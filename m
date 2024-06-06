@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157F68FE88E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 731028FECAE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA0DC1F23282
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 111DFB2838C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F22B197501;
-	Thu,  6 Jun 2024 14:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D231B1515;
+	Thu,  6 Jun 2024 14:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mLyoqhP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4o6iml/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0E51974E8;
-	Thu,  6 Jun 2024 14:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44D3198A35;
+	Thu,  6 Jun 2024 14:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682908; cv=none; b=Ekrts+ynNuP3mOSZWZBVN8ze+Q0z3kgoody31deSBZFDUcDPBt/e/5yymzMMR90zWCnFC7jDneY/kHerQHyuyszfrfm5xADONM5QmWUUI8XYkJ4kIcOvP5pyR1Tttrsu6QB9fDT7exDa3LRYFTyvrkylEiSDp6IQnXVKn1I7+tM=
+	t=1717683395; cv=none; b=LUa5caFNqKLaI1wEumJekX9W5SSWqtx6LsI/KIQIxVY0WJZh7OLH1hKOzRaDWHZjIndL+Xz9WdLEiBNOaLx1/fuTHM8zrfJNYFoF+HP5kXgnMx6sxDITQTVQTE7WwW8+JrJtI/3f//ERyGDC1v70Ev9XmFDUVw8kFQ8R7WGQAe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682908; c=relaxed/simple;
-	bh=HVJpiTLHNuSn3mcpMS6zchnd6FcP6Yi3okUi0oWtT/I=;
+	s=arc-20240116; t=1717683395; c=relaxed/simple;
+	bh=b8HBJz/y+mQ18Q3Um9C7nwqy3K7OFM//de6/DoPG7xI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHclme3+bIMSv7Of5d0G5aXY753gEDtULrYCgq8uusX9W6CPF++yEGdu9PM3EQbduZEYtNnpRBnraHThvGXCpZps3JaosryaM0nUJGBHcmm2QDiyy5cZTZAYGGQAdL3coRXvaCKER14rNKhiAsiwKrvooXKr1tuVp6b/ujGgaIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0mLyoqhP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFCBC2BD10;
-	Thu,  6 Jun 2024 14:08:27 +0000 (UTC)
+	 MIME-Version; b=h+x+jkTKvQ5WxglCFOQQHnPhDOfNBcMLI6d6hbfcu8PDrvCbfdiuc/SG9i7O1tTjZ6FwINmtJB98zMy7HAyUxMfMjjiIcUJ6fAyzJbR6hGDCRzWDnbEqsOEHGE8uU3hbVqbtQ3Qn4YEUboR3+55ynySSNbZ9c3JXB16sIRPDeeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4o6iml/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B09C2BD10;
+	Thu,  6 Jun 2024 14:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682907;
-	bh=HVJpiTLHNuSn3mcpMS6zchnd6FcP6Yi3okUi0oWtT/I=;
+	s=korg; t=1717683395;
+	bh=b8HBJz/y+mQ18Q3Um9C7nwqy3K7OFM//de6/DoPG7xI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0mLyoqhPRd2mtnMXbzbxpmccOHcYp4De2IPeUN+jLIFisX7k5QJl1YHtfbGf8SnaP
-	 Inxg1aL5MPueyGgP+Gzk/VzNGW0Vh0olaCCAinX0l1dbbLqgiUaPqBGrdltFPGpbyg
-	 ZbjgIY+LiuFBidIbbrvm3eCdmZOtYdr4aVzQDwkY=
+	b=T4o6iml/IEDTWuLVerUrs2FO4uX6N77AhKt7BaDcwwuMYmTYzIGuMjvK7O04Jk1ei
+	 2Ud0+JqVZryLCWut01HzGLtVQsJCNWolGbz+g0rsCUFjP3yvG1bmOZhop3FfKjTn7g
+	 XkZ/8hS2FUjK1LsEf5llP1lSIOzGjdcq0YnpbMPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 033/374] arm64: dts: meson: fix S4 power-controller node
+Subject: [PATCH 6.6 340/744] RDMA/hns: Fix deadlock on SRQ async events.
 Date: Thu,  6 Jun 2024 16:00:12 +0200
-Message-ID: <20240606131652.928796691@linuxfoundation.org>
+Message-ID: <20240606131743.372350853@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xianwei Zhao <xianwei.zhao@amlogic.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 72907de9051dc2aa7b55c2a020e2872184ac17cd ]
+[ Upstream commit b46494b6f9c19f141114a57729e198698f40af37 ]
 
-The power-controller module works well by adding its parent
-node secure-monitor.
+xa_lock for SRQ table may be required in AEQ. Use xa_store_irq()/
+xa_erase_irq() to avoid deadlock.
 
-Fixes: 085f7a298a14 ("arm64: dts: add support for S4 power domain controller")
-Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240412-fix-secpwr-s4-v2-1-3802fd936d77@amlogic.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Fixes: 81fce6291d99 ("RDMA/hns: Add SRQ asynchronous event support")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240412091616.370789-5-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-s4.dtsi | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_main.c | 1 +
+ drivers/infiniband/hw/hns/hns_roce_srq.c  | 6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-index ce90b35686a21..10896f9df682d 100644
---- a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-@@ -65,10 +65,15 @@ xtal: xtal-clk {
- 		#clock-cells = <0>;
- 	};
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index 4a9cd4d21bc99..c8c49110a3378 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -37,6 +37,7 @@
+ #include <rdma/ib_smi.h>
+ #include <rdma/ib_user_verbs.h>
+ #include <rdma/ib_cache.h>
++#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_hem.h"
+diff --git a/drivers/infiniband/hw/hns/hns_roce_srq.c b/drivers/infiniband/hw/hns/hns_roce_srq.c
+index 8dae98f827eb2..6a4923c21cbc6 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_srq.c
++++ b/drivers/infiniband/hw/hns/hns_roce_srq.c
+@@ -122,7 +122,7 @@ static int alloc_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq)
+ 		return ret;
+ 	}
  
--	pwrc: power-controller {
--		compatible = "amlogic,meson-s4-pwrc";
--		#power-domain-cells = <1>;
--		status = "okay";
-+	firmware {
-+		sm: secure-monitor {
-+			compatible = "amlogic,meson-gxbb-sm";
-+
-+			pwrc: power-controller {
-+				compatible = "amlogic,meson-s4-pwrc";
-+				#power-domain-cells = <1>;
-+			};
-+		};
- 	};
+-	ret = xa_err(xa_store(&srq_table->xa, srq->srqn, srq, GFP_KERNEL));
++	ret = xa_err(xa_store_irq(&srq_table->xa, srq->srqn, srq, GFP_KERNEL));
+ 	if (ret) {
+ 		ibdev_err(ibdev, "failed to store SRQC, ret = %d.\n", ret);
+ 		goto err_put;
+@@ -135,7 +135,7 @@ static int alloc_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq)
+ 	return 0;
  
- 	soc {
+ err_xa:
+-	xa_erase(&srq_table->xa, srq->srqn);
++	xa_erase_irq(&srq_table->xa, srq->srqn);
+ err_put:
+ 	hns_roce_table_put(hr_dev, &srq_table->table, srq->srqn);
+ 
+@@ -153,7 +153,7 @@ static void free_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq)
+ 		dev_err(hr_dev->dev, "DESTROY_SRQ failed (%d) for SRQN %06lx\n",
+ 			ret, srq->srqn);
+ 
+-	xa_erase(&srq_table->xa, srq->srqn);
++	xa_erase_irq(&srq_table->xa, srq->srqn);
+ 
+ 	if (refcount_dec_and_test(&srq->refcount))
+ 		complete(&srq->free);
 -- 
 2.43.0
 
