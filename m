@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-49496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8703E8FED81
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4658FE9DB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F04D1C242E2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75DCC2899A5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12F5198E8F;
-	Thu,  6 Jun 2024 14:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F3519CCF2;
+	Thu,  6 Jun 2024 14:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wYicXtHr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ErzdX9fT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605B81BBBD0;
-	Thu,  6 Jun 2024 14:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A083B198E6A;
+	Thu,  6 Jun 2024 14:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683494; cv=none; b=XfEs34hLUJThiJZ4cUJjcTUD7fbzPEwyOMZhpVD34S+h+1lJeo84D2JcC4HlydcY6TI7VC9Wi/3zibE7rfVbYy/YXB4tOIhUcfphgCInh6GwVJ/72KgoCFSwDuSzDPybWDyI0EqtkRRr0oXtbhuad2z97iOocF2YWG+o87N5fTE=
+	t=1717683072; cv=none; b=ITYuv0dheZZt7gaT7UmZB4cZTxcTaMdQG4wmjzes9Z0WMQEjEbtpXTF+5Zw6uPw5kMDRoCWgTqCKb9nCQLCTr5rxKciaSQi4WhEOVcIr0a3nos45TJuKW/+5bxQrcDFBiEwNBTCtzAU0Av7NM87yzF6kFTIaWupO8ay0RSkztiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683494; c=relaxed/simple;
-	bh=OPfFgP6+/ItiK0rBhKHmLob0nvGk0lu8GfnXbmWKqzE=;
+	s=arc-20240116; t=1717683072; c=relaxed/simple;
+	bh=2BFtFDfKugUKKKFE23FURCNheAhoCG0TNB8+gyJSsis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ziwg2DJiMgbON7k93GGSzvxAG5fh71mud9AJ7radcrk1tRfXqbN2GfeL49ANT8911fhbSHwmHaZXMbmoYgBFEPHbTYUdf38MY8ly3jyjIFVrDzMHhZUU1OneVZMnJjCG4pSd+sT96JuJsZ3e/EWysnr+0bN0A7UBdQ+SuvPElJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wYicXtHr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1381EC32781;
-	Thu,  6 Jun 2024 14:18:14 +0000 (UTC)
+	 MIME-Version; b=Hmt2MLHKdrBEHKW3L2+l7N1g3NoFsNyb3T3sm0STZqAHzCzF0K2rHG394ayQnQId8Rp7hcLioM0PxocAu8hCs/stNh05H3g42piwbFbLCUhOZwkUVPDUXXbDLg0YEji+ZOhRFtKzdYJrx8ZtelbXJfR/AyfpV8No/45akgeOtsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ErzdX9fT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 815FDC2BD10;
+	Thu,  6 Jun 2024 14:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683494;
-	bh=OPfFgP6+/ItiK0rBhKHmLob0nvGk0lu8GfnXbmWKqzE=;
+	s=korg; t=1717683072;
+	bh=2BFtFDfKugUKKKFE23FURCNheAhoCG0TNB8+gyJSsis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wYicXtHr8YXqF2nvdaoI5WBuFDK1QlZpSADwR2YSIpRU5Dlz0a4Bvhb9xtFW/8PVP
-	 Mp6Ez3BpN+0sVcbEdtkMBaJq+wcSIP9ABpEnoNH5OpKQyWPDG4sb7AizxhLLrNUs7+
-	 oFnNugLovTmcVAUJs6n6ozdimLn6/epUEcXkP1Bw=
+	b=ErzdX9fTg+OyoP90GiSfBnFzXkZEhptpm6cTxynVicOINqjickYPHN/quzahFNAOz
+	 OBWvdDY54nkFZrb9Lg8YKcfgIU+pcP1UjrLTTdslNy5R9qxictHh8qQqV40+A+9Sxg
+	 O1N+wmGt7qJieQ2PlorCeYdnlC9QoqRXoje2EVrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Richard Weinberger <richard@nod.at>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 384/473] um: Fix the -Wmissing-prototypes warning for __switch_mm
-Date: Thu,  6 Jun 2024 16:05:13 +0200
-Message-ID: <20240606131712.550956625@linuxfoundation.org>
+Subject: [PATCH 6.9 335/374] netfilter: nft_payload: skbuff vlan metadata mangle support
+Date: Thu,  6 Jun 2024 16:05:14 +0200
+Message-ID: <20240606131703.072072054@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 2cbade17b18c0f0fd9963f26c9fc9b057eb1cb3a ]
+[ Upstream commit 33c563ebf8d3deed7d8addd20d77398ac737ef9a ]
 
-The __switch_mm function is defined in the user code, and is called
-by the kernel code. It should be declared in a shared header.
+Userspace assumes vlan header is present at a given offset, but vlan
+offload allows to store this in metadata fields of the skbuff. Hence
+mangling vlan results in a garbled packet. Handle this transparently by
+adding a parser to the kernel.
 
-Fixes: 4dc706c2f292 ("um: take um_mmu.h to asm/mmu.h, clean asm/mmu_context.h a bit")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+If vlan metadata is present and payload offset is over 12 bytes (source
+and destination mac address fields), then subtract vlan header present
+in vlan metadata, otherwise mangle vlan metadata based on offset and
+length, extracting data from the source register.
+
+This is similar to:
+
+  8cfd23e67401 ("netfilter: nft_payload: work around vlan header stripping")
+
+to deal with vlan payload mangling.
+
+Fixes: 7ec3f7b47b8d ("netfilter: nft_payload: add packet mangling support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/include/asm/mmu.h           | 2 --
- arch/um/include/shared/skas/mm_id.h | 2 ++
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nft_payload.c | 72 +++++++++++++++++++++++++++++++++----
+ 1 file changed, 65 insertions(+), 7 deletions(-)
 
-diff --git a/arch/um/include/asm/mmu.h b/arch/um/include/asm/mmu.h
-index 5b072aba5b658..a7cb380c0b5c0 100644
---- a/arch/um/include/asm/mmu.h
-+++ b/arch/um/include/asm/mmu.h
-@@ -15,8 +15,6 @@ typedef struct mm_context {
- 	struct page *stub_pages[2];
- } mm_context_t;
+diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
+index a3cb5dbcb362c..0c43d748e23ae 100644
+--- a/net/netfilter/nft_payload.c
++++ b/net/netfilter/nft_payload.c
+@@ -145,12 +145,12 @@ int nft_payload_inner_offset(const struct nft_pktinfo *pkt)
+ 	return pkt->inneroff;
+ }
  
--extern void __switch_mm(struct mm_id * mm_idp);
--
- /* Avoid tangled inclusion with asm/ldt.h */
- extern long init_new_ldt(struct mm_context *to_mm, struct mm_context *from_mm);
- extern void free_ldt(struct mm_context *mm);
-diff --git a/arch/um/include/shared/skas/mm_id.h b/arch/um/include/shared/skas/mm_id.h
-index e82e203f5f419..92dbf727e3842 100644
---- a/arch/um/include/shared/skas/mm_id.h
-+++ b/arch/um/include/shared/skas/mm_id.h
-@@ -15,4 +15,6 @@ struct mm_id {
- 	int kill;
+-static bool nft_payload_need_vlan_copy(const struct nft_payload *priv)
++static bool nft_payload_need_vlan_adjust(u32 offset, u32 len)
+ {
+-	unsigned int len = priv->offset + priv->len;
++	unsigned int boundary = offset + len;
+ 
+ 	/* data past ether src/dst requested, copy needed */
+-	if (len > offsetof(struct ethhdr, h_proto))
++	if (boundary > offsetof(struct ethhdr, h_proto))
+ 		return true;
+ 
+ 	return false;
+@@ -174,7 +174,7 @@ void nft_payload_eval(const struct nft_expr *expr,
+ 			goto err;
+ 
+ 		if (skb_vlan_tag_present(skb) &&
+-		    nft_payload_need_vlan_copy(priv)) {
++		    nft_payload_need_vlan_adjust(priv->offset, priv->len)) {
+ 			if (!nft_payload_copy_vlan(dest, skb,
+ 						   priv->offset, priv->len))
+ 				goto err;
+@@ -801,21 +801,79 @@ struct nft_payload_set {
+ 	u8			csum_flags;
  };
  
-+void __switch_mm(struct mm_id *mm_idp);
++/* This is not struct vlan_hdr. */
++struct nft_payload_vlan_hdr {
++	__be16			h_vlan_proto;
++	__be16			h_vlan_TCI;
++};
 +
- #endif
++static bool
++nft_payload_set_vlan(const u32 *src, struct sk_buff *skb, u8 offset, u8 len,
++		     int *vlan_hlen)
++{
++	struct nft_payload_vlan_hdr *vlanh;
++	__be16 vlan_proto;
++	u16 vlan_tci;
++
++	if (offset >= offsetof(struct vlan_ethhdr, h_vlan_encapsulated_proto)) {
++		*vlan_hlen = VLAN_HLEN;
++		return true;
++	}
++
++	switch (offset) {
++	case offsetof(struct vlan_ethhdr, h_vlan_proto):
++		if (len == 2) {
++			vlan_proto = nft_reg_load_be16(src);
++			skb->vlan_proto = vlan_proto;
++		} else if (len == 4) {
++			vlanh = (struct nft_payload_vlan_hdr *)src;
++			__vlan_hwaccel_put_tag(skb, vlanh->h_vlan_proto,
++					       ntohs(vlanh->h_vlan_TCI));
++		} else {
++			return false;
++		}
++		break;
++	case offsetof(struct vlan_ethhdr, h_vlan_TCI):
++		if (len != 2)
++			return false;
++
++		vlan_tci = ntohs(nft_reg_load_be16(src));
++		skb->vlan_tci = vlan_tci;
++		break;
++	default:
++		return false;
++	}
++
++	return true;
++}
++
+ static void nft_payload_set_eval(const struct nft_expr *expr,
+ 				 struct nft_regs *regs,
+ 				 const struct nft_pktinfo *pkt)
+ {
+ 	const struct nft_payload_set *priv = nft_expr_priv(expr);
+-	struct sk_buff *skb = pkt->skb;
+ 	const u32 *src = &regs->data[priv->sreg];
+-	int offset, csum_offset;
++	int offset, csum_offset, vlan_hlen = 0;
++	struct sk_buff *skb = pkt->skb;
+ 	__wsum fsum, tsum;
+ 
+ 	switch (priv->base) {
+ 	case NFT_PAYLOAD_LL_HEADER:
+ 		if (!skb_mac_header_was_set(skb))
+ 			goto err;
+-		offset = skb_mac_header(skb) - skb->data;
++
++		if (skb_vlan_tag_present(skb) &&
++		    nft_payload_need_vlan_adjust(priv->offset, priv->len)) {
++			if (!nft_payload_set_vlan(src, skb,
++						  priv->offset, priv->len,
++						  &vlan_hlen))
++				goto err;
++
++			if (!vlan_hlen)
++				return;
++		}
++
++		offset = skb_mac_header(skb) - skb->data - vlan_hlen;
+ 		break;
+ 	case NFT_PAYLOAD_NETWORK_HEADER:
+ 		offset = skb_network_offset(skb);
 -- 
 2.43.0
 
