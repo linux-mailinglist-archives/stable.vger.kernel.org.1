@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-49144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40388FEC09
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 405EC8FEAAA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C78C282557
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85F86287AC1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17D31ABE30;
-	Thu,  6 Jun 2024 14:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F34A1A0B17;
+	Thu,  6 Jun 2024 14:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AY7XhJJL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VX0ak0sr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615331AC431;
-	Thu,  6 Jun 2024 14:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33662233B;
+	Thu,  6 Jun 2024 14:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683323; cv=none; b=LmU3ouA6RcCxSogQEi9xuzebyZZN9rf8y1EFxKmM279Hm9AmPS39IFlS9f17IeEv4WBNzvnyq7nmLmu+URH/qioWmycXLFWSd0QzlmgyJlmxEVUSWHB3XOoYZgapIXq1zvgFXny2qFuurEs/UBtNYDKRPCJumj1//qCnuQnjSv4=
+	t=1717683162; cv=none; b=MW9NaBG5tjYUf5UD4rZVPd6dK0H+GWXSdp3ciZ+CT5686W1CwKUWA1IEBQBfbYduJpc5PL87wgllWg5LH4A4u477d5o3RjGwh3PobjquPym9sqZWTt3Rt7GxXLHI5crgyW9bbQ1qkH3g2ckwVKNFFbyRVURqvUlLMhK4UGflvvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683323; c=relaxed/simple;
-	bh=+d21GlBZSfEvtNHqerw1y7bdoVwFpC1RILmTwGx8svo=;
+	s=arc-20240116; t=1717683162; c=relaxed/simple;
+	bh=QFGYzKy5uMVyIyHZNbFMyt+o2ayCkD7S5UoAytod9qM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tRwIFKKk+Zij92qROeRxWU86zKWiPros5OqGDQ0CFnU4RRt6RNqQg/DfixozIirAZwehjR+SUktX1bJS3Rz/KVD3Ctk9396piGYnFQhcV0iedtDWgBwxxnGA4RygV2pHgogW8AFElzrCCuMmdcKXGTkC4DfBw/TjyRDOCVMFsWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AY7XhJJL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4277BC32781;
-	Thu,  6 Jun 2024 14:15:23 +0000 (UTC)
+	 MIME-Version; b=KpTjvBil11rDDSf/L7202+vJj+XdLqPIaCU4e8TapjazeP8KPHxf0v0kXehiKqPNyQuounu9p6ldyY0Hn3qamCWNd15JKOHC7xoJq6FJG2MG9n7XGrKOTBJ/ivWkQpAsFAQFPf2gs+lvE3+0uFBqR18ha6vdNzBrck5qGQCAFMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VX0ak0sr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F8EC32781;
+	Thu,  6 Jun 2024 14:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683323;
-	bh=+d21GlBZSfEvtNHqerw1y7bdoVwFpC1RILmTwGx8svo=;
+	s=korg; t=1717683162;
+	bh=QFGYzKy5uMVyIyHZNbFMyt+o2ayCkD7S5UoAytod9qM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AY7XhJJL+bvY9FwJkIje0ewP2QZNX7qC8EcF9nagaQA0F94oNcOgwmUttfivCWgzR
-	 jnMl4T+ldbwBiQR9XERFbUIeS/Hpae2eOsnZpEhHh3Dzzymr9lqiVjgKWOTMkVtUYo
-	 I2vcPmGMjBAP8p3OieuAIOx8ur1og5GYjvxn0w+A=
+	b=VX0ak0srFqJJMxm+aTzFDj1mns7UBP2dLBMc7z0jVZPgFLRidIeNSliE4CKZZ0Hux
+	 eiGhN5EKRqCECL5KY+04zknvYjcMQvDXXCekX3BSSMQoplyAOEA9RSV1+Z5cvuKDtp
+	 svMVv2U6zsjjYSa93vuJzEkXlA3F5oqnmM6O8ZEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 263/744] Bluetooth: ISO: Fix BIS cleanup
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 6.1 006/473] serial: 8250_bcm7271: use default_mux_rate if possible
 Date: Thu,  6 Jun 2024 15:58:55 +0200
-Message-ID: <20240606131740.833593086@linuxfoundation.org>
+Message-ID: <20240606131700.026471306@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,127 +61,180 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+From: Doug Berger <opendmb@gmail.com>
 
-[ Upstream commit a254b90c9aac3d3d938a07e019773e35a977451b ]
+commit 614a19b89ca43449196a8af1afac7d55c6781687 upstream.
 
-This fixes the master BIS cleanup procedure - as opposed to CIS cleanup,
-no HCI disconnect command should be issued. A master BIS should only be
-terminated by disabling periodic and extended advertising, and terminating
-the BIG.
+There is a scenario when resuming from some power saving states
+with no_console_suspend where console output can be generated
+before the 8250_bcm7271 driver gets the opportunity to restore
+the baud_mux_clk frequency. Since the baud_mux_clk is at its
+default frequency at this time the output can be garbled until
+the driver gets the opportunity to resume.
 
-In case of a Broadcast Receiver, all BIS and PA connections can be
-cleaned up by calling hci_conn_failed, since it contains all function
-calls that are necessary for successful cleanup.
+Since this is only an issue with console use of the serial port
+during that window and the console isn't likely to use baud
+rates that require alternate baud_mux_clk frequencies, allow the
+driver to select the default_mux_rate if it is accurate enough.
 
-Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 84a4bb6548a2 ("Bluetooth: HCI: Remove HCI_AMP support")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 41a469482de2 ("serial: 8250: Add new 8250-core based Broadcom STB driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Doug Berger <opendmb@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20240424222559.1844045-1-opendmb@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/hci_sync.h |  2 ++
- net/bluetooth/hci_conn.c         |  7 +++++++
- net/bluetooth/hci_sync.c         | 28 ++++++++++++----------------
- 3 files changed, 21 insertions(+), 16 deletions(-)
+ drivers/tty/serial/8250/8250_bcm7271.c |  101 +++++++++++++++++++--------------
+ 1 file changed, 60 insertions(+), 41 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
-index 268145efbe4cb..e2582c2425449 100644
---- a/include/net/bluetooth/hci_sync.h
-+++ b/include/net/bluetooth/hci_sync.h
-@@ -80,6 +80,8 @@ int hci_start_per_adv_sync(struct hci_dev *hdev, u8 instance, u8 data_len,
- 			   u8 *data, u32 flags, u16 min_interval,
- 			   u16 max_interval, u16 sync_interval);
- 
-+int hci_disable_per_advertising_sync(struct hci_dev *hdev, u8 instance);
-+
- int hci_remove_advertising_sync(struct hci_dev *hdev, struct sock *sk,
- 				u8 instance, bool force);
- int hci_disable_advertising_sync(struct hci_dev *hdev);
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index aea7f06c107eb..707c7710d84ec 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -759,6 +759,7 @@ static int terminate_big_sync(struct hci_dev *hdev, void *data)
- 
- 	bt_dev_dbg(hdev, "big 0x%2.2x bis 0x%2.2x", d->big, d->bis);
- 
-+	hci_disable_per_advertising_sync(hdev, d->bis);
- 	hci_remove_ext_adv_instance_sync(hdev, d->bis, NULL);
- 
- 	/* Only terminate BIG if it has been created */
-@@ -1279,6 +1280,12 @@ void hci_conn_failed(struct hci_conn *conn, u8 status)
- 		break;
- 	}
- 
-+	/* In case of BIG/PA sync failed, clear conn flags so that
-+	 * the conns will be correctly cleaned up by ISO layer
-+	 */
-+	test_and_clear_bit(HCI_CONN_BIG_SYNC_FAILED, &conn->flags);
-+	test_and_clear_bit(HCI_CONN_PA_SYNC_FAILED, &conn->flags);
-+
- 	conn->state = BT_CLOSED;
- 	hci_connect_cfm(conn, status);
- 	hci_conn_del(conn);
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 1bc58b324b73e..40f5324e1e66f 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -1321,7 +1321,7 @@ int hci_start_ext_adv_sync(struct hci_dev *hdev, u8 instance)
- 	return hci_enable_ext_advertising_sync(hdev, instance);
+--- a/drivers/tty/serial/8250/8250_bcm7271.c
++++ b/drivers/tty/serial/8250/8250_bcm7271.c
+@@ -674,18 +674,46 @@ static void init_real_clk_rates(struct d
+ 	clk_set_rate(priv->baud_mux_clk, priv->default_mux_rate);
  }
  
--static int hci_disable_per_advertising_sync(struct hci_dev *hdev, u8 instance)
-+int hci_disable_per_advertising_sync(struct hci_dev *hdev, u8 instance)
- {
- 	struct hci_cp_le_set_per_adv_enable cp;
- 	struct adv_info *adv = NULL;
-@@ -5304,6 +5304,17 @@ static int hci_disconnect_sync(struct hci_dev *hdev, struct hci_conn *conn,
- 	if (conn->type == AMP_LINK)
- 		return hci_disconnect_phy_link_sync(hdev, conn->handle, reason);
- 
-+	if (test_bit(HCI_CONN_BIG_CREATED, &conn->flags)) {
-+		/* This is a BIS connection, hci_conn_del will
-+		 * do the necessary cleanup.
-+		 */
-+		hci_dev_lock(hdev);
-+		hci_conn_failed(conn, reason);
-+		hci_dev_unlock(hdev);
++static u32 find_quot(struct device *dev, u32 freq, u32 baud, u32 *percent)
++{
++	u32 quot;
++	u32 rate;
++	u64 hires_rate;
++	u64 hires_baud;
++	u64 hires_err;
 +
++	rate = freq / 16;
++	quot = DIV_ROUND_CLOSEST(rate, baud);
++	if (!quot)
 +		return 0;
-+	}
 +
- 	memset(&cp, 0, sizeof(cp));
- 	cp.handle = cpu_to_le16(conn->handle);
- 	cp.reason = reason;
-@@ -5456,21 +5467,6 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
- 		err = hci_reject_conn_sync(hdev, conn, reason);
- 		break;
- 	case BT_OPEN:
--		hci_dev_lock(hdev);
++	/* increase resolution to get xx.xx percent */
++	hires_rate = div_u64((u64)rate * 10000, (u64)quot);
++	hires_baud = (u64)baud * 10000;
++
++	/* get the delta */
++	if (hires_rate > hires_baud)
++		hires_err = (hires_rate - hires_baud);
++	else
++		hires_err = (hires_baud - hires_rate);
++
++	*percent = (unsigned long)DIV_ROUND_CLOSEST_ULL(hires_err, baud);
++
++	dev_dbg(dev, "Baud rate: %u, MUX Clk: %u, Error: %u.%u%%\n",
++		baud, freq, *percent / 100, *percent % 100);
++
++	return quot;
++}
++
+ static void set_clock_mux(struct uart_port *up, struct brcmuart_priv *priv,
+ 			u32 baud)
+ {
+ 	u32 percent;
+ 	u32 best_percent = UINT_MAX;
+ 	u32 quot;
++	u32 freq;
+ 	u32 best_quot = 1;
+-	u32 rate;
+-	int best_index = -1;
+-	u64 hires_rate;
+-	u64 hires_baud;
+-	u64 hires_err;
++	u32 best_freq = 0;
+ 	int rc;
+ 	int i;
+ 	int real_baud;
+@@ -694,44 +722,35 @@ static void set_clock_mux(struct uart_po
+ 	if (priv->baud_mux_clk == NULL)
+ 		return;
+ 
+-	/* Find the closest match for specified baud */
+-	for (i = 0; i < ARRAY_SIZE(priv->real_rates); i++) {
+-		if (priv->real_rates[i] == 0)
+-			continue;
+-		rate = priv->real_rates[i] / 16;
+-		quot = DIV_ROUND_CLOSEST(rate, baud);
+-		if (!quot)
+-			continue;
 -
--		/* Cleanup bis or pa sync connections */
--		if (test_and_clear_bit(HCI_CONN_BIG_SYNC_FAILED, &conn->flags) ||
--		    test_and_clear_bit(HCI_CONN_PA_SYNC_FAILED, &conn->flags)) {
--			hci_conn_failed(conn, reason);
--		} else if (test_bit(HCI_CONN_PA_SYNC, &conn->flags) ||
--			   test_bit(HCI_CONN_BIG_SYNC, &conn->flags)) {
--			conn->state = BT_CLOSED;
--			hci_disconn_cfm(conn, reason);
--			hci_conn_del(conn);
--		}
+-		/* increase resolution to get xx.xx percent */
+-		hires_rate = (u64)rate * 10000;
+-		hires_baud = (u64)baud * 10000;
 -
--		hci_dev_unlock(hdev);
--		return 0;
- 	case BT_BOUND:
- 		break;
- 	default:
--- 
-2.43.0
-
+-		hires_err = div_u64(hires_rate, (u64)quot);
+-
+-		/* get the delta */
+-		if (hires_err > hires_baud)
+-			hires_err = (hires_err - hires_baud);
+-		else
+-			hires_err = (hires_baud - hires_err);
+-
+-		percent = (unsigned long)DIV_ROUND_CLOSEST_ULL(hires_err, baud);
+-		dev_dbg(up->dev,
+-			"Baud rate: %u, MUX Clk: %u, Error: %u.%u%%\n",
+-			baud, priv->real_rates[i], percent / 100,
+-			percent % 100);
+-		if (percent < best_percent) {
+-			best_percent = percent;
+-			best_index = i;
+-			best_quot = quot;
++	/* Try default_mux_rate first */
++	quot = find_quot(up->dev, priv->default_mux_rate, baud, &percent);
++	if (quot) {
++		best_percent = percent;
++		best_freq = priv->default_mux_rate;
++		best_quot = quot;
++	}
++	/* If more than 1% error, find the closest match for specified baud */
++	if (best_percent > 100) {
++		for (i = 0; i < ARRAY_SIZE(priv->real_rates); i++) {
++			freq = priv->real_rates[i];
++			if (freq == 0 || freq == priv->default_mux_rate)
++				continue;
++			quot = find_quot(up->dev, freq, baud, &percent);
++			if (!quot)
++				continue;
++
++			if (percent < best_percent) {
++				best_percent = percent;
++				best_freq = freq;
++				best_quot = quot;
++			}
+ 		}
+ 	}
+-	if (best_index == -1) {
++	if (!best_freq) {
+ 		dev_err(up->dev, "Error, %d BAUD rate is too fast.\n", baud);
+ 		return;
+ 	}
+-	rate = priv->real_rates[best_index];
+-	rc = clk_set_rate(priv->baud_mux_clk, rate);
++	rc = clk_set_rate(priv->baud_mux_clk, best_freq);
+ 	if (rc)
+ 		dev_err(up->dev, "Error selecting BAUD MUX clock\n");
+ 
+@@ -740,8 +759,8 @@ static void set_clock_mux(struct uart_po
+ 		dev_err(up->dev, "Error, baud: %d has %u.%u%% error\n",
+ 			baud, percent / 100, percent % 100);
+ 
+-	real_baud = rate / 16 / best_quot;
+-	dev_dbg(up->dev, "Selecting BAUD MUX rate: %u\n", rate);
++	real_baud = best_freq / 16 / best_quot;
++	dev_dbg(up->dev, "Selecting BAUD MUX rate: %u\n", best_freq);
+ 	dev_dbg(up->dev, "Requested baud: %u, Actual baud: %u\n",
+ 		baud, real_baud);
+ 
+@@ -750,7 +769,7 @@ static void set_clock_mux(struct uart_po
+ 	i += (i / 2);
+ 	priv->char_wait = ns_to_ktime(i);
+ 
+-	up->uartclk = rate;
++	up->uartclk = best_freq;
+ }
+ 
+ static void brcmstb_set_termios(struct uart_port *up,
 
 
 
