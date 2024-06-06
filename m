@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD228FEE9D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DE848FE983
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 505CDB2213B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 784141C23CA0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822B21C53B4;
-	Thu,  6 Jun 2024 14:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7121198841;
+	Thu,  6 Jun 2024 14:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKlGyo5n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMSbO5PG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1B81A0DD5;
-	Thu,  6 Jun 2024 14:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8670419AA6A;
+	Thu,  6 Jun 2024 14:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683681; cv=none; b=Yfa76TFXFjyPSkZPSlG7SVhkjPULKr5RHIXchvMN5Uz+HG4ei03zxYDUVpNMhX4/qi/6PVCI1AHb9+OLkenAVmnceZtYC6mFEca9YkdTDmyvrO9WMaiHIJIaq0Jsk3FtmI/c4bH85phq1YLp7L0mo7uDmtQRnnTC7w9iiV7N7Us=
+	t=1717683033; cv=none; b=QCUTrKjyap6HUIXCjgRzzFXIAaLg5mgZf49lhwMfKQxNl4zB+U9w5TcUMyG4d4cSfOCQ0M2p2OCmJ/3fbgRMfwyRYjzu9iT5KlpbNlWJtRvcOOHUFAhXNhWvVtAGw4cb4S/9AFBALbnlXQcXBX9fe1z/3SJUR6WaHebhe1uKv/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683681; c=relaxed/simple;
-	bh=EDRf94/P2iyKcZqdInyNfJsdF5Q44y/0P52s/cI+1Kw=;
+	s=arc-20240116; t=1717683033; c=relaxed/simple;
+	bh=aAgTHiMz/T5ZpU+Fuo+oUZjUnLqLOZ/5yaVw2GeUlz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/OlbhWB0lJtR6vvVFgFzp+856pJ3RsVvJZUNQR5Jz3D1TMKasuH+TovEbqXHBdruCwPhEAcZRiNYxUivZuSY5c2EXy2DW1Il+Hos7XgG302nlf0R4zMMBLr35AAh4M67lAhTHGzT9lfnGCpDwFBKv3aqPD1szzGXLtNmt2d4I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKlGyo5n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE51C32786;
-	Thu,  6 Jun 2024 14:21:21 +0000 (UTC)
+	 MIME-Version; b=pU+PTZWvo2TUL3lDvPWImu0DbgcUbW03GiyYzbilu1l4bXuBD5p+RwbHKh+BKrWw2/E8ORtSKzF5Y2CzoqOOF6FSfty4xE5UVnh+Tshv7Kv+dNZRttzasLFWstqvLyilCuRSOH5hhLoOIEvTG+BbXu+ilvkg3l0/HR4ZVZeQDaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMSbO5PG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667BBC4AF0D;
+	Thu,  6 Jun 2024 14:10:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683681;
-	bh=EDRf94/P2iyKcZqdInyNfJsdF5Q44y/0P52s/cI+1Kw=;
+	s=korg; t=1717683033;
+	bh=aAgTHiMz/T5ZpU+Fuo+oUZjUnLqLOZ/5yaVw2GeUlz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKlGyo5nFXw6ajBW+fD6x3C+IVPS3+YOPRqhOkHm43+RSvb39OHktJicfydkbBFa0
-	 uzGy6Jd9lvR52/0z5rDGUHrSPbKTDHo1gq3pZJsPi9sfjRSX2tDEDEsClZZ7faJudj
-	 ckkfFH+OQDCE6/i407giN+cW6nwpoytiipr8D+ck=
+	b=rMSbO5PG4BiAO951H0sjTv2RcckwkDzRc/wDzACWwgMIgc7mJZsjy6XeiXrK+2Wbx
+	 7zldI6gyxA0Fex+PCPEnvcJwdBZzTK1L5S21MqFLqs/ZrdOC5465ZjNsaBV022Z0CL
+	 Br/KiZiVjeypgyTdkFTgDlh6kOCKoQ08CJmzB37c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 565/744] mmc: sdhci_am654: Fix ITAPDLY for HS400 timing
+Subject: [PATCH 6.9 258/374] net: lan966x: Remove ptp traps in case the ptp is not enabled.
 Date: Thu,  6 Jun 2024 16:03:57 +0200
-Message-ID: <20240606131750.575578104@linuxfoundation.org>
+Message-ID: <20240606131700.511469645@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit d3182932bb070e7518411fd165e023f82afd7d25 ]
+[ Upstream commit eda40be3a5ff3fdce513d2bcfeaca8cc16cf962a ]
 
-While STRB is currently used for DATA and CRC responses, the CMD
-responses from the device to the host still require ITAPDLY for
-HS400 timing.
+Lan966x is adding ptp traps to redirect the ptp frames to the CPU such
+that the HW will not forward these frames anywhere. The issue is that in
+case ptp is not enabled and the timestamping source is et to
+HWTSTAMP_SOURCE_NETDEV then these traps would not be removed on the
+error path.
+Fix this by removing the traps in this case as they are not needed.
 
-Currently what is stored for HS400 is the ITAPDLY from High Speed
-mode which is incorrect. The ITAPDLY for HS400 speed mode should
-be the same as ITAPDLY as HS200 timing after tuning is executed.
-Add the functionality to save ITAPDLY from HS200 tuning and save
-as HS400 ITAPDLY.
-
-Fixes: a161c45f2979 ("mmc: sdhci_am654: Enable DLL only for some speed modes")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240320223837.959900-8-jm@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 54e1ed69c40a ("net: lan966x: convert to ndo_hwtstamp_get() and ndo_hwtstamp_set()")
+Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://lore.kernel.org/r/20240517135808.3025435-1-horatiu.vultur@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci_am654.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/microchip/lan966x/lan966x_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-index 884d1b53180d7..562034af653eb 100644
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -301,6 +301,12 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
- 	if (timing > MMC_TIMING_UHS_SDR25 && clock >= CLOCK_TOO_SLOW_HZ) {
- 		sdhci_am654_setup_dll(host, clock);
- 		sdhci_am654->dll_enable = true;
-+
-+		if (timing == MMC_TIMING_MMC_HS400) {
-+			sdhci_am654->itap_del_ena[timing] = 0x1;
-+			sdhci_am654->itap_del_sel[timing] = sdhci_am654->itap_del_sel[timing - 1];
-+		}
-+
- 		sdhci_am654_write_itapdly(sdhci_am654, sdhci_am654->itap_del_sel[timing],
- 					  sdhci_am654->itap_del_ena[timing]);
- 	} else {
-@@ -531,6 +537,9 @@ static int sdhci_am654_platform_execute_tuning(struct sdhci_host *host,
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+index 61d88207eed42..6695ed661ef83 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+@@ -474,14 +474,14 @@ static int lan966x_port_hwtstamp_set(struct net_device *dev,
+ 	    cfg->source != HWTSTAMP_SOURCE_PHYLIB)
+ 		return -EOPNOTSUPP;
  
- 	sdhci_am654_write_itapdly(sdhci_am654, itap, sdhci_am654->itap_del_ena[timing]);
- 
-+	/* Save ITAPDLY */
-+	sdhci_am654->itap_del_sel[timing] = itap;
++	if (cfg->source == HWTSTAMP_SOURCE_NETDEV && !port->lan966x->ptp)
++		return -EOPNOTSUPP;
 +
- 	return 0;
- }
+ 	err = lan966x_ptp_setup_traps(port, cfg);
+ 	if (err)
+ 		return err;
  
+ 	if (cfg->source == HWTSTAMP_SOURCE_NETDEV) {
+-		if (!port->lan966x->ptp)
+-			return -EOPNOTSUPP;
+-
+ 		err = lan966x_ptp_hwtstamp_set(port, cfg, extack);
+ 		if (err) {
+ 			lan966x_ptp_del_traps(port);
 -- 
 2.43.0
 
