@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-48534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE058FE969
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FFDD8FECBA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEF7F1C208FA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0E44B28569
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44DB8197A7C;
-	Thu,  6 Jun 2024 14:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8663196DB7;
+	Thu,  6 Jun 2024 14:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLU3bnrX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTLLSjUH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0414F19A2A7;
-	Thu,  6 Jun 2024 14:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9860C1B29A4;
+	Thu,  6 Jun 2024 14:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683017; cv=none; b=Frq95aU1jd2/pSTs4Hg6CE3mh/p/RKyYi4aJCUHUAFFuAq10ewmR2MU+kW5Ux9xXG+nFTxZ3ob0DfaLl9EaC70wP/Z7qhAXdfAAo4kQvTfHt+U3YTXfw+QyyXBY2pJ1FbQDPCExFbF4TTB1nMWVdEMtnCEXnVORSI7+VRzK9AaQ=
+	t=1717683401; cv=none; b=FHmH9o5Yf8sL1bcT+NP30XIorVkhWZEnLMh3JCbBb3Ku8BlktNzCMqI+x2uh/glIJ3/Sv2Z63xGoT4S7NUIEi8kFrQBSBpr6esKcHrMkCSM1+GQ/CYHt5OAYWGSVYV0HZ8dTPceZx5grX7g6S5pVisuJmEfHPLASTrQfxIrtx34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683017; c=relaxed/simple;
-	bh=bLKeizKXlxEvn02vlT3DE7EelCRsiPPua27/ut6AF60=;
+	s=arc-20240116; t=1717683401; c=relaxed/simple;
+	bh=ZbVTZh/HtjxsjZ5jFCXT2Gb2RlO8SulYs137CTtUOFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+nXaXdLlSy/9A3v8uC5pDR7SyjLWzQFFwtILgJZYfSyj8g8kztNz0ZxoKvuZ1z36PbLL2dPTQsGtEowwcrETEUzkZPgncOTZtTSreDe/95PO0BtcF+Khct1ej5V/274AATstO7YBpzsqzXrMtnJ4WNFsC1VHQuP3nupWJ8SW+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLU3bnrX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F21C32781;
-	Thu,  6 Jun 2024 14:10:16 +0000 (UTC)
+	 MIME-Version; b=cmIsN97x4yA0MTWAwnNQ8jx3rJr5oLkqwSAYxPCgVov01ts60txKUYj0jRcSNka4bj+OVze9AYBLLhr4qWGv9nBWniDRzblnfO9MOLfqVC8tjMNT21mqAnsyE3qWWIVQAjVLIdb09RYef+fJpbKGCJ7zVDYsWV5PD+Hkm6Nx+ME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTLLSjUH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3F3C32781;
+	Thu,  6 Jun 2024 14:16:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683016;
-	bh=bLKeizKXlxEvn02vlT3DE7EelCRsiPPua27/ut6AF60=;
+	s=korg; t=1717683401;
+	bh=ZbVTZh/HtjxsjZ5jFCXT2Gb2RlO8SulYs137CTtUOFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oLU3bnrXTvDjiPzK9ZqAMUerwiHTzBziiWJo+CCOx5MNx+GCWXV+fGmDndlkIX66M
-	 YD4Q8JWNpF0mnbClsQqU5g5q/dWXlnezDrMSVtJEbKpBPYoo0nE1ys/VwFbZoSzkHE
-	 1pjFrufp156G6Knd+OK8dDwSXXXEZodeOTeYmUes=
+	b=eTLLSjUHk13VgbKj7G9pDpQ3HOENzohbi4qF8P2UAeG3apJW/Q4mMwh+5I9wSJVx8
+	 Bdxx96bMvjSeTPQn1CbbxuCglukyh8ihHNTT8pxkvW/+IcAv/7M4jYXdwHn/qZG70l
+	 G+pQrn+HTjSn+UyvRVlzwbK718zXUmHbhCORlQeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taehee Yoo <ap420073@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	William Breathitt Gray <william.gray@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 235/374] selftests: net: kill smcrouted in the cleanup logic in amt.sh
+Subject: [PATCH 6.1 285/473] counter: linux/counter.h: fix Excess kernel-doc description warning
 Date: Thu,  6 Jun 2024 16:03:34 +0200
-Message-ID: <20240606131659.690749387@linuxfoundation.org>
+Message-ID: <20240606131709.314021697@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit cc563e749810f5636451d4b833fbd689899ecdb9 ]
+[ Upstream commit 416bdb89605d960405178b9bf04df512d1ace1a3 ]
 
-The amt.sh requires smcrouted for multicasting routing.
-So, it starts smcrouted before forwarding tests.
-It must be stopped after all tests, but it isn't.
+Remove the @priv: line to prevent the kernel-doc warning:
 
-To fix this issue, it kills smcrouted in the cleanup logic.
+include/linux/counter.h:400: warning: Excess struct member 'priv' description in 'counter_device'
 
-Fixes: c08e8baea78e ("selftests: add amt interface selftest script")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Fixes: f2ee4759fb70 ("counter: remove old and now unused registration API")
+Link: https://lore.kernel.org/r/20231223050511.13849-1-rdunlap@infradead.org
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/amt.sh | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/linux/counter.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/amt.sh b/tools/testing/selftests/net/amt.sh
-index 5175a42cbe8a2..7e7ed6c558da9 100755
---- a/tools/testing/selftests/net/amt.sh
-+++ b/tools/testing/selftests/net/amt.sh
-@@ -77,6 +77,7 @@ readonly LISTENER=$(mktemp -u listener-XXXXXXXX)
- readonly GATEWAY=$(mktemp -u gateway-XXXXXXXX)
- readonly RELAY=$(mktemp -u relay-XXXXXXXX)
- readonly SOURCE=$(mktemp -u source-XXXXXXXX)
-+readonly SMCROUTEDIR="$(mktemp -d)"
- ERR=4
- err=0
- 
-@@ -85,6 +86,11 @@ exit_cleanup()
- 	for ns in "$@"; do
- 		ip netns delete "${ns}" 2>/dev/null || true
- 	done
-+	if [ -f "$SMCROUTEDIR/amt.pid" ]; then
-+		smcpid=$(< $SMCROUTEDIR/amt.pid)
-+		kill $smcpid
-+	fi
-+	rm -rf $SMCROUTEDIR
- 
- 	exit $ERR
- }
-@@ -167,7 +173,7 @@ setup_iptables()
- 
- setup_mcast_routing()
- {
--	ip netns exec "${RELAY}" smcrouted
-+	ip netns exec "${RELAY}" smcrouted -P $SMCROUTEDIR/amt.pid
- 	ip netns exec "${RELAY}" smcroutectl a relay_src \
- 		172.17.0.2 239.0.0.1 amtr
- 	ip netns exec "${RELAY}" smcroutectl a relay_src \
+diff --git a/include/linux/counter.h b/include/linux/counter.h
+index b63746637de2a..246711b76e548 100644
+--- a/include/linux/counter.h
++++ b/include/linux/counter.h
+@@ -359,7 +359,6 @@ struct counter_ops {
+  * @num_counts:		number of Counts specified in @counts
+  * @ext:		optional array of Counter device extensions
+  * @num_ext:		number of Counter device extensions specified in @ext
+- * @priv:		optional private data supplied by driver
+  * @dev:		internal device structure
+  * @chrdev:		internal character device structure
+  * @events_list:	list of current watching Counter events
 -- 
 2.43.0
 
