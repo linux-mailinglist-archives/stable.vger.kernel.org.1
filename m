@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B85D8FE951
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287EA8FEC91
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAD4A1F237A9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 789DBB27FC9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E874199E81;
-	Thu,  6 Jun 2024 14:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD5919B3DD;
+	Thu,  6 Jun 2024 14:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgXj425y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSCSZ+PZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2FB197A81;
-	Thu,  6 Jun 2024 14:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1911B1432;
+	Thu,  6 Jun 2024 14:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683007; cv=none; b=XNyOIPXcsdYATHHi/hP1mLI2MPE0tZHu84Xcy0pUUHNfUAF1vrnNgf2Gkqm2ai+WEZ5nswhumqepr9M/LqO67E4AJr3wW0FA7JhH2nZteNgFzG0UQ7kpgAm9u3AWH5OU+lNMwhkN6NUlX0nqQhPoNWYOvtuLKvNh4yOaKo7UZV0=
+	t=1717683381; cv=none; b=M/S0IHNZk0Zr4FHq4pfsGcFUdutSUarxns3aAhbrbQgUaCZGIVDeCix+e9gG+BkT9+4UDfmVeB4bPLrsWUwRnPtm3OZ72Z1i3qTG6DQcbmcM/hgi/OVzY+6pFsdNQRMmP0+1UdVKDyKwC8QXFfv6JOGATASPFHRRTKhK73D7NuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683007; c=relaxed/simple;
-	bh=bitw/NDyHYdot8opRQ+dikPj3j3/wAmLB9ofpn+t74s=;
+	s=arc-20240116; t=1717683381; c=relaxed/simple;
+	bh=1GrK1BZSm6tgj8cxlbRwa/0XajewwtEVV/kQNw0TdVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfLTwsJKamkYQgG0ZVKOpT523tV2m5+JkPU8H1b7w2aVRFyetQeUGP9pBBUWsUf67lc9My+kvyh06biO3Pp/6pnJ61IB+iYMF4aW6izDD6cHX7k92Esb77TWKPkZMSI9zWC8AqNC0cPlqEqRkopPTPerG5IIu3SVCUbZ/oHoakY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgXj425y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D6AC4AF0C;
-	Thu,  6 Jun 2024 14:10:06 +0000 (UTC)
+	 MIME-Version; b=b3GZcM3A58mkSeFG58nOU8IGFpr1yODuuSGX64ZtVaPqudweRYMvUnLgMUI0yVYWB+52wPscl2/KXzI77Psz77W+h+iZGaHrOAhOd92Y9GpW4mkW3prLG2+dQGZY5EXUxumnvWglbWq4S+R1EAAPxWs0ueHU1/t/OwSpOSzF9MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSCSZ+PZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210FCC32781;
+	Thu,  6 Jun 2024 14:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683006;
-	bh=bitw/NDyHYdot8opRQ+dikPj3j3/wAmLB9ofpn+t74s=;
+	s=korg; t=1717683381;
+	bh=1GrK1BZSm6tgj8cxlbRwa/0XajewwtEVV/kQNw0TdVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LgXj425y0FeECWtMi3grosqbI+Rb4Jwg6yqgi+d7TcQ7v9LcsgSGKDZf55cnu4w7s
-	 hJqeOaYxnAXZD03stJIKrgrnXU0PhTJQhJvtPORx27faiVR/t0wJ+5oQkJ8O0g4qnW
-	 CNVKneOWo/3765653uNee7eduJLttje3YMq6WBfM=
+	b=oSCSZ+PZDxM9i3m8GE8xcN155YRL99kMzDTH2yakw4DOk4RAYzizlbxTeWNXv2f3S
+	 1AFruuzMvyW/SXdPQmKR5WGiY8+Lyay0UYC5s1KFh4pmiwGqO2deix6lVhfMXTOJaI
+	 IaXB+DhOK6y81dKM17qqo++V1lCh9xhZFbQ7c5jA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 214/374] KVM: arm64: Destroy mpidr_data for late vCPU creation
+Subject: [PATCH 6.1 264/473] ext4: remove unused parameter from ext4_mb_new_blocks_simple()
 Date: Thu,  6 Jun 2024 16:03:13 +0200
-Message-ID: <20240606131658.978339880@linuxfoundation.org>
+Message-ID: <20240606131708.670674267@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,141 +63,191 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit ce5d2448eb8fe83aed331db53a08612286a137dd ]
+[ Upstream commit ad78b5efe4246e5deba8d44a6ed172b8a00d3113 ]
 
-A particularly annoying userspace could create a vCPU after KVM has
-computed mpidr_data for the VM, either by racing against VGIC
-initialization or having a userspace irqchip.
+Two cleanups for ext4_mb_new_blocks_simple:
+Remove unused parameter handle of ext4_mb_new_blocks_simple.
+Move ext4_mb_new_blocks_simple definition before ext4_mb_new_blocks to
+remove unnecessary forward declaration of ext4_mb_new_blocks_simple.
 
-In any case, this means mpidr_data no longer fully describes the VM, and
-attempts to find the new vCPU with kvm_mpidr_to_vcpu() will fail. The
-fix is to discard mpidr_data altogether, as it is only a performance
-optimization and not required for correctness. In all likelihood KVM
-will recompute the mappings when KVM_RUN is called on the new vCPU.
-
-Note that reads of mpidr_data are not guarded by a lock; promote to RCU
-to cope with the possibility of mpidr_data being invalidated at runtime.
-
-Fixes: 54a8006d0b49 ("KVM: arm64: Fast-track kvm_mpidr_to_vcpu() when mpidr_data is available")
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240508071952.2035422-1-oliver.upton@linux.dev
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230603150327.3596033-10-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 3f4830abd236 ("ext4: fix potential unnitialized variable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/arm.c | 50 ++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 41 insertions(+), 9 deletions(-)
+ fs/ext4/mballoc.c | 137 +++++++++++++++++++++++-----------------------
+ 1 file changed, 67 insertions(+), 70 deletions(-)
 
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index c4a0a35e02c72..6cda738a41577 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -195,6 +195,23 @@ void kvm_arch_create_vm_debugfs(struct kvm *kvm)
- 	kvm_sys_regs_create_debugfs(kvm);
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index a7801d2a7d1b4..97f4563a97c8e 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -5608,8 +5608,72 @@ static bool ext4_mb_discard_preallocations_should_retry(struct super_block *sb,
+ 	return ret;
  }
  
-+static void kvm_destroy_mpidr_data(struct kvm *kvm)
+-static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+-				struct ext4_allocation_request *ar, int *errp);
++/*
++ * Simple allocator for Ext4 fast commit replay path. It searches for blocks
++ * linearly starting at the goal block and also excludes the blocks which
++ * are going to be in use after fast commit replay.
++ */
++static ext4_fsblk_t
++ext4_mb_new_blocks_simple(struct ext4_allocation_request *ar, int *errp)
 +{
-+	struct kvm_mpidr_data *data;
++	struct buffer_head *bitmap_bh;
++	struct super_block *sb = ar->inode->i_sb;
++	struct ext4_sb_info *sbi = EXT4_SB(sb);
++	ext4_group_t group, nr;
++	ext4_grpblk_t blkoff;
++	ext4_grpblk_t max = EXT4_CLUSTERS_PER_GROUP(sb);
++	ext4_grpblk_t i = 0;
++	ext4_fsblk_t goal, block;
++	struct ext4_super_block *es = EXT4_SB(sb)->s_es;
 +
-+	mutex_lock(&kvm->arch.config_lock);
++	goal = ar->goal;
++	if (goal < le32_to_cpu(es->s_first_data_block) ||
++			goal >= ext4_blocks_count(es))
++		goal = le32_to_cpu(es->s_first_data_block);
 +
-+	data = rcu_dereference_protected(kvm->arch.mpidr_data,
-+					 lockdep_is_held(&kvm->arch.config_lock));
-+	if (data) {
-+		rcu_assign_pointer(kvm->arch.mpidr_data, NULL);
-+		synchronize_rcu();
-+		kfree(data);
++	ar->len = 0;
++	ext4_get_group_no_and_offset(sb, goal, &group, &blkoff);
++	for (nr = ext4_get_groups_count(sb); nr > 0; nr--) {
++		bitmap_bh = ext4_read_block_bitmap(sb, group);
++		if (IS_ERR(bitmap_bh)) {
++			*errp = PTR_ERR(bitmap_bh);
++			pr_warn("Failed to read block bitmap\n");
++			return 0;
++		}
++
++		while (1) {
++			i = mb_find_next_zero_bit(bitmap_bh->b_data, max,
++						blkoff);
++			if (i >= max)
++				break;
++			if (ext4_fc_replay_check_excluded(sb,
++				ext4_group_first_block_no(sb, group) +
++				EXT4_C2B(sbi, i))) {
++				blkoff = i + 1;
++			} else
++				break;
++		}
++		brelse(bitmap_bh);
++		if (i < max)
++			break;
++
++		if (++group >= ext4_get_groups_count(sb))
++			group = 0;
++
++		blkoff = 0;
 +	}
 +
-+	mutex_unlock(&kvm->arch.config_lock);
++	if (i >= max) {
++		*errp = -ENOSPC;
++		return 0;
++	}
++
++	block = ext4_group_first_block_no(sb, group) + EXT4_C2B(sbi, i);
++	ext4_mb_mark_bb(sb, block, 1, 1);
++	ar->len = 1;
++
++	return block;
 +}
-+
- /**
-  * kvm_arch_destroy_vm - destroy the VM data structure
-  * @kvm:	pointer to the KVM struct
-@@ -209,7 +226,8 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
- 	if (is_protected_kvm_enabled())
- 		pkvm_destroy_hyp_vm(kvm);
  
--	kfree(kvm->arch.mpidr_data);
-+	kvm_destroy_mpidr_data(kvm);
-+
- 	kfree(kvm->arch.sysreg_masks);
- 	kvm_destroy_vcpus(kvm);
+ /*
+  * Main entry point into mballoc to allocate blocks
+@@ -5634,7 +5698,7 @@ ext4_fsblk_t ext4_mb_new_blocks(handle_t *handle,
  
-@@ -395,6 +413,13 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+ 	trace_ext4_request_blocks(ar);
+ 	if (sbi->s_mount_state & EXT4_FC_REPLAY)
+-		return ext4_mb_new_blocks_simple(handle, ar, errp);
++		return ext4_mb_new_blocks_simple(ar, errp);
  
- 	vcpu->arch.hw_mmu = &vcpu->kvm->arch.mmu;
- 
-+	/*
-+	 * This vCPU may have been created after mpidr_data was initialized.
-+	 * Throw out the pre-computed mappings if that is the case which forces
-+	 * KVM to fall back to iteratively searching the vCPUs.
-+	 */
-+	kvm_destroy_mpidr_data(vcpu->kvm);
-+
- 	err = kvm_vgic_vcpu_init(vcpu);
- 	if (err)
- 		return err;
-@@ -594,7 +619,8 @@ static void kvm_init_mpidr_data(struct kvm *kvm)
- 
- 	mutex_lock(&kvm->arch.config_lock);
- 
--	if (kvm->arch.mpidr_data || atomic_read(&kvm->online_vcpus) == 1)
-+	if (rcu_access_pointer(kvm->arch.mpidr_data) ||
-+	    atomic_read(&kvm->online_vcpus) == 1)
- 		goto out;
- 
- 	kvm_for_each_vcpu(c, vcpu, kvm) {
-@@ -631,7 +657,7 @@ static void kvm_init_mpidr_data(struct kvm *kvm)
- 		data->cmpidr_to_idx[index] = c;
- 	}
- 
--	kvm->arch.mpidr_data = data;
-+	rcu_assign_pointer(kvm->arch.mpidr_data, data);
- out:
- 	mutex_unlock(&kvm->arch.config_lock);
+ 	/* Allow to use superuser reservation for quota file */
+ 	if (ext4_is_quota_file(ar->inode))
+@@ -5864,73 +5928,6 @@ ext4_mb_free_metadata(handle_t *handle, struct ext4_buddy *e4b,
+ 	return 0;
  }
-@@ -2470,21 +2496,27 @@ static int __init init_hyp_mode(void)
  
- struct kvm_vcpu *kvm_mpidr_to_vcpu(struct kvm *kvm, unsigned long mpidr)
- {
--	struct kvm_vcpu *vcpu;
-+	struct kvm_vcpu *vcpu = NULL;
-+	struct kvm_mpidr_data *data;
- 	unsigned long i;
- 
- 	mpidr &= MPIDR_HWID_BITMASK;
- 
--	if (kvm->arch.mpidr_data) {
--		u16 idx = kvm_mpidr_index(kvm->arch.mpidr_data, mpidr);
-+	rcu_read_lock();
-+	data = rcu_dereference(kvm->arch.mpidr_data);
- 
--		vcpu = kvm_get_vcpu(kvm,
--				    kvm->arch.mpidr_data->cmpidr_to_idx[idx]);
-+	if (data) {
-+		u16 idx = kvm_mpidr_index(data, mpidr);
-+
-+		vcpu = kvm_get_vcpu(kvm, data->cmpidr_to_idx[idx]);
- 		if (mpidr != kvm_vcpu_get_mpidr_aff(vcpu))
- 			vcpu = NULL;
-+	}
- 
-+	rcu_read_unlock();
-+
-+	if (vcpu)
- 		return vcpu;
+-/*
+- * Simple allocator for Ext4 fast commit replay path. It searches for blocks
+- * linearly starting at the goal block and also excludes the blocks which
+- * are going to be in use after fast commit replay.
+- */
+-static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+-				struct ext4_allocation_request *ar, int *errp)
+-{
+-	struct buffer_head *bitmap_bh;
+-	struct super_block *sb = ar->inode->i_sb;
+-	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	ext4_group_t group, nr;
+-	ext4_grpblk_t blkoff;
+-	ext4_grpblk_t max = EXT4_CLUSTERS_PER_GROUP(sb);
+-	ext4_grpblk_t i = 0;
+-	ext4_fsblk_t goal, block;
+-	struct ext4_super_block *es = EXT4_SB(sb)->s_es;
+-
+-	goal = ar->goal;
+-	if (goal < le32_to_cpu(es->s_first_data_block) ||
+-			goal >= ext4_blocks_count(es))
+-		goal = le32_to_cpu(es->s_first_data_block);
+-
+-	ar->len = 0;
+-	ext4_get_group_no_and_offset(sb, goal, &group, &blkoff);
+-	for (nr = ext4_get_groups_count(sb); nr > 0; nr--) {
+-		bitmap_bh = ext4_read_block_bitmap(sb, group);
+-		if (IS_ERR(bitmap_bh)) {
+-			*errp = PTR_ERR(bitmap_bh);
+-			pr_warn("Failed to read block bitmap\n");
+-			return 0;
+-		}
+-
+-		while (1) {
+-			i = mb_find_next_zero_bit(bitmap_bh->b_data, max,
+-						blkoff);
+-			if (i >= max)
+-				break;
+-			if (ext4_fc_replay_check_excluded(sb,
+-				ext4_group_first_block_no(sb, group) +
+-				EXT4_C2B(sbi, i))) {
+-				blkoff = i + 1;
+-			} else
+-				break;
+-		}
+-		brelse(bitmap_bh);
+-		if (i < max)
+-			break;
+-
+-		if (++group >= ext4_get_groups_count(sb))
+-			group = 0;
+-
+-		blkoff = 0;
 -	}
- 
- 	kvm_for_each_vcpu(i, vcpu, kvm) {
- 		if (mpidr == kvm_vcpu_get_mpidr_aff(vcpu))
+-
+-	if (i >= max) {
+-		*errp = -ENOSPC;
+-		return 0;
+-	}
+-
+-	block = ext4_group_first_block_no(sb, group) + EXT4_C2B(sbi, i);
+-	ext4_mb_mark_bb(sb, block, 1, 1);
+-	ar->len = 1;
+-
+-	return block;
+-}
+-
+ static void ext4_free_blocks_simple(struct inode *inode, ext4_fsblk_t block,
+ 					unsigned long count)
+ {
 -- 
 2.43.0
 
