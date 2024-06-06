@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-49525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FCF78FEDA1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E738FEDA3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2A92281F4E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C32EB1C20312
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0248319E7C7;
-	Thu,  6 Jun 2024 14:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE251BD002;
+	Thu,  6 Jun 2024 14:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMsmXJXJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xm5lpeid"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56291BC09A;
-	Thu,  6 Jun 2024 14:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE465198E9A;
+	Thu,  6 Jun 2024 14:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683508; cv=none; b=fkXTtt27BmyYuRrKuFID/tMmd9ORJhUOXLUbR1DlEG6i1yPwFxfjg9duQLSTuh1lR+rFTESUeL0co7BxyLcS34Y/I/YIG0IAW4uHiOh+2hsPyifMgYU/YoHfGTWmPqsgGUfU3F0ukWvqOAbj8tpqfLSWOX2rogqKqBEcOmAuWzA=
+	t=1717683509; cv=none; b=ojX/EX5h527y1HeiRy4A/HHsEl7VJQ9vtx/b/tmyNWC4RWVPNd5QfCqZ0VxWX61IaxKb0EhniNBuDKbPiX8dhMlCllgI21O/EOrvu5qM0Z3hvmvd4tm2jEeWh5kHon53N/ba+Lyp5m0rIPLVKCfem94Xq8I6HOZBAqaZmlAB8h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683508; c=relaxed/simple;
-	bh=tJzcgTgXgGFCY56QrcUpKgqGANf3YEv5hVFkGkaiTak=;
+	s=arc-20240116; t=1717683509; c=relaxed/simple;
+	bh=nbY+WKW2/zYfdjc1NFO9s3FnSMeZN6Dw8tZc6w/l0AA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVoQsW5LjEeyRCQZ8bwU6mtS1xPVGY6hbtKIjyTI6Ir4HFAllPRrb2VoSOI3JDYXK9MU+xqa499hYLW1Cxt20sNR7K/X+d2lqGWlxWSxKUCB0tj2NAiFFa3mJIdEMIw4vvYnsy6YWSu+ytVO2HXrMh01eQ4xk5BcE3m1r11dKVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMsmXJXJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AECC32781;
-	Thu,  6 Jun 2024 14:18:28 +0000 (UTC)
+	 MIME-Version; b=lo0+PNluB/oVpDTSt5WGV9xwsS58ildLPr0Dr463/qnU1sX4d2ad4RYQKeWqwCAwZdHW4RfTf3UBc2df1/fN0JmDwBZ+JQ8TfEXjvkHYgwQpjkjIw/yLZX5aDO+gYDthVvJSzcbMJSFupMdaffEzukHXyAopECAPz7Y+YHAm8lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xm5lpeid; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E77CC2BD10;
+	Thu,  6 Jun 2024 14:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683508;
-	bh=tJzcgTgXgGFCY56QrcUpKgqGANf3YEv5hVFkGkaiTak=;
+	s=korg; t=1717683509;
+	bh=nbY+WKW2/zYfdjc1NFO9s3FnSMeZN6Dw8tZc6w/l0AA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oMsmXJXJ/opPqaPuDy/ojWKtQgF8cjCriA+6IX5uF4uL+klM1BqKeYvg/G7hFneCV
-	 b7LoG3wI1HM79QINWZjKmrGMTrQ8e3Y+AyXCBTSQZX1VcpRPVDi5FEgRKDiYBoi9x+
-	 6YiUvCX60XuimpjBzzAVrQVIdmOiD3HAViMluf4o=
+	b=xm5lpeid22Hwe7E9ghgi2coiIl1LzKmJmKd6Yk6eGmxFke4ZvnrWdpsaz0vZxpyYQ
+	 U98PrmONK4ET7YTaee1wwoBvilDe0IpOuc/h6AYAg9BSBbPgRxmtinm1f1MoOxQHUv
+	 5OXHN8/8VFsvlMTXiWA6PPsbqz4NJxg3M4OLD7d0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 397/473] ALSA: hda/cs_dsp_ctl: Use private_free for control cleanup
-Date: Thu,  6 Jun 2024 16:05:26 +0200
-Message-ID: <20240606131712.946821371@linuxfoundation.org>
+Subject: [PATCH 6.1 398/473] ASoC: mediatek: mt8192: fix register configuration for tdm
+Date: Thu,  6 Jun 2024 16:05:27 +0200
+Message-ID: <20240606131712.979033215@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -66,143 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit 172811e3a557d8681a5e2d0f871dc04a2d17eb13 ]
+[ Upstream commit a85ed162f0efcfdd664954414a05d1d560cc95dc ]
 
-Use the control private_free callback to free the associated data
-block. This ensures that the memory won't leak, whatever way the
-control gets destroyed.
+For DSP_A, data is a BCK cycle behind LRCK trigger edge. For DSP_B, this
+delay doesn't exist. Fix the delay configuration to match the standard.
 
-The original implementation didn't actually remove the ALSA
-controls in hda_cs_dsp_control_remove(). It only freed the internal
-tracking structure. This meant it was possible to remove/unload the
-amp driver while leaving its ALSA controls still present in the
-soundcard. Obviously attempting to access them could cause segfaults
-or at least dereferencing stale pointers.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 3233b978af23 ("ALSA: hda: hda_cs_dsp_ctl: Add Library to support CS_DSP ALSA controls")
-Link: https://lore.kernel.org/r/20240508095627.44476-1-rf@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 52fcd65414abfc ("ASoC: mediatek: mt8192: support tdm in platform driver")
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20240509-8192-tdm-v1-1-530b54645763@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_cs_dsp_ctl.c | 47 ++++++++++++++++++++++------------
- 1 file changed, 31 insertions(+), 16 deletions(-)
+ sound/soc/mediatek/mt8192/mt8192-dai-tdm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/hda_cs_dsp_ctl.c b/sound/pci/hda/hda_cs_dsp_ctl.c
-index 1622a22f96f6a..4a84ebe83157e 100644
---- a/sound/pci/hda/hda_cs_dsp_ctl.c
-+++ b/sound/pci/hda/hda_cs_dsp_ctl.c
-@@ -8,6 +8,7 @@
- 
- #include <linux/module.h>
- #include <sound/soc.h>
-+#include <linux/cleanup.h>
- #include <linux/firmware/cirrus/cs_dsp.h>
- #include <linux/firmware/cirrus/wmfw.h>
- #include "hda_cs_dsp_ctl.h"
-@@ -97,11 +98,23 @@ static unsigned int wmfw_convert_flags(unsigned int in)
- 	return out;
- }
- 
--static void hda_cs_dsp_add_kcontrol(struct hda_cs_dsp_coeff_ctl *ctl, const char *name)
-+static void hda_cs_dsp_free_kcontrol(struct snd_kcontrol *kctl)
- {
-+	struct hda_cs_dsp_coeff_ctl *ctl = (struct hda_cs_dsp_coeff_ctl *)snd_kcontrol_chip(kctl);
- 	struct cs_dsp_coeff_ctl *cs_ctl = ctl->cs_ctl;
-+
-+	/* NULL priv to prevent a double-free in hda_cs_dsp_control_remove() */
-+	cs_ctl->priv = NULL;
-+	kfree(ctl);
-+}
-+
-+static void hda_cs_dsp_add_kcontrol(struct cs_dsp_coeff_ctl *cs_ctl,
-+				    const struct hda_cs_dsp_ctl_info *info,
-+				    const char *name)
-+{
- 	struct snd_kcontrol_new kcontrol = {0};
- 	struct snd_kcontrol *kctl;
-+	struct hda_cs_dsp_coeff_ctl *ctl __free(kfree) = NULL;
- 	int ret = 0;
- 
- 	if (cs_ctl->len > ADSP_MAX_STD_CTRL_SIZE) {
-@@ -110,6 +123,13 @@ static void hda_cs_dsp_add_kcontrol(struct hda_cs_dsp_coeff_ctl *ctl, const char
- 		return;
+diff --git a/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c b/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
+index f3bebed2428a7..360259e60de84 100644
+--- a/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
++++ b/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
+@@ -566,10 +566,10 @@ static int mtk_dai_tdm_hw_params(struct snd_pcm_substream *substream,
+ 		tdm_con |= 1 << DELAY_DATA_SFT;
+ 		tdm_con |= get_tdm_lrck_width(format) << LRCK_TDM_WIDTH_SFT;
+ 	} else if (tdm_priv->tdm_out_mode == TDM_OUT_DSP_A) {
+-		tdm_con |= 0 << DELAY_DATA_SFT;
++		tdm_con |= 1 << DELAY_DATA_SFT;
+ 		tdm_con |= 0 << LRCK_TDM_WIDTH_SFT;
+ 	} else if (tdm_priv->tdm_out_mode == TDM_OUT_DSP_B) {
+-		tdm_con |= 1 << DELAY_DATA_SFT;
++		tdm_con |= 0 << DELAY_DATA_SFT;
+ 		tdm_con |= 0 << LRCK_TDM_WIDTH_SFT;
  	}
- 
-+	ctl = kzalloc(sizeof(*ctl), GFP_KERNEL);
-+	if (!ctl)
-+		return;
-+
-+	ctl->cs_ctl = cs_ctl;
-+	ctl->card = info->card;
-+
- 	kcontrol.name = name;
- 	kcontrol.info = hda_cs_dsp_coeff_info;
- 	kcontrol.iface = SNDRV_CTL_ELEM_IFACE_MIXER;
-@@ -117,20 +137,22 @@ static void hda_cs_dsp_add_kcontrol(struct hda_cs_dsp_coeff_ctl *ctl, const char
- 	kcontrol.get = hda_cs_dsp_coeff_get;
- 	kcontrol.put = hda_cs_dsp_coeff_put;
- 
--	/* Save ctl inside private_data, ctl is owned by cs_dsp,
--	 * and will be freed when cs_dsp removes the control */
- 	kctl = snd_ctl_new1(&kcontrol, (void *)ctl);
- 	if (!kctl)
- 		return;
- 
--	ret = snd_ctl_add(ctl->card, kctl);
-+	kctl->private_free = hda_cs_dsp_free_kcontrol;
-+	ctl->kctl = kctl;
-+
-+	/* snd_ctl_add() calls our private_free on error, which will kfree(ctl) */
-+	cs_ctl->priv = no_free_ptr(ctl);
-+	ret = snd_ctl_add(info->card, kctl);
- 	if (ret) {
- 		dev_err(cs_ctl->dsp->dev, "Failed to add KControl %s = %d\n", kcontrol.name, ret);
- 		return;
- 	}
- 
- 	dev_dbg(cs_ctl->dsp->dev, "Added KControl: %s\n", kcontrol.name);
--	ctl->kctl = kctl;
- }
- 
- static void hda_cs_dsp_control_add(struct cs_dsp_coeff_ctl *cs_ctl,
-@@ -138,7 +160,6 @@ static void hda_cs_dsp_control_add(struct cs_dsp_coeff_ctl *cs_ctl,
- {
- 	struct cs_dsp *cs_dsp = cs_ctl->dsp;
- 	char name[SNDRV_CTL_ELEM_ID_NAME_MAXLEN];
--	struct hda_cs_dsp_coeff_ctl *ctl;
- 	const char *region_name;
- 	int ret;
- 
-@@ -163,15 +184,7 @@ static void hda_cs_dsp_control_add(struct cs_dsp_coeff_ctl *cs_ctl,
- 			 " %.*s", cs_ctl->subname_len - skip, cs_ctl->subname + skip);
- 	}
- 
--	ctl = kzalloc(sizeof(*ctl), GFP_KERNEL);
--	if (!ctl)
--		return;
--
--	ctl->cs_ctl = cs_ctl;
--	ctl->card = info->card;
--	cs_ctl->priv = ctl;
--
--	hda_cs_dsp_add_kcontrol(ctl, name);
-+	hda_cs_dsp_add_kcontrol(cs_ctl, info, name);
- }
- 
- void hda_cs_dsp_add_controls(struct cs_dsp *dsp, const struct hda_cs_dsp_ctl_info *info)
-@@ -203,7 +216,9 @@ void hda_cs_dsp_control_remove(struct cs_dsp_coeff_ctl *cs_ctl)
- {
- 	struct hda_cs_dsp_coeff_ctl *ctl = cs_ctl->priv;
- 
--	kfree(ctl);
-+	/* ctl and kctl may already have been removed by ALSA private_free */
-+	if (ctl && ctl->kctl)
-+		snd_ctl_remove(ctl->card, ctl->kctl);
- }
- EXPORT_SYMBOL_NS_GPL(hda_cs_dsp_control_remove, SND_HDA_CS_DSP_CONTROLS);
  
 -- 
 2.43.0
