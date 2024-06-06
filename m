@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-48997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA63F8FEB6B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8913A8FEB6D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBE8A1C232D9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D4AF1C21FF7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F211AB506;
-	Thu,  6 Jun 2024 14:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66961196D9E;
+	Thu,  6 Jun 2024 14:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESgXzLX8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RX6HVej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B2C1993A0;
-	Thu,  6 Jun 2024 14:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247311993A0;
+	Thu,  6 Jun 2024 14:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683250; cv=none; b=o0HxG8uO0z8xpBCls+peSFN0FawvXg7A2vP+9NKyIpIOBspKFymrT18lhukMIDnLltvpQUtgbBR+H1uteW36RHoJ/h6iAvunm/XXo5DxnOMP0Te/BcNO6Mqt6XKxKtgLvJm8qo8hRcW2NYLOxLbaeNLmyVbFbThfHz6Xyf0oBew=
+	t=1717683251; cv=none; b=hTDRJ8l8tkzXsa3O2RkTdgYT5sygVxbW5yJl/UamfD5YwOZzcu4PDwPh2PgQrr/41a0zUfRnxHWqV7BPWF1SdUNJUauVdDN05QmLVcFCTRjMSlCQGNs50A6dQC5wzabw1b0tl3Z+QDak3QZL1OG650LJu9GnM+Qj6FyhslZePlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683250; c=relaxed/simple;
-	bh=4lDUXAQMEOz0IeYK65hLSGWuHgolP/HEaYWhTElSqIc=;
+	s=arc-20240116; t=1717683251; c=relaxed/simple;
+	bh=G4tKwEePAqqVfdacfwcFx308VNBwCcpSZsx8oy1E7K4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bidoswCDUZ3NEj9Z2e1SFn9VoAdU7mngd/P8qiEKPXD7JufLNCK4hjd820hxJAzmEDyP/qb7SbAejoD0ykiCOPsV0sqnj6Ed3jPbQr14uZGpSPbw9Q+D4eR2O+IJ3KfLni1zHJ7s5hfYFxH6FFUsNf0qLUDeK26OLSJN7jJPyX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESgXzLX8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00EC5C2BD10;
-	Thu,  6 Jun 2024 14:14:09 +0000 (UTC)
+	 MIME-Version; b=nd/VQajpmrh1esvdfQaNxJcLLjidshZLQ8diHqC/Pqu1BhsitgykvK4VNGqycUThuLYjU0JUA+Yss10T1h4iyOCaOVn3rjY/Q3xb0uEaj1cd35rZqeVu2Z1s0GwFSkmTOxz2D8fcY4y++aEnE2EFHn3bbLT9TMa/FL4QLWJqotI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RX6HVej; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B99C2BD10;
+	Thu,  6 Jun 2024 14:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683250;
-	bh=4lDUXAQMEOz0IeYK65hLSGWuHgolP/HEaYWhTElSqIc=;
+	s=korg; t=1717683251;
+	bh=G4tKwEePAqqVfdacfwcFx308VNBwCcpSZsx8oy1E7K4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ESgXzLX8JrzZQ4w8VxpsxUAXqtQLH0L9R53usPwMARWXTKr2fdgGqFqVDAPMb2FMe
-	 zCDPMxPF4CPRBfImYWk4cdVDwSB9NNUEVf9mJyJ0zoT7FwTr/qQ4bf676Vcn/9ipIy
-	 54JOZtBSoYPyyAxmJysEGodalXQAA4QBpsxsIp8Y=
+	b=1RX6HVejE7hrNHazRSoHJ2/5SAVga4qv45YTAsiC+zxEYc1gNfj08Q7cVsSwEzsbm
+	 ZNqgQTwlJ9NAU/UQfgD5VQXOjxIgZ5LQ7mmBnamLehNVNGTE8sVWm4eeOcvRYXlQDt
+	 BNZ0UEHG80+vFt0Jc4SzLJtJflV0yuvgxkbhQExw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenz Bauer <lmb@isovalent.com>,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/473] udp: Avoid call to compute_score on multiple sites
-Date: Thu,  6 Jun 2024 16:00:55 +0200
-Message-ID: <20240606131704.101062483@linuxfoundation.org>
+Subject: [PATCH 6.1 127/473] cppc_cpufreq: Fix possible null pointer dereference
+Date: Thu,  6 Jun 2024 16:00:56 +0200
+Message-ID: <20240606131704.137943127@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -69,162 +66,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@suse.de>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 50aee97d15113b95a68848db1f0cb2a6c09f753a ]
+[ Upstream commit cf7de25878a1f4508c69dc9f6819c21ba177dbfe ]
 
-We've observed a 7-12% performance regression in iperf3 UDP ipv4 and
-ipv6 tests with multiple sockets on Zen3 cpus, which we traced back to
-commit f0ea27e7bfe1 ("udp: re-score reuseport groups when connected
-sockets are present").  The failing tests were those that would spawn
-UDP sockets per-cpu on systems that have a high number of cpus.
+cppc_cpufreq_get_rate() and hisi_cppc_cpufreq_get_rate() can be called from
+different places with various parameters. So cpufreq_cpu_get() can return
+null as 'policy' in some circumstances.
+Fix this bug by adding null return check.
 
-Unsurprisingly, it is not caused by the extra re-scoring of the reused
-socket, but due to the compiler no longer inlining compute_score, once
-it has the extra call site in udp4_lib_lookup2.  This is augmented by
-the "Safe RET" mitigation for SRSO, needed in our Zen3 cpus.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-We could just explicitly inline it, but compute_score() is quite a large
-function, around 300b.  Inlining in two sites would almost double
-udp4_lib_lookup2, which is a silly thing to do just to workaround a
-mitigation.  Instead, this patch shuffles the code a bit to avoid the
-multiple calls to compute_score.  Since it is a static function used in
-one spot, the compiler can safely fold it in, as it did before, without
-increasing the text size.
-
-With this patch applied I ran my original iperf3 testcases.  The failing
-cases all looked like this (ipv4):
-	iperf3 -c 127.0.0.1 --udp -4 -f K -b $R -l 8920 -t 30 -i 5 -P 64 -O 2
-
-where $R is either 1G/10G/0 (max, unlimited).  I ran 3 times each.
-baseline is v6.9-rc3. harmean == harmonic mean; CV == coefficient of
-variation.
-
-ipv4:
-                 1G                10G                  MAX
-	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
-baseline 1743852.66(0.0208) 1725933.02(0.0167) 1705203.78(0.0386)
-patched  1968727.61(0.0035) 1962283.22(0.0195) 1923853.50(0.0256)
-
-ipv6:
-                 1G                10G                  MAX
-	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
-baseline 1729020.03(0.0028) 1691704.49(0.0243) 1692251.34(0.0083)
-patched  1900422.19(0.0067) 1900968.01(0.0067) 1568532.72(0.1519)
-
-This restores the performance we had before the change above with this
-benchmark.  We obviously don't expect any real impact when mitigations
-are disabled, but just to be sure it also doesn't regresses:
-
-mitigations=off ipv4:
-                 1G                10G                  MAX
-	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
-baseline 3230279.97(0.0066) 3229320.91(0.0060) 2605693.19(0.0697)
-patched  3242802.36(0.0073) 3239310.71(0.0035) 2502427.19(0.0882)
-
-Cc: Lorenz Bauer <lmb@isovalent.com>
-Fixes: f0ea27e7bfe1 ("udp: re-score reuseport groups when connected sockets are present")
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: a28b2bfc099c ("cppc_cpufreq: replace per-cpu data array with a list")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp.c | 21 ++++++++++++++++-----
- net/ipv6/udp.c | 20 ++++++++++++++++----
- 2 files changed, 32 insertions(+), 9 deletions(-)
+ drivers/cpufreq/cppc_cpufreq.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 3dc4eaddb598a..b8f93c1479ae1 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -422,15 +422,21 @@ static struct sock *udp4_lib_lookup2(struct net *net,
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index 022e3555407c8..8791a88c7741c 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -841,10 +841,15 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
  {
- 	struct sock *sk, *result;
- 	int score, badness;
-+	bool need_rescore;
+ 	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+-	struct cppc_cpudata *cpu_data = policy->driver_data;
++	struct cppc_cpudata *cpu_data;
+ 	u64 delivered_perf;
+ 	int ret;
  
- 	result = NULL;
- 	badness = 0;
- 	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
--		score = compute_score(sk, net, saddr, sport,
--				      daddr, hnum, dif, sdif);
-+		need_rescore = false;
-+rescore:
-+		score = compute_score(need_rescore ? result : sk, net, saddr,
-+				      sport, daddr, hnum, dif, sdif);
- 		if (score > badness) {
- 			badness = score;
- 
-+			if (need_rescore)
-+				continue;
++	if (!policy)
++		return -ENODEV;
 +
- 			if (sk->sk_state == TCP_ESTABLISHED) {
- 				result = sk;
- 				continue;
-@@ -451,9 +457,14 @@ static struct sock *udp4_lib_lookup2(struct net *net,
- 			if (IS_ERR(result))
- 				continue;
++	cpu_data = policy->driver_data;
++
+ 	cpufreq_cpu_put(policy);
  
--			badness = compute_score(result, net, saddr, sport,
--						daddr, hnum, dif, sdif);
--
-+			/* compute_score is too long of a function to be
-+			 * inlined, and calling it again here yields
-+			 * measureable overhead for some
-+			 * workloads. Work around it by jumping
-+			 * backwards to rescore 'result'.
-+			 */
-+			need_rescore = true;
-+			goto rescore;
- 		}
- 	}
- 	return result;
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 6f270fda3cbe0..f55d08d2096ae 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -169,15 +169,21 @@ static struct sock *udp6_lib_lookup2(struct net *net,
+ 	ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
+@@ -924,10 +929,15 @@ static struct cpufreq_driver cppc_cpufreq_driver = {
+ static unsigned int hisi_cppc_cpufreq_get_rate(unsigned int cpu)
  {
- 	struct sock *sk, *result;
- 	int score, badness;
-+	bool need_rescore;
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+-	struct cppc_cpudata *cpu_data = policy->driver_data;
++	struct cppc_cpudata *cpu_data;
+ 	u64 desired_perf;
+ 	int ret;
  
- 	result = NULL;
- 	badness = -1;
- 	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
--		score = compute_score(sk, net, saddr, sport,
--				      daddr, hnum, dif, sdif);
-+		need_rescore = false;
-+rescore:
-+		score = compute_score(need_rescore ? result : sk, net, saddr,
-+				      sport, daddr, hnum, dif, sdif);
- 		if (score > badness) {
- 			badness = score;
- 
-+			if (need_rescore)
-+				continue;
++	if (!policy)
++		return -ENODEV;
 +
- 			if (sk->sk_state == TCP_ESTABLISHED) {
- 				result = sk;
- 				continue;
-@@ -198,8 +204,14 @@ static struct sock *udp6_lib_lookup2(struct net *net,
- 			if (IS_ERR(result))
- 				continue;
++	cpu_data = policy->driver_data;
++
+ 	cpufreq_cpu_put(policy);
  
--			badness = compute_score(sk, net, saddr, sport,
--						daddr, hnum, dif, sdif);
-+			/* compute_score is too long of a function to be
-+			 * inlined, and calling it again here yields
-+			 * measureable overhead for some
-+			 * workloads. Work around it by jumping
-+			 * backwards to rescore 'result'.
-+			 */
-+			need_rescore = true;
-+			goto rescore;
- 		}
- 	}
- 	return result;
+ 	ret = cppc_get_desired_perf(cpu, &desired_perf);
 -- 
 2.43.0
 
