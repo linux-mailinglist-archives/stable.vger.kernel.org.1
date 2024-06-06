@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-49755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C270A8FEEB7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E42CF8FED37
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C5DCB214FB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 691BEB2254B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63345199226;
-	Thu,  6 Jun 2024 14:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12E21B5810;
+	Thu,  6 Jun 2024 14:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgJCtMNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6DlcFOO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DB61C617F;
-	Thu,  6 Jun 2024 14:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6173E1974EB;
+	Thu,  6 Jun 2024 14:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683693; cv=none; b=Ea7Vfh8E4+MGqGl+1M6ZoQbxEqkcoWfoXzBznswGDciM2bJIKV+eFZqHTn1skHiYD3pCvThM4ZwRpli/e3Ow6fsKNYBNRziKOLg7lXxt3lBKmSO2vec+R1T0YQqePeSpZ4L6APZnD3an4EOPZQnL0CrM2YOAXXb7tnmKjIT3S7k=
+	t=1717683460; cv=none; b=oqjHWWPUZtmwRHwJUuMQCUx1wHFVXxLpkKdSWqEJDvWIeG83us12L8KQ8AadROVNXyOtp44LAu5u0/mJz6YjD2afmC68tTjCdO5qfJOW5sJfcKnH/byVsJhPbNVCic/1FnXUnkuR050Kr4jzDnQoNmgY8hoRsXD9MuI0Q6Fh9ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683693; c=relaxed/simple;
-	bh=VRcGj2IPDdCJDbbAweftXFcQ0aDFIEfPs+KTC+tpf5o=;
+	s=arc-20240116; t=1717683460; c=relaxed/simple;
+	bh=IS5kNX+JeALvNkTPpSKidmnRh+wrLv/+rNgIyuSTwYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=awcDmeV2Xq7nMhQypjTep3TUK6FthUmW7k8C1Yw4LuRlY3GBpGoBefpA9e5/rutIwfBSJ/jad0qQ7wuK8MCmRVfHZIzDLTgrj6AxSt6fjZWWj/m2TFVqFcw4u3AgahszIhZCriZAzu8NS3JHmVKMEWDMZ34rJ9mQdZX2xy1MlD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgJCtMNi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3595C32782;
-	Thu,  6 Jun 2024 14:21:32 +0000 (UTC)
+	 MIME-Version; b=X8GDLYquej4aKUJDuKWT+58qfOKTcosgXjG2fSyVjVfuokNfa0VpgTBfQLRZ8vfBVDXBeaIJm2F3dhbM7WLqbo6l1wx9UcgGI3x+CZCUUKqMGUp8IluwuL5cZ4ecYqktQPoVM79Vl3YaKlqxWaxWhK6NteCi1+q/jnx9kU4WDj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6DlcFOO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D207C2BD10;
+	Thu,  6 Jun 2024 14:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683693;
-	bh=VRcGj2IPDdCJDbbAweftXFcQ0aDFIEfPs+KTC+tpf5o=;
+	s=korg; t=1717683460;
+	bh=IS5kNX+JeALvNkTPpSKidmnRh+wrLv/+rNgIyuSTwYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UgJCtMNit1zJERQhrTB8O1mLtuC9BbkhV8kIfKSK3RlmFueJ200nFS7WU1UBFdMMU
-	 kulZ9uT76HmdaWuqx6O5R9oMvs/hPjpkRDhfpQB6Ze0FSndxdk2Ya0rMld9efeB2qf
-	 x+4CMFfTVw40DxHQjk03OV0wA64sA8sfwcBtdztQ=
+	b=r6DlcFOOe7giwxe8d1SAX5Yu4jKjPspL/xazBfglM55ItSktEKq9FxSfNYJfEERND
+	 MdJXX9/xAJQ1g7nuTpOyWTLWTVl902WCTRbqAjBgPXeRac/Nvyrkd65aPItIG9fVn3
+	 Pz6I6X6EZiHQ7SQJd/OK/wR5Dd2Qme5SU+nOU9B8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiyang Ruan <ruansy.fnst@fujitsu.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 604/744] cxl/trace: Correct DPA field masks for general_media & dram events
+Subject: [PATCH 6.1 347/473] perf daemon: Fix file leak in daemon_session__control
 Date: Thu,  6 Jun 2024 16:04:36 +0200
-Message-ID: <20240606131751.858551050@linuxfoundation.org>
+Message-ID: <20240606131711.380758386@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +70,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alison Schofield <alison.schofield@intel.com>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit 2042d11cb57b7e0cbda7910e5ff80e9e8bf0ae17 ]
+[ Upstream commit 09541603462c399c7408d50295db99b4b8042eaa ]
 
-The length of Physical Address in General Media and DRAM event
-records is 64-bit, so the field mask for extracting the DPA should
-be 64-bit also, otherwise the trace event reports DPA's with the
-upper 32 bits of a DPA address masked off. If users do DPA-to-HPA
-translations this could lead to incorrect page retirement decisions.
+The open() function returns -1 on error.
 
-Use GENMASK_ULL() for CXL_DPA_MASK to get all the DPA address bits.
+The 'control' and 'ack' file descriptors are both initialized with
+open() and further validated with 'if' statement.
 
-Tidy up CXL_DPA_FLAGS_MASK by using GENMASK() to only mask the exact
-flag bits.
+'if (!control)' would evaluate to 'true' if returned value on error were
+'0' but it is actually '-1'.
 
-These bits are defined as part of the event record physical address
-descriptions of General Media and DRAM events in CXL Spec 3.1
-Section 8.2.9.2 Events.
-
-Fixes: d54a531a430b ("cxl/mem: Trace General Media Event Record")
-Co-developed-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/2867fc43c57720a4a15a3179431829b8dbd2dc16.1714496730.git.alison.schofield@intel.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: edcaa47958c7438b ("perf daemon: Add 'ping' command")
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240510003424.2016914-1-samasth.norway.ananda@oracle.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/trace.h | 4 ++--
+ tools/perf/builtin-daemon.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
-index f01d0709c9c32..bdf24867d5174 100644
---- a/drivers/cxl/core/trace.h
-+++ b/drivers/cxl/core/trace.h
-@@ -252,8 +252,8 @@ TRACE_EVENT(cxl_generic_event,
-  * DRAM Event Record
-  * CXL rev 3.0 section 8.2.9.2.1.2; Table 8-44
-  */
--#define CXL_DPA_FLAGS_MASK			0x3F
--#define CXL_DPA_MASK				(~CXL_DPA_FLAGS_MASK)
-+#define CXL_DPA_FLAGS_MASK			GENMASK(1, 0)
-+#define CXL_DPA_MASK				GENMASK_ULL(63, 6)
+diff --git a/tools/perf/builtin-daemon.c b/tools/perf/builtin-daemon.c
+index 6cb3f6cc36d0a..35942256582ab 100644
+--- a/tools/perf/builtin-daemon.c
++++ b/tools/perf/builtin-daemon.c
+@@ -523,7 +523,7 @@ static int daemon_session__control(struct daemon_session *session,
+ 		  session->base, SESSION_CONTROL);
  
- #define CXL_DPA_VOLATILE			BIT(0)
- #define CXL_DPA_NOT_REPAIRABLE			BIT(1)
+ 	control = open(control_path, O_WRONLY|O_NONBLOCK);
+-	if (!control)
++	if (control < 0)
+ 		return -1;
+ 
+ 	if (do_ack) {
+@@ -532,7 +532,7 @@ static int daemon_session__control(struct daemon_session *session,
+ 			  session->base, SESSION_ACK);
+ 
+ 		ack = open(ack_path, O_RDONLY, O_NONBLOCK);
+-		if (!ack) {
++		if (ack < 0) {
+ 			close(control);
+ 			return -1;
+ 		}
 -- 
 2.43.0
 
