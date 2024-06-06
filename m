@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D59D8FED4F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8338FE9BB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF07C283464
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 459251C25E9E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0283E19D093;
-	Thu,  6 Jun 2024 14:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0C3198A2F;
+	Thu,  6 Jun 2024 14:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLv3ZOVF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpcyCC2T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EDB1BA860;
-	Thu,  6 Jun 2024 14:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF27E19B3E1;
+	Thu,  6 Jun 2024 14:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683472; cv=none; b=AADFfhF2zdf189eTln3dyIuPgthKAu4N72l029luVq8zODAlLu8f4isCQgdWO7bNODN+RUpIxvwPBaCgULdqYBuU8uy9nMWc0nA7LSNP6b987XwcgSvIatL7DN9YfeMDunJg/2aeLAiYMywf2YKIjnPsTfyL1BXd+/nnaHssGz0=
+	t=1717683060; cv=none; b=kZy5DXAE3D1txIB/qn0ht9pq3FahiA/enkp5ADgcOA6rOEmGt/KFB/7/OeJ11RujT7Rvux1gk+mO9Ik7EFfO9cPFNqD6ImZfS8xMmevhYkIpE7yUE0d6vGf6AGhsuEWbFaoeLJs97TZ4t9HibtC5VY8NRi2rt+CoIPegVb/NT98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683472; c=relaxed/simple;
-	bh=Ci+pKSfK7v6MTD8zAG3VMz237mp/0BaMmfBl/sggkDE=;
+	s=arc-20240116; t=1717683060; c=relaxed/simple;
+	bh=Cd1NOaxCf+J7MqwsjdTcWRLVkBRxxiLu1shyTi74GGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OE69aQG/ItU0jXa4WvrybYlwEbr1aEpT6uuDfepMfhBishun2KRTcyZ3dg7+1Vl++B4QUz1rfhb6OYAGE/u7dHtbVZaHTZVqWkWrY1zFZGiP0Aq80UuvHwz6SBBU54jgio4hZ3TnOgWf5gMqnx0ZpYjD2rmnqW3SY8OrkQeMu5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLv3ZOVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D3FC2BD10;
-	Thu,  6 Jun 2024 14:17:52 +0000 (UTC)
+	 MIME-Version; b=poScKdNUD2OaV5jK0rV3C/AwgoyZpYeIcyHX11CwsXcu/Uv/MLErDz+f10DxSIyjU6/p8OTm+Z081N1ar4mce+bwS+uRwFSanIEvQJtrI1wRrc452/XAlahhSOVKf5xsMScjJQ8h54lfUibMBQaJh2fEz6EljZ6qNGCZTgN4jYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpcyCC2T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C07C32782;
+	Thu,  6 Jun 2024 14:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683472;
-	bh=Ci+pKSfK7v6MTD8zAG3VMz237mp/0BaMmfBl/sggkDE=;
+	s=korg; t=1717683060;
+	bh=Cd1NOaxCf+J7MqwsjdTcWRLVkBRxxiLu1shyTi74GGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLv3ZOVFAlbR3IBu4AHU1fzI74Mt8R4Ch4hUoMkhRlYlBQLBYukOXaWa6FDpqEyyV
-	 7km+A2wXZ/AewC1kke6L5O7R6dUsU/HOzzFaPDiJB5hv9TX1/xrp/YD6eHh3+5k9tN
-	 2yrYmx4331esDO13Xr+1R9E8wg/BY8eMcXgTed8I=
+	b=NpcyCC2TB1WRTPr6Q0+3hHBO/5p+ozqdOZjfqBPyxZLnXpzkbhJiTElqPjQ72LfDt
+	 rulTGuZa2+iZro+RY0PgAuXIZ4uFJ2KYoBQ/O8yMM8IGKjg5tjRMN3tFWwKv1z5xyJ
+	 LYiBVquF5QAwapBsG0xV69S0xiT3FCn0mh6ak/5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Roded Zats <rzats@paloaltonetworks.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 359/473] Input: ioc3kbd - convert to platform remove callback returning void
+Subject: [PATCH 6.9 309/374] enic: Validate length of nl attributes in enic_set_vf_port
 Date: Thu,  6 Jun 2024 16:04:48 +0200
-Message-ID: <20240606131711.781974379@linuxfoundation.org>
+Message-ID: <20240606131702.202730135@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Roded Zats <rzats@paloaltonetworks.com>
 
-[ Upstream commit 150e792dee9ca8416f3d375e48f2f4d7f701fc6b ]
+[ Upstream commit e8021b94b0412c37bcc79027c2e382086b6ce449 ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new() which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+enic_set_vf_port assumes that the nl attribute IFLA_PORT_PROFILE
+is of length PORT_PROFILE_MAX and that the nl attributes
+IFLA_PORT_INSTANCE_UUID, IFLA_PORT_HOST_UUID are of length PORT_UUID_MAX.
+These attributes are validated (in the function do_setlink in rtnetlink.c)
+using the nla_policy ifla_port_policy. The policy defines IFLA_PORT_PROFILE
+as NLA_STRING, IFLA_PORT_INSTANCE_UUID as NLA_BINARY and
+IFLA_PORT_HOST_UUID as NLA_STRING. That means that the length validation
+using the policy is for the max size of the attributes and not on exact
+size so the length of these attributes might be less than the sizes that
+enic_set_vf_port expects. This might cause an out of bands
+read access in the memcpys of the data of these
+attributes in enic_set_vf_port.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230920125829.1478827-37-u.kleine-koenig@pengutronix.de
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Stable-dep-of: d40e9edcf3eb ("Input: ioc3kbd - add device table")
+Fixes: f8bd909183ac ("net: Add ndo_{set|get}_vf_port support for enic dynamic vnics")
+Signed-off-by: Roded Zats <rzats@paloaltonetworks.com>
+Link: https://lore.kernel.org/r/20240522073044.33519-1-rzats@paloaltonetworks.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/ioc3kbd.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/cisco/enic/enic_main.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/input/serio/ioc3kbd.c b/drivers/input/serio/ioc3kbd.c
-index d51bfe912db5b..50552dc7b4f5e 100644
---- a/drivers/input/serio/ioc3kbd.c
-+++ b/drivers/input/serio/ioc3kbd.c
-@@ -190,7 +190,7 @@ static int ioc3kbd_probe(struct platform_device *pdev)
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index d266a87297a5e..54798df8e2544 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -1117,18 +1117,30 @@ static int enic_set_vf_port(struct net_device *netdev, int vf,
+ 	pp->request = nla_get_u8(port[IFLA_PORT_REQUEST]);
  
--static int ioc3kbd_remove(struct platform_device *pdev)
-+static void ioc3kbd_remove(struct platform_device *pdev)
- {
- 	struct ioc3kbd_data *d = platform_get_drvdata(pdev);
+ 	if (port[IFLA_PORT_PROFILE]) {
++		if (nla_len(port[IFLA_PORT_PROFILE]) != PORT_PROFILE_MAX) {
++			memcpy(pp, &prev_pp, sizeof(*pp));
++			return -EINVAL;
++		}
+ 		pp->set |= ENIC_SET_NAME;
+ 		memcpy(pp->name, nla_data(port[IFLA_PORT_PROFILE]),
+ 			PORT_PROFILE_MAX);
+ 	}
  
-@@ -198,13 +198,11 @@ static int ioc3kbd_remove(struct platform_device *pdev)
+ 	if (port[IFLA_PORT_INSTANCE_UUID]) {
++		if (nla_len(port[IFLA_PORT_INSTANCE_UUID]) != PORT_UUID_MAX) {
++			memcpy(pp, &prev_pp, sizeof(*pp));
++			return -EINVAL;
++		}
+ 		pp->set |= ENIC_SET_INSTANCE;
+ 		memcpy(pp->instance_uuid,
+ 			nla_data(port[IFLA_PORT_INSTANCE_UUID]), PORT_UUID_MAX);
+ 	}
  
- 	serio_unregister_port(d->kbd);
- 	serio_unregister_port(d->aux);
--
--	return 0;
- }
- 
- static struct platform_driver ioc3kbd_driver = {
- 	.probe          = ioc3kbd_probe,
--	.remove         = ioc3kbd_remove,
-+	.remove_new     = ioc3kbd_remove,
- 	.driver = {
- 		.name = "ioc3-kbd",
- 	},
+ 	if (port[IFLA_PORT_HOST_UUID]) {
++		if (nla_len(port[IFLA_PORT_HOST_UUID]) != PORT_UUID_MAX) {
++			memcpy(pp, &prev_pp, sizeof(*pp));
++			return -EINVAL;
++		}
+ 		pp->set |= ENIC_SET_HOST;
+ 		memcpy(pp->host_uuid,
+ 			nla_data(port[IFLA_PORT_HOST_UUID]), PORT_UUID_MAX);
 -- 
 2.43.0
 
