@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-49147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BDB58FEC0D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 967018FE8F8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A33892824E7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A2821F2523C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C93D1AC43C;
-	Thu,  6 Jun 2024 14:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304301990CC;
+	Thu,  6 Jun 2024 14:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CM4GcUQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WW5GDrFq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEE819884B;
-	Thu,  6 Jun 2024 14:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C2819750E;
+	Thu,  6 Jun 2024 14:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683325; cv=none; b=bKdnCtrg2FpkLdHS6NbOcXHoNfbbg2E+hYsvuOczA6boKIhrYnT6IqmgYU3Cs4hj8MzV3wTVFsYVyiZbcf4fJ1OFSv1JUBwmT+XbhA95TJFkO/uqscrl3lQv8A2PD4VT+3QcY2AXMv2/8TYyCw+1vqKYGygwbvGHoMn9rkW+LhM=
+	t=1717682961; cv=none; b=f21m6WjXtJmU2ZIXMIztclIPzI4lfgLvwyp7Jkb2PPDp8jIoytoW6pvZlv/8wCGzyG+tLI/duGNDbIU6wDFZDi+YhvgdqiSeqdMrkss5QyZa6Yrg3QeB90h97LcrlS2MjdFgfoKP23fyzV+gpFjtVJPmmSDrRnerftRdDaN1Fvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683325; c=relaxed/simple;
-	bh=fQRZbwc9FGz4PyiQn3KA6zKxlBOvQVY7BJTopg5sdBQ=;
+	s=arc-20240116; t=1717682961; c=relaxed/simple;
+	bh=vXD4GgbOIo10lSpjmIptZ+b/CvKKYqKFO2YvDYCCNLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KD1OVkzkmnZqgpd9i7IgY+SJdJDBQsFU7h/AU/GEUFX9CECMn74JWrHJEf916chPd9o4wpPRgf/8FJ+hsH6RbXbJzfdaTdqTD+ybMmuGnV2rU85HRVki4rejw1NLEms9uETB7Le5+/tdSf/lJ/CWIp+JYhGoa2nav7WAExdetng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CM4GcUQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE111C2BD10;
-	Thu,  6 Jun 2024 14:15:24 +0000 (UTC)
+	 MIME-Version; b=aHQvXWcb0v6zroS6q3almH090y0LuhPaZvPZ0F5J2a22LYdoJZHq8gEEZiP1EQmXxR5rvDuxSlsVrdImf9o4LMm8lu9s1lLT1H68B4JM9vgPJ9hlAhsFX4j+mTdX4U4gtICBv3NiOjEE4ATz/Rar3t9p1e8uNMeVYSGBm3LiPV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WW5GDrFq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BB5C32781;
+	Thu,  6 Jun 2024 14:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683324;
-	bh=fQRZbwc9FGz4PyiQn3KA6zKxlBOvQVY7BJTopg5sdBQ=;
+	s=korg; t=1717682960;
+	bh=vXD4GgbOIo10lSpjmIptZ+b/CvKKYqKFO2YvDYCCNLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CM4GcUQqd53sprXWThENczc10kl2fonNt6OPvNATL9Itsjrq6/JpYQ/6VBCPrEDng
-	 bBNLTeAugxk4tGVuUdbcgQgT6DfL0BNQsy0brPFBLbJkgFymJi/fpLaVK83LAOtj+j
-	 jyDATSRyf3rLMACA4PW3d/EiKUJ7XMg3C0Xog+io=
+	b=WW5GDrFqIZOifhMTo1U7Bi44bn8JdRQ5mxeTj3gfqEcBTW6WfkknOwp3Ff3PeEwqv
+	 bqL5H3l2mGBNOAR/zyh9XmprdejJpm14pSbuJTNMNVVyshUPVa9XD4th0IXHtnasTk
+	 X17f7oOdJvG5GLdR5W4Tvy7QRQxoZcw9gV1U7mC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jens Remus <jremus@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 177/473] ipv6: sr: fix invalid unregister error path
+Subject: [PATCH 6.9 127/374] s390/vdso: Generate unwind information for C modules
 Date: Thu,  6 Jun 2024 16:01:46 +0200
-Message-ID: <20240606131705.777540627@linuxfoundation.org>
+Message-ID: <20240606131656.153113519@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Jens Remus <jremus@linux.ibm.com>
 
-[ Upstream commit 160e9d2752181fcf18c662e74022d77d3164cd45 ]
+[ Upstream commit 10f70525365146046dddcc3d36bfaea2aee0376a ]
 
-The error path of seg6_init() is wrong in case CONFIG_IPV6_SEG6_LWTUNNEL
-is not defined. In that case if seg6_hmac_init() fails, the
-genl_unregister_family() isn't called.
+GDB fails to unwind vDSO functions with error message "PC not saved",
+for instance when stepping through gettimeofday().
 
-This issue exist since commit 46738b1317e1 ("ipv6: sr: add option to control
-lwtunnel support"), and commit 5559cea2d5aa ("ipv6: sr: fix possible
-use-after-free and null-ptr-deref") replaced unregister_pernet_subsys()
-with genl_unregister_family() in this error path.
+Add -fasynchronous-unwind-tables to CFLAGS to generate .eh_frame
+DWARF unwind information for the vDSO C modules.
 
-Fixes: 46738b1317e1 ("ipv6: sr: add option to control lwtunnel support")
-Reported-by: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240509131812.1662197-4-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/s390/kernel/vdso32/Makefile | 3 ++-
+ arch/s390/kernel/vdso64/Makefile | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index c4ef96c8fdaca..a31521e270f78 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -551,6 +551,8 @@ int __init seg6_init(void)
- #endif
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
- out_unregister_genl:
-+#endif
-+#if IS_ENABLED(CONFIG_IPV6_SEG6_LWTUNNEL) || IS_ENABLED(CONFIG_IPV6_SEG6_HMAC)
- 	genl_unregister_family(&seg6_genl_family);
- #endif
- out_unregister_pernet:
+diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
+index b12a274cbb473..9090c0e5de254 100644
+--- a/arch/s390/kernel/vdso32/Makefile
++++ b/arch/s390/kernel/vdso32/Makefile
+@@ -20,7 +20,8 @@ KBUILD_AFLAGS_32 += -m31 -s
+ 
+ KBUILD_CFLAGS_32 := $(filter-out -m64,$(KBUILD_CFLAGS))
+ KBUILD_CFLAGS_32 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_32))
+-KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin
++KBUILD_CFLAGS_32 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_32))
++KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin -fasynchronous-unwind-tables
+ 
+ LDFLAGS_vdso32.so.dbg += -shared -soname=linux-vdso32.so.1 \
+ 	--hash-style=both --build-id=sha1 -melf_s390 -T
+diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
+index ef98327260972..a44f51de1f1ea 100644
+--- a/arch/s390/kernel/vdso64/Makefile
++++ b/arch/s390/kernel/vdso64/Makefile
+@@ -26,7 +26,8 @@ KBUILD_AFLAGS_64 += -m64
+ KBUILD_CFLAGS_64 := $(filter-out -m64,$(KBUILD_CFLAGS))
+ KBUILD_CFLAGS_64 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_64))
+ KBUILD_CFLAGS_64 := $(filter-out -munaligned-symbols,$(KBUILD_CFLAGS_64))
+-KBUILD_CFLAGS_64 += -m64 -fPIC -fno-common -fno-builtin
++KBUILD_CFLAGS_64 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_64))
++KBUILD_CFLAGS_64 += -m64 -fPIC -fno-common -fno-builtin -fasynchronous-unwind-tables
+ ldflags-y := -shared -soname=linux-vdso64.so.1 \
+ 	     --hash-style=both --build-id=sha1 -T
+ 
 -- 
 2.43.0
 
