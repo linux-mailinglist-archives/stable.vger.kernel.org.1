@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-49897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFB88FEF4D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E17068FEE18
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E3D31C23DB2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79CED1F23681
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A6E1CBE95;
-	Thu,  6 Jun 2024 14:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6284119EEC4;
+	Thu,  6 Jun 2024 14:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cl3h4lZ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4XpuCNA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631B41A2579;
-	Thu,  6 Jun 2024 14:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F941BF917;
+	Thu,  6 Jun 2024 14:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683765; cv=none; b=QnqiSua4j/O88XC3uqWfKKq627mkfihIGXhAkqwZuNHX1nWMjiZ7ZGFQYAnPHo5/N+avRYxyM+lBBdfAkcD+HwSVPi0UZph8k/P+VufnGMJTR5s1cM96a0ZO+snpjeZcbdSYeDcKvCA8XCpiiOq4g3Cf7uReP4CE2DmySnXlVc4=
+	t=1717683558; cv=none; b=aB1GaLBwqGLIHDXuB6lYa0batOfZgX4HgpPBCS1dKgtvzaYTpxvs+ybia7RyvJWpErKwsbjI/mKGUICe2Ht13eidpdPxtC2dyEG66LvCH7wQLbuSg5vQJCIZFGADezusSt8Tc3OctlYGdfO95aFgj0eMiy8fjHBnop3KjUM/Tu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683765; c=relaxed/simple;
-	bh=JC3+1BXb4a7VORjXjw84uEWRgOkA4s29S10yFI0soIY=;
+	s=arc-20240116; t=1717683558; c=relaxed/simple;
+	bh=cIutm8C6uXW9QeUCXS2TqUtsPvD1LqFM1yJjNSH8Ghc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aJdWD05FtWyhc5uEBXtfgBBHrmw4qDT6QaNpozoLorDmavWtddhKXnEkc+YIOh2bo2VrDuTic49nbvGWp9LnTODvApdtmBSUtq2NG50STvRjXgBCtudVLrUbepkwhaSHNLFRwU1Rs9oQiadhYXoHqdOaYvy8Jmd4PDpUF37gWVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cl3h4lZ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F536C2BD10;
-	Thu,  6 Jun 2024 14:22:45 +0000 (UTC)
+	 MIME-Version; b=nZkgXlKdEP2KhUoSAIIR8aln8mccznoGicG66AoI8teBkKvlAwA1wIOnQpu78v6Y9XzsclZ3WTA2oXo+ll+h2SEaQj+VjqSxZc6k49RcyF+xtr5CO6fu3nIHIesQSAxWnc2B3bfG5BZPqE5ida8/OkIgm/2eP5QC8s+AvAFzw64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4XpuCNA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02545C32782;
+	Thu,  6 Jun 2024 14:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683765;
-	bh=JC3+1BXb4a7VORjXjw84uEWRgOkA4s29S10yFI0soIY=;
+	s=korg; t=1717683558;
+	bh=cIutm8C6uXW9QeUCXS2TqUtsPvD1LqFM1yJjNSH8Ghc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cl3h4lZ6TEU4MVBo2hbO3kLV50ASIG7XgotwqnbX6doA/C7j4H+DG5+/nMq4AINd0
-	 j3tMfD/LdLKXw08shbzbPWqgZhCF5YJAkVM2khZItzXqW/Y0WRhTFWFGRtArUGaqfR
-	 JGFz4ybEkUJ7kU8CsUvbKtsxXefL3sl48xpcB2CE=
+	b=z4XpuCNAMK76ykcW2RRXJDmNhEDEL1BGL7wChFbbUN7jedWwJHOQOH3s9F8qkfO3C
+	 AkY+qHAJY8bXfRFl7S3x92hTs/cM0UF2hnvRi+vYJl7k57A7zOAb4pEDecLUw+5yvz
+	 A3Yw/845yikAvmpSzkE/rDUC60QYY0rzrwA1kjd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 705/744] ice: fix accounting if a VLAN already exists
+Subject: [PATCH 6.1 448/473] ALSA: hda/realtek: Adjust G814JZR to use SPI init for amp
 Date: Thu,  6 Jun 2024 16:06:17 +0200
-Message-ID: <20240606131755.086853137@linuxfoundation.org>
+Message-ID: <20240606131714.527958965@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Luke D. Jones <luke@ljones.dev>
 
-[ Upstream commit 82617b9a04649e83ee8731918aeadbb6e6d7cbc7 ]
+[ Upstream commit 2be46155d792d629e8fe3188c2cde176833afe36 ]
 
-The ice_vsi_add_vlan() function is used to add a VLAN filter for the target
-VSI. This function prepares a filter in the switch table for the given VSI.
-If it succeeds, the vsi->num_vlan counter is incremented.
+The 2024 ASUS ROG G814J model is much the same as the 2023 model
+and the 2023 16" version. We can use the same Cirrus Amp quirk.
 
-It is not considered an error to add a VLAN which already exists in the
-switch table, so the function explicitly checks and ignores -EEXIST. The
-vsi->num_vlan counter is still incremented.
-
-This seems incorrect, as it means we can double-count in the case where the
-same VLAN is added twice by the caller. The actual table will have one less
-filter than the count.
-
-The ice_vsi_del_vlan() function similarly checks and handles the -ENOENT
-condition for when deleting a filter that doesn't exist. This flow only
-decrements the vsi->num_vlan if it actually deleted a filter.
-
-The vsi->num_vlan counter is used only in a few places, primarily related
-to tracking the number of non-zero VLANs. If the vsi->num_vlans gets out of
-sync, then ice_vsi_num_non_zero_vlans() will incorrectly report more VLANs
-than are present, and ice_vsi_has_non_zero_vlans() could return true
-potentially in cases where there are only VLAN 0 filters left.
-
-Fix this by only incrementing the vsi->num_vlan in the case where we
-actually added an entry, and not in the case where the entry already
-existed.
-
-Fixes: a1ffafb0b4a4 ("ice: Support configuring the device to Double VLAN Mode")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240523-net-2024-05-23-intel-net-fixes-v1-2-17a923e0bb5f@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 811dd426a9b1 ("ALSA: hda/realtek: Add quirks for Asus ROG 2024 laptops using CS35L41")
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Link: https://lore.kernel.org/r/20240526091032.114545-1-luke@ljones.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_realtek.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c b/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
-index 8307902115ff2..3ecab12baea33 100644
---- a/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
-@@ -45,14 +45,15 @@ int ice_vsi_add_vlan(struct ice_vsi *vsi, struct ice_vlan *vlan)
- 		return -EINVAL;
- 
- 	err = ice_fltr_add_vlan(vsi, vlan);
--	if (err && err != -EEXIST) {
-+	if (!err)
-+		vsi->num_vlan++;
-+	else if (err == -EEXIST)
-+		err = 0;
-+	else
- 		dev_err(ice_pf_to_dev(vsi->back), "Failure Adding VLAN %d on VSI %i, status %d\n",
- 			vlan->vid, vsi->vsi_num, err);
--		return err;
--	}
- 
--	vsi->num_vlan++;
--	return 0;
-+	return err;
- }
- 
- /**
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index c08bf42c602dd..3a7104f72cabd 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9893,7 +9893,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
+ 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a50, "ASUS G834JYR/JZR", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3a60, "ASUS G634JYR/JZR", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x831a, "ASUS P901", ALC269_FIXUP_STEREO_DMIC),
 -- 
 2.43.0
 
