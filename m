@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-49758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EB918FEEB9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E433A8FE9B1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14F691F21D0D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86E5728949D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6171C618A;
-	Thu,  6 Jun 2024 14:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1B519B3CC;
+	Thu,  6 Jun 2024 14:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhlFQUCD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxlbhaSZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8771A0DF1;
-	Thu,  6 Jun 2024 14:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDAF198A20;
+	Thu,  6 Jun 2024 14:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683694; cv=none; b=KUGYtZgjUpLJRmPMDwJiW8S3oenZCflyLZshl8HqeE2nRY3yZ+3m5rHK34KdcPTDopu1d5NsBhPqOyI8xDVo6ZCeBKIx8/YSAAWks2RF42UZnE+ozq8LU2KTRZ0Ego9B6KCUf1H2Md92Kf7KcpYavm7BAXMPO1U4rz52b5/f3JE=
+	t=1717683056; cv=none; b=GeRlyId8eWQ1AVbk1MCO6TRZ7ijafL1uj9l10l27BHVIW6PxEKDfqZUx6CoVsEQCbm0pdyulXQFvCaj/Jh7ZcaJ0sYg95vdZu0TI0Xcg4pFLMU48N4H3vkN0/pfdjCd6f3pzjqD40pHCLOkdQzzPp0kEOlejJFiQJW6Z9L0g3LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683694; c=relaxed/simple;
-	bh=PVTG0H6TNWGLhYKrEz/4+7mezVBxLca+Gvl1luCIF+8=;
+	s=arc-20240116; t=1717683056; c=relaxed/simple;
+	bh=x7LHFzmQf8mTF6mCEMBxgXjlAl5SvvTYF+H78De0GGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSLGDSYBzzpzscCeLkMyrjqIwedr8SkBR/W55IGhe8Gbm7+6zbAA3aNHTG83V4B5wnP6r77mjkCQUohZRa41cDd0Z+DjI+lR+IqM+35e95nhihzpeTXlN2FmmZsqTqyBPkeCqYag24H9ekpYWbw122CYcvAemVWFEJ32VfwXe7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhlFQUCD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6718DC2BD10;
-	Thu,  6 Jun 2024 14:21:34 +0000 (UTC)
+	 MIME-Version; b=PLaPLMaEUTbhLLB0BXBiTb+4f1HhMX62V9awQhMdYiMUcG4xNoml4HH/SkqtMYq5XGD9KlkxMaVJxQyQQBbJRmI4zX3r/1Xib2kQd5BH47qGY8HsKyVr8iK/x+seZfrAllEa4tZ1ZNBRHIiAoY8jYCrtzBICNzgs3t5wPSyvFig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxlbhaSZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD00AC4AF07;
+	Thu,  6 Jun 2024 14:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683694;
-	bh=PVTG0H6TNWGLhYKrEz/4+7mezVBxLca+Gvl1luCIF+8=;
+	s=korg; t=1717683055;
+	bh=x7LHFzmQf8mTF6mCEMBxgXjlAl5SvvTYF+H78De0GGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RhlFQUCDb+0wVwjHgCELpjLiJ4HglCCJjfrVsGnPc+C+XbsphVdESIZ99QPWWQYnV
-	 hh6uQVgtA9AKdQKBTzoZnIjbnAyogKzntbBIbt7K3CVjXC3cX3mOvAgyN6Pp1uZpt3
-	 Xq30d+8jctwoeMXQ2xWbNZoJgd/1g6yX6/jT2CPw=
+	b=KxlbhaSZEG73y7LG1DNKKqWvfJbb7oMb+6oVU8p+F+g8m3zaV8bC365ItV7PwjMJw
+	 NcCg8cKjYX+9erFMx0CuiHNe9X7BFck0mSVXSuixAHNLVOKJGbHpHJiH34XhdEafF4
+	 1702de6YPCX1A3FSdozeBmRAbcL8M/FTx+eT5R7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	"Yang, Chenyuan" <cy54@illinois.edu>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
-Subject: [PATCH 6.6 607/744] media: cec: cec-adap: always cancel work in cec_transmit_msg_fh
+	patches@lists.linux.dev,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 300/374] net/mlx5e: Fix IPsec tunnel mode offload feature check
 Date: Thu,  6 Jun 2024 16:04:39 +0200
-Message-ID: <20240606131751.955385764@linuxfoundation.org>
+Message-ID: <20240606131701.909333603@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-[ Upstream commit 9fe2816816a3c765dff3b88af5b5c3d9bbb911ce ]
+[ Upstream commit 9a52f6d44f4521773b4699b4ed34b8e21d5a175c ]
 
-Do not check for !data->completed, just always call
-cancel_delayed_work_sync(). This fixes a small race condition.
+Remove faulty check disabling checksum offload and GSO for offload of
+simple IPsec tunnel L4 traffic. Comment previously describing the deleted
+code incorrectly claimed the check prevented double tunnel (or three layers
+of ip headers).
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Yang, Chenyuan <cy54@illinois.edu>
-Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
-Fixes: 490d84f6d73c ("media: cec: forgot to cancel delayed work")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: f1267798c980 ("net/mlx5: Fix checksum issue of VXLAN and IPsec crypto offload")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/core/cec-adap.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ .../mellanox/mlx5/core/en_accel/ipsec_rxtx.h    | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
-index ed1fa07e70b57..99c14942f2813 100644
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -909,8 +909,7 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
- 	 */
- 	mutex_unlock(&adap->lock);
- 	wait_for_completion_killable(&data->c);
--	if (!data->completed)
--		cancel_delayed_work_sync(&data->work);
-+	cancel_delayed_work_sync(&data->work);
- 	mutex_lock(&adap->lock);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h
+index 82064614846f5..359050f0b54dd 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h
+@@ -97,18 +97,11 @@ mlx5e_ipsec_feature_check(struct sk_buff *skb, netdev_features_t features)
+ 		if (!x || !x->xso.offload_handle)
+ 			goto out_disable;
  
- 	/* Cancel the transmit if it was interrupted */
+-		if (xo->inner_ipproto) {
+-			/* Cannot support tunnel packet over IPsec tunnel mode
+-			 * because we cannot offload three IP header csum
+-			 */
+-			if (x->props.mode == XFRM_MODE_TUNNEL)
+-				goto out_disable;
+-
+-			/* Only support UDP or TCP L4 checksum */
+-			if (xo->inner_ipproto != IPPROTO_UDP &&
+-			    xo->inner_ipproto != IPPROTO_TCP)
+-				goto out_disable;
+-		}
++		/* Only support UDP or TCP L4 checksum */
++		if (xo->inner_ipproto &&
++		    xo->inner_ipproto != IPPROTO_UDP &&
++		    xo->inner_ipproto != IPPROTO_TCP)
++			goto out_disable;
+ 
+ 		return features;
+ 
 -- 
 2.43.0
 
