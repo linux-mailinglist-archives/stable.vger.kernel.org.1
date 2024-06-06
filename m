@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-48547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC29A8FE977
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB0F58FECD8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C64581C20282
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EB6BB28A3C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F9919882E;
-	Thu,  6 Jun 2024 14:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61051B29D5;
+	Thu,  6 Jun 2024 14:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RR6UBlKk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBY/mzAa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD6B19645B;
-	Thu,  6 Jun 2024 14:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F9B19FA9F;
+	Thu,  6 Jun 2024 14:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683027; cv=none; b=Yqg8zE328395JiDl3KTwaspy/upC0vMC2iBx6sop0+KA2xhBGxF+Z+cQbSG9pyya9pnsQltzjg1htUtcqH6t4l0euPWaXUQOd3GCqEks/G3inpvXUkVRG0ebjes0DuHXz98TaC6IrvHBYle0/JOdP4GavVgyjuFd0K4BcdOj9/4=
+	t=1717683415; cv=none; b=JIA3W1bL26bnhkUsU0aBvoGLwzlSPohDTvrNlxBJQnbTkfpy0IaYlgkbEQ9EAt9pCOuTwNFm6EyzeF2B4a+BgXPgaxay55M0XQMUEzOonEFJ8lIK8+yRkgHKUYOwLr4m82tRlVRvWDsCRwCIre2yBTa6BfeEIbKZQX+VH+0JrpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683027; c=relaxed/simple;
-	bh=+np5vvRhAccdRO4sgrtg7XHvFHmxVd4y1dQpTYkOu+0=;
+	s=arc-20240116; t=1717683415; c=relaxed/simple;
+	bh=1nhihlHXM0w+5YPPKpFi3s81ft/auojFWxKo7+nVbDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=noW1lPseKm9cMdl/125xhKNaWvnilKW9t9OPL1cW6WwaCgl/aGUIQNfsGeNFfoUMJpuQwSHOl/tP7YJ0OzwtJ6DKuf7p0sd3HYK1AyKI413WyMIwgCMvyM4esJAvaBkqgxDjfHHAd8AQD2FohcsEd7J/whj/52x85KardJ6aw0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RR6UBlKk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FA0C32786;
-	Thu,  6 Jun 2024 14:10:27 +0000 (UTC)
+	 MIME-Version; b=dpmI1jlcJdvUVReHA3UAFxBh3TZGgnfk9I26gcU7BCZLdUnJjsMmLsAFSW0ZEN1TQX3hnGqe9hRMlJBnlU0l2dPTXVBNI8QhNqlxGoB8lNUd0kpnSSV56V0Lo7ZSW7Sav78LE158pS637XKThLjrS/WKm30vLdoybPN4VxurAHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBY/mzAa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DDC6C32782;
+	Thu,  6 Jun 2024 14:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683027;
-	bh=+np5vvRhAccdRO4sgrtg7XHvFHmxVd4y1dQpTYkOu+0=;
+	s=korg; t=1717683415;
+	bh=1nhihlHXM0w+5YPPKpFi3s81ft/auojFWxKo7+nVbDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RR6UBlKkcYCzM80F19+/lOmilK/B2L9BVQQ07ZTJHTwRoGXkjpdX7H79QGlOATZ6C
-	 dda7VTQy2nuKCtNz91zI3IMpHYItaUlf80UZLV3+WxS7dBOu9849qNemg7W8NlftA6
-	 eULa8uOecyqr5WJwFdASrs4wcETR5FCa6uLvvD3c=
+	b=mBY/mzAaNcR7Q4SgJ/PFpPafmPf63w8h1HRnIfS1f9q8uEOJjRqd7YwVu26FG6NaX
+	 PgsfBBzeDBj4HJSP5w77lEgH57Xzb4MiZZVxiIE8EhNjHrdxYjRIz0NIMfnQiIQ0z+
+	 sbwVG4TtI/ILhGyxyqw7VBghC5ppkTgrYK/9mkxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobias Waldekranz <tobias@waldekranz.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
+	German Gomez <german.gomez@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Leo Yan <leo.yan@linaro.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Zhengjun Xing <zhengjun.xing@linux.intel.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 247/374] selftests: forwarding: Change inappropriate log_test_skip() calls
-Date: Thu,  6 Jun 2024 16:03:46 +0200
-Message-ID: <20240606131700.095416275@linuxfoundation.org>
+Subject: [PATCH 6.1 298/473] perf test: Add -w/--workload option
+Date: Thu,  6 Jun 2024 16:03:47 +0200
+Message-ID: <20240606131709.760199357@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,134 +72,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 677f394956e808c709c18b92bd01d19f14a96dd5 ]
+[ Upstream commit f215054d749b17c56e014fdca2fcc592dac4529c ]
 
-The SKIP return should be used for cases where tooling of the machine under
-test is lacking. For cases where HW is lacking, the appropriate outcome is
-XFAIL.
+The -w/--workload option is to run a simple workload used by testing.
+This adds a basic framework to run the workloads and 'noploop' workload
+as an example.
 
-This is the case with ethtool_rmon and mlxsw_lib. For these, introduce a
-new helper, log_test_xfail().
+  $ perf test -w noploop
 
-Do the same for router_mpath_nh_lib. Note that it will be fixed using a
-more reusable way in a following patch.
+The noploop does a loop doing nothing (NOP) for a second by default.
+It can have an optional argument to specify the time in seconds.
 
-For the two resource_scale selftests, the log should simply not be written,
-because there is no problem.
-
-Cc: Tobias Waldekranz <tobias@waldekranz.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://lore.kernel.org/r/3d668d8fb6fa0d9eeb47ce6d9e54114348c7c179.1711464583.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: ea63ac142925 ("selftests/net: use tc rule to filter the na packet")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Zhengjun Xing <zhengjun.xing@linux.intel.com>
+Link: https://lore.kernel.org/r/20221116233854.1596378-2-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 256ef072b384 ("perf tests: Make "test data symbol" more robust on Neoverse N1")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/mlxsw/mlxsw_lib.sh   | 2 +-
- .../drivers/net/mlxsw/spectrum-2/resource_scale.sh       | 1 -
- .../drivers/net/mlxsw/spectrum/resource_scale.sh         | 1 -
- tools/testing/selftests/net/forwarding/ethtool_rmon.sh   | 4 ++--
- tools/testing/selftests/net/forwarding/lib.sh            | 9 +++++++++
- .../selftests/net/forwarding/router_mpath_nh_lib.sh      | 2 +-
- 6 files changed, 13 insertions(+), 6 deletions(-)
+ tools/perf/tests/Build               |  2 ++
+ tools/perf/tests/builtin-test.c      | 24 +++++++++++++++++++++
+ tools/perf/tests/tests.h             | 22 +++++++++++++++++++
+ tools/perf/tests/workloads/Build     |  3 +++
+ tools/perf/tests/workloads/noploop.c | 32 ++++++++++++++++++++++++++++
+ 5 files changed, 83 insertions(+)
+ create mode 100644 tools/perf/tests/workloads/Build
+ create mode 100644 tools/perf/tests/workloads/noploop.c
 
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/mlxsw_lib.sh b/tools/testing/selftests/drivers/net/mlxsw/mlxsw_lib.sh
-index 6369927e9c378..48395cfd4f958 100644
---- a/tools/testing/selftests/drivers/net/mlxsw/mlxsw_lib.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/mlxsw_lib.sh
-@@ -42,7 +42,7 @@ __mlxsw_only_on_spectrum()
- 	local src=$1; shift
- 
- 	if ! mlxsw_on_spectrum "$rev"; then
--		log_test_skip $src:$caller "(Spectrum-$rev only)"
-+		log_test_xfail $src:$caller "(Spectrum-$rev only)"
- 		return 1
- 	fi
- }
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/resource_scale.sh b/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/resource_scale.sh
-index a88d8a8c85f2e..899b6892603fd 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/resource_scale.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/resource_scale.sh
-@@ -47,7 +47,6 @@ for current_test in ${TESTS:-$ALL_TESTS}; do
- 		RET=0
- 		target=$(${current_test}_get_target "$should_fail")
- 		if ((target == 0)); then
--			log_test_skip "'$current_test' should_fail=$should_fail test"
- 			continue
- 		fi
- 
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/spectrum/resource_scale.sh b/tools/testing/selftests/drivers/net/mlxsw/spectrum/resource_scale.sh
-index f981c957f0975..482ebb744ebad 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/spectrum/resource_scale.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/spectrum/resource_scale.sh
-@@ -52,7 +52,6 @@ for current_test in ${TESTS:-$ALL_TESTS}; do
- 			RET=0
- 			target=$(${current_test}_get_target "$should_fail")
- 			if ((target == 0)); then
--				log_test_skip "'$current_test' [$profile] should_fail=$should_fail test"
- 				continue
- 			fi
- 			${current_test}_setup_prepare
-diff --git a/tools/testing/selftests/net/forwarding/ethtool_rmon.sh b/tools/testing/selftests/net/forwarding/ethtool_rmon.sh
-index 41a34a61f7632..e78776db850f1 100755
---- a/tools/testing/selftests/net/forwarding/ethtool_rmon.sh
-+++ b/tools/testing/selftests/net/forwarding/ethtool_rmon.sh
-@@ -78,7 +78,7 @@ rmon_histogram()
- 
- 		for if in $iface $neigh; do
- 			if ! ensure_mtu $if ${bucket[0]}; then
--				log_test_skip "$if does not support the required MTU for $step"
-+				log_test_xfail "$if does not support the required MTU for $step"
- 				return
- 			fi
- 		done
-@@ -93,7 +93,7 @@ rmon_histogram()
- 		jq -r ".[0].rmon[\"${set}-pktsNtoM\"][]|[.low, .high]|@tsv" 2>/dev/null)
- 
- 	if [ $nbuckets -eq 0 ]; then
--		log_test_skip "$iface does not support $set histogram counters"
-+		log_test_xfail "$iface does not support $set histogram counters"
- 		return
- 	fi
- }
-diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
-index e579c2e0c462a..9042fe92ca465 100644
---- a/tools/testing/selftests/net/forwarding/lib.sh
-+++ b/tools/testing/selftests/net/forwarding/lib.sh
-@@ -429,6 +429,15 @@ log_test_skip()
- 	return 0
- }
- 
-+log_test_xfail()
-+{
-+	local test_name=$1
-+	local opt_str=$2
+diff --git a/tools/perf/tests/Build b/tools/perf/tests/Build
+index 2064a640facbe..11b69023011b0 100644
+--- a/tools/perf/tests/Build
++++ b/tools/perf/tests/Build
+@@ -103,3 +103,5 @@ endif
+ CFLAGS_attr.o         += -DBINDIR="BUILD_STR($(bindir_SQ))" -DPYTHON="BUILD_STR($(PYTHON_WORD))"
+ CFLAGS_python-use.o   += -DPYTHONPATH="BUILD_STR($(OUTPUT)python)" -DPYTHON="BUILD_STR($(PYTHON_WORD))"
+ CFLAGS_dwarf-unwind.o += -fno-optimize-sibling-calls
 +
-+	printf "TEST: %-60s  [XFAIL]\n" "$test_name $opt_str"
-+	return 0
++perf-y += workloads/
+diff --git a/tools/perf/tests/builtin-test.c b/tools/perf/tests/builtin-test.c
+index 7122eae1d98d9..ce641ccfcf814 100644
+--- a/tools/perf/tests/builtin-test.c
++++ b/tools/perf/tests/builtin-test.c
+@@ -118,6 +118,10 @@ static struct test_suite **tests[] = {
+ 	arch_tests,
+ };
+ 
++static struct test_workload *workloads[] = {
++	&workload__noploop,
++};
++
+ static int num_subtests(const struct test_suite *t)
+ {
+ 	int num;
+@@ -475,6 +479,21 @@ static int perf_test__list(int argc, const char **argv)
+ 	return 0;
+ }
+ 
++static int run_workload(const char *work, int argc, const char **argv)
++{
++	unsigned int i = 0;
++	struct test_workload *twl;
++
++	for (i = 0; i < ARRAY_SIZE(workloads); i++) {
++		twl = workloads[i];
++		if (!strcmp(twl->name, work))
++			return twl->func(argc, argv);
++	}
++
++	pr_info("No workload found: %s\n", work);
++	return -1;
 +}
 +
- log_info()
+ int cmd_test(int argc, const char **argv)
  {
- 	local msg=$1
-diff --git a/tools/testing/selftests/net/forwarding/router_mpath_nh_lib.sh b/tools/testing/selftests/net/forwarding/router_mpath_nh_lib.sh
-index 7e7d62161c345..b2d2c6cecc01e 100644
---- a/tools/testing/selftests/net/forwarding/router_mpath_nh_lib.sh
-+++ b/tools/testing/selftests/net/forwarding/router_mpath_nh_lib.sh
-@@ -69,7 +69,7 @@ nh_stats_test_dispatch_swhw()
- 		nh_stats_do_test "HW $what" "$nh1_id" "$nh2_id" "$group_id" \
- 				 nh_stats_get_hw "${mz[@]}"
- 	elif [[ $kind == veth ]]; then
--		log_test_skip "HW stats not offloaded on veth topology"
-+		log_test_xfail "HW stats not offloaded on veth topology"
- 	fi
- }
+ 	const char *test_usage[] = {
+@@ -482,12 +501,14 @@ int cmd_test(int argc, const char **argv)
+ 	NULL,
+ 	};
+ 	const char *skip = NULL;
++	const char *workload = NULL;
+ 	const struct option test_options[] = {
+ 	OPT_STRING('s', "skip", &skip, "tests", "tests to skip"),
+ 	OPT_INCR('v', "verbose", &verbose,
+ 		    "be more verbose (show symbol address, etc)"),
+ 	OPT_BOOLEAN('F', "dont-fork", &dont_fork,
+ 		    "Do not fork for testcase"),
++	OPT_STRING('w', "workload", &workload, "work", "workload to run for testing"),
+ 	OPT_END()
+ 	};
+ 	const char * const test_subcommands[] = { "list", NULL };
+@@ -504,6 +525,9 @@ int cmd_test(int argc, const char **argv)
+ 	if (argc >= 1 && !strcmp(argv[0], "list"))
+ 		return perf_test__list(argc - 1, argv + 1);
  
++	if (workload)
++		return run_workload(workload, argc, argv);
++
+ 	symbol_conf.priv_size = sizeof(int);
+ 	symbol_conf.sort_by_name = true;
+ 	symbol_conf.try_vmlinux_path = true;
+diff --git a/tools/perf/tests/tests.h b/tools/perf/tests/tests.h
+index 5bbb8f6a48fcb..d315d0d6fc977 100644
+--- a/tools/perf/tests/tests.h
++++ b/tools/perf/tests/tests.h
+@@ -180,4 +180,26 @@ int test__arch_unwind_sample(struct perf_sample *sample,
+ DECLARE_SUITE(vectors_page);
+ #endif
+ 
++/*
++ * Define test workloads to be used in test suites.
++ */
++typedef int (*workload_fnptr)(int argc, const char **argv);
++
++struct test_workload {
++	const char	*name;
++	workload_fnptr	func;
++};
++
++#define DECLARE_WORKLOAD(work) \
++	extern struct test_workload workload__##work
++
++#define DEFINE_WORKLOAD(work) \
++struct test_workload workload__##work = {	\
++	.name = #work,				\
++	.func = work,				\
++}
++
++/* The list of test workloads */
++DECLARE_WORKLOAD(noploop);
++
+ #endif /* TESTS_H */
+diff --git a/tools/perf/tests/workloads/Build b/tools/perf/tests/workloads/Build
+new file mode 100644
+index 0000000000000..f98e968d4633a
+--- /dev/null
++++ b/tools/perf/tests/workloads/Build
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0
++
++perf-y += noploop.o
+diff --git a/tools/perf/tests/workloads/noploop.c b/tools/perf/tests/workloads/noploop.c
+new file mode 100644
+index 0000000000000..940ea5910a84c
+--- /dev/null
++++ b/tools/perf/tests/workloads/noploop.c
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#include <stdlib.h>
++#include <signal.h>
++#include <unistd.h>
++#include <linux/compiler.h>
++#include "../tests.h"
++
++static volatile sig_atomic_t done;
++
++static void sighandler(int sig __maybe_unused)
++{
++	done = 1;
++}
++
++static int noploop(int argc, const char **argv)
++{
++	int sec = 1;
++
++	if (argc > 0)
++		sec = atoi(argv[0]);
++
++	signal(SIGINT, sighandler);
++	signal(SIGALRM, sighandler);
++	alarm(sec);
++
++	while (!done)
++		continue;
++
++	return 0;
++}
++
++DEFINE_WORKLOAD(noploop);
 -- 
 2.43.0
 
