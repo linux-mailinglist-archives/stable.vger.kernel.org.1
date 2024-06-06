@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-49610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBF18FEE06
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E43508FE937
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 847931C22255
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 946B928345D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC79419EEB4;
-	Thu,  6 Jun 2024 14:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106EC199242;
+	Thu,  6 Jun 2024 14:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAaYJQmJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pD5K6sqa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6B21BE87E;
-	Thu,  6 Jun 2024 14:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A6C19925E;
+	Thu,  6 Jun 2024 14:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683551; cv=none; b=MzU6e3ov2M0jM/ckiXSycJ6bmZmKgGSqt/56+tiEjRh6TOevvv92bi889xjcyrs61jtre2OyhhXNpasRbSD/T7excCCfah1zz0uSLYVVXQ/XM+8VimYfR1LIUT65tAHrltG/OM8yXU0eM/Uzu+qcgu6KERFgzlltqdZeVOk20Xs=
+	t=1717682993; cv=none; b=lgEzUaBuKGdsk4VbfXAKLGXZYblI9ba/fK6XgKUvA7Rt5Ohq8NzS21okicC8PQrrjpLYwAU7eO4HDJNHIbKXPBp2CNjU5g1XWfpxs3icnt+g5TJy9PrccE03q0X5tMS5lyRoRAja9mnzXAkKPm1vtnmqd0KE7nyBCXRga9j4fYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683551; c=relaxed/simple;
-	bh=ra6w31LwSxgSaeuNaT+x8y1dkUHzd2jUcPmajFZxHDI=;
+	s=arc-20240116; t=1717682993; c=relaxed/simple;
+	bh=3/hf0RdSxaYSAgOeoAweyTYhe7wJD/L2sakpBF2VsJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DEMPKebmgnKUjmHcCo5HdIfyVASc9hQY/QpN/f++fmrJRUes1Kjjlg+yjmVP/EqwaCnklyfN9ZirvzPGMi7p+hWny4A1I2l7qGGd7E+znBMEmlc+QICiCCOnzkygKny/v60glyClisgo3HuLqoxNNQoUipZqlMLJUtb7gBSaL3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAaYJQmJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8939DC2BD10;
-	Thu,  6 Jun 2024 14:19:11 +0000 (UTC)
+	 MIME-Version; b=rBM2cqPDlTX9LiFOhsVnvXLbxwmHTl+7Q5/TjfbIvXXSBF/9Sbgzio06FqU/k0YpdJroPjmYKvtkZFQCNJmw/If5HL7U6AK3+BudKxWMghfS4RmTu02MnXsADUjtgjCdS1chTVbLSAzif+x9U+ekn6tgcSZ/5FmQfxs63Ta05TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pD5K6sqa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A17C32782;
+	Thu,  6 Jun 2024 14:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683551;
-	bh=ra6w31LwSxgSaeuNaT+x8y1dkUHzd2jUcPmajFZxHDI=;
+	s=korg; t=1717682993;
+	bh=3/hf0RdSxaYSAgOeoAweyTYhe7wJD/L2sakpBF2VsJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UAaYJQmJqf6Cy91tGrZ7PjUXBW9dJPvVt0k2ebJqZtAr6kVQTq+stggKdVgMCDMBv
-	 Nzm3KBZcYCgpYNMz0l+zfHN2s/tsgZfJXLdlUPi4OWL8jV7Y+gfrLse/QHcFNDk0es
-	 Rt/ZIS4hb2g/wkysFfzXXhmNVL8cwf5nBt3ZZO68=
+	b=pD5K6sqaWVT/fzKZyg57muRP9T+rsSW3nii95sM62MQFAYT0woahN56GMTW2SB4fw
+	 selttAaKid0ZOFeV6/li+afWYbLAPebWOAD+aWHTynXFgP6IFhsyL2Fltw3M/F4U9G
+	 Zlja5IitPL16lDp3LBdG7vVCn+Occd8bABKX4qfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Le Ma <le.ma@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 489/744] stm class: Fix a double free in stm_register_device()
+Subject: [PATCH 6.9 182/374] drm/amdgpu: init microcode chip name from ip versions
 Date: Thu,  6 Jun 2024 16:02:41 +0200
-Message-ID: <20240606131748.131845893@linuxfoundation.org>
+Message-ID: <20240606131657.970371370@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Le Ma <le.ma@amd.com>
 
-[ Upstream commit 3df463865ba42b8f88a590326f4c9ea17a1ce459 ]
+[ Upstream commit 92ed1e9cd5f6cc4f8c9a9ba6c4d2d2bbc6221296 ]
 
-The put_device(&stm->dev) call will trigger stm_device_release() which
-frees "stm" so the vfree(stm) on the next line is a double free.
+To adapt to different gc versions in gfx_v9_4_3.c file.
 
-Fixes: 389b6699a2aa ("stm class: Fix stm device initialization order")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Link: https://lore.kernel.org/r/20240429130119.1518073-2-alexander.shishkin@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Le Ma <le.ma@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: acce6479e30f ("drm/amdgpu: Fix buffer size in gfx_v9_4_3_init_ cp_compute_microcode() and rlc_microcode()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/stm/core.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwtracing/stm/core.c b/drivers/hwtracing/stm/core.c
-index 534fbefc7f6aa..20895d3915623 100644
---- a/drivers/hwtracing/stm/core.c
-+++ b/drivers/hwtracing/stm/core.c
-@@ -868,8 +868,11 @@ int stm_register_device(struct device *parent, struct stm_data *stm_data,
- 		return -ENOMEM;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+index b53c8fd4e8cf3..f4d48d6d7e777 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+@@ -431,16 +431,16 @@ static int gfx_v9_4_3_init_cp_compute_microcode(struct amdgpu_device *adev,
  
- 	stm->major = register_chrdev(0, stm_data->name, &stm_fops);
--	if (stm->major < 0)
--		goto err_free;
-+	if (stm->major < 0) {
-+		err = stm->major;
-+		vfree(stm);
-+		return err;
-+	}
+ static int gfx_v9_4_3_init_microcode(struct amdgpu_device *adev)
+ {
+-	const char *chip_name;
++	char ucode_prefix[30];
+ 	int r;
  
- 	device_initialize(&stm->dev);
- 	stm->dev.devt = MKDEV(stm->major, 0);
-@@ -913,10 +916,8 @@ int stm_register_device(struct device *parent, struct stm_data *stm_data,
- err_device:
- 	unregister_chrdev(stm->major, stm_data->name);
+-	chip_name = "gc_9_4_3";
++	amdgpu_ucode_ip_version_decode(adev, GC_HWIP, ucode_prefix, sizeof(ucode_prefix));
  
--	/* matches device_initialize() above */
-+	/* calls stm_device_release() */
- 	put_device(&stm->dev);
--err_free:
--	vfree(stm);
+-	r = gfx_v9_4_3_init_rlc_microcode(adev, chip_name);
++	r = gfx_v9_4_3_init_rlc_microcode(adev, ucode_prefix);
+ 	if (r)
+ 		return r;
  
- 	return err;
- }
+-	r = gfx_v9_4_3_init_cp_compute_microcode(adev, chip_name);
++	r = gfx_v9_4_3_init_cp_compute_microcode(adev, ucode_prefix);
+ 	if (r)
+ 		return r;
+ 
 -- 
 2.43.0
 
