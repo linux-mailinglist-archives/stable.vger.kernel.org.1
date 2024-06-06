@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BA28FEC1D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C4F8FEDD6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01CFC280C33
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D52DB29AB6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FB91AC24F;
-	Thu,  6 Jun 2024 14:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BCE51BE232;
+	Thu,  6 Jun 2024 14:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYmkNQq0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gDRn+9/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6806219AD46;
-	Thu,  6 Jun 2024 14:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098111BE22F;
+	Thu,  6 Jun 2024 14:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683331; cv=none; b=YWA1DRxD7WnV1Mq3OVV96POnJ2e55rbNUYUCSfdqQL5XEuWi0qjD4HmfSQtqhn3DQhOSF2G2W94nFr6yirxvvxIB5vjUdYDeVe6XNzGh3+RxxA/bXaBiJ8fNW9rlVdCQf9DoHPsVN5gaZd4dzM3woToDnFFx2F2E9EvRw17Wwgs=
+	t=1717683530; cv=none; b=qixZBHdun8DUIAMKdFNKFIcTsg8dPR5TbElqzieDK6lZT9fofF+He/YvuR+zU0AfketceuuhF/IMoit6eFaa+pZyvmC2zy27wHPOTFqMJx2cWOAwui8vtnLfHP/ALIdKT5TQMGbabb4Lu6l3/ueWh/qU17pA8MYxql5a/ozEPrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683331; c=relaxed/simple;
-	bh=SdXA4d8f7ZkjkIjMOsCfwk2Cw6Dv+RqMahcIuxAJr1c=;
+	s=arc-20240116; t=1717683530; c=relaxed/simple;
+	bh=2BXcnOhqc8fZIlPCcq4YuN+to1ORkqTsTVaIXwQ6kuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dwy1VdBpH+0Lgul4RouLIGGUsu9vG3giIQBleQbigAvL0d+th8vCKjN2OaB8on6o8uRTaRdL6pWEjEdvaypZM4xfaVHx0ZmayaK1SkHZutFIE7QMC+jy7BUhUD4kRHn9DTKY/12UJgujPDfU7AhO0892akzvvwiMrSMyDdMobig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYmkNQq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F58C2BD10;
-	Thu,  6 Jun 2024 14:15:31 +0000 (UTC)
+	 MIME-Version; b=lZkAEf2afZIRYEJanOxXgeYzUXpx+JTGCZcqselkzo8T/CaVGqKvtHCEedp95f3/9jfce/lruZwF/ebDgm7o0Lq/wB9res8Vrxa9axhSis3OPLzkxETb/kKprIgL3qG4f4sp7uVilzjVOdcJz8IYSYeUDyahN5CPzlc78DFzq2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gDRn+9/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE25C2BD10;
+	Thu,  6 Jun 2024 14:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683331;
-	bh=SdXA4d8f7ZkjkIjMOsCfwk2Cw6Dv+RqMahcIuxAJr1c=;
+	s=korg; t=1717683529;
+	bh=2BXcnOhqc8fZIlPCcq4YuN+to1ORkqTsTVaIXwQ6kuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OYmkNQq0XnW12QAEWi7LTmd7TPu3hponU0WErAsj70Q/NZXbTGuc/wPO61+giuSKA
-	 DzVh4ct1AO/1JU7hTy/fvFPPxmkrGBZOTEuzqW1jO/tyVL7TxA+czRTlbe2EeP0XtY
-	 qGvLd06ud2XAoZ2PMY2NGkImv20TD4bUthqcgVnQ=
+	b=0gDRn+9/sFwclV0CruvTVyFDnzt6t1QUWCSq69/FuFCNNgHLDEvdeg6LYJ8VpykTT
+	 OR4PiTAwiooV1RCoSYfswyAAQMzgu9aNakA7xKHF2Xehz0DPW6D9r2mxzQhhLFYFJ+
+	 ywHUF0JMCshjma013Z4mZA4QkK7TeYstvPB8kCwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 213/473] platform/x86: xiaomi-wmi: Fix race condition when reporting key events
+Subject: [PATCH 6.6 470/744] riscv: Flush the instruction cache during SMP bringup
 Date: Thu,  6 Jun 2024 16:02:22 +0200
-Message-ID: <20240606131706.958934841@linuxfoundation.org>
+Message-ID: <20240606131747.541178576@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-[ Upstream commit 290680c2da8061e410bcaec4b21584ed951479af ]
+[ Upstream commit 58661a30f1bcc748475ffd9be6d2fc9e4e6be679 ]
 
-Multiple WMI events can be received concurrently, so multiple instances
-of xiaomi_wmi_notify() can be active at the same time. Since the input
-device is shared between those handlers, the key input sequence can be
-disturbed.
+Instruction cache flush IPIs are sent only to CPUs in cpu_online_mask,
+so they will not target a CPU until it calls set_cpu_online() earlier in
+smp_callin(). As a result, if instruction memory is modified between the
+CPU coming out of reset and that point, then its instruction cache may
+contain stale data. Therefore, the instruction cache must be flushed
+after the set_cpu_online() synchronization point.
 
-Fix this by protecting the key input sequence with a mutex.
-
-Compile-tested only.
-
-Fixes: edb73f4f0247 ("platform/x86: wmi: add Xiaomi WMI key driver")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20240402143059.8456-2-W_Armin@gmx.de
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: 08f051eda33b ("RISC-V: Flush I$ when making a dirty page executable")
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Link: https://lore.kernel.org/r/20240327045035.368512-2-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/xiaomi-wmi.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/riscv/kernel/smpboot.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/xiaomi-wmi.c b/drivers/platform/x86/xiaomi-wmi.c
-index 54a2546bb93bf..be80f0bda9484 100644
---- a/drivers/platform/x86/xiaomi-wmi.c
-+++ b/drivers/platform/x86/xiaomi-wmi.c
-@@ -2,8 +2,10 @@
- /* WMI driver for Xiaomi Laptops */
+diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
+index d1b0a6fc3adfc..b30aeed26b717 100644
+--- a/arch/riscv/kernel/smpboot.c
++++ b/arch/riscv/kernel/smpboot.c
+@@ -26,7 +26,7 @@
+ #include <linux/sched/task_stack.h>
+ #include <linux/sched/mm.h>
  
- #include <linux/acpi.h>
-+#include <linux/device.h>
- #include <linux/input.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/wmi.h>
+-#include <asm/cpufeature.h>
++#include <asm/cacheflush.h>
+ #include <asm/cpu_ops.h>
+ #include <asm/cpufeature.h>
+ #include <asm/irq.h>
+@@ -258,9 +258,10 @@ asmlinkage __visible void smp_callin(void)
+ 	riscv_user_isa_enable();
  
- #include <uapi/linux/input-event-codes.h>
-@@ -20,12 +22,21 @@
- 
- struct xiaomi_wmi {
- 	struct input_dev *input_dev;
-+	struct mutex key_lock;	/* Protects the key event sequence */
- 	unsigned int key_code;
- };
- 
-+static void xiaomi_mutex_destroy(void *data)
-+{
-+	struct mutex *lock = data;
-+
-+	mutex_destroy(lock);
-+}
-+
- static int xiaomi_wmi_probe(struct wmi_device *wdev, const void *context)
- {
- 	struct xiaomi_wmi *data;
-+	int ret;
- 
- 	if (wdev == NULL || context == NULL)
- 		return -EINVAL;
-@@ -35,6 +46,11 @@ static int xiaomi_wmi_probe(struct wmi_device *wdev, const void *context)
- 		return -ENOMEM;
- 	dev_set_drvdata(&wdev->dev, data);
- 
-+	mutex_init(&data->key_lock);
-+	ret = devm_add_action_or_reset(&wdev->dev, xiaomi_mutex_destroy, &data->key_lock);
-+	if (ret < 0)
-+		return ret;
-+
- 	data->input_dev = devm_input_allocate_device(&wdev->dev);
- 	if (data->input_dev == NULL)
- 		return -ENOMEM;
-@@ -59,10 +75,12 @@ static void xiaomi_wmi_notify(struct wmi_device *wdev, union acpi_object *dummy)
- 	if (data == NULL)
- 		return;
- 
-+	mutex_lock(&data->key_lock);
- 	input_report_key(data->input_dev, data->key_code, 1);
- 	input_sync(data->input_dev);
- 	input_report_key(data->input_dev, data->key_code, 0);
- 	input_sync(data->input_dev);
-+	mutex_unlock(&data->key_lock);
- }
- 
- static const struct wmi_device_id xiaomi_wmi_id_table[] = {
+ 	/*
+-	 * Remote TLB flushes are ignored while the CPU is offline, so emit
+-	 * a local TLB flush right now just in case.
++	 * Remote cache and TLB flushes are ignored while the CPU is offline,
++	 * so flush them both right now just in case.
+ 	 */
++	local_flush_icache_all();
+ 	local_flush_tlb_all();
+ 	complete(&cpu_running);
+ 	/*
 -- 
 2.43.0
 
