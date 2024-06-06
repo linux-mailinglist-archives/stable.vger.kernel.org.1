@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 281EF8FEB97
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7AA78FED39
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5ECC1F28C21
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CADB1C2239A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25EBF19A28D;
-	Thu,  6 Jun 2024 14:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D261B581C;
+	Thu,  6 Jun 2024 14:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jK/4dJRI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoTy5vHe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8041196DA5;
-	Thu,  6 Jun 2024 14:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A271974EB;
+	Thu,  6 Jun 2024 14:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683270; cv=none; b=AMsodX5tdVYETidZiAG7QwPJC4LhozLFMVJZsSjc/Jpp8JoSrDIII0xgFFFEFU5HfTbXB4FdvVUGdNQe0oblLus7bZeHsdrUzY9z9dthzbYYLzvWxfP2qUS2zZvKfdwF1+r0lbRP2oCc7UssTAAeED3cqfJRyBEDFkxGmDoheIg=
+	t=1717683462; cv=none; b=TK+CnoNJGJGpe4jRxn2K2A5QxV2DBChDwNFfSVQKNiJC8c8FKM31+sC5xagXoFH2G6QNBLxt9QISwV0EgEQaG9U2nmhj9nolRewAS1NH1FKEOJpBbX/U9KjK/tqFiK6/B+ELd31XHR4V09s1NCEhV75P5iQheEV1HocccDJe9NU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683270; c=relaxed/simple;
-	bh=lYQkzTRVHIrVuEA9MMc0YTzr9eO+4wtojcgXfLJWN0U=;
+	s=arc-20240116; t=1717683462; c=relaxed/simple;
+	bh=Nfx3rUFm+xBy9mP3yWtbEVdfRnqVETlaqNt2E32hICc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iu8xq3SxYU19r3k/fMGgDJ/51E78L9WlWMslnc5+VWEKY8hwnmfZOcsZxQn3ZkzzUmrpjzrOIbipZhefgy9vWPfpEJRRa6ibXj9OvakHG75Flq7nQaX5mZ8sYS+Ph3rT1keHSgUwmRd+MYUQORheqzrZDcj7PEggvpiYcn7Lgio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jK/4dJRI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67DBC2BD10;
-	Thu,  6 Jun 2024 14:14:30 +0000 (UTC)
+	 MIME-Version; b=Jx+MFL6TKdHrpcXi+keBYDQus5ONJi9aHy7qTRKr5I+ad3SOLv3j87TXKLHMbWqrNnScrDWYQEFmZo1vD09/a0qoLRmCmJyi9lR1foZHGe7xY/mUHfL51f9NgWsuVcKcsQ0ciQRWMXY3ccqD59BHMUkmkF9A1UazQtJKx+4pRD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoTy5vHe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89E1C2BD10;
+	Thu,  6 Jun 2024 14:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683270;
-	bh=lYQkzTRVHIrVuEA9MMc0YTzr9eO+4wtojcgXfLJWN0U=;
+	s=korg; t=1717683461;
+	bh=Nfx3rUFm+xBy9mP3yWtbEVdfRnqVETlaqNt2E32hICc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jK/4dJRIXVlssMizN0eth+uwFcstSqNS8YXWVEvOgehgD9bU5V73ow1lCS32p/TwZ
-	 xKNUkyCS8v8tAqlOhQ9EkQQis63xBFyNxhlqcb0JtT9qoDSyrGIJsKQE3gFUB5RzOk
-	 vhDYrr252pvz+jM3jmN62Lw9vyIcwZMzKlC/QNwg=
+	b=DoTy5vHeifUPXnrVZUQXgQ7N0Lok5MFbr2Ff04amIswaua7s00h84+gCAx+v0I2t4
+	 /8niarIlurpsygKDQ13/N0UWjlHtFOmZ6MDDjXxB73tlEUiZyJ3tiyhLVHXngmCJ/k
+	 bW19MKMTSy46WCwdvG2n7n30BZ9A2DPl8GaXufjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jean Delvare <jdelvare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/473] Revert "sh: Handle calling csum_partial with misaligned data"
+Subject: [PATCH 6.6 406/744] firmware: dmi-id: add a release callback function
 Date: Thu,  6 Jun 2024 16:01:18 +0200
-Message-ID: <20240606131704.881248488@linuxfoundation.org>
+Message-ID: <20240606131745.484694189@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,188 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit b5319c96292ff877f6b58d349acf0a9dc8d3b454 ]
+[ Upstream commit cf770af5645a41a753c55a053fa1237105b0964a ]
 
-This reverts commit cadc4e1a2b4d20d0cc0e81f2c6ba0588775e54e5.
+dmi_class uses kfree() as the .release function, but that now causes
+a warning with clang-16 as it violates control flow integrity (KCFI)
+rules:
 
-Commit cadc4e1a2b4d ("sh: Handle calling csum_partial with misaligned
-data") causes bad checksum calculations on unaligned data. Reverting
-it fixes the problem.
+drivers/firmware/dmi-id.c:174:17: error: cast from 'void (*)(const void *)' to 'void (*)(struct device *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+  174 |         .dev_release = (void(*)(struct device *)) kfree,
 
-    # Subtest: checksum
-    # module: checksum_kunit
-    1..5
-    # test_csum_fixed_random_inputs: ASSERTION FAILED at lib/checksum_kunit.c:500
-    Expected ( u64)result == ( u64)expec, but
-        ( u64)result == 53378 (0xd082)
-        ( u64)expec == 33488 (0x82d0)
-    # test_csum_fixed_random_inputs: pass:0 fail:1 skip:0 total:1
-    not ok 1 test_csum_fixed_random_inputs
-    # test_csum_all_carry_inputs: ASSERTION FAILED at lib/checksum_kunit.c:525
-    Expected ( u64)result == ( u64)expec, but
-        ( u64)result == 65281 (0xff01)
-        ( u64)expec == 65280 (0xff00)
-    # test_csum_all_carry_inputs: pass:0 fail:1 skip:0 total:1
-    not ok 2 test_csum_all_carry_inputs
-    # test_csum_no_carry_inputs: ASSERTION FAILED at lib/checksum_kunit.c:573
-    Expected ( u64)result == ( u64)expec, but
-        ( u64)result == 65535 (0xffff)
-        ( u64)expec == 65534 (0xfffe)
-    # test_csum_no_carry_inputs: pass:0 fail:1 skip:0 total:1
-    not ok 3 test_csum_no_carry_inputs
-    # test_ip_fast_csum: pass:1 fail:0 skip:0 total:1
-    ok 4 test_ip_fast_csum
-    # test_csum_ipv6_magic: pass:1 fail:0 skip:0 total:1
-    ok 5 test_csum_ipv6_magic
- # checksum: pass:2 fail:3 skip:0 total:5
- # Totals: pass:2 fail:3 skip:0 total:5
-not ok 22 checksum
+Add an explicit function to call kfree() instead.
 
-Fixes: cadc4e1a2b4d ("sh: Handle calling csum_partial with misaligned data")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20240324231804.841099-1-linux@roeck-us.net
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Fixes: 4f5c791a850e ("DMI-based module autoloading")
+Link: https://lore.kernel.org/lkml/20240213100238.456912-1-arnd@kernel.org/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/lib/checksum.S | 67 ++++++++++++------------------------------
- 1 file changed, 18 insertions(+), 49 deletions(-)
+ drivers/firmware/dmi-id.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sh/lib/checksum.S b/arch/sh/lib/checksum.S
-index 3e07074e00981..06fed5a21e8ba 100644
---- a/arch/sh/lib/checksum.S
-+++ b/arch/sh/lib/checksum.S
-@@ -33,7 +33,8 @@
-  */
+diff --git a/drivers/firmware/dmi-id.c b/drivers/firmware/dmi-id.c
+index 5f3a3e913d28f..d19c78a78ae3a 100644
+--- a/drivers/firmware/dmi-id.c
++++ b/drivers/firmware/dmi-id.c
+@@ -169,9 +169,14 @@ static int dmi_dev_uevent(const struct device *dev, struct kobj_uevent_env *env)
+ 	return 0;
+ }
  
- /*	
-- * asmlinkage __wsum csum_partial(const void *buf, int len, __wsum sum);
-+ * unsigned int csum_partial(const unsigned char *buf, int len,
-+ *                           unsigned int sum);
-  */
- 
- .text
-@@ -45,31 +46,11 @@ ENTRY(csum_partial)
- 	   * Fortunately, it is easy to convert 2-byte alignment to 4-byte
- 	   * alignment for the unrolled loop.
- 	   */
-+	mov	r5, r1
- 	mov	r4, r0
--	tst	#3, r0		! Check alignment.
--	bt/s	2f		! Jump if alignment is ok.
--	 mov	r4, r7		! Keep a copy to check for alignment
-+	tst	#2, r0		! Check alignment.
-+	bt	2f		! Jump if alignment is ok.
- 	!
--	tst	#1, r0		! Check alignment.
--	bt	21f		! Jump if alignment is boundary of 2bytes.
--
--	! buf is odd
--	tst	r5, r5
--	add	#-1, r5
--	bt	9f
--	mov.b	@r4+, r0
--	extu.b	r0, r0
--	addc	r0, r6		! t=0 from previous tst
--	mov	r6, r0
--	shll8	r6
--	shlr16	r0
--	shlr8	r0
--	or	r0, r6
--	mov	r4, r0
--	tst	#2, r0
--	bt	2f
--21:
--	! buf is 2 byte aligned (len could be 0)
- 	add	#-2, r5		! Alignment uses up two bytes.
- 	cmp/pz	r5		!
- 	bt/s	1f		! Jump if we had at least two bytes.
-@@ -77,17 +58,16 @@ ENTRY(csum_partial)
- 	bra	6f
- 	 add	#2, r5		! r5 was < 2.  Deal with it.
- 1:
-+	mov	r5, r1		! Save new len for later use.
- 	mov.w	@r4+, r0
- 	extu.w	r0, r0
- 	addc	r0, r6
- 	bf	2f
- 	add	#1, r6
- 2:
--	! buf is 4 byte aligned (len could be 0)
--	mov	r5, r1
- 	mov	#-5, r0
--	shld	r0, r1
--	tst	r1, r1
-+	shld	r0, r5
-+	tst	r5, r5
- 	bt/s	4f		! if it's =0, go to 4f
- 	 clrt
- 	.align	2
-@@ -109,31 +89,30 @@ ENTRY(csum_partial)
- 	addc	r0, r6
- 	addc	r2, r6
- 	movt	r0
--	dt	r1
-+	dt	r5
- 	bf/s	3b
- 	 cmp/eq	#1, r0
--	! here, we know r1==0
--	addc	r1, r6			! add carry to r6
-+	! here, we know r5==0
-+	addc	r5, r6			! add carry to r6
- 4:
--	mov	r5, r0
-+	mov	r1, r0
- 	and	#0x1c, r0
- 	tst	r0, r0
--	bt	6f
--	! 4 bytes or more remaining
--	mov	r0, r1
--	shlr2	r1
-+	bt/s	6f
-+	 mov	r0, r5
-+	shlr2	r5
- 	mov	#0, r2
- 5:
- 	addc	r2, r6
- 	mov.l	@r4+, r2
- 	movt	r0
--	dt	r1
-+	dt	r5
- 	bf/s	5b
- 	 cmp/eq	#1, r0
- 	addc	r2, r6
--	addc	r1, r6		! r1==0 here, so it means add carry-bit
-+	addc	r5, r6		! r5==0 here, so it means add carry-bit
- 6:
--	! 3 bytes or less remaining
-+	mov	r1, r5
- 	mov	#3, r0
- 	and	r0, r5
- 	tst	r5, r5
-@@ -159,16 +138,6 @@ ENTRY(csum_partial)
- 	mov	#0, r0
- 	addc	r0, r6
- 9:
--	! Check if the buffer was misaligned, if so realign sum
--	mov	r7, r0
--	tst	#1, r0
--	bt	10f
--	mov	r6, r0
--	shll8	r6
--	shlr16	r0
--	shlr8	r0
--	or	r0, r6
--10:
- 	rts
- 	 mov	r6, r0
++static void dmi_dev_release(struct device *dev)
++{
++	kfree(dev);
++}
++
+ static struct class dmi_class = {
+ 	.name = "dmi",
+-	.dev_release = (void(*)(struct device *)) kfree,
++	.dev_release = dmi_dev_release,
+ 	.dev_uevent = dmi_dev_uevent,
+ };
  
 -- 
 2.43.0
