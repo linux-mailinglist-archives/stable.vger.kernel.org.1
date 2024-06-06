@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3254D8FEECA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73EAC8FED64
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC5B2285036
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D19D6B25636
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5111C7D77;
-	Thu,  6 Jun 2024 14:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE889198E82;
+	Thu,  6 Jun 2024 14:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQXM8Ids"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEOum1JR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995A7199229;
-	Thu,  6 Jun 2024 14:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA0019D09F;
+	Thu,  6 Jun 2024 14:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683701; cv=none; b=gimph8fq7gxamNY4q8oZC4gmacutBgkmmf1kK/BuT2kfK7iKmOowo1/U207V+4IA+3GFobowR6XJdtQg2pbGvX4kR/5KMbjnBG0PALEZ7EucpJj0aNcuFBc/YOLXdeE3mfl67VIaKpKnr0W8Z1zvjCfrevhaQil1ZNuOBQTo9fo=
+	t=1717683482; cv=none; b=CE1mq6ChM6y94A1CMnYOLcHevvlHyxgsldGY6b5tBIossQJ8rKmvS1hUuv2iS4K5M+lPHO4WCTVIJq7P+Q/lQItF6ojjnser6jTj4C+9FXA6nz7Ia2642N/pDuGVl8wENFTCArcA2tb+vkm82NaKP2GD4CGr+ki1aiqLP8U9Ens=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683701; c=relaxed/simple;
-	bh=2xPfXcKSNZKsmx3LbuyQLV3V8vuwqe7FNGz9fngatZc=;
+	s=arc-20240116; t=1717683482; c=relaxed/simple;
+	bh=ghjBF2UdqH90nns3NcaVpeBBvnlSZLhbBC1pBhfS9Ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i4dXS0DzJcf9NqPbHPWlJhq5+qg6Sf58ver3pUJmrdolrexa93u6BoMQ8n1M2HnTHWdq+Nk4LD+MppdNaj1kyuXQewur546qBl48bVEfyD9qnnSPI4q21hQsVTveMkjvDpq8+GHzd1ZVHHfgmUxecQpTwVR7SbAHvatDaKNNNlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQXM8Ids; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79262C2BD10;
-	Thu,  6 Jun 2024 14:21:41 +0000 (UTC)
+	 MIME-Version; b=SxX6EjtaE4J+FlUWfBOLdl8gJ/PhFggCS2Gr1nSBmo+qTUNaN5ciA3HNA50UDHZB1+bbfs1A/2pox+H8F85hJx+Ns++QStS+adu4MGtz6C/iER/sgtFaV/PfzaZ3zoJgbbX5cwyF7ZDsd8yY/5aPaiDaCcBNCICEIBZLJAsGe/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEOum1JR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CA5C2BD10;
+	Thu,  6 Jun 2024 14:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683701;
-	bh=2xPfXcKSNZKsmx3LbuyQLV3V8vuwqe7FNGz9fngatZc=;
+	s=korg; t=1717683482;
+	bh=ghjBF2UdqH90nns3NcaVpeBBvnlSZLhbBC1pBhfS9Ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TQXM8IdsjVUld1a/SZcBJQhtUW7B3t3b8/2e+a2zzm2S5SddPIgTzme91N0PSCGaG
-	 KOIbYI0cZ1+FSsv5S9io7I0yAftMUvtvwnGRHy8qZAuEHivzVPjnxRdBuv5jCDSEOT
-	 1WqMoanwf1aXZLoNHb1bEtSAtapztY1H0PwTepU4=
+	b=uEOum1JR3VPN1cV34nFeVySuROAFiepHN6Kb3UIANMkaJAGFBM4uXZz7P81OhYNq9
+	 ryZEeH/cFuI1LzhLYVE8LGa2atgTx+NzfwLuGC8b9Fh3aleEdKgx3LkcMmL2paCNvq
+	 Q796PA1okNig9HeQOxds8apnPnuFNtKeXbnmi86c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Faith Ekstrand <faith.ekstrand@collabora.com>,
-	Dave Airlie <airlied@redhat.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 624/744] nouveau: add an ioctl to report vram usage
-Date: Thu,  6 Jun 2024 16:04:56 +0200
-Message-ID: <20240606131752.511479498@linuxfoundation.org>
+Subject: [PATCH 6.1 368/473] drm/msm/dsi: Print dual-DSI-adjusted pclk instead of original mode pclk
+Date: Thu,  6 Jun 2024 16:04:57 +0200
+Message-ID: <20240606131712.067925725@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-[ Upstream commit 72fa02fdf83306c52bc1eede28359e3fa32a151a ]
+[ Upstream commit f12e0e12524a34bf145f7b80122e653ffe3d130a ]
 
-This reports the currently used vram allocations.
+When dual-DSI (bonded DSI) was added in commit ed9976a09b48
+("drm/msm/dsi: adjust dsi timing for dual dsi mode") some DBG() prints
+were not updated, leading to print the original mode->clock rather
+than the adjusted (typically the mode clock divided by two, though more
+recently also adjusted for DSC compression) msm_host->pixel_clk_rate
+which is passed to clk_set_rate() just below.  Fix that by printing the
+actual pixel_clk_rate that is being set.
 
-userspace using this has been proposed for nvk, but
-it's a rather trivial uapi addition.
-
-Reviewed-by: Faith Ekstrand <faith.ekstrand@collabora.com>
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Stable-dep-of: aed9a1a4f710 ("drm/nouveau: use tile_mode and pte_kind for VM_BIND bo allocations")
+Fixes: ed9976a09b48 ("drm/msm/dsi: adjust dsi timing for dual dsi mode")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/589896/
+Link: https://lore.kernel.org/r/20240417-drm-msm-initial-dualpipe-dsc-fixes-v1-1-78ae3ee9a697@somainline.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_abi16.c | 5 +++++
- include/uapi/drm/nouveau_drm.h          | 7 +++++++
- 2 files changed, 12 insertions(+)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_abi16.c b/drivers/gpu/drm/nouveau/nouveau_abi16.c
-index d05bd0ecea2b5..0fbc9c841666e 100644
---- a/drivers/gpu/drm/nouveau/nouveau_abi16.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_abi16.c
-@@ -272,6 +272,11 @@ nouveau_abi16_ioctl_getparam(ABI16_IOCTL_ARGS)
- 	case NOUVEAU_GETPARAM_VRAM_BAR_SIZE:
- 		getparam->value = nvkm_device->func->resource_size(nvkm_device, 1);
- 		break;
-+	case NOUVEAU_GETPARAM_VRAM_USED: {
-+		struct ttm_resource_manager *vram_mgr = ttm_manager_type(&drm->ttm.bdev, TTM_PL_VRAM);
-+		getparam->value = (u64)ttm_resource_manager_usage(vram_mgr) << PAGE_SHIFT;
-+		break;
-+	}
- 	default:
- 		NV_PRINTK(dbg, cli, "unknown parameter %lld\n", getparam->param);
- 		return -EINVAL;
-diff --git a/include/uapi/drm/nouveau_drm.h b/include/uapi/drm/nouveau_drm.h
-index 10a917639d8d3..77d7ff0d5b110 100644
---- a/include/uapi/drm/nouveau_drm.h
-+++ b/include/uapi/drm/nouveau_drm.h
-@@ -61,6 +61,13 @@ extern "C" {
-  */
- #define NOUVEAU_GETPARAM_VRAM_BAR_SIZE 18
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index a7c6e8a1754de..cd9ca36901611 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -402,8 +402,8 @@ int dsi_link_clk_set_rate_6g(struct msm_dsi_host *msm_host)
+ 	unsigned long byte_intf_rate;
+ 	int ret;
  
-+/*
-+ * NOUVEAU_GETPARAM_VRAM_USED
-+ *
-+ * Get remaining VRAM size.
-+ */
-+#define NOUVEAU_GETPARAM_VRAM_USED 19
-+
- struct drm_nouveau_getparam {
- 	__u64 param;
- 	__u64 value;
+-	DBG("Set clk rates: pclk=%d, byteclk=%lu",
+-		msm_host->mode->clock, msm_host->byte_clk_rate);
++	DBG("Set clk rates: pclk=%lu, byteclk=%lu",
++	    msm_host->pixel_clk_rate, msm_host->byte_clk_rate);
+ 
+ 	ret = dev_pm_opp_set_rate(&msm_host->pdev->dev,
+ 				  msm_host->byte_clk_rate);
+@@ -482,9 +482,9 @@ int dsi_link_clk_set_rate_v2(struct msm_dsi_host *msm_host)
+ {
+ 	int ret;
+ 
+-	DBG("Set clk rates: pclk=%d, byteclk=%lu, esc_clk=%lu, dsi_src_clk=%lu",
+-		msm_host->mode->clock, msm_host->byte_clk_rate,
+-		msm_host->esc_clk_rate, msm_host->src_clk_rate);
++	DBG("Set clk rates: pclk=%lu, byteclk=%lu, esc_clk=%lu, dsi_src_clk=%lu",
++	    msm_host->pixel_clk_rate, msm_host->byte_clk_rate,
++	    msm_host->esc_clk_rate, msm_host->src_clk_rate);
+ 
+ 	ret = clk_set_rate(msm_host->byte_clk, msm_host->byte_clk_rate);
+ 	if (ret) {
 -- 
 2.43.0
 
