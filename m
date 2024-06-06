@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4B068FE946
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5B88FEC7A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB6761C20B31
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D0F32842A1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CEE1993A4;
-	Thu,  6 Jun 2024 14:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1211B1410;
+	Thu,  6 Jun 2024 14:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1dqkdNu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFwX42V+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D182196D99;
-	Thu,  6 Jun 2024 14:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1D31B140F;
+	Thu,  6 Jun 2024 14:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683001; cv=none; b=HMVAmJXEiBjVubCIkh4pzAIrzjspMSdqHieSUnmGEeZAElLAr7BRhqITaXXzrhubfX3r96aqwYCHSKQO+AHYQ82dRbXwHECbprL5Eg8VsClbXjVKVNvi9b51d6ScGllrW5IVzQ1OXVTKq+OYKdSnNbWWE6pfS3OymVswJcCbpI8=
+	t=1717683371; cv=none; b=T9fxUozB9NpR/CAijmFEYpWzY7WW4DfEE3hb09O6xskKEvqriNjHi4bnhZau2KCRb1J5grP67+bf8wKYQZZFHJIyZ26nHbXjj8KV7HUfYDzxvgmZW9FSTX2LrC0diHQNF0dDEq8GVLHLtEgXcCTPflT7b00ZPkFLrBpcjl53X9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683001; c=relaxed/simple;
-	bh=xSH9TtkRF79ZsG/DkYxLcRPkSWinCc5+KMv6p2Weuow=;
+	s=arc-20240116; t=1717683371; c=relaxed/simple;
+	bh=jYtTY6z/PGG2FoOUSTWqx3dtPLYnUBFDgcECd0PwePE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hsOb3afRKRGJL7amYloZcVZsGnd2KMX47yzoagdY3RTOHavUxuUeqaY9gVjRu6yULwKYNxUz+3bspPGa625r5TLnSsVISAzp4QUzTx/RGiBefRKC8Bik4Awn2pyNDpzuq/PHsrM78zCxNmqiHV1PFTzbYx6hNKQMCKitur6fGL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1dqkdNu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C429C32786;
-	Thu,  6 Jun 2024 14:10:01 +0000 (UTC)
+	 MIME-Version; b=ZJ0+Xa3kQy8kcUhJmh3tfGSd7gHemZXMKRPSAaQOfYv/Tu7OTQoz2SO+59CW/ZQkFM42TazVI7c4/zr34LY/W0/wMq8OqKeJQsn0I+z7QGMO5ZKCHlxldz5BbqJYt9J7Bp4MStGlJYPwsZKKeIlG5UErjc8+NcOtV6mxd/gLXvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFwX42V+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE87C2BD10;
+	Thu,  6 Jun 2024 14:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683001;
-	bh=xSH9TtkRF79ZsG/DkYxLcRPkSWinCc5+KMv6p2Weuow=;
+	s=korg; t=1717683371;
+	bh=jYtTY6z/PGG2FoOUSTWqx3dtPLYnUBFDgcECd0PwePE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z1dqkdNuIcIqZvoZZDjLDtslpnxEXFushTkF7gXDrRRwOnyXWWkBlK5InJHMhWXRd
-	 K8E4NCabpNW33+8dVZAhhDSL3MP2ADXjMUbDRyZe7v1ehIZFSHjpiHCPry4TV2oGEu
-	 l9TvgpTxp9YMmIgZlBt/DXK3MoGrBO8kc8qudrAk=
+	b=fFwX42V+dN8phHCRFgkh81V63FiQNQZH7+xldUkxJLcNP79cBC5tD6wmDVeKj6sKw
+	 47lYDLkYv8w3t5iLexR0Wls8R70S/tcr81GWFy7ba6qKmmEcbJ42GWjP3+NLL12zt7
+	 tMZsD8wgkpakkhTxeiZIP7httP2zg09p98il1efQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 204/374] ASoC: amd: acp: fix for acp platform device creation failure
-Date: Thu,  6 Jun 2024 16:03:03 +0200
-Message-ID: <20240606131658.663708413@linuxfoundation.org>
+Subject: [PATCH 6.1 255/473] x86/insn: Fix PUSH instruction in x86 instruction decoder opcode map
+Date: Thu,  6 Jun 2024 16:03:04 +0200
+Message-ID: <20240606131708.398818091@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,274 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 09068d624c490c0e89f33f963c402f1859964467 ]
+[ Upstream commit 59162e0c11d7257cde15f907d19fefe26da66692 ]
 
-ACP pin configuration varies based on acp version.
-ACP PCI driver should read the ACP PIN config value and based on config
-value, it has to create a platform device in below two conditions.
-1) If ACP PDM configuration is selected from BIOS and ACP PDM controller
-exists.
-2) If ACP I2S configuration is selected from BIOS.
+The x86 instruction decoder is used not only for decoding kernel
+instructions. It is also used by perf uprobes (user space probes) and by
+perf tools Intel Processor Trace decoding. Consequently, it needs to
+support instructions executed by user space also.
 
-Other than above scenarios, ACP PCI driver should skip the platform
-device creation logic, i.e. ACP PCI driver probe sequence should never
-fail if other acp pin configuration is selected. It should skip platform
-device creation logic.
+Opcode 0x68 PUSH instruction is currently defined as 64-bit operand size
+only i.e. (d64). That was based on Intel SDM Opcode Map. However that is
+contradicted by the Instruction Set Reference section for PUSH in the
+same manual.
 
-check_acp_pdm() function was implemented for ACP6.x platforms to check
-ACP PDM configuration. Previously, this code was safe guarded by
-FLAG_AMD_LEGACY_ONLY_DMIC flag check.
+Remove 64-bit operand size only annotation from opcode 0x68 PUSH
+instruction.
 
-This implementation breaks audio use cases for Huawei Matebooks which are
-based on ACP3.x varaint uses I2S configuration.
-In current scenario, check_acp_pdm() function returns -ENODEV value
-which results in ACP PCI driver probe failure without creating a platform
-device even in case of valid ACP pin configuration.
+Example:
 
-Implement check_acp_config() as a common function which invokes platform
-specific acp pin configuration check functions for ACP3.x, ACP6.0 & ACP6.3
-& ACP7.0 variants and checks for ACP PDM controller.
+  $ cat pushw.s
+  .global  _start
+  .text
+  _start:
+          pushw   $0x1234
+          mov     $0x1,%eax   # system call number (sys_exit)
+          int     $0x80
+  $ as -o pushw.o pushw.s
+  $ ld -s -o pushw pushw.o
+  $ objdump -d pushw | tail -4
+  0000000000401000 <.text>:
+    401000:       66 68 34 12             pushw  $0x1234
+    401004:       b8 01 00 00 00          mov    $0x1,%eax
+    401009:       cd 80                   int    $0x80
+  $ perf record -e intel_pt//u ./pushw
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.014 MB perf.data ]
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218780
-Fixes: 4af565de9f8c ("ASoC: amd: acp: fix for acp pdm configuration check")
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://lore.kernel.org/r/20240502140340.4049021-1-Vijendar.Mukunda@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+ Before:
+
+  $ perf script --insn-trace=disasm
+  Warning:
+  1 instruction trace errors
+           pushw   10349 [000] 10586.869237014:            401000 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           pushw $0x1234
+           pushw   10349 [000] 10586.869237014:            401006 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb %al, (%rax)
+           pushw   10349 [000] 10586.869237014:            401008 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb %cl, %ch
+           pushw   10349 [000] 10586.869237014:            40100a [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb $0x2e, (%rax)
+   instruction trace error type 1 time 10586.869237224 cpu 0 pid 10349 tid 10349 ip 0x40100d code 6: Trace doesn't match instruction
+
+ After:
+
+  $ perf script --insn-trace=disasm
+             pushw   10349 [000] 10586.869237014:            401000 [unknown] (./pushw)           pushw $0x1234
+             pushw   10349 [000] 10586.869237014:            401004 [unknown] (./pushw)           movl $1, %eax
+
+Fixes: eb13296cfaf6 ("x86: Instruction decoder API")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20240502105853.5338-3-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-legacy-common.c | 96 ++++++++++++++++++++++-----
- sound/soc/amd/acp/acp-pci.c           |  9 ++-
- sound/soc/amd/acp/amd.h               | 10 ++-
- sound/soc/amd/acp/chip_offset_byte.h  |  1 +
- 4 files changed, 95 insertions(+), 21 deletions(-)
+ arch/x86/lib/x86-opcode-map.txt       | 2 +-
+ tools/arch/x86/lib/x86-opcode-map.txt | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/amd/acp/acp-legacy-common.c b/sound/soc/amd/acp/acp-legacy-common.c
-index b5aff3f230be5..3be7c6d55a6f8 100644
---- a/sound/soc/amd/acp/acp-legacy-common.c
-+++ b/sound/soc/amd/acp/acp-legacy-common.c
-@@ -358,11 +358,25 @@ int smn_read(struct pci_dev *dev, u32 smn_addr)
- }
- EXPORT_SYMBOL_NS_GPL(smn_read, SND_SOC_ACP_COMMON);
- 
--int check_acp_pdm(struct pci_dev *pci, struct acp_chip_info *chip)
-+static void check_acp3x_config(struct acp_chip_info *chip)
- {
--	struct acpi_device *pdm_dev;
--	const union acpi_object *obj;
--	u32 pdm_addr, val;
-+	u32 val;
-+
-+	val = readl(chip->base + ACP3X_PIN_CONFIG);
-+	switch (val) {
-+	case ACP_CONFIG_4:
-+		chip->is_i2s_config = true;
-+		chip->is_pdm_config = true;
-+		break;
-+	default:
-+		chip->is_pdm_config = true;
-+		break;
-+	}
-+}
-+
-+static void check_acp6x_config(struct acp_chip_info *chip)
-+{
-+	u32 val;
- 
- 	val = readl(chip->base + ACP_PIN_CONFIG);
- 	switch (val) {
-@@ -371,42 +385,94 @@ int check_acp_pdm(struct pci_dev *pci, struct acp_chip_info *chip)
- 	case ACP_CONFIG_6:
- 	case ACP_CONFIG_7:
- 	case ACP_CONFIG_8:
--	case ACP_CONFIG_10:
- 	case ACP_CONFIG_11:
-+	case ACP_CONFIG_14:
-+		chip->is_pdm_config = true;
-+		break;
-+	case ACP_CONFIG_9:
-+		chip->is_i2s_config = true;
-+		break;
-+	case ACP_CONFIG_10:
- 	case ACP_CONFIG_12:
- 	case ACP_CONFIG_13:
-+		chip->is_i2s_config = true;
-+		chip->is_pdm_config = true;
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
-+static void check_acp70_config(struct acp_chip_info *chip)
-+{
-+	u32 val;
-+
-+	val = readl(chip->base + ACP_PIN_CONFIG);
-+	switch (val) {
-+	case ACP_CONFIG_4:
-+	case ACP_CONFIG_5:
-+	case ACP_CONFIG_6:
-+	case ACP_CONFIG_7:
-+	case ACP_CONFIG_8:
-+	case ACP_CONFIG_11:
- 	case ACP_CONFIG_14:
-+	case ACP_CONFIG_17:
-+	case ACP_CONFIG_18:
-+		chip->is_pdm_config = true;
-+		break;
-+	case ACP_CONFIG_9:
-+		chip->is_i2s_config = true;
-+		break;
-+	case ACP_CONFIG_10:
-+	case ACP_CONFIG_12:
-+	case ACP_CONFIG_13:
-+	case ACP_CONFIG_19:
-+	case ACP_CONFIG_20:
-+		chip->is_i2s_config = true;
-+		chip->is_pdm_config = true;
- 		break;
- 	default:
--		return -EINVAL;
-+		break;
- 	}
-+}
-+
-+void check_acp_config(struct pci_dev *pci, struct acp_chip_info *chip)
-+{
-+	struct acpi_device *pdm_dev;
-+	const union acpi_object *obj;
-+	u32 pdm_addr;
- 
- 	switch (chip->acp_rev) {
- 	case ACP3X_DEV:
- 		pdm_addr = ACP_RENOIR_PDM_ADDR;
-+		check_acp3x_config(chip);
- 		break;
- 	case ACP6X_DEV:
- 		pdm_addr = ACP_REMBRANDT_PDM_ADDR;
-+		check_acp6x_config(chip);
- 		break;
- 	case ACP63_DEV:
- 		pdm_addr = ACP63_PDM_ADDR;
-+		check_acp6x_config(chip);
- 		break;
- 	case ACP70_DEV:
- 		pdm_addr = ACP70_PDM_ADDR;
-+		check_acp70_config(chip);
- 		break;
- 	default:
--		return -EINVAL;
-+		break;
- 	}
- 
--	pdm_dev = acpi_find_child_device(ACPI_COMPANION(&pci->dev), pdm_addr, 0);
--	if (pdm_dev) {
--		if (!acpi_dev_get_property(pdm_dev, "acp-audio-device-type",
--					   ACPI_TYPE_INTEGER, &obj) &&
--					   obj->integer.value == pdm_addr)
--			return 0;
-+	if (chip->is_pdm_config) {
-+		pdm_dev = acpi_find_child_device(ACPI_COMPANION(&pci->dev), pdm_addr, 0);
-+		if (pdm_dev) {
-+			if (!acpi_dev_get_property(pdm_dev, "acp-audio-device-type",
-+						   ACPI_TYPE_INTEGER, &obj) &&
-+						   obj->integer.value == pdm_addr)
-+				chip->is_pdm_dev = true;
-+		}
- 	}
--	return -ENODEV;
- }
--EXPORT_SYMBOL_NS_GPL(check_acp_pdm, SND_SOC_ACP_COMMON);
-+EXPORT_SYMBOL_NS_GPL(check_acp_config, SND_SOC_ACP_COMMON);
- 
- MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/sound/soc/amd/acp/acp-pci.c b/sound/soc/amd/acp/acp-pci.c
-index 5f35b90eab8d3..ad320b29e87dc 100644
---- a/sound/soc/amd/acp/acp-pci.c
-+++ b/sound/soc/amd/acp/acp-pci.c
-@@ -100,7 +100,6 @@ static int acp_pci_probe(struct pci_dev *pci, const struct pci_device_id *pci_id
- 		ret = -EINVAL;
- 		goto release_regions;
- 	}
--
- 	dmic_dev = platform_device_register_data(dev, "dmic-codec", PLATFORM_DEVID_NONE, NULL, 0);
- 	if (IS_ERR(dmic_dev)) {
- 		dev_err(dev, "failed to create DMIC device\n");
-@@ -119,6 +118,10 @@ static int acp_pci_probe(struct pci_dev *pci, const struct pci_device_id *pci_id
- 	if (ret)
- 		goto unregister_dmic_dev;
- 
-+	check_acp_config(pci, chip);
-+	if (!chip->is_pdm_dev && !chip->is_i2s_config)
-+		goto skip_pdev_creation;
-+
- 	res = devm_kcalloc(&pci->dev, num_res, sizeof(struct resource), GFP_KERNEL);
- 	if (!res) {
- 		ret = -ENOMEM;
-@@ -136,10 +139,6 @@ static int acp_pci_probe(struct pci_dev *pci, const struct pci_device_id *pci_id
- 		}
- 	}
- 
--	ret = check_acp_pdm(pci, chip);
--	if (ret < 0)
--		goto skip_pdev_creation;
--
- 	chip->flag = flag;
- 	memset(&pdevinfo, 0, sizeof(pdevinfo));
- 
-diff --git a/sound/soc/amd/acp/amd.h b/sound/soc/amd/acp/amd.h
-index 5017e868f39b9..d75b4eb34de8d 100644
---- a/sound/soc/amd/acp/amd.h
-+++ b/sound/soc/amd/acp/amd.h
-@@ -138,6 +138,9 @@ struct acp_chip_info {
- 	void __iomem *base;	/* ACP memory PCI base */
- 	struct platform_device *chip_pdev;
- 	unsigned int flag;	/* Distinguish b/w Legacy or Only PDM */
-+	bool is_pdm_dev;	/* flag set to true when ACP PDM controller exists */
-+	bool is_pdm_config;	/* flag set to true when PDM configuration is selected from BIOS */
-+	bool is_i2s_config;	/* flag set to true when I2S configuration is selected from BIOS */
- };
- 
- struct acp_stream {
-@@ -212,6 +215,11 @@ enum acp_config {
- 	ACP_CONFIG_13,
- 	ACP_CONFIG_14,
- 	ACP_CONFIG_15,
-+	ACP_CONFIG_16,
-+	ACP_CONFIG_17,
-+	ACP_CONFIG_18,
-+	ACP_CONFIG_19,
-+	ACP_CONFIG_20,
- };
- 
- extern const struct snd_soc_dai_ops asoc_acp_cpu_dai_ops;
-@@ -240,7 +248,7 @@ void restore_acp_pdm_params(struct snd_pcm_substream *substream,
- int restore_acp_i2s_params(struct snd_pcm_substream *substream,
- 			   struct acp_dev_data *adata, struct acp_stream *stream);
- 
--int check_acp_pdm(struct pci_dev *pci, struct acp_chip_info *chip);
-+void check_acp_config(struct pci_dev *pci, struct acp_chip_info *chip);
- 
- static inline u64 acp_get_byte_count(struct acp_dev_data *adata, int dai_id, int direction)
- {
-diff --git a/sound/soc/amd/acp/chip_offset_byte.h b/sound/soc/amd/acp/chip_offset_byte.h
-index cfd6c4d075944..18da734c0e9e7 100644
---- a/sound/soc/amd/acp/chip_offset_byte.h
-+++ b/sound/soc/amd/acp/chip_offset_byte.h
-@@ -20,6 +20,7 @@
- #define ACP_SOFT_RESET                          0x1000
- #define ACP_CONTROL                             0x1004
- #define ACP_PIN_CONFIG				0x1440
-+#define ACP3X_PIN_CONFIG			0x1400
- 
- #define ACP_EXTERNAL_INTR_REG_ADDR(adata, offset, ctrl) \
- 	(adata->acp_base + adata->rsrc->irq_reg_offset + offset + (ctrl * 0x04))
+diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
+index d12d1358f96d2..d94bc4e3e5849 100644
+--- a/arch/x86/lib/x86-opcode-map.txt
++++ b/arch/x86/lib/x86-opcode-map.txt
+@@ -148,7 +148,7 @@ AVXcode:
+ 65: SEG=GS (Prefix)
+ 66: Operand-Size (Prefix)
+ 67: Address-Size (Prefix)
+-68: PUSH Iz (d64)
++68: PUSH Iz
+ 69: IMUL Gv,Ev,Iz
+ 6a: PUSH Ib (d64)
+ 6b: IMUL Gv,Ev,Ib
+diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
+index d12d1358f96d2..d94bc4e3e5849 100644
+--- a/tools/arch/x86/lib/x86-opcode-map.txt
++++ b/tools/arch/x86/lib/x86-opcode-map.txt
+@@ -148,7 +148,7 @@ AVXcode:
+ 65: SEG=GS (Prefix)
+ 66: Operand-Size (Prefix)
+ 67: Address-Size (Prefix)
+-68: PUSH Iz (d64)
++68: PUSH Iz
+ 69: IMUL Gv,Ev,Iz
+ 6a: PUSH Ib (d64)
+ 6b: IMUL Gv,Ev,Ib
 -- 
 2.43.0
 
