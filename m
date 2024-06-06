@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-49488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C47298FED75
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F018FE8F7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ADAA1F21DD5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D3471F23352
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3E61BB691;
-	Thu,  6 Jun 2024 14:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12DB19751F;
+	Thu,  6 Jun 2024 14:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOZnWoJv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cn1zmwSL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D91E198E90;
-	Thu,  6 Jun 2024 14:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBD219750E;
+	Thu,  6 Jun 2024 14:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683490; cv=none; b=TSYx7Hc7R/MXaK+iu5shBeQ7CBh45LvAqEDqEq8liLsJlQ4MmfA6ifOSXLZ/+uVYSYrFMj2sB+1E7ojFQ+zfZ4jMVoHOnguxXKyYxiZq8p+UHSG1t0SPKqBRiliXkVhSGz5Fs6m3j6jG03rQLLoO4ysUiEP7dhDl5/AlKi8B7XA=
+	t=1717682960; cv=none; b=tYy80ajrPgDfbYczfV93cCbbG2pe0cwtcoiesgk/vm7l+fMb9DDiUngvtEmZuATiV3zvPJE6kmZfNut8NEf3tzIf0JxWG5F3MdIDclsjaWjd7hcVcdxmMf5kCMT71A5VPj7ZpknZnTgTgxsfy+VEa1X2+AxXTwExO8CWhyNJ08w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683490; c=relaxed/simple;
-	bh=Su5bkrF9UegRkXugyEqM/t+IwsoCY4amjnSZPjF+Vp8=;
+	s=arc-20240116; t=1717682960; c=relaxed/simple;
+	bh=tDckdRrXmHaRgFB+7G330QpnBOaxNx1Y/2lCZDXq9mU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nLCNGLA4yqHCLVDQnlvMoA1V2MzLgR42tvVmPvVgnv5Ui1u2pAWD3Ljp6U6TwD5NF8xHxxjt4//N4utdwDh+EkLiJdy9MW1h4qjZ0zvBtm+U5UcLfyGWvkRf+Yh21mCpYOUUvkVJDNjIziZPt3+gMR4ObFsdyqBpPLGwG6Lu7Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOZnWoJv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3649FC32786;
-	Thu,  6 Jun 2024 14:18:10 +0000 (UTC)
+	 MIME-Version; b=d+mt2Ek2xbLJV8+gs+nqzXJKh+PT7P2JmUFY1NyHv5eNpz+47rLCkmN7DEMkdqntAamPiik4u7ouUsVxLnKwV2bNmO0ihMShY1b/f6n5U5aqv2w7NStBWhEWB5GtKewFD3K3biB10PZSbSRwxtrxWpeFVZEyl9y7ql2QR7yp7W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cn1zmwSL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384B2C32781;
+	Thu,  6 Jun 2024 14:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683490;
-	bh=Su5bkrF9UegRkXugyEqM/t+IwsoCY4amjnSZPjF+Vp8=;
+	s=korg; t=1717682960;
+	bh=tDckdRrXmHaRgFB+7G330QpnBOaxNx1Y/2lCZDXq9mU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GOZnWoJvUhw+6LBsnvmnl1qFSpPL4kAzHceVVviFsmEXwmyLgD85Nc6lkpaTubrDx
-	 gaamOBCoA22Otki4Pzo9Zf5vUEiBGkTrlOX04RkpEkcl5e4idVqPRpj6pJygiNixnm
-	 lUkKf961tjHvaoRbFVAoJ9lpzqJXrBD+prG4NNYU=
+	b=cn1zmwSLgFj3p5POEyvesS8BYgJiOSO2U44+sImsHHQZ7+4ewrUM7cWtiBkX/UynT
+	 NRIKywfvNKtQ1M/Q5uM+dysnMGWSCbW9ju0pL6AHEHmDtvrec3o8rsxXo1G/ArGzxs
+	 Ydku2ZEoLgs4XKFguVMqBK0I9Gvw4IP5tqDsbIl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 433/744] f2fs: compress: fix to relocate check condition in f2fs_ioc_{,de}compress_file()
+Subject: [PATCH 6.9 126/374] LoongArch: Fix callchain parse error with kernel tracepoint events again
 Date: Thu,  6 Jun 2024 16:01:45 +0200
-Message-ID: <20240606131746.362220909@linuxfoundation.org>
+Message-ID: <20240606131656.118093489@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit bd9ae4ae9e585061acfd4a169f2321706f900246 ]
+[ Upstream commit d6af2c76399f98444a5b4de96baf4b362d9f102b ]
 
-Compress flag should be checked after inode lock held to avoid
-racing w/ f2fs_setflags_common() , fix it.
+With commit d3119bc985fb645 ("LoongArch: Fix callchain parse error with
+kernel tracepoint events"), perf can parse kernel callchain, but not
+complete and sometimes maybe error. The reason is LoongArch's unwinders
+(guess, prologue and orc) don't really need fp (i.e., regs[22]), and
+they use sp (i.e., regs[3]) as the frame address rather than the current
+stack pointer.
 
-Fixes: 5fdb322ff2c2 ("f2fs: add F2FS_IOC_DECOMPRESS_FILE and F2FS_IOC_COMPRESS_FILE")
-Reported-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Closes: https://lore.kernel.org/linux-f2fs-devel/CAHJ8P3LdZXLc2rqeYjvymgYHr2+YLuJ0sLG9DdsJZmwO7deuhw@mail.gmail.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fix that by removing the assignment of regs[22], and instead assign the
+__builtin_frame_address(0) to regs[3].
+
+Without fix:
+
+  Children      Self  Command        Shared Object      Symbol
+  ........  ........  .............  .................  ................
+  33.91%    33.91%    swapper        [kernel.vmlinux]   [k] __schedule
+            |
+            |--33.04%--__schedule
+            |
+             --0.87%--__arch_cpu_idle
+                       __schedule
+
+With this fix:
+
+  Children      Self  Command        Shared Object      Symbol
+  ........  ........  .............  .................  ................
+  31.16%    31.16%    swapper        [kernel.vmlinux]   [k] __schedule
+            |
+            |--20.63%--smpboot_entry
+            |          cpu_startup_entry
+            |          schedule_idle
+            |          __schedule
+            |
+             --10.53%--start_kernel
+                       cpu_startup_entry
+                       schedule_idle
+                       __schedule
+
+Fixes: d3119bc985fb645 ("LoongArch: Fix callchain parse error with kernel tracepoint events")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ arch/loongarch/include/asm/perf_event.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 0350f36d043d6..420939ca36422 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -4086,9 +4086,6 @@ static int f2fs_ioc_decompress_file(struct file *filp)
- 	if (!(filp->f_mode & FMODE_WRITE))
- 		return -EBADF;
+diff --git a/arch/loongarch/include/asm/perf_event.h b/arch/loongarch/include/asm/perf_event.h
+index 52b638059e40b..f948a0676daf8 100644
+--- a/arch/loongarch/include/asm/perf_event.h
++++ b/arch/loongarch/include/asm/perf_event.h
+@@ -13,8 +13,7 @@
  
--	if (!f2fs_compressed_file(inode))
--		return -EINVAL;
--
- 	f2fs_balance_fs(sbi, true);
+ #define perf_arch_fetch_caller_regs(regs, __ip) { \
+ 	(regs)->csr_era = (__ip); \
+-	(regs)->regs[3] = current_stack_pointer; \
+-	(regs)->regs[22] = (unsigned long) __builtin_frame_address(0); \
++	(regs)->regs[3] = (unsigned long) __builtin_frame_address(0); \
+ }
  
- 	file_start_write(filp);
-@@ -4099,7 +4096,8 @@ static int f2fs_ioc_decompress_file(struct file *filp)
- 		goto out;
- 	}
- 
--	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
-+	if (!f2fs_compressed_file(inode) ||
-+		is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
- 		ret = -EINVAL;
- 		goto out;
- 	}
-@@ -4165,9 +4163,6 @@ static int f2fs_ioc_compress_file(struct file *filp)
- 	if (!(filp->f_mode & FMODE_WRITE))
- 		return -EBADF;
- 
--	if (!f2fs_compressed_file(inode))
--		return -EINVAL;
--
- 	f2fs_balance_fs(sbi, true);
- 
- 	file_start_write(filp);
-@@ -4178,7 +4173,8 @@ static int f2fs_ioc_compress_file(struct file *filp)
- 		goto out;
- 	}
- 
--	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
-+	if (!f2fs_compressed_file(inode) ||
-+		is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
- 		ret = -EINVAL;
- 		goto out;
- 	}
+ #endif /* __LOONGARCH_PERF_EVENT_H__ */
 -- 
 2.43.0
 
