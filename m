@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DE88FEEC7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BBDE8FED5C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EA4D288AAD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FA7328209D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A431A0DFE;
-	Thu,  6 Jun 2024 14:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459B81BA87F;
+	Thu,  6 Jun 2024 14:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DhdXX/3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgHczE3a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E261C68BF;
-	Thu,  6 Jun 2024 14:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0531F19DF41;
+	Thu,  6 Jun 2024 14:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683700; cv=none; b=EHYrJwHW33YMFwFBa4try6CWtZjftNLA5aagT0VqfT4Ln3pc6IV0Oxny+8jE/Ip2iAb3KHqHzdx2bxwYOT55GxMyDxSc8esSV8VMNZoUROmzBxVqMFZ0vQM9OHeFbKaLyAjvQhQWifnu+3bNyHCzyR9J7mCwT8LmafYEkb/tkYI=
+	t=1717683479; cv=none; b=ezGRtD8lAgnPtfNRiLrgLUABn1hEQZd8Rb6mJ+WVPJzgR7Pm9SdaDeEW709Fg/VwN2P97y5IKx/KfdfW9qu3vrH3kOuAh1/fWbjyN+BWhCQEckavTfwpBjX9TQztOrsTku3NGXRVe7bQSnYORnDzyIwDP8O5QuSuDxqHqVzTDPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683700; c=relaxed/simple;
-	bh=x+rrnpRa1hMj4sucEFwz2ZUbmRPPjL2s/gLymw/+JvE=;
+	s=arc-20240116; t=1717683479; c=relaxed/simple;
+	bh=tatFHDNSIDb/GAEZVfTA4u1zhu7JTVq7t76phSb5Z0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cf5+q1mlh0iXQzXIjvT5dYpKxwsc2F0NjZtLEKu2JHxaBzm3UIASRR1mwoZU5HZfKv29jR4QssFGMcRedjCUS/WLy8x+BolqFNOGK5XyB+3XaMPudjmFgzcodbNrf9hmb9KqKq1vm6ICkNrmyjKlW79mJ7s2RvG+G8VoBzzbrUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DhdXX/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00208C32781;
-	Thu,  6 Jun 2024 14:21:39 +0000 (UTC)
+	 MIME-Version; b=SnBoI9Ig4EOFxCYrDeYNvhY2szdcC0ZDXUKI1rXw/wveNjCNpJlvGH1lQ/XGeUsViNTURspmGMaww1i8oTdqkKrI0iQ9mYLAtoswZsf1QLhVPAm6Kxipe5e7EhlMEjLjrGvnWq7dGDIK/fxt5HXQvMI+UzQ4Bp57iRDLGijedWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgHczE3a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B86C2BD10;
+	Thu,  6 Jun 2024 14:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683700;
-	bh=x+rrnpRa1hMj4sucEFwz2ZUbmRPPjL2s/gLymw/+JvE=;
+	s=korg; t=1717683478;
+	bh=tatFHDNSIDb/GAEZVfTA4u1zhu7JTVq7t76phSb5Z0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1DhdXX/3wLhP69IokSRinWTSFZrWOhjCGI4HKWLe2MAyGV5KUWsfUf1gZcd2t1dL2
-	 ZCqVZrwl7m1711yYkZmr/HDhi6NB8auZ95AWtf+abSyxgpnUinLy8A7HFFvhAnYlj9
-	 LomcyyynqKUw6M+pckP7NZGuB46RibgkRjmuWFek=
+	b=QgHczE3akjcagJ0/0xBw4275K7z5nRz6RYkgVtT30Qc54AzjXwwKJQGlilpzGldKO
+	 GIrpScHJPMPDEZ4RZ9nA0PpkxQKLL56959EnKP1FmgTS0tITok5k/p27ugnB4oCAkj
+	 Dcy1FhlLwb1Y0pclnAd8GRQTs+CPNY4S4JgUoqpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Judith Mendez <jm@ti.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 621/744] ALSA: hda: cs35l56: Fix lifetime of cs_dsp instance
-Date: Thu,  6 Jun 2024 16:04:53 +0200
-Message-ID: <20240606131752.417738960@linuxfoundation.org>
+Subject: [PATCH 6.1 365/473] mmc: sdhci_am654: Add ITAPDLYSEL in sdhci_j721e_4bit_set_clock
+Date: Thu,  6 Jun 2024 16:04:54 +0200
+Message-ID: <20240606131711.976158005@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit d344873c4cbde249b7152d36a273bcc45864001e ]
+[ Upstream commit 9dff65bb5e09903c27d9cff947dff4d22b6ea6a1 ]
 
-The cs_dsp instance is initialized in the driver probe() so it
-should be freed in the driver remove(). Also fix a missing call
-to cs_dsp_remove() in the error path of cs35l56_hda_common_probe().
+Add ITAPDLYSEL to sdhci_j721e_4bit_set_clock function.
+This allows to set the correct ITAPDLY for timings that
+do not carry out tuning.
 
-The call to cs_dsp_remove() was being done in the component unbind
-callback cs35l56_hda_unbind(). This meant that if the driver was
-unbound and then re-bound it would be using an uninitialized cs_dsp
-instance.
-
-It is best to initialize the cs_dsp instance in probe() so that it
-can return an error if it fails. The component binding API doesn't
-have any error handling so there's no way to handle a failure if
-cs_dsp was initialized in the bind.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic CS35L56 amplifier")
-Link: https://lore.kernel.org/r/20240508100811.49514-1-rf@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 1accbced1c32 ("mmc: sdhci_am654: Add Support for 4 bit IP on J721E")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240320223837.959900-7-jm@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/cs35l56_hda.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/mmc/host/sdhci_am654.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
-index e599b287f0961..15e20d9261393 100644
---- a/sound/pci/hda/cs35l56_hda.c
-+++ b/sound/pci/hda/cs35l56_hda.c
-@@ -699,8 +699,6 @@ static void cs35l56_hda_unbind(struct device *dev, struct device *master, void *
- 	if (cs35l56->base.fw_patched)
- 		cs_dsp_power_down(&cs35l56->cs_dsp);
+diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+index 4c2a12927478e..c20ec525c9bf8 100644
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -319,6 +319,7 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
+ 	unsigned char timing = host->mmc->ios.timing;
+ 	u32 otap_del_sel;
+ 	u32 itap_del_ena;
++	u32 itap_del_sel;
+ 	u32 mask, val;
  
--	cs_dsp_remove(&cs35l56->cs_dsp);
+ 	/* Setup DLL Output TAP delay */
+@@ -328,13 +329,18 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
+ 	val = (0x1 << OTAPDLYENA_SHIFT) |
+ 	      (otap_del_sel << OTAPDLYSEL_SHIFT);
+ 
++	/* Setup Input TAP delay */
+ 	itap_del_ena = sdhci_am654->itap_del_ena[timing];
++	itap_del_sel = sdhci_am654->itap_del_sel[timing];
+ 
+-	mask |= ITAPDLYENA_MASK;
+-	val |= (itap_del_ena << ITAPDLYENA_SHIFT);
++	mask |= ITAPDLYENA_MASK | ITAPDLYSEL_MASK;
++	val |= (itap_del_ena << ITAPDLYENA_SHIFT) |
++	       (itap_del_sel << ITAPDLYSEL_SHIFT);
+ 
++	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPCHGWIN_MASK,
++			   1 << ITAPCHGWIN_SHIFT);
+ 	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, mask, val);
 -
- 	if (comps[cs35l56->index].dev == dev)
- 		memset(&comps[cs35l56->index], 0, sizeof(*comps));
- 
-@@ -984,7 +982,7 @@ int cs35l56_hda_common_probe(struct cs35l56_hda *cs35l56, int id)
- 			       ARRAY_SIZE(cs35l56_hda_dai_config));
- 	ret = cs35l56_force_sync_asp1_registers_from_cache(&cs35l56->base);
- 	if (ret)
--		goto err;
-+		goto dsp_err;
- 
- 	/*
- 	 * By default only enable one ASP1TXn, where n=amplifier index,
-@@ -1010,6 +1008,8 @@ int cs35l56_hda_common_probe(struct cs35l56_hda *cs35l56, int id)
- 
- pm_err:
- 	pm_runtime_disable(cs35l56->base.dev);
-+dsp_err:
-+	cs_dsp_remove(&cs35l56->cs_dsp);
- err:
- 	gpiod_set_value_cansleep(cs35l56->base.reset_gpio, 0);
- 
-@@ -1027,6 +1027,8 @@ void cs35l56_hda_remove(struct device *dev)
- 
- 	component_del(cs35l56->base.dev, &cs35l56_hda_comp_ops);
- 
-+	cs_dsp_remove(&cs35l56->cs_dsp);
-+
- 	kfree(cs35l56->system_name);
- 	pm_runtime_put_noidle(cs35l56->base.dev);
++	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPCHGWIN_MASK, 0);
+ 	regmap_update_bits(sdhci_am654->base, PHY_CTRL5, CLKBUFSEL_MASK,
+ 			   sdhci_am654->clkbuf_sel);
  
 -- 
 2.43.0
