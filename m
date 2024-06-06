@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 120728FE98D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 218258FEE92
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 824E1288138
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AE531C2589A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A792B198856;
-	Thu,  6 Jun 2024 14:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875361C53A5;
+	Thu,  6 Jun 2024 14:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmGrsarb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZg5gghp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675CB19AD42;
-	Thu,  6 Jun 2024 14:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EC71991D3;
+	Thu,  6 Jun 2024 14:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683038; cv=none; b=D+KJqsl6gFon4Vcey6HTLbkyibDhFgfJm8OkQcpRvKH35YExn+2lXtUfd2ihe695hajpem1tMeuJpxVvLzQ7NjwPkUH+2OWlxnmvS9KItkWgTQGIbbdmEuwFRkCShL2G/XHlT6sCDLVZCoohq5F9QNoDfNKP+8CPLLzIawgZ9LE=
+	t=1717683677; cv=none; b=WdnQoU1cwh5ldrRJDy6rSlW/KnMvKj1Cmrp4Xty8b3nc1IGDkE9bHsa2fFyjsAWfPX7SOs2Dbyg0moSRIrDwMGDEEbDY/wGMsAjtW+N/QqKKlMgsDqx/3OlB8F8ObgfMSaisrD5GFGllT7QoIbPmKoWSRH8fnh86hQmcDHMaw20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683038; c=relaxed/simple;
-	bh=5mRl3S1tZE9XzLjdNiqUZuTiArmOBQf0JWOQDbbQkw4=;
+	s=arc-20240116; t=1717683677; c=relaxed/simple;
+	bh=un5pqYhvZ7UDRIydyq57Yh68vrxnrZie5J/DAN5k0i8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urFFthyRIfCC3u5XuExyyWCVzZ2DRl/Djn7z9SPbTzAca5ni8hP7JY3ILVA0ptQA6wUdiQledxIBy/SySzTmuvyijnQPYOETQmiogAu78egoM+xdOdmg3muFnE8a5anrbhzdidREFR7t0b+JZHeMpO+TYylUYuv8GPwb1BW3u1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmGrsarb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456EDC4DDE1;
-	Thu,  6 Jun 2024 14:10:38 +0000 (UTC)
+	 MIME-Version; b=tHt0AlkpKuLcrQTlR7Tdso6mbGf8iTUi4akhsLHsylJmNPBQgYUQsHYBWSk03Z64sL/b4mE5gevlwgTnfBlVjZNiMX9pZY3saqDHU9eOEEuZrjGGXH7j2JGG1C/EqepWJIg3PoPRiEDGlMlCK1dmg0hc4yFxfmW4E0/aiVZc+xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZg5gghp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281EFC2BD10;
+	Thu,  6 Jun 2024 14:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683038;
-	bh=5mRl3S1tZE9XzLjdNiqUZuTiArmOBQf0JWOQDbbQkw4=;
+	s=korg; t=1717683677;
+	bh=un5pqYhvZ7UDRIydyq57Yh68vrxnrZie5J/DAN5k0i8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmGrsarbtcbUCJig4RkSKeVzxCJmG28q+4iwCtubfXp8LDXgjYUJvLwFv2swlejZ8
-	 dq4/Bhj6QBweK6F23Ojt/iGcCHNrRdrPKKvJaPZOzuNTVkolj9oonGyzpdg8OFqNCC
-	 2cDqfuf4Fzq57AQLQ8WqIDa7CFtB/Emj1QDDHPAA=
+	b=HZg5gghpbc7INmpu05dPk810+hO5o+tB5MCV8wRxfza4Nh4eWvcVq5hbvMllj9pHH
+	 qVf3ytShsgVvr0Cuh5ZLGHDpN6JWjMbYiGEk522YeyT69bB1kbTlsE+HGOZ3/cWYvK
+	 ZPZR1g+k9kApoDBy04w/n2Sdq4fQ8B7ORw7Gf074=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Nicolas Belin <nbelin@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 267/374] net: fec: avoid lock evasion when reading pps_enable
-Date: Thu,  6 Jun 2024 16:04:06 +0200
-Message-ID: <20240606131700.847838150@linuxfoundation.org>
+Subject: [PATCH 6.6 575/744] drm/meson: gate px_clk when setting rate
+Date: Thu,  6 Jun 2024 16:04:07 +0200
+Message-ID: <20240606131750.903596699@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 3b1c92f8e5371700fada307cc8fd2c51fa7bc8c1 ]
+[ Upstream commit 5c9837374ecf55a1fa3b7622d365a0456960270f ]
 
-The assignment of pps_enable is protected by tmreg_lock, but the read
-operation of pps_enable is not. So the Coverity tool reports a lock
-evasion warning which may cause data race to occur when running in a
-multithread environment. Although this issue is almost impossible to
-occur, we'd better fix it, at least it seems more logically reasonable,
-and it also prevents Coverity from continuing to issue warnings.
+Disable the px_clk when setting the rate to recover a fully
+configured and correctly reset VCLK clock tree after the rate
+is set.
 
-Fixes: 278d24047891 ("net: fec: ptp: Enable PPS output based on ptp clock")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Link: https://lore.kernel.org/r/20240521023800.17102-1-wei.fang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 77d9e1e6b846 ("drm/meson: add support for MIPI-DSI transceiver")
+Reviewed-by: Nicolas Belin <nbelin@baylibre.com>
+Link: https://lore.kernel.org/r/20240403-amlogic-v6-4-upstream-dsi-ccf-vim3-v12-4-99ecdfdc87fc@linaro.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240403-amlogic-v6-4-upstream-dsi-ccf-vim3-v12-4-99ecdfdc87fc@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/meson/meson_dw_mipi_dsi.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 181d9bfbee220..e32f6724f5681 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -104,14 +104,13 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
- 	struct timespec64 ts;
- 	u64 ns;
+diff --git a/drivers/gpu/drm/meson/meson_dw_mipi_dsi.c b/drivers/gpu/drm/meson/meson_dw_mipi_dsi.c
+index e5fe4e994f43b..72abe2057ec31 100644
+--- a/drivers/gpu/drm/meson/meson_dw_mipi_dsi.c
++++ b/drivers/gpu/drm/meson/meson_dw_mipi_dsi.c
+@@ -95,6 +95,7 @@ static int dw_mipi_dsi_phy_init(void *priv_data)
+ 		return ret;
+ 	}
  
--	if (fep->pps_enable == enable)
--		return 0;
--
--	fep->pps_channel = DEFAULT_PPS_CHANNEL;
--	fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
--
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
++	clk_disable_unprepare(mipi_dsi->px_clk);
+ 	ret = clk_set_rate(mipi_dsi->px_clk, mipi_dsi->mode->clock * 1000);
  
-+	if (fep->pps_enable == enable) {
-+		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-+		return 0;
+ 	if (ret) {
+@@ -103,6 +104,12 @@ static int dw_mipi_dsi_phy_init(void *priv_data)
+ 		return ret;
+ 	}
+ 
++	ret = clk_prepare_enable(mipi_dsi->px_clk);
++	if (ret) {
++		dev_err(mipi_dsi->dev, "Failed to enable DSI Pixel clock (ret %d)\n", ret);
++		return ret;
 +	}
 +
- 	if (enable) {
- 		/* clear capture or output compare interrupt status if have.
- 		 */
-@@ -532,6 +531,9 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 	int ret = 0;
- 
- 	if (rq->type == PTP_CLK_REQ_PPS) {
-+		fep->pps_channel = DEFAULT_PPS_CHANNEL;
-+		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
-+
- 		ret = fec_ptp_enable_pps(fep, on);
- 
- 		return ret;
+ 	switch (mipi_dsi->dsi_device->format) {
+ 	case MIPI_DSI_FMT_RGB888:
+ 		dpi_data_format = DPI_COLOR_24BIT;
 -- 
 2.43.0
 
