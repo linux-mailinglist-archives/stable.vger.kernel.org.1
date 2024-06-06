@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C33D48FEB61
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8039C8FE8B6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 267381F28377
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E0BA1F247A7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70C71A3BD4;
-	Thu,  6 Jun 2024 14:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B267B197A97;
+	Thu,  6 Jun 2024 14:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H14vz31J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJES9aYV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868EC1A3BCF;
-	Thu,  6 Jun 2024 14:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E47E196D9C;
+	Thu,  6 Jun 2024 14:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683244; cv=none; b=PybLs1i5eMbqVdMqNNvJEznlVEp0ct1H/yHWvJftoEZ2imbY/ra+jr/gTHf+Trld9BZzVwo2e6B9tJrhNoftDWTlZBKxRWCsbktUx7Pgj5b8+84iIpp4otkgponlbjdDvdikoK0/fBJanIdSDnMNTQw288NcweYqqOquCnhdJ84=
+	t=1717682927; cv=none; b=jkkq+F+mNTq0rRCWZ49bXS5sE4OUXXrM0OUqCbc03yzsXdP09tQ1bLn/fgHSBzRUCAPaTB6TP+Ba7v7Jtf7+yu2p5JbSIMJRAxQ3Bwuo1MAE5SZ60YLtHmoLLLDR6F0vQNB/BLl/yvLmrfmafH+cY5cfTHINB/ahxHzRzWtVYD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683244; c=relaxed/simple;
-	bh=qcL2OIm6PG3JsWddbHZVu88jr2frrq58+aZEkXaUc/I=;
+	s=arc-20240116; t=1717682927; c=relaxed/simple;
+	bh=NvmkrUCYdlQIMWpTjHduxbH7ewAzlXH3YVFIG5KLSnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxZf8UXttWCrU9hN4L++DT6UyWUXf9Hr9nkkguiL9EtYfNkCpe8uflk9P9MspI62ig3J++Bzv2CWTMkCM61cabekHnQrr98AOol5xBGqSIf71vGJW6Er3gb3zMePNX7h1NNlo/CLkwhPc6anip7pL8r/6scmIy9P+iOUgSshBh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H14vz31J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DBBC32781;
-	Thu,  6 Jun 2024 14:14:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t1K8J1RGW4wWWEIyJ5rLI3wh6Tdy25qgh/S3nN0YRtKma1cPr5Snyj1VNHaF6xCdOw/SAZ6x7nCiu5ZkxJlzWDG03kWCf+njvIOrdVdsHDYvmSGMKGRpFNpVhyElGOuma75bJLNfgl6aLOyeSwKf12gahkiEr+91P5hXhBh7zD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJES9aYV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2AFC2BD10;
+	Thu,  6 Jun 2024 14:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683244;
-	bh=qcL2OIm6PG3JsWddbHZVu88jr2frrq58+aZEkXaUc/I=;
+	s=korg; t=1717682927;
+	bh=NvmkrUCYdlQIMWpTjHduxbH7ewAzlXH3YVFIG5KLSnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H14vz31JFQTSi83YWZXFpNpR/fmlZRr0RFHRcMJ3fnfQ1Y+c1frxm+WdEzwiZCLjr
-	 O6Q41EgH7FdJYqYuw+q66q+vdt08aEqfWE6Y6hkbrOPTytoEXW/qAw5w6jKO6FWQ6Y
-	 TuKyEbna3aXEi1mwh9kGvhyypdOhi7jp0UX80aEo=
+	b=VJES9aYV2vMyiffTQm2BL0f4sRyxvCZHp648hF45NfdNBZBSAfW1aU/er0fLSDGPR
+	 GU4PtrRZHHxCf1R7FZcYsHglI7Mpk7RkbZjwZiLcbwtM8o0ZowRwg3znm/YSOP8SFf
+	 HmMWVkhCgdquLgxvZ4BjEYbHTNymjEdzgGgttBWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/473] x86/pat: Introduce lookup_address_in_pgd_attr()
+Subject: [PATCH 6.9 071/374] leds: pwm: Disable PWM when going to suspend
 Date: Thu,  6 Jun 2024 16:00:50 +0200
-Message-ID: <20240606131703.936500973@linuxfoundation.org>
+Message-ID: <20240606131654.225631194@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,131 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit ceb647b4b529fdeca9021cd34486f5a170746bda ]
+[ Upstream commit 974afccd37947a6951a052ef8118c961e57eaf7b ]
 
-Add lookup_address_in_pgd_attr() doing the same as the already
-existing lookup_address_in_pgd(), but returning the effective settings
-of the NX and RW bits of all walked page table levels, too.
+On stm32mp1xx based machines (and others) a PWM consumer has to disable
+the PWM because an enabled PWM refuses to suspend. So check the
+LED_SUSPENDED flag and depending on that set the .enabled property.
 
-This will be needed in order to match hardware behavior when looking
-for effective access rights, especially for detecting writable code
-pages.
-
-In order to avoid code duplication, let lookup_address_in_pgd() call
-lookup_address_in_pgd_attr() with dummy parameters.
-
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240412151258.9171-2-jgross@suse.com
-Stable-dep-of: 5bc8b0f5dac0 ("x86/pat: Fix W^X violation false-positives when running as Xen PV guest")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218559
+Fixes: 76fe464c8e64 ("leds: pwm: Don't disable the PWM when the LED should be off")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20240417153846.271751-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/pgtable_types.h |  2 ++
- arch/x86/mm/pat/set_memory.c         | 33 +++++++++++++++++++++++++---
- 2 files changed, 32 insertions(+), 3 deletions(-)
+ drivers/leds/leds-pwm.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index f0b9b37c4609b..e3028373f0b45 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -544,6 +544,8 @@ static inline void update_page_count(int level, unsigned long pages) { }
- extern pte_t *lookup_address(unsigned long address, unsigned int *level);
- extern pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
- 				    unsigned int *level);
-+pte_t *lookup_address_in_pgd_attr(pgd_t *pgd, unsigned long address,
-+				  unsigned int *level, bool *nx, bool *rw);
- extern pmd_t *lookup_pmd_address(unsigned long address);
- extern phys_addr_t slow_virt_to_phys(void *__address);
- extern int __init kernel_map_pages_in_pgd(pgd_t *pgd, u64 pfn,
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 68d4f328f1696..a26a9e3608cb2 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -625,20 +625,26 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
+diff --git a/drivers/leds/leds-pwm.c b/drivers/leds/leds-pwm.c
+index 4e3936a39d0ed..e1b414b403534 100644
+--- a/drivers/leds/leds-pwm.c
++++ b/drivers/leds/leds-pwm.c
+@@ -53,7 +53,13 @@ static int led_pwm_set(struct led_classdev *led_cdev,
+ 		duty = led_dat->pwmstate.period - duty;
  
- /*
-  * Lookup the page table entry for a virtual address in a specific pgd.
-- * Return a pointer to the entry and the level of the mapping.
-+ * Return a pointer to the entry, the level of the mapping, and the effective
-+ * NX and RW bits of all page table levels.
-  */
--pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
--			     unsigned int *level)
-+pte_t *lookup_address_in_pgd_attr(pgd_t *pgd, unsigned long address,
-+				  unsigned int *level, bool *nx, bool *rw)
- {
- 	p4d_t *p4d;
- 	pud_t *pud;
- 	pmd_t *pmd;
- 
- 	*level = PG_LEVEL_NONE;
-+	*nx = false;
-+	*rw = true;
- 
- 	if (pgd_none(*pgd))
- 		return NULL;
- 
-+	*nx |= pgd_flags(*pgd) & _PAGE_NX;
-+	*rw &= pgd_flags(*pgd) & _PAGE_RW;
-+
- 	p4d = p4d_offset(pgd, address);
- 	if (p4d_none(*p4d))
- 		return NULL;
-@@ -647,6 +653,9 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
- 	if (p4d_large(*p4d) || !p4d_present(*p4d))
- 		return (pte_t *)p4d;
- 
-+	*nx |= p4d_flags(*p4d) & _PAGE_NX;
-+	*rw &= p4d_flags(*p4d) & _PAGE_RW;
-+
- 	pud = pud_offset(p4d, address);
- 	if (pud_none(*pud))
- 		return NULL;
-@@ -655,6 +664,9 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
- 	if (pud_large(*pud) || !pud_present(*pud))
- 		return (pte_t *)pud;
- 
-+	*nx |= pud_flags(*pud) & _PAGE_NX;
-+	*rw &= pud_flags(*pud) & _PAGE_RW;
-+
- 	pmd = pmd_offset(pud, address);
- 	if (pmd_none(*pmd))
- 		return NULL;
-@@ -663,11 +675,26 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
- 	if (pmd_large(*pmd) || !pmd_present(*pmd))
- 		return (pte_t *)pmd;
- 
-+	*nx |= pmd_flags(*pmd) & _PAGE_NX;
-+	*rw &= pmd_flags(*pmd) & _PAGE_RW;
-+
- 	*level = PG_LEVEL_4K;
- 
- 	return pte_offset_kernel(pmd, address);
+ 	led_dat->pwmstate.duty_cycle = duty;
+-	led_dat->pwmstate.enabled = true;
++	/*
++	 * Disabling a PWM doesn't guarantee that it emits the inactive level.
++	 * So keep it on. Only for suspending the PWM should be disabled because
++	 * otherwise it refuses to suspend. The possible downside is that the
++	 * LED might stay (or even go) on.
++	 */
++	led_dat->pwmstate.enabled = !(led_cdev->flags & LED_SUSPENDED);
+ 	return pwm_apply_might_sleep(led_dat->pwm, &led_dat->pwmstate);
  }
  
-+/*
-+ * Lookup the page table entry for a virtual address in a specific pgd.
-+ * Return a pointer to the entry and the level of the mapping.
-+ */
-+pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
-+			     unsigned int *level)
-+{
-+	bool nx, rw;
-+
-+	return lookup_address_in_pgd_attr(pgd, address, level, &nx, &rw);
-+}
-+
- /*
-  * Lookup the page table entry for a virtual address. Return a pointer
-  * to the entry and the level of the mapping.
 -- 
 2.43.0
 
