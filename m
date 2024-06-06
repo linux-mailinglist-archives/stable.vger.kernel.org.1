@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-49311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D1F8FECC0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4AD18FE96B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 014A0B28763
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B56321C24993
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557FF1B29A4;
-	Thu,  6 Jun 2024 14:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF4319A2BE;
+	Thu,  6 Jun 2024 14:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccOm3uMt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5Hvvp7A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1483119B3F3;
-	Thu,  6 Jun 2024 14:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E82A19A2A7;
+	Thu,  6 Jun 2024 14:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683404; cv=none; b=JOV/2g8N0umR2sA4A+18XNmSKWMnP/O8P9X8Qtr//UTRKjQzwakTwPHKu5EuNl8b94WQkXJ9lGozvMa6t6sub4+kKvmwzNlJ4p1uBEeRQOYoVzavPV4saV0MabRYV2m/4FbZUguRO7wYkLS/Uoc5rqaVPwxiGUpY7ImhS25P7kI=
+	t=1717683018; cv=none; b=c2wBsfiXCCQoq9FdojJFiTblSeXzLC2YrMCnkzJyJCsygRqdOFliaBQ1f7wYFRJ7+keQeBZ/jrxHEp8eVOrz2LWoa/wEkSKfYuXTree7yrpIRBybbstbF+h48OykmEU+u2RZ6bwTLcXHpvL8t+to+Jc2kxD60V2ks/cP3H5txO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683404; c=relaxed/simple;
-	bh=/4WNkdZ/hj5m5IscuvA3plg7wZaz/QbInuD0+ALi4rg=;
+	s=arc-20240116; t=1717683018; c=relaxed/simple;
+	bh=7AhlLpr/kef3I6L4YGWPDCBUFancnb1YAFpgB9mlZo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qGAzE11xjBXLaHFN/MyJz4qRtMbgVDvFSS0nbgY+OR7cC/+2iv7fXtvdv6i4A8VxWzZR3aVBGbwLKh0WKwMKOJuAXB6cK7Mzw5jPl6u98AAG//R+N3fCBsRMGmaP6qoFDGqhEQlZHTY8wHty5dn+DrbHnb4/AInD2SI/dw5ZJyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccOm3uMt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEEA7C2BD10;
-	Thu,  6 Jun 2024 14:16:43 +0000 (UTC)
+	 MIME-Version; b=nb348gM4He80QjuGsy1+GwE2j6wKgVkWhrcrM9ltix9IXgdoYMR9+fEcRRdUQVT5efLBG4k/VkzF/x2Fhvlzo+GTmb/nmxCTfTMfNknfss7nubmdmXQjAH1ddCQ0Hhx+4W15WNoP84TyHBb1A7oGARZaV6CM95nLxBOr0MJ4t4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5Hvvp7A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFC9C32781;
+	Thu,  6 Jun 2024 14:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683403;
-	bh=/4WNkdZ/hj5m5IscuvA3plg7wZaz/QbInuD0+ALi4rg=;
+	s=korg; t=1717683017;
+	bh=7AhlLpr/kef3I6L4YGWPDCBUFancnb1YAFpgB9mlZo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ccOm3uMtjDPHLi3TxqRxw6ex3V5rt8h5Oww/DY5aKujlN4k8hX6rlvGfbO5JhbhZl
-	 KWa1RJ6gqOm77xuIXRDl2vhdetgnJsCoYxiyfDBSaKC6GEO+BzOp1QQZret/vAEz0C
-	 /0fDzxQ1Ahyg6S8NO0JMFwtLNZus6WKm4wFM01+c=
+	b=M5Hvvp7APh1OfIzgZeq+7v5LUv1d0D47GyJ3cGOqZCSg1Cd0CbZYcgAMyeqMay/4n
+	 C+sV+OEQfaJReZ9fsDFKcRON8NRoI4NWxqcTtS82A5MfJmKqxnxTDUbq4n7P3+hSjw
+	 lLoJ+0lSEFYJ7QmHngmfd6kWwX3GGheysQ7l5mto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Rander Wang <rander.wang@intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 287/473] soundwire: cadence: fix invalid PDI offset
+Subject: [PATCH 6.9 237/374] ASoC: tas2552: Add TX path for capturing AUDIO-OUT data
 Date: Thu,  6 Jun 2024 16:03:36 +0200
-Message-ID: <20240606131709.381871920@linuxfoundation.org>
+Message-ID: <20240606131659.761046522@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-[ Upstream commit 8ee1b439b1540ae543149b15a2a61b9dff937d91 ]
+[ Upstream commit 7078ac4fd179a68d0bab448004fcd357e7a45f8d ]
 
-For some reason, we add an offset to the PDI, presumably to skip the
-PDI0 and PDI1 which are reserved for BPT.
+TAS2552 is a Smartamp with I/V sense data, add TX path
+to support capturing I/V data.
 
-This code is however completely wrong and leads to an out-of-bounds
-access. We were just lucky so far since we used only a couple of PDIs
-and remained within the PDI array bounds.
-
-A Fixes: tag is not provided since there are no known platforms where
-the out-of-bounds would be accessed, and the initial code had problems
-as well.
-
-A follow-up patch completely removes this useless offset.
-
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://lore.kernel.org/r/20240326090122.1051806-2-yung-chuan.liao@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 38803ce7b53b ("ASoC: codecs: tas*: merge .digital_mute() into .mute_stream()")
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Link: https://msgid.link/r/20240518033515.866-1-shenghao-ding@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/cadence_master.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/tas2552.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
-index 7286c9b3be691..5bd874e58dd6e 100644
---- a/drivers/soundwire/cadence_master.c
-+++ b/drivers/soundwire/cadence_master.c
-@@ -1847,7 +1847,7 @@ struct sdw_cdns_pdi *sdw_cdns_alloc_pdi(struct sdw_cdns *cdns,
+diff --git a/sound/soc/codecs/tas2552.c b/sound/soc/codecs/tas2552.c
+index 8c9dc318b0e82..c65a4219ecd6c 100644
+--- a/sound/soc/codecs/tas2552.c
++++ b/sound/soc/codecs/tas2552.c
+@@ -2,7 +2,8 @@
+ /*
+  * tas2552.c - ALSA SoC Texas Instruments TAS2552 Mono Audio Amplifier
+  *
+- * Copyright (C) 2014 Texas Instruments Incorporated -  https://www.ti.com
++ * Copyright (C) 2014 - 2024 Texas Instruments Incorporated -
++ *	https://www.ti.com
+  *
+  * Author: Dan Murphy <dmurphy@ti.com>
+  */
+@@ -119,12 +120,14 @@ static const struct snd_soc_dapm_widget tas2552_dapm_widgets[] =
+ 			 &tas2552_input_mux_control),
  
- 	/* check if we found a PDI, else find in bi-directional */
- 	if (!pdi)
--		pdi = cdns_find_pdi(cdns, 2, stream->num_bd, stream->bd,
-+		pdi = cdns_find_pdi(cdns, 0, stream->num_bd, stream->bd,
- 				    dai_id);
+ 	SND_SOC_DAPM_AIF_IN("DAC IN", "DAC Playback", 0, SND_SOC_NOPM, 0, 0),
++	SND_SOC_DAPM_AIF_OUT("ASI OUT", "DAC Capture", 0, SND_SOC_NOPM, 0, 0),
+ 	SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
+ 	SND_SOC_DAPM_OUT_DRV("ClassD", TAS2552_CFG_2, 7, 0, NULL, 0),
+ 	SND_SOC_DAPM_SUPPLY("PLL", TAS2552_CFG_2, 3, 0, NULL, 0),
+ 	SND_SOC_DAPM_POST("Post Event", tas2552_post_event),
  
- 	if (pdi) {
+-	SND_SOC_DAPM_OUTPUT("OUT")
++	SND_SOC_DAPM_OUTPUT("OUT"),
++	SND_SOC_DAPM_INPUT("DMIC")
+ };
+ 
+ static const struct snd_soc_dapm_route tas2552_audio_map[] = {
+@@ -134,6 +137,7 @@ static const struct snd_soc_dapm_route tas2552_audio_map[] = {
+ 	{"ClassD", NULL, "Input selection"},
+ 	{"OUT", NULL, "ClassD"},
+ 	{"ClassD", NULL, "PLL"},
++	{"ASI OUT", NULL, "DMIC"}
+ };
+ 
+ #ifdef CONFIG_PM
+@@ -538,6 +542,13 @@ static struct snd_soc_dai_driver tas2552_dai[] = {
+ 			.rates = SNDRV_PCM_RATE_8000_192000,
+ 			.formats = TAS2552_FORMATS,
+ 		},
++		.capture = {
++			.stream_name = "Capture",
++			.channels_min = 2,
++			.channels_max = 2,
++			.rates = SNDRV_PCM_RATE_8000_192000,
++			.formats = TAS2552_FORMATS,
++		},
+ 		.ops = &tas2552_speaker_dai_ops,
+ 	},
+ };
 -- 
 2.43.0
 
