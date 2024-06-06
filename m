@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-49021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 922798FEB87
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1728FE8D0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E806B21482
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAD56284BA0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29FE1AB52D;
-	Thu,  6 Jun 2024 14:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3BDE198E65;
+	Thu,  6 Jun 2024 14:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHIH+hci"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1GZC/fI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19FB199EBD;
-	Thu,  6 Jun 2024 14:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70EC0198E60;
+	Thu,  6 Jun 2024 14:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683261; cv=none; b=hVhFZLFUYgxDuWhcq4rr4Md4U718DjeNlLSQtKl75ZwSRRPx1uLRBU65kY7lYso2DPj38qC2lM+g2/G3CIGTug4vEouhXzTJ6zVlIYh+IYP0TNYckHnacz1E5sY+X2qwrghgyruvcmAEU/fVOHz9gvYJXfYh8z9H+EZLqqr2RVI=
+	t=1717682936; cv=none; b=mFP3TmfVWKWYaRkbsI4RvH8dKpbCBM+SbRYvvs3c0tvFhFQpSidfb9yGpF8zLvd/nwjrDc+VollKA5iDdzdmqN3xPCdpKia0sOKCP/nvOonrnGIhOvhWTdn05WLarbbWqUuldgXooHHlKTx+H6wBw0JmOWF9iCGAVgVuwoAXxG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683261; c=relaxed/simple;
-	bh=yaeSxjjoN6CVE3uFIEG2/n7wIpSVPX56J8+e9cxEjRg=;
+	s=arc-20240116; t=1717682936; c=relaxed/simple;
+	bh=++rEYy8DapI4lq3fZqJueQOQ5OAoNtDQ/bOPYEaGSY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4CxJ0Pa0FiHvB/b/h16gEl8W4vIbaKeVZ6ZIN8tRerjSQjjqUjyBUdsCGj6GwdY5XpeNo8H4VBvJZz4jl/NGr5K7nFAm9OvkVnH/CzjJNOdBepkpozTmO4XgA7bVaL/U0XFCQdbFCNy3xRxAxt6PHL/SUCZwq3a9zneNBOPyag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHIH+hci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9A4C32781;
-	Thu,  6 Jun 2024 14:14:21 +0000 (UTC)
+	 MIME-Version; b=b7mCZwBGtOAyoKCKHR2Eoh7jZs3zM/c7PQeyZHi/mfwD9HyKcLBskwCmd212cdiQZ8u+008/w0izobn/mPgZ4LZOTtktEXdfMLT6REAAGsPz6mMzkZls0+xVJLVCJePrA+m+qhfcsuqAdHhevXa+KFQ0SWkVcGl0EXtBkIz2wRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1GZC/fI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC1AC32781;
+	Thu,  6 Jun 2024 14:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683261;
-	bh=yaeSxjjoN6CVE3uFIEG2/n7wIpSVPX56J8+e9cxEjRg=;
+	s=korg; t=1717682936;
+	bh=++rEYy8DapI4lq3fZqJueQOQ5OAoNtDQ/bOPYEaGSY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHIH+hcisOO63TLeSsotDkA6xar302AhtZfVvC5P0t6Qp1Hs/GcckE/d6pz3MtuyO
-	 ubYOUBjbX9UMs9KmMrfhilxYQm6+VYZk84T0PxgCFd1bRQWvAZLBPIt9M+alGsC1sP
-	 qec4BABPl5nEfk2AhrkMxARpV04g2bMqJ5ryvRLY=
+	b=K1GZC/fIJiduIIr4S+KyWMJJ4uiabwwH4CXJuN5RwoCmsltlCjN1eZU14LrOr0IYT
+	 UBvp2YOuu/Uf4a5xZy96xsMhPUxosMFrvPEQmS46sV+5k3YsR3a1SwXJcXyfZ2zwwu
+	 2P0b5PDe16m/bZCcdrtXxD8L4tELn3CHrI4pB/ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/473] tcp: avoid premature drops in tcp_add_backlog()
+Subject: [PATCH 6.9 087/374] stm class: Fix a double free in stm_register_device()
 Date: Thu,  6 Jun 2024 16:01:06 +0200
-Message-ID: <20240606131704.458524233@linuxfoundation.org>
+Message-ID: <20240606131654.803170704@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit ec00ed472bdb7d0af840da68c8c11bff9f4d9caa ]
+[ Upstream commit 3df463865ba42b8f88a590326f4c9ea17a1ce459 ]
 
-While testing TCP performance with latest trees,
-I saw suspect SOCKET_BACKLOG drops.
+The put_device(&stm->dev) call will trigger stm_device_release() which
+frees "stm" so the vfree(stm) on the next line is a double free.
 
-tcp_add_backlog() computes its limit with :
-
-    limit = (u32)READ_ONCE(sk->sk_rcvbuf) +
-            (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
-    limit += 64 * 1024;
-
-This does not take into account that sk->sk_backlog.len
-is reset only at the very end of __release_sock().
-
-Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
-sk_rcvbuf in normal conditions.
-
-We should double sk->sk_rcvbuf contribution in the formula
-to absorb bubbles in the backlog, which happen more often
-for very fast flows.
-
-This change maintains decent protection against abuses.
-
-Fixes: c377411f2494 ("net: sk_add_backlog() take rmem_alloc into account")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240423125620.3309458-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 389b6699a2aa ("stm class: Fix stm device initialization order")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Link: https://lore.kernel.org/r/20240429130119.1518073-2-alexander.shishkin@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/hwtracing/stm/core.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 5dcb969cb5e9c..befa848fb820c 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -1771,7 +1771,7 @@ int tcp_v4_early_demux(struct sk_buff *skb)
- bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
- 		     enum skb_drop_reason *reason)
- {
--	u32 limit, tail_gso_size, tail_gso_segs;
-+	u32 tail_gso_size, tail_gso_segs;
- 	struct skb_shared_info *shinfo;
- 	const struct tcphdr *th;
- 	struct tcphdr *thtail;
-@@ -1780,6 +1780,7 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
- 	bool fragstolen;
- 	u32 gso_segs;
- 	u32 gso_size;
-+	u64 limit;
- 	int delta;
+diff --git a/drivers/hwtracing/stm/core.c b/drivers/hwtracing/stm/core.c
+index 534fbefc7f6aa..20895d3915623 100644
+--- a/drivers/hwtracing/stm/core.c
++++ b/drivers/hwtracing/stm/core.c
+@@ -868,8 +868,11 @@ int stm_register_device(struct device *parent, struct stm_data *stm_data,
+ 		return -ENOMEM;
  
- 	/* In case all data was pulled from skb frags (in __pskb_pull_tail()),
-@@ -1877,7 +1878,13 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
- 	__skb_push(skb, hdrlen);
+ 	stm->major = register_chrdev(0, stm_data->name, &stm_fops);
+-	if (stm->major < 0)
+-		goto err_free;
++	if (stm->major < 0) {
++		err = stm->major;
++		vfree(stm);
++		return err;
++	}
  
- no_coalesce:
--	limit = (u32)READ_ONCE(sk->sk_rcvbuf) + (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
-+	/* sk->sk_backlog.len is reset only at the end of __release_sock().
-+	 * Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
-+	 * sk_rcvbuf in normal conditions.
-+	 */
-+	limit = ((u64)READ_ONCE(sk->sk_rcvbuf)) << 1;
-+
-+	limit += ((u32)READ_ONCE(sk->sk_sndbuf)) >> 1;
+ 	device_initialize(&stm->dev);
+ 	stm->dev.devt = MKDEV(stm->major, 0);
+@@ -913,10 +916,8 @@ int stm_register_device(struct device *parent, struct stm_data *stm_data,
+ err_device:
+ 	unregister_chrdev(stm->major, stm_data->name);
  
- 	/* Only socket owner can try to collapse/prune rx queues
- 	 * to reduce memory overhead, so add a little headroom here.
-@@ -1885,6 +1892,8 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
- 	 */
- 	limit += 64 * 1024;
+-	/* matches device_initialize() above */
++	/* calls stm_device_release() */
+ 	put_device(&stm->dev);
+-err_free:
+-	vfree(stm);
  
-+	limit = min_t(u64, limit, UINT_MAX);
-+
- 	if (unlikely(sk_add_backlog(sk, skb, limit))) {
- 		bh_unlock_sock(sk);
- 		*reason = SKB_DROP_REASON_SOCKET_BACKLOG;
+ 	return err;
+ }
 -- 
 2.43.0
 
