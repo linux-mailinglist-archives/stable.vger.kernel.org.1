@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-49253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514B38FEC84
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD1A8FE94B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9B0A284A30
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDC0A1F23DC7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2370F1B1424;
-	Thu,  6 Jun 2024 14:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB661993AF;
+	Thu,  6 Jun 2024 14:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tr+o32Hn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNbHfWbd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65431B1429;
-	Thu,  6 Jun 2024 14:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF446196D9B;
+	Thu,  6 Jun 2024 14:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683375; cv=none; b=ktLE3RkTeAJki8INmMDQqnI558AtUznT8xEp9XRGuLdOR/9lI/UwyRHB50EL0vdSvtfCpqTZ5eeD1Vx69MZolFwXMJmreNtJkhB8P0Xq7Q3VdvNDkwHJ9XaqNBqTpGlVXShNmVWXG7QxMpE99Bomtmg7wcdvqA5jyp93xly6tRA=
+	t=1717683003; cv=none; b=C1dCYOMKkEf9Yt/0GS976l7njbxQ5ifL2siMoTNqlLtiDbo/882f5rwCG2VuQUyPqfZm3xrnlBAmXKlnnl3d5c6+fUzS3NMUBDxJkdofAsyl/Zv+Ek+30+ZK78aP0iOM6qaw3+l9hSbRVcsn0Qqmn0FLuRyvvxaP6JVNtHdGOYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683375; c=relaxed/simple;
-	bh=2fQZmFO7QgXG7VvOrjrbEUhTlf8Zu5kfiRVHSTjVdm8=;
+	s=arc-20240116; t=1717683003; c=relaxed/simple;
+	bh=xYRHcSvgjZwpBXHP9ldFEpWcnIpczpTqdhDr/MEx6nE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SENH1Jx5xZhAEo0AHhy6dKK9EVgV5GeNUOBVjl5YktEudNvJASSE+ywH5V+IYRUzIAgtNZspz9XKS9FKtWWppBKqp1I2mNRNuJTvuuBiNnTSJB83GIxMU2wUgCVQI3qFgUOTU3v7TluMcM1hJ7Ea0XjZOIFER/DpXfGMpg9i2DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tr+o32Hn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E3AC2BD10;
-	Thu,  6 Jun 2024 14:16:15 +0000 (UTC)
+	 MIME-Version; b=kOoKhQPC3aXCDyoVKgKlbEPlP+6AuRuC2Rl4KpTguTNcbC73ybsxC8CrxWJBl8aTZMJlSKhCLrIim5ZwNex528UyNeyooqSEhYM/RxVjHNFDGca0GlgH06widmns11nl4siFe963HRygBQTG9UFOct5mlD24swftmRGmFAYXtHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNbHfWbd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0F2C2BD10;
+	Thu,  6 Jun 2024 14:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683375;
-	bh=2fQZmFO7QgXG7VvOrjrbEUhTlf8Zu5kfiRVHSTjVdm8=;
+	s=korg; t=1717683003;
+	bh=xYRHcSvgjZwpBXHP9ldFEpWcnIpczpTqdhDr/MEx6nE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tr+o32Hn6K1GoiC2qbnZqoZCvi7BetTeeM5Hy0FT13BzcviFDLTCNYygJneMfa7wv
-	 r/fbYxGw66xTSGj+gGQLYpB3pmakIZBw77q0gYWVrAOaGiRCLPq6vlNOvFjf9ELrGS
-	 wEmaEWb4uL0U8doCCrk6SyY7GX21CYKrQC5tYmEs=
+	b=CNbHfWbdZUKTE5D/glTTfas/T9S8siptOw+4V6QeDMUQLsbwuyFLBhJybjt7xo3NY
+	 elbww3OGUeScQAc/F/SLxJWI+zlArF2cB62hpoPSepr8BVZ5AjegM/oq0smRVkWaeP
+	 mFFdXfj77hkCVqY6/aDM1vXFtqvOwV910HOuwyG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Fei Li <fei1.li@intel.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Yonghua Huang <yonghua.huang@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 259/473] drivers/virt/acrn: fix PFNMAP PTE checks in acrn_vm_ram_map()
+Subject: [PATCH 6.9 209/374] null_blk: Fix the WARNING: modpost: missing MODULE_DESCRIPTION()
 Date: Thu,  6 Jun 2024 16:03:08 +0200
-Message-ID: <20240606131708.523892034@linuxfoundation.org>
+Message-ID: <20240606131658.818737914@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,197 +63,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-[ Upstream commit 3d6586008f7b638f91f3332602592caa8b00b559 ]
+[ Upstream commit 9e6727f824edcdb8fdd3e6e8a0862eb49546e1cd ]
 
-Patch series "mm: follow_pte() improvements and acrn follow_pte() fixes".
+No functional changes intended.
 
-Patch #1 fixes a bunch of issues I spotted in the acrn driver.  It
-compiles, that's all I know.  I'll appreciate some review and testing from
-acrn folks.
-
-Patch #2+#3 improve follow_pte(), passing a VMA instead of the MM, adding
-more sanity checks, and improving the documentation.  Gave it a quick test
-on x86-64 using VM_PAT that ends up using follow_pte().
-
-This patch (of 3):
-
-We currently miss handling various cases, resulting in a dangerous
-follow_pte() (previously follow_pfn()) usage.
-
-(1) We're not checking PTE write permissions.
-
-Maybe we should simply always require pte_write() like we do for
-pin_user_pages_fast(FOLL_WRITE)? Hard to tell, so let's check for
-ACRN_MEM_ACCESS_WRITE for now.
-
-(2) We're not rejecting refcounted pages.
-
-As we are not using MMU notifiers, messing with refcounted pages is
-dangerous and can result in use-after-free. Let's make sure to reject them.
-
-(3) We are only looking at the first PTE of a bigger range.
-
-We only lookup a single PTE, but memmap->len may span a larger area.
-Let's loop over all involved PTEs and make sure the PFN range is
-actually contiguous. Reject everything else: it couldn't have worked
-either way, and rather made use access PFNs we shouldn't be accessing.
-
-Link: https://lkml.kernel.org/r/20240410155527.474777-1-david@redhat.com
-Link: https://lkml.kernel.org/r/20240410155527.474777-2-david@redhat.com
-Fixes: 8a6e85f75a83 ("virt: acrn: obtain pa from VMA with PFNMAP flag")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Fei Li <fei1.li@intel.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Yonghua Huang <yonghua.huang@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: f2298c0403b0 ("null_blk: multi queue aware block test driver")
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Link: https://lore.kernel.org/r/20240506075538.6064-1-yanjun.zhu@linux.dev
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virt/acrn/mm.c | 63 +++++++++++++++++++++++++++++++-----------
- 1 file changed, 47 insertions(+), 16 deletions(-)
+ drivers/block/null_blk/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/virt/acrn/mm.c b/drivers/virt/acrn/mm.c
-index ffc1d1136f765..8ef49d7be453c 100644
---- a/drivers/virt/acrn/mm.c
-+++ b/drivers/virt/acrn/mm.c
-@@ -155,23 +155,29 @@ int acrn_vm_memseg_unmap(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
- int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
- {
- 	struct vm_memory_region_batch *regions_info;
--	int nr_pages, i = 0, order, nr_regions = 0;
-+	int nr_pages, i, order, nr_regions = 0;
- 	struct vm_memory_mapping *region_mapping;
- 	struct vm_memory_region_op *vm_region;
- 	struct page **pages = NULL, *page;
- 	void *remap_vaddr;
- 	int ret, pinned;
- 	u64 user_vm_pa;
--	unsigned long pfn;
- 	struct vm_area_struct *vma;
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index eed63f95e89d0..14ffda1ffe6c3 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -2121,4 +2121,5 @@ module_init(null_init);
+ module_exit(null_exit);
  
- 	if (!vm || !memmap)
- 		return -EINVAL;
- 
-+	/* Get the page number of the map region */
-+	nr_pages = memmap->len >> PAGE_SHIFT;
-+	if (!nr_pages)
-+		return -EINVAL;
-+
- 	mmap_read_lock(current->mm);
- 	vma = vma_lookup(current->mm, memmap->vma_base);
- 	if (vma && ((vma->vm_flags & VM_PFNMAP) != 0)) {
-+		unsigned long start_pfn, cur_pfn;
- 		spinlock_t *ptl;
-+		bool writable;
- 		pte_t *ptep;
- 
- 		if ((memmap->vma_base + memmap->len) > vma->vm_end) {
-@@ -179,25 +185,53 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
- 			return -EINVAL;
- 		}
- 
--		ret = follow_pte(vma->vm_mm, memmap->vma_base, &ptep, &ptl);
--		if (ret < 0) {
--			mmap_read_unlock(current->mm);
-+		for (i = 0; i < nr_pages; i++) {
-+			ret = follow_pte(vma->vm_mm,
-+					 memmap->vma_base + i * PAGE_SIZE,
-+					 &ptep, &ptl);
-+			if (ret)
-+				break;
-+
-+			cur_pfn = pte_pfn(ptep_get(ptep));
-+			if (i == 0)
-+				start_pfn = cur_pfn;
-+			writable = !!pte_write(ptep_get(ptep));
-+			pte_unmap_unlock(ptep, ptl);
-+
-+			/* Disallow write access if the PTE is not writable. */
-+			if (!writable &&
-+			    (memmap->attr & ACRN_MEM_ACCESS_WRITE)) {
-+				ret = -EFAULT;
-+				break;
-+			}
-+
-+			/* Disallow refcounted pages. */
-+			if (pfn_valid(cur_pfn) &&
-+			    !PageReserved(pfn_to_page(cur_pfn))) {
-+				ret = -EFAULT;
-+				break;
-+			}
-+
-+			/* Disallow non-contiguous ranges. */
-+			if (cur_pfn != start_pfn + i) {
-+				ret = -EINVAL;
-+				break;
-+			}
-+		}
-+		mmap_read_unlock(current->mm);
-+
-+		if (ret) {
- 			dev_dbg(acrn_dev.this_device,
- 				"Failed to lookup PFN at VMA:%pK.\n", (void *)memmap->vma_base);
- 			return ret;
- 		}
--		pfn = pte_pfn(ptep_get(ptep));
--		pte_unmap_unlock(ptep, ptl);
--		mmap_read_unlock(current->mm);
- 
- 		return acrn_mm_region_add(vm, memmap->user_vm_pa,
--			 PFN_PHYS(pfn), memmap->len,
-+			 PFN_PHYS(start_pfn), memmap->len,
- 			 ACRN_MEM_TYPE_WB, memmap->attr);
- 	}
- 	mmap_read_unlock(current->mm);
- 
--	/* Get the page number of the map region */
--	nr_pages = memmap->len >> PAGE_SHIFT;
- 	pages = vzalloc(array_size(nr_pages, sizeof(*pages)));
- 	if (!pages)
- 		return -ENOMEM;
-@@ -241,12 +275,11 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
- 	mutex_unlock(&vm->regions_mapping_lock);
- 
- 	/* Calculate count of vm_memory_region_op */
--	while (i < nr_pages) {
-+	for (i = 0; i < nr_pages; i += 1 << order) {
- 		page = pages[i];
- 		VM_BUG_ON_PAGE(PageTail(page), page);
- 		order = compound_order(page);
- 		nr_regions++;
--		i += 1 << order;
- 	}
- 
- 	/* Prepare the vm_memory_region_batch */
-@@ -263,8 +296,7 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
- 	regions_info->regions_num = nr_regions;
- 	regions_info->regions_gpa = virt_to_phys(vm_region);
- 	user_vm_pa = memmap->user_vm_pa;
--	i = 0;
--	while (i < nr_pages) {
-+	for (i = 0; i < nr_pages; i += 1 << order) {
- 		u32 region_size;
- 
- 		page = pages[i];
-@@ -280,7 +312,6 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
- 
- 		vm_region++;
- 		user_vm_pa += region_size;
--		i += 1 << order;
- 	}
- 
- 	/* Inform the ACRN Hypervisor to set up EPT mappings */
+ MODULE_AUTHOR("Jens Axboe <axboe@kernel.dk>");
++MODULE_DESCRIPTION("multi queue aware block test driver");
+ MODULE_LICENSE("GPL");
 -- 
 2.43.0
 
