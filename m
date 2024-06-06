@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-48941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD2EC8FEB33
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6988FEB35
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 805921F277A6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C89081F27423
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23BA01A2FDC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DD31A38CA;
 	Thu,  6 Jun 2024 14:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bn4vz8w+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJRIV2Ry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53B61A2FD9;
-	Thu,  6 Jun 2024 14:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891DE1A38C5;
+	Thu,  6 Jun 2024 14:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683222; cv=none; b=Jf3oU+fMKI8NiFzCchEoIUIzmrVKWL0h4Uc5r0lwZ1WtBwvI92FDJiMaXmwgVCGwl7Q083LfYcvLI+1bEJ3o5ayxsBW8b/3DS/3Y/1c1naRs4hxvdcZg0DsRHriblvuWL7MRNgbxzrACtHlKQln6baqvwm7Py9VUXaDt4lZVlrw=
+	t=1717683223; cv=none; b=hsbwESTIRTD0qRca8qgg44AhDWq3aEfFd/yloXZVC3BBqQFm3W/tfKEfAiESKSOCiZPpM514fWDK01tRMbh8wOqRwDcjBo3NXY1qJ+gdKYpEiOtFodUE1orSw5Di9pSQI52cvHklYLGsQbbp3Xll1V70xIniwG+3qcmsum4+y/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683222; c=relaxed/simple;
-	bh=uZL6h0NbAygCONNuH0nA/JSkoeXBMi2H/Y4NsfykjuY=;
+	s=arc-20240116; t=1717683223; c=relaxed/simple;
+	bh=Alzth2JwaelvU8i+CTEWOpuiH+P7SHDYYq2ED0UGy2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAmQEqHp/zzn79/TwokeTXo3999nINXCZTXhJ4Rex02Je+OhRAIkhJsFPoufj493l922eMHP7yAQC4H1OYvtXQuaVMCZeO+p5rvgla2YrL9BH/un+U+1lSlTGObvB89y4epE30adTJf0kS4YjXNuJcHoOkSfbAl2UKYHwH5AtCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bn4vz8w+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD44C32786;
-	Thu,  6 Jun 2024 14:13:42 +0000 (UTC)
+	 MIME-Version; b=HTFvvUDTwqGFmjhUNL2qZFbugQEyj15DSEcvE9bsi8DCVjJa0M8Mkht8tch2y/NId6b9yH7RH1yttc8L4HeEDAV7r70l+nM+Eew9cUnqymN/zdIFBb0F97GhtFgQDqIvkn3eJhnbH1XIbvW5USMrE4xClxd23s71U2dcPqtAl5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJRIV2Ry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5FEC32782;
+	Thu,  6 Jun 2024 14:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683222;
-	bh=uZL6h0NbAygCONNuH0nA/JSkoeXBMi2H/Y4NsfykjuY=;
+	s=korg; t=1717683223;
+	bh=Alzth2JwaelvU8i+CTEWOpuiH+P7SHDYYq2ED0UGy2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bn4vz8w+dTz4LNxQ2i7d7qikiVVOdj7d3EIrUfLjweSl7BGzKAD2HThcMTIrCZVwL
-	 1ZWf93ltPQ7NFQdGeAugAnpcjN2/+740VIErxnQ7i1X155q3IFbz7MkAhPdzpAwOYe
-	 dcaGl79ILDQhL1wgshWOlqgs8OpWXcGTdk1mIXMs=
+	b=sJRIV2Ry3IsU1jDxz3i1cSkLycMz5rPY57zRXPIRKm/SEogV16hzgC6YskNwVHR+H
+	 3EzzCSUZv3iEJ8g3Zj9I90RbFTEG3KnruuFPCyaFH2WajPGpk75HqwdFU3x8ZDd42c
+	 zapuGo2geJ2+B4FgEM79k7HiMkpMNY90WM7Zsokc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/744] gfs2: Fix "ignore unlock failures after withdraw"
-Date: Thu,  6 Jun 2024 15:57:16 +0200
-Message-ID: <20240606131737.682590043@linuxfoundation.org>
+Subject: [PATCH 6.6 165/744] x86/boot/64: Clear most of CR4 in startup_64(), except PAE, MCE and LA57
+Date: Thu,  6 Jun 2024 15:57:17 +0200
+Message-ID: <20240606131737.714165281@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -65,61 +68,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 5d9231111966b6c5a65016d58dcbeab91055bc91 ]
+[ Upstream commit a0025f587c685e5ff842fb0194036f2ca0b6eaf4 ]
 
-Commit 3e11e53041502 tries to suppress dlm_lock() lock conversion errors
-that occur when the lockspace has already been released.
+The early 64-bit boot code must be entered with a 1:1 mapping of the
+bootable image, but it cannot operate without a 1:1 mapping of all the
+assets in memory that it accesses, and therefore, it creates such
+mappings for all known assets upfront, and additional ones on demand
+when a page fault happens on a memory address.
 
-It does that by setting and checking the SDF_SKIP_DLM_UNLOCK flag.  This
-conflicts with the intended meaning of the SDF_SKIP_DLM_UNLOCK flag, so
-check whether the lockspace is still allocated instead.
+These mappings are created with the global bit G set, as the flags used
+to create page table descriptors are based on __PAGE_KERNEL_LARGE_EXEC
+defined by the core kernel, even though the context where these mappings
+are used is very different.
 
-(Given the current DLM API, checking for this kind of error after the
-fact seems easier that than to make sure that the lockspace is still
-allocated before calling dlm_lock().  Changing the DLM API so that users
-maintain the lockspace references themselves would be an option.)
+This means that the TLB maintenance carried out by the decompressor is
+not sufficient if it is entered with CR4.PGE enabled, which has been
+observed to happen with the stage0 bootloader of project Oak. While this
+is a dubious practice if no global mappings are being used to begin
+with, the decompressor is clearly at fault here for creating global
+mappings and not performing the appropriate TLB maintenance.
 
-Fixes: 3e11e53041502 ("GFS2: ignore unlock failures after withdraw")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Since commit:
+
+  f97b67a773cd84b ("x86/decompressor: Only call the trampoline when changing paging levels")
+
+CR4 is no longer modified by the decompressor if no change in the number
+of paging levels is needed. Before that, CR4 would always be set to a
+consistent value with PGE cleared.
+
+So let's reinstate a simplified version of the original logic to put CR4
+into a known state, and preserve the PAE, MCE and LA57 bits, none of
+which can be modified freely at this point (PAE and LA57 cannot be
+changed while running in long mode, and MCE cannot be cleared when
+running under some hypervisors).
+
+This effectively clears PGE and works around the project Oak bug.
+
+Fixes: f97b67a773cd84b ("x86/decompressor: Only call the trampoline when ...")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20240410151354.506098-2-ardb+git@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c | 4 +++-
- fs/gfs2/util.c  | 1 -
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/head_64.S | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 4a280be229a65..207b7c23bc0f3 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -785,11 +785,13 @@ __acquires(&gl->gl_lockref.lock)
- 	}
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index bf4a10a5794f1..1dcb794c5479e 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -398,6 +398,11 @@ SYM_CODE_START(startup_64)
+ 	call	sev_enable
+ #endif
  
- 	if (sdp->sd_lockstruct.ls_ops->lm_lock)	{
-+		struct lm_lockstruct *ls = &sdp->sd_lockstruct;
++	/* Preserve only the CR4 bits that must be preserved, and clear the rest */
++	movq	%cr4, %rax
++	andl	$(X86_CR4_PAE | X86_CR4_MCE | X86_CR4_LA57), %eax
++	movq	%rax, %cr4
 +
- 		/* lock_dlm */
- 		ret = sdp->sd_lockstruct.ls_ops->lm_lock(gl, target, lck_flags);
- 		if (ret == -EINVAL && gl->gl_target == LM_ST_UNLOCKED &&
- 		    target == LM_ST_UNLOCKED &&
--		    test_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags)) {
-+		    test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
- 			finish_xmote(gl, target);
- 			gfs2_glock_queue_work(gl, 0);
- 		} else if (ret) {
-diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
-index da29fafb62728..d424691bd3f8a 100644
---- a/fs/gfs2/util.c
-+++ b/fs/gfs2/util.c
-@@ -350,7 +350,6 @@ int gfs2_withdraw(struct gfs2_sbd *sdp)
- 			fs_err(sdp, "telling LM to unmount\n");
- 			lm->lm_unmount(sdp);
- 		}
--		set_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags);
- 		fs_err(sdp, "File system withdrawn\n");
- 		dump_stack();
- 		clear_bit(SDF_WITHDRAW_IN_PROG, &sdp->sd_flags);
+ 	/*
+ 	 * configure_5level_paging() updates the number of paging levels using
+ 	 * a trampoline in 32-bit addressable memory if the current number does
 -- 
 2.43.0
 
