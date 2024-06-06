@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-49173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479DF8FEC2C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F224B8FE924
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D512FB27B42
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91EC21F26B43
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F021AD9D8;
-	Thu,  6 Jun 2024 14:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E58199228;
+	Thu,  6 Jun 2024 14:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWQa6FT8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0oduuME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20661AD9D5;
-	Thu,  6 Jun 2024 14:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA25196D8E;
+	Thu,  6 Jun 2024 14:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683337; cv=none; b=qqp2ITWWgT3htjNV+MC02dHfLhrfaGgL3IAGs8eRwqxgCGYozlbQoZCv1ZIg7KwqKg2T8tmeoBnmcQDNLJX4n/Ckf9RVXMlmnh/N62YY53iGdbjaY23ngxBxMS9X8MAWl0/mH1BXVGO0+M119muYUN8va6rviJWTbx5J+VnAR2E=
+	t=1717682984; cv=none; b=KklIRCHIGyVpdwt9h48gNYhuaUC9jPoR3ZfMqF6WlmXmxCV44xGpBOvHXVF6hmEcdNP0pWbD1LI4c6mD4N70A8UJx/D5WlAckvpdR1X+6lMx0hHZRjxbX6vk7MxrGMlZaD5EFzg6T0Ymk7ERpzMnA1k0KzKXEOGcCyAHnI8+7AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683337; c=relaxed/simple;
-	bh=sWxVXphpHOp+nvSwnvHDM8aSVO3oewbIXQFiDEcabyM=;
+	s=arc-20240116; t=1717682984; c=relaxed/simple;
+	bh=3enp6nYqIasOnHHHZsVvjq2wWFdT+F2ib/+cwqLV8+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D9pRDHqiEZiKXrBtYufBxkzExGCBy8HWTRDPUJyqEj8F/aCHdcGGbGjtH+H95zCC+WLA0zrhmUppgudk//L+hj+DHwJhFUUs20qMPJn0rIvDwgJBUuHFYXGLHvk3vwIr8gKLVNGPYZ9b12yHFKvjGMarTVE20tQDd2XX4W+aS4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWQa6FT8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFDCC2BD10;
-	Thu,  6 Jun 2024 14:15:37 +0000 (UTC)
+	 MIME-Version; b=FLrNRaIUtrUn2Q8QDlmBTDHhVl4/2QIEJmF7XV1zTpLUX9HO76wBQHgdzCHRUa3RRxun9KW4ek781I4SQ+y2MRPkvVe6hotiqcDInbqu8WAH9bMPfX4BMQb0DLLTBQNiMzLZmtajO/9dMmM0NFLrb29AF0pVm2nqyFhhAFQdB8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0oduuME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC7BC2BD10;
+	Thu,  6 Jun 2024 14:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683337;
-	bh=sWxVXphpHOp+nvSwnvHDM8aSVO3oewbIXQFiDEcabyM=;
+	s=korg; t=1717682984;
+	bh=3enp6nYqIasOnHHHZsVvjq2wWFdT+F2ib/+cwqLV8+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DWQa6FT8otdeyX+IMfMwv3PoDHQnqOOUitJyf0scUjEjYSTmDK6VuttHPeygatMOD
-	 uoxyA6v9yodDYpe5fU+yjj5yYS9ZO2mfddbH/zWVS+LIzzKTrylmIJEDa4twCCRAt2
-	 Yp1+9ENwRvi+z7Lwnd0M2LBdL/vBV7pfnTas4erE=
+	b=y0oduuME+fEaYxPvbrRgxnin4YKo5ehaRbVEKjXTzgeIBYQKyUA5hW3U/Gd1JWtSI
+	 IMLS+CqdfZ9zNWl9llfGIV935QhGa38aK65y4Qn6NdOmiRqvg6RK+4czDYt2FkNZrT
+	 ozGqOlWI7sq6OEZA/QZwprxeW+OVahexq9PA05hM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
+	Johannes Berg <johannes.berg@intel.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 219/473] fbdev: sh7760fb: allow modular build
+Subject: [PATCH 6.9 169/374] um: vector: fix bpfflash parameter evaluation
 Date: Thu,  6 Jun 2024 16:02:28 +0200
-Message-ID: <20240606131707.137002943@linuxfoundation.org>
+Message-ID: <20240606131657.556749153@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,52 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 51084f89d687e14d96278241e5200cde4b0985c7 ]
+[ Upstream commit 584ed2f76ff5fe360d87a04d17b6520c7999e06b ]
 
-There is no reason to prohibit sh7760fb from being built as a
-loadable module as suggested by Geert, so change the config symbol
-from bool to tristate to allow that and change the FB dependency as
-needed.
+With W=1 the build complains about a pointer compared to
+zero, clearly the result should've been compared.
 
-Fixes: f75f71b2c418 ("fbdev/sh7760fb: Depend on FB=y")
-Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 9807019a62dc ("um: Loadable BPF "Firmware" for vector drivers")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/um/drivers/vector_kern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index ff95f19224901..37089d5a7ccc5 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -2014,8 +2014,8 @@ config FB_COBALT
- 	depends on FB && MIPS_COBALT
+diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
+index dc2feae789cbb..63e5f108a6b95 100644
+--- a/arch/um/drivers/vector_kern.c
++++ b/arch/um/drivers/vector_kern.c
+@@ -141,7 +141,7 @@ static bool get_bpf_flash(struct arglist *def)
  
- config FB_SH7760
--	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
--	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
-+	tristate "SH7760/SH7763/SH7720/SH7721 LCDC support"
-+	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
- 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
+ 	if (allow != NULL) {
+ 		if (kstrtoul(allow, 10, &result) == 0)
+-			return (allow > 0);
++			return result > 0;
+ 	}
+ 	return false;
+ }
 -- 
 2.43.0
 
