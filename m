@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-49423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B888FED32
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D8B8FE8F3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8935C1C2204F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0FD1284029
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9626338D;
-	Thu,  6 Jun 2024 14:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2AFA197513;
+	Thu,  6 Jun 2024 14:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h+ycC7Fp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmmEhnNE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C151974EB;
-	Thu,  6 Jun 2024 14:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEFB19750E;
+	Thu,  6 Jun 2024 14:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683458; cv=none; b=U4ui9w9FNV+safXmOLj4wuLbmR8uODVrfdpUM0/RHogmnEUnijApbUz1Wwg+hBGXeMp3yAnzDzLRak7EjCHXAlckngcPVldbKzKKIBfdzLu3oMrZhNGnXWl/4tdCQRr/jZ/itMuu8vgi1BgFAuQfjYquuaxj55NVaelbBIIa61U=
+	t=1717682958; cv=none; b=n9wAXucONPlvKrNvSbVJJOd1/n+phk33S2i0fDakDnY/CmA1e9cG8KfcWRAk42lrNhAVWu0f3Ly8PRB1F/GZt6eHb7yJ0aMLfNhxi8QQ8L1pD7IHcmwsJ4EsaWgyy04tOP31yHYCiK+PWMQDFyPFL8j9Owes2rPQgkH8FFOkVA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683458; c=relaxed/simple;
-	bh=6xB3DNP7jtvfvK5gavU5NKl5q+oZW9hE8BEAl6z40yE=;
+	s=arc-20240116; t=1717682958; c=relaxed/simple;
+	bh=McqT6fY1WF6PHlT3FSx3/AqxtIQ1SV/M4Q263w4b2CY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7oYlmJtDnJ3c1fdE+tege4MvJOz6xhQXCYwLKIbu4h2Q2c+XaFNUDccl5+oxZntmYOdLLyO+zixFuWkfBYBrBmLO+K3gUHx26o+psY2mm0IvU+WU0lml+JMudo8c/ZnYvzDzoUcpnv1XAIsHw+wudpOXPPPb+wE2M5i+LxbLx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+ycC7Fp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30EEFC32781;
-	Thu,  6 Jun 2024 14:17:38 +0000 (UTC)
+	 MIME-Version; b=TeFmeHxgfaWrhuMoSzfiAP/rjfaLabhEn2KpGXz1L3Hua46mVExdTMdpo/Jzro54rgO7aY08Sngxwn9uGRQkCeWbgII1fdww3kvkH2KzYfNR1Nj6A9RUvSTEZccNZOIJqPkIeLn6y0ojUdIQkv08V4MzwNE2Z9mK2t/kVJaqxkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmmEhnNE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363BEC32786;
+	Thu,  6 Jun 2024 14:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683458;
-	bh=6xB3DNP7jtvfvK5gavU5NKl5q+oZW9hE8BEAl6z40yE=;
+	s=korg; t=1717682958;
+	bh=McqT6fY1WF6PHlT3FSx3/AqxtIQ1SV/M4Q263w4b2CY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h+ycC7FpsXH2jDo0gXaj2eWiaxnTvcV1jeKwsC1G15npnQE9GmKbWM63qZFNjY2yq
-	 X6R+jgwHwOCw0pSKfTgafFdQ2J3r3kFe5ReovmNspDKrI/loZJGAgT6Wf7cfOVZUjy
-	 krWweWqz7BLiT1A4cMsfZ+CiZu7lZ1R84rN/8Eoo=
+	b=pmmEhnNEc59SYPaGWvtT6+0BS3QE6Gvy41gtf/JGCIYB9KxXygh8/pQSylq4jQv5z
+	 AFYwqGFP4Inu4SczLMkFaFOBgs5/jTLH3GAn1gMnQ8au9Jhzpa1KXZzIdwYiKYrka2
+	 BSfVx4xMXGmBSC0n0njDfgOWvDUTF0NXKBl82NS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 403/744] perf stat: Do not fail on metrics on s390 z/VM systems
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com>
+Subject: [PATCH 6.9 096/374] PCI/EDR: Align EDR_PORT_DPC_ENABLE_DSM with PCI Firmware r3.3
 Date: Thu,  6 Jun 2024 16:01:15 +0200
-Message-ID: <20240606131745.380727392@linuxfoundation.org>
+Message-ID: <20240606131655.112626970@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,178 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-[ Upstream commit c2f3d7dfc7373d53286f2a5c882d3397a5070adc ]
+[ Upstream commit f24ba846133d0edec785ac6430d4daf6e9c93a09 ]
 
-On s390 z/VM virtual machines command 'perf list' also displays metrics:
+The "Downstream Port Containment related Enhancements" ECN of Jan 28, 2019
+(document 12888 below), defined the EDR_PORT_DPC_ENABLE_DSM function with
+Revision ID 5 with Arg3 being an integer.  But when the ECN was integrated
+into PCI Firmware r3.3, sec 4.6.12, it was defined as Revision ID 6 with
+Arg3 being a package containing an integer.
 
-  # perf list | grep -A 20 'Metric Groups:'
-  Metric Groups:
+The implementation in acpi_enable_dpc() supplies a package as Arg3 (arg4 in
+the code), but it previously specified Revision ID 5.  Align this with PCI
+Firmware r3.3 by using Revision ID 6.
 
-  No_group:
-   cpi
-        [Cycles per Instruction]
-   est_cpi
-        [Estimated Instruction Complexity CPI infinite Level 1]
-   finite_cpi
-        [Cycles per Instructions from Finite cache/memory]
-   l1mp
-        [Level One Miss per 100 Instructions]
-   l2p
-        [Percentage sourced from Level 2 cache]
-   l3p
-        [Percentage sourced from Level 3 on same chip cache]
-   l4lp
-        [Percentage sourced from Level 4 Local cache on same book]
-   l4rp
-        [Percentage sourced from Level 4 Remote cache on different book]
-   memp
-        [Percentage sourced from memory]
-   ....
-  #
+If firmware implemented per the ECN, its Revision 5 function would receive
+a package as Arg3 when it expects an integer, so acpi_enable_dpc() would
+likely fail.  If such firmware exists and lacks a Revision 6 function that
+expects a package, we may have to add support for Revision 5.
 
-The command
-
-  # perf stat -M cpi -- true
-  event syntax error: '{CPU_CYCLES/metric-id=CPU_CYCLES/.....'
-                        \___ Bad event or PMU
-
-  Unable to find PMU or event on a PMU of 'CPU_CYCLES'
-
-   event syntax error: '{CPU_CYCLES/metric-id=CPU_CYCLES/...'
-                        \___ Cannot find PMU `CPU_CYCLES'.
-                             Missing kernel support?
- #
-
-fails. 'perf stat' should not fail on metrics when the referenced CPU
-Counter Measurement PMU is not available.
-
-Output after:
-
-  # perf stat -M est_cpi -- sleep 1
-
-  Performance counter stats for 'sleep 1':
-
-     1,000,887,494 ns   duration_time   #     0.00 est_cpi
-
-       1.000887494 seconds time elapsed
-
-       0.000143000 seconds user
-       0.000662000 seconds sys
-
- #
-
-Fixes: 7f76b31130680fb3 ("perf list: Add IBM z16 event description for s390")
-Suggested-by: Ian Rogers <irogers@google.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240404064806.1362876-2-tmricht@linux.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Link: https://lore.kernel.org/r/20240501022543.1626025-1-sathyanarayanan.kuppuswamy@linux.intel.com
+Link: https://members.pcisig.com/wg/PCI-SIG/document/12888
+Fixes: ac1c8e35a326 ("PCI/DPC: Add Error Disconnect Recover (EDR) support")
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+[bhelgaas: split into two patches, update commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com> # one platform
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../arch/s390/cf_z16/transaction.json         | 28 +++++++++----------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/pci/pcie/edr.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json b/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json
-index ec2ff78e2b5f2..3ab1d3a6638c4 100644
---- a/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json
-+++ b/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json
-@@ -2,71 +2,71 @@
-   {
-     "BriefDescription": "Transaction count",
-     "MetricName": "transaction",
--    "MetricExpr": "TX_C_TEND + TX_NC_TEND + TX_NC_TABORT + TX_C_TABORT_SPECIAL + TX_C_TABORT_NO_SPECIAL"
-+    "MetricExpr": "TX_C_TEND + TX_NC_TEND + TX_NC_TABORT + TX_C_TABORT_SPECIAL + TX_C_TABORT_NO_SPECIAL if has_event(TX_C_TEND) else 0"
-   },
-   {
-     "BriefDescription": "Cycles per Instruction",
-     "MetricName": "cpi",
--    "MetricExpr": "CPU_CYCLES / INSTRUCTIONS"
-+    "MetricExpr": "CPU_CYCLES / INSTRUCTIONS if has_event(INSTRUCTIONS) else 0"
-   },
-   {
-     "BriefDescription": "Problem State Instruction Ratio",
-     "MetricName": "prbstate",
--    "MetricExpr": "(PROBLEM_STATE_INSTRUCTIONS / INSTRUCTIONS) * 100"
-+    "MetricExpr": "(PROBLEM_STATE_INSTRUCTIONS / INSTRUCTIONS) * 100 if has_event(INSTRUCTIONS) else 0"
-   },
-   {
-     "BriefDescription": "Level One Miss per 100 Instructions",
-     "MetricName": "l1mp",
--    "MetricExpr": "((L1I_DIR_WRITES + L1D_DIR_WRITES) / INSTRUCTIONS) * 100"
-+    "MetricExpr": "((L1I_DIR_WRITES + L1D_DIR_WRITES) / INSTRUCTIONS) * 100 if has_event(INSTRUCTIONS) else 0"
-   },
-   {
-     "BriefDescription": "Percentage sourced from Level 2 cache",
-     "MetricName": "l2p",
--    "MetricExpr": "((DCW_REQ + DCW_REQ_IV + ICW_REQ + ICW_REQ_IV) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
-+    "MetricExpr": "((DCW_REQ + DCW_REQ_IV + ICW_REQ + ICW_REQ_IV) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_REQ) else 0"
-   },
-   {
-     "BriefDescription": "Percentage sourced from Level 3 on same chip cache",
-     "MetricName": "l3p",
--    "MetricExpr": "((DCW_REQ_CHIP_HIT + DCW_ON_CHIP + DCW_ON_CHIP_IV + DCW_ON_CHIP_CHIP_HIT + ICW_REQ_CHIP_HIT + ICW_ON_CHIP + ICW_ON_CHIP_IV + ICW_ON_CHIP_CHIP_HIT) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
-+    "MetricExpr": "((DCW_REQ_CHIP_HIT + DCW_ON_CHIP + DCW_ON_CHIP_IV + DCW_ON_CHIP_CHIP_HIT + ICW_REQ_CHIP_HIT + ICW_ON_CHIP + ICW_ON_CHIP_IV + ICW_ON_CHIP_CHIP_HIT) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_REQ_CHIP_HIT) else 0"
-   },
-   {
-     "BriefDescription": "Percentage sourced from Level 4 Local cache on same book",
-     "MetricName": "l4lp",
--    "MetricExpr": "((DCW_REQ_DRAWER_HIT + DCW_ON_CHIP_DRAWER_HIT + DCW_ON_MODULE + DCW_ON_DRAWER + IDCW_ON_MODULE_IV + IDCW_ON_MODULE_CHIP_HIT + IDCW_ON_MODULE_DRAWER_HIT + IDCW_ON_DRAWER_IV + IDCW_ON_DRAWER_CHIP_HIT + IDCW_ON_DRAWER_DRAWER_HIT + ICW_REQ_DRAWER_HIT + ICW_ON_CHIP_DRAWER_HIT + ICW_ON_MODULE + ICW_ON_DRAWER) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
-+    "MetricExpr": "((DCW_REQ_DRAWER_HIT + DCW_ON_CHIP_DRAWER_HIT + DCW_ON_MODULE + DCW_ON_DRAWER + IDCW_ON_MODULE_IV + IDCW_ON_MODULE_CHIP_HIT + IDCW_ON_MODULE_DRAWER_HIT + IDCW_ON_DRAWER_IV + IDCW_ON_DRAWER_CHIP_HIT + IDCW_ON_DRAWER_DRAWER_HIT + ICW_REQ_DRAWER_HIT + ICW_ON_CHIP_DRAWER_HIT + ICW_ON_MODULE + ICW_ON_DRAWER) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_REQ_DRAWER_HIT) else 0"
-   },
-   {
-     "BriefDescription": "Percentage sourced from Level 4 Remote cache on different book",
-     "MetricName": "l4rp",
--    "MetricExpr": "((DCW_OFF_DRAWER + IDCW_OFF_DRAWER_IV + IDCW_OFF_DRAWER_CHIP_HIT + IDCW_OFF_DRAWER_DRAWER_HIT + ICW_OFF_DRAWER) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
-+    "MetricExpr": "((DCW_OFF_DRAWER + IDCW_OFF_DRAWER_IV + IDCW_OFF_DRAWER_CHIP_HIT + IDCW_OFF_DRAWER_DRAWER_HIT + ICW_OFF_DRAWER) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_OFF_DRAWER) else 0"
-   },
-   {
-     "BriefDescription": "Percentage sourced from memory",
-     "MetricName": "memp",
--    "MetricExpr": "((DCW_ON_CHIP_MEMORY + DCW_ON_MODULE_MEMORY + DCW_ON_DRAWER_MEMORY + DCW_OFF_DRAWER_MEMORY + ICW_ON_CHIP_MEMORY + ICW_ON_MODULE_MEMORY + ICW_ON_DRAWER_MEMORY + ICW_OFF_DRAWER_MEMORY) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
-+    "MetricExpr": "((DCW_ON_CHIP_MEMORY + DCW_ON_MODULE_MEMORY + DCW_ON_DRAWER_MEMORY + DCW_OFF_DRAWER_MEMORY + ICW_ON_CHIP_MEMORY + ICW_ON_MODULE_MEMORY + ICW_ON_DRAWER_MEMORY + ICW_OFF_DRAWER_MEMORY) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_ON_CHIP_MEMORY) else 0"
-   },
-   {
-     "BriefDescription": "Cycles per Instructions from Finite cache/memory",
-     "MetricName": "finite_cpi",
--    "MetricExpr": "L1C_TLB2_MISSES / INSTRUCTIONS"
-+    "MetricExpr": "L1C_TLB2_MISSES / INSTRUCTIONS if has_event(L1C_TLB2_MISSES) else 0"
-   },
-   {
-     "BriefDescription": "Estimated Instruction Complexity CPI infinite Level 1",
-     "MetricName": "est_cpi",
--    "MetricExpr": "(CPU_CYCLES / INSTRUCTIONS) - (L1C_TLB2_MISSES / INSTRUCTIONS)"
-+    "MetricExpr": "(CPU_CYCLES / INSTRUCTIONS) - (L1C_TLB2_MISSES / INSTRUCTIONS) if has_event(INSTRUCTIONS) else 0"
-   },
-   {
-     "BriefDescription": "Estimated Sourcing Cycles per Level 1 Miss",
-     "MetricName": "scpl1m",
--    "MetricExpr": "L1C_TLB2_MISSES / (L1I_DIR_WRITES + L1D_DIR_WRITES)"
-+    "MetricExpr": "L1C_TLB2_MISSES / (L1I_DIR_WRITES + L1D_DIR_WRITES) if has_event(L1C_TLB2_MISSES) else 0"
-   },
-   {
-     "BriefDescription": "Estimated TLB CPU percentage of Total CPU",
-     "MetricName": "tlb_percent",
--    "MetricExpr": "((DTLB2_MISSES + ITLB2_MISSES) / CPU_CYCLES) * (L1C_TLB2_MISSES / (L1I_PENALTY_CYCLES + L1D_PENALTY_CYCLES)) * 100"
-+    "MetricExpr": "((DTLB2_MISSES + ITLB2_MISSES) / CPU_CYCLES) * (L1C_TLB2_MISSES / (L1I_PENALTY_CYCLES + L1D_PENALTY_CYCLES)) * 100 if has_event(CPU_CYCLES) else 0"
-   },
-   {
-     "BriefDescription": "Estimated Cycles per TLB Miss",
-     "MetricName": "tlb_miss",
--    "MetricExpr": "((DTLB2_MISSES + ITLB2_MISSES) / (DTLB2_WRITES + ITLB2_WRITES)) * (L1C_TLB2_MISSES / (L1I_PENALTY_CYCLES + L1D_PENALTY_CYCLES))"
-+    "MetricExpr": "((DTLB2_MISSES + ITLB2_MISSES) / (DTLB2_WRITES + ITLB2_WRITES)) * (L1C_TLB2_MISSES / (L1I_PENALTY_CYCLES + L1D_PENALTY_CYCLES)) if has_event(DTLB2_MISSES) else 0"
-   }
- ]
+diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
+index 5f4914d313a17..fa085677c91de 100644
+--- a/drivers/pci/pcie/edr.c
++++ b/drivers/pci/pcie/edr.c
+@@ -32,10 +32,10 @@ static int acpi_enable_dpc(struct pci_dev *pdev)
+ 	int status = 0;
+ 
+ 	/*
+-	 * Behavior when calling unsupported _DSM functions is undefined,
+-	 * so check whether EDR_PORT_DPC_ENABLE_DSM is supported.
++	 * Per PCI Firmware r3.3, sec 4.6.12, EDR_PORT_DPC_ENABLE_DSM is
++	 * optional. Return success if it's not implemented.
+ 	 */
+-	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
++	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 6,
+ 			    1ULL << EDR_PORT_DPC_ENABLE_DSM))
+ 		return 0;
+ 
+@@ -46,12 +46,7 @@ static int acpi_enable_dpc(struct pci_dev *pdev)
+ 	argv4.package.count = 1;
+ 	argv4.package.elements = &req;
+ 
+-	/*
+-	 * Per Downstream Port Containment Related Enhancements ECN to PCI
+-	 * Firmware Specification r3.2, sec 4.6.12, EDR_PORT_DPC_ENABLE_DSM is
+-	 * optional.  Return success if it's not implemented.
+-	 */
+-	obj = acpi_evaluate_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
++	obj = acpi_evaluate_dsm(adev->handle, &pci_acpi_dsm_guid, 6,
+ 				EDR_PORT_DPC_ENABLE_DSM, &argv4);
+ 	if (!obj)
+ 		return 0;
 -- 
 2.43.0
 
