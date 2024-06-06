@@ -1,58 +1,78 @@
-Return-Path: <stable+bounces-49476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C8C8FED66
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8C28FE8D6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E75E31C215C2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE66D1F23B14
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DB71BA895;
-	Thu,  6 Jun 2024 14:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19881974E0;
+	Thu,  6 Jun 2024 14:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vg0WE6Q0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPE2t5KS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833B21BA874;
-	Thu,  6 Jun 2024 14:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A84196C7D;
+	Thu,  6 Jun 2024 14:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683484; cv=none; b=M1IWC2EYMCCqdq3ePuEU+8I2yg1ucfP7v7Mb59luh9OUK7JNPZk4if4y0MaIfBiZc9Y9kZ6H5bSLCH/EQ0Q/73a6XQW04GOM3YY+lD/KXRJoeFNrV/26UTcEj758nfjtNfSOvTFoADGHeDh241wHxQi5Jl4cZvcT1etNFYbgfzY=
+	t=1717682939; cv=none; b=rnnpUpY3+JXvKrVnTlKYZomWVkq00giMwDqCTdXCQuNiUDMVB7SsgGPMTIMsWRxNZtAu7LvNA5hSRiHuAkHINSHtiC7HD1p94+ulFb5cGDbTJ8LtFZajLS9JNrA0003AEQorZsWpMDFxF2nF1YOuqo7VlKUrQVoCTs2j+vuL/pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683484; c=relaxed/simple;
-	bh=4PVQY36Qljk4cIDcU0sjzfUQUgT8z8Vtah1DQquutks=;
+	s=arc-20240116; t=1717682939; c=relaxed/simple;
+	bh=Z7VW2ozS4+ItS+CWo4JwGdIZYB2Cx6Ovh0ecbHuHBgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BDHKHQuJehxetNYNNPxSj+iq2qC39Q48mkonIhDzgz3UdQrMeIb/q1NG/P3rAVhcC+Zn+COo9W+DvsTYHyrOLg3FVE/uqC4HnfbbFxiYtZWk0RjD2V7wio/feEB2rDbmLR63LrvABt0iIOVKvNrp0c3V8yR5T49oortNuh9sMAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vg0WE6Q0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C54C32781;
-	Thu,  6 Jun 2024 14:18:04 +0000 (UTC)
+	 MIME-Version; b=jZwx4voRhNwxK9L7fvyCWTRo4KMAjMQsytM2+gsZ5K9B7P4ZC/nJuUsfsFDfUozakc6tX6hCHt2NHrXGyDj64wYnms+NoXr9miLsczRGH52O5Ydms3rlLU/wB3tvb8zWNyRNfhoPH8jydygdbZPpKsy077kV6oTN4m/C9Ku6Z3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPE2t5KS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76473C32781;
+	Thu,  6 Jun 2024 14:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683484;
-	bh=4PVQY36Qljk4cIDcU0sjzfUQUgT8z8Vtah1DQquutks=;
+	s=korg; t=1717682939;
+	bh=Z7VW2ozS4+ItS+CWo4JwGdIZYB2Cx6Ovh0ecbHuHBgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vg0WE6Q0faNvYzwk5fYTlt/wSFmA8Vg8QGWS7dbGOYAg7MzpFecJpn72tRpU8g7T0
-	 PPN7xdsSbexCmGQ1ig3uzjqxuUKWKNpeNXvZHrsTbsA9/4F1tGYVGBuWNdUmeCwJcR
-	 gdaGI6KXFTH039c2d9HBlRwPQUgBlvgEvfthypHA=
+	b=WPE2t5KSeIlodVSRM3CeastRhhpaZX3Ef/opYXQPKemlVsUoStsspNP/GOV316+Ed
+	 mRCct66SHrR5Gdqva6qDuCkrsllf+zzDMUAchQNFUb4H7nkBsyWL8Xenj91z7tkuRX
+	 tmHNKt67ckYq0YHtEVu5BU2poNkkJfTm2l/CPjjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yilun <yilun.xu@intel.com>,
-	Russ Weight <russ.weight@linux.dev>,
-	Marco Pagani <marpagan@redhat.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Ben Gainey <ben.gainey@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Li Dong <lidong@vivo.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Paran Lee <p4ranlee@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Sun Haiyong <sunhaiyong@loongson.cn>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Yanteng Si <siyanteng@loongson.cn>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 398/744] fpga: bridge: add owner module and take its refcount
-Date: Thu,  6 Jun 2024 16:01:10 +0200
-Message-ID: <20240606131745.225764040@linuxfoundation.org>
+Subject: [PATCH 6.9 092/374] perf ui browser: Dont save pointer to stack memory
+Date: Thu,  6 Jun 2024 16:01:11 +0200
+Message-ID: <20240606131654.971358222@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,253 +84,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Pagani <marpagan@redhat.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 1da11f822042eb6ef4b6064dc048f157a7852529 ]
+[ Upstream commit 769e6a1e15bdbbaf2b0d2f37c24f2c53268bd21f ]
 
-The current implementation of the fpga bridge assumes that the low-level
-module registers a driver for the parent device and uses its owner pointer
-to take the module's refcount. This approach is problematic since it can
-lead to a null pointer dereference while attempting to get the bridge if
-the parent device does not have a driver.
+ui_browser__show() is capturing the input title that is stack allocated
+memory in hist_browser__run().
 
-To address this problem, add a module owner pointer to the fpga_bridge
-struct and use it to take the module's refcount. Modify the function for
-registering a bridge to take an additional owner module parameter and
-rename it to avoid conflicts. Use the old function name for a helper macro
-that automatically sets the module that registers the bridge as the owner.
-This ensures compatibility with existing low-level control modules and
-reduces the chances of registering a bridge without setting the owner.
+Avoid a use after return by strdup-ing the string.
 
-Also, update the documentation to keep it consistent with the new interface
-for registering an fpga bridge.
+Committer notes:
 
-Other changes: opportunistically move put_device() from __fpga_bridge_get()
-to fpga_bridge_get() and of_fpga_bridge_get() to improve code clarity since
-the bridge device is taken in these functions.
+Further explanation from Ian Rogers:
 
-Fixes: 21aeda950c5f ("fpga: add fpga bridge framework")
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Suggested-by: Xu Yilun <yilun.xu@intel.com>
-Reviewed-by: Russ Weight <russ.weight@linux.dev>
-Signed-off-by: Marco Pagani <marpagan@redhat.com>
-Acked-by: Xu Yilun <yilun.xu@intel.com>
-Link: https://lore.kernel.org/r/20240322171839.233864-1-marpagan@redhat.com
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+My command line using tui is:
+$ sudo bash -c 'rm /tmp/asan.log*; export
+ASAN_OPTIONS="log_path=/tmp/asan.log"; /tmp/perf/perf mem record -a
+sleep 1; /tmp/perf/perf mem report'
+I then go to the perf annotate view and quit. This triggers the asan
+error (from the log file):
+```
+==1254591==ERROR: AddressSanitizer: stack-use-after-return on address
+0x7f2813331920 at pc 0x7f28180
+65991 bp 0x7fff0a21c750 sp 0x7fff0a21bf10
+READ of size 80 at 0x7f2813331920 thread T0
+    #0 0x7f2818065990 in __interceptor_strlen
+../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:461
+    #1 0x7f2817698251 in SLsmg_write_wrapped_string
+(/lib/x86_64-linux-gnu/libslang.so.2+0x98251)
+    #2 0x7f28176984b9 in SLsmg_write_nstring
+(/lib/x86_64-linux-gnu/libslang.so.2+0x984b9)
+    #3 0x55c94045b365 in ui_browser__write_nstring ui/browser.c:60
+    #4 0x55c94045c558 in __ui_browser__show_title ui/browser.c:266
+    #5 0x55c94045c776 in ui_browser__show ui/browser.c:288
+    #6 0x55c94045c06d in ui_browser__handle_resize ui/browser.c:206
+    #7 0x55c94047979b in do_annotate ui/browsers/hists.c:2458
+    #8 0x55c94047fb17 in evsel__hists_browse ui/browsers/hists.c:3412
+    #9 0x55c940480a0c in perf_evsel_menu__run ui/browsers/hists.c:3527
+    #10 0x55c940481108 in __evlist__tui_browse_hists ui/browsers/hists.c:3613
+    #11 0x55c9404813f7 in evlist__tui_browse_hists ui/browsers/hists.c:3661
+    #12 0x55c93ffa253f in report__browse_hists tools/perf/builtin-report.c:671
+    #13 0x55c93ffa58ca in __cmd_report tools/perf/builtin-report.c:1141
+    #14 0x55c93ffaf159 in cmd_report tools/perf/builtin-report.c:1805
+    #15 0x55c94000c05c in report_events tools/perf/builtin-mem.c:374
+    #16 0x55c94000d96d in cmd_mem tools/perf/builtin-mem.c:516
+    #17 0x55c9400e44ee in run_builtin tools/perf/perf.c:350
+    #18 0x55c9400e4a5a in handle_internal_command tools/perf/perf.c:403
+    #19 0x55c9400e4e22 in run_argv tools/perf/perf.c:447
+    #20 0x55c9400e53ad in main tools/perf/perf.c:561
+    #21 0x7f28170456c9 in __libc_start_call_main
+../sysdeps/nptl/libc_start_call_main.h:58
+    #22 0x7f2817045784 in __libc_start_main_impl ../csu/libc-start.c:360
+    #23 0x55c93ff544c0 in _start (/tmp/perf/perf+0x19a4c0) (BuildId:
+84899b0e8c7d3a3eaa67b2eb35e3d8b2f8cd4c93)
+
+Address 0x7f2813331920 is located in stack of thread T0 at offset 32 in frame
+    #0 0x55c94046e85e in hist_browser__run ui/browsers/hists.c:746
+
+  This frame has 1 object(s):
+    [32, 192) 'title' (line 747) <== Memory access at offset 32 is
+inside this variable
+HINT: this may be a false positive if your program uses some custom
+stack unwind mechanism, swapcontext or vfork
+```
+hist_browser__run isn't on the stack so the asan error looks legit.
+There's no clean init/exit on struct ui_browser so I may be trading a
+use-after-return for a memory leak, but that seems look a good trade
+anyway.
+
+Fixes: 05e8b0804ec4 ("perf ui browser: Stop using 'self'")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ben Gainey <ben.gainey@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Li Dong <lidong@vivo.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Cc: Paran Lee <p4ranlee@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Sun Haiyong <sunhaiyong@loongson.cn>
+Cc: Tim Chen <tim.c.chen@linux.intel.com>
+Cc: Yanteng Si <siyanteng@loongson.cn>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20240507183545.1236093-2-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/driver-api/fpga/fpga-bridge.rst |  7 ++-
- drivers/fpga/fpga-bridge.c                    | 57 ++++++++++---------
- include/linux/fpga/fpga-bridge.h              | 10 +++-
- 3 files changed, 43 insertions(+), 31 deletions(-)
+ tools/perf/ui/browser.c | 4 +++-
+ tools/perf/ui/browser.h | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/driver-api/fpga/fpga-bridge.rst b/Documentation/driver-api/fpga/fpga-bridge.rst
-index 6042085340953..833f68fb07008 100644
---- a/Documentation/driver-api/fpga/fpga-bridge.rst
-+++ b/Documentation/driver-api/fpga/fpga-bridge.rst
-@@ -6,9 +6,12 @@ API to implement a new FPGA bridge
+diff --git a/tools/perf/ui/browser.c b/tools/perf/ui/browser.c
+index 603d11283cbdc..c4cdf2ea69b72 100644
+--- a/tools/perf/ui/browser.c
++++ b/tools/perf/ui/browser.c
+@@ -287,7 +287,8 @@ int ui_browser__show(struct ui_browser *browser, const char *title,
+ 	mutex_lock(&ui__lock);
+ 	__ui_browser__show_title(browser, title);
  
- * struct fpga_bridge - The FPGA Bridge structure
- * struct fpga_bridge_ops - Low level Bridge driver ops
--* fpga_bridge_register() - Create and register a bridge
-+* __fpga_bridge_register() - Create and register a bridge
- * fpga_bridge_unregister() - Unregister a bridge
+-	browser->title = title;
++	free(browser->title);
++	browser->title = strdup(title);
+ 	zfree(&browser->helpline);
  
-+The helper macro ``fpga_bridge_register()`` automatically sets
-+the module that registers the FPGA bridge as the owner.
-+
- .. kernel-doc:: include/linux/fpga/fpga-bridge.h
-    :functions: fpga_bridge
- 
-@@ -16,7 +19,7 @@ API to implement a new FPGA bridge
-    :functions: fpga_bridge_ops
- 
- .. kernel-doc:: drivers/fpga/fpga-bridge.c
--   :functions: fpga_bridge_register
-+   :functions: __fpga_bridge_register
- 
- .. kernel-doc:: drivers/fpga/fpga-bridge.c
-    :functions: fpga_bridge_unregister
-diff --git a/drivers/fpga/fpga-bridge.c b/drivers/fpga/fpga-bridge.c
-index a024be2b84e29..83d35fbb82450 100644
---- a/drivers/fpga/fpga-bridge.c
-+++ b/drivers/fpga/fpga-bridge.c
-@@ -55,33 +55,26 @@ int fpga_bridge_disable(struct fpga_bridge *bridge)
- }
- EXPORT_SYMBOL_GPL(fpga_bridge_disable);
- 
--static struct fpga_bridge *__fpga_bridge_get(struct device *dev,
-+static struct fpga_bridge *__fpga_bridge_get(struct device *bridge_dev,
- 					     struct fpga_image_info *info)
- {
- 	struct fpga_bridge *bridge;
--	int ret = -ENODEV;
- 
--	bridge = to_fpga_bridge(dev);
-+	bridge = to_fpga_bridge(bridge_dev);
- 
- 	bridge->info = info;
- 
--	if (!mutex_trylock(&bridge->mutex)) {
--		ret = -EBUSY;
--		goto err_dev;
--	}
-+	if (!mutex_trylock(&bridge->mutex))
-+		return ERR_PTR(-EBUSY);
- 
--	if (!try_module_get(dev->parent->driver->owner))
--		goto err_ll_mod;
-+	if (!try_module_get(bridge->br_ops_owner)) {
-+		mutex_unlock(&bridge->mutex);
-+		return ERR_PTR(-ENODEV);
-+	}
- 
- 	dev_dbg(&bridge->dev, "get\n");
- 
- 	return bridge;
--
--err_ll_mod:
--	mutex_unlock(&bridge->mutex);
--err_dev:
--	put_device(dev);
--	return ERR_PTR(ret);
+ 	va_start(ap, helpline);
+@@ -304,6 +305,7 @@ void ui_browser__hide(struct ui_browser *browser)
+ 	mutex_lock(&ui__lock);
+ 	ui_helpline__pop();
+ 	zfree(&browser->helpline);
++	zfree(&browser->title);
+ 	mutex_unlock(&ui__lock);
  }
  
- /**
-@@ -98,13 +91,18 @@ static struct fpga_bridge *__fpga_bridge_get(struct device *dev,
- struct fpga_bridge *of_fpga_bridge_get(struct device_node *np,
- 				       struct fpga_image_info *info)
- {
--	struct device *dev;
-+	struct fpga_bridge *bridge;
-+	struct device *bridge_dev;
- 
--	dev = class_find_device_by_of_node(&fpga_bridge_class, np);
--	if (!dev)
-+	bridge_dev = class_find_device_by_of_node(&fpga_bridge_class, np);
-+	if (!bridge_dev)
- 		return ERR_PTR(-ENODEV);
- 
--	return __fpga_bridge_get(dev, info);
-+	bridge = __fpga_bridge_get(bridge_dev, info);
-+	if (IS_ERR(bridge))
-+		put_device(bridge_dev);
-+
-+	return bridge;
- }
- EXPORT_SYMBOL_GPL(of_fpga_bridge_get);
- 
-@@ -125,6 +123,7 @@ static int fpga_bridge_dev_match(struct device *dev, const void *data)
- struct fpga_bridge *fpga_bridge_get(struct device *dev,
- 				    struct fpga_image_info *info)
- {
-+	struct fpga_bridge *bridge;
- 	struct device *bridge_dev;
- 
- 	bridge_dev = class_find_device(&fpga_bridge_class, NULL, dev,
-@@ -132,7 +131,11 @@ struct fpga_bridge *fpga_bridge_get(struct device *dev,
- 	if (!bridge_dev)
- 		return ERR_PTR(-ENODEV);
- 
--	return __fpga_bridge_get(bridge_dev, info);
-+	bridge = __fpga_bridge_get(bridge_dev, info);
-+	if (IS_ERR(bridge))
-+		put_device(bridge_dev);
-+
-+	return bridge;
- }
- EXPORT_SYMBOL_GPL(fpga_bridge_get);
- 
-@@ -146,7 +149,7 @@ void fpga_bridge_put(struct fpga_bridge *bridge)
- 	dev_dbg(&bridge->dev, "put\n");
- 
- 	bridge->info = NULL;
--	module_put(bridge->dev.parent->driver->owner);
-+	module_put(bridge->br_ops_owner);
- 	mutex_unlock(&bridge->mutex);
- 	put_device(&bridge->dev);
- }
-@@ -316,18 +319,19 @@ static struct attribute *fpga_bridge_attrs[] = {
- ATTRIBUTE_GROUPS(fpga_bridge);
- 
- /**
-- * fpga_bridge_register - create and register an FPGA Bridge device
-+ * __fpga_bridge_register - create and register an FPGA Bridge device
-  * @parent:	FPGA bridge device from pdev
-  * @name:	FPGA bridge name
-  * @br_ops:	pointer to structure of fpga bridge ops
-  * @priv:	FPGA bridge private data
-+ * @owner:	owner module containing the br_ops
-  *
-  * Return: struct fpga_bridge pointer or ERR_PTR()
-  */
- struct fpga_bridge *
--fpga_bridge_register(struct device *parent, const char *name,
--		     const struct fpga_bridge_ops *br_ops,
--		     void *priv)
-+__fpga_bridge_register(struct device *parent, const char *name,
-+		       const struct fpga_bridge_ops *br_ops,
-+		       void *priv, struct module *owner)
- {
- 	struct fpga_bridge *bridge;
- 	int id, ret;
-@@ -357,6 +361,7 @@ fpga_bridge_register(struct device *parent, const char *name,
- 
- 	bridge->name = name;
- 	bridge->br_ops = br_ops;
-+	bridge->br_ops_owner = owner;
- 	bridge->priv = priv;
- 
- 	bridge->dev.groups = br_ops->groups;
-@@ -386,7 +391,7 @@ fpga_bridge_register(struct device *parent, const char *name,
- 
- 	return ERR_PTR(ret);
- }
--EXPORT_SYMBOL_GPL(fpga_bridge_register);
-+EXPORT_SYMBOL_GPL(__fpga_bridge_register);
- 
- /**
-  * fpga_bridge_unregister - unregister an FPGA bridge
-diff --git a/include/linux/fpga/fpga-bridge.h b/include/linux/fpga/fpga-bridge.h
-index 223da48a6d18b..94c4edd047e54 100644
---- a/include/linux/fpga/fpga-bridge.h
-+++ b/include/linux/fpga/fpga-bridge.h
-@@ -45,6 +45,7 @@ struct fpga_bridge_info {
-  * @dev: FPGA bridge device
-  * @mutex: enforces exclusive reference to bridge
-  * @br_ops: pointer to struct of FPGA bridge ops
-+ * @br_ops_owner: module containing the br_ops
-  * @info: fpga image specific information
-  * @node: FPGA bridge list node
-  * @priv: low level driver private date
-@@ -54,6 +55,7 @@ struct fpga_bridge {
- 	struct device dev;
- 	struct mutex mutex; /* for exclusive reference to bridge */
- 	const struct fpga_bridge_ops *br_ops;
-+	struct module *br_ops_owner;
- 	struct fpga_image_info *info;
- 	struct list_head node;
- 	void *priv;
-@@ -79,10 +81,12 @@ int of_fpga_bridge_get_to_list(struct device_node *np,
- 			       struct fpga_image_info *info,
- 			       struct list_head *bridge_list);
- 
-+#define fpga_bridge_register(parent, name, br_ops, priv) \
-+	__fpga_bridge_register(parent, name, br_ops, priv, THIS_MODULE)
- struct fpga_bridge *
--fpga_bridge_register(struct device *parent, const char *name,
--		     const struct fpga_bridge_ops *br_ops,
--		     void *priv);
-+__fpga_bridge_register(struct device *parent, const char *name,
-+		       const struct fpga_bridge_ops *br_ops, void *priv,
-+		       struct module *owner);
- void fpga_bridge_unregister(struct fpga_bridge *br);
- 
- #endif /* _LINUX_FPGA_BRIDGE_H */
+diff --git a/tools/perf/ui/browser.h b/tools/perf/ui/browser.h
+index 510ce45540501..6e98d5f8f71cc 100644
+--- a/tools/perf/ui/browser.h
++++ b/tools/perf/ui/browser.h
+@@ -21,7 +21,7 @@ struct ui_browser {
+ 	u8	      extra_title_lines;
+ 	int	      current_color;
+ 	void	      *priv;
+-	const char    *title;
++	char	      *title;
+ 	char	      *helpline;
+ 	const char    *no_samples_msg;
+ 	void 	      (*refresh_dimensions)(struct ui_browser *browser);
 -- 
 2.43.0
 
