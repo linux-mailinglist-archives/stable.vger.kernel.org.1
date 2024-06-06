@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-49696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184E58FEE77
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A298FECC5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EB86285887
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 595311C261FE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044531C3733;
-	Thu,  6 Jun 2024 14:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BDAD19B5A6;
+	Thu,  6 Jun 2024 14:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xds8PIF+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icHfkhrM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77771C3730;
-	Thu,  6 Jun 2024 14:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE905198A3B;
+	Thu,  6 Jun 2024 14:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683663; cv=none; b=cbCwfr3ztieOm7ERCPT9sY45X12N55ojTVtQ5w65A3ORZsx62uKlvmfslZhf4TLDz16E+Lhp4vB5VJ2TkmL5/ud377msbSDom3/nqc9ZklQciFZcHKuhR3Pkt1kVP/2dp4UdHR7ZgQIr7ohyVKoT5iw//JhdP6C0U5dkvWBWLa8=
+	t=1717683407; cv=none; b=MSI6pNj4b6snzI0cb2QhNS6dl0VNLvTYaVS65UHg4yQTlQFovhjGBB+gZHR1rpLs7/cKOxPs8L9e+OxuJ52hgbTjDpBt0N242l1W6dJJ7isLzWe2UQMRxK03lZilTeSRYIkn84nYydbbuU8yH2P9t5aUF8odHst2w2ArFbYVYA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683663; c=relaxed/simple;
-	bh=ttMfCjVPfVQ7rOjaExdEcpTKVNAUdmoIw0CSeNcQaWI=;
+	s=arc-20240116; t=1717683407; c=relaxed/simple;
+	bh=Qsj4TC1o2UUkiW/kLd6yGG3ZLm1OYSfwNkQBt3JNCEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PPr80zDFTeWqpvRF5dU91sX7U4PUQqnynLm349FIlpYXDoPEmK7MGNtWtwYUfY9x6UeJ+MmZpcUoTbxJfqbzonJPQCvuKGxQ6RyI6wd6Cq0Ufy9to5x5/Il10sYgUjZIzjzuVqxoWojb0U8m9lRb5rItuV02ByT+qioFEonkOQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xds8PIF+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 958EAC2BD10;
-	Thu,  6 Jun 2024 14:21:03 +0000 (UTC)
+	 MIME-Version; b=XDw015dGLr/cFRrryRqwmqf+/MG9Lb6IeYAIxUYOiB7RBgtAX0XX73cFC+lUavM11jnjV3EOHJKdwI0C6rRnP/f/QMDEaDPkGL+btdkUibBR8d/H+61nXboGR1k73yXyAn4KeQkxpWVInPF/IxSC2IfzWSWIrepXxoMbWA4BGeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icHfkhrM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD195C4AF0A;
+	Thu,  6 Jun 2024 14:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683663;
-	bh=ttMfCjVPfVQ7rOjaExdEcpTKVNAUdmoIw0CSeNcQaWI=;
+	s=korg; t=1717683406;
+	bh=Qsj4TC1o2UUkiW/kLd6yGG3ZLm1OYSfwNkQBt3JNCEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xds8PIF+3PelI27eH9XquxXROv6+4poOr3S9l0tkgUish8QWDqhSc21ZZcvkiIM9Y
-	 oBUXAOxktdyYnGHmQOSo971Pa2eBNvYHzZ5s3iDoj0k/7i0X/5Smfl/KKpKrjfodXl
-	 /nsTXjjWsA+QJDLESJWDhgNU+kaxrvUgcGUqAMk4=
+	b=icHfkhrMe+8Yly8Ub7GFDxifXhS9pVsiCmszDhWD8fqzXI2U99LXIl9D0zvnOQPzm
+	 1kXZUKYRzubbEL2PhNZKpKpBdtavO8O0bvi8GLOvgEAxRdd/q0D5JZiAbxSzMg9A6x
+	 OWIrgxz9CezkmORsUS5tstGu5ebcX+FqfwOG+NFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 547/744] iio: accel: mxc4005: allow module autoloading via OF compatible
+Subject: [PATCH 6.1 290/473] serial: max3100: Lock port->lock when calling uart_handle_cts_change()
 Date: Thu,  6 Jun 2024 16:03:39 +0200
-Message-ID: <20240606131749.993268936@linuxfoundation.org>
+Message-ID: <20240606131709.476003315@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 4d7c16d08d248952c116f2eb9b7b5abc43a19688 ]
+[ Upstream commit 77ab53371a2066fdf9b895246505f5ef5a4b5d47 ]
 
-Add OF device table with compatible strings to allow automatic module
-loading.
+uart_handle_cts_change() has to be called with port lock taken,
+Since we run it in a separate work, the lock may not be taken at
+the time of running. Make sure that it's taken by explicitly doing
+that. Without it we got a splat:
 
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20231004-mxc4005-device-tree-support-v1-2-e7c0faea72e4@bootlin.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 6b8cffdc4a31 ("iio: accel: mxc4005: Reset chip on probe() and resume()")
+  WARNING: CPU: 0 PID: 10 at drivers/tty/serial/serial_core.c:3491 uart_handle_cts_change+0xa6/0xb0
+  ...
+  Workqueue: max3100-0 max3100_work [max3100]
+  RIP: 0010:uart_handle_cts_change+0xa6/0xb0
+  ...
+   max3100_handlerx+0xc5/0x110 [max3100]
+   max3100_work+0x12a/0x340 [max3100]
+
+Fixes: 7831d56b0a35 ("tty: MAX3100")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240402195306.269276-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/mxc4005.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/tty/serial/max3100.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
-index b608aa5467175..88f0bf2cc1d3f 100644
---- a/drivers/iio/accel/mxc4005.c
-+++ b/drivers/iio/accel/mxc4005.c
-@@ -486,6 +486,13 @@ static const struct acpi_device_id mxc4005_acpi_match[] = {
- };
- MODULE_DEVICE_TABLE(acpi, mxc4005_acpi_match);
+diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
+index c69602f356fdc..1c4a2b1b1f690 100644
+--- a/drivers/tty/serial/max3100.c
++++ b/drivers/tty/serial/max3100.c
+@@ -213,7 +213,7 @@ static int max3100_sr(struct max3100_port *s, u16 tx, u16 *rx)
+ 	return 0;
+ }
  
-+static const struct of_device_id mxc4005_of_match[] = {
-+	{ .compatible = "memsic,mxc4005", },
-+	{ .compatible = "memsic,mxc6655", },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, mxc4005_of_match);
+-static int max3100_handlerx(struct max3100_port *s, u16 rx)
++static int max3100_handlerx_unlocked(struct max3100_port *s, u16 rx)
+ {
+ 	unsigned int ch, flg, status = 0;
+ 	int ret = 0, cts;
+@@ -253,6 +253,17 @@ static int max3100_handlerx(struct max3100_port *s, u16 rx)
+ 	return ret;
+ }
+ 
++static int max3100_handlerx(struct max3100_port *s, u16 rx)
++{
++	unsigned long flags;
++	int ret;
 +
- static const struct i2c_device_id mxc4005_id[] = {
- 	{"mxc4005",	0},
- 	{"mxc6655",	0},
-@@ -497,6 +504,7 @@ static struct i2c_driver mxc4005_driver = {
- 	.driver = {
- 		.name = MXC4005_DRV_NAME,
- 		.acpi_match_table = ACPI_PTR(mxc4005_acpi_match),
-+		.of_match_table = mxc4005_of_match,
- 	},
- 	.probe		= mxc4005_probe,
- 	.id_table	= mxc4005_id,
++	uart_port_lock_irqsave(&s->port, &flags);
++	ret = max3100_handlerx_unlocked(s, rx);
++	uart_port_unlock_irqrestore(&s->port, flags);
++	return ret;
++}
++
+ static void max3100_work(struct work_struct *w)
+ {
+ 	struct max3100_port *s = container_of(w, struct max3100_port, work);
 -- 
 2.43.0
 
