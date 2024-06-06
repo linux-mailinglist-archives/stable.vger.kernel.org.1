@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-49304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE0648FECB6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 209D48FE995
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C0F61F2495A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26732880D3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25281B29A5;
-	Thu,  6 Jun 2024 14:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080E8198858;
+	Thu,  6 Jun 2024 14:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TI1DwPUP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vab8hbBl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B081B29A4;
-	Thu,  6 Jun 2024 14:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A0E19AD5C;
+	Thu,  6 Jun 2024 14:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683400; cv=none; b=BJVsO/2LrOmVsZUWhDBUz48XlIsXdUqEdD9htutACw/wxu+Y4w7sM/9BARHOF4nQ4zcBg5F9Dr291nBkImOeIMalhvHJYnBv3prdM8GJW7uccfQaHIWSOx1q7kaFwk50UNDQUnRFB4xmAKcxNT1sNM3PHsH1VmkvcK55iOkcQro=
+	t=1717683042; cv=none; b=rsB3ZNvjRNSPdHuIRpfz7brVb+nvpq4tn18zQQEH2/cewW8cJUOeG6YchuUfCrF4ahTFbKGiBooWpM5HY80QMSs1NWkzX171R6PIbpXPtMENBS4mFZ0/vcZ3FZ/93wOUFzw+NjSlQrZ9ABTeUh1KilrYqeIyVKInySGqJ9LAm9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683400; c=relaxed/simple;
-	bh=PgQuOTiMSvTQfIXBm9o8ecdj8N/nCMZVoBVQDc42KaA=;
+	s=arc-20240116; t=1717683042; c=relaxed/simple;
+	bh=3T2eAvkedQWt6gtNeiYmQ0LFPZzM/kWLERgIOHGZcvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVpzxWkD4s7PphBhwabjQEZKPeHOj4QRrb/2WVKso871HkNGkn+nRjATmYPKcjFzcXD3do03pSpUo8f1ePUw+DOF2RNeD3lENlhgVQNhYN1nw1MM8yaTUHuwJ6k7gWAw/w8e0NcOOJkNZmaq6ILbRd+IwUMyh2qaGEobIGgTcKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TI1DwPUP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E55CC2BD10;
-	Thu,  6 Jun 2024 14:16:40 +0000 (UTC)
+	 MIME-Version; b=cEVSUWxZFIvLIaTebDliFSBlhiG+4faPciVDqvkaKUvbH42pWybOwdr7qTv7YhwusnW6O3CrzqxKuwcAjMy5hm0bZL4LzMZ98s+0LcMO49jbCy6Z0drGSKVpB+OTJc36NMoFMd3lxdQjaOBPxu6bgoKm/Iq+qSTA5oc4ri0rwkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vab8hbBl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE0BC2BD10;
+	Thu,  6 Jun 2024 14:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683400;
-	bh=PgQuOTiMSvTQfIXBm9o8ecdj8N/nCMZVoBVQDc42KaA=;
+	s=korg; t=1717683041;
+	bh=3T2eAvkedQWt6gtNeiYmQ0LFPZzM/kWLERgIOHGZcvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TI1DwPUPobqmb3MboiiyRUryADbIqoxDAuGy73Tm7hRItBJCoHSb9Oe4K+RRc/BfI
-	 WuifVWecX1qrresF62ZpR++cY/c/OpXVSooUPhG3c8wwO4NC6XCukzMZIzgwv3XP7w
-	 Br6USAvvOO3wZjSn3Z9kgc1vWjEC9VTiUiLu7bvE=
+	b=vab8hbBlp0RI52FLtfw5MHmIkb3v/RrCwakVTBsvc4VQ5m9PvyZlQfVs4B7lCL0m5
+	 5oWaB1ndw0Gwa/MF5iYc4c1tDtW3Qisgg/IkWuAMMgFdQzNsvi+RaaenIrwKue/Flr
+	 R5lln17PoQP4WTXMlWG8WVag32lCabQveoqrVjK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Andrea Mayer <andrea.mayer@uniroma2.it>,
+	Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 284/473] f2fs: fix to wait on page writeback in __clone_blkaddrs()
+Subject: [PATCH 6.9 234/374] ipv6: sr: fix missing sk_buff release in seg6_input_core
 Date: Thu,  6 Jun 2024 16:03:33 +0200
-Message-ID: <20240606131709.280109276@linuxfoundation.org>
+Message-ID: <20240606131659.657466875@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
 
-[ Upstream commit d3876e34e7e789e2cbdd782360fef2a777391082 ]
+[ Upstream commit 5447f9708d9e4c17a647b16a9cb29e9e02820bd9 ]
 
-In below race condition, dst page may become writeback status
-in __clone_blkaddrs(), it needs to wait writeback before update,
-fix it.
+The seg6_input() function is responsible for adding the SRH into a
+packet, delegating the operation to the seg6_input_core(). This function
+uses the skb_cow_head() to ensure that there is sufficient headroom in
+the sk_buff for accommodating the link-layer header.
+In the event that the skb_cow_header() function fails, the
+seg6_input_core() catches the error but it does not release the sk_buff,
+which will result in a memory leak.
 
-Thread A				GC Thread
-- f2fs_move_file_range
-  - filemap_write_and_wait_range(dst)
-					- gc_data_segment
-					 - f2fs_down_write(dst)
-					 - move_data_page
-					  - set_page_writeback(dst_page)
-					  - f2fs_submit_page_write
-					 - f2fs_up_write(dst)
-  - f2fs_down_write(dst)
-  - __exchange_data_block
-   - __clone_blkaddrs
-    - f2fs_get_new_data_page
-    - memcpy_page
+This issue was introduced in commit af3b5158b89d ("ipv6: sr: fix BUG due
+to headroom too small after SRH push") and persists even after commit
+7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane"),
+where the entire seg6_input() code was refactored to deal with netfilter
+hooks.
 
-Fixes: 0a2aa8fbb969 ("f2fs: refactor __exchange_data_block for speed up")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+The proposed patch addresses the identified memory leak by requiring the
+seg6_input_core() function to release the sk_buff in the event that
+skb_cow_head() fails.
+
+Fixes: af3b5158b89d ("ipv6: sr: fix BUG due to headroom too small after SRH push")
+Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv6/seg6_iptunnel.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 2fbc8d89c600b..9b325290d6a54 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1314,6 +1314,9 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
- 				f2fs_put_page(psrc, 1);
- 				return PTR_ERR(pdst);
- 			}
-+
-+			f2fs_wait_on_page_writeback(pdst, DATA, true, true);
-+
- 			memcpy_page(pdst, 0, psrc, 0, PAGE_SIZE);
- 			set_page_dirty(pdst);
- 			set_page_private_gcing(pdst);
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 03b877ff45588..a75df2ec8db0d 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -459,10 +459,8 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 	int err;
+ 
+ 	err = seg6_do_srh(skb);
+-	if (unlikely(err)) {
+-		kfree_skb(skb);
+-		return err;
+-	}
++	if (unlikely(err))
++		goto drop;
+ 
+ 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+@@ -486,7 +484,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 
+ 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 	if (unlikely(err))
+-		return err;
++		goto drop;
+ 
+ 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
+ 		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
+@@ -494,6 +492,9 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 			       skb_dst(skb)->dev, seg6_input_finish);
+ 
+ 	return seg6_input_finish(dev_net(skb->dev), NULL, skb);
++drop:
++	kfree_skb(skb);
++	return err;
+ }
+ 
+ static int seg6_input_nf(struct sk_buff *skb)
 -- 
 2.43.0
 
