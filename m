@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-49703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80F08FEE7D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBE98FECD5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8BA91C254D3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D0BB283413
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943FE197532;
-	Thu,  6 Jun 2024 14:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C628B196C7B;
+	Thu,  6 Jun 2024 14:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcXutyEd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9qWa+wo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541C5196D90;
-	Thu,  6 Jun 2024 14:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802C11B29CF;
+	Thu,  6 Jun 2024 14:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683667; cv=none; b=owpv7PSx33O14CrrSXWCim6yrRh2BxvEd0HjV4pJnMrai6t/tvmX0cdSj4KUvLmdQtZMAwUe/st7l51uC8sfMqGwLwwNIbXPqGYvVhUTgMtVyZolyWnmKbNSMHCTAxjMCXT+s5CBtzB9jhBNhepZCffGr5cHslLjMtoReU0vQo8=
+	t=1717683414; cv=none; b=joj/BMS8hSTJamo4oYo2rlvkLcZIVoRi/5B/N9+Iq7+VFKzZW2ZxPf/7vALhAWp1w3XrpwFaFrxdVjwGZHGN0foRb8BaKLAw/BrumKC/Sw+H9GAZuroMf5hFqmqtQ9aUwoRDWG2eFfsm5/S1/5L57ajDmU9lnyWGAv2kIiCdluk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683667; c=relaxed/simple;
-	bh=hW9t5STaZj9wdX+JzmK5zosJGo7lEpDnDV2uVWy4qAI=;
+	s=arc-20240116; t=1717683414; c=relaxed/simple;
+	bh=KTK4qN/8k3Eg8etAYmPqdlcXR0TBwTNuGNkS+yrcvJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aGpU01VqNEyiCcb0w0O17UZSfwnta9Tg0uGEs2j2iMXVF76Uh+Gf5C3P6y+WvvvoiRGqzqNjM5wsIh8U5SHT/sk2dQgAZdNwMPyzNJkxj016xTbFM1yJiM1bGxliVhMdmL/VmftNmlWC7wK2S6g1jjvQgu2B+FPWfPDTRmEMe1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcXutyEd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E8DC2BD10;
-	Thu,  6 Jun 2024 14:21:07 +0000 (UTC)
+	 MIME-Version; b=knY96q+lxaPOAv1LxIjKDJ+rhZ7Zc0XXul/3D0wtXZdTFq2YM4AdIDRESqs+07MO+BhMVF/TFX8DfHwQXCojN9ODQXT1dayjdKd9XmOPuPl3XJbr661QEzz3YYxm4XPPWJkOho09f/rLoZFfpPjrKdP3R6EEq2k20THIkDu3BjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9qWa+wo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61BF0C32781;
+	Thu,  6 Jun 2024 14:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683667;
-	bh=hW9t5STaZj9wdX+JzmK5zosJGo7lEpDnDV2uVWy4qAI=;
+	s=korg; t=1717683414;
+	bh=KTK4qN/8k3Eg8etAYmPqdlcXR0TBwTNuGNkS+yrcvJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KcXutyEdp1uJPk4wtarHvetY2+SPIFU/xXfE6iv2ReM+g46NvWxdWu+xnaVNk5VYX
-	 7f74RpwM3stStFRSnqbb9yDr+FDHX0aFMm9oZYaDVn8lhSpRLvCAtdHqnn9ovk9jUO
-	 0uP+WY8ELcG84D4t5H72RMWwKLST8Gi+eekKO7+s=
+	b=t9qWa+woGGhpn3dr2cyrg5ZvdY0GLo6TQfYKG93SpXKv1nAJioS33t8ZbHzG1tYd7
+	 OulpE/6oItYzEllNZq4ZNZpv76a1fXWk1KRutYRiIs/nsxqfAZ/5v7DDZrn7s/drWG
+	 /7JnhLExGezwe/JeQuTThXVXVsnIS0F6KQHw4UGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 553/744] eventfs: Create eventfs_root_inode to store dentry
-Date: Thu,  6 Jun 2024 16:03:45 +0200
-Message-ID: <20240606131750.194303597@linuxfoundation.org>
+Subject: [PATCH 6.1 297/473] arm64: dts: meson: fix S4 power-controller node
+Date: Thu,  6 Jun 2024 16:03:46 +0200
+Message-ID: <20240606131709.721260833@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,197 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 
-[ Upstream commit c3137ab6318d56370dd5541ebf027ddfc0c8557c ]
+[ Upstream commit 72907de9051dc2aa7b55c2a020e2872184ac17cd ]
 
-Only the root "events" directory stores a dentry. There's no reason to
-hold a dentry pointer for every eventfs_inode as it is never set except
-for the root "events" eventfs_inode.
+The power-controller module works well by adding its parent
+node secure-monitor.
 
-Create a eventfs_root_inode structure that holds the events_dir dentry.
-The "events" eventfs_inode *is* special, let it have its own descriptor.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240201161617.658992558@goodmis.org
-
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: b63db58e2fa5 ("eventfs/tracing: Add callback for release of an eventfs_inode")
+Fixes: 085f7a298a14 ("arm64: dts: add support for S4 power domain controller")
+Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240412-fix-secpwr-s4-v2-1-3802fd936d77@amlogic.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/event_inode.c | 65 +++++++++++++++++++++++++++++++++-------
- fs/tracefs/internal.h    |  2 --
- 2 files changed, 55 insertions(+), 12 deletions(-)
+ arch/arm64/boot/dts/amlogic/meson-s4.dtsi | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 47228de4c17af..6d3a11b0c606a 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -35,6 +35,17 @@ static DEFINE_MUTEX(eventfs_mutex);
- /* Choose something "unique" ;-) */
- #define EVENTFS_FILE_INODE_INO		0x12c4e37
+diff --git a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
+index 372a03762d69b..a1c55b047708c 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
+@@ -61,10 +61,15 @@ xtal: xtal-clk {
+ 		#clock-cells = <0>;
+ 	};
  
-+struct eventfs_root_inode {
-+	struct eventfs_inode		ei;
-+	struct dentry			*events_dir;
-+};
+-	pwrc: power-controller {
+-		compatible = "amlogic,meson-s4-pwrc";
+-		#power-domain-cells = <1>;
+-		status = "okay";
++	firmware {
++		sm: secure-monitor {
++			compatible = "amlogic,meson-gxbb-sm";
 +
-+static struct eventfs_root_inode *get_root_inode(struct eventfs_inode *ei)
-+{
-+	WARN_ON_ONCE(!ei->is_events);
-+	return container_of(ei, struct eventfs_root_inode, ei);
-+}
-+
- /* Just try to make something consistent and unique */
- static int eventfs_dir_ino(struct eventfs_inode *ei)
- {
-@@ -72,12 +83,18 @@ enum {
- static void release_ei(struct kref *ref)
- {
- 	struct eventfs_inode *ei = container_of(ref, struct eventfs_inode, kref);
-+	struct eventfs_root_inode *rei;
++			pwrc: power-controller {
++				compatible = "amlogic,meson-s4-pwrc";
++				#power-domain-cells = <1>;
++			};
++		};
+ 	};
  
- 	WARN_ON_ONCE(!ei->is_freed);
- 
- 	kfree(ei->entry_attrs);
- 	kfree_const(ei->name);
--	kfree_rcu(ei, rcu);
-+	if (ei->is_events) {
-+		rei = get_root_inode(ei);
-+		kfree_rcu(rei, ei.rcu);
-+	} else {
-+		kfree_rcu(ei, rcu);
-+	}
- }
- 
- static inline void put_ei(struct eventfs_inode *ei)
-@@ -418,19 +435,43 @@ static struct dentry *lookup_dir_entry(struct dentry *dentry,
- 	return NULL;
- }
- 
-+static inline struct eventfs_inode *init_ei(struct eventfs_inode *ei, const char *name)
-+{
-+	ei->name = kstrdup_const(name, GFP_KERNEL);
-+	if (!ei->name)
-+		return NULL;
-+	kref_init(&ei->kref);
-+	return ei;
-+}
-+
- static inline struct eventfs_inode *alloc_ei(const char *name)
- {
- 	struct eventfs_inode *ei = kzalloc(sizeof(*ei), GFP_KERNEL);
-+	struct eventfs_inode *result;
- 
- 	if (!ei)
- 		return NULL;
- 
--	ei->name = kstrdup_const(name, GFP_KERNEL);
--	if (!ei->name) {
-+	result = init_ei(ei, name);
-+	if (!result)
- 		kfree(ei);
-+
-+	return result;
-+}
-+
-+static inline struct eventfs_inode *alloc_root_ei(const char *name)
-+{
-+	struct eventfs_root_inode *rei = kzalloc(sizeof(*rei), GFP_KERNEL);
-+	struct eventfs_inode *ei;
-+
-+	if (!rei)
- 		return NULL;
--	}
--	kref_init(&ei->kref);
-+
-+	rei->ei.is_events = 1;
-+	ei = init_ei(&rei->ei, name);
-+	if (!ei)
-+		kfree(rei);
-+
- 	return ei;
- }
- 
-@@ -719,6 +760,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 						int size, void *data)
- {
- 	struct dentry *dentry = tracefs_start_creating(name, parent);
-+	struct eventfs_root_inode *rei;
- 	struct eventfs_inode *ei;
- 	struct tracefs_inode *ti;
- 	struct inode *inode;
-@@ -731,7 +773,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	if (IS_ERR(dentry))
- 		return ERR_CAST(dentry);
- 
--	ei = alloc_ei(name);
-+	ei = alloc_root_ei(name);
- 	if (!ei)
- 		goto fail;
- 
-@@ -740,10 +782,11 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 		goto fail;
- 
- 	// Note: we have a ref to the dentry from tracefs_start_creating()
--	ei->events_dir = dentry;
-+	rei = get_root_inode(ei);
-+	rei->events_dir = dentry;
-+
- 	ei->entries = entries;
- 	ei->nr_entries = size;
--	ei->is_events = 1;
- 	ei->data = data;
- 
- 	/* Save the ownership of this directory */
-@@ -846,13 +889,15 @@ void eventfs_remove_dir(struct eventfs_inode *ei)
-  */
- void eventfs_remove_events_dir(struct eventfs_inode *ei)
- {
-+	struct eventfs_root_inode *rei;
- 	struct dentry *dentry;
- 
--	dentry = ei->events_dir;
-+	rei = get_root_inode(ei);
-+	dentry = rei->events_dir;
- 	if (!dentry)
- 		return;
- 
--	ei->events_dir = NULL;
-+	rei->events_dir = NULL;
- 	eventfs_remove_dir(ei);
- 
- 	/*
-diff --git a/fs/tracefs/internal.h b/fs/tracefs/internal.h
-index b79ab2827b504..f704d8348357e 100644
---- a/fs/tracefs/internal.h
-+++ b/fs/tracefs/internal.h
-@@ -39,7 +39,6 @@ struct eventfs_attr {
-  * @children:	link list into the child eventfs_inode
-  * @entries:	the array of entries representing the files in the directory
-  * @name:	the name of the directory to create
-- * @events_dir: the dentry of the events directory
-  * @entry_attrs: Saved mode and ownership of the @d_children
-  * @data:	The private data to pass to the callbacks
-  * @attr:	Saved mode and ownership of eventfs_inode itself
-@@ -57,7 +56,6 @@ struct eventfs_inode {
- 	struct list_head		children;
- 	const struct eventfs_entry	*entries;
- 	const char			*name;
--	struct dentry			*events_dir;
- 	struct eventfs_attr		*entry_attrs;
- 	void				*data;
- 	struct eventfs_attr		attr;
+ 	soc {
 -- 
 2.43.0
 
