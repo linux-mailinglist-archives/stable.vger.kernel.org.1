@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-48863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4F6C8FEADA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E54DB8FE886
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 636BE1F22693
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C892D1C24155
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3691A1878;
-	Thu,  6 Jun 2024 14:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48FA3196C6F;
+	Thu,  6 Jun 2024 14:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4UWnTTw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOwpzyNa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD781A186B;
-	Thu,  6 Jun 2024 14:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06680196C62;
+	Thu,  6 Jun 2024 14:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683184; cv=none; b=mrLh1BdPE1a2swWscaEWc21kW1DkSJMGmGDu2netFy9ySxi0gc95KBUU0B5FQCw+RJ/ApETN16VWlTM/jbAMGAe7xUlMp9ddcvBwev3vhpB58FfDItBtKlEBHC/Ctg3gHvrNPmKIvu688QlzJebvcx+KpGUmqn53b0E9AesuFiQ=
+	t=1717682904; cv=none; b=guQJScYeCNRLH/yRRkUxF0e4BSeXwztJVGAQrjz/e1ZDk1+YlBkvZrGQSzLOByrweXOIWEQCfcSKxl0F9WXT2n5Vm/sGQMi4v6/TFCTYiUi7I1ANC3wWJQ0chGOF+FkRXVqVVNmna2QjtGdprrLv7YRM7widT8fm9MjaiSqA8fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683184; c=relaxed/simple;
-	bh=iaJBjcSCNYxOIBUwVlVOKMJAofRzPVEdTU9Nquoh1+U=;
+	s=arc-20240116; t=1717682904; c=relaxed/simple;
+	bh=5VWzQKbEpsNnMWaThvLJVy6XcffFL8k4zzPXVI8E0X4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y40jX0S7EbAKU0lSuYfbVZAoB7TA88FRoU8h44QHypvndQTkXrf9+q1I21ZmBe/2oZb/3RJNQz7iZvv28MZU3HOl5XWez/CiCa27A4D+Qa3GIeAuhHHG1jZ9rpeBtkbMf2AHcUNvx8m0Xa8A8caKN74FfCtTI0XI/s76ZstG1ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4UWnTTw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB48C2BD10;
-	Thu,  6 Jun 2024 14:13:04 +0000 (UTC)
+	 MIME-Version; b=YxQ4irSCY3mSn00zqGrO4VhjryfTWbB8a/J3nD3wjpEVTVp/UyFNm0Z1uewpdtsT2NMS1XYRXvzM66//FGusG0sEhKsse+OxPaN/VTcK/fY9Pvi+6HMgpeE77keUi5YPJR5CIUv+w3s+gpkJrHUNQ0PzCipec1JXXcnGmV4lEl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOwpzyNa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949F7C2BD10;
+	Thu,  6 Jun 2024 14:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683184;
-	bh=iaJBjcSCNYxOIBUwVlVOKMJAofRzPVEdTU9Nquoh1+U=;
+	s=korg; t=1717682903;
+	bh=5VWzQKbEpsNnMWaThvLJVy6XcffFL8k4zzPXVI8E0X4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4UWnTTwDb2RgDcoqabD5a/LbatqErMFqDEcg0hhS6pNe6cI2+l7iltTzJDuDeJ5X
-	 GtmHxUPZstfxskcfbhhPhctUhl2nQWMhXCkmjWOwT/GZ/bwpuOB6g/7IaEUyi7P05h
-	 4W5ZMdTa1b8rw2roFNmxVIIbc/9ue1nP8lHpbQh8=
+	b=YOwpzyNaa7yiZ6eO3z/rwphbQ+H6aQbMIQG9cD7d6DjZvraHjjLgdv/kRkoWA0aVY
+	 0iuXwywOp4rdzsCDzE6GRIF19xESRs5j+iPjJELy8aair0fYQLwbI+dN8YcqZgYit5
+	 8wDky2yrCp7wIHnN33tbtqJgMH0r+ifpUBtaH8B4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+83e7f982ca045ab4405c@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 058/473] x86/mm: Remove broken vsyscall emulation code from the page fault code
+	Yi Zhang <yi.zhang@redhat.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 008/374] f2fs: multidev: fix to recognize valid zero block address
 Date: Thu,  6 Jun 2024 15:59:47 +0200
-Message-ID: <20240606131701.797098556@linuxfoundation.org>
+Message-ID: <20240606131652.004682760@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,233 +64,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 02b670c1f88e78f42a6c5aee155c7b26960ca054 ]
+[ Upstream commit 33e62cd7b4c281cd737c62e5d8c4f0e602a8c5c5 ]
 
-The syzbot-reported stack trace from hell in this discussion thread
-actually has three nested page faults:
+As reported by Yi Zhang in mailing list [1], kernel warning was catched
+during zbd/010 test as below:
 
-  https://lore.kernel.org/r/000000000000d5f4fc0616e816d4@google.com
+./check zbd/010
+zbd/010 (test gap zone support with F2FS)                    [failed]
+    runtime    ...  3.752s
+    something found in dmesg:
+    [ 4378.146781] run blktests zbd/010 at 2024-02-18 11:31:13
+    [ 4378.192349] null_blk: module loaded
+    [ 4378.209860] null_blk: disk nullb0 created
+    [ 4378.413285] scsi_debug:sdebug_driver_probe: scsi_debug: trim
+poll_queues to 0. poll_q/nr_hw = (0/1)
+    [ 4378.422334] scsi host15: scsi_debug: version 0191 [20210520]
+                     dev_size_mb=1024, opts=0x0, submit_queues=1, statistics=0
+    [ 4378.434922] scsi 15:0:0:0: Direct-Access-ZBC Linux
+scsi_debug       0191 PQ: 0 ANSI: 7
+    [ 4378.443343] scsi 15:0:0:0: Power-on or device reset occurred
+    [ 4378.449371] sd 15:0:0:0: Attached scsi generic sg5 type 20
+    [ 4378.449418] sd 15:0:0:0: [sdf] Host-managed zoned block device
+    ...
+    (See '/mnt/tests/gitlab.com/api/v4/projects/19168116/repository/archive.zip/storage/blktests/blk/blktests/results/nodev/zbd/010.dmesg'
 
-... and I think that's actually the important thing here:
+WARNING: CPU: 22 PID: 44011 at fs/iomap/iter.c:51
+CPU: 22 PID: 44011 Comm: fio Not tainted 6.8.0-rc3+ #1
+RIP: 0010:iomap_iter+0x32b/0x350
+Call Trace:
+ <TASK>
+ __iomap_dio_rw+0x1df/0x830
+ f2fs_file_read_iter+0x156/0x3d0 [f2fs]
+ aio_read+0x138/0x210
+ io_submit_one+0x188/0x8c0
+ __x64_sys_io_submit+0x8c/0x1a0
+ do_syscall_64+0x86/0x170
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
 
- - the first page fault is from user space, and triggers the vsyscall
-   emulation.
+Shinichiro Kawasaki helps to analyse this issue and proposes a potential
+fixing patch in [2].
 
- - the second page fault is from __do_sys_gettimeofday(), and that should
-   just have caused the exception that then sets the return value to
-   -EFAULT
+Quoted from reply of Shinichiro Kawasaki:
 
- - the third nested page fault is due to _raw_spin_unlock_irqrestore() ->
-   preempt_schedule() -> trace_sched_switch(), which then causes a BPF
-   trace program to run, which does that bpf_probe_read_compat(), which
-   causes that page fault under pagefault_disable().
+"I confirmed that the trigger commit is dbf8e63f48af as Yi reported. I took a
+look in the commit, but it looks fine to me. So I thought the cause is not
+in the commit diff.
 
-It's quite the nasty backtrace, and there's a lot going on.
+I found the WARN is printed when the f2fs is set up with multiple devices,
+and read requests are mapped to the very first block of the second device in the
+direct read path. In this case, f2fs_map_blocks() and f2fs_map_blocks_cached()
+modify map->m_pblk as the physical block address from each block device. It
+becomes zero when it is mapped to the first block of the device. However,
+f2fs_iomap_begin() assumes that map->m_pblk is the physical block address of the
+whole f2fs, across the all block devices. It compares map->m_pblk against
+NULL_ADDR == 0, then go into the unexpected branch and sets the invalid
+iomap->length. The WARN catches the invalid iomap->length.
 
-The problem is literally the vsyscall emulation, which sets
+This WARN is printed even for non-zoned block devices, by following steps.
 
-        current->thread.sig_on_uaccess_err = 1;
+ - Create two (non-zoned) null_blk devices memory backed with 128MB size each:
+   nullb0 and nullb1.
+ # mkfs.f2fs /dev/nullb0 -c /dev/nullb1
+ # mount -t f2fs /dev/nullb0 "${mount_dir}"
+ # dd if=/dev/zero of="${mount_dir}/test.dat" bs=1M count=192
+ # dd if="${mount_dir}/test.dat" of=/dev/null bs=1M count=192 iflag=direct
 
-and that causes the fixup_exception() code to send the signal *despite* the
-exception being caught.
+..."
 
-And I think that is in fact completely bogus.  It's completely bogus
-exactly because it sends that signal even when it *shouldn't* be sent -
-like for the BPF user mode trace gathering.
+So, the root cause of this issue is: when multi-devices feature is on,
+f2fs_map_blocks() may return zero blkaddr in non-primary device, which is
+a verified valid block address, however, f2fs_iomap_begin() treats it as
+an invalid block address, and then it triggers the warning in iomap
+framework code.
 
-In other words, I think the whole "sig_on_uaccess_err" thing is entirely
-broken, because it makes any nested page-faults do all the wrong things.
+Finally, as discussed, we decide to use a more simple and direct way that
+checking (map.m_flags & F2FS_MAP_MAPPED) condition instead of
+(map.m_pblk != NULL_ADDR) to fix this issue.
 
-Now, arguably, I don't think anybody should enable vsyscall emulation any
-more, but this test case clearly does.
+Thanks a lot for the effort of Yi Zhang and Shinichiro Kawasaki on this
+issue.
 
-I think we should just make the "send SIGSEGV" be something that the
-vsyscall emulation does on its own, not this broken per-thread state for
-something that isn't actually per thread.
+[1] https://lore.kernel.org/linux-f2fs-devel/CAHj4cs-kfojYC9i0G73PRkYzcxCTex=-vugRFeP40g_URGvnfQ@mail.gmail.com/
+[2] https://lore.kernel.org/linux-f2fs-devel/gngdj77k4picagsfdtiaa7gpgnup6fsgwzsltx6milmhegmjff@iax2n4wvrqye/
 
-The x86 page fault code actually tried to deal with the "incorrect nesting"
-by having that:
-
-                if (in_interrupt())
-                        return;
-
-which ignores the sig_on_uaccess_err case when it happens in interrupts,
-but as shown by this example, these nested page faults do not need to be
-about interrupts at all.
-
-IOW, I think the only right thing is to remove that horrendously broken
-code.
-
-The attached patch looks like the ObviouslyCorrect(tm) thing to do.
-
-NOTE! This broken code goes back to this commit in 2011:
-
-  4fc3490114bb ("x86-64: Set siginfo and context on vsyscall emulation faults")
-
-... and back then the reason was to get all the siginfo details right.
-Honestly, I do not for a moment believe that it's worth getting the siginfo
-details right here, but part of the commit says:
-
-    This fixes issues with UML when vsyscall=emulate.
-
-... and so my patch to remove this garbage will probably break UML in this
-situation.
-
-I do not believe that anybody should be running with vsyscall=emulate in
-2024 in the first place, much less if you are doing things like UML. But
-let's see if somebody screams.
-
-Reported-and-tested-by: syzbot+83e7f982ca045ab4405c@syzkaller.appspotmail.com
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/r/CAHk-=wh9D6f7HUkDgZHKmDCHUQmp+Co89GP+b8+z+G56BKeyNg@mail.gmail.com
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Closes: https://lore.kernel.org/linux-f2fs-devel/CAHj4cs-kfojYC9i0G73PRkYzcxCTex=-vugRFeP40g_URGvnfQ@mail.gmail.com/
+Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Fixes: 1517c1a7a445 ("f2fs: implement iomap operations")
+Fixes: 8d3c1fa3fa5e ("f2fs: don't rely on F2FS_MAP_* in f2fs_iomap_begin")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/entry/vsyscall/vsyscall_64.c | 28 ++---------------------
- arch/x86/include/asm/processor.h      |  1 -
- arch/x86/mm/fault.c                   | 33 +--------------------------
- 3 files changed, 3 insertions(+), 59 deletions(-)
+ fs/f2fs/data.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
-index 4af81df133ee8..5d4ca8b942939 100644
---- a/arch/x86/entry/vsyscall/vsyscall_64.c
-+++ b/arch/x86/entry/vsyscall/vsyscall_64.c
-@@ -98,11 +98,6 @@ static int addr_to_vsyscall_nr(unsigned long addr)
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index d9494b5fc7c18..5ef1874b572a6 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -4185,7 +4185,7 @@ static int f2fs_iomap_begin(struct inode *inode, loff_t offset, loff_t length,
+ 	if (WARN_ON_ONCE(map.m_pblk == COMPRESS_ADDR))
+ 		return -EINVAL;
  
- static bool write_ok_or_segv(unsigned long ptr, size_t size)
- {
--	/*
--	 * XXX: if access_ok, get_user, and put_user handled
--	 * sig_on_uaccess_err, this could go away.
--	 */
--
- 	if (!access_ok((void __user *)ptr, size)) {
- 		struct thread_struct *thread = &current->thread;
- 
-@@ -120,10 +115,8 @@ static bool write_ok_or_segv(unsigned long ptr, size_t size)
- bool emulate_vsyscall(unsigned long error_code,
- 		      struct pt_regs *regs, unsigned long address)
- {
--	struct task_struct *tsk;
- 	unsigned long caller;
- 	int vsyscall_nr, syscall_nr, tmp;
--	int prev_sig_on_uaccess_err;
- 	long ret;
- 	unsigned long orig_dx;
- 
-@@ -172,8 +165,6 @@ bool emulate_vsyscall(unsigned long error_code,
- 		goto sigsegv;
- 	}
- 
--	tsk = current;
--
- 	/*
- 	 * Check for access_ok violations and find the syscall nr.
- 	 *
-@@ -234,12 +225,8 @@ bool emulate_vsyscall(unsigned long error_code,
- 		goto do_ret;  /* skip requested */
- 
- 	/*
--	 * With a real vsyscall, page faults cause SIGSEGV.  We want to
--	 * preserve that behavior to make writing exploits harder.
-+	 * With a real vsyscall, page faults cause SIGSEGV.
- 	 */
--	prev_sig_on_uaccess_err = current->thread.sig_on_uaccess_err;
--	current->thread.sig_on_uaccess_err = 1;
--
- 	ret = -EFAULT;
- 	switch (vsyscall_nr) {
- 	case 0:
-@@ -262,23 +249,12 @@ bool emulate_vsyscall(unsigned long error_code,
- 		break;
- 	}
- 
--	current->thread.sig_on_uaccess_err = prev_sig_on_uaccess_err;
--
- check_fault:
- 	if (ret == -EFAULT) {
- 		/* Bad news -- userspace fed a bad pointer to a vsyscall. */
- 		warn_bad_vsyscall(KERN_INFO, regs,
- 				  "vsyscall fault (exploit attempt?)");
--
--		/*
--		 * If we failed to generate a signal for any reason,
--		 * generate one here.  (This should be impossible.)
--		 */
--		if (WARN_ON_ONCE(!sigismember(&tsk->pending.signal, SIGBUS) &&
--				 !sigismember(&tsk->pending.signal, SIGSEGV)))
--			goto sigsegv;
--
--		return true;  /* Don't emulate the ret. */
-+		goto sigsegv;
- 	}
- 
- 	regs->ax = ret;
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 94ea13adb724a..3ed6cc7785037 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -519,7 +519,6 @@ struct thread_struct {
- 	unsigned long		iopl_emul;
- 
- 	unsigned int		iopl_warn:1;
--	unsigned int		sig_on_uaccess_err:1;
- 
- 	/*
- 	 * Protection Keys Register for Userspace.  Loaded immediately on
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index f20636510eb1e..2fc007752ceb1 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -737,39 +737,8 @@ kernelmode_fixup_or_oops(struct pt_regs *regs, unsigned long error_code,
- 	WARN_ON_ONCE(user_mode(regs));
- 
- 	/* Are we prepared to handle this kernel fault? */
--	if (fixup_exception(regs, X86_TRAP_PF, error_code, address)) {
--		/*
--		 * Any interrupt that takes a fault gets the fixup. This makes
--		 * the below recursive fault logic only apply to a faults from
--		 * task context.
--		 */
--		if (in_interrupt())
--			return;
--
--		/*
--		 * Per the above we're !in_interrupt(), aka. task context.
--		 *
--		 * In this case we need to make sure we're not recursively
--		 * faulting through the emulate_vsyscall() logic.
--		 */
--		if (current->thread.sig_on_uaccess_err && signal) {
--			sanitize_error_code(address, &error_code);
--
--			set_signal_archinfo(address, error_code);
--
--			if (si_code == SEGV_PKUERR) {
--				force_sig_pkuerr((void __user *)address, pkey);
--			} else {
--				/* XXX: hwpoison faults will set the wrong code. */
--				force_sig_fault(signal, si_code, (void __user *)address);
--			}
--		}
--
--		/*
--		 * Barring that, we can do the fixup and be happy.
--		 */
-+	if (fixup_exception(regs, X86_TRAP_PF, error_code, address))
- 		return;
--	}
- 
- 	/*
- 	 * AMD erratum #91 manifests as a spurious page fault on a PREFETCH
+-	if (map.m_pblk != NULL_ADDR) {
++	if (map.m_flags & F2FS_MAP_MAPPED) {
+ 		iomap->length = blks_to_bytes(inode, map.m_len);
+ 		iomap->type = IOMAP_MAPPED;
+ 		iomap->flags |= IOMAP_F_MERGED;
 -- 
 2.43.0
 
