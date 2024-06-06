@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-49418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7358A8FED2C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9A088FE9A9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 169632858B5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB7111C25F07
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC191B5806;
-	Thu,  6 Jun 2024 14:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA7D19ADB6;
+	Thu,  6 Jun 2024 14:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxLAX0BD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mk7lEjij"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D127E1B5805;
-	Thu,  6 Jun 2024 14:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3BB198A16;
+	Thu,  6 Jun 2024 14:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683455; cv=none; b=Nn1gJBxkr16dYuipXFdY0MXDPKMG8kZlBMZCW1ltrM4xk4s0eq1PFIcBXqVOdxB4IGJ5/LIXRZJ/3fave+m+cukpiX0Lv3jIuLfEwciBl0P+ZFvpN1PfprtSzv+X9DrxdVgN3Fdfpmrcgcubhjl4fr8ork6IpZHLt2d10xN8LYI=
+	t=1717683052; cv=none; b=UyE0MvmqE/DcoRq+rlDuYouSt64aq94b+OvxJT7I8g/tfRRta+mREHCwJ0j9EBWx2BaUs++IV6kaNhXOdcpWhjC/aFKQcuMbfpL0T6LyYT+QW2lBeOhP+1VPTZHdIVaokhQwrUJuKwurMVPxyFa/5rGdIB3Q/9SmOgh+UcQtjBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683455; c=relaxed/simple;
-	bh=B2lXsrUt8avfhaRMDXWrkogQrwXFeSmvhvba+FQXFCU=;
+	s=arc-20240116; t=1717683052; c=relaxed/simple;
+	bh=sQ3cMM86IKeaGdDnND1eHZfDUBiKsjBekt4ksrtrFPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yt1fYStvmI4Iih2O1UPvJAncKo8v3Ilei3nSZTEJUDR7mT4sAS49rJV2ZUQNQ6iTFZKgELTr09gGNUktEsmE/5/cmD5GG6UC7r2FKo3rjweWsbFcXw0jDAjYUmwhcn/nu0dUrqiUxdomLtEZC76+Ml+qz4F2btyK8t2f+hLWJNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxLAX0BD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0736C2BD10;
-	Thu,  6 Jun 2024 14:17:35 +0000 (UTC)
+	 MIME-Version; b=H9Pb+IZgDfBpdZFuq2FpNuxTUdVf5jex4DfM+nbzEUJkfleBfcxxTeBSNob46SQvwS9i7SSqKiiS7Z+uUz4aT3EGMs6nIDCdw77Zu2XzmfNfxFEGd4O5T7dKtGpi6r2JVay0AqdvztWJzuk++m6BWBCJbNv0lhPNolosb9l/WEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mk7lEjij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32F6C4AF19;
+	Thu,  6 Jun 2024 14:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683455;
-	bh=B2lXsrUt8avfhaRMDXWrkogQrwXFeSmvhvba+FQXFCU=;
+	s=korg; t=1717683052;
+	bh=sQ3cMM86IKeaGdDnND1eHZfDUBiKsjBekt4ksrtrFPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yxLAX0BDf/8IcECAxDQuANRWVmhczNamaXgbl5bCw+XFF+BEz7MXbxp1GohQW4V9j
-	 BWoVIcaE5cdqZ7qQsbPeGXMezkET7o2r03Z6/k9KsSnmtHPVqMGmhdBO64Is+QY8Tr
-	 0EOpGRyS0NmQrN/z0iVMLKCeVqUq12Jc5dQaAe7c=
+	b=mk7lEjij7Jy/2lw/DDg6+JccYFaiZNY6R3J8Hzepzgd9IgIyfFUGBPdavnKETl/6X
+	 FPM9w25aHjYewJaF7+FYMa8wH6zfIwrKhCu3jd5znYC8l1JPzOmuuxfp2O0z+K0v6w
+	 zOy0nUQb9Cn2A4R3KtFaO+X/pGHCpyBefjpOc9/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 343/473] f2fs: fix to release node block count in error path of f2fs_new_node_page()
+Subject: [PATCH 6.9 293/374] nvmet: fix ns enable/disable possible hang
 Date: Thu,  6 Jun 2024 16:04:32 +0200
-Message-ID: <20240606131711.252349259@linuxfoundation.org>
+Message-ID: <20240606131701.693141828@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit 0fa4e57c1db263effd72d2149d4e21da0055c316 ]
+[ Upstream commit f97914e35fd98b2b18fb8a092e0a0799f73afdfe ]
 
-It missed to call dec_valid_node_count() to release node block count
-in error path, fix it.
+When disabling an nvmet namespace, there is a period where the
+subsys->lock is released, as the ns disable waits for backend IO to
+complete, and the ns percpu ref to be properly killed. The original
+intent was to avoid taking the subsystem lock for a prolong period as
+other processes may need to acquire it (for example new incoming
+connections).
 
-Fixes: 141170b759e0 ("f2fs: fix to avoid use f2fs_bug_on() in f2fs_new_node_page()")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+However, it opens up a window where another process may come in and
+enable the ns, (re)intiailizing the ns percpu_ref, causing the disable
+sequence to hang.
+
+Solve this by taking the global nvmet_config_sem over the entire configfs
+enable/disable sequence.
+
+Fixes: a07b4970f464 ("nvmet: add a generic NVMe target")
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/target/configfs.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index fcf22a50ff5db..745ecf5523c9b 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1307,6 +1307,7 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
- 	}
- 	if (unlikely(new_ni.blk_addr != NULL_ADDR)) {
- 		err = -EFSCORRUPTED;
-+		dec_valid_node_count(sbi, dn->inode, !ofs);
- 		set_sbi_flag(sbi, SBI_NEED_FSCK);
- 		f2fs_handle_error(sbi, ERROR_INVALID_BLKADDR);
- 		goto fail;
-@@ -1333,7 +1334,6 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
- 	if (ofs == 0)
- 		inc_valid_inode_count(sbi);
- 	return page;
--
- fail:
- 	clear_node_page_dirty(page);
- 	f2fs_put_page(page, 1);
+diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
+index 7fda69395c1ef..dfdff6aba6953 100644
+--- a/drivers/nvme/target/configfs.c
++++ b/drivers/nvme/target/configfs.c
+@@ -676,10 +676,18 @@ static ssize_t nvmet_ns_enable_store(struct config_item *item,
+ 	if (kstrtobool(page, &enable))
+ 		return -EINVAL;
+ 
++	/*
++	 * take a global nvmet_config_sem because the disable routine has a
++	 * window where it releases the subsys-lock, giving a chance to
++	 * a parallel enable to concurrently execute causing the disable to
++	 * have a misaccounting of the ns percpu_ref.
++	 */
++	down_write(&nvmet_config_sem);
+ 	if (enable)
+ 		ret = nvmet_ns_enable(ns);
+ 	else
+ 		nvmet_ns_disable(ns);
++	up_write(&nvmet_config_sem);
+ 
+ 	return ret ? ret : count;
+ }
 -- 
 2.43.0
 
