@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE9B48FEAA2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC448FEC42
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EE392858F3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E04E6282791
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD96B1A0B08;
-	Thu,  6 Jun 2024 14:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CEEB19AD7F;
+	Thu,  6 Jun 2024 14:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nM3xtcpG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7JgIjBX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D48B1A0B04;
-	Thu,  6 Jun 2024 14:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00211AED37;
+	Thu,  6 Jun 2024 14:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683158; cv=none; b=VssKWjWuMsN6RILIO0qoLk36dzf4oRVmj0VdUPNclCgAU6xFZ6DxMXLzYCBiv3CzWawo//Rp7nHkeuelUxbpFkYZ5c4paTtLjqDHYj/I7MLDdowm9Lt2Bj+QnnoUEnFMyDfxsmQcEH9YgtcG9CQ3wRXjFEZc0OsW6ai4T6hXLE0=
+	t=1717683346; cv=none; b=ApZpdQcbb3puTctrRnYT741NByU7qtpWXHyHzvTrSSEhEIr8ZdOf9EnHHhKQZEjZ/RZZrFhAjIqPRMKld9D76OolorbNciKiA2t9/6sINEaL+8I7ZJONeBPNe4QzEkgnORThA0C6iit5Sm5InqJWIM5WnjLSOfo62Mjfwt7gRxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683158; c=relaxed/simple;
-	bh=VVldJC3qWOqChS4GMwb/rZ9/fXXM/Tbzv0DI5hvyfgA=;
+	s=arc-20240116; t=1717683346; c=relaxed/simple;
+	bh=x/1KCcu43p2cG6nRII52x1ib/WSuhc73pIwV/6E+NnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UDgf+XWyZD0ZEKq4Y9HOyP2BPtwChmJmTjISNFI6zH9dXlhQQLbwsCs6L4dxWH6rZVlbIFCsStviZyGVGFUTUEiX7pZ4A+s2LiqCwrD68dQqWBonVXKhx/vbf7g9C2Zdkq1siiwSlzO2+B0DSVR6iochjCPEognVDgjMqq1qgok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nM3xtcpG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA0CC32781;
-	Thu,  6 Jun 2024 14:12:38 +0000 (UTC)
+	 MIME-Version; b=GP4ONgnUHvQzay031aTXrTJaraqpIj9JOnzQZPD0ZmxzwcELxZAeC+/jCw9nflm4rXGdTffkoqGn2Al0cce2a9RrvTxGkQj40BJbeakKxzkfHyGv4S1yOlpYeePU1T+16cj65tmPBzYYmqVDal9AMtqc5MHvcrAFuE/795ng/Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7JgIjBX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED0BC4AF08;
+	Thu,  6 Jun 2024 14:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683158;
-	bh=VVldJC3qWOqChS4GMwb/rZ9/fXXM/Tbzv0DI5hvyfgA=;
+	s=korg; t=1717683346;
+	bh=x/1KCcu43p2cG6nRII52x1ib/WSuhc73pIwV/6E+NnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nM3xtcpGtQk/70nyNWCRP+j3VbF+PkQqWBWJsaE2wbjN957CU9Ra+4RfUeTLoLT1w
-	 KzVu4dyHK4N12qVR9OoksnfInSfb6LosZhhW79NRaBEzQYlCAqUutQtLyXfYMAV+HS
-	 k7/yV358tCf9ueSuAuDrSNkSDeRMH3ijsQozRMFs=
+	b=S7JgIjBX4K1tGNTCRbkn9waqHuqiOK/Tm2W+4AL2UETIhjg4Q+IZnXVxa7bDS07RQ
+	 UFgxAU8JOHvf7I8W+spremwfXfWQ9+0E9DJwomqk0qU0EXXOYKSGgdRivIQ0Plf5dX
+	 nO62W0kVu88NLcbHg2BM1dWV9cSRd/TipkwI7V54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/473] wifi: cfg80211: fix the order of arguments for trace events of the tx_rx_evt class
-Date: Thu,  6 Jun 2024 15:59:18 +0200
-Message-ID: <20240606131700.830484836@linuxfoundation.org>
+Subject: [PATCH 6.6 287/744] drm/meson: vclk: fix calculation of 59.94 fractional rates
+Date: Thu,  6 Jun 2024 15:59:19 +0200
+Message-ID: <20240606131741.610967878@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+From: Christian Hewitt <christianshewitt@gmail.com>
 
-[ Upstream commit 9ef369973cd2c97cce3388d2c0c7e3c056656e8a ]
+[ Upstream commit bfbc68e4d8695497f858a45a142665e22a512ea3 ]
 
-The declarations of the tx_rx_evt class and the rdev_set_antenna event
-use the wrong order of arguments in the TP_ARGS macro.
+Playing 4K media with 59.94 fractional rate (typically VP9) causes the screen to lose
+sync with the following error reported in the system log:
 
-Fix the order of arguments in the TP_ARGS macro.
+[   89.610280] Fatal Error, invalid HDMI vclk freq 593406
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Modetest shows the following:
 
-Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
-Link: https://msgid.link/20240405152431.270267-1-Igor.A.Artemiev@mcst.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+3840x2160 59.94 3840 4016 4104 4400 2160 2168 2178 2250 593407 flags: xxxx, xxxx,
+drm calculated value -------------------------------------^
+
+Change the fractional rate calculation to stop DIV_ROUND_CLOSEST rounding down which
+results in vclk freq failing to match correctly.
+
+Fixes: e5fab2ec9ca4 ("drm/meson: vclk: add support for YUV420 setup")
+Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240109230704.4120561-1-christianshewitt@gmail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240109230704.4120561-1-christianshewitt@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/trace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/meson/meson_vclk.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index cb5c3224e038a..137937b1f4b39 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -1734,7 +1734,7 @@ TRACE_EVENT(rdev_return_void_tx_rx,
+diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
+index 2a82119eb58ed..2a942dc6a6dc2 100644
+--- a/drivers/gpu/drm/meson/meson_vclk.c
++++ b/drivers/gpu/drm/meson/meson_vclk.c
+@@ -790,13 +790,13 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv, unsigned int phy_freq,
+ 				 FREQ_1000_1001(params[i].pixel_freq));
+ 		DRM_DEBUG_DRIVER("i = %d phy_freq = %d alt = %d\n",
+ 				 i, params[i].phy_freq,
+-				 FREQ_1000_1001(params[i].phy_freq/10)*10);
++				 FREQ_1000_1001(params[i].phy_freq/1000)*1000);
+ 		/* Match strict frequency */
+ 		if (phy_freq == params[i].phy_freq &&
+ 		    vclk_freq == params[i].vclk_freq)
+ 			return MODE_OK;
+ 		/* Match 1000/1001 variant */
+-		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/10)*10) &&
++		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/1000)*1000) &&
+ 		    vclk_freq == FREQ_1000_1001(params[i].vclk_freq))
+ 			return MODE_OK;
+ 	}
+@@ -1070,7 +1070,7 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
  
- DECLARE_EVENT_CLASS(tx_rx_evt,
- 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
--	TP_ARGS(wiphy, rx, tx),
-+	TP_ARGS(wiphy, tx, rx),
- 	TP_STRUCT__entry(
- 		WIPHY_ENTRY
- 		__field(u32, tx)
-@@ -1751,7 +1751,7 @@ DECLARE_EVENT_CLASS(tx_rx_evt,
- 
- DEFINE_EVENT(tx_rx_evt, rdev_set_antenna,
- 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
--	TP_ARGS(wiphy, rx, tx)
-+	TP_ARGS(wiphy, tx, rx)
- );
- 
- DECLARE_EVENT_CLASS(wiphy_netdev_id_evt,
+ 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
+ 		if ((phy_freq == params[freq].phy_freq ||
+-		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/10)*10) &&
++		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/1000)*1000) &&
+ 		    (vclk_freq == params[freq].vclk_freq ||
+ 		     vclk_freq == FREQ_1000_1001(params[freq].vclk_freq))) {
+ 			if (vclk_freq != params[freq].vclk_freq)
 -- 
 2.43.0
 
