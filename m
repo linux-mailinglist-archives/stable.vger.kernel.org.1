@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-49051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7178FEBA8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E028FED46
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C223B22153
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD22C281E44
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206931AB91B;
-	Thu,  6 Jun 2024 14:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E01198E7E;
+	Thu,  6 Jun 2024 14:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToGS8BR+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5qLHkhD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D388F19A2A4;
-	Thu,  6 Jun 2024 14:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA10D19D07B;
+	Thu,  6 Jun 2024 14:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683277; cv=none; b=EUiU3hpp4axurXmRr4ZT0/pos+KCbKXmNcSjZmgPcdif5xOBR9XLmQcYcjIyjpq7w0LdN+o6rr/q3UMZNHGY76iCbu8rLZaqd+4BrLV4orCmbZtMYH6lhtfdSHoIo8rufqVdegLqCuo/UUqyqD0XHKsP0jrrOmsTVacMrrFGkas=
+	t=1717683469; cv=none; b=jXaBrOhzQj/Cl6osp/ClQtZu+tJmwjbev4pjFYlJh6tpaTJ6ul1aKo5rGhkcbs5bWZDAofGgOLhZ+/IaTbT0zu08m1p6dCwKcG9Mhb98sSUWTe+fjrNnKeD/TJ3uh9DpzTaDDScgvJc6FlyoygX726U5dOb3v8ZBhGlLUkSaOx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683277; c=relaxed/simple;
-	bh=WkMGRVT0b9mYOnIfDvuZpNg8goUCZ/FUixpAvMY5+L0=;
+	s=arc-20240116; t=1717683469; c=relaxed/simple;
+	bh=rtQe5lYIWcYt1ujuPz0GFxFDbW6vvQjPB75xTU0m8/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=urZjuMVOQDKBMK1d5Cv9rI6k0p/aWQFm70Bfeg85t/RT9idiyJAkpn44jUwUq+iendraDw/YYWHwDx0nh1Sy4rQL0xhOaMfvlnUahrtLyxdYLtMuXren++NlZANxfucLMSuQnR3GMHURp0CCAAQOXo/8kpqxTJ7sLB48uegIGUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToGS8BR+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA525C32781;
-	Thu,  6 Jun 2024 14:14:37 +0000 (UTC)
+	 MIME-Version; b=Bzols3eO2mJ8Fc9dhHyZeME4RG+1TVkSAx1A+4hzca0OMxazht6jO53Sp9WLZsmUeZXVe/dENW74Hz55hx7PAv1lLHhgJkGMBRnN/pvagZHN7dpOwErTz1YH9CzaGqJgDvGFwwdPS1NJwtnVjzA83Twbrg+s6Sx+ZifBKAExPSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5qLHkhD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0C8C2BD10;
+	Thu,  6 Jun 2024 14:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683277;
-	bh=WkMGRVT0b9mYOnIfDvuZpNg8goUCZ/FUixpAvMY5+L0=;
+	s=korg; t=1717683468;
+	bh=rtQe5lYIWcYt1ujuPz0GFxFDbW6vvQjPB75xTU0m8/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToGS8BR+y8d13RDbdt0yIJLMYDY/8R4T3XPRjutQSAG1c3GKe1Onuoh5JokFCJ1Ip
-	 R5x7VJ+EZEnSX5Lg/INGIkzD0pFVUu8zv+FeXWo4BywOySAlsoCAUn2yQXrLq8tv0o
-	 DR5/5ksA2UmMgjMsYtm6P0iAImpuCby5KSxm2LhQ=
+	b=P5qLHkhDMZfgAawTKSVbRCiOGQkBwBDwj/3vrC6doiUswSxw3szEFHywJvwEkEZL4
+	 DUsJqgM8DkO03QhhoZ5aokjKBi5GCktRvywy1np7bpkb59gHT68XMyqYoMAhwX63Yr
+	 xeYbqSZu6h0/V6vXQjYNq6JArivrFiyP5J4cUH+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brendan Higgins <brendanhiggins@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	David Gow <davidgow@google.com>,
-	Rae Moar <rmoar@google.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 155/473] kunit: Fix kthread reference
+Subject: [PATCH 6.6 412/744] perf top: Convert to the global annotation_options
 Date: Thu,  6 Jun 2024 16:01:24 +0200
-Message-ID: <20240606131705.083879875@linuxfoundation.org>
+Message-ID: <20240606131745.684667657@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +65,192 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit f8aa1b98ce40184521ed95ec26cc115a255183b2 ]
+[ Upstream commit c9a21a872c69032cb9a94ebc171649c0c28141d7 ]
 
-There is a race condition when a kthread finishes after the deadline and
-before the call to kthread_stop(), which may lead to use after free.
+Use the global option and drop the local copy.
 
-Cc: Brendan Higgins <brendanhiggins@google.com>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Fixes: adf505457032 ("kunit: fix UAF when run kfence test case test_gfpzero")
-Reviewed-by: David Gow <davidgow@google.com>
-Reviewed-by: Rae Moar <rmoar@google.com>
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
-Link: https://lore.kernel.org/r/20240408074625.65017-3-mic@digikod.net
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231128175441.721579-4-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: aaf494cf483a ("perf annotate: Fix annotation_calc_lines() to pass correct address to get_srcline()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/try-catch.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/perf/builtin-top.c | 44 ++++++++++++++++++++--------------------
+ tools/perf/util/top.h    |  1 -
+ 2 files changed, 22 insertions(+), 23 deletions(-)
 
-diff --git a/lib/kunit/try-catch.c b/lib/kunit/try-catch.c
-index f7825991d576a..d9d1df28cc52e 100644
---- a/lib/kunit/try-catch.c
-+++ b/lib/kunit/try-catch.c
-@@ -11,6 +11,7 @@
- #include <linux/completion.h>
- #include <linux/kernel.h>
- #include <linux/kthread.h>
-+#include <linux/sched/task.h>
- 
- #include "try-catch-impl.h"
- 
-@@ -65,13 +66,14 @@ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context)
- 	try_catch->context = context;
- 	try_catch->try_completion = &try_completion;
- 	try_catch->try_result = 0;
--	task_struct = kthread_run(kunit_generic_run_threadfn_adapter,
--				  try_catch,
--				  "kunit_try_catch_thread");
-+	task_struct = kthread_create(kunit_generic_run_threadfn_adapter,
-+				     try_catch, "kunit_try_catch_thread");
- 	if (IS_ERR(task_struct)) {
- 		try_catch->catch(try_catch->context);
- 		return;
- 	}
-+	get_task_struct(task_struct);
-+	wake_up_process(task_struct);
- 
- 	time_remaining = wait_for_completion_timeout(&try_completion,
- 						     kunit_test_timeout());
-@@ -81,6 +83,7 @@ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context)
- 		kthread_stop(task_struct);
+diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
+index cd64ae44ccbde..ecf98169fd8fd 100644
+--- a/tools/perf/builtin-top.c
++++ b/tools/perf/builtin-top.c
+@@ -147,7 +147,7 @@ static int perf_top__parse_source(struct perf_top *top, struct hist_entry *he)
+ 		return err;
  	}
  
-+	put_task_struct(task_struct);
- 	exit_code = try_catch->try_result;
+-	err = symbol__annotate(&he->ms, evsel, &top->annotation_opts, NULL);
++	err = symbol__annotate(&he->ms, evsel, &annotate_opts, NULL);
+ 	if (err == 0) {
+ 		top->sym_filter_entry = he;
+ 	} else {
+@@ -261,9 +261,9 @@ static void perf_top__show_details(struct perf_top *top)
+ 		goto out_unlock;
  
- 	if (!exit_code)
+ 	printf("Showing %s for %s\n", evsel__name(top->sym_evsel), symbol->name);
+-	printf("  Events  Pcnt (>=%d%%)\n", top->annotation_opts.min_pcnt);
++	printf("  Events  Pcnt (>=%d%%)\n", annotate_opts.min_pcnt);
+ 
+-	more = symbol__annotate_printf(&he->ms, top->sym_evsel, &top->annotation_opts);
++	more = symbol__annotate_printf(&he->ms, top->sym_evsel, &annotate_opts);
+ 
+ 	if (top->evlist->enabled) {
+ 		if (top->zero)
+@@ -450,7 +450,7 @@ static void perf_top__print_mapped_keys(struct perf_top *top)
+ 
+ 	fprintf(stdout, "\t[f]     profile display filter (count).    \t(%d)\n", top->count_filter);
+ 
+-	fprintf(stdout, "\t[F]     annotate display filter (percent). \t(%d%%)\n", top->annotation_opts.min_pcnt);
++	fprintf(stdout, "\t[F]     annotate display filter (percent). \t(%d%%)\n", annotate_opts.min_pcnt);
+ 	fprintf(stdout, "\t[s]     annotate symbol.                   \t(%s)\n", name?: "NULL");
+ 	fprintf(stdout, "\t[S]     stop annotation.\n");
+ 
+@@ -553,7 +553,7 @@ static bool perf_top__handle_keypress(struct perf_top *top, int c)
+ 			prompt_integer(&top->count_filter, "Enter display event count filter");
+ 			break;
+ 		case 'F':
+-			prompt_percent(&top->annotation_opts.min_pcnt,
++			prompt_percent(&annotate_opts.min_pcnt,
+ 				       "Enter details display event filter (percent)");
+ 			break;
+ 		case 'K':
+@@ -647,7 +647,7 @@ static void *display_thread_tui(void *arg)
+ 
+ 	ret = evlist__tui_browse_hists(top->evlist, help, &hbt, top->min_percent,
+ 				       &top->session->header.env, !top->record_opts.overwrite,
+-				       &top->annotation_opts);
++				       &annotate_opts);
+ 	if (ret == K_RELOAD) {
+ 		top->zero = true;
+ 		goto repeat;
+@@ -1241,9 +1241,9 @@ static int __cmd_top(struct perf_top *top)
+ 	pthread_t thread, thread_process;
+ 	int ret;
+ 
+-	if (!top->annotation_opts.objdump_path) {
++	if (!annotate_opts.objdump_path) {
+ 		ret = perf_env__lookup_objdump(&top->session->header.env,
+-					       &top->annotation_opts.objdump_path);
++					       &annotate_opts.objdump_path);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -1537,9 +1537,9 @@ int cmd_top(int argc, const char **argv)
+ 		   "only consider symbols in these comms"),
+ 	OPT_STRING(0, "symbols", &symbol_conf.sym_list_str, "symbol[,symbol...]",
+ 		   "only consider these symbols"),
+-	OPT_BOOLEAN(0, "source", &top.annotation_opts.annotate_src,
++	OPT_BOOLEAN(0, "source", &annotate_opts.annotate_src,
+ 		    "Interleave source code with assembly code (default)"),
+-	OPT_BOOLEAN(0, "asm-raw", &top.annotation_opts.show_asm_raw,
++	OPT_BOOLEAN(0, "asm-raw", &annotate_opts.show_asm_raw,
+ 		    "Display raw encoding of assembly instructions (default)"),
+ 	OPT_BOOLEAN(0, "demangle-kernel", &symbol_conf.demangle_kernel,
+ 		    "Enable kernel symbol demangling"),
+@@ -1550,9 +1550,9 @@ int cmd_top(int argc, const char **argv)
+ 		   "addr2line binary to use for line numbers"),
+ 	OPT_STRING('M', "disassembler-style", &disassembler_style, "disassembler style",
+ 		   "Specify disassembler style (e.g. -M intel for intel syntax)"),
+-	OPT_STRING(0, "prefix", &top.annotation_opts.prefix, "prefix",
++	OPT_STRING(0, "prefix", &annotate_opts.prefix, "prefix",
+ 		    "Add prefix to source file path names in programs (with --prefix-strip)"),
+-	OPT_STRING(0, "prefix-strip", &top.annotation_opts.prefix_strip, "N",
++	OPT_STRING(0, "prefix-strip", &annotate_opts.prefix_strip, "N",
+ 		    "Strip first N entries of source file path name in programs (with --prefix)"),
+ 	OPT_STRING('u', "uid", &target->uid_str, "user", "user to profile"),
+ 	OPT_CALLBACK(0, "percent-limit", &top, "percent",
+@@ -1610,10 +1610,10 @@ int cmd_top(int argc, const char **argv)
+ 	if (status < 0)
+ 		return status;
+ 
+-	annotation_options__init(&top.annotation_opts);
++	annotation_options__init(&annotate_opts);
+ 
+-	top.annotation_opts.min_pcnt = 5;
+-	top.annotation_opts.context  = 4;
++	annotate_opts.min_pcnt = 5;
++	annotate_opts.context  = 4;
+ 
+ 	top.evlist = evlist__new();
+ 	if (top.evlist == NULL)
+@@ -1643,13 +1643,13 @@ int cmd_top(int argc, const char **argv)
+ 		usage_with_options(top_usage, options);
+ 
+ 	if (disassembler_style) {
+-		top.annotation_opts.disassembler_style = strdup(disassembler_style);
+-		if (!top.annotation_opts.disassembler_style)
++		annotate_opts.disassembler_style = strdup(disassembler_style);
++		if (!annotate_opts.disassembler_style)
+ 			return -ENOMEM;
+ 	}
+ 	if (objdump_path) {
+-		top.annotation_opts.objdump_path = strdup(objdump_path);
+-		if (!top.annotation_opts.objdump_path)
++		annotate_opts.objdump_path = strdup(objdump_path);
++		if (!annotate_opts.objdump_path)
+ 			return -ENOMEM;
+ 	}
+ 	if (addr2line_path) {
+@@ -1662,7 +1662,7 @@ int cmd_top(int argc, const char **argv)
+ 	if (status)
+ 		goto out_delete_evlist;
+ 
+-	if (annotate_check_args(&top.annotation_opts) < 0)
++	if (annotate_check_args(&annotate_opts) < 0)
+ 		goto out_delete_evlist;
+ 
+ 	if (!top.evlist->core.nr_entries) {
+@@ -1788,7 +1788,7 @@ int cmd_top(int argc, const char **argv)
+ 	if (status < 0)
+ 		goto out_delete_evlist;
+ 
+-	annotation_config__init(&top.annotation_opts);
++	annotation_config__init(&annotate_opts);
+ 
+ 	symbol_conf.try_vmlinux_path = (symbol_conf.vmlinux_name == NULL);
+ 	status = symbol__init(NULL);
+@@ -1841,7 +1841,7 @@ int cmd_top(int argc, const char **argv)
+ out_delete_evlist:
+ 	evlist__delete(top.evlist);
+ 	perf_session__delete(top.session);
+-	annotation_options__exit(&top.annotation_opts);
++	annotation_options__exit(&annotate_opts);
+ 
+ 	return status;
+ }
+diff --git a/tools/perf/util/top.h b/tools/perf/util/top.h
+index a8b0d79bd96cf..4c5588dbb1317 100644
+--- a/tools/perf/util/top.h
++++ b/tools/perf/util/top.h
+@@ -21,7 +21,6 @@ struct perf_top {
+ 	struct perf_tool   tool;
+ 	struct evlist *evlist, *sb_evlist;
+ 	struct record_opts record_opts;
+-	struct annotation_options annotation_opts;
+ 	struct evswitch	   evswitch;
+ 	/*
+ 	 * Symbols will be added here in perf_event__process_sample and will
 -- 
 2.43.0
 
