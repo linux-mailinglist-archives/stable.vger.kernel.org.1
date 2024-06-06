@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-49783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C8D8FEED5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C1E8FE9D0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6C141C25BAB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 850A51C249F0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CF21C7D92;
-	Thu,  6 Jun 2024 14:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B06196DB8;
+	Thu,  6 Jun 2024 14:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9PUduSU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1wWnGP1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2609E1C7D76;
-	Thu,  6 Jun 2024 14:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8844198A39;
+	Thu,  6 Jun 2024 14:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683707; cv=none; b=Jtgu/QtQfYAjVlVxwuiqrmdIxKycr1sc7w6DFYzfCGbYaLwQySU+fvamUOGTogccYS3zqBxSfaLyv3MgxVRFxjThW4xEnmunt3WI/5fATmPPVc7FLBqu4D5K9J3W2t3cUsZFpPYnjgG+hg4eSh56K3LBFYp+6Z49tOYAK+PAr6A=
+	t=1717683068; cv=none; b=b/y5Ln+hyn4hOgoA41RipK5o4EDqs9CfMcX3nNQ4g2Z3D/Bzh6EaQaaJVUYgTsxYlYnzEdikl4p2dZHlXdDKuWEpFpI9GBq3V3hNVl5Y3b6oePKO7LCwH31A3RRs06Eiok/qIOOdzshUlaBiZcqhjcidIxk3GHEoCuT9cvXwzg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683707; c=relaxed/simple;
-	bh=Ko88NHpCHNitBZJ6lDs1lKvfQB3MeoHflwI1F2njMbo=;
+	s=arc-20240116; t=1717683068; c=relaxed/simple;
+	bh=0BLPlyD9iKo2iVCtCvEBRcTgzakcx/qC8zcw7p9SoXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C1bOgnjT5EZHrsAthDnp3pFR9rHm8oTbNF//TNt5DhdndQNwjvnDNVFav/L6HkJNlT2noCxFD9xRxk2bjk+TlqEooHlI7e1a2iTrWACydHQxCQTo3MXnLKHF/BetMhIrqWwVnYZGxBOqouwFzWHWBsXmBJXifJzgAOrUSCxU4b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9PUduSU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A9AC2BD10;
-	Thu,  6 Jun 2024 14:21:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mXDHT/XavU2G06Lmmr8euGi1P4yRWML6X5PVsmotS0nS/FGV/CYM+etcxYJJQUJssM5QNEl/etmZ4PQQroZSiccAxgGPMqnTUJ/H1np3EuoemvDvGB/azZLqm4Iw12TP0fqjDIcrE83dCK2VzsG+BVEU9uDLkBDE//Lez9hud/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1wWnGP1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDC9C32781;
+	Thu,  6 Jun 2024 14:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683707;
-	bh=Ko88NHpCHNitBZJ6lDs1lKvfQB3MeoHflwI1F2njMbo=;
+	s=korg; t=1717683068;
+	bh=0BLPlyD9iKo2iVCtCvEBRcTgzakcx/qC8zcw7p9SoXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9PUduSUm3sW5CXNKuyKisquprMEIjI2zTSjJJEjsBPbSkP8UnQHZeKWT1mvC0QAe
-	 n1x1jeXGigU7yaCwAr1weJptM7c66r1wIy7v//Q9i4XaygSVvnrHjMHZYiHbgwaqP9
-	 5g7QTp3Qt8EIzsmrNkpGQTyEXgJCACWlMY3Rul5g=
+	b=t1wWnGP1tz7vuI7jcPIFsy2C6Lcv8tCihv6/kdPJREWkZVHFRNc7bF+ysmGP4PdIN
+	 EbtZ4E5Gfo14smYMHbEXpcmnvLqFUM6h++qoQioZ9iIyuBb2kwwuUPv5DEaXxxUjl4
+	 aEpkE9J9+uDkfhqrj9+z7TE99MGteV2lDD5BDB/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Mayer <andrea.mayer@uniroma2.it>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 634/744] ipv6: sr: fix missing sk_buff release in seg6_input_core
-Date: Thu,  6 Jun 2024 16:05:06 +0200
-Message-ID: <20240606131752.814720406@linuxfoundation.org>
+Subject: [PATCH 6.9 328/374] drm/xe: Change pcode timeout to 50msec while polling again
+Date: Thu,  6 Jun 2024 16:05:07 +0200
+Message-ID: <20240606131702.849269900@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 
-[ Upstream commit 5447f9708d9e4c17a647b16a9cb29e9e02820bd9 ]
+[ Upstream commit 77b79df0268bee3ef38fd5e76e86a076ce02995d ]
 
-The seg6_input() function is responsible for adding the SRH into a
-packet, delegating the operation to the seg6_input_core(). This function
-uses the skb_cow_head() to ensure that there is sufficient headroom in
-the sk_buff for accommodating the link-layer header.
-In the event that the skb_cow_header() function fails, the
-seg6_input_core() catches the error but it does not release the sk_buff,
-which will result in a memory leak.
+Polling is initially attempted with timeout_base_ms enabled for
+preemption, and if it exceeds this timeframe, another attempt is made
+without preemption, allowing an additional 50 ms before timing out.
 
-This issue was introduced in commit af3b5158b89d ("ipv6: sr: fix BUG due
-to headroom too small after SRH push") and persists even after commit
-7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane"),
-where the entire seg6_input() code was refactored to deal with netfilter
-hooks.
+v2
+- Rebase
 
-The proposed patch addresses the identified memory leak by requiring the
-seg6_input_core() function to release the sk_buff in the event that
-skb_cow_head() fails.
+v3
+- Move warnings to separate patch (Lucas)
 
-Fixes: af3b5158b89d ("ipv6: sr: fix BUG due to headroom too small after SRH push")
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Fixes: 7dc9b92dcfef ("drm/xe: Remove i915_utils dependency from xe_pcode.")
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240508152216.3263109-2-himal.prasad.ghimiray@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit c81858eb52266b3d6ba28ca4f62a198231a10cdc)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6_iptunnel.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/xe/xe_pcode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 03b877ff45588..a75df2ec8db0d 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -459,10 +459,8 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 	int err;
+diff --git a/drivers/gpu/drm/xe/xe_pcode.c b/drivers/gpu/drm/xe/xe_pcode.c
+index c674c87c7f40b..81f4ae2ea08f3 100644
+--- a/drivers/gpu/drm/xe/xe_pcode.c
++++ b/drivers/gpu/drm/xe/xe_pcode.c
+@@ -191,7 +191,7 @@ int xe_pcode_request(struct xe_gt *gt, u32 mbox, u32 request,
+ 	drm_WARN_ON_ONCE(&gt_to_xe(gt)->drm, timeout_base_ms > 1);
+ 	preempt_disable();
+ 	ret = pcode_try_request(gt, mbox, request, reply_mask, reply, &status,
+-				true, timeout_base_ms * 1000, true);
++				true, 50 * 1000, true);
+ 	preempt_enable();
  
- 	err = seg6_do_srh(skb);
--	if (unlikely(err)) {
--		kfree_skb(skb);
--		return err;
--	}
-+	if (unlikely(err))
-+		goto drop;
- 
- 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
- 
-@@ -486,7 +484,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 
- 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
- 	if (unlikely(err))
--		return err;
-+		goto drop;
- 
- 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
- 		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
-@@ -494,6 +492,9 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 			       skb_dst(skb)->dev, seg6_input_finish);
- 
- 	return seg6_input_finish(dev_net(skb->dev), NULL, skb);
-+drop:
-+	kfree_skb(skb);
-+	return err;
- }
- 
- static int seg6_input_nf(struct sk_buff *skb)
+ out:
 -- 
 2.43.0
 
