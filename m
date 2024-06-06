@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-49676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074BE8FEE62
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5131C8FECB9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 758DD2819F0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 060701F25B02
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6741C3713;
-	Thu,  6 Jun 2024 14:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8881B29AB;
+	Thu,  6 Jun 2024 14:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXOIu5Su"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBjoV243"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCAB1991C5;
-	Thu,  6 Jun 2024 14:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC5019B3F3;
+	Thu,  6 Jun 2024 14:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683653; cv=none; b=Zw/CFegUfBM0h3X8wJwR/aiOR6DPqF5JUuObgHhL3IJNTrA9OOeSiJPgQV19qQUuiJBKIxd4O5Rahdywp6gwH6fmGSMmkgBzFc9oo5MZ12R4YjC3N3bvdq956qmWDgaZY0DlAFYErnMelY0PMSIK+sj6F3wZID0fkvE6d/y5Qdo=
+	t=1717683402; cv=none; b=TO99sAbLZvmiapNR/4a62noVvY2v9pCVwbpO71P52VDAx/UmaBabSODjF0Wu8a//FEDqRpo12G95xdAHeF7MstpGdZGdNHoVjiEXs7/CjYurRB2x5HSku+LRjFwaihxN8ZnutqT09D0hyKvz/qbbWi4UVXFt8Hls8g7YIQYsH6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683653; c=relaxed/simple;
-	bh=gaIBaIO2EwI2YbO+86sIJ0Patt8QH1lg5v8zxBudK/s=;
+	s=arc-20240116; t=1717683402; c=relaxed/simple;
+	bh=Tlap14aR28FdEfy7slxaN0pz9WJR3H/Nk2dKEH/fDPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=drpXRK8Ah2FMaKdFRJyKEOjcLet5gxqbxpEz0FDAVZZmzgfuNXhYIt5ssArOvjuMdB5rKh9v2dE8z25wroaCB4WfaC5w12pz03yIrtPgMFBQSHAdiUNYlSQOWTOCeyLPgekgYRL6jBQ0Bjm1fjW7YduNz5T7sLT742vm1+GHm2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXOIu5Su; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AADBDC2BD10;
-	Thu,  6 Jun 2024 14:20:53 +0000 (UTC)
+	 MIME-Version; b=l4DN3jaP1VNi1EnztRBgg97PizmSpP70Jrs2zPGXkCfhrhAqiAs+LQrxkSA1lSdWOpKnN78kn7rE9riURj41xtz21FnZaiguy30u42MVuNDxdjGniQB1mMvESZXSD0eXrkGcvQojItPQar7ij5p6vewJ/3jfGucoxmLu6yZj7Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBjoV243; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0A6C2BD10;
+	Thu,  6 Jun 2024 14:16:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683653;
-	bh=gaIBaIO2EwI2YbO+86sIJ0Patt8QH1lg5v8zxBudK/s=;
+	s=korg; t=1717683402;
+	bh=Tlap14aR28FdEfy7slxaN0pz9WJR3H/Nk2dKEH/fDPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RXOIu5SuOlyhMEZDjYAph0t/E+KW6t8QUunLRUkaT7lcU5+LIClPmBOjgJJKuP6D5
-	 CcZ8ZAGzLLX9o8jlKb405ytbm6WanKgLm/l5F4zGnsBJPk8gxUMIRZZRew4B4xERrc
-	 CK5wK+tjsGdM+ESauFKLnwwtPGR4Di6rv40X0sKY=
+	b=UBjoV243f1+bUi6+PDqVY8Sqncefl1uuw7r+nAsqe26T5lDIjc6a2GzhRX19+0xNQ
+	 VhyvEnyJcPAHLxeMZtwAAQQNBABwnI4aqOOUuYoZRz57T4EXoLrQla1VA1Fk4wzuAn
+	 DsoChoI0R2HzH6YtVjnweY3vqDx1YrIZsgMWpFKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Yang Jihong <yangjihong1@huawei.com>,
+	syzbot+fa04eb8a56fd923fc5d8@syzkaller.appspotmail.com,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 528/744] perf tools: Use pmus to describe type from attribute
-Date: Thu,  6 Jun 2024 16:03:20 +0200
-Message-ID: <20240606131749.365266043@linuxfoundation.org>
+Subject: [PATCH 6.1 272/473] net: bridge: mst: fix vlan use-after-free
+Date: Thu,  6 Jun 2024 16:03:21 +0200
+Message-ID: <20240606131708.916919848@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,163 +64,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 7093882067e2e2f88d3449c35c5f0f3f566c8a26 ]
+[ Upstream commit 3a7c1661ae1383364cd6092d851f5e5da64d476b ]
 
-When dumping a perf_event_attr, use pmus to find the PMU and its name
-by the type number. This allows dynamically added PMUs to be described.
+syzbot reported a suspicious rcu usage[1] in bridge's mst code. While
+fixing it I noticed that nothing prevents a vlan to be freed while
+walking the list from the same path (br forward delay timer). Fix the rcu
+usage and also make sure we are not accessing freed memory by making
+br_mst_vlan_set_state use rcu read lock.
 
-Before:
+[1]
+ WARNING: suspicious RCU usage
+ 6.9.0-rc6-syzkaller #0 Not tainted
+ -----------------------------
+ net/bridge/br_private.h:1599 suspicious rcu_dereference_protected() usage!
+ ...
+ stack backtrace:
+ CPU: 1 PID: 8017 Comm: syz-executor.1 Not tainted 6.9.0-rc6-syzkaller #0
+ Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+ Call Trace:
+  <IRQ>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+  lockdep_rcu_suspicious+0x221/0x340 kernel/locking/lockdep.c:6712
+  nbp_vlan_group net/bridge/br_private.h:1599 [inline]
+  br_mst_set_state+0x1ea/0x650 net/bridge/br_mst.c:105
+  br_set_state+0x28a/0x7b0 net/bridge/br_stp.c:47
+  br_forward_delay_timer_expired+0x176/0x440 net/bridge/br_stp_timer.c:88
+  call_timer_fn+0x18e/0x650 kernel/time/timer.c:1793
+  expire_timers kernel/time/timer.c:1844 [inline]
+  __run_timers kernel/time/timer.c:2418 [inline]
+  __run_timer_base+0x66a/0x8e0 kernel/time/timer.c:2429
+  run_timer_base kernel/time/timer.c:2438 [inline]
+  run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2448
+  __do_softirq+0x2c6/0x980 kernel/softirq.c:554
+  invoke_softirq kernel/softirq.c:428 [inline]
+  __irq_exit_rcu+0xf2/0x1c0 kernel/softirq.c:633
+  irq_exit_rcu+0x9/0x30 kernel/softirq.c:645
+  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1043 [inline]
+  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1043
+  </IRQ>
+  <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+ RIP: 0010:lock_acquire+0x264/0x550 kernel/locking/lockdep.c:5758
+ Code: 2b 00 74 08 4c 89 f7 e8 ba d1 84 00 f6 44 24 61 02 0f 85 85 01 00 00 41 f7 c7 00 02 00 00 74 01 fb 48 c7 44 24 40 0e 36 e0 45 <4b> c7 44 25 00 00 00 00 00 43 c7 44 25 09 00 00 00 00 43 c7 44 25
+ RSP: 0018:ffffc90013657100 EFLAGS: 00000206
+ RAX: 0000000000000001 RBX: 1ffff920026cae2c RCX: 0000000000000001
+ RDX: dffffc0000000000 RSI: ffffffff8bcaca00 RDI: ffffffff8c1eaa60
+ RBP: ffffc90013657260 R08: ffffffff92efe507 R09: 1ffffffff25dfca0
+ R10: dffffc0000000000 R11: fffffbfff25dfca1 R12: 1ffff920026cae28
+ R13: dffffc0000000000 R14: ffffc90013657160 R15: 0000000000000246
 
-  $ perf stat -vv -e data_read true
-  ...
-  perf_event_attr:
-    type                             24
-    size                             136
-    config                           0x20ff
-    sample_type                      IDENTIFIER
-    read_format                      TOTAL_TIME_ENABLED|TOTAL_TIME_RUNNING
-    disabled                         1
-    inherit                          1
-    exclude_guest                    1
-  ...
-
-After:
-
-  $ perf stat -vv -e data_read true
-  ...
-  perf_event_attr:
-    type                             24 (uncore_imc_free_running_0)
-    size                             136
-    config                           0x20ff
-    sample_type                      IDENTIFIER
-    read_format                      TOTAL_TIME_ENABLED|TOTAL_TIME_RUNNING
-    disabled                         1
-    inherit                          1
-    exclude_guest                    1
-  ...
-
-However, it also means that when we have a PMU name we prefer it to a
-hard coded name:
-
-Before:
-
-  $ perf stat -vv -e faults true
-  ...
-  perf_event_attr:
-    type                             1 (PERF_TYPE_SOFTWARE)
-    size                             136
-    config                           0x2 (PERF_COUNT_SW_PAGE_FAULTS)
-    sample_type                      IDENTIFIER
-    read_format                      TOTAL_TIME_ENABLED|TOTAL_TIME_RUNNING
-    disabled                         1
-    inherit                          1
-    enable_on_exec                   1
-    exclude_guest                    1
-  ...
-
-After:
-
-  $ perf stat -vv -e faults true
-  ...
-  perf_event_attr:
-    type                             1 (software)
-    size                             136
-    config                           0x2 (PERF_COUNT_SW_PAGE_FAULTS)
-    sample_type                      IDENTIFIER
-    read_format                      TOTAL_TIME_ENABLED|TOTAL_TIME_RUNNING
-    disabled                         1
-    inherit                          1
-    enable_on_exec                   1
-    exclude_guest                    1
-  ...
-
-It feels more consistent to do this, rather than only prefer a PMU
-name when a hard coded name isn't available.
-
-Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Tested-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Link: https://lore.kernel.org/r/20240308001915.4060155-6-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: d9c5f5f94c2d ("perf pmu: Count sys and cpuid JSON events separately")
+Fixes: ec7328b59176 ("net: bridge: mst: Multiple Spanning Tree (MST) mode")
+Reported-by: syzbot+fa04eb8a56fd923fc5d8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fa04eb8a56fd923fc5d8
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/perf_event_attr_fprintf.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ net/bridge/br_mst.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/util/perf_event_attr_fprintf.c b/tools/perf/util/perf_event_attr_fprintf.c
-index 2247991451f3a..f3c6db5f4182c 100644
---- a/tools/perf/util/perf_event_attr_fprintf.c
-+++ b/tools/perf/util/perf_event_attr_fprintf.c
-@@ -7,6 +7,8 @@
- #include <linux/types.h>
- #include <linux/perf_event.h>
- #include "util/evsel_fprintf.h"
-+#include "util/pmu.h"
-+#include "util/pmus.h"
- #include "trace-event.h"
+diff --git a/net/bridge/br_mst.c b/net/bridge/br_mst.c
+index ee680adcee179..3c66141d34d62 100644
+--- a/net/bridge/br_mst.c
++++ b/net/bridge/br_mst.c
+@@ -78,7 +78,7 @@ static void br_mst_vlan_set_state(struct net_bridge_port *p, struct net_bridge_v
+ {
+ 	struct net_bridge_vlan_group *vg = nbp_vlan_group(p);
  
- struct bit_names {
-@@ -74,9 +76,12 @@ static void __p_read_format(char *buf, size_t size, u64 value)
+-	if (v->state == state)
++	if (br_vlan_get_state(v) == state)
+ 		return;
+ 
+ 	br_vlan_set_state(v, state);
+@@ -100,11 +100,12 @@ int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
+ 	};
+ 	struct net_bridge_vlan_group *vg;
+ 	struct net_bridge_vlan *v;
+-	int err;
++	int err = 0;
+ 
++	rcu_read_lock();
+ 	vg = nbp_vlan_group(p);
+ 	if (!vg)
+-		return 0;
++		goto out;
+ 
+ 	/* MSTI 0 (CST) state changes are notified via the regular
+ 	 * SWITCHDEV_ATTR_ID_PORT_STP_STATE.
+@@ -112,17 +113,20 @@ int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
+ 	if (msti) {
+ 		err = switchdev_port_attr_set(p->dev, &attr, extack);
+ 		if (err && err != -EOPNOTSUPP)
+-			return err;
++			goto out;
+ 	}
+ 
+-	list_for_each_entry(v, &vg->vlan_list, vlist) {
++	err = 0;
++	list_for_each_entry_rcu(v, &vg->vlan_list, vlist) {
+ 		if (v->brvlan->msti != msti)
+ 			continue;
+ 
+ 		br_mst_vlan_set_state(p, v, state);
+ 	}
+ 
+-	return 0;
++out:
++	rcu_read_unlock();
++	return err;
  }
  
- #define ENUM_ID_TO_STR_CASE(x) case x: return (#x);
--static const char *stringify_perf_type_id(u64 value)
-+static const char *stringify_perf_type_id(struct perf_pmu *pmu, u32 type)
- {
--	switch (value) {
-+	if (pmu)
-+		return pmu->name;
-+
-+	switch (type) {
- 	ENUM_ID_TO_STR_CASE(PERF_TYPE_HARDWARE)
- 	ENUM_ID_TO_STR_CASE(PERF_TYPE_SOFTWARE)
- 	ENUM_ID_TO_STR_CASE(PERF_TYPE_TRACEPOINT)
-@@ -174,9 +179,9 @@ do {								\
- #define print_id_unsigned(_s)	PRINT_ID(_s, "%"PRIu64)
- #define print_id_hex(_s)	PRINT_ID(_s, "%#"PRIx64)
- 
--static void __p_type_id(char *buf, size_t size, u64 value)
-+static void __p_type_id(struct perf_pmu *pmu, char *buf, size_t size, u64 value)
- {
--	print_id_unsigned(stringify_perf_type_id(value));
-+	print_id_unsigned(stringify_perf_type_id(pmu, value));
- }
- 
- static void __p_config_hw_id(char *buf, size_t size, u64 value)
-@@ -245,7 +250,7 @@ static void __p_config_id(char *buf, size_t size, u32 type, u64 value)
- #define p_sample_type(val)	__p_sample_type(buf, BUF_SIZE, val)
- #define p_branch_sample_type(val) __p_branch_sample_type(buf, BUF_SIZE, val)
- #define p_read_format(val)	__p_read_format(buf, BUF_SIZE, val)
--#define p_type_id(val)		__p_type_id(buf, BUF_SIZE, val)
-+#define p_type_id(val)		__p_type_id(pmu, buf, BUF_SIZE, val)
- #define p_config_id(val)	__p_config_id(buf, BUF_SIZE, attr->type, val)
- 
- #define PRINT_ATTRn(_n, _f, _p, _a)			\
-@@ -261,6 +266,7 @@ do {							\
- int perf_event_attr__fprintf(FILE *fp, struct perf_event_attr *attr,
- 			     attr__fprintf_f attr__fprintf, void *priv)
- {
-+	struct perf_pmu *pmu = perf_pmus__find_by_type(attr->type);
- 	char buf[BUF_SIZE];
- 	int ret = 0;
- 
+ static void br_mst_vlan_sync_state(struct net_bridge_vlan *pv, u16 msti)
 -- 
 2.43.0
 
