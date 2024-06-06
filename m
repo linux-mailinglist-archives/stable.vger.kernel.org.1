@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6778FED29
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D4BB8FEEAB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 540121F26219
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0CB61F2430F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41F319D074;
-	Thu,  6 Jun 2024 14:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61451C6179;
+	Thu,  6 Jun 2024 14:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z699kNAc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPlqm7SL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C7519D069;
-	Thu,  6 Jun 2024 14:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EF11C6177;
+	Thu,  6 Jun 2024 14:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683454; cv=none; b=gPzv5jvj1H6wB3doHA93Rv3rcP6rIroX9kBNXenhzXA6lP+1V7oV3SJ5yoJndP5u+Vuera2Wkx3vMNB1km6NYBHHKs1GAqVhuM/5gRCUkpsQK9d0dHk9A+2BF77jaXixAsf7ZwMqJMmyuQga6aV4ePjYfihd6f9s+DEfs+6p8tA=
+	t=1717683688; cv=none; b=k9N7fdxO+v/udoSSaQ47+yoRsAGt90EZBqgEKzIjEu1CGcUPJAJCfWUTjv/w3gkELNCIJiuGTrRkHZGZCfprCAv0U1m2iCD//HvNp4KRgPPMU6q90RF4sSPt3NlmrVURiEeyEKFVtjzUD02tPVt1qvURcVuccV2gxsO1aik6jAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683454; c=relaxed/simple;
-	bh=wYdByVeXDIXel4YRTpdrp/COLpctXl4hbQLJClSmn5k=;
+	s=arc-20240116; t=1717683688; c=relaxed/simple;
+	bh=zCDMJptxmqw4OozDtx3N4Yy8vGwYduSq/2ixQCOG0C0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LqEud41j90TpfyJc79OVLEbnbVvaC1ZtYoVwA0fTy2WDMUy6WWzqiOciycI3MduAQwa0bqnAlhs/eJ4k/ogVnnn2AnYi2FCeiywwA+jh4RcgHmB3XikjYnR11x59CDJd1R+WquarPZrCVs4PWjPKFpvNs7J/bwYsdWVhKIGcCGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z699kNAc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7CFC2BD10;
-	Thu,  6 Jun 2024 14:17:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pO0zh2JgJNgrAb86SMT/eD31qJRwJtJPX3uUTm02Irsfxys5sJPGXaJMy3JcPEImBANBf4iV4RKPPgR0Oevuibwov4lVPaolUMz7irvqkqIVI+nWPZcfFiR1yIa3MzxSJ8SAgFvBf5Ysn2FV6D6MRQgGGrOp9Sq5DkCh1qYjwMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPlqm7SL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01092C32781;
+	Thu,  6 Jun 2024 14:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683454;
-	bh=wYdByVeXDIXel4YRTpdrp/COLpctXl4hbQLJClSmn5k=;
+	s=korg; t=1717683688;
+	bh=zCDMJptxmqw4OozDtx3N4Yy8vGwYduSq/2ixQCOG0C0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z699kNAcIDrWnRteKUk+qqC6Qt2atlbfP3ZvLd+/l5aEVcvaDkJPLz8uZdVe7mxXa
-	 zQ//ofB69SEHIyiwOGAraVNl7w4dI/Q2uhuYn5eovHzUzj/yDwQu2evI2OnXr3oryC
-	 1M0p7OKvOlBUj2tSpf8c/KtbGqqPpUeic9DQ5so8=
+	b=EPlqm7SL8DVGnn6vV44whI0fiyeszRxpc0MwL6QRhD6AThkptqtlYlMqqLbqF39fS
+	 AWruvFHwzhsP2QEc0iKMsXOMzQnV66oRJoyFFWYmXJuoj8JJIPHXBsK5PPMldbQsrP
+	 bBab+tOdOEqS5v81uby0sug7KZZw0Eu2/OfyzVw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com>
-Subject: [PATCH 6.1 337/473] PCI/EDR: Align EDR_PORT_DPC_ENABLE_DSM with PCI Firmware r3.3
-Date: Thu,  6 Jun 2024 16:04:26 +0200
-Message-ID: <20240606131711.059367260@linuxfoundation.org>
+	"David E. Box" <david.e.box@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 595/744] tools/arch/x86/intel_sdsi: Fix maximum meter bundle length
+Date: Thu,  6 Jun 2024 16:04:27 +0200
+Message-ID: <20240606131751.557486164@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+From: David E. Box <david.e.box@linux.intel.com>
 
-[ Upstream commit f24ba846133d0edec785ac6430d4daf6e9c93a09 ]
+[ Upstream commit a66f962f67ebbbdf7c82c6652180930c0169cf13 ]
 
-The "Downstream Port Containment related Enhancements" ECN of Jan 28, 2019
-(document 12888 below), defined the EDR_PORT_DPC_ENABLE_DSM function with
-Revision ID 5 with Arg3 being an integer.  But when the ECN was integrated
-into PCI Firmware r3.3, sec 4.6.12, it was defined as Revision ID 6 with
-Arg3 being a package containing an integer.
+The maximum number of bundles in the meter certificate was set to 8 which
+is much less than the maximum. Instead, since the bundles appear at the end
+of the file, set it based on the remaining file size from the bundle start
+position.
 
-The implementation in acpi_enable_dpc() supplies a package as Arg3 (arg4 in
-the code), but it previously specified Revision ID 5.  Align this with PCI
-Firmware r3.3 by using Revision ID 6.
-
-If firmware implemented per the ECN, its Revision 5 function would receive
-a package as Arg3 when it expects an integer, so acpi_enable_dpc() would
-likely fail.  If such firmware exists and lacks a Revision 6 function that
-expects a package, we may have to add support for Revision 5.
-
-Link: https://lore.kernel.org/r/20240501022543.1626025-1-sathyanarayanan.kuppuswamy@linux.intel.com
-Link: https://members.pcisig.com/wg/PCI-SIG/document/12888
-Fixes: ac1c8e35a326 ("PCI/DPC: Add Error Disconnect Recover (EDR) support")
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-[bhelgaas: split into two patches, update commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com> # one platform
+Fixes: 7fdc03a7370f ("tools/arch/x86: intel_sdsi: Add support for reading meter certificates")
+Signed-off-by: David E. Box <david.e.box@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240411025856.2782476-6-david.e.box@linux.intel.com
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/edr.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ tools/arch/x86/intel_sdsi/intel_sdsi.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
-index 87734e4c3c204..5b5a502363c00 100644
---- a/drivers/pci/pcie/edr.c
-+++ b/drivers/pci/pcie/edr.c
-@@ -32,10 +32,10 @@ static int acpi_enable_dpc(struct pci_dev *pdev)
- 	int status = 0;
+diff --git a/tools/arch/x86/intel_sdsi/intel_sdsi.c b/tools/arch/x86/intel_sdsi/intel_sdsi.c
+index 2cd92761f1714..7eaffcbff788c 100644
+--- a/tools/arch/x86/intel_sdsi/intel_sdsi.c
++++ b/tools/arch/x86/intel_sdsi/intel_sdsi.c
+@@ -43,7 +43,6 @@
+ #define METER_CERT_MAX_SIZE	4096
+ #define STATE_MAX_NUM_LICENSES	16
+ #define STATE_MAX_NUM_IN_BUNDLE	(uint32_t)8
+-#define METER_MAX_NUM_BUNDLES	8
  
- 	/*
--	 * Behavior when calling unsupported _DSM functions is undefined,
--	 * so check whether EDR_PORT_DPC_ENABLE_DSM is supported.
-+	 * Per PCI Firmware r3.3, sec 4.6.12, EDR_PORT_DPC_ENABLE_DSM is
-+	 * optional. Return success if it's not implemented.
- 	 */
--	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
-+	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 6,
- 			    1ULL << EDR_PORT_DPC_ENABLE_DSM))
- 		return 0;
+ #define __round_mask(x, y) ((__typeof__(x))((y) - 1))
+ #define round_up(x, y) ((((x) - 1) | __round_mask(x, y)) + 1)
+@@ -167,6 +166,11 @@ struct bundle_encoding_counter {
+ 	uint32_t encoding;
+ 	uint32_t counter;
+ };
++#define METER_BUNDLE_SIZE sizeof(struct bundle_encoding_counter)
++#define BUNDLE_COUNT(length) ((length) / METER_BUNDLE_SIZE)
++#define METER_MAX_NUM_BUNDLES							\
++		((METER_CERT_MAX_SIZE - sizeof(struct meter_certificate)) /	\
++		 sizeof(struct bundle_encoding_counter))
  
-@@ -46,12 +46,7 @@ static int acpi_enable_dpc(struct pci_dev *pdev)
- 	argv4.package.count = 1;
- 	argv4.package.elements = &req;
+ struct sdsi_dev {
+ 	struct sdsi_regs regs;
+@@ -386,9 +390,9 @@ static int sdsi_meter_cert_show(struct sdsi_dev *s)
+ 		return -1;
+ 	}
  
--	/*
--	 * Per Downstream Port Containment Related Enhancements ECN to PCI
--	 * Firmware Specification r3.2, sec 4.6.12, EDR_PORT_DPC_ENABLE_DSM is
--	 * optional.  Return success if it's not implemented.
--	 */
--	obj = acpi_evaluate_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
-+	obj = acpi_evaluate_dsm(adev->handle, &pci_acpi_dsm_guid, 6,
- 				EDR_PORT_DPC_ENABLE_DSM, &argv4);
- 	if (!obj)
- 		return 0;
+-	if (mc->bundle_length > METER_MAX_NUM_BUNDLES * 8)  {
+-		fprintf(stderr, "More than %d bundles: %d\n",
+-			METER_MAX_NUM_BUNDLES, mc->bundle_length / 8);
++	if (mc->bundle_length > METER_MAX_NUM_BUNDLES * METER_BUNDLE_SIZE)  {
++		fprintf(stderr, "More than %ld bundles: actual %ld\n",
++			METER_MAX_NUM_BUNDLES, BUNDLE_COUNT(mc->bundle_length));
+ 		return -1;
+ 	}
+ 
 -- 
 2.43.0
 
