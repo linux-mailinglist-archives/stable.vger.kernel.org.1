@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7163B8FEC5C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A938FE964
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF9C3B233ED
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E83C1F21B20
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C3D1B0112;
-	Thu,  6 Jun 2024 14:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAFA19A298;
+	Thu,  6 Jun 2024 14:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N635mIQx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yi+oKbGF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0211419ADA4;
-	Thu,  6 Jun 2024 14:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2AA19A292;
+	Thu,  6 Jun 2024 14:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683358; cv=none; b=O8Lz35wh4Ke1ngNpAWny+Wdo1E/cbrXH32f4cTcCHopB4ORu6FpGQl8/mtsFWM4oUPgXPC+0XvQkz0inaBW/IWvmuvyy8eN9SJNW37C+SNHy9nzAcQaprpotyStm3N7eUSNQUGyBCN6LzbDIArK6BSoWPLjtMTuYdnHscvnpydg=
+	t=1717683014; cv=none; b=BR4ntMfyhbSPbMM5pZZwY36n0ib6GmrtrgHf7svp478HPe77yl9JqAr41+YnOXi/LU2FwbFRVNd5bZHKK4I5g81JGcPHVwfCuIRQO6hA8Ay9o4I20FliuYSjNGsEJlKldKg9m6omIIMImewBVPB4Y6dafliLlVmUOcs/09gSX44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683358; c=relaxed/simple;
-	bh=9M8UKkBCpo9mp8mraY64yW2TqjJDRLcmHYfmmrjKgeg=;
+	s=arc-20240116; t=1717683014; c=relaxed/simple;
+	bh=Atax6XiikmgdOTgpAAz3qW6kAyJiEvTbbPAqiN7DFJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6Emv39D+ZfKmpVJsNVIcvIA97+zSAUxGCAsQgb9iDMCKLT81Azfk94qyR5p3FdjyD3hbAo8zXmtx4FP2mPLgU65G+5Za8rz9PWW218dEyMHPv/feEEgA/fQ8XlzUDByjMcuUoybduR35G4wk6pemdl376yzoizTo+tIwk5PYt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N635mIQx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927AAC32782;
-	Thu,  6 Jun 2024 14:15:57 +0000 (UTC)
+	 MIME-Version; b=PvkBQ0bd/0FC3XvBcTKup2/OI6tH+01P2O1haHtGyBEg78aHYpPlNYMNs2JGbF6wofWEIifyF65a98t/yY2B+bxrsSin4s2EC5/Zizfrp2sLzeYYn7m+0hIdkoAC1fQgmo1AG5LBGr3J4rvtCO4FZcnRHqYeRFCpzjEJEWD256E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yi+oKbGF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A3C5C32781;
+	Thu,  6 Jun 2024 14:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683357;
-	bh=9M8UKkBCpo9mp8mraY64yW2TqjJDRLcmHYfmmrjKgeg=;
+	s=korg; t=1717683014;
+	bh=Atax6XiikmgdOTgpAAz3qW6kAyJiEvTbbPAqiN7DFJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N635mIQx2DeyPJkHihg6x8G2q3el0B3Dckl8GjgIvS55Wdxv7YZKOk+lrHtdCXmrc
-	 r57Y7kWPbOnqHzNSQY2gGGrJwtIRUKPzMZKdhRh+YzQQVmXDTT+uDtbla4UVJRBJlW
-	 VVS3KuWQme94DpGETtWYSGG44n/TXJknjBCLdJhI=
+	b=yi+oKbGF7XzSLHnBF0jMho4OEHqXXl/oG99l82SlMkZTBIWKMXGWfW8bDOK4T6Ji/
+	 Tg0c1/4D7uhq2O2cP9NbvGtfXmVz16UkvATvTebBQ01YXN+QP+nN7YSmr1OJsgx8AD
+	 DxDfVxpokcKvIWnSQzR9usiTybddYTltu7DWL+ZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Dongliang Mu <mudongliangabcd@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 238/473] RDMA/hns: Fix deadlock on SRQ async events.
-Date: Thu,  6 Jun 2024 16:02:47 +0200
-Message-ID: <20240606131707.700047637@linuxfoundation.org>
+Subject: [PATCH 6.9 189/374] media: flexcop-usb: fix sanity check of bNumEndpoints
+Date: Thu,  6 Jun 2024 16:02:48 +0200
+Message-ID: <20240606131658.201686118@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Dongliang Mu <mudongliangabcd@gmail.com>
 
-[ Upstream commit b46494b6f9c19f141114a57729e198698f40af37 ]
+[ Upstream commit f62dc8f6bf82d1b307fc37d8d22cc79f67856c2f ]
 
-xa_lock for SRQ table may be required in AEQ. Use xa_store_irq()/
-xa_erase_irq() to avoid deadlock.
+Commit d725d20e81c2 ("media: flexcop-usb: sanity checking of endpoint type
+") adds a sanity check for endpoint[1], but fails to modify the sanity
+check of bNumEndpoints.
 
-Fixes: 81fce6291d99 ("RDMA/hns: Add SRQ asynchronous event support")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240412091616.370789-5-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fix this by modifying the sanity check of bNumEndpoints to 2.
+
+Link: https://lore.kernel.org/linux-media/20220602055027.849014-1-dzm91@hust.edu.cn
+Fixes: d725d20e81c2 ("media: flexcop-usb: sanity checking of endpoint type")
+Signed-off-by: Dongliang Mu <mudongliangabcd@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_main.c | 1 +
- drivers/infiniband/hw/hns/hns_roce_srq.c  | 6 +++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/usb/b2c2/flexcop-usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
-index da1b33d818d82..afe7523eca909 100644
---- a/drivers/infiniband/hw/hns/hns_roce_main.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_main.c
-@@ -37,6 +37,7 @@
- #include <rdma/ib_smi.h>
- #include <rdma/ib_user_verbs.h>
- #include <rdma/ib_cache.h>
-+#include "hnae3.h"
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include "hns_roce_hem.h"
-diff --git a/drivers/infiniband/hw/hns/hns_roce_srq.c b/drivers/infiniband/hw/hns/hns_roce_srq.c
-index 8dae98f827eb2..6a4923c21cbc6 100644
---- a/drivers/infiniband/hw/hns/hns_roce_srq.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_srq.c
-@@ -122,7 +122,7 @@ static int alloc_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq)
- 		return ret;
- 	}
+diff --git a/drivers/media/usb/b2c2/flexcop-usb.c b/drivers/media/usb/b2c2/flexcop-usb.c
+index 790787f0eba84..bcb24d8964981 100644
+--- a/drivers/media/usb/b2c2/flexcop-usb.c
++++ b/drivers/media/usb/b2c2/flexcop-usb.c
+@@ -515,7 +515,7 @@ static int flexcop_usb_init(struct flexcop_usb *fc_usb)
  
--	ret = xa_err(xa_store(&srq_table->xa, srq->srqn, srq, GFP_KERNEL));
-+	ret = xa_err(xa_store_irq(&srq_table->xa, srq->srqn, srq, GFP_KERNEL));
- 	if (ret) {
- 		ibdev_err(ibdev, "failed to store SRQC, ret = %d.\n", ret);
- 		goto err_put;
-@@ -135,7 +135,7 @@ static int alloc_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq)
- 	return 0;
+ 	alt = fc_usb->uintf->cur_altsetting;
  
- err_xa:
--	xa_erase(&srq_table->xa, srq->srqn);
-+	xa_erase_irq(&srq_table->xa, srq->srqn);
- err_put:
- 	hns_roce_table_put(hr_dev, &srq_table->table, srq->srqn);
- 
-@@ -153,7 +153,7 @@ static void free_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq)
- 		dev_err(hr_dev->dev, "DESTROY_SRQ failed (%d) for SRQN %06lx\n",
- 			ret, srq->srqn);
- 
--	xa_erase(&srq_table->xa, srq->srqn);
-+	xa_erase_irq(&srq_table->xa, srq->srqn);
- 
- 	if (refcount_dec_and_test(&srq->refcount))
- 		complete(&srq->free);
+-	if (alt->desc.bNumEndpoints < 1)
++	if (alt->desc.bNumEndpoints < 2)
+ 		return -ENODEV;
+ 	if (!usb_endpoint_is_isoc_in(&alt->endpoint[0].desc))
+ 		return -ENODEV;
 -- 
 2.43.0
 
