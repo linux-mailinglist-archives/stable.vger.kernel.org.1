@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-48477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 288948FE92B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC798FEBF0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D316D283994
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29922B2760F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFD4199241;
-	Thu,  6 Jun 2024 14:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783711AC250;
+	Thu,  6 Jun 2024 14:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Z37eZB8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qc9k+dnX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BED319753A;
-	Thu,  6 Jun 2024 14:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37183197A9B;
+	Thu,  6 Jun 2024 14:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682988; cv=none; b=S3QP48ZEEB+Ej61svmcsF3kVVL6y6Bx9xYd3Nv/O36NRb2Dp/+92q7OFacMwOEjNO8BcZVykixGfu7IXl/Osz9oy86SSNPhShqe4r8AteY7OML2K7UdiB3GCxNSHKvWPT6n76MXG0FsFafs0j9NBWf2H1KXU3cr98GEesfCPSdo=
+	t=1717683311; cv=none; b=EnIRnMRs2f1inNCnAJIC/DVw3/9Sntt8F7hQCRu7uw4PfwF99tJQGcPV5Zz9CJhZ2h1L7Q+LR7/3oiHMPYcoT5NE2iE1O6va32S8+t1anMwItVJqBpSq8sWyPI3ulH9cuoRb5ge5HnXhP4dh995fQQzaYD55dMrLIGE/hoog0IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682988; c=relaxed/simple;
-	bh=AGPdF9t7Pl4k1yFdXu9zzWCYFsgc8VsVhiMWzNamwV4=;
+	s=arc-20240116; t=1717683311; c=relaxed/simple;
+	bh=hNPSijbu5gk0BNif3nWxmelgykcvoNtNSalHqXJzGwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ncp4FDw9fZVOqtHkoSp/oMQxKL2AaRhJrSr9X5PwOL+yLtL9Qz645aW4wgGpa4mLsHCq9hC4YGp9SPpIlFtBOTd7zg5ig4wC/5hWUxEsgsrqOWY6GB/QVGWJ/3xaJMp2T5BGNXl8qXvmtoGRcx01houWu51EgfTqZi1q2j5afSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Z37eZB8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3463C2BD10;
-	Thu,  6 Jun 2024 14:09:47 +0000 (UTC)
+	 MIME-Version; b=aQE9lzWMchRldbALOJ+fmdXoUeTm3vj9/PISFMGoARbe94KLOV66o4QLLNzrngSzUXl+JGSY5cnhC/POmdlEN26g4eEHNk0mi3hlMeAjtpGfNyyNZq76DqCFx0wFHFBEF++Xou+jL4CY41g3DJg+8STimZ25ruUqYD12iIXIM8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qc9k+dnX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14650C2BD10;
+	Thu,  6 Jun 2024 14:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682987;
-	bh=AGPdF9t7Pl4k1yFdXu9zzWCYFsgc8VsVhiMWzNamwV4=;
+	s=korg; t=1717683311;
+	bh=hNPSijbu5gk0BNif3nWxmelgykcvoNtNSalHqXJzGwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Z37eZB81NYT7bZf6U6uCDLkKk9YDYFtbkwI3AzKY/5ANcIGFnd2P+3osLcBt+iRR
-	 hYVz/7Eo0D5gBhhG7+SjEFr708CvOO7FYy7G/ksJ60uRPsbx7O8hXDCsN93Nc8pGVr
-	 fgHOx8efJkKwwhtz2hFZUo0nrv789cz/1VoZthuo=
+	b=qc9k+dnXyXPb0Qn8qOMOrQ0ErSm8fPXpPXKitOvymASwqCj7wn4mrCTX3GjwhhwnX
+	 yXLS8+o77De4ZF0bjudGNUy9KEl4/cgLEJSn8s7o8N4q9P3UBO0z3VXzN3tvdjNpTn
+	 13lt9n2Mt/AkzFQbwFKDL4rAZlEfDuCBQsxon50A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Chris Down <chris@chrisdown.name>,
+	Petr Mladek <pmladek@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 140/374] dt-bindings: PCI: rockchip,rk3399-pcie: Add missing maxItems to ep-gpios
-Date: Thu,  6 Jun 2024 16:01:59 +0200
-Message-ID: <20240606131656.599880848@linuxfoundation.org>
+Subject: [PATCH 6.1 191/473] dev_printk: Add and use dev_no_printk()
+Date: Thu,  6 Jun 2024 16:02:00 +0200
+Message-ID: <20240606131706.251832165@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 52d06636a4ae4db24ebfe23fae7a525f7e983604 ]
+[ Upstream commit c26ec799042a3888935d59b599f33e41efedf5f8 ]
 
-Properties with GPIOs should define number of actual GPIOs, so add
-missing maxItems to ep-gpios.  Otherwise multiple GPIOs could be
-provided which is not a true hardware description.
+When printk-indexing is enabled, each dev_printk() invocation emits a
+pi_entry structure.  This is even true when the dev_printk() is
+protected by an always-false check, as is typically the case for debug
+messages: while the actual code to print the message is optimized out by
+the compiler, the pi_entry structure is still emitted.
 
-Fixes: aa222f9311e1 ("dt-bindings: PCI: Convert Rockchip RK3399 PCIe to DT schema")
-Link: https://lore.kernel.org/linux-pci/20240401100058.15749-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Avoid emitting pi_entry structures for unavailable dev_printk() kernel
+messages by:
+  1. Introducing a dev_no_printk() helper, mimicked after the existing
+     no_printk() helper, which calls _dev_printk() instead of
+     dev_printk(),
+  2. Replacing all "if (0) dev_printk(...)" constructs by calls to the
+     new helper.
+
+This reduces the size of an arm64 defconfig kernel with
+CONFIG_PRINTK_INDEX=y by 957 KiB.
+
+Fixes: ad7d61f159db7397 ("printk: index: Add indexing support to dev_printk")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Chris Down <chris@chrisdown.name>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/8583d54f1687c801c6cda8edddf2cf0344c6e883.1709127473.git.geert+renesas@glider.be
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/pci/rockchip,rk3399-pcie.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/dev_printk.h | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/pci/rockchip,rk3399-pcie.yaml b/Documentation/devicetree/bindings/pci/rockchip,rk3399-pcie.yaml
-index 531008f0b6ac3..002b728cbc718 100644
---- a/Documentation/devicetree/bindings/pci/rockchip,rk3399-pcie.yaml
-+++ b/Documentation/devicetree/bindings/pci/rockchip,rk3399-pcie.yaml
-@@ -37,6 +37,7 @@ properties:
-     description: This property is needed if using 24MHz OSC for RC's PHY.
+diff --git a/include/linux/dev_printk.h b/include/linux/dev_printk.h
+index 8904063d4c9f0..65eec5be8ccb9 100644
+--- a/include/linux/dev_printk.h
++++ b/include/linux/dev_printk.h
+@@ -129,6 +129,16 @@ void _dev_info(const struct device *dev, const char *fmt, ...)
+ 		_dev_printk(level, dev, fmt, ##__VA_ARGS__);		\
+ 	})
  
-   ep-gpios:
-+    maxItems: 1
-     description: pre-reset GPIO
++/*
++ * Dummy dev_printk for disabled debugging statements to use whilst maintaining
++ * gcc's format checking.
++ */
++#define dev_no_printk(level, dev, fmt, ...)				\
++	({								\
++		if (0)							\
++			_dev_printk(level, dev, fmt, ##__VA_ARGS__);	\
++	})
++
+ /*
+  * #defines for all the dev_<level> macros to prefix with whatever
+  * possible use of #define dev_fmt(fmt) ...
+@@ -158,10 +168,7 @@ void _dev_info(const struct device *dev, const char *fmt, ...)
+ 	dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
+ #else
+ #define dev_dbg(dev, fmt, ...)						\
+-({									\
+-	if (0)								\
+-		dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__); \
+-})
++	dev_no_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
+ #endif
  
-   vpcie12v-supply:
+ #ifdef CONFIG_PRINTK
+@@ -247,20 +254,14 @@ do {									\
+ } while (0)
+ #else
+ #define dev_dbg_ratelimited(dev, fmt, ...)				\
+-do {									\
+-	if (0)								\
+-		dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__); \
+-} while (0)
++	dev_no_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
+ #endif
+ 
+ #ifdef VERBOSE_DEBUG
+ #define dev_vdbg	dev_dbg
+ #else
+ #define dev_vdbg(dev, fmt, ...)						\
+-({									\
+-	if (0)								\
+-		dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__); \
+-})
++	dev_no_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
+ #endif
+ 
+ /*
 -- 
 2.43.0
 
