@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-48595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD418FE9AB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D9F8FED31
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7690A289128
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A7501F21ADA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AEEF198A1D;
-	Thu,  6 Jun 2024 14:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF631974E0;
+	Thu,  6 Jun 2024 14:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzcqDcpk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhfnC+lO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A28B198A16;
-	Thu,  6 Jun 2024 14:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31E11B580B;
+	Thu,  6 Jun 2024 14:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683053; cv=none; b=JS8PRKFNsSi3BuexipOGJWBbPS2rKxmHuNA8sYStHKAaClM8cE2uXeAJotnzi6fbg8g+R7TANcrRdioKkyHMehpZY0oUl4d6aY4HVlxwjobFjlb73pVI2yf99XrKI8RR5cU6yGsOpagt1U7weT8T+3ryr4Q89OISh2Ld1xTGjaw=
+	t=1717683457; cv=none; b=fQIOeywFrtc/K+xil/HEVJn2a7Jp4wGWhb+lPkOXSy/zeOkw+lYp8gxIZKgTSkkZm+fpjsXHmmA3apFguDU+jXxF5za4HHfadz6IA+231HUZBwXhxStEO/NNJeJ/ItGrLOj9cq3BgAyHTc6Zj0ph8y3kSKKBdUN/tXYyopHKgEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683053; c=relaxed/simple;
-	bh=WyjiUSOxG9wuSn558O2V8qfIHTA/GX4U28j1uwQkjuw=;
+	s=arc-20240116; t=1717683457; c=relaxed/simple;
+	bh=tgWjefYsOeeaJGF0f5KVBWHH088UdgmfzA/FYFr9p3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVmO6HTMEr8y3nvyPzWium6qtRPXKHgN30k5qk+L2+MEnR5QSVs61nOvwsqZSVR4N+6hhtrj98N3gBxA6p/ke0pZnkR4u3vvM5ZkkSpjLPqtA34IMYQrdNYS2sjTTV3GazJqmOejH/By5cpazJSNh5FbL6Bbt9oh+JNeAVjuXhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzcqDcpk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3ACC4AF0D;
-	Thu,  6 Jun 2024 14:10:52 +0000 (UTC)
+	 MIME-Version; b=OQeLv/EmTW8o1ej2fDdw/gPIGuVTK+MHnwdY7Xgfl2fF/V0BFCzxBi/GBLzio2Y/6P8FdSu5msRE07PDuGYorcastywsnpef/NRqKw9cYIPXcqc6u2gRbmhSbD5AyaOtNv6O3as/m3zm/gafHD053pIMYS7Nh6uMOtNvFn+1ncU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhfnC+lO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A042FC32781;
+	Thu,  6 Jun 2024 14:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683053;
-	bh=WyjiUSOxG9wuSn558O2V8qfIHTA/GX4U28j1uwQkjuw=;
+	s=korg; t=1717683457;
+	bh=tgWjefYsOeeaJGF0f5KVBWHH088UdgmfzA/FYFr9p3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NzcqDcpkOsNGFEXSRZXJDmhOC286ImTMcCxad1lLRuspR+cCfqJeZjOdRrJGtYAa2
-	 iu1dc/KguVJp0tj4aT1Ptw9zUldGtQsC52O+CSFtF8d9hR1FafTM5DEcl+vs5uGuOC
-	 /sQtqHTekxE6VeAQKZcAWUMY4jTmXZmYNb6NTjHQ=
+	b=NhfnC+lOWO9vFKhMOSietx52HS4MIl8siVbP/8LqEilvhuUHZABKSzsCNnvV+WTbW
+	 175AeGrjo59AEfbkv8kRdQy0lyx+1X2y0n55f7zZ75ywJBzW2SiPFBma4YgiqUVjHg
+	 iv3cbKYgp3cL6/689IjYnVp/XH640z4MDpiVH0Io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karim Ben Houcine <karim.benhoucine@landisgyr.com>,
-	Mathieu Othacehe <othacehe@gnu.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 295/374] net: phy: micrel: set soft_reset callback to genphy_soft_reset for KSZ8061
+Subject: [PATCH 6.1 345/473] serial: sh-sci: protect invalidating RXDMA on shutdown
 Date: Thu,  6 Jun 2024 16:04:34 +0200
-Message-ID: <20240606131701.754032231@linuxfoundation.org>
+Message-ID: <20240606131711.311924415@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathieu Othacehe <othacehe@gnu.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 128d54fbcb14b8717ecf596d3dbded327b9980b3 ]
+[ Upstream commit aae20f6e34cd0cbd67a1d0e5877561c40109a81b ]
 
-Following a similar reinstate for the KSZ8081 and KSZ9031.
+The to-be-fixed commit removed locking when invalidating the DMA RX
+descriptors on shutdown. It overlooked that there is still a rx_timer
+running which may still access the protected data. So, re-add the
+locking.
 
-Older kernels would use the genphy_soft_reset if the PHY did not implement
-a .soft_reset.
-
-The KSZ8061 errata described here:
-https://ww1.microchip.com/downloads/en/DeviceDoc/KSZ8061-Errata-DS80000688B.pdf
-and worked around with 232ba3a51c ("net: phy: Micrel KSZ8061: link failure after cable connect")
-is back again without this soft reset.
-
-Fixes: 6e2d85ec0559 ("net: phy: Stop with excessive soft reset")
-Tested-by: Karim Ben Houcine <karim.benhoucine@landisgyr.com>
-Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
+Closes: https://lore.kernel.org/r/ee6c9e16-9f29-450e-81da-4a8dceaa8fc7@de.bosch.com
+Fixes: 2c4ee23530ff ("serial: sh-sci: Postpone DMA release when falling back to PIO")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/r/20240506114016.30498-7-wsa+renesas@sang-engineering.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/sh-sci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 87780465cd0d5..18dee364e2b31 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -4814,6 +4814,7 @@ static struct phy_driver ksphy_driver[] = {
- 	/* PHY_BASIC_FEATURES */
- 	.probe		= kszphy_probe,
- 	.config_init	= ksz8061_config_init,
-+	.soft_reset	= genphy_soft_reset,
- 	.config_intr	= kszphy_config_intr,
- 	.handle_interrupt = kszphy_handle_interrupt,
- 	.suspend	= kszphy_suspend,
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index e67d3a886bf4f..08ad5ae411216 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -1244,9 +1244,14 @@ static void sci_dma_rx_chan_invalidate(struct sci_port *s)
+ static void sci_dma_rx_release(struct sci_port *s)
+ {
+ 	struct dma_chan *chan = s->chan_rx_saved;
++	struct uart_port *port = &s->port;
++	unsigned long flags;
+ 
++	uart_port_lock_irqsave(port, &flags);
+ 	s->chan_rx_saved = NULL;
+ 	sci_dma_rx_chan_invalidate(s);
++	uart_port_unlock_irqrestore(port, flags);
++
+ 	dmaengine_terminate_sync(chan);
+ 	dma_free_coherent(chan->device->dev, s->buf_len_rx * 2, s->rx_buf[0],
+ 			  sg_dma_address(&s->sg_rx[0]));
 -- 
 2.43.0
 
