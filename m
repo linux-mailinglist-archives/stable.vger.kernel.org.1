@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-49489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 658F88FED76
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EFC68FEEDC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05E3D1F2132D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D14CB23880
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63FDF1BB68D;
-	Thu,  6 Jun 2024 14:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5962C1C7D96;
+	Thu,  6 Jun 2024 14:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtEsBQ1f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5I/7Gfv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C0C198E96;
-	Thu,  6 Jun 2024 14:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185F61C7D9F;
+	Thu,  6 Jun 2024 14:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683491; cv=none; b=WKVfBa/VjFgelx3+g4dcoSU7O29iC2zU6U/4zTas4Xqai/b6SSQAHNgnbkt7ryMl9BaH4Cc7yl3pExPDjCYRoD5zOEUAPScdOpon0IH3koztnMnRC0jhMDxVAlffWpHTGXKGBYS5HzMeQ1KG5+VZbOmmDgLDkEhHpK3Lb1s5n3Y=
+	t=1717683710; cv=none; b=quXtfv4b3LBjshz6iKpFLUWU/0vGdGArHjiXTYs3qtkJte3ape1g+juv8lTz/n0gG5jCidbTyK4itzXcPt3Y5VTHidDa8+jCMWukv/mIfxcfAQS4oX+p2YnuwmzsrnAz/E1q1FdgmWLfHh5wIzqhuIJvRDiDrLgizsd63IFBBgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683491; c=relaxed/simple;
-	bh=gjeDgqDcskU3NdtdCnAQbZqZhjNmNRMFCLLdqJ55x20=;
+	s=arc-20240116; t=1717683710; c=relaxed/simple;
+	bh=9cQyIkVBQYCVrg7jeEBseIgnJrV/OCcCeV5/aabzW6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AaubnJmL7OM9ZohY+GVpamSr9kLbGjej3MXQ+QeeRtpc8Yb4JSnZtZLaFZNzoqAppbOJxZBgZm2LvIVeuD0qLR7parsQOiWmF68874Qd1oMtfv+E7nKa/TnaQiibspqyl6qOdLYSjw4eiyJWC6glVB5wYiSMr9kx0l6HIXhrQGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtEsBQ1f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E4DC2BD10;
-	Thu,  6 Jun 2024 14:18:10 +0000 (UTC)
+	 MIME-Version; b=TjxgFSrw8DZKrryL5kPvn1zOzJ185xs4Gn5CqIwH4GdJwRmgVMAJ7jfWlcDGfnKISYA7aQGXisB+sUIL96EfAujAIIUJGpgSew69NJHZan4iBHhabTrD77hROgter9U3deuJHMACcoW/BjavVnZkcwtUuRvTk60AznDmcsPQGJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5I/7Gfv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2ECC32782;
+	Thu,  6 Jun 2024 14:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683490;
-	bh=gjeDgqDcskU3NdtdCnAQbZqZhjNmNRMFCLLdqJ55x20=;
+	s=korg; t=1717683710;
+	bh=9cQyIkVBQYCVrg7jeEBseIgnJrV/OCcCeV5/aabzW6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TtEsBQ1fKXT6IaCiDAlpSYeW9rVnxoPn4rcLpIJ+ymZ7zfIULhosZJu9ZhwtBZtcC
-	 3cgyAmTo5Q2UYndkGo99qSDYOLHEDQmCkUyJyPxAs6OmcivX9bZIHYP5ESmeAPzisv
-	 bNK3uTKrnxhvDVSqnIs6EgARRs5/eo+PwXskeYMU=
+	b=M5I/7Gfv7jMmSXRaSEr//Yzn6FJoXQH37dN2dUcFHta7EDS+LohsxqlOSvc0nOB0M
+	 bMjaw92aT7TR+dBsOZ/FE5wJ9yyZE3FO2+qlr2le/BbmzEiSF8a5FodRFbQjDQOUQD
+	 twASmoROL5EAx7dAmYKMEfkK6aKyI6dH018C9+9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 381/473] Input: cyapa - add missing input core locking to suspend/resume functions
-Date: Thu,  6 Jun 2024 16:05:10 +0200
-Message-ID: <20240606131712.453632564@linuxfoundation.org>
+Subject: [PATCH 6.6 639/744] NFSv4: Fixup smatch warning for ambiguous return
+Date: Thu,  6 Jun 2024 16:05:11 +0200
+Message-ID: <20240606131752.973114668@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit 7b4e0b39182cf5e677c1fc092a3ec40e621c25b6 ]
+[ Upstream commit 37ffe06537af3e3ec212e7cbe941046fce0a822f ]
 
-Grab input->mutex during suspend/resume functions like it is done in
-other input drivers. This fixes the following warning during system
-suspend/resume cycle on Samsung Exynos5250-based Snow Chromebook:
+Dan Carpenter reports smatch warning for nfs4_try_migration() when a memory
+allocation failure results in a zero return value.  In this case, a
+transient allocation failure error will likely be retried the next time the
+server responds with NFS4ERR_MOVED.
 
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 1680 at drivers/input/input.c:2291 input_device_enabled+0x68/0x6c
-Modules linked in: ...
-CPU: 1 PID: 1680 Comm: kworker/u4:12 Tainted: G        W          6.6.0-rc5-next-20231009 #14109
-Hardware name: Samsung Exynos (Flattened Device Tree)
-Workqueue: events_unbound async_run_entry_fn
- unwind_backtrace from show_stack+0x10/0x14
- show_stack from dump_stack_lvl+0x58/0x70
- dump_stack_lvl from __warn+0x1a8/0x1cc
- __warn from warn_slowpath_fmt+0x18c/0x1b4
- warn_slowpath_fmt from input_device_enabled+0x68/0x6c
- input_device_enabled from cyapa_gen3_set_power_mode+0x13c/0x1dc
- cyapa_gen3_set_power_mode from cyapa_reinitialize+0x10c/0x15c
- cyapa_reinitialize from cyapa_resume+0x48/0x98
- cyapa_resume from dpm_run_callback+0x90/0x298
- dpm_run_callback from device_resume+0xb4/0x258
- device_resume from async_resume+0x20/0x64
- async_resume from async_run_entry_fn+0x40/0x15c
- async_run_entry_fn from process_scheduled_works+0xbc/0x6a8
- process_scheduled_works from worker_thread+0x188/0x454
- worker_thread from kthread+0x108/0x140
- kthread from ret_from_fork+0x14/0x28
-Exception stack(0xf1625fb0 to 0xf1625ff8)
-...
----[ end trace 0000000000000000 ]---
-...
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 1680 at drivers/input/input.c:2291 input_device_enabled+0x68/0x6c
-Modules linked in: ...
-CPU: 1 PID: 1680 Comm: kworker/u4:12 Tainted: G        W          6.6.0-rc5-next-20231009 #14109
-Hardware name: Samsung Exynos (Flattened Device Tree)
-Workqueue: events_unbound async_run_entry_fn
- unwind_backtrace from show_stack+0x10/0x14
- show_stack from dump_stack_lvl+0x58/0x70
- dump_stack_lvl from __warn+0x1a8/0x1cc
- __warn from warn_slowpath_fmt+0x18c/0x1b4
- warn_slowpath_fmt from input_device_enabled+0x68/0x6c
- input_device_enabled from cyapa_gen3_set_power_mode+0x13c/0x1dc
- cyapa_gen3_set_power_mode from cyapa_reinitialize+0x10c/0x15c
- cyapa_reinitialize from cyapa_resume+0x48/0x98
- cyapa_resume from dpm_run_callback+0x90/0x298
- dpm_run_callback from device_resume+0xb4/0x258
- device_resume from async_resume+0x20/0x64
- async_resume from async_run_entry_fn+0x40/0x15c
- async_run_entry_fn from process_scheduled_works+0xbc/0x6a8
- process_scheduled_works from worker_thread+0x188/0x454
- worker_thread from kthread+0x108/0x140
- kthread from ret_from_fork+0x14/0x28
-Exception stack(0xf1625fb0 to 0xf1625ff8)
-...
----[ end trace 0000000000000000 ]---
+We can fixup the smatch warning with a small refactor: attempt all three
+allocations before testing and returning on a failure.
 
-Fixes: d69f0a43c677 ("Input: use input_device_enabled()")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Link: https://lore.kernel.org/r/20231009121018.1075318-1-m.szyprowski@samsung.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: c3ed222745d9 ("NFSv4: Fix free of uninitialized nfs4_label on referral lookup.")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/mouse/cyapa.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ fs/nfs/nfs4state.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/input/mouse/cyapa.c b/drivers/input/mouse/cyapa.c
-index 77cc653edca22..e401934df4642 100644
---- a/drivers/input/mouse/cyapa.c
-+++ b/drivers/input/mouse/cyapa.c
-@@ -1357,10 +1357,16 @@ static int __maybe_unused cyapa_suspend(struct device *dev)
- 	u8 power_mode;
- 	int error;
+diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+index 9a5d911a7edc7..c95c50328ced8 100644
+--- a/fs/nfs/nfs4state.c
++++ b/fs/nfs/nfs4state.c
+@@ -2117,6 +2117,7 @@ static int nfs4_try_migration(struct nfs_server *server, const struct cred *cred
+ {
+ 	struct nfs_client *clp = server->nfs_client;
+ 	struct nfs4_fs_locations *locations = NULL;
++	struct nfs_fattr *fattr;
+ 	struct inode *inode;
+ 	struct page *page;
+ 	int status, result;
+@@ -2126,19 +2127,16 @@ static int nfs4_try_migration(struct nfs_server *server, const struct cred *cred
+ 			(unsigned long long)server->fsid.minor,
+ 			clp->cl_hostname);
  
--	error = mutex_lock_interruptible(&cyapa->state_sync_lock);
-+	error = mutex_lock_interruptible(&cyapa->input->mutex);
- 	if (error)
- 		return error;
+-	result = 0;
+ 	page = alloc_page(GFP_KERNEL);
+ 	locations = kmalloc(sizeof(struct nfs4_fs_locations), GFP_KERNEL);
+-	if (page == NULL || locations == NULL) {
+-		dprintk("<-- %s: no memory\n", __func__);
+-		goto out;
+-	}
+-	locations->fattr = nfs_alloc_fattr();
+-	if (locations->fattr == NULL) {
++	fattr = nfs_alloc_fattr();
++	if (page == NULL || locations == NULL || fattr == NULL) {
+ 		dprintk("<-- %s: no memory\n", __func__);
++		result = 0;
+ 		goto out;
+ 	}
  
-+	error = mutex_lock_interruptible(&cyapa->state_sync_lock);
-+	if (error) {
-+		mutex_unlock(&cyapa->input->mutex);
-+		return error;
-+	}
-+
- 	/*
- 	 * Runtime PM is enable only when device is in operational mode and
- 	 * users in use, so need check it before disable it to
-@@ -1395,6 +1401,8 @@ static int __maybe_unused cyapa_suspend(struct device *dev)
- 		cyapa->irq_wake = (enable_irq_wake(client->irq) == 0);
- 
- 	mutex_unlock(&cyapa->state_sync_lock);
-+	mutex_unlock(&cyapa->input->mutex);
-+
- 	return 0;
- }
- 
-@@ -1404,6 +1412,7 @@ static int __maybe_unused cyapa_resume(struct device *dev)
- 	struct cyapa *cyapa = i2c_get_clientdata(client);
- 	int error;
- 
-+	mutex_lock(&cyapa->input->mutex);
- 	mutex_lock(&cyapa->state_sync_lock);
- 
- 	if (device_may_wakeup(dev) && cyapa->irq_wake) {
-@@ -1422,6 +1431,7 @@ static int __maybe_unused cyapa_resume(struct device *dev)
- 	enable_irq(client->irq);
- 
- 	mutex_unlock(&cyapa->state_sync_lock);
-+	mutex_unlock(&cyapa->input->mutex);
- 	return 0;
- }
- 
++	locations->fattr = fattr;
+ 	inode = d_inode(server->super->s_root);
+ 	result = nfs4_proc_get_locations(server, NFS_FH(inode), locations,
+ 					 page, cred);
 -- 
 2.43.0
 
