@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-48389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EEF28FE8D1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6954C8FEB8E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5A251F24C6F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 543E91C24AC6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C7E198E6D;
-	Thu,  6 Jun 2024 14:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14041AB53C;
+	Thu,  6 Jun 2024 14:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JiaxZFaO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1lcSFkkC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21C1198E60;
-	Thu,  6 Jun 2024 14:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917461AB53B;
+	Thu,  6 Jun 2024 14:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682937; cv=none; b=UXncoVmRTGYrQyegFe3m+uoSCAwci7x98DL6MXa8hzgW1NnuTpetpoa4c38HoXUUiR/zURGg5NVhZ47GbyPVO3pjNjF86NmVqlgN/qzmeb/tCRjubSs22GNkXx5O13RsiGovGPDS2WazJdq74tofHuQcuXixInYUrylL5KLHqbg=
+	t=1717683264; cv=none; b=AhglPopsxoORrAqJzWPTVWsu/hSJnoS+FILi4fjCxI8Pr57t9YlI2vpR1RS+U5BORZc1SEsfLaYlcI9QwOchVj5MkNtVAWI5Lh/fkwP3aklrUdlF4/whjVU6MkaDzP1vyLVexnGYr9rR37xLzegCgqiHHHxMLfuhiQv5RGTU6ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682937; c=relaxed/simple;
-	bh=gTBTIlBqeQlslb8qiZd3SiN5z6AR10zkETEabMKdL2U=;
+	s=arc-20240116; t=1717683264; c=relaxed/simple;
+	bh=4BhVvEcKo7JB3v3j+lgcTW9WjSmAJg9wNwuKqQ/FlQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUdt+Scp72I8w/rWIDiy0f66hgjyWPVdzJv4NWkhmzHuFngV+pobk0GBLy3Wd5pAFkoB470xNtq1JFfY/3jBiMG6Eco2/WBdfJhyBjvMKQy4kWAMdTHbPzBD7SCZFy9Phuy4Gg1JpOSZGZshvSRTFdylSY/aFwxQjiC2k14ehy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JiaxZFaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D233FC32781;
-	Thu,  6 Jun 2024 14:08:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b0IhEdqmrMJkctxk07TDTvalt/BLbXhNiLUC3HtQFPUsKXhu2rR+euETpWt/SiDPFA9I9WZQzzjE1VFXEwogOpR31R8JVdh+tX6FQOrie6y7x4z89/n+eGCGCaPs/YuipNJipfxGVRzn0/KhZ5V5P3BL+ql/hZ7JNUFlJAi8VRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1lcSFkkC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDC8C32786;
+	Thu,  6 Jun 2024 14:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682936;
-	bh=gTBTIlBqeQlslb8qiZd3SiN5z6AR10zkETEabMKdL2U=;
+	s=korg; t=1717683264;
+	bh=4BhVvEcKo7JB3v3j+lgcTW9WjSmAJg9wNwuKqQ/FlQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JiaxZFaOwusH6oaCc4ChN0SL9OX72Tuqcduc1OxN8pG3ecHzjs+6DpoTi7XJ+J5HA
-	 U/OBGJCCC55PjAuzjqEOy5NeQZti/tw9aCF0yaGWI0w0s4gAblFq+BgM5xp7PH8c5E
-	 +PIjVVBuMfAcko/FyeWultY7TypUIGtkMs67QiqA=
+	b=1lcSFkkCFXOJMs5GxpSIvQlYGS1WWF/u9zIKWk9hFZaAZWUfVz6dgaiGxTm0wZjb4
+	 HOWefmeCSDf30gfy2Y83rGlOeWIHGJsk+XGONjqzs5pwN6k4y5SAiWEgiUK6CGV8aL
+	 w152PlJDoxl/3KPpuqkOztqAXZG99wQTg1bI9OGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huai-Yuan Liu <qq810974084@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 088/374] ppdev: Add an error check in register_device
-Date: Thu,  6 Jun 2024 16:01:07 +0200
-Message-ID: <20240606131654.834294209@linuxfoundation.org>
+Subject: [PATCH 6.1 139/473] pwm: sti: Prepare removing pwm_chip from driver data
+Date: Thu,  6 Jun 2024 16:01:08 +0200
+Message-ID: <20240606131704.530659393@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +59,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huai-Yuan Liu <qq810974084@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit fbf740aeb86a4fe82ad158d26d711f2f3be79b3e ]
+[ Upstream commit 54272761ce7c475fa30a31b59b0cb89f7652b39e ]
 
-In register_device, the return value of ida_simple_get is unchecked,
-in witch ida_simple_get will use an invalid index value.
+This prepares the driver for further changes that will drop struct
+pwm_chip chip from struct sti_pwm_chip. Use the pwm_chip as driver data
+instead of the sti_pwm_chip to get access to the pwm_chip in
+sti_pwm_remove() without using pc->chip.
 
-To address this issue, index should be checked after ida_simple_get. When
-the index value is abnormal, a warning message should be printed, the port
-should be dropped, and the value should be recorded.
-
-Fixes: 9a69645dde11 ("ppdev: fix registering same device name")
-Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
-Link: https://lore.kernel.org/r/20240412083840.234085-1-qq810974084@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/56d53372aacff6871df4d6c6779c9dac94592696.1707900770.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Stable-dep-of: 5bb0b194aeee ("pwm: sti: Simplify probe function using devm functions")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ppdev.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/pwm/pwm-sti.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/char/ppdev.c b/drivers/char/ppdev.c
-index ee951b265213f..58e9dcc2a3087 100644
---- a/drivers/char/ppdev.c
-+++ b/drivers/char/ppdev.c
-@@ -296,28 +296,35 @@ static int register_device(int minor, struct pp_struct *pp)
- 	if (!port) {
- 		pr_warn("%s: no associated port!\n", name);
- 		rc = -ENXIO;
--		goto err;
-+		goto err_free_name;
+diff --git a/drivers/pwm/pwm-sti.c b/drivers/pwm/pwm-sti.c
+index c782378dff5e5..8f7aff51787be 100644
+--- a/drivers/pwm/pwm-sti.c
++++ b/drivers/pwm/pwm-sti.c
+@@ -571,6 +571,7 @@ static int sti_pwm_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct sti_pwm_compat_data *cdata;
++	struct pwm_chip *chip;
+ 	struct sti_pwm_chip *pc;
+ 	unsigned int i;
+ 	int irq, ret;
+@@ -578,6 +579,7 @@ static int sti_pwm_probe(struct platform_device *pdev)
+ 	pc = devm_kzalloc(dev, sizeof(*pc), GFP_KERNEL);
+ 	if (!pc)
+ 		return -ENOMEM;
++	chip = &pc->chip;
+ 
+ 	cdata = devm_kzalloc(dev, sizeof(*cdata), GFP_KERNEL);
+ 	if (!cdata)
+@@ -654,9 +656,9 @@ static int sti_pwm_probe(struct platform_device *pdev)
+ 			return -ENOMEM;
  	}
  
- 	index = ida_alloc(&ida_index, GFP_KERNEL);
-+	if (index < 0) {
-+		pr_warn("%s: failed to get index!\n", name);
-+		rc = index;
-+		goto err_put_port;
-+	}
-+
- 	memset(&ppdev_cb, 0, sizeof(ppdev_cb));
- 	ppdev_cb.irq_func = pp_irq;
- 	ppdev_cb.flags = (pp->flags & PP_EXCL) ? PARPORT_FLAG_EXCL : 0;
- 	ppdev_cb.private = pp;
- 	pdev = parport_register_dev_model(port, name, &ppdev_cb, index);
--	parport_put_port(port);
+-	pc->chip.dev = dev;
+-	pc->chip.ops = &sti_pwm_ops;
+-	pc->chip.npwm = max(cdata->pwm_num_devs, cdata->cpt_num_devs);
++	chip->dev = dev;
++	chip->ops = &sti_pwm_ops;
++	chip->npwm = max(cdata->pwm_num_devs, cdata->cpt_num_devs);
  
- 	if (!pdev) {
- 		pr_warn("%s: failed to register device!\n", name);
- 		rc = -ENXIO;
- 		ida_free(&ida_index, index);
--		goto err;
-+		goto err_put_port;
+ 	for (i = 0; i < cdata->cpt_num_devs; i++) {
+ 		struct sti_cpt_ddata *ddata = &cdata->ddata[i];
+@@ -665,23 +667,24 @@ static int sti_pwm_probe(struct platform_device *pdev)
+ 		mutex_init(&ddata->lock);
  	}
  
- 	pp->pdev = pdev;
- 	pp->index = index;
- 	dev_dbg(&pdev->dev, "registered pardevice\n");
--err:
-+err_put_port:
-+	parport_put_port(port);
-+err_free_name:
- 	kfree(name);
- 	return rc;
+-	ret = pwmchip_add(&pc->chip);
++	ret = pwmchip_add(chip);
+ 	if (ret < 0) {
+ 		clk_unprepare(pc->pwm_clk);
+ 		clk_unprepare(pc->cpt_clk);
+ 		return ret;
+ 	}
+ 
+-	platform_set_drvdata(pdev, pc);
++	platform_set_drvdata(pdev, chip);
+ 
+ 	return 0;
  }
+ 
+ static void sti_pwm_remove(struct platform_device *pdev)
+ {
+-	struct sti_pwm_chip *pc = platform_get_drvdata(pdev);
++	struct pwm_chip *chip = platform_get_drvdata(pdev);
++	struct sti_pwm_chip *pc = to_sti_pwmchip(chip);
+ 
+-	pwmchip_remove(&pc->chip);
++	pwmchip_remove(chip);
+ 
+ 	clk_unprepare(pc->pwm_clk);
+ 	clk_unprepare(pc->cpt_clk);
 -- 
 2.43.0
 
