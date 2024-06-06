@@ -1,73 +1,58 @@
-Return-Path: <stable+bounces-48308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E328FE873
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B70BA8FEC72
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 578CD1C21B97
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 371E0B25298
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6874196C63;
-	Thu,  6 Jun 2024 14:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233E21B1405;
+	Thu,  6 Jun 2024 14:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+gkxYQ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXl9/5pd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953D738D;
-	Thu,  6 Jun 2024 14:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65E6198A1D;
+	Thu,  6 Jun 2024 14:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682895; cv=none; b=faBtdJZhTlVGVzK2nlCce4zLCYAp6To0GS4/5+pkR6jclN0rStQ96araFuFlnDD+mk0xKUktOBN+VigAY3k+DFEUELxOeKxvON3WE0n5mJCLgoQD1mFBd40HQfoTdPBmJwLMG2aWWFNqdc+NNk2IH2Bw6AkaG0Up+7792kAJOfQ=
+	t=1717683367; cv=none; b=JdfB4kpkYW+ESa9GhcQV6InCjIoxp9fvgrdnhPRs8yACxVk/UBdpN0zJvbu7Z2iLBxvb4bIlknO4wi7LzqN2MRjA+dXAIiyx/JmEF2Ik8LNoSGGKAFxfhnqb+cU9k1mW1tOE4ph0VAUKlNW+e3Et3aMWj9ajSWpNgBqSakd0A34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682895; c=relaxed/simple;
-	bh=D0QAg9gR5OEjHbcOSXhNX9jyHg+B/uEYRSAb/xaQ6BQ=;
+	s=arc-20240116; t=1717683367; c=relaxed/simple;
+	bh=oRlfIUmxnhQAYtv9G73q7PqoyshvmKukVqEhlS9JeNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1KDWAhyCwumEubV8bBAKV0hcBdHl4hrRteo9fSrOHloAwAHL2Mpu9AseDzovsES2w6Kz9vhj/M6nqSbO5poYfLlTBXzeTs25NCu2osRnbDCUcpwd/IgJgJGc4jZ9pWQ2cWMuyt+dj4MKdbPAEyevMYEfoEPxKYcfcYa7lHy9as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+gkxYQ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1978FC32781;
-	Thu,  6 Jun 2024 14:08:15 +0000 (UTC)
+	 MIME-Version; b=XkMbRY2cKVpIRPapy9WU+/xvbjI4w/gE75/A2ejP88434udQbsC5FW6XlnNl43oI9IWPFK4C2fcn04C7hEkyH6Z5Qcrvnp1kVzeUmAuEsCIOLm03jSVXCUniVKdZapgPIV4QwdRsWqi+K1ueMl70wdB7KYPOTWwdeUvlyehxHoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXl9/5pd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD1E1C2BD10;
+	Thu,  6 Jun 2024 14:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682895;
-	bh=D0QAg9gR5OEjHbcOSXhNX9jyHg+B/uEYRSAb/xaQ6BQ=;
+	s=korg; t=1717683367;
+	bh=oRlfIUmxnhQAYtv9G73q7PqoyshvmKukVqEhlS9JeNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k+gkxYQ6CcIEy8ePtuc6GhPSbj0A0u573zMa9pjUqcpnmVHE85fmrvIQLIyuPTCBB
-	 EgosJxNUAKQQiqjbnWYwcx68g6LYTSzFAVQo7OkjcRPFzggzRl5poZwimdUhvfWKmA
-	 CBsSD+cxYUhVANelXfkyav/v6D0VZ7D0YMQKxUpY=
+	b=AXl9/5pdCQTKcelCWpqTKfqNpzj32AFxt8lHN5wR+wV1z8LhUBh7Y3wbAuYOLXqOc
+	 zVzj9BAdtJiCrCgRCWpKgNuP/uvy0F0LBWZsrqvPO7qZGTdaOQAIQVUJNJcgJg8wix
+	 wrl9+6QjJKjR4J1KzHGBvSFhAh5YovkEqwTfsE4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Disha Goel <disgoel@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Song Liu <songliubraving@fb.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 002/374] perf record: Delete session after stopping sideband thread
+Subject: [PATCH 6.6 309/744] drm/msm/dp: Avoid a long timeout for AUX transfer if nothing connected
 Date: Thu,  6 Jun 2024 15:59:41 +0200
-Message-ID: <20240606131651.778887231@linuxfoundation.org>
+Message-ID: <20240606131742.306336686@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,85 +64,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 88ce0106a1f603bf360cb397e8fe293f8298fabb ]
+[ Upstream commit 5d1a7493343cc00d9019880b686e4e0a0f649531 ]
 
-The session has a header in it which contains a perf env with
-bpf_progs. The bpf_progs are accessed by the sideband thread and so
-the sideband thread must be stopped before the session is deleted, to
-avoid a use after free.  This error was detected by AddressSanitizer
-in the following:
+As documented in the description of the transfer() function of
+"struct drm_dp_aux", the transfer() function can be called at any time
+regardless of the state of the DP port. Specifically if the kernel has
+the DP AUX character device enabled and userspace accesses
+"/dev/drm_dp_auxN" directly then the AUX transfer function will be
+called regardless of whether a DP device is connected.
 
-  ==2054673==ERROR: AddressSanitizer: heap-use-after-free on address 0x61d000161e00 at pc 0x55769289de54 bp 0x7f9df36d4ab0 sp 0x7f9df36d4aa8
-  READ of size 8 at 0x61d000161e00 thread T1
-      #0 0x55769289de53 in __perf_env__insert_bpf_prog_info util/env.c:42
-      #1 0x55769289dbb1 in perf_env__insert_bpf_prog_info util/env.c:29
-      #2 0x557692bbae29 in perf_env__add_bpf_info util/bpf-event.c:483
-      #3 0x557692bbb01a in bpf_event__sb_cb util/bpf-event.c:512
-      #4 0x5576928b75f4 in perf_evlist__poll_thread util/sideband_evlist.c:68
-      #5 0x7f9df96a63eb in start_thread nptl/pthread_create.c:444
-      #6 0x7f9df9726a4b in clone3 ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+For eDP panels we have a special rule where we wait (with a 5 second
+timeout) for HPD to go high. This rule was important before all panels
+drivers were converted to call wait_hpd_asserted() and actually can be
+removed in a future commit.
 
-  0x61d000161e00 is located 384 bytes inside of 2136-byte region [0x61d000161c80,0x61d0001624d8)
-  freed by thread T0 here:
-      #0 0x7f9dfa6d7288 in __interceptor_free libsanitizer/asan/asan_malloc_linux.cpp:52
-      #1 0x557692978d50 in perf_session__delete util/session.c:319
-      #2 0x557692673959 in __cmd_record tools/perf/builtin-record.c:2884
-      #3 0x55769267a9f0 in cmd_record tools/perf/builtin-record.c:4259
-      #4 0x55769286710c in run_builtin tools/perf/perf.c:349
-      #5 0x557692867678 in handle_internal_command tools/perf/perf.c:402
-      #6 0x557692867a40 in run_argv tools/perf/perf.c:446
-      #7 0x557692867fae in main tools/perf/perf.c:562
-      #8 0x7f9df96456c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+For external DP devices we never checked for HPD. That means that
+trying to access the DP AUX character device (AKA `hexdump -C
+/dev/drm_dp_auxN`) would very, very slowly timeout. Specifically on my
+system:
+  $ time hexdump -C /dev/drm_dp_aux0
+  hexdump: /dev/drm_dp_aux0: Connection timed out
+  real    0m8.200s
+We want access to the drm_dp_auxN character device to fail faster than
+8 seconds when no DP cable is plugged in.
 
-Fixes: 657ee5531903339b ("perf evlist: Introduce side band thread")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Disha Goel <disgoel@linux.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Tim Chen <tim.c.chen@linux.intel.com>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20240301074639.2260708-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Let's add a test to make transfers fail right away if a device isn't
+plugged in. Rather than testing the HPD line directly, we have the
+dp_display module tell us when AUX transfers should be enabled so we
+can handle cases where HPD is signaled out of band like with Type C.
+
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Guenter Roeck <groeck@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/583127/
+Link: https://lore.kernel.org/r/20240315143621.v2.1.I16aff881c9fe82b5e0fc06ca312da017aa7b5b3e@changeid
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-record.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_aux.c     | 20 ++++++++++++++++++++
+ drivers/gpu/drm/msm/dp/dp_aux.h     |  1 +
+ drivers/gpu/drm/msm/dp/dp_display.c |  4 ++++
+ 3 files changed, 25 insertions(+)
 
-diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
-index ff7e1d6cfcd2e..40d2c1c486665 100644
---- a/tools/perf/builtin-record.c
-+++ b/tools/perf/builtin-record.c
-@@ -2881,10 +2881,10 @@ static int __cmd_record(struct record *rec, int argc, const char **argv)
+diff --git a/drivers/gpu/drm/msm/dp/dp_aux.c b/drivers/gpu/drm/msm/dp/dp_aux.c
+index 8e3b677f35e64..559809a5cbcfb 100644
+--- a/drivers/gpu/drm/msm/dp/dp_aux.c
++++ b/drivers/gpu/drm/msm/dp/dp_aux.c
+@@ -35,6 +35,7 @@ struct dp_aux_private {
+ 	bool no_send_stop;
+ 	bool initted;
+ 	bool is_edp;
++	bool enable_xfers;
+ 	u32 offset;
+ 	u32 segment;
+ 
+@@ -297,6 +298,17 @@ static ssize_t dp_aux_transfer(struct drm_dp_aux *dp_aux,
+ 		goto exit;
  	}
- #endif
- 	zstd_fini(&session->zstd_data);
--	perf_session__delete(session);
--
- 	if (!opts->no_bpf_event)
- 		evlist__stop_sb_thread(rec->sb_evlist);
+ 
++	/*
++	 * If we're using DP and an external display isn't connected then the
++	 * transfer won't succeed. Return right away. If we don't do this we
++	 * can end up with long timeouts if someone tries to access the DP AUX
++	 * character device when no DP device is connected.
++	 */
++	if (!aux->is_edp && !aux->enable_xfers) {
++		ret = -ENXIO;
++		goto exit;
++	}
 +
-+	perf_session__delete(session);
- 	return status;
+ 	/*
+ 	 * For eDP it's important to give a reasonably long wait here for HPD
+ 	 * to be asserted. This is because the panel driver may have _just_
+@@ -428,6 +440,14 @@ irqreturn_t dp_aux_isr(struct drm_dp_aux *dp_aux)
+ 	return IRQ_HANDLED;
  }
  
++void dp_aux_enable_xfers(struct drm_dp_aux *dp_aux, bool enabled)
++{
++	struct dp_aux_private *aux;
++
++	aux = container_of(dp_aux, struct dp_aux_private, dp_aux);
++	aux->enable_xfers = enabled;
++}
++
+ void dp_aux_reconfig(struct drm_dp_aux *dp_aux)
+ {
+ 	struct dp_aux_private *aux;
+diff --git a/drivers/gpu/drm/msm/dp/dp_aux.h b/drivers/gpu/drm/msm/dp/dp_aux.h
+index 511305da4f66d..f3052cb43306b 100644
+--- a/drivers/gpu/drm/msm/dp/dp_aux.h
++++ b/drivers/gpu/drm/msm/dp/dp_aux.h
+@@ -12,6 +12,7 @@
+ int dp_aux_register(struct drm_dp_aux *dp_aux);
+ void dp_aux_unregister(struct drm_dp_aux *dp_aux);
+ irqreturn_t dp_aux_isr(struct drm_dp_aux *dp_aux);
++void dp_aux_enable_xfers(struct drm_dp_aux *dp_aux, bool enabled);
+ void dp_aux_init(struct drm_dp_aux *dp_aux);
+ void dp_aux_deinit(struct drm_dp_aux *dp_aux);
+ void dp_aux_reconfig(struct drm_dp_aux *dp_aux);
+diff --git a/drivers/gpu/drm/msm/dp/dp_display.c b/drivers/gpu/drm/msm/dp/dp_display.c
+index eec5768aac727..ed77c957eceba 100644
+--- a/drivers/gpu/drm/msm/dp/dp_display.c
++++ b/drivers/gpu/drm/msm/dp/dp_display.c
+@@ -586,6 +586,8 @@ static int dp_hpd_plug_handle(struct dp_display_private *dp, u32 data)
+ 	u32 state;
+ 	int ret;
+ 
++	dp_aux_enable_xfers(dp->aux, true);
++
+ 	mutex_lock(&dp->event_mutex);
+ 
+ 	state =  dp->hpd_state;
+@@ -642,6 +644,8 @@ static int dp_hpd_unplug_handle(struct dp_display_private *dp, u32 data)
+ {
+ 	u32 state;
+ 
++	dp_aux_enable_xfers(dp->aux, false);
++
+ 	mutex_lock(&dp->event_mutex);
+ 
+ 	state = dp->hpd_state;
 -- 
 2.43.0
 
