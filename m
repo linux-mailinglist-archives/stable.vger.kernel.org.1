@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-48942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 817D08FEB34
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB728FE8DC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA8B1284E3A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D5B71C22FE2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAC619939D;
-	Thu,  6 Jun 2024 14:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A2F1974FB;
+	Thu,  6 Jun 2024 14:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiDOImn2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jv3UdEao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD7A1A2FCF;
-	Thu,  6 Jun 2024 14:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B73196C89;
+	Thu,  6 Jun 2024 14:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683223; cv=none; b=oSWL1oLdkkBJu7hxGUGY3b2oAxucPrYIxGPuFeM/Og5eh/csubyZGGTumksDv8tprkQtbLymaU6zOs2EZTNyA93CuWranyvqKWugYhCunV/OOQavYVbhKZslIwYJjVyrwd0z4UE/XtOmAkVi8Z0WEo1513MxD67PLLqAR3QZVHc=
+	t=1717682943; cv=none; b=uCgd0NFcUKPi9W7nqVMGx4AccuFBr0F1HHxGckB7zkZ1m4oD1kQOoCZRgjLYMMKSyq2qBZyJCVCZufVld9X22cI6W2vPMS30fgxG1Re7JagZxEYmUW35BN1polrWRlsseQTh4vqISzV3whwNOmWChOcWfIRsc1et6/P8UAUSXfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683223; c=relaxed/simple;
-	bh=/E3s6Wv+9WZr6+VcWSz75P4/Yo/x2bv9i47wXf4KCqg=;
+	s=arc-20240116; t=1717682943; c=relaxed/simple;
+	bh=f5E+SHqVaemLMC1hhAoaJH/ctFPC6UBP//WdsVQ50ME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UeIu16Dc0gpRXIooOGZHkBVYJ74LjMTi4RN8G0ELXoxpYFQ9sKEfUEuqLqzVXt6qOWepLcifihMurG6+VgWNWVBzmTDflvF8o7x4noQaopNz7aWSsboKbFaMyAwwIaMB2G10acVmuMcly5wXgRVC6u9VG+3P5GREVQi41DG1yd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iiDOImn2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0601C2BD10;
-	Thu,  6 Jun 2024 14:13:42 +0000 (UTC)
+	 MIME-Version; b=KommezOG5FzRHJ5fjAwau+soJ4G8I3JKrF4D1bJNrNXMy5TniEnAi61QqW0Ot53zm0/DE4LxcmvtS+5HFWM8z+0YV5bhQhfGQ7U/fZGKJUrndc4RYadsIWlEPt1s546cL278BFp3Ui8OiaxQoM73l03yQwoVXSoEodePqKjzBc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jv3UdEao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF98C32781;
+	Thu,  6 Jun 2024 14:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683222;
-	bh=/E3s6Wv+9WZr6+VcWSz75P4/Yo/x2bv9i47wXf4KCqg=;
+	s=korg; t=1717682943;
+	bh=f5E+SHqVaemLMC1hhAoaJH/ctFPC6UBP//WdsVQ50ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iiDOImn2HFeC13RJHeGRvMkpBBT+EYzH2G1HOQmcfnpCUJ1Tp/s0g9rd5eX4gtNEp
-	 rEDM5YEV3kXGZxh9+h8/PG+IUHpRvk62lRxTt5sTPl/fookLwZC3+pXTboiJxYTyRq
-	 0Qz4tIxUdeqW+apTXkHb/F4NGjRkeFAYvUeDjZpE=
+	b=Jv3UdEaoG1mGjYJctLJdhydlTUBrQDeDJvpuy96JaKk2PofuRMO/sbzndZQDqBSwn
+	 7LNA/MDVjQyN6xY/saJMSNkNq+cjUiDXqRo7flzBb93nWg/7NNZmndPmktY9LyqNyY
+	 mK46V0IoEwJaO5qP+clAExjh4lyG7tPJOpGLu0RQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Maxim Mikityanskiy <maxtram95@gmail.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/473] mlx5: stop warning for 64KB pages
-Date: Thu,  6 Jun 2024 16:00:28 +0200
-Message-ID: <20240606131703.172889820@linuxfoundation.org>
+Subject: [PATCH 6.9 050/374] perf dwarf-aux: Check pointer offset when checking variables
+Date: Thu,  6 Jun 2024 16:00:29 +0200
+Message-ID: <20240606131653.495648134@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +69,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit a5535e5336943b33689f558199366102387b7bbf ]
+[ Upstream commit 645af3fb62bf12911ce1fc79efa676dae9a8289b ]
 
-When building with 64KB pages, clang points out that xsk->chunk_size
-can never be PAGE_SIZE:
+In match_var_offset(), it checks the offset range with the target type
+only for non-pointer types.  But it also needs to check the pointer
+types with the target type.
 
-drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c:19:22: error: result of comparison of constant 65536 with expression of type 'u16' (aka 'unsigned short') is always false [-Werror,-Wtautological-constant-out-of-range-compare]
-        if (xsk->chunk_size > PAGE_SIZE ||
-            ~~~~~~~~~~~~~~~ ^ ~~~~~~~~~
+This is because there can be more than one pointer variable located in
+the same register.  Let's look at the following example.  It's looking
+up a variable for reg3 at tcp_get_info+0x62.  It found "sk" variable but
+it wasn't the right one since it accesses beyond the target type (struct
+'sock' in this case) size.
 
-In older versions of this code, using PAGE_SIZE was the only
-possibility, so this would have never worked on 64KB page kernels,
-but the patch apparently did not address this case completely.
+  -----------------------------------------------------------
+  find data type for 0x7bc(reg3) at tcp_get_info+0x62
+  CU for net/ipv4/tcp.c (die:0x7b5f516)
+  frame base: cfa=0 fbreg=6
+  offset: 1980 is bigger than size: 760
+  check variable "sk" failed (die: 0x7b92b2c)
+   variable location: reg3
+   type='struct sock' size=0x2f8 (die:0x7b63c3a)
 
-As Maxim Mikityanskiy suggested, 64KB chunks are really not all that
-useful, so just shut up the warning by adding a cast.
+Actually there was another variable "tp" in the function and it's
+located at the same (reg3) because it's just type-casted like below.
 
-Fixes: 282c0c798f8e ("net/mlx5e: Allow XSK frames smaller than a page")
-Link: https://lore.kernel.org/netdev/20211013150232.2942146-1-arnd@kernel.org/
-Link: https://lore.kernel.org/lkml/a7b27541-0ebb-4f2d-bd06-270a4d404613@app.fastmail.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Maxim Mikityanskiy <maxtram95@gmail.com>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240328143051.1069575-9-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  void tcp_get_info(struct sock *sk, struct tcp_info *info)
+  {
+      const struct tcp_sock *tp = tcp_sk(sk);
+      ...
+
+The 'struct tcp_sock' contains the 'struct sock' at offset 0 so it can
+just use the same address as a pointer to tcp_sock.  That means it
+should match variables correctly by checking the offset and size.
+Actually it cannot distinguish if the offset was smaller than the size
+of the original struct sock.  But I think it's fine as they are the same
+at that part.
+
+So let's check the target type size and retry if it doesn't match.
+Now it succeeded to find the correct variable.
+
+  -----------------------------------------------------------
+  find data type for 0x7bc(reg3) at tcp_get_info+0x62
+  CU for net/ipv4/tcp.c (die:0x7b5f516)
+  frame base: cfa=0 fbreg=6
+  found "tp" in scope=1/1 (die: 0x7b92b16) type_offset=0x7bc
+   variable location: reg3
+   type='struct tcp_sock' size=0xa68 (die:0x7b81380)
+
+Fixes: bc10db8eb8955fbc ("perf annotate-data: Support stack variables")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240412183310.2518474-3-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/perf/util/dwarf-aux.c | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c
-index 81a567e172646..608d4253799de 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c
-@@ -28,8 +28,10 @@ bool mlx5e_validate_xsk_param(struct mlx5e_params *params,
- 			      struct mlx5e_xsk_param *xsk,
- 			      struct mlx5_core_dev *mdev)
+diff --git a/tools/perf/util/dwarf-aux.c b/tools/perf/util/dwarf-aux.c
+index 2791126069b4f..f7f7171539d3c 100644
+--- a/tools/perf/util/dwarf-aux.c
++++ b/tools/perf/util/dwarf-aux.c
+@@ -1280,7 +1280,7 @@ struct find_var_data {
+ #define DWARF_OP_DIRECT_REGS  32
+ 
+ static bool match_var_offset(Dwarf_Die *die_mem, struct find_var_data *data,
+-			     u64 addr_offset, u64 addr_type)
++			     u64 addr_offset, u64 addr_type, bool is_pointer)
  {
--	/* AF_XDP doesn't support frames larger than PAGE_SIZE. */
--	if (xsk->chunk_size > PAGE_SIZE || xsk->chunk_size < MLX5E_MIN_XSK_CHUNK_SIZE) {
-+	/* AF_XDP doesn't support frames larger than PAGE_SIZE,
-+	 * and xsk->chunk_size is limited to 65535 bytes.
-+	 */
-+	if ((size_t)xsk->chunk_size > PAGE_SIZE || xsk->chunk_size < MLX5E_MIN_XSK_CHUNK_SIZE) {
- 		mlx5_core_err(mdev, "XSK chunk size %u out of bounds [%u, %lu]\n", xsk->chunk_size,
- 			      MLX5E_MIN_XSK_CHUNK_SIZE, PAGE_SIZE);
+ 	Dwarf_Die type_die;
+ 	Dwarf_Word size;
+@@ -1294,6 +1294,12 @@ static bool match_var_offset(Dwarf_Die *die_mem, struct find_var_data *data,
+ 	if (die_get_real_type(die_mem, &type_die) == NULL)
  		return false;
+ 
++	if (is_pointer && dwarf_tag(&type_die) == DW_TAG_pointer_type) {
++		/* Get the target type of the pointer */
++		if (die_get_real_type(&type_die, &type_die) == NULL)
++			return false;
++	}
++
+ 	if (dwarf_aggregate_size(&type_die, &size) < 0)
+ 		return false;
+ 
+@@ -1361,31 +1367,38 @@ static int __die_find_var_reg_cb(Dwarf_Die *die_mem, void *arg)
+ 		if (data->is_fbreg && ops->atom == DW_OP_fbreg &&
+ 		    data->offset >= (int)ops->number &&
+ 		    check_allowed_ops(ops, nops) &&
+-		    match_var_offset(die_mem, data, data->offset, ops->number))
++		    match_var_offset(die_mem, data, data->offset, ops->number,
++				     /*is_pointer=*/false))
+ 			return DIE_FIND_CB_END;
+ 
+ 		/* Only match with a simple case */
+ 		if (data->reg < DWARF_OP_DIRECT_REGS) {
+ 			/* pointer variables saved in a register 0 to 31 */
+ 			if (ops->atom == (DW_OP_reg0 + data->reg) &&
+-			    check_allowed_ops(ops, nops))
++			    check_allowed_ops(ops, nops) &&
++			    match_var_offset(die_mem, data, data->offset, 0,
++					     /*is_pointer=*/true))
+ 				return DIE_FIND_CB_END;
+ 
+ 			/* Local variables accessed by a register + offset */
+ 			if (ops->atom == (DW_OP_breg0 + data->reg) &&
+ 			    check_allowed_ops(ops, nops) &&
+-			    match_var_offset(die_mem, data, data->offset, ops->number))
++			    match_var_offset(die_mem, data, data->offset, ops->number,
++					     /*is_pointer=*/false))
+ 				return DIE_FIND_CB_END;
+ 		} else {
+ 			/* pointer variables saved in a register 32 or above */
+ 			if (ops->atom == DW_OP_regx && ops->number == data->reg &&
+-			    check_allowed_ops(ops, nops))
++			    check_allowed_ops(ops, nops) &&
++			    match_var_offset(die_mem, data, data->offset, 0,
++					     /*is_pointer=*/true))
+ 				return DIE_FIND_CB_END;
+ 
+ 			/* Local variables accessed by a register + offset */
+ 			if (ops->atom == DW_OP_bregx && data->reg == ops->number &&
+ 			    check_allowed_ops(ops, nops) &&
+-			    match_var_offset(die_mem, data, data->offset, ops->number2))
++			    match_var_offset(die_mem, data, data->offset, ops->number2,
++					     /*is_poitner=*/false))
+ 				return DIE_FIND_CB_END;
+ 		}
+ 	}
+@@ -1447,7 +1460,8 @@ static int __die_find_var_addr_cb(Dwarf_Die *die_mem, void *arg)
+ 			continue;
+ 
+ 		if (check_allowed_ops(ops, nops) &&
+-		    match_var_offset(die_mem, data, data->addr, ops->number))
++		    match_var_offset(die_mem, data, data->addr, ops->number,
++				     /*is_pointer=*/false))
+ 			return DIE_FIND_CB_END;
+ 	}
+ 	return DIE_FIND_CB_SIBLING;
 -- 
 2.43.0
 
