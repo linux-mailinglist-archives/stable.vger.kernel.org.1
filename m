@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2A78FEEC0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF2D8FED14
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E638A1F252BF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6365B21A6D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D565A1A0DF6;
-	Thu,  6 Jun 2024 14:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9D01B4C3A;
+	Thu,  6 Jun 2024 14:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16Pq2JXs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bwa+1Ie3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E141C619B;
-	Thu,  6 Jun 2024 14:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690E619CD1D;
+	Thu,  6 Jun 2024 14:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683697; cv=none; b=uq10JPJdRRUiahoMkTptqrR0PWFBfioNbKLM3L24qd853DdDPmO16CwpP+5tNeXqw/ju5qGD60HbfJqQP38BQa94ztPMYBJw8kh7fcYy0kYVY93+pNbFGddCd6ao+9fX6rF6UGkN6cSFQYInNArr/db/vMI0i6B1/nhqSdxLMis=
+	t=1717683444; cv=none; b=W7/WjlIsg2NmfQ5E3/LLoQKK+3si7oYrXc7vEH8dEZ4F3PQQa8AVqqiOeNkopqJdxk6R8kzdms7t0G5nL/MN0cTngWMHomsIrRP18kNbg5Jh779WzxBecmnx5NGksVIou4A0wdYdjtlJDJmAZi2vPYARtIDLH8LInJmOjiRDZ0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683697; c=relaxed/simple;
-	bh=6qGDsvwnG8YPaMRuoW7mznDRlJ1F6moGBVvT7seL2xE=;
+	s=arc-20240116; t=1717683444; c=relaxed/simple;
+	bh=iqYEQf+Ab+GtWR1bCWcKS3uMQW/bbftkxoBxE3pePBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NE7kRIcUNZ1AErd1vydcF7S0X+IvfXqE7U9qsz3w9KMtfrWT2ZGoYWNSnS2gB4cSaWK8yFLMEJSpuSe9Z0RRdauBbU8TD9bm3O9wL9MpEo/xORQ8HEAG6CedMTdzo1rUqTa+gnxVjAUKmM6Y26fRilSwiQgUEaIyRr+YjBWcr5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16Pq2JXs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE51C32786;
-	Thu,  6 Jun 2024 14:21:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BYfjRbt0matWe8qw8euDd78ZN9JrTqQe4RVwVo4tQL4xRcfvYSMhnS7Sa3Ur5p0WNUJy8OYnrOIaPK9WrgAd5Q/EbywZO61c/TfFiNJVd3ck9koJVv6UG1vF/4NJqpUOSzOH/RDnB5FoQDUh34EO94O44ZpoduxpCyPrnoinBG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bwa+1Ie3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F259AC32782;
+	Thu,  6 Jun 2024 14:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683697;
-	bh=6qGDsvwnG8YPaMRuoW7mznDRlJ1F6moGBVvT7seL2xE=;
+	s=korg; t=1717683444;
+	bh=iqYEQf+Ab+GtWR1bCWcKS3uMQW/bbftkxoBxE3pePBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=16Pq2JXs76PGsX5qTADBQpgVjFX6sBcroIpnw0xCGz9nH38rXZGCnxBlCpBudGzJq
-	 VVWvhkboYGjeuCPR/98BKCKSieDD3eZfez9ZVXS20dbtvkMuti3evpzFOFdl7KOnW+
-	 nuAzOdE3IT9ex1KpABztvuxbHxCNoBImDe1rCcfY=
+	b=Bwa+1Ie302fUYnG0xIRjJmkdvu4nQ5Bxkq4HTQZ6hfPBNAXflSVVKnKZ9h2L6goH2
+	 Nnqz+15d1PaqonTXwTz/F6I/jzWZAL1TCBNfRPyg4I9I1OwM8z0CW1eRDahQvA0axr
+	 EjVTpeoOArpooHgmGjBdlu2QchHkXBdoRbyRpdY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 563/744] mmc: sdhci_am654: Add OTAP/ITAP delay enable
+Subject: [PATCH 6.1 306/473] dt-bindings: PCI: rcar-pci-host: Add missing IOMMU properties
 Date: Thu,  6 Jun 2024 16:03:55 +0200
-Message-ID: <20240606131750.518316387@linuxfoundation.org>
+Message-ID: <20240606131710.055505549@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,172 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 387c1bf7dce0dfea02080c8bdb066b5209e92155 ]
+[ Upstream commit 78d212851f0e56b7d7083c4d5014aa7fa8b77e20 ]
 
-Currently the OTAP/ITAP delay enable functionality is incorrect in
-the am654_set_clock function. The OTAP delay is not enabled when
-timing < SDR25 bus speed mode. The ITAP delay is not enabled for
-timings that do not carry out tuning.
+make dtbs_check:
 
-Add this OTAP/ITAP delay functionality according to the datasheet
-[1] OTAPDLYENA and ITAPDLYENA for MMC0.
+    arch/arm64/boot/dts/renesas/r8a77951-salvator-xs.dtb: pcie@fe000000: Unevaluated properties are not allowed ('iommu-map', 'iommu-map-mask' were unexpected)
+	    from schema $id: http://devicetree.org/schemas/pci/rcar-pci-host.yaml#
 
-[1] https://www.ti.com/lit/ds/symlink/am62p.pdf
+Fix this by adding the missing IOMMU-related properties.
 
-Fixes: 8ee5fc0e0b3b ("mmc: sdhci_am654: Update OTAPDLY writes")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240320223837.959900-4-jm@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[kwilczynski: added missing Fixes: tag]
+Fixes: 0d69ce3c2c63 ("dt-bindings: PCI: rcar-pci-host: Convert bindings to json-schema")
+Link: https://lore.kernel.org/linux-pci/babc878a93cb6461a5d39331f8ecfa654dfda921.1706802597.git.geert+renesas@glider.be
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci_am654.c | 40 ++++++++++++++++++++++------------
- 1 file changed, 26 insertions(+), 14 deletions(-)
+ Documentation/devicetree/bindings/pci/rcar-pci-host.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-index cfb614d0b42b4..888bfda0ebc0e 100644
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -143,6 +143,7 @@ struct sdhci_am654_data {
- 	struct regmap *base;
- 	int otap_del_sel[ARRAY_SIZE(td)];
- 	int itap_del_sel[ARRAY_SIZE(td)];
-+	u32 itap_del_ena[ARRAY_SIZE(td)];
- 	int clkbuf_sel;
- 	int trm_icp;
- 	int drv_strength;
-@@ -239,11 +240,13 @@ static void sdhci_am654_setup_dll(struct sdhci_host *host, unsigned int clock)
- }
+diff --git a/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml b/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml
+index b6a7cb32f61e5..835b6db00c279 100644
+--- a/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml
++++ b/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml
+@@ -77,6 +77,9 @@ properties:
+   vpcie12v-supply:
+     description: The 12v regulator to use for PCIe.
  
- static void sdhci_am654_write_itapdly(struct sdhci_am654_data *sdhci_am654,
--				      u32 itapdly)
-+				      u32 itapdly, u32 enable)
- {
- 	/* Set ITAPCHGWIN before writing to ITAPDLY */
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPCHGWIN_MASK,
- 			   1 << ITAPCHGWIN_SHIFT);
-+	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPDLYENA_MASK,
-+			   enable << ITAPDLYENA_SHIFT);
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPDLYSEL_MASK,
- 			   itapdly << ITAPDLYSEL_SHIFT);
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPCHGWIN_MASK, 0);
-@@ -260,8 +263,8 @@ static void sdhci_am654_setup_delay_chain(struct sdhci_am654_data *sdhci_am654,
- 	mask = SELDLYTXCLK_MASK | SELDLYRXCLK_MASK;
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL5, mask, val);
- 
--	sdhci_am654_write_itapdly(sdhci_am654,
--				  sdhci_am654->itap_del_sel[timing]);
-+	sdhci_am654_write_itapdly(sdhci_am654, sdhci_am654->itap_del_sel[timing],
-+				  sdhci_am654->itap_del_ena[timing]);
- }
- 
- static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
-@@ -270,7 +273,6 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
- 	struct sdhci_am654_data *sdhci_am654 = sdhci_pltfm_priv(pltfm_host);
- 	unsigned char timing = host->mmc->ios.timing;
- 	u32 otap_del_sel;
--	u32 otap_del_ena;
- 	u32 mask, val;
- 
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL1, ENDLL_MASK, 0);
-@@ -279,10 +281,9 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
- 
- 	/* Setup DLL Output TAP delay */
- 	otap_del_sel = sdhci_am654->otap_del_sel[timing];
--	otap_del_ena = (timing > MMC_TIMING_UHS_SDR25) ? 1 : 0;
- 
- 	mask = OTAPDLYENA_MASK | OTAPDLYSEL_MASK;
--	val = (otap_del_ena << OTAPDLYENA_SHIFT) |
-+	val = (0x1 << OTAPDLYENA_SHIFT) |
- 	      (otap_del_sel << OTAPDLYSEL_SHIFT);
- 
- 	/* Write to STRBSEL for HS400 speed mode */
-@@ -300,7 +301,8 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
- 	if (timing > MMC_TIMING_UHS_SDR25 && clock >= CLOCK_TOO_SLOW_HZ) {
- 		sdhci_am654_setup_dll(host, clock);
- 		sdhci_am654->dll_enable = true;
--		sdhci_am654_write_itapdly(sdhci_am654, sdhci_am654->itap_del_sel[timing]);
-+		sdhci_am654_write_itapdly(sdhci_am654, sdhci_am654->itap_del_sel[timing],
-+					  sdhci_am654->itap_del_ena[timing]);
- 	} else {
- 		sdhci_am654_setup_delay_chain(sdhci_am654, timing);
- 		sdhci_am654->dll_enable = false;
-@@ -317,6 +319,7 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
- 	struct sdhci_am654_data *sdhci_am654 = sdhci_pltfm_priv(pltfm_host);
- 	unsigned char timing = host->mmc->ios.timing;
- 	u32 otap_del_sel;
-+	u32 itap_del_ena;
- 	u32 mask, val;
- 
- 	/* Setup DLL Output TAP delay */
-@@ -325,6 +328,12 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
- 	mask = OTAPDLYENA_MASK | OTAPDLYSEL_MASK;
- 	val = (0x1 << OTAPDLYENA_SHIFT) |
- 	      (otap_del_sel << OTAPDLYSEL_SHIFT);
++  iommu-map: true
++  iommu-map-mask: true
 +
-+	itap_del_ena = sdhci_am654->itap_del_ena[timing];
-+
-+	mask |= ITAPDLYENA_MASK;
-+	val |= (itap_del_ena << ITAPDLYENA_SHIFT);
-+
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, mask, val);
- 
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL5, CLKBUFSEL_MASK,
-@@ -478,6 +487,7 @@ static int sdhci_am654_platform_execute_tuning(struct sdhci_host *host,
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_am654_data *sdhci_am654 = sdhci_pltfm_priv(pltfm_host);
-+	unsigned char timing = host->mmc->ios.timing;
- 	struct window fail_window[ITAPDLY_LENGTH];
- 	u8 curr_pass, itap;
- 	u8 fail_index = 0;
-@@ -486,11 +496,10 @@ static int sdhci_am654_platform_execute_tuning(struct sdhci_host *host,
- 	memset(fail_window, 0, sizeof(fail_window));
- 
- 	/* Enable ITAPDLY */
--	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPDLYENA_MASK,
--			   1 << ITAPDLYENA_SHIFT);
-+	sdhci_am654->itap_del_ena[timing] = 0x1;
- 
- 	for (itap = 0; itap < ITAPDLY_LENGTH; itap++) {
--		sdhci_am654_write_itapdly(sdhci_am654, itap);
-+		sdhci_am654_write_itapdly(sdhci_am654, itap, sdhci_am654->itap_del_ena[timing]);
- 
- 		curr_pass = !mmc_send_tuning(host->mmc, opcode, NULL);
- 
-@@ -514,7 +523,7 @@ static int sdhci_am654_platform_execute_tuning(struct sdhci_host *host,
- 	itap = sdhci_am654_calculate_itap(host, fail_window, fail_index,
- 					  sdhci_am654->dll_enable);
- 
--	sdhci_am654_write_itapdly(sdhci_am654, itap);
-+	sdhci_am654_write_itapdly(sdhci_am654, itap, sdhci_am654->itap_del_ena[timing]);
- 
- 	return 0;
- }
-@@ -663,9 +672,12 @@ static int sdhci_am654_get_otap_delay(struct sdhci_host *host,
- 				host->mmc->caps2 &= ~td[i].capability;
- 		}
- 
--		if (td[i].itap_binding)
--			device_property_read_u32(dev, td[i].itap_binding,
--						 &sdhci_am654->itap_del_sel[i]);
-+		if (td[i].itap_binding) {
-+			ret = device_property_read_u32(dev, td[i].itap_binding,
-+						       &sdhci_am654->itap_del_sel[i]);
-+			if (!ret)
-+				sdhci_am654->itap_del_ena[i] = 0x1;
-+		}
- 	}
- 
- 	return 0;
+ required:
+   - compatible
+   - reg
 -- 
 2.43.0
 
