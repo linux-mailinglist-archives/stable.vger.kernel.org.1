@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84E018FEC1E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F628FEA7F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 909361C21C6A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2B581F245B8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7731AC45E;
-	Thu,  6 Jun 2024 14:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54E21A01C0;
+	Thu,  6 Jun 2024 14:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsOOpdmr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZ6SGXYX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E366619AD46;
-	Thu,  6 Jun 2024 14:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83ABF1A01AF;
+	Thu,  6 Jun 2024 14:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683332; cv=none; b=kfTMr4mTOIhyffyD9YsEOU7hyCuIqS2Uu4qWQr5HraaPJcjMVWmR95HVzX5nP2RpSSPNoYwsrXrG4SaRS9GpF9Ud7sHZ7XqmFsLJADYTVeydYs9W1+O9k/5PRpIuk8pcCeooxrMnC1U+ECoDxDJf5xwbbRv7G1YuZqs9ho/LcyA=
+	t=1717683144; cv=none; b=i5oaTHG7stO+okKt33jQcBV56IinFoMLXahPDgt9v1y9luJAQDzpLw2DmS/SbsIaBhAgigz0A0f9UJQRBjB3yghMQjddLFycBAmRqfOB9X2IbFEbBJDOLSQMUROH1MjaNhUWEagvcaWsZ2XIRjex2oNOy5yWGhFY3YJOaVVpKKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683332; c=relaxed/simple;
-	bh=C+dxkKEibI1M2QNL66H1F8YwMtEwuHtXbImeYGByfJI=;
+	s=arc-20240116; t=1717683144; c=relaxed/simple;
+	bh=BgBjieV6+WDkR0G6F/IeLce9wWNhDHkW3WjiIQ1vb+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B7KivhTZBb96F9m9zZtTD2v5lFkq7S8AGcf7O33rJoWxzYGsrrP9Owu4AR3oGgeNN7FYZ5XejzwYU3gUSrIjWJ9UUDXJnt3jOLMsevYRfW9iDX+gFE00JH3+GFwAPI0dpnzI8QWPIDhOTN768XCGcnuvQjy+RwCbWRdsx4I8IwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsOOpdmr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC46AC2BD10;
-	Thu,  6 Jun 2024 14:15:31 +0000 (UTC)
+	 MIME-Version; b=pn4fc4Vsj+rbVbF5+JX/EbDtk4i+Wy95t4iinAfDL6+gT8pawvifZTl4l1Wz5Yx5PItxOem8CIGJ+BRC26PqvhychU/ohjKI4MDp8UBxKdT0LdjbjczLho4RLEX4q9/aZydsIfmjJjg1ZrVr1pePFhxcD1rnwpyO5AB9D8DG2aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZ6SGXYX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6394DC2BD10;
+	Thu,  6 Jun 2024 14:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683331;
-	bh=C+dxkKEibI1M2QNL66H1F8YwMtEwuHtXbImeYGByfJI=;
+	s=korg; t=1717683144;
+	bh=BgBjieV6+WDkR0G6F/IeLce9wWNhDHkW3WjiIQ1vb+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gsOOpdmr69n4p1Qed68KDVlnOC39NToau4MvzlpQxQ7GP38zIuyjKwaMssQ8BNy29
-	 SYwhncL0sKwJnHa+XetCzwPb1SShfu9YaPTrfR9Zd27S0zgRWGN3AA8BATUK1npBD4
-	 ivbqLlNRhdR3E6ATnZtJ5/8+85iBTEfMijOwGws8=
+	b=WZ6SGXYXwJ1BIByBahjXs8WqNf8fGwercwHdakofw/liO98qMd3tSQK4RvZMvW+jy
+	 sJ4RcoNwSm5B85HBCjHCGT0ZTJgMT4e1QcJAraIHHL3DsQvIhEuQq+4nT+4uPOtjeE
+	 LwO9ZqXYEPAGCtJxB15IJoCjZDZVfo7mQ/f2O3iY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 273/744] drm/omapdrm: Fix console with deferred ops
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+e3973c409251e136fdd0@syzkaller.appspotmail.com,
+	"Bai, Shuangpeng" <sjb7183@psu.edu>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 016/473] nilfs2: fix potential hang in nilfs_detach_log_writer()
 Date: Thu,  6 Jun 2024 15:59:05 +0200
-Message-ID: <20240606131741.138442845@linuxfoundation.org>
+Message-ID: <20240606131700.379814906@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,161 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 01c0cce88c5480cc2505b79330246ef12eda938f ]
+commit eb85dace897c5986bc2f36b3c783c6abb8a4292e upstream.
 
-Commit 95da53d63dcf ("drm/omapdrm: Use regular fbdev I/O helpers")
-stopped console from updating for command mode displays because there is
-no damage handling in fb_sys_write() unlike we had earlier in
-drm_fb_helper_sys_write().
+Syzbot has reported a potential hang in nilfs_detach_log_writer() called
+during nilfs2 unmount.
 
-Let's fix the issue by adding FB_GEN_DEFAULT_DEFERRED_DMAMEM_OPS and
-FB_DMAMEM_HELPERS_DEFERRED as suggested by Thomas. We cannot use the
-FB_DEFAULT_DEFERRED_OPS as fb_deferred_io_mmap() won't work properly
-for write-combine.
+Analysis revealed that this is because nilfs_segctor_sync(), which
+synchronizes with the log writer thread, can be called after
+nilfs_segctor_destroy() terminates that thread, as shown in the call trace
+below:
 
-Fixes: 95da53d63dcf ("drm/omapdrm: Use regular fbdev I/O helpers")
-Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240228063540.4444-3-tony@atomide.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+nilfs_detach_log_writer
+  nilfs_segctor_destroy
+    nilfs_segctor_kill_thread  --> Shut down log writer thread
+    flush_work
+      nilfs_iput_work_func
+        nilfs_dispose_list
+          iput
+            nilfs_evict_inode
+              nilfs_transaction_commit
+                nilfs_construct_segment (if inode needs sync)
+                  nilfs_segctor_sync  --> Attempt to synchronize with
+                                          log writer thread
+                           *** DEADLOCK ***
+
+Fix this issue by changing nilfs_segctor_sync() so that the log writer
+thread returns normally without synchronizing after it terminates, and by
+forcing tasks that are already waiting to complete once after the thread
+terminates.
+
+The skipped inode metadata flushout will then be processed together in the
+subsequent cleanup work in nilfs_segctor_destroy().
+
+Link: https://lkml.kernel.org/r/20240520132621.4054-4-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+e3973c409251e136fdd0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e3973c409251e136fdd0
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Cc: "Bai, Shuangpeng" <sjb7183@psu.edu>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/omapdrm/Kconfig      |  2 +-
- drivers/gpu/drm/omapdrm/omap_fbdev.c | 28 ++++++++++++++++++++++------
- drivers/video/fbdev/core/Kconfig     |  6 ++++++
- include/linux/fb.h                   |  4 ++++
- 4 files changed, 33 insertions(+), 7 deletions(-)
+ fs/nilfs2/segment.c |   21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/omapdrm/Kconfig b/drivers/gpu/drm/omapdrm/Kconfig
-index b715301ec79f6..6c49270cb290a 100644
---- a/drivers/gpu/drm/omapdrm/Kconfig
-+++ b/drivers/gpu/drm/omapdrm/Kconfig
-@@ -4,7 +4,7 @@ config DRM_OMAP
- 	depends on DRM && OF
- 	depends on ARCH_OMAP2PLUS
- 	select DRM_KMS_HELPER
--	select FB_DMAMEM_HELPERS if DRM_FBDEV_EMULATION
-+	select FB_DMAMEM_HELPERS_DEFERRED if DRM_FBDEV_EMULATION
- 	select VIDEOMODE_HELPERS
- 	select HDMI
- 	default n
-diff --git a/drivers/gpu/drm/omapdrm/omap_fbdev.c b/drivers/gpu/drm/omapdrm/omap_fbdev.c
-index 7c5af3de1e727..523be34682caf 100644
---- a/drivers/gpu/drm/omapdrm/omap_fbdev.c
-+++ b/drivers/gpu/drm/omapdrm/omap_fbdev.c
-@@ -51,6 +51,10 @@ static void pan_worker(struct work_struct *work)
- 	omap_gem_roll(bo, fbi->var.yoffset * npages);
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2229,6 +2229,14 @@ static int nilfs_segctor_sync(struct nil
+ 	for (;;) {
+ 		set_current_state(TASK_INTERRUPTIBLE);
+ 
++		/*
++		 * Synchronize only while the log writer thread is alive.
++		 * Leave flushing out after the log writer thread exits to
++		 * the cleanup work in nilfs_segctor_destroy().
++		 */
++		if (!sci->sc_task)
++			break;
++
+ 		if (atomic_read(&wait_req.done)) {
+ 			err = wait_req.err;
+ 			break;
+@@ -2244,7 +2252,7 @@ static int nilfs_segctor_sync(struct nil
+ 	return err;
  }
  
-+FB_GEN_DEFAULT_DEFERRED_DMAMEM_OPS(omap_fbdev,
-+				   drm_fb_helper_damage_range,
-+				   drm_fb_helper_damage_area)
-+
- static int omap_fbdev_pan_display(struct fb_var_screeninfo *var,
- 		struct fb_info *fbi)
+-static void nilfs_segctor_wakeup(struct nilfs_sc_info *sci, int err)
++static void nilfs_segctor_wakeup(struct nilfs_sc_info *sci, int err, bool force)
  {
-@@ -78,11 +82,9 @@ static int omap_fbdev_pan_display(struct fb_var_screeninfo *var,
+ 	struct nilfs_segctor_wait_request *wrq, *n;
+ 	unsigned long flags;
+@@ -2252,7 +2260,7 @@ static void nilfs_segctor_wakeup(struct
+ 	spin_lock_irqsave(&sci->sc_wait_request.lock, flags);
+ 	list_for_each_entry_safe(wrq, n, &sci->sc_wait_request.head, wq.entry) {
+ 		if (!atomic_read(&wrq->done) &&
+-		    nilfs_cnt32_ge(sci->sc_seq_done, wrq->seq)) {
++		    (force || nilfs_cnt32_ge(sci->sc_seq_done, wrq->seq))) {
+ 			wrq->err = err;
+ 			atomic_set(&wrq->done, 1);
+ 		}
+@@ -2390,7 +2398,7 @@ static void nilfs_segctor_notify(struct
+ 	if (mode == SC_LSEG_SR) {
+ 		sci->sc_state &= ~NILFS_SEGCTOR_COMMIT;
+ 		sci->sc_seq_done = sci->sc_seq_accepted;
+-		nilfs_segctor_wakeup(sci, err);
++		nilfs_segctor_wakeup(sci, err, false);
+ 		sci->sc_flush_request = 0;
+ 	} else {
+ 		if (mode == SC_FLUSH_FILE)
+@@ -2772,6 +2780,13 @@ static void nilfs_segctor_destroy(struct
+ 		|| sci->sc_seq_request != sci->sc_seq_done);
+ 	spin_unlock(&sci->sc_state_lock);
  
- static int omap_fbdev_fb_mmap(struct fb_info *info, struct vm_area_struct *vma)
- {
--	struct drm_fb_helper *helper = info->par;
--	struct drm_framebuffer *fb = helper->fb;
--	struct drm_gem_object *bo = drm_gem_fb_get_obj(fb, 0);
-+	vma->vm_page_prot = pgprot_writecombine(vm_get_page_prot(vma->vm_flags));
- 
--	return drm_gem_mmap_obj(bo, omap_gem_mmap_size(bo), vma);
-+	return fb_deferred_io_mmap(info, vma);
- }
- 
- static void omap_fbdev_fb_destroy(struct fb_info *info)
-@@ -94,6 +96,7 @@ static void omap_fbdev_fb_destroy(struct fb_info *info)
- 
- 	DBG();
- 
-+	fb_deferred_io_cleanup(info);
- 	drm_fb_helper_fini(helper);
- 
- 	omap_gem_unpin(bo);
-@@ -104,15 +107,19 @@ static void omap_fbdev_fb_destroy(struct fb_info *info)
- 	kfree(fbdev);
- }
- 
-+/*
-+ * For now, we cannot use FB_DEFAULT_DEFERRED_OPS and fb_deferred_io_mmap()
-+ * because we use write-combine.
-+ */
- static const struct fb_ops omap_fb_ops = {
- 	.owner = THIS_MODULE,
--	__FB_DEFAULT_DMAMEM_OPS_RDWR,
-+	__FB_DEFAULT_DEFERRED_OPS_RDWR(omap_fbdev),
- 	.fb_check_var	= drm_fb_helper_check_var,
- 	.fb_set_par	= drm_fb_helper_set_par,
- 	.fb_setcmap	= drm_fb_helper_setcmap,
- 	.fb_blank	= drm_fb_helper_blank,
- 	.fb_pan_display = omap_fbdev_pan_display,
--	__FB_DEFAULT_DMAMEM_OPS_DRAW,
-+	__FB_DEFAULT_DEFERRED_OPS_DRAW(omap_fbdev),
- 	.fb_ioctl	= drm_fb_helper_ioctl,
- 	.fb_mmap	= omap_fbdev_fb_mmap,
- 	.fb_destroy	= omap_fbdev_fb_destroy,
-@@ -213,6 +220,15 @@ static int omap_fbdev_create(struct drm_fb_helper *helper,
- 	fbi->fix.smem_start = dma_addr;
- 	fbi->fix.smem_len = bo->size;
- 
-+	/* deferred I/O */
-+	helper->fbdefio.delay = HZ / 20;
-+	helper->fbdefio.deferred_io = drm_fb_helper_deferred_io;
++	/*
++	 * Forcibly wake up tasks waiting in nilfs_segctor_sync(), which can
++	 * be called from delayed iput() via nilfs_evict_inode() and can race
++	 * with the above log writer thread termination.
++	 */
++	nilfs_segctor_wakeup(sci, 0, true);
 +
-+	fbi->fbdefio = &helper->fbdefio;
-+	ret = fb_deferred_io_init(fbi);
-+	if (ret)
-+		goto fail;
-+
- 	/* if we have DMM, then we can use it for scrolling by just
- 	 * shuffling pages around in DMM rather than doing sw blit.
- 	 */
-diff --git a/drivers/video/fbdev/core/Kconfig b/drivers/video/fbdev/core/Kconfig
-index 56f721ebcff05..acb19045d3046 100644
---- a/drivers/video/fbdev/core/Kconfig
-+++ b/drivers/video/fbdev/core/Kconfig
-@@ -145,6 +145,12 @@ config FB_DMAMEM_HELPERS
- 	select FB_SYS_FOPS
- 	select FB_SYS_IMAGEBLIT
+ 	if (flush_work(&sci->sc_iput_work))
+ 		flag = true;
  
-+config FB_DMAMEM_HELPERS_DEFERRED
-+	bool
-+	depends on FB_CORE
-+	select FB_DEFERRED_IO
-+	select FB_DMAMEM_HELPERS
-+
- config FB_IOMEM_FOPS
- 	tristate
- 	depends on FB_CORE
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index c14576458228a..322b4d20afa55 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -690,6 +690,10 @@ extern int fb_deferred_io_fsync(struct file *file, loff_t start,
- 	__FB_GEN_DEFAULT_DEFERRED_OPS_RDWR(__prefix, __damage_range, sys) \
- 	__FB_GEN_DEFAULT_DEFERRED_OPS_DRAW(__prefix, __damage_area, sys)
- 
-+#define FB_GEN_DEFAULT_DEFERRED_DMAMEM_OPS(__prefix, __damage_range, __damage_area) \
-+	__FB_GEN_DEFAULT_DEFERRED_OPS_RDWR(__prefix, __damage_range, sys) \
-+	__FB_GEN_DEFAULT_DEFERRED_OPS_DRAW(__prefix, __damage_area, sys)
-+
- /*
-  * Initializes struct fb_ops for deferred I/O.
-  */
--- 
-2.43.0
-
 
 
 
