@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-49245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F93D8FEC7B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3701A8FEAD5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1C111F29971
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAD1E284901
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1F619B3C9;
-	Thu,  6 Jun 2024 14:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01A9197549;
+	Thu,  6 Jun 2024 14:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFdvaKCh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pi8hzya9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0C919AD5C;
-	Thu,  6 Jun 2024 14:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD71199227;
+	Thu,  6 Jun 2024 14:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683372; cv=none; b=Fmdl1BiuT7JKbmvgEHwnrPz0j1jpZK6Hiz2EuUht0Fe1xbzQMGWywdp9e2heaXo9V4i1zEMO1tDA4LR/nqZ4aEoPS5gVUbsB8GKAQQttNiCLET675yK7iqY5nNAfMKUITozRUSEG+39Ol0n6k2N4mnUsUSvJbavnESwxTUZwl/c=
+	t=1717683181; cv=none; b=ehV/bP2CR+xLyxnySGX4IfQGXOkPRiCAhFi1KvMPELxwiTwYo/T1u5+g37jLLb3iQLPbTmgZUEP5EEtLsdEq+zAExWIGlBnaRLFPUgCU857pKSprcr/eNYyYwG8TEUBlysHmCxwVIPeQ1Q/FYdH3Mazl1imBwgx+RmDXFhZUw1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683372; c=relaxed/simple;
-	bh=Zd5LAgAfQZojQdKpaDkuTOl44iPSmhsv9mHH6tGHjfg=;
+	s=arc-20240116; t=1717683181; c=relaxed/simple;
+	bh=4+lqhQfLyOypY1z/8EPBnZYUK8GzzEgKIHGAmdngZKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JdVG3BHovKiTj3XAlXh5cLvQLuaQGfEA1kZk5HjajWhKCz+wLmGvfGJUldCx1jfIIK1/AZVVm6228wedkJoxkrcsPtREccnlcxjpGD+8OhMCDf4gaOaPw/G3Ux9YBPNJbUrzav3sAKcvkLuuEAp/dxOmF0md84Kc4HxhEuCJKGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFdvaKCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD345C4AF07;
-	Thu,  6 Jun 2024 14:16:11 +0000 (UTC)
+	 MIME-Version; b=ElVTRKiLs7y83LacF6waxlBhOP1SS2du/PQ7Wy3E+5gfOt+Yv6IFXsUVAZjv7EWezd3YnJV7Uos4kBsDmrybWH0CUsCXUeFrFokM3kyBHyfbrO6bpA8Cut0MpEknUd3OemLntxHRIA5CoOCWA3DZG3LREQbCCrPE+Tz7T2gpmjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pi8hzya9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F40BC32781;
+	Thu,  6 Jun 2024 14:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683371;
-	bh=Zd5LAgAfQZojQdKpaDkuTOl44iPSmhsv9mHH6tGHjfg=;
+	s=korg; t=1717683181;
+	bh=4+lqhQfLyOypY1z/8EPBnZYUK8GzzEgKIHGAmdngZKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LFdvaKChVeaFuDMnl9RHu6JKAtq0tdhUY2raLCnIQe7X6LsM7gHzzN3xUErun/JCs
-	 UKD5G+Ppi43A3IeiITgO+Opg0ZZZkY3FtOelwUbPbAGsByaKPX3Zad+LRF5sEc7VGP
-	 /4gVEP3FBPuypoGEMAHuvAOy5bnxCr05d6pyGl5w=
+	b=pi8hzya9gkggsI++DECqpXr2o4661MkfX9FAM8hFue/g6UptMMbVRuBrJEoZkHwXu
+	 mKHhra5Wb3kMjfgjDdDbjJOc2fareM5n3C0MDICOjytsCUBFdXgC1U7DlWimYu6/Tn
+	 HpcjdvQm+s21gZgzHqQeg+8iEP3MPWf9tb1Ti7IQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 313/744] media: v4l2-subdev: Fix stream handling for crop API
+Subject: [PATCH 6.1 056/473] drm/amd/display: Add VCO speed parameter for DCN31 FPU
 Date: Thu,  6 Jun 2024 15:59:45 +0200
-Message-ID: <20240606131742.457081795@linuxfoundation.org>
+Message-ID: <20240606131701.737668195@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-[ Upstream commit 34d7bf1c8e59f5fbf438ee32c96389ebe41ca2e8 ]
+[ Upstream commit 0e62103bdcbc88281e16add299a946fb3bd02fbe ]
 
-When support for streams was added to the V4L2 subdev API, the
-v4l2_subdev_crop structure was extended with a stream field, but the
-field was not handled in the core code that translates the
-VIDIOC_SUBDEV_[GS]_CROP ioctls to the selection API. Fix it.
+Add VCO speed parameters in the bounding box array.
 
-Fixes: 2f91e10ee6fd ("media: subdev: add stream based configuration")
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
+ drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
-index 31752c06d1f0c..ee159b4341abc 100644
---- a/drivers/media/v4l2-core/v4l2-subdev.c
-+++ b/drivers/media/v4l2-core/v4l2-subdev.c
-@@ -664,6 +664,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg,
- 		memset(&sel, 0, sizeof(sel));
- 		sel.which = crop->which;
- 		sel.pad = crop->pad;
-+		sel.stream = crop->stream;
- 		sel.target = V4L2_SEL_TGT_CROP;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
+index 19d034341e640..cb2f6cd73af54 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
+@@ -291,6 +291,7 @@ static struct _vcs_dpi_soc_bounding_box_st dcn3_15_soc = {
+ 	.do_urgent_latency_adjustment = false,
+ 	.urgent_latency_adjustment_fabric_clock_component_us = 0,
+ 	.urgent_latency_adjustment_fabric_clock_reference_mhz = 0,
++	.dispclk_dppclk_vco_speed_mhz = 2400.0,
+ 	.num_chans = 4,
+ 	.dummy_pstate_latency_us = 10.0
+ };
+@@ -438,6 +439,7 @@ static struct _vcs_dpi_soc_bounding_box_st dcn3_16_soc = {
+ 	.do_urgent_latency_adjustment = false,
+ 	.urgent_latency_adjustment_fabric_clock_component_us = 0,
+ 	.urgent_latency_adjustment_fabric_clock_reference_mhz = 0,
++	.dispclk_dppclk_vco_speed_mhz = 2500.0,
+ };
  
- 		rval = v4l2_subdev_call(
-@@ -688,6 +689,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg,
- 		memset(&sel, 0, sizeof(sel));
- 		sel.which = crop->which;
- 		sel.pad = crop->pad;
-+		sel.stream = crop->stream;
- 		sel.target = V4L2_SEL_TGT_CROP;
- 		sel.r = crop->rect;
- 
+ void dcn31_zero_pipe_dcc_fraction(display_e2e_pipe_params_st *pipes,
 -- 
 2.43.0
 
