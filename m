@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-48654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49208FE9ED
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5EE8FEDAE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 594A51F270EB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18877B293C3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ACBB19D071;
-	Thu,  6 Jun 2024 14:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C8D1BD014;
+	Thu,  6 Jun 2024 14:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvOss5YJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnxpKqZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9B519D066;
-	Thu,  6 Jun 2024 14:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CF1198E9C;
+	Thu,  6 Jun 2024 14:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683082; cv=none; b=BKa7xITu4ZoBCCUz+myWomMm7qcAB+rmO2FfBUQI/7ueGsI4U1/OJ6+7xsvsSWjCnVpRqpWSDHzNAOroYSONbm3RT32bdxcRuT2/F+nd/rHw75fpKbQbgpBGNnoi+fb2iDEfTWjRYRlxZ1jPJSsYYLBIDzbl6leNqVIh3cKbMS4=
+	t=1717683515; cv=none; b=lqI2XDbVk7bQsHWP9bc8G15K3j2mEU1aFUJaskeA8o9LInQggY8yFkHODDlJHa/0VlFuySpAJ5KpFqEg0rc0k96wrzeKjFQjuQABe3CmEgF9GFgImMriT3DSvlafoVTGEW35dUNIKcsmVD2/F5kT+gEkoplAFUwYlct5BpfrsUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683082; c=relaxed/simple;
-	bh=rasDIihceQ1kK9qUgoW3Sa6w9fNsxDFNx/4DkCNHwd4=;
+	s=arc-20240116; t=1717683515; c=relaxed/simple;
+	bh=Q/qc3JfqahrJy4pjgfAaWeXQojMauVVgUIcqjZ4ZQzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBE3j4gTrf8iOOtpaveZ9hs2kQqzPdgINmZMW2///2P/YMLe/YTP4WJBgjyNMZxmR7JGgA2PQHuYKF4JoxswsmMmjZcR9Y46nl57m0B5SNh8haeXRTL9ObFz+CTXPxZtGootehKu6KAQP/94juXdFmEqf7wezZrl7mj2eecW47s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvOss5YJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89C0C4AF09;
-	Thu,  6 Jun 2024 14:11:21 +0000 (UTC)
+	 MIME-Version; b=DNjRerCVqCNIQauhNesh9CohxkV8qq5vsIQ7MeByCL+cfRgdcC5jhQ0F5wYz9UsRh117/kr6LbL0Gl8k5KmiUyoTEyW5d+pD1RmP/SBsu+V4eCUFGdYfiVizdYwY7bTtY8Xrid+eTNFntZoijoLPlEPPVcu/ZivrFg8dRYZ3rAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnxpKqZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A10CC32781;
+	Thu,  6 Jun 2024 14:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683081;
-	bh=rasDIihceQ1kK9qUgoW3Sa6w9fNsxDFNx/4DkCNHwd4=;
+	s=korg; t=1717683515;
+	bh=Q/qc3JfqahrJy4pjgfAaWeXQojMauVVgUIcqjZ4ZQzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vvOss5YJp9MrNVNbwbAeDDpeYYovQlRPhkRkzUbx+94DtXvbmwRJ7nPt8xM4/q4ak
-	 PcArTk8lwSbipXP8w5qLGCStoWElDQZiRyTwzuBFhRoYRQffKEm8DDugc5o1xHXlJ9
-	 FCfkPskOnBKccQ/W1Dee5tSTdvsXDJREhRcl2Q9Y=
+	b=CnxpKqZ17nE8HNC/cj8LydCCbc3elYGuLXmTzp/GiogcCOLLUf804/JnG9JCVjzwZ
+	 SuZNMIPbCPPq8s/MxKCYN/84bqGofbvQVEmLNQJQ8KBmlPVAy4GBpRCwtgLnzATuAz
+	 gOZBfCyiDBQt0o9XNyNKVqF7FCqKaCH7Hv2G6Un4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Agroskin <shayagr@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andrea Mayer <andrea.mayer@uniroma2.it>,
+	Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 353/374] net: ena: Fix redundant device NUMA node override
+Subject: [PATCH 6.1 403/473] ipv6: sr: fix missing sk_buff release in seg6_input_core
 Date: Thu,  6 Jun 2024 16:05:32 +0200
-Message-ID: <20240606131703.696850363@linuxfoundation.org>
+Message-ID: <20240606131713.139691271@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Agroskin <shayagr@amazon.com>
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
 
-[ Upstream commit 2dc8b1e7177d4f49f492ce648440caf2de0c3616 ]
+[ Upstream commit 5447f9708d9e4c17a647b16a9cb29e9e02820bd9 ]
 
-The driver overrides the NUMA node id of the device regardless of
-whether it knows its correct value (often setting it to -1 even though
-the node id is advertised in 'struct device'). This can lead to
-suboptimal configurations.
+The seg6_input() function is responsible for adding the SRH into a
+packet, delegating the operation to the seg6_input_core(). This function
+uses the skb_cow_head() to ensure that there is sufficient headroom in
+the sk_buff for accommodating the link-layer header.
+In the event that the skb_cow_header() function fails, the
+seg6_input_core() catches the error but it does not release the sk_buff,
+which will result in a memory leak.
 
-This patch fixes this behavior and makes the shared memory allocation
-functions use the NUMA node id advertised by the underlying device.
+This issue was introduced in commit af3b5158b89d ("ipv6: sr: fix BUG due
+to headroom too small after SRH push") and persists even after commit
+7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane"),
+where the entire seg6_input() code was refactored to deal with netfilter
+hooks.
 
-Fixes: 1738cd3ed342 ("net: ena: Add a driver for Amazon Elastic Network Adapters (ENA)")
-Signed-off-by: Shay Agroskin <shayagr@amazon.com>
-Link: https://lore.kernel.org/r/20240528170912.1204417-1-shayagr@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The proposed patch addresses the identified memory leak by requiring the
+seg6_input_core() function to release the sk_buff in the event that
+skb_cow_head() fails.
+
+Fixes: af3b5158b89d ("ipv6: sr: fix BUG due to headroom too small after SRH push")
+Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_com.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ net/ipv6/seg6_iptunnel.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
-index 2d8a66ea82fab..713a595370bff 100644
---- a/drivers/net/ethernet/amazon/ena/ena_com.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_com.c
-@@ -312,7 +312,6 @@ static int ena_com_init_io_sq(struct ena_com_dev *ena_dev,
- 			      struct ena_com_io_sq *io_sq)
- {
- 	size_t size;
--	int dev_node = 0;
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 34db881204d24..5924407b87b07 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -459,10 +459,8 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 	int err;
  
- 	memset(&io_sq->desc_addr, 0x0, sizeof(io_sq->desc_addr));
+ 	err = seg6_do_srh(skb);
+-	if (unlikely(err)) {
+-		kfree_skb(skb);
+-		return err;
+-	}
++	if (unlikely(err))
++		goto drop;
  
-@@ -325,12 +324,9 @@ static int ena_com_init_io_sq(struct ena_com_dev *ena_dev,
- 	size = io_sq->desc_entry_size * io_sq->q_depth;
+ 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
  
- 	if (io_sq->mem_queue_type == ENA_ADMIN_PLACEMENT_POLICY_HOST) {
--		dev_node = dev_to_node(ena_dev->dmadev);
--		set_dev_node(ena_dev->dmadev, ctx->numa_node);
- 		io_sq->desc_addr.virt_addr =
- 			dma_alloc_coherent(ena_dev->dmadev, size, &io_sq->desc_addr.phys_addr,
- 					   GFP_KERNEL);
--		set_dev_node(ena_dev->dmadev, dev_node);
- 		if (!io_sq->desc_addr.virt_addr) {
- 			io_sq->desc_addr.virt_addr =
- 				dma_alloc_coherent(ena_dev->dmadev, size,
-@@ -354,10 +350,7 @@ static int ena_com_init_io_sq(struct ena_com_dev *ena_dev,
- 		size = (size_t)io_sq->bounce_buf_ctrl.buffer_size *
- 			io_sq->bounce_buf_ctrl.buffers_num;
+@@ -487,7 +485,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
  
--		dev_node = dev_to_node(ena_dev->dmadev);
--		set_dev_node(ena_dev->dmadev, ctx->numa_node);
- 		io_sq->bounce_buf_ctrl.base_buffer = devm_kzalloc(ena_dev->dmadev, size, GFP_KERNEL);
--		set_dev_node(ena_dev->dmadev, dev_node);
- 		if (!io_sq->bounce_buf_ctrl.base_buffer)
- 			io_sq->bounce_buf_ctrl.base_buffer =
- 				devm_kzalloc(ena_dev->dmadev, size, GFP_KERNEL);
-@@ -397,7 +390,6 @@ static int ena_com_init_io_cq(struct ena_com_dev *ena_dev,
- 			      struct ena_com_io_cq *io_cq)
- {
- 	size_t size;
--	int prev_node = 0;
+ 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 	if (unlikely(err))
+-		return err;
++		goto drop;
  
- 	memset(&io_cq->cdesc_addr, 0x0, sizeof(io_cq->cdesc_addr));
+ 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
+ 		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
+@@ -495,6 +493,9 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 			       skb_dst(skb)->dev, seg6_input_finish);
  
-@@ -409,11 +401,8 @@ static int ena_com_init_io_cq(struct ena_com_dev *ena_dev,
+ 	return seg6_input_finish(dev_net(skb->dev), NULL, skb);
++drop:
++	kfree_skb(skb);
++	return err;
+ }
  
- 	size = io_cq->cdesc_entry_size_in_bytes * io_cq->q_depth;
- 
--	prev_node = dev_to_node(ena_dev->dmadev);
--	set_dev_node(ena_dev->dmadev, ctx->numa_node);
- 	io_cq->cdesc_addr.virt_addr =
- 		dma_alloc_coherent(ena_dev->dmadev, size, &io_cq->cdesc_addr.phys_addr, GFP_KERNEL);
--	set_dev_node(ena_dev->dmadev, prev_node);
- 	if (!io_cq->cdesc_addr.virt_addr) {
- 		io_cq->cdesc_addr.virt_addr =
- 			dma_alloc_coherent(ena_dev->dmadev, size, &io_cq->cdesc_addr.phys_addr,
+ static int seg6_input_nf(struct sk_buff *skb)
 -- 
 2.43.0
 
