@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-48955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AA78FEB42
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 741648FE8D7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7914B21BF5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 138D6284269
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A221A38F1;
-	Thu,  6 Jun 2024 14:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E72198E79;
+	Thu,  6 Jun 2024 14:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pTEMAFE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+J+BD+9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754A91A38EF;
-	Thu,  6 Jun 2024 14:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F83196C7D;
+	Thu,  6 Jun 2024 14:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683229; cv=none; b=MSV2GAH2vbtIE7Ghy1UAEMgMfHLkYljMxKAIddlloIU4CQT+wgtkFgyVhFgLpJrxHc74DY3mWFLkz4qd/VKBAd6LsYh2HY6azEuMgRKYSjxlj5Ss3fogX3xBgUao9bV4/NsRlqGSl2cMo3dbfywyCDAG0fHEoSAr3mBYR0yDen8=
+	t=1717682940; cv=none; b=MyP/9nQg97aOQWV3JnbVe3+sAy6Sq/pNaRH+n2D+PMQhqznz1q7d3wfgXqtthCsPJtdotMJcCWmh4VDv9n4W/gTUUAvMuj5keNYBz/gofdsIoYBr2OwGAfIax+IfHDX0K5ZVH4VzrLyp3RxAoL1fuNel9FHYXEFKc4gpsjN4iaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683229; c=relaxed/simple;
-	bh=p1EBD86fbNpBrEkFJ9hIdTH6DBAxtZ6o1Oyd6qlPXfM=;
+	s=arc-20240116; t=1717682940; c=relaxed/simple;
+	bh=maW7uI93kl6Q4dySsm7fY6Kny7bsA/eLC01EX3BgEYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PXIV7X/6owVC/qttfAi6YtaEhGZmDf9Fue278ZV/Pa/vObbW3qDl8zptfFpDZtT6rTIIwS6/Qdh5JaStS4zns5Hd9S+LqjX1N2KqR0Ad73cKFpcQvY1N8siZIYO18JHQl4FMclnwS7CqZK+SlPxFlzKwLMD/GRP6gKTRsK3JfCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pTEMAFE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514FCC2BD10;
-	Thu,  6 Jun 2024 14:13:49 +0000 (UTC)
+	 MIME-Version; b=X/RdgIwU9y4SpZhiZ0/98Dn4s6y9R9W7CGspsdS7LWgvF+CUa4jIq4NbmViUD6UCx77/mfU98pe5Qjk4gOl88wLG0hR7Mr+7qU0D+xUJ9luRW9jqIcU+Bqae9OcQk4qbAev+lUukYbGiLgjDUOlZJoU/rYZUMyUyZDOyzjf3U9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+J+BD+9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005B7C2BD10;
+	Thu,  6 Jun 2024 14:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683229;
-	bh=p1EBD86fbNpBrEkFJ9hIdTH6DBAxtZ6o1Oyd6qlPXfM=;
+	s=korg; t=1717682940;
+	bh=maW7uI93kl6Q4dySsm7fY6Kny7bsA/eLC01EX3BgEYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1pTEMAFEk05WXVe8PJm0vT58wcLLzzF+Ydi+zO7xq6TpAqsX8rBtsIm9hcpOmQCDd
-	 ws11FsISSGgq2P/OXWqEEzuVKDWTL74jWZfagNJf8FwVp3k0O4TNNTdFJLMD6QNx6W
-	 r4C2dW54N6HsKZb0s7AiUhN7Uq3ap1Z3Fo08E+NY=
+	b=c+J+BD+9auG1Kt+oXKa1gteqimbsMl/Ya47NEFIymGGAzNy1UCXXY/4BmCG+w8vvU
+	 BJfcEXX2eqWLMLxWrgRzBaYc32F8hmMyu8s8YVH7zZDXcHZ+UUV50Dg72QiroNzLyd
+	 XwshXecnyUuu3Ae8ghSqHU7joXn89/tcr/IkSyAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Halaney <ahalaney@redhat.com>,
-	Asutosh Das <quic_asutoshd@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Yabin Cui <yabinc@google.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 105/473] scsi: ufs: ufs-qcom: Fix the Qcom register name for offset 0xD0
+Subject: [PATCH 6.9 055/374] coresight: etm4x: Do not hardcode IOMEM access for register restore
 Date: Thu,  6 Jun 2024 16:00:34 +0200
-Message-ID: <20240606131703.378382184@linuxfoundation.org>
+Message-ID: <20240606131653.677925267@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-[ Upstream commit 7959587f3284bf163e4f1baff3c6fa71fc6a55b1 ]
+[ Upstream commit 1e7ba33fa591de1cf60afffcabb45600b3607025 ]
 
-On newer UFS revisions, the register at offset 0xD0 is called,
-REG_UFS_PARAM0. Since the existing register, RETRY_TIMER_REG is not used
-anywhere, it is safe to use the new name.
+When we restore the register state for ETM4x, while coming back
+from CPU idle, we hardcode IOMEM access. This is wrong and could
+blow up for an ETM with system instructions access (and for ETE).
 
-Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
-Reviewed-by: Asutosh Das <quic_asutoshd@quicinc.com>
-Tested-by: Andrew Halaney <ahalaney@redhat.com> # Qdrive3/sa8540p-ride
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 823150ecf04f ("scsi: ufs: qcom: Perform read back after writing unipro mode")
+Fixes: f5bd523690d2 ("coresight: etm4x: Convert all register accesses")
+Reported-by: Yabin Cui <yabinc@google.com>
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Tested-by: Yabin Cui <yabinc@google.com>
+Link: https://lore.kernel.org/r/20240412142702.2882478-2-suzuki.poulose@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-qcom.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hwtracing/coresight/coresight-etm4x-core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-qcom.h b/drivers/ufs/host/ufs-qcom.h
-index 8a3a65625db55..112e53efafe2b 100644
---- a/drivers/ufs/host/ufs-qcom.h
-+++ b/drivers/ufs/host/ufs-qcom.h
-@@ -36,7 +36,8 @@ enum {
- 	REG_UFS_TX_SYMBOL_CLK_NS_US         = 0xC4,
- 	REG_UFS_LOCAL_PORT_ID_REG           = 0xC8,
- 	REG_UFS_PA_ERR_CODE                 = 0xCC,
--	REG_UFS_RETRY_TIMER_REG             = 0xD0,
-+	/* On older UFS revisions, this register is called "RETRY_TIMER_REG" */
-+	REG_UFS_PARAM0                      = 0xD0,
- 	REG_UFS_PA_LINK_STARTUP_TIMER       = 0xD8,
- 	REG_UFS_CFG1                        = 0xDC,
- 	REG_UFS_CFG2                        = 0xE0,
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index 06a9b94b8c13e..b9c6c544d7597 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -1843,8 +1843,10 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
+ {
+ 	int i;
+ 	struct etmv4_save_state *state = drvdata->save_state;
+-	struct csdev_access tmp_csa = CSDEV_ACCESS_IOMEM(drvdata->base);
+-	struct csdev_access *csa = &tmp_csa;
++	struct csdev_access *csa = &drvdata->csdev->access;
++
++	if (WARN_ON(!drvdata->csdev))
++		return;
+ 
+ 	etm4_cs_unlock(drvdata, csa);
+ 	etm4x_relaxed_write32(csa, state->trcclaimset, TRCCLAIMSET);
 -- 
 2.43.0
 
