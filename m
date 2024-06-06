@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 577BE8FEDA0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 063848FEBF1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B35CFB22F69
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0CBF1F272D3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079CF1BC096;
-	Thu,  6 Jun 2024 14:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7513E198833;
+	Thu,  6 Jun 2024 14:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JgbNQ7s0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OM/zOPaY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D84198E9A;
-	Thu,  6 Jun 2024 14:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DEF197A9B;
+	Thu,  6 Jun 2024 14:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683507; cv=none; b=ImXCN5jYTq9DG7XM5+wOLui0P907ydOfzlbwx31mE/MAdhOn9+G8/+AoEPGQ/RgT04C/tq72wNlmnShtkdhwMqD4MdH9NbgQMqJKUzK6zPMud7SHjVX3x9rmyQ1RQ4lHpvvI11M6zstbOA8MxjKHwWfFP5Fzs+5+I9r9Z9sGLxs=
+	t=1717683312; cv=none; b=g5fIF7aapY4jLoRw9JulyFzmFFLcFlIcBL2reISmuTHYzdz0/H2CluZ9pHFT32CuY30uFcRjLUZ3UgSHbnpTFSCR+AiJ4exuIGhpa3diIzoQ/sMZYaIx1ddiAz8pLqn7qn3Yy6DSIsbQ5UEZRlBEn2jscR1sDljI8mghOpuuiSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683507; c=relaxed/simple;
-	bh=lPMmsLXrCMD87bDX71WoTE8HaFHuB/Hf3O9wVcx/bo8=;
+	s=arc-20240116; t=1717683312; c=relaxed/simple;
+	bh=MIvAoAwXFrU6vlaCmjrh7IsinO4mCrmewNoPfO9duGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQTQeX+LwNqxlNRPr8nqLQUL3OOWNvHp25eH3EvXnOrQVQ0GczdOrjupGjJCRHri5BodAedgQLlRSJ2ExuVm4scSoKzjr7kcQ8bg/do3XpV32Wobb2v5uoNe8si5TpsSVmO/v4v5Ao1j+lClIbgIOok9TOq71vdbTaeEFR00JzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JgbNQ7s0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FB3C32781;
-	Thu,  6 Jun 2024 14:18:27 +0000 (UTC)
+	 MIME-Version; b=NDcUxa+4VmqfeqQlrT/4wydTPz5QcKJFbILxEkK5ArX4VT/PelGaGrxo7DhMkHNIHvikrv8hj+UXDjdWcKLT0V8b9NXNKz0/wXOapgvs8sZbWrvobXlvdzVpXmFtvAT8rxnUZcSOdwLIg5X2HjrWfQeg/jb2HF5/EMLag1BySFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OM/zOPaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117EFC2BD10;
+	Thu,  6 Jun 2024 14:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683507;
-	bh=lPMmsLXrCMD87bDX71WoTE8HaFHuB/Hf3O9wVcx/bo8=;
+	s=korg; t=1717683312;
+	bh=MIvAoAwXFrU6vlaCmjrh7IsinO4mCrmewNoPfO9duGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JgbNQ7s0/WCqh5SgwbFhfBtGviobY3VUiNyMz4OAxHH20hMUtrX+QmdFlI3IBJzvf
-	 JvZz5X9I6k/8a5MZuFWXQoNWrayglJd62TzU2AalQF07ipRKE3fAd9QOp9yWwd+8cd
-	 Pk8guH6iY2NQ9/PhvCc8tR159Sb75rm/EbZFKKz0=
+	b=OM/zOPaYWaGShQonsCvW3yjR5MVKRyaE3FulmGU5LWm5FESTf2ico3znu39MkxjhZ
+	 6kl266rOHpJYj7p4cFCUQVmlZpeWFwQSm3o7x0+imJ65bxqd5s3kJABWBZyEUMBJqV
+	 QpdU4BE3H6dQfeIUqfxNoD/WNoCNxrW0+q19qXH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Liu Ying <victor.liu@nxp.com>,
+	Marek Vasut <marex@denx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 449/744] iio: buffer-dmaengine: export buffer alloc and free functions
+Subject: [PATCH 6.1 192/473] drm/lcdif: Do not disable clocks on already suspended hardware
 Date: Thu,  6 Jun 2024 16:02:01 +0200
-Message-ID: <20240606131746.901505212@linuxfoundation.org>
+Message-ID: <20240606131706.293372095@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 9c446288d7b31402adb454535cb2c3cbdb55bb88 ]
+[ Upstream commit 172695f145fb4798ab605e8a73f6e87711930124 ]
 
-Export iio_dmaengine_buffer_free() and iio_dmaengine_buffer_alloc().
-This is in preparation of introducing IIO backends support. This will
-allow us to allocate a buffer and control it's lifetime from a device
-different from the one holding the DMA firmware properties. Effectively,
-in this case the struct device holding the firmware information about
-the DMA channels is not the same as iio_dev->dev.parent (typical case).
+In case the LCDIF is enabled in DT but unused, the clocks used by the
+LCDIF are not enabled. Those clocks may even have a use count of 0 in
+case there are no other users of those clocks. This can happen e.g. in
+case the LCDIF drives HDMI bridge which has no panel plugged into the
+HDMI connector.
 
-While at it, namespace the buffer-dmaengine exports and update the
-current user of these buffers.
+Do not attempt to disable clocks in the suspend callback and re-enable
+clocks in the resume callback unless the LCDIF is enabled and was in
+use before the system entered suspend, otherwise the driver might end
+up trying to disable clocks which are already disabled with use count
+0, and would trigger a warning from clock core about this condition.
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240210-iio-backend-v11-4-f5242a5fb42a@analog.com
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: cf1c833f89e7 ("iio: adc: adi-axi-adc: only error out in major version mismatch")
+Note that the lcdif_rpm_suspend() and lcdif_rpm_resume() functions
+internally perform the clocks disable and enable operations and act
+as runtime PM hooks too.
+
+Reviewed-by: Liu Ying <victor.liu@nxp.com>
+Fixes: 9db35bb349a0 ("drm: lcdif: Add support for i.MX8MP LCDIF variant")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240226082644.32603-1-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/adi-axi-adc.c                      | 1 +
- drivers/iio/buffer/industrialio-buffer-dmaengine.c | 8 +++++---
- include/linux/iio/buffer-dmaengine.h               | 3 +++
- 3 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/mxsfb/lcdif_drv.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-index c247ff1541d28..0f21d1d98b9fa 100644
---- a/drivers/iio/adc/adi-axi-adc.c
-+++ b/drivers/iio/adc/adi-axi-adc.c
-@@ -447,3 +447,4 @@ module_platform_driver(adi_axi_adc_driver);
- MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
- MODULE_DESCRIPTION("Analog Devices Generic AXI ADC IP core driver");
- MODULE_LICENSE("GPL v2");
-+MODULE_IMPORT_NS(IIO_DMAENGINE_BUFFER);
-diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-index 5f85ba38e6f6e..0d53c0a07b0d6 100644
---- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-+++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-@@ -159,7 +159,7 @@ static const struct iio_dev_attr *iio_dmaengine_buffer_attrs[] = {
-  * Once done using the buffer iio_dmaengine_buffer_free() should be used to
-  * release it.
-  */
--static struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
-+struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
- 	const char *channel)
- {
- 	struct dmaengine_buffer *dmaengine_buffer;
-@@ -210,6 +210,7 @@ static struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
- 	kfree(dmaengine_buffer);
- 	return ERR_PTR(ret);
+diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+index 075002ed6fb09..43d316447f387 100644
+--- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
++++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+@@ -290,6 +290,9 @@ static int __maybe_unused lcdif_suspend(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	if (pm_runtime_suspended(dev))
++		return 0;
++
+ 	return lcdif_rpm_suspend(dev);
  }
-+EXPORT_SYMBOL_NS_GPL(iio_dmaengine_buffer_alloc, IIO_DMAENGINE_BUFFER);
  
- /**
-  * iio_dmaengine_buffer_free() - Free dmaengine buffer
-@@ -217,7 +218,7 @@ static struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
-  *
-  * Frees a buffer previously allocated with iio_dmaengine_buffer_alloc().
-  */
--static void iio_dmaengine_buffer_free(struct iio_buffer *buffer)
-+void iio_dmaengine_buffer_free(struct iio_buffer *buffer)
+@@ -297,7 +300,8 @@ static int __maybe_unused lcdif_resume(struct device *dev)
  {
- 	struct dmaengine_buffer *dmaengine_buffer =
- 		iio_buffer_to_dmaengine_buffer(buffer);
-@@ -227,6 +228,7 @@ static void iio_dmaengine_buffer_free(struct iio_buffer *buffer)
+ 	struct drm_device *drm = dev_get_drvdata(dev);
  
- 	iio_buffer_put(buffer);
+-	lcdif_rpm_resume(dev);
++	if (!pm_runtime_suspended(dev))
++		lcdif_rpm_resume(dev);
+ 
+ 	return drm_mode_config_helper_resume(drm);
  }
-+EXPORT_SYMBOL_NS_GPL(iio_dmaengine_buffer_free, IIO_DMAENGINE_BUFFER);
- 
- static void __devm_iio_dmaengine_buffer_free(void *buffer)
- {
-@@ -288,7 +290,7 @@ int devm_iio_dmaengine_buffer_setup(struct device *dev,
- 
- 	return iio_device_attach_buffer(indio_dev, buffer);
- }
--EXPORT_SYMBOL_GPL(devm_iio_dmaengine_buffer_setup);
-+EXPORT_SYMBOL_NS_GPL(devm_iio_dmaengine_buffer_setup, IIO_DMAENGINE_BUFFER);
- 
- MODULE_AUTHOR("Lars-Peter Clausen <lars@metafoo.de>");
- MODULE_DESCRIPTION("DMA buffer for the IIO framework");
-diff --git a/include/linux/iio/buffer-dmaengine.h b/include/linux/iio/buffer-dmaengine.h
-index 5c355be898149..cbb8ba957fade 100644
---- a/include/linux/iio/buffer-dmaengine.h
-+++ b/include/linux/iio/buffer-dmaengine.h
-@@ -10,6 +10,9 @@
- struct iio_dev;
- struct device;
- 
-+struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
-+					      const char *channel);
-+void iio_dmaengine_buffer_free(struct iio_buffer *buffer);
- int devm_iio_dmaengine_buffer_setup(struct device *dev,
- 				    struct iio_dev *indio_dev,
- 				    const char *channel);
 -- 
 2.43.0
 
