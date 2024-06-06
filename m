@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-48783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD408FEA80
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92CDC8FEC20
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3A471F24550
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D5401C24F71
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DB01991AC;
-	Thu,  6 Jun 2024 14:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0171AD9C5;
+	Thu,  6 Jun 2024 14:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHTXl0oq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6dfD+x2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747AB1A01C6;
-	Thu,  6 Jun 2024 14:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E240E198824;
+	Thu,  6 Jun 2024 14:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683145; cv=none; b=ffwJlRtgSgJ7ZIY1evgvBhBYwxIT9sOUMDdnt47Uxhf1fWFbWqKpXuxHwiV4zAXW8Crbl9bv7q+VHbUIBSkSt7MMZOz/P7M0KdNftU38S/HqTMHWjTpHmz8B65fH3UE/xWDPMp74rdKmUW1VGzXOQIceWgSdtjpR3a2yocSp278=
+	t=1717683333; cv=none; b=Uidw7A34WBT3UEFUtjJDujNaZTZUSpFwNQM4cfieU58uLpP9/1jJ16qpTsw02VnxHFljbDd6kC8A0DR+YGJBM0l7JGTLPpu06yR9C9izqPQ0UI2dZMzLRj0yUZcW9SnfGstIlPFa29I25XSutEZiut9hm9OjN9ZV7xi7y2WsILc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683145; c=relaxed/simple;
-	bh=69SM+kKzD7bpAqxwp+CY2M1xiaUZzrGKMmgqInpGjzk=;
+	s=arc-20240116; t=1717683333; c=relaxed/simple;
+	bh=Uf5L1MXArgCJ09hjzaY+3bfAS/ZQTnKpMOy+Ff8IXNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W434XhBxv0ssffjUr0bLgwUvf8xq6JJCCd34dAITXQAaHPcZ5S4FoxG4oLrUiYJ0Mc1GS1If7csHwZj9XMxTjwErW6fBOLmHMy2G/SN4p/Yn2U5il+9sZnuboyxsoPhk2EpUakvFuDKflSTHxxsMY/FjV4vF5hz6HtOC8WhV7zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHTXl0oq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F22C2BD10;
-	Thu,  6 Jun 2024 14:12:25 +0000 (UTC)
+	 MIME-Version; b=ldpxmnuOXPMMmGNDhRIuy1AvR86yjS4UIJ3pIiPZcwTAihAcUdXc0zm+i6d2c2OAf9mJOgU/hfw53LP1/HN53CG/uMM7cequp8T6EYYyrHlMs5xItlt0meUcch466+/cPmOglF0llaY7EVtAqlBq3LAGW9xIecc+gPjg2ajutEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6dfD+x2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2708C2BD10;
+	Thu,  6 Jun 2024 14:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683145;
-	bh=69SM+kKzD7bpAqxwp+CY2M1xiaUZzrGKMmgqInpGjzk=;
+	s=korg; t=1717683332;
+	bh=Uf5L1MXArgCJ09hjzaY+3bfAS/ZQTnKpMOy+Ff8IXNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHTXl0oqgnjCMLEZPwQDWgEz2ssDlqO/5FtJaX6WewLoX3R9hOOLV7VcZP1E5I+MT
-	 dZBN+G27M6e/N0rPlt6W43kVfLxrddqvgvR2SSHO2IAOJQ9Qyk2elnyfpa4apC99CZ
-	 JvJmbHN2kG18KJl1KsfXsZ00KguEYhkXOA/KTE0w=
+	b=e6dfD+x2pgDxsB+bHSD2F9Uj4TIjEy7r56LxdOLyBL8MwIL+RILRI+1YPenUgoXLz
+	 zLqIsnTfToU3lm4xnOqIS13P0JCaR7DKiExLvmz8Po+9qK/7cemtQ3Hq56i8UVV2gm
+	 T1BU0Q+EDJvYkerzWx/BUPNLViAyCGpACDh/KGYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 6.1 017/473] fs/ntfs3: Remove max link count info display during driver init
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Chris Down <chris@chrisdown.name>,
+	Petr Mladek <pmladek@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 274/744] printk: Let no_printk() use _printk()
 Date: Thu,  6 Jun 2024 15:59:06 +0200
-Message-ID: <20240606131700.413841049@linuxfoundation.org>
+Message-ID: <20240606131741.171261151@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit a8948b5450e7c65a3a34ebf4ccfcebc19335d4fb upstream.
+[ Upstream commit 8522f6b760ca588928eede740d5d69dd1e936b49 ]
 
-Removes the output of this purely informational message from the
-kernel buffer:
+When printk-indexing is enabled, each printk() invocation emits a
+pi_entry structure, containing the format string and other information
+related to its location in the kernel sources.  This is even true for
+no_printk(): while the actual code to print the message is optimized out
+by the compiler due to the always-false check, the pi_entry structure is
+still emitted.
 
-	"ntfs3: Max link count 4000"
+As the main purpose of no_printk() is to provide a helper to maintain
+printf()-style format checking when debugging is disabled, this leads to
+the inclusion in the index of lots of printk formats that cannot be
+emitted by the current kernel.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by switching no_printk() from printk() to _printk().
+
+This reduces the size of an arm64 defconfig kernel with
+CONFIG_PRINTK_INDEX=y by 576 KiB.
+
+Fixes: 337015573718b161 ("printk: Userspace format indexing support")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Chris Down <chris@chrisdown.name>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/56cf92edccffea970e1f40a075334dd6cf5bb2a4.1709127473.git.geert+renesas@glider.be
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/super.c |    2 --
- 1 file changed, 2 deletions(-)
+ include/linux/printk.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ntfs3/super.c
-+++ b/fs/ntfs3/super.c
-@@ -1453,8 +1453,6 @@ static int __init init_ntfs_fs(void)
- {
- 	int err;
+diff --git a/include/linux/printk.h b/include/linux/printk.h
+index 8ef499ab3c1ed..e4878bb58f663 100644
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -126,7 +126,7 @@ struct va_format {
+ #define no_printk(fmt, ...)				\
+ ({							\
+ 	if (0)						\
+-		printk(fmt, ##__VA_ARGS__);		\
++		_printk(fmt, ##__VA_ARGS__);		\
+ 	0;						\
+ })
  
--	pr_info("ntfs3: Max link count %u\n", NTFS_LINK_MAX);
--
- 	if (IS_ENABLED(CONFIG_NTFS3_FS_POSIX_ACL))
- 		pr_info("ntfs3: Enabled Linux POSIX ACLs support\n");
- 	if (IS_ENABLED(CONFIG_NTFS3_64BIT_CLUSTER))
+-- 
+2.43.0
+
 
 
 
