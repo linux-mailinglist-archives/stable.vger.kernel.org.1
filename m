@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-48327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725008FE888
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F38E58FEB45
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF14A28138D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26D741C25030
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2700A196C62;
-	Thu,  6 Jun 2024 14:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2E51A38FE;
+	Thu,  6 Jun 2024 14:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BdLOtYiW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyRtiLZS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25D7196DBC;
-	Thu,  6 Jun 2024 14:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBEB1A38F6;
+	Thu,  6 Jun 2024 14:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682904; cv=none; b=EepS36KIo/UYTcbB1sKxafSQcEWD+1AoxCkuahNR6goabeOYrI76TpCl8B1YWFGiirS+ragK43qoolr8qI9ydkIj6Br+ZACz8oK7t8KLw+vv9p7KiYg6OY0m81fl6X/eHFY12BrQMQ9th+TcisFoW3pMcRfk0gagNvEse/VmbCI=
+	t=1717683231; cv=none; b=P3lff0B+2xcdFma+orT8stuYe/t7Ftw8gHV0SLO+HRQUfiDfguUKrKlC/bugjMjcjJ1HcrQ4KbzTjmWZV4Y+f7sAoHWLgTf648vsmNpZ9SmmYeyAm856FoQ21vI6QnPYrL7f6qNIqK1K3gyx+uGlFezXyWauJ9mG7KcqGZG1VtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682904; c=relaxed/simple;
-	bh=WB4bRg37FrUGFRmjG4Tlo08I+uf8u78PCKJLyAAkVS0=;
+	s=arc-20240116; t=1717683231; c=relaxed/simple;
+	bh=rdZDgFXI551dOFodu8rAiz00ZHp3dm2RFAHkomEVXZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Da/GkkDIDIEubqzTDyUZb6as5W6KKXLRpQ41d3sFJlHgha4cFThP6T/8sEp7UUq1/pHp6CHfZ7iepS1BhYM9+IQixZZKSwi7PqciBac7QEN1wsKKwFGUQeWKIiLmCKtAt9cB56+wdA8OpBNKYksK3cxhR+ZJ51YaJTtRqMl+wDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BdLOtYiW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7658C2BD10;
-	Thu,  6 Jun 2024 14:08:24 +0000 (UTC)
+	 MIME-Version; b=smGXFOJEbt1yk0/RMKSxZab573odnk0asno1LwHWRlkaRVjznCbdEOFxOGqE6NM2oZ+/JU31iNMaM2DPWwLblOVcwhIKKaz+DEhh73WYkIMwbIYsAUrw/rakKJYF81JCe2cqk9dlh+R1tBUoV8Da5zZ4KcW2YoEMKtkvkfOOyq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyRtiLZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A82BC32781;
+	Thu,  6 Jun 2024 14:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682904;
-	bh=WB4bRg37FrUGFRmjG4Tlo08I+uf8u78PCKJLyAAkVS0=;
+	s=korg; t=1717683231;
+	bh=rdZDgFXI551dOFodu8rAiz00ZHp3dm2RFAHkomEVXZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BdLOtYiW3QljHJCisjPsX5Rax1yLVLO4Ks5LSF81wFXWafnwrJwZhTyRbXowMUNY8
-	 1P4xodY49245fu9OKd0Mr/ZpefrhVOdpdFsc+jiCTXypQ2DyIMxFu/K5cAmqNA1O5C
-	 +dUlW8xQu1W4Y/JgpfBwZbkuAhAiDTe5jN6C+8TM=
+	b=TyRtiLZSq20ATibG0qFzrW+wS2OxW8/xf4KIuDiyx5HtiDgnWcJWQwNYnf2iS95B+
+	 RsZVNUxMOvAmcHiQASw3iN4ZHd0Fc+izSJJO18l7MNezP5zmlHsRxW+qqFWmCszDBC
+	 g5gSa3wZA6v9mbTHRPsyiWb5WXmXKkCMPTm4Budw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 027/374] greybus: arche-ctrl: move device table to its right location
+Subject: [PATCH 6.1 077/473] s390/cio: fix tracepoint subchannel type field
 Date: Thu,  6 Jun 2024 16:00:06 +0200
-Message-ID: <20240606131652.733796660@linuxfoundation.org>
+Message-ID: <20240606131702.460974807@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 6a0b8c0da8d8d418cde6894a104cf74e6098ddfa ]
+[ Upstream commit 8692a24d0fae19f674d51726d179ad04ba95d958 ]
 
-The arche-ctrl has two platform drivers and three of_device_id tables,
-but one table is only used for the the module loader, while the other
-two seem to be associated with their drivers.
+The subchannel-type field "st" of s390_cio_stsch and s390_cio_msch
+tracepoints is incorrectly filled with the subchannel-enabled SCHIB
+value "ena". Fix this by assigning the correct value.
 
-This leads to a W=1 warning when the driver is built-in:
-
-drivers/staging/greybus/arche-platform.c:623:34: error: 'arche_combined_id' defined but not used [-Werror=unused-const-variable=]
-  623 | static const struct of_device_id arche_combined_id[] = {
-
-Drop the extra table and register both tables that are actually
-used as the ones for the module loader instead.
-
-Fixes: 7b62b61c752a ("greybus: arche-ctrl: Don't expose driver internals to arche-platform driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240403080702.3509288-18-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d1de8633d96a ("s390 cio: Rewrite trace point class s390_class_schib")
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/greybus/arche-apb-ctrl.c | 1 +
- drivers/staging/greybus/arche-platform.c | 9 +--------
- 2 files changed, 2 insertions(+), 8 deletions(-)
+ drivers/s390/cio/trace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/greybus/arche-apb-ctrl.c b/drivers/staging/greybus/arche-apb-ctrl.c
-index 8541995008da8..aa6f266b62a14 100644
---- a/drivers/staging/greybus/arche-apb-ctrl.c
-+++ b/drivers/staging/greybus/arche-apb-ctrl.c
-@@ -466,6 +466,7 @@ static const struct of_device_id arche_apb_ctrl_of_match[] = {
- 	{ .compatible = "usbffff,2", },
- 	{ },
- };
-+MODULE_DEVICE_TABLE(of, arche_apb_ctrl_of_match);
- 
- static struct platform_driver arche_apb_ctrl_device_driver = {
- 	.probe		= arche_apb_ctrl_probe,
-diff --git a/drivers/staging/greybus/arche-platform.c b/drivers/staging/greybus/arche-platform.c
-index 891b75327d7f7..b33977ccd5271 100644
---- a/drivers/staging/greybus/arche-platform.c
-+++ b/drivers/staging/greybus/arche-platform.c
-@@ -619,14 +619,7 @@ static const struct of_device_id arche_platform_of_match[] = {
- 	{ .compatible = "google,arche-platform", },
- 	{ },
- };
--
--static const struct of_device_id arche_combined_id[] = {
--	/* Use PID/VID of SVC device */
--	{ .compatible = "google,arche-platform", },
--	{ .compatible = "usbffff,2", },
--	{ },
--};
--MODULE_DEVICE_TABLE(of, arche_combined_id);
-+MODULE_DEVICE_TABLE(of, arche_platform_of_match);
- 
- static struct platform_driver arche_platform_device_driver = {
- 	.probe		= arche_platform_probe,
+diff --git a/drivers/s390/cio/trace.h b/drivers/s390/cio/trace.h
+index 86993de253451..a4c5c6736b310 100644
+--- a/drivers/s390/cio/trace.h
++++ b/drivers/s390/cio/trace.h
+@@ -50,7 +50,7 @@ DECLARE_EVENT_CLASS(s390_class_schib,
+ 		__entry->devno = schib->pmcw.dev;
+ 		__entry->schib = *schib;
+ 		__entry->pmcw_ena = schib->pmcw.ena;
+-		__entry->pmcw_st = schib->pmcw.ena;
++		__entry->pmcw_st = schib->pmcw.st;
+ 		__entry->pmcw_dnv = schib->pmcw.dnv;
+ 		__entry->pmcw_dev = schib->pmcw.dev;
+ 		__entry->pmcw_lpm = schib->pmcw.lpm;
 -- 
 2.43.0
 
