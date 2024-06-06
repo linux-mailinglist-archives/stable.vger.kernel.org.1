@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-49113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9859E8FEBEB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 949088FED72
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19227B27595
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AF321F21456
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043471AC24B;
-	Thu,  6 Jun 2024 14:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8F01BB688;
+	Thu,  6 Jun 2024 14:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iBK+YGu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ApS5wU5s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F0D1AC246;
-	Thu,  6 Jun 2024 14:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF0819DF4F;
+	Thu,  6 Jun 2024 14:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683308; cv=none; b=o6Jyndcd+cUNWbsPf3liA5+1wkz95uXymvVss69/eJBnf4x+2DE6hpeOkKS2f+c9ZDLfcutf4ReaKWdFOuIM7HcAvk1QsJQFT5IiPcVJfZwTTdsRbcei4taB96VMSABCB3+xOAlKTTfbKnBCh4Pd43bqZAzFJ+x313FGay4vAKw=
+	t=1717683489; cv=none; b=l1MY1d1MqLj2HTrMEV6JelUxNDDGceGyi2o6BpefYNImP+ebvAtaY4aF51+8fAfi7HnwFp4hIIcKb0EtFyHNON0TU3T9LSq1eBza18N0CY3oDLoBPigLYFLNxaf6WyXQUrA1NgE25GkI9dP8lsB7PnDJ8boXvZ/9WgZ7btbMBW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683308; c=relaxed/simple;
-	bh=+Wjw8okDf8mPEGPswjBhS0HQ3LdrKEdBjogTMxeMFNg=;
+	s=arc-20240116; t=1717683489; c=relaxed/simple;
+	bh=pSwlInxndPqVn5+NBz1QBCgkSFETt9DmfeeiOZ2ZMus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9R56YQ65iIbJtlfya2pv19M5mYDmaPRdYP2lNPquFgyKgDdLU80QfylqaRBn4ZPXrtjghrdtNo4WNeP31Fma3DZxOGKj0MIu23OHGXz7U6WPDC8n96EgL/WynBUsXkGmAKrE79fSAThcd+KEcTm/CEtV10yJq6yQy3N14mRW8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iBK+YGu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979C7C32781;
-	Thu,  6 Jun 2024 14:15:08 +0000 (UTC)
+	 MIME-Version; b=YjlEJ51daWFy8EZ0XXky8T0Xxnn30PKpI2pGebyqVFX4/JqkvcMF/imbZ4X9z2aNqRpZXPckTzIfuLgHAMpBZ4g+rfCFplwvSs6L13r+EhdML6kmRLu+l4Ke1PeBu5I6xwxOjo/4dCqhF5FEhMq1D5MNIdaEC1NgpFjAHKX65xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ApS5wU5s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B93AC32782;
+	Thu,  6 Jun 2024 14:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683308;
-	bh=+Wjw8okDf8mPEGPswjBhS0HQ3LdrKEdBjogTMxeMFNg=;
+	s=korg; t=1717683489;
+	bh=pSwlInxndPqVn5+NBz1QBCgkSFETt9DmfeeiOZ2ZMus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2iBK+YGuBaBj82XOaZFwvRb4uwK4HyGQWUTeAZycIFgcspvRPIO5+mFAaZcM3fvDw
-	 H4HKQ1s0Rj5274FfK++SqBflyZBOV95cR5Iy3uRWHz5E7ZlDBn9h7E3UoECJ3WUZ3V
-	 naA8rE7FUHBA1Ursr2Ud45PZjZUx6wJl7nxbLBdE=
+	b=ApS5wU5sk2yCDCA1LxDDsDM8Cuk7twz/TnCLo3mnppf7Hqas1NcSfP2bs2ydpwRhy
+	 7iHdETrK/cC+zNjN4wkmjfZAc1niXLYC8aXrzPdX7U5VlkRoFMyi2Le2g6qkPe2J8O
+	 MQIghrew1RV62AxQNDMSGlnGW1XAr7eXvJlrR0Ys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 175/473] ipv6: sr: add missing seg6_local_exit
+Subject: [PATCH 6.6 432/744] f2fs: compress: fix to relocate check condition in f2fs_{release,reserve}_compress_blocks()
 Date: Thu,  6 Jun 2024 16:01:44 +0200
-Message-ID: <20240606131705.718112412@linuxfoundation.org>
+Message-ID: <20240606131746.326540280@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 3321687e321307629c71b664225b861ebf3e5753 ]
+[ Upstream commit 7c5dffb3d90c5921b91981cc663e02757d90526e ]
 
-Currently, we only call seg6_local_exit() in seg6_init() if
-seg6_local_init() failed. But forgot to call it in seg6_exit().
+Compress flag should be checked after inode lock held to avoid
+racing w/ f2fs_setflags_common(), fix it.
 
-Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240509131812.1662197-2-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4c8ff7095bef ("f2fs: support data compression")
+Reported-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Closes: https://lore.kernel.org/linux-f2fs-devel/CAHJ8P3LdZXLc2rqeYjvymgYHr2+YLuJ0sLG9DdsJZmwO7deuhw@mail.gmail.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/file.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index 35508abd76f43..5423f1f2aa626 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -564,6 +564,7 @@ void seg6_exit(void)
- 	seg6_hmac_exit();
- #endif
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
-+	seg6_local_exit();
- 	seg6_iptunnel_exit();
- #endif
- 	unregister_pernet_subsys(&ip6_segments_ops);
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 7f631a617ee99..0350f36d043d6 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -3488,9 +3488,6 @@ static int f2fs_release_compress_blocks(struct file *filp, unsigned long arg)
+ 	if (!f2fs_sb_has_compression(sbi))
+ 		return -EOPNOTSUPP;
+ 
+-	if (!f2fs_compressed_file(inode))
+-		return -EINVAL;
+-
+ 	if (f2fs_readonly(sbi->sb))
+ 		return -EROFS;
+ 
+@@ -3509,7 +3506,8 @@ static int f2fs_release_compress_blocks(struct file *filp, unsigned long arg)
+ 		goto out;
+ 	}
+ 
+-	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
++	if (!f2fs_compressed_file(inode) ||
++		is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
+@@ -3672,9 +3670,6 @@ static int f2fs_reserve_compress_blocks(struct file *filp, unsigned long arg)
+ 	if (!f2fs_sb_has_compression(sbi))
+ 		return -EOPNOTSUPP;
+ 
+-	if (!f2fs_compressed_file(inode))
+-		return -EINVAL;
+-
+ 	if (f2fs_readonly(sbi->sb))
+ 		return -EROFS;
+ 
+@@ -3686,7 +3681,8 @@ static int f2fs_reserve_compress_blocks(struct file *filp, unsigned long arg)
+ 
+ 	inode_lock(inode);
+ 
+-	if (!is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
++	if (!f2fs_compressed_file(inode) ||
++		!is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
+ 		ret = -EINVAL;
+ 		goto unlock_inode;
+ 	}
 -- 
 2.43.0
 
