@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-48592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD1F8FE9A8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5588FED2A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 672AD288A70
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4B881F2623E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2472119AD9B;
-	Thu,  6 Jun 2024 14:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D8D19D075;
+	Thu,  6 Jun 2024 14:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+o0gY7C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cP8uIKOf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D797E19ADB6;
-	Thu,  6 Jun 2024 14:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF9F19D069;
+	Thu,  6 Jun 2024 14:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683051; cv=none; b=FsyuhWlDwn/HEGahdQMq9W9R7pKod5xupzeOKXWdktEQ/HXNDSSfhLfx/XBi4euEvkCfvBNpRTRArRm5xsUO45k+ExWZhjM4NyfkZwNPnTtVAB5G+y3Z3uxuMwqZi0119Fn50O5xAYm05Ma6Vd7nEwJBkCGQZoNmEr4LLR3u1Vw=
+	t=1717683454; cv=none; b=QDyKywCw39iVKNNswek7MOWp11LOZhAKimadZoK6Wiudjp6JODYaAZYyfuetYgW3WEDesf4EtSAMkeIef6U3BeefFGVxq25O73Nrv0VWeip00DCT51RjuJ3/R7Hp7zGuitdn5MVJw3Ht3APGowlt25KNHR60cLfBkV8tgUsFa10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683051; c=relaxed/simple;
-	bh=IP6aCR9TaEUIytwK3Hn89HLj8WLj1TrUjw5FNasiwxQ=;
+	s=arc-20240116; t=1717683454; c=relaxed/simple;
+	bh=3zYIx55xsZYaKcAe4i3WfxktfQUusNMt763/iGVG3RU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/mGiTK6rh9TMHR347dvleUxRMQRMe4Shv4u3oMtWUc4/WASuTlanlSlx0GumWKo2x41lobNizQW0EM+WNvitWQtH68IvxmansshkpaZ/26/36XO4BB/xxnx1zrBjDzma3tLUOdpknj1XA8k9g+tSthZlWMePYTdTU7xuM604Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+o0gY7C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84348C4AF16;
-	Thu,  6 Jun 2024 14:10:51 +0000 (UTC)
+	 MIME-Version; b=TksLNKPIETICj4Qx4M5B7mM85Uwaf0MCZRWBFZ9AThtJ9jAyKN8nc+mmMXmNe+MDqEGME3/2ZOd8LWaPAE5GVXEKSKuH58B09xbepiiHymnoEjQiI81rnWCJ//lYQbN3NU90G9R1lvEpMtZDed4PaeWS896roQIelCI8o2NQRkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cP8uIKOf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F8AC2BD10;
+	Thu,  6 Jun 2024 14:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683051;
-	bh=IP6aCR9TaEUIytwK3Hn89HLj8WLj1TrUjw5FNasiwxQ=;
+	s=korg; t=1717683454;
+	bh=3zYIx55xsZYaKcAe4i3WfxktfQUusNMt763/iGVG3RU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+o0gY7CpN73DOeGpC4AD1puV32nlWIqWpnlXjo40XGdSNby3Fx5JMj3rNsltNSB/
-	 TzSWJ8023NCxO01/jka62ixW8L8IEtI/4XBiv7lgzdaez5AqK8ZSOHyWEpAQxKPCRJ
-	 nKXOA5C73FUbl7kFyS2eZ8XKM6+IJP9pkH+Fa54c=
+	b=cP8uIKOfzSFlibRJV7BGY04RtPzMMJoGGmzs+o5HY4cpwq3BU7vybpHqoiprqH87t
+	 rpaXW+EdJoe0x8K8Tf6IEah8oJG4fA6SgIBsCa9MK2h7f7zC7N9ZjheucbT7fDI7qa
+	 zwIylN+CPcEk7u3h/E+URa5kmx7hK7XVyrcQ4Cik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 292/374] nvme-multipath: fix io accounting on failover
+Subject: [PATCH 6.1 342/473] f2fs: compress: fix to cover {reserve,release}_compress_blocks() w/ cp_rwsem lock
 Date: Thu,  6 Jun 2024 16:04:31 +0200
-Message-ID: <20240606131701.661940902@linuxfoundation.org>
+Message-ID: <20240606131711.219979869@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit a2e4c5f5f68dbd206f132bc709b98dea64afc3b8 ]
+[ Upstream commit 0a4ed2d97cb6d044196cc3e726b6699222b41019 ]
 
-There are io stats accounting that needs to be handled, so don't call
-blk_mq_end_request() directly. Use the existing nvme_end_req() helper
-that already handles everything.
+It needs to cover {reserve,release}_compress_blocks() w/ cp_rwsem lock
+to avoid racing with checkpoint, otherwise, filesystem metadata including
+blkaddr in dnode, inode fields and .total_valid_block_count may be
+corrupted after SPO case.
 
-Fixes: d4d957b53d91ee ("nvme-multipath: support io stats on the mpath device")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: ef8d563f184e ("f2fs: introduce F2FS_IOC_RELEASE_COMPRESS_BLOCKS")
+Fixes: c75488fb4d82 ("f2fs: introduce F2FS_IOC_RESERVE_COMPRESS_BLOCKS")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c      | 2 +-
- drivers/nvme/host/multipath.c | 3 ++-
- drivers/nvme/host/nvme.h      | 1 +
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ fs/f2fs/file.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 5008964f3ebe8..d513fd27589df 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -422,7 +422,7 @@ static inline void __nvme_end_req(struct request *req)
- 		nvme_mpath_end_request(req);
- }
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 69023b8fc67a7..2b0f8408917bb 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -3515,9 +3515,12 @@ static int f2fs_release_compress_blocks(struct file *filp, unsigned long arg)
+ 		struct dnode_of_data dn;
+ 		pgoff_t end_offset, count;
  
--static inline void nvme_end_req(struct request *req)
-+void nvme_end_req(struct request *req)
- {
- 	blk_status_t status = nvme_error_status(nvme_req(req)->status);
++		f2fs_lock_op(sbi);
++
+ 		set_new_dnode(&dn, inode, NULL, NULL, 0);
+ 		ret = f2fs_get_dnode_of_data(&dn, page_idx, LOOKUP_NODE);
+ 		if (ret) {
++			f2fs_unlock_op(sbi);
+ 			if (ret == -ENOENT) {
+ 				page_idx = f2fs_get_next_page_offset(&dn,
+ 								page_idx);
+@@ -3535,6 +3538,8 @@ static int f2fs_release_compress_blocks(struct file *filp, unsigned long arg)
  
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index d16e976ae1a47..a4e46eb20be63 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -118,7 +118,8 @@ void nvme_failover_req(struct request *req)
- 	blk_steal_bios(&ns->head->requeue_list, req);
- 	spin_unlock_irqrestore(&ns->head->requeue_lock, flags);
+ 		f2fs_put_dnode(&dn);
  
--	blk_mq_end_request(req, 0);
-+	nvme_req(req)->status = 0;
-+	nvme_end_req(req);
- 	kblockd_schedule_work(&ns->head->requeue_work);
- }
++		f2fs_unlock_op(sbi);
++
+ 		if (ret < 0)
+ 			break;
  
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index 05532c2811774..d7bcc6d51e84e 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -767,6 +767,7 @@ static inline bool nvme_state_terminal(struct nvme_ctrl *ctrl)
- 	}
- }
+@@ -3687,9 +3692,12 @@ static int f2fs_reserve_compress_blocks(struct file *filp, unsigned long arg)
+ 		struct dnode_of_data dn;
+ 		pgoff_t end_offset, count;
  
-+void nvme_end_req(struct request *req);
- void nvme_complete_rq(struct request *req);
- void nvme_complete_batch_req(struct request *req);
++		f2fs_lock_op(sbi);
++
+ 		set_new_dnode(&dn, inode, NULL, NULL, 0);
+ 		ret = f2fs_get_dnode_of_data(&dn, page_idx, LOOKUP_NODE);
+ 		if (ret) {
++			f2fs_unlock_op(sbi);
+ 			if (ret == -ENOENT) {
+ 				page_idx = f2fs_get_next_page_offset(&dn,
+ 								page_idx);
+@@ -3707,6 +3715,8 @@ static int f2fs_reserve_compress_blocks(struct file *filp, unsigned long arg)
+ 
+ 		f2fs_put_dnode(&dn);
+ 
++		f2fs_unlock_op(sbi);
++
+ 		if (ret < 0)
+ 			break;
  
 -- 
 2.43.0
