@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9307F8FED5E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A4018FEEC9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9F731C22B25
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90BDF1C25C40
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484E01BA886;
-	Thu,  6 Jun 2024 14:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FC21C7D74;
+	Thu,  6 Jun 2024 14:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEtw7zDr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="osCtzln7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F8019DF41;
-	Thu,  6 Jun 2024 14:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F75B1A1861;
+	Thu,  6 Jun 2024 14:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683480; cv=none; b=JstJlWbQkqa7KDWiDfym6dE4XvRx1p72Iy7zGyC8ZdRJLlQIVW88mwvnrZuyZyWCu1luQMZuYtVvMMwb9PaGNLGin2ljYtF7hS2FmriseXGmQcAWTzs0eUVJo9PStnF5Q/8WW+a3vlUcmq4+GnyG7LcyQwtqcTpgM5BByXt1yKU=
+	t=1717683701; cv=none; b=txWHvUarptSk2bf7IPJjLkqZyNsxDCSmwcmg9NqQHrTAk0BD3QpUmTfQfQdd65yrfc8920cZg9IvvV6vN/TrHnrNrfGG/bXVZ0XJzGDSI3wVypYi0Hc4oOysGGAgemA1yhsVhtLCK0Aw0MuOTaX7v1YfNKRLhI3BASpfXo0fAZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683480; c=relaxed/simple;
-	bh=p1WvVu5hleUW/lAu3IZCDiWqCRNQvpb5MSBJTWUNe28=;
+	s=arc-20240116; t=1717683701; c=relaxed/simple;
+	bh=fAI4Ab9LL7OW3A/S8pOV9XMo+ysgjaVvOryfHmyyMeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dlLH/gbpHMZaUji1iTuZ2aLX68xb6d9WyWAnnh18/JPhIFytIp44r/ZMbzde2rQ9lbv0ueJKro1OMJqZ9EOACgSqN56XoA4g6cMPlcl9Nj/e1w4TKdSVMYtrwvQb6pKz6VAnwNcQq90nX1EinRhx2skow2GBFsqLakVxin3qFsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEtw7zDr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D658BC2BD10;
-	Thu,  6 Jun 2024 14:17:59 +0000 (UTC)
+	 MIME-Version; b=Tu5M+oVGux8aJxDltb4ABgYuPtscPemUKrkf1CZ/mOza3EkY0oTjeG5FPXB0s2jZBnfBHfGnj5OYziSn/bgjZTACO7Svyq5BWN5nycocU0OsdDiXov6DXbvI4fdXaTGLqAVA9mDjVzWUM6wgqjFBTwmw1wzs9dGzNryvtbyWUZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=osCtzln7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00DBC32781;
+	Thu,  6 Jun 2024 14:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683479;
-	bh=p1WvVu5hleUW/lAu3IZCDiWqCRNQvpb5MSBJTWUNe28=;
+	s=korg; t=1717683701;
+	bh=fAI4Ab9LL7OW3A/S8pOV9XMo+ysgjaVvOryfHmyyMeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kEtw7zDr3BejZ9KbLaozU0ySfvjgYexii2PLRmYELVpfcu7EdcevencSsfYINZ3pC
-	 rFlfKD+N6qtlqmiVGiictSVg3ZbHImBOCuCMPkQV1C3oOccBmxVxQxTdJaImtFtfAY
-	 18iJCrl+mqYqFxKWyhFqlZ8/clAzVlLvG+4baZQc=
+	b=osCtzln7NiabNVn/7dxZ2Q4pvlvhus6Plz88gQP4OossvxDhWbbIhVUhBL1bDOAc+
+	 kMOPvX9aYE8L6jt3AoqW8tKczFq9wb4Wj07HYbb3vcpii8br+pdw2F03tWByyxuLwf
+	 whUCaqsfrJZlvyXP9HKcA5wXJU/oEvfgOuB6fVQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Faith Ekstrand <faith.ekstrand@collabora.com>,
+	Dave Airlie <airlied@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 366/473] mmc: sdhci_am654: Fix ITAPDLY for HS400 timing
+Subject: [PATCH 6.6 623/744] nouveau: add an ioctl to return vram bar size.
 Date: Thu,  6 Jun 2024 16:04:55 +0200
-Message-ID: <20240606131712.010038510@linuxfoundation.org>
+Message-ID: <20240606131752.478517629@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit d3182932bb070e7518411fd165e023f82afd7d25 ]
+[ Upstream commit 3f4d8aac6e768c2215ce68275256971c2f54f0c8 ]
 
-While STRB is currently used for DATA and CRC responses, the CMD
-responses from the device to the host still require ITAPDLY for
-HS400 timing.
+This returns the BAR resources size so userspace can make
+decisions based on rebar support.
 
-Currently what is stored for HS400 is the ITAPDLY from High Speed
-mode which is incorrect. The ITAPDLY for HS400 speed mode should
-be the same as ITAPDLY as HS200 timing after tuning is executed.
-Add the functionality to save ITAPDLY from HS200 tuning and save
-as HS400 ITAPDLY.
+userspace using this has been proposed for nvk, but
+it's a rather trivial uapi addition.
 
-Fixes: a161c45f2979 ("mmc: sdhci_am654: Enable DLL only for some speed modes")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240320223837.959900-8-jm@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Faith Ekstrand <faith.ekstrand@collabora.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Stable-dep-of: aed9a1a4f710 ("drm/nouveau: use tile_mode and pte_kind for VM_BIND bo allocations")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci_am654.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/nouveau/nouveau_abi16.c | 4 ++++
+ include/uapi/drm/nouveau_drm.h          | 7 +++++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-index c20ec525c9bf8..52d6cc07e38cc 100644
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -300,6 +300,12 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
- 	if (timing > MMC_TIMING_UHS_SDR25 && clock >= CLOCK_TOO_SLOW_HZ) {
- 		sdhci_am654_setup_dll(host, clock);
- 		sdhci_am654->dll_enable = true;
-+
-+		if (timing == MMC_TIMING_MMC_HS400) {
-+			sdhci_am654->itap_del_ena[timing] = 0x1;
-+			sdhci_am654->itap_del_sel[timing] = sdhci_am654->itap_del_sel[timing - 1];
-+		}
-+
- 		sdhci_am654_write_itapdly(sdhci_am654, sdhci_am654->itap_del_sel[timing],
- 					  sdhci_am654->itap_del_ena[timing]);
- 	} else {
-@@ -530,6 +536,9 @@ static int sdhci_am654_platform_execute_tuning(struct sdhci_host *host,
+diff --git a/drivers/gpu/drm/nouveau/nouveau_abi16.c b/drivers/gpu/drm/nouveau/nouveau_abi16.c
+index 2edd7bb13faea..d05bd0ecea2b5 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_abi16.c
++++ b/drivers/gpu/drm/nouveau/nouveau_abi16.c
+@@ -204,6 +204,7 @@ nouveau_abi16_ioctl_getparam(ABI16_IOCTL_ARGS)
+ 	struct nouveau_cli *cli = nouveau_cli(file_priv);
+ 	struct nouveau_drm *drm = nouveau_drm(dev);
+ 	struct nvif_device *device = &drm->client.device;
++	struct nvkm_device *nvkm_device = nvxx_device(&drm->client.device);
+ 	struct nvkm_gr *gr = nvxx_gr(device);
+ 	struct drm_nouveau_getparam *getparam = data;
+ 	struct pci_dev *pdev = to_pci_dev(dev->dev);
+@@ -268,6 +269,9 @@ nouveau_abi16_ioctl_getparam(ABI16_IOCTL_ARGS)
+ 		getparam->value = nouveau_exec_push_max_from_ib_max(ib_max);
+ 		break;
+ 	}
++	case NOUVEAU_GETPARAM_VRAM_BAR_SIZE:
++		getparam->value = nvkm_device->func->resource_size(nvkm_device, 1);
++		break;
+ 	default:
+ 		NV_PRINTK(dbg, cli, "unknown parameter %lld\n", getparam->param);
+ 		return -EINVAL;
+diff --git a/include/uapi/drm/nouveau_drm.h b/include/uapi/drm/nouveau_drm.h
+index 0bade1592f34f..10a917639d8d3 100644
+--- a/include/uapi/drm/nouveau_drm.h
++++ b/include/uapi/drm/nouveau_drm.h
+@@ -54,6 +54,13 @@ extern "C" {
+  */
+ #define NOUVEAU_GETPARAM_EXEC_PUSH_MAX   17
  
- 	sdhci_am654_write_itapdly(sdhci_am654, itap, sdhci_am654->itap_del_ena[timing]);
- 
-+	/* Save ITAPDLY */
-+	sdhci_am654->itap_del_sel[timing] = itap;
++/*
++ * NOUVEAU_GETPARAM_VRAM_BAR_SIZE - query bar size
++ *
++ * Query the VRAM BAR size.
++ */
++#define NOUVEAU_GETPARAM_VRAM_BAR_SIZE 18
 +
- 	return 0;
- }
- 
+ struct drm_nouveau_getparam {
+ 	__u64 param;
+ 	__u64 value;
 -- 
 2.43.0
 
