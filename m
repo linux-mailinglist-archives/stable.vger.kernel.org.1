@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-49655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE0778FEE4D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 122F08FEC7F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58F972824BC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91776284737
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE591C225A;
-	Thu,  6 Jun 2024 14:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43EE1B1421;
+	Thu,  6 Jun 2024 14:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvKq9Ldl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDpnhHtB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDE21C2257;
-	Thu,  6 Jun 2024 14:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E811B1420;
+	Thu,  6 Jun 2024 14:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683643; cv=none; b=DGwuH40paWoxWJbzovQn3ke2qW7WrPYT/ogHZuObnvONYACAAo/gkcAYSje6O28RNunWrZU/0YuKCC0xtoQDX8TODYyVOSx60b1AWS24iQHutkmYEQifmLJaN4kLFTNWJDXtAc2yJBs3Y/wiVTssltL+7H5gNVg8tiYz0kZt5as=
+	t=1717683373; cv=none; b=oY+ubfQCoF1TSnA7/xdaFtSQQSjpsZx7+6pLcaS6VjYte4/I4QZP+UHsCgTRyFAh/XVJ18aa7cpRFpDxRMsWABa2jopKI2S1WbAlV7TK1+/9wa8hRJ3lbr+KJrMUQaSXf7YptSI/mSb9DbwVkihzyAaQOLSknQ5ZlG9pfgWdW+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683643; c=relaxed/simple;
-	bh=zkmJzOV8U2hz8CbhwuHYzKJRwbOjjl1yz4zCejWSb0w=;
+	s=arc-20240116; t=1717683373; c=relaxed/simple;
+	bh=7BWJQge+IdgB+1SV2kpMyXdefkirL/OzbDDx2zNnIL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uPmnrO7CZt9y3bEm53dahQ+KcIqMQYhi6Bnh9LN17+rfMn0MKIOTmeaDtijiGVKduyUj62hhnaDjWtclUSKqeBi3XZv9bN5nPpQRB9matQ58ANGTWqGVuBZhK17HVUass3wgc/NxDaa0A+ZUCMdxV3dKOo2b8/YYiRTKbOSrceo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvKq9Ldl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F06DC2BD10;
-	Thu,  6 Jun 2024 14:20:43 +0000 (UTC)
+	 MIME-Version; b=OdtV2yWWt+SMshzco82izaK6dKFQ70lbjpbxX0fqWa0wUHaSCHWe++efl91ylOliAegsVBiZGigVFYHUNYQYvEd3FY1t6owuQAz08kL8JTjN6kliAh1qg+lpycibO7geZs+MUin9IBgEQiRqq+RD0B7x+HssmWQ5R60WwWYZ2jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDpnhHtB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52ECFC32781;
+	Thu,  6 Jun 2024 14:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683643;
-	bh=zkmJzOV8U2hz8CbhwuHYzKJRwbOjjl1yz4zCejWSb0w=;
+	s=korg; t=1717683373;
+	bh=7BWJQge+IdgB+1SV2kpMyXdefkirL/OzbDDx2zNnIL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QvKq9Ldl500eC92pq5xv2uWfK0D+Xv7N//OVvHBEEvt+3vKzg5lWZUr61O/hpGah0
-	 c8qGH6f14o2H4HQoU3olTduiWGBNuRi7JF66NNMQPIstCBdqYsV2o1KxzeN465wGap
-	 QVZdnJCdRD10M8FPRnnjpnFef5H/7VOXHZFeqal4=
+	b=XDpnhHtBBdvmvFkGdGchR8XOs2PgCiURPRnyRS1OrN5x/ZE3q7/Oogh89vuS4NnOi
+	 dADjV3xzogzf5eSYyuotTkHCMLtWy0d9BxIhHmvXL+muhhL2Tmxllq/xYX6JqHejTP
+	 cG+3Y0wgWQIWdM/ZgVpKRA5ZtxhrqTXheMHGjgtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Luis Henriques <lhenriques@suse.de>,
+	Disha Goel <disgoel@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 514/744] f2fs: introduce get_available_block_count() for cleanup
+Subject: [PATCH 6.1 257/473] ext4: avoid excessive credit estimate in ext4_tmpfile()
 Date: Thu,  6 Jun 2024 16:03:06 +0200
-Message-ID: <20240606131748.932971640@linuxfoundation.org>
+Message-ID: <20240606131708.463188884@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 0f1c6ede6da9f7c5dd7380b74a64850298279168 ]
+[ Upstream commit 35a1f12f0ca857fee1d7a04ef52cbd5f1f84de13 ]
 
-There are very similar codes in inc_valid_block_count() and
-inc_valid_node_count() which is used for available user block
-count calculation.
+A user with minimum journal size (1024 blocks these days) complained
+about the following error triggered by generic/697 test in
+ext4_tmpfile():
 
-This patch introduces a new helper get_available_block_count()
-to include those common codes, and used it to clean up codes.
+run fstests generic/697 at 2024-02-28 05:34:46
+JBD2: vfstest wants too many credits credits:260 rsv_credits:0 max:256
+EXT4-fs error (device loop0) in __ext4_new_inode:1083: error 28
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 043c832371cd ("f2fs: compress: fix error path of inc_valid_block_count()")
+Indeed the credit estimate in ext4_tmpfile() is huge.
+EXT4_MAXQUOTAS_INIT_BLOCKS() is 219, then 10 credits from ext4_tmpfile()
+itself and then ext4_xattr_credits_for_new_inode() adds more credits
+needed for security attributes and ACLs. Now the
+EXT4_MAXQUOTAS_INIT_BLOCKS() is in fact unnecessary because we've
+already initialized quotas with dquot_init() shortly before and so
+EXT4_MAXQUOTAS_TRANS_BLOCKS() is enough (which boils down to 3 credits).
+
+Fixes: af51a2ac36d1 ("ext4: ->tmpfile() support")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Tested-by: Luis Henriques <lhenriques@suse.de>
+Tested-by: Disha Goel <disgoel@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240307115320.28949-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h | 49 +++++++++++++++++++++++++++----------------------
- 1 file changed, 27 insertions(+), 22 deletions(-)
+ fs/ext4/namei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 8aa7b481320ec..c90f6f9855c8e 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -2271,6 +2271,27 @@ static inline bool __allow_reserved_blocks(struct f2fs_sb_info *sbi,
- 	return false;
- }
- 
-+static inline unsigned int get_available_block_count(struct f2fs_sb_info *sbi,
-+						struct inode *inode, bool cap)
-+{
-+	block_t avail_user_block_count;
-+
-+	avail_user_block_count = sbi->user_block_count -
-+					sbi->current_reserved_blocks;
-+
-+	if (!__allow_reserved_blocks(sbi, inode, cap))
-+		avail_user_block_count -= F2FS_OPTION(sbi).root_reserved_blocks;
-+
-+	if (unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED))) {
-+		if (avail_user_block_count > sbi->unusable_block_count)
-+			avail_user_block_count -= sbi->unusable_block_count;
-+		else
-+			avail_user_block_count = 0;
-+	}
-+
-+	return avail_user_block_count;
-+}
-+
- static inline void f2fs_i_blocks_write(struct inode *, block_t, bool, bool);
- static inline int inc_valid_block_count(struct f2fs_sb_info *sbi,
- 				 struct inode *inode, blkcnt_t *count, bool partial)
-@@ -2296,18 +2317,8 @@ static inline int inc_valid_block_count(struct f2fs_sb_info *sbi,
- 
- 	spin_lock(&sbi->stat_lock);
- 	sbi->total_valid_block_count += (block_t)(*count);
--	avail_user_block_count = sbi->user_block_count -
--					sbi->current_reserved_blocks;
-+	avail_user_block_count = get_available_block_count(sbi, inode, true);
- 
--	if (!__allow_reserved_blocks(sbi, inode, true))
--		avail_user_block_count -= F2FS_OPTION(sbi).root_reserved_blocks;
--
--	if (unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED))) {
--		if (avail_user_block_count > sbi->unusable_block_count)
--			avail_user_block_count -= sbi->unusable_block_count;
--		else
--			avail_user_block_count = 0;
--	}
- 	if (unlikely(sbi->total_valid_block_count > avail_user_block_count)) {
- 		if (!partial) {
- 			spin_unlock(&sbi->stat_lock);
-@@ -2603,7 +2614,8 @@ static inline int inc_valid_node_count(struct f2fs_sb_info *sbi,
- 					struct inode *inode, bool is_inode)
- {
- 	block_t	valid_block_count;
--	unsigned int valid_node_count, user_block_count;
-+	unsigned int valid_node_count;
-+	unsigned int avail_user_block_count;
- 	int err;
- 
- 	if (is_inode) {
-@@ -2623,17 +2635,10 @@ static inline int inc_valid_node_count(struct f2fs_sb_info *sbi,
- 
- 	spin_lock(&sbi->stat_lock);
- 
--	valid_block_count = sbi->total_valid_block_count +
--					sbi->current_reserved_blocks + 1;
--
--	if (!__allow_reserved_blocks(sbi, inode, false))
--		valid_block_count += F2FS_OPTION(sbi).root_reserved_blocks;
--
--	user_block_count = sbi->user_block_count;
--	if (unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
--		user_block_count -= sbi->unusable_block_count;
-+	valid_block_count = sbi->total_valid_block_count + 1;
-+	avail_user_block_count = get_available_block_count(sbi, inode, false);
- 
--	if (unlikely(valid_block_count > user_block_count)) {
-+	if (unlikely(valid_block_count > avail_user_block_count)) {
- 		spin_unlock(&sbi->stat_lock);
- 		goto enospc;
- 	}
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index bbfb37390723c..8b13832238484 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -2901,7 +2901,7 @@ static int ext4_tmpfile(struct user_namespace *mnt_userns, struct inode *dir,
+ 	inode = ext4_new_inode_start_handle(mnt_userns, dir, mode,
+ 					    NULL, 0, NULL,
+ 					    EXT4_HT_DIR,
+-			EXT4_MAXQUOTAS_INIT_BLOCKS(dir->i_sb) +
++			EXT4_MAXQUOTAS_TRANS_BLOCKS(dir->i_sb) +
+ 			  4 + EXT4_XATTR_TRANS_BLOCKS);
+ 	handle = ext4_journal_current_handle();
+ 	err = PTR_ERR(inode);
 -- 
 2.43.0
 
