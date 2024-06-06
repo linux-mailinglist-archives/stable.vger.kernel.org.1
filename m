@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-48683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335E48FEA0B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:18:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5518D8FEA16
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:18:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C56B5289472
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:18:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3012D1C22207
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DFAF198E8C;
-	Thu,  6 Jun 2024 14:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806DF19DF59;
+	Thu,  6 Jun 2024 14:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="leJmD12h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqD7qRFU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16D619DF46;
-	Thu,  6 Jun 2024 14:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCAC1974FA;
+	Thu,  6 Jun 2024 14:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683095; cv=none; b=WlUVTzougGeYlHb+4r7jai65AuDrKQiWme6I3tmKkX83kUbxPv2y+4Zx5lCBoJUKmQdyuo7waiE8LMZ+pmN7sc8ML58acFQtkbm9UPvPVmFIetGIcrV6jLqYtZMw9VBWlZ0THkx+kFrJmmn4VUs8Usi9g0TGUv6n+fyDzJT99c0=
+	t=1717683101; cv=none; b=ou+vAZcmw3Ju7iV4MBPXIoyw0waCwnnuXvu0QQrFrnCR6BatshoJaBsjSl+TbOhh+4eVeDgh0sEy9rrZYVVEpT8tNYqpHG4u+0XQ7l5SK9/wTh8CnYBadjxQWPRG9pir9xFRQBBjiERKrpJ5WaRHLHL/Ua1K+9ZKq/jhnBetWm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683095; c=relaxed/simple;
-	bh=5Ff5iHYAY9PyjCJVbN3+3LVrDQ13GZwaJn/ZdfxM2gM=;
+	s=arc-20240116; t=1717683101; c=relaxed/simple;
+	bh=k0LbirbYwDNMJXucrgzFOY0gtF6KOr0SYwvMFPIFZSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ilspra0CKhlDgtGN1+60rt4Dd9xRt9zsGSitUo1G9SRaFBvBboC/lhp0hxU5+8kpwx3Fh6Xf9k7f0Lgn270Stnt74Fxnz+NAEhC6iI3xjS70KDRvwj9n/OzuUOOD59j4c4AAwfhBs/EZM8YyFKIJ91kY/omeO/O6u33PtPD4wFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leJmD12h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21DDC2BD10;
-	Thu,  6 Jun 2024 14:11:35 +0000 (UTC)
+	 MIME-Version; b=Bd92/+p3bkXCQIRfeAuKQZ0DyJwdvE4x9JqynKbEqPBLBvC2jKtW0huJtrS3Y9/2sXzk3uGfOz+CypEXiM5FS5ja1R4baiYcrHz0N0RdqzpXOEjooMcPRFLxEydIcrodkSz4X+h3Fh0ywLdhtOrji4MfKb8KGajSZ5qab7aXjPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqD7qRFU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA56C2BD10;
+	Thu,  6 Jun 2024 14:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683095;
-	bh=5Ff5iHYAY9PyjCJVbN3+3LVrDQ13GZwaJn/ZdfxM2gM=;
+	s=korg; t=1717683101;
+	bh=k0LbirbYwDNMJXucrgzFOY0gtF6KOr0SYwvMFPIFZSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=leJmD12hgztj7x55emoGFQZZORKQPOQ2XSB3EmCTP9dCVd2nhdWFCGvV6zZdiWNKs
-	 IdYsNe/7DxVJiBffKqVH94h0J58TWvhVc0IYD3JfS7whtPlL/ZaEldBGHdcRddEnm4
-	 dL8pMBUru0q6RRdnk5RFQdkjFjHVhr4Z7FsmF9d0=
+	b=BqD7qRFU78Kti82KYKSygjGRXGQhQeIqna9lEmKA7v7T8M2B4uXfHn000YGSY4s6l
+	 SgaSjTUYFuBRyPX3J6sEW2KPUeSpfQq32Xq0ykxYZJsJ9CJ+V7eSQArQVmMWCK+2YU
+	 FLTb/AOoZDnmCw9wmZXVE+lBOyboxd18umsP2Thw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel J Blueman <daniel@quora.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Steffen Persvold <sp@numascale.com>,
-	James Cleverdon <james.cleverdon.external@eviden.com>,
-	Dimitri Sivanich <sivanich@hpe.com>,
-	Prarit Bhargava <prarit@redhat.com>
-Subject: [PATCH 6.6 001/744] x86/tsc: Trust initial offset in architectural TSC-adjust MSRs
-Date: Thu,  6 Jun 2024 15:54:33 +0200
-Message-ID: <20240606131732.500554749@linuxfoundation.org>
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.6 002/744] selftests/ftrace: Fix BTFARG testcase to check fprobe is enabled correctly
+Date: Thu,  6 Jun 2024 15:54:34 +0200
+Message-ID: <20240606131732.534997831@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,47 +65,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel J Blueman <daniel@quora.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 455f9075f14484f358b3c1d6845b4a438de198a7 upstream.
+commit 2fd3ef1b9265eda7f53b9506f1ebfb67eb6435a2 upstream.
 
-When the BIOS configures the architectural TSC-adjust MSRs on secondary
-sockets to correct a constant inter-chassis offset, after Linux brings the
-cores online, the TSC sync check later resets the core-local MSR to 0,
-triggering HPET fallback and leading to performance loss.
+Since the dynevent/add_remove_btfarg.tc test case forgets to ensure that
+fprobe is enabled for some structure field access tests which uses the
+fprobe, it fails if CONFIG_FPROBE=n or CONFIG_FPROBE_EVENTS=n.
+Fixes it to ensure the fprobe events are supported.
 
-Fix this by unconditionally using the initial adjust values read from the
-MSRs. Trusting the initial offsets in this architectural mechanism is a
-better approach than special-casing workarounds for specific platforms.
-
-Signed-off-by: Daniel J Blueman <daniel@quora.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Steffen Persvold <sp@numascale.com>
-Reviewed-by: James Cleverdon <james.cleverdon.external@eviden.com>
-Reviewed-by: Dimitri Sivanich <sivanich@hpe.com>
-Reviewed-by: Prarit Bhargava <prarit@redhat.com>
-Link: https://lore.kernel.org/r/20240419085146.175665-1-daniel@quora.org
+Fixes: d892d3d3d885 ("selftests/ftrace: Add BTF fields access testcases")
+Cc: stable@vger.kernel.org
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/tsc_sync.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ .../selftests/ftrace/test.d/dynevent/add_remove_btfarg.tc       | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/tsc_sync.c
-+++ b/arch/x86/kernel/tsc_sync.c
-@@ -193,11 +193,9 @@ bool tsc_store_and_check_tsc_adjust(bool
- 	cur->warned = false;
+diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_btfarg.tc b/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_btfarg.tc
+index b9c21a81d248..c0cdad4c400e 100644
+--- a/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_btfarg.tc
++++ b/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_btfarg.tc
+@@ -53,7 +53,7 @@ fi
  
- 	/*
--	 * If a non-zero TSC value for socket 0 may be valid then the default
--	 * adjusted value cannot assumed to be zero either.
-+	 * The default adjust value cannot be assumed to be zero on any socket.
- 	 */
--	if (tsc_async_resets)
--		cur->adjusted = bootval;
-+	cur->adjusted = bootval;
+ echo > dynamic_events
  
- 	/*
- 	 * Check whether this CPU is the first in a package to come up. In
+-if [ "$FIELDS" ] ; then
++if [ "$FIELDS" -a "$FPROBES" ] ; then
+ echo "t:tpevent ${TP2} obj_size=s->object_size" >> dynamic_events
+ echo "f:fpevent ${TP3}%return path=\$retval->name:string" >> dynamic_events
+ echo "t:tpevent2 ${TP4} p->se.group_node.next->prev" >> dynamic_events
+-- 
+2.45.1
+
 
 
 
