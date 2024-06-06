@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-49465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BBDE8FED5C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF3E8FE9CB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FA7328209D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2479E286954
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459B81BA87F;
-	Thu,  6 Jun 2024 14:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999FD19B588;
+	Thu,  6 Jun 2024 14:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgHczE3a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8LhFOmQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0531F19DF41;
-	Thu,  6 Jun 2024 14:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586C4198A30;
+	Thu,  6 Jun 2024 14:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683479; cv=none; b=ezGRtD8lAgnPtfNRiLrgLUABn1hEQZd8Rb6mJ+WVPJzgR7Pm9SdaDeEW709Fg/VwN2P97y5IKx/KfdfW9qu3vrH3kOuAh1/fWbjyN+BWhCQEckavTfwpBjX9TQztOrsTku3NGXRVe7bQSnYORnDzyIwDP8O5QuSuDxqHqVzTDPA=
+	t=1717683066; cv=none; b=jVgjc3EvaZWWbemhta1ZvXuBT3mFGuL1/wrmzN+w3a91pPOdlmtjA4zap9mClPBNEUAFmvXV93G1T1DU3cF8rDAn3Mbf8s25E2xKJtq6V4Nr5sdqs1NZV6QKqRXG/3eOfIzfmw3gSsGQHWL7Mjibayme9e0c0MXwq6Y+tgJW1OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683479; c=relaxed/simple;
-	bh=tatFHDNSIDb/GAEZVfTA4u1zhu7JTVq7t76phSb5Z0c=;
+	s=arc-20240116; t=1717683066; c=relaxed/simple;
+	bh=aSyJoppJ6mE/ZDU942THbgElbuY87FC6cjR5T0fWHz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SnBoI9Ig4EOFxCYrDeYNvhY2szdcC0ZDXUKI1rXw/wveNjCNpJlvGH1lQ/XGeUsViNTURspmGMaww1i8oTdqkKrI0iQ9mYLAtoswZsf1QLhVPAm6Kxipe5e7EhlMEjLjrGvnWq7dGDIK/fxt5HXQvMI+UzQ4Bp57iRDLGijedWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgHczE3a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B86C2BD10;
-	Thu,  6 Jun 2024 14:17:58 +0000 (UTC)
+	 MIME-Version; b=UuRrmiqGSFkiCvu5rkP0WxiUvg+/fQ9nFZLfXaCD3EtzWaolz4rZ0qvhXJqLrfKYt8dEqLkMu4eie6GxjEk3auslL8B4OEW07R890YX5peE3VK8vu/aipTbQAA8WdFwTLucRlUvEJ1Sfkibn+mM4LB2NNc3gpYNEyAdABPbzhS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8LhFOmQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38565C4AF15;
+	Thu,  6 Jun 2024 14:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683478;
-	bh=tatFHDNSIDb/GAEZVfTA4u1zhu7JTVq7t76phSb5Z0c=;
+	s=korg; t=1717683066;
+	bh=aSyJoppJ6mE/ZDU942THbgElbuY87FC6cjR5T0fWHz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QgHczE3akjcagJ0/0xBw4275K7z5nRz6RYkgVtT30Qc54AzjXwwKJQGlilpzGldKO
-	 GIrpScHJPMPDEZ4RZ9nA0PpkxQKLL56959EnKP1FmgTS0tITok5k/p27ugnB4oCAkj
-	 Dcy1FhlLwb1Y0pclnAd8GRQTs+CPNY4S4JgUoqpM=
+	b=a8LhFOmQ+pSHUt64keizUSLIipzTSQzllxeUd/9N0vS/CiwgKCUQFJc3K8+O5F7xo
+	 GesWDV82tLOrd20oHPIzEn0ADEIlK07v/lqjflT09k2gZTJqLiDXz73E0wJWXRRW/m
+	 KEnUXmDb+TDsRVQV9husplyAl3GzT1er1hV7cEjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	syzbot+ec941d6e24f633a59172@syzkaller.appspotmail.com,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 365/473] mmc: sdhci_am654: Add ITAPDLYSEL in sdhci_j721e_4bit_set_clock
+Subject: [PATCH 6.9 315/374] bpf: Allow delete from sockmap/sockhash only if update is allowed
 Date: Thu,  6 Jun 2024 16:04:54 +0200
-Message-ID: <20240606131711.976158005@linuxfoundation.org>
+Message-ID: <20240606131702.432927753@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Jakub Sitnicki <jakub@cloudflare.com>
 
-[ Upstream commit 9dff65bb5e09903c27d9cff947dff4d22b6ea6a1 ]
+[ Upstream commit 98e948fb60d41447fd8d2d0c3b8637fc6b6dc26d ]
 
-Add ITAPDLYSEL to sdhci_j721e_4bit_set_clock function.
-This allows to set the correct ITAPDLY for timings that
-do not carry out tuning.
+We have seen an influx of syzkaller reports where a BPF program attached to
+a tracepoint triggers a locking rule violation by performing a map_delete
+on a sockmap/sockhash.
 
-Fixes: 1accbced1c32 ("mmc: sdhci_am654: Add Support for 4 bit IP on J721E")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240320223837.959900-7-jm@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+We don't intend to support this artificial use scenario. Extend the
+existing verifier allowed-program-type check for updating sockmap/sockhash
+to also cover deleting from a map.
+
+>From now on only BPF programs which were previously allowed to update
+sockmap/sockhash can delete from these map types.
+
+Fixes: ff9105993240 ("bpf, sockmap: Prevent lock inversion deadlock in map delete elem")
+Reported-by: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Reported-by: syzbot+ec941d6e24f633a59172@syzkaller.appspotmail.com
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: syzbot+ec941d6e24f633a59172@syzkaller.appspotmail.com
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=ec941d6e24f633a59172
+Link: https://lore.kernel.org/bpf/20240527-sockmap-verify-deletes-v1-1-944b372f2101@cloudflare.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci_am654.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ kernel/bpf/verifier.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-index 4c2a12927478e..c20ec525c9bf8 100644
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -319,6 +319,7 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
- 	unsigned char timing = host->mmc->ios.timing;
- 	u32 otap_del_sel;
- 	u32 itap_del_ena;
-+	u32 itap_del_sel;
- 	u32 mask, val;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 2c90b1eb12e2c..8a29309db4245 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -8845,7 +8845,8 @@ static bool may_update_sockmap(struct bpf_verifier_env *env, int func_id)
+ 	enum bpf_attach_type eatype = env->prog->expected_attach_type;
+ 	enum bpf_prog_type type = resolve_prog_type(env->prog);
  
- 	/* Setup DLL Output TAP delay */
-@@ -328,13 +329,18 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
- 	val = (0x1 << OTAPDLYENA_SHIFT) |
- 	      (otap_del_sel << OTAPDLYSEL_SHIFT);
+-	if (func_id != BPF_FUNC_map_update_elem)
++	if (func_id != BPF_FUNC_map_update_elem &&
++	    func_id != BPF_FUNC_map_delete_elem)
+ 		return false;
  
-+	/* Setup Input TAP delay */
- 	itap_del_ena = sdhci_am654->itap_del_ena[timing];
-+	itap_del_sel = sdhci_am654->itap_del_sel[timing];
- 
--	mask |= ITAPDLYENA_MASK;
--	val |= (itap_del_ena << ITAPDLYENA_SHIFT);
-+	mask |= ITAPDLYENA_MASK | ITAPDLYSEL_MASK;
-+	val |= (itap_del_ena << ITAPDLYENA_SHIFT) |
-+	       (itap_del_sel << ITAPDLYSEL_SHIFT);
- 
-+	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPCHGWIN_MASK,
-+			   1 << ITAPCHGWIN_SHIFT);
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, mask, val);
--
-+	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPCHGWIN_MASK, 0);
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL5, CLKBUFSEL_MASK,
- 			   sdhci_am654->clkbuf_sel);
- 
+ 	/* It's not possible to get access to a locked struct sock in these
+@@ -8856,6 +8857,11 @@ static bool may_update_sockmap(struct bpf_verifier_env *env, int func_id)
+ 		if (eatype == BPF_TRACE_ITER)
+ 			return true;
+ 		break;
++	case BPF_PROG_TYPE_SOCK_OPS:
++		/* map_update allowed only via dedicated helpers with event type checks */
++		if (func_id == BPF_FUNC_map_delete_elem)
++			return true;
++		break;
+ 	case BPF_PROG_TYPE_SOCKET_FILTER:
+ 	case BPF_PROG_TYPE_SCHED_CLS:
+ 	case BPF_PROG_TYPE_SCHED_ACT:
+@@ -8951,7 +8957,6 @@ static int check_map_func_compatibility(struct bpf_verifier_env *env,
+ 	case BPF_MAP_TYPE_SOCKMAP:
+ 		if (func_id != BPF_FUNC_sk_redirect_map &&
+ 		    func_id != BPF_FUNC_sock_map_update &&
+-		    func_id != BPF_FUNC_map_delete_elem &&
+ 		    func_id != BPF_FUNC_msg_redirect_map &&
+ 		    func_id != BPF_FUNC_sk_select_reuseport &&
+ 		    func_id != BPF_FUNC_map_lookup_elem &&
+@@ -8961,7 +8966,6 @@ static int check_map_func_compatibility(struct bpf_verifier_env *env,
+ 	case BPF_MAP_TYPE_SOCKHASH:
+ 		if (func_id != BPF_FUNC_sk_redirect_hash &&
+ 		    func_id != BPF_FUNC_sock_hash_update &&
+-		    func_id != BPF_FUNC_map_delete_elem &&
+ 		    func_id != BPF_FUNC_msg_redirect_hash &&
+ 		    func_id != BPF_FUNC_sk_select_reuseport &&
+ 		    func_id != BPF_FUNC_map_lookup_elem &&
 -- 
 2.43.0
 
