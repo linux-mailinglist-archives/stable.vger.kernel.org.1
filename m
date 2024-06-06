@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-49527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0E738FEDA3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6558FEF0A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C32EB1C20312
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C3F71C20506
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE251BD002;
-	Thu,  6 Jun 2024 14:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806171A189B;
+	Thu,  6 Jun 2024 14:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xm5lpeid"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVlTR+Na"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE465198E9A;
-	Thu,  6 Jun 2024 14:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE1F1A1872;
+	Thu,  6 Jun 2024 14:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683509; cv=none; b=ojX/EX5h527y1HeiRy4A/HHsEl7VJQ9vtx/b/tmyNWC4RWVPNd5QfCqZ0VxWX61IaxKb0EhniNBuDKbPiX8dhMlCllgI21O/EOrvu5qM0Z3hvmvd4tm2jEeWh5kHon53N/ba+Lyp5m0rIPLVKCfem94Xq8I6HOZBAqaZmlAB8h0=
+	t=1717683731; cv=none; b=nz8n8LgGTieq2gRPAkW/q6LJF+TahrAfBLyRymmAlXQ/R/smxBCBkwnBoKn1weYynvRonTXY65IEgGt7jBTsFteFQVKWXdt6SdZcJACSWHK3TETdLUmwCKWS5mF7bYR4Yci9H6QchCpkgV98LO1RxoydG75wGexIEA32Aun0NHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683509; c=relaxed/simple;
-	bh=nbY+WKW2/zYfdjc1NFO9s3FnSMeZN6Dw8tZc6w/l0AA=;
+	s=arc-20240116; t=1717683731; c=relaxed/simple;
+	bh=R1ZXGJ9yUYnQIl12EJ+SyH/wf9r3QN7dq47UPo+c5QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lo0+PNluB/oVpDTSt5WGV9xwsS58ildLPr0Dr463/qnU1sX4d2ad4RYQKeWqwCAwZdHW4RfTf3UBc2df1/fN0JmDwBZ+JQ8TfEXjvkHYgwQpjkjIw/yLZX5aDO+gYDthVvJSzcbMJSFupMdaffEzukHXyAopECAPz7Y+YHAm8lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xm5lpeid; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E77CC2BD10;
-	Thu,  6 Jun 2024 14:18:29 +0000 (UTC)
+	 MIME-Version; b=DVStWhCG/kqp9SyeCeQtU4WZ238pRIDHj9gXICgB8cTqzEUW1Weg3KSH7PNJ0eH28HMkf58vuCsh5I1pNZLCKBOG9emn09Pvqzac++HW+q6RQmU0nzKBBJEavOIJmChG8+ntQWlR9eLyBMEGSYTUMc80xCBC/dp2vn+Z80H6u2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVlTR+Na; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88DAC2BD10;
+	Thu,  6 Jun 2024 14:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683509;
-	bh=nbY+WKW2/zYfdjc1NFO9s3FnSMeZN6Dw8tZc6w/l0AA=;
+	s=korg; t=1717683730;
+	bh=R1ZXGJ9yUYnQIl12EJ+SyH/wf9r3QN7dq47UPo+c5QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xm5lpeid22Hwe7E9ghgi2coiIl1LzKmJmKd6Yk6eGmxFke4ZvnrWdpsaz0vZxpyYQ
-	 U98PrmONK4ET7YTaee1wwoBvilDe0IpOuc/h6AYAg9BSBbPgRxmtinm1f1MoOxQHUv
-	 5OXHN8/8VFsvlMTXiWA6PPsbqz4NJxg3M4OLD7d0=
+	b=hVlTR+NaYGsdJqBtDssYvuxlSnIRqO4SvGUTARsinu1C9Vy9P9NYP72D1D6V9wT0K
+	 V2+JeZQ+egrM1o1MgiPiXdy8o0Lm4JCnxuZ1TVge5yfcBG7Z1PhjRPG/nkD/WPwB8E
+	 xCfj0oSUcke0X/mZMTpTXU1nlqfs+P1262S79skQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Mark Brown <broonie@kernel.org>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Guo Ren <guoren@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 398/473] ASoC: mediatek: mt8192: fix register configuration for tdm
+Subject: [PATCH 6.6 655/744] riscv: cpufeature: Fix thead vector hwcap removal
 Date: Thu,  6 Jun 2024 16:05:27 +0200
-Message-ID: <20240606131712.979033215@linuxfoundation.org>
+Message-ID: <20240606131753.469082610@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +64,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Charlie Jenkins <charlie@rivosinc.com>
 
-[ Upstream commit a85ed162f0efcfdd664954414a05d1d560cc95dc ]
+[ Upstream commit e482eab4d1eb31031eff2b6afb71776483101979 ]
 
-For DSP_A, data is a BCK cycle behind LRCK trigger edge. For DSP_B, this
-delay doesn't exist. Fix the delay configuration to match the standard.
+The riscv_cpuinfo struct that contains mvendorid and marchid is not
+populated until all harts are booted which happens after the DT parsing.
+Use the mvendorid/marchid from the boot hart to determine if the DT
+contains an invalid V.
 
-Fixes: 52fcd65414abfc ("ASoC: mediatek: mt8192: support tdm in platform driver")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20240509-8192-tdm-v1-1-530b54645763@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d82f32202e0d ("RISC-V: Ignore V from the riscv,isa DT property on older T-Head CPUs")
+Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Guo Ren <guoren@kernel.org>
+Link: https://lore.kernel.org/r/20240502-cpufeature_fixes-v4-1-b3d1a088722d@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8192/mt8192-dai-tdm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/riscv/include/asm/sbi.h   |  2 ++
+ arch/riscv/kernel/cpu.c        | 40 ++++++++++++++++++++++++++++++----
+ arch/riscv/kernel/cpufeature.c |  8 +++++--
+ 3 files changed, 44 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c b/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
-index f3bebed2428a7..360259e60de84 100644
---- a/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
-+++ b/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
-@@ -566,10 +566,10 @@ static int mtk_dai_tdm_hw_params(struct snd_pcm_substream *substream,
- 		tdm_con |= 1 << DELAY_DATA_SFT;
- 		tdm_con |= get_tdm_lrck_width(format) << LRCK_TDM_WIDTH_SFT;
- 	} else if (tdm_priv->tdm_out_mode == TDM_OUT_DSP_A) {
--		tdm_con |= 0 << DELAY_DATA_SFT;
-+		tdm_con |= 1 << DELAY_DATA_SFT;
- 		tdm_con |= 0 << LRCK_TDM_WIDTH_SFT;
- 	} else if (tdm_priv->tdm_out_mode == TDM_OUT_DSP_B) {
--		tdm_con |= 1 << DELAY_DATA_SFT;
-+		tdm_con |= 0 << DELAY_DATA_SFT;
- 		tdm_con |= 0 << LRCK_TDM_WIDTH_SFT;
+diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
+index b79d0228144f4..3ed853b8a8c85 100644
+--- a/arch/riscv/include/asm/sbi.h
++++ b/arch/riscv/include/asm/sbi.h
+@@ -327,6 +327,8 @@ static inline int sbi_remote_fence_i(const struct cpumask *cpu_mask) { return -1
+ static inline void sbi_init(void) {}
+ #endif /* CONFIG_RISCV_SBI */
+ 
++unsigned long riscv_get_mvendorid(void);
++unsigned long riscv_get_marchid(void);
+ unsigned long riscv_cached_mvendorid(unsigned int cpu_id);
+ unsigned long riscv_cached_marchid(unsigned int cpu_id);
+ unsigned long riscv_cached_mimpid(unsigned int cpu_id);
+diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
+index 157ace8b262c2..88732abecd023 100644
+--- a/arch/riscv/kernel/cpu.c
++++ b/arch/riscv/kernel/cpu.c
+@@ -139,6 +139,34 @@ int riscv_of_parent_hartid(struct device_node *node, unsigned long *hartid)
+ 	return -1;
+ }
+ 
++unsigned long __init riscv_get_marchid(void)
++{
++	struct riscv_cpuinfo *ci = this_cpu_ptr(&riscv_cpuinfo);
++
++#if IS_ENABLED(CONFIG_RISCV_SBI)
++	ci->marchid = sbi_spec_is_0_1() ? 0 : sbi_get_marchid();
++#elif IS_ENABLED(CONFIG_RISCV_M_MODE)
++	ci->marchid = csr_read(CSR_MARCHID);
++#else
++	ci->marchid = 0;
++#endif
++	return ci->marchid;
++}
++
++unsigned long __init riscv_get_mvendorid(void)
++{
++	struct riscv_cpuinfo *ci = this_cpu_ptr(&riscv_cpuinfo);
++
++#if IS_ENABLED(CONFIG_RISCV_SBI)
++	ci->mvendorid = sbi_spec_is_0_1() ? 0 : sbi_get_mvendorid();
++#elif IS_ENABLED(CONFIG_RISCV_M_MODE)
++	ci->mvendorid = csr_read(CSR_MVENDORID);
++#else
++	ci->mvendorid = 0;
++#endif
++	return ci->mvendorid;
++}
++
+ DEFINE_PER_CPU(struct riscv_cpuinfo, riscv_cpuinfo);
+ 
+ unsigned long riscv_cached_mvendorid(unsigned int cpu_id)
+@@ -170,12 +198,16 @@ static int riscv_cpuinfo_starting(unsigned int cpu)
+ 	struct riscv_cpuinfo *ci = this_cpu_ptr(&riscv_cpuinfo);
+ 
+ #if IS_ENABLED(CONFIG_RISCV_SBI)
+-	ci->mvendorid = sbi_spec_is_0_1() ? 0 : sbi_get_mvendorid();
+-	ci->marchid = sbi_spec_is_0_1() ? 0 : sbi_get_marchid();
++	if (!ci->mvendorid)
++		ci->mvendorid = sbi_spec_is_0_1() ? 0 : sbi_get_mvendorid();
++	if (!ci->marchid)
++		ci->marchid = sbi_spec_is_0_1() ? 0 : sbi_get_marchid();
+ 	ci->mimpid = sbi_spec_is_0_1() ? 0 : sbi_get_mimpid();
+ #elif IS_ENABLED(CONFIG_RISCV_M_MODE)
+-	ci->mvendorid = csr_read(CSR_MVENDORID);
+-	ci->marchid = csr_read(CSR_MARCHID);
++	if (!ci->mvendorid)
++		ci->mvendorid = csr_read(CSR_MVENDORID);
++	if (!ci->marchid)
++		ci->marchid = csr_read(CSR_MARCHID);
+ 	ci->mimpid = csr_read(CSR_MIMPID);
+ #else
+ 	ci->mvendorid = 0;
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index 6754a922a844f..a6b6bbf3f8598 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -351,6 +351,8 @@ static void __init riscv_fill_hwcap_from_isa_string(unsigned long *isa2hwcap)
+ 	struct acpi_table_header *rhct;
+ 	acpi_status status;
+ 	unsigned int cpu;
++	u64 boot_vendorid;
++	u64 boot_archid;
+ 
+ 	if (!acpi_disabled) {
+ 		status = acpi_get_table(ACPI_SIG_RHCT, 0, &rhct);
+@@ -358,6 +360,9 @@ static void __init riscv_fill_hwcap_from_isa_string(unsigned long *isa2hwcap)
+ 			return;
  	}
  
++	boot_vendorid = riscv_get_mvendorid();
++	boot_archid = riscv_get_marchid();
++
+ 	for_each_possible_cpu(cpu) {
+ 		struct riscv_isainfo *isainfo = &hart_isa[cpu];
+ 		unsigned long this_hwcap = 0;
+@@ -405,8 +410,7 @@ static void __init riscv_fill_hwcap_from_isa_string(unsigned long *isa2hwcap)
+ 		 * CPU cores with the ratified spec will contain non-zero
+ 		 * marchid.
+ 		 */
+-		if (acpi_disabled && riscv_cached_mvendorid(cpu) == THEAD_VENDOR_ID &&
+-		    riscv_cached_marchid(cpu) == 0x0) {
++		if (acpi_disabled && boot_vendorid == THEAD_VENDOR_ID && boot_archid == 0x0) {
+ 			this_hwcap &= ~isa2hwcap[RISCV_ISA_EXT_v];
+ 			clear_bit(RISCV_ISA_EXT_v, isainfo->isa);
+ 		}
 -- 
 2.43.0
 
