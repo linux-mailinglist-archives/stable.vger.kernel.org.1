@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-48442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B4F98FE908
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64F448FED3F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 299FF1C24AEB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFD13B21CE0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A651991B7;
-	Thu,  6 Jun 2024 14:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AE41B582C;
+	Thu,  6 Jun 2024 14:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ASgVGf23"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFB3cLY7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B5E19644F;
-	Thu,  6 Jun 2024 14:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07584198E79;
+	Thu,  6 Jun 2024 14:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682970; cv=none; b=Lgo4vlboRJPiqUKQDlb+bsIZaUwTOr0fLRLAz40p+Cj3dvvKBl0aEPg6a2PZ8v84T/YzcqXwadv4Ik/2DZtb3zvDtNEVSVS7DJ0B8Z04bT4wYOCHC8AKVNgyIsapcbJZI5lvK2bRv118ktVERMlVyvBLv3RhP+BuGe1mDfqSzUw=
+	t=1717683465; cv=none; b=eADYkMTWgKmKnUB9c70SS/JkYbr5A5YYTbiW45SSet934Xn9JBgqQn6W1DxFAI2UhWKNpJ2jCCGIXLAFhs0TLg9RpVezbHkSThwPTO1Qb3M7ihcWsxffLyvZUme2WqrOfEoX0uckpaKLWgR+JkGFut2lao5Ms+ZyfuC/vwelGNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682970; c=relaxed/simple;
-	bh=50Nmvw6Nc8D9HBEKaEesQHEJDxIF6CD5GzOlgFTDq5A=;
+	s=arc-20240116; t=1717683465; c=relaxed/simple;
+	bh=lSlSXUodPOAt1UKmIkccRwxAKlgmqw6omH0Iz9nkzrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XeAEnKc2IlB/TfVza/UcyytWFK9PdD19FzJsnSUr4u51MVvBlwO+YKCWVWC2jrqAChuSmhP+gjf2K4bP81bTzOqZIJxK3krim2o33YEWf7vTJocIl+2oYSxaF7PyOIAsg3rHXSsPjtPblLkVKUzsGoiR6V0oQr/dpDeeTHUL5c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ASgVGf23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76468C2BD10;
-	Thu,  6 Jun 2024 14:09:30 +0000 (UTC)
+	 MIME-Version; b=S3AimE9tbB//8ENhXbs77xbYR0Iv30ur+nGsOjVrpntIpOafl5Nd1IFJ72segPiRibXf4e8sGvwUE6qZNWsDrf473/NNqa46Boe4rnEq3ZoEYnOIXxwJAn9pTMhp0vtxL6n0haA46720TUegznV8tgS+Wzu8FUuIRAPqVAtEZgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFB3cLY7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D942AC2BD10;
+	Thu,  6 Jun 2024 14:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682970;
-	bh=50Nmvw6Nc8D9HBEKaEesQHEJDxIF6CD5GzOlgFTDq5A=;
+	s=korg; t=1717683464;
+	bh=lSlSXUodPOAt1UKmIkccRwxAKlgmqw6omH0Iz9nkzrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ASgVGf23RXjYELKAEmnmJp23pbLIUFymHFctMypyBTQylWNsueIeICQWE1X8Srjcf
-	 Lv++4T8hkF0te0pYzGJ/oQZrOIHEpkRkpoJdoA6gygJHJKm+K4qopPqI7SQqf2XkYQ
-	 ji/R1111hs5jLvNPVeIQyB2q+qYkyAM8EGzQeFq8=
+	b=kFB3cLY7wI/SOqWqHS/hXaQR1Kh+wbfrK6CIIaFPcq5T19hUrM/Pkw0JlfYMThHeb
+	 4LsUnrs3VZeM1cbI0ZBDaVOU8gTJJmnq1qdPUKmPv8kRKPvAcqV38Jq3ns9NqdYUPF
+	 AVBy8v2x4AGPAj8hg23yuaZlatWAJIAo6XyEgV0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Namhyung Kim <namhyung@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	Ian Rogers <irogers@google.com>,
 	Ingo Molnar <mingo@kernel.org>,
 	Jiri Olsa <jolsa@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Stephane Eranian <eranian@google.com>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 102/374] perf dwarf-aux: Add die_collect_vars()
+Subject: [PATCH 6.6 409/744] perf annotate: Split branch stack cycles information out of struct annotation_line
 Date: Thu,  6 Jun 2024 16:01:21 +0200
-Message-ID: <20240606131655.332457142@linuxfoundation.org>
+Message-ID: <20240606131745.584697534@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,222 +68,235 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 932dcc2c39aedf54ef291bc0b4129a54f5fe1e84 ]
+[ Upstream commit de2c7eb59c342d1a61124caaf2993e325a9becb7 ]
 
-The die_collect_vars() is to find all variable information in the scope
-including function parameters.  The struct die_var_type is to save the
-type of the variable with the location (reg and offset) as well as where
-it's defined in the code (addr).
+The cycles info is used only when branch stack is provided.  Separate
+them from 'struct annotation_line' into a separate struct and lazy
+allocate them to save some memory.
+
+Committer notes:
+
+Make annotation__compute_ipc() check if the lazy allocation works,
+bailing out if so, its callers already do error checking and
+propagation.
 
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Cc: Ian Rogers <irogers@google.com>
 Cc: Ingo Molnar <mingo@kernel.org>
 Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Link: https://lore.kernel.org/r/20240319055115.4063940-3-namhyung@kernel.org
+Link: https://lore.kernel.org/r/20231103191907.54531-2-namhyung@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: c9d492378fae ("perf dwarf-aux: Fix build with HAVE_DWARF_CFI_SUPPORT")
+Stable-dep-of: aaf494cf483a ("perf annotate: Fix annotation_calc_lines() to pass correct address to get_srcline()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/dwarf-aux.c | 118 +++++++++++++++++++++++++++---------
- tools/perf/util/dwarf-aux.h |  17 ++++++
- 2 files changed, 107 insertions(+), 28 deletions(-)
+ tools/perf/ui/browsers/annotate.c |  2 +-
+ tools/perf/util/annotate.c        | 61 ++++++++++++++++++++++---------
+ tools/perf/util/annotate.h        | 15 +++++---
+ 3 files changed, 54 insertions(+), 24 deletions(-)
 
-diff --git a/tools/perf/util/dwarf-aux.c b/tools/perf/util/dwarf-aux.c
-index f7f7171539d3c..ff1874ae0832e 100644
---- a/tools/perf/util/dwarf-aux.c
-+++ b/tools/perf/util/dwarf-aux.c
-@@ -1136,6 +1136,40 @@ int die_get_varname(Dwarf_Die *vr_die, struct strbuf *buf)
- 	return ret < 0 ? ret : strbuf_addf(buf, "\t%s", dwarf_diename(vr_die));
+diff --git a/tools/perf/ui/browsers/annotate.c b/tools/perf/ui/browsers/annotate.c
+index ccdb2cd11fbf0..d2470f87344d0 100644
+--- a/tools/perf/ui/browsers/annotate.c
++++ b/tools/perf/ui/browsers/annotate.c
+@@ -337,7 +337,7 @@ static void annotate_browser__calc_percent(struct annotate_browser *browser,
+ 				max_percent = percent;
+ 		}
+ 
+-		if (max_percent < 0.01 && pos->al.ipc == 0) {
++		if (max_percent < 0.01 && (!pos->al.cycles || pos->al.cycles->ipc == 0)) {
+ 			RB_CLEAR_NODE(&pos->al.rb_node);
+ 			continue;
+ 		}
+diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+index 82956adf99632..99ff3bb9cad8d 100644
+--- a/tools/perf/util/annotate.c
++++ b/tools/perf/util/annotate.c
+@@ -1100,8 +1100,8 @@ static void annotation__count_and_fill(struct annotation *notes, u64 start, u64
+ 		for (offset = start; offset <= end; offset++) {
+ 			struct annotation_line *al = notes->offsets[offset];
+ 
+-			if (al && al->ipc == 0.0) {
+-				al->ipc = ipc;
++			if (al && al->cycles && al->cycles->ipc == 0.0) {
++				al->cycles->ipc = ipc;
+ 				cover_insn++;
+ 			}
+ 		}
+@@ -1114,12 +1114,13 @@ static void annotation__count_and_fill(struct annotation *notes, u64 start, u64
+ 	}
  }
  
-+#if defined(HAVE_DWARF_GETLOCATIONS_SUPPORT) || defined(HAVE_DWARF_CFI_SUPPORT)
-+static int reg_from_dwarf_op(Dwarf_Op *op)
-+{
-+	switch (op->atom) {
-+	case DW_OP_reg0 ... DW_OP_reg31:
-+		return op->atom - DW_OP_reg0;
-+	case DW_OP_breg0 ... DW_OP_breg31:
-+		return op->atom - DW_OP_breg0;
-+	case DW_OP_regx:
-+	case DW_OP_bregx:
-+		return op->number;
-+	default:
-+		break;
-+	}
-+	return -1;
-+}
-+
-+static int offset_from_dwarf_op(Dwarf_Op *op)
-+{
-+	switch (op->atom) {
-+	case DW_OP_reg0 ... DW_OP_reg31:
-+	case DW_OP_regx:
+-void annotation__compute_ipc(struct annotation *notes, size_t size)
++static int annotation__compute_ipc(struct annotation *notes, size_t size)
+ {
++	int err = 0;
+ 	s64 offset;
+ 
+ 	if (!notes->src || !notes->src->cycles_hist)
+-		return;
 +		return 0;
-+	case DW_OP_breg0 ... DW_OP_breg31:
-+		return op->number;
-+	case DW_OP_bregx:
-+		return op->number2;
-+	default:
-+		break;
+ 
+ 	notes->total_insn = annotation__count_insn(notes, 0, size - 1);
+ 	notes->hit_cycles = 0;
+@@ -1134,18 +1135,39 @@ void annotation__compute_ipc(struct annotation *notes, size_t size)
+ 		if (ch && ch->cycles) {
+ 			struct annotation_line *al;
+ 
++			al = notes->offsets[offset];
++			if (al && al->cycles == NULL) {
++				al->cycles = zalloc(sizeof(*al->cycles));
++				if (al->cycles == NULL) {
++					err = ENOMEM;
++					break;
++				}
++			}
+ 			if (ch->have_start)
+ 				annotation__count_and_fill(notes, ch->start, offset, ch);
+-			al = notes->offsets[offset];
+ 			if (al && ch->num_aggr) {
+-				al->cycles = ch->cycles_aggr / ch->num_aggr;
+-				al->cycles_max = ch->cycles_max;
+-				al->cycles_min = ch->cycles_min;
++				al->cycles->avg = ch->cycles_aggr / ch->num_aggr;
++				al->cycles->max = ch->cycles_max;
++				al->cycles->min = ch->cycles_min;
+ 			}
+ 			notes->have_cycles = true;
+ 		}
+ 	}
++
++	if (err) {
++		while (++offset < (s64)size) {
++			struct cyc_hist *ch = &notes->src->cycles_hist[offset];
++
++			if (ch && ch->cycles) {
++				struct annotation_line *al = notes->offsets[offset];
++				if (al)
++					zfree(&al->cycles);
++			}
++		}
 +	}
-+	return -1;
-+}
-+#endif /* HAVE_DWARF_GETLOCATIONS_SUPPORT || HAVE_DWARF_CFI_SUPPORT */
 +
- #ifdef HAVE_DWARF_GETLOCATIONS_SUPPORT
- /**
-  * die_get_var_innermost_scope - Get innermost scope range of given variable DIE
-@@ -1493,41 +1527,69 @@ Dwarf_Die *die_find_variable_by_addr(Dwarf_Die *sc_die, Dwarf_Addr pc,
- 		*offset = data.offset;
- 	return result;
+ 	annotation__unlock(notes);
++	return 0;
  }
--#endif /* HAVE_DWARF_GETLOCATIONS_SUPPORT */
  
--#ifdef HAVE_DWARF_CFI_SUPPORT
--static int reg_from_dwarf_op(Dwarf_Op *op)
-+static int __die_collect_vars_cb(Dwarf_Die *die_mem, void *arg)
+ int addr_map_symbol__inc_samples(struct addr_map_symbol *ams, struct perf_sample *sample,
+@@ -1225,6 +1247,7 @@ static void annotation_line__exit(struct annotation_line *al)
  {
--	switch (op->atom) {
--	case DW_OP_reg0 ... DW_OP_reg31:
--		return op->atom - DW_OP_reg0;
--	case DW_OP_breg0 ... DW_OP_breg31:
--		return op->atom - DW_OP_breg0;
--	case DW_OP_regx:
--	case DW_OP_bregx:
--		return op->number;
--	default:
--		break;
--	}
--	return -1;
-+	struct die_var_type **var_types = arg;
-+	Dwarf_Die type_die;
-+	int tag = dwarf_tag(die_mem);
-+	Dwarf_Attribute attr;
-+	Dwarf_Addr base, start, end;
-+	Dwarf_Op *ops;
-+	size_t nops;
-+	struct die_var_type *vt;
-+
-+	if (tag != DW_TAG_variable && tag != DW_TAG_formal_parameter)
-+		return DIE_FIND_CB_SIBLING;
-+
-+	if (dwarf_attr(die_mem, DW_AT_location, &attr) == NULL)
-+		return DIE_FIND_CB_SIBLING;
-+
-+	/*
-+	 * Only collect the first location as it can reconstruct the
-+	 * remaining state by following the instructions.
-+	 * start = 0 means it covers the whole range.
-+	 */
-+	if (dwarf_getlocations(&attr, 0, &base, &start, &end, &ops, &nops) <= 0)
-+		return DIE_FIND_CB_SIBLING;
-+
-+	if (die_get_real_type(die_mem, &type_die) == NULL)
-+		return DIE_FIND_CB_SIBLING;
-+
-+	vt = malloc(sizeof(*vt));
-+	if (vt == NULL)
-+		return DIE_FIND_CB_END;
-+
-+	vt->die_off = dwarf_dieoffset(&type_die);
-+	vt->addr = start;
-+	vt->reg = reg_from_dwarf_op(ops);
-+	vt->offset = offset_from_dwarf_op(ops);
-+	vt->next = *var_types;
-+	*var_types = vt;
-+
-+	return DIE_FIND_CB_SIBLING;
+ 	zfree_srcline(&al->path);
+ 	zfree(&al->line);
++	zfree(&al->cycles);
  }
  
--static int offset_from_dwarf_op(Dwarf_Op *op)
-+/**
-+ * die_collect_vars - Save all variables and parameters
-+ * @sc_die: a scope DIE
-+ * @var_types: a pointer to save the resulting list
-+ *
-+ * Save all variables and parameters in the @sc_die and save them to @var_types.
-+ * The @var_types is a singly-linked list containing type and location info.
-+ * Actual type can be retrieved using dwarf_offdie() with 'die_off' later.
-+ *
-+ * Callers should free @var_types.
-+ */
-+void die_collect_vars(Dwarf_Die *sc_die, struct die_var_type **var_types)
- {
--	switch (op->atom) {
--	case DW_OP_reg0 ... DW_OP_reg31:
--	case DW_OP_regx:
--		return 0;
--	case DW_OP_breg0 ... DW_OP_breg31:
--		return op->number;
--	case DW_OP_bregx:
--		return op->number2;
--	default:
--		break;
--	}
--	return -1;
-+	Dwarf_Die die_mem;
+ static size_t disasm_line_size(int nr)
+@@ -3083,8 +3106,8 @@ static void __annotation_line__write(struct annotation_line *al, struct annotati
+ 	int printed;
+ 
+ 	if (first_line && (al->offset == -1 || percent_max == 0.0)) {
+-		if (notes->have_cycles) {
+-			if (al->ipc == 0.0 && al->cycles == 0)
++		if (notes->have_cycles && al->cycles) {
++			if (al->cycles->ipc == 0.0 && al->cycles->avg == 0)
+ 				show_title = true;
+ 		} else
+ 			show_title = true;
+@@ -3121,17 +3144,17 @@ static void __annotation_line__write(struct annotation_line *al, struct annotati
+ 	}
+ 
+ 	if (notes->have_cycles) {
+-		if (al->ipc)
+-			obj__printf(obj, "%*.2f ", ANNOTATION__IPC_WIDTH - 1, al->ipc);
++		if (al->cycles && al->cycles->ipc)
++			obj__printf(obj, "%*.2f ", ANNOTATION__IPC_WIDTH - 1, al->cycles->ipc);
+ 		else if (!show_title)
+ 			obj__printf(obj, "%*s", ANNOTATION__IPC_WIDTH, " ");
+ 		else
+ 			obj__printf(obj, "%*s ", ANNOTATION__IPC_WIDTH - 1, "IPC");
+ 
+ 		if (!notes->options->show_minmax_cycle) {
+-			if (al->cycles)
++			if (al->cycles && al->cycles->avg)
+ 				obj__printf(obj, "%*" PRIu64 " ",
+-					   ANNOTATION__CYCLES_WIDTH - 1, al->cycles);
++					   ANNOTATION__CYCLES_WIDTH - 1, al->cycles->avg);
+ 			else if (!show_title)
+ 				obj__printf(obj, "%*s",
+ 					    ANNOTATION__CYCLES_WIDTH, " ");
+@@ -3145,8 +3168,8 @@ static void __annotation_line__write(struct annotation_line *al, struct annotati
+ 
+ 				scnprintf(str, sizeof(str),
+ 					"%" PRIu64 "(%" PRIu64 "/%" PRIu64 ")",
+-					al->cycles, al->cycles_min,
+-					al->cycles_max);
++					al->cycles->avg, al->cycles->min,
++					al->cycles->max);
+ 
+ 				obj__printf(obj, "%*s ",
+ 					    ANNOTATION__MINMAX_CYCLES_WIDTH - 1,
+@@ -3264,7 +3287,11 @@ int symbol__annotate2(struct map_symbol *ms, struct evsel *evsel,
+ 
+ 	annotation__set_offsets(notes, size);
+ 	annotation__mark_jump_targets(notes, sym);
+-	annotation__compute_ipc(notes, size);
 +
-+	die_find_child(sc_die, __die_collect_vars_cb, (void *)var_types, &die_mem);
- }
-+#endif /* HAVE_DWARF_GETLOCATIONS_SUPPORT */
++	err = annotation__compute_ipc(notes, size);
++	if (err)
++		goto out_free_offsets;
++
+ 	annotation__init_column_widths(notes, sym);
+ 	notes->nr_events = nr_pcnt;
  
-+#ifdef HAVE_DWARF_CFI_SUPPORT
- /**
-  * die_get_cfa - Get frame base information
-  * @dwarf: a Dwarf info
-diff --git a/tools/perf/util/dwarf-aux.h b/tools/perf/util/dwarf-aux.h
-index 85dd527ae1f70..efafd3a1f5b6f 100644
---- a/tools/perf/util/dwarf-aux.h
-+++ b/tools/perf/util/dwarf-aux.h
-@@ -135,6 +135,15 @@ void die_skip_prologue(Dwarf_Die *sp_die, Dwarf_Die *cu_die,
- /* Get the list of including scopes */
- int die_get_scopes(Dwarf_Die *cu_die, Dwarf_Addr pc, Dwarf_Die **scopes);
+diff --git a/tools/perf/util/annotate.h b/tools/perf/util/annotate.h
+index 9627805591760..19bc2f0391757 100644
+--- a/tools/perf/util/annotate.h
++++ b/tools/perf/util/annotate.h
+@@ -130,6 +130,13 @@ struct annotation_data {
+ 	struct sym_hist_entry	 he;
+ };
  
-+/* Variable type information */
-+struct die_var_type {
-+	struct die_var_type *next;
-+	u64 die_off;
-+	u64 addr;
-+	int reg;
-+	int offset;
++struct cycles_info {
++	float			 ipc;
++	u64			 avg;
++	u64			 max;
++	u64			 min;
 +};
 +
- #ifdef HAVE_DWARF_GETLOCATIONS_SUPPORT
- 
- /* Get byte offset range of given variable DIE */
-@@ -150,6 +159,9 @@ Dwarf_Die *die_find_variable_by_addr(Dwarf_Die *sc_die, Dwarf_Addr pc,
- 				     Dwarf_Addr addr, Dwarf_Die *die_mem,
- 				     int *offset);
- 
-+/* Save all variables and parameters in this scope */
-+void die_collect_vars(Dwarf_Die *sc_die, struct die_var_type **var_types);
-+
- #else /*  HAVE_DWARF_GETLOCATIONS_SUPPORT */
- 
- static inline int die_get_var_range(Dwarf_Die *sp_die __maybe_unused,
-@@ -178,6 +190,11 @@ static inline Dwarf_Die *die_find_variable_by_addr(Dwarf_Die *sc_die __maybe_unu
- 	return NULL;
+ struct annotation_line {
+ 	struct list_head	 node;
+ 	struct rb_node		 rb_node;
+@@ -137,12 +144,9 @@ struct annotation_line {
+ 	char			*line;
+ 	int			 line_nr;
+ 	char			*fileloc;
+-	int			 jump_sources;
+-	float			 ipc;
+-	u64			 cycles;
+-	u64			 cycles_max;
+-	u64			 cycles_min;
+ 	char			*path;
++	struct cycles_info	*cycles;
++	int			 jump_sources;
+ 	u32			 idx;
+ 	int			 idx_asm;
+ 	int			 data_nr;
+@@ -325,7 +329,6 @@ static inline bool annotation_line__filter(struct annotation_line *al, struct an
  }
  
-+static inline void die_collect_vars(Dwarf_Die *sc_die __maybe_unused,
-+				    struct die_var_type **var_types __maybe_unused)
-+{
-+}
-+
- #endif /* HAVE_DWARF_GETLOCATIONS_SUPPORT */
- 
- #ifdef HAVE_DWARF_CFI_SUPPORT
+ void annotation__set_offsets(struct annotation *notes, s64 size);
+-void annotation__compute_ipc(struct annotation *notes, size_t size);
+ void annotation__mark_jump_targets(struct annotation *notes, struct symbol *sym);
+ void annotation__update_column_widths(struct annotation *notes);
+ void annotation__init_column_widths(struct annotation *notes, struct symbol *sym);
 -- 
 2.43.0
 
