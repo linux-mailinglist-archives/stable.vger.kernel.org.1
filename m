@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-49385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C708FED0B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D763D8FED0D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 243521F21E6A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 644FC28637A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F8D19CD13;
-	Thu,  6 Jun 2024 14:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1ED4196DBA;
+	Thu,  6 Jun 2024 14:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDYby8sy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkMUHRVp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8902119CD12;
-	Thu,  6 Jun 2024 14:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908581A0DDE;
+	Thu,  6 Jun 2024 14:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683439; cv=none; b=Fa+p90G6uUHWShoVTEJLEqzeEyLDUxNmVQrtiKauxhQHQtAMaxq/6NMn5rIwYUBKH1O2Tu0Y2/djqrLtNrGSdatGLdSLP9GyGSdBqa873tVV20Bm6j5N1QRgVG3n6c3URjmfH9b48A4jNdsWPlwjV/RVIqkNeRDt4G0ENmELfX0=
+	t=1717683440; cv=none; b=lDeqrceysbXfs2bIpNzn6vGvE2DgYwJpFe+Q78MQgmD8Nrk/l3I0Jqq5xJbivTWascLjMmIfK7YfFau5W9ox2pkUzkdMworTxh+c1nZQL+v7sKTNUAHp4MWgur4YoGdCLHKun6GEysg1WF/UIOdqt5vE4bJ5Gcfsj51kUGMB4Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683439; c=relaxed/simple;
-	bh=iljrgyoQBfLOT8UFLk0YJgllzbyTDiVH+3WZYW5NZHI=;
+	s=arc-20240116; t=1717683440; c=relaxed/simple;
+	bh=sEEhDUdz5RxjfIi6kgEydAjqftTmpXvFaApuxb+kO/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PNzWBeij+IO9WTXw9neXnnsW9uIciEhIFXQLEjb4nsFie6cVy7pNLpCcZUtZpSqyXFeyOQB9yjBcKKLILO7hbOXKBlBbWKf3riX5B+hGNgXjxXAIIzFgUJwrmOa42z5/MTLPii2VSkdoqdcMiOfR2VkyrWJh2hPJS7ls6zOD1no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDYby8sy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6944FC2BD10;
-	Thu,  6 Jun 2024 14:17:19 +0000 (UTC)
+	 MIME-Version; b=jbbMx/LNDgN5YF7DsDTjmzE7neZl7uRGuLeyA5cCUcEzJaUdkzIlrTY5WHGjCZyGNF0n7hLDUX6PsGaCkKndsOXyRrRv2tpujutE9xS3byItzhOz0bH09oJXyZ1c83tZLAmvfr52zvk/urzjYwLfFOSkd8vmXL2HHfzsb5WJS7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkMUHRVp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BCDCC2BD10;
+	Thu,  6 Jun 2024 14:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683439;
-	bh=iljrgyoQBfLOT8UFLk0YJgllzbyTDiVH+3WZYW5NZHI=;
+	s=korg; t=1717683440;
+	bh=sEEhDUdz5RxjfIi6kgEydAjqftTmpXvFaApuxb+kO/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDYby8syzlusJEZferUCwYoyMn51OXEe3q7ZESqOBeY0CNW6pgLNM8U6YbBFShL80
-	 qRdK6aQSeFBzJBY8PE/+itzTscmhKN1GeAxfumymQKf9n9OZp4SRA5kBLfqiWK9mA7
-	 Sv+t0xXyoj8bKWsGFdkzQij+016MhvmLePmdHVkA=
+	b=QkMUHRVpvahn9abBYArY+7fMZdoOkEbyOJ8yH4vJ/QLCavV7zdm+3pj12kir5PwjK
+	 b5iLiUG2PStlvztcXfvTMV4qm44UlUWHUOghViDQ0r4lqgIoLcg778NkbwLZ8ldgdL
+	 bWN2hJmMrEZUWzE9v/BAvz4NFGMyZAfBeAbp8Nkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Vishnu Dasa <vishnu.dasa@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 324/473] ovl: remove upper umask handling from ovl_create_upper()
-Date: Thu,  6 Jun 2024 16:04:13 +0200
-Message-ID: <20240606131710.640553834@linuxfoundation.org>
+Subject: [PATCH 6.1 325/473] VMCI: Fix an error handling path in vmci_guest_probe_device()
+Date: Thu,  6 Jun 2024 16:04:14 +0200
+Message-ID: <20240606131710.677772778@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -65,37 +66,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 096802748ea1dea8b476938e0a8dc16f4bd2f1ad ]
+[ Upstream commit 73df3d6f2e9533e93a5039a33c40dd7216b81801 ]
 
-This is already done by vfs_prepare_mode() when creating the upper object
-by vfs_create(), vfs_mkdir() and vfs_mknod().
+After a successful pci_iomap_range() call, pci_iounmap() should be called
+in the error handling path, as already done in the remove function.
 
-No regressions have been observed in xfstests run with posix acls turned
-off for the upper filesystem.
+Add the missing call.
 
-Fixes: 1639a49ccdce ("fs: move S_ISGID stripping into the vfs_*() helpers")
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+The corresponding call was added in the remove function in commit
+5ee109828e73 ("VMCI: dma dg: allocate send and receive buffers for DMA
+datagrams")
+
+Fixes: e283a0e8b7ea ("VMCI: dma dg: add MMIO access to registers")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Vishnu Dasa <vishnu.dasa@broadcom.com>
+Link: https://lore.kernel.org/r/a35bbc3876ae1da70e49dafde4435750e1477be3.1713961553.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/dir.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/misc/vmw_vmci/vmci_guest.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
-index 5339ff08bd0f4..582d4bd50a1fb 100644
---- a/fs/overlayfs/dir.c
-+++ b/fs/overlayfs/dir.c
-@@ -327,9 +327,6 @@ static int ovl_create_upper(struct dentry *dentry, struct inode *inode,
- 	struct dentry *newdentry;
- 	int err;
+diff --git a/drivers/misc/vmw_vmci/vmci_guest.c b/drivers/misc/vmw_vmci/vmci_guest.c
+index 4f8d962bb5b2a..1300ccab3d21b 100644
+--- a/drivers/misc/vmw_vmci/vmci_guest.c
++++ b/drivers/misc/vmw_vmci/vmci_guest.c
+@@ -625,7 +625,8 @@ static int vmci_guest_probe_device(struct pci_dev *pdev,
+ 	if (!vmci_dev) {
+ 		dev_err(&pdev->dev,
+ 			"Can't allocate memory for VMCI device\n");
+-		return -ENOMEM;
++		error = -ENOMEM;
++		goto err_unmap_mmio_base;
+ 	}
  
--	if (!attr->hardlink && !IS_POSIXACL(udir))
--		attr->mode &= ~current_umask();
--
- 	inode_lock_nested(udir, I_MUTEX_PARENT);
- 	newdentry = ovl_create_real(ofs, udir,
- 				    ovl_lookup_upper(ofs, dentry->d_name.name,
+ 	vmci_dev->dev = &pdev->dev;
+@@ -642,7 +643,8 @@ static int vmci_guest_probe_device(struct pci_dev *pdev,
+ 		if (!vmci_dev->tx_buffer) {
+ 			dev_err(&pdev->dev,
+ 				"Can't allocate memory for datagram tx buffer\n");
+-			return -ENOMEM;
++			error = -ENOMEM;
++			goto err_unmap_mmio_base;
+ 		}
+ 
+ 		vmci_dev->data_buffer = dma_alloc_coherent(&pdev->dev, VMCI_DMA_DG_BUFFER_SIZE,
+@@ -893,6 +895,10 @@ static int vmci_guest_probe_device(struct pci_dev *pdev,
+ err_free_data_buffers:
+ 	vmci_free_dg_buffers(vmci_dev);
+ 
++err_unmap_mmio_base:
++	if (mmio_base != NULL)
++		pci_iounmap(pdev, mmio_base);
++
+ 	/* The rest are managed resources and will be freed by PCI core */
+ 	return error;
+ }
 -- 
 2.43.0
 
