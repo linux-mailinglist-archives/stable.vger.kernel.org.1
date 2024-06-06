@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A34E8FEDA4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A926D8FEF18
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 936501C21A46
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44F37B25965
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10EB81BD004;
-	Thu,  6 Jun 2024 14:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E0F1C95F3;
+	Thu,  6 Jun 2024 14:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hC9Xk03o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MomJ6V1y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C07198E9A;
-	Thu,  6 Jun 2024 14:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627F219922B;
+	Thu,  6 Jun 2024 14:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683510; cv=none; b=bbIMn8TkiS0PsvsSYgt0Ipt6JouZsiCD/t8vidgv1gZnXPtWK+EIbqxsjs8YfpiAUIk/tUGsDf/oszogfLuXWPmQo4xNFzouUpTatO7aFZBf/ykpUpVqKoGzsmuU+jO+OsSBOBotruq8uPVMK5fMQxZLEbNKLEdny4KiKzGfp5g=
+	t=1717683736; cv=none; b=J6ZKFGWEJ6gkfeisTVcYEWgz5ztJzNR5HmK1KsiO8CXKJD1zIa2pnROi3bctL58Qs0p937H9Ids3H1VKqU6jHJWgw703OZdlrMsN98qzD7a6dzG2OZn4Tp7I5eRPoIHeDfvvxPq0gVdUs3NnxrMpGO/YGMIEgWf63IuPu026DLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683510; c=relaxed/simple;
-	bh=nwnS6UDzoVaTmdHaa7fI0vOZG9e4TiDTBKsmKT3KdII=;
+	s=arc-20240116; t=1717683736; c=relaxed/simple;
+	bh=Nc7nvephQpWhW2EqwKOqD8ua3y1x1qm3kNjLBqCwZ5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kwmg0X2N8PIGXruZxtom2Z/MjnNAL8ykA8ct04D0ORa1GOqSf0VmqJbPCvP5FW2N1DegdQWjw6kOi/RHAdNjMJ/3/bvcrxG/TRA5wK2TzscB4LrPhAyVTuktstwYy3EfDZuxjo6Grdckr+Vwvg6SHYV2f5vP+3kIJh030oKVg0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hC9Xk03o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974E2C2BD10;
-	Thu,  6 Jun 2024 14:18:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RQGakBDaJlhwn3Xx+j4jw3G5F2297vu3z/ZPe+yk+AHScTTVYEAws91qc6Rw7EURgExW9xG0xzKLyau6kDODiC8Y4etGo/ERLNvKW79SAPMCLB1dGYyLG9zfgeobuHVL6bNAdHvyRwhk86xk67YsuHubMsghP44T1j+/GZYpLIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MomJ6V1y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46742C2BD10;
+	Thu,  6 Jun 2024 14:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683510;
-	bh=nwnS6UDzoVaTmdHaa7fI0vOZG9e4TiDTBKsmKT3KdII=;
+	s=korg; t=1717683736;
+	bh=Nc7nvephQpWhW2EqwKOqD8ua3y1x1qm3kNjLBqCwZ5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hC9Xk03ojp908V8uh18fZqDoy+RmALgLF9+jZottaoPdyiPuPml4d/HG2y7hE1hqS
-	 ms4KwFQ+Sfi4Cz98WQBrPSbFK5JL9QjBTMtg3NRRuXk8ESrXlkUahV1PyH7a71iTwB
-	 ci7qoS8Dm3Z/i9XUxt3rYaTbSvw/qsDwbFcYCqW0=
+	b=MomJ6V1yBrHp8JP+WfZOcYE6AxwAqcpxnLVRNWLkKxhNGvoRmhP5ZcvwfHVd2p4a7
+	 c0qvdI127PZ+lr47mXLGvC3AG4B5q7mqYJC8tYsrXOS7yxgUETLWFQ8QhMg4mXxG3z
+	 stc9TljfKv1A8S0FIvuVnrSbYZJ8ZJ9ctJfvLD0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 399/473] regulator: bd71828: Dont overwrite runtime voltages
+Subject: [PATCH 6.6 656/744] i3c: add actual_len in i3c_priv_xfer
 Date: Thu,  6 Jun 2024 16:05:28 +0200
-Message-ID: <20240606131713.012351296@linuxfoundation.org>
+Message-ID: <20240606131753.502316648@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,190 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 0f9f7c63c415e287cd57b5c98be61eb320dedcfc ]
+[ Upstream commit e5e3df06ac98d15cfb10bb5c12356709365e91b2 ]
 
-Some of the regulators on the BD71828 have common voltage setting for
-RUN/SUSPEND/IDLE/LPSR states. The enable control can be set for each
-state though.
+In MIPI I3C Specification:
 
-The driver allows setting the voltage values for these states via
-device-tree. As a side effect, setting the voltages for
-SUSPEND/IDLE/LPSR will also change the RUN level voltage which is not
-desired and can break the system.
+"Ninth Bit of SDR Target Returned (Read) Data as End-of-Data: In I2C, the
+ninth Data bit from Target to Controller is an ACK by the Controller. By
+contrast, in I3C this bit allows the Target to end a Read, and allows the
+Controller to Abort a Read. In SDR terms, the ninth bit of Read data is
+referred to as the T-Bit (for ‘Transition’)"
 
-The comment in code reflects this behaviour, but it is likely to not
-make people any happier. The right thing to do is to allow setting the
-enable/disable state at SUSPEND/IDLE/LPSR via device-tree, but to
-disallow setting state specific voltages for those regulators.
+I3C allow devices early terminate data transfer. So need "actual_len" field
+to indicate how much get by i3c_priv_xfer.
 
-BUCK1 is a bit different. It only shares the SUSPEND and LPSR state
-voltages. The former behaviour of allowing to silently overwrite the
-SUSPEND state voltage by LPSR state voltage is also changed here so that
-the SUSPEND voltage is prioritized over LPSR voltage.
-
-Prevent setting PMIC state specific voltages for regulators which do not
-support it.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Fixes: 522498f8cb8c ("regulator: bd71828: Basic support for ROHM bd71828 PMIC regulators")
-Link: https://msgid.link/r/e1883ae1e3ae5668f1030455d4750923561f3d68.1715848512.git.mazziesaccount@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231201222532.2431484-4-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Stable-dep-of: 7f3d633b460b ("i3c: master: svc: change ENXIO to EAGAIN when IBI occurs during start frame")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/bd71828-regulator.c | 58 +--------------------------
- 1 file changed, 2 insertions(+), 56 deletions(-)
+ include/linux/i3c/device.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/regulator/bd71828-regulator.c b/drivers/regulator/bd71828-regulator.c
-index a4f09a5a30cab..d07f0d120ca71 100644
---- a/drivers/regulator/bd71828-regulator.c
-+++ b/drivers/regulator/bd71828-regulator.c
-@@ -207,14 +207,11 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
- 			.suspend_reg = BD71828_REG_BUCK1_SUSP_VOLT,
- 			.suspend_mask = BD71828_MASK_BUCK1267_VOLT,
- 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
--			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
- 			/*
- 			 * LPSR voltage is same as SUSPEND voltage. Allow
--			 * setting it so that regulator can be set enabled at
--			 * LPSR state
-+			 * only enabling/disabling regulator for LPSR state
- 			 */
--			.lpsr_reg = BD71828_REG_BUCK1_SUSP_VOLT,
--			.lpsr_mask = BD71828_MASK_BUCK1267_VOLT,
-+			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
- 		},
- 		.reg_inits = buck1_inits,
- 		.reg_init_amnt = ARRAY_SIZE(buck1_inits),
-@@ -289,13 +286,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
- 				     ROHM_DVS_LEVEL_SUSPEND |
- 				     ROHM_DVS_LEVEL_LPSR,
- 			.run_reg = BD71828_REG_BUCK3_VOLT,
--			.idle_reg = BD71828_REG_BUCK3_VOLT,
--			.suspend_reg = BD71828_REG_BUCK3_VOLT,
--			.lpsr_reg = BD71828_REG_BUCK3_VOLT,
- 			.run_mask = BD71828_MASK_BUCK3_VOLT,
--			.idle_mask = BD71828_MASK_BUCK3_VOLT,
--			.suspend_mask = BD71828_MASK_BUCK3_VOLT,
--			.lpsr_mask = BD71828_MASK_BUCK3_VOLT,
- 			.idle_on_mask = BD71828_MASK_IDLE_EN,
- 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
- 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
-@@ -330,13 +321,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
- 				     ROHM_DVS_LEVEL_SUSPEND |
- 				     ROHM_DVS_LEVEL_LPSR,
- 			.run_reg = BD71828_REG_BUCK4_VOLT,
--			.idle_reg = BD71828_REG_BUCK4_VOLT,
--			.suspend_reg = BD71828_REG_BUCK4_VOLT,
--			.lpsr_reg = BD71828_REG_BUCK4_VOLT,
- 			.run_mask = BD71828_MASK_BUCK4_VOLT,
--			.idle_mask = BD71828_MASK_BUCK4_VOLT,
--			.suspend_mask = BD71828_MASK_BUCK4_VOLT,
--			.lpsr_mask = BD71828_MASK_BUCK4_VOLT,
- 			.idle_on_mask = BD71828_MASK_IDLE_EN,
- 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
- 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
-@@ -371,13 +356,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
- 				     ROHM_DVS_LEVEL_SUSPEND |
- 				     ROHM_DVS_LEVEL_LPSR,
- 			.run_reg = BD71828_REG_BUCK5_VOLT,
--			.idle_reg = BD71828_REG_BUCK5_VOLT,
--			.suspend_reg = BD71828_REG_BUCK5_VOLT,
--			.lpsr_reg = BD71828_REG_BUCK5_VOLT,
- 			.run_mask = BD71828_MASK_BUCK5_VOLT,
--			.idle_mask = BD71828_MASK_BUCK5_VOLT,
--			.suspend_mask = BD71828_MASK_BUCK5_VOLT,
--			.lpsr_mask = BD71828_MASK_BUCK5_VOLT,
- 			.idle_on_mask = BD71828_MASK_IDLE_EN,
- 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
- 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
-@@ -494,13 +473,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
- 				     ROHM_DVS_LEVEL_SUSPEND |
- 				     ROHM_DVS_LEVEL_LPSR,
- 			.run_reg = BD71828_REG_LDO1_VOLT,
--			.idle_reg = BD71828_REG_LDO1_VOLT,
--			.suspend_reg = BD71828_REG_LDO1_VOLT,
--			.lpsr_reg = BD71828_REG_LDO1_VOLT,
- 			.run_mask = BD71828_MASK_LDO_VOLT,
--			.idle_mask = BD71828_MASK_LDO_VOLT,
--			.suspend_mask = BD71828_MASK_LDO_VOLT,
--			.lpsr_mask = BD71828_MASK_LDO_VOLT,
- 			.idle_on_mask = BD71828_MASK_IDLE_EN,
- 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
- 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
-@@ -534,13 +507,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
- 				     ROHM_DVS_LEVEL_SUSPEND |
- 				     ROHM_DVS_LEVEL_LPSR,
- 			.run_reg = BD71828_REG_LDO2_VOLT,
--			.idle_reg = BD71828_REG_LDO2_VOLT,
--			.suspend_reg = BD71828_REG_LDO2_VOLT,
--			.lpsr_reg = BD71828_REG_LDO2_VOLT,
- 			.run_mask = BD71828_MASK_LDO_VOLT,
--			.idle_mask = BD71828_MASK_LDO_VOLT,
--			.suspend_mask = BD71828_MASK_LDO_VOLT,
--			.lpsr_mask = BD71828_MASK_LDO_VOLT,
- 			.idle_on_mask = BD71828_MASK_IDLE_EN,
- 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
- 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
-@@ -574,13 +541,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
- 				     ROHM_DVS_LEVEL_SUSPEND |
- 				     ROHM_DVS_LEVEL_LPSR,
- 			.run_reg = BD71828_REG_LDO3_VOLT,
--			.idle_reg = BD71828_REG_LDO3_VOLT,
--			.suspend_reg = BD71828_REG_LDO3_VOLT,
--			.lpsr_reg = BD71828_REG_LDO3_VOLT,
- 			.run_mask = BD71828_MASK_LDO_VOLT,
--			.idle_mask = BD71828_MASK_LDO_VOLT,
--			.suspend_mask = BD71828_MASK_LDO_VOLT,
--			.lpsr_mask = BD71828_MASK_LDO_VOLT,
- 			.idle_on_mask = BD71828_MASK_IDLE_EN,
- 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
- 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
-@@ -615,13 +576,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
- 				     ROHM_DVS_LEVEL_SUSPEND |
- 				     ROHM_DVS_LEVEL_LPSR,
- 			.run_reg = BD71828_REG_LDO4_VOLT,
--			.idle_reg = BD71828_REG_LDO4_VOLT,
--			.suspend_reg = BD71828_REG_LDO4_VOLT,
--			.lpsr_reg = BD71828_REG_LDO4_VOLT,
- 			.run_mask = BD71828_MASK_LDO_VOLT,
--			.idle_mask = BD71828_MASK_LDO_VOLT,
--			.suspend_mask = BD71828_MASK_LDO_VOLT,
--			.lpsr_mask = BD71828_MASK_LDO_VOLT,
- 			.idle_on_mask = BD71828_MASK_IDLE_EN,
- 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
- 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
-@@ -656,13 +611,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
- 				     ROHM_DVS_LEVEL_SUSPEND |
- 				     ROHM_DVS_LEVEL_LPSR,
- 			.run_reg = BD71828_REG_LDO5_VOLT,
--			.idle_reg = BD71828_REG_LDO5_VOLT,
--			.suspend_reg = BD71828_REG_LDO5_VOLT,
--			.lpsr_reg = BD71828_REG_LDO5_VOLT,
- 			.run_mask = BD71828_MASK_LDO_VOLT,
--			.idle_mask = BD71828_MASK_LDO_VOLT,
--			.suspend_mask = BD71828_MASK_LDO_VOLT,
--			.lpsr_mask = BD71828_MASK_LDO_VOLT,
- 			.idle_on_mask = BD71828_MASK_IDLE_EN,
- 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
- 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
-@@ -721,9 +670,6 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
- 			.suspend_reg = BD71828_REG_LDO7_VOLT,
- 			.lpsr_reg = BD71828_REG_LDO7_VOLT,
- 			.run_mask = BD71828_MASK_LDO_VOLT,
--			.idle_mask = BD71828_MASK_LDO_VOLT,
--			.suspend_mask = BD71828_MASK_LDO_VOLT,
--			.lpsr_mask = BD71828_MASK_LDO_VOLT,
- 			.idle_on_mask = BD71828_MASK_IDLE_EN,
- 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
- 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
+diff --git a/include/linux/i3c/device.h b/include/linux/i3c/device.h
+index 90fa83464f003..ef6217da8253b 100644
+--- a/include/linux/i3c/device.h
++++ b/include/linux/i3c/device.h
+@@ -54,6 +54,7 @@ enum i3c_hdr_mode {
+  * struct i3c_priv_xfer - I3C SDR private transfer
+  * @rnw: encodes the transfer direction. true for a read, false for a write
+  * @len: transfer length in bytes of the transfer
++ * @actual_len: actual length in bytes are transferred by the controller
+  * @data: input/output buffer
+  * @data.in: input buffer. Must point to a DMA-able buffer
+  * @data.out: output buffer. Must point to a DMA-able buffer
+@@ -62,6 +63,7 @@ enum i3c_hdr_mode {
+ struct i3c_priv_xfer {
+ 	u8 rnw;
+ 	u16 len;
++	u16 actual_len;
+ 	union {
+ 		void *in;
+ 		const void *out;
 -- 
 2.43.0
 
