@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-49514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFCD8FED95
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 726748FE9E3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CFA51C203B3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08F5E289E77
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2EC19DF6F;
-	Thu,  6 Jun 2024 14:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4985219CD15;
+	Thu,  6 Jun 2024 14:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gpkrgHvF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtp2K064"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E9619DF79;
-	Thu,  6 Jun 2024 14:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0816F198E6D;
+	Thu,  6 Jun 2024 14:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683503; cv=none; b=qWsJKzT8Kv9WB1hbIjGo6PXiMAmdi4x1A8eO8srNlG0ddiFMvWbNIQ8uxJN2hVILBp9R0ATsSYSyxC6BizKtnLjeJiXRqnw1ty1/YHFfJbCo+cpJVp7rhlFRd9zBciFYYxIstunpaqwcQSWdCktO9bkCSNn/qqUR7w2Cy2BwU6I=
+	t=1717683076; cv=none; b=n8CkuLNNQlTTXWypndvM1favXQVJO5kXDuWBr52oLM90OeIgPSg6vQdriXygh4xqt+1IRNKx0ya2waqEVpWx3/4yzxy0N8MkjUjp3gqIlbnIg/5OcR/Sijy3oNILCOjmUuX+FchGsVrLSdiPinYqkQjazYs68EAcwcu4BweeiSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683503; c=relaxed/simple;
-	bh=XDWQ7DXM5b2RdUFYYviOwKLOUfmWscBeDjd6yWYisUs=;
+	s=arc-20240116; t=1717683076; c=relaxed/simple;
+	bh=4y3xkhq0RBzy2frkm7kloxkOs3Q3J05VwsXzVmQzYk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBmhMqXlLO7jZfe4GXcskOJOvuJMBubX8ci5IoTxwCpboP2w0OLFFfDoiuUsHZN+2dK01t3ON8/4SVJPF5f1zIMPqOS4/xef0nRX52dfT4ctrsUOHzdAd/9CO6oX2kx9qZ2erMugAHgW5I4KUBairLlAiCWJZh5dCMTyGSVO4Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gpkrgHvF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F592C2BD10;
-	Thu,  6 Jun 2024 14:18:23 +0000 (UTC)
+	 MIME-Version; b=LbpI7p/f7yXJKN6HYymx+dl/yBDnAb+GovLw9HV+8X+kuBN9Vq57qpGopExK0mAKB2miWy1O40ODgWJakDMResqqtH8Lj0EDDOdHqngG3F9bf1LZNMFGTBS1K1SvwgQhr6AzVddxdptdDoSCHpMdenVRgp7yKl0sQoI5t3FiRhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtp2K064; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EBDC32786;
+	Thu,  6 Jun 2024 14:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683503;
-	bh=XDWQ7DXM5b2RdUFYYviOwKLOUfmWscBeDjd6yWYisUs=;
+	s=korg; t=1717683075;
+	bh=4y3xkhq0RBzy2frkm7kloxkOs3Q3J05VwsXzVmQzYk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gpkrgHvFykw5bkVQmp1k6GKowoPkcbCzdUtTrrFrCECysUJxqwuHJYM76H8xWYCfj
-	 mhW4SLryftO7KicaftFAD4e0weW/9e6xtmszsiz8ErTJZZvz1gA9QfbbRT2EndhdtN
-	 PHr2cTc3QM8wVWQ85ZvbuA9i3f5afkyjSKHI9bSs=
+	b=gtp2K064e+1PzyvEOTyKiJOb1n1Qha13TBhOI9Mv1klK6QrPSxwgwzZNsXxmuNEAG
+	 +r0fhHe5ZDWKHyVGXkQ1O/dXXF8tfa1dC5zsCLBCNdp7mKvEJ+YCkraSjWKLt2i+v0
+	 q1ESRarIklwT08OvI3Ff7VlnSiBE8E8sJMq6x43Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Robert Foss <rfoss@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Gnattu OC <gnattuoc@me.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Jian Ye <jian.ye@intel.com>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 392/473] Revert "drm/bridge: ti-sn65dsi83: Fix enable error path"
+Subject: [PATCH 6.9 342/374] drm/i915/gt: Fix CCS ids calculation for CCS mode setting
 Date: Thu,  6 Jun 2024 16:05:21 +0200
-Message-ID: <20240606131712.800638545@linuxfoundation.org>
+Message-ID: <20240606131703.313949798@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +68,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Andi Shyti <andi.shyti@linux.intel.com>
 
-[ Upstream commit ad81feb5b6f1f5461641706376dcf7a9914ed2e7 ]
+[ Upstream commit ee01b6a386eaf9984b58a2476e8f531149679da9 ]
 
-This reverts commit 8a91b29f1f50ce7742cdbe5cf11d17f128511f3f.
+The whole point of the previous fixes has been to change the CCS
+hardware configuration to generate only one stream available to
+the compute users. We did this by changing the info.engine_mask
+that is set during device probe, reset during the detection of
+the fused engines, and finally reset again when choosing the CCS
+mode.
 
-The regulator_disable() added by the original commit solves one kind of
-regulator imbalance but adds another one as it allows the regulator to be
-disabled one more time than it is enabled in the following scenario:
+We can't use the engine_mask variable anymore, as with the
+current configuration, it imposes only one CCS no matter what the
+hardware configuration is.
 
- 1. Start video pipeline -> sn65dsi83_atomic_pre_enable -> regulator_enable
- 2. PLL lock fails -> regulator_disable
- 3. Stop video pipeline -> sn65dsi83_atomic_disable -> regulator_disable
+Before changing the engine_mask for the third time, save it and
+use it for calculating the CCS mode.
 
-The reason is clear from the code flow, which looks like this (after
-removing unrelated code):
+After the previous changes, the user reported a performance drop
+to around 1/4. We have tested that the compute operations, with
+the current patch, have improved by the same factor.
 
-  static void sn65dsi83_atomic_pre_enable()
-  {
-      regulator_enable(ctx->vcc);
-
-      if (PLL failed locking) {
-          regulator_disable(ctx->vcc);  <---- added by patch being reverted
-          return;
-      }
-  }
-
-  static void sn65dsi83_atomic_disable()
-  {
-      regulator_disable(ctx->vcc);
-  }
-
-The use case for introducing the additional regulator_disable() was
-removing the module for debugging (see link below for the discussion). If
-the module is removed after a .atomic_pre_enable, i.e. with an active
-pipeline from the DRM point of view, .atomic_disable is not called and thus
-the regulator would not be disabled.
-
-According to the discussion however there is no actual use case for
-removing the module with an active pipeline, except for
-debugging/development.
-
-On the other hand, the occurrence of a PLL lock failure is possible due to
-any physical reason (e.g. a temporary hardware failure for electrical
-reasons) so handling it gracefully should be supported. As there is no way
-for .atomic[_pre]_enable to report an error to the core, the only clean way
-to support it is calling regulator_disabled() only in .atomic_disable,
-unconditionally, as it was before.
-
-Link: https://lore.kernel.org/all/15244220.uLZWGnKmhe@steina-w/
-Fixes: 8a91b29f1f50 ("drm/bridge: ti-sn65dsi83: Fix enable error path")
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240426122259.46808-1-luca.ceresoli@bootlin.com
-(cherry picked from commit 2940ee03b23281071620dda1d790cd644dabd394)
-Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Fixes: 6db31251bb26 ("drm/i915/gt: Enable only one CCS for compute workload")
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: Gnattu OC <gnattuoc@me.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Tested-by: Jian Ye <jian.ye@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Tested-by: Gnattu OC <gnattuoc@me.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240517090616.242529-1-andi.shyti@linux.intel.com
+(cherry picked from commit a09d2327a9ba8e3f5be238bc1b7ca2809255b464)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi83.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/i915/gt/intel_engine_cs.c   | 6 ++++++
+ drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c | 2 +-
+ drivers/gpu/drm/i915/gt/intel_gt_types.h    | 8 ++++++++
+ 3 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-index 3f43b44145a89..52008a72bd49a 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-@@ -478,7 +478,6 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
- 		dev_err(ctx->dev, "failed to lock PLL, ret=%i\n", ret);
- 		/* On failure, disable PLL again and exit. */
- 		regmap_write(ctx->regmap, REG_RC_PLL_EN, 0x00);
--		regulator_disable(ctx->vcc);
- 		return;
- 	}
+diff --git a/drivers/gpu/drm/i915/gt/intel_engine_cs.c b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
+index 7a6dc371c384e..bc6209df0f680 100644
+--- a/drivers/gpu/drm/i915/gt/intel_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
+@@ -919,6 +919,12 @@ static intel_engine_mask_t init_engine_mask(struct intel_gt *gt)
+ 	if (IS_DG2(gt->i915)) {
+ 		u8 first_ccs = __ffs(CCS_MASK(gt));
  
++		/*
++		 * Store the number of active cslices before
++		 * changing the CCS engine configuration
++		 */
++		gt->ccs.cslices = CCS_MASK(gt);
++
+ 		/* Mask off all the CCS engine */
+ 		info->engine_mask &= ~GENMASK(CCS3, CCS0);
+ 		/* Put back in the first CCS engine */
+diff --git a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
+index 99b71bb7da0a6..3c62a44e9106c 100644
+--- a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
++++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
+@@ -19,7 +19,7 @@ unsigned int intel_gt_apply_ccs_mode(struct intel_gt *gt)
+ 
+ 	/* Build the value for the fixed CCS load balancing */
+ 	for (cslice = 0; cslice < I915_MAX_CCS; cslice++) {
+-		if (CCS_MASK(gt) & BIT(cslice))
++		if (gt->ccs.cslices & BIT(cslice))
+ 			/*
+ 			 * If available, assign the cslice
+ 			 * to the first available engine...
+diff --git a/drivers/gpu/drm/i915/gt/intel_gt_types.h b/drivers/gpu/drm/i915/gt/intel_gt_types.h
+index def7dd0eb6f19..cfdd2ad5e9549 100644
+--- a/drivers/gpu/drm/i915/gt/intel_gt_types.h
++++ b/drivers/gpu/drm/i915/gt/intel_gt_types.h
+@@ -207,6 +207,14 @@ struct intel_gt {
+ 					    [MAX_ENGINE_INSTANCE + 1];
+ 	enum intel_submission_method submission_method;
+ 
++	struct {
++		/*
++		 * Mask of the non fused CCS slices
++		 * to be used for the load balancing
++		 */
++		intel_engine_mask_t cslices;
++	} ccs;
++
+ 	/*
+ 	 * Default address space (either GGTT or ppGTT depending on arch).
+ 	 *
 -- 
 2.43.0
 
