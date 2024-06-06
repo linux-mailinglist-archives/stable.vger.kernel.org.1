@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-48772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C21228FEA71
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 455078FEC60
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65145283616
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C49D6B23A42
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677B5197524;
-	Thu,  6 Jun 2024 14:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59AC41B0120;
+	Thu,  6 Jun 2024 14:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbdmM1hU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ojd4Uw2h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2537919FA7F;
-	Thu,  6 Jun 2024 14:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E631B0122;
+	Thu,  6 Jun 2024 14:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683140; cv=none; b=PU+AIzAvsMEXGnWboJnuaB58mRFrEToE/F0r1V7lkNNRsRKyAqatNFtpUBOUcftuR5aJo5QkFZjhERsfA+n/tPq1IZt3YMIzLXNmvNeesvMaGU07O68kAkFMBUnGotKvoMJLk1eYDV39B1oPpCrwIf4Nbc6DRAbHNFWdx+yihb8=
+	t=1717683359; cv=none; b=JRemk8WWsl77aG5LoIaBEDrXSekqsFbdWvp9HVomnhXSeft5csbgWnVRKurZZ5C9u3HXysIMIR5zoeleeB/nPdZHR6LIxxmJPBHAamM4QnKjMWsac2L2PPbbrIgIBgUKigID03ZPGy8bnb2rYx8NeCtPaknQcbCI/dKwEQaggW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683140; c=relaxed/simple;
-	bh=icB+IGJwBXwGSMBu3CENpIYTcNWTU9a2b+Uc/CfzZ3Q=;
+	s=arc-20240116; t=1717683359; c=relaxed/simple;
+	bh=wGPmc/qJ9IcvTIBshV1oZ7aaPc+oje1lXrIUtBK5Av8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YCePW7W4T6RlC5WNn7lGEQcjB1HhSLImVekOMTVmI7mBeLJ6UmbeGjNGTiletrmc4BYo9x6C8UBd4r3ZHznxtwjww8VsdyBWE6MbeCInBF2Uv+rViMLW3kle/PBtWYRscDyCZtiC+qLpR+rUVU/JSJcIy1xir5oAirXZURMoMAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lbdmM1hU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E32C2BD10;
-	Thu,  6 Jun 2024 14:12:20 +0000 (UTC)
+	 MIME-Version; b=da3oh/3M1iVY7+03qqXlQ099vxArZMtdoD+OsUxPO9Ctg0Y3Zkp3rpTChQ7DNdlWQnE1jfgpzVT/YuNQuY/j3ZurHAe/3iov9wf6BhoEIYxMwygtu5dOJp717LIMfrkXOS5lfZdtB6SddrxJoMgTPhI57kFAhIUDXSoz5JuMKGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ojd4Uw2h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8224C2BD10;
+	Thu,  6 Jun 2024 14:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683140;
-	bh=icB+IGJwBXwGSMBu3CENpIYTcNWTU9a2b+Uc/CfzZ3Q=;
+	s=korg; t=1717683359;
+	bh=wGPmc/qJ9IcvTIBshV1oZ7aaPc+oje1lXrIUtBK5Av8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lbdmM1hU6DhV4sdN9gLyk9FV08OvBcUhkuXG1BrgJEeFX7w790/p25oUbCdEM0I2n
-	 xkuMPQTpPVGxLQzIN91zlmla1P+TSz/VqDLVaVD1e0jGqyLLrFOa8NM4V61Phkzi7S
-	 IPGwnGmTRsZZC/7F+KGOisVGwa1Ac26fYDSDvpIQ=
+	b=Ojd4Uw2hb3sB1lw9Ntc1yxurvFSlJZobgWFDvWcDCz4UH4JEn+sd1kcbk7QxTWffE
+	 z6UWFKyubWayplhBW5nLncXkVlnCCq+rlQowwyz+sUUSUIie2KqFhhHRw2INC2S5L7
+	 NtDaDPqdYQU5Fol1kUm1+ixd2PJseHqHF4BgS/GY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 012/473] tools/latency-collector: Fix -Wformat-security compile warns
-Date: Thu,  6 Jun 2024 15:59:01 +0200
-Message-ID: <20240606131700.232487271@linuxfoundation.org>
+	David Heidelberg <david.heidelberg@collabora.com>,
+	Vignesh Raman <vignesh.raman@collabora.com>,
+	Helen Koike <helen.koike@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 270/744] drm/ci: update device type for volteer devices
+Date: Thu,  6 Jun 2024 15:59:02 +0200
+Message-ID: <20240606131741.035754048@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,89 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuah Khan <skhan@linuxfoundation.org>
+From: Vignesh Raman <vignesh.raman@collabora.com>
 
-commit df73757cf8f66fa54c4721c53b0916af3c4d9818 upstream.
+[ Upstream commit a2c71b711e7efc6478976233768bdbc3386e6dce ]
 
-Fix the following -Wformat-security compile warnings adding missing
-format arguments:
+Volteer devices in the collabora lab are categorized under the
+asus-cx9400-volteer device type. The majority of these units
+has an Intel Core i5-1130G7 CPU, while some of them have a
+Intel Core i7-1160G7 CPU instead. So due to this difference,
+new device type template is added for the Intel Core i5-1130G7
+and i7-1160G7 variants of the Acer Chromebook Spin 514 (CP514-2H)
+volteer Chromebooks. So update the same in drm-ci.
 
-latency-collector.c: In function ‘show_available’:
-latency-collector.c:938:17: warning: format not a string literal and
-no format arguments [-Wformat-security]
-  938 |                 warnx(no_tracer_msg);
-      |                 ^~~~~
+https://gitlab.collabora.com/lava/lava/-/merge_requests/149
 
-latency-collector.c:943:17: warning: format not a string literal and
-no format arguments [-Wformat-security]
-  943 |                 warnx(no_latency_tr_msg);
-      |                 ^~~~~
-
-latency-collector.c: In function ‘find_default_tracer’:
-latency-collector.c:986:25: warning: format not a string literal and
-no format arguments [-Wformat-security]
-  986 |                         errx(EXIT_FAILURE, no_tracer_msg);
-      |
-                         ^~~~
-latency-collector.c: In function ‘scan_arguments’:
-latency-collector.c:1881:33: warning: format not a string literal and
-no format arguments [-Wformat-security]
- 1881 |                                 errx(EXIT_FAILURE, no_tracer_msg);
-      |                                 ^~~~
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240404011009.32945-1-skhan@linuxfoundation.org
-
-Cc: stable@vger.kernel.org
-Fixes: e23db805da2df ("tracing/tools: Add the latency-collector to tools directory")
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0119c894ab0d ("drm: Add initial ci/ subdirectory")
+Reviewed-by: David Heidelberg <david.heidelberg@collabora.com>
+Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
+Acked-by: Helen Koike <helen.koike@collabora.com>
+Signed-off-by: Helen Koike <helen.koike@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240307021841.100561-1-vignesh.raman@collabora.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/latency/latency-collector.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/ci/test.yml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/tools/tracing/latency/latency-collector.c
-+++ b/tools/tracing/latency/latency-collector.c
-@@ -935,12 +935,12 @@ static void show_available(void)
- 	}
+diff --git a/drivers/gpu/drm/ci/test.yml b/drivers/gpu/drm/ci/test.yml
+index 7b5c5fe121d9d..6f81dc10865b5 100644
+--- a/drivers/gpu/drm/ci/test.yml
++++ b/drivers/gpu/drm/ci/test.yml
+@@ -235,11 +235,11 @@ i915:cml:
+ i915:tgl:
+   extends:
+     - .i915
+-  parallel: 8
++  parallel: 5
+   variables:
+-    DEVICE_TYPE: asus-cx9400-volteer
++    DEVICE_TYPE: acer-cp514-2h-1130g7-volteer
+     GPU_VERSION: tgl
+-    RUNNER_TAG: mesa-ci-x86-64-lava-asus-cx9400-volteer
++    RUNNER_TAG: mesa-ci-x86-64-lava-acer-cp514-2h-1130g7-volteer
  
- 	if (!tracers) {
--		warnx(no_tracer_msg);
-+		warnx("%s", no_tracer_msg);
- 		return;
- 	}
- 
- 	if (!found) {
--		warnx(no_latency_tr_msg);
-+		warnx("%s", no_latency_tr_msg);
- 		tracefs_list_free(tracers);
- 		return;
- 	}
-@@ -983,7 +983,7 @@ static const char *find_default_tracer(v
- 	for (i = 0; relevant_tracers[i]; i++) {
- 		valid = tracer_valid(relevant_tracers[i], &notracer);
- 		if (notracer)
--			errx(EXIT_FAILURE, no_tracer_msg);
-+			errx(EXIT_FAILURE, "%s", no_tracer_msg);
- 		if (valid)
- 			return relevant_tracers[i];
- 	}
-@@ -1878,7 +1878,7 @@ static void scan_arguments(int argc, cha
- 			}
- 			valid = tracer_valid(current_tracer, &notracer);
- 			if (notracer)
--				errx(EXIT_FAILURE, no_tracer_msg);
-+				errx(EXIT_FAILURE, "%s", no_tracer_msg);
- 			if (!valid)
- 				errx(EXIT_FAILURE,
- "The tracer %s is not supported by your kernel!\n", current_tracer);
+ .amdgpu:
+   extends:
+-- 
+2.43.0
+
 
 
 
