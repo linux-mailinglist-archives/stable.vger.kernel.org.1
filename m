@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-49645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248F78FEE41
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42EDB8FEF2E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C3381C2483A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B638FB22E13
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0501C2240;
-	Thu,  6 Jun 2024 14:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141F01CB301;
+	Thu,  6 Jun 2024 14:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPry4jSU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpk8yBTz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2121A01D4;
-	Thu,  6 Jun 2024 14:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C681E1A2560;
+	Thu,  6 Jun 2024 14:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683638; cv=none; b=cCZ2WMFdH3R9TPkqPOoqzMU6iLpPqro2Z+4fcUs/C+faKbf0XoJ0x+CNlG0Gxh67WGys/MX7HmzcashwsIvLBLRJX8Cv1Spz+Rp+HWoTjW5McBdj5D+7cmrqh9+uMNpWoMPVp3SP9XlaVwdgXy/CuCgea0WEhVEnAauGfCn6iSI=
+	t=1717683748; cv=none; b=gz4Px/VUhHUcbFdOdJa+c+BdY45fNxWZGQff3X+t1pBqA3rIfFovnyIR9M+oIf3E1an+0VNM/U1iuKsUabRm0jH0vn6X4V/cDlY/UEGX76dxMe30nEonAEXI29CI+Jl+YmEZZB8ZoRwMHt+RmN97pJ8AgOtgMOXZkqXlOCwc4v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683638; c=relaxed/simple;
-	bh=ZIlkVJRG20gPU28scxSJz5YPPr4u+bLrq5BxMtsLGJY=;
+	s=arc-20240116; t=1717683748; c=relaxed/simple;
+	bh=uP5txpySRG7URDpLtLdxr3Oct+nMvUYlS5Zq+O8aU9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lYlxwNLI43si/jnBt3kCAnrTa4hia3DA3D9L/LvSYYWyZT4dZle94UJqW0G4swW1miVoFvIAsLzj3mWRFvqgIKCQNtIYxLClQ4zsCHb9TzT0tvb/1syCtTVigMAAGZMg+eS4vm3X6MRXUZg8gyjPjZ0O6iX7W6zsXBJj7+gP/xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPry4jSU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16ACDC32781;
-	Thu,  6 Jun 2024 14:20:38 +0000 (UTC)
+	 MIME-Version; b=ev5YaFVWJXfMbsQD6Vy2IBY5Sb+/SQeFlclN7BMMY9DDKZqYrvw2l1XxO2GP8j7J6g4F+f9J+19UA0U3BWgIZUP0IMp9iZDMK0MX0FgNV2Mi+c0RCTEJ0gWf59gQ9WaToPZ8/PM7BYzZ8tqBdth8n9ID8iQVnQYNOHbnJ7RJdQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpk8yBTz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A682BC2BD10;
+	Thu,  6 Jun 2024 14:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683638;
-	bh=ZIlkVJRG20gPU28scxSJz5YPPr4u+bLrq5BxMtsLGJY=;
+	s=korg; t=1717683748;
+	bh=uP5txpySRG7URDpLtLdxr3Oct+nMvUYlS5Zq+O8aU9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DPry4jSUoDmhEaO4vIV8ts32bVjELyZqTWCRvMhqlS28jujKNpadVSMwVYTPnkH/v
-	 2KwtWm6NFieg9mFwK6unenvgdKuc46NeXQwmChKcB/AAtV+i8uIf6wN+IOZGlWDdeo
-	 XutCFHNrXxJFvEdn1c1AwyspEJjm8SMmNpRhLIRU=
+	b=tpk8yBTzcadtRFBKdrIxZa+tNacZFchM2VLgiDhBqJA6bGuFe0dMaBbvH52UdUWWu
+	 yIqJpF4XkFBK/1MxxWkidzcmW3siWZEWGc+TpovDd8CqSPmnoQM4hW6B8X8RDsocFv
+	 ucEpbQu8Boqx3191+pezXezAQnP3Ge74mUhbL4zE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	syzbot+a7d2b1d5d1af83035567@syzkaller.appspotmail.com,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 458/473] netfilter: nft_payload: skbuff vlan metadata mangle support
-Date: Thu,  6 Jun 2024 16:06:27 +0200
-Message-ID: <20240606131714.829987659@linuxfoundation.org>
+Subject: [PATCH 6.6 716/744] net/sched: taprio: extend minimum interval restriction to entire cycle too
+Date: Thu,  6 Jun 2024 16:06:28 +0200
+Message-ID: <20240606131755.435937288@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,149 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 33c563ebf8d3deed7d8addd20d77398ac737ef9a ]
+[ Upstream commit fb66df20a7201e60f2b13d7f95d031b31a8831d3 ]
 
-Userspace assumes vlan header is present at a given offset, but vlan
-offload allows to store this in metadata fields of the skbuff. Hence
-mangling vlan results in a garbled packet. Handle this transparently by
-adding a parser to the kernel.
+It is possible for syzbot to side-step the restriction imposed by the
+blamed commit in the Fixes: tag, because the taprio UAPI permits a
+cycle-time different from (and potentially shorter than) the sum of
+entry intervals.
 
-If vlan metadata is present and payload offset is over 12 bytes (source
-and destination mac address fields), then subtract vlan header present
-in vlan metadata, otherwise mangle vlan metadata based on offset and
-length, extracting data from the source register.
+We need one more restriction, which is that the cycle time itself must
+be larger than N * ETH_ZLEN bit times, where N is the number of schedule
+entries. This restriction needs to apply regardless of whether the cycle
+time came from the user or was the implicit, auto-calculated value, so
+we move the existing "cycle == 0" check outside the "if "(!new->cycle_time)"
+branch. This way covers both conditions and scenarios.
 
-This is similar to:
+Add a selftest which illustrates the issue triggered by syzbot.
 
-  8cfd23e67401 ("netfilter: nft_payload: work around vlan header stripping")
-
-to deal with vlan payload mangling.
-
-Fixes: 7ec3f7b47b8d ("netfilter: nft_payload: add packet mangling support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: b5b73b26b3ca ("taprio: Fix allowing too small intervals")
+Reported-by: syzbot+a7d2b1d5d1af83035567@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/0000000000007d66bc06196e7c66@google.com/
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://lore.kernel.org/r/20240527153955.553333-2-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_payload.c | 72 +++++++++++++++++++++++++++++++++----
- 1 file changed, 65 insertions(+), 7 deletions(-)
+ net/sched/sch_taprio.c                        | 10 ++++-----
+ .../tc-testing/tc-tests/qdiscs/taprio.json    | 22 +++++++++++++++++++
+ 2 files changed, 27 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index eaa629c6d7da6..1b001dd2bc9ad 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -109,12 +109,12 @@ static int nft_payload_inner_offset(const struct nft_pktinfo *pkt)
- 	return pkt->inneroff;
- }
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index c0b846918400a..a315748a5e531 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -1161,11 +1161,6 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
+ 		list_for_each_entry(entry, &new->entries, list)
+ 			cycle = ktime_add_ns(cycle, entry->interval);
  
--static bool nft_payload_need_vlan_copy(const struct nft_payload *priv)
-+static bool nft_payload_need_vlan_adjust(u32 offset, u32 len)
- {
--	unsigned int len = priv->offset + priv->len;
-+	unsigned int boundary = offset + len;
+-		if (!cycle) {
+-			NL_SET_ERR_MSG(extack, "'cycle_time' can never be 0");
+-			return -EINVAL;
+-		}
+-
+ 		if (cycle < 0 || cycle > INT_MAX) {
+ 			NL_SET_ERR_MSG(extack, "'cycle_time' is too big");
+ 			return -EINVAL;
+@@ -1174,6 +1169,11 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
+ 		new->cycle_time = cycle;
+ 	}
  
- 	/* data past ether src/dst requested, copy needed */
--	if (len > offsetof(struct ethhdr, h_proto))
-+	if (boundary > offsetof(struct ethhdr, h_proto))
- 		return true;
- 
- 	return false;
-@@ -138,7 +138,7 @@ void nft_payload_eval(const struct nft_expr *expr,
- 			goto err;
- 
- 		if (skb_vlan_tag_present(skb) &&
--		    nft_payload_need_vlan_copy(priv)) {
-+		    nft_payload_need_vlan_adjust(priv->offset, priv->len)) {
- 			if (!nft_payload_copy_vlan(dest, skb,
- 						   priv->offset, priv->len))
- 				goto err;
-@@ -678,21 +678,79 @@ struct nft_payload_set {
- 	u8			csum_flags;
- };
- 
-+/* This is not struct vlan_hdr. */
-+struct nft_payload_vlan_hdr {
-+	__be16			h_vlan_proto;
-+	__be16			h_vlan_TCI;
-+};
-+
-+static bool
-+nft_payload_set_vlan(const u32 *src, struct sk_buff *skb, u8 offset, u8 len,
-+		     int *vlan_hlen)
-+{
-+	struct nft_payload_vlan_hdr *vlanh;
-+	__be16 vlan_proto;
-+	u16 vlan_tci;
-+
-+	if (offset >= offsetof(struct vlan_ethhdr, h_vlan_encapsulated_proto)) {
-+		*vlan_hlen = VLAN_HLEN;
-+		return true;
++	if (new->cycle_time < new->num_entries * length_to_duration(q, ETH_ZLEN)) {
++		NL_SET_ERR_MSG(extack, "'cycle_time' is too small");
++		return -EINVAL;
 +	}
 +
-+	switch (offset) {
-+	case offsetof(struct vlan_ethhdr, h_vlan_proto):
-+		if (len == 2) {
-+			vlan_proto = nft_reg_load_be16(src);
-+			skb->vlan_proto = vlan_proto;
-+		} else if (len == 4) {
-+			vlanh = (struct nft_payload_vlan_hdr *)src;
-+			__vlan_hwaccel_put_tag(skb, vlanh->h_vlan_proto,
-+					       ntohs(vlanh->h_vlan_TCI));
-+		} else {
-+			return false;
-+		}
-+		break;
-+	case offsetof(struct vlan_ethhdr, h_vlan_TCI):
-+		if (len != 2)
-+			return false;
-+
-+		vlan_tci = ntohs(nft_reg_load_be16(src));
-+		skb->vlan_tci = vlan_tci;
-+		break;
-+	default:
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- static void nft_payload_set_eval(const struct nft_expr *expr,
- 				 struct nft_regs *regs,
- 				 const struct nft_pktinfo *pkt)
- {
- 	const struct nft_payload_set *priv = nft_expr_priv(expr);
--	struct sk_buff *skb = pkt->skb;
- 	const u32 *src = &regs->data[priv->sreg];
--	int offset, csum_offset;
-+	int offset, csum_offset, vlan_hlen = 0;
-+	struct sk_buff *skb = pkt->skb;
- 	__wsum fsum, tsum;
+ 	taprio_calculate_gate_durations(q, new);
  
- 	switch (priv->base) {
- 	case NFT_PAYLOAD_LL_HEADER:
- 		if (!skb_mac_header_was_set(skb))
- 			goto err;
--		offset = skb_mac_header(skb) - skb->data;
-+
-+		if (skb_vlan_tag_present(skb) &&
-+		    nft_payload_need_vlan_adjust(priv->offset, priv->len)) {
-+			if (!nft_payload_set_vlan(src, skb,
-+						  priv->offset, priv->len,
-+						  &vlan_hlen))
-+				goto err;
-+
-+			if (!vlan_hlen)
-+				return;
-+		}
-+
-+		offset = skb_mac_header(skb) - skb->data - vlan_hlen;
- 		break;
- 	case NFT_PAYLOAD_NETWORK_HEADER:
- 		offset = skb_network_offset(skb);
+ 	return 0;
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/taprio.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/taprio.json
+index 3644434cf681b..6a6f61ac48587 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/taprio.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/taprio.json
+@@ -154,6 +154,28 @@
+             "echo \"1\" > /sys/bus/netdevsim/del_device"
+         ]
+     },
++    {
++        "id": "831f",
++        "name": "Add taprio Qdisc with too short cycle-time",
++        "category": [
++            "qdisc",
++            "taprio"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 8\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH root handle 1: taprio num_tc 2 queues 1@0 1@1 sched-entry S 01 200000 sched-entry S 02 200000 cycle-time 100 clockid CLOCK_TAI",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc taprio 1: root refcnt",
++        "matchCount": "0",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
+     {
+         "id": "3e1e",
+         "name": "Add taprio Qdisc with an invalid cycle-time",
 -- 
 2.43.0
 
