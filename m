@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-48397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1BFE8FE8D8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A8A8FEB89
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A56B71C24C54
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C78A31F28A0F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071FF1974EC;
-	Thu,  6 Jun 2024 14:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0ADC1AB537;
+	Thu,  6 Jun 2024 14:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ib3cE4UU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAqrTnhZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AF1196C7D;
-	Thu,  6 Jun 2024 14:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902C3199EB5;
+	Thu,  6 Jun 2024 14:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682941; cv=none; b=p+o82D/+yLKgwMJC6ap4mS673vgck7z0UQnYKx9Mimqwp9MEwuvfPET94esm1jbVZFk4XybAE1GwX7UBw4wcP6wdAjpotYpq64Wz8oWsnk6O49bkYLJI7PAA5CsdNDLv2FpsFYjl/8173R3v9gCaUWU88V8WMpygRZzPAcysskw=
+	t=1717683262; cv=none; b=QxD1B9bH7VCAHaLqoSl04a7nuqXT1buks6IGX4WYd9lZwTGKVQDdMrpT08EshzLzQM62gzGI1VJbZXUZZl/FK01en9/8iK9Wbm+m1IcvT1wmoU6mCtksMJaSzhT7nzufmvcjzx14pqFDlFT2MWpTCl+IJX5fhOl3aYBL+7meLmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682941; c=relaxed/simple;
-	bh=MUvZ0I73TkKxYPJi+eeTDsGFQOMedCM5D/Xi7WHn28o=;
+	s=arc-20240116; t=1717683262; c=relaxed/simple;
+	bh=A3TOCVZ/I4oUQA13+fV9+dH+6l/RJ9JokZIPtL4OnV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6k5vMPGQ1c0Ki+br5jgh4hlcA690Ablnmt2COWY5bAc/HSqWbaoJV5WtpohP8HOX0XI+obfyz8GJR81EnmOfGzrZ54azfMe5RO8JEBuNVxNCe9aLRNjfoLoliGgN78tlgJIpoyoJ/DVfYQyezNOY+6ulO0/cGQgCiPwvWvYVEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ib3cE4UU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D97C32781;
-	Thu,  6 Jun 2024 14:09:01 +0000 (UTC)
+	 MIME-Version; b=oLdrdjlgkSTAxOWch/8mYnlJtz8fRg4mzmbIcQyYCvBlV2s3MLdk7DuFVKzdOD0GjX79OoaOysNf+8yYlTT9wLkTpqlF/ZEUmAT5dB94SSeq+buFlkSXPt06o/bkNwba6Fxa/wRtGeDUNA1OFIYJcp79d3pwqkWQZsfEsfhTqxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAqrTnhZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D700C32781;
+	Thu,  6 Jun 2024 14:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682941;
-	bh=MUvZ0I73TkKxYPJi+eeTDsGFQOMedCM5D/Xi7WHn28o=;
+	s=korg; t=1717683262;
+	bh=A3TOCVZ/I4oUQA13+fV9+dH+6l/RJ9JokZIPtL4OnV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ib3cE4UU41PSotdK4xSol9WoTA6zklBfmTdJtLq2CNcLbMYF7hNCydca0ZNzqHEGQ
-	 aBcuGxqtRrISJ+Sri39eTe1sBrFuf3ArnYj0jzTaUn55PkCw2TTT3pPH2L37bgsRfA
-	 U9UK58yhEM93r8DcNbzEhIPyqc69ReuEeghrBZ1o=
+	b=ZAqrTnhZpsnscvsX0nSTcFDr4KEALxaaxM5Nj498SWYJZpQlZ5GUi8WSTuGNmdEQl
+	 5kpPekXzUnhhRimxgANuKIb+aB1ZxIQOe6zG9DaS4+R5Q1YXa/G9MBjWBGTHUqiVFV
+	 Y5ndHE2qgMmip1t9azACfDrLJCw4As2NGw8jAzVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yabin Cui <yabinc@google.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 058/374] coresight: etm4x: Fix access to resource selector registers
-Date: Thu,  6 Jun 2024 16:00:37 +0200
-Message-ID: <20240606131653.792348537@linuxfoundation.org>
+Subject: [PATCH 6.1 109/473] scsi: ufs: cdns-pltfrm: Perform read back after writing HCLKDIV
+Date: Thu,  6 Jun 2024 16:00:38 +0200
+Message-ID: <20240606131703.524679160@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit d6fc00d0f640d6010b51054aa8b0fd191177dbc9 ]
+[ Upstream commit b715c55daf598aac8fa339048e4ca8a0916b332e ]
 
-Resource selector pair 0 is always implemented and reserved. We must not
-touch it, even during save/restore for CPU Idle. Rest of the driver is
-well behaved. Fix the offending ones.
+Currently, HCLKDIV is written to and then completed with an mb().
 
-Reported-by: Yabin Cui <yabinc@google.com>
-Fixes: f188b5e76aae ("coresight: etm4x: Save/restore state across CPU low power states")
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Tested-by: Yabin Cui <yabinc@google.com>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Link: https://lore.kernel.org/r/20240412142702.2882478-5-suzuki.poulose@arm.com
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring this
+bit has taken effect on the device is to perform a read back to force it to
+make it all the way to the device. This is documented in device-io.rst and
+a talk by Will Deacon on this can be seen over here:
+
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
+
+Let's do that to ensure the bit hits the device. Because the mb()'s purpose
+wasn't to add extra ordering (on top of the ordering guaranteed by
+writel()/readl()), it can safely be removed.
+
+Fixes: d90996dae8e4 ("scsi: ufs: Add UFS platform driver for Cadence UFS")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-6-181252004586@redhat.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/ufs/host/cdns-pltfrm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 8643b77e50f41..a0bdfabddbc68 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -1758,7 +1758,8 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 		state->trccntvr[i] = etm4x_read32(csa, TRCCNTVRn(i));
- 	}
+diff --git a/drivers/ufs/host/cdns-pltfrm.c b/drivers/ufs/host/cdns-pltfrm.c
+index e05c0ae64eea4..38a238eaa2133 100644
+--- a/drivers/ufs/host/cdns-pltfrm.c
++++ b/drivers/ufs/host/cdns-pltfrm.c
+@@ -137,7 +137,7 @@ static int cdns_ufs_set_hclkdiv(struct ufs_hba *hba)
+ 	 * Make sure the register was updated,
+ 	 * UniPro layer will not work with an incorrect value.
+ 	 */
+-	mb();
++	ufshcd_readl(hba, CDNS_UFS_REG_HCLKDIV);
  
--	for (i = 0; i < drvdata->nr_resource * 2; i++)
-+	/* Resource selector pair 0 is reserved */
-+	for (i = 2; i < drvdata->nr_resource * 2; i++)
- 		state->trcrsctlr[i] = etm4x_read32(csa, TRCRSCTLRn(i));
- 
- 	for (i = 0; i < drvdata->nr_ss_cmp; i++) {
-@@ -1889,7 +1890,8 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- 		etm4x_relaxed_write32(csa, state->trccntvr[i], TRCCNTVRn(i));
- 	}
- 
--	for (i = 0; i < drvdata->nr_resource * 2; i++)
-+	/* Resource selector pair 0 is reserved */
-+	for (i = 2; i < drvdata->nr_resource * 2; i++)
- 		etm4x_relaxed_write32(csa, state->trcrsctlr[i], TRCRSCTLRn(i));
- 
- 	for (i = 0; i < drvdata->nr_ss_cmp; i++) {
+ 	return 0;
+ }
 -- 
 2.43.0
 
