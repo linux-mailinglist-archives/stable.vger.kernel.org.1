@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-48464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0538FE91E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC138FEDDC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CA4B1F25241
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CF2DB29AE6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F3119754B;
-	Thu,  6 Jun 2024 14:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844BD19E7F7;
+	Thu,  6 Jun 2024 14:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3g/fmH4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXw8OKxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D1619753E;
-	Thu,  6 Jun 2024 14:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4FE1BE23E;
+	Thu,  6 Jun 2024 14:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682982; cv=none; b=Xp0SrnVM552jhn5ILA0jONd7GbxvBwJ4WdYCeYdmu2y0hFMAIzx150NpTjSlL1uKhASbQD7uudb6bSohDXB01UqJZfeJWpFXHwa+PRxkQfVmQFOpUop94FP3aRRhk5cvQS2E9VrO6e3xxmwKNKbzEDVarBKb5dwRse/IcB+yGvw=
+	t=1717683532; cv=none; b=twk22ZtU+cJycbOKViP5OeZFQVPLODy1nEx34zgkkNPfxNnQmCuEYw3Mk+AcbzACga09pExcfEiLXxCP6w9eweq/GHpLfUI/Ev77pKHQPrOv5n95u4/MDhynvuVmxn0kq/qjc3A1xrYIC/E7lI18CvOkGFM50uQ5aeh4ipa1IlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682982; c=relaxed/simple;
-	bh=CffEr3wslm1qOz3Pbl5gop9UTVXexnvknkF3MqDhDfk=;
+	s=arc-20240116; t=1717683532; c=relaxed/simple;
+	bh=q/ocA9YPOctYLQj3SsnOcG6HsrM7R8bESiwT6P+pLes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTbCePZ2MVzBK2+CB3OJVqKBNq6wAXNgMZZTav52QuOw4fMXGBAuI9+DKk2rZVYHngWZprL3wDDXb9RvuC5V+r1uBGboxdXn+7AMWbrqXEhlvF3veWVFfzb3Gl175MWslL7o0D1WS16GurCFu5E40zySno7EOHTzDFer6NpqOGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3g/fmH4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31E3C32781;
-	Thu,  6 Jun 2024 14:09:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=COnznBOQ/GoJGnlq3jfOpPBJOVJccrCxDvRuNML9EP4L+TCgydg5UPe7r0NFMKtdeVLjR3gwduBLNvxf8z0lSKu7hhyDmpC5faChyzldwKy7TzLKXce7G+F0y/25Z3F+1YHf340s72KdTgxP1WdOGbMeAnb8DFpRwOWmahAJPhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXw8OKxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1719DC32782;
+	Thu,  6 Jun 2024 14:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682981;
-	bh=CffEr3wslm1qOz3Pbl5gop9UTVXexnvknkF3MqDhDfk=;
+	s=korg; t=1717683532;
+	bh=q/ocA9YPOctYLQj3SsnOcG6HsrM7R8bESiwT6P+pLes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S3g/fmH4/gVIp7kHRnMeGlN3wKQhBLVP/CVOA/X5EFr2YND82RNHOSzWKv2Hs/67r
-	 F0idZ4aiWyOSIu1m/HwJg87do3h/cYqETvrRtcCNrT6DrWVIdmNQfkIy8QccsuMb0I
-	 QWrTOlsqPNUtgBzMswk8KrOnWgfsmJQzWDOG1B7E=
+	b=vXw8OKxdSfMCGrJ2EzV4vQdZNG+4E4OsEQ9RPXuRqNSWS6FFd/fxEs8zQQi7NGjXY
+	 5heeGguXFZd+uDNgfzFJd960Sek/ZFeQ5Vefg5CCpYz9vEuiTWSMFYcgb7+5/Zf2AB
+	 k6nEZBfuDpt8Koq2MYHvZ1U5YXZgdLgHzK+MoMrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Macek <wmacek@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 165/374] drm/mediatek: dp: Fix mtk_dp_aux_transfer return value
+Subject: [PATCH 6.6 472/744] leds: pwm: Disable PWM when going to suspend
 Date: Thu,  6 Jun 2024 16:02:24 +0200
-Message-ID: <20240606131657.434161761@linuxfoundation.org>
+Message-ID: <20240606131747.600212143@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojciech Macek <wmacek@chromium.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 8431fff9e0f3fc1c5844cf99a73b49b63ceed481 ]
+[ Upstream commit 974afccd37947a6951a052ef8118c961e57eaf7b ]
 
-In case there is no DP device attached to the port the
-transfer function should return IO error, similar to what
-other drivers do.
-In case EAGAIN is returned then any read from /dev/drm_dp_aux
-device ends up in an infinite loop as the upper layers
-constantly repeats the transfer request.
+On stm32mp1xx based machines (and others) a PWM consumer has to disable
+the PWM because an enabled PWM refuses to suspend. So check the
+LED_SUSPENDED flag and depending on that set the .enabled property.
 
-Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
-Signed-off-by: Wojciech Macek <wmacek@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240417103819.990512-1-wmacek@chromium.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218559
+Fixes: 76fe464c8e64 ("leds: pwm: Don't disable the PWM when the LED should be off")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20240417153846.271751-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/leds/leds-pwm.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index 0ba72102636aa..536366956447a 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -2104,7 +2104,7 @@ static ssize_t mtk_dp_aux_transfer(struct drm_dp_aux *mtk_aux,
+diff --git a/drivers/leds/leds-pwm.c b/drivers/leds/leds-pwm.c
+index 4e3936a39d0ed..e1b414b403534 100644
+--- a/drivers/leds/leds-pwm.c
++++ b/drivers/leds/leds-pwm.c
+@@ -53,7 +53,13 @@ static int led_pwm_set(struct led_classdev *led_cdev,
+ 		duty = led_dat->pwmstate.period - duty;
  
- 	if (mtk_dp->bridge.type != DRM_MODE_CONNECTOR_eDP &&
- 	    !mtk_dp->train_info.cable_plugged_in) {
--		ret = -EAGAIN;
-+		ret = -EIO;
- 		goto err;
- 	}
+ 	led_dat->pwmstate.duty_cycle = duty;
+-	led_dat->pwmstate.enabled = true;
++	/*
++	 * Disabling a PWM doesn't guarantee that it emits the inactive level.
++	 * So keep it on. Only for suspending the PWM should be disabled because
++	 * otherwise it refuses to suspend. The possible downside is that the
++	 * LED might stay (or even go) on.
++	 */
++	led_dat->pwmstate.enabled = !(led_cdev->flags & LED_SUSPENDED);
+ 	return pwm_apply_might_sleep(led_dat->pwm, &led_dat->pwmstate);
+ }
  
 -- 
 2.43.0
