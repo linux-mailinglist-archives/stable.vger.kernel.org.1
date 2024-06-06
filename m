@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-49339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133F38FECDB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B96BF8FE97A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8714BB28AF1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF2D61C242E8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8ACE1B3724;
-	Thu,  6 Jun 2024 14:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D8219AA5D;
+	Thu,  6 Jun 2024 14:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UD+VQDWK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnaIv7+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C2D198E66;
-	Thu,  6 Jun 2024 14:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7B719AA5C;
+	Thu,  6 Jun 2024 14:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683417; cv=none; b=or2oYbUafKkFRmRTw7QNr/K6H8vtWAYlKoOjbsojfMsq8fA7YqoIV1d6oADul6P9gN9HwTiaYOCQ7rEN95F16k/qbzSjZV8iJlwUtIYXUCigbwbGOglx6gUTANTjne7umj/Cre9VNQaBC7m7WU5p5MyV2T5sN16P+EqaogOCGKM=
+	t=1717683029; cv=none; b=jh5EwzSjjW4VIfgtBrqRP8/cVVYRtLxsnoOjCG9IhujRUkzOCgQDnEzSPfPVXE43YfVoI02SbXcmZMpz/zWEYrv00qjzv4Kb7oMfSe6OdT98z3O/o0pJYGh9bFC+Sc1sw30pcFtLyyzBKN+9otDzwN7YXP+6bAMlmzpftOElKEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683417; c=relaxed/simple;
-	bh=5YEfUUYN2ULVg1tl1Ya4pkZaNCKiVoVA6u4YD9TaR+s=;
+	s=arc-20240116; t=1717683029; c=relaxed/simple;
+	bh=eNE7NWfYPr/gY5KIOl12D9npsrK175Xy0KckwFewDIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+vMYtqm0uhe2WyTMkOtpXez3Ib2FxwK7ilEC4/BAG8s8rFfL/o2Ud8gJiGdGz9R0Q8We1IXD9SbsD6XesvBc/sKXa7cp6Z2gnKLHh185pCLKYfYMJVIZw32WkDhsOWjuYacdCDi4lfqQUHHo9ogksxbLff5P5MDQpJZMBcg4Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UD+VQDWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCDEC4AF08;
-	Thu,  6 Jun 2024 14:16:57 +0000 (UTC)
+	 MIME-Version; b=XYSOfxbRWcwO3Eqkykr+ZtHgLT0g1yByniDi5HVu2cIeG1VbhJOdBx27qUcpZnbn+yP3ZFFolUaTlvewEe5Vucvae+6Vq5kE5gz/5aM8BsjRlQN5rRufc0Neeo1+Go/ep32VEVXcbneLsBEuR3U4XZ15A+5PERrCgidm+rIHfJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FnaIv7+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E8DC32781;
+	Thu,  6 Jun 2024 14:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683417;
-	bh=5YEfUUYN2ULVg1tl1Ya4pkZaNCKiVoVA6u4YD9TaR+s=;
+	s=korg; t=1717683028;
+	bh=eNE7NWfYPr/gY5KIOl12D9npsrK175Xy0KckwFewDIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UD+VQDWK+tffHsvky9ZCLn+bBfvlu63m+LG+lokycpEqvDoDO9417aryp2sbF7pcL
-	 LcT+nM1YMxIVYgkmGajN/4URE5ldlONA+Bo8vtMzrEfvtX40RYPI/h8RvYv6UgL5nZ
-	 6NYTHdZLwlBzH8nMa4QONjM4Y3FuJFZcL3c/Wymk=
+	b=FnaIv7+J0BcFJNPUeKY9Z7rvs/+MLXFo4oZPzqv+I9mj4kIx/KSOFKi0/7O1Pv0Dt
+	 7uVrtB1YfwvHoIGbjD5bAQgd07f6hL+xhHCBoQhANkOhjX5/9nSLd0f4ZDElah3sFM
+	 IlSWx0Sap21RMpKXuZvZJl6nX8h45PiO28Ay6e5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
-	German Gomez <german.gomez@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Leo Yan <leo.yan@linaro.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Zhengjun Xing <zhengjun.xing@linux.intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 300/473] perf test: Add leafloop test workload
+Subject: [PATCH 6.9 250/374] selftests: net: Unify code of busywait() and slowwait()
 Date: Thu,  6 Jun 2024 16:03:49 +0200
-Message-ID: <20240606131709.839849773@linuxfoundation.org>
+Message-ID: <20240606131700.197785975@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,126 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit 41522f7442905814c654dbe2ca7b8d3605c7e0cc ]
+[ Upstream commit a4022a332f437ae5b10921d66058ce98a2db2c20 ]
 
-The leafloop workload is to run an infinite loop in the test_leaf
-function.  This is needed for the ARM fp callgraph test to verify if it
-gets the correct callchains.
+Bodies of busywait() and slowwait() functions are almost identical. Extract
+the common code into a helper, loopy_wait, and convert busywait() and
+slowwait() into trivial wrappers.
 
-  $ perf test -w leafloop
+Moreover, the fact that slowwait() uses seconds for units is really not
+intuitive, and the comment does not help much. Instead make the unit part
+of the name of the argument to further clarify what units are expected.
 
-Committer notes:
-
-Add a:
-
-  -U_FORTIFY_SOURCE
-
-to the leafloop CFLAGS as the main perf flags set it and it requires
-building with optimization, and this new test has a -O0.
-
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Zhengjun Xing <zhengjun.xing@linux.intel.com>
-Link: https://lore.kernel.org/r/20221116233854.1596378-6-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 256ef072b384 ("perf tests: Make "test data symbol" more robust on Neoverse N1")
+Cc: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Benjamin Poirier <bpoirier@nvidia.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: ea63ac142925 ("selftests/net: use tc rule to filter the na packet")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/builtin-test.c       |  1 +
- tools/perf/tests/tests.h              |  1 +
- tools/perf/tests/workloads/Build      |  3 +++
- tools/perf/tests/workloads/leafloop.c | 34 +++++++++++++++++++++++++++
- 4 files changed, 39 insertions(+)
- create mode 100644 tools/perf/tests/workloads/leafloop.c
+ tools/testing/selftests/net/forwarding/lib.sh | 22 ++-----------------
+ tools/testing/selftests/net/lib.sh            | 16 +++++++++++---
+ 2 files changed, 15 insertions(+), 23 deletions(-)
 
-diff --git a/tools/perf/tests/builtin-test.c b/tools/perf/tests/builtin-test.c
-index 161f38476e77b..0ed5ac452f6ee 100644
---- a/tools/perf/tests/builtin-test.c
-+++ b/tools/perf/tests/builtin-test.c
-@@ -121,6 +121,7 @@ static struct test_suite **tests[] = {
- static struct test_workload *workloads[] = {
- 	&workload__noploop,
- 	&workload__thloop,
-+	&workload__leafloop,
- };
+diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
+index 99ab42319e3e3..01322758255f7 100644
+--- a/tools/testing/selftests/net/forwarding/lib.sh
++++ b/tools/testing/selftests/net/forwarding/lib.sh
+@@ -41,27 +41,9 @@ source "$net_forwarding_dir/../lib.sh"
+ # timeout in seconds
+ slowwait()
+ {
+-	local timeout=$1; shift
+-
+-	local start_time="$(date -u +%s)"
+-	while true
+-	do
+-		local out
+-		out=$("$@")
+-		local ret=$?
+-		if ((!ret)); then
+-			echo -n "$out"
+-			return 0
+-		fi
++	local timeout_sec=$1; shift
  
- static int num_subtests(const struct test_suite *t)
-diff --git a/tools/perf/tests/tests.h b/tools/perf/tests/tests.h
-index e6edfeeadaeba..86804dd6452b7 100644
---- a/tools/perf/tests/tests.h
-+++ b/tools/perf/tests/tests.h
-@@ -202,5 +202,6 @@ struct test_workload workload__##work = {	\
- /* The list of test workloads */
- DECLARE_WORKLOAD(noploop);
- DECLARE_WORKLOAD(thloop);
-+DECLARE_WORKLOAD(leafloop);
+-		local current_time="$(date -u +%s)"
+-		if ((current_time - start_time > timeout)); then
+-			echo -n "$out"
+-			return 1
+-		fi
+-
+-		sleep 0.1
+-	done
++	loopy_wait "sleep 0.1" "$((timeout_sec * 1000))" "$@"
+ }
  
- #endif /* TESTS_H */
-diff --git a/tools/perf/tests/workloads/Build b/tools/perf/tests/workloads/Build
-index b8964b1099c0e..03dc675a4a7c8 100644
---- a/tools/perf/tests/workloads/Build
-+++ b/tools/perf/tests/workloads/Build
-@@ -2,3 +2,6 @@
+ ##############################################################################
+diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+index e826ec1cc9d88..308c3b0bcf210 100644
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -53,9 +53,10 @@ ksft_exit_status_merge()
+ 		$ksft_xfail $ksft_pass $ksft_skip $ksft_fail
+ }
  
- perf-y += noploop.o
- perf-y += thloop.o
-+perf-y += leafloop.o
+-busywait()
++loopy_wait()
+ {
+-	local timeout=$1; shift
++	local sleep_cmd=$1; shift
++	local timeout_ms=$1; shift
+ 
+ 	local start_time="$(date -u +%s%3N)"
+ 	while true
+@@ -69,13 +70,22 @@ busywait()
+ 		fi
+ 
+ 		local current_time="$(date -u +%s%3N)"
+-		if ((current_time - start_time > timeout)); then
++		if ((current_time - start_time > timeout_ms)); then
+ 			echo -n "$out"
+ 			return 1
+ 		fi
 +
-+CFLAGS_leafloop.o         = -g -O0 -fno-inline -fno-omit-frame-pointer -U_FORTIFY_SOURCE
-diff --git a/tools/perf/tests/workloads/leafloop.c b/tools/perf/tests/workloads/leafloop.c
-new file mode 100644
-index 0000000000000..1bf5cc97649b0
---- /dev/null
-+++ b/tools/perf/tests/workloads/leafloop.c
-@@ -0,0 +1,34 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#include <stdlib.h>
-+#include <linux/compiler.h>
-+#include "../tests.h"
-+
-+/* We want to check these symbols in perf script */
-+noinline void leaf(volatile int b);
-+noinline void parent(volatile int b);
-+
-+static volatile int a;
-+
-+noinline void leaf(volatile int b)
++		$sleep_cmd
+ 	done
+ }
+ 
++busywait()
 +{
-+	for (;;)
-+		a += b;
++	local timeout_ms=$1; shift
++
++	loopy_wait : "$timeout_ms" "$@"
 +}
 +
-+noinline void parent(volatile int b)
-+{
-+	leaf(b);
-+}
-+
-+static int leafloop(int argc, const char **argv)
-+{
-+	int c = 1;
-+
-+	if (argc > 0)
-+		c = atoi(argv[0]);
-+
-+	parent(c);
-+	return 0;
-+}
-+
-+DEFINE_WORKLOAD(leafloop);
+ cleanup_ns()
+ {
+ 	local ns=""
 -- 
 2.43.0
 
