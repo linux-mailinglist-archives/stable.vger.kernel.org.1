@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E79008FEBB1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2DF38FEBC6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70F0028484E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50C75283D73
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C7C1ABCB2;
-	Thu,  6 Jun 2024 14:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC551ABCD9;
+	Thu,  6 Jun 2024 14:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIVdma5G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ran05jK/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643F7197A8F;
-	Thu,  6 Jun 2024 14:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C959197A93;
+	Thu,  6 Jun 2024 14:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683282; cv=none; b=AE0TH9kyWcsZh/ItmVpRpHd7yTJ6ta5v7O6zH9FTTd//b+jCrqwQlwfpV+B4Rwi9WoBqpP4sP5TZhCUfTskvbQzIQT/6v4P0IX0JfVoQ2n60ezEI4TD+/14p7pfl+JGnzjdOGiC7pX2IMVRF4Lqxa9RmIEV2ZAw9PFHdW7fNrEw=
+	t=1717683293; cv=none; b=L79cN+a0GWWc1ND1dwOzuJrr98dB7A6qkVWAjkqq714R1sYjlt0OfZUTmf6TrJnp/4g22dprHfghNLHJz++5yn2yXRcG0C4qutFnRdbMng5iX+yU3+Rn/ONWR/XYqhXfeMzL/TJ4iHfpk78gmL+Six2LP2zlPBedDvNJDl0jdSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683282; c=relaxed/simple;
-	bh=xx9icGSRU8GcDmcHp6FarrgHSQ3OEtspRbrygO3EjaI=;
+	s=arc-20240116; t=1717683293; c=relaxed/simple;
+	bh=HwxUU5Hzbk40hFU+QVNJ0xgG4nzQPdzMP0h1QgqBlKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQY3FUJP25W2sHbzOTplyd5d1LeSoBI6D+bvXB04+6GzXtbufQ+VpFznjQSO9CcB1MwSRCjswt7IcRF+lCeshRbWvVo8iHBsJBPmn5+a+hY5JDeRaE1+qY6GcUilXmrsJajMBpnl06vtvvKWf6eLhw9NOO0prosxvG0vyxgxJ3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIVdma5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D95C32781;
-	Thu,  6 Jun 2024 14:14:42 +0000 (UTC)
+	 MIME-Version; b=BxWyJEF3BZzNPTsbNr5gmjW1B0xT+s6aNPB3ab5E81ONm/1jkFvbIw2gT5w90tLXnE4PL7F65hufc2Ehd6OwcXpP3OurwUa/Du+uQ5qfwXJ8ottp5R8sJozJnmCMPQ0Z+IQ37ax+ImXzzMPucwfZgMXWmtBi3fleP2eO+POst58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ran05jK/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A3D0C2BD10;
+	Thu,  6 Jun 2024 14:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683282;
-	bh=xx9icGSRU8GcDmcHp6FarrgHSQ3OEtspRbrygO3EjaI=;
+	s=korg; t=1717683293;
+	bh=HwxUU5Hzbk40hFU+QVNJ0xgG4nzQPdzMP0h1QgqBlKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gIVdma5GAxhup8PJTFCGGbWGXYEYRSoAnZVJBtVjY9owwsD4i5NunuRJD6LK0QCVm
-	 oF5QQgYGbbfr6a5GvG8NK81mLqf0JjjZ+P41rpoQVnE40038UGAyR30IwkuQnMhxTm
-	 soh1+pll0/uwnlqZ9Ol3bZ4mi2H750MXhWxfWaZM=
+	b=Ran05jK/0Wyhku1o1sdJbsZFwLOLh2TA8iQML2+9LkxwbWq8lhKy+n7MdE0IXdy+k
+	 9JE8mTc6rtTEl6fFHV2MjI8NEKFKwVDyskObmrJOCA1E+2jxsNbn9dcNvVDtIGgLNk
+	 K0QttkXxwO8mxisCoARDunrebdkzkpHIPxtGq7cM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junhao He <hejunhao3@huawei.com>,
 	Hao Chen <chenhao418@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Junhao He <hejunhao3@huawei.com>,
 	Jijie Shao <shaojijie@huawei.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 206/744] drivers/perf: hisi: hns3: Fix out-of-bound access when valid event group
-Date: Thu,  6 Jun 2024 15:57:58 +0200
-Message-ID: <20240606131739.014145782@linuxfoundation.org>
+Subject: [PATCH 6.6 207/744] drivers/perf: hisi: hns3: Actually use devm_add_action_or_reset()
+Date: Thu,  6 Jun 2024 15:57:59 +0200
+Message-ID: <20240606131739.044107982@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,67 +69,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: Hao Chen <chenhao418@huawei.com>
 
-[ Upstream commit 81bdd60a3d1d3b05e6cc6674845afb1694dd3a0e ]
+[ Upstream commit 582c1aeee0a9e73010cf1c4cef338709860deeb0 ]
 
-The perf tool allows users to create event groups through following
-cmd [1], but the driver does not check whether the array index is out
-of bounds when writing data to the event_group array. If the number of
-events in an event_group is greater than HNS3_PMU_MAX_HW_EVENTS, the
-memory write overflow of event_group array occurs.
+pci_alloc_irq_vectors() allocates an irq vector. When devm_add_action()
+fails, the irq vector is not freed, which leads to a memory leak.
 
-Add array index check to fix the possible array out of bounds violation,
-and return directly when write new events are written to array bounds.
-
-There are 9 different events in an event_group.
-[1] perf stat -e '{pmu/event1/, ... ,pmu/event9/}
+Replace the devm_add_action with devm_add_action_or_reset to ensure
+the irq vector can be destroyed when it fails.
 
 Fixes: 66637ab137b4 ("drivers/perf: hisi: add driver for HNS3 PMU")
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
 Signed-off-by: Hao Chen <chenhao418@huawei.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Junhao He <hejunhao3@huawei.com>
 Reviewed-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://lore.kernel.org/r/20240425124627.13764-3-hejunhao3@huawei.com
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/r/20240425124627.13764-4-hejunhao3@huawei.com
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/hisilicon/hns3_pmu.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/perf/hisilicon/hns3_pmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/perf/hisilicon/hns3_pmu.c b/drivers/perf/hisilicon/hns3_pmu.c
-index 16869bf5bf4cc..cbdd53b0a0342 100644
+index cbdd53b0a0342..60062eaa342aa 100644
 --- a/drivers/perf/hisilicon/hns3_pmu.c
 +++ b/drivers/perf/hisilicon/hns3_pmu.c
-@@ -1085,15 +1085,27 @@ static bool hns3_pmu_validate_event_group(struct perf_event *event)
- 			return false;
- 
- 		for (num = 0; num < counters; num++) {
-+			/*
-+			 * If we find a related event, then it's a valid group
-+			 * since we don't need to allocate a new counter for it.
-+			 */
- 			if (hns3_pmu_cmp_event(event_group[num], sibling))
- 				break;
- 		}
- 
-+		/*
-+		 * Otherwise it's a new event but if there's no available counter,
-+		 * fail the check since we cannot schedule all the events in
-+		 * the group simultaneously.
-+		 */
-+		if (num == HNS3_PMU_MAX_HW_EVENTS)
-+			return false;
-+
- 		if (num == counters)
- 			event_group[counters++] = sibling;
+@@ -1527,7 +1527,7 @@ static int hns3_pmu_irq_register(struct pci_dev *pdev,
+ 		return ret;
  	}
  
--	return counters <= HNS3_PMU_MAX_HW_EVENTS;
-+	return true;
- }
- 
- static u32 hns3_pmu_get_filter_condition(struct perf_event *event)
+-	ret = devm_add_action(&pdev->dev, hns3_pmu_free_irq, pdev);
++	ret = devm_add_action_or_reset(&pdev->dev, hns3_pmu_free_irq, pdev);
+ 	if (ret) {
+ 		pci_err(pdev, "failed to add free irq action, ret = %d.\n", ret);
+ 		return ret;
 -- 
 2.43.0
 
