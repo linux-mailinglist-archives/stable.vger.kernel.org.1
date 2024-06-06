@@ -1,73 +1,56 @@
-Return-Path: <stable+bounces-48485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AC6C8FE934
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A419E8FEBF4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07250B21055
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 957D11C238DF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26EEF199258;
-	Thu,  6 Jun 2024 14:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8431B1AC257;
+	Thu,  6 Jun 2024 14:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyeCvOmH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jcEm5Vz4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96F6199255;
-	Thu,  6 Jun 2024 14:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418631AC254;
+	Thu,  6 Jun 2024 14:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682991; cv=none; b=GqW2WpxxwznzfCJq7C1+kWDuQal9fleomMU4XYdfV49h6jRJTTP6XdxB/Z2N/jIqFubBpUL2faSGR0TMEVXZ0T+63taDPnm7KU6/qGnHCTK3oG0447KkLrKBbyGX/f9ER9RZ7WMefeImckzg7ULm9OQx0iZxAAaRyGGQ6nmknSw=
+	t=1717683313; cv=none; b=k9GoHWtgzzYboY4kR9TptOg1hcWaFvltuGiOvbZi7wWuD3+AsSk6rrkVLzgHkI8LPz7SQSdY4+ytAunyh7efnPaOQQCyTn923q2guYzEGfL4Z7Vxrn6YWpPXsGEIrHVkXZzTz6pyw6Ls9lRkBKWxLiZyPqdigQVAfb7TRw71cCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682991; c=relaxed/simple;
-	bh=IqypKjAMUHeIW6c+JyEMV5IlAGQwjVY9nPNTe43MMpw=;
+	s=arc-20240116; t=1717683313; c=relaxed/simple;
+	bh=bQyye2PWkhatAonfwMVBjGdoB10MTR2gTsvIqUvonDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lL9uhte5ob0vpG+KNbffeE+Q7yWbV/aAAV0mPl21cWofnnuaJ8CxF2HgyTkqTeG74teVUgrfQdhc05EDslDseAk2QPIxkdkUqMww9bea11flJRzLBhXSlXEJTNPbAoiCZl6WqikoaPtG13TYbsnmZN46QrOpVAmpmqok7GaxmOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyeCvOmH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3691C32782;
-	Thu,  6 Jun 2024 14:09:51 +0000 (UTC)
+	 MIME-Version; b=g6oUwzsResuAq8dxxZ6XojpZ2O9NmGN0SU4EwXip3+5+qV4XgajrhV5ib9mfQtSTQ73YN0UXzdFPxFUEBr6bMLSjYZtyC3y6IcrOnyaGxDWAqrp6IXda36ySW5Ikx7RKXvxJuyou4dLTP1cdyDDKoTFMqtz0GnMQsAULZpCBnXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jcEm5Vz4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4EBC32781;
+	Thu,  6 Jun 2024 14:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682991;
-	bh=IqypKjAMUHeIW6c+JyEMV5IlAGQwjVY9nPNTe43MMpw=;
+	s=korg; t=1717683313;
+	bh=bQyye2PWkhatAonfwMVBjGdoB10MTR2gTsvIqUvonDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PyeCvOmHMzI8+y2S56llGiCC54qZ/226gZk7u0biovLGsNo6x4z1mUr4ZVdhqbjfV
-	 luCZnwBjdqqAWpUSOA/iUVwBHcExPVvydFzHtfWtYNdZeHmTADohlkbwBoSYoybjaB
-	 QmxH9cWMqcc1InTbqH1amlclq1EhEnwhwfDjR2xw=
+	b=jcEm5Vz4WOLuPN2sp7NQb5WrqUV/HI7B2hypWVcZp6xgSuiBsFZwWfYa5a+jX86Zj
+	 9u7AXig2R/R5QXzZGF2rTRwcB7i/d9fVJ9KFshMhc8usJgmyj8imHCrguuRnRucl4d
+	 5VuhSx4aYp7icQLBn20aJmu1hgj88UPQ73NUjUbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Su <tao1.su@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Bongsu Jeon <bongsu.jeon@samsung.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Edward Liaw <edliaw@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ivan Orlov <ivan.orlov0322@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Mark Brown <broonie@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Takashi Iwai <tiwai@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Drew Davenport <ddavenport@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 143/374] selftests/harness: use 1024 in place of LINE_MAX
+Subject: [PATCH 6.1 193/473] drm/panel-samsung-atna33xc20: Use ktime_get_boottime for delays
 Date: Thu,  6 Jun 2024 16:02:02 +0200
-Message-ID: <20240606131656.691910114@linuxfoundation.org>
+Message-ID: <20240606131706.329753821@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,66 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Su <tao1.su@linux.intel.com>
+From: Drew Davenport <ddavenport@chromium.org>
 
-[ Upstream commit 28d2188709d9c19a7c4601c6870edd9fa0527379 ]
+[ Upstream commit 62e43673ca84a68cc06dcaa9337a06df7f79fef9 ]
 
-Android was seeing a compilation error because its C library does not
-define LINE_MAX.  Since LINE_MAX is only used to determine the size of
-test_name[] and 1024 should be enough for the test name, use 1024 instead
-of LINE_MAX.
+ktime_get_boottime continues while the device is suspended. This change
+ensures that the resume path will not be delayed if the power off delay
+has already been met while the device is suspended
 
-Link: https://lkml.kernel.org/r/20240509053113.43462-3-tao1.su@linux.intel.com
-Fixes: 38c957f07038 ("selftests: kselftest_harness: generate test name once")
-Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Bongsu Jeon <bongsu.jeon@samsung.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Edward Liaw <edliaw@google.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Ivan Orlov <ivan.orlov0322@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Takashi Iwai <tiwai@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Drew Davenport <ddavenport@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20221117133655.2.Iebd9f79aba0a62015fd2383fe6986c2d6fe12cfd@changeid
+Stable-dep-of: 5e842d55bad7 ("drm/panel: atna33xc20: Fix unbalanced regulator in the case HPD doesn't assert")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kselftest_harness.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-samsung-atna33xc20.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
-index e8d79e0210831..b634969cbb6f1 100644
---- a/tools/testing/selftests/kselftest_harness.h
-+++ b/tools/testing/selftests/kselftest_harness.h
-@@ -56,7 +56,6 @@
- #include <asm/types.h>
- #include <ctype.h>
- #include <errno.h>
--#include <limits.h>
- #include <stdbool.h>
- #include <stdint.h>
- #include <stdio.h>
-@@ -1217,7 +1216,7 @@ void __run_test(struct __fixture_metadata *f,
- 		struct __test_metadata *t)
- {
- 	struct __test_xfail *xfail;
--	char test_name[LINE_MAX];
-+	char test_name[1024];
- 	const char *diagnostic;
+diff --git a/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c b/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
+index 5a8b978c64158..f4616f0367846 100644
+--- a/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
++++ b/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
+@@ -53,7 +53,7 @@ static void atana33xc20_wait(ktime_t start_ktime, unsigned int min_ms)
+ 	ktime_t now_ktime, min_ktime;
  
- 	/* reset test struct */
+ 	min_ktime = ktime_add(start_ktime, ms_to_ktime(min_ms));
+-	now_ktime = ktime_get();
++	now_ktime = ktime_get_boottime();
+ 
+ 	if (ktime_before(now_ktime, min_ktime))
+ 		msleep(ktime_to_ms(ktime_sub(min_ktime, now_ktime)) + 1);
+@@ -75,7 +75,7 @@ static int atana33xc20_suspend(struct device *dev)
+ 	ret = regulator_disable(p->supply);
+ 	if (ret)
+ 		return ret;
+-	p->powered_off_time = ktime_get();
++	p->powered_off_time = ktime_get_boottime();
+ 	p->el3_was_on = false;
+ 
+ 	return 0;
+@@ -93,7 +93,7 @@ static int atana33xc20_resume(struct device *dev)
+ 	ret = regulator_enable(p->supply);
+ 	if (ret)
+ 		return ret;
+-	p->powered_on_time = ktime_get();
++	p->powered_on_time = ktime_get_boottime();
+ 
+ 	if (p->no_hpd) {
+ 		msleep(HPD_MAX_MS);
+@@ -142,7 +142,7 @@ static int atana33xc20_disable(struct drm_panel *panel)
+ 		return 0;
+ 
+ 	gpiod_set_value_cansleep(p->el_on3_gpio, 0);
+-	p->el_on3_off_time = ktime_get();
++	p->el_on3_off_time = ktime_get_boottime();
+ 	p->enabled = false;
+ 
+ 	/*
 -- 
 2.43.0
 
