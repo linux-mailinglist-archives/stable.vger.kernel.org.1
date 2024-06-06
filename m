@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-49607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4688FEE03
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 373528FE911
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF50F283A74
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B688A2830E5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7564C197517;
-	Thu,  6 Jun 2024 14:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78FE3196D90;
+	Thu,  6 Jun 2024 14:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbsGhfhz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjrI5ALq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344491BF8E3;
-	Thu,  6 Jun 2024 14:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36708196C9C;
+	Thu,  6 Jun 2024 14:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683550; cv=none; b=cpktj8uxnrbGhkX2fV1+mLgF+NDRvNcK462V/O1krQ3itlf1LTwgMjcu+IWulqH0VYt0pbhNriX7NisHRRMLZALey2HzHd/PyuH402Wb27yunpVCx1/ZBlb+JmZvLdeTmk6eiKn5mdNS/G/xwtzyijoCl0c3kvSYG/1OsfrtkFc=
+	t=1717682975; cv=none; b=QljzwgP3aAfvwOejNs1brt1/LqypDyFHNr0Yn3XOj4t0DBimA+p1Bx7AxmxooJhM4ScF9EyYow7gCjBKFyshV460X/Ub+2OLkRqAk7i4aJqmIimNuGRnP8jJ9VlCvUioOkznFwJ6g0PTjyA4Kgkl61U4i3QzwW/nKXPp/hcEU0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683550; c=relaxed/simple;
-	bh=Dnxocy+DvWZeXRssaU3Egn7hwaMGhBPbV50F4fAl624=;
+	s=arc-20240116; t=1717682975; c=relaxed/simple;
+	bh=w8LhlaBHNETn3VLnKrwMSoIfK4OrJVkd4LrIv2EzeXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqXrnVxeGY4FlvW69l0pxkDmG1Vzx2zm4WO06Wc4I9Myu9IPkK3WjPTG2EAaJAsVbzAailalBJ+6vDmBapc/nVhJtV2NZidEixGYraNiIBFgGJk2auEfjCxFwK/xOlKsZdfH/5D4C7+SvU52vr9wbitKU0E/AuMiQ9PMP/voP84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbsGhfhz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1673EC2BD10;
-	Thu,  6 Jun 2024 14:19:10 +0000 (UTC)
+	 MIME-Version; b=TPs79Ils2jEKo+X12QhJs/fKq6oZsgEjkresK4wF45MbaVcWpxL05huGQLUyHZ90+5h4phwb24q9shltDx+V9vzSaz1Z0y4VlVu7vEhufd1Si9JUSlHB6jto0uBfGsFsu1Lc7sA5tC3VFlT8CcIW1QyKWS/VkH7q478TjVCCGo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjrI5ALq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16725C2BD10;
+	Thu,  6 Jun 2024 14:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683550;
-	bh=Dnxocy+DvWZeXRssaU3Egn7hwaMGhBPbV50F4fAl624=;
+	s=korg; t=1717682975;
+	bh=w8LhlaBHNETn3VLnKrwMSoIfK4OrJVkd4LrIv2EzeXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TbsGhfhzCXxWF1Wm1qzW6bQ9Y2EQz5Dnptomw/QFXtcfA+voBxlSQ6vt3SNlvSnvw
-	 sfJLtqI736VNh3ntgHiDzge5gr5FtawS8MOiLruirsG0Dz3XeCn1hk9LcCY15J22a/
-	 1mTQkNw/2bhd6wKJp0G6YYyk0amVFb7NNZxYMzFY=
+	b=FjrI5ALqhkqCLfY/kv8OBC5wDnIGglr0BHtR2ZxIZwayQ25ehsYQY7GGPJJ6Sxj6M
+	 mEDeiZjK+LFgpza/5vKYzqPRR4ihS9KjL8SPdAFNPr4Y2vBjeYcMlxkHZ+uRx5z7Px
+	 iVchMgfJEZFC7p+wS0P5vZdRoshzFWMedhubwDI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Judith Mendez <jm@ti.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 459/744] vfio/pci: fix potential memory leak in vfio_intx_enable()
+Subject: [PATCH 6.9 152/374] mmc: sdhci_am654: Fix ITAPDLY for HS400 timing
 Date: Thu,  6 Jun 2024 16:02:11 +0200
-Message-ID: <20240606131747.192629347@linuxfoundation.org>
+Message-ID: <20240606131657.014497505@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit 82b951e6fbd31d85ae7f4feb5f00ddd4c5d256e2 ]
+[ Upstream commit d3182932bb070e7518411fd165e023f82afd7d25 ]
 
-If vfio_irq_ctx_alloc() failed will lead to 'name' memory leak.
+While STRB is currently used for DATA and CRC responses, the CMD
+responses from the device to the host still require ITAPDLY for
+HS400 timing.
 
-Fixes: 18c198c96a81 ("vfio/pci: Create persistent INTx handler")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://lore.kernel.org/r/20240415015029.3699844-1-yebin10@huawei.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Currently what is stored for HS400 is the ITAPDLY from High Speed
+mode which is incorrect. The ITAPDLY for HS400 speed mode should
+be the same as ITAPDLY as HS200 timing after tuning is executed.
+Add the functionality to save ITAPDLY from HS200 tuning and save
+as HS400 ITAPDLY.
+
+Fixes: a161c45f2979 ("mmc: sdhci_am654: Enable DLL only for some speed modes")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240320223837.959900-8-jm@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_intrs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci_am654.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index 99bbd647e5d81..620134041b488 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -277,8 +277,10 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
- 		return -ENOMEM;
+diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+index 884d1b53180d7..562034af653eb 100644
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -301,6 +301,12 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
+ 	if (timing > MMC_TIMING_UHS_SDR25 && clock >= CLOCK_TOO_SLOW_HZ) {
+ 		sdhci_am654_setup_dll(host, clock);
+ 		sdhci_am654->dll_enable = true;
++
++		if (timing == MMC_TIMING_MMC_HS400) {
++			sdhci_am654->itap_del_ena[timing] = 0x1;
++			sdhci_am654->itap_del_sel[timing] = sdhci_am654->itap_del_sel[timing - 1];
++		}
++
+ 		sdhci_am654_write_itapdly(sdhci_am654, sdhci_am654->itap_del_sel[timing],
+ 					  sdhci_am654->itap_del_ena[timing]);
+ 	} else {
+@@ -531,6 +537,9 @@ static int sdhci_am654_platform_execute_tuning(struct sdhci_host *host,
  
- 	ctx = vfio_irq_ctx_alloc(vdev, 0);
--	if (!ctx)
-+	if (!ctx) {
-+		kfree(name);
- 		return -ENOMEM;
-+	}
+ 	sdhci_am654_write_itapdly(sdhci_am654, itap, sdhci_am654->itap_del_ena[timing]);
  
- 	ctx->name = name;
- 	ctx->trigger = trigger;
++	/* Save ITAPDLY */
++	sdhci_am654->itap_del_sel[timing] = itap;
++
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
