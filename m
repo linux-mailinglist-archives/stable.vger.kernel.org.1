@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-48894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 397268FEB02
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 946788FEC50
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD37BB24FE8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32381282539
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B308B1A2C13;
-	Thu,  6 Jun 2024 14:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EAA31B0109;
+	Thu,  6 Jun 2024 14:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QnRlhuwr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlKvbgFR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712C619924D;
-	Thu,  6 Jun 2024 14:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20A419AD8C;
+	Thu,  6 Jun 2024 14:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683199; cv=none; b=SUL4ClfNc0tF5RNGlQTYvHuFO9l532/XQ4ab3c6W/7lDZpIRX2B4uTRlUBK3eiavDyVWpCL4lAfr78qqDLB6En839LkDqZPQKiP6wIjLSJxv5U7KKiImoQ9xEkoaioHRz6yyPBErKfuI+xSyqakaNd/dzWoqSgVAf1OdinIxPUo=
+	t=1717683353; cv=none; b=aiPmvKkqGBVjN1Q3pd9+XO/477UGeypd1fSNOufasKT5RRD6e2koSGIkB1zH9eT1Z/63vYob3GU2vtVL6KdgwFe4tKg3RMhysUElgM7yYUOP0uFhwWORv6ghzkvajvaFKwp1XSdC6xlXNDSQWpuV2si/C62JNBVQSp9F64Bl3N8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683199; c=relaxed/simple;
-	bh=aS2E3CzOBvKwtdoUuzZRNlLM4t6rHl7RYH+dj4qBt5g=;
+	s=arc-20240116; t=1717683353; c=relaxed/simple;
+	bh=5sIWibTgJEINBwqC8e6LHh5NOOO5IGa4+w5lmZL7V1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpWIXA84fX5TwyNtiH2V58DtA+LRz4rx4wY38WA9OPiVjhPMprGBH3oYXraS055LF9TQBGxMhoRmf46SiGgVnv09rEJ+hDu9+76e4zWl5DvdTwyK6tLddK9nfXhSusnEiiK5YKIWIHmA/uB9R0wxLWFGutOlpQYLRb+KdZqAhME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QnRlhuwr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E641C32781;
-	Thu,  6 Jun 2024 14:13:19 +0000 (UTC)
+	 MIME-Version; b=MBy8i4V6SsAFR80LhyEb/LEAvvdDMS8RTcKXGEeJ0BxTkUCksy9Zw++mm2JZE4i08XbFtFrb58M6qUpHrQeudxsxNJMlmE6bn3moB5/AE+HOlr8MnY0M4nGtNvckFOFLcupOA/FMs8So6vPr6tBW8jK+/uqrFxZEzbUSzBG3iuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlKvbgFR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16E1C2BD10;
+	Thu,  6 Jun 2024 14:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683199;
-	bh=aS2E3CzOBvKwtdoUuzZRNlLM4t6rHl7RYH+dj4qBt5g=;
+	s=korg; t=1717683352;
+	bh=5sIWibTgJEINBwqC8e6LHh5NOOO5IGa4+w5lmZL7V1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QnRlhuwrb1b5zAk1U3wueI+BJoS70Kg23fIC4j1NfiA/RNNNroAE8W30ENdMJohO9
-	 ORwS9rCrWzzabnMqHoz6VAj7szqaqce2P1Rxc1p2ZMVfG5AcDPObw8ej5x01MvZhtO
-	 fkEqvGSoWHDnmyRCn9R2Zum3hLB8WqRw3LlUsOxc=
+	b=MlKvbgFRM635cmQ69xZVG2bCxaJaaywlsgdpAfO2A8B0C/J67uwhfIRsz8XMV1hU7
+	 bLHRvbx2r4ZXZ8jMblp+JL8awsaUCCWe/JhzE5UWLRhb8YJbZFsCd5wiGGF9ZxyrTm
+	 9/LS0qLY6kmsgJnxBJtKOxv0U3RiF5AR3w4T990k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Rander Wang <rander.wang@intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/473] LoongArch: Lately init pmu after smp is online
+Subject: [PATCH 6.6 293/744] ASoC: SOF: Intel: mtl: Correct rom_status_reg
 Date: Thu,  6 Jun 2024 15:59:25 +0200
-Message-ID: <20240606131701.086322505@linuxfoundation.org>
+Message-ID: <20240606131741.804794014@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +66,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit f3334ebb8a2a1841c2824594dd992e66de19deb2 ]
+[ Upstream commit 1f1b820dc3c65b6883da3130ba3b8624dcbf87db ]
 
-There is an smp function call named reset_counters() to init PMU
-registers of every CPU in PMU initialization state. It requires that all
-CPUs are online. However there is an early_initcall() wrapper for the
-PMU init funciton init_hw_perf_events(), so that pmu init funciton is
-called in do_pre_smp_initcalls() which before function smp_init().
-Function reset_counters() cannot work on other CPUs since they haven't
-boot up still.
+ACE1 architecture changed the place where the ROM updates the status code
+from the shared SRAM window to HFFLGP1QW0 register for the status and
+HFFLGP1QW0 + 4 for the error code.
 
-Here replace the wrapper early_initcall() with pure_initcall(), so that
-the PMU init function is called after every cpu is online.
+The rom_status_reg is not used on MTL because it was wrongly assigned based
+on older platform convention (SRAM window) and it was giving inconsistent
+readings.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 064520e8aeaa ("ASoC: SOF: Intel: Add support for MeteorLake (MTL)")
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Rander Wang <rander.wang@intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Link: https://msgid.link/r/20240403105210.17949-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/perf_event.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/intel/mtl.c | 4 ++--
+ sound/soc/sof/intel/mtl.h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/loongarch/kernel/perf_event.c b/arch/loongarch/kernel/perf_event.c
-index 3a2edb157b65a..1563bf47f3e2c 100644
---- a/arch/loongarch/kernel/perf_event.c
-+++ b/arch/loongarch/kernel/perf_event.c
-@@ -884,4 +884,4 @@ static int __init init_hw_perf_events(void)
+diff --git a/sound/soc/sof/intel/mtl.c b/sound/soc/sof/intel/mtl.c
+index e45a6cef63916..834eb31cd9332 100644
+--- a/sound/soc/sof/intel/mtl.c
++++ b/sound/soc/sof/intel/mtl.c
+@@ -725,7 +725,7 @@ const struct sof_intel_dsp_desc mtl_chip_info = {
+ 	.ipc_ack = MTL_DSP_REG_HFIPCXIDA,
+ 	.ipc_ack_mask = MTL_DSP_REG_HFIPCXIDA_DONE,
+ 	.ipc_ctl = MTL_DSP_REG_HFIPCXCTL,
+-	.rom_status_reg = MTL_DSP_ROM_STS,
++	.rom_status_reg = MTL_DSP_REG_HFFLGPXQWY,
+ 	.rom_init_timeout	= 300,
+ 	.ssp_count = MTL_SSP_COUNT,
+ 	.ssp_base_offset = CNL_SSP_BASE_OFFSET,
+@@ -753,7 +753,7 @@ const struct sof_intel_dsp_desc arl_s_chip_info = {
+ 	.ipc_ack = MTL_DSP_REG_HFIPCXIDA,
+ 	.ipc_ack_mask = MTL_DSP_REG_HFIPCXIDA_DONE,
+ 	.ipc_ctl = MTL_DSP_REG_HFIPCXCTL,
+-	.rom_status_reg = MTL_DSP_ROM_STS,
++	.rom_status_reg = MTL_DSP_REG_HFFLGPXQWY,
+ 	.rom_init_timeout	= 300,
+ 	.ssp_count = MTL_SSP_COUNT,
+ 	.ssp_base_offset = CNL_SSP_BASE_OFFSET,
+diff --git a/sound/soc/sof/intel/mtl.h b/sound/soc/sof/intel/mtl.h
+index 95696b3d7c4cf..fab28d5f68915 100644
+--- a/sound/soc/sof/intel/mtl.h
++++ b/sound/soc/sof/intel/mtl.h
+@@ -76,8 +76,8 @@
+ #define MTL_DSP_ROM_STS			MTL_SRAM_WINDOW_OFFSET(0) /* ROM status */
+ #define MTL_DSP_ROM_ERROR		(MTL_SRAM_WINDOW_OFFSET(0) + 0x4) /* ROM error code */
  
- 	return 0;
- }
--early_initcall(init_hw_perf_events);
-+pure_initcall(init_hw_perf_events);
+-#define MTL_DSP_REG_HFFLGPXQWY		0x163200 /* ROM debug status */
+-#define MTL_DSP_REG_HFFLGPXQWY_ERROR	0x163204 /* ROM debug error code */
++#define MTL_DSP_REG_HFFLGPXQWY		0x163200 /* DSP core0 status */
++#define MTL_DSP_REG_HFFLGPXQWY_ERROR	0x163204 /* DSP core0 error */
+ #define MTL_DSP_REG_HfIMRIS1		0x162088
+ #define MTL_DSP_REG_HfIMRIS1_IU_MASK	BIT(0)
+ 
 -- 
 2.43.0
 
