@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-49277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF82F8FEC9C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF10C8FEB48
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A38F286A6A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C699281B6B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F12198A34;
-	Thu,  6 Jun 2024 14:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953EE197A60;
+	Thu,  6 Jun 2024 14:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiiRwswV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6vqut5P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876D119B3ED;
-	Thu,  6 Jun 2024 14:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B3E1993A8;
+	Thu,  6 Jun 2024 14:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683387; cv=none; b=U498P9fTXzuN1lJMa9NtvSA8S7G05UtZgCKxHmX5UqVxiJ3uYJ0Avw6lqhu66LOo9HqUP5MxV7aXgUC76HF1R2LTWkCuHXsuUW8+vJBeXyht9n6n0MYvvI3UVGzI4SoeJe0VLObbbZlDT4yP3FD8rdtIYUgUplRyWcfaUS/CDLw=
+	t=1717683232; cv=none; b=dyXoN3k3PuXTwzXJ9vsdcUja4EwSEeEcHY9FvDjD9D+8/CysupfYTPv9TMmevqRlEToZiCsyTVWfM0oIqk0GJEJK+9TPoJaXJeLGCwKj0kz4znpvxtY/g+Lt9Womo3YxT0dMplUg9JiF/aSo7jaESMrINCuWIynDni67PvZZJVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683387; c=relaxed/simple;
-	bh=CJNzR+XlUbBxPrxcwhAgt4vtI7B7vy05RGDR7m+yFrk=;
+	s=arc-20240116; t=1717683232; c=relaxed/simple;
+	bh=gGu/pMAH9zkLRJZlBccYCwPlmEPI+kHICWTWVaW2rGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZjQRrAUWMiILUxSe3BwDJUIt2/DJK3saqNzdHJ0yjO8QLIjc2plydoyhXo1+5RGiUudWELLCNrXpXcqxl3pm1AutnWQVtDSjfl6026PQqxbuqKb1yZGgePOVBWIoVkws0lL9YZwFVZnbiBawPc1QLcXlBdjM/HAU03a8eSZQBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiiRwswV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67464C2BD10;
-	Thu,  6 Jun 2024 14:16:27 +0000 (UTC)
+	 MIME-Version; b=Dc/nJucLYdub1kprCHpCR24QjpYCS3UWrAnb/YeimMNV7U5NGZtjHN4mCDmLNYEV6faZyKgl/uMasywY4kZAO2We/LTNsn7WGJZi6bhZM4Y3rHcZDutD58PqQTKDda8QXTkaN47+ZKg78KswhDrf070jsXwH2A2Sg9ndqRhoRN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6vqut5P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E8BC2BD10;
+	Thu,  6 Jun 2024 14:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683387;
-	bh=CJNzR+XlUbBxPrxcwhAgt4vtI7B7vy05RGDR7m+yFrk=;
+	s=korg; t=1717683232;
+	bh=gGu/pMAH9zkLRJZlBccYCwPlmEPI+kHICWTWVaW2rGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HiiRwswVT8hOQtwKcPh0pQTOZa5BwAhyESxhV1UVerIIjsGMYestBJxg4hibMe033
-	 uYedDcL/iERgH5Co3M2pzL6cDYCz9QHdVzo+V2BPacDGlcwWqm45BwXGgQYM3AW/AB
-	 LQ2B2Q/8NMgoiJJe3+oAMfw285PaoDSPLxrpmmQk=
+	b=J6vqut5Pif7ZLJXaNi/50W1uo/4JLfrgYuuGqZext2uAEq6XGz/ICRB3wpcN5+bLB
+	 iNj3ArYqnRLI4n/3hv/XKFHAAJyNjU2ucBbAuiw5zlvmIreYCn10jt0VIjsek21DxT
+	 aD8hQUCqmG2Z8u/OiqD6cRwSQRMftqHVncq9EEnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 328/744] drm/panel: simple: Add missing Innolux G121X1-L03 format, flags, connector
+Subject: [PATCH 6.1 071/473] nilfs2: fix out-of-range warning
 Date: Thu,  6 Jun 2024 16:00:00 +0200
-Message-ID: <20240606131742.958517386@linuxfoundation.org>
+Message-ID: <20240606131702.226304814@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 11ac72d033b9f577e8ba0c7a41d1c312bb232593 ]
+[ Upstream commit c473bcdd80d4ab2ae79a7a509a6712818366e32a ]
 
-The .bpc = 6 implies .bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG ,
-add the missing bus_format. Add missing connector type and bus_flags
-as well.
+clang-14 points out that v_size is always smaller than a 64KB
+page size if that is configured by the CPU architecture:
 
-Documentation [1] 1.4 GENERAL SPECIFICATI0NS indicates this panel is
-capable of both RGB 18bit/24bit panel, the current configuration uses
-18bit mode, .bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG , .bpc = 6.
+fs/nilfs2/ioctl.c:63:19: error: result of comparison of constant 65536 with expression of type '__u16' (aka 'unsigned short') is always false [-Werror,-Wtautological-constant-out-of-range-compare]
+        if (argv->v_size > PAGE_SIZE)
+            ~~~~~~~~~~~~ ^ ~~~~~~~~~
 
-Support for the 24bit mode would require another entry in panel-simple
-with .bus_format = MEDIA_BUS_FMT_RGB666_1X7X4_SPWG and .bpc = 8, which
-is out of scope of this fix.
+This is ok, so just shut up that warning with a cast.
 
-[1] https://www.distec.de/fileadmin/pdf/produkte/TFT-Displays/Innolux/G121X1-L03_Datasheet.pdf
-
-Fixes: f8fa17ba812b ("drm/panel: simple: Add support for Innolux G121X1-L03")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240328102746.17868-2-marex@denx.de
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240328143051.1069575-7-arnd@kernel.org
+Fixes: 3358b4aaa84f ("nilfs2: fix problems of memory allocation in ioctl")
+Acked-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nilfs2/ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 51f838befb321..e8d12ec8dbec1 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -2407,6 +2407,9 @@ static const struct panel_desc innolux_g121x1_l03 = {
- 		.unprepare = 200,
- 		.disable = 400,
- 	},
-+	.bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
-+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
- };
+diff --git a/fs/nilfs2/ioctl.c b/fs/nilfs2/ioctl.c
+index ef9f9a2511b72..1d4d610bd82b5 100644
+--- a/fs/nilfs2/ioctl.c
++++ b/fs/nilfs2/ioctl.c
+@@ -60,7 +60,7 @@ static int nilfs_ioctl_wrap_copy(struct the_nilfs *nilfs,
+ 	if (argv->v_nmembs == 0)
+ 		return 0;
  
- static const struct display_timing innolux_g156hce_l01_timings = {
+-	if (argv->v_size > PAGE_SIZE)
++	if ((size_t)argv->v_size > PAGE_SIZE)
+ 		return -EINVAL;
+ 
+ 	/*
 -- 
 2.43.0
 
