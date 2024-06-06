@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-49633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804E38FEE35
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:43:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69AED8FEE39
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:43:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C5C61C21A50
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:43:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEDA3281637
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156881A01AE;
-	Thu,  6 Jun 2024 14:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473931A01BF;
+	Thu,  6 Jun 2024 14:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwjQkgu/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yz+jeiWo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C879E1A01A5;
-	Thu,  6 Jun 2024 14:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CAE19FA9D;
+	Thu,  6 Jun 2024 14:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683632; cv=none; b=EPwL3bT1L9UL7BiCSPfT7DGC4AasujvHrFEt67rumc46KDllUm0+lxvL1Biy9b5hcboMXynTLYzFZP4Ezw5C+XFnWZs/FkmAzX3gxipQ2dQrjXoHHiZfIxeTb8CUR0eZBE3GvlN2H+JDClNnhfnoRRsNu1+EdjPm+i+bSQCQLIk=
+	t=1717683634; cv=none; b=ItaYXRBy0OxdZpvXwHQFzEDustL99gcWEyudV4+qARvzasbu+WAevE1729hjjUtF/amRpD4p8IhlICxmiIKebtCDtSRah09C6FM1ALEf9G6O5PzbcismuOvCsPZHuGyDmnjL+vV9RgYIvPnJ1LbyjNqDWw835iKR8pFn35gU8AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683632; c=relaxed/simple;
-	bh=4BvJ3rcDHwSpuGZ5sb3lhnWSmGs36GYMuihfUAClvQs=;
+	s=arc-20240116; t=1717683634; c=relaxed/simple;
+	bh=bNW87ASMCZ2dlJvzeSKssS5qRsdnHGQsREU/mmrM5e8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ry3N/eizN4TTg6jaIFqYCIz8NR8I2ATqouwdXPulmNi2xBAG0YNf9NGz1erpA0y6qE73Sd7oryks5jJ8K4vQhNBgaVJRFVpdHo+tZH8guzz3eoDO1FMqvjycsuXG6Fe2PC9RnI5gw5X2/xsLmVQYMvYUuWw437zTQPsmcr1S1Hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwjQkgu/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693BBC32781;
-	Thu,  6 Jun 2024 14:20:32 +0000 (UTC)
+	 MIME-Version; b=MpzF8WLIrcn5iQOhN0aIIIJpCb1ct+6DhteYM9N/ISYpyIRNNGDWmtmvSu6pYl3BDsmy2oLDbFEgCyPjYvyqzNFvwMDh5Vd54HmLAOlZ3QskZGJfmOBYKbGnXpbzXIZpJEGxYR9NOgVHtUiUr4ne5zGaqtRGbbaAYGh3mHqJFVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yz+jeiWo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F8FC2BD10;
+	Thu,  6 Jun 2024 14:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683632;
-	bh=4BvJ3rcDHwSpuGZ5sb3lhnWSmGs36GYMuihfUAClvQs=;
+	s=korg; t=1717683633;
+	bh=bNW87ASMCZ2dlJvzeSKssS5qRsdnHGQsREU/mmrM5e8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwjQkgu/IHsylm7ysLV+tMMTNqjrhfZbUjbZbiA9rwMeHOvsWUn9r4ZHQ2NSTV7G8
-	 LouFTIWIy4Oy8+kxGLCKR4oftLFH5Fy8ZVfYOfbZQFzBjyIrF6kPXvb9/iXKY/E42X
-	 OKjiGIbKQZSekBmYxDeA8SeUlBqfO49uaO4XMMrI=
+	b=Yz+jeiWoVl0JSphX0vfLfRRsilbv10Rx4WJgojjsi+H95qx2+rsFnnHFm5PnEg3tk
+	 gdtTXsQpdZp0RfjutfqUjfMPl6IXjYeX2Lz3hzegclNFM4JimQHL+h21v3MbTYUXRp
+	 mNMFBUg71w2/L+unGOzoDimJYGz2ePsxfLObsFjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 453/473] net:fec: Add fec_enet_deinit()
-Date: Thu,  6 Jun 2024 16:06:22 +0200
-Message-ID: <20240606131714.675185456@linuxfoundation.org>
+Subject: [PATCH 6.1 454/473] ice: fix accounting if a VLAN already exists
+Date: Thu,  6 Jun 2024 16:06:23 +0200
+Message-ID: <20240606131714.705834078@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -68,61 +68,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit bf0497f53c8535f99b72041529d3f7708a6e2c0d ]
+[ Upstream commit 82617b9a04649e83ee8731918aeadbb6e6d7cbc7 ]
 
-When fec_probe() fails or fec_drv_remove() needs to release the
-fec queue and remove a NAPI context, therefore add a function
-corresponding to fec_enet_init() and call fec_enet_deinit() which
-does the opposite to release memory and remove a NAPI context.
+The ice_vsi_add_vlan() function is used to add a VLAN filter for the target
+VSI. This function prepares a filter in the switch table for the given VSI.
+If it succeeds, the vsi->num_vlan counter is incremented.
 
-Fixes: 59d0f7465644 ("net: fec: init multi queue date structure")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240524050528.4115581-1-xiaolei.wang@windriver.com
+It is not considered an error to add a VLAN which already exists in the
+switch table, so the function explicitly checks and ignores -EEXIST. The
+vsi->num_vlan counter is still incremented.
+
+This seems incorrect, as it means we can double-count in the case where the
+same VLAN is added twice by the caller. The actual table will have one less
+filter than the count.
+
+The ice_vsi_del_vlan() function similarly checks and handles the -ENOENT
+condition for when deleting a filter that doesn't exist. This flow only
+decrements the vsi->num_vlan if it actually deleted a filter.
+
+The vsi->num_vlan counter is used only in a few places, primarily related
+to tracking the number of non-zero VLANs. If the vsi->num_vlans gets out of
+sync, then ice_vsi_num_non_zero_vlans() will incorrectly report more VLANs
+than are present, and ice_vsi_has_non_zero_vlans() could return true
+potentially in cases where there are only VLAN 0 filters left.
+
+Fix this by only incrementing the vsi->num_vlan in the case where we
+actually added an entry, and not in the case where the entry already
+existed.
+
+Fixes: a1ffafb0b4a4 ("ice: Support configuring the device to Double VLAN Mode")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240523-net-2024-05-23-intel-net-fixes-v1-2-17a923e0bb5f@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index ebff14b0837d9..0a3df468316e5 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -3732,6 +3732,14 @@ static int fec_enet_init(struct net_device *ndev)
- 	return ret;
+diff --git a/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c b/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
+index 239266e9d5f12..80c16e04f6702 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
+@@ -45,14 +45,15 @@ int ice_vsi_add_vlan(struct ice_vsi *vsi, struct ice_vlan *vlan)
+ 		return -EINVAL;
+ 
+ 	err = ice_fltr_add_vlan(vsi, vlan);
+-	if (err && err != -EEXIST) {
++	if (!err)
++		vsi->num_vlan++;
++	else if (err == -EEXIST)
++		err = 0;
++	else
+ 		dev_err(ice_pf_to_dev(vsi->back), "Failure Adding VLAN %d on VSI %i, status %d\n",
+ 			vlan->vid, vsi->vsi_num, err);
+-		return err;
+-	}
+ 
+-	vsi->num_vlan++;
+-	return 0;
++	return err;
  }
  
-+static void fec_enet_deinit(struct net_device *ndev)
-+{
-+	struct fec_enet_private *fep = netdev_priv(ndev);
-+
-+	netif_napi_del(&fep->napi);
-+	fec_enet_free_queue(ndev);
-+}
-+
- #ifdef CONFIG_OF
- static int fec_reset_phy(struct platform_device *pdev)
- {
-@@ -4136,6 +4144,7 @@ fec_probe(struct platform_device *pdev)
- 	fec_enet_mii_remove(fep);
- failed_mii_init:
- failed_irq:
-+	fec_enet_deinit(ndev);
- failed_init:
- 	fec_ptp_stop(pdev);
- failed_reset:
-@@ -4199,6 +4208,7 @@ fec_drv_remove(struct platform_device *pdev)
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 
-+	fec_enet_deinit(ndev);
- 	free_netdev(ndev);
- 	return 0;
- }
+ /**
 -- 
 2.43.0
 
