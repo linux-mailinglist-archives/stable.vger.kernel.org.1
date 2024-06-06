@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-48518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B52E8FE957
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D71A08FEC97
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91F891F2146B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D8BFB28283
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CBF199E98;
-	Thu,  6 Jun 2024 14:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D94F6198A2F;
+	Thu,  6 Jun 2024 14:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENELMMdh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWkfIxX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82313197A83;
-	Thu,  6 Jun 2024 14:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DC91B14EA;
+	Thu,  6 Jun 2024 14:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683008; cv=none; b=Zd01rFZr2+jtIRPHrQW/e+8RtDdybiJiR0cikzxmWtoUdFdx0xnOWNHfhHnIckD+Rdg3fhUQi3Jv+DsO7yz61l+WfUzsxaB6AJvUdbtHSbcAXXlhNhT/2NkBHe6u0Wwql1W1buV3qL+SU4Fmrj+IuvFN1evzZYN7qbKGEaUPPBc=
+	t=1717683384; cv=none; b=UzA+Dq2JhZ5X8rJxctgO0h+p/SI3nD9d6oZvX1bOTj5QEv5K5cPvVyvEBRRo74hC8FAzrPQ/OO2iBMwfx9QFYg9r9MFtFpPVVP+GqzDdNNQaBsDzEqEemppxO/mS4R35YzM6WSRXwaSe8dmYpzR9LIufBie4UpxkzPLf/FL8lao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683008; c=relaxed/simple;
-	bh=jM73STagFitRaYyJi/KqnTiP9/M/NSWcL2Mf/wree+0=;
+	s=arc-20240116; t=1717683384; c=relaxed/simple;
+	bh=iKfEb79e2I6J0nYi8KuZ8qnpyONhcvs5up1Rvuu439c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lencA+cNEFxQFZOzxN7/yIa9K37hDnDCp6rBycVmm0FVVs7jSiaeffvFTh8d0HuwmrBfRUP/j4cqreNcsWB04Gr0KEaVkcV8V4uLRKjmo4f6YJSzNYi9axvOk7Bj0Ui7u9IfQP7yUD+EfU8HiBsiUBRN/jKrmwaWfnjdVqj2GcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENELMMdh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E296C4AF0A;
-	Thu,  6 Jun 2024 14:10:08 +0000 (UTC)
+	 MIME-Version; b=l9lcS0T7kJF0VXuExc1G71djHt9EunZ5H+bwr3xZ/xBpi7uwnVsmGYckmxFaPIkJCTdF0a1gvB7HNyME1lkvxnm3AHuYJRKdqizMvPpispKeKwZ/AFG0/WbxfB8eKtYCTQVH/1xpmqb33+EPHnxybDR/+gmYGrRDZRX2EzacAdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWkfIxX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5E3C32781;
+	Thu,  6 Jun 2024 14:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683008;
-	bh=jM73STagFitRaYyJi/KqnTiP9/M/NSWcL2Mf/wree+0=;
+	s=korg; t=1717683384;
+	bh=iKfEb79e2I6J0nYi8KuZ8qnpyONhcvs5up1Rvuu439c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ENELMMdhY/PgZ/olPKakVHFUmDfUgdpWUmtrIjeQjR65RUtDK35aVoO3w0R8s/ixh
-	 P2blE71Siibdk8P6gpetsqUrJR1MtL09QpG7onmmO6EfON13u0/xDTYmvpcyr/uy/s
-	 SVQ7EmzXKWJu4EfAGML7ronKZvRJAtcwwawxec0Q=
+	b=MWkfIxX6Q7cVVSgk1ZT1sGokh/5Z4q4D5tGSGRvnCQ4jqTWUZA1ebUE/z1i+LAjrn
+	 JAntXgEGIxWjgEGWvTaD6VabGWDAnohdeFBxy0b64DaLlD42t7DFCKzNyLJGIq6aBe
+	 4mF8y63IyOJ4Qu6eGfCjxs5rImPfGx4c5mI6ZDlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Edward Liaw <edliaw@google.com>,
+	Cyrill Gorcunov <gorcunov@gmail.com>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 217/374] ALSA: hda: hda_component: Initialize shared data during bind callback
+Subject: [PATCH 6.1 267/473] selftests/kcmp: remove unused open mode
 Date: Thu,  6 Jun 2024 16:03:16 +0200
-Message-ID: <20240606131659.068873605@linuxfoundation.org>
+Message-ID: <20240606131708.769645217@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Edward Liaw <edliaw@google.com>
 
-[ Upstream commit ec6f32bc924d1c00cbcd5672510758f7088f2513 ]
+[ Upstream commit eb59a58113717df04b8a8229befd8ab1e5dbf86e ]
 
-Move the initialization of the shared struct hda_component array into
-hda_component_manager_bind().
+Android bionic warns that open modes are ignored if O_CREAT or O_TMPFILE
+aren't specified.  The permissions for the file are set above:
 
-The purpose of the manager bind() callback is to allow it to perform
-initialization before binding in the component drivers. This is the
-correct place to initialize the shared data.
+	fd1 = open(kpath, O_RDWR | O_CREAT | O_TRUNC, 0644);
 
-The original implementation initialized the shared data in
-hda_component_manager_init(). This is only done once during probe()
-of the manager driver. So if the component binding was unbound and
-then rebound, the shared data would not be re-initialized.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: fd895a74dc1d ("ALSA: hda: realtek: Move hda_component implementation to module")
-Link: https://lore.kernel.org/r/20240508100347.47283-1-rf@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lkml.kernel.org/r/20240429234610.191144-1-edliaw@google.com
+Fixes: d97b46a64674 ("syscalls, x86: add __NR_kcmp syscall")
+Signed-off-by: Edward Liaw <edliaw@google.com>
+Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_component.c | 16 +++++++++++++++-
- sound/pci/hda/hda_component.h |  7 ++-----
- sound/pci/hda/patch_realtek.c |  2 +-
- 3 files changed, 18 insertions(+), 7 deletions(-)
+ tools/testing/selftests/kcmp/kcmp_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/hda_component.c b/sound/pci/hda/hda_component.c
-index cd299d7d84baf..d02589014a3fa 100644
---- a/sound/pci/hda/hda_component.c
-+++ b/sound/pci/hda/hda_component.c
-@@ -123,6 +123,21 @@ static int hda_comp_match_dev_name(struct device *dev, void *data)
- 	return !strcmp(d + n, tmp);
- }
+diff --git a/tools/testing/selftests/kcmp/kcmp_test.c b/tools/testing/selftests/kcmp/kcmp_test.c
+index 25110c7c0b3ed..d7a8e321bb16b 100644
+--- a/tools/testing/selftests/kcmp/kcmp_test.c
++++ b/tools/testing/selftests/kcmp/kcmp_test.c
+@@ -91,7 +91,7 @@ int main(int argc, char **argv)
+ 		ksft_print_header();
+ 		ksft_set_plan(3);
  
-+int hda_component_manager_bind(struct hda_codec *cdc,
-+			       struct hda_component *comps, int count)
-+{
-+	int i;
-+
-+	/* Init shared data */
-+	for (i = 0; i < count; ++i) {
-+		memset(&comps[i], 0, sizeof(comps[i]));
-+		comps[i].codec = cdc;
-+	}
-+
-+	return component_bind_all(hda_codec_dev(cdc), comps);
-+}
-+EXPORT_SYMBOL_NS_GPL(hda_component_manager_bind, SND_HDA_SCODEC_COMPONENT);
-+
- int hda_component_manager_init(struct hda_codec *cdc,
- 			       struct hda_component *comps, int count,
- 			       const char *bus, const char *hid,
-@@ -143,7 +158,6 @@ int hda_component_manager_init(struct hda_codec *cdc,
- 		sm->hid = hid;
- 		sm->match_str = match_str;
- 		sm->index = i;
--		comps[i].codec = cdc;
- 		component_match_add(dev, &match, hda_comp_match_dev_name, sm);
- 	}
- 
-diff --git a/sound/pci/hda/hda_component.h b/sound/pci/hda/hda_component.h
-index c80a66691b5d8..c70b3de68ab20 100644
---- a/sound/pci/hda/hda_component.h
-+++ b/sound/pci/hda/hda_component.h
-@@ -75,11 +75,8 @@ int hda_component_manager_init(struct hda_codec *cdc,
- void hda_component_manager_free(struct hda_codec *cdc,
- 				const struct component_master_ops *ops);
- 
--static inline int hda_component_manager_bind(struct hda_codec *cdc,
--					     struct hda_component *comps)
--{
--	return component_bind_all(hda_codec_dev(cdc), comps);
--}
-+int hda_component_manager_bind(struct hda_codec *cdc,
-+			       struct hda_component *comps, int count);
- 
- static inline void hda_component_manager_unbind(struct hda_codec *cdc,
- 					       struct hda_component *comps)
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 3b8b4ab488a61..08598a4f1fa3f 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6793,7 +6793,7 @@ static int comp_bind(struct device *dev)
- 	struct alc_spec *spec = cdc->spec;
- 	int ret;
- 
--	ret = hda_component_manager_bind(cdc, spec->comps);
-+	ret = hda_component_manager_bind(cdc, spec->comps, ARRAY_SIZE(spec->comps));
- 	if (ret)
- 		return ret;
- 
+-		fd2 = open(kpath, O_RDWR, 0644);
++		fd2 = open(kpath, O_RDWR);
+ 		if (fd2 < 0) {
+ 			perror("Can't open file");
+ 			ksft_exit_fail();
 -- 
 2.43.0
 
