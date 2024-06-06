@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B21708FEED6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7C88FED6F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F0DD287F9F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E22F7B21854
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0970197549;
-	Thu,  6 Jun 2024 14:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413951BB683;
+	Thu,  6 Jun 2024 14:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IffV1sdh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyZBdTLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02351C7D76;
-	Thu,  6 Jun 2024 14:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004E5198E92;
+	Thu,  6 Jun 2024 14:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683707; cv=none; b=gsayFKSFUWFipHKQQ/Ci+04aYe8XBog8Yn1RwOefIeLVsnjfh9jMPidcfhqLn94fgxTuegsPWmSkJ1N0oaNwrvYoW1GqOuEL1qcXUnyzp+hZkSkwTzS6pHYkNQCcHJYCft1pnbiGH8iaybBjW6rbciL8+idFDTtG9g9uEqCIgMs=
+	t=1717683488; cv=none; b=usSOPboCGxzvWvOMmoXcIwKyW1ooLWA2lyF5OA/eLqrhX8il+50uYbNQ/IBuEamWYy0WRph2TZ6otRwVZvbBt2hW4pdHBm4o2CItQ8VGzJp79bVCkgqJxkBkmeJ8TsIBLnJllSJg8z4WLFOjuTGGK0Ulk90UOP6Up6Ff5uC7e4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683707; c=relaxed/simple;
-	bh=tEBr8ClS1/wEOOgqvVXfuyyP+iNcb5s/u9D/DPAN8bo=;
+	s=arc-20240116; t=1717683488; c=relaxed/simple;
+	bh=6FSpXIf7oGmTC/yUlWsO2GrGxc15vaPb5FSQdNW1XN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZhP1qnpQRreVVd36aiV59NoH1DsZfRYe/ZiPXFg3FL2MWus2YmI+Dq6j9X+1VMlfZ6EldtGv3VXXBhrQu45bud5bDBWDcQVloxDMsoSUbniFkWgzwHtfFkzMCVUQhcSxZP7SmDlv9xMn5vGXlPna1V9O78XH3rBpHaQpvUfzHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IffV1sdh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA3DC2BD10;
-	Thu,  6 Jun 2024 14:21:47 +0000 (UTC)
+	 MIME-Version; b=JD/eRf04qkA47j9CK6MCPiJe+ttp8+eiIyz4EkQcCYwhHQxQzYQkwLmTyjo5px2P9KIHV/Y+c6raM6xLoVVXhbg6Tvc0SuaGIeuCON7HWbtQ+rsOBCM3wR0QVFuNTcP5NiTCvxaBnp5CsaGKO3GkK0KRBz8ZWuHe5weR3i/BKjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyZBdTLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3350C2BD10;
+	Thu,  6 Jun 2024 14:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683707;
-	bh=tEBr8ClS1/wEOOgqvVXfuyyP+iNcb5s/u9D/DPAN8bo=;
+	s=korg; t=1717683487;
+	bh=6FSpXIf7oGmTC/yUlWsO2GrGxc15vaPb5FSQdNW1XN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IffV1sdhy015GuqI0jesdwCibBY3sPSup0R5a4ma5Ntb/bRxQ/+M9rsZIZvT1ykMT
-	 QEaU5S89+8JDPPwllxOhAU9xY3odp6oUhUvVTIH1cwFp46/hNfn7vynbA2t1gKU1RQ
-	 vMGh8w5KzVSWCAjljC/45xhpF7rjZV4UwaNqQzpk=
+	b=QyZBdTLIvLmocx1lcZ8vktuNHQBSN+WNt7WDkpHUtD9BY35nPbPIBe0T2GDsYRUMJ
+	 D6fzm/kbnE8DtZWM70hK3eFJihVjpG4m+kKUDWPbRlwGFSLxvAMgCVLMoXUPf1Aamr
+	 j4X95VFkdEBBzE2LqttFMS8djukAu8lFzqWObe8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taehee Yoo <ap420073@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Michael Walle <mwalle@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 635/744] selftests: net: kill smcrouted in the cleanup logic in amt.sh
+Subject: [PATCH 6.1 378/473] drm/bridge: tc358775: fix support for jeida-18 and jeida-24
 Date: Thu,  6 Jun 2024 16:05:07 +0200
-Message-ID: <20240606131752.849072366@linuxfoundation.org>
+Message-ID: <20240606131712.366622925@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit cc563e749810f5636451d4b833fbd689899ecdb9 ]
+[ Upstream commit 30ea09a182cb37c4921b9d477ed18107befe6d78 ]
 
-The amt.sh requires smcrouted for multicasting routing.
-So, it starts smcrouted before forwarding tests.
-It must be stopped after all tests, but it isn't.
+The bridge always uses 24bpp internally. Therefore, for jeida-18
+mapping we need to discard the lowest two bits for each channel and thus
+starting with LV_[RGB]2. jeida-24 has the same mapping but uses four
+lanes instead of three, with the forth pair transmitting the lowest two
+bits of each channel. Thus, the mapping between jeida-18 and jeida-24
+is actually the same, except that one channel is turned off (by
+selecting the RGB666 format in VPCTRL).
 
-To fix this issue, it kills smcrouted in the cleanup logic.
+While at it, remove the bogus comment about the hardware default because
+the default is overwritten in any case.
 
-Fixes: c08e8baea78e ("selftests: add amt interface selftest script")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Tested with a jeida-18 display (Evervision VGG644804).
+
+Fixes: b26975593b17 ("display/drm/bridge: TC358775 DSI/LVDS driver")
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240225062008.33191-5-tony@atomide.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/amt.sh | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/tc358775.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/net/amt.sh b/tools/testing/selftests/net/amt.sh
-index 5175a42cbe8a2..7e7ed6c558da9 100755
---- a/tools/testing/selftests/net/amt.sh
-+++ b/tools/testing/selftests/net/amt.sh
-@@ -77,6 +77,7 @@ readonly LISTENER=$(mktemp -u listener-XXXXXXXX)
- readonly GATEWAY=$(mktemp -u gateway-XXXXXXXX)
- readonly RELAY=$(mktemp -u relay-XXXXXXXX)
- readonly SOURCE=$(mktemp -u source-XXXXXXXX)
-+readonly SMCROUTEDIR="$(mktemp -d)"
- ERR=4
- err=0
+diff --git a/drivers/gpu/drm/bridge/tc358775.c b/drivers/gpu/drm/bridge/tc358775.c
+index b1c8ce5d20186..40d6da7743325 100644
+--- a/drivers/gpu/drm/bridge/tc358775.c
++++ b/drivers/gpu/drm/bridge/tc358775.c
+@@ -455,10 +455,6 @@ static void tc_bridge_enable(struct drm_bridge *bridge)
+ 	dev_dbg(tc->dev, "bus_formats %04x bpc %d\n",
+ 		connector->display_info.bus_formats[0],
+ 		tc->bpc);
+-	/*
+-	 * Default hardware register settings of tc358775 configured
+-	 * with MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA jeida-24 format
+-	 */
+ 	if (connector->display_info.bus_formats[0] ==
+ 		MEDIA_BUS_FMT_RGB888_1X7X4_SPWG) {
+ 		/* VESA-24 */
+@@ -469,14 +465,15 @@ static void tc_bridge_enable(struct drm_bridge *bridge)
+ 		d2l_write(tc->i2c, LV_MX1619, LV_MX(LVI_B6, LVI_B7, LVI_B1, LVI_B2));
+ 		d2l_write(tc->i2c, LV_MX2023, LV_MX(LVI_B3, LVI_B4, LVI_B5, LVI_L0));
+ 		d2l_write(tc->i2c, LV_MX2427, LV_MX(LVI_HS, LVI_VS, LVI_DE, LVI_R6));
+-	} else { /*  MEDIA_BUS_FMT_RGB666_1X7X3_SPWG - JEIDA-18 */
+-		d2l_write(tc->i2c, LV_MX0003, LV_MX(LVI_R0, LVI_R1, LVI_R2, LVI_R3));
+-		d2l_write(tc->i2c, LV_MX0407, LV_MX(LVI_R4, LVI_L0, LVI_R5, LVI_G0));
+-		d2l_write(tc->i2c, LV_MX0811, LV_MX(LVI_G1, LVI_G2, LVI_L0, LVI_L0));
+-		d2l_write(tc->i2c, LV_MX1215, LV_MX(LVI_G3, LVI_G4, LVI_G5, LVI_B0));
+-		d2l_write(tc->i2c, LV_MX1619, LV_MX(LVI_L0, LVI_L0, LVI_B1, LVI_B2));
+-		d2l_write(tc->i2c, LV_MX2023, LV_MX(LVI_B3, LVI_B4, LVI_B5, LVI_L0));
+-		d2l_write(tc->i2c, LV_MX2427, LV_MX(LVI_HS, LVI_VS, LVI_DE, LVI_L0));
++	} else {
++		/* JEIDA-18 and JEIDA-24 */
++		d2l_write(tc->i2c, LV_MX0003, LV_MX(LVI_R2, LVI_R3, LVI_R4, LVI_R5));
++		d2l_write(tc->i2c, LV_MX0407, LV_MX(LVI_R6, LVI_R1, LVI_R7, LVI_G2));
++		d2l_write(tc->i2c, LV_MX0811, LV_MX(LVI_G3, LVI_G4, LVI_G0, LVI_G1));
++		d2l_write(tc->i2c, LV_MX1215, LV_MX(LVI_G5, LVI_G6, LVI_G7, LVI_B2));
++		d2l_write(tc->i2c, LV_MX1619, LV_MX(LVI_B0, LVI_B1, LVI_B3, LVI_B4));
++		d2l_write(tc->i2c, LV_MX2023, LV_MX(LVI_B5, LVI_B6, LVI_B7, LVI_L0));
++		d2l_write(tc->i2c, LV_MX2427, LV_MX(LVI_HS, LVI_VS, LVI_DE, LVI_R0));
+ 	}
  
-@@ -85,6 +86,11 @@ exit_cleanup()
- 	for ns in "$@"; do
- 		ip netns delete "${ns}" 2>/dev/null || true
- 	done
-+	if [ -f "$SMCROUTEDIR/amt.pid" ]; then
-+		smcpid=$(< $SMCROUTEDIR/amt.pid)
-+		kill $smcpid
-+	fi
-+	rm -rf $SMCROUTEDIR
- 
- 	exit $ERR
- }
-@@ -167,7 +173,7 @@ setup_iptables()
- 
- setup_mcast_routing()
- {
--	ip netns exec "${RELAY}" smcrouted
-+	ip netns exec "${RELAY}" smcrouted -P $SMCROUTEDIR/amt.pid
- 	ip netns exec "${RELAY}" smcroutectl a relay_src \
- 		172.17.0.2 239.0.0.1 amtr
- 	ip netns exec "${RELAY}" smcroutectl a relay_src \
+ 	d2l_write(tc->i2c, VFUEN, VFUEN_EN);
 -- 
 2.43.0
 
