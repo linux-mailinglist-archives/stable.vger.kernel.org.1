@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE5BE8FEC3C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB888FEAA0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FC421F29919
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 985B81C2182D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CD11AED3F;
-	Thu,  6 Jun 2024 14:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75F21A0AFF;
+	Thu,  6 Jun 2024 14:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMT2mpq3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AU8KHwD2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758351AED3E;
-	Thu,  6 Jun 2024 14:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9509A196447;
+	Thu,  6 Jun 2024 14:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683344; cv=none; b=Qtoj3yhC5K3qaH0P1u6BP1wq4Q08CA3u/IQSHNleLGlnmThZ5Fszgaht8CFEJLMn+TbWQEzt4dMqboyNfBc+S5HbE9pwLAPO74QRSSSq5YFfMyZmXl3mI4C11hqLS51na3rxLBWVXU0UbG13qVi4MSt9PBKrxFdRRNm1RyInsSU=
+	t=1717683157; cv=none; b=jJeio9hSE5vtRO+vzoJglU/KViBhVNVa3KZSvD5nmARGTSX+WVdjoi2rlrUkjIgYVE5lxwRZrboOtDneGc2L20x18h0qSny3mc3LNJCmMdH0F783neFPKVioa55104vwujxGRicNzmMqBRuuD+DvETbXw8HpZeuueXPcm24X0EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683344; c=relaxed/simple;
-	bh=Il7tkWgSVvHWA+qWiP+emPYld1aB5XDyf8eGdwsV9iY=;
+	s=arc-20240116; t=1717683157; c=relaxed/simple;
+	bh=xb6Zsuy4lxG4DTGDbOksy+qy8fEBtVcVTt2lWP+54Io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kx/3Wg6yxnAHFhsJvNpXYJxwki0U+ZOjsX/Ub456EzvyTRvYz22B8RIR9cioEWZS/3OjeRqIlr5viaoHKrD9a+Do8ZnYJ4fDTVd4sScXiPvtJOoXYZCLrMpxCO4i+zKy/6ixZleY4bIewrn/bzR98JWDXZdKmoYTbMRrKjrg8ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMT2mpq3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56951C2BD10;
-	Thu,  6 Jun 2024 14:15:44 +0000 (UTC)
+	 MIME-Version; b=BbDkZNlVCS9OMdFt9aWQqXwITM7ogyE4Bxoo5GpWI/9YTbTaXazkldOp1gfUaQveBxK29LiAoIcZwxti2P0FJkY7UGZ13xk/Im0rq9k7vDbmPCKglNu8Qbzx7AC4tj6COuliXmDkj7sTYb0mj3GOwsQL+SPyFJ3w6VeRPmlJVpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AU8KHwD2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA4EC2BD10;
+	Thu,  6 Jun 2024 14:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683344;
-	bh=Il7tkWgSVvHWA+qWiP+emPYld1aB5XDyf8eGdwsV9iY=;
+	s=korg; t=1717683157;
+	bh=xb6Zsuy4lxG4DTGDbOksy+qy8fEBtVcVTt2lWP+54Io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SMT2mpq38HCCj8RXxf17LVJSLChT1MzPiwWBteoL2GuGgD1/Nm9ArbMYIg3AwrCSQ
-	 mXZQdfpM6u37lHlVNDEuzJT42Mvj7et5i2eMFCycfmw+zFst1vGHk0mqqZexa+zH5Q
-	 dvTQquLfaok+ZsWv21YB3YdviyLPxi8u5G7EQBrY=
+	b=AU8KHwD2u1d8wzAda5Fc0A98faF407BrCC0t+1Fv6x36Q3KvDRWCCwpxA6WXYXNy1
+	 Vy5KtuiGeEhhgU2wt/BIFLLSpSbNHwo04U0+P6vtkc8lkoHKVmjfLPnpToEoMAn+yC
+	 AovrG8Mdr8b9uifqg0VGc1u+0TUACgUMkBPjFKHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Helge Deller <deller@gmx.de>,
+	Richard Kinder <richard.kinder@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 285/744] fbdev: shmobile: fix snprintf truncation
+Subject: [PATCH 6.1 028/473] wifi: mac80211: ensure beacon is non-S1G prior to extracting the beacon timestamp field
 Date: Thu,  6 Jun 2024 15:59:17 +0200
-Message-ID: <20240606131741.545231542@linuxfoundation.org>
+Message-ID: <20240606131700.803215052@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Richard Kinder <richard.kinder@gmail.com>
 
-[ Upstream commit 26c8cfb9d1e4b252336d23dd5127a8cbed414a32 ]
+[ Upstream commit d12b9779cc9ba29d65fbfc728eb8a037871dd331 ]
 
-The name of the overlay does not fit into the fixed-length field:
+Logic inside ieee80211_rx_mgmt_beacon accesses the
+mgmt->u.beacon.timestamp field without first checking whether the beacon
+received is non-S1G format.
 
-drivers/video/fbdev/sh_mobile_lcdcfb.c:1577:2: error: 'snprintf' will always be truncated; specified size is 16, but format string expands to at least 25
+Fix the problem by checking the beacon is non-S1G format to avoid access
+of the mgmt->u.beacon.timestamp field.
 
-Make it short enough by changing the string.
-
-Fixes: c5deac3c9b22 ("fbdev: sh_mobile_lcdc: Implement overlays support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Richard Kinder <richard.kinder@gmail.com>
+Link: https://msgid.link/20240328005725.85355-1-richard.kinder@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sh_mobile_lcdcfb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-index 1364dafaadb1d..2a4794ec19473 100644
---- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
-+++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-@@ -1575,7 +1575,7 @@ sh_mobile_lcdc_overlay_fb_init(struct sh_mobile_lcdc_overlay *ovl)
- 	 */
- 	info->fix = sh_mobile_lcdc_overlay_fix;
- 	snprintf(info->fix.id, sizeof(info->fix.id),
--		 "SH Mobile LCDC Overlay %u", ovl->index);
-+		 "SHMobile ovl %u", ovl->index);
- 	info->fix.smem_start = ovl->dma_handle;
- 	info->fix.smem_len = ovl->fb_size;
- 	info->fix.line_length = ovl->pitch;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index f25dc6931a5b1..9a5530ca2f6b2 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5528,7 +5528,8 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
+ 			link->u.mgd.dtim_period = elems->dtim_period;
+ 		link->u.mgd.have_beacon = true;
+ 		ifmgd->assoc_data->need_beacon = false;
+-		if (ieee80211_hw_check(&local->hw, TIMING_BEACON_ONLY)) {
++		if (ieee80211_hw_check(&local->hw, TIMING_BEACON_ONLY) &&
++		    !ieee80211_is_s1g_beacon(hdr->frame_control)) {
+ 			link->conf->sync_tsf =
+ 				le64_to_cpu(mgmt->u.beacon.timestamp);
+ 			link->conf->sync_device_ts =
 -- 
 2.43.0
 
