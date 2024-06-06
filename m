@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-49328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 427288FECD0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C31B8FE975
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5B7F1F26717
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9287E1F23A03
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E9A1B29D3;
-	Thu,  6 Jun 2024 14:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F3B198823;
+	Thu,  6 Jun 2024 14:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LoPVlhvB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G4V9IkP1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276AD1B29CC;
-	Thu,  6 Jun 2024 14:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CDB19645B;
+	Thu,  6 Jun 2024 14:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683412; cv=none; b=fK38ly82CJKbIsrskig0dX3rE1VKlDHB3i7msgGEsy1exR6ro/Z4jRX/SrsYTrPsRd7rzyPJN2E+EehEJPg2JfEk9H5eddrz+xIhc36FzdC/QqVyQL5+Xl1Sxekv7UQNCKtMFIUC7CwLTAEg5jYkqU6WBd7JxVLEbe39aIRd1EQ=
+	t=1717683025; cv=none; b=G4mMikgjPeJgGcedphg9CLQne/Fog3STrpsioNXJoAZyM48MpoYxhhDHALF1buaWEJ/+j/IRp/OOYdQtxQw9bU/GlZmeFkYi7xVX3n21mF3v/Hucj59QwDJfRt1UXhwoAha4Vr/QpNPpZrGRvXnjZQ1axC0R4ebb7iryc3bzM0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683412; c=relaxed/simple;
-	bh=BKF3hUnxhUXsrCSDPxLyVt+G290bYVtyz26U3yME+4I=;
+	s=arc-20240116; t=1717683025; c=relaxed/simple;
+	bh=m/+rw1ftUWCnqtlUlRmGXPo9fhsWp2ZBulVroC6wm8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7VR6NSHLwWaCbbJ7BaL5VhbT3eclWEF3o5B4cT/+5k2TBnOwyRacWXVFDiLRwDfsfaM105Yst2zp8K+8wVCnYog7c2/3ee+NAsBvUjBfIUozdi2r8h5TlEz9J7CYp2TmLt5d+yJoTer9mv6TLPPUyjrMTl+Da2Cii3+zx89kdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LoPVlhvB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083CBC32781;
-	Thu,  6 Jun 2024 14:16:52 +0000 (UTC)
+	 MIME-Version; b=gGyEXwSb8HvnjrSvma+OapvRwHV0rsyQTBwdZ+7iyIVcAaABn9QPXf32fcyZqUS+yzVh9dZ/4K30/58bAl2K1k4pIUHe+ptBU9+LPGq9qXYIeS6DWZOmM+cJQE8QUNjrIGfV0p1QrrFAA7zxM5oNP1lMNfw/HRUC2l+N9uveNKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G4V9IkP1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56ACC2BD10;
+	Thu,  6 Jun 2024 14:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683412;
-	bh=BKF3hUnxhUXsrCSDPxLyVt+G290bYVtyz26U3yME+4I=;
+	s=korg; t=1717683024;
+	bh=m/+rw1ftUWCnqtlUlRmGXPo9fhsWp2ZBulVroC6wm8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LoPVlhvBZKtqJ5ey8Gg9205Ay/+2O6B9ZvQPlVyY/VTWwKJuUkYi+RJ4mtLgyrFbS
-	 Wb2pQbp6cWrFnRJ/SI0KCes4joHpnT3Ct0L02GatOhgv3juijVYuY/q81onUvLQPIM
-	 +QOPOIYjlg+Fbb7ql4/dwX8AIzXlGTCeOI4xdzKk=
+	b=G4V9IkP1L71V4VxuI9Y3varR+bYjJRZjIdz7pZLRu8UVclON0oo0fqE5aHeS9xULp
+	 /FNKAIxsE/gA3UZ0RMPCh2mCq5FmwHcsqzJkFALUmmLJ1eBty+oumapeh50ijgBpUl
+	 NPjSll4ikBPIztBSZs5uQVBknLh1l+sOuJ6U6chA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Billy Jheng Bing-Jhong <billy@starlabs.sg>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 295/473] serial: sc16is7xx: add proper sched.h include for sched_set_fifo()
+Subject: [PATCH 6.9 245/374] af_unix: Update unix_sk(sk)->oob_skb under sk_receive_queue lock.
 Date: Thu,  6 Jun 2024 16:03:44 +0200
-Message-ID: <20240606131709.649256186@linuxfoundation.org>
+Message-ID: <20240606131700.026011008@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 2a8e4ab0c93fad30769479f86849e22d63cd0e12 ]
+[ Upstream commit 9841991a446c87f90f66f4b9fee6fe934c1336a2 ]
 
-Replace incorrect include with the proper one for sched_set_fifo()
-declaration.
+Billy Jheng Bing-Jhong reported a race between __unix_gc() and
+queue_oob().
 
-Fixes: 28d2f209cd16 ("sched,serial: Convert to sched_set_fifo()")
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240409154253.3043822-2-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+__unix_gc() tries to garbage-collect close()d inflight sockets,
+and then if the socket has MSG_OOB in unix_sk(sk)->oob_skb, GC
+will drop the reference and set NULL to it locklessly.
+
+However, the peer socket still can send MSG_OOB message and
+queue_oob() can update unix_sk(sk)->oob_skb concurrently, leading
+NULL pointer dereference. [0]
+
+To fix the issue, let's update unix_sk(sk)->oob_skb under the
+sk_receive_queue's lock and take it everywhere we touch oob_skb.
+
+Note that we defer kfree_skb() in manage_oob() to silence lockdep
+false-positive (See [1]).
+
+[0]:
+BUG: kernel NULL pointer dereference, address: 0000000000000008
+ PF: supervisor write access in kernel mode
+ PF: error_code(0x0002) - not-present page
+PGD 8000000009f5e067 P4D 8000000009f5e067 PUD 9f5d067 PMD 0
+Oops: 0002 [#1] PREEMPT SMP PTI
+CPU: 3 PID: 50 Comm: kworker/3:1 Not tainted 6.9.0-rc5-00191-gd091e579b864 #110
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+Workqueue: events delayed_fput
+RIP: 0010:skb_dequeue (./include/linux/skbuff.h:2386 ./include/linux/skbuff.h:2402 net/core/skbuff.c:3847)
+Code: 39 e3 74 3e 8b 43 10 48 89 ef 83 e8 01 89 43 10 49 8b 44 24 08 49 c7 44 24 08 00 00 00 00 49 8b 14 24 49 c7 04 24 00 00 00 00 <48> 89 42 08 48 89 10 e8 e7 c5 42 00 4c 89 e0 5b 5d 41 5c c3 cc cc
+RSP: 0018:ffffc900001bfd48 EFLAGS: 00000002
+RAX: 0000000000000000 RBX: ffff8880088f5ae8 RCX: 00000000361289f9
+RDX: 0000000000000000 RSI: 0000000000000206 RDI: ffff8880088f5b00
+RBP: ffff8880088f5b00 R08: 0000000000080000 R09: 0000000000000001
+R10: 0000000000000003 R11: 0000000000000001 R12: ffff8880056b6a00
+R13: ffff8880088f5280 R14: 0000000000000001 R15: ffff8880088f5a80
+FS:  0000000000000000(0000) GS:ffff88807dd80000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000008 CR3: 0000000006314000 CR4: 00000000007506f0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ unix_release_sock (net/unix/af_unix.c:654)
+ unix_release (net/unix/af_unix.c:1050)
+ __sock_release (net/socket.c:660)
+ sock_close (net/socket.c:1423)
+ __fput (fs/file_table.c:423)
+ delayed_fput (fs/file_table.c:444 (discriminator 3))
+ process_one_work (kernel/workqueue.c:3259)
+ worker_thread (kernel/workqueue.c:3329 kernel/workqueue.c:3416)
+ kthread (kernel/kthread.c:388)
+ ret_from_fork (arch/x86/kernel/process.c:153)
+ ret_from_fork_asm (arch/x86/entry/entry_64.S:257)
+ </TASK>
+Modules linked in:
+CR2: 0000000000000008
+
+Link: https://lore.kernel.org/netdev/a00d3993-c461-43f2-be6d-07259c98509a@rbox.co/ [1]
+Fixes: 1279f9d9dec2 ("af_unix: Call kfree_skb() for dead unix_(sk)->oob_skb in GC.")
+Reported-by: Billy Jheng Bing-Jhong <billy@starlabs.sg>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240516134835.8332-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/unix/af_unix.c | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index e331b57d6d7d3..e6eedebf67765 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -18,6 +18,7 @@
- #include <linux/module.h>
- #include <linux/property.h>
- #include <linux/regmap.h>
-+#include <linux/sched.h>
- #include <linux/serial_core.h>
- #include <linux/serial.h>
- #include <linux/tty.h>
-@@ -25,7 +26,6 @@
- #include <linux/spi/spi.h>
- #include <linux/uaccess.h>
- #include <linux/units.h>
--#include <uapi/linux/sched/types.h>
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index e94839d89b09d..9bc879f3e34e6 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2217,13 +2217,15 @@ static int queue_oob(struct socket *sock, struct msghdr *msg, struct sock *other
+ 	maybe_add_creds(skb, sock, other);
+ 	skb_get(skb);
  
- #define SC16IS7XX_NAME			"sc16is7xx"
- #define SC16IS7XX_MAX_DEVS		8
++	scm_stat_add(other, skb);
++
++	spin_lock(&other->sk_receive_queue.lock);
+ 	if (ousk->oob_skb)
+ 		consume_skb(ousk->oob_skb);
+-
+ 	WRITE_ONCE(ousk->oob_skb, skb);
++	__skb_queue_tail(&other->sk_receive_queue, skb);
++	spin_unlock(&other->sk_receive_queue.lock);
+ 
+-	scm_stat_add(other, skb);
+-	skb_queue_tail(&other->sk_receive_queue, skb);
+ 	sk_send_sigurg(other);
+ 	unix_state_unlock(other);
+ 	other->sk_data_ready(other);
+@@ -2614,8 +2616,10 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
+ 
+ 	mutex_lock(&u->iolock);
+ 	unix_state_lock(sk);
++	spin_lock(&sk->sk_receive_queue.lock);
+ 
+ 	if (sock_flag(sk, SOCK_URGINLINE) || !u->oob_skb) {
++		spin_unlock(&sk->sk_receive_queue.lock);
+ 		unix_state_unlock(sk);
+ 		mutex_unlock(&u->iolock);
+ 		return -EINVAL;
+@@ -2627,6 +2631,8 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
+ 		WRITE_ONCE(u->oob_skb, NULL);
+ 	else
+ 		skb_get(oob_skb);
++
++	spin_unlock(&sk->sk_receive_queue.lock);
+ 	unix_state_unlock(sk);
+ 
+ 	chunk = state->recv_actor(oob_skb, 0, chunk, state);
+@@ -2655,6 +2661,10 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+ 		consume_skb(skb);
+ 		skb = NULL;
+ 	} else {
++		struct sk_buff *unlinked_skb = NULL;
++
++		spin_lock(&sk->sk_receive_queue.lock);
++
+ 		if (skb == u->oob_skb) {
+ 			if (copied) {
+ 				skb = NULL;
+@@ -2666,13 +2676,19 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+ 			} else if (flags & MSG_PEEK) {
+ 				skb = NULL;
+ 			} else {
+-				skb_unlink(skb, &sk->sk_receive_queue);
++				__skb_unlink(skb, &sk->sk_receive_queue);
+ 				WRITE_ONCE(u->oob_skb, NULL);
+-				if (!WARN_ON_ONCE(skb_unref(skb)))
+-					kfree_skb(skb);
++				unlinked_skb = skb;
+ 				skb = skb_peek(&sk->sk_receive_queue);
+ 			}
+ 		}
++
++		spin_unlock(&sk->sk_receive_queue.lock);
++
++		if (unlinked_skb) {
++			WARN_ON_ONCE(skb_unref(unlinked_skb));
++			kfree_skb(unlinked_skb);
++		}
+ 	}
+ 	return skb;
+ }
 -- 
 2.43.0
 
