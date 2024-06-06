@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-49448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3DF48FED4B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 384918FEEAD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17A7F1C23124
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B03F0286879
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 301431BA863;
-	Thu,  6 Jun 2024 14:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10371C6177;
+	Thu,  6 Jun 2024 14:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kiIXTNM8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uG0lOvVT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27C6198E85;
-	Thu,  6 Jun 2024 14:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE821991DC;
+	Thu,  6 Jun 2024 14:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683471; cv=none; b=J3JjuzhhDO0Zg0VDC+x5VaAyTjFonAW4f3Vd6F9+OPTErIcE4jNuMVASPZcfRgh9yfqF0NT29ReSUWIyy7tnai3hr68XdYygJYF2qN64G2DMFuqf2Iw5U1xIFxnNWt8xrUtT/vgPZ2iRHP9q748+Y5HRi95SfCs3wsB5MaNKQlk=
+	t=1717683688; cv=none; b=Tl5u5FmT0UuZt0Yc1/l+dQR7CYwfKUyTHdovr7zs1ZQ2I5Hfmsj2KAI3ZWoHqPKof2nCrFEwb3+7aRNUZN3JDoVOfZM2rwQXAXRc9mnDnz92UXBGi2EtEkrn+Y1JFs38L0V9WWmmK3z4bj2zZ5oBCz5scsAhFnC0jZQxTYOUJbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683471; c=relaxed/simple;
-	bh=C7CDtVi1b7b/lubj0MF4DPIyFgk9dObnl4sLKDT5i1I=;
+	s=arc-20240116; t=1717683688; c=relaxed/simple;
+	bh=9IZ3EI7J6gSUKSK/MlqWZ+HQFbJaewxFJwZviIQ5uYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6rEuoEwdc6fKEQ1NLl7whfRs+LDl9ou08IVUvGyLnYnuh/a6IqwNZIpIHuI9FkPraHNMLkFJrx3m5Px1X7aATJaqIR1w3Nsh0jy/38QGGcj6sxghJdA/HI1x9DFjb464KQmgDJtD1US9MrQZFmejg0EI++/nnw8k1O79sBAmyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kiIXTNM8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDAEEC2BD10;
-	Thu,  6 Jun 2024 14:17:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ADzfZsNi3FV7WaIlSoO429jmZ0DoPq8EeWFkTF/N6glYkZrBhaFsUTRDXYLDGY/nTdCdyiDYlvwPYEL6ne6hswPSgWaAQ8oYk95AB7rdYJ364o3u7Ngdae6Lt1FkrMtKNvp0GxOuugSnIlsy+NSZ5JS5KGkjWALwUx7+dqqiTQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uG0lOvVT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E002C4AF09;
+	Thu,  6 Jun 2024 14:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683470;
-	bh=C7CDtVi1b7b/lubj0MF4DPIyFgk9dObnl4sLKDT5i1I=;
+	s=korg; t=1717683688;
+	bh=9IZ3EI7J6gSUKSK/MlqWZ+HQFbJaewxFJwZviIQ5uYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kiIXTNM8U0QQtUt1rw/lxCOSN/C36enzGsCNWNOD2z+Fhi/jupoEkQ2vdkdWLJOZQ
-	 0Ni1qjWOQqhCgA/GRZ2J7J1IiVJCwj/IMi7wKVlA4Ka5hFMoK2JDkPXYmQs7R9YjKn
-	 KX2gNLUVeviY+2g6Xvk42gh4BfzkH9MpkMbf62uE=
+	b=uG0lOvVTpeLLtPFfELmMz4LPber/RbwuvK3ktAxbKBhSJzoBR+qxlsE/AwkfFEkfG
+	 93wunZcd70xmKkZqW25p9z/22PE7UYzq1WiDsoNZAOOVSq99CoTK1xS6vFism5gbZQ
+	 vaBOqB2ieItLmhSnq+5SnqJEu3f3D/64zH2FevNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Leo Yan <leo.yan@linux.dev>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	"David E. Box" <david.e.box@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 339/473] perf ui browser: Avoid SEGV on title
+Subject: [PATCH 6.6 596/744] tools/arch/x86/intel_sdsi: Fix meter_show display
 Date: Thu,  6 Jun 2024 16:04:28 +0200
-Message-ID: <20240606131711.113854997@linuxfoundation.org>
+Message-ID: <20240606131751.591466334@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,49 +62,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: David E. Box <david.e.box@linux.intel.com>
 
-[ Upstream commit 90f01afb0dfafbc9b094bb61e61a4ac297d9d0d2 ]
+[ Upstream commit 76f2bc17428c890754d11aa6aea14b332ba130c5 ]
 
-If the title is NULL then it can lead to a SEGV.
+Fixes sdsi_meter_cert_show() to correctly decode and display the meter
+certificate output. Adds and displays a missing version field, displays the
+ASCII name of the signature, and fixes the print alignment.
 
-Fixes: 769e6a1e15bdbbaf ("perf ui browser: Don't save pointer to stack memory")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Leo Yan <leo.yan@linux.dev>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240508035301.1554434-2-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 7fdc03a7370f ("tools/arch/x86: intel_sdsi: Add support for reading meter certificates")
+Signed-off-by: David E. Box <david.e.box@linux.intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240411025856.2782476-7-david.e.box@linux.intel.com
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/ui/browser.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/arch/x86/intel_sdsi/intel_sdsi.c | 29 +++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/tools/perf/ui/browser.c b/tools/perf/ui/browser.c
-index d09b4cbec6e06..5d6f4f25c33d0 100644
---- a/tools/perf/ui/browser.c
-+++ b/tools/perf/ui/browser.c
-@@ -203,7 +203,7 @@ void ui_browser__refresh_dimensions(struct ui_browser *browser)
- void ui_browser__handle_resize(struct ui_browser *browser)
- {
- 	ui__refresh_dimensions(false);
--	ui_browser__show(browser, browser->title, ui_helpline__current);
-+	ui_browser__show(browser, browser->title ?: "", ui_helpline__current);
- 	ui_browser__refresh(browser);
- }
+diff --git a/tools/arch/x86/intel_sdsi/intel_sdsi.c b/tools/arch/x86/intel_sdsi/intel_sdsi.c
+index 7eaffcbff788c..ae29214da1029 100644
+--- a/tools/arch/x86/intel_sdsi/intel_sdsi.c
++++ b/tools/arch/x86/intel_sdsi/intel_sdsi.c
+@@ -153,11 +153,12 @@ struct bundle_encoding {
+ };
+ 
+ struct meter_certificate {
+-	uint32_t block_signature;
+-	uint32_t counter_unit;
++	uint32_t signature;
++	uint32_t version;
+ 	uint64_t ppin;
++	uint32_t counter_unit;
+ 	uint32_t bundle_length;
+-	uint32_t reserved;
++	uint64_t reserved;
+ 	uint32_t mmrc_encoding;
+ 	uint32_t mmrc_counter;
+ };
+@@ -338,6 +339,7 @@ static int sdsi_meter_cert_show(struct sdsi_dev *s)
+ 	uint32_t count = 0;
+ 	FILE *cert_ptr;
+ 	int ret, size;
++	char name[4];
+ 
+ 	ret = sdsi_update_registers(s);
+ 	if (ret)
+@@ -379,12 +381,19 @@ static int sdsi_meter_cert_show(struct sdsi_dev *s)
+ 	printf("\n");
+ 	printf("Meter certificate for device %s\n", s->dev_name);
+ 	printf("\n");
+-	printf("Block Signature:       0x%x\n", mc->block_signature);
+-	printf("Count Unit:            %dms\n", mc->counter_unit);
+-	printf("PPIN:                  0x%lx\n", mc->ppin);
+-	printf("Feature Bundle Length: %d\n", mc->bundle_length);
+-	printf("MMRC encoding:         %d\n", mc->mmrc_encoding);
+-	printf("MMRC counter:          %d\n", mc->mmrc_counter);
++
++	get_feature(mc->signature, name);
++	printf("Signature:                    %.4s\n", name);
++
++	printf("Version:                      %d\n", mc->version);
++	printf("Count Unit:                   %dms\n", mc->counter_unit);
++	printf("PPIN:                         0x%lx\n", mc->ppin);
++	printf("Feature Bundle Length:        %d\n", mc->bundle_length);
++
++	get_feature(mc->mmrc_encoding, name);
++	printf("MMRC encoding:                %.4s\n", name);
++
++	printf("MMRC counter:                 %d\n", mc->mmrc_counter);
+ 	if (mc->bundle_length % 8) {
+ 		fprintf(stderr, "Invalid bundle length\n");
+ 		return -1;
+@@ -398,7 +407,7 @@ static int sdsi_meter_cert_show(struct sdsi_dev *s)
+ 
+ 	bec = (void *)(mc) + sizeof(mc);
+ 
+-	printf("Number of Feature Counters:          %d\n", mc->bundle_length / 8);
++	printf("Number of Feature Counters:   %ld\n", BUNDLE_COUNT(mc->bundle_length));
+ 	while (count++ < mc->bundle_length / 8) {
+ 		char feature[5];
  
 -- 
 2.43.0
