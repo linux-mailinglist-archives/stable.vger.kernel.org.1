@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-49048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3A58FEBA5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7FEA8FE8DF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9263A1C20885
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17B591F24BE5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B31F1AB91C;
-	Thu,  6 Jun 2024 14:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662F0196C85;
+	Thu,  6 Jun 2024 14:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UbgdtjI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cARr53XQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECA919A2A2;
-	Thu,  6 Jun 2024 14:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241CA197500;
+	Thu,  6 Jun 2024 14:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683277; cv=none; b=RJRMCQ35yXJ6tTaFpwzInHyXlcsnRdE9boAlG0Magj2dQZ0wBJwE3B3xSZrD8pzfeXcSsElZPWvbBisxWoKh4J2BJc71JDIWveaoa7XmmMGuBMmxWo+BhAVNbjYDnrDhE9kEwuUHAQzZ4Tui7ER1JTc1rvRbeRA16n7JU35RYMM=
+	t=1717682945; cv=none; b=r05XKTnCTt4HS1bBqN5112xe8EaO7GTDIATAZtLMbUSIZKyzLJQ+WsS84wj0w70i52w2Bxlaeqh74n1G0v9wQSzMaBdT6cy6jLUPtAyrfIsFzjFpuzEspL4wl4jTU/JEsrnivUqSx0MD6BbJJLB6LWXYWUcCfFyToVUaqfAxi+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683277; c=relaxed/simple;
-	bh=P+tUMIex25pmTvaY+udiIYQ++yG+po/q/crqYlQVBpM=;
+	s=arc-20240116; t=1717682945; c=relaxed/simple;
+	bh=kCG9J3EWaF3CMfB+7bxFjDsqsYTtD8DroHlRJkSl3tQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6p0QgMaQUJgd6YZGI6uaT0mtWEZbu4T73J9MgT8sq0A9aBwRLSz8ENhHJpSBxDnqdhwIS0JGM1ry9y3oXaAYgYc9d9v5oXPymWRmF0r3JCnA+R7RMOcqbB6WwDR9PsxC06gb3RZnnHVDKniptRmf4O0GeACvCS0AHNJUGBWUaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UbgdtjI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF09C2BD10;
-	Thu,  6 Jun 2024 14:14:36 +0000 (UTC)
+	 MIME-Version; b=NHlBhNIXFOrJYaS1kD56fbUjv0aKLRPgofULYyumReNx/DV6E4l6jdMnXVNO5GjygvemGjp0+xPmr/uJ5ixbjhmRXowWBClScGea1JRQkpeiU1z3oshoX5HpbDk3QFmiA/yy0CXk0G2s6Xi4vzo2h2mtDFtXcV3+tKFrw7j3lyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cARr53XQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7719C2BD10;
+	Thu,  6 Jun 2024 14:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683276;
-	bh=P+tUMIex25pmTvaY+udiIYQ++yG+po/q/crqYlQVBpM=;
+	s=korg; t=1717682944;
+	bh=kCG9J3EWaF3CMfB+7bxFjDsqsYTtD8DroHlRJkSl3tQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2UbgdtjIgbNoZ3XcXy8yLXwOo6/MosIF145LKsPfyQ2qweHP/t95EeB+NvV8g8O7m
-	 dMQEKPsO3ywK9x07x6a9ynaoQuqlQK+hrUwz6DvuJfEeUfEuhKuePo7Awq1b1Eq4Hi
-	 HZU6GbQEtmv0RDNDkU/TehaIqfq1LrxyyxRCOPiw=
+	b=cARr53XQeCN/46XOYNpjc1P4WnZT4F0VPm1H7Fn0yB2hhkUfNB9GEksNIR1e6OW7u
+	 1pCe/3PbmwF6sEBtiyHgyOIqZIycJsZWTFQgI70pAMM/pNnWTetJp09Vul0tOKx/Cm
+	 2jUr4TziCceYbhlIq3jHJaKtp+SIuqx4GCqtCcBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Valentin Obst <kernel@valentinobst.de>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	James Clark <james.clark@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 154/473] selftests: default to host arch for LLVM builds
+Subject: [PATCH 6.9 104/374] perf symbols: Remove map from list before updating addresses
 Date: Thu,  6 Jun 2024 16:01:23 +0200
-Message-ID: <20240606131705.052262073@linuxfoundation.org>
+Message-ID: <20240606131655.406390816@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +71,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valentin Obst <kernel@valentinobst.de>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit d4e6fbd245c48b272cc591d1c5e7c07aedd7f071 ]
+[ Upstream commit 9fe410a7ef483a9aca08bf620d8ddfd35ac99bc7 ]
 
-Align the behavior for gcc and clang builds by interpreting unset
-`ARCH` and `CROSS_COMPILE` variables in `LLVM` builds as a sign that the
-user wants to build for the host architecture.
+Make the order of operations remove, update, add. Updating addresses
+before the map is removed causes the ordering check to fail when the map
+is removed. This can be reproduced when running Perf on an Arm system
+with a static kernel and Perf uses kcore rather than other sources:
 
-This patch preserves the properties that setting the `ARCH` variable to an
-unknown value will trigger an error that complains about insufficient
-information, and that a set `CROSS_COMPILE` variable will override the
-target triple that is determined based on presence/absence of `ARCH`.
+  $ perf record -- ls
+  $ perf report
 
-When compiling with clang, i.e., `LLVM` is set, an unset `ARCH` variable in
-combination with an unset `CROSS_COMPILE` variable, i.e., compiling for
-the host architecture, leads to compilation failures since `lib.mk` can
-not determine the clang target triple. In this case, the following error
-message is displayed for each subsystem that does not set `ARCH` in its
-own Makefile before including `lib.mk` (lines wrapped at 75 chrs):
+  util/maps.c:96: check_invariants: Assertion `map__end(prev) <=
+    map__start(map) || map__start(prev) == map__start(map)' failed
 
-  make[1]: Entering directory '/mnt/build/linux/tools/testing/selftests/
-   sysctl'
-  ../lib.mk:33: *** Specify CROSS_COMPILE or add '--target=' option to
-   lib.mk.  Stop.
-  make[1]: Leaving directory '/mnt/build/linux/tools/testing/selftests/
-   sysctl'
-
-In the same scenario a gcc build would default to the host architecture,
-i.e., it would use plain `gcc`.
-
-Fixes: 795285ef2425 ("selftests: Fix clang cross compilation")
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Valentin Obst <kernel@valentinobst.de>
-Reviewed-by: John Hubbard <jhubbard@nvidia.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 659ad3492b913c90 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
+Signed-off-by: James Clark <james.clark@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240507141210.195939-2-james.clark@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/lib.mk | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ tools/perf/util/symbol.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
-index aa646e0661f36..a8f0442a36bca 100644
---- a/tools/testing/selftests/lib.mk
-+++ b/tools/testing/selftests/lib.mk
-@@ -7,6 +7,8 @@ else ifneq ($(filter -%,$(LLVM)),)
- LLVM_SUFFIX := $(LLVM)
- endif
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index 9ebdb8e13c0b8..cd825241e07d9 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -1375,13 +1375,15 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
+ 		if (RC_CHK_EQUAL(new_map, replacement_map)) {
+ 			struct map *map_ref;
  
-+CLANG := $(LLVM_PREFIX)clang$(LLVM_SUFFIX)
+-			map__set_start(map, map__start(new_map));
+-			map__set_end(map, map__end(new_map));
+-			map__set_pgoff(map, map__pgoff(new_map));
+-			map__set_mapping_type(map, map__mapping_type(new_map));
+ 			/* Ensure maps are correctly ordered */
+ 			map_ref = map__get(map);
+ 			maps__remove(kmaps, map_ref);
 +
- CLANG_TARGET_FLAGS_arm          := arm-linux-gnueabi
- CLANG_TARGET_FLAGS_arm64        := aarch64-linux-gnu
- CLANG_TARGET_FLAGS_hexagon      := hexagon-linux-musl
-@@ -18,7 +20,13 @@ CLANG_TARGET_FLAGS_riscv        := riscv64-linux-gnu
- CLANG_TARGET_FLAGS_s390         := s390x-linux-gnu
- CLANG_TARGET_FLAGS_x86          := x86_64-linux-gnu
- CLANG_TARGET_FLAGS_x86_64       := x86_64-linux-gnu
--CLANG_TARGET_FLAGS              := $(CLANG_TARGET_FLAGS_$(ARCH))
++			map__set_start(map_ref, map__start(new_map));
++			map__set_end(map_ref, map__end(new_map));
++			map__set_pgoff(map_ref, map__pgoff(new_map));
++			map__set_mapping_type(map_ref, map__mapping_type(new_map));
 +
-+# Default to host architecture if ARCH is not explicitly given.
-+ifeq ($(ARCH),)
-+CLANG_TARGET_FLAGS := $(shell $(CLANG) -print-target-triple)
-+else
-+CLANG_TARGET_FLAGS := $(CLANG_TARGET_FLAGS_$(ARCH))
-+endif
- 
- ifeq ($(CROSS_COMPILE),)
- ifeq ($(CLANG_TARGET_FLAGS),)
-@@ -30,7 +38,7 @@ else
- CLANG_FLAGS     += --target=$(notdir $(CROSS_COMPILE:%-=%))
- endif # CROSS_COMPILE
- 
--CC := $(LLVM_PREFIX)clang$(LLVM_SUFFIX) $(CLANG_FLAGS) -fintegrated-as
-+CC := $(CLANG) $(CLANG_FLAGS) -fintegrated-as
- else
- CC := $(CROSS_COMPILE)gcc
- endif # LLVM
+ 			err = maps__insert(kmaps, map_ref);
+ 			map__put(map_ref);
+ 			map__put(new_map);
 -- 
 2.43.0
 
