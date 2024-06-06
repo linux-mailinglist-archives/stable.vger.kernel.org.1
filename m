@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-49026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D63178FEB8D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 425408FEB49
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89CD9286D41
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A342874FD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B201199EB5;
-	Thu,  6 Jun 2024 14:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243FC1A3BA3;
+	Thu,  6 Jun 2024 14:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBzV0u2f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExYmSsbR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB401AB53B;
-	Thu,  6 Jun 2024 14:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85941993A8;
+	Thu,  6 Jun 2024 14:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683264; cv=none; b=YsHi+9dmso48gzxcEhASJD8K4gGeJZEvgdwutRktsNUuDMoWm+U+2cS/k49C+CA1WsUDvFhoBIiFHKx+8topgY8NF9M3BVayTO4JNd9HCuahEHM7nDvQkEu2tOoRq9CjBFihZ7EhK5lIF++NJXH9xI30t3FXOKBfvKV71m+Hqno=
+	t=1717683232; cv=none; b=gwFCZn9GkAINN2WWb92O+MvmbvxXMlz65K5zqJyJXM1/3p5udQk7n1A7MRLkEfoeC+HTQwTqx81PkdaWxPxVCA2vhZAOL7N9vhcrvuJido0FJHomZ38+8yAdvOwtTCzef1H+cXIr9KwMN4Z5BY23w/fiGJYrr7NWIps2a6b5hdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683264; c=relaxed/simple;
-	bh=XcFevsoNWzl6cDkT6VMhYGPgIKO6/KI0Ougchp05QnI=;
+	s=arc-20240116; t=1717683232; c=relaxed/simple;
+	bh=iCrCN50XgIHDGW0TcqU9hz8C9DzoBl1ghnFvEf/zQ/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1ikm0u5Q/Rokc0iTUeGB1T3v/T4QPT5EcJszsriy95aPfuEHAz0FZOOKoyNzr/hJ/G7mjof9Cs5yykM1WX3mIc+xElJFjV9pX6PTJB1OOWUW30LRa6cWXbl9+lRiDWsM5akhryCnCQUjyIejTn4dyouafYlvZR9fq8Brx4FQm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBzV0u2f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE96BC32782;
-	Thu,  6 Jun 2024 14:14:23 +0000 (UTC)
+	 MIME-Version; b=s774B5/QHIulC/9hn3b1g9cG4+AuWo5riZYsrno1EknksOAPjZIbKSVEsM8D/B0VugiIedZ4iA/DxMtNtnjAXCATBstckCOSEzQ7Ys2gUp3R3c7iU85qrzjVFB1x3wZWx5Rq98oLqGP6MraX4SyE++X5ktYuQjycYByWlPRoZ1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExYmSsbR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B522FC2BD10;
+	Thu,  6 Jun 2024 14:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683264;
-	bh=XcFevsoNWzl6cDkT6VMhYGPgIKO6/KI0Ougchp05QnI=;
+	s=korg; t=1717683232;
+	bh=iCrCN50XgIHDGW0TcqU9hz8C9DzoBl1ghnFvEf/zQ/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBzV0u2fjVH9kVVJwXZ8reWNUCHC/otlyk6Cvn9QuSdkhkMCx6RtWyAI2la5exeue
-	 WMv3qtwcpdOlcCgFHD9W2izrS43JZOE/hdfP3x+iIMeyfbbNRPsWMnQ4NCAjXI+8gn
-	 rcabGjEufTgxpinSJ9quuIfJWdmmz4DgTAlrkaJQ=
+	b=ExYmSsbRwsGPDN5xSF7sxoRAhYirU1immAbz2+KYKGihf2Fb9XtVAwh9Tr3zz99nX
+	 HC4YtSIMSQimJ2vgLbV2rrTRMIBBEt5+J2xhyIYm9VOzkDsPzs75I+3SK8AUqC0RZb
+	 XP24LJQsUvz5bHft2cMDZmdmpvjfldBhlMdved88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Andryuk <jandryuk@gmail.com>,
-	Juergen Gross <jgross@suse.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	Lorenz Bauer <lmb@isovalent.com>,
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/744] x86/pat: Fix W^X violation false-positives when running as Xen PV guest
-Date: Thu,  6 Jun 2024 15:57:24 +0200
-Message-ID: <20240606131737.940985820@linuxfoundation.org>
+Subject: [PATCH 6.6 173/744] udp: Avoid call to compute_score on multiple sites
+Date: Thu,  6 Jun 2024 15:57:25 +0200
+Message-ID: <20240606131737.975632918@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,141 +69,162 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-[ Upstream commit 5bc8b0f5dac04cd4ebe47f8090a5942f2f2647ef ]
+[ Upstream commit 50aee97d15113b95a68848db1f0cb2a6c09f753a ]
 
-When running as Xen PV guest in some cases W^X violation WARN()s have
-been observed. Those WARN()s are produced by verify_rwx(), which looks
-into the PTE to verify that writable kernel pages have the NX bit set
-in order to avoid code modifications of the kernel by rogue code.
+We've observed a 7-12% performance regression in iperf3 UDP ipv4 and
+ipv6 tests with multiple sockets on Zen3 cpus, which we traced back to
+commit f0ea27e7bfe1 ("udp: re-score reuseport groups when connected
+sockets are present").  The failing tests were those that would spawn
+UDP sockets per-cpu on systems that have a high number of cpus.
 
-As the NX bits of all levels of translation entries are or-ed and the
-RW bits of all levels are and-ed, looking just into the PTE isn't enough
-for the decision that a writable page is executable, too.
+Unsurprisingly, it is not caused by the extra re-scoring of the reused
+socket, but due to the compiler no longer inlining compute_score, once
+it has the extra call site in udp4_lib_lookup2.  This is augmented by
+the "Safe RET" mitigation for SRSO, needed in our Zen3 cpus.
 
-When running as a Xen PV guest, the direct map PMDs and kernel high
-map PMDs share the same set of PTEs. Xen kernel initialization will set
-the NX bit in the direct map PMD entries, and not the shared PTEs.
+We could just explicitly inline it, but compute_score() is quite a large
+function, around 300b.  Inlining in two sites would almost double
+udp4_lib_lookup2, which is a silly thing to do just to workaround a
+mitigation.  Instead, this patch shuffles the code a bit to avoid the
+multiple calls to compute_score.  Since it is a static function used in
+one spot, the compiler can safely fold it in, as it did before, without
+increasing the text size.
 
-Fixes: 652c5bf380ad ("x86/mm: Refuse W^X violations")
-Reported-by: Jason Andryuk <jandryuk@gmail.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240412151258.9171-5-jgross@suse.com
+With this patch applied I ran my original iperf3 testcases.  The failing
+cases all looked like this (ipv4):
+	iperf3 -c 127.0.0.1 --udp -4 -f K -b $R -l 8920 -t 30 -i 5 -P 64 -O 2
+
+where $R is either 1G/10G/0 (max, unlimited).  I ran 3 times each.
+baseline is v6.9-rc3. harmean == harmonic mean; CV == coefficient of
+variation.
+
+ipv4:
+                 1G                10G                  MAX
+	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
+baseline 1743852.66(0.0208) 1725933.02(0.0167) 1705203.78(0.0386)
+patched  1968727.61(0.0035) 1962283.22(0.0195) 1923853.50(0.0256)
+
+ipv6:
+                 1G                10G                  MAX
+	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
+baseline 1729020.03(0.0028) 1691704.49(0.0243) 1692251.34(0.0083)
+patched  1900422.19(0.0067) 1900968.01(0.0067) 1568532.72(0.1519)
+
+This restores the performance we had before the change above with this
+benchmark.  We obviously don't expect any real impact when mitigations
+are disabled, but just to be sure it also doesn't regresses:
+
+mitigations=off ipv4:
+                 1G                10G                  MAX
+	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
+baseline 3230279.97(0.0066) 3229320.91(0.0060) 2605693.19(0.0697)
+patched  3242802.36(0.0073) 3239310.71(0.0035) 2502427.19(0.0882)
+
+Cc: Lorenz Bauer <lmb@isovalent.com>
+Fixes: f0ea27e7bfe1 ("udp: re-score reuseport groups when connected sockets are present")
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/pat/set_memory.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ net/ipv4/udp.c | 21 ++++++++++++++++-----
+ net/ipv6/udp.c | 20 ++++++++++++++++----
+ 2 files changed, 32 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index a2dd773b1cd29..2d850f6bae701 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -619,7 +619,8 @@ static inline pgprot_t static_protections(pgprot_t prot, unsigned long start,
-  * Validate strict W^X semantics.
-  */
- static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long start,
--				  unsigned long pfn, unsigned long npg)
-+				  unsigned long pfn, unsigned long npg,
-+				  bool nx, bool rw)
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index ca576587f6d21..16ca211c8619d 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -429,15 +429,21 @@ static struct sock *udp4_lib_lookup2(struct net *net,
  {
- 	unsigned long end;
+ 	struct sock *sk, *result;
+ 	int score, badness;
++	bool need_rescore;
  
-@@ -641,6 +642,10 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
- 	if ((pgprot_val(new) & (_PAGE_RW | _PAGE_NX)) != _PAGE_RW)
- 		return new;
+ 	result = NULL;
+ 	badness = 0;
+ 	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
+-		score = compute_score(sk, net, saddr, sport,
+-				      daddr, hnum, dif, sdif);
++		need_rescore = false;
++rescore:
++		score = compute_score(need_rescore ? result : sk, net, saddr,
++				      sport, daddr, hnum, dif, sdif);
+ 		if (score > badness) {
+ 			badness = score;
  
-+	/* Non-leaf translation entries can disable writing or execution. */
-+	if (!rw || nx)
-+		return new;
++			if (need_rescore)
++				continue;
 +
- 	end = start + npg * PAGE_SIZE - 1;
- 	WARN_ONCE(1, "CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
- 		  (unsigned long long)pgprot_val(old),
-@@ -742,7 +747,7 @@ pte_t *lookup_address(unsigned long address, unsigned int *level)
- EXPORT_SYMBOL_GPL(lookup_address);
+ 			if (sk->sk_state == TCP_ESTABLISHED) {
+ 				result = sk;
+ 				continue;
+@@ -458,9 +464,14 @@ static struct sock *udp4_lib_lookup2(struct net *net,
+ 			if (IS_ERR(result))
+ 				continue;
  
- static pte_t *_lookup_address_cpa(struct cpa_data *cpa, unsigned long address,
--				  unsigned int *level)
-+				  unsigned int *level, bool *nx, bool *rw)
+-			badness = compute_score(result, net, saddr, sport,
+-						daddr, hnum, dif, sdif);
+-
++			/* compute_score is too long of a function to be
++			 * inlined, and calling it again here yields
++			 * measureable overhead for some
++			 * workloads. Work around it by jumping
++			 * backwards to rescore 'result'.
++			 */
++			need_rescore = true;
++			goto rescore;
+ 		}
+ 	}
+ 	return result;
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 124cf2bb2a6d7..c77ee9a3cde24 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -171,15 +171,21 @@ static struct sock *udp6_lib_lookup2(struct net *net,
  {
- 	pgd_t *pgd;
+ 	struct sock *sk, *result;
+ 	int score, badness;
++	bool need_rescore;
  
-@@ -751,7 +756,7 @@ static pte_t *_lookup_address_cpa(struct cpa_data *cpa, unsigned long address,
- 	else
- 		pgd = cpa->pgd + pgd_index(address);
+ 	result = NULL;
+ 	badness = -1;
+ 	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
+-		score = compute_score(sk, net, saddr, sport,
+-				      daddr, hnum, dif, sdif);
++		need_rescore = false;
++rescore:
++		score = compute_score(need_rescore ? result : sk, net, saddr,
++				      sport, daddr, hnum, dif, sdif);
+ 		if (score > badness) {
+ 			badness = score;
  
--	return lookup_address_in_pgd(pgd, address, level);
-+	return lookup_address_in_pgd_attr(pgd, address, level, nx, rw);
- }
++			if (need_rescore)
++				continue;
++
+ 			if (sk->sk_state == TCP_ESTABLISHED) {
+ 				result = sk;
+ 				continue;
+@@ -200,8 +206,14 @@ static struct sock *udp6_lib_lookup2(struct net *net,
+ 			if (IS_ERR(result))
+ 				continue;
  
- /*
-@@ -875,12 +880,13 @@ static int __should_split_large_page(pte_t *kpte, unsigned long address,
- 	pgprot_t old_prot, new_prot, req_prot, chk_prot;
- 	pte_t new_pte, *tmp;
- 	enum pg_level level;
-+	bool nx, rw;
- 
- 	/*
- 	 * Check for races, another CPU might have split this page
- 	 * up already:
- 	 */
--	tmp = _lookup_address_cpa(cpa, address, &level);
-+	tmp = _lookup_address_cpa(cpa, address, &level, &nx, &rw);
- 	if (tmp != kpte)
- 		return 1;
- 
-@@ -991,7 +997,8 @@ static int __should_split_large_page(pte_t *kpte, unsigned long address,
- 	new_prot = static_protections(req_prot, lpaddr, old_pfn, numpages,
- 				      psize, CPA_DETECT);
- 
--	new_prot = verify_rwx(old_prot, new_prot, lpaddr, old_pfn, numpages);
-+	new_prot = verify_rwx(old_prot, new_prot, lpaddr, old_pfn, numpages,
-+			      nx, rw);
- 
- 	/*
- 	 * If there is a conflict, split the large page.
-@@ -1072,6 +1079,7 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
- 	pte_t *pbase = (pte_t *)page_address(base);
- 	unsigned int i, level;
- 	pgprot_t ref_prot;
-+	bool nx, rw;
- 	pte_t *tmp;
- 
- 	spin_lock(&pgd_lock);
-@@ -1079,7 +1087,7 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
- 	 * Check for races, another CPU might have split this page
- 	 * up for us already:
- 	 */
--	tmp = _lookup_address_cpa(cpa, address, &level);
-+	tmp = _lookup_address_cpa(cpa, address, &level, &nx, &rw);
- 	if (tmp != kpte) {
- 		spin_unlock(&pgd_lock);
- 		return 1;
-@@ -1620,10 +1628,11 @@ static int __change_page_attr(struct cpa_data *cpa, int primary)
- 	int do_split, err;
- 	unsigned int level;
- 	pte_t *kpte, old_pte;
-+	bool nx, rw;
- 
- 	address = __cpa_addr(cpa, cpa->curpage);
- repeat:
--	kpte = _lookup_address_cpa(cpa, address, &level);
-+	kpte = _lookup_address_cpa(cpa, address, &level, &nx, &rw);
- 	if (!kpte)
- 		return __cpa_process_fault(cpa, address, primary);
- 
-@@ -1645,7 +1654,8 @@ static int __change_page_attr(struct cpa_data *cpa, int primary)
- 		new_prot = static_protections(new_prot, address, pfn, 1, 0,
- 					      CPA_PROTECT);
- 
--		new_prot = verify_rwx(old_prot, new_prot, address, pfn, 1);
-+		new_prot = verify_rwx(old_prot, new_prot, address, pfn, 1,
-+				      nx, rw);
- 
- 		new_prot = pgprot_clear_protnone_bits(new_prot);
- 
+-			badness = compute_score(sk, net, saddr, sport,
+-						daddr, hnum, dif, sdif);
++			/* compute_score is too long of a function to be
++			 * inlined, and calling it again here yields
++			 * measureable overhead for some
++			 * workloads. Work around it by jumping
++			 * backwards to rescore 'result'.
++			 */
++			need_rescore = true;
++			goto rescore;
+ 		}
+ 	}
+ 	return result;
 -- 
 2.43.0
 
