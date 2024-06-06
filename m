@@ -1,85 +1,86 @@
-Return-Path: <stable+bounces-49909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71BB08FF00E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 17:10:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4183B8FEFF3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 17:07:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74971B29143
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:59:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABD691F23650
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 15:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAB319B59C;
-	Thu,  6 Jun 2024 14:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AD019EEA4;
+	Thu,  6 Jun 2024 14:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gih88277"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qf5xRqGU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014DB195FDA
-	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 14:35:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730731990BD;
+	Thu,  6 Jun 2024 14:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717684504; cv=none; b=UJDGczLUuRRBvfhb7UB6D/BK3AeVvJ45q5XsFpxd4U962zdDGLpovnb3HVcLBFs/yu8VgeahWtpZLb9jtpTRkm8GnRA0pzwQViltIJCDSOKsYb/6UFnZy9407TjQPnk06twvpJMHyd3jCdGkkFOV1Ud1wWLsw7bsaMnDgqr+k6s=
+	t=1717684909; cv=none; b=ZihfTMClUh+PtOcdhAfnqooTMw2e/5pt5YAR4ytn812OljjXbtk4f1bPaCsmojLj2txydQ8dxLtGf4yxF1vedkXnwU4liDd2pSekgNmRv2oYFCgZw96pGibl2qInFaOJBoQEaza7XK3c0QEpRo5gmwnCusYiH0ffy5LWnmZl3LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717684504; c=relaxed/simple;
-	bh=h9ZaPrAmxAPQehpDzjStkeIg6YJXxVarWCaYU2WS9kQ=;
+	s=arc-20240116; t=1717684909; c=relaxed/simple;
+	bh=pNdNKUz8Qx6fVYu4D3HZWpU/yRKMx8AbP0xu0qMyrvM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VK6Dvdx9XWLGKywPh54WtIFXlnGa89UV/qeAD93/uesoaRJPCOTWb5Txq6ADF725R/hYHvbcQ61Nu8Z4I61ELNdYYSd1M4UU7b8fi7fUSt+lSYy4hjEHloBE+YVSIBjRRCZX3Mz7CgO9EzhPAfv9Qw8EH/4/Qbnp24Wy0vb3NJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gih88277; arc=none smtp.client-ip=209.85.222.176
+	 To:Cc:Content-Type; b=Cer+rwt6eDoXWo/o7v3B6WbxBT4DrwhzUPpOz5YCnTw4f0JWN1Eg1g1es8WpOgyc7j3FvwfS1KIT3DoexE2cfDBfRSHWkkI5Rv53EcKf6F+1qqNiajunCsm0IOzg9oanbgnlDQ+kwUlX+v/o3vXK9sF1lWlycssX9TRNHjq948o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qf5xRqGU; arc=none smtp.client-ip=209.85.222.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-79532ec4306so48080785a.1
-        for <stable@vger.kernel.org>; Thu, 06 Jun 2024 07:35:02 -0700 (PDT)
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-79526197ba6so54657585a.2;
+        Thu, 06 Jun 2024 07:41:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717684502; x=1718289302; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1717684906; x=1718289706; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Fk/yBrg3lB0eIyTR1z2aQPbvwHEOsAf8ISJq44rsaRI=;
-        b=gih88277epJawk1SuxqwFyQOEfj9cx4y3SbIkBAoB+rVNE1Ra4ZvSW4rEoQAZIC5ou
-         uACMkeVNXpTewPsYvJuiH7nisl3gCS1355B5lnzmuV+c+H+gcIhaOyIHqTHpJdAe3cqG
-         AB0UthuivThFEkwcVqA38iVCdtXYbLDaSnql69q124o6jK+s/VDpy2Km7pnGfqzL08Rc
-         aDkrolynl69WDEi/OOUssGgVuc7EbPHydZG+iyrlT10uurpK0ee7AuoWgEKqPs7uW3Ly
-         XkJUW6Em23OwGQ4GgwoxopZKgc/ULKFkhWF8YKXn71xOypPqbylCLZEIa8qOmvSQjyL7
-         VJUA==
+        bh=2iCRDxRBjaRLEHPz1RTSOPHgc01ZwAtsHfV91DtTiy4=;
+        b=Qf5xRqGUloB6mfSXHP32BMV73am3bsQzW7HFUWcr54+/oRH3mwVcDoJ7kh62yi6la2
+         UZBaaYIWmlVKQ8Nslz+X8F7zybqNjODcqAwPgshy/d4pNdpDZ2e9sT25CBdeZyrjqt2B
+         3v6xW+8E99UeMry9QE/fCkWUwuxKvHbAJEzDFRXTmx+iCK6moHztM4WzEDRpisOfApGp
+         eCTTykIUiHzUrENl1e3zivn1ziC1XUeZhY50vVwceMbfE3hE+dz3Phb17Hhitlagl24t
+         OkXBRQ324PJFKKEtP4UikVVNp3pYU/cKuGEJTT+BZ7czovE25U/lcKNp0hMArZj0Hmcn
+         mwOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717684502; x=1718289302;
+        d=1e100.net; s=20230601; t=1717684906; x=1718289706;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Fk/yBrg3lB0eIyTR1z2aQPbvwHEOsAf8ISJq44rsaRI=;
-        b=XpI71b28bdoVqFeMTyN69L0lHUbBISaUVLIFRpszaegC9YeuNGEpH2avZzSBzy9VMG
-         PMCTP57QXKXdn5VB3WDGOC5Pxms59Z+pR7lZOjN/xRiyuc1qYQHkeFUusdOeKK2MSwFs
-         lk8qeU6AcF40ISioRhDeCg9ejSNTpDhjDpt+YdFLLKi5RGZJkLrkuKHrR787qrPVAhW/
-         blJO+2jdGfyYrIbh5a2utpKPjw9k6H+zi/nTCMwywumHwdvGSTU9frjXhEGeL/fOvkUv
-         etn+MsSbZUzl/zVVHrXaHZuESuaHR4QYFzKJOQH70VzdKYjX7tHgT3Tko+MY77BxHpcm
-         3kQg==
-X-Gm-Message-State: AOJu0Yzg+CCkg2b7eiYX4MKjertsBnncm40XtH4cthSioxnPte1PvhEp
-	Yr4Q6BlsYUmn7IcqMPscIiRGOMHvsCd8nXkHR+Exskhtn7FNXEMYal9XqL2wW+iy7pu/JFHh8f6
-	gfDUfbmsAqjQUiFisuRNpXtO6Rwg=
-X-Google-Smtp-Source: AGHT+IGialW1cgUFYrkwgo6znlv+dlJDrhpohenFUSsh7AtWMA1/F9Ae5x0lyonf7iHbyWTdszun78wPTkmnnYgf2WU=
-X-Received: by 2002:a05:620a:2005:b0:792:c683:1f48 with SMTP id
- af79cd13be357-79523d4f6bamr611477785a.36.1717684501908; Thu, 06 Jun 2024
- 07:35:01 -0700 (PDT)
+        bh=2iCRDxRBjaRLEHPz1RTSOPHgc01ZwAtsHfV91DtTiy4=;
+        b=hMy6dA3N3YkUdVKYsNkbUBC3FsaiJHRc2cmJ5vmxzyr7z3f44198ToB+aa/posLq3H
+         TzKabSvC9EG4QD8/ncoWEFJVnpaX031ybwZHUOFX+pPZPOao+0BqR9HfiJmahuXi4pWk
+         HbK0OSjbAwQhgHXvcBp6dEKzbuPrNQ8nJGUXzviuW2N1wNG9ZtpgBMz9aoJqTz8E9E5D
+         BVKUbHbJzVlsOMH+hJ7x/vjoknX2fa3mxOE8ptJR8hQ7dVL8tB/aLEkq61uK1w+ChxHM
+         3FBwshixH9UI/+FcudEZcPhvEHxvB7Z2ueofZO+Z3yuyDIp3kLF6So2wec+CPG942GBy
+         oTxA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQxwwZkIUk0rGfyByZUwMRkJBiXEu6ohc83iIOMbZTDIZwZxe9IGX4bWEHW0hTq1OpxuNBBr8+y2OAR1eJKuJ1hL0fEqr0fIqm72UI4g==
+X-Gm-Message-State: AOJu0Yx5t7IORq2E6qbrJ3ykPi3andmXowBS7FetqIXWMDRKBKU9TJMp
+	FHp2Wir5KvnRF9ThaSLCIGCwhrYqwQKvMb3xKgTeRAgkoT3mSGeywXWejHchYz0A6T74aoNoSFH
+	iVUaASO5z1iUT4mO/pacvyv2nE8Y=
+X-Google-Smtp-Source: AGHT+IGE1TzyZQFnzCWobTDTF8CDE5UYv4N4231xtIVgReMpj55uUq4SoSovxY8BTHFD5OUm/0TdtJoRXoi78qdxgI0=
+X-Received: by 2002:a05:620a:2f8:b0:792:93ed:2e7c with SMTP id
+ af79cd13be357-795240e4073mr589955785a.76.1717684906364; Thu, 06 Jun 2024
+ 07:41:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240606131732.440653204@linuxfoundation.org> <20240606131746.600659628@linuxfoundation.org>
-In-Reply-To: <20240606131746.600659628@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org> <20240606131746.528729378@linuxfoundation.org>
+In-Reply-To: <20240606131746.528729378@linuxfoundation.org>
 From: Amir Goldstein <amir73il@gmail.com>
-Date: Thu, 6 Jun 2024 17:34:50 +0300
-Message-ID: <CAOQ4uxifOH00rFOgOb50-XySScixowqa3YfrFLDDcsdfmtEMCQ@mail.gmail.com>
-Subject: Re: [PATCH 6.6 440/744] fs: move kiocb_start_write() into vfs_iocb_iter_write()
+Date: Thu, 6 Jun 2024 17:41:35 +0300
+Message-ID: <CAOQ4uxhwgGKf0=y4LTst5ExDVO0c0HWeZ=3iRK63t8GW9zBzbA@mail.gmail.com>
+Subject: Re: [PATCH 6.6 438/744] ovl: add helper ovl_file_modified()
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, Jan Kara <jack@suse.cz>, 
-	Josef Bacik <josef@toxicpanda.com>, Christian Brauner <brauner@kernel.org>, 
-	Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Sasha Levin <sashal@kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -90,12 +91,19 @@ On Thu, Jun 6, 2024 at 5:18=E2=80=AFPM Greg Kroah-Hartman
 w.
 >
 
-I have objections and I wrote them when Sasha posted the patch for review:
+As I wrote here:
+https://lore.kernel.org/stable/CAOQ4uxj6y0TJs9ZEzGCY4UkqUc1frcEOZsnP4UnWvGt=
+QX89mRA@mail.gmail.com/
 
-https://lore.kernel.org/stable/CAOQ4uxg1Ce31UDDeb9ADYgEBvr582j4hqmJ-B72iAL+=
-2xsAYzw@mail.gmail.com/
+No objection to this patch, but this patch in itself is useless for stable.
+It is being backported as
+ Stable-dep-of: 7c98f7cb8fda ("remove call_{read,write}_iter() functions")
+and I think the decision to backport 7c98f7cb8fda is wrong.
+I think that the Fixes: tag in 7c98f7cb8fda is misleading to think that thi=
+s
+is a bug fix - it is not.
 
-Where did this objection get lost?
+I wonder how my feedback on Sasha's series got lost?
 
 Thanks,
 Amir.
@@ -104,130 +112,89 @@ Amir.
 >
 > From: Amir Goldstein <amir73il@gmail.com>
 >
-> [ Upstream commit 6ae654392bb516a0baa47fed1f085d84e8cad739 ]
+> [ Upstream commit c002728f608183449673818076380124935e6b9b ]
 >
-> In vfs code, sb_start_write() is usually called after the permission hook
-> in rw_verify_area().  vfs_iocb_iter_write() is an exception to this rule,
-> where kiocb_start_write() is called by its callers.
+> A simple wrapper for updating ovl inode size/mtime, to conform
+> with ovl_file_accessed().
 >
-> Move kiocb_start_write() from the callers into vfs_iocb_iter_write()
-> after the rw_verify_area() checks, to make them "start-write-safe".
->
-> The semantics of vfs_iocb_iter_write() is changed, so that the caller is
-> responsible for calling kiocb_end_write() on completion only if async
-> iocb was queued.  The completion handlers of both callers were adapted
-> to this semantic change.
->
-> This is needed for fanotify "pre content" events.
->
-> Suggested-by: Jan Kara <jack@suse.cz>
-> Suggested-by: Josef Bacik <josef@toxicpanda.com>
 > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> Link: https://lore.kernel.org/r/20231122122715.2561213-14-amir73il@gmail.=
-com
-> Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-> Reviewed-by: Jan Kara <jack@suse.cz>
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
 > Stable-dep-of: 7c98f7cb8fda ("remove call_{read,write}_iter() functions")
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  fs/cachefiles/io.c  | 5 ++---
->  fs/overlayfs/file.c | 8 ++++----
->  fs/read_write.c     | 7 +++++++
->  3 files changed, 13 insertions(+), 7 deletions(-)
->
-> diff --git a/fs/cachefiles/io.c b/fs/cachefiles/io.c
-> index 009d23cd435b5..5857241c59181 100644
-> --- a/fs/cachefiles/io.c
-> +++ b/fs/cachefiles/io.c
-> @@ -259,7 +259,8 @@ static void cachefiles_write_complete(struct kiocb *i=
-ocb, long ret)
->
->         _enter("%ld", ret);
->
-> -       kiocb_end_write(iocb);
-> +       if (ki->was_async)
-> +               kiocb_end_write(iocb);
->
->         if (ret < 0)
->                 trace_cachefiles_io_error(object, inode, ret,
-> @@ -319,8 +320,6 @@ int __cachefiles_write(struct cachefiles_object *obje=
-ct,
->                 ki->iocb.ki_complete =3D cachefiles_write_complete;
->         atomic_long_add(ki->b_writing, &cache->b_writing);
->
-> -       kiocb_start_write(&ki->iocb);
-> -
->         get_file(ki->iocb.ki_filp);
->         cachefiles_grab_object(object, cachefiles_obj_get_ioreq);
+>  fs/overlayfs/file.c | 18 +++++++++++-------
+>  1 file changed, 11 insertions(+), 7 deletions(-)
 >
 > diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
-> index 9fd88579bfbfb..a1c64c2b8e204 100644
+> index 8be4dc050d1ed..9fd88579bfbfb 100644
 > --- a/fs/overlayfs/file.c
 > +++ b/fs/overlayfs/file.c
-> @@ -295,10 +295,8 @@ static void ovl_aio_cleanup_handler(struct ovl_aio_r=
-eq *aio_req)
->         struct kiocb *iocb =3D &aio_req->iocb;
->         struct kiocb *orig_iocb =3D aio_req->orig_iocb;
->
-> -       if (iocb->ki_flags & IOCB_WRITE) {
-> -               kiocb_end_write(iocb);
-> +       if (iocb->ki_flags & IOCB_WRITE)
->                 ovl_file_modified(orig_iocb->ki_filp);
-> -       }
->
->         orig_iocb->ki_pos =3D iocb->ki_pos;
->         ovl_aio_put(aio_req);
-> @@ -310,6 +308,9 @@ static void ovl_aio_rw_complete(struct kiocb *iocb, l=
-ong res)
->                                                    struct ovl_aio_req, io=
-cb);
->         struct kiocb *orig_iocb =3D aio_req->orig_iocb;
->
-> +       if (iocb->ki_flags & IOCB_WRITE)
-> +               kiocb_end_write(iocb);
-> +
->         ovl_aio_cleanup_handler(aio_req);
->         orig_iocb->ki_complete(orig_iocb, res);
->  }
-> @@ -421,7 +422,6 @@ static ssize_t ovl_write_iter(struct kiocb *iocb, str=
-uct iov_iter *iter)
->                 aio_req->iocb.ki_flags =3D ifl;
->                 aio_req->iocb.ki_complete =3D ovl_aio_rw_complete;
->                 refcount_set(&aio_req->ref, 2);
-> -               kiocb_start_write(&aio_req->iocb);
->                 ret =3D vfs_iocb_iter_write(real.file, &aio_req->iocb, it=
-er);
->                 ovl_aio_put(aio_req);
->                 if (ret !=3D -EIOCBQUEUED)
-> diff --git a/fs/read_write.c b/fs/read_write.c
-> index 4771701c896ba..9a56949f3b8d1 100644
-> --- a/fs/read_write.c
-> +++ b/fs/read_write.c
-> @@ -865,6 +865,10 @@ static ssize_t do_iter_write(struct file *file, stru=
-ct iov_iter *iter,
+> @@ -235,6 +235,12 @@ static loff_t ovl_llseek(struct file *file, loff_t o=
+ffset, int whence)
 >         return ret;
 >  }
 >
-> +/*
-> + * Caller is responsible for calling kiocb_end_write() on completion
-> + * if async iocb was queued.
-> + */
->  ssize_t vfs_iocb_iter_write(struct file *file, struct kiocb *iocb,
->                             struct iov_iter *iter)
+> +static void ovl_file_modified(struct file *file)
+> +{
+> +       /* Update size/mtime */
+> +       ovl_copyattr(file_inode(file));
+> +}
+> +
+>  static void ovl_file_accessed(struct file *file)
 >  {
-> @@ -885,7 +889,10 @@ ssize_t vfs_iocb_iter_write(struct file *file, struc=
-t kiocb *iocb,
->         if (ret < 0)
->                 return ret;
+>         struct inode *inode, *upperinode;
+> @@ -290,10 +296,8 @@ static void ovl_aio_cleanup_handler(struct ovl_aio_r=
+eq *aio_req)
+>         struct kiocb *orig_iocb =3D aio_req->orig_iocb;
 >
-> +       kiocb_start_write(iocb);
->         ret =3D call_write_iter(file, iocb, iter);
-> +       if (ret !=3D -EIOCBQUEUED)
-> +               kiocb_end_write(iocb);
->         if (ret > 0)
->                 fsnotify_modify(file);
+>         if (iocb->ki_flags & IOCB_WRITE) {
+> -               struct inode *inode =3D file_inode(orig_iocb->ki_filp);
+> -
+>                 kiocb_end_write(iocb);
+> -               ovl_copyattr(inode);
+> +               ovl_file_modified(orig_iocb->ki_filp);
+>         }
 >
+>         orig_iocb->ki_pos =3D iocb->ki_pos;
+> @@ -403,7 +407,7 @@ static ssize_t ovl_write_iter(struct kiocb *iocb, str=
+uct iov_iter *iter)
+>                                      ovl_iocb_to_rwf(ifl));
+>                 file_end_write(real.file);
+>                 /* Update size */
+> -               ovl_copyattr(inode);
+> +               ovl_file_modified(file);
+>         } else {
+>                 struct ovl_aio_req *aio_req;
+>
+> @@ -489,7 +493,7 @@ static ssize_t ovl_splice_write(struct pipe_inode_inf=
+o *pipe, struct file *out,
+>
+>         file_end_write(real.file);
+>         /* Update size */
+> -       ovl_copyattr(inode);
+> +       ovl_file_modified(out);
+>         revert_creds(old_cred);
+>         fdput(real);
+>
+> @@ -570,7 +574,7 @@ static long ovl_fallocate(struct file *file, int mode=
+, loff_t offset, loff_t len
+>         revert_creds(old_cred);
+>
+>         /* Update size */
+> -       ovl_copyattr(inode);
+> +       ovl_file_modified(file);
+>
+>         fdput(real);
+>
+> @@ -654,7 +658,7 @@ static loff_t ovl_copyfile(struct file *file_in, loff=
+_t pos_in,
+>         revert_creds(old_cred);
+>
+>         /* Update size */
+> -       ovl_copyattr(inode_out);
+> +       ovl_file_modified(file_out);
+>
+>         fdput(real_in);
+>         fdput(real_out);
 > --
 > 2.43.0
 >
