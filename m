@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-48704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE838FEA21
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC34D8FEA23
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ECA71F236D5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:18:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E61C1F24E86
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4352B19E7D9;
-	Thu,  6 Jun 2024 14:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4671990A7;
+	Thu,  6 Jun 2024 14:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlpzAKzY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TC6JRiGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B4419E7D5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E0719E7DC;
 	Thu,  6 Jun 2024 14:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683106; cv=none; b=mzFs7bSMzR8tA82RkJGWPN+A35Wd3XauTbmxt6yn6pm+/9anjSt/PRzUjOahIGu2IxIwfNXK7C431TH49Of0SufLlrSoc2cgmBZ9CElaFwtNQ7tmQnTBKCiMZkA/vUtjRyEHQzRjiBhU8H0OxKNOBJk33Sxxs1kGBc1LSPcDaeE=
+	t=1717683107; cv=none; b=AqDRZd9m0Qe44LcWP0iFXJi899kUV/h+KdYWZm6zUeNT//BhGVdjUrlkB91xw2nTuV0q+PsXMB8Gdxk15lcJm4S5a2ef8gPddYji3PEpOk94t4PiicqwX8AbGI9meap14GogynF1hq7I7CVfIZlcs/ZuW8WyZExTEvm8eZtV/z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683106; c=relaxed/simple;
-	bh=6CAJ7Xvt02veTwzg8D+/2QU9do+JbSq2gr2B+E1Dmks=;
+	s=arc-20240116; t=1717683107; c=relaxed/simple;
+	bh=XMNGtvRLdA7W2+jyRni1dIr63CED2jb8nNiZ1kzx1+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T2NX9QCYT6cpvephXKlLobKWKj/vyAtMHW4GVBnzU1M6o0O9iAhwBef5yu2ULhrsfOfQjpJ4yP3anTTyYq/jURFdLcclSHrlkfJ/HnXnmOP60mvuCOubITl86x0asZxI2U+TFv6ej2njywPgMheNLnNqrEVNZNhMUxRRh11QOPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlpzAKzY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D66BDC2BD10;
-	Thu,  6 Jun 2024 14:11:45 +0000 (UTC)
+	 MIME-Version; b=PatRAuB1xFlxNImhC7C0cTCtUVDEPrLHRUWOWYKlLK3OAat57TgPyllV7OKfmvVk395DgzLSzdbCao6uV2LcKG9g/8ftxdDZC0xO56wDex+6Jc53+8mLDNUi+1joJSoUqYrKlj9n+YqZICCpMpjswUGgOFzV36IayL/vF8lj9/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TC6JRiGf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D136DC32781;
+	Thu,  6 Jun 2024 14:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683105;
-	bh=6CAJ7Xvt02veTwzg8D+/2QU9do+JbSq2gr2B+E1Dmks=;
+	s=korg; t=1717683106;
+	bh=XMNGtvRLdA7W2+jyRni1dIr63CED2jb8nNiZ1kzx1+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlpzAKzYM6DDWQ0uifbZPw9zMo96exOyEKnBJBdFR6OxY5pbx+A3RVLxDpJQyJRMj
-	 SoN4sD1bG4rGvvqb0jNmSKthQSoXmIEnt0XRaTLSRksSx2R6aB8kwz0yGkPGFSQPze
-	 o3DD3kFW1JbgQvTGWTt3AV2jRllvnxSuh7SqFjjk=
+	b=TC6JRiGfrRAFoqcv3gNFm0Ob3LaLXuIVSqvRoSTIceXHdMYXr1WjbFzyWr/vrrxgu
+	 ki+ZnIlq38RdZ4fPE/UGlcS5/c2QxstOPdaSRQ0cop+asvTIFv1nceQ66jE4eRiGF2
+	 VjUqCP5IN+ANha7meUxk5kpWAAWYPrykwgEXXiqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Chi <andy.chi@canonical.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 029/744] ALSA: hda/realtek: fix mute/micmute LEDs dont work for ProBook 440/460 G11.
-Date: Thu,  6 Jun 2024 15:55:01 +0200
-Message-ID: <20240606131733.389606054@linuxfoundation.org>
+Subject: [PATCH 6.6 030/744] ALSA: core: Fix NULL module pointer assignment at card init
+Date: Thu,  6 Jun 2024 15:55:02 +0200
+Message-ID: <20240606131733.422168119@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -65,36 +65,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andy Chi <andy.chi@canonical.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit b3b6f125da2773cbc681316842afba63ca9869aa upstream.
+commit 39381fe7394e5eafac76e7e9367e7351138a29c1 upstream.
 
-HP ProBook 440/460 G11 needs ALC236_FIXUP_HP_GPIO_LED quirk to
-make mic-mute/audio-mute working.
+The commit 81033c6b584b ("ALSA: core: Warn on empty module")
+introduced a WARN_ON() for a NULL module pointer passed at snd_card
+object creation, and it also wraps the code around it with '#ifdef
+MODULE'.  This works in most cases, but the devils are always in
+details.  "MODULE" is defined when the target code (i.e. the sound
+core) is built as a module; but this doesn't mean that the caller is
+also built-in or not.  Namely, when only the sound core is built-in
+(CONFIG_SND=y) while the driver is a module (CONFIG_SND_USB_AUDIO=m),
+the passed module pointer is ignored even if it's non-NULL, and
+card->module remains as NULL.  This would result in the missing module
+reference up/down at the device open/close, leading to a race with the
+code execution after the module removal.
 
-Signed-off-by: Andy Chi <andy.chi@canonical.com>
+For addressing the bug, move the assignment of card->module again out
+of ifdef.  The WARN_ON() is still wrapped with ifdef because the
+module can be really NULL when all sound drivers are built-in.
+
+Note that we keep 'ifdef MODULE' for WARN_ON(), otherwise it would
+lead to a false-positive NULL module check.  Admittedly it won't catch
+perfectly, i.e. no check is performed when CONFIG_SND=y.  But, it's no
+real problem as it's only for debugging, and the condition is pretty
+rare.
+
+Fixes: 81033c6b584b ("ALSA: core: Warn on empty module")
+Reported-by: Xu Yang <xu.yang_2@nxp.com>
+Closes: https://lore.kernel.org/r/20240520170349.2417900-1-xu.yang_2@nxp.com
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240523061832.607500-1-andy.chi@canonical.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Tested-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20240522070442.17786-1-tiwai@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/core/init.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9959,8 +9959,11 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8c70, "HP EliteBook 835 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c89, "HP ProBook 460 G11", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c8a, "HP EliteBook 630", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c8c, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c8d, "HP ProBook 440 G11", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c8e, "HP ProBook 460 G11", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c90, "HP EliteBook 640", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c91, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+--- a/sound/core/init.c
++++ b/sound/core/init.c
+@@ -312,8 +312,8 @@ static int snd_card_init(struct snd_card
+ 	card->number = idx;
+ #ifdef MODULE
+ 	WARN_ON(!module);
+-	card->module = module;
+ #endif
++	card->module = module;
+ 	INIT_LIST_HEAD(&card->devices);
+ 	init_rwsem(&card->controls_rwsem);
+ 	rwlock_init(&card->ctl_files_rwlock);
 
 
 
