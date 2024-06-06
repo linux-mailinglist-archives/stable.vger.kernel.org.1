@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-48809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4298FEAA1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B068FEAA4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 751F8289F97
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5248B22F63
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560801991C5;
-	Thu,  6 Jun 2024 14:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422441A0B0B;
+	Thu,  6 Jun 2024 14:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWIPdDJL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kogHdKQl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155881A0B04;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016FD1A0B0A;
 	Thu,  6 Jun 2024 14:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683158; cv=none; b=Kz+6fSmt8/BhoWlU3ARnqLaehNapjwsrGCukTFwvqCMlZCIg3yQGexh+0/X4PyBSz0sGxYFk9KQwKEGRvLhXcbxozE8B/LMNc16xp2y4dlu5dmLDrBLI4l+prQTEGuzTxkCMEm5s/bn154DJSWahKRgLVeDkmbCB79lgtcibK8U=
+	t=1717683159; cv=none; b=GQpbrTC2YOPT/CBCROKAITslt3XQM2mjPECjjEOKdo+YC4IOpRBeZ5fK/VY6deFvM9zSHeP/I6JGWfGLNgNYbKLE4gczfJnXGwv5IW33yvoqVpunop0RPwdHJv0bd5O+3TEs94nOx9t+/H4ATs4XYSnNcY6L3W36WjxUg/rvglo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683158; c=relaxed/simple;
-	bh=OyOtW5kN1n4AdX5JQEdvHz7kkX9swJaBKVixeaYGqO8=;
+	s=arc-20240116; t=1717683159; c=relaxed/simple;
+	bh=9TO7WriRBMr/uceQYHVobMSRy4zZJ3WfVSLku+oXu2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PyZmCS34g/js3VKOXL+J3grjs8kUGvkon4Kd4C6g2fo7kJ0uAm38ufROdaZzthoZ4+aPXYSDdlQNFLA6Lz2QI0eCjTqfLzplJ85yB9h8vfIIUsw7f3G0+MaVXrhEpYggPeBqhCSd+r9fSzmrSr9EjhJjCkb7OiT2nEz919OhBXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWIPdDJL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E95C32781;
-	Thu,  6 Jun 2024 14:12:37 +0000 (UTC)
+	 MIME-Version; b=tBM4LXkiUQs4bo+lQ2hWvQOKahfZso6qSOVdxcxkbQG8dGcEAixcoZ0Ccz4iMsyU+toZVhZIqP7u5sWi778Qn1dqDMWr8Q/BN1AF7zendZNMFvIZ0I+qVjmCJLLdtOGvo2hzpTrnVKnAMs7Bt09fs/SOMRVb7Kk8slY4fIg42fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kogHdKQl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D8CC32781;
+	Thu,  6 Jun 2024 14:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
 	s=korg; t=1717683158;
-	bh=OyOtW5kN1n4AdX5JQEdvHz7kkX9swJaBKVixeaYGqO8=;
+	bh=9TO7WriRBMr/uceQYHVobMSRy4zZJ3WfVSLku+oXu2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWIPdDJLgMt2pFF6cPBA8Fa95vLZcy/QeBbxzwEIdIPy/4sY9HP167z2JaSYGEx0o
-	 h7FhVdmB0XshpjKq2kwoCWACyGbI0d5daS+9exEYB5DAj4YpOTPF6JZSxBDXYsnHY/
-	 Otvf3S0uaEXcWQc2UHQCbq60ZpvkuD0W9kJQPZYA=
+	b=kogHdKQl/v1Gh85BIKFTezny0EIgVgyejafSlt73DEAziWtVHQAIqhbxVnES4MdgO
+	 HZy+DNU0Gh6umnvVp3EecveFBEG+RS0A+oPgHPM9Nra/QgUK3QGm8ZrUZZoTA7JqbB
+	 WibKSv2v8DWY+DWxn3kIp3Ghpb23kd+UZkuGibvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tim Chen <tim.c.chen@linux.intel.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/744] crypto: x86/sha256-avx2 - add missing vzeroupper
-Date: Thu,  6 Jun 2024 15:56:14 +0200
-Message-ID: <20240606131735.673166729@linuxfoundation.org>
+Subject: [PATCH 6.6 103/744] crypto: x86/sha512-avx2 - add missing vzeroupper
+Date: Thu,  6 Jun 2024 15:56:15 +0200
+Message-ID: <20240606131735.702166936@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,32 +69,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 57ce8a4e162599cf9adafef1f29763160a8e5564 ]
+[ Upstream commit 6a24fdfe1edbafacdacd53516654d99068f20eec ]
 
-Since sha256_transform_rorx() uses ymm registers, execute vzeroupper
+Since sha512_transform_rorx() uses ymm registers, execute vzeroupper
 before returning from it.  This is necessary to avoid reducing the
 performance of SSE code.
 
-Fixes: d34a460092d8 ("crypto: sha256 - Optimized sha256 x86_64 routine using AVX2's RORX instructions")
+Fixes: e01d69cb0195 ("crypto: sha512 - Optimized SHA512 x86_64 assembly routine using AVX instructions.")
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 Acked-by: Tim Chen <tim.c.chen@linux.intel.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/sha256-avx2-asm.S | 1 +
+ arch/x86/crypto/sha512-avx2-asm.S | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/crypto/sha256-avx2-asm.S b/arch/x86/crypto/sha256-avx2-asm.S
-index 9918212faf914..0ffb072be9561 100644
---- a/arch/x86/crypto/sha256-avx2-asm.S
-+++ b/arch/x86/crypto/sha256-avx2-asm.S
-@@ -716,6 +716,7 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
- 	popq	%r13
- 	popq	%r12
- 	popq	%rbx
+diff --git a/arch/x86/crypto/sha512-avx2-asm.S b/arch/x86/crypto/sha512-avx2-asm.S
+index f08496cd68708..24973f42c43ff 100644
+--- a/arch/x86/crypto/sha512-avx2-asm.S
++++ b/arch/x86/crypto/sha512-avx2-asm.S
+@@ -680,6 +680,7 @@ SYM_TYPED_FUNC_START(sha512_transform_rorx)
+ 	pop	%r12
+ 	pop	%rbx
+ 
 +	vzeroupper
  	RET
- SYM_FUNC_END(sha256_transform_rorx)
+ SYM_FUNC_END(sha512_transform_rorx)
  
 -- 
 2.43.0
