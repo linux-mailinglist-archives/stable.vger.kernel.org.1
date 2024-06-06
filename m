@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0B08FE8B0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A108FECF1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 571C31C2433C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAEF5B24E82
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211C6197A88;
-	Thu,  6 Jun 2024 14:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551271B3754;
+	Thu,  6 Jun 2024 14:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3DBfcaW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="narlHO8N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D247E197559;
-	Thu,  6 Jun 2024 14:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A02198E6A;
+	Thu,  6 Jun 2024 14:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682923; cv=none; b=caVKkxzP85ALYRQ4DRBAWvYYaRuFJZMjKM2CaQJwGK2VLmwkbUdo/l5wClZHRxkItMevGAJPplgPyPLYwsKB71yu1YEdA2BHuYE746TtfI3TIXEoAg+/ySFduqPu2/0v3pAdMeAMV60HQhk7lI5EWRPj1bouh34ZssWwaHCEhq4=
+	t=1717683427; cv=none; b=If841CdidKD9ayt2wSkKgJbLps7JbVvFjZqnm/vpQJtAbhUJdYXGOZ4tGmQEZ6HRDnBc20YmGoNWhomxYleq4xhrJbN92jtOPnAO4MqFJoVW9oP5k621N3NpxbuxwYrYTladMQWpv1TVCWTuLV0MdSsS/gMuGy9GROuk0/eO9pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682923; c=relaxed/simple;
-	bh=DCyFddNiHZvuiZYa+g12ADaP3/Q1bwhcuxw4Y/HbnEc=;
+	s=arc-20240116; t=1717683427; c=relaxed/simple;
+	bh=MvPwgqxzGmXfQ4lZc3W3irYbddou3ZQ3hrGPHK0bIKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jyLH1vn01dXm/RPHo/mYluCAjDQjCRhGFegiPyE7Rzrx8fVwF4l42YdoHSHmFrUp7oZI/Dln3Ot5JlX3HpM7Q3F4IgRLpDqklQflrodYAUHs/wdOMqhqzWC/4OopGkJHaSiYM4wQB7rkA+5SWFJ2iADiT35HqSOrwUcZxxCCd7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3DBfcaW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B010AC2BD10;
-	Thu,  6 Jun 2024 14:08:43 +0000 (UTC)
+	 MIME-Version; b=MqNvUrlqQCVHks7w8+8HdwkpcIHk7XhXs1/YeoULpbH/heoWjvFLQ//MCBnNnQGVWXzqQ/FTIiEaS26EEUohh5K4dwx8bqyyK/8TL7WNVnq1O/HYcznpNvLo39L9SgWMWJhTs+OJodCPARLvwUG3DuO9YnUxUviLAvnC5EisdWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=narlHO8N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D0FC2BD10;
+	Thu,  6 Jun 2024 14:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682923;
-	bh=DCyFddNiHZvuiZYa+g12ADaP3/Q1bwhcuxw4Y/HbnEc=;
+	s=korg; t=1717683427;
+	bh=MvPwgqxzGmXfQ4lZc3W3irYbddou3ZQ3hrGPHK0bIKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3DBfcaWQHlSRpmmvq4daNJSyjQ5rGmIBLSjvxKmnbZ59p5UlCupZj+m0s6aybIaC
-	 GH7MgRYxhsHNWYktd/VuEBIZBo/Yx2o5FqrEtdGAY1r2Y9OkKZz36yCx2kSL6or3Et
-	 lqsrw8B6cf8VxjOrU6kKThtAcUvQXx43BP6Ov9Eo=
+	b=narlHO8N4huyyp3/72pvT/CU1lyC2w6dxYynaIj25Qg/TVMeD3rxYyiKewlYfmMgY
+	 NUbIkNZ2IcNHo/psGoje7zaBTCf++OevS/MZ+FKj4fWtQ1vIczKEWV5AV2GggYPdmc
+	 ZzjvlJQOk8CFaMBNNPL2fwf+CkSByuMacl3asSx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Barker <paul.barker.ct@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 065/374] pinctrl: renesas: rzg2l: Limit 2.5V power supply to Ethernet interfaces
+Subject: [PATCH 6.6 372/744] bnxt_re: avoid shift undefined behavior in bnxt_qplib_alloc_init_hwq
 Date: Thu,  6 Jun 2024 16:00:44 +0200
-Message-ID: <20240606131654.019412037@linuxfoundation.org>
+Message-ID: <20240606131744.420072134@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-[ Upstream commit cd27553b0dee6fdc4a2535ab9fc3c8fbdd811d13 ]
+[ Upstream commit 78cfd17142ef70599d6409cbd709d94b3da58659 ]
 
-The RZ/G3S SoC supports configurable supply voltages for several of its
-I/O interfaces. All of these interfaces support both 1.8V and 3.3V
-supplies, but only the Ethernet and XSPI interfaces support a 2.5V
-supply.
+Undefined behavior is triggered when bnxt_qplib_alloc_init_hwq is called
+with hwq_attr->aux_depth != 0 and hwq_attr->aux_stride == 0.
+In that case, "roundup_pow_of_two(hwq_attr->aux_stride)" gets called.
+roundup_pow_of_two is documented as undefined for 0.
 
-Voltage selection for the XSPI interface is not yet supported, so this
-leaves only the Ethernet interfaces currently supporting selection of a
-2.5V supply. So we need to return an error if there is an attempt to
-select a 2.5V supply for any non-Ethernet interface.
+Fix it in the one caller that had this combination.
 
-Fixes: 51996952b8b5 ("pinctrl: renesas: rzg2l: Add support to select power source for Ethernet pins")
-Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20240417114132.6605-1-paul.barker.ct@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+The undefined behavior was detected by UBSAN:
+  UBSAN: shift-out-of-bounds in ./include/linux/log2.h:57:13
+  shift exponent 64 is too large for 64-bit type 'long unsigned int'
+  CPU: 24 PID: 1075 Comm: (udev-worker) Not tainted 6.9.0-rc6+ #4
+  Hardware name: Abacus electric, s.r.o. - servis@abacus.cz Super Server/H12SSW-iN, BIOS 2.7 10/25/2023
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5d/0x80
+   ubsan_epilogue+0x5/0x30
+   __ubsan_handle_shift_out_of_bounds.cold+0x61/0xec
+   __roundup_pow_of_two+0x25/0x35 [bnxt_re]
+   bnxt_qplib_alloc_init_hwq+0xa1/0x470 [bnxt_re]
+   bnxt_qplib_create_qp+0x19e/0x840 [bnxt_re]
+   bnxt_re_create_qp+0x9b1/0xcd0 [bnxt_re]
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __kmalloc+0x1b6/0x4f0
+   ? create_qp.part.0+0x128/0x1c0 [ib_core]
+   ? __pfx_bnxt_re_create_qp+0x10/0x10 [bnxt_re]
+   create_qp.part.0+0x128/0x1c0 [ib_core]
+   ib_create_qp_kernel+0x50/0xd0 [ib_core]
+   create_mad_qp+0x8e/0xe0 [ib_core]
+   ? __pfx_qp_event_handler+0x10/0x10 [ib_core]
+   ib_mad_init_device+0x2be/0x680 [ib_core]
+   add_client_context+0x10d/0x1a0 [ib_core]
+   enable_device_and_get+0xe0/0x1d0 [ib_core]
+   ib_register_device+0x53c/0x630 [ib_core]
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   bnxt_re_probe+0xbd8/0xe50 [bnxt_re]
+   ? __pfx_bnxt_re_probe+0x10/0x10 [bnxt_re]
+   auxiliary_bus_probe+0x49/0x80
+   ? driver_sysfs_add+0x57/0xc0
+   really_probe+0xde/0x340
+   ? pm_runtime_barrier+0x54/0x90
+   ? __pfx___driver_attach+0x10/0x10
+   __driver_probe_device+0x78/0x110
+   driver_probe_device+0x1f/0xa0
+   __driver_attach+0xba/0x1c0
+   bus_for_each_dev+0x8f/0xe0
+   bus_add_driver+0x146/0x220
+   driver_register+0x72/0xd0
+   __auxiliary_driver_register+0x6e/0xd0
+   ? __pfx_bnxt_re_mod_init+0x10/0x10 [bnxt_re]
+   bnxt_re_mod_init+0x3e/0xff0 [bnxt_re]
+   ? __pfx_bnxt_re_mod_init+0x10/0x10 [bnxt_re]
+   do_one_initcall+0x5b/0x310
+   do_init_module+0x90/0x250
+   init_module_from_file+0x86/0xc0
+   idempotent_init_module+0x121/0x2b0
+   __x64_sys_finit_module+0x5e/0xb0
+   do_syscall_64+0x82/0x160
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? syscall_exit_to_user_mode_prepare+0x149/0x170
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? syscall_exit_to_user_mode+0x75/0x230
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? do_syscall_64+0x8e/0x160
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __count_memcg_events+0x69/0x100
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? count_memcg_events.constprop.0+0x1a/0x30
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? handle_mm_fault+0x1f0/0x300
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? do_user_addr_fault+0x34e/0x640
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7f4e5132821d
+  Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d e3 db 0c 00 f7 d8 64 89 01 48
+  RSP: 002b:00007ffca9c906a8 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+  RAX: ffffffffffffffda RBX: 0000563ec8a8f130 RCX: 00007f4e5132821d
+  RDX: 0000000000000000 RSI: 00007f4e518fa07d RDI: 000000000000003b
+  RBP: 00007ffca9c90760 R08: 00007f4e513f6b20 R09: 00007ffca9c906f0
+  R10: 0000563ec8a8faa0 R11: 0000000000000246 R12: 00007f4e518fa07d
+  R13: 0000000000020000 R14: 0000563ec8409e90 R15: 0000563ec8a8fa60
+   </TASK>
+  ---[ end trace ]---
+
+Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Link: https://lore.kernel.org/r/20240507103929.30003-1-mschmidt@redhat.com
+Acked-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rzg2l.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-index 20425afc6b331..248ab71b9f9da 100644
---- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-@@ -892,6 +892,8 @@ static int rzg2l_set_power_source(struct rzg2l_pinctrl *pctrl, u32 pin, u32 caps
- 		val = PVDD_1800;
- 		break;
- 	case 2500:
-+		if (!(caps & (PIN_CFG_IO_VMC_ETH0 | PIN_CFG_IO_VMC_ETH1)))
-+			return -EINVAL;
- 		val = PVDD_2500;
- 		break;
- 	case 3300:
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index b99451b3c10fc..3b28878f62062 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -1010,7 +1010,8 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+ 	hwq_attr.stride = sizeof(struct sq_sge);
+ 	hwq_attr.depth = bnxt_qplib_get_depth(sq);
+ 	hwq_attr.aux_stride = psn_sz;
+-	hwq_attr.aux_depth = bnxt_qplib_set_sq_size(sq, qp->wqe_mode);
++	hwq_attr.aux_depth = psn_sz ? bnxt_qplib_set_sq_size(sq, qp->wqe_mode)
++				    : 0;
+ 	/* Update msn tbl size */
+ 	if (BNXT_RE_HW_RETX(qp->dev_cap_flags) && psn_sz) {
+ 		hwq_attr.aux_depth = roundup_pow_of_two(bnxt_qplib_set_sq_size(sq, qp->wqe_mode));
 -- 
 2.43.0
 
