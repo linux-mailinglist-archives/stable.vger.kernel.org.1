@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-48330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3578FE88B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB0178FECA7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EA0C284742
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59E9028705C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D1C1974F2;
-	Thu,  6 Jun 2024 14:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3296A1B150A;
+	Thu,  6 Jun 2024 14:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gUoU8x1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIuhvlpz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509CA196C85;
-	Thu,  6 Jun 2024 14:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B001B1502;
+	Thu,  6 Jun 2024 14:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682906; cv=none; b=XOBVItL0NdxNi62feqxlGl2846JL9eKa8CKNyNpyb//GtNMtY1+1OHy+OHce6yoRIOMrQYwb5U8azBEPwtUgrRovghfpI8fkzVdC1r6I7q5Rk+bqzy/r0DTE8/ryGlTiqLdy5OmY/BOuIIUxUJK0G8fFnhtfKjCDAWVBw19lHKY=
+	t=1717683393; cv=none; b=BqE893AiF5GFrlvBX14+/NuRlrpxIF7p2b+Hik1rGt071mIYMXJJJiYTztBF5PDbEX4JXdh3RPbYKh0KNJ/DWP9uDcYvRFGeX+WW7wSNWtEMuV8goEk84QetHNQGMrk1wsgn2ZzfIOB/MPcMCF93QbLjasd7Ksu2hx6pFpoGPYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682906; c=relaxed/simple;
-	bh=jmCtsH7DTIjuk6UaSe0tfzrLof2aKEZyNZccUjWdsSg=;
+	s=arc-20240116; t=1717683393; c=relaxed/simple;
+	bh=VQ2Wu+FiRHdsyzR5zaGKU7IVgzin/TUafDS1k3OGZ/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sguz2afOwbgkisCA7C92R6XI6pDvYZZ4i2dZLqnYk+xkW7EVoMvEfKq7lsIn5fQFjqL+UN9IyUJ8+PldMyzWYzhNP6iw3yd/KGRpjT92aCTztvotK4av8EwPvGNIP27UI2pQpPRa1UuBfdhqKFv9cLZagbfBhX20CWe8qGo81s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gUoU8x1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB40C4AF07;
-	Thu,  6 Jun 2024 14:08:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=o67oJew2Z6DqeyPSKifUFVT4rPzuL33hPOF7wAt24xpcGGdhILjJCWRrV1J1RRcGGny7LKrsNHYTNqkhrmUHYk3ife8kQGsSGBKaSKwJBvkOY0BMTypeci11/ggv0mDy5N42iFVi2Xtx3MRZlqyfUSyxKqI9CTL2E2kE+1mItgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIuhvlpz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D7AC2BD10;
+	Thu,  6 Jun 2024 14:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682906;
-	bh=jmCtsH7DTIjuk6UaSe0tfzrLof2aKEZyNZccUjWdsSg=;
+	s=korg; t=1717683392;
+	bh=VQ2Wu+FiRHdsyzR5zaGKU7IVgzin/TUafDS1k3OGZ/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0gUoU8x1oPqfGXj+/LSvzC7wFyxoGkbubH1koWdewbqTTbpxnhEw++g2g4FKixtZO
-	 uVnViEuieePdFs11tFcdaj/qajZm0auz/naA4tvRxggAdvhaS7VScj7GORRCf9Rjc8
-	 0ll35iznd92J9Pqquuj89CQYlqNEEsBu39lRTgAY=
+	b=KIuhvlpzFCrvDVIrczCBMCCKkDO0eZDVZAcDw19UAYao/r1N9gCvDKcrDDNnpvu/q
+	 geQBQSpfTvNsUqKEnE4yc4nYh+3j3X8yIM3vsSn13iGfEvR2JQJWA9lLwqLBEhCbZP
+	 5Qw8Oggd+Mpi3iKXo6O3LwRlooUh//NKCS8LEG/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 030/374] serial: sc16is7xx: add proper sched.h include for sched_set_fifo()
+Subject: [PATCH 6.6 337/744] clk: mediatek: pllfh: Dont log error for missing fhctl node
 Date: Thu,  6 Jun 2024 16:00:09 +0200
-Message-ID: <20240606131652.834458076@linuxfoundation.org>
+Message-ID: <20240606131743.272128275@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 2a8e4ab0c93fad30769479f86849e22d63cd0e12 ]
+[ Upstream commit bb7b3c8e7180f36de75cdea200ab7127f93f58cc ]
 
-Replace incorrect include with the proper one for sched_set_fifo()
-declaration.
+Support for fhctl clocks in apmixedsys was introduced at a later point
+and to this moment only one mt6795 based platform has a fhctl DT node
+present. Therefore the fhctl support in apmixedsys should be seen as
+optional and not cause an error when it is missing.
 
-Fixes: 28d2f209cd16 ("sched,serial: Convert to sched_set_fifo()")
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240409154253.3043822-2-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Change the message's log level to warning. The warning level is chosen
+so that it will still alert the fact that fhctl support might be
+unintentionally missing, but without implying that this is necessarily
+an issue.
+
+Even if the FHCTL DT nodes are added to all current platforms moving
+forward, since those changes won't be backported, this ensures stable
+kernel releases won't have live with this error.
+
+Fixes: d7964de8a8ea ("clk: mediatek: Add new clock driver to handle FHCTL hardware")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20240308-mtk-fhctl-no-node-error-v1-1-51e446eb149a@collabora.com
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 2 +-
+ drivers/clk/mediatek/clk-pllfh.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 12915fffac279..ace2c4b333acc 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -18,6 +18,7 @@
- #include <linux/module.h>
- #include <linux/property.h>
- #include <linux/regmap.h>
-+#include <linux/sched.h>
- #include <linux/serial_core.h>
- #include <linux/serial.h>
- #include <linux/tty.h>
-@@ -25,7 +26,6 @@
- #include <linux/spi/spi.h>
- #include <linux/uaccess.h>
- #include <linux/units.h>
--#include <uapi/linux/sched/types.h>
+diff --git a/drivers/clk/mediatek/clk-pllfh.c b/drivers/clk/mediatek/clk-pllfh.c
+index 3a2b3f90be25d..094ec8a26d668 100644
+--- a/drivers/clk/mediatek/clk-pllfh.c
++++ b/drivers/clk/mediatek/clk-pllfh.c
+@@ -68,7 +68,7 @@ void fhctl_parse_dt(const u8 *compatible_node, struct mtk_pllfh_data *pllfhs,
  
- #define SC16IS7XX_NAME			"sc16is7xx"
- #define SC16IS7XX_MAX_DEVS		8
+ 	node = of_find_compatible_node(NULL, NULL, compatible_node);
+ 	if (!node) {
+-		pr_err("cannot find \"%s\"\n", compatible_node);
++		pr_warn("cannot find \"%s\"\n", compatible_node);
+ 		return;
+ 	}
+ 
 -- 
 2.43.0
 
