@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-49271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D71A08FEC97
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 448B58FEE8C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D8BFB28283
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C24F8B217F3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D94F6198A2F;
-	Thu,  6 Jun 2024 14:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6031C538C;
+	Thu,  6 Jun 2024 14:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWkfIxX6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fu59dD/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DC91B14EA;
-	Thu,  6 Jun 2024 14:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596E5196D90;
+	Thu,  6 Jun 2024 14:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683384; cv=none; b=UzA+Dq2JhZ5X8rJxctgO0h+p/SI3nD9d6oZvX1bOTj5QEv5K5cPvVyvEBRRo74hC8FAzrPQ/OO2iBMwfx9QFYg9r9MFtFpPVVP+GqzDdNNQaBsDzEqEemppxO/mS4R35YzM6WSRXwaSe8dmYpzR9LIufBie4UpxkzPLf/FL8lao=
+	t=1717683673; cv=none; b=Pd90d6E+ylVILOQ5lnhKS1szLfhLYZ+beczJ33k2EHV5Ke/pRmE1ybFBWCBQ+HYm3y/2mgm1sOoaEIaf9vzTjuSZvNuoykpPaL6M8dAzgkumziZrFrjNoCiG1U6qS8QC9t8mt9S37z5AXgfbBGQHIb2FFK0KWx7il20xvIQZvj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683384; c=relaxed/simple;
-	bh=iKfEb79e2I6J0nYi8KuZ8qnpyONhcvs5up1Rvuu439c=;
+	s=arc-20240116; t=1717683673; c=relaxed/simple;
+	bh=uTbaq+RNaE89DRsq35IppZShW+xlSgzEbaaXvKBLk1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l9lcS0T7kJF0VXuExc1G71djHt9EunZ5H+bwr3xZ/xBpi7uwnVsmGYckmxFaPIkJCTdF0a1gvB7HNyME1lkvxnm3AHuYJRKdqizMvPpispKeKwZ/AFG0/WbxfB8eKtYCTQVH/1xpmqb33+EPHnxybDR/+gmYGrRDZRX2EzacAdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWkfIxX6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5E3C32781;
-	Thu,  6 Jun 2024 14:16:24 +0000 (UTC)
+	 MIME-Version; b=sCj8b9eaU2mzf5xu+FuPRNc76PfSRcQhZn2qeIKPITfYNMfO3bYYPVAolsQOgTkX3Blj811XtKab4tfW2ENeD+rc0bqCnmIDYbAdr2Gc9N9BfnWo2aR8eaWzSTy53lcck6tpy/Ww4yVkZZKXMWaT8A/7c7ikXNwYUj2EPu59q1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fu59dD/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342CEC2BD10;
+	Thu,  6 Jun 2024 14:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683384;
-	bh=iKfEb79e2I6J0nYi8KuZ8qnpyONhcvs5up1Rvuu439c=;
+	s=korg; t=1717683673;
+	bh=uTbaq+RNaE89DRsq35IppZShW+xlSgzEbaaXvKBLk1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWkfIxX6Q7cVVSgk1ZT1sGokh/5Z4q4D5tGSGRvnCQ4jqTWUZA1ebUE/z1i+LAjrn
-	 JAntXgEGIxWjgEGWvTaD6VabGWDAnohdeFBxy0b64DaLlD42t7DFCKzNyLJGIq6aBe
-	 4mF8y63IyOJ4Qu6eGfCjxs5rImPfGx4c5mI6ZDlg=
+	b=Fu59dD/7eSzEczhhCOG4VqDjuJbL7mtHQF6z/qVy6ksH9MoOYzpV5He88iEfslUNW
+	 MHQgypTQlHD1CNpLLvhuz7fP2U1GJnjiI/KKxSuubTpl3wbgemViLaU54sYrKdl/tz
+	 ZtIR48o9aPePKzUPlnvEzxxVXVmJLireeFZig4x8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Liaw <edliaw@google.com>,
-	Cyrill Gorcunov <gorcunov@gmail.com>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kaige Ye <ye@kaige.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 267/473] selftests/kcmp: remove unused open mode
+Subject: [PATCH 6.6 524/744] perf stat: Dont display metric header for non-leader uncore events
 Date: Thu,  6 Jun 2024 16:03:16 +0200
-Message-ID: <20240606131708.769645217@linuxfoundation.org>
+Message-ID: <20240606131749.251950240@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +73,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Liaw <edliaw@google.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit eb59a58113717df04b8a8229befd8ab1e5dbf86e ]
+[ Upstream commit 193a9e30207f54777ff42d0d8be8389edc522277 ]
 
-Android bionic warns that open modes are ignored if O_CREAT or O_TMPFILE
-aren't specified.  The permissions for the file are set above:
+On an Intel tigerlake laptop a metric like:
 
-	fd1 = open(kpath, O_RDWR | O_CREAT | O_TRUNC, 0644);
+    {
+        "BriefDescription": "Test",
+        "MetricExpr": "imc_free_running@data_read@ + imc_free_running@data_write@",
+        "MetricGroup": "Test",
+        "MetricName": "Test",
+        "ScaleUnit": "6.103515625e-5MiB"
+    },
 
-Link: https://lkml.kernel.org/r/20240429234610.191144-1-edliaw@google.com
-Fixes: d97b46a64674 ("syscalls, x86: add __NR_kcmp syscall")
-Signed-off-by: Edward Liaw <edliaw@google.com>
-Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
-Cc: Eric Biederman <ebiederm@xmission.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Will have 4 events:
+
+  uncore_imc_free_running_0/data_read/
+  uncore_imc_free_running_0/data_write/
+  uncore_imc_free_running_1/data_read/
+  uncore_imc_free_running_1/data_write/
+
+If aggregration is disabled with metric-only 2 column headers are
+needed:
+
+  $ perf stat -M test --metric-only -A -a sleep 1
+
+   Performance counter stats for 'system wide':
+
+                    MiB  Test            MiB  Test
+  CPU0                 1821.0               1820.5
+
+But when not, the counts aggregated in the metric leader and only 1
+column should be shown:
+
+  $ perf stat -M test --metric-only -a sleep 1
+   Performance counter stats for 'system wide':
+
+              MiB  Test
+                5909.4
+
+         1.001258915 seconds time elapsed
+
+Achieve this by skipping events that aren't metric leaders when
+printing column headers and aggregation isn't disabled.
+
+The bug is long standing, the fixes tag is set to a refactor as that
+is as far back as is reasonable to backport.
+
+Fixes: 088519f318be3a41 ("perf stat: Move the display functions to stat-display.c")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kaige Ye <ye@kaige.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20240510051309.2452468-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kcmp/kcmp_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/stat-display.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/kcmp/kcmp_test.c b/tools/testing/selftests/kcmp/kcmp_test.c
-index 25110c7c0b3ed..d7a8e321bb16b 100644
---- a/tools/testing/selftests/kcmp/kcmp_test.c
-+++ b/tools/testing/selftests/kcmp/kcmp_test.c
-@@ -91,7 +91,7 @@ int main(int argc, char **argv)
- 		ksft_print_header();
- 		ksft_set_plan(3);
+diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
+index 969ce40096330..0abe35388ab15 100644
+--- a/tools/perf/util/stat-display.c
++++ b/tools/perf/util/stat-display.c
+@@ -1207,6 +1207,9 @@ static void print_metric_headers(struct perf_stat_config *config,
  
--		fd2 = open(kpath, O_RDWR, 0644);
-+		fd2 = open(kpath, O_RDWR);
- 		if (fd2 < 0) {
- 			perror("Can't open file");
- 			ksft_exit_fail();
+ 	/* Print metrics headers only */
+ 	evlist__for_each_entry(evlist, counter) {
++		if (config->aggr_mode != AGGR_NONE && counter->metric_leader != counter)
++			continue;
++
+ 		os.evsel = counter;
+ 
+ 		perf_stat__print_shadow_stats(config, counter, 0,
 -- 
 2.43.0
 
