@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-48796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E4D8FEA94
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD948FEC08
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99A7B2813C2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F098E280A23
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8EC1A0AE5;
-	Thu,  6 Jun 2024 14:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6BE19AA7D;
+	Thu,  6 Jun 2024 14:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAbXuAVC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gL35378G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D168A1991B4;
-	Thu,  6 Jun 2024 14:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B85F19AA79;
+	Thu,  6 Jun 2024 14:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683151; cv=none; b=l4a3FJ072WKD7MGE4D1w3GkUcfuKtEfjQCpHiZQOXC1K/Ohpt39M0xIr2pxPvPaI0Zuf6oOeC7Uf848PO/k+WFaOz7E1mrJiuzjiyRz9TJlsusiv8Wr3jKwQ4s4X1T9tEyInXd2yAqokAO/pRb+HpQwjzXJi+Mu4302qTVnZkJk=
+	t=1717683322; cv=none; b=oY9d2Zi26qclbk2mfdpzzoM+7ruei1xf7wNcpZ6ZgePkDwaTshhrF1S+8J/we71OVO2k67mtE8/Xd96CDQNDsVn1B7BRDR5J+LV8VMtlhBGOpdt7TxPtOnpBDhKURRauWNuhOH8UgXe5HU4Ftjfo1dpI4tbwrG7APaWXEnDlU/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683151; c=relaxed/simple;
-	bh=alB1SL6kf9fshQZF9oonZdS29NTlwinVbTzSodTNwWc=;
+	s=arc-20240116; t=1717683322; c=relaxed/simple;
+	bh=sCDbQ3+4yK/luxgDtTY+9ttQ4qFnRDvOPgbC6NEJj0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NGOEbmeeT2FlZdBJ3UYIius9Itf0oj6MGZAEDESq1AyLM5q/+p/AG/SnYGqP/d6QO1e1Xe84rSQr+FWbiHl+cyZfhf07FXu0jyRjTxE85Rlg4Yn8PRTFOqzeXwqqR9pTBgmkQiw2HF7d9PaTrYp9Xi8WL4IULCEhhAIbQayu7as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAbXuAVC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D5FC2BD10;
-	Thu,  6 Jun 2024 14:12:31 +0000 (UTC)
+	 MIME-Version; b=fCyTG9ys3WCYzDE1fyQyVk5p0a7mePrFWm8O1nVcvD2f/nvFFquTzp2Ch2QkrHR0D32LGH7DR+M2kNCbgTvXEY0S3/BPWT2fnmAzNYUZs38dfvwqocswIunA3giJzRhVGiQ0P2CrrQgcdtfYjGxtv3VUAaI71QvjoinFnrAUly4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gL35378G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A4FDC4AF07;
+	Thu,  6 Jun 2024 14:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683151;
-	bh=alB1SL6kf9fshQZF9oonZdS29NTlwinVbTzSodTNwWc=;
+	s=korg; t=1717683322;
+	bh=sCDbQ3+4yK/luxgDtTY+9ttQ4qFnRDvOPgbC6NEJj0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gAbXuAVCc472TROx4SSnB9cXkbumWFouSEgrhXZhdo7OFLXzRowgy+qXJ8J9bB+0B
-	 hEEOKnMS2MA0LsYMlSfGD/w58oyI8SWR1KshMU+SHuxhy+3s8B5Frjt0DTU4VPqcWF
-	 viTe9DE0uc/aNAHBwpipnBIxVqzyVrrvt/xFmBcU=
+	b=gL35378GObCdrGos0xw5i5O2qJ6fpcJqFcxl+P5Du3oOMWKgnK7BjUY7Qmq68A1Ro
+	 Y/DIrYDCvR73Gvvbud62wLAKeAB7Is+2L7QUrfZ+lYxcuOMV4qyDreTuizU/yE4hpo
+	 UsTO8J6qLhI11v3fGTNCmjKalSvqJL1Sk7fyKU4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Dan Carpenter <dan.carpenter@linaro.org>,
-	Samuel Thibault <samuel.thibault@ens-lyon.org>
-Subject: [PATCH 6.1 005/473] speakup: Fix sizeof() vs ARRAY_SIZE() bug
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 262/744] Bluetooth: qca: Fix error code in qca_read_fw_build_info()
 Date: Thu,  6 Jun 2024 15:58:54 +0200
-Message-ID: <20240606131659.989419584@linuxfoundation.org>
+Message-ID: <20240606131740.801562659@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 008ab3c53bc4f0b2f20013c8f6c204a3203d0b8b upstream.
+[ Upstream commit a189f0ee6685457528db7a36ded3085e5d13ddc3 ]
 
-The "buf" pointer is an array of u16 values.  This code should be
-using ARRAY_SIZE() (which is 256) instead of sizeof() (which is 512),
-otherwise it can the still got out of bounds.
+Return -ENOMEM on allocation failure.  Don't return success.
 
-Fixes: c8d2f34ea96e ("speakup: Avoid crash on very long word")
-Cc: stable@vger.kernel.org
+Fixes: cda0d6a198e2 ("Bluetooth: qca: fix info leak when fetching fw build id")
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
-Link: https://lore.kernel.org/r/d16f67d2-fd0a-4d45-adac-75ddd11001aa@moroto.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accessibility/speakup/main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btqca.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/accessibility/speakup/main.c
-+++ b/drivers/accessibility/speakup/main.c
-@@ -573,7 +573,7 @@ static u_long get_word(struct vc_data *v
+diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+index 638074992c829..35fb26cbf2294 100644
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -148,8 +148,10 @@ static int qca_read_fw_build_info(struct hci_dev *hdev)
  	}
- 	attr_ch = get_char(vc, (u_short *)tmp_pos, &spk_attr);
- 	buf[cnt++] = attr_ch;
--	while (tmpx < vc->vc_cols - 1 && cnt < sizeof(buf) - 1) {
-+	while (tmpx < vc->vc_cols - 1 && cnt < ARRAY_SIZE(buf) - 1) {
- 		tmp_pos += 2;
- 		tmpx++;
- 		ch = get_char(vc, (u_short *)tmp_pos, &temp);
+ 
+ 	build_label = kstrndup(&edl->data[1], build_lbl_len, GFP_KERNEL);
+-	if (!build_label)
++	if (!build_label) {
++		err = -ENOMEM;
+ 		goto out;
++	}
+ 
+ 	hci_set_fw_info(hdev, "%s", build_label);
+ 
+-- 
+2.43.0
+
 
 
 
