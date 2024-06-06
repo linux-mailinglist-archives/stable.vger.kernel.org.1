@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36098FE90A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5F48FEDA8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0CD51C245DA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64AE0283C3C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD0B196D8D;
-	Thu,  6 Jun 2024 14:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB22E1BD00C;
+	Thu,  6 Jun 2024 14:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJ1ip0t2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDD0PsYX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE81197521;
-	Thu,  6 Jun 2024 14:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66CE319E7C9;
+	Thu,  6 Jun 2024 14:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682972; cv=none; b=fTE+Yj/YCD0X+RYDVSkox66BWdXUcloH5zcqIpyphfmcPsLBuZPhy5ImDxHvbdzLsQIYGx+ppmtfzbvHsZcaNEEDnE3Y+aKg1Q4BePvOS3MtZG4aYWplzJOmWulU+I6Aw9kb3ssEoBQuWXD9tiMHMzM6nDKJvDgLl6XQxF95Tkc=
+	t=1717683512; cv=none; b=oI0b345D85xCGBIGm/Xe00vSE/eGa2D77x4AYSOM/gcqflg9ok0IvbXhmaF0wuk3ou9X7GBXulf0MaSZE5tXcUurfRKlVnNgwPqc0i2xIJLRZgq3AQu+ML1IfgU8tQY8eOxQE5zYrYkqX/nkUrvfz5SU6XYT7nIVqXbT2k9HK9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682972; c=relaxed/simple;
-	bh=5muAA8RnlDVLJXG0sUWGh1o1UxRqn8M02cGkQSUgxrk=;
+	s=arc-20240116; t=1717683512; c=relaxed/simple;
+	bh=GmIrOUTL7+2L+LB28W1ja+975h9XEc1xKuR7sjvJGzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MJB46d8gpMNmsy78dcQXpnKvWrdIS8zxo8G0FmgAjs8dc8Qp/LyQ3jmiXT2Zsd3JBfKAJ0w/iq33Pohwg8I3LkQiJDRyO66/78lSnM7VRUTalEPM+iHk0aiIG+Mj7r9Lpls10cqqYxb7ARZ/BiFZWCRWGAiBCIEI6gjGALCMzu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJ1ip0t2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078DDC2BD10;
-	Thu,  6 Jun 2024 14:09:32 +0000 (UTC)
+	 MIME-Version; b=hYvWI0d9brOpMv/kH7hrzU3cBvePGB/CSaRZ7nA8XWscANQ+im1TTD+ZSYpMYMx7raHdVc1l7RF6uOtkgHwQnYqSmaQSHnuj2uZitH9vl7xS0c3vSaNYfO8UdCAYwxQPHuoa1wYB5oh7WUKST043yvX5CM1Vi52/vN/BRxMEKPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDD0PsYX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEBAC2BD10;
+	Thu,  6 Jun 2024 14:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682972;
-	bh=5muAA8RnlDVLJXG0sUWGh1o1UxRqn8M02cGkQSUgxrk=;
+	s=korg; t=1717683512;
+	bh=GmIrOUTL7+2L+LB28W1ja+975h9XEc1xKuR7sjvJGzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJ1ip0t2hfPR5nUFg2vN6AsZYMn4WH9Z+cN1p8R6h6uVD09MaFpU5nlfChEp+zZUF
-	 exlA58UKXZtqiSEujNcCKVKCqj34z24Ol2nv+hkC8Ma5Ip/wOJdQ4Z2lvw++CwSr8d
-	 tJgPVK3zIecxQwjZfKleTwSUYEJ55KNPHLjGI+dQ=
+	b=hDD0PsYXlVnSi07gNcV+Do6XzFBri6tjFqXU3ejYphwtgWnRycjf5NIbDLCDGBVvC
+	 jwYBJOknkdPjqUQ1oIim01lNpxUfr6uq20t6Zop0BoXMFFDyprVt/AtNgQzsPKnnDj
+	 495wvmpOSFUv0+8D0BKn6vbFpIj70YB3SpksiN3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 146/374] Input: ims-pcu - fix printf string overflow
+Subject: [PATCH 6.6 453/744] iio: adc: adi-axi-adc: only error out in major version mismatch
 Date: Thu,  6 Jun 2024 16:02:05 +0200
-Message-ID: <20240606131656.809882458@linuxfoundation.org>
+Message-ID: <20240606131747.012353584@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit bf32bceedd0453c70d9d022e2e29f98e446d7161 ]
+[ Upstream commit cf1c833f89e7c8635a28c3db15c68ead150ea712 ]
 
-clang warns about a string overflow in this driver
+The IP core only has breaking changes when there major version changes.
+Hence, only match the major number. This is also in line with the other
+core ADI has upstream. The current check for erroring out
+'expected_version > current_version"' is then wrong as we could just
+increase the core major with breaking changes and that would go
+unnoticed.
 
-drivers/input/misc/ims-pcu.c:1802:2: error: 'snprintf' will always be truncated; specified size is 10, but format string expands to at least 12 [-Werror,-Wformat-truncation]
-drivers/input/misc/ims-pcu.c:1814:2: error: 'snprintf' will always be truncated; specified size is 10, but format string expands to at least 12 [-Werror,-Wformat-truncation]
-
-Make the buffer a little longer to ensure it always fits.
-
-Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240326223825.4084412-7-arnd@kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: ef04070692a2 ("iio: adc: adi-axi-adc: add support for AXI ADC IP core")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240419-ad9467-new-features-v1-2-3e7628ff6d5e@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/ims-pcu.c | 4 ++--
+ drivers/iio/adc/adi-axi-adc.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/input/misc/ims-pcu.c b/drivers/input/misc/ims-pcu.c
-index 6e8cc28debd97..80d16c92a08b3 100644
---- a/drivers/input/misc/ims-pcu.c
-+++ b/drivers/input/misc/ims-pcu.c
-@@ -42,8 +42,8 @@ struct ims_pcu_backlight {
- #define IMS_PCU_PART_NUMBER_LEN		15
- #define IMS_PCU_SERIAL_NUMBER_LEN	8
- #define IMS_PCU_DOM_LEN			8
--#define IMS_PCU_FW_VERSION_LEN		(9 + 1)
--#define IMS_PCU_BL_VERSION_LEN		(9 + 1)
-+#define IMS_PCU_FW_VERSION_LEN		16
-+#define IMS_PCU_BL_VERSION_LEN		16
- #define IMS_PCU_BL_RESET_REASON_LEN	(2 + 1)
+diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+index 4156639b3c8bd..a543b91124b07 100644
+--- a/drivers/iio/adc/adi-axi-adc.c
++++ b/drivers/iio/adc/adi-axi-adc.c
+@@ -207,9 +207,9 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
  
- #define IMS_PCU_PCU_B_DEVICE_ID		5
+-	if (*expected_ver > ver) {
++	if (ADI_AXI_PCORE_VER_MAJOR(ver) != ADI_AXI_PCORE_VER_MAJOR(*expected_ver)) {
+ 		dev_err(&pdev->dev,
+-			"IP core version is too old. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
++			"Major version mismatch. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
+ 			ADI_AXI_PCORE_VER_MAJOR(*expected_ver),
+ 			ADI_AXI_PCORE_VER_MINOR(*expected_ver),
+ 			ADI_AXI_PCORE_VER_PATCH(*expected_ver),
 -- 
 2.43.0
 
