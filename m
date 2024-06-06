@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-49846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CE98FEF1A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CAE28FEE01
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BA502861F4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DD251F227FA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DE91C9EA5;
-	Thu,  6 Jun 2024 14:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86EAB1BF8E1;
+	Thu,  6 Jun 2024 14:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fr1bLy7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlR3se2u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6315E1A254A;
-	Thu,  6 Jun 2024 14:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E9E1BE87D;
+	Thu,  6 Jun 2024 14:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683738; cv=none; b=ao91/5zgVaLDaLPEjAWvDNRtkB5x5s59PiIVFJ5X+YmUSNkaiimoFsnvRV19OL/Xl1O6/BqGdOO/dN77cxy9V9FfiuzgW23jeT85F5qS8Yv4yTRQYKYJFfQwiS+Q4VnOaoEf6XZBv9yeBRrbeSc7O8aWVcDBFtvtdegEELHTxx4=
+	t=1717683549; cv=none; b=r4b6tewmvdwcgp7bjfFfQAgzx+Co2SN3LdKxX6sRjyvvAc1BznH2MnlFNWixrsbOgxxMy1VCGuMkrULAKGfvlQD8iw9HaHuhDXOQ27mN4SRr52TAhYheta1WBecQ95WS53mElHueuPmNJUn+SkTN2GszTPCMYSduV7FvwA1+qZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683738; c=relaxed/simple;
-	bh=s19NKno47Tz6iR1NcC/Tx+2WtiUQTdVupos1N3qQvsY=;
+	s=arc-20240116; t=1717683549; c=relaxed/simple;
+	bh=JMyNnHXN1YDejErouLNJ72cGJuKxbPx4c1m3/iz2uVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s574UJ/sYZkvoXltIbqlOnY5X0Ni5UoCXyjjwNqc+cQEVOcz3KP8nVqunFoal4HS6apFN/wipkgReh9tLWt3WwIDW1XTaG3wyjtdDrI9zdC8e1oWoX8bX/ALpn9lg0rUv3YQ/jjAXXCjSsatM+ebhgoeiybsnYgTmX7KfVlvIDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fr1bLy7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D240C32782;
-	Thu,  6 Jun 2024 14:22:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iZ5AXaY/aWRsJdpUE6/7Fmcy1md83N8AMiYME+1D06siYmdOcqMX+5Ug7tVuQQEq2rNctIw/5kf06oAWcJSXVYYPnGs1YYTK+Dox4MyDaA4VDPWe3Tl5qJPsy5UslL0k4ONWL3GUL8L0tIo8UMwy/I9AVqE3ahiOPy4Rjc01TLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlR3se2u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A7CC32782;
+	Thu,  6 Jun 2024 14:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683738;
-	bh=s19NKno47Tz6iR1NcC/Tx+2WtiUQTdVupos1N3qQvsY=;
+	s=korg; t=1717683549;
+	bh=JMyNnHXN1YDejErouLNJ72cGJuKxbPx4c1m3/iz2uVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fr1bLy7xJDkc7acm2oiC3qqAVMySv1QFE8j2zQLebBdFj0NykOeBF9tRvusQaJ8Q7
-	 fQhJ8l7Hkk61eenfOoJsZQ1S9GPrrXSNjWA5qBWw/gnBfXL7cAPqaJ8FqNjUluSrqZ
-	 eX8il+qp75ocFg0EcBnLgqvSNs1kDnNUeGPXe8YQ=
+	b=mlR3se2ufoU75il1PmFKyYOM4equ2URMIzMdXvO0AJ3Z2K+GjVS7O6kDYI83eTtgP
+	 LiLbK6sbebfvGjvkFekD282ADNb42ltUK0GoLrWGh9vz11xprPCc0pOfEFuayBPkou
+	 q1z+tLufs0iTvtyabs2Q9fBWmuYKVfw1XHB104rs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Takashi Iwai <tiwai@suse.de>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 695/744] ALSA: hda/realtek: Adjust G814JZR to use SPI init for amp
+Subject: [PATCH 6.1 438/473] net/mlx5: Lag, do bond only if slaves agree on roce state
 Date: Thu,  6 Jun 2024 16:06:07 +0200
-Message-ID: <20240606131754.776993011@linuxfoundation.org>
+Message-ID: <20240606131714.211163271@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +62,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Maher Sanalla <msanalla@nvidia.com>
 
-[ Upstream commit 2be46155d792d629e8fe3188c2cde176833afe36 ]
+[ Upstream commit 51ef9305b8f40946d65c40368ffb4c14636d369a ]
 
-The 2024 ASUS ROG G814J model is much the same as the 2023 model
-and the 2023 16" version. We can use the same Cirrus Amp quirk.
+Currently, the driver does not enforce that lag bond slaves must have
+matching roce capabilities. Yet, in mlx5_do_bond(), the driver attempts
+to enable roce on all vports of the bond slaves, causing the following
+syndrome when one slave has no roce fw support:
 
-Fixes: 811dd426a9b1 ("ALSA: hda/realtek: Add quirks for Asus ROG 2024 laptops using CS35L41")
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Link: https://lore.kernel.org/r/20240526091032.114545-1-luke@ljones.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+mlx5_cmd_out_err:809:(pid 25427): MODIFY_NIC_VPORT_CONTEXT(0×755) op_mod(0×0)
+failed, status bad parameter(0×3), syndrome (0xc1f678), err(-22)
+
+Thus, create HW lag only if bond's slaves agree on roce state,
+either all slaves have roce support resulting in a roce lag bond,
+or none do, resulting in a raw eth bond.
+
+Fixes: 7907f23adc18 ("net/mlx5: Implement RoCE LAG feature")
+Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index df1eb73c379e0..2151fb1bd0de7 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10057,7 +10057,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
- 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC245_FIXUP_CS35L41_SPI_2),
--	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
- 	SND_PCI_QUIRK(0x1043, 0x3a50, "ASUS G834JYR/JZR", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x3a60, "ASUS G634JYR/JZR", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x831a, "ASUS P901", ALC269_FIXUP_STEREO_DMIC),
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+index 01c0e1ee918d8..a283d8ae466b6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+@@ -696,6 +696,7 @@ static bool mlx5_lag_check_prereq(struct mlx5_lag *ldev)
+ 	struct mlx5_core_dev *dev;
+ 	u8 mode;
+ #endif
++	bool roce_support;
+ 	int i;
+ 
+ 	for (i = 0; i < ldev->ports; i++)
+@@ -722,6 +723,11 @@ static bool mlx5_lag_check_prereq(struct mlx5_lag *ldev)
+ 		if (mlx5_sriov_is_enabled(ldev->pf[i].dev))
+ 			return false;
+ #endif
++	roce_support = mlx5_get_roce_state(ldev->pf[MLX5_LAG_P1].dev);
++	for (i = 1; i < ldev->ports; i++)
++		if (mlx5_get_roce_state(ldev->pf[i].dev) != roce_support)
++			return false;
++
+ 	return true;
+ }
+ 
+@@ -884,8 +890,10 @@ static void mlx5_do_bond(struct mlx5_lag *ldev)
+ 		} else if (roce_lag) {
+ 			dev0->priv.flags &= ~MLX5_PRIV_FLAGS_DISABLE_IB_ADEV;
+ 			mlx5_rescan_drivers_locked(dev0);
+-			for (i = 1; i < ldev->ports; i++)
+-				mlx5_nic_vport_enable_roce(ldev->pf[i].dev);
++			for (i = 1; i < ldev->ports; i++) {
++				if (mlx5_get_roce_state(ldev->pf[i].dev))
++					mlx5_nic_vport_enable_roce(ldev->pf[i].dev);
++			}
+ 		} else if (shared_fdb) {
+ 			dev0->priv.flags &= ~MLX5_PRIV_FLAGS_DISABLE_IB_ADEV;
+ 			mlx5_rescan_drivers_locked(dev0);
 -- 
 2.43.0
 
