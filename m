@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-48841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35C2A8FEAC4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFAA8FEC68
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF7B21F25043
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B079EB23E99
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA04E1A01AD;
-	Thu,  6 Jun 2024 14:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4631B0133;
+	Thu,  6 Jun 2024 14:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xU0uTlhf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYR6UIQi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6866C1A0DEA;
-	Thu,  6 Jun 2024 14:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6CA19884D;
+	Thu,  6 Jun 2024 14:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683173; cv=none; b=stXqEg7fgGUlndDYDJQ1DJnC92Lbr9iBpSvWClnmYlJ7oSk9ACETRajHYYM6lwm2zY3N5hbLS1Acpr7YUTKwvbLg0WBiRBeuM7CTsxlQEEzr8NrnyZxc/CJ9m4SXPflNbyf8+zl/hJ4OxMWog4WN0KPl6jRGiedNFiYpE2A+p/c=
+	t=1717683363; cv=none; b=IAJ30xJlqLjlZRIWMAOuWeznx2cRnSDpWwzaUKCAs1twNypnLNy122BIqNlLnSlkwlpih66bIE7g+Kn0ZBIu8mNkW0Mj1mIb+Ujeiv+L/Noigtg2zHJu4q/3pMVfpxnuMfBXr4pmh0pH0kwY09UsqXeeT/382jfHZezRRILDzJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683173; c=relaxed/simple;
-	bh=deoJlH3l5Q/HMzdLck8BoicEcfiIi4yM8oxT67E6IkQ=;
+	s=arc-20240116; t=1717683363; c=relaxed/simple;
+	bh=E6WwGDbzzCTVStALOIo0Y2oOBOu4tqnCDm70Jxmr7uY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WfadqRoyaMQqX2tkDya1wCN0nuSWOpD5HqCt0eUjvSSeJmxtKhq9NZiamVnD/8J7e8JpL2p5J0qjMLOfsMFXfQoY0DgoWOG7QM5MsxigDxf8lOXKmQUxcjvj48CFU4b511O9NhTyScdeiYRJ3rU0Reyot8DlS8CcaaChIvVjxio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xU0uTlhf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482E5C32781;
-	Thu,  6 Jun 2024 14:12:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a/HbLT6Xw7icc9hpmdof4lH2ukGS9/nh5C5QARmAI5HXmeWNo3vvP8792IbqksG2Zpfw18lbjZlf+FEH+hr1V3p5t4CUGNOmxYEFhzdg78dbfpLadyx+9OdUHjBNlQWocy0WIOxVfc9e468DhB3rJRJgrSeEaQswVVP0BOd4E1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYR6UIQi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5839AC32781;
+	Thu,  6 Jun 2024 14:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683173;
-	bh=deoJlH3l5Q/HMzdLck8BoicEcfiIi4yM8oxT67E6IkQ=;
+	s=korg; t=1717683363;
+	bh=E6WwGDbzzCTVStALOIo0Y2oOBOu4tqnCDm70Jxmr7uY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xU0uTlhf/0jnNM+Y3VN8dClFdQmnAVTDyn95HrMhxBmGPy/d6vxGLkMHXoBuRsXG6
-	 ZGKMhbmWxAkFVGRqoY9ZO+Fj1oGdqaHVU4SFYQxdK50qsoX8CRsSXMsZqH1RIwsmvz
-	 inFv9DPURLAU4m87OYocPLMQM+0b/WI90TLIBrC0=
+	b=YYR6UIQiSDKjpgthxc6xUHDirciU8eMPkhHFCgjLr9hgevB4Ndu8pDq9jIMtV1NW4
+	 Tx6gzrvdCEuccXh3pGUk8bTHr5VIhPXmDLx00A+SPoCZ4Xl8DZSx36YhcSyPTXiuuB
+	 RGWd3UYXkyiMwUJQFwb/VEgdfDDiv3CsvghJlePA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hagar Hemdan <hagarhem@amazon.com>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.1 048/473] efi: libstub: only free priv.runtime_map when allocated
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 305/744] media: radio-shark2: Avoid led_names truncations
 Date: Thu,  6 Jun 2024 15:59:37 +0200
-Message-ID: <20240606131701.472072800@linuxfoundation.org>
+Message-ID: <20240606131742.163968444@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,50 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hagar Hemdan <hagarhem@amazon.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 4b2543f7e1e6b91cfc8dd1696e3cdf01c3ac8974 upstream.
+[ Upstream commit 1820e16a3019b6258e6009d34432946a6ddd0a90 ]
 
-priv.runtime_map is only allocated when efi_novamap is not set.
-Otherwise, it is an uninitialized value.  In the error path, it is freed
-unconditionally.  Avoid passing an uninitialized value to free_pool.
-Free priv.runtime_map only when it was allocated.
+Increase the size of led_names so it can fit any valid v4l2 device name.
 
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
+Fixes:
+drivers/media/radio/radio-shark2.c:197:17: warning: ‘%s’ directive output may be truncated writing up to 35 bytes into a region of size 32 [-Wformat-truncation=]
 
-Fixes: f80d26043af9 ("efi: libstub: avoid efi_get_memory_map() for allocating the virt map")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/fdt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/radio/radio-shark2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
-index 70e9789ff9de..6a337f1f8787 100644
---- a/drivers/firmware/efi/libstub/fdt.c
-+++ b/drivers/firmware/efi/libstub/fdt.c
-@@ -335,8 +335,8 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 
- fail:
- 	efi_free(fdt_size, fdt_addr);
--
--	efi_bs_call(free_pool, priv.runtime_map);
-+	if (!efi_novamap)
-+		efi_bs_call(free_pool, priv.runtime_map);
- 
- 	return EFI_LOAD_ERROR;
- }
+diff --git a/drivers/media/radio/radio-shark2.c b/drivers/media/radio/radio-shark2.c
+index f1c5c0a6a335c..e3e6aa87fe081 100644
+--- a/drivers/media/radio/radio-shark2.c
++++ b/drivers/media/radio/radio-shark2.c
+@@ -62,7 +62,7 @@ struct shark_device {
+ #ifdef SHARK_USE_LEDS
+ 	struct work_struct led_work;
+ 	struct led_classdev leds[NO_LEDS];
+-	char led_names[NO_LEDS][32];
++	char led_names[NO_LEDS][64];
+ 	atomic_t brightness[NO_LEDS];
+ 	unsigned long brightness_new;
+ #endif
 -- 
-2.45.2
+2.43.0
 
 
 
