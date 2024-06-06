@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E088FE943
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BADD8FEC71
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB9F91F233F5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 091BDB258E8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDDBA197A6D;
-	Thu,  6 Jun 2024 14:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981AB19B3C4;
+	Thu,  6 Jun 2024 14:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqYol4yH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18HNBr/l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1F6196D99;
-	Thu,  6 Jun 2024 14:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572EF1B1402;
+	Thu,  6 Jun 2024 14:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682999; cv=none; b=IiKcIdOFeUdRpaehpFz89yXwE4RSoti9UqUf3hvZrGr9ASY2QW/GhXlO/a1CAZYsCqM4r6B4OwDgSZrOk2hP6M6kOAhdlGCvAa6RHszvs9mXAP4m1u54MIoKwbh8B2QBSbqQ3tJ+XOl1T4Nu9drkNNsgTvjo2A41uPRfwU4wb1o=
+	t=1717683367; cv=none; b=lgelJKPkSCOz4jFACVF3iAap529AzDOPx79zwkqjxHVzolYlbAsPLKttYlC3NjyCaIAQSEhbyukf8J0DP8YwH3+9z9QyTaLLQ/mUn8LC1mZI1XABUNDuDgN++Z3rnQeBgaKUZE1/tsE+zYzP0A0hOLtsF/Y9odWIItMNqsX2O0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682999; c=relaxed/simple;
-	bh=f3Prjbmfra6Fgc6lt1CQ4aYO7hQY2yPF5vsL/mc4qr8=;
+	s=arc-20240116; t=1717683367; c=relaxed/simple;
+	bh=O6t+p78Oq7zx0Xj7uidvztq64+lsyIp9O5FxXh9iyrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tS+G3KqAkHhNS7FhIQxPUZ78M8KlzacjvgrqU0MhfvG9XJzWkT4/8Eapcsz+OrXA8ohLNg92/EYUUGQIuK52C8GPpyqXpxnDMZHMtFKhXRoqZ6eAPZmqkgv+lJ1aJLNe4oj8ywiS6VsqNq8MGRJsA2t0R1fen9WigCKjXr/knpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqYol4yH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D7E1C32786;
-	Thu,  6 Jun 2024 14:09:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m+icC06jHr6YkMTVvoD0Ay5hDq/V+YVMxfi/+Das12N6qp/GPENjyGEm3W6pPfq1RhEhu+u3a3N0w+F6m/TLDLYcR3hQA1RJKRpjbcIaM7/W4HTYCd65ahuXJq/S+rsFteEnqJPOUlkykKI2gGabUU1ih1MnPBvm36MXkXHu9bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18HNBr/l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34048C32781;
+	Thu,  6 Jun 2024 14:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682999;
-	bh=f3Prjbmfra6Fgc6lt1CQ4aYO7hQY2yPF5vsL/mc4qr8=;
+	s=korg; t=1717683367;
+	bh=O6t+p78Oq7zx0Xj7uidvztq64+lsyIp9O5FxXh9iyrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XqYol4yHoLdwv0q1+cMJ88V/zy1eCOtiGZZ/Xrcz6ARG/Oy+/iLwYmWdFVq4eDojQ
-	 x/lsxUAxX1f1PlQynYn8GFdxZ1o/NcNuT1HqzqsDcZUPn8E6Qy25kV9etOuaLkNmHJ
-	 QBqeyfXSnLx4PFOiEi+H01h2XW+I9A5YSZTKzS9I=
+	b=18HNBr/lV0AZHtynp+dKBa5+ZPpgfzubmEzbLL9CWn0pzjWK+LVeeWuX+vsdA6lV3
+	 Lr23cZ6Hpqes1Ke5fXCp13bSAKHU/CGW+xVWJQLDOEl/2Ll3UhBXvkFRH59mol4lJH
+	 GQwrZS/6PGXoiOBD5nk0OjMHDEsUTnoA9v54CQU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	"Yang, Chenyuan" <cy54@illinois.edu>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
-Subject: [PATCH 6.9 201/374] media: cec: core: avoid confusing "transmit timed out" message
+	patches@lists.linux.dev,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 251/473] lib/test_hmm.c: handle src_pfns and dst_pfns allocation failure
 Date: Thu,  6 Jun 2024 16:03:00 +0200
-Message-ID: <20240606131658.563766556@linuxfoundation.org>
+Message-ID: <20240606131708.280097665@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit cbe499977bc36fedae89f0a0d7deb4ccde9798fe ]
+[ Upstream commit c2af060d1c18beaec56351cf9c9bcbbc5af341a3 ]
 
-If, when waiting for a transmit to finish, the wait is interrupted,
-then you might get a "transmit timed out" message, even though the
-transmit was interrupted and did not actually time out.
+The kcalloc() in dmirror_device_evict_chunk() will return null if the
+physical memory has run out.  As a result, if src_pfns or dst_pfns is
+dereferenced, the null pointer dereference bug will happen.
 
-Set transmit_in_progress_aborted to true if the
-wait_for_completion_killable() call was interrupted and ensure
-that the transmit is properly marked as ABORTED.
+Moreover, the device is going away.  If the kcalloc() fails, the pages
+mapping a chunk could not be evicted.  So add a __GFP_NOFAIL flag in
+kcalloc().
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Yang, Chenyuan <cy54@illinois.edu>
-Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
-Fixes: 590a8e564c6e ("media: cec: abort if the current transmit was canceled")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Finally, as there is no need to have physically contiguous memory, Switch
+kcalloc() to kvcalloc() in order to avoid failing allocations.
+
+Link: https://lkml.kernel.org/r/20240312005905.9939-1-duoming@zju.edu.cn
+Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Cc: Jérôme Glisse <jglisse@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/core/cec-adap.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ lib/test_hmm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
-index a493cbce24567..da09834990b87 100644
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -490,6 +490,15 @@ int cec_thread_func(void *_adap)
- 			goto unlock;
- 		}
+diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+index 67e6f83fe0f82..be50a1fdba70b 100644
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -1232,8 +1232,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
+ 	unsigned long *src_pfns;
+ 	unsigned long *dst_pfns;
  
-+		if (adap->transmit_in_progress &&
-+		    adap->transmit_in_progress_aborted) {
-+			if (adap->transmitting)
-+				cec_data_cancel(adap->transmitting,
-+						CEC_TX_STATUS_ABORTED, 0);
-+			adap->transmit_in_progress = false;
-+			adap->transmit_in_progress_aborted = false;
-+			goto unlock;
-+		}
- 		if (adap->transmit_in_progress && timeout) {
- 			/*
- 			 * If we timeout, then log that. Normally this does
-@@ -771,6 +780,7 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
- {
- 	struct cec_data *data;
- 	bool is_raw = msg_is_raw(msg);
-+	int err;
+-	src_pfns = kcalloc(npages, sizeof(*src_pfns), GFP_KERNEL);
+-	dst_pfns = kcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL);
++	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
++	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
  
- 	if (adap->devnode.unregistered)
- 		return -ENODEV;
-@@ -935,10 +945,13 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
- 	 * Release the lock and wait, retake the lock afterwards.
- 	 */
- 	mutex_unlock(&adap->lock);
--	wait_for_completion_killable(&data->c);
-+	err = wait_for_completion_killable(&data->c);
- 	cancel_delayed_work_sync(&data->work);
- 	mutex_lock(&adap->lock);
+ 	migrate_device_range(src_pfns, start_pfn, npages);
+ 	for (i = 0; i < npages; i++) {
+@@ -1256,8 +1256,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
+ 	}
+ 	migrate_device_pages(src_pfns, dst_pfns, npages);
+ 	migrate_device_finalize(src_pfns, dst_pfns, npages);
+-	kfree(src_pfns);
+-	kfree(dst_pfns);
++	kvfree(src_pfns);
++	kvfree(dst_pfns);
+ }
  
-+	if (err)
-+		adap->transmit_in_progress_aborted = true;
-+
- 	/* Cancel the transmit if it was interrupted */
- 	if (!data->completed) {
- 		if (data->msg.tx_status & CEC_TX_STATUS_OK)
+ /* Removes free pages from the free list so they can't be re-allocated */
 -- 
 2.43.0
 
