@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-49198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFDD8FEC49
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4798FEAAB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52A7928282D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B41CE1F22FCB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C654A1AED5D;
-	Thu,  6 Jun 2024 14:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7501A0B1B;
+	Thu,  6 Jun 2024 14:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VF9RuiHV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUvYg7+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85568196DB4;
-	Thu,  6 Jun 2024 14:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7E81991CF;
+	Thu,  6 Jun 2024 14:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683349; cv=none; b=ktEITAZ+fuojeLPw4UCbp4rIL+4XLn6sTqMgczzPkwobmRzYedBMOY/EXgIbxRdaTyY3RGSNqMbuAyihd2rzC5Fz41ul5CegE8qIj6KqxPpDiMVUNG04L25+jBPmM7gMMZUllmJJwGm/48nWwbHnE8rSs26Av3lKXj6zvTBA670=
+	t=1717683163; cv=none; b=USVfvBZPigi2u+ObqmmoJ+pKSKkv/cR5dlbGlZle7yZiSEqchyDF56omA82ean6S4IueCOQDWFDXC1c5aWZrOTmu4/yUo1d+gQGI4Ozx9297ZM1nqoPAsedmeATBSd4QRXEYRQX0dEGXtD3HdyT8JdYvoYW4Y+H3206WcPjnLdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683349; c=relaxed/simple;
-	bh=CPgqF1YYrJANJfVyKEfUHj6XIxf/KBI98jQysTbZNyU=;
+	s=arc-20240116; t=1717683163; c=relaxed/simple;
+	bh=xKx7RX6PP1V4CN7ZEiPV+y+dy9qm9JMLQjpnm1lKB38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nI5vjzdfK9HVo46eOeYJ6/wBTNLRUFMPg5tMT3VK40cJOSgtE6MRrcrTn+EWF/pv9dL1DQoZdzZjPh50Il8yat1bidrr1BI4NGdnSK/xq3T3Mov7zW5IqE+FZwWfF+yp0vV12QiOCn0gi2qQ6lpbaZOd/VvKbQ77cI2NEZ47hLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VF9RuiHV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63EFFC2BD10;
-	Thu,  6 Jun 2024 14:15:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YNFFAFYZMa052W+jujQ7pYglldg6Bvwq1PMbQ+H4uanSwus7BQj7GPXYWhcOD8LOlO6F+Jw6i2VN+q4qyu2A5htbkmtEBwrR2QVEav1SRgR4kEPUWcHIDLNyXZNFSLnr5gm4R3gy0OM1YE4vQtjl07hpcmMqz220GcAkTMi6miI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUvYg7+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC42C32782;
+	Thu,  6 Jun 2024 14:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683349;
-	bh=CPgqF1YYrJANJfVyKEfUHj6XIxf/KBI98jQysTbZNyU=;
+	s=korg; t=1717683162;
+	bh=xKx7RX6PP1V4CN7ZEiPV+y+dy9qm9JMLQjpnm1lKB38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VF9RuiHVsD1mDABGpYt3iTNeBu+ITmVVTmFXNt+nI2/M8QkYC17tgJSwcSvr7NDJk
-	 KPf4VVygwZzZ/p9WXcPnlw2b2b+qJJ/jMV8SIMm7VrdYnQh/oPq/EOxsCABGlZruGP
-	 Rb+Fn9ZgwXK+f5b8V2DwjttKCu8J5KTXOlHx6aAI=
+	b=aUvYg7+Bws40UEvX7E561tOVDv6qEmbpzyz4F/zS4c70mASPE7Z/OBcEgj+VbMHqe
+	 JKlG2CvRrLPFV3tDp3slsFYfdg8dE31PrGTK4aH4kWNEJQfqi0TPZg5FrgIIm4Dts4
+	 4N13ujXRjRhsYq74V9Rn5WVxk+YN3t0qsQ5wb6dU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arun T <arun.t@intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Mukul Joshi <mukul.joshi@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 290/744] ASoC: Intel: common: add ACPI matching tables for Arrow Lake
+Subject: [PATCH 6.1 033/473] drm/amdgpu: Update BO eviction priorities
 Date: Thu,  6 Jun 2024 15:59:22 +0200
-Message-ID: <20240606131741.705555319@linuxfoundation.org>
+Message-ID: <20240606131700.989868875@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,123 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arun T <arun.t@intel.com>
+From: Felix Kuehling <felix.kuehling@amd.com>
 
-[ Upstream commit 24af0d7c0f9f49a243b77e607e3f4a4737386b59 ]
+[ Upstream commit b0b13d532105e0e682d95214933bb8483a063184 ]
 
-Initial support for ARL w/ RT711
+Make SVM BOs more likely to get evicted than other BOs. These BOs
+opportunistically use available VRAM, but can fall back relatively
+seamlessly to system memory. It also avoids SVM migrations evicting
+other, more important BOs as they will evict other SVM allocations
+first.
 
-Signed-off-by: Arun T <arun.t@intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://lore.kernel.org/r/20230915080635.1619942-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 1f1b820dc3c6 ("ASoC: SOF: Intel: mtl: Correct rom_status_reg")
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Acked-by: Mukul Joshi <mukul.joshi@amd.com>
+Tested-by: Mukul Joshi <mukul.joshi@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/soc-acpi-intel-match.h          |  2 +
- sound/soc/intel/common/Makefile               |  1 +
- .../intel/common/soc-acpi-intel-arl-match.c   | 51 +++++++++++++++++++
- 3 files changed, 54 insertions(+)
- create mode 100644 sound/soc/intel/common/soc-acpi-intel-arl-match.c
+ drivers/gpu/drm/amd/amdgpu/amdgpu_object.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/sound/soc-acpi-intel-match.h b/include/sound/soc-acpi-intel-match.h
-index e49b97d9e3ff2..845e7608ac375 100644
---- a/include/sound/soc-acpi-intel-match.h
-+++ b/include/sound/soc-acpi-intel-match.h
-@@ -32,6 +32,7 @@ extern struct snd_soc_acpi_mach snd_soc_acpi_intel_adl_machines[];
- extern struct snd_soc_acpi_mach snd_soc_acpi_intel_rpl_machines[];
- extern struct snd_soc_acpi_mach snd_soc_acpi_intel_mtl_machines[];
- extern struct snd_soc_acpi_mach snd_soc_acpi_intel_lnl_machines[];
-+extern struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_machines[];
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+index 9a111988b7f15..7acf1586882e1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+@@ -585,6 +585,8 @@ int amdgpu_bo_create(struct amdgpu_device *adev,
+ 	else
+ 		amdgpu_bo_placement_from_domain(bo, bp->domain);
+ 	if (bp->type == ttm_bo_type_kernel)
++		bo->tbo.priority = 2;
++	else if (!(bp->flags & AMDGPU_GEM_CREATE_DISCARDABLE))
+ 		bo->tbo.priority = 1;
  
- extern struct snd_soc_acpi_mach snd_soc_acpi_intel_cnl_sdw_machines[];
- extern struct snd_soc_acpi_mach snd_soc_acpi_intel_cfl_sdw_machines[];
-@@ -42,6 +43,7 @@ extern struct snd_soc_acpi_mach snd_soc_acpi_intel_adl_sdw_machines[];
- extern struct snd_soc_acpi_mach snd_soc_acpi_intel_rpl_sdw_machines[];
- extern struct snd_soc_acpi_mach snd_soc_acpi_intel_mtl_sdw_machines[];
- extern struct snd_soc_acpi_mach snd_soc_acpi_intel_lnl_sdw_machines[];
-+extern struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_sdw_machines[];
- 
- /*
-  * generic table used for HDA codec-based platforms, possibly with
-diff --git a/sound/soc/intel/common/Makefile b/sound/soc/intel/common/Makefile
-index 07aa37dd90e99..f7370e5b4e9e4 100644
---- a/sound/soc/intel/common/Makefile
-+++ b/sound/soc/intel/common/Makefile
-@@ -10,6 +10,7 @@ snd-soc-acpi-intel-match-objs := soc-acpi-intel-byt-match.o soc-acpi-intel-cht-m
- 	soc-acpi-intel-tgl-match.o soc-acpi-intel-ehl-match.o \
- 	soc-acpi-intel-jsl-match.o soc-acpi-intel-adl-match.o \
- 	soc-acpi-intel-rpl-match.o soc-acpi-intel-mtl-match.o \
-+	soc-acpi-intel-arl-match.o \
- 	soc-acpi-intel-lnl-match.o \
- 	soc-acpi-intel-hda-match.o \
- 	soc-acpi-intel-sdw-mockup-match.o
-diff --git a/sound/soc/intel/common/soc-acpi-intel-arl-match.c b/sound/soc/intel/common/soc-acpi-intel-arl-match.c
-new file mode 100644
-index 0000000000000..e52797aae6e65
---- /dev/null
-+++ b/sound/soc/intel/common/soc-acpi-intel-arl-match.c
-@@ -0,0 +1,51 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * soc-apci-intel-arl-match.c - tables and support for ARL ACPI enumeration.
-+ *
-+ * Copyright (c) 2023 Intel Corporation.
-+ */
-+
-+#include <sound/soc-acpi.h>
-+#include <sound/soc-acpi-intel-match.h>
-+
-+static const struct snd_soc_acpi_endpoint single_endpoint = {
-+	.num = 0,
-+	.aggregated = 0,
-+	.group_position = 0,
-+	.group_id = 0,
-+};
-+
-+static const struct snd_soc_acpi_adr_device rt711_0_adr[] = {
-+	{
-+		.adr = 0x000020025D071100ull,
-+		.num_endpoints = 1,
-+		.endpoints = &single_endpoint,
-+		.name_prefix = "rt711"
-+	}
-+};
-+
-+static const struct snd_soc_acpi_link_adr arl_rvp[] = {
-+	{
-+		.mask = BIT(0),
-+		.num_adr = ARRAY_SIZE(rt711_0_adr),
-+		.adr_d = rt711_0_adr,
-+	},
-+	{}
-+};
-+
-+struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_machines[] = {
-+	{},
-+};
-+EXPORT_SYMBOL_GPL(snd_soc_acpi_intel_arl_machines);
-+
-+/* this table is used when there is no I2S codec present */
-+struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_sdw_machines[] = {
-+	{
-+		.link_mask = 0x1, /* link0 required */
-+		.links = arl_rvp,
-+		.drv_name = "sof_sdw",
-+		.sof_tplg_filename = "sof-arl-rt711.tplg",
-+	},
-+	{},
-+};
-+EXPORT_SYMBOL_GPL(snd_soc_acpi_intel_arl_sdw_machines);
+ 	if (!bp->destroy)
 -- 
 2.43.0
 
