@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-49751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B628FEEB3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ABB08FE9AA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3CE21F251EC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B02931C25C71
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFC71AED39;
-	Thu,  6 Jun 2024 14:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F6E19B3C1;
+	Thu,  6 Jun 2024 14:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCD/VEC6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSwPER52"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B14819AD8B;
-	Thu,  6 Jun 2024 14:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F1A198A16;
+	Thu,  6 Jun 2024 14:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683691; cv=none; b=cWuB7LXjju2GQFvr+ubiP6WY0rQGPFh0AMH5y0QQzchKPfkp87jIDw76p1nAAoLO2qxtBcRUQ83fU+enmI4ZartUBjyzFu3F83WeJUmtt0AT0duNgsMl6eFPdGhik9L/OS2+fIvxAKVzVuHTHVAdDYCZWfai+/YY6nI+5LsuEyc=
+	t=1717683052; cv=none; b=d85ylXsbtw2IDIESqJXNYELyDVKsWptT6+3Rdd0nvY+qSjHsTMfXp+7n7YF0rGuVH6dHvnyDaueN0ssmxDjIa4XRrR94awpcWxXUXYgtiIJepR2Z/lLSuOZNoQYhKmgRz8Mz3y9yVa/L4MmbBnc6pji4G+Nl40sx6+LdoRiIm6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683691; c=relaxed/simple;
-	bh=iHlMk+IZuONKm0L47hSgbPg5vTEmKSMWZ9bepgsRg7w=;
+	s=arc-20240116; t=1717683052; c=relaxed/simple;
+	bh=9cQPr4ldOj7AAzTSDxDSCFrHiaDN1QznG7w83BbCaDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nh+7/WeJNDUERPERDE6+pXkCiF5ZHEIU6q6LJPSYn78lyZYQAMrtv+4JrCmPFf2I3BCR+FXiYkMXV736msyRsTWTwwT57EjIhosydlJP0lNPrqLJkwWZVIHk/h+XQTtyLDuItzBIvg0Cv6UFNSg+5BA2VeiiJ/r0GaGU6mmueCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCD/VEC6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F4DC2BD10;
-	Thu,  6 Jun 2024 14:21:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jq9sZs4peWQ16Uox1myP0tqGgJ9efNHX5DMkw6Skt5FgiG7SPP8IZKBBQ1ftxgw0NcYsiZJpRQOW8GscPdl9AhmvGghIoST6lHSJ+OsEue/RHU20X1nYksEmn+UNgLCpk0HrmTbb6DPsa3xyrPgz/5/aa38Kp49zr6F2DFfvJiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSwPER52; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C49C4AF08;
+	Thu,  6 Jun 2024 14:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683691;
-	bh=iHlMk+IZuONKm0L47hSgbPg5vTEmKSMWZ9bepgsRg7w=;
+	s=korg; t=1717683052;
+	bh=9cQPr4ldOj7AAzTSDxDSCFrHiaDN1QznG7w83BbCaDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nCD/VEC6UGDzBrEkfdFqrFoDYc3x8H24wTGx5B8AVLj3v3kCGruTR12Unsr0FQTn7
-	 2JyvzT/QFSdYc3RnF9Oz02yJDSFvUh8DQLFUxNKIDmBcZQfgQAnBpgFcgH0vOqD4Z/
-	 o0ojL2Wn+zR5bpuM+FUYAonEbnZ4zMeAom54SDKM=
+	b=dSwPER52Ldfzj0ePl6te6AvMLJ/P1HOBRXKwd5gqnE8CqOS8QyspKWpN7NpY8phnX
+	 xXMTZt1y311Rrv25NoRTwtLvxZJe7MoDya2dozUE3LNG+TuNSYhLHK5e01YBSAKS+E
+	 pttYFuWi+8rzdj84LISdFGvyij6cFv21wLdudcQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Richard Weinberger <richard@nod.at>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 601/744] um: Fix the -Wmissing-prototypes warning for __switch_mm
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Tyler Schneider <tyler.schneider@amd.com>
+Subject: [PATCH 6.9 294/374] drm/amd/display: Enable colorspace property for MST connectors
 Date: Thu,  6 Jun 2024 16:04:33 +0200
-Message-ID: <20240606131751.755852025@linuxfoundation.org>
+Message-ID: <20240606131701.725931085@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +63,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 2cbade17b18c0f0fd9963f26c9fc9b057eb1cb3a ]
+[ Upstream commit 8195979d2dd995d60c2663adf54c69c1bf4eadd1 ]
 
-The __switch_mm function is defined in the user code, and is called
-by the kernel code. It should be declared in a shared header.
+MST colorspace property support was disabled due to a series of warnings
+that came up when the device was plugged in since the properties weren't
+made at device creation. Create the properties in advance instead.
 
-Fixes: 4dc706c2f292 ("um: take um_mmu.h to asm/mmu.h, clean asm/mmu_context.h a bit")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Suggested-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Fixes: 69a959610229 ("drm/amd/display: Temporary Disable MST DP Colorspace Property").
+Reported-and-tested-by: Tyler Schneider <tyler.schneider@amd.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3353
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/include/asm/mmu.h           | 2 --
- arch/um/include/shared/skas/mm_id.h | 2 ++
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/um/include/asm/mmu.h b/arch/um/include/asm/mmu.h
-index 5b072aba5b658..a7cb380c0b5c0 100644
---- a/arch/um/include/asm/mmu.h
-+++ b/arch/um/include/asm/mmu.h
-@@ -15,8 +15,6 @@ typedef struct mm_context {
- 	struct page *stub_pages[2];
- } mm_context_t;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index cb31a699c6622..1a269099f19f8 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -613,6 +613,9 @@ dm_dp_add_mst_connector(struct drm_dp_mst_topology_mgr *mgr,
+ 		&connector->base,
+ 		dev->mode_config.tile_property,
+ 		0);
++	connector->colorspace_property = master->base.colorspace_property;
++	if (connector->colorspace_property)
++		drm_connector_attach_colorspace_property(connector);
  
--extern void __switch_mm(struct mm_id * mm_idp);
--
- /* Avoid tangled inclusion with asm/ldt.h */
- extern long init_new_ldt(struct mm_context *to_mm, struct mm_context *from_mm);
- extern void free_ldt(struct mm_context *mm);
-diff --git a/arch/um/include/shared/skas/mm_id.h b/arch/um/include/shared/skas/mm_id.h
-index e82e203f5f419..92dbf727e3842 100644
---- a/arch/um/include/shared/skas/mm_id.h
-+++ b/arch/um/include/shared/skas/mm_id.h
-@@ -15,4 +15,6 @@ struct mm_id {
- 	int kill;
- };
+ 	drm_connector_set_path_property(connector, pathprop);
  
-+void __switch_mm(struct mm_id *mm_idp);
-+
- #endif
 -- 
 2.43.0
 
