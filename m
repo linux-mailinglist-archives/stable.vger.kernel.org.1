@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-48820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 521B38FEAAC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B48F38FEAB0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05A7D1F24DBD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40017B237F7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963211991CF;
-	Thu,  6 Jun 2024 14:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966051A0DC5;
+	Thu,  6 Jun 2024 14:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaigrUz7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gdo7SKJJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560692233B;
-	Thu,  6 Jun 2024 14:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A071991CE;
+	Thu,  6 Jun 2024 14:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683163; cv=none; b=gqr9sbeBhE+Citkw3/9dIi6govPkYsibpqHlt0s47A/q5kK6AMDsRQKcCYCjsjgafwk3xODbpPmF7XtWnK7n6XmteMdp8Fq1xhQut21on/wzoHXf/PGAN/9IoKRkkBzqZGM23QW1Ei0z5qOyDAU2MmxLCvDZm8rHyVcgIPhzaoE=
+	t=1717683164; cv=none; b=Q3mhOI92sRZyh/MyDsT0O8gJDaoCU/Ay+YZ18st9toT2+5iKsbLhJCjWLyyHU/Y+xjKKROLjZbWZMjozh6uAZGYk+mWdpyk6md/MHUkJfMEFBj6MUksMKLV0yzPo3tQCKlqf587kJcpgP6EhkV9J+RmbB3UWViWVTec+byFUiPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683163; c=relaxed/simple;
-	bh=ZVsWEtoFJ8HDIamHypFMPVEfXFlCsbJHZlAzUR/5yOQ=;
+	s=arc-20240116; t=1717683164; c=relaxed/simple;
+	bh=QexsfiIlW/iLfEskw6pcTAG0B9yFctLFdP4SwfqbGmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/a8fXlQIvB0iNOHkPKjyveogGfUFrh6pdqpjLsG43/jGDTxzEqxp/ht0cl9ZRZD59/sE8WqsNbrVbicbmw3NBZfLxlxjJOkT06gHqiOf0GwADrL38cUzKsginkopcsKYzvE8mvjg9l2gHNdjVKBe+25+giF/D2n0AhtCqnh8Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaigrUz7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D37C2BD10;
-	Thu,  6 Jun 2024 14:12:43 +0000 (UTC)
+	 MIME-Version; b=upV8YszH2FelPbr7V6gbr1eOZK8kKDtcfqUW3KjHPesBUXuYgoKarF/t/z4d1t49RNMlb2UNoR2gfMQHs6h9Ypu+XEjmX+vpgw0uBAS7L9nCqFot/v69l/me5HEP2TnID6XZggAZ/L8P1WsaT/spXuMLlW7xVPoZApCZhCPf630=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gdo7SKJJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327C0C32781;
+	Thu,  6 Jun 2024 14:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683163;
-	bh=ZVsWEtoFJ8HDIamHypFMPVEfXFlCsbJHZlAzUR/5yOQ=;
+	s=korg; t=1717683164;
+	bh=QexsfiIlW/iLfEskw6pcTAG0B9yFctLFdP4SwfqbGmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IaigrUz7UtOZ7O2rS3Drd3Ew23TfCqGzF8nxs70tySzKqV/YjYyjl01NTeeSPlMa1
-	 chm4UPtsg8w2hY6FVGr9N0ioudKQUmlAhkZDkff89D/pNBlO4UcPwVH/uI1VOy+Y1w
-	 4mLmcpRaa/KvJlRwsMen+KMRucL4MOkG4YYUwqN4=
+	b=Gdo7SKJJCX4akXWv/T4DhEJ2Q+mwLVkfjIbZb97bdZ1jey/tQWwY3lCBdQIy5pclr
+	 +FOJuYbRj1Eq66zW/CEDjy9g3xM73jScUzljIdjtOvKOUNOoR6iadPD4FJh8Mb+sKM
+	 ZacS7fUPANQyVGCo1JWX6V0uJrTdTucK7EHfHy4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 107/744] rcu: Fix buffer overflow in print_cpu_stall_info()
-Date: Thu,  6 Jun 2024 15:56:19 +0200
-Message-ID: <20240606131735.825798135@linuxfoundation.org>
+Subject: [PATCH 6.6 108/744] ARM: configs: sunxi: Enable DRM_DW_HDMI
+Date: Thu,  6 Jun 2024 15:56:20 +0200
+Message-ID: <20240606131735.864190373@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,49 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: Maxime Ripard <mripard@kernel.org>
 
-[ Upstream commit 3758f7d9917bd7ef0482c4184c0ad673b4c4e069 ]
+[ Upstream commit deff401b14e2d832b25b55862ad6c73378fe034e ]
 
-The rcuc-starvation output from print_cpu_stall_info() might overflow the
-buffer if there is a huge difference in jiffies difference.  The situation
-might seem improbable, but computers sometimes get very confused about
-time, which can result in full-sized integers, and, in this case,
-buffer overflow.
+Commit 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper
+module") turned the DRM_DW_HDMI dependency of DRM_SUN8I_DW_HDMI into a
+depends on which ended up disabling the driver in the defconfig. Make
+sure it's still enabled.
 
-Also, the unsigned jiffies difference is printed using %ld, which is
-normally for signed integers.  This is intentional for debugging purposes,
-but it is not obvious from the code.
-
-This commit therefore changes sprintf() to snprintf() and adds a
-clarifying comment about intention of %ld format.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 245a62982502 ("rcu: Dump rcuc kthread status for CPUs not reporting quiescent state")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Fixes: 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper module")
+Reported-by: Mark Brown <broonie@kernel.org>
+Reported-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://lore.kernel.org/r/20240403-fix-dw-hdmi-kconfig-v1-5-afbc4a835c38@kernel.org
+Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree_stall.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/configs/sunxi_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
-index e09f4f624261e..11a1fac3a5898 100644
---- a/kernel/rcu/tree_stall.h
-+++ b/kernel/rcu/tree_stall.h
-@@ -503,7 +503,8 @@ static void print_cpu_stall_info(int cpu)
- 			rcu_dynticks_in_eqs(rcu_dynticks_snap(cpu));
- 	rcuc_starved = rcu_is_rcuc_kthread_starving(rdp, &j);
- 	if (rcuc_starved)
--		sprintf(buf, " rcuc=%ld jiffies(starved)", j);
-+		// Print signed value, as negative values indicate a probable bug.
-+		snprintf(buf, sizeof(buf), " rcuc=%ld jiffies(starved)", j);
- 	pr_err("\t%d-%c%c%c%c: (%lu %s) idle=%04x/%ld/%#lx softirq=%u/%u fqs=%ld%s%s\n",
- 	       cpu,
- 	       "O."[!!cpu_online(cpu)],
+diff --git a/arch/arm/configs/sunxi_defconfig b/arch/arm/configs/sunxi_defconfig
+index bddc82f789421..a83d29fed1756 100644
+--- a/arch/arm/configs/sunxi_defconfig
++++ b/arch/arm/configs/sunxi_defconfig
+@@ -110,6 +110,7 @@ CONFIG_DRM_PANEL_LVDS=y
+ CONFIG_DRM_PANEL_SIMPLE=y
+ CONFIG_DRM_PANEL_EDP=y
+ CONFIG_DRM_SIMPLE_BRIDGE=y
++CONFIG_DRM_DW_HDMI=y
+ CONFIG_DRM_LIMA=y
+ CONFIG_FB_SIMPLE=y
+ CONFIG_BACKLIGHT_CLASS_DEVICE=y
 -- 
 2.43.0
 
