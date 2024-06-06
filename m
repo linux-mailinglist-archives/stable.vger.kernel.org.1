@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-49064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7D98FEBB6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A018FE8E6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F6B3B25F84
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E98AC283D21
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA9619A2B2;
-	Thu,  6 Jun 2024 14:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7FDA1974FD;
+	Thu,  6 Jun 2024 14:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwEoSQUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqKNcKoj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8AB1ABCB8;
-	Thu,  6 Jun 2024 14:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A712B196C8D;
+	Thu,  6 Jun 2024 14:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683284; cv=none; b=g+FS97LLnmRhY21nmG51qudFhgs7AYqAQLBtLSxDsMQnnKSlulj+gbghPbuO/VlPWUoRzWr6Ho2hAT0RqI2vIY5UcmV1y5vuQSH3yA+SK/D/+Yma6FqA1Hm2LhFWtO2kz8tLyE9rvQz6Fvacq/pRyb81dEODqLaUJ+t7EAGtTMA=
+	t=1717682948; cv=none; b=RSx0eNnABO2xiy1wxKsF/EGtTygWvyvVyOSsTwOeHsZXP5fFvBLQO5eQ9KdaA+tuh6tcsA3lWzCdE3h/NLW+zmfD2f75lEbucWIocPx6UXzvGZ8h49LhloVMxLw9T56LCHFQBSSfnRKPHQ46oYkh3sh9Viybhu/t5RoDVmZLnWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683284; c=relaxed/simple;
-	bh=0YCVubg/vbVYB5bwJCouZUx0PsVU2O7E4LQWmzPxNLI=;
+	s=arc-20240116; t=1717682948; c=relaxed/simple;
+	bh=lYtExvF3zIG9F8kK9YPLmRDeT1FtkKORufkahtk5r7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/i+BbSVksa2k4bPvSHg6GkM9IgBpwuVU4NGItueH1DRHEAm1/xDcGnUk4svi44mKV95sua9xlKK2PF3y+YJSTFpdjwpMMVmWYKsVgtUdhrAjAnQ3nqnjyHKNah5Q4qL1onR/9bkmvxvKpVWtZ1l0yIpsE2VwTLEJxil16/OGrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwEoSQUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1DEC32781;
-	Thu,  6 Jun 2024 14:14:44 +0000 (UTC)
+	 MIME-Version; b=cD2CRFt1rUv3H6eaGNXUuIZDydkFdaL4XkozXDAAxbtsYU32dTNNAMa25VAaQN+3TtExn872U81XPhVq/P8zgjZ36s5V1lKObWxWbqMG88g5pVTLRyL4nbucSZuEiqQTE+khoSpdulyc5tkjCOocA9zWDx4mcDEtVmlptH6YkwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqKNcKoj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DDBC32781;
+	Thu,  6 Jun 2024 14:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683284;
-	bh=0YCVubg/vbVYB5bwJCouZUx0PsVU2O7E4LQWmzPxNLI=;
+	s=korg; t=1717682948;
+	bh=lYtExvF3zIG9F8kK9YPLmRDeT1FtkKORufkahtk5r7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwEoSQUo50P6198LCTZEyP7M9++SE0EXnhwVxMSk6lV+ggnH1IpZl52iNkZzJmdMz
-	 ExJe3yrA+RBsb6bCtBJyp7cD9wi5AiEyJe2jhLuJXTMnUZGh7XgENJtwFYWjnhJtBT
-	 N2Qp/Xm+K3oTLyCeiFS85w6fpo+N5TIgCbNdeppU=
+	b=fqKNcKojtYRFXTKbQ+RMcgjaq824iYg+4RfU/qRuHdRraAKi1F6qKN+WRk6ryIcq3
+	 8S0vaqPzQIMLcl2ho1iJu32S6KFBwPwyKXCNPV8qqWASjpKXfPMbVddGPjCfjQERJp
+	 MY0ZKKGnWODTb/m8a+1a1NMoneE8nOFuCJpCB+ho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Robert Richter <rrichter@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/473] x86/numa: Fix SRAT lookup of CFMWS ranges with numa_fill_memblks()
+Subject: [PATCH 6.9 111/374] f2fs: compress: dont allow unaligned truncation on released compress inode
 Date: Thu,  6 Jun 2024 16:01:30 +0200
-Message-ID: <20240606131705.274744255@linuxfoundation.org>
+Message-ID: <20240606131655.642218490@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,120 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Richter <rrichter@amd.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit f9f67e5adc8dc2e1cc51ab2d3d6382fa97f074d4 ]
+[ Upstream commit 29ed2b5dd521ce7c5d8466cd70bf0cc9d07afeee ]
 
-For configurations that have the kconfig option NUMA_KEEP_MEMINFO
-disabled, numa_fill_memblks() only returns with NUMA_NO_MEMBLK (-1).
-SRAT lookup fails then because an existing SRAT memory range cannot be
-found for a CFMWS address range. This causes the addition of a
-duplicate numa_memblk with a different node id and a subsequent page
-fault and kernel crash during boot.
+f2fs image may be corrupted after below testcase:
+- mkfs.f2fs -O extra_attr,compression -f /dev/vdb
+- mount /dev/vdb /mnt/f2fs
+- touch /mnt/f2fs/file
+- f2fs_io setflags compression /mnt/f2fs/file
+- dd if=/dev/zero of=/mnt/f2fs/file bs=4k count=4
+- f2fs_io release_cblocks /mnt/f2fs/file
+- truncate -s 8192 /mnt/f2fs/file
+- umount /mnt/f2fs
+- fsck.f2fs /dev/vdb
 
-Fix this by making numa_fill_memblks() always available regardless of
-NUMA_KEEP_MEMINFO.
+[ASSERT] (fsck_chk_inode_blk:1256)  --> ino: 0x5 has i_blocks: 0x00000002, but has 0x3 blocks
+[FSCK] valid_block_count matching with CP             [Fail] [0x4, 0x5]
+[FSCK] other corrupted bugs                           [Fail]
 
-As Dan suggested, the fix is implemented to remove numa_fill_memblks()
-from sparsemem.h and alos using __weak for the function.
+The reason is: partial truncation assume compressed inode has reserved
+blocks, after partial truncation, valid block count may change w/o
+.i_blocks and .total_valid_block_count update, result in corruption.
 
-Note that the issue was initially introduced with [1]. But since
-phys_to_target_node() was originally used that returned the valid node
-0, an additional numa_memblk was not added. Though, the node id was
-wrong too, a message is seen then in the logs:
+This patch only allow cluster size aligned truncation on released
+compress inode for fixing.
 
- kernel/numa.c:  pr_info_once("Unknown target node for memory at 0x%llx, assuming node 0\n",
-
-[1] commit fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each
-    CFMWS not in SRAT")
-
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://lore.kernel.org/all/66271b0072317_69102944c@dwillia2-xfh.jf.intel.com.notmuch/
-Fixes: 8f1004679987 ("ACPI/NUMA: Apply SRAT proximity domain to entire CFMWS window")
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Robert Richter <rrichter@amd.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: c61404153eb6 ("f2fs: introduce FI_COMPRESS_RELEASED instead of using IMMUTABLE bit")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/sparsemem.h | 2 --
- arch/x86/mm/numa.c               | 4 ++--
- drivers/acpi/numa/srat.c         | 5 +++++
- include/linux/numa.h             | 7 +------
- 4 files changed, 8 insertions(+), 10 deletions(-)
+ fs/f2fs/file.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/sparsemem.h b/arch/x86/include/asm/sparsemem.h
-index 1be13b2dfe8bf..64df897c0ee30 100644
---- a/arch/x86/include/asm/sparsemem.h
-+++ b/arch/x86/include/asm/sparsemem.h
-@@ -37,8 +37,6 @@ extern int phys_to_target_node(phys_addr_t start);
- #define phys_to_target_node phys_to_target_node
- extern int memory_add_physaddr_to_nid(u64 start);
- #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
--extern int numa_fill_memblks(u64 start, u64 end);
--#define numa_fill_memblks numa_fill_memblks
- #endif
- #endif /* __ASSEMBLY__ */
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 30d438bd30ab4..208dedc161d53 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -952,9 +952,14 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 				  ATTR_GID | ATTR_TIMES_SET))))
+ 		return -EPERM;
  
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index dae5c952735c7..c7fa5396c0f05 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -956,6 +956,8 @@ int memory_add_physaddr_to_nid(u64 start)
- }
- EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
+-	if ((attr->ia_valid & ATTR_SIZE) &&
+-		!f2fs_is_compress_backend_ready(inode))
+-		return -EOPNOTSUPP;
++	if ((attr->ia_valid & ATTR_SIZE)) {
++		if (!f2fs_is_compress_backend_ready(inode))
++			return -EOPNOTSUPP;
++		if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED) &&
++			!IS_ALIGNED(attr->ia_size,
++			F2FS_BLK_TO_BYTES(F2FS_I(inode)->i_cluster_size)))
++			return -EINVAL;
++	}
  
-+#endif
-+
- static int __init cmp_memblk(const void *a, const void *b)
- {
- 	const struct numa_memblk *ma = *(const struct numa_memblk **)a;
-@@ -1028,5 +1030,3 @@ int __init numa_fill_memblks(u64 start, u64 end)
- 	}
- 	return 0;
- }
--
--#endif
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index b57de78fbf14f..a44c0761fd1c0 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -206,6 +206,11 @@ int __init srat_disabled(void)
- 	return acpi_numa < 0;
- }
- 
-+__weak int __init numa_fill_memblks(u64 start, u64 end)
-+{
-+	return NUMA_NO_MEMBLK;
-+}
-+
- #if defined(CONFIG_X86) || defined(CONFIG_ARM64) || defined(CONFIG_LOONGARCH)
- /*
-  * Callback for SLIT parsing.  pxm_to_node() returns NUMA_NO_NODE for
-diff --git a/include/linux/numa.h b/include/linux/numa.h
-index 8fc218a55be4e..871e7babc2886 100644
---- a/include/linux/numa.h
-+++ b/include/linux/numa.h
-@@ -36,12 +36,7 @@ int memory_add_physaddr_to_nid(u64 start);
- int phys_to_target_node(u64 start);
- #endif
- 
--#ifndef numa_fill_memblks
--static inline int __init numa_fill_memblks(u64 start, u64 end)
--{
--	return NUMA_NO_MEMBLK;
--}
--#endif
-+int numa_fill_memblks(u64 start, u64 end);
- 
- #else /* !CONFIG_NUMA */
- static inline int numa_map_to_online_node(int node)
+ 	err = setattr_prepare(idmap, dentry, attr);
+ 	if (err)
 -- 
 2.43.0
 
