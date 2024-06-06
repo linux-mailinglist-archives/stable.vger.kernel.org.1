@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-49532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5F48FEDA8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1D28FEBFD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64AE0283C3C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7EAAB22A28
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB22E1BD00C;
-	Thu,  6 Jun 2024 14:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36B119AA71;
+	Thu,  6 Jun 2024 14:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDD0PsYX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJ8h7D1d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66CE319E7C9;
-	Thu,  6 Jun 2024 14:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F1419AA6D;
+	Thu,  6 Jun 2024 14:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683512; cv=none; b=oI0b345D85xCGBIGm/Xe00vSE/eGa2D77x4AYSOM/gcqflg9ok0IvbXhmaF0wuk3ou9X7GBXulf0MaSZE5tXcUurfRKlVnNgwPqc0i2xIJLRZgq3AQu+ML1IfgU8tQY8eOxQE5zYrYkqX/nkUrvfz5SU6XYT7nIVqXbT2k9HK9k=
+	t=1717683316; cv=none; b=kTa1wpuDi2bMWIgwuNTXHVAvMMZTLsIO7ZwyfYCmjlVOgYTnHXeMfQzx/ObgKR0y1EWt3mMmIR9SH4Mul9Z/6aOsKWOG5IuUaE48MLDqGYUlPcXU1xOz6hUEGZz0c3sQefj+wXK0G93l/iiHRMaLQsEiW6inu3C/098fuaP7Iyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683512; c=relaxed/simple;
-	bh=GmIrOUTL7+2L+LB28W1ja+975h9XEc1xKuR7sjvJGzQ=;
+	s=arc-20240116; t=1717683316; c=relaxed/simple;
+	bh=CcDVmKAJhNtxAbrgT7H2xEhmMTBFyJpSM959/J6ShzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hYvWI0d9brOpMv/kH7hrzU3cBvePGB/CSaRZ7nA8XWscANQ+im1TTD+ZSYpMYMx7raHdVc1l7RF6uOtkgHwQnYqSmaQSHnuj2uZitH9vl7xS0c3vSaNYfO8UdCAYwxQPHuoa1wYB5oh7WUKST043yvX5CM1Vi52/vN/BRxMEKPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDD0PsYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEBAC2BD10;
-	Thu,  6 Jun 2024 14:18:32 +0000 (UTC)
+	 MIME-Version; b=aiA7vZ4O68jp5PrnzdxWUOfJvmAxfmEcGotSkvpR+sRx3gw+/74e7AZ6brM4OOMHb+yyOOwEk2/akrdupD3cC/vgdQY2O6B4MGBVER0PcPn/W4DMTJF/g4l/m792MpZRI62Z5WrktIiqpTTIgwEDUMGNZjHHBLxOrz9fBY6oVgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJ8h7D1d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C75AC2BD10;
+	Thu,  6 Jun 2024 14:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683512;
-	bh=GmIrOUTL7+2L+LB28W1ja+975h9XEc1xKuR7sjvJGzQ=;
+	s=korg; t=1717683316;
+	bh=CcDVmKAJhNtxAbrgT7H2xEhmMTBFyJpSM959/J6ShzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hDD0PsYXlVnSi07gNcV+Do6XzFBri6tjFqXU3ejYphwtgWnRycjf5NIbDLCDGBVvC
-	 jwYBJOknkdPjqUQ1oIim01lNpxUfr6uq20t6Zop0BoXMFFDyprVt/AtNgQzsPKnnDj
-	 495wvmpOSFUv0+8D0BKn6vbFpIj70YB3SpksiN3U=
+	b=sJ8h7D1d5OHRJgqthz10JfNFIe1YkT+HtQzE5T+YKdIEmnLxRMRlTn2d/TUTSwAhl
+	 WZSRuq+Zqk1Ilsuvc4lLVLp/mMncTJxV97GUFGa3APws13ESTAd3ILcEQ6UxTIW9sG
+	 r8kk1oTYUhPpFcPOIZPJDta8Ur2xl8CMmoYT00BU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 453/744] iio: adc: adi-axi-adc: only error out in major version mismatch
+Subject: [PATCH 6.1 196/473] drm/amd/display: Fix potential index out of bounds in color transformation function
 Date: Thu,  6 Jun 2024 16:02:05 +0200
-Message-ID: <20240606131747.012353584@linuxfoundation.org>
+Message-ID: <20240606131706.424678471@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +69,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit cf1c833f89e7c8635a28c3db15c68ead150ea712 ]
+[ Upstream commit 63ae548f1054a0b71678d0349c7dc9628ddd42ca ]
 
-The IP core only has breaking changes when there major version changes.
-Hence, only match the major number. This is also in line with the other
-core ADI has upstream. The current check for erroring out
-'expected_version > current_version"' is then wrong as we could just
-increase the core major with breaking changes and that would go
-unnoticed.
+Fixes index out of bounds issue in the color transformation function.
+The issue could occur when the index 'i' exceeds the number of transfer
+function points (TRANSFER_FUNC_POINTS).
 
-Fixes: ef04070692a2 ("iio: adc: adi-axi-adc: add support for AXI ADC IP core")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240419-ad9467-new-features-v1-2-3e7628ff6d5e@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The fix adds a check to ensure 'i' is within bounds before accessing the
+transfer function points. If 'i' is out of bounds, an error message is
+logged and the function returns false to indicate an error.
+
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:405 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:406 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:407 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
+
+Fixes: b629596072e5 ("drm/amd/display: Build unity lut for shaper")
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Charlene Liu <Charlene.Liu@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/adi-axi-adc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-index 4156639b3c8bd..a543b91124b07 100644
---- a/drivers/iio/adc/adi-axi-adc.c
-+++ b/drivers/iio/adc/adi-axi-adc.c
-@@ -207,9 +207,9 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	if (*expected_ver > ver) {
-+	if (ADI_AXI_PCORE_VER_MAJOR(ver) != ADI_AXI_PCORE_VER_MAJOR(*expected_ver)) {
- 		dev_err(&pdev->dev,
--			"IP core version is too old. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
-+			"Major version mismatch. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
- 			ADI_AXI_PCORE_VER_MAJOR(*expected_ver),
- 			ADI_AXI_PCORE_VER_MINOR(*expected_ver),
- 			ADI_AXI_PCORE_VER_PATCH(*expected_ver),
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
+index 3538973bd0c6c..c0372aa4ec838 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
+@@ -382,6 +382,11 @@ bool cm_helper_translate_curve_to_hw_format(struct dc_context *ctx,
+ 				i += increment) {
+ 			if (j == hw_points - 1)
+ 				break;
++			if (i >= TRANSFER_FUNC_POINTS) {
++				DC_LOG_ERROR("Index out of bounds: i=%d, TRANSFER_FUNC_POINTS=%d\n",
++					     i, TRANSFER_FUNC_POINTS);
++				return false;
++			}
+ 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
+ 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
+ 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
 -- 
 2.43.0
 
