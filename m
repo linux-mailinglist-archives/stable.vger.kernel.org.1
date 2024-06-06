@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07FE18FEC1A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD1B18FEA7B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1C2B282422
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B49F1F24AD5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0CC1AC44D;
-	Thu,  6 Jun 2024 14:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D536A1A01B2;
+	Thu,  6 Jun 2024 14:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Xud/jHl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUGgsUrc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02EC1AC24F;
-	Thu,  6 Jun 2024 14:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B181991A0;
+	Thu,  6 Jun 2024 14:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683330; cv=none; b=SAiCVRk1CVAHOWhU4M+GiEnWC1hBlZR6pH3kbJd1HrsKNZdgcXYGVAN0qtw06Q7O0Hf+tWBAW24R6XYEk8JCKHeZJHt0It/OZP9WLdCW7dI2GREip7U3l/Yhvsvb73M6Nygr0/mU9g6xK3MMf7VjOQZzImR9wpcuO/fR/FHIUh0=
+	t=1717683142; cv=none; b=dJS1GFn50b394J5V0aFM2Cyeq2ooYxIlcAxfpeqV3hhfvLlfVJPpwyFGXzGfHHMavndV+/FzX//T7ZYkqOOk2/iK8Nr3bvUINjNm5qkULw7nansYTGRL2cqZmYUMvPtt/6OzeGLweh4wMhhn9jHi/ok15+5WNBbKHLbkrlErN6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683330; c=relaxed/simple;
-	bh=Q4/gLcdvaBmAJjs5ltWiMROBMsCNlZVHICS4lelOOjk=;
+	s=arc-20240116; t=1717683142; c=relaxed/simple;
+	bh=Fepczum1cCc7sCrnl8OhaaeUrfkknnj5+4bJJj4xvWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+Sks7qqnwUvekJlItU4aCryRVzMCgchxQVj59YDaHQFFAU1cPXRtasJO1QrtHAhJ0Ds8bI4cVlGoPZgKg1QsZVNbYOGJHv3g+kEYzZZwITsfTwOXb2ZlgaGkJmRwUgmU/v6Z+Et19DyUzpEYEUFircSIBzt2bwVm1oGY26plLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Xud/jHl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD270C2BD10;
-	Thu,  6 Jun 2024 14:15:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gRUXRmKfNXWWZYG1KrosI/0+QWLbBLejWuV0cU/0Dlr+5nw3Yc5smeb0UpA/6EUZLcH5GcjvmbGMf3PbYIC7ASGwdp8xnzy5AD3hZjyFfB032STRZ0a2WsI/Q1lfnVCQ1ClBDlfPAkn+4YV9cNTxYJf3KIPv3BttpJN+qegF4h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUGgsUrc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A2FC2BD10;
+	Thu,  6 Jun 2024 14:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683329;
-	bh=Q4/gLcdvaBmAJjs5ltWiMROBMsCNlZVHICS4lelOOjk=;
+	s=korg; t=1717683142;
+	bh=Fepczum1cCc7sCrnl8OhaaeUrfkknnj5+4bJJj4xvWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Xud/jHlDI20Jeox6bRMB4/qted4QXKdflvHkM+eui8PPhRsnpWlP6Fp4p4oyzDuR
-	 RLF6o+PtOS4XjdaDSWHAeoLrpBzmtsh6jzLrblYurzvyxcxKREkabtOQlZa3P9lrpD
-	 emGNfHzzZRK7b33bIOSg9ltFZHBpIitqiqmvJhu8=
+	b=pUGgsUrcbjUmjZKGsGuQs//MehWOEtlLR3QKimESNVxJmVkxzqaJsvekm+uIGnOI7
+	 +siaRr9aK6AqDi8Bfm1ssRZOGnlPMf/yKt9X5EBUQZyDz4kNB4ZYehQ1N26IYUI0nv
+	 /KTg/JcufX0UoitmiUwMJX1pUxrrixpJrFG3u3NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 271/744] drm/omapdrm: Fix console by implementing fb_dirty
+	Thorsten Blum <thorsten.blum@toblux.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 014/473] net: smc91x: Fix m68k kernel compilation for ColdFire CPU
 Date: Thu,  6 Jun 2024 15:59:03 +0200
-Message-ID: <20240606131741.063469209@linuxfoundation.org>
+Message-ID: <20240606131700.300496324@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Thorsten Blum <thorsten.blum@toblux.com>
 
-[ Upstream commit 632bac50544c0929ced9eed41e7d04c08adecbb0 ]
+commit 5eefb477d21a26183bc3499aeefa991198315a2d upstream.
 
-The framebuffer console stopped updating with commit f231af498c29
-("drm/fb-helper: Disconnect damage worker from update logic").
+Compiling the m68k kernel with support for the ColdFire CPU family fails
+with the following error:
 
-Let's fix the issue by implementing fb_dirty similar to what was done
-with commit 039a72ce7e57 ("drm/i915/fbdev: Implement fb_dirty for intel
-custom fb helper").
+In file included from drivers/net/ethernet/smsc/smc91x.c:80:
+drivers/net/ethernet/smsc/smc91x.c: In function ‘smc_reset’:
+drivers/net/ethernet/smsc/smc91x.h:160:40: error: implicit declaration of function ‘_swapw’; did you mean ‘swap’? [-Werror=implicit-function-declaration]
+  160 | #define SMC_outw(lp, v, a, r)   writew(_swapw(v), (a) + (r))
+      |                                        ^~~~~~
+drivers/net/ethernet/smsc/smc91x.h:904:25: note: in expansion of macro ‘SMC_outw’
+  904 |                         SMC_outw(lp, x, ioaddr, BANK_SELECT);           \
+      |                         ^~~~~~~~
+drivers/net/ethernet/smsc/smc91x.c:250:9: note: in expansion of macro ‘SMC_SELECT_BANK’
+  250 |         SMC_SELECT_BANK(lp, 2);
+      |         ^~~~~~~~~~~~~~~
+cc1: some warnings being treated as errors
 
-Fixes: f231af498c29 ("drm/fb-helper: Disconnect damage worker from update logic")
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240228063540.4444-2-tony@atomide.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The function _swapw() was removed in commit d97cf70af097 ("m68k: use
+asm-generic/io.h for non-MMU io access functions"), but is still used in
+drivers/net/ethernet/smsc/smc91x.h.
+
+Use ioread16be() and iowrite16be() to resolve the error.
+
+Cc: stable@vger.kernel.org
+Fixes: d97cf70af097 ("m68k: use asm-generic/io.h for non-MMU io access functions")
+Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20240510113054.186648-2-thorsten.blum@toblux.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/omapdrm/omap_fbdev.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/ethernet/smsc/smc91x.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/omapdrm/omap_fbdev.c b/drivers/gpu/drm/omapdrm/omap_fbdev.c
-index 6b08b137af1ad..7c5af3de1e727 100644
---- a/drivers/gpu/drm/omapdrm/omap_fbdev.c
-+++ b/drivers/gpu/drm/omapdrm/omap_fbdev.c
-@@ -238,8 +238,20 @@ static int omap_fbdev_create(struct drm_fb_helper *helper,
- 	return ret;
+--- a/drivers/net/ethernet/smsc/smc91x.h
++++ b/drivers/net/ethernet/smsc/smc91x.h
+@@ -175,8 +175,8 @@ static inline void mcf_outsw(void *a, un
+ 		writew(*wp++, a);
  }
  
-+static int omap_fbdev_dirty(struct drm_fb_helper *helper, struct drm_clip_rect *clip)
-+{
-+	if (!(clip->x1 < clip->x2 && clip->y1 < clip->y2))
-+		return 0;
-+
-+	if (helper->fb->funcs->dirty)
-+		return helper->fb->funcs->dirty(helper->fb, NULL, 0, 0, clip, 1);
-+
-+	return 0;
-+}
-+
- static const struct drm_fb_helper_funcs omap_fb_helper_funcs = {
- 	.fb_probe = omap_fbdev_create,
-+	.fb_dirty = omap_fbdev_dirty,
- };
+-#define SMC_inw(a, r)		_swapw(readw((a) + (r)))
+-#define SMC_outw(lp, v, a, r)	writew(_swapw(v), (a) + (r))
++#define SMC_inw(a, r)		ioread16be((a) + (r))
++#define SMC_outw(lp, v, a, r)	iowrite16be(v, (a) + (r))
+ #define SMC_insw(a, r, p, l)	mcf_insw(a + r, p, l)
+ #define SMC_outsw(a, r, p, l)	mcf_outsw(a + r, p, l)
  
- static struct drm_fb_helper *get_fb(struct fb_info *fbi)
--- 
-2.43.0
-
 
 
 
