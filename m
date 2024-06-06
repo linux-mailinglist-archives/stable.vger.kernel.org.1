@@ -1,53 +1,59 @@
-Return-Path: <stable+bounces-49421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76CAF8FED30
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B888FED32
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6A6C282156
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8935C1C2204F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B42019D069;
-	Thu,  6 Jun 2024 14:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9626338D;
+	Thu,  6 Jun 2024 14:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NPgTCtj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h+ycC7Fp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9C938D;
-	Thu,  6 Jun 2024 14:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C151974EB;
+	Thu,  6 Jun 2024 14:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683457; cv=none; b=V+pPQ6D3h5azyQ6PVuNng4FNCiajwkfz8NjLG3Bl2V62p6yLLb5aopTIbjsdGGxVze5B1Q89BHAWO7iAvHAavFi+LGx3CGo/Ih3ELQuLJn3gCoGQoh2OcOADfqn023TtiQR+DhShkeZbkfogtGeo+PD4I9YEr+Y5FqVLpMeK9HI=
+	t=1717683458; cv=none; b=U4ui9w9FNV+safXmOLj4wuLbmR8uODVrfdpUM0/RHogmnEUnijApbUz1Wwg+hBGXeMp3yAnzDzLRak7EjCHXAlckngcPVldbKzKKIBfdzLu3oMrZhNGnXWl/4tdCQRr/jZ/itMuu8vgi1BgFAuQfjYquuaxj55NVaelbBIIa61U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683457; c=relaxed/simple;
-	bh=SyUebccWWwPBHgWsHKom0XZqG1C9mqNy0KOBmudkRxg=;
+	s=arc-20240116; t=1717683458; c=relaxed/simple;
+	bh=6xB3DNP7jtvfvK5gavU5NKl5q+oZW9hE8BEAl6z40yE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PWMp4KDrrqOVNnCdKqH5vAlu/rLNX9Bs1xlf/hc5BC3iwLban8A2mkKz5VXu/OQnECldkqGOspYllhXD0jrst0qnMwnhnGmPHY7TwTnX6CfgdCmJfu16/h1bnamyGseMMAS3RXCXezNOXO5MyRrdq6+pJd0nLqB8fd80M/EM+ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NPgTCtj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A75C32781;
-	Thu,  6 Jun 2024 14:17:37 +0000 (UTC)
+	 MIME-Version; b=A7oYlmJtDnJ3c1fdE+tege4MvJOz6xhQXCYwLKIbu4h2Q2c+XaFNUDccl5+oxZntmYOdLLyO+zixFuWkfBYBrBmLO+K3gUHx26o+psY2mm0IvU+WU0lml+JMudo8c/ZnYvzDzoUcpnv1XAIsHw+wudpOXPPPb+wE2M5i+LxbLx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+ycC7Fp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30EEFC32781;
+	Thu,  6 Jun 2024 14:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683457;
-	bh=SyUebccWWwPBHgWsHKom0XZqG1C9mqNy0KOBmudkRxg=;
+	s=korg; t=1717683458;
+	bh=6xB3DNP7jtvfvK5gavU5NKl5q+oZW9hE8BEAl6z40yE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1NPgTCtjKCRCXUM83Sk3CiA64gHTS6nUypNI89irYhswVgzbFCeI9294pZEGZPUVm
-	 umlaAKr5lxGCWJ0Cf+CVJTJe30KvFIm2SvWS2xETkFDfZaiVkvB2SwFKkTx+6RSKJF
-	 1hu1e/JVZg1tlxhoiRc5eeUOxVO46CbWwBNuNFBU=
+	b=h+ycC7FpsXH2jDo0gXaj2eWiaxnTvcV1jeKwsC1G15npnQE9GmKbWM63qZFNjY2yq
+	 X6R+jgwHwOCw0pSKfTgafFdQ2J3r3kFe5ReovmNspDKrI/loZJGAgT6Wf7cfOVZUjy
+	 krWweWqz7BLiT1A4cMsfZ+CiZu7lZ1R84rN/8Eoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 402/744] usb: typec: ucsi: simplify partners PD caps registration
-Date: Thu,  6 Jun 2024 16:01:14 +0200
-Message-ID: <20240606131745.351354916@linuxfoundation.org>
+Subject: [PATCH 6.6 403/744] perf stat: Do not fail on metrics on s390 z/VM systems
+Date: Thu,  6 Jun 2024 16:01:15 +0200
+Message-ID: <20240606131745.380727392@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -66,61 +72,174 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit 41e1cd1401fcd1f1ae9e47574af2d9fc44a870b3 ]
+[ Upstream commit c2f3d7dfc7373d53286f2a5c882d3397a5070adc ]
 
-In a way similar to the previous commit, move
-typec_partner_set_usb_power_delivery() to be called after reading the PD
-caps. This also removes calls to
-usb_power_delivery_unregister_capabilities() from the error path. Keep
-all capabilities registered until they are cleared by
-ucsi_unregister_partner_pdos().
+On s390 z/VM virtual machines command 'perf list' also displays metrics:
 
-Fixes: b04e1747fbcc ("usb: typec: ucsi: Register USB Power Delivery Capabilities")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240329-qcom-ucsi-fixes-v2-5-0f5d37ed04db@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  # perf list | grep -A 20 'Metric Groups:'
+  Metric Groups:
+
+  No_group:
+   cpi
+        [Cycles per Instruction]
+   est_cpi
+        [Estimated Instruction Complexity CPI infinite Level 1]
+   finite_cpi
+        [Cycles per Instructions from Finite cache/memory]
+   l1mp
+        [Level One Miss per 100 Instructions]
+   l2p
+        [Percentage sourced from Level 2 cache]
+   l3p
+        [Percentage sourced from Level 3 on same chip cache]
+   l4lp
+        [Percentage sourced from Level 4 Local cache on same book]
+   l4rp
+        [Percentage sourced from Level 4 Remote cache on different book]
+   memp
+        [Percentage sourced from memory]
+   ....
+  #
+
+The command
+
+  # perf stat -M cpi -- true
+  event syntax error: '{CPU_CYCLES/metric-id=CPU_CYCLES/.....'
+                        \___ Bad event or PMU
+
+  Unable to find PMU or event on a PMU of 'CPU_CYCLES'
+
+   event syntax error: '{CPU_CYCLES/metric-id=CPU_CYCLES/...'
+                        \___ Cannot find PMU `CPU_CYCLES'.
+                             Missing kernel support?
+ #
+
+fails. 'perf stat' should not fail on metrics when the referenced CPU
+Counter Measurement PMU is not available.
+
+Output after:
+
+  # perf stat -M est_cpi -- sleep 1
+
+  Performance counter stats for 'sleep 1':
+
+     1,000,887,494 ns   duration_time   #     0.00 est_cpi
+
+       1.000887494 seconds time elapsed
+
+       0.000143000 seconds user
+       0.000662000 seconds sys
+
+ #
+
+Fixes: 7f76b31130680fb3 ("perf list: Add IBM z16 event description for s390")
+Suggested-by: Ian Rogers <irogers@google.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240404064806.1362876-2-tmricht@linux.ibm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c | 14 +-------------
- 1 file changed, 1 insertion(+), 13 deletions(-)
+ .../arch/s390/cf_z16/transaction.json         | 28 +++++++++----------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index 4aac2a719b7cd..7f575b9b3debe 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -694,12 +694,6 @@ static int ucsi_register_partner_pdos(struct ucsi_connector *con)
- 			return PTR_ERR(cap);
- 
- 		con->partner_source_caps = cap;
--
--		ret = typec_partner_set_usb_power_delivery(con->partner, con->partner_pd);
--		if (ret) {
--			usb_power_delivery_unregister_capabilities(con->partner_source_caps);
--			return ret;
--		}
- 	}
- 
- 	ret = ucsi_get_pdos(con, TYPEC_SINK, 1, caps.pdo);
-@@ -714,15 +708,9 @@ static int ucsi_register_partner_pdos(struct ucsi_connector *con)
- 			return PTR_ERR(cap);
- 
- 		con->partner_sink_caps = cap;
--
--		ret = typec_partner_set_usb_power_delivery(con->partner, con->partner_pd);
--		if (ret) {
--			usb_power_delivery_unregister_capabilities(con->partner_sink_caps);
--			return ret;
--		}
- 	}
- 
--	return 0;
-+	return typec_partner_set_usb_power_delivery(con->partner, con->partner_pd);
- }
- 
- static void ucsi_unregister_partner_pdos(struct ucsi_connector *con)
+diff --git a/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json b/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json
+index ec2ff78e2b5f2..3ab1d3a6638c4 100644
+--- a/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json
++++ b/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json
+@@ -2,71 +2,71 @@
+   {
+     "BriefDescription": "Transaction count",
+     "MetricName": "transaction",
+-    "MetricExpr": "TX_C_TEND + TX_NC_TEND + TX_NC_TABORT + TX_C_TABORT_SPECIAL + TX_C_TABORT_NO_SPECIAL"
++    "MetricExpr": "TX_C_TEND + TX_NC_TEND + TX_NC_TABORT + TX_C_TABORT_SPECIAL + TX_C_TABORT_NO_SPECIAL if has_event(TX_C_TEND) else 0"
+   },
+   {
+     "BriefDescription": "Cycles per Instruction",
+     "MetricName": "cpi",
+-    "MetricExpr": "CPU_CYCLES / INSTRUCTIONS"
++    "MetricExpr": "CPU_CYCLES / INSTRUCTIONS if has_event(INSTRUCTIONS) else 0"
+   },
+   {
+     "BriefDescription": "Problem State Instruction Ratio",
+     "MetricName": "prbstate",
+-    "MetricExpr": "(PROBLEM_STATE_INSTRUCTIONS / INSTRUCTIONS) * 100"
++    "MetricExpr": "(PROBLEM_STATE_INSTRUCTIONS / INSTRUCTIONS) * 100 if has_event(INSTRUCTIONS) else 0"
+   },
+   {
+     "BriefDescription": "Level One Miss per 100 Instructions",
+     "MetricName": "l1mp",
+-    "MetricExpr": "((L1I_DIR_WRITES + L1D_DIR_WRITES) / INSTRUCTIONS) * 100"
++    "MetricExpr": "((L1I_DIR_WRITES + L1D_DIR_WRITES) / INSTRUCTIONS) * 100 if has_event(INSTRUCTIONS) else 0"
+   },
+   {
+     "BriefDescription": "Percentage sourced from Level 2 cache",
+     "MetricName": "l2p",
+-    "MetricExpr": "((DCW_REQ + DCW_REQ_IV + ICW_REQ + ICW_REQ_IV) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
++    "MetricExpr": "((DCW_REQ + DCW_REQ_IV + ICW_REQ + ICW_REQ_IV) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_REQ) else 0"
+   },
+   {
+     "BriefDescription": "Percentage sourced from Level 3 on same chip cache",
+     "MetricName": "l3p",
+-    "MetricExpr": "((DCW_REQ_CHIP_HIT + DCW_ON_CHIP + DCW_ON_CHIP_IV + DCW_ON_CHIP_CHIP_HIT + ICW_REQ_CHIP_HIT + ICW_ON_CHIP + ICW_ON_CHIP_IV + ICW_ON_CHIP_CHIP_HIT) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
++    "MetricExpr": "((DCW_REQ_CHIP_HIT + DCW_ON_CHIP + DCW_ON_CHIP_IV + DCW_ON_CHIP_CHIP_HIT + ICW_REQ_CHIP_HIT + ICW_ON_CHIP + ICW_ON_CHIP_IV + ICW_ON_CHIP_CHIP_HIT) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_REQ_CHIP_HIT) else 0"
+   },
+   {
+     "BriefDescription": "Percentage sourced from Level 4 Local cache on same book",
+     "MetricName": "l4lp",
+-    "MetricExpr": "((DCW_REQ_DRAWER_HIT + DCW_ON_CHIP_DRAWER_HIT + DCW_ON_MODULE + DCW_ON_DRAWER + IDCW_ON_MODULE_IV + IDCW_ON_MODULE_CHIP_HIT + IDCW_ON_MODULE_DRAWER_HIT + IDCW_ON_DRAWER_IV + IDCW_ON_DRAWER_CHIP_HIT + IDCW_ON_DRAWER_DRAWER_HIT + ICW_REQ_DRAWER_HIT + ICW_ON_CHIP_DRAWER_HIT + ICW_ON_MODULE + ICW_ON_DRAWER) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
++    "MetricExpr": "((DCW_REQ_DRAWER_HIT + DCW_ON_CHIP_DRAWER_HIT + DCW_ON_MODULE + DCW_ON_DRAWER + IDCW_ON_MODULE_IV + IDCW_ON_MODULE_CHIP_HIT + IDCW_ON_MODULE_DRAWER_HIT + IDCW_ON_DRAWER_IV + IDCW_ON_DRAWER_CHIP_HIT + IDCW_ON_DRAWER_DRAWER_HIT + ICW_REQ_DRAWER_HIT + ICW_ON_CHIP_DRAWER_HIT + ICW_ON_MODULE + ICW_ON_DRAWER) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_REQ_DRAWER_HIT) else 0"
+   },
+   {
+     "BriefDescription": "Percentage sourced from Level 4 Remote cache on different book",
+     "MetricName": "l4rp",
+-    "MetricExpr": "((DCW_OFF_DRAWER + IDCW_OFF_DRAWER_IV + IDCW_OFF_DRAWER_CHIP_HIT + IDCW_OFF_DRAWER_DRAWER_HIT + ICW_OFF_DRAWER) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
++    "MetricExpr": "((DCW_OFF_DRAWER + IDCW_OFF_DRAWER_IV + IDCW_OFF_DRAWER_CHIP_HIT + IDCW_OFF_DRAWER_DRAWER_HIT + ICW_OFF_DRAWER) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_OFF_DRAWER) else 0"
+   },
+   {
+     "BriefDescription": "Percentage sourced from memory",
+     "MetricName": "memp",
+-    "MetricExpr": "((DCW_ON_CHIP_MEMORY + DCW_ON_MODULE_MEMORY + DCW_ON_DRAWER_MEMORY + DCW_OFF_DRAWER_MEMORY + ICW_ON_CHIP_MEMORY + ICW_ON_MODULE_MEMORY + ICW_ON_DRAWER_MEMORY + ICW_OFF_DRAWER_MEMORY) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
++    "MetricExpr": "((DCW_ON_CHIP_MEMORY + DCW_ON_MODULE_MEMORY + DCW_ON_DRAWER_MEMORY + DCW_OFF_DRAWER_MEMORY + ICW_ON_CHIP_MEMORY + ICW_ON_MODULE_MEMORY + ICW_ON_DRAWER_MEMORY + ICW_OFF_DRAWER_MEMORY) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_ON_CHIP_MEMORY) else 0"
+   },
+   {
+     "BriefDescription": "Cycles per Instructions from Finite cache/memory",
+     "MetricName": "finite_cpi",
+-    "MetricExpr": "L1C_TLB2_MISSES / INSTRUCTIONS"
++    "MetricExpr": "L1C_TLB2_MISSES / INSTRUCTIONS if has_event(L1C_TLB2_MISSES) else 0"
+   },
+   {
+     "BriefDescription": "Estimated Instruction Complexity CPI infinite Level 1",
+     "MetricName": "est_cpi",
+-    "MetricExpr": "(CPU_CYCLES / INSTRUCTIONS) - (L1C_TLB2_MISSES / INSTRUCTIONS)"
++    "MetricExpr": "(CPU_CYCLES / INSTRUCTIONS) - (L1C_TLB2_MISSES / INSTRUCTIONS) if has_event(INSTRUCTIONS) else 0"
+   },
+   {
+     "BriefDescription": "Estimated Sourcing Cycles per Level 1 Miss",
+     "MetricName": "scpl1m",
+-    "MetricExpr": "L1C_TLB2_MISSES / (L1I_DIR_WRITES + L1D_DIR_WRITES)"
++    "MetricExpr": "L1C_TLB2_MISSES / (L1I_DIR_WRITES + L1D_DIR_WRITES) if has_event(L1C_TLB2_MISSES) else 0"
+   },
+   {
+     "BriefDescription": "Estimated TLB CPU percentage of Total CPU",
+     "MetricName": "tlb_percent",
+-    "MetricExpr": "((DTLB2_MISSES + ITLB2_MISSES) / CPU_CYCLES) * (L1C_TLB2_MISSES / (L1I_PENALTY_CYCLES + L1D_PENALTY_CYCLES)) * 100"
++    "MetricExpr": "((DTLB2_MISSES + ITLB2_MISSES) / CPU_CYCLES) * (L1C_TLB2_MISSES / (L1I_PENALTY_CYCLES + L1D_PENALTY_CYCLES)) * 100 if has_event(CPU_CYCLES) else 0"
+   },
+   {
+     "BriefDescription": "Estimated Cycles per TLB Miss",
+     "MetricName": "tlb_miss",
+-    "MetricExpr": "((DTLB2_MISSES + ITLB2_MISSES) / (DTLB2_WRITES + ITLB2_WRITES)) * (L1C_TLB2_MISSES / (L1I_PENALTY_CYCLES + L1D_PENALTY_CYCLES))"
++    "MetricExpr": "((DTLB2_MISSES + ITLB2_MISSES) / (DTLB2_WRITES + ITLB2_WRITES)) * (L1C_TLB2_MISSES / (L1I_PENALTY_CYCLES + L1D_PENALTY_CYCLES)) if has_event(DTLB2_MISSES) else 0"
+   }
+ ]
 -- 
 2.43.0
 
