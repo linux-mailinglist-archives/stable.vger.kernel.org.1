@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A018FE8E6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6460C8FED57
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E98AC283D21
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAC7B285A76
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7FDA1974FD;
-	Thu,  6 Jun 2024 14:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4E71BA875;
+	Thu,  6 Jun 2024 14:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqKNcKoj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7IGR3I8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A712B196C8D;
-	Thu,  6 Jun 2024 14:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA84196C89;
+	Thu,  6 Jun 2024 14:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682948; cv=none; b=RSx0eNnABO2xiy1wxKsF/EGtTygWvyvVyOSsTwOeHsZXP5fFvBLQO5eQ9KdaA+tuh6tcsA3lWzCdE3h/NLW+zmfD2f75lEbucWIocPx6UXzvGZ8h49LhloVMxLw9T56LCHFQBSSfnRKPHQ46oYkh3sh9Viybhu/t5RoDVmZLnWM=
+	t=1717683476; cv=none; b=YsXNoCDtUH8W5x4/igrfCc000XOgI4/2Sq8q10ehxB6HL+FsaIS/tIBPHBpWvCP7V2D+B49UxooNJ101rBlWc9KYS703NBjxBfkxojYE9mgI1qX2DVmxJfXU7caoiJgNWz9IofgBR3R5ocQ928HxERp5RtRxYU+5UpWG8GUtlYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682948; c=relaxed/simple;
-	bh=lYtExvF3zIG9F8kK9YPLmRDeT1FtkKORufkahtk5r7Q=;
+	s=arc-20240116; t=1717683476; c=relaxed/simple;
+	bh=ShYC3OW5hF4FEjbXX55ElSyp3BYBTz9An0PMHK+ortE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cD2CRFt1rUv3H6eaGNXUuIZDydkFdaL4XkozXDAAxbtsYU32dTNNAMa25VAaQN+3TtExn872U81XPhVq/P8zgjZ36s5V1lKObWxWbqMG88g5pVTLRyL4nbucSZuEiqQTE+khoSpdulyc5tkjCOocA9zWDx4mcDEtVmlptH6YkwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqKNcKoj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DDBC32781;
-	Thu,  6 Jun 2024 14:09:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dM183uGH2kZ2UN/RknxeGHKSZFVD5iK0YCVWpH2rJdsDTcFPdVSO3oVeKxk2M6OVNULEwG9E0EJzqS8cUy7oQSU1oZ4m3glhlBENlK/S5fLTO6FuSSvTh3VNGCTvgl4eomvZu7ItUJDBrmA9msgZG8biu1AuxiPLXNdQl66M8tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7IGR3I8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F49C32782;
+	Thu,  6 Jun 2024 14:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682948;
-	bh=lYtExvF3zIG9F8kK9YPLmRDeT1FtkKORufkahtk5r7Q=;
+	s=korg; t=1717683476;
+	bh=ShYC3OW5hF4FEjbXX55ElSyp3BYBTz9An0PMHK+ortE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqKNcKojtYRFXTKbQ+RMcgjaq824iYg+4RfU/qRuHdRraAKi1F6qKN+WRk6ryIcq3
-	 8S0vaqPzQIMLcl2ho1iJu32S6KFBwPwyKXCNPV8qqWASjpKXfPMbVddGPjCfjQERJp
-	 MY0ZKKGnWODTb/m8a+1a1NMoneE8nOFuCJpCB+ho=
+	b=K7IGR3I8ES0QlUW4ZXVO/Z+pVAXN4OO50zO9DjScrwoQoH8pEeSYaDkWaJFHkdyVj
+	 W3heIERz25hn41mGjN99I7E3+K5JFo8MdFKhvC/SJ+AV64B8z5528E/xkvy9ZGaG9b
+	 FmwIrr+C7cml+QDipaLxBOixykLBpeX+m0+AaApo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 111/374] f2fs: compress: dont allow unaligned truncation on released compress inode
-Date: Thu,  6 Jun 2024 16:01:30 +0200
-Message-ID: <20240606131655.642218490@linuxfoundation.org>
+Subject: [PATCH 6.6 419/744] PCI: tegra194: Fix probe path for Endpoint mode
+Date: Thu,  6 Jun 2024 16:01:31 +0200
+Message-ID: <20240606131745.913664000@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 29ed2b5dd521ce7c5d8466cd70bf0cc9d07afeee ]
+[ Upstream commit 19326006a21da26532d982254677c892dae8f29b ]
 
-f2fs image may be corrupted after below testcase:
-- mkfs.f2fs -O extra_attr,compression -f /dev/vdb
-- mount /dev/vdb /mnt/f2fs
-- touch /mnt/f2fs/file
-- f2fs_io setflags compression /mnt/f2fs/file
-- dd if=/dev/zero of=/mnt/f2fs/file bs=4k count=4
-- f2fs_io release_cblocks /mnt/f2fs/file
-- truncate -s 8192 /mnt/f2fs/file
-- umount /mnt/f2fs
-- fsck.f2fs /dev/vdb
+Tegra194 PCIe probe path is taking failure path in success case for
+Endpoint mode. Return success from the switch case instead of going
+into the failure path.
 
-[ASSERT] (fsck_chk_inode_blk:1256)  --> ino: 0x5 has i_blocks: 0x00000002, but has 0x3 blocks
-[FSCK] valid_block_count matching with CP             [Fail] [0x4, 0x5]
-[FSCK] other corrupted bugs                           [Fail]
-
-The reason is: partial truncation assume compressed inode has reserved
-blocks, after partial truncation, valid block count may change w/o
-.i_blocks and .total_valid_block_count update, result in corruption.
-
-This patch only allow cluster size aligned truncation on released
-compress inode for fixing.
-
-Fixes: c61404153eb6 ("f2fs: introduce FI_COMPRESS_RELEASED instead of using IMMUTABLE bit")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Link: https://lore.kernel.org/linux-pci/20240408093053.3948634-1-vidyas@nvidia.com
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 30d438bd30ab4..208dedc161d53 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -952,9 +952,14 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 				  ATTR_GID | ATTR_TIMES_SET))))
- 		return -EPERM;
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 248cd9347e8fd..416d6b45d1fe8 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -2272,11 +2272,14 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
+ 		ret = tegra_pcie_config_ep(pcie, pdev);
+ 		if (ret < 0)
+ 			goto fail;
++		else
++			return 0;
+ 		break;
  
--	if ((attr->ia_valid & ATTR_SIZE) &&
--		!f2fs_is_compress_backend_ready(inode))
--		return -EOPNOTSUPP;
-+	if ((attr->ia_valid & ATTR_SIZE)) {
-+		if (!f2fs_is_compress_backend_ready(inode))
-+			return -EOPNOTSUPP;
-+		if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED) &&
-+			!IS_ALIGNED(attr->ia_size,
-+			F2FS_BLK_TO_BYTES(F2FS_I(inode)->i_cluster_size)))
-+			return -EINVAL;
-+	}
+ 	default:
+ 		dev_err(dev, "Invalid PCIe device type %d\n",
+ 			pcie->of_data->mode);
++		ret = -EINVAL;
+ 	}
  
- 	err = setattr_prepare(idmap, dentry, attr);
- 	if (err)
+ fail:
 -- 
 2.43.0
 
