@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E14798FEB65
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE9B8FED05
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA19C1C22B72
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1FB11F2703D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F501A3BDB;
-	Thu,  6 Jun 2024 14:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52D91B3F2B;
+	Thu,  6 Jun 2024 14:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9NEXz4N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygPd3dSf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A271993A0;
-	Thu,  6 Jun 2024 14:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B9D1B3F39;
+	Thu,  6 Jun 2024 14:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683246; cv=none; b=XTDhPJabnIAQbky7wW93O29JFKRDbOnu27pgpwl4UzPPa4bNG9A39I5QZOWft+BhWlRATWWQ2X6iJ3dJLOqYCOCt27/s3blrm7Cn5Ved6Ue65MvAwB6C1n5am5pZHnltMgjA+G2hs1q7IeeNzotNpqgu5Rzy+t8Vl3LmSlSWUIU=
+	t=1717683436; cv=none; b=Wb4ewtELVQu+rP1kX/M5M3kC7ds9SG+HhxBvSU7k/nr8RHZpQwTRX8HwePGAI1A06d3uKUCbiebK7X/uh5PQfhqdzgFvZq8Xo/M6EgqL9uXPrxH7N1fPWaFo8aiS96MiMZ2TFiYj99nU3zmSUyVBhcfBH8ydNH+rCPeEvJeI8Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683246; c=relaxed/simple;
-	bh=fBgT5EhwqPOGiKuXATOsO2pMVjgmoNPRwfy7aJRUG2w=;
+	s=arc-20240116; t=1717683436; c=relaxed/simple;
+	bh=X3Uiz+hEh3q8Oo8zh2KSypL0xWvKovEqOXaNjTw1x5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tNZItSOLqC1FMrsj8RpHGyEBBKzM3duBQNFHuLhoBT+xz1U0eyRCQY8tcCoccVrLspLb7pplqDfenPLPDu1Hz0kTABoKZ+/VLYAFKk9yqyuJRAUKUKEg1UpBIHcRBydq3B5D+szb0wxiIZuo533wyXx3XRy7qSi0qRsxeag6zsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9NEXz4N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66AB8C2BD10;
-	Thu,  6 Jun 2024 14:14:06 +0000 (UTC)
+	 MIME-Version; b=TSAF7/E/Iw4CgTYtvmrRAGRI/WyscMk3nTs7lhiMmluU/k/hEQw0kkRqLd/eQQKFaWsicrV/xx8Xhf5mLH2BvqnHHsy1oIhICnLrU/+bKDiYpssRwgw9chfQwXxULIKiXMSWgTemm2GLLntlsQrav5cWZ6oeFaub70VdPomBlQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygPd3dSf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F19C2BD10;
+	Thu,  6 Jun 2024 14:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683246;
-	bh=fBgT5EhwqPOGiKuXATOsO2pMVjgmoNPRwfy7aJRUG2w=;
+	s=korg; t=1717683436;
+	bh=X3Uiz+hEh3q8Oo8zh2KSypL0xWvKovEqOXaNjTw1x5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q9NEXz4NBdGefiV0MNfAkLGtHoEm2HrZ1Mfmx0rzA9wsMW46N7Qn+TPnST9RE17Is
-	 scj4xcosqGwfurhv69hri9VURX4veH8HqZU4o509yhPrBm3sS6nR4JEmuxfYR7byPo
-	 RbMrRbKU5mxseFHZF+i8MH+uzISTw41F76OeN7oU=
+	b=ygPd3dSfcx+z2/PZi+32k+UXvNrlC/swc7hzJW6eeDQe8i/s6kJbYBO11PXTc1UYg
+	 vgUj+p2GzAKCkEEwwiLlUTVZ38P8/vVBQz84UuySNOLnrdVeWKTRIiajvLwk4IVvFM
+	 sRYExbm1ao+XR2ee72SIwOS7eVOZh6WMWK8OjtME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Andryuk <jandryuk@gmail.com>,
-	Juergen Gross <jgross@suse.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	syzbot+a63a1f6a062033cf0f40@syzkaller.appspotmail.com,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/473] x86/pat: Fix W^X violation false-positives when running as Xen PV guest
-Date: Thu,  6 Jun 2024 16:00:52 +0200
-Message-ID: <20240606131704.004461697@linuxfoundation.org>
+Subject: [PATCH 6.6 381/744] net: bridge: xmit: make sure we have at least eth header len bytes
+Date: Thu,  6 Jun 2024 16:00:53 +0200
+Message-ID: <20240606131744.694838690@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,144 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 5bc8b0f5dac04cd4ebe47f8090a5942f2f2647ef ]
+[ Upstream commit 8bd67ebb50c0145fd2ca8681ab65eb7e8cde1afc ]
 
-When running as Xen PV guest in some cases W^X violation WARN()s have
-been observed. Those WARN()s are produced by verify_rwx(), which looks
-into the PTE to verify that writable kernel pages have the NX bit set
-in order to avoid code modifications of the kernel by rogue code.
+syzbot triggered an uninit value[1] error in bridge device's xmit path
+by sending a short (less than ETH_HLEN bytes) skb. To fix it check if
+we can actually pull that amount instead of assuming.
 
-As the NX bits of all levels of translation entries are or-ed and the
-RW bits of all levels are and-ed, looking just into the PTE isn't enough
-for the decision that a writable page is executable, too.
+Tested with dropwatch:
+ drop at: br_dev_xmit+0xb93/0x12d0 [bridge] (0xffffffffc06739b3)
+ origin: software
+ timestamp: Mon May 13 11:31:53 2024 778214037 nsec
+ protocol: 0x88a8
+ length: 2
+ original length: 2
+ drop reason: PKT_TOO_SMALL
 
-When running as a Xen PV guest, the direct map PMDs and kernel high
-map PMDs share the same set of PTEs. Xen kernel initialization will set
-the NX bit in the direct map PMD entries, and not the shared PTEs.
+[1]
+BUG: KMSAN: uninit-value in br_dev_xmit+0x61d/0x1cb0 net/bridge/br_device.c:65
+ br_dev_xmit+0x61d/0x1cb0 net/bridge/br_device.c:65
+ __netdev_start_xmit include/linux/netdevice.h:4903 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4917 [inline]
+ xmit_one net/core/dev.c:3531 [inline]
+ dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3547
+ __dev_queue_xmit+0x34db/0x5350 net/core/dev.c:4341
+ dev_queue_xmit include/linux/netdevice.h:3091 [inline]
+ __bpf_tx_skb net/core/filter.c:2136 [inline]
+ __bpf_redirect_common net/core/filter.c:2180 [inline]
+ __bpf_redirect+0x14a6/0x1620 net/core/filter.c:2187
+ ____bpf_clone_redirect net/core/filter.c:2460 [inline]
+ bpf_clone_redirect+0x328/0x470 net/core/filter.c:2432
+ ___bpf_prog_run+0x13fe/0xe0f0 kernel/bpf/core.c:1997
+ __bpf_prog_run512+0xb5/0xe0 kernel/bpf/core.c:2238
+ bpf_dispatcher_nop_func include/linux/bpf.h:1234 [inline]
+ __bpf_prog_run include/linux/filter.h:657 [inline]
+ bpf_prog_run include/linux/filter.h:664 [inline]
+ bpf_test_run+0x499/0xc30 net/bpf/test_run.c:425
+ bpf_prog_test_run_skb+0x14ea/0x1f20 net/bpf/test_run.c:1058
+ bpf_prog_test_run+0x6b7/0xad0 kernel/bpf/syscall.c:4269
+ __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5678
+ __do_sys_bpf kernel/bpf/syscall.c:5767 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:5765 [inline]
+ __x64_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5765
+ x64_sys_call+0x96b/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:322
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 652c5bf380ad ("x86/mm: Refuse W^X violations")
-Reported-by: Jason Andryuk <jandryuk@gmail.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240412151258.9171-5-jgross@suse.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+a63a1f6a062033cf0f40@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a63a1f6a062033cf0f40
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/pat/set_memory.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ net/bridge/br_device.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index cf721614806b9..fd412dec01259 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -583,7 +583,8 @@ static inline pgprot_t static_protections(pgprot_t prot, unsigned long start,
-  * Validate strict W^X semantics.
-  */
- static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long start,
--				  unsigned long pfn, unsigned long npg)
-+				  unsigned long pfn, unsigned long npg,
-+				  bool nx, bool rw)
+diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
+index 9a5ea06236bd7..42d4c3727bf76 100644
+--- a/net/bridge/br_device.c
++++ b/net/bridge/br_device.c
+@@ -27,6 +27,7 @@ EXPORT_SYMBOL_GPL(nf_br_ops);
+ /* net device transmit always called with BH disabled */
+ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
  {
- 	unsigned long end;
++	enum skb_drop_reason reason = pskb_may_pull_reason(skb, ETH_HLEN);
+ 	struct net_bridge_mcast_port *pmctx_null = NULL;
+ 	struct net_bridge *br = netdev_priv(dev);
+ 	struct net_bridge_mcast *brmctx = &br->multicast_ctx;
+@@ -38,6 +39,11 @@ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	const unsigned char *dest;
+ 	u16 vid = 0;
  
-@@ -609,6 +610,10 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
- 	if ((pgprot_val(new) & (_PAGE_RW | _PAGE_NX)) != _PAGE_RW)
- 		return new;
- 
-+	/* Non-leaf translation entries can disable writing or execution. */
-+	if (!rw || nx)
-+		return new;
++	if (unlikely(reason != SKB_NOT_DROPPED_YET)) {
++		kfree_skb_reason(skb, reason);
++		return NETDEV_TX_OK;
++	}
 +
- 	end = start + npg * PAGE_SIZE - 1;
- 	WARN_ONCE(1, "CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
- 		  (unsigned long long)pgprot_val(old),
-@@ -710,7 +715,7 @@ pte_t *lookup_address(unsigned long address, unsigned int *level)
- EXPORT_SYMBOL_GPL(lookup_address);
- 
- static pte_t *_lookup_address_cpa(struct cpa_data *cpa, unsigned long address,
--				  unsigned int *level)
-+				  unsigned int *level, bool *nx, bool *rw)
- {
- 	pgd_t *pgd;
- 
-@@ -719,7 +724,7 @@ static pte_t *_lookup_address_cpa(struct cpa_data *cpa, unsigned long address,
- 	else
- 		pgd = cpa->pgd + pgd_index(address);
- 
--	return lookup_address_in_pgd(pgd, address, level);
-+	return lookup_address_in_pgd_attr(pgd, address, level, nx, rw);
- }
- 
- /*
-@@ -843,12 +848,13 @@ static int __should_split_large_page(pte_t *kpte, unsigned long address,
- 	pgprot_t old_prot, new_prot, req_prot, chk_prot;
- 	pte_t new_pte, *tmp;
- 	enum pg_level level;
-+	bool nx, rw;
- 
- 	/*
- 	 * Check for races, another CPU might have split this page
- 	 * up already:
- 	 */
--	tmp = _lookup_address_cpa(cpa, address, &level);
-+	tmp = _lookup_address_cpa(cpa, address, &level, &nx, &rw);
- 	if (tmp != kpte)
- 		return 1;
- 
-@@ -959,7 +965,8 @@ static int __should_split_large_page(pte_t *kpte, unsigned long address,
- 	new_prot = static_protections(req_prot, lpaddr, old_pfn, numpages,
- 				      psize, CPA_DETECT);
- 
--	new_prot = verify_rwx(old_prot, new_prot, lpaddr, old_pfn, numpages);
-+	new_prot = verify_rwx(old_prot, new_prot, lpaddr, old_pfn, numpages,
-+			      nx, rw);
- 
- 	/*
- 	 * If there is a conflict, split the large page.
-@@ -1040,6 +1047,7 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
- 	pte_t *pbase = (pte_t *)page_address(base);
- 	unsigned int i, level;
- 	pgprot_t ref_prot;
-+	bool nx, rw;
- 	pte_t *tmp;
- 
- 	spin_lock(&pgd_lock);
-@@ -1047,7 +1055,7 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
- 	 * Check for races, another CPU might have split this page
- 	 * up for us already:
- 	 */
--	tmp = _lookup_address_cpa(cpa, address, &level);
-+	tmp = _lookup_address_cpa(cpa, address, &level, &nx, &rw);
- 	if (tmp != kpte) {
- 		spin_unlock(&pgd_lock);
- 		return 1;
-@@ -1588,10 +1596,11 @@ static int __change_page_attr(struct cpa_data *cpa, int primary)
- 	int do_split, err;
- 	unsigned int level;
- 	pte_t *kpte, old_pte;
-+	bool nx, rw;
- 
- 	address = __cpa_addr(cpa, cpa->curpage);
- repeat:
--	kpte = _lookup_address_cpa(cpa, address, &level);
-+	kpte = _lookup_address_cpa(cpa, address, &level, &nx, &rw);
- 	if (!kpte)
- 		return __cpa_process_fault(cpa, address, primary);
- 
-@@ -1613,7 +1622,8 @@ static int __change_page_attr(struct cpa_data *cpa, int primary)
- 		new_prot = static_protections(new_prot, address, pfn, 1, 0,
- 					      CPA_PROTECT);
- 
--		new_prot = verify_rwx(old_prot, new_prot, address, pfn, 1);
-+		new_prot = verify_rwx(old_prot, new_prot, address, pfn, 1,
-+				      nx, rw);
- 
- 		new_prot = pgprot_clear_protnone_bits(new_prot);
+ 	memset(skb->cb, 0, sizeof(struct br_input_skb_cb));
+ 	br_tc_skb_miss_set(skb, false);
  
 -- 
 2.43.0
