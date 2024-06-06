@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7276B8FEC6E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E088FE943
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87AA21C256C2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB9F91F233F5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E131B013D;
-	Thu,  6 Jun 2024 14:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDDBA197A6D;
+	Thu,  6 Jun 2024 14:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8DfDlVa"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqYol4yH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A545E19ADB5;
-	Thu,  6 Jun 2024 14:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1F6196D99;
+	Thu,  6 Jun 2024 14:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683366; cv=none; b=VdcQ5VUJ8gJBQksV1OUdTRXuU+buHbbs5ZxoT04WserPfk1ZWwUl97WlvnMJkW7rQk50LBOJgc+hZkgRQm8guxz1OH+yHURbvbtJoEm0Rs2zscKh591Cl3wfoiVo5kOFpYZy3eXUc2tZPWULGE3cJyO7GeyXnH4as/BKd+UzaOo=
+	t=1717682999; cv=none; b=IiKcIdOFeUdRpaehpFz89yXwE4RSoti9UqUf3hvZrGr9ASY2QW/GhXlO/a1CAZYsCqM4r6B4OwDgSZrOk2hP6M6kOAhdlGCvAa6RHszvs9mXAP4m1u54MIoKwbh8B2QBSbqQ3tJ+XOl1T4Nu9drkNNsgTvjo2A41uPRfwU4wb1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683366; c=relaxed/simple;
-	bh=UDlpF2RvaiiRxXzVtrN2hM5v+IXitGyokxGpBPvvTEI=;
+	s=arc-20240116; t=1717682999; c=relaxed/simple;
+	bh=f3Prjbmfra6Fgc6lt1CQ4aYO7hQY2yPF5vsL/mc4qr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gIlp9NPcwC6S50WeqtYKD64mhYB9OtI6t3ovW8NspQCCEB4QD0JVQbTSRuMuxIexhlfB1Tpc/hK8ESWXj/rsCYBPGkCxA8LaVcXMfZueLhMnWFXG9CJWcnQ0/R9m3AbZdcq3deoia36oQJdN/OmouVnnglmI4kRtXzx50oT54SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8DfDlVa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36682C32781;
-	Thu,  6 Jun 2024 14:16:06 +0000 (UTC)
+	 MIME-Version; b=tS+G3KqAkHhNS7FhIQxPUZ78M8KlzacjvgrqU0MhfvG9XJzWkT4/8Eapcsz+OrXA8ohLNg92/EYUUGQIuK52C8GPpyqXpxnDMZHMtFKhXRoqZ6eAPZmqkgv+lJ1aJLNe4oj8ywiS6VsqNq8MGRJsA2t0R1fen9WigCKjXr/knpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqYol4yH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D7E1C32786;
+	Thu,  6 Jun 2024 14:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683366;
-	bh=UDlpF2RvaiiRxXzVtrN2hM5v+IXitGyokxGpBPvvTEI=;
+	s=korg; t=1717682999;
+	bh=f3Prjbmfra6Fgc6lt1CQ4aYO7hQY2yPF5vsL/mc4qr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w8DfDlVanJb49ZUJyCNZsB4/QluwH0b/KFevX2icubsQ8Sywp1YB8U0wIoFkF5ziQ
-	 b3W2tDvV8IwlBUEaAXKAFyNL7pAey4vzwVMfTdiuCTfU0kBo0tKDTXeyMC/jM9drmH
-	 cYNoDPSUlxmVjUfFGl+0eRCbamGCp5BUR9T65d1w=
+	b=XqYol4yHoLdwv0q1+cMJ88V/zy1eCOtiGZZ/Xrcz6ARG/Oy+/iLwYmWdFVq4eDojQ
+	 x/lsxUAxX1f1PlQynYn8GFdxZ1o/NcNuT1HqzqsDcZUPn8E6Qy25kV9etOuaLkNmHJ
+	 QBqeyfXSnLx4PFOiEi+H01h2XW+I9A5YSZTKzS9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 250/473] clk: renesas: r9a07g043: Add clock and reset entry for PLIC
-Date: Thu,  6 Jun 2024 16:02:59 +0200
-Message-ID: <20240606131708.251747001@linuxfoundation.org>
+	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	"Yang, Chenyuan" <cy54@illinois.edu>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
+Subject: [PATCH 6.9 201/374] media: cec: core: avoid confusing "transmit timed out" message
+Date: Thu,  6 Jun 2024 16:03:00 +0200
+Message-ID: <20240606131658.563766556@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 44019387fce230beda35b83da3a2c9fc5787704e ]
+[ Upstream commit cbe499977bc36fedae89f0a0d7deb4ccde9798fe ]
 
-Add the missing clock and reset entry for PLIC. Also add
-R9A07G043_NCEPLIC_ACLK to the critical clocks list.
+If, when waiting for a transmit to finish, the wait is interrupted,
+then you might get a "transmit timed out" message, even though the
+transmit was interrupted and did not actually time out.
 
-Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Five SoC")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20240403200952.633084-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Set transmit_in_progress_aborted to true if the
+wait_for_completion_killable() call was interrupted and ensure
+that the transmit is properly marked as ABORTED.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Yang, Chenyuan <cy54@illinois.edu>
+Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
+Fixes: 590a8e564c6e ("media: cec: abort if the current transmit was canceled")
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a07g043-cpg.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/media/cec/core/cec-adap.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/renesas/r9a07g043-cpg.c b/drivers/clk/renesas/r9a07g043-cpg.c
-index 37475465100de..0b56688ecbfc4 100644
---- a/drivers/clk/renesas/r9a07g043-cpg.c
-+++ b/drivers/clk/renesas/r9a07g043-cpg.c
-@@ -252,6 +252,10 @@ static struct rzg2l_mod_clk r9a07g043_mod_clks[] = {
- 				0x5a8, 1),
- 	DEF_MOD("tsu_pclk",	R9A07G043_TSU_PCLK, R9A07G043_CLK_TSU,
- 				0x5ac, 0),
-+#ifdef CONFIG_RISCV
-+	DEF_MOD("nceplic_aclk",	R9A07G043_NCEPLIC_ACLK, R9A07G043_CLK_P1,
-+				0x608, 0),
-+#endif
- };
+diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
+index a493cbce24567..da09834990b87 100644
+--- a/drivers/media/cec/core/cec-adap.c
++++ b/drivers/media/cec/core/cec-adap.c
+@@ -490,6 +490,15 @@ int cec_thread_func(void *_adap)
+ 			goto unlock;
+ 		}
  
- static struct rzg2l_reset r9a07g043_resets[] = {
-@@ -305,6 +309,10 @@ static struct rzg2l_reset r9a07g043_resets[] = {
- 	DEF_RST(R9A07G043_ADC_PRESETN, 0x8a8, 0),
- 	DEF_RST(R9A07G043_ADC_ADRST_N, 0x8a8, 1),
- 	DEF_RST(R9A07G043_TSU_PRESETN, 0x8ac, 0),
-+#ifdef CONFIG_RISCV
-+	DEF_RST(R9A07G043_NCEPLIC_ARESETN, 0x908, 0),
-+#endif
++		if (adap->transmit_in_progress &&
++		    adap->transmit_in_progress_aborted) {
++			if (adap->transmitting)
++				cec_data_cancel(adap->transmitting,
++						CEC_TX_STATUS_ABORTED, 0);
++			adap->transmit_in_progress = false;
++			adap->transmit_in_progress_aborted = false;
++			goto unlock;
++		}
+ 		if (adap->transmit_in_progress && timeout) {
+ 			/*
+ 			 * If we timeout, then log that. Normally this does
+@@ -771,6 +780,7 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
+ {
+ 	struct cec_data *data;
+ 	bool is_raw = msg_is_raw(msg);
++	int err;
+ 
+ 	if (adap->devnode.unregistered)
+ 		return -ENODEV;
+@@ -935,10 +945,13 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
+ 	 * Release the lock and wait, retake the lock afterwards.
+ 	 */
+ 	mutex_unlock(&adap->lock);
+-	wait_for_completion_killable(&data->c);
++	err = wait_for_completion_killable(&data->c);
+ 	cancel_delayed_work_sync(&data->work);
+ 	mutex_lock(&adap->lock);
+ 
++	if (err)
++		adap->transmit_in_progress_aborted = true;
 +
- };
- 
- static const unsigned int r9a07g043_crit_mod_clks[] __initconst = {
-@@ -314,6 +322,7 @@ static const unsigned int r9a07g043_crit_mod_clks[] __initconst = {
- #endif
- #ifdef CONFIG_RISCV
- 	MOD_CLK_BASE + R9A07G043_IAX45_CLK,
-+	MOD_CLK_BASE + R9A07G043_NCEPLIC_ACLK,
- #endif
- 	MOD_CLK_BASE + R9A07G043_DMAC_ACLK,
- };
+ 	/* Cancel the transmit if it was interrupted */
+ 	if (!data->completed) {
+ 		if (data->msg.tx_status & CEC_TX_STATUS_OK)
 -- 
 2.43.0
 
