@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-49211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31D8A8FEC57
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C21228FEA71
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD7D11F2994A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65145283616
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2016B19AD94;
-	Thu,  6 Jun 2024 14:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677B5197524;
+	Thu,  6 Jun 2024 14:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPRpnAE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbdmM1hU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D353819AD8B;
-	Thu,  6 Jun 2024 14:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2537919FA7F;
+	Thu,  6 Jun 2024 14:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683355; cv=none; b=mo9UCZ79TQcb6xY1y+ng0BBcyULBEGycvL/72icdzlwSJUd/RyK4fzwyZgqvpvPmAABIYV+jg6oP8fqRZEnZbIc3FAZ3mB7F8krBKaNs9Pti/6AWYay79NRbzS0kP+ZvcESvIlVV55g3vKENpSWtmLakwehCqyd6dwVJpE0eRFM=
+	t=1717683140; cv=none; b=PU+AIzAvsMEXGnWboJnuaB58mRFrEToE/F0r1V7lkNNRsRKyAqatNFtpUBOUcftuR5aJo5QkFZjhERsfA+n/tPq1IZt3YMIzLXNmvNeesvMaGU07O68kAkFMBUnGotKvoMJLk1eYDV39B1oPpCrwIf4Nbc6DRAbHNFWdx+yihb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683355; c=relaxed/simple;
-	bh=TCU1rN5FoD7IxvYAjzBbfwDVI7mIZhBCFqNwokoxr9A=;
+	s=arc-20240116; t=1717683140; c=relaxed/simple;
+	bh=icB+IGJwBXwGSMBu3CENpIYTcNWTU9a2b+Uc/CfzZ3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z185TvrGbUmRyk3Lqq8cNoA0PiO6knTgDgdWIkGhs+hdw9Jrsd/v6aCiLg74vFs+zDAc8B0T45UbKKLEoijoet4o7zuf/JcS/vK5p5X83wp4/cRoVIbF+biRkaj0Yhbc2iT1+DRhpim1uxiUIzb0cWnGqTZThqQKqkGIIYvsK0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPRpnAE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F8FC2BD10;
-	Thu,  6 Jun 2024 14:15:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YCePW7W4T6RlC5WNn7lGEQcjB1HhSLImVekOMTVmI7mBeLJ6UmbeGjNGTiletrmc4BYo9x6C8UBd4r3ZHznxtwjww8VsdyBWE6MbeCInBF2Uv+rViMLW3kle/PBtWYRscDyCZtiC+qLpR+rUVU/JSJcIy1xir5oAirXZURMoMAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lbdmM1hU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E32C2BD10;
+	Thu,  6 Jun 2024 14:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683355;
-	bh=TCU1rN5FoD7IxvYAjzBbfwDVI7mIZhBCFqNwokoxr9A=;
+	s=korg; t=1717683140;
+	bh=icB+IGJwBXwGSMBu3CENpIYTcNWTU9a2b+Uc/CfzZ3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JPRpnAE+1FrW5QdHLZ1g6PhYAaNJ1ux5/G6kqmxx5hjAPOPF7aX0R9SQAHexFN7bA
-	 M7lwkxLWsP+6/DStCiVuiG/jTNH3rzubSDEtRlmfusCT9eztrDD2SSghU/5ok72VaW
-	 aT1OwU6NCPxrwSMSCI9bb3LMQ0dbVhGbUk/ekzAA=
+	b=lbdmM1hU6DhV4sdN9gLyk9FV08OvBcUhkuXG1BrgJEeFX7w790/p25oUbCdEM0I2n
+	 xkuMPQTpPVGxLQzIN91zlmla1P+TSz/VqDLVaVD1e0jGqyLLrFOa8NM4V61Phkzi7S
+	 IPGwnGmTRsZZC/7F+KGOisVGwa1Ac26fYDSDvpIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helen Koike <helen.koike@collabora.com>,
-	David Heidelberg <david.heidelberg@collabora.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 269/744] drm/ci: add subset-1-gfx to LAVA_TAGS and adjust shards
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 012/473] tools/latency-collector: Fix -Wformat-security compile warns
 Date: Thu,  6 Jun 2024 15:59:01 +0200
-Message-ID: <20240606131741.005232238@linuxfoundation.org>
+Message-ID: <20240606131700.232487271@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,177 +59,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helen Koike <helen.koike@collabora.com>
+From: Shuah Khan <skhan@linuxfoundation.org>
 
-[ Upstream commit 68a3f17732d1d72be958576b6ce0e6c29686a40b ]
+commit df73757cf8f66fa54c4721c53b0916af3c4d9818 upstream.
 
-The Collabora Lava farm added a tag called `subset-1-gfx` to half of
-devices the graphics community use.
+Fix the following -Wformat-security compile warnings adding missing
+format arguments:
 
-Lets use this tag so we don't occupy all the resources.
+latency-collector.c: In function ‘show_available’:
+latency-collector.c:938:17: warning: format not a string literal and
+no format arguments [-Wformat-security]
+  938 |                 warnx(no_tracer_msg);
+      |                 ^~~~~
 
-This is particular important because Mesa3D shares the resources with
-DRM-CI and use them to do pre-merge tests, so it can block developers
-from getting their patches merged.
+latency-collector.c:943:17: warning: format not a string literal and
+no format arguments [-Wformat-security]
+  943 |                 warnx(no_latency_tr_msg);
+      |                 ^~~~~
 
-Signed-off-by: Helen Koike <helen.koike@collabora.com>
-Reviewed-by: David Heidelberg <david.heidelberg@collabora.com>
-Link: https://lore.kernel.org/r/20231024004525.169002-7-helen.koike@collabora.com
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Stable-dep-of: a2c71b711e7e ("drm/ci: update device type for volteer devices")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+latency-collector.c: In function ‘find_default_tracer’:
+latency-collector.c:986:25: warning: format not a string literal and
+no format arguments [-Wformat-security]
+  986 |                         errx(EXIT_FAILURE, no_tracer_msg);
+      |
+                         ^~~~
+latency-collector.c: In function ‘scan_arguments’:
+latency-collector.c:1881:33: warning: format not a string literal and
+no format arguments [-Wformat-security]
+ 1881 |                                 errx(EXIT_FAILURE, no_tracer_msg);
+      |                                 ^~~~
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240404011009.32945-1-skhan@linuxfoundation.org
+
+Cc: stable@vger.kernel.org
+Fixes: e23db805da2df ("tracing/tools: Add the latency-collector to tools directory")
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ci/gitlab-ci.yml |  2 +-
- drivers/gpu/drm/ci/test.yml      | 23 ++++++++++++++---------
- 2 files changed, 15 insertions(+), 10 deletions(-)
+ tools/tracing/latency/latency-collector.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/ci/gitlab-ci.yml b/drivers/gpu/drm/ci/gitlab-ci.yml
-index 452b9c2532ae5..3694924367480 100644
---- a/drivers/gpu/drm/ci/gitlab-ci.yml
-+++ b/drivers/gpu/drm/ci/gitlab-ci.yml
-@@ -26,7 +26,7 @@ variables:
-   JOB_ARTIFACTS_BASE: ${PIPELINE_ARTIFACTS_BASE}/${CI_JOB_ID}
-   # default kernel for rootfs before injecting the current kernel tree
-   KERNEL_IMAGE_BASE: https://${S3_HOST}/mesa-lava/gfx-ci/linux/v6.4.12-for-mesa-ci-f6b4ad45f48d
--
-+  LAVA_TAGS: subset-1-gfx
-   LAVA_JOB_PRIORITY: 30
+--- a/tools/tracing/latency/latency-collector.c
++++ b/tools/tracing/latency/latency-collector.c
+@@ -935,12 +935,12 @@ static void show_available(void)
+ 	}
  
- default:
-diff --git a/drivers/gpu/drm/ci/test.yml b/drivers/gpu/drm/ci/test.yml
-index e5b7d309ca186..7b5c5fe121d9d 100644
---- a/drivers/gpu/drm/ci/test.yml
-+++ b/drivers/gpu/drm/ci/test.yml
-@@ -86,7 +86,7 @@ msm:sc7180:
-   extends:
-     - .lava-igt:arm64
-   stage: msm
--  parallel: 2
-+  parallel: 4
-   variables:
-     DRIVER_NAME: msm
-     DEVICE_TYPE: sc7180-trogdor-lazor-limozeen
-@@ -158,7 +158,7 @@ rockchip:rk3399:
-   extends:
-     - .lava-igt:arm64
-   stage: rockchip
--  parallel: 3
-+  parallel: 2
-   variables:
-     DRIVER_NAME: rockchip
-     DEVICE_TYPE: rk3399-gru-kevin
-@@ -181,7 +181,7 @@ rockchip:rk3399:
- i915:apl:
-   extends:
-     - .i915
--  parallel: 12
-+  parallel: 3
-   variables:
-     DEVICE_TYPE: asus-C523NA-A20057-coral
-     GPU_VERSION: apl
-@@ -190,7 +190,7 @@ i915:apl:
- i915:glk:
-   extends:
-     - .i915
--  parallel: 5
-+  parallel: 2
-   variables:
-     DEVICE_TYPE: hp-x360-12b-ca0010nr-n4020-octopus
-     GPU_VERSION: glk
-@@ -199,7 +199,7 @@ i915:glk:
- i915:amly:
-   extends:
-     - .i915
--  parallel: 8
-+  parallel: 2
-   variables:
-     DEVICE_TYPE: asus-C433TA-AJ0005-rammus
-     GPU_VERSION: amly
-@@ -208,7 +208,7 @@ i915:amly:
- i915:kbl:
-   extends:
-     - .i915
--  parallel: 5
-+  parallel: 3
-   variables:
-     DEVICE_TYPE: hp-x360-14-G1-sona
-     GPU_VERSION: kbl
-@@ -217,7 +217,7 @@ i915:kbl:
- i915:whl:
-   extends:
-     - .i915
--  parallel: 8
-+  parallel: 2
-   variables:
-     DEVICE_TYPE: dell-latitude-5400-8665U-sarien
-     GPU_VERSION: whl
-@@ -226,7 +226,7 @@ i915:whl:
- i915:cml:
-   extends:
-     - .i915
--  parallel: 6
-+  parallel: 2
-   variables:
-     DEVICE_TYPE: asus-C436FA-Flip-hatch
-     GPU_VERSION: cml
-@@ -235,7 +235,7 @@ i915:cml:
- i915:tgl:
-   extends:
-     - .i915
--  parallel: 6
-+  parallel: 8
-   variables:
-     DEVICE_TYPE: asus-cx9400-volteer
-     GPU_VERSION: tgl
-@@ -254,6 +254,7 @@ i915:tgl:
- amdgpu:stoney:
-   extends:
-     - .amdgpu
-+  parallel: 2
-   variables:
-     DEVICE_TYPE: hp-11A-G6-EE-grunt
-     GPU_VERSION: stoney
-@@ -272,6 +273,7 @@ amdgpu:stoney:
- mediatek:mt8173:
-   extends:
-     - .mediatek
-+  parallel: 4
-   variables:
-     DEVICE_TYPE: mt8173-elm-hana
-     GPU_VERSION: mt8173
-@@ -283,6 +285,7 @@ mediatek:mt8173:
- mediatek:mt8183:
-   extends:
-     - .mediatek
-+  parallel: 3
-   variables:
-     DEVICE_TYPE: mt8183-kukui-jacuzzi-juniper-sku16
-     GPU_VERSION: mt8183
-@@ -292,6 +295,7 @@ mediatek:mt8183:
- .mediatek:mt8192:
-   extends:
-     - .mediatek
-+  parallel: 3
-   variables:
-     DEVICE_TYPE: mt8192-asurada-spherion-r0
-     GPU_VERSION: mt8192
-@@ -310,6 +314,7 @@ mediatek:mt8183:
- meson:g12b:
-   extends:
-     - .meson
-+  parallel: 3
-   variables:
-     DEVICE_TYPE: meson-g12b-a311d-khadas-vim3
-     GPU_VERSION: g12b
--- 
-2.43.0
-
+ 	if (!tracers) {
+-		warnx(no_tracer_msg);
++		warnx("%s", no_tracer_msg);
+ 		return;
+ 	}
+ 
+ 	if (!found) {
+-		warnx(no_latency_tr_msg);
++		warnx("%s", no_latency_tr_msg);
+ 		tracefs_list_free(tracers);
+ 		return;
+ 	}
+@@ -983,7 +983,7 @@ static const char *find_default_tracer(v
+ 	for (i = 0; relevant_tracers[i]; i++) {
+ 		valid = tracer_valid(relevant_tracers[i], &notracer);
+ 		if (notracer)
+-			errx(EXIT_FAILURE, no_tracer_msg);
++			errx(EXIT_FAILURE, "%s", no_tracer_msg);
+ 		if (valid)
+ 			return relevant_tracers[i];
+ 	}
+@@ -1878,7 +1878,7 @@ static void scan_arguments(int argc, cha
+ 			}
+ 			valid = tracer_valid(current_tracer, &notracer);
+ 			if (notracer)
+-				errx(EXIT_FAILURE, no_tracer_msg);
++				errx(EXIT_FAILURE, "%s", no_tracer_msg);
+ 			if (!valid)
+ 				errx(EXIT_FAILURE,
+ "The tracer %s is not supported by your kernel!\n", current_tracer);
 
 
 
