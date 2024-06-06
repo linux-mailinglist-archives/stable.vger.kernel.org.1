@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-48946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ACDF8FEB38
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28F5F8FECD7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23C341C25836
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D05028221E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBDA1A38DB;
-	Thu,  6 Jun 2024 14:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9A11B3720;
+	Thu,  6 Jun 2024 14:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwMJOu1+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVg01Agc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DFB1A2FDD;
-	Thu,  6 Jun 2024 14:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B55819FA9F;
+	Thu,  6 Jun 2024 14:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683225; cv=none; b=Z72ZQoWN705lvHF9ZOHeNr9CuRHSFrgPkEZFr3MynAk/JXzmG52jn3v4vVQeEho/MoSFh+MsXRLxGxxNQaF0cXqYkqi6ylSpOsEYTbwBIk8g3S9x+HBT6Gdz33VOQF2AgoNkHBGhBTVqp0ipMi7RY189OaYLMzZZZTacEPd5dPw=
+	t=1717683416; cv=none; b=n0mRUJaz/S6kh1KZeOrMjB3ZoYow+M3LWGMPW3P00pv7em+FeAi5hDlmSr1Y3UbUa6CNu+8xCRuCxWaw7pLHDm3lNA5uKgJZwS/KsgpG7KJ3mo9ojjNo9fTm86HY4rZDIV/P/dWZEo4r+by6zWLvskgvAPpbqPJ3hslblXh8sck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683225; c=relaxed/simple;
-	bh=7hgKuPNrpIE96+aRwqpfA7Knq2EsGPPNmwQgmy+OXI0=;
+	s=arc-20240116; t=1717683416; c=relaxed/simple;
+	bh=8veSNe0CVLTdt9rThlzWDljWShHURCkaq3vpUonjbn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+Ywi2Xpak/WbqOQncCFIvtXB6v5ohYbpw6cdBOr9mzCvWj/rRSIJjNsYv68JvqKH0kLLnhIg0U93QA5sAwZ8HyvHl4R1sedwlLt4aWcWDm44SW1djiGUw0oSUbiZMumf/QgmcwL/AGEYTPHPQW2Ezki9ueY8TG07Df/Ms5pVAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwMJOu1+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76CDC4AF09;
-	Thu,  6 Jun 2024 14:13:44 +0000 (UTC)
+	 MIME-Version; b=d0xaUSRvHtLLPdezrVH3t5O0/fpSikuwcOJ7h+zSW2YMe1c+6WBGCZofP+nnv9JaY/EXypl8X9qfdwYy9WHimB8IbqwPM+V78XsavfjyGrIKSg5Pf1zLhpB6I0RNzPBa1Ewdsfjq/nIhZ5ohi6N94ur0Qw5L7nN9YzmQG1HW3e0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVg01Agc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EE7C2BD10;
+	Thu,  6 Jun 2024 14:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683224;
-	bh=7hgKuPNrpIE96+aRwqpfA7Knq2EsGPPNmwQgmy+OXI0=;
+	s=korg; t=1717683416;
+	bh=8veSNe0CVLTdt9rThlzWDljWShHURCkaq3vpUonjbn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kwMJOu1+PUzBqLpYFHiIc5ZndGj7vkUVjkZcIDwraFmEd4/yaDk5SyMzZPvbedzUG
-	 wXDGWdyXIDzvPpjGDqNSU2MwJp8AXRb0Rf2nM5B8lF2613hm9Gdqu1TPZUFdlWNtcb
-	 3EXZ+GIlaAjxk/0Hj2fa3WJvZyYr1fBx6JPTuf54=
+	b=MVg01Agcr7kuFudSDE6VBkB3SpR69xqV5V7K8wrO2Vl0mQmm8G3ypp797sLVe9PtF
+	 vAszSZ69VOYl0ML/xy6mMPY/RGG6Tq53YkIZSauV4S9nHfJ34Tq3lVTomtIyKoB3ZC
+	 up+l2K5OWDVGBF17k+MO1DmCNJ/BP3zLFo6LjjAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Kees Cook <keescook@chromium.org>,
-	Christian Lamparter <chunkeey@gmail.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/473] wifi: carl9170: re-fix fortified-memset warning
-Date: Thu,  6 Jun 2024 16:00:30 +0200
-Message-ID: <20240606131703.240746359@linuxfoundation.org>
+Subject: [PATCH 6.6 359/744] x86/insn: Fix PUSH instruction in x86 instruction decoder opcode map
+Date: Thu,  6 Jun 2024 16:00:31 +0200
+Message-ID: <20240606131743.993327934@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 066afafc10c9476ee36c47c9062527a17e763901 ]
+[ Upstream commit 59162e0c11d7257cde15f907d19fefe26da66692 ]
 
-The carl9170_tx_release() function sometimes triggers a fortified-memset
-warning in my randconfig builds:
+The x86 instruction decoder is used not only for decoding kernel
+instructions. It is also used by perf uprobes (user space probes) and by
+perf tools Intel Processor Trace decoding. Consequently, it needs to
+support instructions executed by user space also.
 
-In file included from include/linux/string.h:254,
-                 from drivers/net/wireless/ath/carl9170/tx.c:40:
-In function 'fortify_memset_chk',
-    inlined from 'carl9170_tx_release' at drivers/net/wireless/ath/carl9170/tx.c:283:2,
-    inlined from 'kref_put' at include/linux/kref.h:65:3,
-    inlined from 'carl9170_tx_put_skb' at drivers/net/wireless/ath/carl9170/tx.c:342:9:
-include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-  493 |                         __write_overflow_field(p_size_field, size);
+Opcode 0x68 PUSH instruction is currently defined as 64-bit operand size
+only i.e. (d64). That was based on Intel SDM Opcode Map. However that is
+contradicted by the Instruction Set Reference section for PUSH in the
+same manual.
 
-Kees previously tried to avoid this by using memset_after(), but it seems
-this does not fully address the problem. I noticed that the memset_after()
-here is done on a different part of the union (status) than the original
-cast was from (rate_driver_data), which may confuse the compiler.
+Remove 64-bit operand size only annotation from opcode 0x68 PUSH
+instruction.
 
-Unfortunately, the memset_after() trick does not work on driver_rates[]
-because that is part of an anonymous struct, and I could not get
-struct_group() to do this either. Using two separate memset() calls
-on the two members does address the warning though.
+Example:
 
-Fixes: fb5f6a0e8063b ("mac80211: Use memset_after() to clear tx status")
-Link: https://lore.kernel.org/lkml/20230623152443.2296825-1-arnd@kernel.org/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Christian Lamparter <chunkeey@gmail.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240328135509.3755090-2-arnd@kernel.org
+  $ cat pushw.s
+  .global  _start
+  .text
+  _start:
+          pushw   $0x1234
+          mov     $0x1,%eax   # system call number (sys_exit)
+          int     $0x80
+  $ as -o pushw.o pushw.s
+  $ ld -s -o pushw pushw.o
+  $ objdump -d pushw | tail -4
+  0000000000401000 <.text>:
+    401000:       66 68 34 12             pushw  $0x1234
+    401004:       b8 01 00 00 00          mov    $0x1,%eax
+    401009:       cd 80                   int    $0x80
+  $ perf record -e intel_pt//u ./pushw
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.014 MB perf.data ]
+
+ Before:
+
+  $ perf script --insn-trace=disasm
+  Warning:
+  1 instruction trace errors
+           pushw   10349 [000] 10586.869237014:            401000 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           pushw $0x1234
+           pushw   10349 [000] 10586.869237014:            401006 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb %al, (%rax)
+           pushw   10349 [000] 10586.869237014:            401008 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb %cl, %ch
+           pushw   10349 [000] 10586.869237014:            40100a [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb $0x2e, (%rax)
+   instruction trace error type 1 time 10586.869237224 cpu 0 pid 10349 tid 10349 ip 0x40100d code 6: Trace doesn't match instruction
+
+ After:
+
+  $ perf script --insn-trace=disasm
+             pushw   10349 [000] 10586.869237014:            401000 [unknown] (./pushw)           pushw $0x1234
+             pushw   10349 [000] 10586.869237014:            401004 [unknown] (./pushw)           movl $1, %eax
+
+Fixes: eb13296cfaf6 ("x86: Instruction decoder API")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20240502105853.5338-3-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/carl9170/tx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/lib/x86-opcode-map.txt       | 2 +-
+ tools/arch/x86/lib/x86-opcode-map.txt | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/carl9170/tx.c b/drivers/net/wireless/ath/carl9170/tx.c
-index 6bb9aa2bfe654..88ef6e023f826 100644
---- a/drivers/net/wireless/ath/carl9170/tx.c
-+++ b/drivers/net/wireless/ath/carl9170/tx.c
-@@ -280,7 +280,8 @@ static void carl9170_tx_release(struct kref *ref)
- 	 * carl9170_tx_fill_rateinfo() has filled the rate information
- 	 * before we get to this point.
- 	 */
--	memset_after(&txinfo->status, 0, rates);
-+	memset(&txinfo->pad, 0, sizeof(txinfo->pad));
-+	memset(&txinfo->rate_driver_data, 0, sizeof(txinfo->rate_driver_data));
- 
- 	if (atomic_read(&ar->tx_total_queued))
- 		ar->tx_schedule = true;
+diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
+index 5168ee0360b24..940913550ed83 100644
+--- a/arch/x86/lib/x86-opcode-map.txt
++++ b/arch/x86/lib/x86-opcode-map.txt
+@@ -148,7 +148,7 @@ AVXcode:
+ 65: SEG=GS (Prefix)
+ 66: Operand-Size (Prefix)
+ 67: Address-Size (Prefix)
+-68: PUSH Iz (d64)
++68: PUSH Iz
+ 69: IMUL Gv,Ev,Iz
+ 6a: PUSH Ib (d64)
+ 6b: IMUL Gv,Ev,Ib
+diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
+index 5168ee0360b24..940913550ed83 100644
+--- a/tools/arch/x86/lib/x86-opcode-map.txt
++++ b/tools/arch/x86/lib/x86-opcode-map.txt
+@@ -148,7 +148,7 @@ AVXcode:
+ 65: SEG=GS (Prefix)
+ 66: Operand-Size (Prefix)
+ 67: Address-Size (Prefix)
+-68: PUSH Iz (d64)
++68: PUSH Iz
+ 69: IMUL Gv,Ev,Iz
+ 6a: PUSH Ib (d64)
+ 6b: IMUL Gv,Ev,Ib
 -- 
 2.43.0
 
