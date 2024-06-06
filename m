@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-49618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD318FEE10
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E548FEF4B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C855C285492
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD5B3287CC8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4BE1BF908;
-	Thu,  6 Jun 2024 14:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2DDC1CBE8F;
+	Thu,  6 Jun 2024 14:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m22ZiuG/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9+iNHUJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D14019EEC6;
-	Thu,  6 Jun 2024 14:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB9F1CBE8E;
+	Thu,  6 Jun 2024 14:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683555; cv=none; b=fR+8bOLMy627dtKl87IPczUjpeN33SWffU9Bp0mxxzcBXPEcV75ZNbqSt4AzF9oC2/TKpJK+lrbGJh5sFi79sLlqN+zVDdBOi0mB1uDEr4P7VtCEUHSwohmGQYZY2y3y6vB3o2pxCmvyQZJd2Kj5lsN6rIs04nqJkuI9EkKTvps=
+	t=1717683764; cv=none; b=ljn7G1v5ctY8MNnv8vgWx+lQFbuzMS92hEekM8BICkadK9AHVhY/Hl4b3IrQnFyyPWSE/QPTGQXyL4Np5rVjhkyjwiMf/vHJvBD7YPw3BCu583R2TMieG0oNS3z0fj1WjLYqdBbwjjInyDX2YiTyl5duPwT53eFOiUERq8IFKPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683555; c=relaxed/simple;
-	bh=WB31M6Vs2xxfLampbPMpvsjqByiUSXfG0JOMEuvD0OU=;
+	s=arc-20240116; t=1717683764; c=relaxed/simple;
+	bh=8IZTFdu3fjFMEv9ZzAdNL9dD/vWvpyl3YdiABDGCPoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUcZy63eZaqIdI4bUla97W4qSjzeWwTMzZmEJnkgBzI8Hh6gdRZfLQUl9RROgKZdPhaxHtwv8V1fSLSBwmZQW3t0mI/AGgPq0RsAF7BIhZWjx10+0Hj7ZTwHbbm+5rdPRi0fQz2nWtHdL+cFTEj4H5Nu9wSai0rTo8KARM18K+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m22ZiuG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D805C32781;
-	Thu,  6 Jun 2024 14:19:15 +0000 (UTC)
+	 MIME-Version; b=j/8YKPxVlJMNH0KeE/AKEJA7pXxb8ZVkIquTg/UZyXnPJZ8tyNaJSfzqBF4EwUbCuFO9m+26PdPQ+d5ehWp2oTRrewv+z8Jq5tpyoQXmG7GDX6ZsHQFB+BSVe5orILceWZnTPp/r0LVl9Pi+3bZR48GtHHTdOReQOaHgJwyhbu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9+iNHUJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B61C32781;
+	Thu,  6 Jun 2024 14:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683555;
-	bh=WB31M6Vs2xxfLampbPMpvsjqByiUSXfG0JOMEuvD0OU=;
+	s=korg; t=1717683764;
+	bh=8IZTFdu3fjFMEv9ZzAdNL9dD/vWvpyl3YdiABDGCPoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m22ZiuG/vP+Ha+TzS5xs/eQjVpQQfIjAY2jSCgxEUnudd3GHS7GXvVJF0g166p1Ky
-	 HWMkDt1AYrIOlNtIFpjxWkultASWrKADJtGEkLVNZFeIdOmLdwfzzvQwjGqMavJLZh
-	 VG/Ek3BPdbn1B7+W5JGsiEpnQyW7S1HpfgijvQrA=
+	b=y9+iNHUJyev/kxqrBhzgstaeimsgUVSbg6aQ0jqhg2buReNBDG5Lt78oUB0wLpRsY
+	 vj7yC35fG6SiH/TxdymteqWDgpgVvCqybcntydUSVGwcpgTUlVI24uk/G4jXr4qCpQ
+	 bReV3tPmVXAGqvxEvknrTRy8lJq1cyMJZ8KATWhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Takashi Iwai <tiwai@suse.de>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 446/473] ALSA: hda/realtek: Add quirk for ASUS ROG G634Z
+Subject: [PATCH 6.6 703/744] net:fec: Add fec_enet_deinit()
 Date: Thu,  6 Jun 2024 16:06:15 +0200
-Message-ID: <20240606131714.462793568@linuxfoundation.org>
+Message-ID: <20240606131755.028233273@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit 555434fd5c6b3589d9511ab6e88faf50346e19da ]
+[ Upstream commit bf0497f53c8535f99b72041529d3f7708a6e2c0d ]
 
-Adds the required quirk to enable the Cirrus amp and correct pins
-on the ASUS ROG G634Z series.
+When fec_probe() fails or fec_drv_remove() needs to release the
+fec queue and remove a NAPI context, therefore add a function
+corresponding to fec_enet_init() and call fec_enet_deinit() which
+does the opposite to release memory and remove a NAPI context.
 
-While this works if the related _DSD properties are made available, these
-aren't included in the ACPI of these laptops (yet).
-
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Link: https://lore.kernel.org/r/20230619060320.1336455-1-luke@ljones.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: 2be46155d792 ("ALSA: hda/realtek: Adjust G814JZR to use SPI init for amp")
+Fixes: 59d0f7465644 ("net: fec: init multi queue date structure")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20240524050528.4115581-1-xiaolei.wang@windriver.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/freescale/fec_main.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 7aa961f613f88..4d7c23b20cce0 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9860,6 +9860,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1c23, "Asus X55U", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x1043, 0x1c62, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1c92, "ASUS ROG Strix G15", ALC285_FIXUP_ASUS_G533Z_PINS),
-+	SND_PCI_QUIRK(0x1043, 0x1caf, "ASUS G634JYR/JZR", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1ccd, "ASUS X555UB", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1d1f, "ASUS ROG Strix G17 2023 (G713PV)", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1d42, "ASUS Zephyrus G14 2022", ALC289_FIXUP_ASUS_GA401),
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index ca50472479f6d..d675f9d5f3612 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -4113,6 +4113,14 @@ static int fec_enet_init(struct net_device *ndev)
+ 	return ret;
+ }
+ 
++static void fec_enet_deinit(struct net_device *ndev)
++{
++	struct fec_enet_private *fep = netdev_priv(ndev);
++
++	netif_napi_del(&fep->napi);
++	fec_enet_free_queue(ndev);
++}
++
+ #ifdef CONFIG_OF
+ static int fec_reset_phy(struct platform_device *pdev)
+ {
+@@ -4509,6 +4517,7 @@ fec_probe(struct platform_device *pdev)
+ 	fec_enet_mii_remove(fep);
+ failed_mii_init:
+ failed_irq:
++	fec_enet_deinit(ndev);
+ failed_init:
+ 	fec_ptp_stop(pdev);
+ failed_reset:
+@@ -4572,6 +4581,7 @@ fec_drv_remove(struct platform_device *pdev)
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 
++	fec_enet_deinit(ndev);
+ 	free_netdev(ndev);
+ }
+ 
 -- 
 2.43.0
 
