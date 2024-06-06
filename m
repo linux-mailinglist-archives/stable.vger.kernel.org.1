@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-49594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE398FEDF3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C94C8FEDF4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66E212820AA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 020091F2158E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0832919EEB0;
-	Thu,  6 Jun 2024 14:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091CF1BE861;
+	Thu,  6 Jun 2024 14:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5OdLkxq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="McWuwWrT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD8A19E7FF;
-	Thu,  6 Jun 2024 14:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8261990B7;
+	Thu,  6 Jun 2024 14:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683543; cv=none; b=HIl+4nx96onm3wfr4OkIz/NUKzCXlelfwy3roUA1D2zl6AsyKzZSSx+HJVWpv+nnRhzYhlpI+YJMs6CSEwgZSuSxkA97EHtabmc5ivBXCzr9Yv2CY5cpX5lKoEIaVC6E3IvkF2M6v7ftWaV7Q6G7JV4jtIrwXiqq16H76mEs+ZM=
+	t=1717683544; cv=none; b=VR0o5/43C3egGEHrE6CsOE0kNBhcfZRdwMH4GgYwkMqUZee2Uey0zu4bKZfTdyYkMN93JjyhOmhX+p6rqGsCeyqg1rVRPwbPt5bHYgOyaZid0+2Tt02wwc2LdFXXjHED039Sk+xjnD7eKWNr1/RUkgT32StJdR/mw8SA+20176s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683543; c=relaxed/simple;
-	bh=whXzKEwc2o5sTlzPC+innY/yOdNCFO+Hpk796URxpX8=;
+	s=arc-20240116; t=1717683544; c=relaxed/simple;
+	bh=mPg1o7mx1JVvGbDIvO1Kxoag6R0iQmqLSpnfnJiQ5dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mARgvxANQYwQTn8hdlARK9RyKdZwoX15yD8ozn3gOdJe7QY0XpFKmhD6GC+Cuk4VlTy3hGdLGj6p4tN1kZccNZ/Vv5kRoS54y5MCW9mXXEVZrOhmzUOUEr3Zoz+mo8ukhaARJr2/XDKowJttEfLdrbcxiCI8CWytY4klYaKNBt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5OdLkxq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C111C2BD10;
-	Thu,  6 Jun 2024 14:19:03 +0000 (UTC)
+	 MIME-Version; b=D3Rpy9onDn/WXVtXMosLDtFdgS71BCiNQlRjQtYVyYKq+VO2pDly81olIPusZ5UhRUx4mABexhVuO8RPDPwyoMxOcJsaTz75lTaJknUof7TssUwbF6vM0sg17N1o6/trVXtPbmmTNIcxRKqEFJp7VYSoK+gTg9W7e3rN+xTfwXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McWuwWrT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B77C2BD10;
+	Thu,  6 Jun 2024 14:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683543;
-	bh=whXzKEwc2o5sTlzPC+innY/yOdNCFO+Hpk796URxpX8=;
+	s=korg; t=1717683544;
+	bh=mPg1o7mx1JVvGbDIvO1Kxoag6R0iQmqLSpnfnJiQ5dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K5OdLkxq2ecZCOohGOIeawcvV04cGd7LVOSYOswqg0chgcsvyf3pQP14Mc19uKnZ8
-	 1Z+slc3DC2lwmNln7+a8F/CrhcjUSrr96O8XTN9ohqJEWAYjI1oyOYDnujC311chOc
-	 ObYBJ3sxwQqxghDOi7NF8s8Vw0rTS5JyoG79ucFE=
+	b=McWuwWrTqcH4uQ9Xyhkf+Zckgk5lk8lfdVZGq+/Y1d9iafW2Z0VwSMLiP3Owvx3+8
+	 sQePZFzRu5r1wZchvVYafA1AF+Co/GZr+pUesNNtyfft1CI+r9x3tPyHr+1TqjkqtY
+	 Dg25LX4akO/J/Y4ZQXWsQIkCIxLn5upRjWLV69pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 433/473] spi: Dont mark message DMA mapped when no transfer in it is
-Date: Thu,  6 Jun 2024 16:06:02 +0200
-Message-ID: <20240606131714.060388623@linuxfoundation.org>
+Subject: [PATCH 6.1 434/473] dma-mapping: benchmark: fix node id validation
+Date: Thu,  6 Jun 2024 16:06:03 +0200
+Message-ID: <20240606131714.090526315@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -66,46 +67,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 9f788ba457b45b0ce422943fcec9fa35c4587764 ]
+[ Upstream commit 1ff05e723f7ca30644b8ec3fb093f16312e408ad ]
 
-There is no need to set the DMA mapped flag of the message if it has
-no mapped transfers. Moreover, it may give the code a chance to take
-the wrong paths, i.e. to exercise DMA related APIs on unmapped data.
-Make __spi_map_msg() to bail earlier on the above mentioned cases.
+While validating node ids in map_benchmark_ioctl(), node_possible() may
+be provided with invalid argument outside of [0,MAX_NUMNODES-1] range
+leading to:
 
-Fixes: 99adef310f68 ("spi: Provide core support for DMA mapping transfers")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://msgid.link/r/20240522171018.3362521-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+BUG: KASAN: wild-memory-access in map_benchmark_ioctl (kernel/dma/map_benchmark.c:214)
+Read of size 8 at addr 1fffffff8ccb6398 by task dma_map_benchma/971
+CPU: 7 PID: 971 Comm: dma_map_benchma Not tainted 6.9.0-rc6 #37
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+Call Trace:
+ <TASK>
+dump_stack_lvl (lib/dump_stack.c:117)
+kasan_report (mm/kasan/report.c:603)
+kasan_check_range (mm/kasan/generic.c:189)
+variable_test_bit (arch/x86/include/asm/bitops.h:227) [inline]
+arch_test_bit (arch/x86/include/asm/bitops.h:239) [inline]
+_test_bit at (include/asm-generic/bitops/instrumented-non-atomic.h:142) [inline]
+node_state (include/linux/nodemask.h:423) [inline]
+map_benchmark_ioctl (kernel/dma/map_benchmark.c:214)
+full_proxy_unlocked_ioctl (fs/debugfs/file.c:333)
+__x64_sys_ioctl (fs/ioctl.c:890)
+do_syscall_64 (arch/x86/entry/common.c:83)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+Compare node ids with sane bounds first. NUMA_NO_NODE is considered a
+special valid case meaning that benchmarking kthreads won't be bound to a
+cpuset of a given node.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 65789daa8087 ("dma-mapping: add benchmark support for streaming DMA APIs")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/dma/map_benchmark.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 1018feff468c9..50fe5aa450f84 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1147,6 +1147,7 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 	else
- 		rx_dev = ctlr->dev.parent;
- 
-+	ret = -ENOMSG;
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
- 		/* The sync is done before each transfer. */
- 		unsigned long attrs = DMA_ATTR_SKIP_CPU_SYNC;
-@@ -1176,6 +1177,9 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 			}
+diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
+index 0520a8f4fb1df..11ad1c43833d1 100644
+--- a/kernel/dma/map_benchmark.c
++++ b/kernel/dma/map_benchmark.c
+@@ -208,7 +208,8 @@ static long map_benchmark_ioctl(struct file *file, unsigned int cmd,
  		}
- 	}
-+	/* No transfer has been mapped, bail out with success */
-+	if (ret)
-+		return 0;
  
- 	ctlr->cur_rx_dma_dev = rx_dev;
- 	ctlr->cur_tx_dma_dev = tx_dev;
+ 		if (map->bparam.node != NUMA_NO_NODE &&
+-		    !node_possible(map->bparam.node)) {
++		    (map->bparam.node < 0 || map->bparam.node >= MAX_NUMNODES ||
++		     !node_possible(map->bparam.node))) {
+ 			pr_err("invalid numa node\n");
+ 			return -EINVAL;
+ 		}
 -- 
 2.43.0
 
