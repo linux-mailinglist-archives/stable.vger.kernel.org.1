@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-49682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76BBF8FEE67
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6E998FECA8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B5B21C251D7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8B1A1C25658
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE051A0B0E;
-	Thu,  6 Jun 2024 14:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06E5197A9A;
+	Thu,  6 Jun 2024 14:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJFd7pHw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xT0wobfP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38221A0B06;
-	Thu,  6 Jun 2024 14:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6053A1B150B;
+	Thu,  6 Jun 2024 14:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683656; cv=none; b=nI+WSBdSvbsGp2ABAjyR6n1GzVfvvllXJCgOl4DwDm7tiNoOBimHUojWLCKcK38bb+FAjxG9TMYUSEPD45Yax3B5FeSoLEJxbCBJ/2Wa4s67MzhFN9PtaRTDOgZqdMVO9IK0Q9F3urcfU5fDekaaJ/8MgaVTYueR6ueoqEplH04=
+	t=1717683393; cv=none; b=YVuPqWtQ+EoLkb1dBV7aqsSgzCBDa6yg1YMbW0peMEbIMD2ZPGkFycKtKUjWmaKhGSm27UJKlu5A4/6a8mtfeXDt5yoyP78Yd9cdegEiZ187PknpJPWKQii3epkFCp2GO1isIlsPm7JRCioQ4cZMuoE3GhlpSWuIX4VjAkx4+Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683656; c=relaxed/simple;
-	bh=A1kIOWvKri9ERD8RgTzAFdEA2uUkO/nLWp88rIGs8jc=;
+	s=arc-20240116; t=1717683393; c=relaxed/simple;
+	bh=/J8DLDyJy5KxFYm5vVhxGP/V3VF9JOJnCwfUECusMHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hkeI1nsePgQiehC3+Ps81wuJlJ9zYvewRTsOwYwgUltJmIvaDa0WLj5bqs+kMsrLeD42DvrOaXpjRnySCRLBsvnbH+azK2UabNNi0N73WlKQ0e1mrhcqAPaFpvIVq6WB2CIjKAumwAW8fdPTbwGin4jYKMGgelhXJmFEz7HpkCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJFd7pHw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F86C32781;
-	Thu,  6 Jun 2024 14:20:56 +0000 (UTC)
+	 MIME-Version; b=LB8ngi5WDcIzHX+JdNvYnPSBCiAQhmVmL+Nzsi0DX8A0fzwqQtmB5UIXkNo0cw3aKA0DwhJR48R6A4HPaan7BrMLDuyrAea8sU0XQfxcDny8Lbb5MNOJORyg0I0icLkFO3plmx5CN6Iw7Itq4aFtAwYVLk7AvZK0ibhILZq4G1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xT0wobfP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40856C2BD10;
+	Thu,  6 Jun 2024 14:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683656;
-	bh=A1kIOWvKri9ERD8RgTzAFdEA2uUkO/nLWp88rIGs8jc=;
+	s=korg; t=1717683393;
+	bh=/J8DLDyJy5KxFYm5vVhxGP/V3VF9JOJnCwfUECusMHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJFd7pHwdk11ofTqD+C2uvJOyPhTkjUolFrbn/G394BAqPlMR/4i6W+Sx+rrT8OGW
-	 ohhVfbAfsFPexA9RfRQn59VgeQqnkDqdrOdCpchxgoNvU7LHm9IINBymWXxvUz1zXT
-	 9ijW0ZmceC+GY19aZNBRzwvMAYNEe8YmzNcex7g0=
+	b=xT0wobfPYxMSOnaa7hBWYZf/mapkV9M7C4IvLUAL636F6AVoyrEG3a/05vij9RRW5
+	 DE0x/YQnU/9MjxXh51chs8IGVKmMo1vevEgF7QEHBMIf2VwXfWuRsBA5kD1IoDlmM/
+	 5q+EfGgO+7oEW0QYxVvXL++9gO8bmY3vXaH9+s5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Remus <jremus@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Qixin Liao <liaoqixin@huawei.com>,
+	Cheng Yu <serein.chengyu@huawei.com>,
+	Zhang Qiao <zhangqiao22@huawei.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 534/744] s390/vdso: Generate unwind information for C modules
+Subject: [PATCH 6.1 277/473] sched/core: Fix incorrect initialization of the burst parameter in cpu_max_write()
 Date: Thu,  6 Jun 2024 16:03:26 +0200
-Message-ID: <20240606131749.579695714@linuxfoundation.org>
+Message-ID: <20240606131709.067344715@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Remus <jremus@linux.ibm.com>
+From: Cheng Yu <serein.chengyu@huawei.com>
 
-[ Upstream commit 10f70525365146046dddcc3d36bfaea2aee0376a ]
+[ Upstream commit 49217ea147df7647cb89161b805c797487783fc0 ]
 
-GDB fails to unwind vDSO functions with error message "PC not saved",
-for instance when stepping through gettimeofday().
+In the cgroup v2 CPU subsystem, assuming we have a
+cgroup named 'test', and we set cpu.max and cpu.max.burst:
 
-Add -fasynchronous-unwind-tables to CFLAGS to generate .eh_frame
-DWARF unwind information for the vDSO C modules.
+    # echo 1000000 > /sys/fs/cgroup/test/cpu.max
+    # echo 1000000 > /sys/fs/cgroup/test/cpu.max.burst
 
-Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
-Signed-off-by: Jens Remus <jremus@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+then we check cpu.max and cpu.max.burst:
+
+    # cat /sys/fs/cgroup/test/cpu.max
+    1000000 100000
+    # cat /sys/fs/cgroup/test/cpu.max.burst
+    1000000
+
+Next we set cpu.max again and check cpu.max and
+cpu.max.burst:
+
+    # echo 2000000 > /sys/fs/cgroup/test/cpu.max
+    # cat /sys/fs/cgroup/test/cpu.max
+    2000000 100000
+
+    # cat /sys/fs/cgroup/test/cpu.max.burst
+    1000
+
+... we find that the cpu.max.burst value changed unexpectedly.
+
+In cpu_max_write(), the unit of the burst value returned
+by tg_get_cfs_burst() is microseconds, while in cpu_max_write(),
+the burst unit used for calculation should be nanoseconds,
+which leads to the bug.
+
+To fix it, get the burst value directly from tg->cfs_bandwidth.burst.
+
+Fixes: f4183717b370 ("sched/fair: Introduce the burstable CFS controller")
+Reported-by: Qixin Liao <liaoqixin@huawei.com>
+Signed-off-by: Cheng Yu <serein.chengyu@huawei.com>
+Signed-off-by: Zhang Qiao <zhangqiao22@huawei.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lore.kernel.org/r/20240424132438.514720-1-serein.chengyu@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/vdso32/Makefile | 3 ++-
- arch/s390/kernel/vdso64/Makefile | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ kernel/sched/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
-index c4b14a8700d88..9793266245587 100644
---- a/arch/s390/kernel/vdso32/Makefile
-+++ b/arch/s390/kernel/vdso32/Makefile
-@@ -20,7 +20,8 @@ KBUILD_AFLAGS_32 += -m31 -s
- 
- KBUILD_CFLAGS_32 := $(filter-out -m64,$(KBUILD_CFLAGS))
- KBUILD_CFLAGS_32 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_32))
--KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin
-+KBUILD_CFLAGS_32 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_32))
-+KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin -fasynchronous-unwind-tables
- 
- LDFLAGS_vdso32.so.dbg += -shared -soname=linux-vdso32.so.1 \
- 	--hash-style=both --build-id=sha1 -melf_s390 -T
-diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
-index aa410a0a141cc..197fa382b58ab 100644
---- a/arch/s390/kernel/vdso64/Makefile
-+++ b/arch/s390/kernel/vdso64/Makefile
-@@ -26,7 +26,8 @@ KBUILD_AFLAGS_64 += -m64
- KBUILD_CFLAGS_64 := $(filter-out -m64,$(KBUILD_CFLAGS))
- KBUILD_CFLAGS_64 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_64))
- KBUILD_CFLAGS_64 := $(filter-out -munaligned-symbols,$(KBUILD_CFLAGS_64))
--KBUILD_CFLAGS_64 += -m64 -fPIC -fno-common -fno-builtin
-+KBUILD_CFLAGS_64 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_64))
-+KBUILD_CFLAGS_64 += -m64 -fPIC -fno-common -fno-builtin -fasynchronous-unwind-tables
- ldflags-y := -shared -soname=linux-vdso64.so.1 \
- 	     --hash-style=both --build-id=sha1 -T
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 18a4f8f28a25f..d71234729edb4 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -11117,7 +11117,7 @@ static ssize_t cpu_max_write(struct kernfs_open_file *of,
+ {
+ 	struct task_group *tg = css_tg(of_css(of));
+ 	u64 period = tg_get_cfs_period(tg);
+-	u64 burst = tg_get_cfs_burst(tg);
++	u64 burst = tg->cfs_bandwidth.burst;
+ 	u64 quota;
+ 	int ret;
  
 -- 
 2.43.0
