@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-48950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B35F8FEB3C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 119668FE887
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E4D61C24AAF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6D781F237DE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4D31A38E0;
-	Thu,  6 Jun 2024 14:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF70196C7B;
+	Thu,  6 Jun 2024 14:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8f8DMom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHNc5gnU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21ED1A38E6;
-	Thu,  6 Jun 2024 14:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8634B196C62;
+	Thu,  6 Jun 2024 14:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683227; cv=none; b=QAWQ5KA9FEoqTJg/+HJhNtQ2V0PiOJhCp4JsDH5MZZW8Ag2ULxV5tOpjMTdhHfz6e/wxCCvfycOlH52kzZh15AM8fz+aICwJU6OXb3i2jY2rCoyxl4MauXZWMEke9gGl6jACwNg7esqwXQ3jQtVYCrOrLCHZi/rUjZsByn7E8iU=
+	t=1717682904; cv=none; b=drmfASs8gjNjOsrigWi1gpbDpIUZcLlB+nJD++6uLHZEKtD6w0RgC60J9v1sw2Y2bGwIzEzbFzhwzIQgydPWIo5M3Z2mFe750FhSxyhepI3rOhuJZjPcOp+ZGPxnvoiSxqSY62YcKzPnioM8CTzlfiAlYmaFwqmyTkaurpjN3uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683227; c=relaxed/simple;
-	bh=nnzPwEiFViQFNWqh2+amo03pFwZ1qZKgGF54JggvLyU=;
+	s=arc-20240116; t=1717682904; c=relaxed/simple;
+	bh=pFS4kWzn3r5DYIv+lvD64t9vbgKEqmqxLnBh6Sdb26c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nOr1VAck6BuRLjFA4Q2Rl3F50hiqxCmYJahqaw5JpvysryQJ0oxMPcY3yPOMXuPJ1nvAvQR4iOi4a3uFom8lmhCkuWXfytaCTb5z2WXce1G9fTZNCfVVXkOnfhIMDXUvkO7X79W4Y3ll1FThOrjydb38iPMw0odt5iSpq5LUcvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8f8DMom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF7EC32786;
-	Thu,  6 Jun 2024 14:13:46 +0000 (UTC)
+	 MIME-Version; b=i5amUOtdDY3iBrsZ/dMkAh0K8+UGac5ihCW93Lm22VYdp7R1GiFWJZ8kDip20erxhg4IrTNcUySjq2I3+UaCyYWni5ZZ3ZIvaKoYkWFPdQA2FclxKw2nbSqdpkKbEy1ZkIVfrtZcZE+TUGf/Au7cZaoHb3bebmntFTufYl0kilg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHNc5gnU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F6DC32781;
+	Thu,  6 Jun 2024 14:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683226;
-	bh=nnzPwEiFViQFNWqh2+amo03pFwZ1qZKgGF54JggvLyU=;
+	s=korg; t=1717682904;
+	bh=pFS4kWzn3r5DYIv+lvD64t9vbgKEqmqxLnBh6Sdb26c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q8f8DMomnOgfkkbx2S9HFgLMttpPKSBws17/DeDN1U40JSRUo8fgQL6jyOUpGxFe1
-	 +UyphurKfsjiYG2ebov+VbVVpXW9ejF6c884PBmsEJH6R2IKU7nlCaKQZf3oLGbOMs
-	 tFq+3L4xcwiCwgnqxyGJy028UEwEhua3xxH1xWCI=
+	b=ZHNc5gnUqmLNGBhgGfyiEjVzl1ll6CugnLuSeb6C214j3Wc1G0TY0OMeRJp69GDl2
+	 5y/d36RIliRIYFdeEFhDq5N6JQGapkAT1vHgqYvu1h7cub2RWeKHZ455mDF1br/CT/
+	 r9vwNSuiULwEkO+awhYrQmycvKNO9OUDgCux456I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/473] crypto: x86/sha512-avx2 - add missing vzeroupper
+Subject: [PATCH 6.9 026/374] serial: max3100: Fix bitwise types
 Date: Thu,  6 Jun 2024 16:00:05 +0200
-Message-ID: <20240606131702.428715136@linuxfoundation.org>
+Message-ID: <20240606131652.697192920@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 6a24fdfe1edbafacdacd53516654d99068f20eec ]
+[ Upstream commit e60955dbecb97f080848a57524827e2db29c70fd ]
 
-Since sha512_transform_rorx() uses ymm registers, execute vzeroupper
-before returning from it.  This is necessary to avoid reducing the
-performance of SSE code.
+Sparse is not happy about misuse of bitwise types:
 
-Fixes: e01d69cb0195 ("crypto: sha512 - Optimized SHA512 x86_64 assembly routine using AVX instructions.")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Acked-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+  .../max3100.c:194:13: warning: incorrect type in assignment (different base types)
+  .../max3100.c:194:13:    expected unsigned short [addressable] [usertype] etx
+  .../max3100.c:194:13:    got restricted __be16 [usertype]
+  .../max3100.c:202:15: warning: cast to restricted __be16
+
+Fix this by choosing proper types for the respective variables.
+
+Fixes: 7831d56b0a35 ("tty: MAX3100")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240402195306.269276-4-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/sha512-avx2-asm.S | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/max3100.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/crypto/sha512-avx2-asm.S b/arch/x86/crypto/sha512-avx2-asm.S
-index b1ca99055ef99..17d6c756b5414 100644
---- a/arch/x86/crypto/sha512-avx2-asm.S
-+++ b/arch/x86/crypto/sha512-avx2-asm.S
-@@ -680,6 +680,7 @@ done_hash:
- 	pop	%r12
- 	pop	%rbx
+diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
+index b3e63b6a402e1..3d2b83d6ab51a 100644
+--- a/drivers/tty/serial/max3100.c
++++ b/drivers/tty/serial/max3100.c
+@@ -45,6 +45,9 @@
+ #include <linux/freezer.h>
+ #include <linux/tty.h>
+ #include <linux/tty_flip.h>
++#include <linux/types.h>
++
++#include <asm/unaligned.h>
  
-+	vzeroupper
- 	RET
- SYM_FUNC_END(sha512_transform_rorx)
+ #include <linux/serial_max3100.h>
  
+@@ -191,7 +194,7 @@ static void max3100_timeout(struct timer_list *t)
+ static int max3100_sr(struct max3100_port *s, u16 tx, u16 *rx)
+ {
+ 	struct spi_message message;
+-	u16 etx, erx;
++	__be16 etx, erx;
+ 	int status;
+ 	struct spi_transfer tran = {
+ 		.tx_buf = &etx,
 -- 
 2.43.0
 
