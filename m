@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-48322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 366E88FE883
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0940B8FEB0D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5E8D28218E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 311A61C2554A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912D9196DA8;
-	Thu,  6 Jun 2024 14:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953321A2C28;
+	Thu,  6 Jun 2024 14:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mRy6f7B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FAfn4o5v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C985196DA2;
-	Thu,  6 Jun 2024 14:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FBF19755C;
+	Thu,  6 Jun 2024 14:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682902; cv=none; b=qdZj7Jp+Hl4EDKl32R1fXAqmfYlA7bM4iEa7K5QcBOpYfvxzrE2B3irXDGSG55CdoiNNXwJ78L/Ej8Sg8ql4aZ6RvS4SCP8iZQudBw2nduryJ7s77nzu4VphU7/YcPlKJEt2JJ6yqXqFIaPejBjXcH6ZwDVtW5xAk+l2IX5WnIE=
+	t=1717683205; cv=none; b=RwU7yaBBklwSjEM8IaCelsL19XnX8Q0n4ggbW2EdDvfjo7qAjVn2pZPqfEUyXStcCaiOs1Y9BbjkUSIe2KmzmkFz83dY0132i05uRHV75u15drI58roHrGgs0/KzYHLhZEBS4oZKY1EWWHIc4B9Fv9IFnNn2Qog12zv8uhFoT6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682902; c=relaxed/simple;
-	bh=b4Uj0XQOEJEMvBzYSDQ9uCckBWfG67210yA+119Qk5M=;
+	s=arc-20240116; t=1717683205; c=relaxed/simple;
+	bh=A1M6hvY2woNapSzgHmDXQgN2RDTiSqfQsT48XnLnKvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LbBBDWStzpLGGPq79mUi/+y9WpOSkai/Adm5gpoQTCoC6KjgQKZygtxDlwE9WGuo5oQxzvVPv/DeJ8RhTpo+HW8A5LTte7DC2/Hyh/lDLTd+Q7dT2pquDwOLdQNufV2GWRKYOMOrLfn3YXq7KloFENEcb6UeEyHRTFHg4d62Cac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0mRy6f7B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29300C32781;
-	Thu,  6 Jun 2024 14:08:22 +0000 (UTC)
+	 MIME-Version; b=YBeC54WesylfbnY0yeGOXFgKboDbycN5GqWxhxI4myxPJM7VWWJEv3hrjRQthMP2BdnDf9+CZNSdbeXf2IAJgjX4lhoVgqRFcsL4p/UloUzSFiM70iYek+R1M0jgA1/v2zMO70nEDwsA3302DPYzeqcUTlvwrBrb2kD0tihsZNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FAfn4o5v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3079EC2BD10;
+	Thu,  6 Jun 2024 14:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682902;
-	bh=b4Uj0XQOEJEMvBzYSDQ9uCckBWfG67210yA+119Qk5M=;
+	s=korg; t=1717683205;
+	bh=A1M6hvY2woNapSzgHmDXQgN2RDTiSqfQsT48XnLnKvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0mRy6f7Ba2g5pOqZbL5dmIOIBU0iXxJiLqXk3S8QWsVYJtT2K0p0h8ZOmbQnVNnsp
-	 iBI7KyGKRcdN/qwabYTL518YOUE55RkPsW1ZbAsSCP1vjuzicEWFBOU+iep2nMAhV5
-	 kIFGUqJtoo/d6+iSgljU7ubFx9w42dK2QgjEkdLw=
+	b=FAfn4o5vop35xpTNVqlsDaSu/q4aCeVYDMiLbd456G9XZ/IVjikZ39dIBEWz747Xh
+	 gEVpZsAw3l78lSJGkHMNOJ9HOaTspUXZEKu2K0LBp2PEb4F3fEKGaWTSmLR7yvr42R
+	 q6njT4juevdjHHTihkZbODbkYMz74SqesscSHP5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 023/374] perf annotate: Fix annotation_calc_lines() to pass correct address to get_srcline()
+Subject: [PATCH 6.1 073/473] crypto: ccp - drop platform ifdef checks
 Date: Thu,  6 Jun 2024 16:00:02 +0200
-Message-ID: <20240606131652.574129161@linuxfoundation.org>
+Message-ID: <20240606131702.296004098@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,82 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit aaf494cf483a1a835c44e942861429b30a00cab0 ]
+[ Upstream commit 42c2d7d02977ef09d434b1f5b354f5bc6c1027ab ]
 
-It should pass a proper address (i.e. suitable for objdump or addr2line)
-to get_srcline() in order to work correctly.  It used to pass an address
-with map__rip_2objdump() as the second argument but later it's changed
-to use notes->start.  It's ok in normal cases but it can be changed when
-annotate_opts.full_addr is set.  So let's convert the address directly
-instead of using the notes->start.
+When both ACPI and OF are disabled, the dev_vdata variable is unused:
 
-Also the last argument is an IP to print symbol offset if requested.  So
-it should pass symbol-relative address.
+drivers/crypto/ccp/sp-platform.c:33:34: error: unused variable 'dev_vdata' [-Werror,-Wunused-const-variable]
 
-Fixes: 7d18a824b5e57ddd ("perf annotate: Toggle full address <-> offset display")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240404175716.1225482-2-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+This is not a useful configuration, and there is not much point in saving
+a few bytes when only one of the two is enabled, so just remove all
+these ifdef checks and rely on of_match_node() and acpi_match_device()
+returning NULL when these subsystems are disabled.
+
+Fixes: 6c5063434098 ("crypto: ccp - Add ACPI support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/annotate.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/crypto/ccp/sp-platform.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
-index 50ca92255ff62..2ebe2fe92a10b 100644
---- a/tools/perf/util/annotate.c
-+++ b/tools/perf/util/annotate.c
-@@ -3025,7 +3025,7 @@ void annotation__toggle_full_addr(struct annotation *notes, struct map_symbol *m
- 	annotation__update_column_widths(notes);
+diff --git a/drivers/crypto/ccp/sp-platform.c b/drivers/crypto/ccp/sp-platform.c
+index 7d79a8744f9a6..c43ad7e1acf7e 100644
+--- a/drivers/crypto/ccp/sp-platform.c
++++ b/drivers/crypto/ccp/sp-platform.c
+@@ -39,44 +39,38 @@ static const struct sp_dev_vdata dev_vdata[] = {
+ 	},
+ };
+ 
+-#ifdef CONFIG_ACPI
+ static const struct acpi_device_id sp_acpi_match[] = {
+ 	{ "AMDI0C00", (kernel_ulong_t)&dev_vdata[0] },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(acpi, sp_acpi_match);
+-#endif
+ 
+-#ifdef CONFIG_OF
+ static const struct of_device_id sp_of_match[] = {
+ 	{ .compatible = "amd,ccp-seattle-v1a",
+ 	  .data = (const void *)&dev_vdata[0] },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(of, sp_of_match);
+-#endif
+ 
+ static struct sp_dev_vdata *sp_get_of_version(struct platform_device *pdev)
+ {
+-#ifdef CONFIG_OF
+ 	const struct of_device_id *match;
+ 
+ 	match = of_match_node(sp_of_match, pdev->dev.of_node);
+ 	if (match && match->data)
+ 		return (struct sp_dev_vdata *)match->data;
+-#endif
++
+ 	return NULL;
  }
  
--static void annotation__calc_lines(struct annotation *notes, struct map *map,
-+static void annotation__calc_lines(struct annotation *notes, struct map_symbol *ms,
- 				   struct rb_root *root)
+ static struct sp_dev_vdata *sp_get_acpi_version(struct platform_device *pdev)
  {
- 	struct annotation_line *al;
-@@ -3033,6 +3033,7 @@ static void annotation__calc_lines(struct annotation *notes, struct map *map,
+-#ifdef CONFIG_ACPI
+ 	const struct acpi_device_id *match;
  
- 	list_for_each_entry(al, &notes->src->source, node) {
- 		double percent_max = 0.0;
-+		u64 addr;
- 		int i;
- 
- 		for (i = 0; i < al->data_nr; i++) {
-@@ -3048,8 +3049,9 @@ static void annotation__calc_lines(struct annotation *notes, struct map *map,
- 		if (percent_max <= 0.5)
- 			continue;
- 
--		al->path = get_srcline(map__dso(map), notes->start + al->offset, NULL,
--				       false, true, notes->start + al->offset);
-+		addr = map__rip_2objdump(ms->map, ms->sym->start);
-+		al->path = get_srcline(map__dso(ms->map), addr + al->offset, NULL,
-+				       false, true, ms->sym->start + al->offset);
- 		insert_source_line(&tmp_root, al);
- 	}
- 
-@@ -3060,7 +3062,7 @@ static void symbol__calc_lines(struct map_symbol *ms, struct rb_root *root)
- {
- 	struct annotation *notes = symbol__annotation(ms->sym);
- 
--	annotation__calc_lines(notes, ms->map, root);
-+	annotation__calc_lines(notes, ms, root);
+ 	match = acpi_match_device(sp_acpi_match, &pdev->dev);
+ 	if (match && match->driver_data)
+ 		return (struct sp_dev_vdata *)match->driver_data;
+-#endif
++
+ 	return NULL;
  }
  
- int symbol__tty_annotate2(struct map_symbol *ms, struct evsel *evsel)
+@@ -214,12 +208,8 @@ static int sp_platform_resume(struct platform_device *pdev)
+ static struct platform_driver sp_platform_driver = {
+ 	.driver = {
+ 		.name = "ccp",
+-#ifdef CONFIG_ACPI
+ 		.acpi_match_table = sp_acpi_match,
+-#endif
+-#ifdef CONFIG_OF
+ 		.of_match_table = sp_of_match,
+-#endif
+ 	},
+ 	.probe = sp_platform_probe,
+ 	.remove = sp_platform_remove,
 -- 
 2.43.0
 
