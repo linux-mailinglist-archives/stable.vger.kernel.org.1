@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-49027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6954C8FEB8E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EDFA8FE8D2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 543E91C24AC6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B460F1C22442
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14041AB53C;
-	Thu,  6 Jun 2024 14:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A88198E73;
+	Thu,  6 Jun 2024 14:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1lcSFkkC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFaJxx9n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917461AB53B;
-	Thu,  6 Jun 2024 14:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754F5198E70;
+	Thu,  6 Jun 2024 14:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683264; cv=none; b=AhglPopsxoORrAqJzWPTVWsu/hSJnoS+FILi4fjCxI8Pr57t9YlI2vpR1RS+U5BORZc1SEsfLaYlcI9QwOchVj5MkNtVAWI5Lh/fkwP3aklrUdlF4/whjVU6MkaDzP1vyLVexnGYr9rR37xLzegCgqiHHHxMLfuhiQv5RGTU6ck=
+	t=1717682937; cv=none; b=g+zgoh4TB6XNVLTjwDfru80Y1uNtxC9Joyx6S/vZEREmEG8JUU2719O0lMkt/25QppU6TGBunDsnTT4zES6baiEV7lS/0EEHRx2TVJOCa7Vq2M2n2quozBxxfaON5MIjdJ/JgL/D/Y8R8gp+dJY32RdS43mVk1Nht1jrthrUCpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683264; c=relaxed/simple;
-	bh=4BhVvEcKo7JB3v3j+lgcTW9WjSmAJg9wNwuKqQ/FlQY=;
+	s=arc-20240116; t=1717682937; c=relaxed/simple;
+	bh=C5obL2/HySdR11mXAom24xfy12nHSr0gss4Q3LB4t7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b0IhEdqmrMJkctxk07TDTvalt/BLbXhNiLUC3HtQFPUsKXhu2rR+euETpWt/SiDPFA9I9WZQzzjE1VFXEwogOpR31R8JVdh+tX6FQOrie6y7x4z89/n+eGCGCaPs/YuipNJipfxGVRzn0/KhZ5V5P3BL+ql/hZ7JNUFlJAi8VRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1lcSFkkC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDC8C32786;
-	Thu,  6 Jun 2024 14:14:24 +0000 (UTC)
+	 MIME-Version; b=lbrO3mn+xqoxIFgq4k9zLq4o1+avYSyM+S2VEWlua0bLIa/G+yqLej6EJsCVcEzubHs9il0neY2ZbmdNjYnC0auniF+Kble/7b38CT6FRvOfPIS8dXUjq6QjVq7PwJTeUcOeEboXS641aEATFYFTWTq+lInM/InVD+IQsYYlRJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFaJxx9n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56292C32781;
+	Thu,  6 Jun 2024 14:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683264;
-	bh=4BhVvEcKo7JB3v3j+lgcTW9WjSmAJg9wNwuKqQ/FlQY=;
+	s=korg; t=1717682937;
+	bh=C5obL2/HySdR11mXAom24xfy12nHSr0gss4Q3LB4t7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1lcSFkkCFXOJMs5GxpSIvQlYGS1WWF/u9zIKWk9hFZaAZWUfVz6dgaiGxTm0wZjb4
-	 HOWefmeCSDf30gfy2Y83rGlOeWIHGJsk+XGONjqzs5pwN6k4y5SAiWEgiUK6CGV8aL
-	 w152PlJDoxl/3KPpuqkOztqAXZG99wQTg1bI9OGk=
+	b=JFaJxx9nvQEGyLDtuJASaJcP9o+LMTj6EdCqGsiXiCU3DmDloVdb26XiFmMI9AV31
+	 brfHpufeh999w29IjzHR6Wyhn1XHXdWzzGKKiWkXRIUNdovaXMgTCB7ORvWSl4k2oj
+	 S3/MWACqoy9ENdRq4ssZ+Ltgy0bsjjsDwNh6ErcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Sai Pavan Boddu <sai.pavan.boddu@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/473] pwm: sti: Prepare removing pwm_chip from driver data
+Subject: [PATCH 6.9 089/374] i2c: cadence: Avoid fifo clear after start
 Date: Thu,  6 Jun 2024 16:01:08 +0200
-Message-ID: <20240606131704.530659393@linuxfoundation.org>
+Message-ID: <20240606131654.864749631@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,92 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
 
-[ Upstream commit 54272761ce7c475fa30a31b59b0cb89f7652b39e ]
+[ Upstream commit c2e55b449de7298a751ed0256251019d302af453 ]
 
-This prepares the driver for further changes that will drop struct
-pwm_chip chip from struct sti_pwm_chip. Use the pwm_chip as driver data
-instead of the sti_pwm_chip to get access to the pwm_chip in
-sti_pwm_remove() without using pc->chip.
+The Driver unintentionally programs ctrl reg to clear the fifo, which
+happens after the start of transaction. Previously, this was not an issue
+as it involved read-modified-write. However, this issue breaks i2c reads
+on QEMU, as i2c-read is executed before guest starts programming control
+register.
 
-Link: https://lore.kernel.org/r/56d53372aacff6871df4d6c6779c9dac94592696.1707900770.git.u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Stable-dep-of: 5bb0b194aeee ("pwm: sti: Simplify probe function using devm functions")
+Fixes: ff0cf7bca630 ("i2c: cadence: Remove unnecessary register reads")
+Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-sti.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/i2c/busses/i2c-cadence.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pwm/pwm-sti.c b/drivers/pwm/pwm-sti.c
-index c782378dff5e5..8f7aff51787be 100644
---- a/drivers/pwm/pwm-sti.c
-+++ b/drivers/pwm/pwm-sti.c
-@@ -571,6 +571,7 @@ static int sti_pwm_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct sti_pwm_compat_data *cdata;
-+	struct pwm_chip *chip;
- 	struct sti_pwm_chip *pc;
- 	unsigned int i;
- 	int irq, ret;
-@@ -578,6 +579,7 @@ static int sti_pwm_probe(struct platform_device *pdev)
- 	pc = devm_kzalloc(dev, sizeof(*pc), GFP_KERNEL);
- 	if (!pc)
- 		return -ENOMEM;
-+	chip = &pc->chip;
+diff --git a/drivers/i2c/busses/i2c-cadence.c b/drivers/i2c/busses/i2c-cadence.c
+index 4bb7d6756947c..2fce3e84ba646 100644
+--- a/drivers/i2c/busses/i2c-cadence.c
++++ b/drivers/i2c/busses/i2c-cadence.c
+@@ -633,6 +633,7 @@ static void cdns_i2c_mrecv(struct cdns_i2c *id)
  
- 	cdata = devm_kzalloc(dev, sizeof(*cdata), GFP_KERNEL);
- 	if (!cdata)
-@@ -654,9 +656,9 @@ static int sti_pwm_probe(struct platform_device *pdev)
- 			return -ENOMEM;
- 	}
- 
--	pc->chip.dev = dev;
--	pc->chip.ops = &sti_pwm_ops;
--	pc->chip.npwm = max(cdata->pwm_num_devs, cdata->cpt_num_devs);
-+	chip->dev = dev;
-+	chip->ops = &sti_pwm_ops;
-+	chip->npwm = max(cdata->pwm_num_devs, cdata->cpt_num_devs);
- 
- 	for (i = 0; i < cdata->cpt_num_devs; i++) {
- 		struct sti_cpt_ddata *ddata = &cdata->ddata[i];
-@@ -665,23 +667,24 @@ static int sti_pwm_probe(struct platform_device *pdev)
- 		mutex_init(&ddata->lock);
- 	}
- 
--	ret = pwmchip_add(&pc->chip);
-+	ret = pwmchip_add(chip);
- 	if (ret < 0) {
- 		clk_unprepare(pc->pwm_clk);
- 		clk_unprepare(pc->cpt_clk);
- 		return ret;
- 	}
- 
--	platform_set_drvdata(pdev, pc);
-+	platform_set_drvdata(pdev, chip);
- 
- 	return 0;
- }
- 
- static void sti_pwm_remove(struct platform_device *pdev)
- {
--	struct sti_pwm_chip *pc = platform_get_drvdata(pdev);
-+	struct pwm_chip *chip = platform_get_drvdata(pdev);
-+	struct sti_pwm_chip *pc = to_sti_pwmchip(chip);
- 
--	pwmchip_remove(&pc->chip);
-+	pwmchip_remove(chip);
- 
- 	clk_unprepare(pc->pwm_clk);
- 	clk_unprepare(pc->cpt_clk);
+ 	if (hold_clear) {
+ 		ctrl_reg &= ~CDNS_I2C_CR_HOLD;
++		ctrl_reg &= ~CDNS_I2C_CR_CLR_FIFO;
+ 		/*
+ 		 * In case of Xilinx Zynq SOC, clear the HOLD bit before transfer size
+ 		 * register reaches '0'. This is an IP bug which causes transfer size
 -- 
 2.43.0
 
