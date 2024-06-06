@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-48600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7228FE9B0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F93D8FEEBA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A19241F27049
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 036F2B23198
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADB219B3CA;
-	Thu,  6 Jun 2024 14:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0501C6188;
+	Thu,  6 Jun 2024 14:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J70di1Bp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSzSfD+R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADAA198A20;
-	Thu,  6 Jun 2024 14:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC2B197542;
+	Thu,  6 Jun 2024 14:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683055; cv=none; b=VgtrX4Uuu2GefG0kjJAuodIvMqUqvoELGA8Tv45rew5HmtTcVgkfD47XodVypK0Lf0KAsoPYUjJ5ObQS66NHvcLiBc6DZWb5fhW5YO01APWo5vjYtg0MJIKLX/G8QYKK0Vvd4LCdrO4vE9WRkd4F3gJ6kt2E/g30Fpb2D9OrdOc=
+	t=1717683694; cv=none; b=uYyWVLdZEm2OIyQTwDc5oqjCt/JGvUn1G8JpaGiraw34cKhKdpse70vkH4kOB5tZI2g7SLNOSP4yP/JfTxdsa/dVfXU1xlbPF9t4DZdJknkJKzr60WyitI1DsZXlyYfHZpk8garUdAFdcYFEsBB+FMiDfQieJyFKuvqXwi/xVaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683055; c=relaxed/simple;
-	bh=3n9XkyVschkoB2AVqgQUf+XsF/7OVm2727PBCrj1b1A=;
+	s=arc-20240116; t=1717683694; c=relaxed/simple;
+	bh=VeqAjJ4hyYCjMILq31zNiuYu1OC2jfyVX+Jz2+5nNz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m7+AsRcBVP5HzmmNqegFNs36FzJSZJ/8v4GM3FHizO6JMvOjEM86KXgMV7MmM8JzgjWthrVbfNvQopOuT7CyMXcLDhnDAlQsh/3jFa7T9J/FwbiNSUqtkHbrZ3/I81MjhBrYueSMTULF7z7GbKQlckVdtnfhOSyVaNwa11e149c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J70di1Bp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA23C4AF15;
-	Thu,  6 Jun 2024 14:10:55 +0000 (UTC)
+	 MIME-Version; b=YHYkIfbUsl1AkruwLTOr6wS9Q89ICBcMXfDLZ6t+2ABxtosxcods0O3azMdSBAdMSeMlaNJAHtKmYjhZZgDcphrva+TG1vbWGQ8sC1ejShNfjMHYjqDLO1vzSqFp7Zp39BYti/eezKAXrYOr/G0r1x3e5IXtdC9OcZ+P9iXjmpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSzSfD+R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC563C4AF0C;
+	Thu,  6 Jun 2024 14:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683055;
-	bh=3n9XkyVschkoB2AVqgQUf+XsF/7OVm2727PBCrj1b1A=;
+	s=korg; t=1717683694;
+	bh=VeqAjJ4hyYCjMILq31zNiuYu1OC2jfyVX+Jz2+5nNz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J70di1BpaRSx52BYU9OSDM/LexechO3Ni2+46Sp1fKlepwSce6H2f+TP7Q4s+5C5q
-	 a0xeWpZk0FXRsIuhN4menr6PTlwzV9QyyilmmvN//IwlE1m6T2jmRMInXOa23WVxZo
-	 Py0fM6LuENHCg+wvZkle+LM6u4QVMISvLGD3ZrCg=
+	b=eSzSfD+Rxe8xp4tqbu4q6i0R00mmwuur/0dMgSfgPka32Nan1QXTdWBsiEza2gLKD
+	 QKX5lHvjtrxEMrM2AsgmkXDAJtsAxgAvvjgx0PsLh8Xo4CVMxCO0Y7ujzP4EkJgg50
+	 TvABePpo1NQ0sEsjfA7f0s4u9RLhd2eiXjCqNrW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	kernel test robot <lkp@intel.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 299/374] net/mlx5: Use mlx5_ipsec_rx_status_destroy to correctly delete status rules
+Subject: [PATCH 6.6 606/744] media: sunxi: a83-mips-csi2: also select GENERIC_PHY
 Date: Thu,  6 Jun 2024 16:04:38 +0200
-Message-ID: <20240606131701.880848050@linuxfoundation.org>
+Message-ID: <20240606131751.922634643@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 16d66a4fa81da07bc4ed19f4e53b87263c2f8d38 ]
+[ Upstream commit 8237026159cb6760ad22e28d57b9a1c53b612d3a ]
 
-rx_create no longer allocates a modify_hdr instance that needs to be
-cleaned up. The mlx5_modify_header_dealloc call will lead to a NULL pointer
-dereference. A leak in the rules also previously occurred since there are
-now two rules populated related to status.
+When selecting GENERIC_PHY_MIPI_DPHY, also select GENERIC_PHY to
+prevent kconfig warnings:
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 109907067 P4D 109907067 PUD 116890067 PMD 0
-  Oops: 0000 [#1] SMP
-  CPU: 1 PID: 484 Comm: ip Not tainted 6.9.0-rc2-rrameshbabu+ #254
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS Arch Linux 1.16.3-1-1 04/01/2014
-  RIP: 0010:mlx5_modify_header_dealloc+0xd/0x70
-  <snip>
-  Call Trace:
-   <TASK>
-   ? show_regs+0x60/0x70
-   ? __die+0x24/0x70
-   ? page_fault_oops+0x15f/0x430
-   ? free_to_partial_list.constprop.0+0x79/0x150
-   ? do_user_addr_fault+0x2c9/0x5c0
-   ? exc_page_fault+0x63/0x110
-   ? asm_exc_page_fault+0x27/0x30
-   ? mlx5_modify_header_dealloc+0xd/0x70
-   rx_create+0x374/0x590
-   rx_add_rule+0x3ad/0x500
-   ? rx_add_rule+0x3ad/0x500
-   ? mlx5_cmd_exec+0x2c/0x40
-   ? mlx5_create_ipsec_obj+0xd6/0x200
-   mlx5e_accel_ipsec_fs_add_rule+0x31/0xf0
-   mlx5e_xfrm_add_state+0x426/0xc00
-  <snip>
+WARNING: unmet direct dependencies detected for GENERIC_PHY_MIPI_DPHY
+  Depends on [n]: GENERIC_PHY [=n]
+  Selected by [y]:
+  - VIDEO_SUN8I_A83T_MIPI_CSI2 [=y] && MEDIA_SUPPORT [=y] && MEDIA_PLATFORM_SUPPORT [=y] && MEDIA_PLATFORM_DRIVERS [=y] && V4L_PLATFORM_DRIVERS [=y] && VIDEO_DEV [=y] && (ARCH_SUNXI || COMPILE_TEST [=y]) && PM [=y] && COMMON_CLK [=y] && RESET_CONTROLLER [=y]
 
-Fixes: 94af50c0a9bb ("net/mlx5e: Unify esw and normal IPsec status table creation/destruction")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 94d7fd9692b5 ("media: sunxi: Depend on GENERIC_PHY_MIPI_DPHY")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/ZQ/WS8HC1A3F0Qn8@rli9-mobl
+Link: https://lore.kernel.org/linux-media/20230927040438.5589-1-rdunlap@infradead.org
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/platform/sunxi/sun8i-a83t-mipi-csi2/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-index 41a2543a52cda..e51b03d4c717f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-@@ -750,8 +750,7 @@ static int rx_create(struct mlx5_core_dev *mdev, struct mlx5e_ipsec *ipsec,
- err_fs_ft:
- 	if (rx->allow_tunnel_mode)
- 		mlx5_eswitch_unblock_encap(mdev);
--	mlx5_del_flow_rules(rx->status.rule);
--	mlx5_modify_header_dealloc(mdev, rx->status.modify_hdr);
-+	mlx5_ipsec_rx_status_destroy(ipsec, rx);
- err_add:
- 	mlx5_destroy_flow_table(rx->ft.status);
- err_fs_ft_status:
+diff --git a/drivers/media/platform/sunxi/sun8i-a83t-mipi-csi2/Kconfig b/drivers/media/platform/sunxi/sun8i-a83t-mipi-csi2/Kconfig
+index 47a8c0fb7eb9f..99c401e653bc4 100644
+--- a/drivers/media/platform/sunxi/sun8i-a83t-mipi-csi2/Kconfig
++++ b/drivers/media/platform/sunxi/sun8i-a83t-mipi-csi2/Kconfig
+@@ -8,6 +8,7 @@ config VIDEO_SUN8I_A83T_MIPI_CSI2
+ 	select VIDEO_V4L2_SUBDEV_API
+ 	select V4L2_FWNODE
+ 	select REGMAP_MMIO
++	select GENERIC_PHY
+ 	select GENERIC_PHY_MIPI_DPHY
+ 	help
+ 	   Support for the Allwinner A83T MIPI CSI-2 controller and D-PHY.
 -- 
 2.43.0
 
