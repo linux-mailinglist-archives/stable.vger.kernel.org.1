@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BDD8FEC79
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A48CA8FEAFE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 481A61C25243
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 822F31C26178
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5071B1406;
-	Thu,  6 Jun 2024 14:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E6A199250;
+	Thu,  6 Jun 2024 14:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4Fm5Q3s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdtUu0ME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B00F19AD5C;
-	Thu,  6 Jun 2024 14:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA4219924D;
+	Thu,  6 Jun 2024 14:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683371; cv=none; b=sfUC18rgfGH1PESkWFnJtONY9f4XsvcIeFf4yVsLjZONPaVdbKfxxK3xtYveQ2kP0cxoqMjY0abSq/ImNQ0EQ/VWaxoTwOWnxF6Gjyi0zAFG1vWc+GHhxKwdou7RVa1LQslavjavjMoJBujYnOsN8W7rZ8GSRVmrYdpWZ4Jw3kY=
+	t=1717683198; cv=none; b=pNOZDQ6GDukE6TwKDNujI+LjOciArUwH0t9KmyZbkLv03sLtFurXa+s3Pz6jiarVgj4/IVFN4sfWk1AhpTd/F46+PO5iFWwCdFMZVujRJ78YaA404cOd5xexiRUgXYmcGrOx/hWjnzVIva2FulY6QJp+iXqQLZsjQK6MsSWWUZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683371; c=relaxed/simple;
-	bh=Lp1D48iSNuiv7cTLvETdEfTCe8Q6OeuRkR+hablHPkE=;
+	s=arc-20240116; t=1717683198; c=relaxed/simple;
+	bh=RTgNlyAm1KlD5nWb7cY2KEHWAZoh3CXk/PGuqL+Py2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIcktSZ/0sORtfuqeertL6jcU5MUiTPjSPvIsiky0IZh5dT6+hOrvjChf8Jj+WRnMKEHEhp3l3mGSSHp5b6vfjHCR0Zkv0Jly+tDj4wugvMx5GHg0skQ08WtAgQLpBd/183xxwMzEwnGAqdQjlIcah+BZhEfnA0PkVHnj3n47k4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4Fm5Q3s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA24C2BD10;
-	Thu,  6 Jun 2024 14:16:10 +0000 (UTC)
+	 MIME-Version; b=u+Cen9/9TgcFnKCVhA94qvKzAx3VhX7gLY2ilQD91oio7HHd+HsRm4G610CVKuwj14K9TUiXXzA08q6YcAWZm8xZIf9EiOetr4DdQjf0Yk0iUPTnHFSe0Bbhl6hhwPJDJ5YtZqtlPVv9da8cxnjVQrMpDWO33qMulLcks2IA9tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdtUu0ME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B264C2BD10;
+	Thu,  6 Jun 2024 14:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683371;
-	bh=Lp1D48iSNuiv7cTLvETdEfTCe8Q6OeuRkR+hablHPkE=;
+	s=korg; t=1717683198;
+	bh=RTgNlyAm1KlD5nWb7cY2KEHWAZoh3CXk/PGuqL+Py2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K4Fm5Q3sQOjS6ekq/LyFRagAeJBkrUfZ0xCSF917OnIohJyodP7iCsPqhwbJ/CZnP
-	 eF76ok+fq6stpraaU8S6lO24JbaE9nusafJd+m2f22jWPNpPO2qzenxZyxOvvyiuVA
-	 TfEgcQBJmczaYUb9bKxxZid0kBPicqOZIDfP7lIA=
+	b=mdtUu0MEjJJWOFqEqp59k594kIq6cTI17VpdkhtOSyTAWkjNsKSWUf5EIinAOacBw
+	 1i0onRleoHqeY7n5gEv2/LOm4HU2BOAqj1vnk1uBiVPdd2U3JIzhabIcW5a07Ws3oJ
+	 +Z6yVAfcv2KIb5CMs+edDgFRA5zu/ouaTGfZERrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianchen Ding <dtcccc@linux.alibaba.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Tejun Heo <tj@kernel.org>,
+	Derek Fang <derek.fang@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 299/744] selftests: cgroup: skip test_cgcore_lesser_ns_open when cgroup2 mounted without nsdelegate
+Subject: [PATCH 6.1 042/473] ASoC: dt-bindings: rt5645: add cbj sleeve gpio property
 Date: Thu,  6 Jun 2024 15:59:31 +0200
-Message-ID: <20240606131741.979035892@linuxfoundation.org>
+Message-ID: <20240606131701.277412894@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,208 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianchen Ding <dtcccc@linux.alibaba.com>
+From: Derek Fang <derek.fang@realtek.com>
 
-[ Upstream commit 4793cb599b1bdc3d356f0374c2c99ffe890ae876 ]
+[ Upstream commit 306b38e3fa727d22454a148a364123709e356600 ]
 
-The test case test_cgcore_lesser_ns_open only tasks effect when cgroup2
-is mounted with "nsdelegate" mount option. If it misses this option, or
-is remounted without "nsdelegate", the test case will fail. For example,
-running bpf/test_cgroup_storage first, and then run cgroup/test_core will
-fail on test_cgcore_lesser_ns_open. Skip it if "nsdelegate" is not
-detected in cgroup2 mount options.
+Add an optional gpio property to control external CBJ circuits
+to avoid some electric noise caused by sleeve/ring2 contacts floating.
 
-Fixes: bf35a7879f1d ("selftests: cgroup: Test open-time cgroup namespace usage for migration checks")
-Signed-off-by: Tianchen Ding <dtcccc@linux.alibaba.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Derek Fang <derek.fang@realtek.com>
+
+Link: https://msgid.link/r/20240408091057.14165-2-derek.fang@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/cgroup/cgroup_util.c     | 8 +++++---
- tools/testing/selftests/cgroup/cgroup_util.h     | 2 +-
- tools/testing/selftests/cgroup/test_core.c       | 7 ++++++-
- tools/testing/selftests/cgroup/test_cpu.c        | 2 +-
- tools/testing/selftests/cgroup/test_cpuset.c     | 2 +-
- tools/testing/selftests/cgroup/test_freezer.c    | 2 +-
- tools/testing/selftests/cgroup/test_kill.c       | 2 +-
- tools/testing/selftests/cgroup/test_kmem.c       | 2 +-
- tools/testing/selftests/cgroup/test_memcontrol.c | 2 +-
- tools/testing/selftests/cgroup/test_zswap.c      | 2 +-
- 10 files changed, 19 insertions(+), 12 deletions(-)
+ Documentation/devicetree/bindings/sound/rt5645.txt | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/testing/selftests/cgroup/cgroup_util.c b/tools/testing/selftests/cgroup/cgroup_util.c
-index 0340d4ca8f51c..432db923bced0 100644
---- a/tools/testing/selftests/cgroup/cgroup_util.c
-+++ b/tools/testing/selftests/cgroup/cgroup_util.c
-@@ -195,10 +195,10 @@ int cg_write_numeric(const char *cgroup, const char *control, long value)
- 	return cg_write(cgroup, control, buf);
- }
+diff --git a/Documentation/devicetree/bindings/sound/rt5645.txt b/Documentation/devicetree/bindings/sound/rt5645.txt
+index 41a62fd2ae1ff..c1fa379f5f3ea 100644
+--- a/Documentation/devicetree/bindings/sound/rt5645.txt
++++ b/Documentation/devicetree/bindings/sound/rt5645.txt
+@@ -20,6 +20,11 @@ Optional properties:
+   a GPIO spec for the external headphone detect pin. If jd-mode = 0,
+   we will get the JD status by getting the value of hp-detect-gpios.
  
--int cg_find_unified_root(char *root, size_t len)
-+int cg_find_unified_root(char *root, size_t len, bool *nsdelegate)
- {
- 	char buf[10 * PAGE_SIZE];
--	char *fs, *mount, *type;
-+	char *fs, *mount, *type, *options;
- 	const char delim[] = "\n\t ";
- 
- 	if (read_text("/proc/self/mounts", buf, sizeof(buf)) <= 0)
-@@ -211,12 +211,14 @@ int cg_find_unified_root(char *root, size_t len)
- 	for (fs = strtok(buf, delim); fs; fs = strtok(NULL, delim)) {
- 		mount = strtok(NULL, delim);
- 		type = strtok(NULL, delim);
--		strtok(NULL, delim);
-+		options = strtok(NULL, delim);
- 		strtok(NULL, delim);
- 		strtok(NULL, delim);
- 
- 		if (strcmp(type, "cgroup2") == 0) {
- 			strncpy(root, mount, len);
-+			if (nsdelegate)
-+				*nsdelegate = !!strstr(options, "nsdelegate");
- 			return 0;
- 		}
- 	}
-diff --git a/tools/testing/selftests/cgroup/cgroup_util.h b/tools/testing/selftests/cgroup/cgroup_util.h
-index 1df7f202214af..89e8519fb2719 100644
---- a/tools/testing/selftests/cgroup/cgroup_util.h
-+++ b/tools/testing/selftests/cgroup/cgroup_util.h
-@@ -21,7 +21,7 @@ static inline int values_close(long a, long b, int err)
- 	return abs(a - b) <= (a + b) / 100 * err;
- }
- 
--extern int cg_find_unified_root(char *root, size_t len);
-+extern int cg_find_unified_root(char *root, size_t len, bool *nsdelegate);
- extern char *cg_name(const char *root, const char *name);
- extern char *cg_name_indexed(const char *root, const char *name, int index);
- extern char *cg_control(const char *cgroup, const char *control);
-diff --git a/tools/testing/selftests/cgroup/test_core.c b/tools/testing/selftests/cgroup/test_core.c
-index 80aa6b2373b96..a5672a91d273c 100644
---- a/tools/testing/selftests/cgroup/test_core.c
-+++ b/tools/testing/selftests/cgroup/test_core.c
-@@ -18,6 +18,8 @@
- #include "../kselftest.h"
- #include "cgroup_util.h"
- 
-+static bool nsdelegate;
++- cbj-sleeve-gpios:
++  a GPIO spec to control the external combo jack circuit to tie the sleeve/ring2
++  contacts to the ground or floating. It could avoid some electric noise from the
++  active speaker jacks.
 +
- static int touch_anon(char *buf, size_t size)
- {
- 	int fd;
-@@ -775,6 +777,9 @@ static int test_cgcore_lesser_ns_open(const char *root)
- 	pid_t pid;
- 	int status;
+ - realtek,in2-differential
+   Boolean. Indicate MIC2 input are differential, rather than single-ended.
  
-+	if (!nsdelegate)
-+		return KSFT_SKIP;
-+
- 	cg_test_a = cg_name(root, "cg_test_a");
- 	cg_test_b = cg_name(root, "cg_test_b");
- 
-@@ -862,7 +867,7 @@ int main(int argc, char *argv[])
- 	char root[PATH_MAX];
- 	int i, ret = EXIT_SUCCESS;
- 
--	if (cg_find_unified_root(root, sizeof(root)))
-+	if (cg_find_unified_root(root, sizeof(root), &nsdelegate))
- 		ksft_exit_skip("cgroup v2 isn't mounted\n");
- 
- 	if (cg_read_strstr(root, "cgroup.subtree_control", "memory"))
-diff --git a/tools/testing/selftests/cgroup/test_cpu.c b/tools/testing/selftests/cgroup/test_cpu.c
-index 24020a2c68dcd..186bf96f6a284 100644
---- a/tools/testing/selftests/cgroup/test_cpu.c
-+++ b/tools/testing/selftests/cgroup/test_cpu.c
-@@ -700,7 +700,7 @@ int main(int argc, char *argv[])
- 	char root[PATH_MAX];
- 	int i, ret = EXIT_SUCCESS;
- 
--	if (cg_find_unified_root(root, sizeof(root)))
-+	if (cg_find_unified_root(root, sizeof(root), NULL))
- 		ksft_exit_skip("cgroup v2 isn't mounted\n");
- 
- 	if (cg_read_strstr(root, "cgroup.subtree_control", "cpu"))
-diff --git a/tools/testing/selftests/cgroup/test_cpuset.c b/tools/testing/selftests/cgroup/test_cpuset.c
-index b061ed1e05b4d..4034d14ba69ac 100644
---- a/tools/testing/selftests/cgroup/test_cpuset.c
-+++ b/tools/testing/selftests/cgroup/test_cpuset.c
-@@ -249,7 +249,7 @@ int main(int argc, char *argv[])
- 	char root[PATH_MAX];
- 	int i, ret = EXIT_SUCCESS;
- 
--	if (cg_find_unified_root(root, sizeof(root)))
-+	if (cg_find_unified_root(root, sizeof(root), NULL))
- 		ksft_exit_skip("cgroup v2 isn't mounted\n");
- 
- 	if (cg_read_strstr(root, "cgroup.subtree_control", "cpuset"))
-diff --git a/tools/testing/selftests/cgroup/test_freezer.c b/tools/testing/selftests/cgroup/test_freezer.c
-index ff519029f6f43..969e9f0f495c3 100644
---- a/tools/testing/selftests/cgroup/test_freezer.c
-+++ b/tools/testing/selftests/cgroup/test_freezer.c
-@@ -827,7 +827,7 @@ int main(int argc, char *argv[])
- 	char root[PATH_MAX];
- 	int i, ret = EXIT_SUCCESS;
- 
--	if (cg_find_unified_root(root, sizeof(root)))
-+	if (cg_find_unified_root(root, sizeof(root), NULL))
- 		ksft_exit_skip("cgroup v2 isn't mounted\n");
- 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
- 		switch (tests[i].fn(root)) {
-diff --git a/tools/testing/selftests/cgroup/test_kill.c b/tools/testing/selftests/cgroup/test_kill.c
-index 6153690319c9c..0e5bb6c7307a5 100644
---- a/tools/testing/selftests/cgroup/test_kill.c
-+++ b/tools/testing/selftests/cgroup/test_kill.c
-@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
- 	char root[PATH_MAX];
- 	int i, ret = EXIT_SUCCESS;
- 
--	if (cg_find_unified_root(root, sizeof(root)))
-+	if (cg_find_unified_root(root, sizeof(root), NULL))
- 		ksft_exit_skip("cgroup v2 isn't mounted\n");
- 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
- 		switch (tests[i].fn(root)) {
-diff --git a/tools/testing/selftests/cgroup/test_kmem.c b/tools/testing/selftests/cgroup/test_kmem.c
-index c82f974b85c94..137506db03127 100644
---- a/tools/testing/selftests/cgroup/test_kmem.c
-+++ b/tools/testing/selftests/cgroup/test_kmem.c
-@@ -420,7 +420,7 @@ int main(int argc, char **argv)
- 	char root[PATH_MAX];
- 	int i, ret = EXIT_SUCCESS;
- 
--	if (cg_find_unified_root(root, sizeof(root)))
-+	if (cg_find_unified_root(root, sizeof(root), NULL))
- 		ksft_exit_skip("cgroup v2 isn't mounted\n");
- 
- 	/*
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index c7c9572003a8c..b462416b38061 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -1314,7 +1314,7 @@ int main(int argc, char **argv)
- 	char root[PATH_MAX];
- 	int i, proc_status, ret = EXIT_SUCCESS;
- 
--	if (cg_find_unified_root(root, sizeof(root)))
-+	if (cg_find_unified_root(root, sizeof(root), NULL))
- 		ksft_exit_skip("cgroup v2 isn't mounted\n");
- 
- 	/*
-diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index 49def87a909bd..6927b4a06dee6 100644
---- a/tools/testing/selftests/cgroup/test_zswap.c
-+++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -250,7 +250,7 @@ int main(int argc, char **argv)
- 	char root[PATH_MAX];
- 	int i, ret = EXIT_SUCCESS;
- 
--	if (cg_find_unified_root(root, sizeof(root)))
-+	if (cg_find_unified_root(root, sizeof(root), NULL))
- 		ksft_exit_skip("cgroup v2 isn't mounted\n");
- 
- 	if (!zswap_configured())
+@@ -68,6 +73,7 @@ codec: rt5650@1a {
+ 	compatible = "realtek,rt5650";
+ 	reg = <0x1a>;
+ 	hp-detect-gpios = <&gpio 19 0>;
++	cbj-sleeve-gpios = <&gpio 20 0>;
+ 	interrupt-parent = <&gpio>;
+ 	interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
+ 	realtek,dmic-en = "true";
 -- 
 2.43.0
 
