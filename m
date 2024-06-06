@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-48885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C59E08FEAF7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C998FEC95
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62CB0B24DEE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E914B1F2993D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4BF1A2C02;
-	Thu,  6 Jun 2024 14:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F93D19B3D1;
+	Thu,  6 Jun 2024 14:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7hSZ2i0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USPZs8MM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0461196D98;
-	Thu,  6 Jun 2024 14:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E920196C6F;
+	Thu,  6 Jun 2024 14:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683195; cv=none; b=kBq9dJ5cqbasQmSe1WSNYCoRm2Zl8O1MBKsrGawg1jpXdqRI7VN2ZzN2+qo+nfYSljif6vPxecf8ijCexHbCCLZU70q1A4M2gjNDb5hC+V7eI4drbYxcKHIqW4pLNUqCaLYcVKRFLMHKnk0pBM1D4tEiChaUZStDhcrg7Qf+NnA=
+	t=1717683384; cv=none; b=TYmwWjmWvT5YqVe8ddlcz7W6apKn8ZypG5GH2uNIPplgOKRXE1O8f9EoixwVX6+fd/iy1qp5957svPtactcRPJbxAo7SPwfoROdi/J4bWxd6Y8288Dcvr9h/ibT1C3JtWwyVD/j8wUQ+XTL3UlMbqKfRwXuLXPCejoRzb7rQISQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683195; c=relaxed/simple;
-	bh=j7sucH7T0cWFkLXmBcpzi1ChCBKiNaklZYd2zaqeFJ0=;
+	s=arc-20240116; t=1717683384; c=relaxed/simple;
+	bh=X0tn2SAI2rZovVk3vHtxee2mn4ZztOxkSxnCtZzRHU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XUIx+KB7JV69nOSVUkH1uh2Sr6xs3blIsKtd3D2mOeAUtyURCrbLC4WV58UIkcCmxSB5c9Z+bCW/mgyke7tcmrDDOSYtXLZ+wkwzCvdpOLjvd4ft8Ljgc8Zxf0fCI3s9jYJf42IJg5ld3wP/6KJKP8U39K5hgtZjr1ndcGVd0oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7hSZ2i0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00E3C2BD10;
-	Thu,  6 Jun 2024 14:13:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hhbRZ6IULVFoCIBknMeh3mSMxZFZ2Hsn7vwVwTlQMCeJ67XMZjCM5eCCGcYzQ0EiETuh2yXzzt285T76sx1S2IGlVxu34UfylIU4uml0E29Cy98X1m2aH0qSL+nRAbpd0JAzzCV2l48WyuWHNIMhKgjvX/IOMoxup41K2P52P2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USPZs8MM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C098C2BD10;
+	Thu,  6 Jun 2024 14:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683194;
-	bh=j7sucH7T0cWFkLXmBcpzi1ChCBKiNaklZYd2zaqeFJ0=;
+	s=korg; t=1717683384;
+	bh=X0tn2SAI2rZovVk3vHtxee2mn4ZztOxkSxnCtZzRHU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7hSZ2i0sOg6OZmW5Ingh61VUfjUcTZXNNNFzOA9RqVdsrvlP8Yp8aEkyKgUfT4B9
-	 0Wz5j0lXRxjGMlppRR8OoFPII+lct2xpz5oLJj9N5fVPVxQqOPiKNjxz+5DcXI08lM
-	 MBT9EHguZ5ZwNa+XvjJRDyG9+wVmLBQr9ob7S2/I=
+	b=USPZs8MM2yAF+oB0PQqPPD9+SY+Whf+8zcRVV4PedxUr1ScQHLasJKbwNqfS6VPn9
+	 DfF8N1rzIGN988mvByJG2nSTDZmwwHkPjQsobonudrsBEGveJddzly/ZvIB4JEdeml
+	 9ipXA9IIx7SJ4+Ay9XKDJ5DC5tQ7SQtzSbt3Ubi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Glitta <glittao@gmail.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Daniel Latypov <dlatypov@google.com>,
-	Marco Elver <elver@google.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/473] mm/slub, kunit: Use inverted data to corrupt kmem cache
+Subject: [PATCH 6.6 325/744] drm/bridge: dpc3433: Dont log an error when DSI host cant be found
 Date: Thu,  6 Jun 2024 15:59:57 +0200
-Message-ID: <20240606131702.128529466@linuxfoundation.org>
+Message-ID: <20240606131742.862214078@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit b1080c667b3b2c8c38a7fa83ca5567124887abae ]
+[ Upstream commit 24f4f575214de776539d346b99b8717bffa8ebba ]
 
-Two failure patterns are seen randomly when running slub_kunit tests with
-CONFIG_SLAB_FREELIST_RANDOM and CONFIG_SLAB_FREELIST_HARDENED enabled.
+Given that failing to find a DSI host causes the driver to defer probe,
+make use of dev_err_probe() to log the reason. This makes the defer
+probe reason available and avoids alerting userspace about something
+that is not necessarily an error.
 
-Pattern 1:
-     # test_clobber_zone: pass:1 fail:0 skip:0 total:1
-     ok 1 test_clobber_zone
-     # test_next_pointer: EXPECTATION FAILED at lib/slub_kunit.c:72
-     Expected 3 == slab_errors, but
-         slab_errors == 0 (0x0)
-     # test_next_pointer: EXPECTATION FAILED at lib/slub_kunit.c:84
-     Expected 2 == slab_errors, but
-         slab_errors == 0 (0x0)
-     # test_next_pointer: pass:0 fail:1 skip:0 total:1
-     not ok 2 test_next_pointer
+Also move the "failed to attach" error message so that it's only printed
+when the devm_mipi_dsi_attach() call fails.
 
-In this case, test_next_pointer() overwrites p[s->offset], but the data
-at p[s->offset] is already 0x12.
-
-Pattern 2:
-     ok 1 test_clobber_zone
-     # test_next_pointer: EXPECTATION FAILED at lib/slub_kunit.c:72
-     Expected 3 == slab_errors, but
-         slab_errors == 2 (0x2)
-     # test_next_pointer: pass:0 fail:1 skip:0 total:1
-     not ok 2 test_next_pointer
-
-In this case, p[s->offset] has a value other than 0x12, but one of the
-expected failures is nevertheless missing.
-
-Invert data instead of writing a fixed value to corrupt the cache data
-structures to fix the problem.
-
-Fixes: 1f9f78b1b376 ("mm/slub, kunit: add a KUnit test for SLUB debugging functionality")
-Cc: Oliver Glitta <glittao@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-CC: Daniel Latypov <dlatypov@google.com>
-Cc: Marco Elver <elver@google.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Fixes: 6352cd451ddb ("drm: bridge: Add TI DLPC3433 DSI to DMD bridge")
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-7-619a28148e5c@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/slub_kunit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/ti-dlpc3433.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/lib/slub_kunit.c b/lib/slub_kunit.c
-index 7a0564d7cb7ae..9384747d90e5f 100644
---- a/lib/slub_kunit.c
-+++ b/lib/slub_kunit.c
-@@ -39,7 +39,7 @@ static void test_next_pointer(struct kunit *test)
+diff --git a/drivers/gpu/drm/bridge/ti-dlpc3433.c b/drivers/gpu/drm/bridge/ti-dlpc3433.c
+index b65632ec7e7da..3f933ba294682 100644
+--- a/drivers/gpu/drm/bridge/ti-dlpc3433.c
++++ b/drivers/gpu/drm/bridge/ti-dlpc3433.c
+@@ -319,12 +319,11 @@ static int dlpc_host_attach(struct dlpc *dlpc)
+ 		.channel = 0,
+ 		.node = NULL,
+ 	};
++	int ret;
  
- 	ptr_addr = (unsigned long *)(p + s->offset);
- 	tmp = *ptr_addr;
--	p[s->offset] = 0x12;
-+	p[s->offset] = ~p[s->offset];
+ 	host = of_find_mipi_dsi_host_by_node(dlpc->host_node);
+-	if (!host) {
+-		DRM_DEV_ERROR(dev, "failed to find dsi host\n");
+-		return -EPROBE_DEFER;
+-	}
++	if (!host)
++		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
  
- 	/*
- 	 * Expecting three errors.
+ 	dlpc->dsi = mipi_dsi_device_register_full(host, &info);
+ 	if (IS_ERR(dlpc->dsi)) {
+@@ -336,7 +335,11 @@ static int dlpc_host_attach(struct dlpc *dlpc)
+ 	dlpc->dsi->format = MIPI_DSI_FMT_RGB565;
+ 	dlpc->dsi->lanes = dlpc->dsi_lanes;
+ 
+-	return devm_mipi_dsi_attach(dev, dlpc->dsi);
++	ret = devm_mipi_dsi_attach(dev, dlpc->dsi);
++	if (ret)
++		DRM_DEV_ERROR(dev, "failed to attach dsi host\n");
++
++	return ret;
+ }
+ 
+ static int dlpc3433_probe(struct i2c_client *client)
+@@ -367,10 +370,8 @@ static int dlpc3433_probe(struct i2c_client *client)
+ 	drm_bridge_add(&dlpc->bridge);
+ 
+ 	ret = dlpc_host_attach(dlpc);
+-	if (ret) {
+-		DRM_DEV_ERROR(dev, "failed to attach dsi host\n");
++	if (ret)
+ 		goto err_remove_bridge;
+-	}
+ 
+ 	return 0;
+ 
 -- 
 2.43.0
 
