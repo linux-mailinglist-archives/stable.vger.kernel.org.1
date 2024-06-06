@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-49490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75D88FED77
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D7CC8FED7B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8B421C23695
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE65B1F210F8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9D71BB6A2;
-	Thu,  6 Jun 2024 14:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F741BB6B1;
+	Thu,  6 Jun 2024 14:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJYpI4TD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJtmogG3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB34F1BB69D;
-	Thu,  6 Jun 2024 14:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79AF1BB6AE;
+	Thu,  6 Jun 2024 14:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683491; cv=none; b=SiKHEpBA+DKmwbQnr8Mbz1v1UIaVSO/QFJNiCtDwEVX/NTP8B4ddY+KOdQvbkz1tu3jTVkvGAxqGoSOGcIJkTfYNvbTcusahv4yn5Ta9IHXfX+4aef7JgFHMOe1enk7TRByWrjqIQGfBqdVFzQEDizqpb9xbonI6vJ3d9Sn8Sko=
+	t=1717683492; cv=none; b=D0UNU98JDUlKa85IH6MAnfjUBqrj2LFlU7nqdTbafnQa9onA5VRXNEV6X7dW1cKmpwEWXD8uPB2dq/R6J9UzmG+Bf0nHkV85EI5jLECLKnAui3+bWDE2mrww4OsKtSdijDPoL55oPPI+BOy1kKNw5SiFZvpkADqYZr2ubIJNbD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683491; c=relaxed/simple;
-	bh=aJ0t4koR/Xl6ceWtvqTdfNjIob6D7NjitTE1zLhr+fc=;
+	s=arc-20240116; t=1717683492; c=relaxed/simple;
+	bh=ebeFKyoihusRIPTMQFuayFCw/imlrHtDz936ofhRUUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3vXJTP2O6TTtbSlbryzuL8IZ/iRnUHVEdv9WXyQVOD+KsTRNA3IZ2YuwRA3qPadh84j7vF0KVhoAPOOr63J1KGxEhqxQOF0I1kX67iR+7fcpAhPQ576sSu6SZ3e2Z2cjQzWqE0g/r8Wjz5qf/KO1R+jn3ZAfdeQjaZvgYyyQJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJYpI4TD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3686AC32782;
-	Thu,  6 Jun 2024 14:18:11 +0000 (UTC)
+	 MIME-Version; b=mF8DKCL4dwHndJ2LMGBURcTvRLCFIb0/4bxXZ6lS/C2afIh6c4ZkIFKLo37arw/52c290wa3m1wJtVqyUdGQzzxPZYB9ENMimr3ym8AuoT9gHUWyD7a38rNJnOmry4kx3h66uyADlBfrwJmawC+rCPlRUZXfKgzsJisemQGUjCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJtmogG3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927DDC32786;
+	Thu,  6 Jun 2024 14:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683491;
-	bh=aJ0t4koR/Xl6ceWtvqTdfNjIob6D7NjitTE1zLhr+fc=;
+	s=korg; t=1717683492;
+	bh=ebeFKyoihusRIPTMQFuayFCw/imlrHtDz936ofhRUUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZJYpI4TDj3H+wHk6APf2fLpD8rgDyEidup66BX8XKqqv3frh38WzzuOZPz+BOrUFq
-	 RwTaYeGXGzGB76wYDyQxPfyLfX7y69uncAeKq5LOls4liv205spdrpXWvSsACGsUME
-	 2kJ2lM3S2NhqKRKq7NT/vUdUxeoaDqu7Gy149uqQ=
+	b=SJtmogG3KUte8K59BLffWKq7RFpi9TiX1zF4KQfOeTyY8kTi4DMaFp0WalZqzpwoQ
+	 hxXd1wgegwVpsCC6b5VTGs9ZZxgymcg8B7qw0Vph+opUQxgcnQ7zRy38bHe6gbDoS3
+	 Xcanu2KYIScjX2rqJb8eUQ2JI5ZmWQEdMn+HByt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 434/744] f2fs: fix to relocate check condition in f2fs_fallocate()
-Date: Thu,  6 Jun 2024 16:01:46 +0200
-Message-ID: <20240606131746.393997959@linuxfoundation.org>
+Subject: [PATCH 6.6 435/744] f2fs: fix to check pinfile flag in f2fs_move_file_range()
+Date: Thu,  6 Jun 2024 16:01:47 +0200
+Message-ID: <20240606131746.428100171@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,58 +68,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 278a6253a673611dbc8ab72a3b34b151a8e75822 ]
+[ Upstream commit e07230da0500e0919a765037c5e81583b519be2c ]
 
-compress and pinfile flag should be checked after inode lock held to
-avoid race condition, fix it.
+ioctl(F2FS_IOC_MOVE_RANGE) can truncate or punch hole on pinned file,
+fix to disallow it.
 
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
 Fixes: 5fed0be8583f ("f2fs: do not allow partial truncation on pinned file")
 Signed-off-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ fs/f2fs/file.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 420939ca36422..d908ef72fef6e 100644
+index d908ef72fef6e..5c24d18f4e297 100644
 --- a/fs/f2fs/file.c
 +++ b/fs/f2fs/file.c
-@@ -1797,15 +1797,6 @@ static long f2fs_fallocate(struct file *file, int mode,
- 		(mode & (FALLOC_FL_COLLAPSE_RANGE | FALLOC_FL_INSERT_RANGE)))
- 		return -EOPNOTSUPP;
+@@ -2813,7 +2813,8 @@ static int f2fs_move_file_range(struct file *file_in, loff_t pos_in,
+ 			goto out;
+ 	}
  
--	/*
--	 * Pinned file should not support partial truncation since the block
--	 * can be used by applications.
--	 */
--	if ((f2fs_compressed_file(inode) || f2fs_is_pinned_file(inode)) &&
--		(mode & (FALLOC_FL_PUNCH_HOLE | FALLOC_FL_COLLAPSE_RANGE |
--			FALLOC_FL_ZERO_RANGE | FALLOC_FL_INSERT_RANGE)))
--		return -EOPNOTSUPP;
--
- 	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE |
- 			FALLOC_FL_COLLAPSE_RANGE | FALLOC_FL_ZERO_RANGE |
- 			FALLOC_FL_INSERT_RANGE))
-@@ -1813,6 +1804,17 @@ static long f2fs_fallocate(struct file *file, int mode,
- 
- 	inode_lock(inode);
- 
-+	/*
-+	 * Pinned file should not support partial truncation since the block
-+	 * can be used by applications.
-+	 */
-+	if ((f2fs_compressed_file(inode) || f2fs_is_pinned_file(inode)) &&
-+		(mode & (FALLOC_FL_PUNCH_HOLE | FALLOC_FL_COLLAPSE_RANGE |
-+			FALLOC_FL_ZERO_RANGE | FALLOC_FL_INSERT_RANGE))) {
-+		ret = -EOPNOTSUPP;
-+		goto out;
-+	}
-+
- 	ret = file_modified(file);
- 	if (ret)
- 		goto out;
+-	if (f2fs_compressed_file(src) || f2fs_compressed_file(dst)) {
++	if (f2fs_compressed_file(src) || f2fs_compressed_file(dst) ||
++		f2fs_is_pinned_file(src) || f2fs_is_pinned_file(dst)) {
+ 		ret = -EOPNOTSUPP;
+ 		goto out_unlock;
+ 	}
 -- 
 2.43.0
 
