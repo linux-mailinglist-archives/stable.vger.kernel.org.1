@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2678FE896
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9DD48FECBC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64481C24228
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF5031C25D9D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4279A19751C;
-	Thu,  6 Jun 2024 14:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D108B1B29B0;
+	Thu,  6 Jun 2024 14:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMxGcTU4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhPk8OgD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0177B196C8E;
-	Thu,  6 Jun 2024 14:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D57C19B3F3;
+	Thu,  6 Jun 2024 14:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682912; cv=none; b=SQ8e/ukvkefdPIEGWeLjtr665qEv93fUi4tYRr6V81nP4foecVZQcOk9WCfK6gicCN81TZklZnP7FVgQfV9ymBU8c+fuX2NZ7f/L5qu3zBia4xh8VTNWCvP6ydqoSZ22K/o5waeQx7X27pxKDiD0zPURf6jPNGV1R//1FMYGIZw=
+	t=1717683403; cv=none; b=fWjJYCDidQCpjfT3jSDsn/LaldCnVMq3VS5zl5GTkVA1mLlip9bTOMNqxcnjdfHXx5Z9p+PnG7eQmXdd2QMcLXXJqm2c33sTnXSsL0MQndflKqIu5IGMkYgGS9JVEpVqmnyEAiA9RG1/D0bv0mYf8t44LvVHbBWVsWmN5Guz6so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682912; c=relaxed/simple;
-	bh=vRSIQlaSpWhIqbxsFO5ZtElEnBmHB7CpRZ0GP6FkuDg=;
+	s=arc-20240116; t=1717683403; c=relaxed/simple;
+	bh=n+7WWibWjur7AIQaaRStphCk7NUYYcwp2eO4LEn9tIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FIcE9MN3BRx5qV99MUS6mM3Xxmn+RO+D3mjvLkDIc/7OejyM2Tzz6mUTOuxdW+CCdISxSlg0UEd+33IgD1/F7zR9GtmFgRe+mz/K5ekdJslFd8Dl70Z36tzw3GxrbNU6Hkww52SR7Hf2vy9xHrpoP+hbpfYXX/gkAVDDNQ1brFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMxGcTU4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BA2C4AF08;
-	Thu,  6 Jun 2024 14:08:31 +0000 (UTC)
+	 MIME-Version; b=dptlNPXn2juusaBAatJUwzW1FUtmqdliTOusa0Gq3sjtfWlNaCJJBcL6qK/P/8I62gfMEFIWgAzQixVBbLJvHmx5pUBvJLMhvJcjPT/2BCneekEvwyuVeYjrEOZz2J1A18HHc7BcBp13hE8Fvzj73gl6kT+xHcHY3AvzNGXX+ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhPk8OgD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE3DC2BD10;
+	Thu,  6 Jun 2024 14:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682911;
-	bh=vRSIQlaSpWhIqbxsFO5ZtElEnBmHB7CpRZ0GP6FkuDg=;
+	s=korg; t=1717683403;
+	bh=n+7WWibWjur7AIQaaRStphCk7NUYYcwp2eO4LEn9tIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WMxGcTU4bOlRVK//Ktl2hgibBald7mAQxfpNVVXFwRDj+HDNJSH/yiPzZCfBiCIPY
-	 6saj5z16pKLYhX+VGrHHr1mNDeiqnSfQ0KhgecSDNlGaLr+8zXEDPfOhOra4jQ1Yaa
-	 vhIqUdRjw2xiBA+fNIAjJL08+yaFj+X8x3yQIydw=
+	b=MhPk8OgD6DUJcgNuyVT+zt/1GsbczXPET6aS43JVJNW9/3hX9L3wlbiGQpG3yeKSj
+	 2pccvr5A2awDf9iGtWuZ6hnORUoTq7E4+65134AlWiOErs/dM8r8Yo4RPnzM3i7p7S
+	 b4QmQrwAlnIST7xYc0DRWD/lK3GJTa9umySnZYyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 040/374] f2fs: compress: fix to relocate check condition in f2fs_{release,reserve}_compress_blocks()
+Subject: [PATCH 6.6 347/744] clk: qcom: clk-alpha-pll: remove invalid Stromer register offset
 Date: Thu,  6 Jun 2024 16:00:19 +0200
-Message-ID: <20240606131653.164934291@linuxfoundation.org>
+Message-ID: <20240606131743.597685797@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 7c5dffb3d90c5921b91981cc663e02757d90526e ]
+[ Upstream commit 4f2bc4acbb1916b8cd2ce4bb3ba7b1cd7cb705fa ]
 
-Compress flag should be checked after inode lock held to avoid
-racing w/ f2fs_setflags_common(), fix it.
+The offset of the CONFIG_CTL_U register defined for the Stromer
+PLL is wrong. It is not aligned on a 4 bytes boundary which might
+causes errors in regmap operations.
 
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
-Reported-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Closes: https://lore.kernel.org/linux-f2fs-devel/CAHJ8P3LdZXLc2rqeYjvymgYHr2+YLuJ0sLG9DdsJZmwO7deuhw@mail.gmail.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Maybe the intention behind of using the 0xff value was to indicate
+that the register is not implemented in the PLL, but this is not
+verified anywhere in the code. Moreover, this value is not used
+even in other register offset arrays despite that those PLLs also
+have unimplemented registers.
+
+Additionally, on the Stromer PLLs the current code only touches
+the CONFIG_CTL_U register if the result of pll_has_64bit_config()
+is true which condition is not affected by the change.
+
+Due to the reasons above, simply remove the CONFIG_CTL_U entry
+from the Stromer specific array.
+
+Fixes: e47a4f55f240 ("clk: qcom: clk-alpha-pll: Add support for Stromer PLLs")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240311-alpha-pll-stromer-cleanup-v1-1-f7c0c5607cca@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/clk/qcom/clk-alpha-pll.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 06e3a69b45dc7..e96d05f13a336 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -3525,9 +3525,6 @@ static int f2fs_release_compress_blocks(struct file *filp, unsigned long arg)
- 	if (!f2fs_sb_has_compression(sbi))
- 		return -EOPNOTSUPP;
- 
--	if (!f2fs_compressed_file(inode))
--		return -EINVAL;
--
- 	if (f2fs_readonly(sbi->sb))
- 		return -EROFS;
- 
-@@ -3546,7 +3543,8 @@ static int f2fs_release_compress_blocks(struct file *filp, unsigned long arg)
- 		goto out;
- 	}
- 
--	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
-+	if (!f2fs_compressed_file(inode) ||
-+		is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
- 		ret = -EINVAL;
- 		goto out;
- 	}
-@@ -3707,9 +3705,6 @@ static int f2fs_reserve_compress_blocks(struct file *filp, unsigned long arg)
- 	if (!f2fs_sb_has_compression(sbi))
- 		return -EOPNOTSUPP;
- 
--	if (!f2fs_compressed_file(inode))
--		return -EINVAL;
--
- 	if (f2fs_readonly(sbi->sb))
- 		return -EROFS;
- 
-@@ -3721,7 +3716,8 @@ static int f2fs_reserve_compress_blocks(struct file *filp, unsigned long arg)
- 
- 	inode_lock(inode);
- 
--	if (!is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
-+	if (!f2fs_compressed_file(inode) ||
-+		!is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
- 		ret = -EINVAL;
- 		goto unlock_inode;
- 	}
+diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
+index 892f2efc1c32c..82420e81da35b 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -212,7 +212,6 @@ const u8 clk_alpha_pll_regs[][PLL_OFF_MAX_REGS] = {
+ 		[PLL_OFF_USER_CTL] = 0x18,
+ 		[PLL_OFF_USER_CTL_U] = 0x1c,
+ 		[PLL_OFF_CONFIG_CTL] = 0x20,
+-		[PLL_OFF_CONFIG_CTL_U] = 0xff,
+ 		[PLL_OFF_TEST_CTL] = 0x30,
+ 		[PLL_OFF_TEST_CTL_U] = 0x34,
+ 		[PLL_OFF_STATUS] = 0x28,
 -- 
 2.43.0
 
