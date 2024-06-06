@@ -1,149 +1,125 @@
-Return-Path: <stable+bounces-48269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE2BF8FDE50
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 07:48:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F5C8FDEFD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 08:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63B9F282883
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 05:48:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 487D21F23536
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 06:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6182039AE7;
-	Thu,  6 Jun 2024 05:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DDC130497;
+	Thu,  6 Jun 2024 06:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QtJGZlhg"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="EWfcv31u"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442A63BB59;
-	Thu,  6 Jun 2024 05:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989807A13A
+	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 06:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717652921; cv=none; b=OQZHTwoWUH/xH1FhoT6OKfZCcU8SUkRqZpZhlGFQulAfYYW6dOgRKfLGNnOYtXVP3U+u0QFeAWlmu7t7W/ZZG5vRWoL0OBaTTxdydxwVtP+xqC8qnxpO1x9ypvRxDwucw/5USylt93ZK4VeqvJAjei0Er/xEsIGWaVJMhbxG5PI=
+	t=1717656204; cv=none; b=otcwEHN0skT3sAKKYfQL3Jl2DPOsBILcacY25fXuRgUvbnHXo8Xm/DpU95J/P8Y1SLCoOZygUvV7NMulURcN4U25ST1Xi4qt+3j4glleafQ+a651GX8Of9P9G8ccKKjlXF3PN/Ine+QELmtoHv6f8J4FgNgxqJnlcGxngw0Ue4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717652921; c=relaxed/simple;
-	bh=S9BRO1CiBzd0Cxt3mGbAHDhzFMKInH76sn7ppWFxmPU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hZNVBsFwyDFY2R0C/o9eJi4MmfNwxhbQMiBwSEqM80I8pTq9+ht1SgRVzOEvges7/5D9qT4oj0PGNM5cjdy+yLR+SPDnwje0FZujNva80NYVfXVo7mB7ZzcejZoI4u2OjyKHDZ52MFwGjWJeGVg1+9P/ALsxNkgNCq+utL0UaQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QtJGZlhg; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4564fQ1l031562;
-	Thu, 6 Jun 2024 05:48:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc : content-type : date
- : from : in-reply-to : message-id : mime-version : references : subject :
- to; s=pp1; bh=F1QxdnanM0DI+xMmZuQK1XU1kD0sRkv46FM+ALv8/RY=;
- b=QtJGZlhgqgx4YR8FKPwgMLc7QHJXCg1ncKiGb8ewrAUZYkfnr6a4dxPLnWAg13NWNePA
- vGZudAhNawb/e7bGe0QaJ/Pldlz+cuaBQ4Nr86ua8HjDUu1Kxx4By4nAV4JJ4+4Vj4AN
- tNXmeQDcTecG7/V5UjT0gVg+ypwNw1npXaZW8rtiIYTD0rgCPLqmKWybQEdrMixGqrNH
- Gv/bgOpJvacHCgUAfcu24rFbOSZ4Gm/3v5PNswzqqp7HTUa0fnpc0winUYwuXwJ0Z+Mn
- iOeM9Fw1zdPWbAOhZiMxJio+X2IevmzNgnr7ShIRk78MnLVf9qKTobWdKDA4ALwx8M6u 0w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yk4n18bee-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Jun 2024 05:48:24 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4565mNsq004930;
-	Thu, 6 Jun 2024 05:48:23 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yk4n18be9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Jun 2024 05:48:23 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4564gXQW008458;
-	Thu, 6 Jun 2024 05:48:22 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ygec10xc1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Jun 2024 05:48:22 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4565mIDC25559620
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Jun 2024 05:48:20 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 75F6F20956;
-	Thu,  6 Jun 2024 05:46:16 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 365242093B;
-	Thu,  6 Jun 2024 05:46:12 +0000 (GMT)
-Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.43.32.207])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  6 Jun 2024 05:46:11 +0000 (GMT)
-Date: Thu, 6 Jun 2024 11:16:08 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com, corbet@lwn.net
-Cc: linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org,
-        kvm@vger.kernel.org, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] Fix doorbell emulation for v2 API on PPC
-Message-ID: <yzixdicgdqcten6eglcc4zlhn3sbnqrax3ymzzqvdmxvdh63zx@xymyajel3aoh>
-References: <20240605113913.83715-1-gautam@linux.ibm.com>
+	s=arc-20240116; t=1717656204; c=relaxed/simple;
+	bh=dRNutEV6Irzt0DuSYxtF3OmJPSVdRGj+rXxKF2Yers4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ua38aZ4KWg0tXXwzl9xoeClpa59ZuKVPPIaQz6TvhT32d/fftBuRWj9cioVnQ1nGYcp+jOCibI4qM3GgQAtm75i9IqE9DSqBg/IChO+iqkBAHzPncYeR7tzUMUMJxtwKadaUBL+ZbORsrNJ5TaJA2Qezr3HXMZD6cRigjWR+Zbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=EWfcv31u; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2e78fe9fc2bso8142091fa.3
+        for <stable@vger.kernel.org>; Wed, 05 Jun 2024 23:43:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1717656201; x=1718261001; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zHyc1Tt3pV1FQtb9e1735Ph8tUakhCj1D2RUXjVww7w=;
+        b=EWfcv31ujQG+2Z8kIPY8ZXJpO7H0eRco60b90p0+RjsI3xBPnJxpa3tzZGppxSvkzm
+         7YjVi8i9zdAqlleSjt6idMdy7KIkOPmIol5HG26M5xa9Bj30eWLvyP8C1IoxZ4I9xZ8W
+         7VMFOgStFDXmMnTX8Cwoik9kv0CI5gecQVAmWWTspK9YPnMYvw9UqjCxW9gwqT80C2WY
+         PzIx6XoOeN6/BocRHq/WwAtrdPq0D6oqeJEZzo6W4pB4pNypiSVjkq2U7paicbeYWDhL
+         deYfH7x4khJC3aE+hCQvnQY7qo7OrgfuW9m895A3fLRJx04uIFGb0GuG0tACvRMQTecv
+         Zuyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717656201; x=1718261001;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zHyc1Tt3pV1FQtb9e1735Ph8tUakhCj1D2RUXjVww7w=;
+        b=hLK63/0KKXZzVzRboZlTN/8EdyPLYIae3CVvd8+8QMAgUjeej4wFVS18zGBPetF4c3
+         /PBzG5ic3Ly6h4cH6O8We2DMZrCREvxwvU0p1wb7sYqet2aL7PJEiES2jvX2FC1seFS0
+         tmI3R1Ph8K+cV4RCNfoRra2pVMeKotixDMowz313pLIY9qTi6AiPA81AjmHHypnWdjOn
+         yepCxvMggXmITMFzS4umv2PNJYs67k3rLhAnH87umuMTvptr7qRKRzgb5uDHh/1Cl1ZE
+         nJSFlNH8xDQItN2cCVDbpCgkjxkc1xxj7bU1E3BWhSvNB70/dbsk40oyi/MKtj0sDmO9
+         6Oxg==
+X-Forwarded-Encrypted: i=1; AJvYcCVS14BXq1bmTTxTkUj50zDI3YWBby1TzCSNWKJl+j222H/by8v6HrrHGBU8D/cr/AHgUolCL13OzAK5kxNaYLDWv1zyQZEI
+X-Gm-Message-State: AOJu0YxNx4uAB/o6ab/E4W5Ba5N25kN7OB2WRpGRp1I3q/5fQ0pS+RUu
+	ZobOX7dvVQBJ64NolYtW9OOxcSEgUn4XN7T3fcvICsOR9iPATJkABL3KNA2xNF0=
+X-Google-Smtp-Source: AGHT+IGAEevHPMa1Q4hJfThfhSVeLwcacpZB+ndTosr+5ZZ71YchIkHJHegUKocqZHRkD83kPgRVCA==
+X-Received: by 2002:a2e:8ed4:0:b0:2ea:7f57:5a74 with SMTP id 38308e7fff4ca-2eac7a6c3ccmr25251421fa.42.1717656200730;
+        Wed, 05 Jun 2024 23:43:20 -0700 (PDT)
+Received: from localhost ([2401:e180:8882:8af3:26fa:edbd:5679:640c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd8136easm6473025ad.278.2024.06.05.23.43.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Jun 2024 23:43:20 -0700 (PDT)
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	stable@vger.kernel.org,
+	workflows@vger.kernel.org,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 1/2] docs: stable-kernel-rules: provide example of specifying target series
+Date: Thu,  6 Jun 2024 14:43:08 +0800
+Message-ID: <20240606064311.18678-1-shung-hsi.yu@suse.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240605113913.83715-1-gautam@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: EblB2tKXDq9detrDQrwOMaMKSlbJs6rb
-X-Proofpoint-GUID: -G_Cdwm-ls8YhJt_YOO4Dh9rKtQGZgs8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-06_01,2024-06-06_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
- mlxlogscore=583 mlxscore=0 malwarescore=0 phishscore=0 impostorscore=0
- spamscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
- definitions=main-2406060040
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 05, 2024 at 05:09:08PM GMT, Gautam Menghani wrote:
-> Doorbell emulation for KVM on PAPR guests is broken as support for DPDES
-> was not added in initial patch series [1].
-> Add DPDES support and doorbell handling support for V2 API. 
-> 
-> [1] lore.kernel.org/linuxppc-dev/20230914030600.16993-1-jniethe5@gmail.com
-> 
-> Changes in v2:
-> 1. Split DPDES support into its own patch
-> 
-> Gautam Menghani (2):
->   arch/powerpc/kvm: Add DPDES support in helper library for Guest state
->     buffer
->   arch/powerpc/kvm: Fix doorbell emulation for v2 API
-> 
->  Documentation/arch/powerpc/kvm-nested.rst     | 4 +++-
->  arch/powerpc/include/asm/guest-state-buffer.h | 3 ++-
->  arch/powerpc/include/asm/kvm_book3s.h         | 1 +
->  arch/powerpc/kvm/book3s_hv.c                  | 5 +++++
->  arch/powerpc/kvm/book3s_hv_nestedv2.c         | 7 +++++++
->  arch/powerpc/kvm/test-guest-state-buffer.c    | 2 +-
->  6 files changed, 19 insertions(+), 3 deletions(-)
-> 
-> -- 
-> 2.45.1
-> 
+Provide a concrete example of how to specify what stable series should
+be targeted for change inclusion. Looking around on the stable mailing
+list this seems like a common practice already, so let's mention that in
+the documentation as well (but worded so it is not interpreted as the
+only way to do so).
 
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+---
+ Documentation/process/stable-kernel-rules.rst | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-Hi Michael,
+diff --git a/Documentation/process/stable-kernel-rules.rst b/Documentation/process/stable-kernel-rules.rst
+index edf90bbe30f4..daa542988095 100644
+--- a/Documentation/process/stable-kernel-rules.rst
++++ b/Documentation/process/stable-kernel-rules.rst
+@@ -57,10 +57,13 @@ options for cases where a mainlined patch needs adjustments to apply in older
+ series (for example due to API changes).
+ 
+ When using option 2 or 3 you can ask for your change to be included in specific
+-stable series. When doing so, ensure the fix or an equivalent is applicable,
+-submitted, or already present in all newer stable trees still supported. This is
+-meant to prevent regressions that users might later encounter on updating, if
+-e.g. a fix merged for 5.19-rc1 would be backported to 5.10.y, but not to 5.15.y.
++stable series, one way to do so is by specifying the target series in the
++subject prefix (e.g. '[PATCH stable 5.15 5.10]' asks that the patch to be
++included in both 5.10.y and 5.15.y). When doing so, ensure the fix or an
++equivalent is applicable, submitted, or already present in all newer stable
++trees still supported. This is meant to prevent regressions that users might
++later encounter on updating, if e.g. a fix merged for 5.19-rc1 would be
++backported to 5.10.y, but not to 5.15.y.
+ 
+ .. _option_1:
+ 
+-- 
+2.45.1
 
-This patch series is to be backported for all kernels >= 6.7. So the tag
-should be 
-Cc: stable@vger.kernel.org # v6.7+
-
-and not
-Cc: stable@vger.kernel.org # v6.7
-
-Should I send a new version of this series or can you please make this 
-change when pulling in your tree?
-
-Thanks,
-Gautam
 
