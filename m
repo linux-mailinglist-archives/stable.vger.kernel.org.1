@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C94C8FEDF4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9A48FEF14
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 020091F2158E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 315AD1C21892
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091CF1BE861;
-	Thu,  6 Jun 2024 14:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E20E1C95F9;
+	Thu,  6 Jun 2024 14:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="McWuwWrT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hfIeat6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8261990B7;
-	Thu,  6 Jun 2024 14:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAF31C95F4;
+	Thu,  6 Jun 2024 14:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683544; cv=none; b=VR0o5/43C3egGEHrE6CsOE0kNBhcfZRdwMH4GgYwkMqUZee2Uey0zu4bKZfTdyYkMN93JjyhOmhX+p6rqGsCeyqg1rVRPwbPt5bHYgOyaZid0+2Tt02wwc2LdFXXjHED039Sk+xjnD7eKWNr1/RUkgT32StJdR/mw8SA+20176s=
+	t=1717683736; cv=none; b=GWkMnb0OF4D9RLvgT9jH3LS1D8vGh1YJ8L7p11UpLJB6wzZVYpC9OfAyixF4d3PUruodG6HF0eLxsOJNhxP0BQ94p3HXWQQUwJsqJYp2tT39kwHqzfAGIoB6XA8/63/mhGxImRLxojB3X+A4cxtOb9hhHHKTkJfbHnRvb6kUyGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683544; c=relaxed/simple;
-	bh=mPg1o7mx1JVvGbDIvO1Kxoag6R0iQmqLSpnfnJiQ5dw=;
+	s=arc-20240116; t=1717683736; c=relaxed/simple;
+	bh=kpxP5lbT5Y0jtJr1WEpCL2vmsQle7FbjVNGviuMqerM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3Rpy9onDn/WXVtXMosLDtFdgS71BCiNQlRjQtYVyYKq+VO2pDly81olIPusZ5UhRUx4mABexhVuO8RPDPwyoMxOcJsaTz75lTaJknUof7TssUwbF6vM0sg17N1o6/trVXtPbmmTNIcxRKqEFJp7VYSoK+gTg9W7e3rN+xTfwXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McWuwWrT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B77C2BD10;
-	Thu,  6 Jun 2024 14:19:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GiUbFzcmwPQKMQrq5962bdmEFXthKy40x49ZzqQxdvKLNIhabTDZtT4PpIJ8i63oTzyMjfFNGrnOW7i9T2b/vwlwRxLiA7pmXSR1EgL6kOr2DC97g4hXQ7fT781D32Xs+AORS8N5nFuOBsvh3SGcKksrZvs50jsr1NlnU2SIHCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hfIeat6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B517CC32782;
+	Thu,  6 Jun 2024 14:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683544;
-	bh=mPg1o7mx1JVvGbDIvO1Kxoag6R0iQmqLSpnfnJiQ5dw=;
+	s=korg; t=1717683735;
+	bh=kpxP5lbT5Y0jtJr1WEpCL2vmsQle7FbjVNGviuMqerM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=McWuwWrTqcH4uQ9Xyhkf+Zckgk5lk8lfdVZGq+/Y1d9iafW2Z0VwSMLiP3Owvx3+8
-	 sQePZFzRu5r1wZchvVYafA1AF+Co/GZr+pUesNNtyfft1CI+r9x3tPyHr+1TqjkqtY
-	 Dg25LX4akO/J/Y4ZQXWsQIkCIxLn5upRjWLV69pc=
+	b=hfIeat6ZJioPmfr+GwsPjySmw0gX0vCiwyZu0Va/1OEsSggLjdiJYvi+mcoo/IfUj
+	 3RlPiFrMhJgJJOkhTOiugEPxSa+ArC8ITG/CrWmLE37zIrqK5YySTgHOYiEBL83XzP
+	 GGSAouN9zDwlEdZXHF871Wl5Jc3wRPKtlsp63DD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
+	syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 434/473] dma-mapping: benchmark: fix node id validation
+Subject: [PATCH 6.6 691/744] dma-buf/sw-sync: dont enable IRQ from sync_print_obj()
 Date: Thu,  6 Jun 2024 16:06:03 +0200
-Message-ID: <20240606131714.090526315@linuxfoundation.org>
+Message-ID: <20240606131754.647302068@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 1ff05e723f7ca30644b8ec3fb093f16312e408ad ]
+[ Upstream commit b794918961516f667b0c745aebdfebbb8a98df39 ]
 
-While validating node ids in map_benchmark_ioctl(), node_possible() may
-be provided with invalid argument outside of [0,MAX_NUMNODES-1] range
-leading to:
+Since commit a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from
+known context") by error replaced spin_unlock_irqrestore() with
+spin_unlock_irq() for both sync_debugfs_show() and sync_print_obj() despite
+sync_print_obj() is called from sync_debugfs_show(), lockdep complains
+inconsistent lock state warning.
 
-BUG: KASAN: wild-memory-access in map_benchmark_ioctl (kernel/dma/map_benchmark.c:214)
-Read of size 8 at addr 1fffffff8ccb6398 by task dma_map_benchma/971
-CPU: 7 PID: 971 Comm: dma_map_benchma Not tainted 6.9.0-rc6 #37
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-Call Trace:
- <TASK>
-dump_stack_lvl (lib/dump_stack.c:117)
-kasan_report (mm/kasan/report.c:603)
-kasan_check_range (mm/kasan/generic.c:189)
-variable_test_bit (arch/x86/include/asm/bitops.h:227) [inline]
-arch_test_bit (arch/x86/include/asm/bitops.h:239) [inline]
-_test_bit at (include/asm-generic/bitops/instrumented-non-atomic.h:142) [inline]
-node_state (include/linux/nodemask.h:423) [inline]
-map_benchmark_ioctl (kernel/dma/map_benchmark.c:214)
-full_proxy_unlocked_ioctl (fs/debugfs/file.c:333)
-__x64_sys_ioctl (fs/ioctl.c:890)
-do_syscall_64 (arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+Use plain spin_{lock,unlock}() for sync_print_obj(), for
+sync_debugfs_show() is already using spin_{lock,unlock}_irq().
 
-Compare node ids with sane bounds first. NUMA_NO_NODE is considered a
-special valid case meaning that benchmarking kthreads won't be bound to a
-cpuset of a given node.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 65789daa8087 ("dma-mapping: add benchmark support for streaming DMA APIs")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reported-by: syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=a225ee3df7e7f9372dbe
+Fixes: a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from known context")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/c2e46020-aaa6-4e06-bf73-f05823f913f0@I-love.SAKURA.ne.jp
+Signed-off-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/map_benchmark.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/dma-buf/sync_debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
-index 0520a8f4fb1df..11ad1c43833d1 100644
---- a/kernel/dma/map_benchmark.c
-+++ b/kernel/dma/map_benchmark.c
-@@ -208,7 +208,8 @@ static long map_benchmark_ioctl(struct file *file, unsigned int cmd,
- 		}
+diff --git a/drivers/dma-buf/sync_debug.c b/drivers/dma-buf/sync_debug.c
+index 101394f16930f..237bce21d1e72 100644
+--- a/drivers/dma-buf/sync_debug.c
++++ b/drivers/dma-buf/sync_debug.c
+@@ -110,12 +110,12 @@ static void sync_print_obj(struct seq_file *s, struct sync_timeline *obj)
  
- 		if (map->bparam.node != NUMA_NO_NODE &&
--		    !node_possible(map->bparam.node)) {
-+		    (map->bparam.node < 0 || map->bparam.node >= MAX_NUMNODES ||
-+		     !node_possible(map->bparam.node))) {
- 			pr_err("invalid numa node\n");
- 			return -EINVAL;
- 		}
+ 	seq_printf(s, "%s: %d\n", obj->name, obj->value);
+ 
+-	spin_lock_irq(&obj->lock);
++	spin_lock(&obj->lock); /* Caller already disabled IRQ. */
+ 	list_for_each(pos, &obj->pt_list) {
+ 		struct sync_pt *pt = container_of(pos, struct sync_pt, link);
+ 		sync_print_fence(s, &pt->base, false);
+ 	}
+-	spin_unlock_irq(&obj->lock);
++	spin_unlock(&obj->lock);
+ }
+ 
+ static void sync_print_sync_file(struct seq_file *s,
 -- 
 2.43.0
 
