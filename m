@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-48490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A9F8FE938
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A078FEC85
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C92AF1F22F1E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37293B25779
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EB119755B;
-	Thu,  6 Jun 2024 14:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BFB1B142B;
+	Thu,  6 Jun 2024 14:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JemI5Hyt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpceXjj7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513C8199255;
-	Thu,  6 Jun 2024 14:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E9319B3D3;
+	Thu,  6 Jun 2024 14:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682994; cv=none; b=gkrk9cpXQHDrKRmRImV3dVsDp0xIgt1acEaqhqeU8VeuY81CzURb7YoCpSZLuHGiU+q7BQ9QzN5dpOyCVATfJykC/vkZQStoBRWfRerC62YdzYtADg6N4e6/1Bsiil8ytHHwWdRgRoGasuweFnzlAYATfR3TGnWyf9i6aEYr6RQ=
+	t=1717683376; cv=none; b=YkSC1KIKXwZzrgN9KjQJOKn2g4DlcT2Nf/G/bijFYFyFrQz0wmc3WYFE5iL+ZvogYfxfPWc5GM7uQf01TXXHUncRczxRiRWkZVrsjvTSRs6B8esfC5CHwMxO3qsJ1jq2Iwd6KC19LC6+RnNwj67OURDokH3GuZ0Sc3zEP1mgPbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682994; c=relaxed/simple;
-	bh=ZZGsl9QpkR6mN9ZS4c3uaDJZDGm09IrJIYplptqoEN0=;
+	s=arc-20240116; t=1717683376; c=relaxed/simple;
+	bh=C22R7VTYC22y3OBoDhL1VnFQUwLPQUqfc8DheIeQHAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MA4mXJQlJvhKvBsDyQkp57Lmj3xI71r5/QvsGsIBi6/L5eK/uFMna+S27YZEtssVr9ASFvi2hWlY1xLou4bMMAy8VuZGqEF9B8Pg8Ws9WDsN9g4KVu6qg8QQrTHUBIFMnm6UM/xWCpHUalxtVvK4nuHZkS9C3IDmMrXF3DWI9kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JemI5Hyt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C87EC32781;
-	Thu,  6 Jun 2024 14:09:54 +0000 (UTC)
+	 MIME-Version; b=Ow3krMfxLCAcvIw/7NWd2hC9gsH+5bRmDAcFVl+EdMyEy94HnWH5VZJLb1VltYOP7s8M2ewg4aMMI1f7Kjm5wwyxRmAJ58o1rq6fKUsZQHbew5aAQqGii2bffUNUXcYNShHBlXy4NVk7ALCFPBQ2iC6p09GPmXaK/lD0BhjXRaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpceXjj7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DEFC2BD10;
+	Thu,  6 Jun 2024 14:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682994;
-	bh=ZZGsl9QpkR6mN9ZS4c3uaDJZDGm09IrJIYplptqoEN0=;
+	s=korg; t=1717683376;
+	bh=C22R7VTYC22y3OBoDhL1VnFQUwLPQUqfc8DheIeQHAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JemI5HytznPC3wXXqmYQAuPrlzCS7fcLIVTrU5wzTLM3YUgJ9ZfOwc6goUa7ZHUJX
-	 6MLZ76efAoxEd8KIihSk0lj+5ZoPaZray66fr897TetZ8G8wpJGrA3d9yRtXpcP4ux
-	 KJPLKS402uZOqGmFqU3SVozlCa2v6m1QlOvkVr08=
+	b=RpceXjj7prlQyvWYQo2L23eEkUCGPtzCAxpGpYb3VqyAhhMiHynBu1nIt4rCyDjdT
+	 8PXrF8jFezPvDCqjukNADWk2EjfAv3BPpQ+xAFeGvuILjDT01/r3DyRQU2UfxzkYZ1
+	 if+OOW1bXXhnRn11H5XN9EyCkBox8I7hxKOBFcPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Herbert <marc.herbert@intel.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 191/374] ASoC: SOF: debug: Handle cases when fw_lib_prefix is not set, NULL
-Date: Thu,  6 Jun 2024 16:02:50 +0200
-Message-ID: <20240606131658.265206089@linuxfoundation.org>
+Subject: [PATCH 6.1 242/473] RDMA/hns: Modify the print level of CQE error
+Date: Thu,  6 Jun 2024 16:02:51 +0200
+Message-ID: <20240606131707.833360960@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit b32487ca7b51ce430f15ec785269f11c25a6a560 ]
+[ Upstream commit 349e859952285ab9689779fb46de163f13f18f43 ]
 
-The firmware libraries are not supported by IPC3, the fw_lib_path is not
-a valid parameter and it is always NULL.
-Do not create the debugfs file for IPC3 at all as it is not applicable.
+Too much print may lead to a panic in kernel. Change ibdev_err() to
+ibdev_err_ratelimited(), and change the printing level of cqe dump
+to debug level.
 
-With IPC4 some vendors/platforms might not support loadable libraries and
-the fw_lib_prefix is left to NULL to indicate this.
-Handle such case with allocating "Not supported" string.
-
-Reviewed-by: Marc Herbert <marc.herbert@intel.com>
-Fixes: 17f4041244e6 ("ASoC: SOF: debug: show firmware/topology prefix/names")
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240426153902.39560-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7c044adca272 ("RDMA/hns: Simplify the cqe code of poll cq")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240412091616.370789-11-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/debug.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sof/debug.c b/sound/soc/sof/debug.c
-index 7275437ea8d8a..6481da31826dc 100644
---- a/sound/soc/sof/debug.c
-+++ b/sound/soc/sof/debug.c
-@@ -345,8 +345,27 @@ int snd_sof_dbg_init(struct snd_sof_dev *sdev)
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 08e2e9569a52a..c931cce50d50d 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -3857,8 +3857,9 @@ static void get_cqe_status(struct hns_roce_dev *hr_dev, struct hns_roce_qp *qp,
+ 		   wc->status == IB_WC_WR_FLUSH_ERR))
+ 		return;
  
- 	debugfs_create_str("fw_path", 0444, fw_profile,
- 			   (char **)&plat_data->fw_filename_prefix);
--	debugfs_create_str("fw_lib_path", 0444, fw_profile,
--			   (char **)&plat_data->fw_lib_prefix);
-+	/* library path is not valid for IPC3 */
-+	if (plat_data->ipc_type != SOF_IPC_TYPE_3) {
-+		/*
-+		 * fw_lib_prefix can be NULL if the vendor/platform does not
-+		 * support loadable libraries
-+		 */
-+		if (plat_data->fw_lib_prefix) {
-+			debugfs_create_str("fw_lib_path", 0444, fw_profile,
-+					   (char **)&plat_data->fw_lib_prefix);
-+		} else {
-+			static char *fw_lib_path;
-+
-+			fw_lib_path = devm_kasprintf(sdev->dev, GFP_KERNEL,
-+						     "Not supported");
-+			if (!fw_lib_path)
-+				return -ENOMEM;
-+
-+			debugfs_create_str("fw_lib_path", 0444, fw_profile,
-+					   (char **)&fw_lib_path);
-+		}
-+	}
- 	debugfs_create_str("tplg_path", 0444, fw_profile,
- 			   (char **)&plat_data->tplg_filename_prefix);
- 	debugfs_create_str("fw_name", 0444, fw_profile,
+-	ibdev_err(&hr_dev->ib_dev, "error cqe status 0x%x:\n", cqe_status);
+-	print_hex_dump(KERN_ERR, "", DUMP_PREFIX_NONE, 16, 4, cqe,
++	ibdev_err_ratelimited(&hr_dev->ib_dev, "error cqe status 0x%x:\n",
++			      cqe_status);
++	print_hex_dump(KERN_DEBUG, "", DUMP_PREFIX_NONE, 16, 4, cqe,
+ 		       cq->cqe_size, false);
+ 	wc->vendor_err = hr_reg_read(cqe, CQE_SUB_STATUS);
+ 
 -- 
 2.43.0
 
