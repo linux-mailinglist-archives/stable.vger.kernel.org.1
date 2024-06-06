@@ -1,50 +1,74 @@
-Return-Path: <stable+bounces-49912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DCEB8FF0E7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 17:40:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 435DE8FF419
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 19:52:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1E181F25CA3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 15:40:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D68E91F26565
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 17:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82574197525;
-	Thu,  6 Jun 2024 15:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34AF1990DA;
+	Thu,  6 Jun 2024 17:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEPwr7FX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cxUmsLGh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7781667E6;
-	Thu,  6 Jun 2024 15:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19ED199239;
+	Thu,  6 Jun 2024 17:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717688430; cv=none; b=T598l6q8l1XrSGpktGciCC47QSaHFNmCC5pvt2voQjT+5NZzazFki5aMckGrsdCTe0XNtqbYLGUeiXe5/mlprEDXWraP3T9O/ON4/KhuIKTYYNLsbfDhlOubwZiuo+XBAetaK25OgHr2JbhfXlTL9U45HH4pxY+3eUpZotxfchM=
+	t=1717696315; cv=none; b=hy14E8oExDQUD22eRlHh8H9KU6EqIPZ+qmWDEMlIIlF1zmRHQE81hbkBEggJmg13YZ3uCU9IzMGkC6peOkN0QUMq8x8jYN1bYfD18r4o0DQpA5BHUfc0BNxOY8unexubGihNcW5ioMLopRLukxMTuMIppmm09RNo41wwtfeIiXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717688430; c=relaxed/simple;
-	bh=bOtc9xpVQTwyQV8Z4EEgfw4s9RXLbG1zVlhp5cDRID4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=RMj4Pjvci63WpelpAjHjGIwmU/Qh0FE/2oJbHKm8RKLe7wLmbyZXNu+v3KVBPp9gxecZxJ9/py1Irm69HKE8eS9QNeYF/N3LfANzu3URF/jpnvSkOg126Jsr7Mzbd/BOuL4pFje9GlDzgHj3rSz6oaUl+sIo2W3lEyO7YsryLo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEPwr7FX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AEAEDC32781;
-	Thu,  6 Jun 2024 15:40:29 +0000 (UTC)
+	s=arc-20240116; t=1717696315; c=relaxed/simple;
+	bh=QtCyvcgciIZk5s3k7PJBwdIzJjsR6DM+WS9zSM/VA/4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Spafhly3jAigSfN06dImi889dFbYDllyUsl343kgb7pcOL9T0307BbNeg49fdS0GCv8EVg9qTcQxG65Wmdv5Op02PL93ZUyJrwjiyS+FfCWFMk8ou1U3lcw4gOQS0hmKpvpri9OaZfXrGq8XLzGtQiJ55HVa5GQ5ql5CXwNpOX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cxUmsLGh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2FDC2BD10;
+	Thu,  6 Jun 2024 17:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717688429;
-	bh=bOtc9xpVQTwyQV8Z4EEgfw4s9RXLbG1zVlhp5cDRID4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=SEPwr7FX0HO8InWEnb9M1muMB5t3cu9RxHr1O32+4uK1/KoTf75dY16jTu2f9kpfq
-	 xuZ7lcjYgUh2+NeszzhRILShEYeP4XOdigtWRbKe9H2jw6GFxJYGan/O50z2jSnABg
-	 2MqN5BBeYXFmIPBomJ1xHqbymRC7DkL31oCvk5HLeWP9sBgIvWF2sTTvZ2z885HJ0/
-	 iUqycHoQbMKs4rHN08ikwfO3C/sLTfnztUhwHXF3yq7OSIL3Ge6R4Pcuqx06IoVWeR
-	 BhQ04UYSwuXEC+pvC+QNzURR6Du9aUIVLo9JWZZQfT/7FVHLIKSlZUcbpZH9MqI6Vn
-	 kzq9xRgTAGjfg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 99D3BD20380;
-	Thu,  6 Jun 2024 15:40:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1717696315;
+	bh=QtCyvcgciIZk5s3k7PJBwdIzJjsR6DM+WS9zSM/VA/4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cxUmsLGhUOhG9vKX4ggX1t/qB8YABjH0QE5zVYdnNlCat1yERxDaK8rOFC+wdB61z
+	 8Dcb4kbZxpUzSONrar3tJOWYm8jYWGMCl8gYnUOijcxjRFNWHC3UITPlFgTx1epRU0
+	 gd6kiUIcWZI+Y2ZYluN7rqXNVW4kQhSOOn3bVWR4M4PzwoXiRxEAljiVrrj45d75D3
+	 4KiHliwbY5g607UGW4PXKWLGBQSuFS1jy/AFeGbdLTDv1RdqDmt2PSNAwVrNrBFYXa
+	 Bja6Ds/Y+WTTLlrEToUzBXsR0SbgrxmooytTNiQsUVJz3vQkLy6Lqrq4XsqsuoZwwe
+	 JvsOy8UEDdNtQ==
+From: SeongJae Park <sj@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org,
+	damon@lists.linux.dev
+Subject: Re: [PATCH 6.1 000/473] 6.1.93-rc1 review
+Date: Thu,  6 Jun 2024 10:51:50 -0700
+Message-Id: <20240606175150.20439-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,49 +76,63 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/3] selftests: net: lib: small fixes
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171768842962.28804.8836141710421199665.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Jun 2024 15:40:29 +0000
-References: <20240605-upstream-net-20240605-selftests-net-lib-fixes-v1-0-b3afadd368c9@kernel.org>
-In-Reply-To: <20240605-upstream-net-20240605-selftests-net-lib-fixes-v1-0-b3afadd368c9@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org, petrm@nvidia.com,
- liuhangbin@gmail.com, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, geliang@kernel.org
 
-Hello:
+Hello,
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+On Thu,  6 Jun 2024 15:58:49 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-On Wed, 05 Jun 2024 11:21:15 +0200 you wrote:
-> While looking at using 'lib.sh' for the MPTCP selftests [1], we found
-> some small issues with 'lib.sh'. Here they are:
+> This is the start of the stable review cycle for the 6.1.93 release.
+> There are 473 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> - Patch 1: fix 'errexit' (set -e) support with busywait. 'errexit' is
->   supported in some functions, not all. A fix for v6.8+.
+> Responses should be made by Sat, 08 Jun 2024 13:15:55 +0000.
+> Anything received after that time might be too late.
 > 
-> - Patch 2: avoid confusing error messages linked to the cleaning part
->   when the netns setup fails. A fix for v6.8+.
-> 
-> [...]
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.93-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 
-Here is the summary with links:
-  - [net,1/3] selftests: net: lib: support errexit with busywait
-    https://git.kernel.org/netdev/net/c/41b02ea4c0ad
-  - [net,2/3] selftests: net: lib: avoid error removing empty netns name
-    https://git.kernel.org/netdev/net/c/79322174bcc7
-  - [net,3/3] selftests: net: lib: set 'i' as local
-    https://git.kernel.org/netdev/net/c/84a8bc3ec225
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Tested-by: SeongJae Park <sj@kernel.org>
 
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] d2106b62e226 ("Linux 6.1.93-rc1")
 
+Thanks,
+SJ
+
+[...]
+
+---
+
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 2 selftests: damon: debugfs_schemes.sh
+ok 3 selftests: damon: debugfs_target_ids.sh
+ok 4 selftests: damon: debugfs_empty_targets.sh
+ok 5 selftests: damon: debugfs_huge_count_read_write.sh
+ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
+ok 7 selftests: damon: sysfs.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_arm64.sh
+ok 12 selftests: damon-tests: build_m68k.sh
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
 
