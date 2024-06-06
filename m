@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-49407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FDDE8FED20
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5EAD8FEEA5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 315031F25A12
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B43491C259A1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A871B4C4F;
-	Thu,  6 Jun 2024 14:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402E71C6169;
+	Thu,  6 Jun 2024 14:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zacf3qws"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7GuPnlo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DE81B4C4D;
-	Thu,  6 Jun 2024 14:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CBF1991CA;
+	Thu,  6 Jun 2024 14:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683450; cv=none; b=sKepcpMjeMotATzUekh+dgHmYMdDR1HZG/s7jMmD6ojECpBHOh2uqmU4+IL02g+3BgK4VtiZD8vErI9rt28aVsmsMCjgrG5HcFVNszhS85MbaE4dK0lpyiNKPVMxuiziRIxvh0ZfYtJobx5dvjzsOgLG/Cbdb6z1j4R5T7lYttk=
+	t=1717683686; cv=none; b=PfnGN41/cy0wiSQ0tR6AkNW+50pCOe/v8mjyG41fipUhJGpwkMCDRae3qmGZfhg1H3ohvd2E8hQNNombdaR2LPa8sF92J24baAhWaTxsqoICGZBEMvRrFeVividCBpMhChTo/VahK6lRtm9PhEH3Ki5C+dlRaBBgK0ikN9Ufok0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683450; c=relaxed/simple;
-	bh=iIdxwHVxTvDOSzQ4Ug2cpFlm3CZqOST5sLA6ywPdcIg=;
+	s=arc-20240116; t=1717683686; c=relaxed/simple;
+	bh=SIv1BoWX2eJxIYHvQUSW/bmkOapTjCOUrZCD16vQBJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rA5cu6RavvJIsa3di1MKilcxR7ojTH+k3MFtA6x5b+u+Tu0tgjpI8EoU5SVAA/8POjxlfZXeSpczaTPdUPvVf0MpbEeIuOSJNuJN7FsOcaaURkmVUsUdC+9ZlPPRSiOMT/4Ju9EtuySjuiop8/73YyxcTqkKuY2EIN6qGl2iCeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zacf3qws; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63843C2BD10;
-	Thu,  6 Jun 2024 14:17:30 +0000 (UTC)
+	 MIME-Version; b=g2GhkJ93GXSTDsWDZLvENsdJsLUC67HzuIaGjV+txsr1jIoAoFo9FqoLFtThOlJdK1IR6+t16FLeV8rRmaJ4JPnHi7gPqKVg6s/2rXXzgUCBV0a56FsWaB07KNegSAqHzhw9vukDxTYDDCo2/1NuwM4Yap0yOA3HaWiqbsQVrTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7GuPnlo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87857C2BD10;
+	Thu,  6 Jun 2024 14:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683450;
-	bh=iIdxwHVxTvDOSzQ4Ug2cpFlm3CZqOST5sLA6ywPdcIg=;
+	s=korg; t=1717683685;
+	bh=SIv1BoWX2eJxIYHvQUSW/bmkOapTjCOUrZCD16vQBJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zacf3qwsBuBRiLqfE/PNvRT4n3yANUe/HH4cSOxew8RVJLZN7kVy/BtJx5rw2jEcv
-	 Vk5OpzVF6sHFIMu9YUwvveJ2JGdA9OFBUMa78aIfbiBWCjxPa71Ybt8YixEeA9mabl
-	 McdIYqhHsWsqSUU1xTJD+Y92C5eZFhBLrDYQWljo=
+	b=t7GuPnloIJY60wpxAXUnM9r45iXNCj/WYEYl+H7m3XsZxQxKAQblX1sAB4arvB3EN
+	 G6mGD5aIfkmsTXaMOwaxzdshDruf01gU9K2gAUuxmD0EWXDMbIr4QmwFYkBZ69YbBY
+	 XV4hJL1Ku0OhEk6WyYsMTpxctgnT2/H18ipYULCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	He Zhe <zhe.he@windriver.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Le Ma <le.ma@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 334/473] perf bench internals inject-build-id: Fix trap divide when collecting just one DSO
+Subject: [PATCH 6.6 591/744] drm/amdgpu: init microcode chip name from ip versions
 Date: Thu,  6 Jun 2024 16:04:23 +0200
-Message-ID: <20240606131710.966475318@linuxfoundation.org>
+Message-ID: <20240606131751.423121099@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,55 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: He Zhe <zhe.he@windriver.com>
+From: Le Ma <le.ma@amd.com>
 
-[ Upstream commit d9180e23fbfa3875424d3a6b28b71b072862a52a ]
+[ Upstream commit 92ed1e9cd5f6cc4f8c9a9ba6c4d2d2bbc6221296 ]
 
-'perf bench internals inject-build-id' suffers from the following error when
-only one DSO is collected.
+To adapt to different gc versions in gfx_v9_4_3.c file.
 
-  # perf bench internals inject-build-id -v
-    Collected 1 DSOs
-  traps: internals-injec[2305] trap divide error
-  ip:557566ba6394 sp:7ffd4de97fe0 error:0 in perf[557566b2a000+23d000]
-    Build-id injection benchmark
-    Iteration #1
-  Floating point exception
-
-This patch removes the unnecessary minus one from the divisor which also
-corrects the randomization range.
-
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Fixes: 0bf02a0d80427f26 ("perf bench: Add build-id injection benchmark")
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240507065026.2652929-1-zhe.he@windriver.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Le Ma <le.ma@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: acce6479e30f ("drm/amdgpu: Fix buffer size in gfx_v9_4_3_init_ cp_compute_microcode() and rlc_microcode()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/bench/inject-buildid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/bench/inject-buildid.c b/tools/perf/bench/inject-buildid.c
-index 17672790f1231..d1672be702f3b 100644
---- a/tools/perf/bench/inject-buildid.c
-+++ b/tools/perf/bench/inject-buildid.c
-@@ -361,7 +361,7 @@ static int inject_build_id(struct bench_data *data, u64 *max_rss)
- 		return -1;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+index e481ef73af6e5..7c9a7ab9df3bb 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+@@ -425,16 +425,16 @@ static int gfx_v9_4_3_init_cp_compute_microcode(struct amdgpu_device *adev,
  
- 	for (i = 0; i < nr_mmaps; i++) {
--		int idx = rand() % (nr_dsos - 1);
-+		int idx = rand() % nr_dsos;
- 		struct bench_dso *dso = &dsos[idx];
- 		u64 timestamp = rand() % 1000000;
+ static int gfx_v9_4_3_init_microcode(struct amdgpu_device *adev)
+ {
+-	const char *chip_name;
++	char ucode_prefix[30];
+ 	int r;
+ 
+-	chip_name = "gc_9_4_3";
++	amdgpu_ucode_ip_version_decode(adev, GC_HWIP, ucode_prefix, sizeof(ucode_prefix));
+ 
+-	r = gfx_v9_4_3_init_rlc_microcode(adev, chip_name);
++	r = gfx_v9_4_3_init_rlc_microcode(adev, ucode_prefix);
+ 	if (r)
+ 		return r;
+ 
+-	r = gfx_v9_4_3_init_cp_compute_microcode(adev, chip_name);
++	r = gfx_v9_4_3_init_cp_compute_microcode(adev, ucode_prefix);
+ 	if (r)
+ 		return r;
  
 -- 
 2.43.0
