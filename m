@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-48346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CDE8FE89B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF508FECC8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EC2D1C23E19
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F1871F26335
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85E619752F;
-	Thu,  6 Jun 2024 14:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302961B29C4;
+	Thu,  6 Jun 2024 14:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkHy23EI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKHCovL5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F56196C82;
-	Thu,  6 Jun 2024 14:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3474198A3B;
+	Thu,  6 Jun 2024 14:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682914; cv=none; b=Zdskf8tbWq8qvhN8NHCMweRZ2nXxTMLNfV06CW1dS1vlrd6hbkKanfhzWdDqr8nao0yDs49HdxRNQOPODFVZVwpUWNBXdh5ZetQftzdMPJ5Y8PCJUDnyutN+g5lrKHedgwdcpJGskychJchLf7QDV/CHoordwGu+N59SgE3erFQ=
+	t=1717683409; cv=none; b=HEz1wadIjxROZ0Thjk7VS5GMGZwrbfyZmbRt/OYFI+q5kgcn1e7/vUmQX91l8K4f6m29ZlxYz2QSF8aiDy8MObkkDiRkVlEF7NgYNEuD5WuYzGx3UOyljyPDckgqnLL9F6HfjwG64/T5jb8LiFhkWZ4PcWgstZsGl0/Ixni7aR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682914; c=relaxed/simple;
-	bh=YtQOr2nupnuhUP9xqQKBxyc/TaNZt49Q8vDbSSgBMyY=;
+	s=arc-20240116; t=1717683409; c=relaxed/simple;
+	bh=xyHfswpSiQ9mB0jsrTrsPexwb4fBWPlQ468fhrnYuys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7Qgvf7YKMq4T1etwMr5fi7+8QD/Z+I1iMU2GCVDAdFoSSRS2rOzLED/w5aopkfOcMw/mandr54K6P+mpGmFmCpMQ7eeRNN5Zx4YSSJgmVrBVWtoLhpB2RINr8mdDAe2Y6nlca1Xhl3lUYxT3eq4urYcdsnRHDpuV15JI66FxVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkHy23EI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705A2C2BD10;
-	Thu,  6 Jun 2024 14:08:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ah7pECdPxWlqr6UKj+3JdKv8/1dKax3TiVG9ENHZlPPzIf/vbBh0nAguov6kr9p0AfsfgwQeyHj2jtYLtiblhAJPQT6jlzRlqKXlQ0BuDLO9qyYI7stkJ4vv84vKQQAOTR8j8DyKo5wyGJ6nZoVrVDrXzEQkUTZKGBVG7Edz2dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKHCovL5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FC7C2BD10;
+	Thu,  6 Jun 2024 14:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682914;
-	bh=YtQOr2nupnuhUP9xqQKBxyc/TaNZt49Q8vDbSSgBMyY=;
+	s=korg; t=1717683408;
+	bh=xyHfswpSiQ9mB0jsrTrsPexwb4fBWPlQ468fhrnYuys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qkHy23EIwW9gldy0rnXJ+AC+atrRjPCtUKe5qK8PbSgnx2mo0JNfKYe1HZ3vG0gz0
-	 dypSF5h1zGyubQYbjim64+FylTtK/YJaXrpS2U1EsdEC/zwpiV0YPiaKUp73HQS26D
-	 8yCHpX8ATmhAqxUiO+n+xiQWRh0Enmo3pJ4joQQA=
+	b=nKHCovL5PIvDw/fz0jpvOTfiR2eBNsaLFdPKee99+txyGBpPZ9JfNorl59IvdSDnx
+	 bst1jVeIyy/VeqMoBQyVbI0NLbAuJf/IlJxz+ifkujPIrWBfzXWxC05Cu0vbVtpQa0
+	 w8tqsLhLBdNRjMCuHlniXvCApWItthSjS94+bx/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 045/374] iio: adc: stm32: Fixing err code to not indicate success
+Subject: [PATCH 6.6 352/744] clk: renesas: r8a779a0: Fix CANFD parent clock
 Date: Thu,  6 Jun 2024 16:00:24 +0200
-Message-ID: <20240606131653.318027961@linuxfoundation.org>
+Message-ID: <20240606131743.766390250@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 3735ca0b072656c3aa2cedc617a5e639b583a472 ]
+[ Upstream commit 3b23118bdbd898dc2f4de8f549d598d492c42ba8 ]
 
-This path would result in returning 0 / success on an error path.
+According to Figure 52A.1 ("RS-CANFD Module Block Diagram (in classical
+CAN mode)") in the R-Car V3U Series User’s Manual Rev. 0.5, the parent
+clock for the CANFD peripheral module clock is the S3D2 clock.
 
-Cc: Olivier Moysan <olivier.moysan@foss.st.com>
-Fixes: 95bc818404b2 ("iio: adc: stm32-adc: add support of generic channels binding")
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://lore.kernel.org/r/20240330185305.1319844-4-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 9b621b6adff53346 ("clk: renesas: r8a779a0: Add CANFD module clock")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/aef9300f44c9141b1465343f91c5cc7303249b6e.1713279523.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/stm32-adc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/renesas/r8a779a0-cpg-mssr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-index b5d3c9cea5c4e..283c207571064 100644
---- a/drivers/iio/adc/stm32-adc.c
-+++ b/drivers/iio/adc/stm32-adc.c
-@@ -2234,6 +2234,7 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
- 			if (vin[0] != val || vin[1] >= adc_info->max_channels) {
- 				dev_err(&indio_dev->dev, "Invalid channel in%d-in%d\n",
- 					vin[0], vin[1]);
-+				ret = -EINVAL;
- 				goto err;
- 			}
- 		} else if (ret != -EINVAL) {
+diff --git a/drivers/clk/renesas/r8a779a0-cpg-mssr.c b/drivers/clk/renesas/r8a779a0-cpg-mssr.c
+index 4c2872f45387f..ff3f85e906fe1 100644
+--- a/drivers/clk/renesas/r8a779a0-cpg-mssr.c
++++ b/drivers/clk/renesas/r8a779a0-cpg-mssr.c
+@@ -139,7 +139,7 @@ static const struct mssr_mod_clk r8a779a0_mod_clks[] __initconst = {
+ 	DEF_MOD("avb3",		214,	R8A779A0_CLK_S3D2),
+ 	DEF_MOD("avb4",		215,	R8A779A0_CLK_S3D2),
+ 	DEF_MOD("avb5",		216,	R8A779A0_CLK_S3D2),
+-	DEF_MOD("canfd0",	328,	R8A779A0_CLK_CANFD),
++	DEF_MOD("canfd0",	328,	R8A779A0_CLK_S3D2),
+ 	DEF_MOD("csi40",	331,	R8A779A0_CLK_CSI0),
+ 	DEF_MOD("csi41",	400,	R8A779A0_CLK_CSI0),
+ 	DEF_MOD("csi42",	401,	R8A779A0_CLK_CSI0),
 -- 
 2.43.0
 
