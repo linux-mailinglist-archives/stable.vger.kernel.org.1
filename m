@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-48656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B3E8FE9F0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDCF18FEDBA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 321B7284497
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6619B283965
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3455F19D077;
-	Thu,  6 Jun 2024 14:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052E81BD017;
+	Thu,  6 Jun 2024 14:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFoifzKP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYkosLdX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69AF198E7B;
-	Thu,  6 Jun 2024 14:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80BF19E7CA;
+	Thu,  6 Jun 2024 14:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683083; cv=none; b=C1rzwxOr+J996mFZDHRrkIS5urT4SIddpZkAfcqljFh3xV3UsNSqONFrKsYnwA8t4tzNA8y1XnugF2lOV9ew4vFo32Dy4//dReCmlKCnXEqHXBIb6pgY+BjQUPsyoUEkYZxjPmkd+285ZzTyE91I/Yl31TvxSpLbINEx302bz1s=
+	t=1717683518; cv=none; b=H9yYGjiBxL1eN4ZridT2KHFHuWcenzmDOSe8NgazvyZ8YYcONBMvEDPSpcHAGakbId2XKuy6XgLNteBR6b5hTeKIgcSy8WGUmB0lXrhEWCRuYBa2wlxXWKpK7J8cg0ZN05gN3qqFX/zBJgHunUZ4EA+zgrg1VQmK76WfwD7h3gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683083; c=relaxed/simple;
-	bh=Pn+z/H0ZZciFZxxt2zmiIRwtooYBcljS/s4UxTNitFM=;
+	s=arc-20240116; t=1717683518; c=relaxed/simple;
+	bh=LVciXXxiKA3QmoA2KaeQgHf3HfhFG5glNwWPav3Zdx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BypQ9vcf78uB/qJO+YAhUhrC9qePih0QmaFBW2qpfopq52ORgS/9tT6gA9AlLaT+M0m9X0Fb6EIykmF6qXwqpv+1LuuHLVjTAO475mHQCvpXRBuqbUiRiZMLjBG+yoli+cj0ZQ8dehrcguiZLqe4W6RoXp5kn7w9Pgvud4ymw2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFoifzKP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C607EC4AF0B;
-	Thu,  6 Jun 2024 14:11:22 +0000 (UTC)
+	 MIME-Version; b=D95bQtfJdDNXoZ9DCvqfOTQPOiTtHL1IR5PvXGA/9n5qjEK6ge6r263LdE8uQCuFpfiO7auKyidz1/Cvg4zS6Ub0CMIX23tvUatST88qXGthWQC49q/3uGAa0xUcBS1K684a/UWwUOIuG4WOFzeuEEIK0q5QVj2p88g0hBTYnG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYkosLdX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F73C2BD10;
+	Thu,  6 Jun 2024 14:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683082;
-	bh=Pn+z/H0ZZciFZxxt2zmiIRwtooYBcljS/s4UxTNitFM=;
+	s=korg; t=1717683518;
+	bh=LVciXXxiKA3QmoA2KaeQgHf3HfhFG5glNwWPav3Zdx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rFoifzKPgi1KUCVhKZvZ6lT1xPyF8gOZAMgUtLWw14eFzVE2MZWHVtOFCKS80dnXw
-	 41UE/FR9idOiNJynBRULcTsWwA1BV9kgD5m+m2SjEWkPfySvezU7t4zbd949e/PQJd
-	 lQo92jfPE3+Zl/vKfDbmRMxRMjL3+Z3IzC+0FKZw=
+	b=KYkosLdXobMLjXvA6+3ncksJrvEo5Tj4aSRSR81a86eFfZLJ6HAF5QO7HWGYFORy3
+	 tNYr49kK7CtJqz1165Gxlx2nmCTUyboBhtd32/yZKOAXhcmesyrHSVOY8ZchnDmeXh
+	 9ErM5No3zdlZ6kmQEMfM27A7sollYleqAbLKYtiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 354/374] ipvlan: Dont Use skb->sk in ipvlan_process_v{4,6}_outbound
-Date: Thu,  6 Jun 2024 16:05:33 +0200
-Message-ID: <20240606131703.731404009@linuxfoundation.org>
+	Ryosuke Yasuoka <ryasuoka@redhat.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+d7b4dc6cd50410152534@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 405/473] nfc: nci: Fix uninit-value in nci_rx_work
+Date: Thu,  6 Jun 2024 16:05:34 +0200
+Message-ID: <20240606131713.199533611@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Ryosuke Yasuoka <ryasuoka@redhat.com>
 
-[ Upstream commit b3dc6e8003b500861fa307e9a3400c52e78e4d3a ]
+[ Upstream commit e4a87abf588536d1cdfb128595e6e680af5cf3ed ]
 
-Raw packet from PF_PACKET socket ontop of an IPv6-backed ipvlan device will
-hit WARN_ON_ONCE() in sk_mc_loop() through sch_direct_xmit() path.
+syzbot reported the following uninit-value access issue [1]
 
-WARNING: CPU: 2 PID: 0 at net/core/sock.c:775 sk_mc_loop+0x2d/0x70
-Modules linked in: sch_netem ipvlan rfkill cirrus drm_shmem_helper sg drm_kms_helper
-CPU: 2 PID: 0 Comm: swapper/2 Kdump: loaded Not tainted 6.9.0+ #279
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:sk_mc_loop+0x2d/0x70
-Code: fa 0f 1f 44 00 00 65 0f b7 15 f7 96 a3 4f 31 c0 66 85 d2 75 26 48 85 ff 74 1c
-RSP: 0018:ffffa9584015cd78 EFLAGS: 00010212
-RAX: 0000000000000011 RBX: ffff91e585793e00 RCX: 0000000002c6a001
-RDX: 0000000000000000 RSI: 0000000000000040 RDI: ffff91e589c0f000
-RBP: ffff91e5855bd100 R08: 0000000000000000 R09: 3d00545216f43d00
-R10: ffff91e584fdcc50 R11: 00000060dd8616f4 R12: ffff91e58132d000
-R13: ffff91e584fdcc68 R14: ffff91e5869ce800 R15: ffff91e589c0f000
-FS:  0000000000000000(0000) GS:ffff91e898100000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f788f7c44c0 CR3: 0000000008e1a000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<IRQ>
- ? __warn (kernel/panic.c:693)
- ? sk_mc_loop (net/core/sock.c:760)
- ? report_bug (lib/bug.c:201 lib/bug.c:219)
- ? handle_bug (arch/x86/kernel/traps.c:239)
- ? exc_invalid_op (arch/x86/kernel/traps.c:260 (discriminator 1))
- ? asm_exc_invalid_op (./arch/x86/include/asm/idtentry.h:621)
- ? sk_mc_loop (net/core/sock.c:760)
- ip6_finish_output2 (net/ipv6/ip6_output.c:83 (discriminator 1))
- ? nf_hook_slow (net/netfilter/core.c:626)
- ip6_finish_output (net/ipv6/ip6_output.c:222)
- ? __pfx_ip6_finish_output (net/ipv6/ip6_output.c:215)
- ipvlan_xmit_mode_l3 (drivers/net/ipvlan/ipvlan_core.c:602) ipvlan
- ipvlan_start_xmit (drivers/net/ipvlan/ipvlan_main.c:226) ipvlan
- dev_hard_start_xmit (net/core/dev.c:3594)
- sch_direct_xmit (net/sched/sch_generic.c:343)
- __qdisc_run (net/sched/sch_generic.c:416)
- net_tx_action (net/core/dev.c:5286)
- handle_softirqs (kernel/softirq.c:555)
- __irq_exit_rcu (kernel/softirq.c:589)
- sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1043)
+nci_rx_work() parses received packet from ndev->rx_q. It should be
+validated header size, payload size and total packet size before
+processing the packet. If an invalid packet is detected, it should be
+silently discarded.
 
-The warning triggers as this:
-packet_sendmsg
-   packet_snd //skb->sk is packet sk
-      __dev_queue_xmit
-         __dev_xmit_skb //q->enqueue is not NULL
-             __qdisc_run
-               sch_direct_xmit
-                 dev_hard_start_xmit
-                   ipvlan_start_xmit
-                      ipvlan_xmit_mode_l3 //l3 mode
-                        ipvlan_process_outbound //vepa flag
-                          ipvlan_process_v6_outbound
-                            ip6_local_out
-                                __ip6_finish_output
-                                  ip6_finish_output2 //multicast packet
-                                    sk_mc_loop //sk->sk_family is AF_PACKET
-
-Call ip{6}_local_out() with NULL sk in ipvlan as other tunnels to fix this.
-
-Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240529095633.613103-1-yuehaibing@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
+Reported-and-tested-by: syzbot+d7b4dc6cd50410152534@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d7b4dc6cd50410152534 [1]
+Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipvlan/ipvlan_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/nfc/nci/core.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index 2d5b021b4ea60..fef4eff7753a7 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -439,7 +439,7 @@ static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index f76a2d8060340..6a1d1e1f9a7cc 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1462,6 +1462,19 @@ int nci_core_ntf_packet(struct nci_dev *ndev, __u16 opcode,
+ 				 ndev->ops->n_core_ops);
+ }
  
- 	memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
++static bool nci_valid_size(struct sk_buff *skb)
++{
++	BUILD_BUG_ON(NCI_CTRL_HDR_SIZE != NCI_DATA_HDR_SIZE);
++	unsigned int hdr_size = NCI_CTRL_HDR_SIZE;
++
++	if (skb->len < hdr_size ||
++	    !nci_plen(skb->data) ||
++	    skb->len < hdr_size + nci_plen(skb->data)) {
++		return false;
++	}
++	return true;
++}
++
+ /* ---- NCI TX Data worker thread ---- */
  
--	err = ip_local_out(net, skb->sk, skb);
-+	err = ip_local_out(net, NULL, skb);
- 	if (unlikely(net_xmit_eval(err)))
- 		DEV_STATS_INC(dev, tx_errors);
- 	else
-@@ -494,7 +494,7 @@ static int ipvlan_process_v6_outbound(struct sk_buff *skb)
+ static void nci_tx_work(struct work_struct *work)
+@@ -1512,7 +1525,7 @@ static void nci_rx_work(struct work_struct *work)
+ 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
+ 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
  
- 	memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
- 
--	err = ip6_local_out(dev_net(dev), skb->sk, skb);
-+	err = ip6_local_out(dev_net(dev), NULL, skb);
- 	if (unlikely(net_xmit_eval(err)))
- 		DEV_STATS_INC(dev, tx_errors);
- 	else
+-		if (!nci_plen(skb->data)) {
++		if (!nci_valid_size(skb)) {
+ 			kfree_skb(skb);
+ 			break;
+ 		}
 -- 
 2.43.0
 
