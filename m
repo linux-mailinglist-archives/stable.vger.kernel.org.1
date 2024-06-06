@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-48571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B3A8FE98F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4757F8FEE6D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC4841F236C1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E07A61F2391B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2677197A9F;
-	Thu,  6 Jun 2024 14:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD91F1C3725;
+	Thu,  6 Jun 2024 14:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhC/YHYX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERqzS2ey"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17C4198831;
-	Thu,  6 Jun 2024 14:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0D91A0B06;
+	Thu,  6 Jun 2024 14:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683039; cv=none; b=BhHlLuzEIJeAsKwe/0yKTtOSWsORbSfTFZUZ7oA42SpLwNlCjEM8m1y57a2aO9zQqHyUEzsyOhQSh2+9VLXfRP+Qes5AgzlhwAWR4AU2MCgQRPQVo74EEneCbu2RdOSG/K0vVJjKrhnx7sh918vUz7YhKFg5PgtHK1OiWo17AwA=
+	t=1717683659; cv=none; b=iHsXrs+sS/JynKbno7qur9DcQwR4wFml8vaqkKJ0/n5OhUEZSNu0xCVB3pV45zdVdpHibflJSW5PehRb2szTJs+Vlj/jWOXeX0za8EryMpZJm5DTZPhWbPYJrehE4+v8Mss4OdVueI8Rfz8Z/FOYgxNC2To43V3rDil0xhOwBqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683039; c=relaxed/simple;
-	bh=NVi1TYPDHju4evz+ts1//jW0cIPnU3XcWSlm/9zBBGY=;
+	s=arc-20240116; t=1717683659; c=relaxed/simple;
+	bh=9votOwkAVc/1V1bb8EcXD8jwJ63Urs/IfScIvC3V8NA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ccf6+5sCA9MNrBAPm7h2BQwZKaF+Ms7Ri9pmsiNgBa7fKlOnBGuWRmFHwPDrsDYl3i4Jeee+nZtPwicyMXWBxfG1ISe3fA2XTuOtEa5KP6D2iX5j6I0LfrVZcmoSVE8EnRGwzReTFAc6hrVkijXMxWh8IVyih2gEi9ca6Ce62eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhC/YHYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FC9C4DDE9;
-	Thu,  6 Jun 2024 14:10:39 +0000 (UTC)
+	 MIME-Version; b=OVxAMGqqEQPxsv7805OKRpqRXUYd4IJoaN87eoX1mNA5mp9DEMuPsCUHBH8KmxTnQ65Q2JdGbh70DY7eLdVTBLCxK21xn4FtWrWGGwpnMn9uDMvUDHlORHec1DeiMu0o3b5b9j3rg5whIYdUOYQxTLi9T8Ui1DqCAz8BCqXbHrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERqzS2ey; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CD58C2BD10;
+	Thu,  6 Jun 2024 14:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683039;
-	bh=NVi1TYPDHju4evz+ts1//jW0cIPnU3XcWSlm/9zBBGY=;
+	s=korg; t=1717683659;
+	bh=9votOwkAVc/1V1bb8EcXD8jwJ63Urs/IfScIvC3V8NA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FhC/YHYXRH0zR1PqC16ihIvKCQ2bKaF4RpfZd8ntarmKi0F5euqYBsOQNkR5B25iL
-	 UvmgQ2Gg9gatta1vDRJEmi29BFsDCmou7VKbu8qYS2RBvpK7HQWq+FLbfY/oKhj41v
-	 U2lHpGb4jQkTk5iXh4mxvB8kZ5asRzhrZwYyLq1M=
+	b=ERqzS2ey9dI9b4ctzrMOU54cAGuvrfY9TFBk9QIZR4ptkKIYBRogrhCs6x/+Yvwi6
+	 UQJ85MVMjw6ceq1Vwoqbv13+XrSDpNczzXWyvGOYo+t+hs3kwrF7H1QdfKSSczdjPh
+	 vVC9gX93uJ4J/a6MxYA3tyyy5wIaLQaMaK+HvH2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Greg Thelen <gthelen@google.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Tuan Phan <tuanphan@os.amperecomputing.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Jens Remus <jremus@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 230/374] perf/arm-dmc620: Fix lockdep assert in ->event_init()
-Date: Thu,  6 Jun 2024 16:03:29 +0200
-Message-ID: <20240606131659.515826607@linuxfoundation.org>
+Subject: [PATCH 6.6 538/744] s390/vdso: Use standard stack frame layout
+Date: Thu,  6 Jun 2024 16:03:30 +0200
+Message-ID: <20240606131749.714648694@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,63 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit a4c5a457c6107dfe9dc65a104af1634811396bac ]
+[ Upstream commit 185445c7c137822ad856aae91a41e199370cb534 ]
 
-for_each_sibling_event() checks leader's ctx but it doesn't have the ctx
-yet if it's the leader.  Like in perf_event_validate_size(), we should
-skip checking siblings in that case.
+By default user space is compiled with standard stack frame layout and not
+with the packed stack layout. The vdso code however inherited the
+-mpacked-stack compiler option from the kernel. Remove this option to make
+sure the vdso is compiled with standard stack frame layout.
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Fixes: f3c0eba28704 ("perf: Add a few assertions")
-Reported-by: Greg Thelen <gthelen@google.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Tuan Phan <tuanphan@os.amperecomputing.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/20240514180050.182454-1-namhyung@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+This makes sure that the stack frame backchain location for vdso generated
+stack frames is the same like for calling code (if compiled with default
+options). This allows to manually walk stack frames without DWARF
+information, like the kernel is doing it e.g. with arch_stack_walk_user().
+
+Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
+Reviewed-by: Jens Remus <jremus@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm_dmc620_pmu.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/s390/kernel/vdso32/Makefile | 1 +
+ arch/s390/kernel/vdso64/Makefile | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/perf/arm_dmc620_pmu.c b/drivers/perf/arm_dmc620_pmu.c
-index 8a81be2dd5ecf..88c17c1d6d499 100644
---- a/drivers/perf/arm_dmc620_pmu.c
-+++ b/drivers/perf/arm_dmc620_pmu.c
-@@ -542,12 +542,16 @@ static int dmc620_pmu_event_init(struct perf_event *event)
- 	if (event->cpu < 0)
- 		return -EINVAL;
+diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
+index 9090c0e5de254..4800d80decee6 100644
+--- a/arch/s390/kernel/vdso32/Makefile
++++ b/arch/s390/kernel/vdso32/Makefile
+@@ -19,6 +19,7 @@ KBUILD_AFLAGS_32 := $(filter-out -m64,$(KBUILD_AFLAGS))
+ KBUILD_AFLAGS_32 += -m31 -s
  
-+	hwc->idx = -1;
-+
-+	if (event->group_leader == event)
-+		return 0;
-+
- 	/*
- 	 * We can't atomically disable all HW counters so only one event allowed,
- 	 * although software events are acceptable.
- 	 */
--	if (event->group_leader != event &&
--			!is_software_event(event->group_leader))
-+	if (!is_software_event(event->group_leader))
- 		return -EINVAL;
+ KBUILD_CFLAGS_32 := $(filter-out -m64,$(KBUILD_CFLAGS))
++KBUILD_CFLAGS_32 := $(filter-out -mpacked-stack,$(KBUILD_CFLAGS))
+ KBUILD_CFLAGS_32 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_32))
+ KBUILD_CFLAGS_32 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_32))
+ KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin -fasynchronous-unwind-tables
+diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
+index a44f51de1f1ea..2f2e4e997030c 100644
+--- a/arch/s390/kernel/vdso64/Makefile
++++ b/arch/s390/kernel/vdso64/Makefile
+@@ -24,6 +24,7 @@ KBUILD_AFLAGS_64 := $(filter-out -m64,$(KBUILD_AFLAGS))
+ KBUILD_AFLAGS_64 += -m64
  
- 	for_each_sibling_event(sibling, event->group_leader) {
-@@ -556,7 +560,6 @@ static int dmc620_pmu_event_init(struct perf_event *event)
- 			return -EINVAL;
- 	}
- 
--	hwc->idx = -1;
- 	return 0;
- }
- 
+ KBUILD_CFLAGS_64 := $(filter-out -m64,$(KBUILD_CFLAGS))
++KBUILD_CFLAGS_64 := $(filter-out -mpacked-stack,$(KBUILD_CFLAGS_64))
+ KBUILD_CFLAGS_64 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_64))
+ KBUILD_CFLAGS_64 := $(filter-out -munaligned-symbols,$(KBUILD_CFLAGS_64))
+ KBUILD_CFLAGS_64 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_64))
 -- 
 2.43.0
 
