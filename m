@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-48782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF2318FEA82
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB898FEA84
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AC7CB21888
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 410B61F24DBD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7A71A01C4;
-	Thu,  6 Jun 2024 14:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF471A01C8;
+	Thu,  6 Jun 2024 14:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERmNEkZj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7ugljYN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA551990DC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32841A01C7;
 	Thu,  6 Jun 2024 14:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683145; cv=none; b=JcN/nkzs0daiCSf4rFAs02SysFDcwMGAvlgZa3IfWh8Sfxq7C2tWKvN7AptGcXJaGKLx+CrAR1BIUxqz5/MY5qyAn6IXxNaq3baqxsA1O2mn8CZ8lBwHzC/tYLnl8kRQtGIfWVprAuSyYvwwwoBEYSF8wLXO6xQvHmGb34rM89g=
+	t=1717683146; cv=none; b=dlJJJSbfo6tR+UtqCouUdUSBexDsLjq0vZIC87uZ6avkKebRv3F2eVHRghkS6iKczb2NC2VP/CNiZ8GxwqIbhaERTAsbTq0Cyqz9b2Lgke+mCJfy/BAc6mK7UvXYkxpHqQjgsPKfO3BW3sN+Iq+JnW/379j1HcMC+0u6IYNaQ4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683145; c=relaxed/simple;
-	bh=HllS7wGNt/7tOi6mZeR8wZZA8VacO8tYzpp7SJNyJ/k=;
+	s=arc-20240116; t=1717683146; c=relaxed/simple;
+	bh=Q9xvA97SENlAhfm3sv9dhhifCWzlW/yP0T7W2iyR3go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSDJhU2IWU+eHWcHTI0MVQRakqPjIya6cqUn1V3wX5ebYKd7ULky2xrppZ1WQboO5R/rg40AU0SyyJMOMYzHzZ1smaoHjzb4WjgZ3wvYZ6dmnwkh7gHiubmgQuSXlA3ZplI59DrB9E+bfoeMgQQJmjfjqN3p32jR2qUiA85ljy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERmNEkZj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5EC7C2BD10;
-	Thu,  6 Jun 2024 14:12:24 +0000 (UTC)
+	 MIME-Version; b=HeJr1ThYQJfFs575O5ioC0Dr9XJvUWDLVO9Cu6Q5o2e56IKbg8HL8lZQZW0oZEYsIPOM81r06gLWuMnF2yVllpk/U48ltyN8INlFRvUunpwHYOXZZlMa+iHjNk9ove3/kCGfgaJdXjJ24V2RWJW04oLt9U7j1Yuvp9715jdHzZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7ugljYN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B03C2BD10;
+	Thu,  6 Jun 2024 14:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683144;
-	bh=HllS7wGNt/7tOi6mZeR8wZZA8VacO8tYzpp7SJNyJ/k=;
+	s=korg; t=1717683145;
+	bh=Q9xvA97SENlAhfm3sv9dhhifCWzlW/yP0T7W2iyR3go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ERmNEkZjiTjrH93hGGJy74twg0355ISAA9R9o50TyZa1GdkGgaIvzz0wuBvYwp09J
-	 AoGemVoTJI7kDJDIa30IdPQtfD1a9qvNnQ9g/cAr36VkzhUtv51VrKImAzL1O4VHaA
-	 kkaGRpmnCPup0iadSD3IH1aIS/jAn7o4dWEDFvxE=
+	b=e7ugljYNbsljVQFdAPQ8snmloo6i021s6+32OIet40uKKqiDv6m9bNVpiU9tRh4R7
+	 nZD6Jw8RigchzUuIYUDLsoLkPVSpK2uEhyHkXIO6jNvVPgSp66/UsRmmTTanprNxBf
+	 lK8Uyg55+ezAPchoccL3EaxCrjiiTZ/FlNXGl4ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/744] epoll: be better about file lifetimes
-Date: Thu,  6 Jun 2024 15:56:02 +0200
-Message-ID: <20240606131735.288954742@linuxfoundation.org>
+Subject: [PATCH 6.6 091/744] ksmbd: fix uninitialized symbol share in smb2_tree_connect()
+Date: Thu,  6 Jun 2024 15:56:03 +0200
+Message-ID: <20240606131735.315661915@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,92 +68,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 4efaa5acf0a1d2b5947f98abb3acf8bfd966422b ]
+[ Upstream commit bc642d7bfdac3bfd838a1cd6651955ae2eb8535a ]
 
-epoll can call out to vfs_poll() with a file pointer that may race with
-the last 'fput()'. That would make f_count go down to zero, and while
-the ep->mtx locking means that the resulting file pointer tear-down will
-be blocked until the poll returns, it means that f_count is already
-dead, and any use of it won't actually get a reference to the file any
-more: it's dead regardless.
+Fix uninitialized symbol 'share' in smb2_tree_connect().
 
-Make sure we have a valid ref on the file pointer before we call down to
-vfs_poll() from the epoll routines.
-
-Link: https://lore.kernel.org/lkml/0000000000002d631f0615918f1e@google.com/
-Reported-by: syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: e9d8c2f95ab8 ("ksmbd: add continuous availability share parameter")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 38 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 1d9a71a0c4c16..0ed73bc7d4652 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -876,6 +876,34 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
- 	return res;
- }
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 1e536ae277618..6a15c5d64f415 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1926,7 +1926,7 @@ int smb2_tree_connect(struct ksmbd_work *work)
+ 	struct ksmbd_session *sess = work->sess;
+ 	char *treename = NULL, *name = NULL;
+ 	struct ksmbd_tree_conn_status status;
+-	struct ksmbd_share_config *share;
++	struct ksmbd_share_config *share = NULL;
+ 	int rc = -EINVAL;
  
-+/*
-+ * The ffd.file pointer may be in the process of being torn down due to
-+ * being closed, but we may not have finished eventpoll_release() yet.
-+ *
-+ * Normally, even with the atomic_long_inc_not_zero, the file may have
-+ * been free'd and then gotten re-allocated to something else (since
-+ * files are not RCU-delayed, they are SLAB_TYPESAFE_BY_RCU).
-+ *
-+ * But for epoll, users hold the ep->mtx mutex, and as such any file in
-+ * the process of being free'd will block in eventpoll_release_file()
-+ * and thus the underlying file allocation will not be free'd, and the
-+ * file re-use cannot happen.
-+ *
-+ * For the same reason we can avoid a rcu_read_lock() around the
-+ * operation - 'ffd.file' cannot go away even if the refcount has
-+ * reached zero (but we must still not call out to ->poll() functions
-+ * etc).
-+ */
-+static struct file *epi_fget(const struct epitem *epi)
-+{
-+	struct file *file;
-+
-+	file = epi->ffd.file;
-+	if (!atomic_long_inc_not_zero(&file->f_count))
-+		file = NULL;
-+	return file;
-+}
-+
- /*
-  * Differs from ep_eventpoll_poll() in that internal callers already have
-  * the ep->mtx so we need to start from depth=1, such that mutex_lock_nested()
-@@ -884,14 +912,22 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
- static __poll_t ep_item_poll(const struct epitem *epi, poll_table *pt,
- 				 int depth)
- {
--	struct file *file = epi->ffd.file;
-+	struct file *file = epi_fget(epi);
- 	__poll_t res;
- 
-+	/*
-+	 * We could return EPOLLERR | EPOLLHUP or something, but let's
-+	 * treat this more as "file doesn't exist, poll didn't happen".
-+	 */
-+	if (!file)
-+		return 0;
-+
- 	pt->_key = epi->event.events;
- 	if (!is_file_epoll(file))
- 		res = vfs_poll(file, pt);
- 	else
- 		res = __ep_eventpoll_poll(file, pt, depth);
-+	fput(file);
- 	return res & epi->event.events;
- }
- 
+ 	WORK_BUFFERS(work, req, rsp);
+@@ -1988,7 +1988,7 @@ int smb2_tree_connect(struct ksmbd_work *work)
+ 	write_unlock(&sess->tree_conns_lock);
+ 	rsp->StructureSize = cpu_to_le16(16);
+ out_err1:
+-	if (server_conf.flags & KSMBD_GLOBAL_FLAG_DURABLE_HANDLE &&
++	if (server_conf.flags & KSMBD_GLOBAL_FLAG_DURABLE_HANDLE && share &&
+ 	    test_share_config_flag(share,
+ 				   KSMBD_SHARE_FLAG_CONTINUOUS_AVAILABILITY))
+ 		rsp->Capabilities = SMB2_SHARE_CAP_CONTINUOUS_AVAILABILITY;
 -- 
 2.43.0
 
