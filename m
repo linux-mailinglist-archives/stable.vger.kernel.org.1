@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455A88FEEEE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0888FED4A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C23CFB28355
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F2182819A3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF81196D8E;
-	Thu,  6 Jun 2024 14:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64171BA861;
+	Thu,  6 Jun 2024 14:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSSaMSXI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxZJ8pDK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6851A1871;
-	Thu,  6 Jun 2024 14:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F4E1B583F;
+	Thu,  6 Jun 2024 14:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683717; cv=none; b=DDjcxzsJpJVlVXHlpCSLSdB4MeH5ScDODVTAdb4tRCwqBCvlaXE3OcGQ+AzlDfK2h7Lv8OrwCr/leJCb6Py80VqZJFxZsJX4t8Ar2NRH7u/DpYZoLj1sc932CpE7su7I5N8ejZYl/CL4aFnnzYX6VRLlTxKTkYOa9wriwgVGNk8=
+	t=1717683470; cv=none; b=sB8Txi31i9fb3tKTWvHOTfNTvVrKbTZRE12K66QAlGnN+jM8VabsketZsSITOXPb7l1/wuuWdaO1nsKY34ievV2+uZEAb/TKIu7NJtkqMGkDQRLHb1dXLDlszP0tbWQ3Z8RhckxwUmAaPJ7Bz1TvUfyFEe29F6zgqjkt9cqVjhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683717; c=relaxed/simple;
-	bh=AdwWhynfYDj6aESQpjYxLLjoURTr/jf2OpxoE+0DKvc=;
+	s=arc-20240116; t=1717683470; c=relaxed/simple;
+	bh=ppfIB7aLc92fG32Kmw4K4w3ukMYMiCIRHusRM6r2g2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fiabiHwRnNCxQK5L1LtgpMbo5quGO1NJe2uwjxTNfa0H0u3G/RnS8PbNmSKm2dF50GytnpVip9xyY48wB8kUCjpaAzXmWwqOeCI3dHKY5RhhsLBtJmTPjCTEFlbZUhplehBeVIuPOMCvd6yUmUSPLmvhr0Fxcut3sASI5NI8T1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSSaMSXI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A9AC2BD10;
-	Thu,  6 Jun 2024 14:21:57 +0000 (UTC)
+	 MIME-Version; b=HRX6htOnmvSqUacuVxwWyDx4EoCwoJzFYHnkgJFwPNWmeUlw/E2n4chn8l1UbeKu6YOZ6TJcEa0Kzp+uUbwl5+/VO2MXJoTMgbivpsAtjATfdqdxaAvQ+gkcPcY0NtbqQgDLTVdIRW5ahe3SRMbFqpEbWcGHoapysxLzGb752cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxZJ8pDK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439B4C4AF09;
+	Thu,  6 Jun 2024 14:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683717;
-	bh=AdwWhynfYDj6aESQpjYxLLjoURTr/jf2OpxoE+0DKvc=;
+	s=korg; t=1717683470;
+	bh=ppfIB7aLc92fG32Kmw4K4w3ukMYMiCIRHusRM6r2g2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MSSaMSXIrys6grfVdXDJOEsnfZsZpV5l9/1WCbDcT+Im2SGpPiaEI05ZIJ2EH7bz1
-	 BXWnCzeU5VTdY9Zh8TRgNYAFEqs4i6MAzlqbB3OmBQ39gZpHaoYohJMsrM3m1zschc
-	 QgaqRjPy87zIQ8/13ad/pcsRjgMUsiraU7Ce9rmw=
+	b=oxZJ8pDKIlWPUIqazWnW+ptuT5HrzBNS1iqNWMsHRSydY8GSPns8UHav7NrwJvlUa
+	 nQzJkneWAQ4nBuAESv6SBTn6KEPtw0M8LgvWj0GHvNJcMpn+NT763Qcuk98xIA0NvS
+	 /IWOfGBVw57RAlyEozA52ssGG1v4D5UwrA2SCRhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Clark <robdclark@chromium.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 614/744] drm/msm/a6xx: Avoid a nullptr dereference when speedbin setting fails
+Subject: [PATCH 6.1 357/473] s390/boot: Remove alt_stfle_fac_list from decompressor
 Date: Thu,  6 Jun 2024 16:04:46 +0200
-Message-ID: <20240606131752.185902358@linuxfoundation.org>
+Message-ID: <20240606131711.715745222@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-[ Upstream commit 46d4efcccc688cbacdd70a238bedca510acaa8e4 ]
+[ Upstream commit e7dec0b7926f3cd493c697c4c389df77e8e8a34c ]
 
-Calling a6xx_destroy() before adreno_gpu_init() leads to a null pointer
-dereference on:
+It is nowhere used in the decompressor, therefore remove it.
 
-msm_gpu_cleanup() : platform_set_drvdata(gpu->pdev, NULL);
-
-as gpu->pdev is only assigned in:
-
-a6xx_gpu_init()
-|_ adreno_gpu_init
-    |_ msm_gpu_init()
-
-Instead of relying on handwavy null checks down the cleanup chain,
-explicitly de-allocate the LLC data and free a6xx_gpu instead.
-
-Fixes: 76efc2453d0e ("drm/msm/gpu: Fix crash during system suspend after unbind")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/588919/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Fixes: 17e89e1340a3 ("s390/facilities: move stfl information from lowcore to global data")
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/s390/boot/startup.c | 1 -
+ arch/s390/kernel/setup.c | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index 522ca7fe67625..3664c1476a83a 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -2343,7 +2343,8 @@ struct msm_gpu *a6xx_gpu_init(struct drm_device *dev)
+diff --git a/arch/s390/boot/startup.c b/arch/s390/boot/startup.c
+index e0863d28759a5..bfb4dec36414a 100644
+--- a/arch/s390/boot/startup.c
++++ b/arch/s390/boot/startup.c
+@@ -30,7 +30,6 @@ int __bootdata(is_full_image) = 1;
+ struct initrd_data __bootdata(initrd_data);
  
- 	ret = a6xx_set_supported_hw(&pdev->dev, config->info);
- 	if (ret) {
--		a6xx_destroy(&(a6xx_gpu->base.base));
-+		a6xx_llc_slices_destroy(a6xx_gpu);
-+		kfree(a6xx_gpu);
- 		return ERR_PTR(ret);
- 	}
+ u64 __bootdata_preserved(stfle_fac_list[16]);
+-u64 __bootdata_preserved(alt_stfle_fac_list[16]);
+ struct oldmem_data __bootdata_preserved(oldmem_data);
  
+ void error(char *x)
+diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
+index 2ec5f1e0312fa..1f514557fee9d 100644
+--- a/arch/s390/kernel/setup.c
++++ b/arch/s390/kernel/setup.c
+@@ -155,7 +155,7 @@ unsigned int __bootdata_preserved(zlib_dfltcc_support);
+ EXPORT_SYMBOL(zlib_dfltcc_support);
+ u64 __bootdata_preserved(stfle_fac_list[16]);
+ EXPORT_SYMBOL(stfle_fac_list);
+-u64 __bootdata_preserved(alt_stfle_fac_list[16]);
++u64 alt_stfle_fac_list[16];
+ struct oldmem_data __bootdata_preserved(oldmem_data);
+ 
+ unsigned long VMALLOC_START;
 -- 
 2.43.0
 
