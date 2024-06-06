@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-48836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9E28FEABF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E038FEAC1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B4631F2292D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ADC128639B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465AC1A0DE5;
-	Thu,  6 Jun 2024 14:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946781991D7;
+	Thu,  6 Jun 2024 14:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqZIIoNN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+9CQYJK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0643A1991DC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DD819753C;
 	Thu,  6 Jun 2024 14:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683171; cv=none; b=WFLdcuEuh7m/0wqhzN2OJCIV3v6ZtrFTye2mOKZ4qOyYT3KGzOCN+yb2n6/O04lhS+obUTdT9YBDu9FgOOO4W/40uEgvn5NKj3vD5pgw9o1dPwJsElVqIC4W2jkbjwn6m18bQpkWMQhmWurPBu7HHIAjhZLgkqE/Y4y/KeipvP4=
+	t=1717683172; cv=none; b=qQStq9cGO/NQWJKAL8jK3UTfPnARuxnaHp7ryO5UhERMfAedJBoJ+zdY0Mf52T5bWpYt/WacevF6pTZZbMIoVDxDjlGs2SUoupO3VYfVK/Svkt7+FI/N2vRihgIqjNZMc3lFs/a4K8EeePONw03LtQd5AR6niBnVPKkzMo3ZjLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683171; c=relaxed/simple;
-	bh=XGvfbJDm1TVxGLtOGkMfPxWAkOkJOu+6vMX2//Y32Yw=;
+	s=arc-20240116; t=1717683172; c=relaxed/simple;
+	bh=1UM61JJp+Xii0u2PxM5O8SY9Kblajv2VWqwY3fOEbFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPlZUnn4OsGabimb3DkyJ8loIfZK8ZpvQNGuzHOawpfm6VnkDaypulL40XX/tthbrYurlKoNAmS5vHCqe0ZmaEsiN4CDU5nw+PIIY+WBxxgbWKDZmejHj2uMqYI7nyyavf1lC2F3iqu2KKK8yOjrof1NSqFFRgjVJtb+hGr/5iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqZIIoNN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB61EC32786;
-	Thu,  6 Jun 2024 14:12:50 +0000 (UTC)
+	 MIME-Version; b=eukb4WPWV0jpOTeHvIP1iSQx7iyv8PEWzgZqVFCyqqfjMdhQGhAxfGwW1/Ro+sC81kkKvf2/IPWz8KIIyz/eU55lghN1q5PwMx/ZVo94aAD11XHX9gu9FdRgjgcn36ebFqUPix20eZLDvJniroYwgmAKzCqGcy8MVx28fh1OT4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+9CQYJK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C968FC32786;
+	Thu,  6 Jun 2024 14:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683170;
-	bh=XGvfbJDm1TVxGLtOGkMfPxWAkOkJOu+6vMX2//Y32Yw=;
+	s=korg; t=1717683171;
+	bh=1UM61JJp+Xii0u2PxM5O8SY9Kblajv2VWqwY3fOEbFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jqZIIoNN4ZC+t9g/Q0HFsSKUybUDza0+97jTCSkQ9kTSAaDyDWWUg20tRyi46HtW3
-	 AL2fl1SB2oh3QlzW3rDOv8XbswyWp68fwfyqdncX2cJmeHcm+SiYcXfp85zQwEJxM9
-	 KnlWGuLXfh8pXd758OiJLe4hDBMGdIRv7II7FCuU=
+	b=f+9CQYJKhU/g5rF0YElAyD/5gS5PbhBFg3D1tsGuO6Xn+8s9b2XSQUojIhkdZWbZR
+	 C3fMZn0h4ZP2z54BXxNOfSmXKG12q+eZEqV5PKl461QYETze6kzmf0QpaG+Fn1OYuM
+	 oahWInskt8wB7J1ybeB5sGZURbM/NPq6o/NIgvQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/473] KVM: selftests: Add test for uaccesses to non-existent vgic-v2 CPUIF
-Date: Thu,  6 Jun 2024 15:59:35 +0200
-Message-ID: <20240606131701.407877932@linuxfoundation.org>
+	Ben Chaney <bchaney@akamai.com>,
+	Kees Cook <keescook@chromium.org>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.1 047/473] x86/efistub: Omit physical KASLR when memory reservations exist
+Date: Thu,  6 Jun 2024 15:59:36 +0200
+Message-ID: <20240606131701.442284898@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -66,106 +66,108 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 160933e330f4c5a13931d725a4d952a4b9aefa71 ]
+commit 15aa8fb852f995dd234a57f12dfb989044968bb6 upstream.
 
-Assert that accesses to a non-existent vgic-v2 CPU interface
-consistently fail across the various KVM device attr ioctls. This also
-serves as a regression test for a bug wherein KVM hits a NULL
-dereference when the CPUID specified in the ioctl is invalid.
+The legacy decompressor has elaborate logic to ensure that the
+randomized physical placement of the decompressed kernel image does not
+conflict with any memory reservations, including ones specified on the
+command line using mem=, memmap=, efi_fake_mem= or hugepages=, which are
+taken into account by the kernel proper at a later stage.
 
-Note that there is no need to print the observed errno, as TEST_ASSERT()
-will take care of it.
+When booting in EFI mode, it is the firmware's job to ensure that the
+chosen range does not conflict with any memory reservations that it
+knows about, and this is trivially achieved by using the firmware's
+memory allocation APIs.
 
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240424173959.3776798-3-oliver.upton@linux.dev
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That leaves reservations specified on the command line, though, which
+the firmware knows nothing about, as these regions have no other special
+significance to the platform. Since commit
+
+  a1b87d54f4e4 ("x86/efistub: Avoid legacy decompressor when doing EFI boot")
+
+these reservations are not taken into account when randomizing the
+physical placement, which may result in conflicts where the memory
+cannot be reserved by the kernel proper because its own executable image
+resides there.
+
+To avoid having to duplicate or reuse the existing complicated logic,
+disable physical KASLR entirely when such overrides are specified. These
+are mostly diagnostic tools or niche features, and physical KASLR (as
+opposed to virtual KASLR, which is much more important as it affects the
+memory addresses observed by code executing in the kernel) is something
+we can live without.
+
+Closes: https://lkml.kernel.org/r/FA5F6719-8824-4B04-803E-82990E65E627%40akamai.com
+Reported-by: Ben Chaney <bchaney@akamai.com>
+Fixes: a1b87d54f4e4 ("x86/efistub: Avoid legacy decompressor when doing EFI boot")
+Cc:  <stable@vger.kernel.org> # v6.1+
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/kvm/aarch64/vgic_init.c |   50 ++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ drivers/firmware/efi/libstub/x86-stub.c |   28 ++++++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/kvm/aarch64/vgic_init.c
-+++ b/tools/testing/selftests/kvm/aarch64/vgic_init.c
-@@ -6,6 +6,7 @@
-  */
- #define _GNU_SOURCE
- #include <linux/kernel.h>
-+#include <linux/bitfield.h>
- #include <sys/syscall.h>
- #include <asm/kvm.h>
- #include <asm/kvm_para.h>
-@@ -86,6 +87,18 @@ static struct vm_gic vm_gic_create_with_
- 	return v;
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -736,6 +736,26 @@ static void error(char *str)
+ 	efi_warn("Decompression failed: %s\n", str);
  }
  
-+static struct vm_gic vm_gic_create_barebones(uint32_t gic_dev_type)
++static const char *cmdline_memmap_override;
++
++static efi_status_t parse_options(const char *cmdline)
 +{
-+	struct vm_gic v;
++	static const char opts[][14] = {
++		"mem=", "memmap=", "efi_fake_mem=", "hugepages="
++	};
 +
-+	v.gic_dev_type = gic_dev_type;
-+	v.vm = vm_create_barebones();
-+	v.gic_fd = kvm_create_device(v.vm, gic_dev_type);
++	for (int i = 0; i < ARRAY_SIZE(opts); i++) {
++		const char *p = strstr(cmdline, opts[i]);
 +
-+	return v;
++		if (p == cmdline || (p > cmdline && isspace(p[-1]))) {
++			cmdline_memmap_override = opts[i];
++			break;
++		}
++	}
++
++	return efi_parse_options(cmdline);
 +}
 +
-+
- static void vm_gic_destroy(struct vm_gic *v)
+ static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry)
  {
- 	close(v->gic_fd);
-@@ -359,6 +372,40 @@ static void test_vcpus_then_vgic(uint32_
- 	vm_gic_destroy(&v);
- }
+ 	unsigned long virt_addr = LOAD_PHYSICAL_ADDR;
+@@ -767,6 +787,10 @@ static efi_status_t efi_decompress_kerne
+ 		    !memcmp(efistub_fw_vendor(), ami, sizeof(ami))) {
+ 			efi_debug("AMI firmware v2.0 or older detected - disabling physical KASLR\n");
+ 			seed[0] = 0;
++		} else if (cmdline_memmap_override) {
++			efi_info("%s detected on the kernel command line - disabling physical KASLR\n",
++				 cmdline_memmap_override);
++			seed[0] = 0;
+ 		}
  
-+#define KVM_VGIC_V2_ATTR(offset, cpu) \
-+	(FIELD_PREP(KVM_DEV_ARM_VGIC_OFFSET_MASK, offset) | \
-+	 FIELD_PREP(KVM_DEV_ARM_VGIC_CPUID_MASK, cpu))
-+
-+#define GIC_CPU_CTRL	0x00
-+
-+static void test_v2_uaccess_cpuif_no_vcpus(void)
-+{
-+	struct vm_gic v;
-+	u64 val = 0;
-+	int ret;
-+
-+	v = vm_gic_create_barebones(KVM_DEV_TYPE_ARM_VGIC_V2);
-+	subtest_dist_rdist(&v);
-+
-+	ret = __kvm_has_device_attr(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CPU_REGS,
-+				    KVM_VGIC_V2_ATTR(GIC_CPU_CTRL, 0));
-+	TEST_ASSERT(ret && errno == EINVAL,
-+		    "accessed non-existent CPU interface, want errno: %i",
-+		    EINVAL);
-+	ret = __kvm_device_attr_get(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CPU_REGS,
-+				    KVM_VGIC_V2_ATTR(GIC_CPU_CTRL, 0), &val);
-+	TEST_ASSERT(ret && errno == EINVAL,
-+		    "accessed non-existent CPU interface, want errno: %i",
-+		    EINVAL);
-+	ret = __kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CPU_REGS,
-+				    KVM_VGIC_V2_ATTR(GIC_CPU_CTRL, 0), &val);
-+	TEST_ASSERT(ret && errno == EINVAL,
-+		    "accessed non-existent CPU interface, want errno: %i",
-+		    EINVAL);
-+
-+	vm_gic_destroy(&v);
-+}
-+
- static void test_v3_new_redist_regions(void)
- {
- 	struct kvm_vcpu *vcpus[NR_VCPUS];
-@@ -677,6 +724,9 @@ void run_tests(uint32_t gic_dev_type)
- 	test_vcpus_then_vgic(gic_dev_type);
- 	test_vgic_then_vcpus(gic_dev_type);
+ 		boot_params_ptr->hdr.loadflags |= KASLR_FLAG;
+@@ -843,7 +867,7 @@ void __noreturn efi_stub_entry(efi_handl
+ 	}
  
-+	if (VGIC_DEV_IS_V2(gic_dev_type))
-+		test_v2_uaccess_cpuif_no_vcpus();
-+
- 	if (VGIC_DEV_IS_V3(gic_dev_type)) {
- 		test_v3_new_redist_regions();
- 		test_v3_typer_accesses();
+ #ifdef CONFIG_CMDLINE_BOOL
+-	status = efi_parse_options(CONFIG_CMDLINE);
++	status = parse_options(CONFIG_CMDLINE);
+ 	if (status != EFI_SUCCESS) {
+ 		efi_err("Failed to parse options\n");
+ 		goto fail;
+@@ -852,7 +876,7 @@ void __noreturn efi_stub_entry(efi_handl
+ 	if (!IS_ENABLED(CONFIG_CMDLINE_OVERRIDE)) {
+ 		unsigned long cmdline_paddr = ((u64)hdr->cmd_line_ptr |
+ 					       ((u64)boot_params->ext_cmd_line_ptr << 32));
+-		status = efi_parse_options((char *)cmdline_paddr);
++		status = parse_options((char *)cmdline_paddr);
+ 		if (status != EFI_SUCCESS) {
+ 			efi_err("Failed to parse options\n");
+ 			goto fail;
 
 
 
