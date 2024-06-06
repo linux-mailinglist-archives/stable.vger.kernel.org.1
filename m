@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-48427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F018FE8F7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BDB58FEC0D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D3471F23352
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A33892824E7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12DB19751F;
-	Thu,  6 Jun 2024 14:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C93D1AC43C;
+	Thu,  6 Jun 2024 14:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cn1zmwSL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CM4GcUQq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBD219750E;
-	Thu,  6 Jun 2024 14:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEE819884B;
+	Thu,  6 Jun 2024 14:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682960; cv=none; b=tYy80ajrPgDfbYczfV93cCbbG2pe0cwtcoiesgk/vm7l+fMb9DDiUngvtEmZuATiV3zvPJE6kmZfNut8NEf3tzIf0JxWG5F3MdIDclsjaWjd7hcVcdxmMf5kCMT71A5VPj7ZpknZnTgTgxsfy+VEa1X2+AxXTwExO8CWhyNJ08w=
+	t=1717683325; cv=none; b=bKdnCtrg2FpkLdHS6NbOcXHoNfbbg2E+hYsvuOczA6boKIhrYnT6IqmgYU3Cs4hj8MzV3wTVFsYVyiZbcf4fJ1OFSv1JUBwmT+XbhA95TJFkO/uqscrl3lQv8A2PD4VT+3QcY2AXMv2/8TYyCw+1vqKYGygwbvGHoMn9rkW+LhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682960; c=relaxed/simple;
-	bh=tDckdRrXmHaRgFB+7G330QpnBOaxNx1Y/2lCZDXq9mU=;
+	s=arc-20240116; t=1717683325; c=relaxed/simple;
+	bh=fQRZbwc9FGz4PyiQn3KA6zKxlBOvQVY7BJTopg5sdBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+mt2Ek2xbLJV8+gs+nqzXJKh+PT7P2JmUFY1NyHv5eNpz+47rLCkmN7DEMkdqntAamPiik4u7ouUsVxLnKwV2bNmO0ihMShY1b/f6n5U5aqv2w7NStBWhEWB5GtKewFD3K3biB10PZSbSRwxtrxWpeFVZEyl9y7ql2QR7yp7W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cn1zmwSL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384B2C32781;
-	Thu,  6 Jun 2024 14:09:20 +0000 (UTC)
+	 MIME-Version; b=KD1OVkzkmnZqgpd9i7IgY+SJdJDBQsFU7h/AU/GEUFX9CECMn74JWrHJEf916chPd9o4wpPRgf/8FJ+hsH6RbXbJzfdaTdqTD+ybMmuGnV2rU85HRVki4rejw1NLEms9uETB7Le5+/tdSf/lJ/CWIp+JYhGoa2nav7WAExdetng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CM4GcUQq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE111C2BD10;
+	Thu,  6 Jun 2024 14:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682960;
-	bh=tDckdRrXmHaRgFB+7G330QpnBOaxNx1Y/2lCZDXq9mU=;
+	s=korg; t=1717683324;
+	bh=fQRZbwc9FGz4PyiQn3KA6zKxlBOvQVY7BJTopg5sdBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cn1zmwSLgFj3p5POEyvesS8BYgJiOSO2U44+sImsHHQZ7+4ewrUM7cWtiBkX/UynT
-	 NRIKywfvNKtQ1M/Q5uM+dysnMGWSCbW9ju0pL6AHEHmDtvrec3o8rsxXo1G/ArGzxs
-	 Ydku2ZEoLgs4XKFguVMqBK0I9Gvw4IP5tqDsbIl8=
+	b=CM4GcUQqd53sprXWThENczc10kl2fonNt6OPvNATL9Itsjrq6/JpYQ/6VBCPrEDng
+	 bBNLTeAugxk4tGVuUdbcgQgT6DfL0BNQsy0brPFBLbJkgFymJi/fpLaVK83LAOtj+j
+	 jyDATSRyf3rLMACA4PW3d/EiKUJ7XMg3C0Xog+io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Guillaume Nault <gnault@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 126/374] LoongArch: Fix callchain parse error with kernel tracepoint events again
-Date: Thu,  6 Jun 2024 16:01:45 +0200
-Message-ID: <20240606131656.118093489@linuxfoundation.org>
+Subject: [PATCH 6.1 177/473] ipv6: sr: fix invalid unregister error path
+Date: Thu,  6 Jun 2024 16:01:46 +0200
+Message-ID: <20240606131705.777540627@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit d6af2c76399f98444a5b4de96baf4b362d9f102b ]
+[ Upstream commit 160e9d2752181fcf18c662e74022d77d3164cd45 ]
 
-With commit d3119bc985fb645 ("LoongArch: Fix callchain parse error with
-kernel tracepoint events"), perf can parse kernel callchain, but not
-complete and sometimes maybe error. The reason is LoongArch's unwinders
-(guess, prologue and orc) don't really need fp (i.e., regs[22]), and
-they use sp (i.e., regs[3]) as the frame address rather than the current
-stack pointer.
+The error path of seg6_init() is wrong in case CONFIG_IPV6_SEG6_LWTUNNEL
+is not defined. In that case if seg6_hmac_init() fails, the
+genl_unregister_family() isn't called.
 
-Fix that by removing the assignment of regs[22], and instead assign the
-__builtin_frame_address(0) to regs[3].
+This issue exist since commit 46738b1317e1 ("ipv6: sr: add option to control
+lwtunnel support"), and commit 5559cea2d5aa ("ipv6: sr: fix possible
+use-after-free and null-ptr-deref") replaced unregister_pernet_subsys()
+with genl_unregister_family() in this error path.
 
-Without fix:
-
-  Children      Self  Command        Shared Object      Symbol
-  ........  ........  .............  .................  ................
-  33.91%    33.91%    swapper        [kernel.vmlinux]   [k] __schedule
-            |
-            |--33.04%--__schedule
-            |
-             --0.87%--__arch_cpu_idle
-                       __schedule
-
-With this fix:
-
-  Children      Self  Command        Shared Object      Symbol
-  ........  ........  .............  .................  ................
-  31.16%    31.16%    swapper        [kernel.vmlinux]   [k] __schedule
-            |
-            |--20.63%--smpboot_entry
-            |          cpu_startup_entry
-            |          schedule_idle
-            |          __schedule
-            |
-             --10.53%--start_kernel
-                       cpu_startup_entry
-                       schedule_idle
-                       __schedule
-
-Fixes: d3119bc985fb645 ("LoongArch: Fix callchain parse error with kernel tracepoint events")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 46738b1317e1 ("ipv6: sr: add option to control lwtunnel support")
+Reported-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240509131812.1662197-4-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/perf_event.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/ipv6/seg6.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/loongarch/include/asm/perf_event.h b/arch/loongarch/include/asm/perf_event.h
-index 52b638059e40b..f948a0676daf8 100644
---- a/arch/loongarch/include/asm/perf_event.h
-+++ b/arch/loongarch/include/asm/perf_event.h
-@@ -13,8 +13,7 @@
- 
- #define perf_arch_fetch_caller_regs(regs, __ip) { \
- 	(regs)->csr_era = (__ip); \
--	(regs)->regs[3] = current_stack_pointer; \
--	(regs)->regs[22] = (unsigned long) __builtin_frame_address(0); \
-+	(regs)->regs[3] = (unsigned long) __builtin_frame_address(0); \
- }
- 
- #endif /* __LOONGARCH_PERF_EVENT_H__ */
+diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+index c4ef96c8fdaca..a31521e270f78 100644
+--- a/net/ipv6/seg6.c
++++ b/net/ipv6/seg6.c
+@@ -551,6 +551,8 @@ int __init seg6_init(void)
+ #endif
+ #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
+ out_unregister_genl:
++#endif
++#if IS_ENABLED(CONFIG_IPV6_SEG6_LWTUNNEL) || IS_ENABLED(CONFIG_IPV6_SEG6_HMAC)
+ 	genl_unregister_family(&seg6_genl_family);
+ #endif
+ out_unregister_pernet:
 -- 
 2.43.0
 
