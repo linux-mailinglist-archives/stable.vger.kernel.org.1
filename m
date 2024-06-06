@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-49014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 288DB8FEB7F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 079CA8FED1B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0A57B22112
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05B271C21256
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DB1199E8E;
-	Thu,  6 Jun 2024 14:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF3719D062;
+	Thu,  6 Jun 2024 14:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bihljgQw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1ICiW72"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A5E1AB522;
-	Thu,  6 Jun 2024 14:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9975519CD19;
+	Thu,  6 Jun 2024 14:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683258; cv=none; b=TAUvVEJjTGF4nUQIamLTfaKVKePGfXoOoFimu0zow8bF3mohJu0uo3E06ajENbMGDg7qtKJAslxQ8b39oyhzHs8PP+dMaQN9QTYajCY0ES9W3iLHZTfDuHjrrEL+OzgGjQDRjtPBW4a/FJh0U4VKuOCGsH0M3gDSbemAQVrCSJI=
+	t=1717683447; cv=none; b=eHUNSKt4krvpcveQiMfFKTt0G8tEZ6llc55KfKbHd/NTRTzgM58dYvxgrotR7Zyh5cLxnupffEILmD3tymCNgaf/Yi3YMAMBAQ40bwKhBXBo1R7j1Cgzupt8EeI7abCX3a+HILsBf+wuJN4G7xXEiDnv5JGHLC1epWc8koUoiYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683258; c=relaxed/simple;
-	bh=z9UOB/Az6zZJcDTlso+2NiC4xjHkjNYIPIsAxI/e2k4=;
+	s=arc-20240116; t=1717683447; c=relaxed/simple;
+	bh=htW6ImnC40S2xBZQtr00989U/0yULfIDGRUaI2SidrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQ1Y9lteGp56DjiBGozMZCsjVNZqykzTmiDXocwc4uTfJaZPMvoqqkUEMTj5lYfraQHM6d7nbmZAKoz1hFx2O+0XusxG6VDM7Eu+UT5FGIMQlswfYQqfWeHBzSpIiZcMJ+yBqJ0Kcr6hmeHx1X1VVWXxdFznkT8y5eAzcVz8Ozc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bihljgQw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A264C2BD10;
-	Thu,  6 Jun 2024 14:14:18 +0000 (UTC)
+	 MIME-Version; b=BNdjdTgfDxTcOiMNC0a5kiQLdsIj27Ydkew4Oo7dGIzUBfKrC+ievpwEwsIdc1Ou9fPCu7UNFHonEG8dlsK0l2fiuZ9oQtHqF2Y1y3eUbttZTs/1lGvedeovlA2ipiW9+ngF5vbGnKCdQrQjrYqyoOje4pC3OubAUUgd7Yd/tvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1ICiW72; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6882EC32781;
+	Thu,  6 Jun 2024 14:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683258;
-	bh=z9UOB/Az6zZJcDTlso+2NiC4xjHkjNYIPIsAxI/e2k4=;
+	s=korg; t=1717683447;
+	bh=htW6ImnC40S2xBZQtr00989U/0yULfIDGRUaI2SidrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bihljgQwG5rxKu0jpLsHDp1idcKXKuIJ5fYQDt6WdhVWotUynXQBRYdZ429oEMNBN
-	 uxeJCicx5WZFXmaE9sMuO3conavWGQnPARjTfuX61r/wyJt7Hdxa2x6Tg95IyGjlLe
-	 1s5GGl3w+gAMCBY71joCE21Y97Mtd58dZMlqHAwg=
+	b=U1ICiW729XPZkVnaWNYvYfbOgkHQAgdHqopumZZckwoxw32V8cw8SWBwvWp1lioGJ
+	 X9bIx6DWd9n7CiPHRqCrl1kNbHne4CZeGBKgpSmfbYGT78+Nu7nm04bOmkTvKYuIE+
+	 V7xZkPJPwX8I78ibkfuyKY6Z2IoDwlAivMCYBSWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongqin Liu <yongqin.liu@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/473] wifi: ath10k: populate board data for WCN3990
+Subject: [PATCH 6.6 391/744] perf probe: Add missing libgen.h header needed for using basename()
 Date: Thu,  6 Jun 2024 16:01:03 +0200
-Message-ID: <20240606131704.359345884@linuxfoundation.org>
+Message-ID: <20240606131745.001921469@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit f1f1b5b055c9f27a2f90fd0f0521f5920e9b3c18 ]
+[ Upstream commit 581037151910126a7934e369e4b6ac70eda9a703 ]
 
-Specify board data size (and board.bin filename) for the WCN3990
-platform.
+This prototype is obtained indirectly, by luck, from some other header
+in probe-event.c in most systems, but recently exploded on alpine:edge:
 
-Reported-by: Yongqin Liu <yongqin.liu@linaro.org>
-Fixes: 03a72288c546 ("ath10k: wmi: add hw params entry for wcn3990")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240130-wcn3990-board-fw-v1-1-738f7c19a8c8@linaro.org
+   8    13.39 alpine:edge                   : FAIL gcc version 13.2.1 20240309 (Alpine 13.2.1_git20240309)
+    util/probe-event.c: In function 'convert_exec_to_group':
+    util/probe-event.c:225:16: error: implicit declaration of function 'basename' [-Werror=implicit-function-declaration]
+      225 |         ptr1 = basename(exec_copy);
+          |                ^~~~~~~~
+    util/probe-event.c:225:14: error: assignment to 'char *' from 'int' makes pointer from integer without a cast [-Werror=int-conversion]
+      225 |         ptr1 = basename(exec_copy);
+          |              ^
+    cc1: all warnings being treated as errors
+    make[3]: *** [/git/perf-6.8.0/tools/build/Makefile.build:158: util] Error 2
+
+Fix it by adding the libgen.h header where basename() is prototyped.
+
+Fixes: fb7345bbf7fad9bf ("perf probe: Support basic dwarf-based operations on uprobe events")
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/lkml/
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/core.c      | 3 +++
- drivers/net/wireless/ath/ath10k/hw.h        | 1 +
- drivers/net/wireless/ath/ath10k/targaddrs.h | 3 +++
- 3 files changed, 7 insertions(+)
+ tools/perf/util/probe-event.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 6cdb225b7eacc..81058be3598f1 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -704,6 +704,9 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.max_spatial_stream = 4,
- 		.fw = {
- 			.dir = WCN3990_HW_1_0_FW_DIR,
-+			.board = WCN3990_HW_1_0_BOARD_DATA_FILE,
-+			.board_size = WCN3990_BOARD_DATA_SZ,
-+			.board_ext_size = WCN3990_BOARD_EXT_DATA_SZ,
- 		},
- 		.sw_decrypt_mcast_mgmt = true,
- 		.rx_desc_ops = &wcn3990_rx_desc_ops,
-diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
-index 9643031a4427a..7ecdd0011cfa4 100644
---- a/drivers/net/wireless/ath/ath10k/hw.h
-+++ b/drivers/net/wireless/ath/ath10k/hw.h
-@@ -132,6 +132,7 @@ enum qca9377_chip_id_rev {
- /* WCN3990 1.0 definitions */
- #define WCN3990_HW_1_0_DEV_VERSION	ATH10K_HW_WCN3990
- #define WCN3990_HW_1_0_FW_DIR		ATH10K_FW_DIR "/WCN3990/hw1.0"
-+#define WCN3990_HW_1_0_BOARD_DATA_FILE "board.bin"
- 
- #define ATH10K_FW_FILE_BASE		"firmware"
- #define ATH10K_FW_API_MAX		6
-diff --git a/drivers/net/wireless/ath/ath10k/targaddrs.h b/drivers/net/wireless/ath/ath10k/targaddrs.h
-index ec556bb88d658..ba37e6c7ced08 100644
---- a/drivers/net/wireless/ath/ath10k/targaddrs.h
-+++ b/drivers/net/wireless/ath/ath10k/targaddrs.h
-@@ -491,4 +491,7 @@ struct host_interest {
- #define QCA4019_BOARD_DATA_SZ	  12064
- #define QCA4019_BOARD_EXT_DATA_SZ 0
- 
-+#define WCN3990_BOARD_DATA_SZ	  26328
-+#define WCN3990_BOARD_EXT_DATA_SZ 0
-+
- #endif /* __TARGADDRS_H__ */
+diff --git a/tools/perf/util/probe-event.c b/tools/perf/util/probe-event.c
+index 1a5b7fa459b23..4026cea9fc3a2 100644
+--- a/tools/perf/util/probe-event.c
++++ b/tools/perf/util/probe-event.c
+@@ -11,6 +11,7 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <errno.h>
++#include <libgen.h>
+ #include <stdio.h>
+ #include <unistd.h>
+ #include <stdlib.h>
 -- 
 2.43.0
 
