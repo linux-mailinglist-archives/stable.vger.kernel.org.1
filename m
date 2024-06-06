@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-49786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7838FEED8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FCD8FEEDA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0D591F25975
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F1B21F25366
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7231C7D76;
-	Thu,  6 Jun 2024 14:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E0919922D;
+	Thu,  6 Jun 2024 14:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08m48Vty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mKn4wGt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F6F197545;
-	Thu,  6 Jun 2024 14:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52BD1C7D9C;
+	Thu,  6 Jun 2024 14:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683708; cv=none; b=dMMlpOh/i0UY7caS22w4wY5ZSpF5fm+9PkbdhoQpRaIhZOkRW5gk6ulu1usb4UMLBf8RV13TpGGaMFHdGB0tXwGkqYAP0o8SB5mdrnbvF/aanwBgv0Ty/MOGd4r49Kho0EVfIpZxwdNWwhlHj3du7QmutBF6hKBlhtU86FTsPAE=
+	t=1717683709; cv=none; b=qEhQ3rPM0x2tknG+apm7aJLH9oYtU8r5GlJqp+TMo4nerzEfScp+xCyKhgIkEWtCstEFXrt5sML/9Hu1jIeg6Yxyo3DGBPMnD+VNhdJx6vpk7fDNc6UTgvSMlh2AKvTmA4/2f/pSXulAalkj91DN1Yzz9F5ZCxaDwGTGOTa1HYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683708; c=relaxed/simple;
-	bh=eeKcV6J4GKsSb1apvky2gJZjMkyHQj3GczC/4V2xBEE=;
+	s=arc-20240116; t=1717683709; c=relaxed/simple;
+	bh=nJLcvWW8mSSGFdW7Bik81wKNkTb2DQBQ66VJYDJTuqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0l1LzA19OVIb6jFWuroYJsFO2fnXx2V1+9GsU7Kn0qXaHY2ucvVfZQA9qT/djCLCZL2Bv2Lw+UW5Tult/bQ8X7GzeG7VCCsvNrTAcXpsOjXnKzWJhzvUYrvgwafVGugL+r2sGYiUwORgA5UjQz1temUqSqytq31Jv7wz4Kq+KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08m48Vty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87605C32782;
-	Thu,  6 Jun 2024 14:21:48 +0000 (UTC)
+	 MIME-Version; b=QJpxZ5kTttB50FPV/QaORsFgTGHHNSZVlclN/wrOOKXzo3o32YhWawsuM6xuV8OkLouwmGaIsdu8q0/KDwEEsA/ML+lqvrSjxSUp0cKG2ObJiQwDOAiJdf/Z1XoPCQ/VdKA97N6wXlJn+L8Bh+IxCwB5biYMwU22dsPTadr/DOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mKn4wGt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829BFC2BD10;
+	Thu,  6 Jun 2024 14:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683708;
-	bh=eeKcV6J4GKsSb1apvky2gJZjMkyHQj3GczC/4V2xBEE=;
+	s=korg; t=1717683709;
+	bh=nJLcvWW8mSSGFdW7Bik81wKNkTb2DQBQ66VJYDJTuqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=08m48VtyR0rLpr4DDIhyP0mpWKV10XjMvkjUgljhc+tON4D3DQ+rnnyNggF62afTB
-	 va087rt3+jf5WnMETddtd8glNa+OZgTzj1q90O4O38S5O1dM1clbIjtCSvV/Cr+rwY
-	 SsCvZxLi9lliVnWlVpeE5MuPUgG/7C7n5apmo3Go=
+	b=2mKn4wGt9VFXvUR+JLvmMq7BhUm4UfXMD3JOUJBVuwmE2KR/6kmCpUlP+IuxerKYf
+	 aV1AiP7124Ay90I5OvT1p1vHhLkDNMTeuYdJ6pKlbJVPew9LgbCL2GR+EI22s/y/L2
+	 4zk9UKNBA+dz5V7OORZahu/lhMQaen3Ohq0T1Y/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Shenghao Ding <shenghao-ding@ti.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 637/744] ASoC: tas2552: Add TX path for capturing AUDIO-OUT data
-Date: Thu,  6 Jun 2024 16:05:09 +0200
-Message-ID: <20240606131752.912195626@linuxfoundation.org>
+Subject: [PATCH 6.6 638/744] ASoC: tas2781: Fix wrong loading calibrated data sequence
+Date: Thu,  6 Jun 2024 16:05:10 +0200
+Message-ID: <20240606131752.942582990@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,72 +68,218 @@ Content-Transfer-Encoding: 8bit
 
 From: Shenghao Ding <shenghao-ding@ti.com>
 
-[ Upstream commit 7078ac4fd179a68d0bab448004fcd357e7a45f8d ]
+[ Upstream commit b195acf5266d2dee4067f89345c3e6b88d925311 ]
 
-TAS2552 is a Smartamp with I/V sense data, add TX path
-to support capturing I/V data.
+Calibrated data will be set to default after loading DSP config params,
+which will cause speaker protection work abnormally. Reload calibrated
+data after loading DSP config params. Remove declaration of unused API
+which load calibrated data in wrong sequence, changed the copyright year
+and correct file name in license
+header.
 
-Fixes: 38803ce7b53b ("ASoC: codecs: tas*: merge .digital_mute() into .mute_stream()")
+Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
 Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Link: https://msgid.link/r/20240518033515.866-1-shenghao-ding@ti.com
+Link: https://msgid.link/r/20240518141546.1742-1-shenghao-ding@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2552.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ include/sound/tas2781-dsp.h       |   7 +-
+ sound/soc/codecs/tas2781-fmwlib.c | 103 ++++++++----------------------
+ sound/soc/codecs/tas2781-i2c.c    |   4 +-
+ 3 files changed, 32 insertions(+), 82 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2552.c b/sound/soc/codecs/tas2552.c
-index 8c9dc318b0e82..c65a4219ecd6c 100644
---- a/sound/soc/codecs/tas2552.c
-+++ b/sound/soc/codecs/tas2552.c
-@@ -2,7 +2,8 @@
- /*
-  * tas2552.c - ALSA SoC Texas Instruments TAS2552 Mono Audio Amplifier
-  *
-- * Copyright (C) 2014 Texas Instruments Incorporated -  https://www.ti.com
-+ * Copyright (C) 2014 - 2024 Texas Instruments Incorporated -
-+ *	https://www.ti.com
-  *
-  * Author: Dan Murphy <dmurphy@ti.com>
-  */
-@@ -119,12 +120,14 @@ static const struct snd_soc_dapm_widget tas2552_dapm_widgets[] =
- 			 &tas2552_input_mux_control),
+diff --git a/include/sound/tas2781-dsp.h b/include/sound/tas2781-dsp.h
+index bd1b72bf47a5e..4ef0f5c6fe6c0 100644
+--- a/include/sound/tas2781-dsp.h
++++ b/include/sound/tas2781-dsp.h
+@@ -2,7 +2,7 @@
+ //
+ // ALSA SoC Texas Instruments TAS2781 Audio Smart Amplifier
+ //
+-// Copyright (C) 2022 - 2023 Texas Instruments Incorporated
++// Copyright (C) 2022 - 2024 Texas Instruments Incorporated
+ // https://www.ti.com
+ //
+ // The TAS2781 driver implements a flexible and configurable
+@@ -13,8 +13,8 @@
+ // Author: Kevin Lu <kevin-lu@ti.com>
+ //
  
- 	SND_SOC_DAPM_AIF_IN("DAC IN", "DAC Playback", 0, SND_SOC_NOPM, 0, 0),
-+	SND_SOC_DAPM_AIF_OUT("ASI OUT", "DAC Capture", 0, SND_SOC_NOPM, 0, 0),
- 	SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
- 	SND_SOC_DAPM_OUT_DRV("ClassD", TAS2552_CFG_2, 7, 0, NULL, 0),
- 	SND_SOC_DAPM_SUPPLY("PLL", TAS2552_CFG_2, 3, 0, NULL, 0),
- 	SND_SOC_DAPM_POST("Post Event", tas2552_post_event),
+-#ifndef __TASDEVICE_DSP_H__
+-#define __TASDEVICE_DSP_H__
++#ifndef __TAS2781_DSP_H__
++#define __TAS2781_DSP_H__
  
--	SND_SOC_DAPM_OUTPUT("OUT")
-+	SND_SOC_DAPM_OUTPUT("OUT"),
-+	SND_SOC_DAPM_INPUT("DMIC")
- };
+ #define MAIN_ALL_DEVICES			0x0d
+ #define MAIN_DEVICE_A				0x01
+@@ -175,7 +175,6 @@ void tasdevice_calbin_remove(void *context);
+ int tasdevice_select_tuningprm_cfg(void *context, int prm,
+ 	int cfg_no, int rca_conf_no);
+ int tasdevice_prmg_load(void *context, int prm_no);
+-int tasdevice_prmg_calibdata_load(void *context, int prm_no);
+ void tasdevice_tuning_switch(void *context, int state);
+ int tas2781_load_calibration(void *context, char *file_name,
+ 	unsigned short i);
+diff --git a/sound/soc/codecs/tas2781-fmwlib.c b/sound/soc/codecs/tas2781-fmwlib.c
+index a7ae4005d83f4..c6c47297a4fe7 100644
+--- a/sound/soc/codecs/tas2781-fmwlib.c
++++ b/sound/soc/codecs/tas2781-fmwlib.c
+@@ -2181,6 +2181,24 @@ static int tasdevice_load_data(struct tasdevice_priv *tas_priv,
+ 	return ret;
+ }
  
- static const struct snd_soc_dapm_route tas2552_audio_map[] = {
-@@ -134,6 +137,7 @@ static const struct snd_soc_dapm_route tas2552_audio_map[] = {
- 	{"ClassD", NULL, "Input selection"},
- 	{"OUT", NULL, "ClassD"},
- 	{"ClassD", NULL, "PLL"},
-+	{"ASI OUT", NULL, "DMIC"}
- };
++static void tasdev_load_calibrated_data(struct tasdevice_priv *priv, int i)
++{
++	struct tasdevice_calibration *cal;
++	struct tasdevice_fw *cal_fmw;
++
++	cal_fmw = priv->tasdevice[i].cali_data_fmw;
++
++	/* No calibrated data for current devices, playback will go ahead. */
++	if (!cal_fmw)
++		return;
++
++	cal = cal_fmw->calibrations;
++	if (cal)
++		return;
++
++	load_calib_data(priv, &cal->dev_data);
++}
++
+ int tasdevice_select_tuningprm_cfg(void *context, int prm_no,
+ 	int cfg_no, int rca_conf_no)
+ {
+@@ -2240,21 +2258,9 @@ int tasdevice_select_tuningprm_cfg(void *context, int prm_no,
+ 		for (i = 0; i < tas_priv->ndev; i++) {
+ 			if (tas_priv->tasdevice[i].is_loaderr == true)
+ 				continue;
+-			else if (tas_priv->tasdevice[i].is_loaderr == false
+-				&& tas_priv->tasdevice[i].is_loading == true) {
+-				struct tasdevice_fw *cal_fmw =
+-					tas_priv->tasdevice[i].cali_data_fmw;
+-
+-				if (cal_fmw) {
+-					struct tasdevice_calibration
+-						*cal = cal_fmw->calibrations;
+-
+-					if (cal)
+-						load_calib_data(tas_priv,
+-							&(cal->dev_data));
+-				}
++			if (tas_priv->tasdevice[i].is_loaderr == false &&
++				tas_priv->tasdevice[i].is_loading == true)
+ 				tas_priv->tasdevice[i].cur_prog = prm_no;
+-			}
+ 		}
+ 	}
  
- #ifdef CONFIG_PM
-@@ -538,6 +542,13 @@ static struct snd_soc_dai_driver tas2552_dai[] = {
- 			.rates = SNDRV_PCM_RATE_8000_192000,
- 			.formats = TAS2552_FORMATS,
- 		},
-+		.capture = {
-+			.stream_name = "Capture",
-+			.channels_min = 2,
-+			.channels_max = 2,
-+			.rates = SNDRV_PCM_RATE_8000_192000,
-+			.formats = TAS2552_FORMATS,
-+		},
- 		.ops = &tas2552_speaker_dai_ops,
- 	},
- };
+@@ -2275,11 +2281,15 @@ int tasdevice_select_tuningprm_cfg(void *context, int prm_no,
+ 		tasdevice_load_data(tas_priv, &(conf->dev_data));
+ 		for (i = 0; i < tas_priv->ndev; i++) {
+ 			if (tas_priv->tasdevice[i].is_loaderr == true) {
+-				status |= 1 << (i + 4);
++				status |= BIT(i + 4);
+ 				continue;
+-			} else if (tas_priv->tasdevice[i].is_loaderr == false
+-				&& tas_priv->tasdevice[i].is_loading == true)
++			}
++
++			if (tas_priv->tasdevice[i].is_loaderr == false &&
++				tas_priv->tasdevice[i].is_loading == true) {
++				tasdev_load_calibrated_data(tas_priv, i);
+ 				tas_priv->tasdevice[i].cur_conf = cfg_no;
++			}
+ 		}
+ 	} else
+ 		dev_dbg(tas_priv->dev, "%s: Unneeded loading dsp conf %d\n",
+@@ -2338,65 +2348,6 @@ int tasdevice_prmg_load(void *context, int prm_no)
+ }
+ EXPORT_SYMBOL_NS_GPL(tasdevice_prmg_load, SND_SOC_TAS2781_FMWLIB);
+ 
+-int tasdevice_prmg_calibdata_load(void *context, int prm_no)
+-{
+-	struct tasdevice_priv *tas_priv = (struct tasdevice_priv *) context;
+-	struct tasdevice_fw *tas_fmw = tas_priv->fmw;
+-	struct tasdevice_prog *program;
+-	int prog_status = 0;
+-	int i;
+-
+-	if (!tas_fmw) {
+-		dev_err(tas_priv->dev, "%s: Firmware is NULL\n", __func__);
+-		goto out;
+-	}
+-
+-	if (prm_no >= tas_fmw->nr_programs) {
+-		dev_err(tas_priv->dev,
+-			"%s: prm(%d) is not in range of Programs %u\n",
+-			__func__, prm_no, tas_fmw->nr_programs);
+-		goto out;
+-	}
+-
+-	for (i = 0, prog_status = 0; i < tas_priv->ndev; i++) {
+-		if (prm_no >= 0 && tas_priv->tasdevice[i].cur_prog != prm_no) {
+-			tas_priv->tasdevice[i].cur_conf = -1;
+-			tas_priv->tasdevice[i].is_loading = true;
+-			prog_status++;
+-		}
+-		tas_priv->tasdevice[i].is_loaderr = false;
+-	}
+-
+-	if (prog_status) {
+-		program = &(tas_fmw->programs[prm_no]);
+-		tasdevice_load_data(tas_priv, &(program->dev_data));
+-		for (i = 0; i < tas_priv->ndev; i++) {
+-			if (tas_priv->tasdevice[i].is_loaderr == true)
+-				continue;
+-			else if (tas_priv->tasdevice[i].is_loaderr == false
+-				&& tas_priv->tasdevice[i].is_loading == true) {
+-				struct tasdevice_fw *cal_fmw =
+-					tas_priv->tasdevice[i].cali_data_fmw;
+-
+-				if (cal_fmw) {
+-					struct tasdevice_calibration *cal =
+-						cal_fmw->calibrations;
+-
+-					if (cal)
+-						load_calib_data(tas_priv,
+-							&(cal->dev_data));
+-				}
+-				tas_priv->tasdevice[i].cur_prog = prm_no;
+-			}
+-		}
+-	}
+-
+-out:
+-	return prog_status;
+-}
+-EXPORT_SYMBOL_NS_GPL(tasdevice_prmg_calibdata_load,
+-	SND_SOC_TAS2781_FMWLIB);
+-
+ void tasdevice_tuning_switch(void *context, int state)
+ {
+ 	struct tasdevice_priv *tas_priv = (struct tasdevice_priv *) context;
+diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
+index 2f7f8b18c36fa..7327e9dcc8c02 100644
+--- a/sound/soc/codecs/tas2781-i2c.c
++++ b/sound/soc/codecs/tas2781-i2c.c
+@@ -2,7 +2,7 @@
+ //
+ // ALSA SoC Texas Instruments TAS2781 Audio Smart Amplifier
+ //
+-// Copyright (C) 2022 - 2023 Texas Instruments Incorporated
++// Copyright (C) 2022 - 2024 Texas Instruments Incorporated
+ // https://www.ti.com
+ //
+ // The TAS2781 driver implements a flexible and configurable
+@@ -412,7 +412,7 @@ static void tasdevice_fw_ready(const struct firmware *fmw,
+ 				__func__, tas_priv->cal_binaryname[i]);
+ 	}
+ 
+-	tasdevice_prmg_calibdata_load(tas_priv, 0);
++	tasdevice_prmg_load(tas_priv, 0);
+ 	tas_priv->cur_prog = 0;
+ out:
+ 	if (tas_priv->fw_state == TASDEVICE_DSP_FW_FAIL) {
 -- 
 2.43.0
 
