@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 731028FECAE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 748598FEB0E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 111DFB2838C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0289028A1DC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D231B1515;
-	Thu,  6 Jun 2024 14:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 114EF1A2C2C;
+	Thu,  6 Jun 2024 14:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4o6iml/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqzkS36B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44D3198A35;
-	Thu,  6 Jun 2024 14:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E771A2C2A;
+	Thu,  6 Jun 2024 14:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683395; cv=none; b=LUa5caFNqKLaI1wEumJekX9W5SSWqtx6LsI/KIQIxVY0WJZh7OLH1hKOzRaDWHZjIndL+Xz9WdLEiBNOaLx1/fuTHM8zrfJNYFoF+HP5kXgnMx6sxDITQTVQTE7WwW8+JrJtI/3f//ERyGDC1v70Ev9XmFDUVw8kFQ8R7WGQAe4=
+	t=1717683205; cv=none; b=g1UDFTnL5zBLA6l8gFc1YIWFlIK9h2F4wJaque9Lox1mR1Aldp5uslbJa/SY6wGXQgYr2fzd28xrkt8uuCxcs4NWWxWocZ39H5qG3aqZIqI0pomRlLQweUlBRh6dFUFiLF8ba6n7pVeiO55bew3ZaHzyRZn90+z1Fw9TtWSsE1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683395; c=relaxed/simple;
-	bh=b8HBJz/y+mQ18Q3Um9C7nwqy3K7OFM//de6/DoPG7xI=;
+	s=arc-20240116; t=1717683205; c=relaxed/simple;
+	bh=zgS90Wy9ocHGKFj7ympq+GWWPjQ1bbbxmqngNAWDzSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+x+jkTKvQ5WxglCFOQQHnPhDOfNBcMLI6d6hbfcu8PDrvCbfdiuc/SG9i7O1tTjZ6FwINmtJB98zMy7HAyUxMfMjjiIcUJ6fAyzJbR6hGDCRzWDnbEqsOEHGE8uU3hbVqbtQ3Qn4YEUboR3+55ynySSNbZ9c3JXB16sIRPDeeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4o6iml/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B09C2BD10;
-	Thu,  6 Jun 2024 14:16:35 +0000 (UTC)
+	 MIME-Version; b=D/hfmbVpHJf7DpzNeIodw2M0BusXik2SQgq1aynJ2jorITjAEHtWVw2xO2sM6X+YBQxyauhOOt7yXQwXyuduCTXfLd8SS8eEdQKkUi2K5qAKIH6XwEpt9LdC81hrhwmvARXO2fFvJtO9FpeCqilrspOZiXkNwz+A3ETt3h+qAyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqzkS36B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3192C2BD10;
+	Thu,  6 Jun 2024 14:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683395;
-	bh=b8HBJz/y+mQ18Q3Um9C7nwqy3K7OFM//de6/DoPG7xI=;
+	s=korg; t=1717683205;
+	bh=zgS90Wy9ocHGKFj7ympq+GWWPjQ1bbbxmqngNAWDzSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T4o6iml/IEDTWuLVerUrs2FO4uX6N77AhKt7BaDcwwuMYmTYzIGuMjvK7O04Jk1ei
-	 2Ud0+JqVZryLCWut01HzGLtVQsJCNWolGbz+g0rsCUFjP3yvG1bmOZhop3FfKjTn7g
-	 XkZ/8hS2FUjK1LsEf5llP1lSIOzGjdcq0YnpbMPg=
+	b=eqzkS36B21bjQNkNGd4Eu40Cl9jG5vkCoUYMyGNxbyviZj+ghNV2VjxmS4aJ6oxia
+	 SNjxd57EFRyIPWCvFpe4mMkvE1ZjvYbVpLQtEE5iXTTMQA0a2/C7HM+ZL/iQ3b3IQb
+	 VEbCUB/WbhG7EXGoFeCK2fbbvuY4SoGZWVZ8dcMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Ilya Denisyev <dev@elkcl.ru>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 340/744] RDMA/hns: Fix deadlock on SRQ async events.
+Subject: [PATCH 6.1 083/473] jffs2: prevent xattr node from overflowing the eraseblock
 Date: Thu,  6 Jun 2024 16:00:12 +0200
-Message-ID: <20240606131743.372350853@linuxfoundation.org>
+Message-ID: <20240606131702.652151809@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Ilya Denisyev <dev@elkcl.ru>
 
-[ Upstream commit b46494b6f9c19f141114a57729e198698f40af37 ]
+[ Upstream commit c6854e5a267c28300ff045480b5a7ee7f6f1d913 ]
 
-xa_lock for SRQ table may be required in AEQ. Use xa_store_irq()/
-xa_erase_irq() to avoid deadlock.
+Add a check to make sure that the requested xattr node size is no larger
+than the eraseblock minus the cleanmarker.
 
-Fixes: 81fce6291d99 ("RDMA/hns: Add SRQ asynchronous event support")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240412091616.370789-5-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Unlike the usual inode nodes, the xattr nodes aren't split into parts
+and spread across multiple eraseblocks, which means that a xattr node
+must not occupy more than one eraseblock. If the requested xattr value is
+too large, the xattr node can spill onto the next eraseblock, overwriting
+the nodes and causing errors such as:
+
+jffs2: argh. node added in wrong place at 0x0000b050(2)
+jffs2: nextblock 0x0000a000, expected at 0000b00c
+jffs2: error: (823) do_verify_xattr_datum: node CRC failed at 0x01e050,
+read=0xfc892c93, calc=0x000000
+jffs2: notice: (823) jffs2_get_inode_nodes: Node header CRC failed
+at 0x01e00c. {848f,2fc4,0fef511f,59a3d171}
+jffs2: Node at 0x0000000c with length 0x00001044 would run over the
+end of the erase block
+jffs2: Perhaps the file system was created with the wrong erase size?
+jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found
+at 0x00000010: 0x1044 instead
+
+This breaks the filesystem and can lead to KASAN crashes such as:
+
+BUG: KASAN: slab-out-of-bounds in jffs2_sum_add_kvec+0x125e/0x15d0
+Read of size 4 at addr ffff88802c31e914 by task repro/830
+CPU: 0 PID: 830 Comm: repro Not tainted 6.9.0-rc3+ #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+BIOS Arch Linux 1.16.3-1-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xc6/0x120
+ print_report+0xc4/0x620
+ ? __virt_addr_valid+0x308/0x5b0
+ kasan_report+0xc1/0xf0
+ ? jffs2_sum_add_kvec+0x125e/0x15d0
+ ? jffs2_sum_add_kvec+0x125e/0x15d0
+ jffs2_sum_add_kvec+0x125e/0x15d0
+ jffs2_flash_direct_writev+0xa8/0xd0
+ jffs2_flash_writev+0x9c9/0xef0
+ ? __x64_sys_setxattr+0xc4/0x160
+ ? do_syscall_64+0x69/0x140
+ ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ [...]
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: aa98d7cf59b5 ("[JFFS2][XATTR] XATTR support on JFFS2 (version. 5)")
+Signed-off-by: Ilya Denisyev <dev@elkcl.ru>
+Link: https://lore.kernel.org/r/20240412155357.237803-1-dev@elkcl.ru
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_main.c | 1 +
- drivers/infiniband/hw/hns/hns_roce_srq.c  | 6 +++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ fs/jffs2/xattr.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
-index 4a9cd4d21bc99..c8c49110a3378 100644
---- a/drivers/infiniband/hw/hns/hns_roce_main.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_main.c
-@@ -37,6 +37,7 @@
- #include <rdma/ib_smi.h>
- #include <rdma/ib_user_verbs.h>
- #include <rdma/ib_cache.h>
-+#include "hnae3.h"
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include "hns_roce_hem.h"
-diff --git a/drivers/infiniband/hw/hns/hns_roce_srq.c b/drivers/infiniband/hw/hns/hns_roce_srq.c
-index 8dae98f827eb2..6a4923c21cbc6 100644
---- a/drivers/infiniband/hw/hns/hns_roce_srq.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_srq.c
-@@ -122,7 +122,7 @@ static int alloc_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq)
- 		return ret;
- 	}
+diff --git a/fs/jffs2/xattr.c b/fs/jffs2/xattr.c
+index acb4492f5970c..5a31220f96f5f 100644
+--- a/fs/jffs2/xattr.c
++++ b/fs/jffs2/xattr.c
+@@ -1111,6 +1111,9 @@ int do_jffs2_setxattr(struct inode *inode, int xprefix, const char *xname,
+ 		return rc;
  
--	ret = xa_err(xa_store(&srq_table->xa, srq->srqn, srq, GFP_KERNEL));
-+	ret = xa_err(xa_store_irq(&srq_table->xa, srq->srqn, srq, GFP_KERNEL));
- 	if (ret) {
- 		ibdev_err(ibdev, "failed to store SRQC, ret = %d.\n", ret);
- 		goto err_put;
-@@ -135,7 +135,7 @@ static int alloc_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq)
- 	return 0;
- 
- err_xa:
--	xa_erase(&srq_table->xa, srq->srqn);
-+	xa_erase_irq(&srq_table->xa, srq->srqn);
- err_put:
- 	hns_roce_table_put(hr_dev, &srq_table->table, srq->srqn);
- 
-@@ -153,7 +153,7 @@ static void free_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq)
- 		dev_err(hr_dev->dev, "DESTROY_SRQ failed (%d) for SRQN %06lx\n",
- 			ret, srq->srqn);
- 
--	xa_erase(&srq_table->xa, srq->srqn);
-+	xa_erase_irq(&srq_table->xa, srq->srqn);
- 
- 	if (refcount_dec_and_test(&srq->refcount))
- 		complete(&srq->free);
+ 	request = PAD(sizeof(struct jffs2_raw_xattr) + strlen(xname) + 1 + size);
++	if (request > c->sector_size - c->cleanmarker_size)
++		return -ERANGE;
++
+ 	rc = jffs2_reserve_space(c, request, &length,
+ 				 ALLOC_NORMAL, JFFS2_SUMMARY_XATTR_SIZE);
+ 	if (rc) {
 -- 
 2.43.0
 
