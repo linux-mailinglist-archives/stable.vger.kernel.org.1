@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-49809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5B38FEEF2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D11788FED9E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F7731C22C66
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82DD51F21C9D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547551C8FA5;
-	Thu,  6 Jun 2024 14:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0101BC095;
+	Thu,  6 Jun 2024 14:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTp+7Aj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uL76zWac"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A8419754E;
-	Thu,  6 Jun 2024 14:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B36F19DF79;
+	Thu,  6 Jun 2024 14:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683720; cv=none; b=XEJCODgIMHt26Kpo6/rV6QC3tb0+D5hy5GtfAoXBD5SEHSvNrSeGHCfiGUZWUOLe1jmPIUg18eurwDrK8hfDo87jzAlyUIWYYRKlHPIaFlVdM75XxWzaACOCj3ztZ0e18WWuasPs+LFT06Po6P09C8qbPahtxY5CMLBSD1p/uiU=
+	t=1717683507; cv=none; b=OYR1ffwKjza4xkXAHUrdQJV+yAFXss9ly5OWkZuyWY9PGf4mUSPdIDtlKNUGlV1GjCw4g6EFaVuZIZS3UoO183Miy79HM8/LbKSRFXcv8WxB/YBjqER8JGqnJveI6R6wHQ9LaMNyUHibFZzkrBR03e6xdWpGf5uEWhAzr8c/1yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683720; c=relaxed/simple;
-	bh=PZIUx6y2Nxvg2T5BLF+woZg444nS4Ri0RjifHuWI0uU=;
+	s=arc-20240116; t=1717683507; c=relaxed/simple;
+	bh=ti69JSkSA9GJVKlN5bNswSsa22VdNh3vPml1F4kC3pY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aNTmVEv6fBullNv8Cu36q0OC5G2KfE7t3KOnSTeRwAgLXrLhIqR2Us1Z48KCnbgHQODjYbOH7aT0HdEq4pEcg4JvjdAcOImUuq4OnVDJw3/VQ5CpbOlFWNpr4argY6PxGUMR39LxY+CS8CETIvlu8qwh7IHu8f+YrYT21ohu0bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTp+7Aj/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0752C2BD10;
-	Thu,  6 Jun 2024 14:21:59 +0000 (UTC)
+	 MIME-Version; b=kZxu9KZzdxssIdY3DSt3tazuBnGWNWU1LOKhWYl3lvEFouvK0JDQ+7JsaMYb+rvPe22XSHxln1VV+68IPj6sjpTwTIB12BM2KtQMdiaELe+OvIJQzM7AXjYdp9MmpeI0BqE+mNHniO1GBisci2ZPmk4u9s+NNIcW6DJ4DEVgNGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uL76zWac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DD1C32781;
+	Thu,  6 Jun 2024 14:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683719;
-	bh=PZIUx6y2Nxvg2T5BLF+woZg444nS4Ri0RjifHuWI0uU=;
+	s=korg; t=1717683507;
+	bh=ti69JSkSA9GJVKlN5bNswSsa22VdNh3vPml1F4kC3pY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WTp+7Aj/q/2KhCalqnstLuchqrJ5tYJb/a67DkvUMuG8eMpF0oW7LqFkmRCMHYXXv
-	 uW3w5Fdw5z7olpRkngirUXPos/cbn4K6yoQfsUiUvEDCMRRdB0BDzpIqgrVIcxjy11
-	 WKNoRx9OhHz/OkrzvzeSiKvMIoBvlNX4Nng1nlf4=
+	b=uL76zWaccnVRfVEKpSEfUw1gAQISba5EYQA4+Z7/00rHTvAqHYPJ5uGLICEviZ1DU
+	 MaK3oXPiR/PGOV6BjWc2OL4PetRWfrQY1zqbhmKv40A+Lzb5g1l/eWVciJq8yTgL9i
+	 17ZW3lH9u0SfCTyPem7sWdad74Q4+IUxkF80XZ/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	kernel test robot <lkp@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 653/744] net: lan966x: Remove ptp traps in case the ptp is not enabled.
+Subject: [PATCH 6.1 396/473] nilfs2: make superblock data array index computation sparse friendly
 Date: Thu,  6 Jun 2024 16:05:25 +0200
-Message-ID: <20240606131753.412875086@linuxfoundation.org>
+Message-ID: <20240606131712.920447805@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +65,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit eda40be3a5ff3fdce513d2bcfeaca8cc16cf962a ]
+[ Upstream commit 91d743a9c8299de1fc1b47428d8bb4c85face00f ]
 
-Lan966x is adding ptp traps to redirect the ptp frames to the CPU such
-that the HW will not forward these frames anywhere. The issue is that in
-case ptp is not enabled and the timestamping source is et to
-HWTSTAMP_SOURCE_NETDEV then these traps would not be removed on the
-error path.
-Fix this by removing the traps in this case as they are not needed.
+Upon running sparse, "warning: dubious: x & !y" is output at an array
+index calculation within nilfs_load_super_block().
 
-Fixes: 54e1ed69c40a ("net: lan966x: convert to ndo_hwtstamp_get() and ndo_hwtstamp_set()")
-Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://lore.kernel.org/r/20240517135808.3025435-1-horatiu.vultur@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The calculation is not wrong, but to eliminate the sparse warning, replace
+it with an equivalent calculation.
+
+Also, add a comment to make it easier to understand what the unintuitive
+array index calculation is doing and whether it's correct.
+
+Link: https://lkml.kernel.org/r/20240430080019.4242-3-konishi.ryusuke@gmail.com
+Fixes: e339ad31f599 ("nilfs2: introduce secondary super block")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Bart Van Assche <bvanassche@acm.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: kernel test robot <lkp@intel.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan966x/lan966x_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nilfs2/the_nilfs.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-index 3f1033abd462d..c3f6c10bc2393 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-@@ -474,14 +474,14 @@ static int lan966x_port_hwtstamp_set(struct net_device *dev,
- 	    cfg->source != HWTSTAMP_SOURCE_PHYLIB)
- 		return -EOPNOTSUPP;
+diff --git a/fs/nilfs2/the_nilfs.c b/fs/nilfs2/the_nilfs.c
+index 71400496ed365..3e3c1d32da180 100644
+--- a/fs/nilfs2/the_nilfs.c
++++ b/fs/nilfs2/the_nilfs.c
+@@ -592,7 +592,7 @@ static int nilfs_load_super_block(struct the_nilfs *nilfs,
+ 	struct nilfs_super_block **sbp = nilfs->ns_sbp;
+ 	struct buffer_head **sbh = nilfs->ns_sbh;
+ 	u64 sb2off, devsize = bdev_nr_bytes(nilfs->ns_bdev);
+-	int valid[2], swp = 0;
++	int valid[2], swp = 0, older;
  
-+	if (cfg->source == HWTSTAMP_SOURCE_NETDEV && !port->lan966x->ptp)
-+		return -EOPNOTSUPP;
+ 	if (devsize < NILFS_SEG_MIN_BLOCKS * NILFS_MIN_BLOCK_SIZE + 4096) {
+ 		nilfs_err(sb, "device size too small");
+@@ -648,9 +648,25 @@ static int nilfs_load_super_block(struct the_nilfs *nilfs,
+ 	if (swp)
+ 		nilfs_swap_super_block(nilfs);
+ 
++	/*
++	 * Calculate the array index of the older superblock data.
++	 * If one has been dropped, set index 0 pointing to the remaining one,
++	 * otherwise set index 1 pointing to the old one (including if both
++	 * are the same).
++	 *
++	 *  Divided case             valid[0]  valid[1]  swp  ->  older
++	 *  -------------------------------------------------------------
++	 *  Both SBs are invalid        0         0       N/A (Error)
++	 *  SB1 is invalid              0         1       1         0
++	 *  SB2 is invalid              1         0       0         0
++	 *  SB2 is newer                1         1       1         0
++	 *  SB2 is older or the same    1         1       0         1
++	 */
++	older = valid[1] ^ swp;
 +
- 	err = lan966x_ptp_setup_traps(port, cfg);
- 	if (err)
- 		return err;
- 
- 	if (cfg->source == HWTSTAMP_SOURCE_NETDEV) {
--		if (!port->lan966x->ptp)
--			return -EOPNOTSUPP;
--
- 		err = lan966x_ptp_hwtstamp_set(port, cfg, extack);
- 		if (err) {
- 			lan966x_ptp_del_traps(port);
+ 	nilfs->ns_sbwcount = 0;
+ 	nilfs->ns_sbwtime = le64_to_cpu(sbp[0]->s_wtime);
+-	nilfs->ns_prot_seq = le64_to_cpu(sbp[valid[1] & !swp]->s_last_seq);
++	nilfs->ns_prot_seq = le64_to_cpu(sbp[older]->s_last_seq);
+ 	*sbpp = sbp[0];
+ 	return 0;
+ }
 -- 
 2.43.0
 
