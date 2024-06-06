@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-49391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E168FED12
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86AAB8FE9C7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D86CCB28D62
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05422B20E59
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD191B4C30;
-	Thu,  6 Jun 2024 14:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABFB198A38;
+	Thu,  6 Jun 2024 14:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwyazOFg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzJmzpkj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F55219CD15;
-	Thu,  6 Jun 2024 14:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD69219B588;
+	Thu,  6 Jun 2024 14:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683442; cv=none; b=i9sPr7BVsCXvtS/Z0ioaivnqWkVlmX9a+YjUod61EBNGnDRX1/I2iCDMKxoDbP7APtXkXr8XB+Y1AVZ7V/jbo26257roazSFueeTNeCiB4ZXQtyDJSgKf+tlLLDqLkJ9T1A61Y3YmSPHxHLy+PeLMs6bVdtxbQlTrZH1z3wiNoA=
+	t=1717683064; cv=none; b=gd6Obv5QY1eyUzThCY03SCK3CfCTt2AlReFL1+KM5NzW590z+YDdVT1u9plfw6K61bKIHiOP/O3KEy7joUDo2I/Dx/fEEYIvbL31Y6MkPdMp7d7UrDR5q4YXWtfR0o1iozV2MbsAEgLncriruT2qugmsEBKKIrwYdFFFsfevY6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683442; c=relaxed/simple;
-	bh=4CBYpYxfIQhOkCbtMpxbMeXpEeJaoxSwYJjlCAOHSlg=;
+	s=arc-20240116; t=1717683064; c=relaxed/simple;
+	bh=FKSqlzkkOnrjEgBTsN3SJVqQvPRdhITh405bnTfeP3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1KSepD6SG8iex52T1uBV4CYlXgbxDq4x+PZVlCZhGAKo4XdPahplSznmmO8mHKAVi20X565CjR4dQ8EeUwMFmGWbFfjy1nPj6itB3VLEPRTiKuOLKFZv/9N4WE1gREa8/rjWvy4f5rx6jnpp0bW3FLs34x9Pbxfgx8dX0e+pOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwyazOFg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEB9C2BD10;
-	Thu,  6 Jun 2024 14:17:22 +0000 (UTC)
+	 MIME-Version; b=o+J6cyW4h4uq+8KfBouNfLqkaAH2hlAYY4v1Wq3YVw0WaeiBgdXBjg/tOEXSvk4xDSDPKIc9b+WAszosb2pN3HYCD+dG5DJzHUWhPME3YimlC5P18VR7P2lG+EEH83INljyfX3uVNdj7Boa7Clafj1QoTLi6zYz7vnVT6XM1/6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzJmzpkj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB314C4AF1C;
+	Thu,  6 Jun 2024 14:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683442;
-	bh=4CBYpYxfIQhOkCbtMpxbMeXpEeJaoxSwYJjlCAOHSlg=;
+	s=korg; t=1717683064;
+	bh=FKSqlzkkOnrjEgBTsN3SJVqQvPRdhITh405bnTfeP3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rwyazOFgFwtM/QdujIlGOhkQQwtjZAxUQw4w6e4pJMO72fVbGjJMup+E5+zPqF66/
-	 pAdgUv55i6OIuekku+epLl2j7E1z50KVlYsgz0QsRSHuzC6Yr3piH+AaAcvHM/wo2M
-	 jW6lE8l6vonSnVMLvLdHyF1p+wkgUe7GTX3zqF/g=
+	b=EzJmzpkj63exHpXFw77iL08BJwE1md3miXuSIGnFQYA5ikizk01t/SmjcffQ3hG4h
+	 4BlWN58Mxmy0m640tgrHuDYmO0MyW1ajyTjSsvJrdJcGZLpZwYraHA5b8PghvA1CRm
+	 caTpKlhIiDS54As9E2UhyPR54MaYZaTqRcQttuQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Erhard Furtner <erhard_f@mailbox.org>,
+	Nico Pache <npache@redhat.com>,
+	Marco Elver <elver@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Daniel Axtens <dja@axtens.net>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 327/473] watchdog: bd9576: Drop "always-running" property
+Subject: [PATCH 6.9 277/374] kasan, fortify: properly rename memintrinsics
 Date: Thu,  6 Jun 2024 16:04:16 +0200
-Message-ID: <20240606131710.744220211@linuxfoundation.org>
+Message-ID: <20240606131701.178752324@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +69,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-[ Upstream commit e3b3afd34d84efcbe4543deb966b1990f43584b8 ]
+[ Upstream commit 2e577732e8d28b9183df701fb90cb7943aa4ed16 ]
 
-The always-running (from linux,wdt-gpio.yaml) is abused by the BD9576
-watchdog driver. It's defined meaning is "the watchdog is always running
-and can not be stopped". The BD9576 watchdog driver has implemented it
-as "start watchdog when loading the module and prevent it from being
-stopped".
+After commit 69d4c0d32186 ("entry, kasan, x86: Disallow overriding mem*()
+functions") and the follow-up fixes, with CONFIG_FORTIFY_SOURCE enabled,
+even though the compiler instruments meminstrinsics by generating calls to
+__asan/__hwasan_ prefixed functions, FORTIFY_SOURCE still uses
+uninstrumented memset/memmove/memcpy as the underlying functions.
 
-Furthermore, the implementation does not set the WDOG_HW_RUNNING when
-enabling the watchdog due to the "always-running" at module loading.
-This will end up resulting a watchdog timeout if the device is not
-opened.
+As a result, KASAN cannot detect bad accesses in memset/memmove/memcpy.
+This also makes KASAN tests corrupt kernel memory and cause crashes.
 
-The culprit was pointed out by Guenter, discussion can be found from
-https://lore.kernel.org/lkml/4fa3a64b-60fb-4e5e-8785-0f14da37eea2@roeck-us.net/
+To fix this, use __asan_/__hwasan_memset/memmove/memcpy as the underlying
+functions whenever appropriate.  Do this only for the instrumented code
+(as indicated by __SANITIZE_ADDRESS__).
 
-Drop the invalid "always-running" handling.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Fixes: b237bcac557a ("wdt: Support wdt on ROHM BD9576MUF and BD9573MUF")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/ZhPAt76yaJMersXf@fedora
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Link: https://lkml.kernel.org/r/20240517130118.759301-1-andrey.konovalov@linux.dev
+Fixes: 69d4c0d32186 ("entry, kasan, x86: Disallow overriding mem*() functions")
+Fixes: 51287dcb00cc ("kasan: emit different calls for instrumentable memintrinsics")
+Fixes: 36be5cba99f6 ("kasan: treat meminstrinsic as builtins in uninstrumented files")
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+Reported-by: Nico Pache <npache@redhat.com>
+Closes: https://lore.kernel.org/all/20240501144156.17e65021@outsider.home/
+Reviewed-by: Marco Elver <elver@google.com>
+Tested-by: Nico Pache <npache@redhat.com>
+Acked-by: Nico Pache <npache@redhat.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Daniel Axtens <dja@axtens.net>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/bd9576_wdt.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ include/linux/fortify-string.h | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/watchdog/bd9576_wdt.c b/drivers/watchdog/bd9576_wdt.c
-index 4a20e07fbb699..f00ea1b4e40b6 100644
---- a/drivers/watchdog/bd9576_wdt.c
-+++ b/drivers/watchdog/bd9576_wdt.c
-@@ -29,7 +29,6 @@ struct bd9576_wdt_priv {
- 	struct gpio_desc	*gpiod_en;
- 	struct device		*dev;
- 	struct regmap		*regmap;
--	bool			always_running;
- 	struct watchdog_device	wdd;
- };
+diff --git a/include/linux/fortify-string.h b/include/linux/fortify-string.h
+index 6eaa190d0083c..9754f97e71e52 100644
+--- a/include/linux/fortify-string.h
++++ b/include/linux/fortify-string.h
+@@ -71,17 +71,30 @@ void __write_overflow_field(size_t avail, size_t wanted) __compiletime_warning("
+ 	__ret;							\
+ })
  
-@@ -62,10 +61,7 @@ static int bd9576_wdt_stop(struct watchdog_device *wdd)
- {
- 	struct bd9576_wdt_priv *priv = watchdog_get_drvdata(wdd);
+-#if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
++#if defined(__SANITIZE_ADDRESS__)
++
++#if !defined(CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX) && !defined(CONFIG_GENERIC_ENTRY)
++extern void *__underlying_memset(void *p, int c, __kernel_size_t size) __RENAME(memset);
++extern void *__underlying_memmove(void *p, const void *q, __kernel_size_t size) __RENAME(memmove);
++extern void *__underlying_memcpy(void *p, const void *q, __kernel_size_t size) __RENAME(memcpy);
++#elif defined(CONFIG_KASAN_GENERIC)
++extern void *__underlying_memset(void *p, int c, __kernel_size_t size) __RENAME(__asan_memset);
++extern void *__underlying_memmove(void *p, const void *q, __kernel_size_t size) __RENAME(__asan_memmove);
++extern void *__underlying_memcpy(void *p, const void *q, __kernel_size_t size) __RENAME(__asan_memcpy);
++#else /* CONFIG_KASAN_SW_TAGS */
++extern void *__underlying_memset(void *p, int c, __kernel_size_t size) __RENAME(__hwasan_memset);
++extern void *__underlying_memmove(void *p, const void *q, __kernel_size_t size) __RENAME(__hwasan_memmove);
++extern void *__underlying_memcpy(void *p, const void *q, __kernel_size_t size) __RENAME(__hwasan_memcpy);
++#endif
++
+ extern void *__underlying_memchr(const void *p, int c, __kernel_size_t size) __RENAME(memchr);
+ extern int __underlying_memcmp(const void *p, const void *q, __kernel_size_t size) __RENAME(memcmp);
+-extern void *__underlying_memcpy(void *p, const void *q, __kernel_size_t size) __RENAME(memcpy);
+-extern void *__underlying_memmove(void *p, const void *q, __kernel_size_t size) __RENAME(memmove);
+-extern void *__underlying_memset(void *p, int c, __kernel_size_t size) __RENAME(memset);
+ extern char *__underlying_strcat(char *p, const char *q) __RENAME(strcat);
+ extern char *__underlying_strcpy(char *p, const char *q) __RENAME(strcpy);
+ extern __kernel_size_t __underlying_strlen(const char *p) __RENAME(strlen);
+ extern char *__underlying_strncat(char *p, const char *q, __kernel_size_t count) __RENAME(strncat);
+ extern char *__underlying_strncpy(char *p, const char *q, __kernel_size_t size) __RENAME(strncpy);
++
+ #else
  
--	if (!priv->always_running)
--		bd9576_wdt_disable(priv);
--	else
--		set_bit(WDOG_HW_RUNNING, &wdd->status);
-+	bd9576_wdt_disable(priv);
+ #if defined(__SANITIZE_MEMORY__)
+@@ -106,6 +119,7 @@ extern char *__underlying_strncpy(char *p, const char *q, __kernel_size_t size)
+ #define __underlying_strlen	__builtin_strlen
+ #define __underlying_strncat	__builtin_strncat
+ #define __underlying_strncpy	__builtin_strncpy
++
+ #endif
  
- 	return 0;
- }
-@@ -264,9 +260,6 @@ static int bd9576_wdt_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	priv->always_running = device_property_read_bool(dev->parent,
--							 "always-running");
--
- 	watchdog_set_drvdata(&priv->wdd, priv);
- 
- 	priv->wdd.info			= &bd957x_wdt_ident;
-@@ -281,9 +274,6 @@ static int bd9576_wdt_probe(struct platform_device *pdev)
- 
- 	watchdog_stop_on_reboot(&priv->wdd);
- 
--	if (priv->always_running)
--		bd9576_wdt_start(&priv->wdd);
--
- 	return devm_watchdog_register_device(dev, &priv->wdd);
- }
- 
+ /**
 -- 
 2.43.0
 
