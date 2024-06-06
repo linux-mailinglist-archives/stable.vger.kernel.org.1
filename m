@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-49573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1D6F8FEDDB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E9F8FE921
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D99B21C24435
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB79C1F2579A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94EAE1BE247;
-	Thu,  6 Jun 2024 14:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B68019922D;
+	Thu,  6 Jun 2024 14:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aF6E0lmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8yoWxXF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543DA1BE23E;
-	Thu,  6 Jun 2024 14:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC22E196D8E;
+	Thu,  6 Jun 2024 14:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683533; cv=none; b=TiZq0mLcnk+5xEuu/FXzPgmVAH01hcgxbxCLgsHx+MmNE+ion57V+kUaXLX72a0txMPc9ZjYVfEhOUwaCKWFj9Kfb31XnrXsti3xXF8wNQxmDlr1Sge5VYzjJUF61QnTQf/4TxvBuCI+ZfBX9KQBozOhBtKNsO1JFx7CFFwjWRA=
+	t=1717682983; cv=none; b=iydxqtdrvToQxSkTCFo9A5cXRF1vzWjCq2gnE3cwRSgiLpU8fiDG2+GdF9ecq1BkQw8m3NvY04KeyewN3JWcGAoj/VhoA9a22A0WMrACE+NSgMZLazSTTdAVmxZXTTE358Oo1pUDEAeL+Aq81425ivCCdG0zzE26xw6dTrdK2w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683533; c=relaxed/simple;
-	bh=CeAPyAFkKgLrrRdsAd1O+xR9TDYlw4+gOvnX5gWkd94=;
+	s=arc-20240116; t=1717682983; c=relaxed/simple;
+	bh=TfSpLpSC++aT0MV69eBPIRKn9HUV3JyiojgAO/VXVv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X2bUzDKlcR1VZMGHbNgo8g2UrfGKdEpqFMeMQbeoa2f6FDT4ydD4n4TgZVIAfnvp1ibdFJrEmkbVAaqtAYN8nWMf8PQV1FxRTM4A98K1lnZoLI0NFddUFffLzs2wkL4xo6HjDY3lL17/txTnKz9Qu8clJZK1YXGKuONFVJHsVXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aF6E0lmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFFAC2BD10;
-	Thu,  6 Jun 2024 14:18:53 +0000 (UTC)
+	 MIME-Version; b=Fnzrq8F8BvgLRog5pDJ8s2TeVWFHOdgRhaJpKUuSleKyDbovYFZoaIbx956jVJNQC2tuvFzUJ5MEfyfno6IeRNJQrxDfWZWIz1k9rMG+ikayUzNswtBi2HcLLCC6Ld6VX/KqKyvOqfUc9IuGUSR62AzmQWNfDCikaan1T7ND3qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8yoWxXF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB105C32781;
+	Thu,  6 Jun 2024 14:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683533;
-	bh=CeAPyAFkKgLrrRdsAd1O+xR9TDYlw4+gOvnX5gWkd94=;
+	s=korg; t=1717682982;
+	bh=TfSpLpSC++aT0MV69eBPIRKn9HUV3JyiojgAO/VXVv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aF6E0lmpLcAY9A1Ew4Pdr0WN2Y9EICYPP+RUtbIvQ0wvQS/O5hnq99qnbjJnL/xpa
-	 MvPnkuDZFkYnrEl+MBsPLkW/OyT7MrDQ5D+4f3PmSf2pCmuOC0kH2yRjfDNUEizQ7P
-	 nBJw/hX7bpsiXgDa6R09oj0fxnIjZzzK+Z4MJL0A=
+	b=G8yoWxXFM4TVTTufeAv96gNYJasEBKZV4g5CLPUYNV03nNH6iyvl7yelhmGq5ZBRL
+	 HRj5b2/vyu2LhZfc/iTikha27Zr+8HXXu/BCKOQcpyGS/dGQpAfN5EVXB2p0ximPdp
+	 aLlnF+5GqZN5PzT+o9Q6jhX8Y3usZfnr2Uf5K8MU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Nicolas Belin <nbelin@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 473/744] ovl: remove upper umask handling from ovl_create_upper()
+Subject: [PATCH 6.9 166/374] drm/meson: gate px_clk when setting rate
 Date: Thu,  6 Jun 2024 16:02:25 +0200
-Message-ID: <20240606131747.625419319@linuxfoundation.org>
+Message-ID: <20240606131657.470868595@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 096802748ea1dea8b476938e0a8dc16f4bd2f1ad ]
+[ Upstream commit 5c9837374ecf55a1fa3b7622d365a0456960270f ]
 
-This is already done by vfs_prepare_mode() when creating the upper object
-by vfs_create(), vfs_mkdir() and vfs_mknod().
+Disable the px_clk when setting the rate to recover a fully
+configured and correctly reset VCLK clock tree after the rate
+is set.
 
-No regressions have been observed in xfstests run with posix acls turned
-off for the upper filesystem.
-
-Fixes: 1639a49ccdce ("fs: move S_ISGID stripping into the vfs_*() helpers")
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Fixes: 77d9e1e6b846 ("drm/meson: add support for MIPI-DSI transceiver")
+Reviewed-by: Nicolas Belin <nbelin@baylibre.com>
+Link: https://lore.kernel.org/r/20240403-amlogic-v6-4-upstream-dsi-ccf-vim3-v12-4-99ecdfdc87fc@linaro.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240403-amlogic-v6-4-upstream-dsi-ccf-vim3-v12-4-99ecdfdc87fc@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/dir.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/meson/meson_dw_mipi_dsi.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
-index 033fc0458a3d8..54602f0bed8be 100644
---- a/fs/overlayfs/dir.c
-+++ b/fs/overlayfs/dir.c
-@@ -327,9 +327,6 @@ static int ovl_create_upper(struct dentry *dentry, struct inode *inode,
- 	struct dentry *newdentry;
- 	int err;
+diff --git a/drivers/gpu/drm/meson/meson_dw_mipi_dsi.c b/drivers/gpu/drm/meson/meson_dw_mipi_dsi.c
+index a6bc1bdb3d0d8..a10cff3ca1fef 100644
+--- a/drivers/gpu/drm/meson/meson_dw_mipi_dsi.c
++++ b/drivers/gpu/drm/meson/meson_dw_mipi_dsi.c
+@@ -95,6 +95,7 @@ static int dw_mipi_dsi_phy_init(void *priv_data)
+ 		return ret;
+ 	}
  
--	if (!attr->hardlink && !IS_POSIXACL(udir))
--		attr->mode &= ~current_umask();
--
- 	inode_lock_nested(udir, I_MUTEX_PARENT);
- 	newdentry = ovl_create_real(ofs, udir,
- 				    ovl_lookup_upper(ofs, dentry->d_name.name,
++	clk_disable_unprepare(mipi_dsi->px_clk);
+ 	ret = clk_set_rate(mipi_dsi->px_clk, mipi_dsi->mode->clock * 1000);
+ 
+ 	if (ret) {
+@@ -103,6 +104,12 @@ static int dw_mipi_dsi_phy_init(void *priv_data)
+ 		return ret;
+ 	}
+ 
++	ret = clk_prepare_enable(mipi_dsi->px_clk);
++	if (ret) {
++		dev_err(mipi_dsi->dev, "Failed to enable DSI Pixel clock (ret %d)\n", ret);
++		return ret;
++	}
++
+ 	switch (mipi_dsi->dsi_device->format) {
+ 	case MIPI_DSI_FMT_RGB888:
+ 		dpi_data_format = DPI_COLOR_24BIT;
 -- 
 2.43.0
 
