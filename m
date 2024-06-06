@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-49680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EB08FEE68
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A1F8FECE3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36A2AB20E80
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC0801C26543
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA871A0B05;
-	Thu,  6 Jun 2024 14:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7311B3730;
+	Thu,  6 Jun 2024 14:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HNGSfk1e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbHdW9DN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16881A0B0D;
-	Thu,  6 Jun 2024 14:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF07319CCEE;
+	Thu,  6 Jun 2024 14:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683655; cv=none; b=rVR/X96e3/fwVhN1Rq/l2lMjPM6SX8LdxED440Qb/PDSlocBXh3KvcjKr1Vz/EXEDXG7FEAICvqtN7xtV1ir6cXSY462EqkOSHilQunWP5L0bh948k6HZUwsLGbgCe0mkv5k4+HDHbAlFXqgbH3txGnhZyLqsbjeHmP13rfiroo=
+	t=1717683421; cv=none; b=P9I/j5CsWr2tRiCq7eynmZ9qvyVNcdFbTzirwVu2k49mk3NO+XVMHFRRDWe+gQUQXuYuR8CEqsdi0Pjy5JFSgSjS6JzYoxMYOLRsh2V3lBAan/G/FfRDPrzSTBrlM/BOBgGTAFWZOYC5YoJJRBlXhWY0dOtfTBglc3Y0X3rg6cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683655; c=relaxed/simple;
-	bh=iKEQAkj5QJJsCJDfXNdTCPUb4M/BOTfPXDCY2s4qKvM=;
+	s=arc-20240116; t=1717683421; c=relaxed/simple;
+	bh=ssHofhTWnlmdSd8nYId4DtXlHqEL3beq5nK43VkFPEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QI1xnTTJyhr6X07REZnQYZeZ/06qNrcKoMzRFpwI7G3vmuYiITeMY7TLQlW2vBmbbsWK9iLK+8MJKYh5+RGP6VNkwFXTjKUSnDhElB6rLMS8E0waLerxd5XNyCTBHLSWP2lObo5pMbCLjJmpwr1GC+IH6cKU6bX/vi4nQ96Mo6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HNGSfk1e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A044DC2BD10;
-	Thu,  6 Jun 2024 14:20:55 +0000 (UTC)
+	 MIME-Version; b=R1bLK0Kg+Vgd3ZfLeJgK2nsj2J0wAw1+BqY4wToa5Pd7arjgC/V/G8nheVRFZv1YbN6uTLsOMnzTgu2WhdqooWhD8EscbqLbIGkJFNHa5/KVwj1pbxXLnADcjDT9uoamu/pyKDQgcxX5vrmAyUOL715jNtScb2mE6RLbxl22hIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbHdW9DN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD26C2BD10;
+	Thu,  6 Jun 2024 14:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683655;
-	bh=iKEQAkj5QJJsCJDfXNdTCPUb4M/BOTfPXDCY2s4qKvM=;
+	s=korg; t=1717683421;
+	bh=ssHofhTWnlmdSd8nYId4DtXlHqEL3beq5nK43VkFPEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HNGSfk1eEP5KE3msIMpOyFknqU48rrQgdNJNkNVmfLH2k3FRAHFwwINy2rd6eFU7M
-	 dBSTV2TJohvYQnwbNk++KQdQ7/d+ifVAq0i6pCkJIg4o1Jpl2qqDcSomNrh2NkaFim
-	 SKa2q2E1ltyuThqaotJTLz28rkggbHBHiE9wLw5w=
+	b=gbHdW9DNKKqwOmttT254onzVAM/PyWWW+kEzTop+wgu7yZj5NbdQb6vzOABtN3YU1
+	 H0XmH82HoUydFyu7runO+ssBDufKQVxcEM8vTRI+ZjBO+Z7c6T1Q5oUNQruWHQk3R3
+	 lCozCnQ9r+01uPXq0Fwh5ORY0BM2RJiTqs6Cg2qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Eric Dumazet <edumazet@google.com>,
+	Neil Horman <nhorman@tuxdriver.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 532/744] LoongArch: Fix callchain parse error with kernel tracepoint events again
+Subject: [PATCH 6.1 275/473] af_packet: do not call packet_read_pending() from tpacket_destruct_skb()
 Date: Thu,  6 Jun 2024 16:03:24 +0200
-Message-ID: <20240606131749.512670641@linuxfoundation.org>
+Message-ID: <20240606131709.008967431@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d6af2c76399f98444a5b4de96baf4b362d9f102b ]
+[ Upstream commit 581073f626e387d3e7eed55c48c8495584ead7ba ]
 
-With commit d3119bc985fb645 ("LoongArch: Fix callchain parse error with
-kernel tracepoint events"), perf can parse kernel callchain, but not
-complete and sometimes maybe error. The reason is LoongArch's unwinders
-(guess, prologue and orc) don't really need fp (i.e., regs[22]), and
-they use sp (i.e., regs[3]) as the frame address rather than the current
-stack pointer.
+trafgen performance considerably sank on hosts with many cores
+after the blamed commit.
 
-Fix that by removing the assignment of regs[22], and instead assign the
-__builtin_frame_address(0) to regs[3].
+packet_read_pending() is very expensive, and calling it
+in af_packet fast path defeats Daniel intent in commit
+b013840810c2 ("packet: use percpu mmap tx frame pending refcount")
 
-Without fix:
+tpacket_destruct_skb() makes room for one packet, we can immediately
+wakeup a producer, no need to completely drain the tx ring.
 
-  Children      Self  Command        Shared Object      Symbol
-  ........  ........  .............  .................  ................
-  33.91%    33.91%    swapper        [kernel.vmlinux]   [k] __schedule
-            |
-            |--33.04%--__schedule
-            |
-             --0.87%--__arch_cpu_idle
-                       __schedule
-
-With this fix:
-
-  Children      Self  Command        Shared Object      Symbol
-  ........  ........  .............  .................  ................
-  31.16%    31.16%    swapper        [kernel.vmlinux]   [k] __schedule
-            |
-            |--20.63%--smpboot_entry
-            |          cpu_startup_entry
-            |          schedule_idle
-            |          __schedule
-            |
-             --10.53%--start_kernel
-                       cpu_startup_entry
-                       schedule_idle
-                       __schedule
-
-Fixes: d3119bc985fb645 ("LoongArch: Fix callchain parse error with kernel tracepoint events")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 89ed5b519004 ("af_packet: Block execution of tasks waiting for transmit to complete in AF_PACKET")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Neil Horman <nhorman@tuxdriver.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20240515163358.4105915-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/perf_event.h | 3 +--
+ net/packet/af_packet.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/perf_event.h b/arch/loongarch/include/asm/perf_event.h
-index 52b638059e40b..f948a0676daf8 100644
---- a/arch/loongarch/include/asm/perf_event.h
-+++ b/arch/loongarch/include/asm/perf_event.h
-@@ -13,8 +13,7 @@
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 7188ca8d84693..8888c09931ce3 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2528,8 +2528,7 @@ static void tpacket_destruct_skb(struct sk_buff *skb)
+ 		ts = __packet_set_timestamp(po, ph, skb);
+ 		__packet_set_status(po, ph, TP_STATUS_AVAILABLE | ts);
  
- #define perf_arch_fetch_caller_regs(regs, __ip) { \
- 	(regs)->csr_era = (__ip); \
--	(regs)->regs[3] = current_stack_pointer; \
--	(regs)->regs[22] = (unsigned long) __builtin_frame_address(0); \
-+	(regs)->regs[3] = (unsigned long) __builtin_frame_address(0); \
- }
+-		if (!packet_read_pending(&po->tx_ring))
+-			complete(&po->skb_completion);
++		complete(&po->skb_completion);
+ 	}
  
- #endif /* __LOONGARCH_PERF_EVENT_H__ */
+ 	sock_wfree(skb);
 -- 
 2.43.0
 
