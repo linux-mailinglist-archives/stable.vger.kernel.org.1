@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 918E68FEE13
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B288FEC6D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3262C1F229A0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F213F282BF5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6901B1BF90C;
-	Thu,  6 Jun 2024 14:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27AFE19ADBE;
+	Thu,  6 Jun 2024 14:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5tYco0Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ilh/s8vg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F9919EEC6;
-	Thu,  6 Jun 2024 14:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9E719ADAD;
+	Thu,  6 Jun 2024 14:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683556; cv=none; b=BLz7GWqb5so59bz5Z+5k3YpyYste/Ch3EVtqy9gJLrrrJLTUBesVwW9QSXxZ3a67SGsbWmqkNx88eXKZzOYphRkjEX5jyOb604IygZVGtzOdpBeN52YvTfc0LxuSb1hUD1A463LOrEWO8vdZaNSj1gDKMA1NLV46SRlF5TQO0Hs=
+	t=1717683365; cv=none; b=ABUxIhevvmcWDWKyUWFGXnU+o5j/qZy+4inOE7S15MoldKhWW/WjiMQ2UmwuePayhK/NT782iPiQZmfcS9LOi87bZMtiHiV2wmAkAd2K5BqTISR5F9lvoUBuuAVBW9ArYlRygnQdoqgWv2VK/UM7Hcc1CqckOcNh8EEeKvvP02E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683556; c=relaxed/simple;
-	bh=TNtNhQtNQJjP/dJwf6BHV0Wy3uY7Km/UFXa4aUB2haQ=;
+	s=arc-20240116; t=1717683365; c=relaxed/simple;
+	bh=lw62V058PJMT55abaI/euw8B8fHFrlua/Da9SkabtSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NcP82C8O1aU/X4xG4sW6c5Wh5NUIVuf2z+s9z7pfCImfzvUWXLizKxXYVl/0jVWpnwZYNBWBw3j89zMF2NJHVvtRaRXzgah289Zm8ngHZ54ARlNw4rp8lQlGY1kHOTUxQzK9R1HW4q8iD6PVEu7PSCKENnc4j1eAtqbAKWNkeV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5tYco0Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057CAC2BD10;
-	Thu,  6 Jun 2024 14:19:16 +0000 (UTC)
+	 MIME-Version; b=m2v6IhhJRHzZ5eRoXJx3/0vPO7ZN+BFzT35I9nZcK95sDLP06XKrnTjU/k2YCsujc/s9pK9ML3QkWnF19Cb5GUrdEycMVK4rbj6IUCz7KkW8iHRUm/3cgKTyy0i+YaWQrmxWJkAUdY8zkuA5X9y+C5oZCDNfPTtzj11bHHAaGg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ilh/s8vg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07F6C2BD10;
+	Thu,  6 Jun 2024 14:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683556;
-	bh=TNtNhQtNQJjP/dJwf6BHV0Wy3uY7Km/UFXa4aUB2haQ=;
+	s=korg; t=1717683365;
+	bh=lw62V058PJMT55abaI/euw8B8fHFrlua/Da9SkabtSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e5tYco0Z1tt8mth5UnFt52W5JmjSlOXvpJdaZf90yo0Fwj+NEn9I1qy+vU6yjft6o
-	 JESx302/An/adYrgSncWRlovgYSGlqxMSQDTZBp2yhnQmjhrYu/qNKQqqzg3mEUBFr
-	 GAFymPWG4LpphuzWrrjHQBOl4AyU5y/hwzmJAKgs=
+	b=Ilh/s8vg7FcxNGVS8QTPUyMKt1nufXsVKRVYu9StlSYsFPcKViBUELkOv3BEXtJEM
+	 37mjtaLacFcaS2eQ3d38EPfXyqoSe16baYosS34guplg/VLdtrkt8dZSwUTPxERUgX
+	 BtXeXiv/6No2R/RRDUKFXIkShxfImBlMD6GpBza8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com>
-Subject: [PATCH 6.6 498/744] PCI/EDR: Align EDR_PORT_DPC_ENABLE_DSM with PCI Firmware r3.3
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 241/473] RDMA/hns: Use complete parentheses in macros
 Date: Thu,  6 Jun 2024 16:02:50 +0200
-Message-ID: <20240606131748.414355337@linuxfoundation.org>
+Message-ID: <20240606131707.803584953@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit f24ba846133d0edec785ac6430d4daf6e9c93a09 ]
+[ Upstream commit 4125269bb9b22e1d8cdf4412c81be8074dbc61ca ]
 
-The "Downstream Port Containment related Enhancements" ECN of Jan 28, 2019
-(document 12888 below), defined the EDR_PORT_DPC_ENABLE_DSM function with
-Revision ID 5 with Arg3 being an integer.  But when the ECN was integrated
-into PCI Firmware r3.3, sec 4.6.12, it was defined as Revision ID 6 with
-Arg3 being a package containing an integer.
+Use complete parentheses to ensure that macro expansion does
+not produce unexpected results.
 
-The implementation in acpi_enable_dpc() supplies a package as Arg3 (arg4 in
-the code), but it previously specified Revision ID 5.  Align this with PCI
-Firmware r3.3 by using Revision ID 6.
-
-If firmware implemented per the ECN, its Revision 5 function would receive
-a package as Arg3 when it expects an integer, so acpi_enable_dpc() would
-likely fail.  If such firmware exists and lacks a Revision 6 function that
-expects a package, we may have to add support for Revision 5.
-
-Link: https://lore.kernel.org/r/20240501022543.1626025-1-sathyanarayanan.kuppuswamy@linux.intel.com
-Link: https://members.pcisig.com/wg/PCI-SIG/document/12888
-Fixes: ac1c8e35a326 ("PCI/DPC: Add Error Disconnect Recover (EDR) support")
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-[bhelgaas: split into two patches, update commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com> # one platform
+Fixes: a25d13cbe816 ("RDMA/hns: Add the interfaces to support multi hop addressing for the contexts in hip08")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240412091616.370789-10-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/edr.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hem.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
-index 5f4914d313a17..fa085677c91de 100644
---- a/drivers/pci/pcie/edr.c
-+++ b/drivers/pci/pcie/edr.c
-@@ -32,10 +32,10 @@ static int acpi_enable_dpc(struct pci_dev *pdev)
- 	int status = 0;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.h b/drivers/infiniband/hw/hns/hns_roce_hem.h
+index 7d23d3c51da46..fea6d7d508b60 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hem.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hem.h
+@@ -61,16 +61,16 @@ enum {
+ 	 (sizeof(struct scatterlist) + sizeof(void *)))
  
- 	/*
--	 * Behavior when calling unsupported _DSM functions is undefined,
--	 * so check whether EDR_PORT_DPC_ENABLE_DSM is supported.
-+	 * Per PCI Firmware r3.3, sec 4.6.12, EDR_PORT_DPC_ENABLE_DSM is
-+	 * optional. Return success if it's not implemented.
- 	 */
--	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
-+	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 6,
- 			    1ULL << EDR_PORT_DPC_ENABLE_DSM))
- 		return 0;
+ #define check_whether_bt_num_3(type, hop_num) \
+-	(type < HEM_TYPE_MTT && hop_num == 2)
++	((type) < HEM_TYPE_MTT && (hop_num) == 2)
  
-@@ -46,12 +46,7 @@ static int acpi_enable_dpc(struct pci_dev *pdev)
- 	argv4.package.count = 1;
- 	argv4.package.elements = &req;
+ #define check_whether_bt_num_2(type, hop_num) \
+-	((type < HEM_TYPE_MTT && hop_num == 1) || \
+-	(type >= HEM_TYPE_MTT && hop_num == 2))
++	(((type) < HEM_TYPE_MTT && (hop_num) == 1) || \
++	((type) >= HEM_TYPE_MTT && (hop_num) == 2))
  
--	/*
--	 * Per Downstream Port Containment Related Enhancements ECN to PCI
--	 * Firmware Specification r3.2, sec 4.6.12, EDR_PORT_DPC_ENABLE_DSM is
--	 * optional.  Return success if it's not implemented.
--	 */
--	obj = acpi_evaluate_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
-+	obj = acpi_evaluate_dsm(adev->handle, &pci_acpi_dsm_guid, 6,
- 				EDR_PORT_DPC_ENABLE_DSM, &argv4);
- 	if (!obj)
- 		return 0;
+ #define check_whether_bt_num_1(type, hop_num) \
+-	((type < HEM_TYPE_MTT && hop_num == HNS_ROCE_HOP_NUM_0) || \
+-	(type >= HEM_TYPE_MTT && hop_num == 1) || \
+-	(type >= HEM_TYPE_MTT && hop_num == HNS_ROCE_HOP_NUM_0))
++	(((type) < HEM_TYPE_MTT && (hop_num) == HNS_ROCE_HOP_NUM_0) || \
++	((type) >= HEM_TYPE_MTT && (hop_num) == 1) || \
++	((type) >= HEM_TYPE_MTT && (hop_num) == HNS_ROCE_HOP_NUM_0))
+ 
+ struct hns_roce_hem_chunk {
+ 	struct list_head	 list;
 -- 
 2.43.0
 
