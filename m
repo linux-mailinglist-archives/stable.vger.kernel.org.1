@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-49205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946788FEC50
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D628FEAB6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32381282539
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1BD0B23802
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EAA31B0109;
-	Thu,  6 Jun 2024 14:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B591991D3;
+	Thu,  6 Jun 2024 14:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlKvbgFR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6S7vh1i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20A419AD8C;
-	Thu,  6 Jun 2024 14:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B148B1991D4;
+	Thu,  6 Jun 2024 14:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683353; cv=none; b=aiPmvKkqGBVjN1Q3pd9+XO/477UGeypd1fSNOufasKT5RRD6e2koSGIkB1zH9eT1Z/63vYob3GU2vtVL6KdgwFe4tKg3RMhysUElgM7yYUOP0uFhwWORv6ghzkvajvaFKwp1XSdC6xlXNDSQWpuV2si/C62JNBVQSp9F64Bl3N8=
+	t=1717683167; cv=none; b=FVgOBpWYU89FunZAJPEFkykzTKXG170qHdqgoo8ZJju5zgK/boyswCdYI3vgoaaYPnwTVX8v3Qwm7PqLbnwWZ2YoLTtq6+b8CRiTdk3oV7M04nu22ub+AMmEu6+AGSbdmu6wO3+TBwQ+u6X6Olt1mHEOrjo+2lJhj3gbzd0zcTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683353; c=relaxed/simple;
-	bh=5sIWibTgJEINBwqC8e6LHh5NOOO5IGa4+w5lmZL7V1M=;
+	s=arc-20240116; t=1717683167; c=relaxed/simple;
+	bh=B9xFp02fpkl3ejxthwxxJ3tljE6Mg6gVgtT0ExjdT+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MBy8i4V6SsAFR80LhyEb/LEAvvdDMS8RTcKXGEeJ0BxTkUCksy9Zw++mm2JZE4i08XbFtFrb58M6qUpHrQeudxsxNJMlmE6bn3moB5/AE+HOlr8MnY0M4nGtNvckFOFLcupOA/FMs8So6vPr6tBW8jK+/uqrFxZEzbUSzBG3iuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlKvbgFR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16E1C2BD10;
-	Thu,  6 Jun 2024 14:15:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=urGSDIfDU1royHPH/yLT+Sq98Drv+RPev5l12dWK2KHEhVRy6U3T385no07zIxlDMW+eYVK4BVVEhoELcgsr3hoMZfK4oHjxCwUXapAP7ySNvlaAO955E0dHZgqNcjfvEZBYnQ5l/WztOLxO/D5m5MA9icixISZ43WCVxNc1FD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6S7vh1i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CFBC2BD10;
+	Thu,  6 Jun 2024 14:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683352;
-	bh=5sIWibTgJEINBwqC8e6LHh5NOOO5IGa4+w5lmZL7V1M=;
+	s=korg; t=1717683167;
+	bh=B9xFp02fpkl3ejxthwxxJ3tljE6Mg6gVgtT0ExjdT+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MlKvbgFRM635cmQ69xZVG2bCxaJaaywlsgdpAfO2A8B0C/J67uwhfIRsz8XMV1hU7
-	 bLHRvbx2r4ZXZ8jMblp+JL8awsaUCCWe/JhzE5UWLRhb8YJbZFsCd5wiGGF9ZxyrTm
-	 9/LS0qLY6kmsgJnxBJtKOxv0U3RiF5AR3w4T990k=
+	b=V6S7vh1iSPxih6XLy+Ee4hs9H7nXZ+4NOy2XjV9n24AM79XYzyqKPdAFwtdi3VT+5
+	 WddyKL3Pu5xJK4cbZB2joE7EHy3PP+Az6TYMtpqoyAO1s5LoPeUcvXLu5DT4i4kk70
+	 X/+UpPhsMoIfS19lwV92HNWBShm1UH/OCL7WVZJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Rander Wang <rander.wang@intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 293/744] ASoC: SOF: Intel: mtl: Correct rom_status_reg
-Date: Thu,  6 Jun 2024 15:59:25 +0200
-Message-ID: <20240606131741.804794014@linuxfoundation.org>
+Subject: [PATCH 6.1 037/473] selftests: sud_test: return correct emulated syscall value on RISC-V
+Date: Thu,  6 Jun 2024 15:59:26 +0200
+Message-ID: <20240606131701.118764950@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Clément Léger <cleger@rivosinc.com>
 
-[ Upstream commit 1f1b820dc3c65b6883da3130ba3b8624dcbf87db ]
+[ Upstream commit 17c67ed752d6a456602b3dbb25c5ae4d3de5deab ]
 
-ACE1 architecture changed the place where the ROM updates the status code
-from the shared SRAM window to HFFLGP1QW0 register for the status and
-HFFLGP1QW0 + 4 for the error code.
+Currently, the sud_test expects the emulated syscall to return the
+emulated syscall number. This assumption only works on architectures
+were the syscall calling convention use the same register for syscall
+number/syscall return value. This is not the case for RISC-V and thus
+the return value must be also emulated using the provided ucontext.
 
-The rom_status_reg is not used on MTL because it was wrongly assigned based
-on older platform convention (SRAM window) and it was giving inconsistent
-readings.
-
-Fixes: 064520e8aeaa ("ASoC: SOF: Intel: Add support for MeteorLake (MTL)")
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Link: https://msgid.link/r/20240403105210.17949-3-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Link: https://lore.kernel.org/r/20231206134438.473166-1-cleger@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/mtl.c | 4 ++--
- sound/soc/sof/intel/mtl.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ .../selftests/syscall_user_dispatch/sud_test.c     | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/sound/soc/sof/intel/mtl.c b/sound/soc/sof/intel/mtl.c
-index e45a6cef63916..834eb31cd9332 100644
---- a/sound/soc/sof/intel/mtl.c
-+++ b/sound/soc/sof/intel/mtl.c
-@@ -725,7 +725,7 @@ const struct sof_intel_dsp_desc mtl_chip_info = {
- 	.ipc_ack = MTL_DSP_REG_HFIPCXIDA,
- 	.ipc_ack_mask = MTL_DSP_REG_HFIPCXIDA_DONE,
- 	.ipc_ctl = MTL_DSP_REG_HFIPCXCTL,
--	.rom_status_reg = MTL_DSP_ROM_STS,
-+	.rom_status_reg = MTL_DSP_REG_HFFLGPXQWY,
- 	.rom_init_timeout	= 300,
- 	.ssp_count = MTL_SSP_COUNT,
- 	.ssp_base_offset = CNL_SSP_BASE_OFFSET,
-@@ -753,7 +753,7 @@ const struct sof_intel_dsp_desc arl_s_chip_info = {
- 	.ipc_ack = MTL_DSP_REG_HFIPCXIDA,
- 	.ipc_ack_mask = MTL_DSP_REG_HFIPCXIDA_DONE,
- 	.ipc_ctl = MTL_DSP_REG_HFIPCXCTL,
--	.rom_status_reg = MTL_DSP_ROM_STS,
-+	.rom_status_reg = MTL_DSP_REG_HFFLGPXQWY,
- 	.rom_init_timeout	= 300,
- 	.ssp_count = MTL_SSP_COUNT,
- 	.ssp_base_offset = CNL_SSP_BASE_OFFSET,
-diff --git a/sound/soc/sof/intel/mtl.h b/sound/soc/sof/intel/mtl.h
-index 95696b3d7c4cf..fab28d5f68915 100644
---- a/sound/soc/sof/intel/mtl.h
-+++ b/sound/soc/sof/intel/mtl.h
-@@ -76,8 +76,8 @@
- #define MTL_DSP_ROM_STS			MTL_SRAM_WINDOW_OFFSET(0) /* ROM status */
- #define MTL_DSP_ROM_ERROR		(MTL_SRAM_WINDOW_OFFSET(0) + 0x4) /* ROM error code */
+diff --git a/tools/testing/selftests/syscall_user_dispatch/sud_test.c b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
+index b5d592d4099e8..d975a67673299 100644
+--- a/tools/testing/selftests/syscall_user_dispatch/sud_test.c
++++ b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
+@@ -158,6 +158,20 @@ static void handle_sigsys(int sig, siginfo_t *info, void *ucontext)
  
--#define MTL_DSP_REG_HFFLGPXQWY		0x163200 /* ROM debug status */
--#define MTL_DSP_REG_HFFLGPXQWY_ERROR	0x163204 /* ROM debug error code */
-+#define MTL_DSP_REG_HFFLGPXQWY		0x163200 /* DSP core0 status */
-+#define MTL_DSP_REG_HFFLGPXQWY_ERROR	0x163204 /* DSP core0 error */
- #define MTL_DSP_REG_HfIMRIS1		0x162088
- #define MTL_DSP_REG_HfIMRIS1_IU_MASK	BIT(0)
+ 	/* In preparation for sigreturn. */
+ 	SYSCALL_DISPATCH_OFF(glob_sel);
++
++	/*
++	 * The tests for argument handling assume that `syscall(x) == x`. This
++	 * is a NOP on x86 because the syscall number is passed in %rax, which
++	 * happens to also be the function ABI return register.  Other
++	 * architectures may need to swizzle the arguments around.
++	 */
++#if defined(__riscv)
++/* REG_A7 is not defined in libc headers */
++# define REG_A7 (REG_A0 + 7)
++
++	((ucontext_t *)ucontext)->uc_mcontext.__gregs[REG_A0] =
++			((ucontext_t *)ucontext)->uc_mcontext.__gregs[REG_A7];
++#endif
+ }
  
+ TEST(dispatch_and_return)
 -- 
 2.43.0
 
