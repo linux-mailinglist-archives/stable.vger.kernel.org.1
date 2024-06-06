@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-48664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1818FE9F8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3527A8FEED2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF3101C2586D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACB13284EC7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CB7196DBC;
-	Thu,  6 Jun 2024 14:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09591C7D88;
+	Thu,  6 Jun 2024 14:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijAbc0Rj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okrXdOM+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EBF19D073;
-	Thu,  6 Jun 2024 14:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A063C1C7D84;
+	Thu,  6 Jun 2024 14:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683086; cv=none; b=guhvLSviX3bniNpFKxumNd3Q8I3zcToiI5gcVYj2M7y40xY8GWkd7H0V3dBYzUdjhSq3Bd7NO31y17xa0JOTTvFBj9llL7V2nE0aMdR4A/7eVzFpBeuouc5MfCmLBXP2Qefqg4iN4zkgZeaD0uRBIkuW2jc40JttBvsGW1xWtA4=
+	t=1717683705; cv=none; b=oIT1XDYx1c7OPR4olzboMDtiOZM8eKm6t32F0Hy8rrqVuo0wW2COFP3yWdKGPnJ7QM6mAbHWrz5KIAQtmhlRufNICj/F7geoxkzZ0wXySbTmitEdcsOwofTaH/VXzaFi4R7HJfRJdzjPL7DKIkH1ma38QjxHuj1uWdS9enge+qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683086; c=relaxed/simple;
-	bh=WuXWWCZXz3EU0rGZrdikQMDVnJqifYsKufl1H2OVH8M=;
+	s=arc-20240116; t=1717683705; c=relaxed/simple;
+	bh=zUw36MjbRnt2rX48gJhOf2sBFJv0vMpthjyUopGeuJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/V6HfjGtA7sB88RjOldajn6kk24RTdGGxp1BtaG5Ej1VL0Lk5CdKH/Ux43oPZHrw/lASAPwl6kXGwhR9+7g2vIqfI9eVQCErx71PPUBA0W34O96hgxunfMlNJuoWCC3DTN7e2f086AETficMAEWAsQs2yoHZvSPGUZqPNpfb7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijAbc0Rj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80596C4AF0A;
-	Thu,  6 Jun 2024 14:11:26 +0000 (UTC)
+	 MIME-Version; b=lEWFEu9vyBQfxItABjOEpiDo8dy6dAjeBNm6cM3bBjvfjmyeSUPj+qRxxxRVkEQ2QabDWFdRePmg6MNO3L2CTSmDs8PNjgvMfIVoE4z87i/ImGno+oj1ytlu/2BUEyAh8l4v2i6ra/2wMS72mVh72c2RmXl/ctRwyTb8EgscLDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okrXdOM+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8033AC32781;
+	Thu,  6 Jun 2024 14:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683086;
-	bh=WuXWWCZXz3EU0rGZrdikQMDVnJqifYsKufl1H2OVH8M=;
+	s=korg; t=1717683705;
+	bh=zUw36MjbRnt2rX48gJhOf2sBFJv0vMpthjyUopGeuJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijAbc0Rj8/pPJwj6pguLizifFS233uMQmliFlmzj6NYc4ryqSXotPuFFfpuo7FkWm
-	 scZnyhlBMNN3EZ2HUM5Sz0gSDpzvre2Z67pU19VaVMVGFNwWf+sZTZV61Ysv5qulSH
-	 4HPeB6bqxL15X/kplhfgxuxYF9Hg/I8NKiG+Yo+w=
+	b=okrXdOM+UIppv6WKSOLv8/88wm5t9v3fqJdZdOOu50KxSayTpiuRejceNTgjdaKR0
+	 6APiM7Zl/l/JX4141CODqVnEKBVSOR0+O1y5endztu2WW3LPPBIjIxSqxoCzIB9RHT
+	 CGQFm6WEeBOv/NNZ7/GqPHAYE+jzQcNAgKhTtN+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Greg Thelen <gthelen@google.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Tuan Phan <tuanphan@os.amperecomputing.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 323/374] selftests: mptcp: join: mark fastclose tests as flaky
-Date: Thu,  6 Jun 2024 16:05:02 +0200
-Message-ID: <20240606131702.687601035@linuxfoundation.org>
+Subject: [PATCH 6.6 631/744] perf/arm-dmc620: Fix lockdep assert in ->event_init()
+Date: Thu,  6 Jun 2024 16:05:03 +0200
+Message-ID: <20240606131752.717274566@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +66,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 8c06ac2178a9dee887929232226e35a5cdda1793 ]
+[ Upstream commit a4c5a457c6107dfe9dc65a104af1634811396bac ]
 
-These tests are flaky since their introduction. This might be less or
-not visible depending on the CI running the tests, especially if it is
-also busy doing other tasks in parallel, and if a debug kernel config is
-being used.
+for_each_sibling_event() checks leader's ctx but it doesn't have the ctx
+yet if it's the leader.  Like in perf_event_validate_size(), we should
+skip checking siblings in that case.
 
-It looks like this issue is often present with the NetDev CI. While this
-is being investigated, the tests are marked as flaky not to create
-noises on such CIs.
-
-Fixes: 01542c9bf9ab ("selftests: mptcp: add fastclose testcase")
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/324
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240524-upstream-net-20240524-selftests-mptcp-flaky-v1-3-a352362f3f8e@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Fixes: f3c0eba28704 ("perf: Add a few assertions")
+Reported-by: Greg Thelen <gthelen@google.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Tuan Phan <tuanphan@os.amperecomputing.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/20240514180050.182454-1-namhyung@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/perf/arm_dmc620_pmu.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index e4403236f6554..908ef799b13a0 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -262,6 +262,8 @@ reset()
+diff --git a/drivers/perf/arm_dmc620_pmu.c b/drivers/perf/arm_dmc620_pmu.c
+index 30cea68595747..b6a677224d682 100644
+--- a/drivers/perf/arm_dmc620_pmu.c
++++ b/drivers/perf/arm_dmc620_pmu.c
+@@ -542,12 +542,16 @@ static int dmc620_pmu_event_init(struct perf_event *event)
+ 	if (event->cpu < 0)
+ 		return -EINVAL;
  
- 	TEST_NAME="${1}"
- 
-+	MPTCP_LIB_SUBTEST_FLAKY=0 # reset if modified
++	hwc->idx = -1;
 +
- 	if skip_test; then
- 		MPTCP_LIB_TEST_COUNTER=$((MPTCP_LIB_TEST_COUNTER+1))
- 		last_test_ignored=1
-@@ -449,7 +451,9 @@ reset_with_tcp_filter()
- # $1: err msg
- fail_test()
- {
--	ret=${KSFT_FAIL}
-+	if ! mptcp_lib_subtest_is_flaky; then
-+		ret=${KSFT_FAIL}
-+	fi
++	if (event->group_leader == event)
++		return 0;
++
+ 	/*
+ 	 * We can't atomically disable all HW counters so only one event allowed,
+ 	 * although software events are acceptable.
+ 	 */
+-	if (event->group_leader != event &&
+-			!is_software_event(event->group_leader))
++	if (!is_software_event(event->group_leader))
+ 		return -EINVAL;
  
- 	if [ ${#} -gt 0 ]; then
- 		print_fail "${@}"
-@@ -3178,6 +3182,7 @@ fullmesh_tests()
- fastclose_tests()
- {
- 	if reset_check_counter "fastclose test" "MPTcpExtMPFastcloseTx"; then
-+		MPTCP_LIB_SUBTEST_FLAKY=1
- 		test_linkfail=1024 fastclose=client \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 0 0 0
-@@ -3186,6 +3191,7 @@ fastclose_tests()
- 	fi
+ 	for_each_sibling_event(sibling, event->group_leader) {
+@@ -556,7 +560,6 @@ static int dmc620_pmu_event_init(struct perf_event *event)
+ 			return -EINVAL;
+ 	}
  
- 	if reset_check_counter "fastclose server test" "MPTcpExtMPFastcloseRx"; then
-+		MPTCP_LIB_SUBTEST_FLAKY=1
- 		test_linkfail=1024 fastclose=server \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 0 0 0 0 0 0 1
+-	hwc->idx = -1;
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
