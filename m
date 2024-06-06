@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-49428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 030FB8FED36
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517918FE904
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9A9C1F22C5C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E45851F24C2F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C051B581D;
-	Thu,  6 Jun 2024 14:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E566B1991A6;
+	Thu,  6 Jun 2024 14:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uy3dVnPe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rV0dE8E5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D764D1974EB;
-	Thu,  6 Jun 2024 14:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A483A1990DC;
+	Thu,  6 Jun 2024 14:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683460; cv=none; b=o8GhKGRDXi8Tx22OJvNMDlb2sbO28yhJ8rd/hHK7UKk6fBX856ZTHbOzqeSdBaHDwE0N7rBQpBmFr+TPW1bUKeJwEc2xziaHtabjNy4irH4BT2i23RxBbXV3mTdueI/I8b9RZpBlAMWGfgZ3bM1i1GvvgvYMsA+y7oFkwt+Dj6Q=
+	t=1717682968; cv=none; b=Di0UafqnbqavJEoxU4LpYlLUBkBpii7exjAyRiJqnMPr/+eslIiHGq/nkPBBdTEwX7CluPfGVt3UUTl40e4sB+WFOMlHv+A7Xzolx0GKzfSYoauCweAkCuBZRJyAJyBTkJQ/i+7bIyewO/Rj8L8F4Q6Kj/bHRI6Wulh4d6EPlw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683460; c=relaxed/simple;
-	bh=4NrrewIIrkvxLD98vGZWp8Zpwo/8PBKcdyDLlOGKqbg=;
+	s=arc-20240116; t=1717682968; c=relaxed/simple;
+	bh=DMcjWPebRPuqGZQSdGkoMDYiLcNyBhEjO1lwIt/oJ78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=llhfePcXDPMrS3tamU4sozr18sKW1R7Pd5mEAu0KlRiXnyIjXmy42zlqfcH/KVeoS6huA5mo3TXHYTurYx6Ttqk8GphfzsAZYqFobITWstiYF/2O5YbMDlHiHO9CuD4GJ+6LzlCYKVgfhnWd2Qt35TbsCP22ADPa4zH8F6BtSM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uy3dVnPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B567DC2BD10;
-	Thu,  6 Jun 2024 14:17:40 +0000 (UTC)
+	 MIME-Version; b=Mhly8PwjzbWz5BwGmfnm0ARx5nRusA3d7lsPBKqMbWqU2DhpaiAk8JJDGneLj8bOF6zKNqXuNTiaRIhMFVDg0mu54yx67nwSyWt0jcP2WZUL5K1MYRVA2d0dezTBuMfUbwgef06MEyWKp5Ut4r+3PmxVg4wYky28KDJZUQpHL+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rV0dE8E5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DDEBC32781;
+	Thu,  6 Jun 2024 14:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683460;
-	bh=4NrrewIIrkvxLD98vGZWp8Zpwo/8PBKcdyDLlOGKqbg=;
+	s=korg; t=1717682968;
+	bh=DMcjWPebRPuqGZQSdGkoMDYiLcNyBhEjO1lwIt/oJ78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uy3dVnPe2qeqXn+WqFY6VG0O3A3SEY9/aorU52+g4jafL/410Z1dBo5KHXR79b//N
-	 CnIFoiqKruVyWN6OcAdSYeOtHK21xaiViWfgr2UTGt0WRP3rE3tnpSkkkNoBTUBCHa
-	 fgbBvHKkQ6onPSjW/pLmGRypygV/4ddcZ70vJhu4=
+	b=rV0dE8E5LB8d7lJfv335aFCVnXCWUxJXBG2DQUP/FacyfnjCVcqC6u7IyCDgqsfec
+	 sf7MM0CuqbxHgd8Jph6oV2h78uZB4K4O53zhR5JLj0aZb5aGJTPSySvmPys6u4GVR6
+	 tBGanB5MH7UFFT89FOwX9pZ8TrFdTd7bU8SJAttE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Liao Yuanhong <liaoyuanhong@vivo.com>,
+	Wu Bo <bo.wu@vivo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 405/744] dmaengine: idma64: Add check for dma_set_max_seg_size
+Subject: [PATCH 6.9 098/374] f2fs: fix block migration when section is not aligned to pow2
 Date: Thu,  6 Jun 2024 16:01:17 +0200
-Message-ID: <20240606131745.451642420@linuxfoundation.org>
+Message-ID: <20240606131655.180846762@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Wu Bo <bo.wu@vivo.com>
 
-[ Upstream commit 2b1c1cf08a0addb6df42f16b37133dc7a351de29 ]
+[ Upstream commit aa4074e8fec4d2e686daee627fcafb3503efe365 ]
 
-As the possible failure of the dma_set_max_seg_size(), it should be
-better to check the return value of the dma_set_max_seg_size().
+As for zoned-UFS, f2fs section size is forced to zone size. And zone
+size may not aligned to pow2.
 
-Fixes: e3fdb1894cfa ("dmaengine: idma64: set maximum allowed segment size for DMA")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240403024932.3342606-1-nichen@iscas.ac.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 859fca6b706e ("f2fs: swap: support migrating swapfile in aligned write mode")
+Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
+Signed-off-by: Wu Bo <bo.wu@vivo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idma64.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/f2fs/data.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/dma/idma64.c b/drivers/dma/idma64.c
-index f86939fa33b95..6fa797fd85017 100644
---- a/drivers/dma/idma64.c
-+++ b/drivers/dma/idma64.c
-@@ -598,7 +598,9 @@ static int idma64_probe(struct idma64_chip *chip)
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 5ef1874b572a6..5f77f9df24760 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -3896,15 +3896,14 @@ static int check_swap_activate(struct swap_info_struct *sis,
+ 	struct address_space *mapping = swap_file->f_mapping;
+ 	struct inode *inode = mapping->host;
+ 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+-	sector_t cur_lblock;
+-	sector_t last_lblock;
+-	sector_t pblock;
+-	sector_t lowest_pblock = -1;
+-	sector_t highest_pblock = 0;
++	block_t cur_lblock;
++	block_t last_lblock;
++	block_t pblock;
++	block_t lowest_pblock = -1;
++	block_t highest_pblock = 0;
+ 	int nr_extents = 0;
+-	unsigned long nr_pblocks;
++	unsigned int nr_pblocks;
+ 	unsigned int blks_per_sec = BLKS_PER_SEC(sbi);
+-	unsigned int sec_blks_mask = BLKS_PER_SEC(sbi) - 1;
+ 	unsigned int not_aligned = 0;
+ 	int ret = 0;
  
- 	idma64->dma.dev = chip->sysdev;
+@@ -3942,8 +3941,8 @@ static int check_swap_activate(struct swap_info_struct *sis,
+ 		pblock = map.m_pblk;
+ 		nr_pblocks = map.m_len;
  
--	dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
-+	ret = dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
-+	if (ret)
-+		return ret;
+-		if ((pblock - SM_I(sbi)->main_blkaddr) & sec_blks_mask ||
+-				nr_pblocks & sec_blks_mask ||
++		if ((pblock - SM_I(sbi)->main_blkaddr) % blks_per_sec ||
++				nr_pblocks % blks_per_sec ||
+ 				!f2fs_valid_pinned_area(sbi, pblock)) {
+ 			bool last_extent = false;
  
- 	ret = dma_async_device_register(&idma64->dma);
- 	if (ret)
 -- 
 2.43.0
 
