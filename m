@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83EBE8FE8BC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A31F78FED09
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEB2D1F23352
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31C17B254AA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B0719645B;
-	Thu,  6 Jun 2024 14:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A491B4C21;
+	Thu,  6 Jun 2024 14:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8+Aolyk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlDwlLBv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938AC197A8B;
-	Thu,  6 Jun 2024 14:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976431B3F39;
+	Thu,  6 Jun 2024 14:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682929; cv=none; b=ei2CJ2Mb/JfZAAiXiRdWe6rGueCCoONCgy/aI0p5LdUNyeXdNPHUd10CVnRoVobVXIdt/yO+qQa6xuZ6SMPu95xivWDxyFFHz3GVvaJBy0sxHSw6IJB8q0bb7H5x19MWIUF0oidDKGSTNT7T/CIf21z9dcd4hdn6awndZHGKjo4=
+	t=1717683437; cv=none; b=WWcUPLs5yhRwI7AzxcQ5/rhGdF65iWp4b9N6xbqAdrPbM28PChdL1hINDL7YSTba1LclXlBdqqxyzP+aI7EWq7yc3B10xxuX1i9/5TUFLs1yk9ObemP4ryUDhSYyoeKqustPyzSHmszjI44Dx71cRn/UyZHLnDtXhiRdfu+17ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682929; c=relaxed/simple;
-	bh=A47w0OdvIQ9vj8JEWpXMJ3WnCThVZlFKZcyppFlufRo=;
+	s=arc-20240116; t=1717683437; c=relaxed/simple;
+	bh=bjZb01F3+BeIGp0dcmUyHx62ejAM1xn5R/yONlbrsV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eKy7UGcUvoV9fnkg/zsk12LRV22IeAZbMVUHgybhxlANVTM/aN1ShS9V+OF8lIb5nKN1R3kfQZODumjzmxDkJpeKC/O3UlgvxdfF71BaQo/q3dxDwiy2W1MS8eCrIPHMh3nTVgPnGXpchUqb1OmPsRaFf8+ruqLcMhT5eXkiwwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8+Aolyk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67489C2BD10;
-	Thu,  6 Jun 2024 14:08:49 +0000 (UTC)
+	 MIME-Version; b=C2d8amYpTI1IaLEXn4HSaQ4UZsU3Mu1pKRwctAYRqtf4rq/oV41mRUb5eHibggdnlhHkf0LOXYU16rfmU7WgQlvZ+1l6nMzcuft8Xe2z8+smVt+0bPDC2ZdPp0xTBlcl2ZmU6gXZAweCK3URwTpIGa+tTvWSBnj63t0FAZHr6Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlDwlLBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A89C2BD10;
+	Thu,  6 Jun 2024 14:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682929;
-	bh=A47w0OdvIQ9vj8JEWpXMJ3WnCThVZlFKZcyppFlufRo=;
+	s=korg; t=1717683437;
+	bh=bjZb01F3+BeIGp0dcmUyHx62ejAM1xn5R/yONlbrsV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8+AolykgWanmCgo2sRwC6faAmVhj4LW3J2iiAwXrclL2X8XtHLZMQjiqjvL4ufGR
-	 DA8FvTR3SUXM80tUcKZeKWfDUN7kYrgymkBSA2Tm+fixf1NdGdTLqYDu/Yj/ChuJFC
-	 Vbi3OPsABA6G5LDFiPrpTQpI/JOWJQeNzBCbj+sI=
+	b=SlDwlLBv5rAvMpEtL1kTXz0Jj/VXehJ1IvdAuBswf0UlEmdfZ+nF+BdVLNWTxATNz
+	 qLYweaHhBaSWISAMkt6o9S7q7rcy4OlENrmPxB8c4zQfViruWVJEKWslmQ6TcSjjsl
+	 LvLauHksSlNQ4RUDTNe2KpVdm9+4bb4FiLHK0W2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Rob Herring <robh@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 075/374] dt-bindings: pinctrl: mediatek: mt7622: fix array properties
+Subject: [PATCH 6.6 382/744] selftests: net: bridge: increase IGMP/MLD exclude timeout membership interval
 Date: Thu,  6 Jun 2024 16:00:54 +0200
-Message-ID: <20240606131654.373623162@linuxfoundation.org>
+Message-ID: <20240606131744.722784906@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,170 +61,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 61fcbbf3ca038c048c942ce31bb3d3c846c87581 ]
+[ Upstream commit 06080ea23095afe04a2cb7a8d05fab4311782623 ]
 
-Some properties (function groups & pins) are meant to be arrays and
-should allow multiple entries out of enum sets. Use "items" for those.
+When running the bridge IGMP/MLD selftests on debug kernels we can get
+spurious errors when setting up the IGMP/MLD exclude timeout tests
+because the membership interval is just 3 seconds and the setup has 2
+seconds of sleep plus various validations, the one second that is left
+is not enough. Increase the membership interval from 3 to 5 seconds to
+make room for the setup validation and 2 seconds of sleep.
 
-Mistake was noticed during validation of in-kernel DTS files.
-
-Fixes: b9ffc18c6388 ("dt-bindings: mediatek: convert pinctrl to yaml")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Acked-by: Rob Herring <robh@kernel.org>
-Message-ID: <20240423045502.7778-1-zajec5@gmail.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 34d7ecb3d4f7 ("selftests: net: bridge: update IGMP/MLD membership interval value")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../pinctrl/mediatek,mt7622-pinctrl.yaml      | 92 ++++++++++---------
- 1 file changed, 49 insertions(+), 43 deletions(-)
+ tools/testing/selftests/net/forwarding/bridge_igmp.sh | 6 +++---
+ tools/testing/selftests/net/forwarding/bridge_mld.sh  | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/pinctrl/mediatek,mt7622-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/mediatek,mt7622-pinctrl.yaml
-index bd72a326e6e06..60f30a59f3853 100644
---- a/Documentation/devicetree/bindings/pinctrl/mediatek,mt7622-pinctrl.yaml
-+++ b/Documentation/devicetree/bindings/pinctrl/mediatek,mt7622-pinctrl.yaml
-@@ -97,7 +97,8 @@ patternProperties:
-             then:
-               properties:
-                 groups:
--                  enum: [emmc, emmc_rst]
-+                  items:
-+                    enum: [emmc, emmc_rst]
-           - if:
-               properties:
-                 function:
-@@ -105,8 +106,9 @@ patternProperties:
-             then:
-               properties:
-                 groups:
--                  enum: [esw, esw_p0_p1, esw_p2_p3_p4, rgmii_via_esw,
--                         rgmii_via_gmac1, rgmii_via_gmac2, mdc_mdio]
-+                  items:
-+                    enum: [esw, esw_p0_p1, esw_p2_p3_p4, rgmii_via_esw,
-+                           rgmii_via_gmac1, rgmii_via_gmac2, mdc_mdio]
-           - if:
-               properties:
-                 function:
-@@ -123,10 +125,11 @@ patternProperties:
-             then:
-               properties:
-                 groups:
--                  enum: [i2s_in_mclk_bclk_ws, i2s1_in_data, i2s2_in_data,
--                         i2s3_in_data, i2s4_in_data, i2s_out_mclk_bclk_ws,
--                         i2s1_out_data, i2s2_out_data, i2s3_out_data,
--                         i2s4_out_data]
-+                  items:
-+                    enum: [i2s_in_mclk_bclk_ws, i2s1_in_data, i2s2_in_data,
-+                           i2s3_in_data, i2s4_in_data, i2s_out_mclk_bclk_ws,
-+                           i2s1_out_data, i2s2_out_data, i2s3_out_data,
-+                           i2s4_out_data]
-           - if:
-               properties:
-                 function:
-@@ -159,10 +162,11 @@ patternProperties:
-             then:
-               properties:
-                 groups:
--                  enum: [pcie0_0_waken, pcie0_1_waken, pcie1_0_waken,
--                         pcie0_0_clkreq, pcie0_1_clkreq, pcie1_0_clkreq,
--                         pcie0_pad_perst, pcie1_pad_perst, pcie_pereset,
--                         pcie_wake, pcie_clkreq]
-+                  items:
-+                    enum: [pcie0_0_waken, pcie0_1_waken, pcie1_0_waken,
-+                           pcie0_0_clkreq, pcie0_1_clkreq, pcie1_0_clkreq,
-+                           pcie0_pad_perst, pcie1_pad_perst, pcie_pereset,
-+                           pcie_wake, pcie_clkreq]
-           - if:
-               properties:
-                 function:
-@@ -178,11 +182,12 @@ patternProperties:
-             then:
-               properties:
-                 groups:
--                  enum: [pwm_ch1_0, pwm_ch1_1, pwm_ch1_2, pwm_ch2_0, pwm_ch2_1,
--                         pwm_ch2_2, pwm_ch3_0, pwm_ch3_1, pwm_ch3_2, pwm_ch4_0,
--                         pwm_ch4_1, pwm_ch4_2, pwm_ch4_3, pwm_ch5_0, pwm_ch5_1,
--                         pwm_ch5_2, pwm_ch6_0, pwm_ch6_1, pwm_ch6_2, pwm_ch6_3,
--                         pwm_ch7_0, pwm_0, pwm_1]
-+                  items:
-+                    enum: [pwm_ch1_0, pwm_ch1_1, pwm_ch1_2, pwm_ch2_0, pwm_ch2_1,
-+                           pwm_ch2_2, pwm_ch3_0, pwm_ch3_1, pwm_ch3_2, pwm_ch4_0,
-+                           pwm_ch4_1, pwm_ch4_2, pwm_ch4_3, pwm_ch5_0, pwm_ch5_1,
-+                           pwm_ch5_2, pwm_ch6_0, pwm_ch6_1, pwm_ch6_2, pwm_ch6_3,
-+                           pwm_ch7_0, pwm_0, pwm_1]
-           - if:
-               properties:
-                 function:
-@@ -260,33 +265,34 @@ patternProperties:
-           pins:
-             description:
-               An array of strings. Each string contains the name of a pin.
--            enum: [GPIO_A, I2S1_IN, I2S1_OUT, I2S_BCLK, I2S_WS, I2S_MCLK, TXD0,
--                   RXD0, SPI_WP, SPI_HOLD, SPI_CLK, SPI_MOSI, SPI_MISO, SPI_CS,
--                   I2C_SDA, I2C_SCL, I2S2_IN, I2S3_IN, I2S4_IN, I2S2_OUT,
--                   I2S3_OUT, I2S4_OUT, GPIO_B, MDC, MDIO, G2_TXD0, G2_TXD1,
--                   G2_TXD2, G2_TXD3, G2_TXEN, G2_TXC, G2_RXD0, G2_RXD1, G2_RXD2,
--                   G2_RXD3, G2_RXDV, G2_RXC, NCEB, NWEB, NREB, NDL4, NDL5, NDL6,
--                   NDL7, NRB, NCLE, NALE, NDL0, NDL1, NDL2, NDL3, MDI_TP_P0,
--                   MDI_TN_P0, MDI_RP_P0, MDI_RN_P0, MDI_TP_P1, MDI_TN_P1,
--                   MDI_RP_P1, MDI_RN_P1, MDI_RP_P2, MDI_RN_P2, MDI_TP_P2,
--                   MDI_TN_P2, MDI_TP_P3, MDI_TN_P3, MDI_RP_P3, MDI_RN_P3,
--                   MDI_RP_P4, MDI_RN_P4, MDI_TP_P4, MDI_TN_P4, PMIC_SCL,
--                   PMIC_SDA, SPIC1_CLK, SPIC1_MOSI, SPIC1_MISO, SPIC1_CS,
--                   GPIO_D, WATCHDOG, RTS3_N, CTS3_N, TXD3, RXD3, PERST0_N,
--                   PERST1_N, WLED_N, EPHY_LED0_N, AUXIN0, AUXIN1, AUXIN2,
--                   AUXIN3, TXD4, RXD4, RTS4_N, CST4_N, PWM1, PWM2, PWM3, PWM4,
--                   PWM5, PWM6, PWM7, GPIO_E, TOP_5G_CLK, TOP_5G_DATA,
--                   WF0_5G_HB0, WF0_5G_HB1, WF0_5G_HB2, WF0_5G_HB3, WF0_5G_HB4,
--                   WF0_5G_HB5, WF0_5G_HB6, XO_REQ, TOP_RST_N, SYS_WATCHDOG,
--                   EPHY_LED0_N_JTDO, EPHY_LED1_N_JTDI, EPHY_LED2_N_JTMS,
--                   EPHY_LED3_N_JTCLK, EPHY_LED4_N_JTRST_N, WF2G_LED_N,
--                   WF5G_LED_N, GPIO_9, GPIO_10, GPIO_11, GPIO_12, UART1_TXD,
--                   UART1_RXD, UART1_CTS, UART1_RTS, UART2_TXD, UART2_RXD,
--                   UART2_CTS, UART2_RTS, SMI_MDC, SMI_MDIO, PCIE_PERESET_N,
--                   PWM_0, GPIO_0, GPIO_1, GPIO_2, GPIO_3, GPIO_4, GPIO_5,
--                   GPIO_6, GPIO_7, GPIO_8, UART0_TXD, UART0_RXD, TOP_2G_CLK,
--                   TOP_2G_DATA, WF0_2G_HB0, WF0_2G_HB1, WF0_2G_HB2, WF0_2G_HB3,
--                   WF0_2G_HB4, WF0_2G_HB5, WF0_2G_HB6]
-+            items:
-+              enum: [GPIO_A, I2S1_IN, I2S1_OUT, I2S_BCLK, I2S_WS, I2S_MCLK, TXD0,
-+                     RXD0, SPI_WP, SPI_HOLD, SPI_CLK, SPI_MOSI, SPI_MISO, SPI_CS,
-+                     I2C_SDA, I2C_SCL, I2S2_IN, I2S3_IN, I2S4_IN, I2S2_OUT,
-+                     I2S3_OUT, I2S4_OUT, GPIO_B, MDC, MDIO, G2_TXD0, G2_TXD1,
-+                     G2_TXD2, G2_TXD3, G2_TXEN, G2_TXC, G2_RXD0, G2_RXD1, G2_RXD2,
-+                     G2_RXD3, G2_RXDV, G2_RXC, NCEB, NWEB, NREB, NDL4, NDL5, NDL6,
-+                     NDL7, NRB, NCLE, NALE, NDL0, NDL1, NDL2, NDL3, MDI_TP_P0,
-+                     MDI_TN_P0, MDI_RP_P0, MDI_RN_P0, MDI_TP_P1, MDI_TN_P1,
-+                     MDI_RP_P1, MDI_RN_P1, MDI_RP_P2, MDI_RN_P2, MDI_TP_P2,
-+                     MDI_TN_P2, MDI_TP_P3, MDI_TN_P3, MDI_RP_P3, MDI_RN_P3,
-+                     MDI_RP_P4, MDI_RN_P4, MDI_TP_P4, MDI_TN_P4, PMIC_SCL,
-+                     PMIC_SDA, SPIC1_CLK, SPIC1_MOSI, SPIC1_MISO, SPIC1_CS,
-+                     GPIO_D, WATCHDOG, RTS3_N, CTS3_N, TXD3, RXD3, PERST0_N,
-+                     PERST1_N, WLED_N, EPHY_LED0_N, AUXIN0, AUXIN1, AUXIN2,
-+                     AUXIN3, TXD4, RXD4, RTS4_N, CST4_N, PWM1, PWM2, PWM3, PWM4,
-+                     PWM5, PWM6, PWM7, GPIO_E, TOP_5G_CLK, TOP_5G_DATA,
-+                     WF0_5G_HB0, WF0_5G_HB1, WF0_5G_HB2, WF0_5G_HB3, WF0_5G_HB4,
-+                     WF0_5G_HB5, WF0_5G_HB6, XO_REQ, TOP_RST_N, SYS_WATCHDOG,
-+                     EPHY_LED0_N_JTDO, EPHY_LED1_N_JTDI, EPHY_LED2_N_JTMS,
-+                     EPHY_LED3_N_JTCLK, EPHY_LED4_N_JTRST_N, WF2G_LED_N,
-+                     WF5G_LED_N, GPIO_9, GPIO_10, GPIO_11, GPIO_12, UART1_TXD,
-+                     UART1_RXD, UART1_CTS, UART1_RTS, UART2_TXD, UART2_RXD,
-+                     UART2_CTS, UART2_RTS, SMI_MDC, SMI_MDIO, PCIE_PERESET_N,
-+                     PWM_0, GPIO_0, GPIO_1, GPIO_2, GPIO_3, GPIO_4, GPIO_5,
-+                     GPIO_6, GPIO_7, GPIO_8, UART0_TXD, UART0_RXD, TOP_2G_CLK,
-+                     TOP_2G_DATA, WF0_2G_HB0, WF0_2G_HB1, WF0_2G_HB2, WF0_2G_HB3,
-+                     WF0_2G_HB4, WF0_2G_HB5, WF0_2G_HB6]
+diff --git a/tools/testing/selftests/net/forwarding/bridge_igmp.sh b/tools/testing/selftests/net/forwarding/bridge_igmp.sh
+index 2aa66d2a1702b..e6a3e04fd83f3 100755
+--- a/tools/testing/selftests/net/forwarding/bridge_igmp.sh
++++ b/tools/testing/selftests/net/forwarding/bridge_igmp.sh
+@@ -478,10 +478,10 @@ v3exc_timeout_test()
+ 	RET=0
+ 	local X=("192.0.2.20" "192.0.2.30")
  
-           bias-disable: true
+-	# GMI should be 3 seconds
++	# GMI should be 5 seconds
+ 	ip link set dev br0 type bridge mcast_query_interval 100 \
+ 					mcast_query_response_interval 100 \
+-					mcast_membership_interval 300
++					mcast_membership_interval 500
  
+ 	v3exclude_prepare $h1 $ALL_MAC $ALL_GROUP
+ 	ip link set dev br0 type bridge mcast_query_interval 500 \
+@@ -489,7 +489,7 @@ v3exc_timeout_test()
+ 					mcast_membership_interval 1500
+ 
+ 	$MZ $h1 -c 1 -b $ALL_MAC -B $ALL_GROUP -t ip "proto=2,p=$MZPKT_ALLOW2" -q
+-	sleep 3
++	sleep 5
+ 	bridge -j -d -s mdb show dev br0 \
+ 		| jq -e ".[].mdb[] | \
+ 			 select(.grp == \"$TEST_GROUP\" and \
+diff --git a/tools/testing/selftests/net/forwarding/bridge_mld.sh b/tools/testing/selftests/net/forwarding/bridge_mld.sh
+index e2b9ff773c6b6..f84ab2e657547 100755
+--- a/tools/testing/selftests/net/forwarding/bridge_mld.sh
++++ b/tools/testing/selftests/net/forwarding/bridge_mld.sh
+@@ -478,10 +478,10 @@ mldv2exc_timeout_test()
+ 	RET=0
+ 	local X=("2001:db8:1::20" "2001:db8:1::30")
+ 
+-	# GMI should be 3 seconds
++	# GMI should be 5 seconds
+ 	ip link set dev br0 type bridge mcast_query_interval 100 \
+ 					mcast_query_response_interval 100 \
+-					mcast_membership_interval 300
++					mcast_membership_interval 500
+ 
+ 	mldv2exclude_prepare $h1
+ 	ip link set dev br0 type bridge mcast_query_interval 500 \
+@@ -489,7 +489,7 @@ mldv2exc_timeout_test()
+ 					mcast_membership_interval 1500
+ 
+ 	$MZ $h1 -c 1 $MZPKT_ALLOW2 -q
+-	sleep 3
++	sleep 5
+ 	bridge -j -d -s mdb show dev br0 \
+ 		| jq -e ".[].mdb[] | \
+ 			 select(.grp == \"$TEST_GROUP\" and \
 -- 
 2.43.0
 
