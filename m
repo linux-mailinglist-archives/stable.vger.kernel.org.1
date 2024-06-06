@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-48668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90E08FE9FC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E048C8FEF05
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF3211C257A7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03F201C210A8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FD3198E83;
-	Thu,  6 Jun 2024 14:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3074B1A187A;
+	Thu,  6 Jun 2024 14:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hbv0YI71"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UcDGyoxn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FD71974EC;
-	Thu,  6 Jun 2024 14:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E390D1C95D3;
+	Thu,  6 Jun 2024 14:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683088; cv=none; b=Leg84ajO9Iv7g4P9dq2goe36SIfGaZAk40qHC0+yvu4G7CFnPHjVG1EllA7OuJx3diJNo1dxKMP+E4MRYrnfkaRgt+Z3l+xxeCQ4yR7L77Zk2yZNhYwbCd9lerW7rWuaw6IZ5vZor3k5SMMwKA3a8oNfnC4T3ljjZXry24umkLU=
+	t=1717683728; cv=none; b=OYXfu5RNp2Nx5sb3+PaNVdwqdeuOkKvNEV7FMENSWNHjueRTvny5K+LomRPXLUmLekDqJXyY8KedZCJEK3ubbgWdllGX1UPOBQzvIVpQU8df5kz4BqJt/ZregZZO2n3VdI0rifRdFRDAOE7Sojg0kDyfYacAd1TSIwwlWfFyDKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683088; c=relaxed/simple;
-	bh=incpsdWh2AC8wQSUhSGld4CCmNDPGBRGl9fjP6MrZcw=;
+	s=arc-20240116; t=1717683728; c=relaxed/simple;
+	bh=iVfQ2tMZVC70qmKzgI6b7OSVmudhXCmRCtbVJNvNb0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/1b5R/0gaJAlI23sV+uZQocX8JGUEmwAafp2lm7QmBFsdxqV9DmsI1WI6URfnD0M4qbz8/0mqFwwnkggYue/yuY9CG7p8gOYMDUv//+B1gUJx9iJhKq2DnGfw6p2ObPcWhM9MZMhVF1HKKjLnrvMrqY6r8gFM8aAJZyEPMOrOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hbv0YI71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 647CAC32786;
-	Thu,  6 Jun 2024 14:11:28 +0000 (UTC)
+	 MIME-Version; b=uVjVAvwnL6XqL8+CRYXNJYtRKSL2fr3FbSkwLhXoJQlHAIg52kBd5fOHlo5wvFVAu/OY9rCgcBNkUbS/1sH/+TAqVYEzYl1j0sai/0zcmZOPBZNlucsN98IGUDQOG+FzT85HOPBeXqXKk6cRcl20SxUa3Ro8D/2poSvESDCXNzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UcDGyoxn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21C2C2BD10;
+	Thu,  6 Jun 2024 14:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683088;
-	bh=incpsdWh2AC8wQSUhSGld4CCmNDPGBRGl9fjP6MrZcw=;
+	s=korg; t=1717683727;
+	bh=iVfQ2tMZVC70qmKzgI6b7OSVmudhXCmRCtbVJNvNb0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hbv0YI7124XHSMazfVbrHoeARy72FpmyRl1uujqXJjhpQXNdu8S+dUV3U7MSjD7fb
-	 u8SmHc6c4d8M9PSYunrKcz1zPYsk2FfmBXlAoPjwyf++PEVXvnNKZl48+6GmIdygnk
-	 y4/KitgPSr4LIvSOhVB8RU9b/++CnxMJCoW3VWfY=
+	b=UcDGyoxnqf+YcuZf+tyJT5o0eALBt6odhRM/udHl7rxn8yCfbDwfcUtE8mDT6LgEF
+	 kyZ8CJt+TNdQTFLyGRniKnpmMOrLM98osG90zNSxTI90Z7c9EDq11XydH+cfi74G+N
+	 iAdLZhkb+N7rNRAbFj8Zlre1X7neBaGOGWNb4pUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mateusz Kaduk <mateusz.kaduk@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH 6.9 369/374] x86/pci: Skip early E820 check for ECAM region
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 676/744] kthread: add kthread_stop_put
 Date: Thu,  6 Jun 2024 16:05:48 +0200
-Message-ID: <20240606131704.240746512@linuxfoundation.org>
+Message-ID: <20240606131754.179013278@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,136 +62,322 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit 199f968f1484a14024d0d467211ffc2faf193eb4 upstream.
+[ Upstream commit 6309727ef27162deabd5c095c11af24970fba5a2 ]
 
-Arul, Mateusz, Imcarneiro91, and Aman reported a regression caused by
-07eab0901ede ("efi/x86: Remove EfiMemoryMappedIO from E820 map").  On the
-Lenovo Legion 9i laptop, that commit removes the ECAM area from E820, which
-means the early E820 validation fails, which means we don't enable ECAM in
-the "early MCFG" path.
+Add a kthread_stop_put() helper that stops a thread and puts its task
+struct.  Use it to replace the various instances of kthread_stop()
+followed by put_task_struct().
 
-The static MCFG table describes ECAM without depending on the ACPI
-interpreter.  Many Legion 9i ACPI methods rely on that, so they fail when
-PCI config access isn't available, resulting in the embedded controller,
-PS/2, audio, trackpad, and battery devices not being detected.  The _OSC
-method also fails, so Linux can't take control of the PCIe hotplug, PME,
-and AER features:
+Remove the kthread_stop_put() macro in usbip that is similar but doesn't
+return the result of kthread_stop().
 
-  # pci_mmcfg_early_init()
-
-  PCI: ECAM [mem 0xc0000000-0xce0fffff] (base 0xc0000000) for domain 0000 [bus 00-e0]
-  PCI: not using ECAM ([mem 0xc0000000-0xce0fffff] not reserved)
-
-  ACPI Error: AE_ERROR, Returned by Handler for [PCI_Config] (20230628/evregion-300)
-  ACPI: Interpreter enabled
-  ACPI: Ignoring error and continuing table load
-  ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PC00.RP01._SB.PC00], AE_NOT_FOUND (20230628/dswload2-162)
-  ACPI Error: AE_NOT_FOUND, During name lookup/catalog (20230628/psobject-220)
-  ACPI: Skipping parse of AML opcode: OpcodeName unavailable (0x0010)
-  ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PC00.RP01._SB.PC00], AE_NOT_FOUND (20230628/dswload2-162)
-  ACPI Error: AE_NOT_FOUND, During name lookup/catalog (20230628/psobject-220)
-  ...
-  ACPI Error: Aborting method \_SB.PC00._OSC due to previous error (AE_NOT_FOUND) (20230628/psparse-529)
-  acpi PNP0A08:00: _OSC: platform retains control of PCIe features (AE_NOT_FOUND)
-
-  # pci_mmcfg_late_init()
-
-  PCI: ECAM [mem 0xc0000000-0xce0fffff] (base 0xc0000000) for domain 0000 [bus 00-e0]
-  PCI: [Firmware Info]: ECAM [mem 0xc0000000-0xce0fffff] not reserved in ACPI motherboard resources
-  PCI: ECAM [mem 0xc0000000-0xce0fffff] is EfiMemoryMappedIO; assuming valid
-  PCI: ECAM [mem 0xc0000000-0xce0fffff] reserved to work around lack of ACPI motherboard _CRS
-
-Per PCI Firmware r3.3, sec 4.1.2, ECAM space must be reserved by a PNP0C02
-resource, but there's no requirement to mention it in E820, so we shouldn't
-look at E820 to validate the ECAM space described by MCFG.
-
-In 2006, 946f2ee5c731 ("[PATCH] i386/x86-64: Check that MCFG points to an
-e820 reserved area") added a sanity check of E820 to work around buggy MCFG
-tables, but that over-aggressive validation causes failures like this one.
-
-Keep the E820 validation check for machines older than 2016, an arbitrary
-ten years after 946f2ee5c731, so machines that depend on it don't break.
-
-Skip the early E820 check for 2016 and newer BIOSes since there's no
-requirement to describe ECAM in E820.
-
-Link: https://lore.kernel.org/r/20240417204012.215030-2-helgaas@kernel.org
-Fixes: 07eab0901ede ("efi/x86: Remove EfiMemoryMappedIO from E820 map")
-Reported-by: Mateusz Kaduk <mateusz.kaduk@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218444
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Mateusz Kaduk <mateusz.kaduk@gmail.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[agruenba@redhat.com: fix kerneldoc comment]
+  Link: https://lkml.kernel.org/r/20230911111730.2565537-1-agruenba@redhat.com
+[akpm@linux-foundation.org: document kthread_stop_put()'s argument]
+Link: https://lkml.kernel.org/r/20230907234048.2499820-1-agruenba@redhat.com
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: bb9025f4432f ("dma-mapping: benchmark: fix up kthread-related error handling")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/pci/mmconfig-shared.c |   40 +++++++++++++++++++++++++++++-----------
- 1 file changed, 29 insertions(+), 11 deletions(-)
+ drivers/accel/ivpu/ivpu_job.c              |  3 +--
+ drivers/dma-buf/st-dma-fence-chain.c       | 12 ++++--------
+ drivers/dma-buf/st-dma-fence.c             |  4 +---
+ drivers/gpu/drm/i915/gt/selftest_migrate.c |  4 +---
+ drivers/net/xen-netback/interface.c        |  3 +--
+ drivers/usb/usbip/usbip_common.h           |  6 ------
+ fs/gfs2/ops_fstype.c                       |  9 +++------
+ include/linux/kthread.h                    |  1 +
+ kernel/irq/manage.c                        | 15 +++++----------
+ kernel/kthread.c                           | 18 ++++++++++++++++++
+ kernel/smpboot.c                           |  3 +--
+ mm/damon/core.c                            |  3 +--
+ net/core/pktgen.c                          |  3 +--
+ 13 files changed, 38 insertions(+), 46 deletions(-)
 
---- a/arch/x86/pci/mmconfig-shared.c
-+++ b/arch/x86/pci/mmconfig-shared.c
-@@ -518,7 +518,34 @@ static bool __ref pci_mmcfg_reserved(str
+diff --git a/drivers/accel/ivpu/ivpu_job.c b/drivers/accel/ivpu/ivpu_job.c
+index de9e69f70af7e..76f468c9f761b 100644
+--- a/drivers/accel/ivpu/ivpu_job.c
++++ b/drivers/accel/ivpu/ivpu_job.c
+@@ -618,6 +618,5 @@ int ivpu_job_done_thread_init(struct ivpu_device *vdev)
+ 
+ void ivpu_job_done_thread_fini(struct ivpu_device *vdev)
  {
- 	struct resource *conflict;
- 
--	if (!early && !acpi_disabled) {
-+	if (early) {
-+
-+		/*
-+		 * Don't try to do this check unless configuration type 1
-+		 * is available.  How about type 2?
-+		 */
-+
-+		/*
-+		 * 946f2ee5c731 ("Check that MCFG points to an e820
-+		 * reserved area") added this E820 check in 2006 to work
-+		 * around BIOS defects.
-+		 *
-+		 * Per PCI Firmware r3.3, sec 4.1.2, ECAM space must be
-+		 * reserved by a PNP0C02 resource, but it need not be
-+		 * mentioned in E820.  Before the ACPI interpreter is
-+		 * available, we can't check for PNP0C02 resources, so
-+		 * there's no reliable way to verify the region in this
-+		 * early check.  Keep it only for the old machines that
-+		 * motivated 946f2ee5c731.
-+		 */
-+		if (dmi_get_bios_year() < 2016 && raw_pci_ops)
-+			return is_mmconf_reserved(e820__mapped_all, cfg, dev,
-+						  "E820 entry");
-+
-+		return true;
-+	}
-+
-+	if (!acpi_disabled) {
- 		if (is_mmconf_reserved(is_acpi_reserved, cfg, dev,
- 				       "ACPI motherboard resource"))
- 			return true;
-@@ -551,16 +578,7 @@ static bool __ref pci_mmcfg_reserved(str
- 	 * For MCFG information constructed from hotpluggable host bridge's
- 	 * _CBA method, just assume it's reserved.
- 	 */
--	if (pci_mmcfg_running_state)
--		return true;
--
--	/* Don't try to do this check unless configuration
--	   type 1 is available. how about type 2 ?*/
--	if (raw_pci_ops)
--		return is_mmconf_reserved(e820__mapped_all, cfg, dev,
--					  "E820 entry");
--
--	return false;
-+	return pci_mmcfg_running_state;
+-	kthread_stop(vdev->job_done_thread);
+-	put_task_struct(vdev->job_done_thread);
++	kthread_stop_put(vdev->job_done_thread);
  }
+diff --git a/drivers/dma-buf/st-dma-fence-chain.c b/drivers/dma-buf/st-dma-fence-chain.c
+index 661de4add4c72..ed4b323886e43 100644
+--- a/drivers/dma-buf/st-dma-fence-chain.c
++++ b/drivers/dma-buf/st-dma-fence-chain.c
+@@ -476,10 +476,9 @@ static int find_race(void *arg)
+ 	for (i = 0; i < ncpus; i++) {
+ 		int ret;
  
- static void __init pci_mmcfg_reject_broken(int early)
+-		ret = kthread_stop(threads[i]);
++		ret = kthread_stop_put(threads[i]);
+ 		if (ret && !err)
+ 			err = ret;
+-		put_task_struct(threads[i]);
+ 	}
+ 	kfree(threads);
+ 
+@@ -591,8 +590,7 @@ static int wait_forward(void *arg)
+ 	for (i = 0; i < fc.chain_length; i++)
+ 		dma_fence_signal(fc.fences[i]);
+ 
+-	err = kthread_stop(tsk);
+-	put_task_struct(tsk);
++	err = kthread_stop_put(tsk);
+ 
+ err:
+ 	fence_chains_fini(&fc);
+@@ -621,8 +619,7 @@ static int wait_backward(void *arg)
+ 	for (i = fc.chain_length; i--; )
+ 		dma_fence_signal(fc.fences[i]);
+ 
+-	err = kthread_stop(tsk);
+-	put_task_struct(tsk);
++	err = kthread_stop_put(tsk);
+ 
+ err:
+ 	fence_chains_fini(&fc);
+@@ -669,8 +666,7 @@ static int wait_random(void *arg)
+ 	for (i = 0; i < fc.chain_length; i++)
+ 		dma_fence_signal(fc.fences[i]);
+ 
+-	err = kthread_stop(tsk);
+-	put_task_struct(tsk);
++	err = kthread_stop_put(tsk);
+ 
+ err:
+ 	fence_chains_fini(&fc);
+diff --git a/drivers/dma-buf/st-dma-fence.c b/drivers/dma-buf/st-dma-fence.c
+index fb6e0a6ae2c96..b7c6f7ea9e0c8 100644
+--- a/drivers/dma-buf/st-dma-fence.c
++++ b/drivers/dma-buf/st-dma-fence.c
+@@ -548,11 +548,9 @@ static int race_signal_callback(void *arg)
+ 		for (i = 0; i < ARRAY_SIZE(t); i++) {
+ 			int err;
+ 
+-			err = kthread_stop(t[i].task);
++			err = kthread_stop_put(t[i].task);
+ 			if (err && !ret)
+ 				ret = err;
+-
+-			put_task_struct(t[i].task);
+ 		}
+ 	}
+ 
+diff --git a/drivers/gpu/drm/i915/gt/selftest_migrate.c b/drivers/gpu/drm/i915/gt/selftest_migrate.c
+index 3def5ca72decf..0fb07f073baa6 100644
+--- a/drivers/gpu/drm/i915/gt/selftest_migrate.c
++++ b/drivers/gpu/drm/i915/gt/selftest_migrate.c
+@@ -719,11 +719,9 @@ static int threaded_migrate(struct intel_migrate *migrate,
+ 		if (IS_ERR_OR_NULL(tsk))
+ 			continue;
+ 
+-		status = kthread_stop(tsk);
++		status = kthread_stop_put(tsk);
+ 		if (status && !err)
+ 			err = status;
+-
+-		put_task_struct(tsk);
+ 	}
+ 
+ 	kfree(thread);
+diff --git a/drivers/net/xen-netback/interface.c b/drivers/net/xen-netback/interface.c
+index fc3bb63b9ac3e..acf310e58f7e2 100644
+--- a/drivers/net/xen-netback/interface.c
++++ b/drivers/net/xen-netback/interface.c
+@@ -668,8 +668,7 @@ int xenvif_connect_ctrl(struct xenvif *vif, grant_ref_t ring_ref,
+ static void xenvif_disconnect_queue(struct xenvif_queue *queue)
+ {
+ 	if (queue->task) {
+-		kthread_stop(queue->task);
+-		put_task_struct(queue->task);
++		kthread_stop_put(queue->task);
+ 		queue->task = NULL;
+ 	}
+ 
+diff --git a/drivers/usb/usbip/usbip_common.h b/drivers/usb/usbip/usbip_common.h
+index d8cbd2dfc2c25..282efca64a012 100644
+--- a/drivers/usb/usbip/usbip_common.h
++++ b/drivers/usb/usbip/usbip_common.h
+@@ -298,12 +298,6 @@ struct usbip_device {
+ 	__k;								   \
+ })
+ 
+-#define kthread_stop_put(k)		\
+-	do {				\
+-		kthread_stop(k);	\
+-		put_task_struct(k);	\
+-	} while (0)
+-
+ /* usbip_common.c */
+ void usbip_dump_urb(struct urb *purb);
+ void usbip_dump_header(struct usbip_header *pdu);
+diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
+index 5d51bc58a9a03..f4c066aa24b96 100644
+--- a/fs/gfs2/ops_fstype.c
++++ b/fs/gfs2/ops_fstype.c
+@@ -1127,8 +1127,7 @@ static int init_threads(struct gfs2_sbd *sdp)
+ 	return 0;
+ 
+ fail:
+-	kthread_stop(sdp->sd_logd_process);
+-	put_task_struct(sdp->sd_logd_process);
++	kthread_stop_put(sdp->sd_logd_process);
+ 	sdp->sd_logd_process = NULL;
+ 	return error;
+ }
+@@ -1136,13 +1135,11 @@ static int init_threads(struct gfs2_sbd *sdp)
+ void gfs2_destroy_threads(struct gfs2_sbd *sdp)
+ {
+ 	if (sdp->sd_logd_process) {
+-		kthread_stop(sdp->sd_logd_process);
+-		put_task_struct(sdp->sd_logd_process);
++		kthread_stop_put(sdp->sd_logd_process);
+ 		sdp->sd_logd_process = NULL;
+ 	}
+ 	if (sdp->sd_quotad_process) {
+-		kthread_stop(sdp->sd_quotad_process);
+-		put_task_struct(sdp->sd_quotad_process);
++		kthread_stop_put(sdp->sd_quotad_process);
+ 		sdp->sd_quotad_process = NULL;
+ 	}
+ }
+diff --git a/include/linux/kthread.h b/include/linux/kthread.h
+index 2c30ade43bc87..b11f53c1ba2e6 100644
+--- a/include/linux/kthread.h
++++ b/include/linux/kthread.h
+@@ -86,6 +86,7 @@ void free_kthread_struct(struct task_struct *k);
+ void kthread_bind(struct task_struct *k, unsigned int cpu);
+ void kthread_bind_mask(struct task_struct *k, const struct cpumask *mask);
+ int kthread_stop(struct task_struct *k);
++int kthread_stop_put(struct task_struct *k);
+ bool kthread_should_stop(void);
+ bool kthread_should_park(void);
+ bool kthread_should_stop_or_park(void);
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index d309ba84e08a9..1782f90cd8c6c 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -1852,15 +1852,13 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
+ 		struct task_struct *t = new->thread;
+ 
+ 		new->thread = NULL;
+-		kthread_stop(t);
+-		put_task_struct(t);
++		kthread_stop_put(t);
+ 	}
+ 	if (new->secondary && new->secondary->thread) {
+ 		struct task_struct *t = new->secondary->thread;
+ 
+ 		new->secondary->thread = NULL;
+-		kthread_stop(t);
+-		put_task_struct(t);
++		kthread_stop_put(t);
+ 	}
+ out_mput:
+ 	module_put(desc->owner);
+@@ -1971,12 +1969,9 @@ static struct irqaction *__free_irq(struct irq_desc *desc, void *dev_id)
+ 	 * the same bit to a newly requested action.
+ 	 */
+ 	if (action->thread) {
+-		kthread_stop(action->thread);
+-		put_task_struct(action->thread);
+-		if (action->secondary && action->secondary->thread) {
+-			kthread_stop(action->secondary->thread);
+-			put_task_struct(action->secondary->thread);
+-		}
++		kthread_stop_put(action->thread);
++		if (action->secondary && action->secondary->thread)
++			kthread_stop_put(action->secondary->thread);
+ 	}
+ 
+ 	/* Last action releases resources */
+diff --git a/kernel/kthread.c b/kernel/kthread.c
+index 1eea53050babc..290cbc845225e 100644
+--- a/kernel/kthread.c
++++ b/kernel/kthread.c
+@@ -715,6 +715,24 @@ int kthread_stop(struct task_struct *k)
+ }
+ EXPORT_SYMBOL(kthread_stop);
+ 
++/**
++ * kthread_stop_put - stop a thread and put its task struct
++ * @k: thread created by kthread_create().
++ *
++ * Stops a thread created by kthread_create() and put its task_struct.
++ * Only use when holding an extra task struct reference obtained by
++ * calling get_task_struct().
++ */
++int kthread_stop_put(struct task_struct *k)
++{
++	int ret;
++
++	ret = kthread_stop(k);
++	put_task_struct(k);
++	return ret;
++}
++EXPORT_SYMBOL(kthread_stop_put);
++
+ int kthreadd(void *unused)
+ {
+ 	struct task_struct *tsk = current;
+diff --git a/kernel/smpboot.c b/kernel/smpboot.c
+index f47d8f375946b..1992b62e980b7 100644
+--- a/kernel/smpboot.c
++++ b/kernel/smpboot.c
+@@ -272,8 +272,7 @@ static void smpboot_destroy_threads(struct smp_hotplug_thread *ht)
+ 		struct task_struct *tsk = *per_cpu_ptr(ht->store, cpu);
+ 
+ 		if (tsk) {
+-			kthread_stop(tsk);
+-			put_task_struct(tsk);
++			kthread_stop_put(tsk);
+ 			*per_cpu_ptr(ht->store, cpu) = NULL;
+ 		}
+ 	}
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index aff611b6eafe1..38e206075143a 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -708,8 +708,7 @@ static int __damon_stop(struct damon_ctx *ctx)
+ 	if (tsk) {
+ 		get_task_struct(tsk);
+ 		mutex_unlock(&ctx->kdamond_lock);
+-		kthread_stop(tsk);
+-		put_task_struct(tsk);
++		kthread_stop_put(tsk);
+ 		return 0;
+ 	}
+ 	mutex_unlock(&ctx->kdamond_lock);
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 4d1696677c48c..0e472f6fab853 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -3982,8 +3982,7 @@ static void __net_exit pg_net_exit(struct net *net)
+ 	list_for_each_safe(q, n, &list) {
+ 		t = list_entry(q, struct pktgen_thread, th_list);
+ 		list_del(&t->th_list);
+-		kthread_stop(t->tsk);
+-		put_task_struct(t->tsk);
++		kthread_stop_put(t->tsk);
+ 		kfree(t);
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
