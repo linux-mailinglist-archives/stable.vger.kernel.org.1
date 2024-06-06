@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-48792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573108FEA8E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B058FEA92
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B0FB1C2381A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 362D71C2561B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2721A01DC;
-	Thu,  6 Jun 2024 14:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7511A0AE2;
+	Thu,  6 Jun 2024 14:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fswa8IwJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1MmV/4D8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAAB1991B4;
-	Thu,  6 Jun 2024 14:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCA11991B4;
+	Thu,  6 Jun 2024 14:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683149; cv=none; b=OmnufMOcrvKsrpLfqAquW3ubY1cHbW5vcx5ZwszcpSGL00ectOWIxm9i9uO4hDV8P83wgj5GgvJnTi6UPOGDBfMoYolMbIsV4TKazwSvwDWdXJn38CWRgrmvQVzH9uruBUDYEqQpVdtD4P4eJmdYAtuqrTzus4UwkV9sQi7CiAk=
+	t=1717683150; cv=none; b=KEkR+lt9n6skBXjfkxFCQ8eN82/wfGpxKgcZjo4F6ysEoM78QEBlevM1TKWIxR33t83kV2aCOfyBFFkjz7OwAwb2ryOEIQnoRXWDjDeDuVN0FsT6xEb9JtLtr39GTwnFBTp67aj4Ad2OryPWD5bNJAx5nBZKny8sJJFowjIerEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683149; c=relaxed/simple;
-	bh=hXD5Mkbbrj5kTvAmHZ8adhkmk/+onaoDAED1WlTUZUc=;
+	s=arc-20240116; t=1717683150; c=relaxed/simple;
+	bh=WHLCH+h06rT2mnF+HQP833QKFNE2xjXjsfM+T0A8SuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bhJ+ddl0Jpojh4gBrj48xG5Dd6zH6NHA2hGe8VyrH0ch6CQupS+2Vd8+OFcCf6yZzLTd1ASsfTRE+uOmF0Um4faYX++EfU+4xm9dqXHvubDpjguS+60C1s0WGeN4XWtJTWgfW9AM2YjyaMDxPevnJTjdPe8fvJchq010lhgTh2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fswa8IwJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CC6C2BD10;
-	Thu,  6 Jun 2024 14:12:29 +0000 (UTC)
+	 MIME-Version; b=Pwa8xLTtKiS4fle+yMxs3PLZzqb9flyzBmUnYkYKObuAp1ODqGTl+RekC3kHhqjm0ezPsuscauYVTzj3YgF0pqt5MWCBZ01OF7l9H3p4dd0oJwA4GktXUYqjCD1xA389k0d/WKjupMokU0bLCEGne2o37dlqiEjka+GCJNWZ+m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1MmV/4D8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B352C2BD10;
+	Thu,  6 Jun 2024 14:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683149;
-	bh=hXD5Mkbbrj5kTvAmHZ8adhkmk/+onaoDAED1WlTUZUc=;
+	s=korg; t=1717683150;
+	bh=WHLCH+h06rT2mnF+HQP833QKFNE2xjXjsfM+T0A8SuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fswa8IwJDwjkYPW4dWuelmKHRVjPhjNR8OJsUWO7Z1Olp36vxTdOM0+f3Xjn3WB4w
-	 8NwEUmSJbvldBoou/Y5IY6lmdycf+2eYmjEks11ITGmFptzkRfWauxTbMzjQ24QXmQ
-	 xR4WThIssa7EFqcTgvyqicT5QX0Cvk+tJJJLoL0Y=
+	b=1MmV/4D8P/JA9mhNqBlbYF5lVjU6jZ7g5uOb61h+X/f4Uh/+CYVpADri/K9HY5nU7
+	 y8rJZVcq3WQo9FP8v0MzPMLTeWZqH9srydUhaJ5k6AYgXwNTQbkkxL9Jo91YlCYxqo
+	 GLdbTE143aFIyUODlWHAN4B+kVX3uQQybIy5b2u4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Nandor Kracser <bonifaido@gmail.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 021/473] ksmbd: avoid to send duplicate oplock break notifications
-Date: Thu,  6 Jun 2024 15:59:10 +0200
-Message-ID: <20240606131700.561821469@linuxfoundation.org>
+Subject: [PATCH 6.1 022/473] ksmbd: ignore trailing slashes in share paths
+Date: Thu,  6 Jun 2024 15:59:11 +0200
+Message-ID: <20240606131700.592004586@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -65,59 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Nandor Kracser <bonifaido@gmail.com>
 
-commit c91ecba9e421e4f2c9219cf5042fa63a12025310 upstream.
+commit 405ee4097c4bc3e70556520aed5ba52a511c2266 upstream.
 
-This patch fixes generic/011 when oplocks is enable.
+Trailing slashes in share paths (like: /home/me/Share/) caused permission
+issues with shares for clients on iOS and on Android TV for me,
+but otherwise they work fine with plain old Samba.
 
-Avoid to send duplicate oplock break notifications like smb2 leases
-case.
-
-Fixes: 97c2ec64667b ("ksmbd: avoid to send duplicate lease break notifications")
 Cc: stable@vger.kernel.org
+Signed-off-by: Nandor Kracser <bonifaido@gmail.com>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ fs/smb/server/mgmt/share_config.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -613,19 +613,24 @@ static int oplock_break_pending(struct o
- 		if (opinfo->op_state == OPLOCK_CLOSING)
- 			return -ENOENT;
- 		else if (opinfo->level <= req_op_level) {
--			if (opinfo->is_lease &&
--			    opinfo->o_lease->state !=
--			     (SMB2_LEASE_HANDLE_CACHING_LE |
--			      SMB2_LEASE_READ_CACHING_LE))
-+			if (opinfo->is_lease == false)
-+				return 1;
-+
-+			if (opinfo->o_lease->state !=
-+			    (SMB2_LEASE_HANDLE_CACHING_LE |
-+			     SMB2_LEASE_READ_CACHING_LE))
- 				return 1;
- 		}
- 	}
+--- a/fs/smb/server/mgmt/share_config.c
++++ b/fs/smb/server/mgmt/share_config.c
+@@ -165,8 +165,12 @@ static struct ksmbd_share_config *share_
  
- 	if (opinfo->level <= req_op_level) {
--		if (opinfo->is_lease &&
--		    opinfo->o_lease->state !=
--		     (SMB2_LEASE_HANDLE_CACHING_LE |
--		      SMB2_LEASE_READ_CACHING_LE)) {
-+		if (opinfo->is_lease == false) {
-+			wake_up_oplock_break(opinfo);
-+			return 1;
+ 		share->path = kstrndup(ksmbd_share_config_path(resp), path_len,
+ 				      GFP_KERNEL);
+-		if (share->path)
++		if (share->path) {
+ 			share->path_sz = strlen(share->path);
++			while (share->path_sz > 1 &&
++			       share->path[share->path_sz - 1] == '/')
++				share->path[--share->path_sz] = '\0';
 +		}
-+		if (opinfo->o_lease->state !=
-+		    (SMB2_LEASE_HANDLE_CACHING_LE |
-+		     SMB2_LEASE_READ_CACHING_LE)) {
- 			wake_up_oplock_break(opinfo);
- 			return 1;
- 		}
+ 		share->create_mask = resp->create_mask;
+ 		share->directory_mask = resp->directory_mask;
+ 		share->force_create_mode = resp->force_create_mode;
 
 
 
