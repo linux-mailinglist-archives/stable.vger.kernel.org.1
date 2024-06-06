@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-48875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4748F8FEAE9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB30A8FEAEB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBEDE1F2564B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D5741F25BB0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44DFC1A188E;
-	Thu,  6 Jun 2024 14:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368331A2555;
+	Thu,  6 Jun 2024 14:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qO3mVx1m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaJIpfwt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A001A189E;
-	Thu,  6 Jun 2024 14:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43DE1A254E;
+	Thu,  6 Jun 2024 14:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683190; cv=none; b=ar6EE5GPJ8dMWvaKAVDb1DjMwncM75i82517l1GPRMxo2ZbDDRtBuX2+a+a2457YUNxO9+Gbg65Lbl7wFtF+asqIWIqZlqJUNB0UdBO+z2bwITywDcK/SKn8v2XvenqzESCzMhf/2xVoyK5Lxmyl1N+2b5degQnTfSVHqgNX15U=
+	t=1717683191; cv=none; b=M2xK1BHvEJGa3Ri1oH8PzBLJanZ6BotElzdpOyCo3VRm5i4kE2nvE8EXCRX1vtYMdC5qL9FAGJcKXKXbpOO7KsA3D+0JRsJwbGWJqysp8N/i18e5HeKsrEc7XPF9ZXtU/MviXsKrvgaTIuPZ3/gDxU6CY1MD5Z2twsmoW26J83I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683190; c=relaxed/simple;
-	bh=vhSMXx7WUpfi7of4BSmgYMrh6Sh0zez/ygCZrHG3UWA=;
+	s=arc-20240116; t=1717683191; c=relaxed/simple;
+	bh=1LpugzYX+8b7baNrsbY/2hhFsTRErMiskP9Dv8vTsqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p3jl8cJZv5jl0ZXUW5v2AJdnZmVCrWFB+TmlGWIUqcU8rGn1luKhq7EnF12OAwQGmIu/3OF3ife6nsZno3dIcCT+bLkkDQvLAn5+Y1Siz+GxfWTCeUFhwFtVjBTIRiK+Usm6s7cwkV4mkl//hxzy9BnSlgR9w6FpV0IdnpXBb34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qO3mVx1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EFCC2BD10;
-	Thu,  6 Jun 2024 14:13:09 +0000 (UTC)
+	 MIME-Version; b=LfaQUmEXJwxfrGj4bPHfIzHvtXHad96/lS4isUVtIwHtpXLbNtxz4NTWyDV+gnJGH54vvfIyR0jPOE8wt/RMTR+wORwTq+7C32Wm0qglyxvTFHLxItgB1OlzEjf9DKMRSXkNZh5dTnL6FUVu7D+1lifzLZs2MsGcS2IcjT541tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaJIpfwt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C7CC2BD10;
+	Thu,  6 Jun 2024 14:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683189;
-	bh=vhSMXx7WUpfi7of4BSmgYMrh6Sh0zez/ygCZrHG3UWA=;
+	s=korg; t=1717683190;
+	bh=1LpugzYX+8b7baNrsbY/2hhFsTRErMiskP9Dv8vTsqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qO3mVx1m0B+HBOISCYM4gjXFtNEGtl5XSysFyVVbjqguez+Jhi9Big9xGOSqg4ohZ
-	 Yj4mfEC0FdTwzZFemJt9lBkeJvemHDlbJeB1B7JyWMnbDSyZCz/WYWxB1dixcunWvh
-	 Lc1q05p45joq8r4Jx3nOGi3JRMe0K6/qdQTolo8U=
+	b=TaJIpfwtTdgqyOZIzD9sE39uhQZ+3BrNi7GRomKERg5Ue34CkAdRe8cTX4i0vLGWB
+	 Bb/ZzbzDMzvK3I1Xbv0BocQplNNkv7QzIitA/UnsUimvbqv60Ua678gz5TZ0TYOwF1
+	 HCjOYT/d2o91AKxlBGu9PkmzOKVbZlWSfIdWihXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 133/744] wifi: ieee80211: fix ieee80211_mle_basic_sta_prof_size_ok()
-Date: Thu,  6 Jun 2024 15:56:45 +0200
-Message-ID: <20240606131736.691367351@linuxfoundation.org>
+Subject: [PATCH 6.6 134/744] wifi: iwlwifi: mvm: allocate STA links only for active links
+Date: Thu,  6 Jun 2024 15:56:46 +0200
+Message-ID: <20240606131736.719789222@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,41 +68,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit c121514df0daa800cc500dc2738e0b8a1c54af98 ]
+[ Upstream commit 62bdd97598f8be82a24f556f78336b05d1c3e84b ]
 
-If there was a possibility of an MLE basic STA profile without
-subelements, we might reject it because we account for the one
-octet for sta_info_len twice (it's part of itself, and in the
-fixed portion). Like in ieee80211_mle_reconf_sta_prof_size_ok,
-subtract 1 to adjust that.
+For the mvm driver, data structures match what's in the firmware,
+we allocate FW IDs for them already etc. During link switch we
+already allocate/free the STA links appropriately, but initially
+we'd allocate them always. Fix this to allocate memory, a STA ID,
+etc. only for active links.
 
-When reading the elements we did take this into account, and
-since there are always elements, this never really mattered.
-
-Fixes: 7b6f08771bf6 ("wifi: ieee80211: Support validating ML station profile length")
+Fixes: 57974a55d995 ("wifi: iwlwifi: mvm: refactor iwl_mvm_mac_sta_state_common()")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240318184907.00bb0b20ed60.I8c41dd6fc14c4b187ab901dea15ade73c79fb98c@changeid
+Link: https://msgid.link/20240319100755.f2093ff73465.Ie891e1cc9c9df09ae22be6aad5c143e376f40f0e@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ieee80211.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 2fa186258e359..aaaa5b90bfe25 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -5081,7 +5081,7 @@ static inline bool ieee80211_mle_basic_sta_prof_size_ok(const u8 *data,
- 		info_len += 1;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+index 278454c116fee..3907707e87716 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+@@ -582,14 +582,14 @@ static int iwl_mvm_mld_alloc_sta_links(struct iwl_mvm *mvm,
+ 				       struct ieee80211_sta *sta)
+ {
+ 	struct iwl_mvm_sta *mvm_sta = iwl_mvm_sta_from_mac80211(sta);
++	struct ieee80211_link_sta *link_sta;
+ 	unsigned int link_id;
+ 	int ret;
  
- 	return prof->sta_info_len >= info_len &&
--	       fixed + prof->sta_info_len <= len;
-+	       fixed + prof->sta_info_len - 1 <= len;
- }
+ 	lockdep_assert_held(&mvm->mutex);
  
- /**
+-	for (link_id = 0; link_id < ARRAY_SIZE(sta->link); link_id++) {
+-		if (!rcu_access_pointer(sta->link[link_id]) ||
+-		    mvm_sta->link[link_id])
++	for_each_sta_active_link(vif, sta, link_sta, link_id) {
++		if (WARN_ON(mvm_sta->link[link_id]))
+ 			continue;
+ 
+ 		ret = iwl_mvm_mld_alloc_sta_link(mvm, vif, sta, link_id);
 -- 
 2.43.0
 
