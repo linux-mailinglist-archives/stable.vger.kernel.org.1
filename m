@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-48473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B488FE927
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5098FEC36
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 490D51C23785
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEAD7B27C37
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4754119754D;
-	Thu,  6 Jun 2024 14:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C06B1AED2F;
+	Thu,  6 Jun 2024 14:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znPxQ0eo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MEHInXgU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E98197551;
-	Thu,  6 Jun 2024 14:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF551AED2E;
+	Thu,  6 Jun 2024 14:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682986; cv=none; b=c629oWan6Q2EWciSpgzxHNNnJdJ3YbGqv2WtdDI2fCXXOrgjkqzzEBDNsUFHpi3eNODpmLFKZS4kLh4Sux6rAS/NSE3zmA24evZRGTsMLP9z7X8l/w0w5wxxForCtbvz2pi5uROI/tSpI696bIZBy02eIqQTNxiNVlQVWTzGUFk=
+	t=1717683341; cv=none; b=FSK1CXUUSc9MvFFKnmW2Y9K74fcV4DCKFKDuxJLZrJVkCrFSwDCuny5afKLOdcZiughRK0Q6anlQHERNdzETnhJlDl2RTgbG/uDVkdG1DTY8uSVnd9BkysWydXxV59F6gX7SGPm9Ybo3A5W5WsOAjhKCF23y27XnLIi8TxqfkUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682986; c=relaxed/simple;
-	bh=yiwomz5EhsMbqUps8CWITtFtkDBabRaeoKZ5XExezMw=;
+	s=arc-20240116; t=1717683341; c=relaxed/simple;
+	bh=HAtaGKFiGfj7JLkFqsuJJOQANH0uK7goAWUkKEqVA8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UAhipltcOuZ/cDbRl0LsOXEbnDq+8ROY9iyc93yIaxXxbBgU53pILe4HWXT/IipdLismII3rKw27gFQ+1i5CTioSkSi4waTG26gY8x5mkIKTBGN3bGYHBjrlG6sv7RVYKvXZXsExEWdSQtkMjhzsnWWblaJyQwI2OiRVihQcq/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znPxQ0eo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC66C32782;
-	Thu,  6 Jun 2024 14:09:45 +0000 (UTC)
+	 MIME-Version; b=pDoZ2dgAIxpajxI9fMkzbCAV2l87e+I2c7ik+nUSoJXyuSdRC/wT2UTsst4/Yc1w3qJWlVBF6intCC+XzoaB063tcLX1Zq8UJeKByDMyRASnfJrfH0ubDQUKC423GohwoXpUh0P3z5/xrlnqk+KsUVaK+AmiG0qWzuAIP31/7Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MEHInXgU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6261C2BD10;
+	Thu,  6 Jun 2024 14:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682985;
-	bh=yiwomz5EhsMbqUps8CWITtFtkDBabRaeoKZ5XExezMw=;
+	s=korg; t=1717683340;
+	bh=HAtaGKFiGfj7JLkFqsuJJOQANH0uK7goAWUkKEqVA8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=znPxQ0eoxZQhUD6mlFCjSPns/wXQeQaMhQZeWEBo0E/o6MLhslJSeqO3UhbMVPjH3
-	 5L53MKJDLfKGao/VR9H2qd3E4lcfFkinliT0cAkz5T9AkiGxdw65q28LL8MZS+1J/y
-	 GGUhSiu8LoxsTR52+oO2QsT+nfjjniMcoL/iX1Ps=
+	b=MEHInXgUaSayt394nVNVL22wKAak6TDP3VJX8GYyOixwDPdvLDeSba9AmoPiDqpvt
+	 0cah7WNuMokj/fUYWHZK1eyoHog2cSL9Ta/L1mf1v4Vzzv6suF3KQ6zWfIs1I6qk9p
+	 qI8PLmsk5WrLS17Zk6Yq5V78SjKQ+in6kPmDKnLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 172/374] fs/ntfs3: Use variable length array instead of fixed size
+Subject: [PATCH 6.1 222/473] drm: vc4: Fix possible null pointer dereference
 Date: Thu,  6 Jun 2024 16:02:31 +0200
-Message-ID: <20240606131657.659030272@linuxfoundation.org>
+Message-ID: <20240606131707.223808004@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 1997cdc3e727526aa5d84b32f7cbb3f56459b7ef ]
+[ Upstream commit c534b63bede6cb987c2946ed4d0b0013a52c5ba7 ]
 
-Should fix smatch warning:
-	ntfs_set_label() error: __builtin_memcpy() 'uni->name' too small (20 vs 256)
+In vc4_hdmi_audio_init() of_get_address() may return
+NULL which is later dereferenced. Fix this bug by adding NULL check.
 
-Fixes: 4534a70b7056f ("fs/ntfs3: Add headers and misc files")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202401091421.3RJ24Mn3-lkp@intel.com/
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: bb7d78568814 ("drm/vc4: Add HDMI audio support")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240409075622.11783-1-amishin@t-argos.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/ntfs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
-index 9c7478150a035..3d6143c7abc03 100644
---- a/fs/ntfs3/ntfs.h
-+++ b/fs/ntfs3/ntfs.h
-@@ -59,7 +59,7 @@ struct GUID {
- struct cpu_str {
- 	u8 len;
- 	u8 unused;
--	u16 name[10];
-+	u16 name[];
- };
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index f696818913499..072e2487b4655 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -2489,6 +2489,8 @@ static int vc4_hdmi_audio_init(struct vc4_hdmi *vc4_hdmi)
+ 		index = 1;
  
- struct le_str {
+ 	addr = of_get_address(dev->of_node, index, NULL, NULL);
++	if (!addr)
++		return -EINVAL;
+ 
+ 	vc4_hdmi->audio.dma_data.addr = be32_to_cpup(addr) + mai_data->offset;
+ 	vc4_hdmi->audio.dma_data.addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
 -- 
 2.43.0
 
