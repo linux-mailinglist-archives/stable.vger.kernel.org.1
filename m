@@ -1,52 +1,57 @@
-Return-Path: <stable+bounces-49072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170CD8FEBBD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 284FD8FEBBE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DEE71C20C14
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC886284D1C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFD61ABCC5;
-	Thu,  6 Jun 2024 14:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46EC1ABCCB;
+	Thu,  6 Jun 2024 14:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npy/e6y8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSmf3Elz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B90F1ABCC4;
-	Thu,  6 Jun 2024 14:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9417619AA40;
+	Thu,  6 Jun 2024 14:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683288; cv=none; b=qcweRgbtK0F2IFV0JGlChEww+c0b0EgJ3XHv3lq8IxJjbIKcHEWqt0C2dvEd7lTr8gkoD2WCFdcBd4MhB3xDD6Gw+pQPhaSO6uGRxtDImrOKJ3kTp7Phey0T1p6QvIxjnJXaQ4Ho6b0Lqxw8vNMZ6dCL7k3xfKuyS+Ljh/klFdQ=
+	t=1717683289; cv=none; b=eY2okQxrXnjOul2ZhW5+H+I3cjUGd0rA9Dt7ksw88xQ7EmbWaf1ENPq9+uzLo1+DNxV/LH4JQzIcmFWyz4fh5LmtC8pLZhBf55NExsLKBcsgvMtguwKLbdzLmfmk9eaMYnHUJlzhIbCC9T+tCY8Pe476DfSt7NoPFR0P4gVQXT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683288; c=relaxed/simple;
-	bh=jnnu74GelYzaIq7e5PynIy3Nl0MWJ4B914AG+JE6fJg=;
+	s=arc-20240116; t=1717683289; c=relaxed/simple;
+	bh=hbueTeak9SY41ZlhMMMw9PdjcPJpiOL473K/QIahxks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BG1oTlCcCIYOxNWvzpiODUCv5kvJrA7PFZJpkunqDrxlGpXKd+YZAV6WQDnvmNEgp8l30Ympuk+dQzszyttquu0jMqW8qYGeCBFnid+V2glaBWR0wWdRAyKQ2uaSSyEzOnaKRZJkHJ7grosb0LElzbRNwg1NjV4zQTA/Vj9yZQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npy/e6y8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A45BC2BD10;
-	Thu,  6 Jun 2024 14:14:48 +0000 (UTC)
+	 MIME-Version; b=XCfMFnG8x0BamrKaFnfQ4TbiurfgknLFKy5Ugyc3M4Aw+6AWb1LLFywEdBO+d3b8z28Xny/PLMjT8ylk0VD0WxbpITwmkF45G+zk4UCZ+85JmP5+mfhR0y3i2MNyuldeGsnvW5aPEwpHNFCCo2GB3KiqrBStCOGRd0mi0fwSpvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kSmf3Elz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744F6C4AF08;
+	Thu,  6 Jun 2024 14:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683288;
-	bh=jnnu74GelYzaIq7e5PynIy3Nl0MWJ4B914AG+JE6fJg=;
+	s=korg; t=1717683289;
+	bh=hbueTeak9SY41ZlhMMMw9PdjcPJpiOL473K/QIahxks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=npy/e6y8XKEVlmDDh3DSNrnvUWUZNbvU8YPfUEy9pBrwvzX7J5eJgVbNK1rf12P/w
-	 spDe00NKwS5sPt1rBTAWV2P3esVtVyaAjIs9kJC37yCdGbFyS2zY4UPevo09flCtGc
-	 7skXe70MozDMCZYhhZfbSua5UY5m3n3pzs3dAOhg=
+	b=kSmf3ElzPRBoqErCeUTijRQ08ecV1GqOPPNTYF8U9L/RLo0Zi1fTmw4REZZay+2p8
+	 fqO0XRvbjWSumfgtj0T+4W/ck7RfnuJRGq1H2/jk2ovSzotHGtdd0fq7aYlCW+hjNt
+	 SGCGrfakqbCAYbYtmoCdf/Z9niPeUJHaKvDQpSzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Robert Richter <rrichter@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 229/744] kernel/numa.c: Move logging out of numa.h
-Date: Thu,  6 Jun 2024 15:58:21 +0200
-Message-ID: <20240606131739.737314826@linuxfoundation.org>
+Subject: [PATCH 6.6 230/744] x86/numa: Fix SRAT lookup of CFMWS ranges with numa_fill_memblks()
+Date: Thu,  6 Jun 2024 15:58:22 +0200
+Message-ID: <20240606131739.766819168@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -65,119 +70,116 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Robert Richter <rrichter@amd.com>
 
-[ Upstream commit d7a73e3f089204aee3393687e23fd45a22657b08 ]
+[ Upstream commit f9f67e5adc8dc2e1cc51ab2d3d6382fa97f074d4 ]
 
-Moving these stub functions to a .c file means we can kill a sched.h
-dependency on printk.h.
+For configurations that have the kconfig option NUMA_KEEP_MEMINFO
+disabled, numa_fill_memblks() only returns with NUMA_NO_MEMBLK (-1).
+SRAT lookup fails then because an existing SRAT memory range cannot be
+found for a CFMWS address range. This causes the addition of a
+duplicate numa_memblk with a different node id and a subsequent page
+fault and kernel crash during boot.
 
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-Stable-dep-of: f9f67e5adc8d ("x86/numa: Fix SRAT lookup of CFMWS ranges with numa_fill_memblks()")
+Fix this by making numa_fill_memblks() always available regardless of
+NUMA_KEEP_MEMINFO.
+
+As Dan suggested, the fix is implemented to remove numa_fill_memblks()
+from sparsemem.h and alos using __weak for the function.
+
+Note that the issue was initially introduced with [1]. But since
+phys_to_target_node() was originally used that returned the valid node
+0, an additional numa_memblk was not added. Though, the node id was
+wrong too, a message is seen then in the logs:
+
+ kernel/numa.c:  pr_info_once("Unknown target node for memory at 0x%llx, assuming node 0\n",
+
+[1] commit fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each
+    CFMWS not in SRAT")
+
+Suggested-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://lore.kernel.org/all/66271b0072317_69102944c@dwillia2-xfh.jf.intel.com.notmuch/
+Fixes: 8f1004679987 ("ACPI/NUMA: Apply SRAT proximity domain to entire CFMWS window")
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Robert Richter <rrichter@amd.com>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/numa.h | 19 ++++++-------------
- kernel/Makefile      |  1 +
- kernel/numa.c        | 26 ++++++++++++++++++++++++++
- 3 files changed, 33 insertions(+), 13 deletions(-)
- create mode 100644 kernel/numa.c
+ arch/x86/include/asm/sparsemem.h | 2 --
+ arch/x86/mm/numa.c               | 4 ++--
+ drivers/acpi/numa/srat.c         | 5 +++++
+ include/linux/numa.h             | 7 +------
+ 4 files changed, 8 insertions(+), 10 deletions(-)
 
+diff --git a/arch/x86/include/asm/sparsemem.h b/arch/x86/include/asm/sparsemem.h
+index 1be13b2dfe8bf..64df897c0ee30 100644
+--- a/arch/x86/include/asm/sparsemem.h
++++ b/arch/x86/include/asm/sparsemem.h
+@@ -37,8 +37,6 @@ extern int phys_to_target_node(phys_addr_t start);
+ #define phys_to_target_node phys_to_target_node
+ extern int memory_add_physaddr_to_nid(u64 start);
+ #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
+-extern int numa_fill_memblks(u64 start, u64 end);
+-#define numa_fill_memblks numa_fill_memblks
+ #endif
+ #endif /* __ASSEMBLY__ */
+ 
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index dae5c952735c7..c7fa5396c0f05 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -956,6 +956,8 @@ int memory_add_physaddr_to_nid(u64 start)
+ }
+ EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
+ 
++#endif
++
+ static int __init cmp_memblk(const void *a, const void *b)
+ {
+ 	const struct numa_memblk *ma = *(const struct numa_memblk **)a;
+@@ -1028,5 +1030,3 @@ int __init numa_fill_memblks(u64 start, u64 end)
+ 	}
+ 	return 0;
+ }
+-
+-#endif
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index b57de78fbf14f..a44c0761fd1c0 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -206,6 +206,11 @@ int __init srat_disabled(void)
+ 	return acpi_numa < 0;
+ }
+ 
++__weak int __init numa_fill_memblks(u64 start, u64 end)
++{
++	return NUMA_NO_MEMBLK;
++}
++
+ #if defined(CONFIG_X86) || defined(CONFIG_ARM64) || defined(CONFIG_LOONGARCH)
+ /*
+  * Callback for SLIT parsing.  pxm_to_node() returns NUMA_NO_NODE for
 diff --git a/include/linux/numa.h b/include/linux/numa.h
-index a904861de8000..915033a757315 100644
+index 915033a757315..1d43371fafd2f 100644
 --- a/include/linux/numa.h
 +++ b/include/linux/numa.h
-@@ -1,6 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #ifndef _LINUX_NUMA_H
- #define _LINUX_NUMA_H
-+#include <linux/init.h>
- #include <linux/types.h>
- 
- #ifdef CONFIG_NODES_SHIFT
-@@ -22,34 +23,26 @@
+@@ -36,12 +36,7 @@ int memory_add_physaddr_to_nid(u64 start);
+ int phys_to_target_node(u64 start);
  #endif
  
- #ifdef CONFIG_NUMA
--#include <linux/printk.h>
- #include <asm/sparsemem.h>
- 
- /* Generic implementation available */
- int numa_nearest_node(int node, unsigned int state);
- 
- #ifndef memory_add_physaddr_to_nid
--static inline int memory_add_physaddr_to_nid(u64 start)
+-#ifndef numa_fill_memblks
+-static inline int __init numa_fill_memblks(u64 start, u64 end)
 -{
--	pr_info_once("Unknown online node for memory at 0x%llx, assuming node 0\n",
--			start);
--	return 0;
+-	return NUMA_NO_MEMBLK;
 -}
-+int memory_add_physaddr_to_nid(u64 start);
- #endif
-+
- #ifndef phys_to_target_node
--static inline int phys_to_target_node(u64 start)
--{
--	pr_info_once("Unknown target node for memory at 0x%llx, assuming node 0\n",
--			start);
--	return 0;
--}
-+int phys_to_target_node(u64 start);
- #endif
-+
- #ifndef numa_fill_memblks
- static inline int __init numa_fill_memblks(u64 start, u64 end)
- {
- 	return NUMA_NO_MEMBLK;
- }
- #endif
-+
+-#endif
++int numa_fill_memblks(u64 start, u64 end);
+ 
  #else /* !CONFIG_NUMA */
  static inline int numa_nearest_node(int node, unsigned int state)
- {
-diff --git a/kernel/Makefile b/kernel/Makefile
-index 3947122d618bf..ce105a5558fcf 100644
---- a/kernel/Makefile
-+++ b/kernel/Makefile
-@@ -114,6 +114,7 @@ obj-$(CONFIG_SHADOW_CALL_STACK) += scs.o
- obj-$(CONFIG_HAVE_STATIC_CALL) += static_call.o
- obj-$(CONFIG_HAVE_STATIC_CALL_INLINE) += static_call_inline.o
- obj-$(CONFIG_CFI_CLANG) += cfi.o
-+obj-$(CONFIG_NUMA) += numa.o
- 
- obj-$(CONFIG_PERF_EVENTS) += events/
- 
-diff --git a/kernel/numa.c b/kernel/numa.c
-new file mode 100644
-index 0000000000000..67ca6b8585c06
---- /dev/null
-+++ b/kernel/numa.c
-@@ -0,0 +1,26 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#include <linux/printk.h>
-+#include <linux/numa.h>
-+
-+/* Stub functions: */
-+
-+#ifndef memory_add_physaddr_to_nid
-+int memory_add_physaddr_to_nid(u64 start)
-+{
-+	pr_info_once("Unknown online node for memory at 0x%llx, assuming node 0\n",
-+			start);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
-+#endif
-+
-+#ifndef phys_to_target_node
-+int phys_to_target_node(u64 start)
-+{
-+	pr_info_once("Unknown target node for memory at 0x%llx, assuming node 0\n",
-+			start);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(phys_to_target_node);
-+#endif
 -- 
 2.43.0
 
