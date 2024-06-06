@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD778FEC93
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 572CE8FE955
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92C7A1F298E4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F33DF285996
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7DA1B14E5;
-	Thu,  6 Jun 2024 14:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16451993A0;
+	Thu,  6 Jun 2024 14:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+cRZA8s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4R8kRPu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDA3196C6F;
-	Thu,  6 Jun 2024 14:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609E0196D9B;
+	Thu,  6 Jun 2024 14:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683383; cv=none; b=kUyEr7AR42HkUPbOHzq3yRtdipZgwiKzKEaNYXHTqYz4A88EbX+1Xdk95O+zpC45chXgTIMcscD8nziFdwsTVnGYTrElj3L5W/Euu52hLSnF9JYSSj/uOsCN90YTJymDiqMTXDcYoXMjwxEnMPjcnizQ+npw51SUPwfA7/fvX0M=
+	t=1717683008; cv=none; b=NbqUOi7Gdkixm0O+ci4e+GlBeniEw/NexR8zKD2dU65AsWfrfDZB5/Pnbe5xxhT53cC/7elhs8jGkf/tsDCdOEt671lfFX0s54GFA+x/WIYFFRKd3SeZP/hxqm3axjWckSadXcIurM6I1Za/2YSXH/oImDldBA3Mhn59Y7QPhME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683383; c=relaxed/simple;
-	bh=D4wHis05izLIPl15EX/9GbyPL7vxRtaAiiD6esCHXVQ=;
+	s=arc-20240116; t=1717683008; c=relaxed/simple;
+	bh=ynaY/u8fK9ENM6lwyMdsz3OJF3a8SldLQW6PpMiWXWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IdP8VrSrpQcGZn3/Qi0plvpOngLQ2RH3TAohZPWkfOEuZ6XfhIw1yKgnOTKPIIPWtp4Ug+hA84aXN8L/Y3IiKoKXUBmU/zF/Oo65Y6UJmSPFSjRq4F4NGzNh0PTfpYg1sb3ucJhZVnwCca6CvbX1WsxPQPltHNumHECKae/bnts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+cRZA8s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8595BC32781;
-	Thu,  6 Jun 2024 14:16:23 +0000 (UTC)
+	 MIME-Version; b=RM639Qrufl4xOg49M3pmAmhHUXppmjG14K32oGGKDNhzKp4dA+hxjP37RoIVtgPWurLs44c4fdd+FkPikYHeB4tActgZkw/CgY9fwPatgTawLe3LCOmvYV5Wuxf4vuQkI7nH+yAdGIGFlIu5DRfPc+NIW+ISXGsr3iiSxV2APoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4R8kRPu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62C9C2BD10;
+	Thu,  6 Jun 2024 14:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683383;
-	bh=D4wHis05izLIPl15EX/9GbyPL7vxRtaAiiD6esCHXVQ=;
+	s=korg; t=1717683007;
+	bh=ynaY/u8fK9ENM6lwyMdsz3OJF3a8SldLQW6PpMiWXWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+cRZA8sJCtcbaxHxmr2wJghLL7pQIh7odstIrnJscAB9qF2ty8rZOkkSK4tD/enu
-	 Jh7DqmgtCUMxGC12wn/0fb3eDuyhXgtfChusIzARSzCT2SF+Cyb5NVuH48BvPKDt2e
-	 l9OurmgIxS5ZBOUcpyb50MmjsJETQ8gaUzyUKGjc=
+	b=J4R8kRPu/Bd4Tnz4u7lonXfvlntzznfa8BNXQo69wU1HzIoNX3KPCqJv5L53+8JJt
+	 NitmpwhD4J6hT6/XQnOd++fYhqn1kWBXIJ/nnKnd5+xOEgchBh3pUC2VH0MncuYZ3x
+	 o4MYiyWqUS7E+O+x2T31Ni2vVytoKQ3kivcdBl+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Trond Myklebust <trondmy@hammerspace.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 266/473] SUNRPC: Fix gss_free_in_token_pages()
+Subject: [PATCH 6.9 216/374] ALSA: hda/cs_dsp_ctl: Use private_free for control cleanup
 Date: Thu,  6 Jun 2024 16:03:15 +0200
-Message-ID: <20240606131708.737351102@linuxfoundation.org>
+Message-ID: <20240606131659.043100915@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit bafa6b4d95d97877baa61883ff90f7e374427fae ]
+[ Upstream commit 172811e3a557d8681a5e2d0f871dc04a2d17eb13 ]
 
-Dan Carpenter says:
-> Commit 5866efa8cbfb ("SUNRPC: Fix svcauth_gss_proxy_init()") from Oct
-> 24, 2019 (linux-next), leads to the following Smatch static checker
-> warning:
->
-> 	net/sunrpc/auth_gss/svcauth_gss.c:1039 gss_free_in_token_pages()
-> 	warn: iterator 'i' not incremented
->
-> net/sunrpc/auth_gss/svcauth_gss.c
->     1034 static void gss_free_in_token_pages(struct gssp_in_token *in_token)
->     1035 {
->     1036         u32 inlen;
->     1037         int i;
->     1038
-> --> 1039         i = 0;
->     1040         inlen = in_token->page_len;
->     1041         while (inlen) {
->     1042                 if (in_token->pages[i])
->     1043                         put_page(in_token->pages[i]);
->                                                          ^
-> This puts page zero over and over.
->
->     1044                 inlen -= inlen > PAGE_SIZE ? PAGE_SIZE : inlen;
->     1045         }
->     1046
->     1047         kfree(in_token->pages);
->     1048         in_token->pages = NULL;
->     1049 }
+Use the control private_free callback to free the associated data
+block. This ensures that the memory won't leak, whatever way the
+control gets destroyed.
 
-Based on the way that the ->pages[] array is constructed in
-gss_read_proxy_verf(), we know that once the loop encounters a NULL
-page pointer, the remaining array elements must also be NULL.
+The original implementation didn't actually remove the ALSA
+controls in hda_cs_dsp_control_remove(). It only freed the internal
+tracking structure. This meant it was possible to remove/unload the
+amp driver while leaving its ALSA controls still present in the
+soundcard. Obviously attempting to access them could cause segfaults
+or at least dereferencing stale pointers.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Suggested-by: Trond Myklebust <trondmy@hammerspace.com>
-Fixes: 5866efa8cbfb ("SUNRPC: Fix svcauth_gss_proxy_init()")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 3233b978af23 ("ALSA: hda: hda_cs_dsp_ctl: Add Library to support CS_DSP ALSA controls")
+Link: https://lore.kernel.org/r/20240508095627.44476-1-rf@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/auth_gss/svcauth_gss.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ sound/pci/hda/hda_cs_dsp_ctl.c | 47 ++++++++++++++++++++++------------
+ 1 file changed, 31 insertions(+), 16 deletions(-)
 
-diff --git a/net/sunrpc/auth_gss/svcauth_gss.c b/net/sunrpc/auth_gss/svcauth_gss.c
-index bdc34ea0d939d..9d045aa6805d7 100644
---- a/net/sunrpc/auth_gss/svcauth_gss.c
-+++ b/net/sunrpc/auth_gss/svcauth_gss.c
-@@ -1132,17 +1132,11 @@ gss_read_verf(struct rpc_gss_wire_cred *gc,
+diff --git a/sound/pci/hda/hda_cs_dsp_ctl.c b/sound/pci/hda/hda_cs_dsp_ctl.c
+index 463ca06036bfe..9db45d7c17e5f 100644
+--- a/sound/pci/hda/hda_cs_dsp_ctl.c
++++ b/sound/pci/hda/hda_cs_dsp_ctl.c
+@@ -8,6 +8,7 @@
  
- static void gss_free_in_token_pages(struct gssp_in_token *in_token)
- {
--	u32 inlen;
- 	int i;
- 
- 	i = 0;
--	inlen = in_token->page_len;
--	while (inlen) {
--		if (in_token->pages[i])
--			put_page(in_token->pages[i]);
--		inlen -= inlen > PAGE_SIZE ? PAGE_SIZE : inlen;
--	}
--
-+	while (in_token->pages[i])
-+		put_page(in_token->pages[i++]);
- 	kfree(in_token->pages);
- 	in_token->pages = NULL;
+ #include <linux/module.h>
+ #include <sound/soc.h>
++#include <linux/cleanup.h>
+ #include <linux/firmware/cirrus/cs_dsp.h>
+ #include <linux/firmware/cirrus/wmfw.h>
+ #include "hda_cs_dsp_ctl.h"
+@@ -97,11 +98,23 @@ static unsigned int wmfw_convert_flags(unsigned int in)
+ 	return out;
  }
+ 
+-static void hda_cs_dsp_add_kcontrol(struct hda_cs_dsp_coeff_ctl *ctl, const char *name)
++static void hda_cs_dsp_free_kcontrol(struct snd_kcontrol *kctl)
+ {
++	struct hda_cs_dsp_coeff_ctl *ctl = (struct hda_cs_dsp_coeff_ctl *)snd_kcontrol_chip(kctl);
+ 	struct cs_dsp_coeff_ctl *cs_ctl = ctl->cs_ctl;
++
++	/* NULL priv to prevent a double-free in hda_cs_dsp_control_remove() */
++	cs_ctl->priv = NULL;
++	kfree(ctl);
++}
++
++static void hda_cs_dsp_add_kcontrol(struct cs_dsp_coeff_ctl *cs_ctl,
++				    const struct hda_cs_dsp_ctl_info *info,
++				    const char *name)
++{
+ 	struct snd_kcontrol_new kcontrol = {0};
+ 	struct snd_kcontrol *kctl;
++	struct hda_cs_dsp_coeff_ctl *ctl __free(kfree) = NULL;
+ 	int ret = 0;
+ 
+ 	if (cs_ctl->len > ADSP_MAX_STD_CTRL_SIZE) {
+@@ -110,6 +123,13 @@ static void hda_cs_dsp_add_kcontrol(struct hda_cs_dsp_coeff_ctl *ctl, const char
+ 		return;
+ 	}
+ 
++	ctl = kzalloc(sizeof(*ctl), GFP_KERNEL);
++	if (!ctl)
++		return;
++
++	ctl->cs_ctl = cs_ctl;
++	ctl->card = info->card;
++
+ 	kcontrol.name = name;
+ 	kcontrol.info = hda_cs_dsp_coeff_info;
+ 	kcontrol.iface = SNDRV_CTL_ELEM_IFACE_MIXER;
+@@ -117,20 +137,22 @@ static void hda_cs_dsp_add_kcontrol(struct hda_cs_dsp_coeff_ctl *ctl, const char
+ 	kcontrol.get = hda_cs_dsp_coeff_get;
+ 	kcontrol.put = hda_cs_dsp_coeff_put;
+ 
+-	/* Save ctl inside private_data, ctl is owned by cs_dsp,
+-	 * and will be freed when cs_dsp removes the control */
+ 	kctl = snd_ctl_new1(&kcontrol, (void *)ctl);
+ 	if (!kctl)
+ 		return;
+ 
+-	ret = snd_ctl_add(ctl->card, kctl);
++	kctl->private_free = hda_cs_dsp_free_kcontrol;
++	ctl->kctl = kctl;
++
++	/* snd_ctl_add() calls our private_free on error, which will kfree(ctl) */
++	cs_ctl->priv = no_free_ptr(ctl);
++	ret = snd_ctl_add(info->card, kctl);
+ 	if (ret) {
+ 		dev_err(cs_ctl->dsp->dev, "Failed to add KControl %s = %d\n", kcontrol.name, ret);
+ 		return;
+ 	}
+ 
+ 	dev_dbg(cs_ctl->dsp->dev, "Added KControl: %s\n", kcontrol.name);
+-	ctl->kctl = kctl;
+ }
+ 
+ static void hda_cs_dsp_control_add(struct cs_dsp_coeff_ctl *cs_ctl,
+@@ -138,7 +160,6 @@ static void hda_cs_dsp_control_add(struct cs_dsp_coeff_ctl *cs_ctl,
+ {
+ 	struct cs_dsp *cs_dsp = cs_ctl->dsp;
+ 	char name[SNDRV_CTL_ELEM_ID_NAME_MAXLEN];
+-	struct hda_cs_dsp_coeff_ctl *ctl;
+ 	const char *region_name;
+ 	int ret;
+ 
+@@ -163,15 +184,7 @@ static void hda_cs_dsp_control_add(struct cs_dsp_coeff_ctl *cs_ctl,
+ 			 " %.*s", cs_ctl->subname_len - skip, cs_ctl->subname + skip);
+ 	}
+ 
+-	ctl = kzalloc(sizeof(*ctl), GFP_KERNEL);
+-	if (!ctl)
+-		return;
+-
+-	ctl->cs_ctl = cs_ctl;
+-	ctl->card = info->card;
+-	cs_ctl->priv = ctl;
+-
+-	hda_cs_dsp_add_kcontrol(ctl, name);
++	hda_cs_dsp_add_kcontrol(cs_ctl, info, name);
+ }
+ 
+ void hda_cs_dsp_add_controls(struct cs_dsp *dsp, const struct hda_cs_dsp_ctl_info *info)
+@@ -203,7 +216,9 @@ void hda_cs_dsp_control_remove(struct cs_dsp_coeff_ctl *cs_ctl)
+ {
+ 	struct hda_cs_dsp_coeff_ctl *ctl = cs_ctl->priv;
+ 
+-	kfree(ctl);
++	/* ctl and kctl may already have been removed by ALSA private_free */
++	if (ctl && ctl->kctl)
++		snd_ctl_remove(ctl->card, ctl->kctl);
+ }
+ EXPORT_SYMBOL_NS_GPL(hda_cs_dsp_control_remove, SND_HDA_CS_DSP_CONTROLS);
+ 
 -- 
 2.43.0
 
