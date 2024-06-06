@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97DE8FEEC4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E917A8FED53
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E8D91F250F7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 894FD283829
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCBB71C68A7;
-	Thu,  6 Jun 2024 14:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E964419D097;
+	Thu,  6 Jun 2024 14:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BlrJhc27"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdE87GBM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2B81A0DFB;
-	Thu,  6 Jun 2024 14:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81D6198E86;
+	Thu,  6 Jun 2024 14:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683698; cv=none; b=Yh/VPqti/X4XmjVCTdmZnEoVaGIbykC4+LGfi2ojR4knF/2Y6AD6hU0wgWsP0uGSLg5Rq6L9ag+WGn4rbU52wi3kRji17N2EFdvEag1bdsPZ4hQlf3yjaKVUlx1yZ2bXvUqaC+LBWjCohO3R2pnGS8coskb+cIKo349rgJlIIUk=
+	t=1717683474; cv=none; b=b7ulR3Mcr7XouTDDwZzfVIp0SYAe3/8vcQHF2e2j6TtZTfcogAxKasdf+nvYtTFButtuYtsnaOl8PCZxql6bh8Zrl8A5cp96Q4Nvua2kwlH/TUmGvWNGmaDzfrxpww5/oLmvuMi+DtvXUkgssfjtP/RBvFzXRixKIpkP4NiF08Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683698; c=relaxed/simple;
-	bh=jOKTcvo5nN1m8KDpnqxiz/Jzw6woKLVqz13y1OviAJg=;
+	s=arc-20240116; t=1717683474; c=relaxed/simple;
+	bh=vm5TV0z8UzRQ/EvVQ64u84onpqjlHCRutIjcFOdAkY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AqE3+Mo7DWIYzYiKKg0h76tVfHJhbCS0aqvPrXbj/qxO/haUiSbYlcZ2S/KfQtzaA5OBajHQJqfgSX1cA24uln1BaknwrMXvp8JviZBekVUKwG4OfxmBmt+V5wOkAgoB3VyxP4uetIVuLglL5ub3BoOvRZjwS6QQssMQ7yfMiMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BlrJhc27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC87C2BD10;
-	Thu,  6 Jun 2024 14:21:38 +0000 (UTC)
+	 MIME-Version; b=twWDFUYzDrPb6HTxSPWPOWM3+keo+SasVs2BJMFNrhptnFZuqHnlZsK9qDj5Wmk7WWLrA6W8XlBNIKUVwJwnQdDftZ6LPrIKHW5sTYWEbGD6B6bPwhKfgLMzu9EX6Vjr3KzOlF3uVK+15OjQZYFK5P662f4EhINKuQ6ibV0OvUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdE87GBM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86EC1C2BD10;
+	Thu,  6 Jun 2024 14:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683698;
-	bh=jOKTcvo5nN1m8KDpnqxiz/Jzw6woKLVqz13y1OviAJg=;
+	s=korg; t=1717683474;
+	bh=vm5TV0z8UzRQ/EvVQ64u84onpqjlHCRutIjcFOdAkY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BlrJhc27HTY5KKLyTtUE5b3NNhiwU5bGO1RyOjbBSuqhJ8FSKp2m3DZL2KfssUBif
-	 0Nnh3oLresRR0L1Xtx9ebHsBBd8xo782vgxlKzdYKLx0Ttv8KUyux2IXBPMGWvvSrE
-	 J4iZSNABuXW8Oy880TuvJ21O+uYSJikFateQ3HBM=
+	b=RdE87GBMNJlOZBrfrhHE8hf4vYLIlvqS1mfl1vbB9EU0q1pWEABYnYVymn8Whz9Lk
+	 JOiMJ1Ryt07avyd78XR+fN4B2+nm417hcGrbh8LClxsqO9vIsvTjbl0lEkeb5nEhZA
+	 OdXfEVtvKo+Qx/olW5jioA93Najia9UwB8Lv23po=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Judith Mendez <jm@ti.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 618/744] ALSA: hda/cs_dsp_ctl: Use private_free for control cleanup
+Subject: [PATCH 6.1 361/473] mmc: sdhci_am654: Add tuning algorithm for delay chain
 Date: Thu,  6 Jun 2024 16:04:50 +0200
-Message-ID: <20240606131752.326242125@linuxfoundation.org>
+Message-ID: <20240606131711.852692325@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,148 +63,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit 172811e3a557d8681a5e2d0f871dc04a2d17eb13 ]
+[ Upstream commit 6231d99dd4119312ad41abf9383e18fec66cbe4b ]
 
-Use the control private_free callback to free the associated data
-block. This ensures that the memory won't leak, whatever way the
-control gets destroyed.
+Currently the sdhci_am654 driver only supports one tuning
+algorithm which should be used only when DLL is enabled. The
+ITAPDLY is selected from the largest passing window and the
+buffer is viewed as a circular buffer.
 
-The original implementation didn't actually remove the ALSA
-controls in hda_cs_dsp_control_remove(). It only freed the internal
-tracking structure. This meant it was possible to remove/unload the
-amp driver while leaving its ALSA controls still present in the
-soundcard. Obviously attempting to access them could cause segfaults
-or at least dereferencing stale pointers.
+The new algorithm should be used when the delay chain
+is enabled. The ITAPDLY is selected from the largest passing
+window and the buffer is not viewed as a circular buffer.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 3233b978af23 ("ALSA: hda: hda_cs_dsp_ctl: Add Library to support CS_DSP ALSA controls")
-Link: https://lore.kernel.org/r/20240508095627.44476-1-rf@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This implementation is based off of the following paper: [1].
+
+Also add support for multiple failing windows.
+
+[1] https://www.ti.com/lit/an/spract9/spract9.pdf
+
+Fixes: 13ebeae68ac9 ("mmc: sdhci_am654: Add support for software tuning")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240320223837.959900-2-jm@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_cs_dsp_ctl.c | 47 ++++++++++++++++++++++------------
- 1 file changed, 31 insertions(+), 16 deletions(-)
+ drivers/mmc/host/sdhci_am654.c | 112 +++++++++++++++++++++++++++------
+ 1 file changed, 92 insertions(+), 20 deletions(-)
 
-diff --git a/sound/pci/hda/hda_cs_dsp_ctl.c b/sound/pci/hda/hda_cs_dsp_ctl.c
-index 463ca06036bfe..9db45d7c17e5f 100644
---- a/sound/pci/hda/hda_cs_dsp_ctl.c
-+++ b/sound/pci/hda/hda_cs_dsp_ctl.c
-@@ -8,6 +8,7 @@
+diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+index c16dbe64859e6..1db03164af2b1 100644
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -149,10 +149,17 @@ struct sdhci_am654_data {
+ 	int strb_sel;
+ 	u32 flags;
+ 	u32 quirks;
++	bool dll_enable;
  
- #include <linux/module.h>
- #include <sound/soc.h>
-+#include <linux/cleanup.h>
- #include <linux/firmware/cirrus/cs_dsp.h>
- #include <linux/firmware/cirrus/wmfw.h>
- #include "hda_cs_dsp_ctl.h"
-@@ -97,11 +98,23 @@ static unsigned int wmfw_convert_flags(unsigned int in)
- 	return out;
+ #define SDHCI_AM654_QUIRK_FORCE_CDTEST BIT(0)
+ };
+ 
++struct window {
++	u8 start;
++	u8 end;
++	u8 length;
++};
++
+ struct sdhci_am654_driver_data {
+ 	const struct sdhci_pltfm_data *pdata;
+ 	u32 flags;
+@@ -294,10 +301,13 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
+ 
+ 	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, mask, val);
+ 
+-	if (timing > MMC_TIMING_UHS_SDR25 && clock >= CLOCK_TOO_SLOW_HZ)
++	if (timing > MMC_TIMING_UHS_SDR25 && clock >= CLOCK_TOO_SLOW_HZ) {
+ 		sdhci_am654_setup_dll(host, clock);
+-	else
++		sdhci_am654->dll_enable = true;
++	} else {
+ 		sdhci_am654_setup_delay_chain(sdhci_am654, timing);
++		sdhci_am654->dll_enable = false;
++	}
+ 
+ 	regmap_update_bits(sdhci_am654->base, PHY_CTRL5, CLKBUFSEL_MASK,
+ 			   sdhci_am654->clkbuf_sel);
+@@ -415,39 +425,101 @@ static u32 sdhci_am654_cqhci_irq(struct sdhci_host *host, u32 intmask)
+ 	return 0;
  }
  
--static void hda_cs_dsp_add_kcontrol(struct hda_cs_dsp_coeff_ctl *ctl, const char *name)
-+static void hda_cs_dsp_free_kcontrol(struct snd_kcontrol *kctl)
- {
-+	struct hda_cs_dsp_coeff_ctl *ctl = (struct hda_cs_dsp_coeff_ctl *)snd_kcontrol_chip(kctl);
- 	struct cs_dsp_coeff_ctl *cs_ctl = ctl->cs_ctl;
+-#define ITAP_MAX	32
++#define ITAPDLY_LENGTH 32
++#define ITAPDLY_LAST_INDEX (ITAPDLY_LENGTH - 1)
 +
-+	/* NULL priv to prevent a double-free in hda_cs_dsp_control_remove() */
-+	cs_ctl->priv = NULL;
-+	kfree(ctl);
++static u32 sdhci_am654_calculate_itap(struct sdhci_host *host, struct window
++			  *fail_window, u8 num_fails, bool circular_buffer)
++{
++	u8 itap = 0, start_fail = 0, end_fail = 0, pass_length = 0;
++	u8 first_fail_start = 0, last_fail_end = 0;
++	struct device *dev = mmc_dev(host->mmc);
++	struct window pass_window = {0, 0, 0};
++	int prev_fail_end = -1;
++	u8 i;
++
++	if (!num_fails)
++		return ITAPDLY_LAST_INDEX >> 1;
++
++	if (fail_window->length == ITAPDLY_LENGTH) {
++		dev_err(dev, "No passing ITAPDLY, return 0\n");
++		return 0;
++	}
++
++	first_fail_start = fail_window->start;
++	last_fail_end = fail_window[num_fails - 1].end;
++
++	for (i = 0; i < num_fails; i++) {
++		start_fail = fail_window[i].start;
++		end_fail = fail_window[i].end;
++		pass_length = start_fail - (prev_fail_end + 1);
++
++		if (pass_length > pass_window.length) {
++			pass_window.start = prev_fail_end + 1;
++			pass_window.length = pass_length;
++		}
++		prev_fail_end = end_fail;
++	}
++
++	if (!circular_buffer)
++		pass_length = ITAPDLY_LAST_INDEX - last_fail_end;
++	else
++		pass_length = ITAPDLY_LAST_INDEX - last_fail_end + first_fail_start;
++
++	if (pass_length > pass_window.length) {
++		pass_window.start = last_fail_end + 1;
++		pass_window.length = pass_length;
++	}
++
++	if (!circular_buffer)
++		itap = pass_window.start + (pass_window.length >> 1);
++	else
++		itap = (pass_window.start + (pass_window.length >> 1)) % ITAPDLY_LENGTH;
++
++	return (itap > ITAPDLY_LAST_INDEX) ? ITAPDLY_LAST_INDEX >> 1 : itap;
 +}
 +
-+static void hda_cs_dsp_add_kcontrol(struct cs_dsp_coeff_ctl *cs_ctl,
-+				    const struct hda_cs_dsp_ctl_info *info,
-+				    const char *name)
-+{
- 	struct snd_kcontrol_new kcontrol = {0};
- 	struct snd_kcontrol *kctl;
-+	struct hda_cs_dsp_coeff_ctl *ctl __free(kfree) = NULL;
- 	int ret = 0;
- 
- 	if (cs_ctl->len > ADSP_MAX_STD_CTRL_SIZE) {
-@@ -110,6 +123,13 @@ static void hda_cs_dsp_add_kcontrol(struct hda_cs_dsp_coeff_ctl *ctl, const char
- 		return;
- 	}
- 
-+	ctl = kzalloc(sizeof(*ctl), GFP_KERNEL);
-+	if (!ctl)
-+		return;
-+
-+	ctl->cs_ctl = cs_ctl;
-+	ctl->card = info->card;
-+
- 	kcontrol.name = name;
- 	kcontrol.info = hda_cs_dsp_coeff_info;
- 	kcontrol.iface = SNDRV_CTL_ELEM_IFACE_MIXER;
-@@ -117,20 +137,22 @@ static void hda_cs_dsp_add_kcontrol(struct hda_cs_dsp_coeff_ctl *ctl, const char
- 	kcontrol.get = hda_cs_dsp_coeff_get;
- 	kcontrol.put = hda_cs_dsp_coeff_put;
- 
--	/* Save ctl inside private_data, ctl is owned by cs_dsp,
--	 * and will be freed when cs_dsp removes the control */
- 	kctl = snd_ctl_new1(&kcontrol, (void *)ctl);
- 	if (!kctl)
- 		return;
- 
--	ret = snd_ctl_add(ctl->card, kctl);
-+	kctl->private_free = hda_cs_dsp_free_kcontrol;
-+	ctl->kctl = kctl;
-+
-+	/* snd_ctl_add() calls our private_free on error, which will kfree(ctl) */
-+	cs_ctl->priv = no_free_ptr(ctl);
-+	ret = snd_ctl_add(info->card, kctl);
- 	if (ret) {
- 		dev_err(cs_ctl->dsp->dev, "Failed to add KControl %s = %d\n", kcontrol.name, ret);
- 		return;
- 	}
- 
- 	dev_dbg(cs_ctl->dsp->dev, "Added KControl: %s\n", kcontrol.name);
--	ctl->kctl = kctl;
- }
- 
- static void hda_cs_dsp_control_add(struct cs_dsp_coeff_ctl *cs_ctl,
-@@ -138,7 +160,6 @@ static void hda_cs_dsp_control_add(struct cs_dsp_coeff_ctl *cs_ctl,
+ static int sdhci_am654_platform_execute_tuning(struct sdhci_host *host,
+ 					       u32 opcode)
  {
- 	struct cs_dsp *cs_dsp = cs_ctl->dsp;
- 	char name[SNDRV_CTL_ELEM_ID_NAME_MAXLEN];
--	struct hda_cs_dsp_coeff_ctl *ctl;
- 	const char *region_name;
- 	int ret;
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_am654_data *sdhci_am654 = sdhci_pltfm_priv(pltfm_host);
+-	int cur_val, prev_val = 1, fail_len = 0, pass_window = 0, pass_len;
+-	u32 itap;
++	struct window fail_window[ITAPDLY_LENGTH];
++	u8 curr_pass, itap;
++	u8 fail_index = 0;
++	u8 prev_pass = 1;
++
++	memset(fail_window, 0, sizeof(fail_window));
  
-@@ -163,15 +184,7 @@ static void hda_cs_dsp_control_add(struct cs_dsp_coeff_ctl *cs_ctl,
- 			 " %.*s", cs_ctl->subname_len - skip, cs_ctl->subname + skip);
+ 	/* Enable ITAPDLY */
+ 	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPDLYENA_MASK,
+ 			   1 << ITAPDLYENA_SHIFT);
+ 
+-	for (itap = 0; itap < ITAP_MAX; itap++) {
++	for (itap = 0; itap < ITAPDLY_LENGTH; itap++) {
+ 		sdhci_am654_write_itapdly(sdhci_am654, itap);
+ 
+-		cur_val = !mmc_send_tuning(host->mmc, opcode, NULL);
+-		if (cur_val && !prev_val)
+-			pass_window = itap;
++		curr_pass = !mmc_send_tuning(host->mmc, opcode, NULL);
+ 
+-		if (!cur_val)
+-			fail_len++;
++		if (!curr_pass && prev_pass)
++			fail_window[fail_index].start = itap;
+ 
+-		prev_val = cur_val;
++		if (!curr_pass) {
++			fail_window[fail_index].end = itap;
++			fail_window[fail_index].length++;
++		}
++
++		if (curr_pass && !prev_pass)
++			fail_index++;
++
++		prev_pass = curr_pass;
  	}
+-	/*
+-	 * Having determined the length of the failing window and start of
+-	 * the passing window calculate the length of the passing window and
+-	 * set the final value halfway through it considering the range as a
+-	 * circular buffer
+-	 */
+-	pass_len = ITAP_MAX - fail_len;
+-	itap = (pass_window + (pass_len >> 1)) % ITAP_MAX;
++
++	if (fail_window[fail_index].length != 0)
++		fail_index++;
++
++	itap = sdhci_am654_calculate_itap(host, fail_window, fail_index,
++					  sdhci_am654->dll_enable);
++
+ 	sdhci_am654_write_itapdly(sdhci_am654, itap);
  
--	ctl = kzalloc(sizeof(*ctl), GFP_KERNEL);
--	if (!ctl)
--		return;
--
--	ctl->cs_ctl = cs_ctl;
--	ctl->card = info->card;
--	cs_ctl->priv = ctl;
--
--	hda_cs_dsp_add_kcontrol(ctl, name);
-+	hda_cs_dsp_add_kcontrol(cs_ctl, info, name);
- }
- 
- void hda_cs_dsp_add_controls(struct cs_dsp *dsp, const struct hda_cs_dsp_ctl_info *info)
-@@ -203,7 +216,9 @@ void hda_cs_dsp_control_remove(struct cs_dsp_coeff_ctl *cs_ctl)
- {
- 	struct hda_cs_dsp_coeff_ctl *ctl = cs_ctl->priv;
- 
--	kfree(ctl);
-+	/* ctl and kctl may already have been removed by ALSA private_free */
-+	if (ctl && ctl->kctl)
-+		snd_ctl_remove(ctl->card, ctl->kctl);
- }
- EXPORT_SYMBOL_NS_GPL(hda_cs_dsp_control_remove, SND_HDA_CS_DSP_CONTROLS);
- 
+ 	return 0;
 -- 
 2.43.0
 
