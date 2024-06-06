@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-48471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1508FE925
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2171E8FEC31
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E09711F25F3F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA57A1F2998C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D133199235;
-	Thu,  6 Jun 2024 14:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D4B1AD9FD;
+	Thu,  6 Jun 2024 14:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8rHSl4v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IiBdbAM/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD66196D8E;
-	Thu,  6 Jun 2024 14:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92446198858;
+	Thu,  6 Jun 2024 14:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682985; cv=none; b=HyrPIAaphJket9sFgo9kQE/+2ShQF+S8TGBizPqC8e+iGXR8IaUeLyWlySdQhL4wIQX1RyquN2eJAxdCZvyakTCrIADFMEuFUpkDkcTRAcdQKjEh1uBM/8ADt18+3025N+xq2AAqfKa9ujENQmC5/TB36zlOUXWFZ8BQcsDPrmQ=
+	t=1717683339; cv=none; b=esivL1X96mdDsPxQGmguLKJ4ULsl0vucdtgOIYN1HwvKNtEpXwMlBvOvXJUFbnGxa8xDwI9+g5m4QY9XmOTEeqnJGL/68mSgKqUpj1jjo6boWpjVkpEVvZReLpWMCg0jAEt2V2m55AYH1BjxAOx/XPn+D0b22IXvRsoo2DbyEPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682985; c=relaxed/simple;
-	bh=/UeY7yp0zQKpOAvtnsISmvFmcRwkblFv25Bsk9OqMAY=;
+	s=arc-20240116; t=1717683339; c=relaxed/simple;
+	bh=EulsvdkFI9ToXBiBeJ2Xn+NRhJS7KmAcwqnaoGlRlRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VAm+M7EQMw5l5tSQF1nW7a1HnKk22IdksTrDfZnMDGqVCfWmRGNPliPJ+Dzow+MYA3jpottlv/COV8+XxaZQrpYz5XI1UUkNvZgp0/NfQVnBbWKZDWsXjA0UY62ArbRPsG3S+mLMm7rwI0iPuRwDnTZwZaXcUQH6evcRY/g/GmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8rHSl4v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92A4C2BD10;
-	Thu,  6 Jun 2024 14:09:44 +0000 (UTC)
+	 MIME-Version; b=ST+HJGPjXwuHtk4uUiJh8RJj/GJc5gB0aEw8/Y9xhGMKbd49P7tsz3OQZUKuANADqzopaNSFB3Hm9cQTQjxr9rvYzIENiGP6X8uDaxWQFboS10Rbq/5hTF6r9c+qaIdJ9edhSanglkkZSsAg4+No6OihUq27F2X7j7kN25j9v7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IiBdbAM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F29BC2BD10;
+	Thu,  6 Jun 2024 14:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682984;
-	bh=/UeY7yp0zQKpOAvtnsISmvFmcRwkblFv25Bsk9OqMAY=;
+	s=korg; t=1717683339;
+	bh=EulsvdkFI9ToXBiBeJ2Xn+NRhJS7KmAcwqnaoGlRlRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N8rHSl4vSblArr9mZphj9YMijzDKvmUj7MPO4AECyXFgMARCAlDL4EtaSS+7loD5h
-	 znrFHTBW/tCYsMQ24coYB24wOcZH83oELW0bTcM7p09oej3hviYtbVplyTRdGWO2BH
-	 rOo7oJcUUezkr3gq3FoPTtHU1LgJ9pRGIBrTO/oQ=
+	b=IiBdbAM/7CMDyskdKTBXplxekhP1zL0pje+/3YCnBftv4o9pGGRYQKHGHMyoZSAam
+	 SYR0ae1x7e6PtKib5W7Sl6ejsT+uBxBXdF6MkUUWvT2uBqiwOWuWvbJ5lro7snPb+9
+	 P3go0oU45HQEaNrcb+/v3rPtYcoDowWU6sdSni0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Huai-Yuan Liu <qq810974084@gmail.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 170/374] fs/ntfs3: Check folio pointer for NULL
-Date: Thu,  6 Jun 2024 16:02:29 +0200
-Message-ID: <20240606131657.591431135@linuxfoundation.org>
+Subject: [PATCH 6.1 221/473] drm/arm/malidp: fix a possible null pointer dereference
+Date: Thu,  6 Jun 2024 16:02:30 +0200
+Message-ID: <20240606131707.196581778@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Huai-Yuan Liu <qq810974084@gmail.com>
 
-[ Upstream commit 1cd6c96219c429ebcfa8e79a865277376c563803 ]
+[ Upstream commit a1f95aede6285dba6dd036d907196f35ae3a11ea ]
 
-It can be NULL if bmap is called.
+In malidp_mw_connector_reset, new memory is allocated with kzalloc, but
+no check is performed. In order to prevent null pointer dereferencing,
+ensure that mw_state is checked before calling
+__drm_atomic_helper_connector_reset.
 
-Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 8cbc5caf36ef ("drm: mali-dp: Add writeback connector")
+Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240407063053.5481-1-qq810974084@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/arm/malidp_mw.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index ba5a39a2f957d..90d4e9a9859e4 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -577,13 +577,18 @@ static noinline int ntfs_get_block_vbo(struct inode *inode, u64 vbo,
- 	clear_buffer_uptodate(bh);
+diff --git a/drivers/gpu/drm/arm/malidp_mw.c b/drivers/gpu/drm/arm/malidp_mw.c
+index ef76d0e6ee2fc..389d32994135b 100644
+--- a/drivers/gpu/drm/arm/malidp_mw.c
++++ b/drivers/gpu/drm/arm/malidp_mw.c
+@@ -72,7 +72,10 @@ static void malidp_mw_connector_reset(struct drm_connector *connector)
+ 		__drm_atomic_helper_connector_destroy_state(connector->state);
  
- 	if (is_resident(ni)) {
--		ni_lock(ni);
--		err = attr_data_read_resident(ni, &folio->page);
--		ni_unlock(ni);
--
--		if (!err)
--			set_buffer_uptodate(bh);
-+		bh->b_blocknr = RESIDENT_LCN;
- 		bh->b_size = block_size;
-+		if (!folio) {
-+			err = 0;
-+		} else {
-+			ni_lock(ni);
-+			err = attr_data_read_resident(ni, &folio->page);
-+			ni_unlock(ni);
+ 	kfree(connector->state);
+-	__drm_atomic_helper_connector_reset(connector, &mw_state->base);
++	connector->state = NULL;
 +
-+			if (!err)
-+				set_buffer_uptodate(bh);
-+		}
- 		return err;
- 	}
++	if (mw_state)
++		__drm_atomic_helper_connector_reset(connector, &mw_state->base);
+ }
  
+ static enum drm_connector_status
 -- 
 2.43.0
 
