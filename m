@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-49485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B717D8FED70
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB3A78FE9D1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FCAD281476
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 752841F23EF4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948251BB687;
-	Thu,  6 Jun 2024 14:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C9319B5AA;
+	Thu,  6 Jun 2024 14:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pg5PUa58"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdTB/RG0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EED198E92;
-	Thu,  6 Jun 2024 14:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45F8198A3E;
+	Thu,  6 Jun 2024 14:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683489; cv=none; b=Ms6YFiXQ0PbbRGNB4Mqj9e+FgsCQCwKbyd6+22g6NPhMT+gPU+6Ohlrvi9fylzBcJu6XtHY0bDCTYEDD50RXe573lwucAD9wBO0ZrucZKcLaD9HfM0AihYyiZKqds3N5WqOExRv9qrkjnhsqIpGVH4U6UfMATRxDrsxN+Ouj99Q=
+	t=1717683069; cv=none; b=IaKCkXsu1O/lxg5Lx0OunPFfDqEECaghLDwiOebsawNnKA92RT4RsVbe1wOc1X50I7RknxjBEjUCyzAumXVQLYiHWhSlgCouyNYDjSW/6EWTm1iwQfZScv0mdL5MPhzYnMcpdtxLt01imtQKN7MMg8eIt5n9ps2DdsdcCZfBtoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683489; c=relaxed/simple;
-	bh=5SzXgdKC6PVYI3sr+EPA5oc3GNSKP9kki0ylHQjHzQg=;
+	s=arc-20240116; t=1717683069; c=relaxed/simple;
+	bh=u5V+qhNRmjFd9yppbwZG23NcgZxm+D6knPhN3XGGqtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2KEnCBYlFP53UzMCNF4034wdZUxHjjs9TAabXMggVAIzQpheu0VNB/2t01WSWy3qIeePUJTI44Flv330ulYroMgZ1L1htIuBNtq6FxR7wPgBiWgX1Vtd7Qfo9wiVvhuVzP3vOILgHkUPytI4Dz4X7VvSZO5IhLxRc/N+cWnrn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pg5PUa58; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE506C2BD10;
-	Thu,  6 Jun 2024 14:18:08 +0000 (UTC)
+	 MIME-Version; b=NgOxq7zE33Ye0HpmFpSQkY9XmR7dzFNlfmNeSa1PpxQwcxyN24EGjqgyh/L7njCsk9CgXITB5P8AmMbtIjzXfr8+3rhkbeaSrLPzfAcEKGV3cW7daBrVe3OQWxncOlmFgh+Gf4zyzngY7xLsqALlutuN13hSh5unepoFN+oWDZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdTB/RG0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A428FC4AF0C;
+	Thu,  6 Jun 2024 14:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683488;
-	bh=5SzXgdKC6PVYI3sr+EPA5oc3GNSKP9kki0ylHQjHzQg=;
+	s=korg; t=1717683069;
+	bh=u5V+qhNRmjFd9yppbwZG23NcgZxm+D6knPhN3XGGqtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pg5PUa58ICVTEY7LNb2X3/oz8lYVTTZUk7+WLQBGXC3l/DrM75WBxUhIMutHtADoJ
-	 wduuvqz91X6cREBAjjNy/H8HcIeAqMfPG91bJROBni6gusXuj3tAOneX6SPxTn8PXA
-	 +reksOCgtPwb9R0qflSeW0N2crh5yLb5UlBLvGlU=
+	b=sdTB/RG0cBcoE5nFKPBU2cn/6jFyAjeMhc1J8guSro00KXGOlMwXEwB0X/I0IeRb2
+	 2eYukr4yg0JE890MrRnD4KLItCUAUys5+gEnnMnUqFAcHwZxGSx1GTJUoFZloFVFtz
+	 iSq9S+8lWkmquw3Px724ztSB/tCZWEjimpBlDxSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 379/473] media: stk1160: fix bounds checking in stk1160_copy_video()
-Date: Thu,  6 Jun 2024 16:05:08 +0200
-Message-ID: <20240606131712.392236991@linuxfoundation.org>
+Subject: [PATCH 6.9 330/374] ALSA: seq: Fix missing bank setup between MIDI1/MIDI2 UMP conversion
+Date: Thu,  6 Jun 2024 16:05:09 +0200
+Message-ID: <20240606131702.915312492@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +61,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit faa4364bef2ec0060de381ff028d1d836600a381 ]
+[ Upstream commit 8a42886cae307663f3f999846926bd6e64392000 ]
 
-The subtract in this condition is reversed.  The ->length is the length
-of the buffer.  The ->bytesused is how many bytes we have copied thus
-far.  When the condition is reversed that means the result of the
-subtraction is always negative but since it's unsigned then the result
-is a very high positive value.  That means the overflow check is never
-true.
+When a UMP packet is converted between MIDI1 and MIDI2 protocols, the
+bank selection may be lost.  The conversion from MIDI1 to MIDI2 needs
+the encoding of the bank into UMP_MSG_STATUS_PROGRAM bits, while the
+conversion from MIDI2 to MIDI1 needs the extraction from that
+instead.
 
-Additionally, the ->bytesused doesn't actually work for this purpose
-because we're not writing to "buf->mem + buf->bytesused".  Instead, the
-math to calculate the destination where we are writing is a bit
-involved.  You calculate the number of full lines already written,
-multiply by two, skip a line if necessary so that we start on an odd
-numbered line, and add the offset into the line.
+This patch implements the missing bank selection mechanism in those
+conversions.
 
-To fix this buffer overflow, just take the actual destination where we
-are writing, if the offset is already out of bounds print an error and
-return.  Otherwise, write up to buf->length bytes.
-
-Fixes: 9cb2173e6ea8 ("[media] media: Add stk1160 new driver (easycap replacement)")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: e9e02819a98a ("ALSA: seq: Automatic conversion of UMP events")
+Link: https://lore.kernel.org/r/20240527151852.29036-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/stk1160/stk1160-video.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ sound/core/seq/seq_ump_convert.c | 38 ++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/drivers/media/usb/stk1160/stk1160-video.c b/drivers/media/usb/stk1160/stk1160-video.c
-index 366f0e4a5dc0d..e79c45db60ab5 100644
---- a/drivers/media/usb/stk1160/stk1160-video.c
-+++ b/drivers/media/usb/stk1160/stk1160-video.c
-@@ -99,7 +99,7 @@ void stk1160_buffer_done(struct stk1160 *dev)
- static inline
- void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
- {
--	int linesdone, lineoff, lencopy;
-+	int linesdone, lineoff, lencopy, offset;
- 	int bytesperline = dev->width * 2;
- 	struct stk1160_buffer *buf = dev->isoc_ctl.buf;
- 	u8 *dst = buf->mem;
-@@ -139,8 +139,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
- 	 * Check if we have enough space left in the buffer.
- 	 * In that case, we force loop exit after copy.
- 	 */
--	if (lencopy > buf->bytesused - buf->length) {
--		lencopy = buf->bytesused - buf->length;
-+	offset = dst - (u8 *)buf->mem;
-+	if (offset > buf->length) {
-+		dev_warn_ratelimited(dev->dev, "out of bounds offset\n");
-+		return;
-+	}
-+	if (lencopy > buf->length - offset) {
-+		lencopy = buf->length - offset;
- 		remain = lencopy;
- 	}
+diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
+index ee6ac649df836..c21be87f5da9e 100644
+--- a/sound/core/seq/seq_ump_convert.c
++++ b/sound/core/seq/seq_ump_convert.c
+@@ -368,6 +368,7 @@ static int cvt_ump_midi1_to_midi2(struct snd_seq_client *dest,
+ 	struct snd_seq_ump_event ev_cvt;
+ 	const union snd_ump_midi1_msg *midi1 = (const union snd_ump_midi1_msg *)event->ump;
+ 	union snd_ump_midi2_msg *midi2 = (union snd_ump_midi2_msg *)ev_cvt.ump;
++	struct snd_seq_ump_midi2_bank *cc;
  
-@@ -182,8 +187,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
- 		 * Check if we have enough space left in the buffer.
- 		 * In that case, we force loop exit after copy.
- 		 */
--		if (lencopy > buf->bytesused - buf->length) {
--			lencopy = buf->bytesused - buf->length;
-+		offset = dst - (u8 *)buf->mem;
-+		if (offset > buf->length) {
-+			dev_warn_ratelimited(dev->dev, "offset out of bounds\n");
-+			return;
+ 	ev_cvt = *event;
+ 	memset(&ev_cvt.ump, 0, sizeof(ev_cvt.ump));
+@@ -387,11 +388,29 @@ static int cvt_ump_midi1_to_midi2(struct snd_seq_client *dest,
+ 		midi2->paf.data = upscale_7_to_32bit(midi1->paf.data);
+ 		break;
+ 	case UMP_MSG_STATUS_CC:
++		cc = &dest_port->midi2_bank[midi1->note.channel];
++		switch (midi1->cc.index) {
++		case UMP_CC_BANK_SELECT:
++			cc->bank_set = 1;
++			cc->cc_bank_msb = midi1->cc.data;
++			return 0; // skip
++		case UMP_CC_BANK_SELECT_LSB:
++			cc->bank_set = 1;
++			cc->cc_bank_lsb = midi1->cc.data;
++			return 0; // skip
 +		}
-+		if (lencopy > buf->length - offset) {
-+			lencopy = buf->length - offset;
- 			remain = lencopy;
- 		}
+ 		midi2->cc.index = midi1->cc.index;
+ 		midi2->cc.data = upscale_7_to_32bit(midi1->cc.data);
+ 		break;
+ 	case UMP_MSG_STATUS_PROGRAM:
+ 		midi2->pg.program = midi1->pg.program;
++		cc = &dest_port->midi2_bank[midi1->note.channel];
++		if (cc->bank_set) {
++			midi2->pg.bank_valid = 1;
++			midi2->pg.bank_msb = cc->cc_bank_msb;
++			midi2->pg.bank_lsb = cc->cc_bank_lsb;
++			cc->bank_set = 0;
++		}
+ 		break;
+ 	case UMP_MSG_STATUS_CHANNEL_PRESSURE:
+ 		midi2->caf.data = upscale_7_to_32bit(midi1->caf.data);
+@@ -419,6 +438,7 @@ static int cvt_ump_midi2_to_midi1(struct snd_seq_client *dest,
+ 	struct snd_seq_ump_event ev_cvt;
+ 	union snd_ump_midi1_msg *midi1 = (union snd_ump_midi1_msg *)ev_cvt.ump;
+ 	const union snd_ump_midi2_msg *midi2 = (const union snd_ump_midi2_msg *)event->ump;
++	int err;
+ 	u16 v;
  
+ 	ev_cvt = *event;
+@@ -443,6 +463,24 @@ static int cvt_ump_midi2_to_midi1(struct snd_seq_client *dest,
+ 		midi1->cc.data = downscale_32_to_7bit(midi2->cc.data);
+ 		break;
+ 	case UMP_MSG_STATUS_PROGRAM:
++		if (midi2->pg.bank_valid) {
++			midi1->cc.status = UMP_MSG_STATUS_CC;
++			midi1->cc.index = UMP_CC_BANK_SELECT;
++			midi1->cc.data = midi2->pg.bank_msb;
++			err = __snd_seq_deliver_single_event(dest, dest_port,
++							     (struct snd_seq_event *)&ev_cvt,
++							     atomic, hop);
++			if (err < 0)
++				return err;
++			midi1->cc.index = UMP_CC_BANK_SELECT_LSB;
++			midi1->cc.data = midi2->pg.bank_lsb;
++			err = __snd_seq_deliver_single_event(dest, dest_port,
++							     (struct snd_seq_event *)&ev_cvt,
++							     atomic, hop);
++			if (err < 0)
++				return err;
++			midi1->note.status = midi2->note.status;
++		}
+ 		midi1->pg.program = midi2->pg.program;
+ 		break;
+ 	case UMP_MSG_STATUS_CHANNEL_PRESSURE:
 -- 
 2.43.0
 
