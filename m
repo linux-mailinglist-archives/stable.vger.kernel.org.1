@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-49614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4668FEE0C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B44A28FEF43
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7DE41F22FA1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF5211C227AE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D8E1BF903;
-	Thu,  6 Jun 2024 14:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A391CBE80;
+	Thu,  6 Jun 2024 14:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8zIl8m/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtWPWYVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF1B1BF8FF;
-	Thu,  6 Jun 2024 14:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F831A2578;
+	Thu,  6 Jun 2024 14:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683553; cv=none; b=m/zpSIOKV8RhW1BR06/2rIpRqUtEr2/0sozhWbpFtYjcL6jo3CdqzH6RdHiDO4xgBRiFKJkWKUEVoJYM4DdrYqcfQ9HVF1wpBI9/xF5Cj0jegk8NziAzF5zVP7IlN1nmKRzY02uGGbemmd14++HCjAkiKWp+O3IKRut4DyEHs6Y=
+	t=1717683760; cv=none; b=MTATL2UtEvV+1NFf1PBVx+hMNgrtZf0PjhB/gLgObeymHxlbkqT2nkdH/kpCu+Dz7GqOhKeIfED4+FeSVfZ+y30/TPzCnwYxOIkiGqcNGJWgrYs2lEXzjafF6Myj/zVMUuK2ehjAKJeiQ1wUlJjnVT2dqp5dQHejdJSwBXgyHfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683553; c=relaxed/simple;
-	bh=7pWnyTko/WelJv33sKtARfjszVuTbx/UelbRBvEImY8=;
+	s=arc-20240116; t=1717683760; c=relaxed/simple;
+	bh=/+YGM8nM9My9H2PdxICFyphUC0rjYKqW6gD0sV0X60Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ofj7rsm8VJ5H5iwTvKNgZ5FQazw5dRMnCF8XcpuS0SnHAZbFWyDiel2dFtU0OWdLU9eBU5pk/VYNM2Jp9IUZoodAutAPWv8F+ybx+fw3nMN1iwSIDc1M+vPLJI20+fvUuBz8LANZdWKbqwRcopiR0GgcF8X/UqfeFOUsUAwLvFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8zIl8m/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803F0C2BD10;
-	Thu,  6 Jun 2024 14:19:13 +0000 (UTC)
+	 MIME-Version; b=cQxQt6AHCkQFC3o2DAJaIIxoPoIzJ8TjQwopIDv26hrYRXDVRzGxrVy6GN+Pgv8vs3eh16T+i0vxbUWJFbF5xr1EZG09VkR4cHvuDejB71JgY30o1TzkfNFNumUXrpsLh+/7XUU9XtePCRK8KEj4sAGlE4KDDlN4WeTNbwzuQjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtWPWYVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E3DC2BD10;
+	Thu,  6 Jun 2024 14:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683553;
-	bh=7pWnyTko/WelJv33sKtARfjszVuTbx/UelbRBvEImY8=;
+	s=korg; t=1717683760;
+	bh=/+YGM8nM9My9H2PdxICFyphUC0rjYKqW6gD0sV0X60Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b8zIl8m/U8yeQEYRG9rD3snf/Wlc71fbRx72SHgWhq3aNUk5UEdX6wkcZOPdZzmZb
-	 iAQcPNw3e/ZUPBV9UxGqlREO3j97jzlyQ6CwBaoBN5XKU4WxdEIAZ9xbLYJqaLJcxy
-	 +oub5C5lC71IUhZ+cc9bWcmwLkzphrHgViQO76sU=
+	b=wtWPWYVJ62CEkjUnoj7T9yeIfclKp66Q9S7oln/wvs4T9ibIogWbmjUvX8F77Y/ZH
+	 H+BzT824GImcrCUdFPiujZl35FvAVimmyAsDU2jJujazJnvQteDSEERj782ScuprMG
+	 QSQYbTw4yLUB+O1lED9BZJrAz5XFfo26V9a6D1zQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 444/473] ALSA: jack: Use guard() for locking
+Subject: [PATCH 6.6 701/744] ASoC: cs42l43: Only restrict 44.1kHz for the ASP
 Date: Thu,  6 Jun 2024 16:06:13 +0200
-Message-ID: <20240606131714.399753558@linuxfoundation.org>
+Message-ID: <20240606131754.961101311@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 7234795b59f7b0b14569ec46dce56300a4988067 ]
+[ Upstream commit 797c525e85d1e44cf0e6f338890e8e0c661f524a ]
 
-We can simplify the code gracefully with new guard() macro and co for
-automatic cleanup of locks.
+The SoundWire interface can always support 44.1kHz using flow controlled
+mode, and whether the ASP is in master mode should obviously only affect
+the ASP. Update cs42l43_startup() to only restrict the rates for the ASP
+DAI.
 
-Only the code refactoring, and no functional changes.
-
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20240227085306.9764-11-tiwai@suse.de
-Stable-dep-of: 495000a38634 ("ALSA: core: Remove debugfs at disconnection")
+Fixes: fc918cbe874e ("ASoC: cs42l43: Add support for the cs42l43")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://msgid.link/r/20240527100840.439832-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/jack.c | 25 +++++++------------------
- 1 file changed, 7 insertions(+), 18 deletions(-)
+ sound/soc/codecs/cs42l43.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/core/jack.c b/sound/core/jack.c
-index 03d155ed362b4..191357d619131 100644
---- a/sound/core/jack.c
-+++ b/sound/core/jack.c
-@@ -42,11 +42,9 @@ static int snd_jack_dev_disconnect(struct snd_device *device)
- #ifdef CONFIG_SND_JACK_INPUT_DEV
- 	struct snd_jack *jack = device->device_data;
+diff --git a/sound/soc/codecs/cs42l43.c b/sound/soc/codecs/cs42l43.c
+index 8015f4b7a5b32..1443eb1dc0b17 100644
+--- a/sound/soc/codecs/cs42l43.c
++++ b/sound/soc/codecs/cs42l43.c
+@@ -220,8 +220,9 @@ static int cs42l43_startup(struct snd_pcm_substream *substream, struct snd_soc_d
+ 	struct snd_soc_component *component = dai->component;
+ 	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
+ 	struct cs42l43 *cs42l43 = priv->core;
+-	int provider = !!regmap_test_bits(cs42l43->regmap, CS42L43_ASP_CLK_CONFIG2,
+-					  CS42L43_ASP_MASTER_MODE_MASK);
++	int provider = !dai->id || !!regmap_test_bits(cs42l43->regmap,
++						      CS42L43_ASP_CLK_CONFIG2,
++						      CS42L43_ASP_MASTER_MODE_MASK);
  
--	mutex_lock(&jack->input_dev_lock);
--	if (!jack->input_dev) {
--		mutex_unlock(&jack->input_dev_lock);
-+	guard(mutex)(&jack->input_dev_lock);
-+	if (!jack->input_dev)
- 		return 0;
--	}
- 
- 	/* If the input device is registered with the input subsystem
- 	 * then we need to use a different deallocator. */
-@@ -55,7 +53,6 @@ static int snd_jack_dev_disconnect(struct snd_device *device)
- 	else
- 		input_free_device(jack->input_dev);
- 	jack->input_dev = NULL;
--	mutex_unlock(&jack->input_dev_lock);
- #endif /* CONFIG_SND_JACK_INPUT_DEV */
- 	return 0;
- }
-@@ -94,11 +91,9 @@ static int snd_jack_dev_register(struct snd_device *device)
- 	snprintf(jack->name, sizeof(jack->name), "%s %s",
- 		 card->shortname, jack->id);
- 
--	mutex_lock(&jack->input_dev_lock);
--	if (!jack->input_dev) {
--		mutex_unlock(&jack->input_dev_lock);
-+	guard(mutex)(&jack->input_dev_lock);
-+	if (!jack->input_dev)
- 		return 0;
--	}
- 
- 	jack->input_dev->name = jack->name;
- 
-@@ -123,7 +118,6 @@ static int snd_jack_dev_register(struct snd_device *device)
- 	if (err == 0)
- 		jack->registered = 1;
- 
--	mutex_unlock(&jack->input_dev_lock);
- 	return err;
- }
- #endif /* CONFIG_SND_JACK_INPUT_DEV */
-@@ -588,14 +582,9 @@ EXPORT_SYMBOL(snd_jack_new);
- void snd_jack_set_parent(struct snd_jack *jack, struct device *parent)
- {
- 	WARN_ON(jack->registered);
--	mutex_lock(&jack->input_dev_lock);
--	if (!jack->input_dev) {
--		mutex_unlock(&jack->input_dev_lock);
--		return;
--	}
--
--	jack->input_dev->dev.parent = parent;
--	mutex_unlock(&jack->input_dev_lock);
-+	guard(mutex)(&jack->input_dev_lock);
-+	if (jack->input_dev)
-+		jack->input_dev->dev.parent = parent;
- }
- EXPORT_SYMBOL(snd_jack_set_parent);
- 
+ 	if (provider)
+ 		priv->constraint.mask = CS42L43_PROVIDER_RATE_MASK;
 -- 
 2.43.0
 
