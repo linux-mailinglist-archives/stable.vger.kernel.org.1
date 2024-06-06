@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-48260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E94E18FDCAB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 04:20:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3647D8FDCAC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 04:20:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9540A28118B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 02:20:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBD781F24900
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 02:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D3A1BDE6;
-	Thu,  6 Jun 2024 02:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344E71C69A;
+	Thu,  6 Jun 2024 02:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="n720W3cX"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="i9Po4IuZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62153440C;
-	Thu,  6 Jun 2024 02:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E578E182C3;
+	Thu,  6 Jun 2024 02:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717640417; cv=none; b=DNWjiQCq4S2hH02mbWdlsm2yKxHLPoE2cOETke1Z182NTyXL1r74Z4o34cfVxFuqwCUmXsuq/DANbG4pMikuz+QDdIScfll2Wfe26HwqPjWqxdxPYN6sHoXW/6z9Gi9Je9bNNDw31RlycBP7ggC08v/TK3e5rWRu7sBso8bGhCU=
+	t=1717640421; cv=none; b=YuUFDZd30R0Er4g3KQW9bm27Aa+Ej+CuQ2Lgxz6XtoJt2KfyzFRfwHagUgSGzuaZrHzhKJzNWb/q2yDCC7g4alE/5ZwicoVse45t2oeGkeAQ59JQKU/F7w0iEU5RfbDKmSmy/7zSDADmjAvrQ3jwbKKIZ2GWRU+Ce12V1ueiVJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717640417; c=relaxed/simple;
-	bh=kZRxQN2CUIH0u8eN6/qoloyz8aQBYFcfcktB3ZOyHxw=;
-	h=Date:To:From:Subject:Message-Id; b=aGUVfYAwjK5B1PbDU/iVRT7JcMe0SB7CgZEmFI8ufocngPTarqqfiKbcluwoE1Zpc2IfCFsJ/ivYgqpOhLwATnzi3ka4U9isVfqP++6wQoTwDsWTJoyl+C3t+Z29FffrSG/8QykuQGdoENx8D11HW+UEWwsQv74t6bOA0dy4R14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=n720W3cX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F04C4AF4D;
-	Thu,  6 Jun 2024 02:20:17 +0000 (UTC)
+	s=arc-20240116; t=1717640421; c=relaxed/simple;
+	bh=xPN9nICOBh+AaxV6AiRJyMy2Acs8CtrQWo96wUErMuo=;
+	h=Date:To:From:Subject:Message-Id; b=hZSWy3+gaWY5Fpf0AnDYl4wsHYDweGL2PjMWbZ4ZdqwWYetT6FECcJ+BW19U5EWYQUMBeZnovRAhZs2g7cXngUx672HiTGbx/LOgtGE2hZa3P+3JvneJPhb+6MX2tnxNyEhGspNHVzaeuDp7ZVn08Thj1YVFGPzQ3R944Pctrz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=i9Po4IuZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95C1C4AF1D;
+	Thu,  6 Jun 2024 02:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1717640417;
-	bh=kZRxQN2CUIH0u8eN6/qoloyz8aQBYFcfcktB3ZOyHxw=;
+	s=korg; t=1717640420;
+	bh=xPN9nICOBh+AaxV6AiRJyMy2Acs8CtrQWo96wUErMuo=;
 	h=Date:To:From:Subject:From;
-	b=n720W3cXLpFUXFoh58AsE4bWN3vqUiEyStnWTDEYHo5wqpPJD8HBQcNmEah/07oTJ
-	 p1MV70PETfMkN37H/xLo9RKA7LKSGDdu58WGjzvExDqtHry6s/ShgoJEMjM0+1AIJW
-	 I+EsfcgK239xEAQhxBlK3nugn59tdPpoDhZ6VaCM=
-Date: Wed, 05 Jun 2024 19:20:16 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,muchun.song@linux.dev,leitao@debian.org,osalvador@suse.de,akpm@linux-foundation.org
+	b=i9Po4IuZcgrkw6Uwf6uVD61sjtq6oj91SaGg7nPioi6OuNRFrxdTQvZyWeUn99C5g
+	 nEmIVoK5sMLhBSVYprg4TnodXpVNbNeucvWa4X6HW6OGl9AwAovicCVOq0ETW1vRjX
+	 fJmycWEmCylSxnfRNT2soQG4L07+cl4N+qAJyJVc=
+Date: Wed, 05 Jun 2024 19:20:20 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-hugetlb-do-not-call-vma_add_reservation-upon-enomem.patch removed from -mm tree
-Message-Id: <20240606022017.33F04C4AF4D@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] nilfs2-fix-nilfs_empty_dir-misjudgment-and-long-loop-on-i-o-errors.patch removed from -mm tree
+Message-Id: <20240606022020.B95C1C4AF1D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,77 +50,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/hugetlb: do not call vma_add_reservation upon ENOMEM
+     Subject: nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors
 has been removed from the -mm tree.  Its filename was
-     mm-hugetlb-do-not-call-vma_add_reservation-upon-enomem.patch
+     nilfs2-fix-nilfs_empty_dir-misjudgment-and-long-loop-on-i-o-errors.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Oscar Salvador <osalvador@suse.de>
-Subject: mm/hugetlb: do not call vma_add_reservation upon ENOMEM
-Date: Tue, 28 May 2024 22:53:23 +0200
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Subject: nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors
+Date: Tue, 4 Jun 2024 22:42:55 +0900
 
-sysbot reported a splat [1] on __unmap_hugepage_range().  This is because
-vma_needs_reservation() can return -ENOMEM if
-allocate_file_region_entries() fails to allocate the file_region struct
-for the reservation.
+The error handling in nilfs_empty_dir() when a directory folio/page read
+fails is incorrect, as in the old ext2 implementation, and if the
+folio/page cannot be read or nilfs_check_folio() fails, it will falsely
+determine the directory as empty and corrupt the file system.
 
-Check for that and do not call vma_add_reservation() if that is the case,
-otherwise region_abort() and region_del() will see that we do not have any
-file_regions.
+In addition, since nilfs_empty_dir() does not immediately return on a
+failed folio/page read, but continues to loop, this can cause a long loop
+with I/O if i_size of the directory's inode is also corrupted, causing the
+log writer thread to wait and hang, as reported by syzbot.
 
-If we detect that vma_needs_reservation() returned -ENOMEM, we clear the
-hugetlb_restore_reserve flag as if this reservation was still consumed, so
-free_huge_folio() will not increment the resv count.
+Fix these issues by making nilfs_empty_dir() immediately return a false
+value (0) if it fails to get a directory folio/page.
 
-[1] https://lore.kernel.org/linux-mm/0000000000004096100617c58d54@google.com/T/#ma5983bc1ab18a54910da83416b3f89f3c7ee43aa
-
-Link: https://lkml.kernel.org/r/20240528205323.20439-1-osalvador@suse.de
-Fixes: df7a6d1f6405 ("mm/hugetlb: restore the reservation if needed")
-Signed-off-by: Oscar Salvador <osalvador@suse.de>
-Reported-and-tested-by: syzbot+d3fe2dc5ffe9380b714b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-mm/0000000000004096100617c58d54@google.com/
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Muchun Song <muchun.song@linux.dev>
+Link: https://lkml.kernel.org/r/20240604134255.7165-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c8166c541d3971bf6c87
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/hugetlb.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ fs/nilfs2/dir.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/hugetlb.c~mm-hugetlb-do-not-call-vma_add_reservation-upon-enomem
-+++ a/mm/hugetlb.c
-@@ -5768,8 +5768,20 @@ void __unmap_hugepage_range(struct mmu_g
- 		 * do_exit() will not see it, and will keep the reservation
- 		 * forever.
- 		 */
--		if (adjust_reservation && vma_needs_reservation(h, vma, address))
--			vma_add_reservation(h, vma, address);
-+		if (adjust_reservation) {
-+			int rc = vma_needs_reservation(h, vma, address);
-+
-+			if (rc < 0)
-+				/* Pressumably allocate_file_region_entries failed
-+				 * to allocate a file_region struct. Clear
-+				 * hugetlb_restore_reserve so that global reserve
-+				 * count will not be incremented by free_huge_folio.
-+				 * Act as if we consumed the reservation.
-+				 */
-+				folio_clear_hugetlb_restore_reserve(page_folio(page));
-+			else if (rc)
-+				vma_add_reservation(h, vma, address);
-+		}
+--- a/fs/nilfs2/dir.c~nilfs2-fix-nilfs_empty_dir-misjudgment-and-long-loop-on-i-o-errors
++++ a/fs/nilfs2/dir.c
+@@ -607,7 +607,7 @@ int nilfs_empty_dir(struct inode *inode)
  
- 		tlb_remove_page_size(tlb, page, huge_page_size(h));
- 		/*
+ 		kaddr = nilfs_get_folio(inode, i, &folio);
+ 		if (IS_ERR(kaddr))
+-			continue;
++			return 0;
+ 
+ 		de = (struct nilfs_dir_entry *)kaddr;
+ 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
 _
 
-Patches currently in -mm which might be from osalvador@suse.de are
+Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
 
-mm-hugetlb-drop-node_alloc_noretry-from-alloc_fresh_hugetlb_folio.patch
-arch-x86-do-not-explicitly-clear-reserved-flag-in-free_pagetable.patch
 
 
