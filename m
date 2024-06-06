@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-49056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848E28FEBAD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C655B8FEBB0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 733211C23AD2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26967B25A62
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9341F1ABCA7;
-	Thu,  6 Jun 2024 14:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F86F1ABCAF;
+	Thu,  6 Jun 2024 14:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nj3Hzd7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yf7nOWbW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521F5197A8F;
-	Thu,  6 Jun 2024 14:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E138197A8F;
+	Thu,  6 Jun 2024 14:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683280; cv=none; b=PPqOGUXyZmzDbhakwb2ZN4YTy7xo1nLP0mUQbpIS23DUQeWfT8NgGqlVk3pRzbe7igsqOF9twvfdHu9W4aWZp6J6/ggkV+322+hnVCydrwtDa21Q5GmDiatSpQyUebPixByWJ8SvZ1ty6JygwoApPytpKwEX/3juGNp5rkMlfnw=
+	t=1717683281; cv=none; b=o9rUFX8znA8uzbmrQixBxiQ4vYGSDFQ3mu+6Kpea0ihvmBPmtPdZxMlMNs1VtddGqp/tRsYKqDCeVPrmwnZ8ab765xthVKaOVdwQNBgWBpqmaza0Oyg+VW296qc765LUf9O9XBmbqEWm/RTotGSvSw0X/NuLPQG4mCZrGLAbA9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683280; c=relaxed/simple;
-	bh=6xwQcj3nwCcFNSIIc6UAQE2vyS7x1LmjUqQa4savqUM=;
+	s=arc-20240116; t=1717683281; c=relaxed/simple;
+	bh=bCY8un0/leYVYfKu/Gg9Q9/7+Cf07xA+eXU3Ovx/Xu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LnTsRG3Ky/v7qTTqpmR5ZZbGkV3Faz2wDyJdf1QliKiuzHbWPVfAoImDtk11qEsRuSDuW2DMLXnFT/el86tBfnHGdicXnNDcaQYtmWq2DRphGgHvWXCHxvOwJpRgCfUBH6CdM+3RyOTHO6IQ640ep/J1LPZ+KJYoXnmtCwE8l2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nj3Hzd7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DABC2BD10;
-	Thu,  6 Jun 2024 14:14:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GjkqA8GDEv0IpqvNOPxdzyppMCE6Mu0Z+dwwaM3I5gAGmTZ7HdlCe0AXX78rSOX3cTBh51H09hH4oHMSkDOsjfgoSZHjRtvJjrm6BQlMbfedtBqbMTFk8eGGZrEwuel9A9MxMtcLshKMYsw00r8xqhbousmRjMAkkpbgVsK016o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yf7nOWbW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39AB2C32782;
+	Thu,  6 Jun 2024 14:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683280;
-	bh=6xwQcj3nwCcFNSIIc6UAQE2vyS7x1LmjUqQa4savqUM=;
+	s=korg; t=1717683281;
+	bh=bCY8un0/leYVYfKu/Gg9Q9/7+Cf07xA+eXU3Ovx/Xu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nj3Hzd7WtxDIdrBgXaoyD0VhIIFeJfYCjWolPps6JggMCtiqFbtW8vBhX93qS7pvw
-	 gnSEheV5m01yNymL1P30X19kukJIBZsk3oWfotSJhtm0V3iHIukcHREaaPhWWsEu42
-	 KgrxmqBJ9uGiL2+dEvg3ML41uavycefH6DU/OXeY=
+	b=Yf7nOWbWJOdCA5Gjr1XroV6pK5kdnHxovOJ/o7xDhbp7RjG+b+SX8AoP/BN9ZKbI7
+	 Ccf6usE5gq4564u9zxulvvQi1eAOOgwegobrgg2FlaNOU4JJEgiARDPPswZlBQByXN
+	 EMC9qpHTW+AkMlDy/s0kUt8DCDjRX9vMFvvCAjCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Valentin Obst <kernel@valentinobst.de>,
-	John Hubbard <jhubbard@nvidia.com>,
+	Brendan Higgins <brendanhiggins@google.com>,
 	Shuah Khan <skhan@linuxfoundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	David Gow <davidgow@google.com>,
+	Rae Moar <rmoar@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 222/744] selftests: default to host arch for LLVM builds
-Date: Thu,  6 Jun 2024 15:58:14 +0200
-Message-ID: <20240606131739.514794674@linuxfoundation.org>
+Subject: [PATCH 6.6 223/744] kunit: Fix kthread reference
+Date: Thu,  6 Jun 2024 15:58:15 +0200
+Message-ID: <20240606131739.548170856@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -62,89 +64,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valentin Obst <kernel@valentinobst.de>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit d4e6fbd245c48b272cc591d1c5e7c07aedd7f071 ]
+[ Upstream commit f8aa1b98ce40184521ed95ec26cc115a255183b2 ]
 
-Align the behavior for gcc and clang builds by interpreting unset
-`ARCH` and `CROSS_COMPILE` variables in `LLVM` builds as a sign that the
-user wants to build for the host architecture.
+There is a race condition when a kthread finishes after the deadline and
+before the call to kthread_stop(), which may lead to use after free.
 
-This patch preserves the properties that setting the `ARCH` variable to an
-unknown value will trigger an error that complains about insufficient
-information, and that a set `CROSS_COMPILE` variable will override the
-target triple that is determined based on presence/absence of `ARCH`.
-
-When compiling with clang, i.e., `LLVM` is set, an unset `ARCH` variable in
-combination with an unset `CROSS_COMPILE` variable, i.e., compiling for
-the host architecture, leads to compilation failures since `lib.mk` can
-not determine the clang target triple. In this case, the following error
-message is displayed for each subsystem that does not set `ARCH` in its
-own Makefile before including `lib.mk` (lines wrapped at 75 chrs):
-
-  make[1]: Entering directory '/mnt/build/linux/tools/testing/selftests/
-   sysctl'
-  ../lib.mk:33: *** Specify CROSS_COMPILE or add '--target=' option to
-   lib.mk.  Stop.
-  make[1]: Leaving directory '/mnt/build/linux/tools/testing/selftests/
-   sysctl'
-
-In the same scenario a gcc build would default to the host architecture,
-i.e., it would use plain `gcc`.
-
-Fixes: 795285ef2425 ("selftests: Fix clang cross compilation")
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Valentin Obst <kernel@valentinobst.de>
-Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+Cc: Brendan Higgins <brendanhiggins@google.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Fixes: adf505457032 ("kunit: fix UAF when run kfence test case test_gfpzero")
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Rae Moar <rmoar@google.com>
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Link: https://lore.kernel.org/r/20240408074625.65017-3-mic@digikod.net
 Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/lib.mk | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ lib/kunit/try-catch.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
-index aa646e0661f36..a8f0442a36bca 100644
---- a/tools/testing/selftests/lib.mk
-+++ b/tools/testing/selftests/lib.mk
-@@ -7,6 +7,8 @@ else ifneq ($(filter -%,$(LLVM)),)
- LLVM_SUFFIX := $(LLVM)
- endif
+diff --git a/lib/kunit/try-catch.c b/lib/kunit/try-catch.c
+index f7825991d576a..d9d1df28cc52e 100644
+--- a/lib/kunit/try-catch.c
++++ b/lib/kunit/try-catch.c
+@@ -11,6 +11,7 @@
+ #include <linux/completion.h>
+ #include <linux/kernel.h>
+ #include <linux/kthread.h>
++#include <linux/sched/task.h>
  
-+CLANG := $(LLVM_PREFIX)clang$(LLVM_SUFFIX)
-+
- CLANG_TARGET_FLAGS_arm          := arm-linux-gnueabi
- CLANG_TARGET_FLAGS_arm64        := aarch64-linux-gnu
- CLANG_TARGET_FLAGS_hexagon      := hexagon-linux-musl
-@@ -18,7 +20,13 @@ CLANG_TARGET_FLAGS_riscv        := riscv64-linux-gnu
- CLANG_TARGET_FLAGS_s390         := s390x-linux-gnu
- CLANG_TARGET_FLAGS_x86          := x86_64-linux-gnu
- CLANG_TARGET_FLAGS_x86_64       := x86_64-linux-gnu
--CLANG_TARGET_FLAGS              := $(CLANG_TARGET_FLAGS_$(ARCH))
-+
-+# Default to host architecture if ARCH is not explicitly given.
-+ifeq ($(ARCH),)
-+CLANG_TARGET_FLAGS := $(shell $(CLANG) -print-target-triple)
-+else
-+CLANG_TARGET_FLAGS := $(CLANG_TARGET_FLAGS_$(ARCH))
-+endif
+ #include "try-catch-impl.h"
  
- ifeq ($(CROSS_COMPILE),)
- ifeq ($(CLANG_TARGET_FLAGS),)
-@@ -30,7 +38,7 @@ else
- CLANG_FLAGS     += --target=$(notdir $(CROSS_COMPILE:%-=%))
- endif # CROSS_COMPILE
+@@ -65,13 +66,14 @@ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context)
+ 	try_catch->context = context;
+ 	try_catch->try_completion = &try_completion;
+ 	try_catch->try_result = 0;
+-	task_struct = kthread_run(kunit_generic_run_threadfn_adapter,
+-				  try_catch,
+-				  "kunit_try_catch_thread");
++	task_struct = kthread_create(kunit_generic_run_threadfn_adapter,
++				     try_catch, "kunit_try_catch_thread");
+ 	if (IS_ERR(task_struct)) {
+ 		try_catch->catch(try_catch->context);
+ 		return;
+ 	}
++	get_task_struct(task_struct);
++	wake_up_process(task_struct);
  
--CC := $(LLVM_PREFIX)clang$(LLVM_SUFFIX) $(CLANG_FLAGS) -fintegrated-as
-+CC := $(CLANG) $(CLANG_FLAGS) -fintegrated-as
- else
- CC := $(CROSS_COMPILE)gcc
- endif # LLVM
+ 	time_remaining = wait_for_completion_timeout(&try_completion,
+ 						     kunit_test_timeout());
+@@ -81,6 +83,7 @@ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context)
+ 		kthread_stop(task_struct);
+ 	}
+ 
++	put_task_struct(task_struct);
+ 	exit_code = try_catch->try_result;
+ 
+ 	if (!exit_code)
 -- 
 2.43.0
 
