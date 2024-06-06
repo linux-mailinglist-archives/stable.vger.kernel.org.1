@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-48348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0568FE89D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E1F8FECCB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E5571C22FEA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1A641C25287
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10B5197533;
-	Thu,  6 Jun 2024 14:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFC61B29C9;
+	Thu,  6 Jun 2024 14:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkKsIq98"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vN0DTlgb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF2F19643E;
-	Thu,  6 Jun 2024 14:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC1D1B29C8;
+	Thu,  6 Jun 2024 14:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682915; cv=none; b=oD5JvFT6mqjbsJhU1n9pg41AhhNezuHDLXvf5thQZyX6nPTrAo/Vd6vLne6NMdv/zSRHtQ/0OU7mgicg4SrSLeoYUdAdlotOwZ+JmtlTBhEWkEoBVSqDSVtnTyJP41ebbS2p1hctl3V/6qbwsxNTfF93LSgdxHKAULL4Q41Rvi4=
+	t=1717683409; cv=none; b=PYg9682S10g8DNpfKm6STVLQLyhl2Wgtaf2EG4lrY0nFHsvYunx8WA+9pX8azndft/FMpTae713lep6fsRanW4u8KSWwcDFPGSPVQCitYnuU0u+BnI/lAhrzyW2jGe2TsbBwF4UDM9oxtR4cJ34wzPEvQz+5qMMVtQrOsuJq9BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682915; c=relaxed/simple;
-	bh=sZZCR4ftEFYxtVj4cKsBISLgZ6L+h4P5uMGtAMJINIQ=;
+	s=arc-20240116; t=1717683409; c=relaxed/simple;
+	bh=RBFgsTkCHG5pmLjZNRlFzSgUhnU2cJYyPsurb5lBnRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rimhUUpduopq3c7LR8jyYQ795pdbUjYxKmu5jwIwiPX8omhX/CNpThYR77gORgddrBnI3ikzm51cVcS4J5hNJz/yted8IRmLFdEZnn0ep2ycAcc6/01tm7EiOfh/7PfuVSWl7KudXpSAt3aCFLBPgMyp4kxEGzrmUJTrP6Dw4bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkKsIq98; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC08C2BD10;
-	Thu,  6 Jun 2024 14:08:35 +0000 (UTC)
+	 MIME-Version; b=JDWqVmmIbWyMqidnFN8UbETf4zPkZ6zVofNc1tUSSkcyCegPmLKjlkdXzaxyns+uA+SQElTlHwVV4Vc9/Hr8WjKHFmLZnIiiB5YBEL131pFgoPT4RNA5Phd9hoYYBgkLk8OBOm1TB2w772oS8ndqf1KzDcXrQ14cYhPBkxx1qYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vN0DTlgb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC09C2BD10;
+	Thu,  6 Jun 2024 14:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682915;
-	bh=sZZCR4ftEFYxtVj4cKsBISLgZ6L+h4P5uMGtAMJINIQ=;
+	s=korg; t=1717683409;
+	bh=RBFgsTkCHG5pmLjZNRlFzSgUhnU2cJYyPsurb5lBnRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zkKsIq98PdgP44rW2ON+7iJpheDakqEyQK5QJfNaOgJYAavfcfp4bp41NxR/eOlUK
-	 7Gsj8w5PpA3P+1RZ6uUuRWAvP5S6/MVZCebuV/5Df/lcfWfOag0P4y4ICSz/1dcsTp
-	 Fvr7G2gdmpXcgaHAgaEWouxSf9O/YWYvWR9BO5Lc=
+	b=vN0DTlgbzuTfVUjcfu6HhBDBxMTCpfoyCOw7PrdY3TUlONPdIf16BX5blNGLDUfGt
+	 +IbO21R+oB5nF57BUbU+9bPtrilm62CgCP5HLzq+22taT7xVRN+nQ9BoCkdYpbrqLN
+	 L+soWp/a/Z348wZOcPzSkxZNNB01RQqs0kpkZfx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannah Peuckmann <hannah.peuckmann@canonical.com>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 046/374] riscv: dts: starfive: visionfive 2: Remove non-existing TDM hardware
+Subject: [PATCH 6.6 353/744] clk: renesas: r9a07g043: Add clock and reset entry for PLIC
 Date: Thu,  6 Jun 2024 16:00:25 +0200
-Message-ID: <20240606131653.356568416@linuxfoundation.org>
+Message-ID: <20240606131743.798178130@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannah Peuckmann <hannah.peuckmann@canonical.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit dcde4e97b122ac318aaa71e8bcd2857dc28a0d12 ]
+[ Upstream commit 44019387fce230beda35b83da3a2c9fc5787704e ]
 
-This partially reverts
-commit e7c304c0346d ("riscv: dts: starfive: jh7110: add the node and pins configuration for tdm")
+Add the missing clock and reset entry for PLIC. Also add
+R9A07G043_NCEPLIC_ACLK to the critical clocks list.
 
-This added device tree nodes for TDM hardware that is not actually on the
-VisionFive 2 board, but connected on the 40pin header. Many different extension
-boards could be added on those pins, so this should be handled by overlays
-instead.
-This also conflicts with the I2S node which also attempts to grab GPIO 44:
-
-  starfive-jh7110-sys-pinctrl 13040000.pinctrl: pin GPIO44 already requested by 10090000.tdm; cannot claim for 120c0000.i2s
-
-Fixes: e7c304c0346d ("riscv: dts: starfive: jh7110: add the node and pins configuration for tdm")
-Signed-off-by: Hannah Peuckmann <hannah.peuckmann@canonical.com>
-Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Tested-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Five SoC")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20240403200952.633084-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../jh7110-starfive-visionfive-2.dtsi         | 40 -------------------
- 1 file changed, 40 deletions(-)
+ drivers/clk/renesas/r9a07g043-cpg.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-index 45b58b6f3df88..d89eef6e26335 100644
---- a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-+++ b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-@@ -622,40 +622,6 @@ GPOEN_ENABLE,
- 		};
- 	};
- 
--	tdm_pins: tdm-0 {
--		tx-pins {
--			pinmux = <GPIOMUX(44, GPOUT_SYS_TDM_TXD,
--					      GPOEN_ENABLE,
--					      GPI_NONE)>;
--			bias-pull-up;
--			drive-strength = <2>;
--			input-disable;
--			input-schmitt-disable;
--			slew-rate = <0>;
--		};
--
--		rx-pins {
--			pinmux = <GPIOMUX(61, GPOUT_HIGH,
--					      GPOEN_DISABLE,
--					      GPI_SYS_TDM_RXD)>;
--			input-enable;
--		};
--
--		sync-pins {
--			pinmux = <GPIOMUX(63, GPOUT_HIGH,
--					      GPOEN_DISABLE,
--					      GPI_SYS_TDM_SYNC)>;
--			input-enable;
--		};
--
--		pcmclk-pins {
--			pinmux = <GPIOMUX(38, GPOUT_HIGH,
--					      GPOEN_DISABLE,
--					      GPI_SYS_TDM_CLK)>;
--			input-enable;
--		};
--	};
--
- 	uart0_pins: uart0-0 {
- 		tx-pins {
- 			pinmux = <GPIOMUX(5, GPOUT_SYS_UART0_TX,
-@@ -681,12 +647,6 @@ GPOEN_DISABLE,
- 	};
+diff --git a/drivers/clk/renesas/r9a07g043-cpg.c b/drivers/clk/renesas/r9a07g043-cpg.c
+index 1a7a6d60aca44..6c6bc79b2e9ce 100644
+--- a/drivers/clk/renesas/r9a07g043-cpg.c
++++ b/drivers/clk/renesas/r9a07g043-cpg.c
+@@ -250,6 +250,10 @@ static struct rzg2l_mod_clk r9a07g043_mod_clks[] = {
+ 				0x5a8, 1),
+ 	DEF_MOD("tsu_pclk",	R9A07G043_TSU_PCLK, R9A07G043_CLK_TSU,
+ 				0x5ac, 0),
++#ifdef CONFIG_RISCV
++	DEF_MOD("nceplic_aclk",	R9A07G043_NCEPLIC_ACLK, R9A07G043_CLK_P1,
++				0x608, 0),
++#endif
  };
  
--&tdm {
--	pinctrl-names = "default";
--	pinctrl-0 = <&tdm_pins>;
--	status = "okay";
--};
--
- &uart0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&uart0_pins>;
+ static struct rzg2l_reset r9a07g043_resets[] = {
+@@ -303,6 +307,10 @@ static struct rzg2l_reset r9a07g043_resets[] = {
+ 	DEF_RST(R9A07G043_ADC_PRESETN, 0x8a8, 0),
+ 	DEF_RST(R9A07G043_ADC_ADRST_N, 0x8a8, 1),
+ 	DEF_RST(R9A07G043_TSU_PRESETN, 0x8ac, 0),
++#ifdef CONFIG_RISCV
++	DEF_RST(R9A07G043_NCEPLIC_ARESETN, 0x908, 0),
++#endif
++
+ };
+ 
+ static const unsigned int r9a07g043_crit_mod_clks[] __initconst = {
+@@ -312,6 +320,7 @@ static const unsigned int r9a07g043_crit_mod_clks[] __initconst = {
+ #endif
+ #ifdef CONFIG_RISCV
+ 	MOD_CLK_BASE + R9A07G043_IAX45_CLK,
++	MOD_CLK_BASE + R9A07G043_NCEPLIC_ACLK,
+ #endif
+ 	MOD_CLK_BASE + R9A07G043_DMAC_ACLK,
+ };
 -- 
 2.43.0
 
