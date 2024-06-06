@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-48587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED488FE9A3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3DF48FED4B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C98CA1C25F2F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17A7F1C23124
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7006E19ADA8;
-	Thu,  6 Jun 2024 14:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 301431BA863;
+	Thu,  6 Jun 2024 14:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPSCCwc+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kiIXTNM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBCE19AD9B;
-	Thu,  6 Jun 2024 14:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27C6198E85;
+	Thu,  6 Jun 2024 14:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683049; cv=none; b=Us2m2C8EMw+aaH+72UJ4oLkYvPlQOa9lfGhX36TXPe66fzrVg5FrHPfq17dJLzpZR2SHyd2GOdHNjSJFoCzRseE6u/+nquGHKs5d9zQD0EAwWKe/BTK5bLEvanseBWxBjrOXIwVSrqPYH4GmfRViUshW8c7u8ZO/E4wpfb1Gf1o=
+	t=1717683471; cv=none; b=J3JjuzhhDO0Zg0VDC+x5VaAyTjFonAW4f3Vd6F9+OPTErIcE4jNuMVASPZcfRgh9yfqF0NT29ReSUWIyy7tnai3hr68XdYygJYF2qN64G2DMFuqf2Iw5U1xIFxnNWt8xrUtT/vgPZ2iRHP9q748+Y5HRi95SfCs3wsB5MaNKQlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683049; c=relaxed/simple;
-	bh=NbjjPLa6mGeDoRMOLAcSYiYlek2dLbyYjs+lJ9Sk5ic=;
+	s=arc-20240116; t=1717683471; c=relaxed/simple;
+	bh=C7CDtVi1b7b/lubj0MF4DPIyFgk9dObnl4sLKDT5i1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=loMHA6WgRnr/pvSya+PPN1DWn3M530Fq82qXFyQ6HUXc9BBO8oDfsUeZk3gotlJo2gzOWX5HRpZ474gThwRpD+3aucCR9yxZ+rkEA5Vrb1R71DlXiTgXBRfncoErJYtN6Scozdkx6B67mqz40tCNxcWfkoQyBK05G5KhZAxPOYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPSCCwc+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9D0C32782;
-	Thu,  6 Jun 2024 14:10:49 +0000 (UTC)
+	 MIME-Version; b=Z6rEuoEwdc6fKEQ1NLl7whfRs+LDl9ou08IVUvGyLnYnuh/a6IqwNZIpIHuI9FkPraHNMLkFJrx3m5Px1X7aATJaqIR1w3Nsh0jy/38QGGcj6sxghJdA/HI1x9DFjb464KQmgDJtD1US9MrQZFmejg0EI++/nnw8k1O79sBAmyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kiIXTNM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDAEEC2BD10;
+	Thu,  6 Jun 2024 14:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683049;
-	bh=NbjjPLa6mGeDoRMOLAcSYiYlek2dLbyYjs+lJ9Sk5ic=;
+	s=korg; t=1717683470;
+	bh=C7CDtVi1b7b/lubj0MF4DPIyFgk9dObnl4sLKDT5i1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EPSCCwc+Al2CBXp9vj14T1zpT/ZcpwK5Kn0ifO4xli3eLVxiWwi7fZlWgviIZeMfw
-	 fNrri/pQAczz/SVQoqf4E8n6DYR5tUUTIi9kSYhGuzfYNk2HWREaeaUnPashr9YnQd
-	 Viyn/qbxU7loOcZlfx9bZ5nTrFy1D2cmnx9OFYkw=
+	b=kiIXTNM8U0QQtUt1rw/lxCOSN/C36enzGsCNWNOD2z+Fhi/jupoEkQ2vdkdWLJOZQ
+	 0Ni1qjWOQqhCgA/GRZ2J7J1IiVJCwj/IMi7wKVlA4Ka5hFMoK2JDkPXYmQs7R9YjKn
+	 KX2gNLUVeviY+2g6Xvk42gh4BfzkH9MpkMbf62uE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Christoph Hellwig <hch@lst.de>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Leo Yan <leo.yan@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 288/374] dma-mapping: benchmark: fix up kthread-related error handling
-Date: Thu,  6 Jun 2024 16:04:27 +0200
-Message-ID: <20240606131701.543239557@linuxfoundation.org>
+Subject: [PATCH 6.1 339/473] perf ui browser: Avoid SEGV on title
+Date: Thu,  6 Jun 2024 16:04:28 +0200
+Message-ID: <20240606131711.113854997@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +72,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit bb9025f4432f8c158322cf2c04c2b492f23eb511 ]
+[ Upstream commit 90f01afb0dfafbc9b094bb61e61a4ac297d9d0d2 ]
 
-kthread creation failure is invalidly handled inside do_map_benchmark().
-The put_task_struct() calls on the error path are supposed to balance the
-get_task_struct() calls which only happen after all the kthreads are
-successfully created. Rollback using kthread_stop() for already created
-kthreads in case of such failure.
+If the title is NULL then it can lead to a SEGV.
 
-In normal situation call kthread_stop_put() to gracefully stop kthreads
-and put their task refcounts. This should be done for all started
-kthreads.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 65789daa8087 ("dma-mapping: add benchmark support for streaming DMA APIs")
-Suggested-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: 769e6a1e15bdbbaf ("perf ui browser: Don't save pointer to stack memory")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Leo Yan <leo.yan@linux.dev>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240508035301.1554434-2-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/map_benchmark.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ tools/perf/ui/browser.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
-index 02205ab53b7e9..2478957cf9f83 100644
---- a/kernel/dma/map_benchmark.c
-+++ b/kernel/dma/map_benchmark.c
-@@ -118,6 +118,8 @@ static int do_map_benchmark(struct map_benchmark_data *map)
- 		if (IS_ERR(tsk[i])) {
- 			pr_err("create dma_map thread failed\n");
- 			ret = PTR_ERR(tsk[i]);
-+			while (--i >= 0)
-+				kthread_stop(tsk[i]);
- 			goto out;
- 		}
+diff --git a/tools/perf/ui/browser.c b/tools/perf/ui/browser.c
+index d09b4cbec6e06..5d6f4f25c33d0 100644
+--- a/tools/perf/ui/browser.c
++++ b/tools/perf/ui/browser.c
+@@ -203,7 +203,7 @@ void ui_browser__refresh_dimensions(struct ui_browser *browser)
+ void ui_browser__handle_resize(struct ui_browser *browser)
+ {
+ 	ui__refresh_dimensions(false);
+-	ui_browser__show(browser, browser->title, ui_helpline__current);
++	ui_browser__show(browser, browser->title ?: "", ui_helpline__current);
+ 	ui_browser__refresh(browser);
+ }
  
-@@ -139,13 +141,17 @@ static int do_map_benchmark(struct map_benchmark_data *map)
- 
- 	msleep_interruptible(map->bparam.seconds * 1000);
- 
--	/* wait for the completion of benchmark threads */
-+	/* wait for the completion of all started benchmark threads */
- 	for (i = 0; i < threads; i++) {
--		ret = kthread_stop(tsk[i]);
--		if (ret)
--			goto out;
-+		int kthread_ret = kthread_stop_put(tsk[i]);
-+
-+		if (kthread_ret)
-+			ret = kthread_ret;
- 	}
- 
-+	if (ret)
-+		goto out;
-+
- 	loops = atomic64_read(&map->loops);
- 	if (likely(loops > 0)) {
- 		u64 map_variance, unmap_variance;
-@@ -170,8 +176,6 @@ static int do_map_benchmark(struct map_benchmark_data *map)
- 	}
- 
- out:
--	for (i = 0; i < threads; i++)
--		put_task_struct(tsk[i]);
- 	put_device(map->dev);
- 	kfree(tsk);
- 	return ret;
 -- 
 2.43.0
 
