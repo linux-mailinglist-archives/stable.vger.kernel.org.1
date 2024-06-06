@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455078FEC60
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA108FEA79
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C49D6B23A42
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 839C11C22361
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59AC41B0120;
-	Thu,  6 Jun 2024 14:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D601A19752B;
+	Thu,  6 Jun 2024 14:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ojd4Uw2h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ezdxVV9O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E631B0122;
-	Thu,  6 Jun 2024 14:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952231990D2;
+	Thu,  6 Jun 2024 14:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683359; cv=none; b=JRemk8WWsl77aG5LoIaBEDrXSekqsFbdWvp9HVomnhXSeft5csbgWnVRKurZZ5C9u3HXysIMIR5zoeleeB/nPdZHR6LIxxmJPBHAamM4QnKjMWsac2L2PPbbrIgIBgUKigID03ZPGy8bnb2rYx8NeCtPaknQcbCI/dKwEQaggW0=
+	t=1717683141; cv=none; b=Yq5ZrnIhDdDEZsAbJEaXBpDMmOQPP14xo446QHQeHHp3GvvzaqJ7Gui8XEslpf02O66QbEQa+JMqRb5KTgP/yZusN+RZfNySLvWPtIfkVyxmV+7xcTD8jwXAXVgaBi2NJVdoOXaYfk5fjBTf2M2nx8qsQ1GuUHYru0Rxx8jKtsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683359; c=relaxed/simple;
-	bh=wGPmc/qJ9IcvTIBshV1oZ7aaPc+oje1lXrIUtBK5Av8=;
+	s=arc-20240116; t=1717683141; c=relaxed/simple;
+	bh=ZWQ0Wt7pPmErSLsyfyMF/COvKYYReALwKZy87UIaf3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=da3oh/3M1iVY7+03qqXlQ099vxArZMtdoD+OsUxPO9Ctg0Y3Zkp3rpTChQ7DNdlWQnE1jfgpzVT/YuNQuY/j3ZurHAe/3iov9wf6BhoEIYxMwygtu5dOJp717LIMfrkXOS5lfZdtB6SddrxJoMgTPhI57kFAhIUDXSoz5JuMKGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ojd4Uw2h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8224C2BD10;
-	Thu,  6 Jun 2024 14:15:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cMHmEwQH5Uqe3IL57XcaAYhLKOPhkeT/2PuOnyfA3PgqxoHJhpuYOj7HcH9uFNUNY2EVhV2m5itaWXiuMPk++st8vrvPkgHF52ejLQvytKA+4JjnxmfTVUn9kvD9nO+/yeqxPqOTkRYyDVS3xbXqR2CrCHCb6OD7KNy69YU2ehs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ezdxVV9O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777C3C2BD10;
+	Thu,  6 Jun 2024 14:12:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683359;
-	bh=wGPmc/qJ9IcvTIBshV1oZ7aaPc+oje1lXrIUtBK5Av8=;
+	s=korg; t=1717683141;
+	bh=ZWQ0Wt7pPmErSLsyfyMF/COvKYYReALwKZy87UIaf3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ojd4Uw2hb3sB1lw9Ntc1yxurvFSlJZobgWFDvWcDCz4UH4JEn+sd1kcbk7QxTWffE
-	 z6UWFKyubWayplhBW5nLncXkVlnCCq+rlQowwyz+sUUSUIie2KqFhhHRw2INC2S5L7
-	 NtDaDPqdYQU5Fol1kUm1+ixd2PJseHqHF4BgS/GY=
+	b=ezdxVV9O4YWvUZezj8aoDdlPqGNsmEyGUwLB38JMcKpPJDYm9v9awEASmktPVu02X
+	 nF+750/yPjVKLFTmuS69EuF3YI8HVHLtXjbSYQXZUcLrzPz/irZtnqdL1NZlBe+fJS
+	 Kyxr7RKoGgJPemxcPtwH9n4KH7XXESHJa8ybI3Yk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Heidelberg <david.heidelberg@collabora.com>,
-	Vignesh Raman <vignesh.raman@collabora.com>,
-	Helen Koike <helen.koike@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 270/744] drm/ci: update device type for volteer devices
+	Brennan Xavier McManus <bxmcmanus@gmail.com>,
+	Ammar Faizi <ammarfaizi2@gnuweeb.org>,
+	Willy Tarreau <w@1wt.eu>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Subject: [PATCH 6.1 013/473] tools/nolibc/stdlib: fix memory error in realloc()
 Date: Thu,  6 Jun 2024 15:59:02 +0200
-Message-ID: <20240606131741.035754048@linuxfoundation.org>
+Message-ID: <20240606131700.267215815@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Raman <vignesh.raman@collabora.com>
+From: Brennan Xavier McManus <bxmcmanus@gmail.com>
 
-[ Upstream commit a2c71b711e7efc6478976233768bdbc3386e6dce ]
+commit 791f4641142e2aced85de082e5783b4fb0b977c2 upstream.
 
-Volteer devices in the collabora lab are categorized under the
-asus-cx9400-volteer device type. The majority of these units
-has an Intel Core i5-1130G7 CPU, while some of them have a
-Intel Core i7-1160G7 CPU instead. So due to this difference,
-new device type template is added for the Intel Core i5-1130G7
-and i7-1160G7 variants of the Acer Chromebook Spin 514 (CP514-2H)
-volteer Chromebooks. So update the same in drm-ci.
+Pass user_p_len to memcpy() instead of heap->len to prevent realloc()
+from copying an extra sizeof(heap) bytes from beyond the allocated
+region.
 
-https://gitlab.collabora.com/lava/lava/-/merge_requests/149
-
-Fixes: 0119c894ab0d ("drm: Add initial ci/ subdirectory")
-Reviewed-by: David Heidelberg <david.heidelberg@collabora.com>
-Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
-Acked-by: Helen Koike <helen.koike@collabora.com>
-Signed-off-by: Helen Koike <helen.koike@collabora.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240307021841.100561-1-vignesh.raman@collabora.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Brennan Xavier McManus <bxmcmanus@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
+Fixes: 0e0ff638400be8f497a35b51a4751fd823f6bd6a ("tools/nolibc/stdlib: Implement `malloc()`, `calloc()`, `realloc()` and `free()`")
+Signed-off-by: Willy Tarreau <w@1wt.eu>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ci/test.yml | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/include/nolibc/stdlib.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/ci/test.yml b/drivers/gpu/drm/ci/test.yml
-index 7b5c5fe121d9d..6f81dc10865b5 100644
---- a/drivers/gpu/drm/ci/test.yml
-+++ b/drivers/gpu/drm/ci/test.yml
-@@ -235,11 +235,11 @@ i915:cml:
- i915:tgl:
-   extends:
-     - .i915
--  parallel: 8
-+  parallel: 5
-   variables:
--    DEVICE_TYPE: asus-cx9400-volteer
-+    DEVICE_TYPE: acer-cp514-2h-1130g7-volteer
-     GPU_VERSION: tgl
--    RUNNER_TAG: mesa-ci-x86-64-lava-asus-cx9400-volteer
-+    RUNNER_TAG: mesa-ci-x86-64-lava-acer-cp514-2h-1130g7-volteer
+--- a/tools/include/nolibc/stdlib.h
++++ b/tools/include/nolibc/stdlib.h
+@@ -166,7 +166,7 @@ void *realloc(void *old_ptr, size_t new_
+ 	if (__builtin_expect(!ret, 0))
+ 		return NULL;
  
- .amdgpu:
-   extends:
--- 
-2.43.0
-
+-	memcpy(ret, heap->user_p, heap->len);
++	memcpy(ret, heap->user_p, user_p_len);
+ 	munmap(heap, heap->len);
+ 	return ret;
+ }
 
 
 
