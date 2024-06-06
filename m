@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755028FEC78
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F2E8FEACF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 033F3B25F11
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 219351F24F49
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D28F1B1409;
-	Thu,  6 Jun 2024 14:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD7519754B;
+	Thu,  6 Jun 2024 14:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8hq04dK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyXt6st2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5FE1B1406;
-	Thu,  6 Jun 2024 14:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46B4196D91;
+	Thu,  6 Jun 2024 14:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683370; cv=none; b=NJptSJExA9S8rQcZhgkSgSJYmfe7BiwYop67wANtzlZKLax6P5obnqV9oWsVmdqsLeYr1+/K2j78QADVusiyg3va4lg39YM31aI6FH/Xdc8a4UN2kcwi5DkKDgA+qZNhn4srfdKS87EoUW/k//coL8sw9puzIkJavXif0dCIb40=
+	t=1717683178; cv=none; b=SL/H09sXS7+mgiS+rw2d0Fwk/pOtGD+jHaGmKvabaj5b+pvZvaNlv8qxSJCpOeBRdCNr+5tUz3IXbhQsnFZyGGCv6yh1Ra6wfwmpACrLb2SflJTy9C4/oOPv99r8V2lzxY2BEvaGZlrbSrYQyk4XmI45t1DCMbdtpl5Uhf32m+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683370; c=relaxed/simple;
-	bh=YK3zgT4BJiaCGj5ZZ5HPX5fBmdEDKAL2ESToI0HgLTI=;
+	s=arc-20240116; t=1717683178; c=relaxed/simple;
+	bh=zVGT7NAsx1k2RxLjcNFv+VG0XeDVJFmJHBHkV+v5DJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJ+fbueLkHFY3yyMqoM/uW4iVtu2AQ2lsmqol/ftsI4ywWf5R9gQR5RUeZfBc5+F5uEyLht8anU4bhmbUKXUGv3IXG0u4P0lKZY/39LNcTiI3CKnbgiQAhm1pBGnwMzEQRlGFg/oSbINQIKw89NQz1RgaWdWT1ZIaSira6freAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8hq04dK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53B7C2BD10;
-	Thu,  6 Jun 2024 14:16:08 +0000 (UTC)
+	 MIME-Version; b=t0++uqmcbiKPhjaNyD44TuGkVMAFhFSyvgUK7Oq0vk+otI6Ja7FEBRm8h8TIdt8FgL4fNYyT5uI1a4h60uoBAAf3p1YxFcmQL3K4t9h64qYqu2+M/AL2anAIfS596vdoTAeeMgu48PSrk6/wg2wsrwwyhzjzKFK5Wb/x0fdbIkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyXt6st2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48A6C32781;
+	Thu,  6 Jun 2024 14:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683368;
-	bh=YK3zgT4BJiaCGj5ZZ5HPX5fBmdEDKAL2ESToI0HgLTI=;
+	s=korg; t=1717683178;
+	bh=zVGT7NAsx1k2RxLjcNFv+VG0XeDVJFmJHBHkV+v5DJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8hq04dKaMTpwzam/p/fT9hcb7JlEBRns4Ch/c3zuzo6h84v0CTzgPM+BzqxPeNV6
-	 TaslFv45UDcnsnsdLCMz+CGRPG8dGyXf15fASW+igttC5BRh/6b/QLVzLd5i3D4Abp
-	 4ynosaxADbqAOnAtZDiDX9xUiqyfmV3eI0wTTHbY=
+	b=DyXt6st2VbV9w0xJLEHeDR9Tf9T7WaeKAg9Br7mDzWRknd8UV7K6eyKxlt/ZAnOEi
+	 ITyQD8OOcgE/Wo8veJGYYS8Xmga245Tz27IZqh3lljeERJQ5ey1hCrP8l0M8ucx/Br
+	 +CmyssI0y5K6x4YdmokV/4lnDtN/kwkAbmN22EUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 310/744] media: ipu3-cio2: Request IRQ earlier
+Subject: [PATCH 6.1 053/473] ASoC: da7219-aad: fix usage of device_get_named_child_node()
 Date: Thu,  6 Jun 2024 15:59:42 +0200
-Message-ID: <20240606131742.344870558@linuxfoundation.org>
+Message-ID: <20240606131701.632753998@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit a069f79bfa6ec1ea0744981ea8425c8a25322579 ]
+[ Upstream commit e8a6a5ad73acbafd98e8fd3f0cbf6e379771bb76 ]
 
-Call devm_request_irq() before registering the async notifier, as otherwise
-it would be possible to use the device before the interrupts could be
-delivered to the driver.
+The documentation for device_get_named_child_node() mentions this
+important point:
 
-Fixes: c2a6a07afe4a ("media: intel-ipu3: cio2: add new MIPI-CSI2 driver")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+"
+The caller is responsible for calling fwnode_handle_put() on the
+returned fwnode pointer.
+"
+
+Add fwnode_handle_put() to avoid a leaked reference.
+
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20240426153033.38500-1-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ipu3/ipu3-cio2.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ sound/soc/codecs/da7219-aad.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/pci/intel/ipu3/ipu3-cio2.c b/drivers/media/pci/intel/ipu3/ipu3-cio2.c
-index 5dd69a251b6a9..423842d2a5b2b 100644
---- a/drivers/media/pci/intel/ipu3/ipu3-cio2.c
-+++ b/drivers/media/pci/intel/ipu3/ipu3-cio2.c
-@@ -1803,11 +1803,6 @@ static int cio2_pci_probe(struct pci_dev *pci_dev,
+diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
+index c8410769188a0..d613f1074524a 100644
+--- a/sound/soc/codecs/da7219-aad.c
++++ b/sound/soc/codecs/da7219-aad.c
+@@ -638,8 +638,10 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct device *dev)
+ 		return NULL;
  
- 	v4l2_async_nf_init(&cio2->notifier, &cio2->v4l2_dev);
+ 	aad_pdata = devm_kzalloc(dev, sizeof(*aad_pdata), GFP_KERNEL);
+-	if (!aad_pdata)
++	if (!aad_pdata) {
++		fwnode_handle_put(aad_np);
+ 		return NULL;
++	}
  
--	/* Register notifier for subdevices we care */
--	r = cio2_parse_firmware(cio2);
--	if (r)
--		goto fail_clean_notifier;
--
- 	r = devm_request_irq(dev, pci_dev->irq, cio2_irq, IRQF_SHARED,
- 			     CIO2_NAME, cio2);
- 	if (r) {
-@@ -1815,6 +1810,11 @@ static int cio2_pci_probe(struct pci_dev *pci_dev,
- 		goto fail_clean_notifier;
- 	}
+ 	aad_pdata->irq = i2c->irq;
  
-+	/* Register notifier for subdevices we care */
-+	r = cio2_parse_firmware(cio2);
-+	if (r)
-+		goto fail_clean_notifier;
+@@ -714,6 +716,8 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct device *dev)
+ 	else
+ 		aad_pdata->adc_1bit_rpt = DA7219_AAD_ADC_1BIT_RPT_1;
+ 
++	fwnode_handle_put(aad_np);
 +
- 	pm_runtime_put_noidle(dev);
- 	pm_runtime_allow(dev);
+ 	return aad_pdata;
+ }
  
 -- 
 2.43.0
