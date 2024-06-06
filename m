@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84E5C8FE87B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CCC8FEAF4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 369D71F22D42
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E174A1F25843
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731DB196D82;
-	Thu,  6 Jun 2024 14:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9EEA1A2570;
+	Thu,  6 Jun 2024 14:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUjr5H0W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KY9HZ3P7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC74196C9B;
-	Thu,  6 Jun 2024 14:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F9F1A2564;
+	Thu,  6 Jun 2024 14:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682899; cv=none; b=nkr6wGlOpgaIGD2c0rUcdUWkybNQTPVhbfmOpj+eluu6MSlsj21Tppfkyu8saak+3UJ46iLk1a0lNubW5eaLV4uVhdzzkVaEuNH5/tJ61c4Ck5JyK7a7MbJ99G+uYwKOR2CO21ck3PmWyqbOVJk8OU4HTcJw3226ygYjSt3CwJA=
+	t=1717683193; cv=none; b=m7Ks/2fc1GKzB88RUN8qiiBQjrvGdV/6+ze76w9cx9aRRMffrZmVL+CHxPIJGgJlTN5xNLvEZrIeRtw3C0Ld6IIkGG/tSz570K0rvdm/eWZZAINmZEDYZ/B2YQzOy7Rl0wR6baDx/BIkB9eie7go9bUwNJsu0O3x3vw1s9QfBpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682899; c=relaxed/simple;
-	bh=/qlWaS/edFAAiAonkzcf52ycEaqJ10W3lVmVeLaCx+g=;
+	s=arc-20240116; t=1717683193; c=relaxed/simple;
+	bh=OcxxCcrQkwjO/qLR7AzifQEBl4mWn1rD9y8Z9jbZ16I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bxed4wUkzyyw5FGaf1n/ycL9e5HK6fBu8+Gn4IcUFT6iOkYLQ5ZUgWB4JFN6V6nEjDNsRDda7n4HPYHT79v1+ARlIiSFAsoZnPeEbM7P+93iolNVCoCUNc0AU4b5w6I85RMAxx0+d1zeTTi1KlTUV7lnUiLiuSG1MHkuWj15mCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUjr5H0W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E29CC32781;
-	Thu,  6 Jun 2024 14:08:19 +0000 (UTC)
+	 MIME-Version; b=BX4dxARqvb/+YcXyDTTBdli5LJYGJuEhGsraEFzGLZXtpkYP03C/sQxDE9LtbSaduPbVWtjkY0X7ki5hFkb0kBRGb9U6UC4AMVPb3RtP3qnq3172pCtvnUFdvuWS1877KhUR9XIW4Hyd2DzwGj6c+4G8bANOgis5c/qSAzG0tJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KY9HZ3P7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46594C32781;
+	Thu,  6 Jun 2024 14:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682899;
-	bh=/qlWaS/edFAAiAonkzcf52ycEaqJ10W3lVmVeLaCx+g=;
+	s=korg; t=1717683193;
+	bh=OcxxCcrQkwjO/qLR7AzifQEBl4mWn1rD9y8Z9jbZ16I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dUjr5H0Wcs+Llt5qloRqGVWyReKwXwobcRP1wLnqcglbOsnuHq2Ur+lElqO7UhZ5u
-	 v8ju3jlUcPRQ+k/9qPIFMVTN+geq1oQok3sy+NX9s7HiLJajRnfJMsXKyiy2d6tAf5
-	 YAIlI/5U6MG/a11DRKzU69wkn6ZEyICCuOvHU/8I=
+	b=KY9HZ3P75KgAHFqG+S4DFt5erZo5u1GSxwoEruHRGY6T47cj4Fuipq15saZL4ms7o
+	 dFk8KDnh8vtR1CEBTqzm1nm0reGUWzrZ4ksHLPxBUTm3WuFWzK7hrDU9H6u4M4Lv6D
+	 igsctdm9J0zmtgqC0bWynbyeqqYrH+uZyi5CXnjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 017/374] usb: typec: ucsi: simplify partners PD caps registration
+Subject: [PATCH 6.1 067/473] crypto: bcm - Fix pointer arithmetic
 Date: Thu,  6 Jun 2024 15:59:56 +0200
-Message-ID: <20240606131652.349035981@linuxfoundation.org>
+Message-ID: <20240606131702.094665322@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 41e1cd1401fcd1f1ae9e47574af2d9fc44a870b3 ]
+[ Upstream commit 2b3460cbf454c6b03d7429e9ffc4fe09322eb1a9 ]
 
-In a way similar to the previous commit, move
-typec_partner_set_usb_power_delivery() to be called after reading the PD
-caps. This also removes calls to
-usb_power_delivery_unregister_capabilities() from the error path. Keep
-all capabilities registered until they are cleared by
-ucsi_unregister_partner_pdos().
+In spu2_dump_omd() value of ptr is increased by ciph_key_len
+instead of hash_iv_len which could lead to going beyond the
+buffer boundaries.
+Fix this bug by changing ciph_key_len to hash_iv_len.
 
-Fixes: b04e1747fbcc ("usb: typec: ucsi: Register USB Power Delivery Capabilities")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240329-qcom-ucsi-fixes-v2-5-0f5d37ed04db@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 9d12ba86f818 ("crypto: brcm - Add Broadcom SPU driver")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c | 14 +-------------
- 1 file changed, 1 insertion(+), 13 deletions(-)
+ drivers/crypto/bcm/spu2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index 7a427c8e92e29..7801501837b69 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -824,12 +824,6 @@ static int ucsi_register_partner_pdos(struct ucsi_connector *con)
- 			return PTR_ERR(cap);
- 
- 		con->partner_source_caps = cap;
--
--		ret = typec_partner_set_usb_power_delivery(con->partner, con->partner_pd);
--		if (ret) {
--			usb_power_delivery_unregister_capabilities(con->partner_source_caps);
--			return ret;
--		}
+diff --git a/drivers/crypto/bcm/spu2.c b/drivers/crypto/bcm/spu2.c
+index 07989bb8c220a..3fdc64b5a65e7 100644
+--- a/drivers/crypto/bcm/spu2.c
++++ b/drivers/crypto/bcm/spu2.c
+@@ -495,7 +495,7 @@ static void spu2_dump_omd(u8 *omd, u16 hash_key_len, u16 ciph_key_len,
+ 	if (hash_iv_len) {
+ 		packet_log("  Hash IV Length %u bytes\n", hash_iv_len);
+ 		packet_dump("  hash IV: ", ptr, hash_iv_len);
+-		ptr += ciph_key_len;
++		ptr += hash_iv_len;
  	}
  
- 	ret = ucsi_get_pdos(con, TYPEC_SINK, 1, caps.pdo);
-@@ -844,15 +838,9 @@ static int ucsi_register_partner_pdos(struct ucsi_connector *con)
- 			return PTR_ERR(cap);
- 
- 		con->partner_sink_caps = cap;
--
--		ret = typec_partner_set_usb_power_delivery(con->partner, con->partner_pd);
--		if (ret) {
--			usb_power_delivery_unregister_capabilities(con->partner_sink_caps);
--			return ret;
--		}
- 	}
- 
--	return 0;
-+	return typec_partner_set_usb_power_delivery(con->partner, con->partner_pd);
- }
- 
- static void ucsi_unregister_partner_pdos(struct ucsi_connector *con)
+ 	if (ciph_iv_len) {
 -- 
 2.43.0
 
