@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-49744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C1048FEEAA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6778FED29
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AE4A286890
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 540121F26219
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365031C6176;
-	Thu,  6 Jun 2024 14:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41F319D074;
+	Thu,  6 Jun 2024 14:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1I2qGkJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z699kNAc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9536199222;
-	Thu,  6 Jun 2024 14:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C7519D069;
+	Thu,  6 Jun 2024 14:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683688; cv=none; b=AbD9YqrHFTKv1ShVHa11x5smvJUSSuHQVakamdCfTelqpWC4+4yLg7m25qu1/KEIeQ5Clw2M18qUXt9Iw6tKj51AXXZcj641tPQNj/UfY8S2umJsWdPGAGPZvsLBRd/ZVrynGM3xmxxNRVIeVFbysteHuzSUexdWg8fpiYIE88s=
+	t=1717683454; cv=none; b=gPzv5jvj1H6wB3doHA93Rv3rcP6rIroX9kBNXenhzXA6lP+1V7oV3SJ5yoJndP5u+Vuera2Wkx3vMNB1km6NYBHHKs1GAqVhuM/5gRCUkpsQK9d0dHk9A+2BF77jaXixAsf7ZwMqJMmyuQga6aV4ePjYfihd6f9s+DEfs+6p8tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683688; c=relaxed/simple;
-	bh=RBaMvAkkvJKQNqLccAl61MOu07v0xDyYG22t+VR+rto=;
+	s=arc-20240116; t=1717683454; c=relaxed/simple;
+	bh=wYdByVeXDIXel4YRTpdrp/COLpctXl4hbQLJClSmn5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+TbBNCfJHvy8Gq/r+D8Yqozwb8zHuK8Zjj3+8VrS23YJH8svobURK0QnAGo5gxm89JYP1/5zqRgtcudfEvmVz3t90aFD3MwjLontJk+KGqKhHj/QqhpevZO4kost+VaOUasrE3y85Y+1dmElccow6zIH2Q+6ySMGmlYgDpvoNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1I2qGkJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A310C2BD10;
-	Thu,  6 Jun 2024 14:21:27 +0000 (UTC)
+	 MIME-Version; b=LqEud41j90TpfyJc79OVLEbnbVvaC1ZtYoVwA0fTy2WDMUy6WWzqiOciycI3MduAQwa0bqnAlhs/eJ4k/ogVnnn2AnYi2FCeiywwA+jh4RcgHmB3XikjYnR11x59CDJd1R+WquarPZrCVs4PWjPKFpvNs7J/bwYsdWVhKIGcCGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z699kNAc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7CFC2BD10;
+	Thu,  6 Jun 2024 14:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683687;
-	bh=RBaMvAkkvJKQNqLccAl61MOu07v0xDyYG22t+VR+rto=;
+	s=korg; t=1717683454;
+	bh=wYdByVeXDIXel4YRTpdrp/COLpctXl4hbQLJClSmn5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u1I2qGkJqNPaYdU2gCgvwWdRVB6Y5OMZ7oohBgp5rvcfZlS1kfPado6Db9UL15uC7
-	 YBGaA3oPSUBGdd8axXFboQewYdYduKO5f6ocisaJIzUm9pWakbKASXsw7LuoJ7v3qe
-	 1rw6GRccJTBv60c5oMBVwKoEO7jQ3ZQHhq3gx0Ms=
+	b=Z699kNAcIDrWnRteKUk+qqC6Qt2atlbfP3ZvLd+/l5aEVcvaDkJPLz8uZdVe7mxXa
+	 zQ//ofB69SEHIyiwOGAraVNl7w4dI/Q2uhuYn5eovHzUzj/yDwQu2evI2OnXr3oryC
+	 1M0p7OKvOlBUj2tSpf8c/KtbGqqPpUeic9DQ5so8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugen Hristev <eugen.hristev@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 594/744] media: mediatek: vcodec: fix possible unbalanced PM counter
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com>
+Subject: [PATCH 6.1 337/473] PCI/EDR: Align EDR_PORT_DPC_ENABLE_DSM with PCI Firmware r3.3
 Date: Thu,  6 Jun 2024 16:04:26 +0200
-Message-ID: <20240606131751.527772509@linuxfoundation.org>
+Message-ID: <20240606131711.059367260@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@collabora.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-[ Upstream commit c28d4921a1e3ce0a0374b7e9d68593be8802c42a ]
+[ Upstream commit f24ba846133d0edec785ac6430d4daf6e9c93a09 ]
 
-It is possible that mtk_vcodec_enc_pw_on fails, and in that scenario
-the PM counter is not incremented, and subsequent call to
-mtk_vcodec_enc_pw_off decrements the counter, leading to a PM imbalance.
-Fix by bailing out of venc_if_encode in the case when mtk_vcodec_enc_pw_on
-fails.
+The "Downstream Port Containment related Enhancements" ECN of Jan 28, 2019
+(document 12888 below), defined the EDR_PORT_DPC_ENABLE_DSM function with
+Revision ID 5 with Arg3 being an integer.  But when the ECN was integrated
+into PCI Firmware r3.3, sec 4.6.12, it was defined as Revision ID 6 with
+Arg3 being a package containing an integer.
 
-Fixes: 4e855a6efa54 ("[media] vcodec: mediatek: Add Mediatek V4L2 Video Encoder Driver")
-Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+The implementation in acpi_enable_dpc() supplies a package as Arg3 (arg4 in
+the code), but it previously specified Revision ID 5.  Align this with PCI
+Firmware r3.3 by using Revision ID 6.
+
+If firmware implemented per the ECN, its Revision 5 function would receive
+a package as Arg3 when it expects an integer, so acpi_enable_dpc() would
+likely fail.  If such firmware exists and lacks a Revision 6 function that
+expects a package, we may have to add support for Revision 5.
+
+Link: https://lore.kernel.org/r/20240501022543.1626025-1-sathyanarayanan.kuppuswamy@linux.intel.com
+Link: https://members.pcisig.com/wg/PCI-SIG/document/12888
+Fixes: ac1c8e35a326 ("PCI/DPC: Add Error Disconnect Recover (EDR) support")
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+[bhelgaas: split into two patches, update commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com> # one platform
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.c     | 4 +++-
- .../platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.h     | 2 +-
- drivers/media/platform/mediatek/vcodec/encoder/venc_drv_if.c | 5 ++++-
- 3 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/pci/pcie/edr.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.c b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.c
-index a22b7dfc656e1..1a2b14a3e219c 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.c
-@@ -58,13 +58,15 @@ int mtk_vcodec_init_enc_clk(struct mtk_vcodec_enc_dev *mtkdev)
- 	return 0;
- }
+diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
+index 87734e4c3c204..5b5a502363c00 100644
+--- a/drivers/pci/pcie/edr.c
++++ b/drivers/pci/pcie/edr.c
+@@ -32,10 +32,10 @@ static int acpi_enable_dpc(struct pci_dev *pdev)
+ 	int status = 0;
  
--void mtk_vcodec_enc_pw_on(struct mtk_vcodec_pm *pm)
-+int mtk_vcodec_enc_pw_on(struct mtk_vcodec_pm *pm)
- {
- 	int ret;
+ 	/*
+-	 * Behavior when calling unsupported _DSM functions is undefined,
+-	 * so check whether EDR_PORT_DPC_ENABLE_DSM is supported.
++	 * Per PCI Firmware r3.3, sec 4.6.12, EDR_PORT_DPC_ENABLE_DSM is
++	 * optional. Return success if it's not implemented.
+ 	 */
+-	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
++	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 6,
+ 			    1ULL << EDR_PORT_DPC_ENABLE_DSM))
+ 		return 0;
  
- 	ret = pm_runtime_resume_and_get(pm->dev);
- 	if (ret)
- 		dev_err(pm->dev, "pm_runtime_resume_and_get fail: %d", ret);
-+
-+	return ret;
- }
+@@ -46,12 +46,7 @@ static int acpi_enable_dpc(struct pci_dev *pdev)
+ 	argv4.package.count = 1;
+ 	argv4.package.elements = &req;
  
- void mtk_vcodec_enc_pw_off(struct mtk_vcodec_pm *pm)
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.h b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.h
-index 157ea08ba9e36..2e28f25e36cc4 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.h
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.h
-@@ -10,7 +10,7 @@
- #include "mtk_vcodec_enc_drv.h"
- 
- int mtk_vcodec_init_enc_clk(struct mtk_vcodec_enc_dev *dev);
--void mtk_vcodec_enc_pw_on(struct mtk_vcodec_pm *pm);
-+int mtk_vcodec_enc_pw_on(struct mtk_vcodec_pm *pm);
- void mtk_vcodec_enc_pw_off(struct mtk_vcodec_pm *pm);
- void mtk_vcodec_enc_clock_on(struct mtk_vcodec_pm *pm);
- void mtk_vcodec_enc_clock_off(struct mtk_vcodec_pm *pm);
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/venc_drv_if.c b/drivers/media/platform/mediatek/vcodec/encoder/venc_drv_if.c
-index c402a686f3cb2..e83747b8d69ab 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/venc_drv_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/venc_drv_if.c
-@@ -64,7 +64,9 @@ int venc_if_encode(struct mtk_vcodec_enc_ctx *ctx,
- 	ctx->dev->curr_ctx = ctx;
- 	spin_unlock_irqrestore(&ctx->dev->irqlock, flags);
- 
--	mtk_vcodec_enc_pw_on(&ctx->dev->pm);
-+	ret = mtk_vcodec_enc_pw_on(&ctx->dev->pm);
-+	if (ret)
-+		goto venc_if_encode_pw_on_err;
- 	mtk_vcodec_enc_clock_on(&ctx->dev->pm);
- 	ret = ctx->enc_if->encode(ctx->drv_handle, opt, frm_buf,
- 				  bs_buf, result);
-@@ -75,6 +77,7 @@ int venc_if_encode(struct mtk_vcodec_enc_ctx *ctx,
- 	ctx->dev->curr_ctx = NULL;
- 	spin_unlock_irqrestore(&ctx->dev->irqlock, flags);
- 
-+venc_if_encode_pw_on_err:
- 	mtk_venc_unlock(ctx);
- 	return ret;
- }
+-	/*
+-	 * Per Downstream Port Containment Related Enhancements ECN to PCI
+-	 * Firmware Specification r3.2, sec 4.6.12, EDR_PORT_DPC_ENABLE_DSM is
+-	 * optional.  Return success if it's not implemented.
+-	 */
+-	obj = acpi_evaluate_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
++	obj = acpi_evaluate_dsm(adev->handle, &pci_acpi_dsm_guid, 6,
+ 				EDR_PORT_DPC_ENABLE_DSM, &argv4);
+ 	if (!obj)
+ 		return 0;
 -- 
 2.43.0
 
