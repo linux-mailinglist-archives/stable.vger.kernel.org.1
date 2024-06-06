@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-49562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC4A68FEDCD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D408FEC5E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89A582826FE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13ED91C24E2C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35371BD503;
-	Thu,  6 Jun 2024 14:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D145F1B011A;
+	Thu,  6 Jun 2024 14:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zVW5IDUr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fo9gG+w3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DA51990AA;
-	Thu,  6 Jun 2024 14:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1271B0122;
+	Thu,  6 Jun 2024 14:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683527; cv=none; b=WZUJf9C0XOgB/4PdwVI9XwySQOgEh+9S2yZfU6swpBh/3GwzYZw5e6jfKxUdHrr8wemzytD+NZIl0vrr6v5b7ZlVdcytfWTSm+z4PEU8a7Q6293BoO7shMyz6TWX6gNq2sjX/SH3oX2JxVcYacirbgd4pLiz3n86Rc7cohYj3yg=
+	t=1717683359; cv=none; b=U54CYr4GhLclh236Ctg0g4LjL7FKx6XepI+/EokKA4kGRQVsOQFPTYbC/zkn4F56p/kSpu3VJhG+6RRQ+fY19Rw30wCHH3kX0SsiQA7m782+OQpQZYhOwj0vFKuOzJiYD2swR8ENwzJ7yrEoDTleNGdCZtUjDUrVybPP0TrQIPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683527; c=relaxed/simple;
-	bh=UDCcFn4GGXebrmNF76+5xSonzhbk5NHHZINsyANTrhY=;
+	s=arc-20240116; t=1717683359; c=relaxed/simple;
+	bh=iGKedrnBnH18PoRaSy8YbrT6UeH6X4wNih4CgIFXBtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZENvbnhSON0xc05olaUQdn1n0/ZX5opiVmM9tFlAKlNSrmHn3A8vbOulMUIF2yE4KfOKkW25Oj1hQ6G92z6bGvyIrCR31S+lQhD0DmO+VBh1/o8y2P05KkxLQsJthURUI+k/+1hBfuw+EhgqeD3Xcx1+Zi6s/t2g4u2nczhh99Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zVW5IDUr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E472C2BD10;
-	Thu,  6 Jun 2024 14:18:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XQWSU6fGbTrYWo4szSMzuLXUJi4msDaPlq4JROfBkQkl+ih0mVPwFsfOXFc/KWBNVLpaYonPqMO/iR2MG5FNKVu2om47a7L5rDP0nq2hXc90Tffr58eGjOdn5IooLjArP49NAhoz9QZfXaOHe0DHxEWgxtTZNsYrxeBydFnQIT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fo9gG+w3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A15C2BD10;
+	Thu,  6 Jun 2024 14:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683527;
-	bh=UDCcFn4GGXebrmNF76+5xSonzhbk5NHHZINsyANTrhY=;
+	s=korg; t=1717683359;
+	bh=iGKedrnBnH18PoRaSy8YbrT6UeH6X4wNih4CgIFXBtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zVW5IDUrA7+5sXdbd+BKmD+yzVUcRlQaxkFoQZcibxCuV17/RRbCfDc5xopChFAMr
-	 5yzM7UxrpSL1tlolAFOY/Spp1AbcCpa5uzDg2/iTIUNEOXJ4uXyUrB3xJB4zr3w2vh
-	 wIzeubAqrNBHHJnPnu37ILcb/rDIm9PPuMKLopI4=
+	b=fo9gG+w335laZUciZSzHw+haGd9Etoe0OCqaLFXZaI9jSBFJIUYb035jVLcy9c5kn
+	 wmlfo7EhAtuwLBoQU2y/Jo4tb+bk5v3KYIARk3msyTjt5htxy11+08m2Rx++4CRZ9J
+	 1e04fEwo1TLG3uOzWOzrgSx4SAhxOGKjPC7GqaMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Chandan Babu R <chandanbabu@kernel.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 468/744] xfs: match lock mode in xfs_buffered_write_iomap_begin()
+Subject: [PATCH 6.1 211/473] media: radio-shark2: Avoid led_names truncations
 Date: Thu,  6 Jun 2024 16:02:20 +0200
-Message-ID: <20240606131747.479694063@linuxfoundation.org>
+Message-ID: <20240606131706.897537576@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit bb712842a85d595525e72f0e378c143e620b3ea2 ]
+[ Upstream commit 1820e16a3019b6258e6009d34432946a6ddd0a90 ]
 
-Commit 1aa91d9c9933 ("xfs: Add async buffered write support") replace
-xfs_ilock(XFS_ILOCK_EXCL) with xfs_ilock_for_iomap() when locking the
-writing inode, and a new variable lockmode is used to indicate the lock
-mode. Although the lockmode should always be XFS_ILOCK_EXCL, it's still
-better to use this variable instead of useing XFS_ILOCK_EXCL directly
-when unlocking the inode.
+Increase the size of led_names so it can fit any valid v4l2 device name.
 
-Fixes: 1aa91d9c9933 ("xfs: Add async buffered write support")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Fixes:
+drivers/media/radio/radio-shark2.c:197:17: warning: ‘%s’ directive output may be truncated writing up to 35 bytes into a region of size 32 [-Wformat-truncation=]
+
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_iomap.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/media/radio/radio-shark2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_iomap.c b/fs/xfs/xfs_iomap.c
-index 18c8f168b1532..ccf83e72d8ca8 100644
---- a/fs/xfs/xfs_iomap.c
-+++ b/fs/xfs/xfs_iomap.c
-@@ -1149,13 +1149,13 @@ xfs_buffered_write_iomap_begin(
- 	 * them out if the write happens to fail.
- 	 */
- 	seq = xfs_iomap_inode_sequence(ip, IOMAP_F_NEW);
--	xfs_iunlock(ip, XFS_ILOCK_EXCL);
-+	xfs_iunlock(ip, lockmode);
- 	trace_xfs_iomap_alloc(ip, offset, count, allocfork, &imap);
- 	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, IOMAP_F_NEW, seq);
- 
- found_imap:
- 	seq = xfs_iomap_inode_sequence(ip, 0);
--	xfs_iunlock(ip, XFS_ILOCK_EXCL);
-+	xfs_iunlock(ip, lockmode);
- 	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, 0, seq);
- 
- found_cow:
-@@ -1165,17 +1165,17 @@ xfs_buffered_write_iomap_begin(
- 		if (error)
- 			goto out_unlock;
- 		seq = xfs_iomap_inode_sequence(ip, IOMAP_F_SHARED);
--		xfs_iunlock(ip, XFS_ILOCK_EXCL);
-+		xfs_iunlock(ip, lockmode);
- 		return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags,
- 					 IOMAP_F_SHARED, seq);
- 	}
- 
- 	xfs_trim_extent(&cmap, offset_fsb, imap.br_startoff - offset_fsb);
--	xfs_iunlock(ip, XFS_ILOCK_EXCL);
-+	xfs_iunlock(ip, lockmode);
- 	return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags, 0, seq);
- 
- out_unlock:
--	xfs_iunlock(ip, XFS_ILOCK_EXCL);
-+	xfs_iunlock(ip, lockmode);
- 	return error;
- }
- 
+diff --git a/drivers/media/radio/radio-shark2.c b/drivers/media/radio/radio-shark2.c
+index f1c5c0a6a335c..e3e6aa87fe081 100644
+--- a/drivers/media/radio/radio-shark2.c
++++ b/drivers/media/radio/radio-shark2.c
+@@ -62,7 +62,7 @@ struct shark_device {
+ #ifdef SHARK_USE_LEDS
+ 	struct work_struct led_work;
+ 	struct led_classdev leds[NO_LEDS];
+-	char led_names[NO_LEDS][32];
++	char led_names[NO_LEDS][64];
+ 	atomic_t brightness[NO_LEDS];
+ 	unsigned long brightness_new;
+ #endif
 -- 
 2.43.0
 
