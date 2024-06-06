@@ -1,58 +1,67 @@
-Return-Path: <stable+bounces-49261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088448FEC8C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 120488FE8A7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 888CB2859F0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3736E1C242F7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224801B1431;
-	Thu,  6 Jun 2024 14:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642D019645C;
+	Thu,  6 Jun 2024 14:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KneBD/nn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXINC+jb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37E3196DAB;
-	Thu,  6 Jun 2024 14:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20AEB19755E;
+	Thu,  6 Jun 2024 14:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683379; cv=none; b=W/OZk7HMClYIHhGSeDmeWcoe7UoC8Dwy2U/lrKM9CT9FraHdak9hFTpfFo9F3dPcxGvhOHqG1qBMe+dsVWJANhADf24wYAJ5b6kDU5MKEd+ywJrNa5IOztLAc8SmXPOmzMbPiYG5afkwH1PLMKhAYHx6R3s62UVVyNDklQb1/DI=
+	t=1717682919; cv=none; b=noO2a7Ap1TQBsCEpnxiVoCee1Xg975hevHArfMlSljINSuyJvwHwRkr0S1aL0GuSfdQTw0wyNzZb9e46yqgpaeknAKIih0N3aF1F1G7qJCEplyc3/OSooRuU5Ll13HUCHVpfCXU7cy2dGYl+BGz8KzatoOe1at/zws6d4rVxU3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683379; c=relaxed/simple;
-	bh=qjJXVShm7U9x1e3fMdisAtaMAWSjoAsvKGk4vIRmeCs=;
+	s=arc-20240116; t=1717682919; c=relaxed/simple;
+	bh=jkFR+4kGniqE1qO4p5ulCDjSxbjVjtWKLrKxMhuMHx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TKGdyX9DUxmaJIHm/sa3swe2WftUaypc3FzwYmzcNEuHZrdpr/IgSX6+7eDDXnav/8I74qsIjTOlfbY9s45u+iGgniwQlb0y7BczGevroHxGQAx5kKot05ongqxjug6GucnFNbW1MWS4ayUZef3E0nq406JiKzFncTS9gG3zfHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KneBD/nn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2722C32781;
-	Thu,  6 Jun 2024 14:16:19 +0000 (UTC)
+	 MIME-Version; b=rdHB4ORjHKLman5NFMD0jGi9CBiqlFRQ6Jzb9aE2cskoKj6pgZRsxLquvgSe59RPGLmbSi5g88fQa76LS6P9W2V5YVhjZD7d6jP08Wz3djVCwo8D85LDaI2B7PmJm2QCu+3ceJNTQW8Bog0/1aqq5ZYFyU6cKqKL/s/hVV7GRuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXINC+jb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C1DC4AF07;
+	Thu,  6 Jun 2024 14:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683379;
-	bh=qjJXVShm7U9x1e3fMdisAtaMAWSjoAsvKGk4vIRmeCs=;
+	s=korg; t=1717682919;
+	bh=jkFR+4kGniqE1qO4p5ulCDjSxbjVjtWKLrKxMhuMHx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KneBD/nn+uOXow6bfMUb/noYF2qQr2KlqjwwsBExOCoHS+vQnC7KVAYEqdA2L9biO
-	 O41KFdJ0pDXfktEx3GeBQ9qBVRw1NPyQRb+ztVA99PgodNm+MpNecJR7HxaNkVCVtE
-	 DcMy2aKQPjKQ9rNzbkDD4GrNLUyNPyn8vaqygwKQ=
+	b=FXINC+jbMvRjA5bgB3kNrHGzpRFwTAEjSyrxGPfLkxXU8bt0t7Udts143g03W1v1L
+	 6YZe2rl0Ee+OlFOpJqUToy3zAy0EtQVYJ9+6Yn44QKKmPA94wJa5sDee/jD9iRZ0vM
+	 Fk4UVl1plOW3BsBTNNxr2T7KzG6F4kku5wPXyctg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Yang Jihong <yangjihong@bytedance.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Yang Jihong <yangjihong1@huawei.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 321/744] drm/bridge: lt8912b: Dont log an error when DSI host cant be found
+Subject: [PATCH 6.9 014/374] perf sched timehist: Fix -g/--call-graph option failure
 Date: Thu,  6 Jun 2024 15:59:53 +0200
-Message-ID: <20240606131742.735046007@linuxfoundation.org>
+Message-ID: <20240606131652.239210235@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +71,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Yang Jihong <yangjihong@bytedance.com>
 
-[ Upstream commit b3b4695ff47c4964d4ccb930890c9ffd8e455e20 ]
+[ Upstream commit 6e4b398770d5023eb6383da9360a23bd537c155b ]
 
-Given that failing to find a DSI host causes the driver to defer probe,
-make use of dev_err_probe() to log the reason. This makes the defer
-probe reason available and avoids alerting userspace about something
-that is not necessarily an error.
+When 'perf sched' enables the call-graph recording, sample_type of dummy
+event does not have PERF_SAMPLE_CALLCHAIN, timehist_check_attr() checks
+that the evsel does not have a callchain, and set show_callchain to 0.
 
-Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-3-619a28148e5c@collabora.com
+Currently 'perf sched timehist' only saves callchain when processing the
+'sched:sched_switch event', timehist_check_attr() only needs to determine
+whether the event has PERF_SAMPLE_CALLCHAIN.
+
+Before:
+
+  # perf sched record -g true
+  [ perf record: Woken up 0 times to write data ]
+  [ perf record: Captured and wrote 4.153 MB perf.data (7536 samples) ]
+  # perf sched timehist
+  Samples do not have callchains.
+             time    cpu  task name                       wait time  sch delay   run time
+                          [tid/pid]                          (msec)     (msec)     (msec)
+  --------------- ------  ------------------------------  ---------  ---------  ---------
+    147851.826019 [0000]  perf[285035]                        0.000      0.000      0.000
+    147851.826029 [0000]  migration/0[15]                     0.000      0.003      0.009
+    147851.826063 [0001]  perf[285035]                        0.000      0.000      0.000
+    147851.826069 [0001]  migration/1[21]                     0.000      0.003      0.006
+  <SNIP>
+
+After:
+
+  # perf sched record -g true
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 2.572 MB perf.data (822 samples) ]
+  # perf sched timehist
+         time cpu task name        waittime  sch delay  runtime
+                    [tid/pid]        (msec)  (msec)    (msec)
+  ----------- --- ---------------  --------  --------  -----
+  4193.035164 [0] perf[277062]        0.000     0.000   0.000 __traceiter_sched_switch <- __traceiter_sched_switch <- __sched_text_start <- preempt_schedule_common <- __cond_resched <- __wait_for_common <- wait_for_completion
+  4193.035174 [0] migration/0[15]     0.000     0.003   0.009 __traceiter_sched_switch <- __traceiter_sched_switch <- __sched_text_start <- smpboot_thread_fn <- kthread <- ret_from_fork
+  4193.035207 [1] perf[277062]        0.000     0.000   0.000 __traceiter_sched_switch <- __traceiter_sched_switch <- __sched_text_start <- preempt_schedule_common <- __cond_resched <- __wait_for_common <- wait_for_completion
+  4193.035214 [1] migration/1[21]     0.000     0.003   0.007 __traceiter_sched_switch <- __traceiter_sched_switch <- __sched_text_start <- smpboot_thread_fn <- kthread <- ret_from_fork
+  <SNIP>
+
+Fixes: 9c95e4ef06572349 ("perf evlist: Add evlist__findnew_tracking_event() helper")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Yang Jihong <yangjihong@bytedance.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Yang Jihong <yangjihong1@huawei.com>
+Link: https://lore.kernel.org/r/20240401062724.1006010-2-yangjihong@bytedance.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/lontium-lt8912b.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ tools/perf/builtin-sched.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-index e5839c89a355a..0efcbc73f2a43 100644
---- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
-+++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-@@ -483,10 +483,8 @@ static int lt8912_attach_dsi(struct lt8912 *lt)
- 						 };
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index b248c433529a8..1bfb223473715 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -2963,8 +2963,11 @@ static int timehist_check_attr(struct perf_sched *sched,
+ 			return -1;
+ 		}
  
- 	host = of_find_mipi_dsi_host_by_node(lt->host_node);
--	if (!host) {
--		dev_err(dev, "failed to find dsi host\n");
--		return -EPROBE_DEFER;
--	}
-+	if (!host)
-+		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
- 
- 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
- 	if (IS_ERR(dsi)) {
+-		if (sched->show_callchain && !evsel__has_callchain(evsel)) {
+-			pr_info("Samples do not have callchains.\n");
++		/* only need to save callchain related to sched_switch event */
++		if (sched->show_callchain &&
++		    evsel__name_is(evsel, "sched:sched_switch") &&
++		    !evsel__has_callchain(evsel)) {
++			pr_info("Samples of sched_switch event do not have callchains.\n");
+ 			sched->show_callchain = 0;
+ 			symbol_conf.use_callchain = 0;
+ 		}
 -- 
 2.43.0
 
