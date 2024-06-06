@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A550E8FE898
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6A448FECC4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3946E283757
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B15E1C260E1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B77C197520;
-	Thu,  6 Jun 2024 14:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34F71B29BC;
+	Thu,  6 Jun 2024 14:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxsSnXNG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opRmeXjV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F0F196C92;
-	Thu,  6 Jun 2024 14:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836D1198832;
+	Thu,  6 Jun 2024 14:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682913; cv=none; b=V3qbcY01OCTKn1oRaWDdMMnUzSKjKYXi349J9s3xRCyjeaQ6M4mWh3B4dsOEuBpznRwhKaaJvgLAWp6MKSyUHybg6mVDSTxlv/57lf3uuZprum2SZFBguewS28IDWC6cCmwe/2JNWrJgpze+KKvIu97ox1AA1svr/H9h1gJQ5pc=
+	t=1717683406; cv=none; b=Ko86QwiCH0N+oL5T8MpWGlN2/qxYsPYX+cZ1t8I6yNhR2Tvgr2jWKKpMFm6aQsZB+oGjtY/d5Uu0WoacwaJqGSUWTsDI3oeHsYoi2j0a6KxRSYH4Zrqd/PetRQDYk+KH0Oc6Btkd7i15G2yXRKYru0xTSzKI6tJ2QtFBaVv7IxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682913; c=relaxed/simple;
-	bh=2eT3ay4QzGefTSFfOEjxY+Lnz2qrpT1uugox50yRdaQ=;
+	s=arc-20240116; t=1717683406; c=relaxed/simple;
+	bh=Yf6Mw7+64JBqfwzeal3MuOvLeH8E2l31NgWlJaOwvXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JlO26CVVBBuxxaPqSTF5T2t4iYdL+oFK0RYchl+mkV3osgbUITsVLxkiI8coNQtI2wI/Y0hunzvpVl5wiIf9YX79AYP2OsmfohbbMjvAowmUw4LSo4qTNGthva4I4+Hj5Envrfen/rHRwNMCwPORysD0EIt+dWrflCqh0G+ulc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxsSnXNG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85DCC32781;
-	Thu,  6 Jun 2024 14:08:32 +0000 (UTC)
+	 MIME-Version; b=d3nAyRrHQXo/9wpDvH5r1ahx+/FCGNM8ppBsItiFWdie+j6gLcLAfwUDs2oUwLuCIuMtHykkIGx4IYJMMTWJboSHv1PmCGXkFOb6RPEwLKOA1Qvz3kySBwSpBRXngmGllGtfjgMcbmnEpM/09mvqG7RQfO/GnWt0xzaOkvnkMPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opRmeXjV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65176C2BD10;
+	Thu,  6 Jun 2024 14:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682913;
-	bh=2eT3ay4QzGefTSFfOEjxY+Lnz2qrpT1uugox50yRdaQ=;
+	s=korg; t=1717683406;
+	bh=Yf6Mw7+64JBqfwzeal3MuOvLeH8E2l31NgWlJaOwvXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KxsSnXNGPG6/9n27C2SxdVC+PMbrZvKvQtPvWUZ7aIdp/V89mjP5HM9mI0IkNdIaa
-	 lQu3Pw836nDOoI+ilYZywRB8C/876WZ5RjE7YsqXueu9bK+FWwpyZOgPeI2eryAUmF
-	 mBqEcgKf1BsQeHSZvg1JIgRLwQ/+bY4EgagjaolI=
+	b=opRmeXjVbG8uEwlVeQ19lk809h7cmDDWQSbS3GQ5oY8l9dnbwkP7spl8vUQszyJkJ
+	 4Lw9vzzlpkftV3wxstZIK3kHPARUzmZndwp1WIi05g5fasyi/SqBwzLY6v3JXF39Bx
+	 WsIWtKwxQ18BH0rl9mTJD/CNIU8jXMRyadRlC7CM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Bob Pearson <rpearsonhpe@gmail.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 042/374] f2fs: fix to relocate check condition in f2fs_fallocate()
-Date: Thu,  6 Jun 2024 16:00:21 +0200
-Message-ID: <20240606131653.226265694@linuxfoundation.org>
+Subject: [PATCH 6.6 350/744] RDMA/rxe: Fix incorrect rxe_put in error path
+Date: Thu,  6 Jun 2024 16:00:22 +0200
+Message-ID: <20240606131743.697593595@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-[ Upstream commit 278a6253a673611dbc8ab72a3b34b151a8e75822 ]
+[ Upstream commit 8776618dbbd1b6f210b31509507e1aad461d6435 ]
 
-compress and pinfile flag should be checked after inode lock held to
-avoid race condition, fix it.
+In rxe_send() a ref is taken on the qp to keep it alive until the
+kfree_skb() has a chance to call the skb destructor rxe_skb_tx_dtor()
+which drops the reference. If the packet has an incorrect protocol the
+error path just calls kfree_skb() which will call the destructor which
+will drop the ref. Currently the driver also calls rxe_put() which is
+incorrect. Additionally since the packets sent to rxe_send() are under the
+control of the driver and it only ever produces IPV4 or IPV6 packets the
+simplest fix is to remove all the code in this block.
 
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
-Fixes: 5fed0be8583f ("f2fs: do not allow partial truncation on pinned file")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Link: https://lore.kernel.org/r/20240329145513.35381-12-rpearsonhpe@gmail.com
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Fixes: 9eb7f8e44d13 ("IB/rxe: Move refcounting earlier in rxe_send()")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_net.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 3eed9f167fc91..357367e2cb337 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1820,15 +1820,6 @@ static long f2fs_fallocate(struct file *file, int mode,
- 		(mode & (FALLOC_FL_COLLAPSE_RANGE | FALLOC_FL_INSERT_RANGE)))
- 		return -EOPNOTSUPP;
+diff --git a/drivers/infiniband/sw/rxe/rxe_net.c b/drivers/infiniband/sw/rxe/rxe_net.c
+index cd59666158b18..e5827064ab1e2 100644
+--- a/drivers/infiniband/sw/rxe/rxe_net.c
++++ b/drivers/infiniband/sw/rxe/rxe_net.c
+@@ -366,18 +366,10 @@ static int rxe_send(struct sk_buff *skb, struct rxe_pkt_info *pkt)
+ 	rxe_get(pkt->qp);
+ 	atomic_inc(&pkt->qp->skb_out);
  
--	/*
--	 * Pinned file should not support partial truncation since the block
--	 * can be used by applications.
--	 */
--	if ((f2fs_compressed_file(inode) || f2fs_is_pinned_file(inode)) &&
--		(mode & (FALLOC_FL_PUNCH_HOLE | FALLOC_FL_COLLAPSE_RANGE |
--			FALLOC_FL_ZERO_RANGE | FALLOC_FL_INSERT_RANGE)))
--		return -EOPNOTSUPP;
--
- 	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE |
- 			FALLOC_FL_COLLAPSE_RANGE | FALLOC_FL_ZERO_RANGE |
- 			FALLOC_FL_INSERT_RANGE))
-@@ -1836,6 +1827,17 @@ static long f2fs_fallocate(struct file *file, int mode,
+-	if (skb->protocol == htons(ETH_P_IP)) {
++	if (skb->protocol == htons(ETH_P_IP))
+ 		err = ip_local_out(dev_net(skb_dst(skb)->dev), skb->sk, skb);
+-	} else if (skb->protocol == htons(ETH_P_IPV6)) {
++	else
+ 		err = ip6_local_out(dev_net(skb_dst(skb)->dev), skb->sk, skb);
+-	} else {
+-		rxe_dbg_qp(pkt->qp, "Unknown layer 3 protocol: %d\n",
+-				skb->protocol);
+-		atomic_dec(&pkt->qp->skb_out);
+-		rxe_put(pkt->qp);
+-		kfree_skb(skb);
+-		return -EINVAL;
+-	}
  
- 	inode_lock(inode);
- 
-+	/*
-+	 * Pinned file should not support partial truncation since the block
-+	 * can be used by applications.
-+	 */
-+	if ((f2fs_compressed_file(inode) || f2fs_is_pinned_file(inode)) &&
-+		(mode & (FALLOC_FL_PUNCH_HOLE | FALLOC_FL_COLLAPSE_RANGE |
-+			FALLOC_FL_ZERO_RANGE | FALLOC_FL_INSERT_RANGE))) {
-+		ret = -EOPNOTSUPP;
-+		goto out;
-+	}
-+
- 	ret = file_modified(file);
- 	if (ret)
- 		goto out;
+ 	if (unlikely(net_xmit_eval(err))) {
+ 		rxe_dbg_qp(pkt->qp, "error sending packet: %d\n", err);
 -- 
 2.43.0
 
