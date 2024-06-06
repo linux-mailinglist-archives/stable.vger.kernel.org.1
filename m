@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-49648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F3918FEE45
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B068FE946
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB89E2822AF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB6761C20B31
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AD41C224A;
-	Thu,  6 Jun 2024 14:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CEE1993A4;
+	Thu,  6 Jun 2024 14:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRcIpQg9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1dqkdNu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F611C2246;
-	Thu,  6 Jun 2024 14:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D182196D99;
+	Thu,  6 Jun 2024 14:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683639; cv=none; b=ZfLJvNqEwBDuDdRh5xv21rctgzG3Zl5NWsQS0jhulUFJ3RptxJlp5AFYl6a1D92L+k869q8dO+J/9kMoMtwKkVXunYI144yvrUG+Z8T+O8tcts1KhMst1E4QTA5rlG8h5wo0Pn2uENsbCFa1E1PFl7F8V8PZZdXQT6PMD+3nkJs=
+	t=1717683001; cv=none; b=HMVAmJXEiBjVubCIkh4pzAIrzjspMSdqHieSUnmGEeZAElLAr7BRhqITaXXzrhubfX3r96aqwYCHSKQO+AHYQ82dRbXwHECbprL5Eg8VsClbXjVKVNvi9b51d6ScGllrW5IVzQ1OXVTKq+OYKdSnNbWWE6pfS3OymVswJcCbpI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683639; c=relaxed/simple;
-	bh=/YZzABjZm23baOs8OvHxPZKE9vDn/dmvxLTmZQZFL94=;
+	s=arc-20240116; t=1717683001; c=relaxed/simple;
+	bh=xSH9TtkRF79ZsG/DkYxLcRPkSWinCc5+KMv6p2Weuow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lML2pirXYxXV5sgYWansQPce7CK1ii1UAHAotUyh6JYDHOY444pHBKodMZl85Vlc/B6OTT45R0AQsmXz/fgDXVJMel/89BrHumGqCLWMQGVfo9HyvO9h9F/Ph+AwLrAY8EwFPgCHKuQ3fakWz0LC5ijNuZrK012C6cxtvunKeVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRcIpQg9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A8CC2BD10;
-	Thu,  6 Jun 2024 14:20:39 +0000 (UTC)
+	 MIME-Version; b=hsOb3afRKRGJL7amYloZcVZsGnd2KMX47yzoagdY3RTOHavUxuUeqaY9gVjRu6yULwKYNxUz+3bspPGa625r5TLnSsVISAzp4QUzTx/RGiBefRKC8Bik4Awn2pyNDpzuq/PHsrM78zCxNmqiHV1PFTzbYx6hNKQMCKitur6fGL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1dqkdNu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C429C32786;
+	Thu,  6 Jun 2024 14:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683639;
-	bh=/YZzABjZm23baOs8OvHxPZKE9vDn/dmvxLTmZQZFL94=;
+	s=korg; t=1717683001;
+	bh=xSH9TtkRF79ZsG/DkYxLcRPkSWinCc5+KMv6p2Weuow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fRcIpQg9kWcr0XkbUSYJgNROuwtDiGqLDGMTb4/zfpPGNIGYRnVb2T8U4Zf/nGnHV
-	 jOzMw/KOr2/+zC8YauQePLAmil0xJ5oX/yfHKkRbiBc6DyA0oRJ64gD2McJjQFSheP
-	 vpi5x7fc+0mKdrBnS/l2/IgLVGw0+VLGiCUj85B4=
+	b=z1dqkdNuIcIqZvoZZDjLDtslpnxEXFushTkF7gXDrRRwOnyXWWkBlK5InJHMhWXRd
+	 K8E4NCabpNW33+8dVZAhhDSL3MP2ADXjMUbDRyZe7v1ehIZFSHjpiHCPry4TV2oGEu
+	 l9TvgpTxp9YMmIgZlBt/DXK3MoGrBO8kc8qudrAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 511/744] perf symbols: Fix ownership of string in dso__load_vmlinux()
+Subject: [PATCH 6.9 204/374] ASoC: amd: acp: fix for acp platform device creation failure
 Date: Thu,  6 Jun 2024 16:03:03 +0200
-Message-ID: <20240606131748.841746225@linuxfoundation.org>
+Message-ID: <20240606131658.663708413@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,93 +62,274 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 25626e19ae6df34f336f235b6b3dbd1b566d2738 ]
+[ Upstream commit 09068d624c490c0e89f33f963c402f1859964467 ]
 
-The linked commit updated dso__load_vmlinux() to call
-dso__set_long_name() before loading the symbols. Loading the symbols may
-not succeed but dso__set_long_name() takes ownership of the string. The
-two callers of this function free the string themselves on failure
-cases, resulting in the following error:
+ACP pin configuration varies based on acp version.
+ACP PCI driver should read the ACP PIN config value and based on config
+value, it has to create a platform device in below two conditions.
+1) If ACP PDM configuration is selected from BIOS and ACP PDM controller
+exists.
+2) If ACP I2S configuration is selected from BIOS.
 
-  $ perf record -- ls
-  $ perf report
+Other than above scenarios, ACP PCI driver should skip the platform
+device creation logic, i.e. ACP PCI driver probe sequence should never
+fail if other acp pin configuration is selected. It should skip platform
+device creation logic.
 
-  free(): double free detected in tcache 2
+check_acp_pdm() function was implemented for ACP6.x platforms to check
+ACP PDM configuration. Previously, this code was safe guarded by
+FLAG_AMD_LEGACY_ONLY_DMIC flag check.
 
-Fix it by always taking ownership of the string, even on failure. This
-means the string is either freed at the very first early exit condition,
-or later when the dso is deleted or the long name is replaced. Now no
-special return value is needed to signify that the caller needs to
-free the string.
+This implementation breaks audio use cases for Huawei Matebooks which are
+based on ACP3.x varaint uses I2S configuration.
+In current scenario, check_acp_pdm() function returns -ENODEV value
+which results in ACP PCI driver probe failure without creating a platform
+device even in case of valid ACP pin configuration.
 
-Fixes: e59fea47f83e8a9a ("perf symbols: Fix DSO kernel load and symbol process to correctly map DSO to its long_name, type and adjust_symbols")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@arm.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240507141210.195939-5-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Implement check_acp_config() as a common function which invokes platform
+specific acp pin configuration check functions for ACP3.x, ACP6.0 & ACP6.3
+& ACP7.0 variants and checks for ACP PDM controller.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218780
+Fixes: 4af565de9f8c ("ASoC: amd: acp: fix for acp pdm configuration check")
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20240502140340.4049021-1-Vijendar.Mukunda@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/symbol.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ sound/soc/amd/acp/acp-legacy-common.c | 96 ++++++++++++++++++++++-----
+ sound/soc/amd/acp/acp-pci.c           |  9 ++-
+ sound/soc/amd/acp/amd.h               | 10 ++-
+ sound/soc/amd/acp/chip_offset_byte.h  |  1 +
+ 4 files changed, 95 insertions(+), 21 deletions(-)
 
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index 1976af974a371..ea24f21aafc3e 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -1935,6 +1935,10 @@ int dso__load(struct dso *dso, struct map *map)
- 	return ret;
+diff --git a/sound/soc/amd/acp/acp-legacy-common.c b/sound/soc/amd/acp/acp-legacy-common.c
+index b5aff3f230be5..3be7c6d55a6f8 100644
+--- a/sound/soc/amd/acp/acp-legacy-common.c
++++ b/sound/soc/amd/acp/acp-legacy-common.c
+@@ -358,11 +358,25 @@ int smn_read(struct pci_dev *dev, u32 smn_addr)
  }
+ EXPORT_SYMBOL_NS_GPL(smn_read, SND_SOC_ACP_COMMON);
  
-+/*
-+ * Always takes ownership of vmlinux when vmlinux_allocated == true, even if
-+ * it returns an error.
-+ */
- int dso__load_vmlinux(struct dso *dso, struct map *map,
- 		      const char *vmlinux, bool vmlinux_allocated)
+-int check_acp_pdm(struct pci_dev *pci, struct acp_chip_info *chip)
++static void check_acp3x_config(struct acp_chip_info *chip)
  {
-@@ -1953,8 +1957,11 @@ int dso__load_vmlinux(struct dso *dso, struct map *map,
- 	else
- 		symtab_type = DSO_BINARY_TYPE__VMLINUX;
- 
--	if (symsrc__init(&ss, dso, symfs_vmlinux, symtab_type))
-+	if (symsrc__init(&ss, dso, symfs_vmlinux, symtab_type)) {
-+		if (vmlinux_allocated)
-+			free((char *) vmlinux);
- 		return -1;
+-	struct acpi_device *pdm_dev;
+-	const union acpi_object *obj;
+-	u32 pdm_addr, val;
++	u32 val;
++
++	val = readl(chip->base + ACP3X_PIN_CONFIG);
++	switch (val) {
++	case ACP_CONFIG_4:
++		chip->is_i2s_config = true;
++		chip->is_pdm_config = true;
++		break;
++	default:
++		chip->is_pdm_config = true;
++		break;
 +	}
++}
++
++static void check_acp6x_config(struct acp_chip_info *chip)
++{
++	u32 val;
  
- 	/*
- 	 * dso__load_sym() may copy 'dso' which will result in the copies having
-@@ -1997,7 +2004,6 @@ int dso__load_vmlinux_path(struct dso *dso, struct map *map)
- 		err = dso__load_vmlinux(dso, map, filename, true);
- 		if (err > 0)
- 			goto out;
--		free(filename);
+ 	val = readl(chip->base + ACP_PIN_CONFIG);
+ 	switch (val) {
+@@ -371,42 +385,94 @@ int check_acp_pdm(struct pci_dev *pci, struct acp_chip_info *chip)
+ 	case ACP_CONFIG_6:
+ 	case ACP_CONFIG_7:
+ 	case ACP_CONFIG_8:
+-	case ACP_CONFIG_10:
+ 	case ACP_CONFIG_11:
++	case ACP_CONFIG_14:
++		chip->is_pdm_config = true;
++		break;
++	case ACP_CONFIG_9:
++		chip->is_i2s_config = true;
++		break;
++	case ACP_CONFIG_10:
+ 	case ACP_CONFIG_12:
+ 	case ACP_CONFIG_13:
++		chip->is_i2s_config = true;
++		chip->is_pdm_config = true;
++		break;
++	default:
++		break;
++	}
++}
++
++static void check_acp70_config(struct acp_chip_info *chip)
++{
++	u32 val;
++
++	val = readl(chip->base + ACP_PIN_CONFIG);
++	switch (val) {
++	case ACP_CONFIG_4:
++	case ACP_CONFIG_5:
++	case ACP_CONFIG_6:
++	case ACP_CONFIG_7:
++	case ACP_CONFIG_8:
++	case ACP_CONFIG_11:
+ 	case ACP_CONFIG_14:
++	case ACP_CONFIG_17:
++	case ACP_CONFIG_18:
++		chip->is_pdm_config = true;
++		break;
++	case ACP_CONFIG_9:
++		chip->is_i2s_config = true;
++		break;
++	case ACP_CONFIG_10:
++	case ACP_CONFIG_12:
++	case ACP_CONFIG_13:
++	case ACP_CONFIG_19:
++	case ACP_CONFIG_20:
++		chip->is_i2s_config = true;
++		chip->is_pdm_config = true;
+ 		break;
+ 	default:
+-		return -EINVAL;
++		break;
  	}
- out:
- 	return err;
-@@ -2149,7 +2155,6 @@ static int dso__load_kernel_sym(struct dso *dso, struct map *map)
- 		err = dso__load_vmlinux(dso, map, filename, true);
- 		if (err > 0)
- 			return err;
--		free(filename);
++}
++
++void check_acp_config(struct pci_dev *pci, struct acp_chip_info *chip)
++{
++	struct acpi_device *pdm_dev;
++	const union acpi_object *obj;
++	u32 pdm_addr;
+ 
+ 	switch (chip->acp_rev) {
+ 	case ACP3X_DEV:
+ 		pdm_addr = ACP_RENOIR_PDM_ADDR;
++		check_acp3x_config(chip);
+ 		break;
+ 	case ACP6X_DEV:
+ 		pdm_addr = ACP_REMBRANDT_PDM_ADDR;
++		check_acp6x_config(chip);
+ 		break;
+ 	case ACP63_DEV:
+ 		pdm_addr = ACP63_PDM_ADDR;
++		check_acp6x_config(chip);
+ 		break;
+ 	case ACP70_DEV:
+ 		pdm_addr = ACP70_PDM_ADDR;
++		check_acp70_config(chip);
+ 		break;
+ 	default:
+-		return -EINVAL;
++		break;
  	}
  
- 	if (!symbol_conf.ignore_vmlinux && vmlinux_path != NULL) {
+-	pdm_dev = acpi_find_child_device(ACPI_COMPANION(&pci->dev), pdm_addr, 0);
+-	if (pdm_dev) {
+-		if (!acpi_dev_get_property(pdm_dev, "acp-audio-device-type",
+-					   ACPI_TYPE_INTEGER, &obj) &&
+-					   obj->integer.value == pdm_addr)
+-			return 0;
++	if (chip->is_pdm_config) {
++		pdm_dev = acpi_find_child_device(ACPI_COMPANION(&pci->dev), pdm_addr, 0);
++		if (pdm_dev) {
++			if (!acpi_dev_get_property(pdm_dev, "acp-audio-device-type",
++						   ACPI_TYPE_INTEGER, &obj) &&
++						   obj->integer.value == pdm_addr)
++				chip->is_pdm_dev = true;
++		}
+ 	}
+-	return -ENODEV;
+ }
+-EXPORT_SYMBOL_NS_GPL(check_acp_pdm, SND_SOC_ACP_COMMON);
++EXPORT_SYMBOL_NS_GPL(check_acp_config, SND_SOC_ACP_COMMON);
+ 
+ MODULE_LICENSE("Dual BSD/GPL");
+diff --git a/sound/soc/amd/acp/acp-pci.c b/sound/soc/amd/acp/acp-pci.c
+index 5f35b90eab8d3..ad320b29e87dc 100644
+--- a/sound/soc/amd/acp/acp-pci.c
++++ b/sound/soc/amd/acp/acp-pci.c
+@@ -100,7 +100,6 @@ static int acp_pci_probe(struct pci_dev *pci, const struct pci_device_id *pci_id
+ 		ret = -EINVAL;
+ 		goto release_regions;
+ 	}
+-
+ 	dmic_dev = platform_device_register_data(dev, "dmic-codec", PLATFORM_DEVID_NONE, NULL, 0);
+ 	if (IS_ERR(dmic_dev)) {
+ 		dev_err(dev, "failed to create DMIC device\n");
+@@ -119,6 +118,10 @@ static int acp_pci_probe(struct pci_dev *pci, const struct pci_device_id *pci_id
+ 	if (ret)
+ 		goto unregister_dmic_dev;
+ 
++	check_acp_config(pci, chip);
++	if (!chip->is_pdm_dev && !chip->is_i2s_config)
++		goto skip_pdev_creation;
++
+ 	res = devm_kcalloc(&pci->dev, num_res, sizeof(struct resource), GFP_KERNEL);
+ 	if (!res) {
+ 		ret = -ENOMEM;
+@@ -136,10 +139,6 @@ static int acp_pci_probe(struct pci_dev *pci, const struct pci_device_id *pci_id
+ 		}
+ 	}
+ 
+-	ret = check_acp_pdm(pci, chip);
+-	if (ret < 0)
+-		goto skip_pdev_creation;
+-
+ 	chip->flag = flag;
+ 	memset(&pdevinfo, 0, sizeof(pdevinfo));
+ 
+diff --git a/sound/soc/amd/acp/amd.h b/sound/soc/amd/acp/amd.h
+index 5017e868f39b9..d75b4eb34de8d 100644
+--- a/sound/soc/amd/acp/amd.h
++++ b/sound/soc/amd/acp/amd.h
+@@ -138,6 +138,9 @@ struct acp_chip_info {
+ 	void __iomem *base;	/* ACP memory PCI base */
+ 	struct platform_device *chip_pdev;
+ 	unsigned int flag;	/* Distinguish b/w Legacy or Only PDM */
++	bool is_pdm_dev;	/* flag set to true when ACP PDM controller exists */
++	bool is_pdm_config;	/* flag set to true when PDM configuration is selected from BIOS */
++	bool is_i2s_config;	/* flag set to true when I2S configuration is selected from BIOS */
+ };
+ 
+ struct acp_stream {
+@@ -212,6 +215,11 @@ enum acp_config {
+ 	ACP_CONFIG_13,
+ 	ACP_CONFIG_14,
+ 	ACP_CONFIG_15,
++	ACP_CONFIG_16,
++	ACP_CONFIG_17,
++	ACP_CONFIG_18,
++	ACP_CONFIG_19,
++	ACP_CONFIG_20,
+ };
+ 
+ extern const struct snd_soc_dai_ops asoc_acp_cpu_dai_ops;
+@@ -240,7 +248,7 @@ void restore_acp_pdm_params(struct snd_pcm_substream *substream,
+ int restore_acp_i2s_params(struct snd_pcm_substream *substream,
+ 			   struct acp_dev_data *adata, struct acp_stream *stream);
+ 
+-int check_acp_pdm(struct pci_dev *pci, struct acp_chip_info *chip);
++void check_acp_config(struct pci_dev *pci, struct acp_chip_info *chip);
+ 
+ static inline u64 acp_get_byte_count(struct acp_dev_data *adata, int dai_id, int direction)
+ {
+diff --git a/sound/soc/amd/acp/chip_offset_byte.h b/sound/soc/amd/acp/chip_offset_byte.h
+index cfd6c4d075944..18da734c0e9e7 100644
+--- a/sound/soc/amd/acp/chip_offset_byte.h
++++ b/sound/soc/amd/acp/chip_offset_byte.h
+@@ -20,6 +20,7 @@
+ #define ACP_SOFT_RESET                          0x1000
+ #define ACP_CONTROL                             0x1004
+ #define ACP_PIN_CONFIG				0x1440
++#define ACP3X_PIN_CONFIG			0x1400
+ 
+ #define ACP_EXTERNAL_INTR_REG_ADDR(adata, offset, ctrl) \
+ 	(adata->acp_base + adata->rsrc->irq_reg_offset + offset + (ctrl * 0x04))
 -- 
 2.43.0
 
