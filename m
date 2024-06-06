@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F50C8FE89E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D7448FECCD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D05D1C243E0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BFCB282086
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B39196C9C;
-	Thu,  6 Jun 2024 14:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212F819B5B4;
+	Thu,  6 Jun 2024 14:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTOJGvyg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCSR2uiV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26040197534;
-	Thu,  6 Jun 2024 14:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CBA198A39;
+	Thu,  6 Jun 2024 14:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682916; cv=none; b=Ax8xxAEhhSovebTRBWt254Nm3miFxbEH1DTQk415slsCY9iQxRTKoOPKDLR//WfakrMOteumhu9T6pgODarrQnI/XBsMIQRNeCtdBsQX9WJzfd8dFA1C7UTeYDmjZQ1PasLQnzUV6Qo7cwmT4cXRNTdRWevh9iKhr1sedBXlnvM=
+	t=1717683410; cv=none; b=RWVbcxY+gUp3apQR9r4Xi+XI2P1E82XpIDWQNlEWP3tE+9GFs+JzUlXxrCaoOwGbICFiSnCuVoI7Zr1Z9g/TXTDKxte9I4pOWIEP/mV8XyOICj7xdLcf4BwZSMl5QeC9Cq1n/9rnZAESzIL8AcIltSlAR4fHIsMW4I3C950MNG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682916; c=relaxed/simple;
-	bh=UA0SEu7fPWyNaCI23tbovxWhPzOZfHXpzXsMqV5f+Y4=;
+	s=arc-20240116; t=1717683410; c=relaxed/simple;
+	bh=q64NQL2DLBgn5QECm+y0JBzSP2TwQhnkOiOY8S+UzyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fkXuHEV7RjcvXlh98CSdrNw+o2qsmB+3FmJxCJu95/D20EH1bEXHij8UeY/I8w8wa4LjCmu+F7fXDtviUX5b2A+VLN6DvPqA8vFW7G6pxU9Vgf9I1s1soeBsk3vsRpAWcGHhO2XBT/PF+tI5qYeW/VxqTxA4xJUJq7CjnY2T38Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTOJGvyg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058CEC2BD10;
-	Thu,  6 Jun 2024 14:08:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fdrIkvScdZcMxMV7AcVKSIuMaaPkCnj+MwT2+H8Y2zDRheTuh+C86pETpR27jUZ2s3nkWuU98jM6WYtJHqFhNodeQ28Yd4dhuo+0e/4L5Q7Whztz5rOSHW+ZfUDMGbiA4ojN15ELFu0FOzWK6BszywGFEtRs8fjaYlbwhAiU1Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCSR2uiV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB511C2BD10;
+	Thu,  6 Jun 2024 14:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682916;
-	bh=UA0SEu7fPWyNaCI23tbovxWhPzOZfHXpzXsMqV5f+Y4=;
+	s=korg; t=1717683410;
+	bh=q64NQL2DLBgn5QECm+y0JBzSP2TwQhnkOiOY8S+UzyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KTOJGvyge3frNUYq6Nny4UR2RY0MWq93S/n4MZ36lQzFIwyZ4iQHPZwE03CUqDRB4
-	 eidGkJC+DfophylX0sJvnKVAbzfJc9Zr3hjhSgwWh/UBAeUcB270zwXyoNncotBmSF
-	 3RZIQTWvUASJkdSr+mT9fqIoIbr60xj6tfLMaeOs=
+	b=PCSR2uiVp0f8DcPJs4ah1DT9BtNGso2wQsmtKERZX/BAASCQigjrryHo5oI9v/7BO
+	 cnvAR0CEudW7Mp9mNcWFeDrA0Oek0e/nKcewus74ZCSZPjwvYLpWrcP1hjN1AvRWS8
+	 KFvS8QcgejMJsCQbat06R61zJhHSf18DYnWhB+9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannah Peuckmann <hannah.peuckmann@canonical.com>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 047/374] riscv: dts: starfive: visionfive 2: Remove non-existing I2S hardware
+Subject: [PATCH 6.6 354/744] lib/test_hmm.c: handle src_pfns and dst_pfns allocation failure
 Date: Thu,  6 Jun 2024 16:00:26 +0200
-Message-ID: <20240606131653.386047193@linuxfoundation.org>
+Message-ID: <20240606131743.833495335@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannah Peuckmann <hannah.peuckmann@canonical.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit e0503d47e93dead8c0475ea1eb624e03fada21d3 ]
+[ Upstream commit c2af060d1c18beaec56351cf9c9bcbbc5af341a3 ]
 
-This partially reverts
-commit 92cfc35838b2 ("riscv: dts: starfive: Add the nodes and pins of I2Srx/I2Stx0/I2Stx1")
+The kcalloc() in dmirror_device_evict_chunk() will return null if the
+physical memory has run out.  As a result, if src_pfns or dst_pfns is
+dereferenced, the null pointer dereference bug will happen.
 
-This added device tree nodes for I2S hardware that is not actually on the
-VisionFive 2 board, but connected on the 40pin header. Many different extension
-boards could be added on those pins, so this should be handled by overlays
-instead.
-This also conflicts with the TDM node which also attempts to grab GPIO 44:
+Moreover, the device is going away.  If the kcalloc() fails, the pages
+mapping a chunk could not be evicted.  So add a __GFP_NOFAIL flag in
+kcalloc().
 
-  starfive-jh7110-sys-pinctrl 13040000.pinctrl: pin GPIO44 already requested by 10090000.tdm; cannot claim for 120c0000.i2s
+Finally, as there is no need to have physically contiguous memory, Switch
+kcalloc() to kvcalloc() in order to avoid failing allocations.
 
-Fixes: 92cfc35838b2 ("riscv: dts: starfive: Add the nodes and pins of I2Srx/I2Stx0/I2Stx1")
-Signed-off-by: Hannah Peuckmann <hannah.peuckmann@canonical.com>
-Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Tested-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lkml.kernel.org/r/20240312005905.9939-1-duoming@zju.edu.cn
+Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Cc: Jérôme Glisse <jglisse@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../jh7110-starfive-visionfive-2.dtsi         | 58 -------------------
- 1 file changed, 58 deletions(-)
+ lib/test_hmm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-index d89eef6e26335..2b3e952513e44 100644
---- a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-+++ b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-@@ -279,24 +279,6 @@ &i2c6 {
- 	status = "okay";
- };
+diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+index 717dcb8301273..b823ba7cb6a15 100644
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -1226,8 +1226,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
+ 	unsigned long *src_pfns;
+ 	unsigned long *dst_pfns;
  
--&i2srx {
--	pinctrl-names = "default";
--	pinctrl-0 = <&i2srx_pins>;
--	status = "okay";
--};
--
--&i2stx0 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&mclk_ext_pins>;
--	status = "okay";
--};
--
--&i2stx1 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&i2stx1_pins>;
--	status = "okay";
--};
--
- &mmc0 {
- 	max-frequency = <100000000>;
- 	assigned-clocks = <&syscrg JH7110_SYSCLK_SDIO0_SDCARD>;
-@@ -447,46 +429,6 @@ GPOEN_SYS_I2C6_DATA,
- 		};
- 	};
+-	src_pfns = kcalloc(npages, sizeof(*src_pfns), GFP_KERNEL);
+-	dst_pfns = kcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL);
++	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
++	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
  
--	i2srx_pins: i2srx-0 {
--		clk-sd-pins {
--			pinmux = <GPIOMUX(38, GPOUT_LOW,
--					      GPOEN_DISABLE,
--					      GPI_SYS_I2SRX_BCLK)>,
--				 <GPIOMUX(63, GPOUT_LOW,
--					      GPOEN_DISABLE,
--					      GPI_SYS_I2SRX_LRCK)>,
--				 <GPIOMUX(38, GPOUT_LOW,
--					      GPOEN_DISABLE,
--					      GPI_SYS_I2STX1_BCLK)>,
--				 <GPIOMUX(63, GPOUT_LOW,
--					      GPOEN_DISABLE,
--					      GPI_SYS_I2STX1_LRCK)>,
--				 <GPIOMUX(61, GPOUT_LOW,
--					      GPOEN_DISABLE,
--					      GPI_SYS_I2SRX_SDIN0)>;
--			input-enable;
--		};
--	};
--
--	i2stx1_pins: i2stx1-0 {
--		sd-pins {
--			pinmux = <GPIOMUX(44, GPOUT_SYS_I2STX1_SDO0,
--					      GPOEN_ENABLE,
--					      GPI_NONE)>;
--			bias-disable;
--			input-disable;
--		};
--	};
--
--	mclk_ext_pins: mclk-ext-0 {
--		mclk-ext-pins {
--			pinmux = <GPIOMUX(4, GPOUT_LOW,
--					     GPOEN_DISABLE,
--					     GPI_SYS_MCLK_EXT)>;
--			input-enable;
--		};
--	};
--
- 	mmc0_pins: mmc0-0 {
- 		 rst-pins {
- 			pinmux = <GPIOMUX(62, GPOUT_SYS_SDIO0_RST,
+ 	migrate_device_range(src_pfns, start_pfn, npages);
+ 	for (i = 0; i < npages; i++) {
+@@ -1250,8 +1250,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
+ 	}
+ 	migrate_device_pages(src_pfns, dst_pfns, npages);
+ 	migrate_device_finalize(src_pfns, dst_pfns, npages);
+-	kfree(src_pfns);
+-	kfree(dst_pfns);
++	kvfree(src_pfns);
++	kvfree(dst_pfns);
+ }
+ 
+ /* Removes free pages from the free list so they can't be re-allocated */
 -- 
 2.43.0
 
