@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D9F8FED31
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3866B8FEEB4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A7501F21ADA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5D0D286B0F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF631974E0;
-	Thu,  6 Jun 2024 14:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFD51C617E;
+	Thu,  6 Jun 2024 14:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhfnC+lO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPu6Hc4k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31E11B580B;
-	Thu,  6 Jun 2024 14:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA2D199222;
+	Thu,  6 Jun 2024 14:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683457; cv=none; b=fQIOeywFrtc/K+xil/HEVJn2a7Jp4wGWhb+lPkOXSy/zeOkw+lYp8gxIZKgTSkkZm+fpjsXHmmA3apFguDU+jXxF5za4HHfadz6IA+231HUZBwXhxStEO/NNJeJ/ItGrLOj9cq3BgAyHTc6Zj0ph8y3kSKKBdUN/tXYyopHKgEE=
+	t=1717683691; cv=none; b=bJq7ls8/Nmy4M1JCr2PVydJnR510pjMlEW1KyEA3oN/ZgxTK0qLn26zt2e36J7kYsu997gtk1Z9B3TzjbVLFQSvmTyyl/5kKZPH6uCppKMLU4HttiF+90/grjOQVTvdBCPagl4MkA+FATCML3+w/0q9DKy04oCRTJRoqmp+3tLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683457; c=relaxed/simple;
-	bh=tgWjefYsOeeaJGF0f5KVBWHH088UdgmfzA/FYFr9p3o=;
+	s=arc-20240116; t=1717683691; c=relaxed/simple;
+	bh=h8dJ1p3MsQ2iqyUFHUyjMa2sN1/qNU1yPKuopj9SoCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQeLv/EmTW8o1ej2fDdw/gPIGuVTK+MHnwdY7Xgfl2fF/V0BFCzxBi/GBLzio2Y/6P8FdSu5msRE07PDuGYorcastywsnpef/NRqKw9cYIPXcqc6u2gRbmhSbD5AyaOtNv6O3as/m3zm/gafHD053pIMYS7Nh6uMOtNvFn+1ncU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhfnC+lO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A042FC32781;
-	Thu,  6 Jun 2024 14:17:37 +0000 (UTC)
+	 MIME-Version; b=UjBjwA4cgXIKyvZFgi+jvDQhuGJO5qPbeok39LhHyOqPxJd5LQ8XfU9By4xde1twy4HeF+Z2DyvZSMObhZW08iCpX+P+9eVYUO+R9l5mdRJ2P3BMDea8QrdKbmzxpgXkuBApD0ozKQUB70sd8N0SFuVfNbXpr/HU0F45Rgj0Rl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPu6Hc4k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75EB0C32786;
+	Thu,  6 Jun 2024 14:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683457;
-	bh=tgWjefYsOeeaJGF0f5KVBWHH088UdgmfzA/FYFr9p3o=;
+	s=korg; t=1717683691;
+	bh=h8dJ1p3MsQ2iqyUFHUyjMa2sN1/qNU1yPKuopj9SoCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NhfnC+lOWO9vFKhMOSietx52HS4MIl8siVbP/8LqEilvhuUHZABKSzsCNnvV+WTbW
-	 175AeGrjo59AEfbkv8kRdQy0lyx+1X2y0n55f7zZ75ywJBzW2SiPFBma4YgiqUVjHg
-	 iv3cbKYgp3cL6/689IjYnVp/XH640z4MDpiVH0Io=
+	b=sPu6Hc4kp5oGjfYhhXQhdRbEuBr+DgzqcdKmRfIDaP6gWJ/CwkrYpoGLcEJsF6zCl
+	 4zNAnPqiEIdNLp7IauBXPgCo/OCp8MEheF74TLgmMmElAkiE+qdaKXpzBdK0aF1QEb
+	 nbfnNtDdzg8U7k6So4S9Hp0+thOypuJ253FOuqOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 345/473] serial: sh-sci: protect invalidating RXDMA on shutdown
+Subject: [PATCH 6.6 602/744] um: Fix the -Wmissing-prototypes warning for get_thread_reg
 Date: Thu,  6 Jun 2024 16:04:34 +0200
-Message-ID: <20240606131711.311924415@linuxfoundation.org>
+Message-ID: <20240606131751.788406763@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit aae20f6e34cd0cbd67a1d0e5877561c40109a81b ]
+[ Upstream commit 3144013e48f4f6e5127223c4ebc488016815dedb ]
 
-The to-be-fixed commit removed locking when invalidating the DMA RX
-descriptors on shutdown. It overlooked that there is still a rx_timer
-running which may still access the protected data. So, re-add the
-locking.
+The get_thread_reg function is defined in the user code, and is
+called by the kernel code. It should be declared in a shared header.
 
-Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
-Closes: https://lore.kernel.org/r/ee6c9e16-9f29-450e-81da-4a8dceaa8fc7@de.bosch.com
-Fixes: 2c4ee23530ff ("serial: sh-sci: Postpone DMA release when falling back to PIO")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20240506114016.30498-7-wsa+renesas@sang-engineering.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dbba7f704aa0 ("um: stop polluting the namespace with registers.h contents")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/um/include/asm/processor-generic.h | 1 -
+ arch/x86/um/shared/sysdep/archsetjmp.h  | 7 +++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index e67d3a886bf4f..08ad5ae411216 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -1244,9 +1244,14 @@ static void sci_dma_rx_chan_invalidate(struct sci_port *s)
- static void sci_dma_rx_release(struct sci_port *s)
- {
- 	struct dma_chan *chan = s->chan_rx_saved;
-+	struct uart_port *port = &s->port;
-+	unsigned long flags;
+diff --git a/arch/um/include/asm/processor-generic.h b/arch/um/include/asm/processor-generic.h
+index 7414154b8e9ae..d34169883dbf0 100644
+--- a/arch/um/include/asm/processor-generic.h
++++ b/arch/um/include/asm/processor-generic.h
+@@ -95,7 +95,6 @@ extern struct cpuinfo_um boot_cpu_data;
+ #define current_cpu_data boot_cpu_data
+ #define cache_line_size()	(boot_cpu_data.cache_alignment)
  
-+	uart_port_lock_irqsave(port, &flags);
- 	s->chan_rx_saved = NULL;
- 	sci_dma_rx_chan_invalidate(s);
-+	uart_port_unlock_irqrestore(port, flags);
+-extern unsigned long get_thread_reg(int reg, jmp_buf *buf);
+ #define KSTK_REG(tsk, reg) get_thread_reg(reg, &tsk->thread.switch_buf)
+ extern unsigned long __get_wchan(struct task_struct *p);
+ 
+diff --git a/arch/x86/um/shared/sysdep/archsetjmp.h b/arch/x86/um/shared/sysdep/archsetjmp.h
+index 166cedbab9266..8c81d1a604a94 100644
+--- a/arch/x86/um/shared/sysdep/archsetjmp.h
++++ b/arch/x86/um/shared/sysdep/archsetjmp.h
+@@ -1,6 +1,13 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __X86_UM_SYSDEP_ARCHSETJMP_H
++#define __X86_UM_SYSDEP_ARCHSETJMP_H
 +
- 	dmaengine_terminate_sync(chan);
- 	dma_free_coherent(chan->device->dev, s->buf_len_rx * 2, s->rx_buf[0],
- 			  sg_dma_address(&s->sg_rx[0]));
+ #ifdef __i386__
+ #include "archsetjmp_32.h"
+ #else
+ #include "archsetjmp_64.h"
+ #endif
++
++unsigned long get_thread_reg(int reg, jmp_buf *buf);
++
++#endif /* __X86_UM_SYSDEP_ARCHSETJMP_H */
 -- 
 2.43.0
 
