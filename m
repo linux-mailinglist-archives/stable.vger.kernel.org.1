@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5248FEDD9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62AB68FEF07
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6728C281ADC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02C17287A79
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEFCD19E7F0;
-	Thu,  6 Jun 2024 14:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9B11C95DD;
+	Thu,  6 Jun 2024 14:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAfzoA+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IxO74+P6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEED51BE23E;
-	Thu,  6 Jun 2024 14:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF3D1A1894;
+	Thu,  6 Jun 2024 14:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683531; cv=none; b=CCSgcz3Zx+yzYnG5ifW+TmT23E4ZlwagHYdZ9rjdso9aeb9PyfyjKojaiLdFNPRPKyrwqCEXwhWrf8W00ibje/++93t5eQP3gWlLO2Lslh9Z59oaTzG5REahkWS15s6+7GXXiPcRgdmMVNDwY68uq12yUXb7MaI85kZADMhtixw=
+	t=1717683729; cv=none; b=UID+jLBrR25vn7U6J+U9aIXjhPxk9r7PKbjUE2qAZS/40QENCcekcVK9TSWYpfyqvhmi8Lpnra9sa+Vdk7caJEl9mlOmgX4jxiMCjahUGjUwUaPDOKreyegdP04GZ/iRukR7vNZwfvXCX/DzZ56jtCBr3wfEei/5i6WmoyKRuq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683531; c=relaxed/simple;
-	bh=wdC8BuKKrK6sbpCyP5tnbMbz7MsObdl6+6j+ZkCrFUw=;
+	s=arc-20240116; t=1717683729; c=relaxed/simple;
+	bh=z69mAHN3SkJdNFh03YvfaHEsi87IUb4gBo6lfnhHpMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/oFJ6SYYx78drI75A0vzGmEz/BIC+a1i39FMbwDxDY9MH/SdqylMggMTJJeyA+3t04qMlJoEUKGDJZGJN9T4uTOx7giWzEvIOSDamTR8QwE3Fhhj7L4yz+Pm10t6BwMkRRrnzorXCz2VgoNY8uWWaCN5l2NftmChW3x9v9468Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAfzoA+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED02C2BD10;
-	Thu,  6 Jun 2024 14:18:51 +0000 (UTC)
+	 MIME-Version; b=b6hareecsJPE6WSGzca4ZLGENNneM/HetV/q2konQn2KbkIwO4iBsfYuMhcBLkgWl0Zko02q78LcPUggxcs6ZWJXu9cfdWCe7xjM/h7ghx4jK43mRyjLORs4lcIS4IDwZhQobyyO4Eced1Zu0FR6LG7fWGaQaM9St2FHI6rsG8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IxO74+P6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2B3C2BD10;
+	Thu,  6 Jun 2024 14:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683531;
-	bh=wdC8BuKKrK6sbpCyP5tnbMbz7MsObdl6+6j+ZkCrFUw=;
+	s=korg; t=1717683729;
+	bh=z69mAHN3SkJdNFh03YvfaHEsi87IUb4gBo6lfnhHpMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HAfzoA+BWaUFe0NAEDrJRBU8wzAPRRU4juETKSOL3syR4AdmH873l0oEp5+tZT1xr
-	 2d3N4+RUgXiebl/V9VcunqWVcZmN8W2B6G4yXejW1jqo1rdp6Y51Bhh8D7YQcN4rFG
-	 g6BUZWmnBslBB9ZFqaZ5AzI+JByxzrwzK8m0fqj0=
+	b=IxO74+P6YUcQnt7XFEMWraGE1UOVhEmLWJuuJTXIuxYCDkU/UgAnkwwKyfRHafFOE
+	 8X+PnN+QWDyVAJ38NiY1AKssC0cuhEler74vxZOFJxYXHCdyL1cq+0ah6aa23O+WI4
+	 Tu5G/froZOMuJt+8Zo7Jnq3SR7VTZocY1Pc/W6NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Barry Song <baohua@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 422/473] net: fec: avoid lock evasion when reading pps_enable
+Subject: [PATCH 6.6 679/744] dma-mapping: benchmark: handle NUMA_NO_NODE correctly
 Date: Thu,  6 Jun 2024 16:05:51 +0200
-Message-ID: <20240606131713.721010928@linuxfoundation.org>
+Message-ID: <20240606131754.269060323@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 3b1c92f8e5371700fada307cc8fd2c51fa7bc8c1 ]
+[ Upstream commit e64746e74f717961250a155e14c156616fcd981f ]
 
-The assignment of pps_enable is protected by tmreg_lock, but the read
-operation of pps_enable is not. So the Coverity tool reports a lock
-evasion warning which may cause data race to occur when running in a
-multithread environment. Although this issue is almost impossible to
-occur, we'd better fix it, at least it seems more logically reasonable,
-and it also prevents Coverity from continuing to issue warnings.
+cpumask_of_node() can be called for NUMA_NO_NODE inside do_map_benchmark()
+resulting in the following sanitizer report:
 
-Fixes: 278d24047891 ("net: fec: ptp: Enable PPS output based on ptp clock")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Link: https://lore.kernel.org/r/20240521023800.17102-1-wei.fang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+UBSAN: array-index-out-of-bounds in ./arch/x86/include/asm/topology.h:72:28
+index -1 is out of range for type 'cpumask [64][1]'
+CPU: 1 PID: 990 Comm: dma_map_benchma Not tainted 6.9.0-rc6 #29
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+Call Trace:
+ <TASK>
+dump_stack_lvl (lib/dump_stack.c:117)
+ubsan_epilogue (lib/ubsan.c:232)
+__ubsan_handle_out_of_bounds (lib/ubsan.c:429)
+cpumask_of_node (arch/x86/include/asm/topology.h:72) [inline]
+do_map_benchmark (kernel/dma/map_benchmark.c:104)
+map_benchmark_ioctl (kernel/dma/map_benchmark.c:246)
+full_proxy_unlocked_ioctl (fs/debugfs/file.c:333)
+__x64_sys_ioctl (fs/ioctl.c:890)
+do_syscall_64 (arch/x86/entry/common.c:83)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+Use cpumask_of_node() in place when binding a kernel thread to a cpuset
+of a particular node.
+
+Note that the provided node id is checked inside map_benchmark_ioctl().
+It's just a NUMA_NO_NODE case which is not handled properly later.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 65789daa8087 ("dma-mapping: add benchmark support for streaming DMA APIs")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Barry Song <baohua@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ kernel/dma/map_benchmark.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index cffd9ad499dda..e0393dc159fc7 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -102,14 +102,13 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
- 	struct timespec64 ts;
- 	u64 ns;
- 
--	if (fep->pps_enable == enable)
--		return 0;
--
--	fep->pps_channel = DEFAULT_PPS_CHANNEL;
--	fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
--
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
- 
-+	if (fep->pps_enable == enable) {
-+		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-+		return 0;
-+	}
-+
- 	if (enable) {
- 		/* clear capture or output compare interrupt status if have.
- 		 */
-@@ -440,6 +439,9 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
+diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
+index 59fb3f849b351..f7f3d14fa69a7 100644
+--- a/kernel/dma/map_benchmark.c
++++ b/kernel/dma/map_benchmark.c
+@@ -101,7 +101,6 @@ static int do_map_benchmark(struct map_benchmark_data *map)
+ 	struct task_struct **tsk;
+ 	int threads = map->bparam.threads;
+ 	int node = map->bparam.node;
+-	const cpumask_t *cpu_mask = cpumask_of_node(node);
+ 	u64 loops;
  	int ret = 0;
+ 	int i;
+@@ -124,7 +123,7 @@ static int do_map_benchmark(struct map_benchmark_data *map)
+ 		}
  
- 	if (rq->type == PTP_CLK_REQ_PPS) {
-+		fep->pps_channel = DEFAULT_PPS_CHANNEL;
-+		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
-+
- 		ret = fec_ptp_enable_pps(fep, on);
+ 		if (node != NUMA_NO_NODE)
+-			kthread_bind_mask(tsk[i], cpu_mask);
++			kthread_bind_mask(tsk[i], cpumask_of_node(node));
+ 	}
  
- 		return ret;
+ 	/* clear the old value in the previous benchmark */
 -- 
 2.43.0
 
