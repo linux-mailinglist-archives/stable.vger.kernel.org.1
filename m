@@ -1,107 +1,249 @@
-Return-Path: <stable+bounces-48261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3647D8FDCAC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 04:20:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8068FDD05
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 04:58:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBD781F24900
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 02:20:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E637284605
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 02:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344E71C69A;
-	Thu,  6 Jun 2024 02:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40FBC1CAA9;
+	Thu,  6 Jun 2024 02:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="i9Po4IuZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VP0+MAOk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E578E182C3;
-	Thu,  6 Jun 2024 02:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717640421; cv=none; b=YuUFDZd30R0Er4g3KQW9bm27Aa+Ej+CuQ2Lgxz6XtoJt2KfyzFRfwHagUgSGzuaZrHzhKJzNWb/q2yDCC7g4alE/5ZwicoVse45t2oeGkeAQ59JQKU/F7w0iEU5RfbDKmSmy/7zSDADmjAvrQ3jwbKKIZ2GWRU+Ce12V1ueiVJQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717640421; c=relaxed/simple;
-	bh=xPN9nICOBh+AaxV6AiRJyMy2Acs8CtrQWo96wUErMuo=;
-	h=Date:To:From:Subject:Message-Id; b=hZSWy3+gaWY5Fpf0AnDYl4wsHYDweGL2PjMWbZ4ZdqwWYetT6FECcJ+BW19U5EWYQUMBeZnovRAhZs2g7cXngUx672HiTGbx/LOgtGE2hZa3P+3JvneJPhb+6MX2tnxNyEhGspNHVzaeuDp7ZVn08Thj1YVFGPzQ3R944Pctrz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=i9Po4IuZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95C1C4AF1D;
-	Thu,  6 Jun 2024 02:20:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1717640420;
-	bh=xPN9nICOBh+AaxV6AiRJyMy2Acs8CtrQWo96wUErMuo=;
-	h=Date:To:From:Subject:From;
-	b=i9Po4IuZcgrkw6Uwf6uVD61sjtq6oj91SaGg7nPioi6OuNRFrxdTQvZyWeUn99C5g
-	 nEmIVoK5sMLhBSVYprg4TnodXpVNbNeucvWa4X6HW6OGl9AwAovicCVOq0ETW1vRjX
-	 fJmycWEmCylSxnfRNT2soQG4L07+cl4N+qAJyJVc=
-Date: Wed, 05 Jun 2024 19:20:20 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] nilfs2-fix-nilfs_empty_dir-misjudgment-and-long-loop-on-i-o-errors.patch removed from -mm tree
-Message-Id: <20240606022020.B95C1C4AF1D@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A27182BD
+	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 02:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717642691; cv=fail; b=c2MxVHkegK0Sh0ISJdqr99PAlziEROuHZ30Z/IwxnGo/8BzQxu/VAhFYzLH5+s0zSIh2QAAEJtHLfbqVS3VyPUvT1M8nI2nhdLcVRBLx3+HGBxbyJzhTY2VXi/f+7yPsG92152nodHvi2EYyRYl8RmbsjCVyLC5c8cmRi/qE9X4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717642691; c=relaxed/simple;
+	bh=VFVCl/dPVGO1SLLVqQzA/h1ik7Oq/gp0fcrYF4bR4EI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=RF47x0xg2G2CwvyWkZQTMBw1qJtpiqT4YaABj2Xbnoo/sl5YdLdOd1634+MeTPkfa81fxVLK4JYmS8vXnVqsOoORaGqlkf8ZHbdCbKfQBNDztSEMsqyG20k16dziRxRd14/XAyozYGrJFnaln9L7ifWL4vIt8hLiz9hG9ybmjow=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VP0+MAOk; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717642689; x=1749178689;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=VFVCl/dPVGO1SLLVqQzA/h1ik7Oq/gp0fcrYF4bR4EI=;
+  b=VP0+MAOk0vfNYw8cSFhNgg7eU1MnX6yRnuVlg2GKTOA2BP6Rhjd/5QUA
+   +zM2G9mERRaPb3GpNNfIGXYpbvWa8WvJ7/VtQeS7QmKE/unpQCOfgC8n8
+   BnxYHHmnOs4pLIQM/fzZogIB2FNSXhXU4G2WUeFHP76u52DBXFAuSSGTf
+   OomXHUHNPjpeEml6mHpkI3MZuH7PVDlAGJpGTB1sxnN5BHrB1/fBkUX3v
+   pbMUQGMBTnkAjllEwJxeRJnA1xrqPikFmN+4MkYs01TN0FAkfsJHOVBLv
+   0khrqUoju77kO7p/uAgS2wMrnTJIMsuwSNuv/yK0tjRujIG3QA4LgKHbX
+   w==;
+X-CSE-ConnectionGUID: BfKE9tL0RpCT8eIwaIMS7w==
+X-CSE-MsgGUID: fhZApH9QRReUdOf9tEijeA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="18134881"
+X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; 
+   d="scan'208";a="18134881"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 19:58:08 -0700
+X-CSE-ConnectionGUID: c5eRWjbhTRSm45plWf3r+w==
+X-CSE-MsgGUID: sK43K+lrTG6M4szqGzeMWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; 
+   d="scan'208";a="37784786"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 05 Jun 2024 19:58:07 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 5 Jun 2024 19:58:07 -0700
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 5 Jun 2024 19:58:06 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Wed, 5 Jun 2024 19:58:06 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 5 Jun 2024 19:58:05 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=J/mbtNx525FCz75QBWjl5yb6NkhxxtTY4ArrNyZdv+hyr/ybfLpCFn9W49r+g9KVEQClrPjTRnO7/5Ua2Af7bJZtt3BaMFrzXggMcYy6FRQO6jrWyTtrKTJv9SZaa0pUC3TGxqY8/gPuZ3ZqxV94O/xyqbGgdeZgoOPiF9w4Ixe9cywTEiTDv97ybhCK3ir2Wk9ACsf2NzvtIMHSN56S1G+n009A0Iua1GScHj/opxcVBrB6Qr/uuTjny5T+C3S6/H2FEFA76UEtmwt6TzFbB7hEFA9s8BDM+KUl8yyJ+cx/yUWxa1o1wXhgreC8tu/hVAVSMROPbaVb+Kv0zF39LA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=t2IZModzkQU1Z9nxOnTpMWxc2P23mFOwY2YWbof09vs=;
+ b=lVY+pJjbHqJjvN3jCqFBu0WNKEruycNIwnsKnu160ZplZZxogbt5R/DNZojjz3HQAonGkqizcKIUWbgCngJ3lN9W3feRxWVly8jBHt2Rrs3EXQ6sNns3aqXYwSq6KP2ALUgRfvznBT1bbcqmMaHHbuAtMp5RGYs9V9c6zq9y9IGRd6vZ+DGMKMtYPD8yuohtO0KQDswNoQfOiAME6T/fkZxJlRGrvUGg0scfsqCFPQAl7OCDu9vZ190KsrYQTyfHygLVcpvf67L119j07PPLBDhFkEQeYOQmjueE5DwYglCeGxpvEF2NUexCMQ/hjlhfHnSnkrpK2sh2yyqBAPeKPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL3PR11MB6508.namprd11.prod.outlook.com (2603:10b6:208:38f::5)
+ by CH3PR11MB7939.namprd11.prod.outlook.com (2603:10b6:610:131::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.25; Thu, 6 Jun
+ 2024 02:58:04 +0000
+Received: from BL3PR11MB6508.namprd11.prod.outlook.com
+ ([fe80::1a0f:84e3:d6cd:e51]) by BL3PR11MB6508.namprd11.prod.outlook.com
+ ([fe80::1a0f:84e3:d6cd:e51%3]) with mapi id 15.20.7633.018; Thu, 6 Jun 2024
+ 02:58:03 +0000
+Date: Thu, 6 Jun 2024 02:57:11 +0000
+From: Matthew Brost <matthew.brost@intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>
+CC: intel-gfx <intel-gfx@lists.freedesktop.org>, dri-devel
+	<dri-devel@lists.freedesktop.org>, John Harrison <John.C.Harrison@intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] drm/i915/gt/uc: Evaluate GuC priority within locks
+Message-ID: <ZmElh72N2x6c/TDj@DUT025-TGLU.fm.intel.com>
+References: <20240606001702.59005-1-andi.shyti@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240606001702.59005-1-andi.shyti@linux.intel.com>
+X-ClientProxiedBy: BY5PR17CA0049.namprd17.prod.outlook.com
+ (2603:10b6:a03:167::26) To BL3PR11MB6508.namprd11.prod.outlook.com
+ (2603:10b6:208:38f::5)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR11MB6508:EE_|CH3PR11MB7939:EE_
+X-MS-Office365-Filtering-Correlation-Id: a12d1b7c-ee67-4bc9-a96b-08dc85d47ba3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|366007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?DZoKwWYaIWOGKPPT0knTRo/jRHGLUOcmbN/kRSYA770i9LvHFBQcAqc56tg/?=
+ =?us-ascii?Q?04lLFULzN/qrhMgqMrB7GiVuRg72C+dxJ+GTrJ48F/uKkF+ykVW8Wl7WIoLG?=
+ =?us-ascii?Q?xsmvDlBHp0F+jMAZaGso9Yf5T7csBfb+qkzJZuud2JVjhZF2278f0MZ+4nA1?=
+ =?us-ascii?Q?42Dgo+CtPo82qXK8FJXMRjgok/hpHEPgmhjDmxzbYLM+nNU8k6ElSqWkyjX8?=
+ =?us-ascii?Q?+QT69+vp85/9DMQY5ljvQfmoOOb1p9nlkqM/930hS0fkg8YUes+ZVGt2rl4C?=
+ =?us-ascii?Q?dNd595D32pPhhwsf1mDs5u/zhs3FMqAxN8TEhpzi29Buvk/HI+f69RsgZHHN?=
+ =?us-ascii?Q?NoMY0dw1qg8nNp/AmGh9i94EJOnmGa9mRqKzI8K6uy88rdVGlp+oOtmwWcO5?=
+ =?us-ascii?Q?JLAlodxMZ7zSPz90XHcofL1u4728HKyOa53Q1LgiA6RRn3xsyU/QHypFX1aG?=
+ =?us-ascii?Q?e8UmnDWDywhdum2dzIl9kkVW4oC+T0+2JispeR9NN1XyyOSU+ZtqNB1eH4fg?=
+ =?us-ascii?Q?UbMjPpyN4Tms6vboy5TUmH5+SpEOLjI+y7WQ3fGyCy3OH79RjDmH+A2mqWCH?=
+ =?us-ascii?Q?hcBqqXraaerra5GiygL8XB6Du2U46J3i+37lBX2ibRsnNJV4fvUD2cl1Viiz?=
+ =?us-ascii?Q?JWrF6rsBcCH5d04Zb20JTxFi15exGrFirs4GZqufDPxcY+yzZJnh/XXCY3UE?=
+ =?us-ascii?Q?v1lED0+A5mpnzq8Hg0lr+HgV8xx8c8EO8w/c9W4CwZ3p4w8t6WvKrDkr4pW0?=
+ =?us-ascii?Q?vGz4v1sd/d6IKY/XOwp6AhrhfKisX+5C1ZzhfshjMCjUDbojT81qwt/fUQzl?=
+ =?us-ascii?Q?YnGADnnsGL+XQYKIndy/guErFuhS39FLUNms0gfGRFQjzUdudoId9sfY9dQx?=
+ =?us-ascii?Q?WTIBY3nX/2e5G1Uxdfrr8SKtAA75mPDJNjvlNb0MYXT9Mh8rQYsIl4jADsMg?=
+ =?us-ascii?Q?Wa9zSmRKxsxqyFis6R8/H41qBuh1wtQDkiwEny0KvB2FwKoSKPTk3JhQUW16?=
+ =?us-ascii?Q?oEqMa7uHjdI7qn3/M0caBkX4amErcg6Z+sbmTtN8vvcL0vrAuErMI5OPGCWv?=
+ =?us-ascii?Q?IoBNCMVJyZjQrurCgieURyRAySnj1RiaMMyCeWrSZogcFGspjvTHcNr0qLPK?=
+ =?us-ascii?Q?M73OAyNzQb+2rokbswoZBlMoSSd05uVPosIyN3mjag49ePxWde5oO8XBRQUO?=
+ =?us-ascii?Q?kumlhi/55dHNz0D6AkxKA6zb3fb7ublvVHQ+WnNy07VZjf7+YwQZR2ieplKw?=
+ =?us-ascii?Q?xHLwjKgUr/rp59RTIovzVGCmU/YiitgNfQ4uDxd25A=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR11MB6508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ZjsF+sAkrAPdO0RY9UKwUfY8oGSjlHDQ42j+zh21MpMT3AJlThe3ooGlU8bO?=
+ =?us-ascii?Q?qQ8aJWbwNZsBf3OwTls3VaG9MFYbv2/eEteidl+bbihOfNpYkv83HMpuKKPw?=
+ =?us-ascii?Q?yfylsq0+T+DRXIUnOfBJvayO3vEbHnCAfdZENa/rN6DEPQE+4c3RSSfgKojr?=
+ =?us-ascii?Q?VKy4xjbdJhDGSa2frUBOF2fhfLFPkxTAXYmm5nNVKTIgW81cS1ZgyhNhpPBf?=
+ =?us-ascii?Q?6bp/hKVARDYWSLVUgU3CoDzKfNsVam6+uRSVdRf7wm11eHjKtBaMQozXvPUH?=
+ =?us-ascii?Q?wk/bsMpSjA9RUjc1caOe0ni4tQIXXAyEpdTshcil4ia3NbHkyoV6vTiYRGLD?=
+ =?us-ascii?Q?6Y0eApnJR81bV8E3VTwzXtLP3/iXyrn8X0T9GBYD/3f7x4KaiptR7zmJ9LVY?=
+ =?us-ascii?Q?gFtgUL16Oujn+8jukAPxcdh/ScLrrPqsz15uGGqaCS8AlKPQchHckiMoUBpe?=
+ =?us-ascii?Q?OTQ248EwoiPlEmhCv5jM5Dt7t3DTqe990Q/2PS9eZGKuVId+4/XYZTR4q2On?=
+ =?us-ascii?Q?jfnsMMRqULOtO12NorOh2q19HbH7WjbBpCZg5JiVCzO79aJNU9E2nGFd8ZR4?=
+ =?us-ascii?Q?ZoNwMHyhoke6XTsWmaWY+xuY9QzwJLlbGRQRYRg44NC12LlXTWGIYbG/l3ew?=
+ =?us-ascii?Q?JzEUB8bGVzhvfGhJhas+T6UDMusSZWQCxyT6K9rrS2R0Oz+1GjxGGeIX3GIx?=
+ =?us-ascii?Q?PYcTzp1nCFe7N+OPEiCcEg6UnfH5ouiq6UiXZdhksMFjTJeGn03DWMORhJ40?=
+ =?us-ascii?Q?YFoSQMn7rWaGcgU6uV5bOw1je/tYwEvfAyDtDqVFlFISrNzsRFX8tXVraB2b?=
+ =?us-ascii?Q?GtbpnJUJpj52jiRM5m8cndsnvqR9r/fmO+53uIP3PLxdtvfqtJrlR2VeplaK?=
+ =?us-ascii?Q?K5MdHYB+waQUXcRjy8fkQbeL9fhgt2Jk6t5CA4mTBnrF9sskWf494xPeP3Ww?=
+ =?us-ascii?Q?sWKxgOwNlsfbXdlriViGlzSKjF8zGq7Iv+eCC8iRXgRIjEPRcheR4xEi8rkk?=
+ =?us-ascii?Q?+UQFM8SoSF9bofV7OS7O9TTTnmvExTQgXAnSnu1xHc2ikjWSSIXdDRzpakyf?=
+ =?us-ascii?Q?F6I1d+qQaaVy0VfJqfO1hBhUl4loEmPJiqL7C+Qw4PZaqFEw3DozTo/chyTu?=
+ =?us-ascii?Q?OaGaI7ajD6qgUKPOlvQ0LvCJeCmolB2D8n0lYHojjgq67Xjup9kx4OHjJbSI?=
+ =?us-ascii?Q?qC9fXPZNf/mX9qUYJjKgH6z0BXSP80e1XdVvmbR4Il/HtwwVL+UGzxeDbwb0?=
+ =?us-ascii?Q?Zk/ziMDZHottXyzj5GIMK1Fl8Q5w7ZINBa/Yq05LO4leJFzuIvp6E8XdkJOp?=
+ =?us-ascii?Q?iWB4+25PIToNSdO2Mt0/WYoWCpXTtjtBFcvMsrRGKcwVLAqL1NMX0gP8atyR?=
+ =?us-ascii?Q?IdJQSWKRwloqL42awyrrIEwU1oqOHBXyFvgfYCKQqnu131pI9zuhflUuzXLW?=
+ =?us-ascii?Q?4/Fup9mYOV/f5PHSm8uQ4SwMhhZYf/AI/o8054RIdPWxCiX3i7Fmt036HK+l?=
+ =?us-ascii?Q?mOgBuHol815Rru3JPc0LHYqQK1lff8U3CpWjFd6VroAV7lQBatP2fy6HWBX/?=
+ =?us-ascii?Q?aO+ensycnolkHMxnJx9YaMPXJksS1vDoh16jwI6eJNogSIJzAHdO3pqiEZRI?=
+ =?us-ascii?Q?JA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a12d1b7c-ee67-4bc9-a96b-08dc85d47ba3
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6508.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jun 2024 02:58:03.4601
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lEa7FwGD6B5dWMnm1FzB1yXnDGCv8lMwz4BHVpnCMuLb8HwQZZQEW2gDcKwmC8a2Nm3LV7bK1UCm7SRpj8ns8w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7939
+X-OriginatorOrg: intel.com
 
+On Thu, Jun 06, 2024 at 02:17:02AM +0200, Andi Shyti wrote:
+> The ce->guc_state.lock was made to protect guc_prio, which
+> indicates the GuC priority level.
+> 
+> But at the begnning of the function we perform some sanity check
+> of guc_prio outside its protected section. Move them within the
+> locked region.
+> 
+> Use this occasion to expand the if statement to make it clearer.
+> 
+> Fixes: ee242ca704d3 ("drm/i915/guc: Implement GuC priority management")
+> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
 
-The quilt patch titled
-     Subject: nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors
-has been removed from the -mm tree.  Its filename was
-     nilfs2-fix-nilfs_empty_dir-misjudgment-and-long-loop-on-i-o-errors.patch
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors
-Date: Tue, 4 Jun 2024 22:42:55 +0900
-
-The error handling in nilfs_empty_dir() when a directory folio/page read
-fails is incorrect, as in the old ext2 implementation, and if the
-folio/page cannot be read or nilfs_check_folio() fails, it will falsely
-determine the directory as empty and corrupt the file system.
-
-In addition, since nilfs_empty_dir() does not immediately return on a
-failed folio/page read, but continues to loop, this can cause a long loop
-with I/O if i_size of the directory's inode is also corrupted, causing the
-log writer thread to wait and hang, as reported by syzbot.
-
-Fix these issues by making nilfs_empty_dir() immediately return a false
-value (0) if it fails to get a directory folio/page.
-
-Link: https://lkml.kernel.org/r/20240604134255.7165-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c8166c541d3971bf6c87
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/nilfs2/dir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/fs/nilfs2/dir.c~nilfs2-fix-nilfs_empty_dir-misjudgment-and-long-loop-on-i-o-errors
-+++ a/fs/nilfs2/dir.c
-@@ -607,7 +607,7 @@ int nilfs_empty_dir(struct inode *inode)
- 
- 		kaddr = nilfs_get_folio(inode, i, &folio);
- 		if (IS_ERR(kaddr))
--			continue;
-+			return 0;
- 
- 		de = (struct nilfs_dir_entry *)kaddr;
- 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
-_
-
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
-
-
+> Cc: <stable@vger.kernel.org> # v5.15+
+> ---
+>  drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c | 15 +++++++++++----
+>  1 file changed, 11 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+> index 0eaa1064242c..1181043bc5e9 100644
+> --- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+> +++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+> @@ -4267,13 +4267,18 @@ static void guc_bump_inflight_request_prio(struct i915_request *rq,
+>  	u8 new_guc_prio = map_i915_prio_to_guc_prio(prio);
+>  
+>  	/* Short circuit function */
+> -	if (prio < I915_PRIORITY_NORMAL ||
+> -	    rq->guc_prio == GUC_PRIO_FINI ||
+> -	    (rq->guc_prio != GUC_PRIO_INIT &&
+> -	     !new_guc_prio_higher(rq->guc_prio, new_guc_prio)))
+> +	if (prio < I915_PRIORITY_NORMAL)
+>  		return;
+>  
+>  	spin_lock(&ce->guc_state.lock);
+> +
+> +	if (rq->guc_prio == GUC_PRIO_FINI)
+> +		goto exit;
+> +
+> +	if (rq->guc_prio != GUC_PRIO_INIT &&
+> +	    !new_guc_prio_higher(rq->guc_prio, new_guc_prio))
+> +		goto exit;
+> +
+>  	if (rq->guc_prio != GUC_PRIO_FINI) {
+>  		if (rq->guc_prio != GUC_PRIO_INIT)
+>  			sub_context_inflight_prio(ce, rq->guc_prio);
+> @@ -4281,6 +4286,8 @@ static void guc_bump_inflight_request_prio(struct i915_request *rq,
+>  		add_context_inflight_prio(ce, rq->guc_prio);
+>  		update_context_prio(ce);
+>  	}
+> +
+> +exit:
+>  	spin_unlock(&ce->guc_state.lock);
+>  }
+>  
+> -- 
+> 2.45.1
+> 
 
