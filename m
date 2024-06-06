@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 500E38FE9E5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D00178FED9B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02ABB1F27092
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FA40B26558
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B9619D061;
-	Thu,  6 Jun 2024 14:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8811BC08F;
+	Thu,  6 Jun 2024 14:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8PCXEHL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EOsDM+lc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6833198E74;
-	Thu,  6 Jun 2024 14:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C41019DF7D;
+	Thu,  6 Jun 2024 14:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683077; cv=none; b=dbCWoMKcdNjD8bsb0cvyIG1eOUIad5Yhc2ZHWGkljivYA/o0lv1Vz5R26h7txoqrft5MzOr7JQYus0HWRfSEftsGGmwe/bHm4UKoxCJjKNGh+bI5eYDBplywC1ETrFe8e/aDAUXMj+Y9Adk8b7PYlApaFeHkAGw7zSdPoTm5fWM=
+	t=1717683505; cv=none; b=Ko0ACXjY98Z5XLFIC9qXfbqHgkxGMpxpYEVM0qTw+DEivaXQpkSGyxvHyCP9he/v8ckeUcrxUvh6Ey72H+o3uzFlw/YXHU/G6V3tYrF9HDprhDT0oHPnKfqqe79H0zuSaqiWNZQbvGNLQ0MAAW4vBNwoOb9bQbRt8vhF8TKu0Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683077; c=relaxed/simple;
-	bh=+NPDw7O5pxpK9qFRLtapfJCRZbyKWf9sPADqj5j6R/U=;
+	s=arc-20240116; t=1717683505; c=relaxed/simple;
+	bh=VHc6BMR0DtyrZPlx8uMmYmd5gw0dBlnsp9RoROYbiLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VsrR7ZI9S3s8nUA/zM7r6l1O6IKymTP/XrbtQjYpmvtDpI23+2PRco4XVfq7Djz6MpqTSLsLd2ICUSI5bYJEX0wnYak17rGfiM43oh9B3dEeXX1GeufT/q/17T9aTPZilc0AmohJh3x/NC9kZFAgwD8+TrHZtRw9PJajsARNjqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8PCXEHL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49753C4AF11;
-	Thu,  6 Jun 2024 14:11:17 +0000 (UTC)
+	 MIME-Version; b=KfWx9HbabRovCoVKSPpzK30i4uZWxJpzFp0OT9d3BMf4B82TbPTVVRDTAqTegnYI0RTjkSRv/fUeE/0IFJEge6OWBeph1AyanASRuVXc8C0cH1gESwCobpAtzVYP+a84bYrN1R5B506e3j+4VKtW3rgY0jobJo+nNSluMkaZ9T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EOsDM+lc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FDCC32782;
+	Thu,  6 Jun 2024 14:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683077;
-	bh=+NPDw7O5pxpK9qFRLtapfJCRZbyKWf9sPADqj5j6R/U=;
+	s=korg; t=1717683505;
+	bh=VHc6BMR0DtyrZPlx8uMmYmd5gw0dBlnsp9RoROYbiLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a8PCXEHLKpJ1yMErG6iys5Hg2NuttJCPpl+PqWGOsPEby9rT02yb4edYirphFipnG
-	 efQGIW2DBe/a70/CBfQTGLXdjvoHXkIwKcZyZmDbmFl3mfrriQFNfq3ja6Y2xvF9ZX
-	 AVvbA9C7jRYl7wMOC3DPG1cVsyd1nRZKZsjh0lew=
+	b=EOsDM+lcL1/1B/49rCqNmgegue+GDTu58k4OqLdsk5lgvlFV1UtMrqKpXbVFTlglY
+	 jeNQ0EY6DyKbm5poeb7z/L1fsRLNJmPhdz8cOL+haZXL8j9MagFH4IU626PFbF2N9J
+	 3RtPcofhjWu9kIxPerFNuxXE+EJj+zZgjszo0Ojg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 344/374] spi: stm32: Dont warn about spurious interrupts
+Subject: [PATCH 6.1 394/473] drm/msm/a6xx: Avoid a nullptr dereference when speedbin setting fails
 Date: Thu,  6 Jun 2024 16:05:23 +0200
-Message-ID: <20240606131703.376807285@linuxfoundation.org>
+Message-ID: <20240606131712.856745452@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 95d7c452a26564ef0c427f2806761b857106d8c4 ]
+[ Upstream commit 46d4efcccc688cbacdd70a238bedca510acaa8e4 ]
 
-The dev_warn to notify about a spurious interrupt was introduced with
-the reasoning that these are unexpected. However spurious interrupts
-tend to trigger continously and the error message on the serial console
-prevents that the core's detection of spurious interrupts kicks in
-(which disables the irq) and just floods the console.
+Calling a6xx_destroy() before adreno_gpu_init() leads to a null pointer
+dereference on:
 
-Fixes: c64e7efe46b7 ("spi: stm32: make spurious and overrun interrupts visible")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://msgid.link/r/20240521105241.62400-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+msm_gpu_cleanup() : platform_set_drvdata(gpu->pdev, NULL);
+
+as gpu->pdev is only assigned in:
+
+a6xx_gpu_init()
+|_ adreno_gpu_init
+    |_ msm_gpu_init()
+
+Instead of relying on handwavy null checks down the cleanup chain,
+explicitly de-allocate the LLC data and free a6xx_gpu instead.
+
+Fixes: 76efc2453d0e ("drm/msm/gpu: Fix crash during system suspend after unbind")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/588919/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-stm32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index e4e7ddb7524a9..4c4ff074e3f6f 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -1057,7 +1057,7 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
- 		mask |= STM32H7_SPI_SR_TXP | STM32H7_SPI_SR_RXP;
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index cdce27adbd03b..d6a810b7cfa2c 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -2040,7 +2040,8 @@ struct msm_gpu *a6xx_gpu_init(struct drm_device *dev)
  
- 	if (!(sr & mask)) {
--		dev_warn(spi->dev, "spurious IT (sr=0x%08x, ier=0x%08x)\n",
-+		dev_vdbg(spi->dev, "spurious IT (sr=0x%08x, ier=0x%08x)\n",
- 			 sr, ier);
- 		spin_unlock_irqrestore(&spi->lock, flags);
- 		return IRQ_NONE;
+ 	ret = a6xx_set_supported_hw(&pdev->dev, config->rev);
+ 	if (ret) {
+-		a6xx_destroy(&(a6xx_gpu->base.base));
++		a6xx_llc_slices_destroy(a6xx_gpu);
++		kfree(a6xx_gpu);
+ 		return ERR_PTR(ret);
+ 	}
+ 
 -- 
 2.43.0
 
