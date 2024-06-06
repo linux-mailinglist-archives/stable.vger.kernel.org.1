@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-48882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35CCC8FEAF4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1CDB8FEC94
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E174A1F25843
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AAB8B28273
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9EEA1A2570;
-	Thu,  6 Jun 2024 14:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708DA1B14E1;
+	Thu,  6 Jun 2024 14:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KY9HZ3P7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJvqZauq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F9F1A2564;
-	Thu,  6 Jun 2024 14:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3079419B3D5;
+	Thu,  6 Jun 2024 14:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683193; cv=none; b=m7Ks/2fc1GKzB88RUN8qiiBQjrvGdV/6+ze76w9cx9aRRMffrZmVL+CHxPIJGgJlTN5xNLvEZrIeRtw3C0Ld6IIkGG/tSz570K0rvdm/eWZZAINmZEDYZ/B2YQzOy7Rl0wR6baDx/BIkB9eie7go9bUwNJsu0O3x3vw1s9QfBpY=
+	t=1717683383; cv=none; b=b6lOviIqYRqUlLvTdrItxNS1xM9OlNfapotN+zEPhgOFI0m5WseRds2FjpLVZfHxed8E/xOnbN8s2z2P18PJ4eLrMMNgEsvSjW0WlX9B/1aQfQKW48xK3O4lORA4en5/8NC7xxYguEJ6fgGMEba4S9JQEfEvDoburNYvm1fcyXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683193; c=relaxed/simple;
-	bh=OcxxCcrQkwjO/qLR7AzifQEBl4mWn1rD9y8Z9jbZ16I=;
+	s=arc-20240116; t=1717683383; c=relaxed/simple;
+	bh=sPpqdieAXWvXBcvQ0mWRTO8X5qNw1/67pRfNJuRJFgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BX4dxARqvb/+YcXyDTTBdli5LJYGJuEhGsraEFzGLZXtpkYP03C/sQxDE9LtbSaduPbVWtjkY0X7ki5hFkb0kBRGb9U6UC4AMVPb3RtP3qnq3172pCtvnUFdvuWS1877KhUR9XIW4Hyd2DzwGj6c+4G8bANOgis5c/qSAzG0tJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KY9HZ3P7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46594C32781;
-	Thu,  6 Jun 2024 14:13:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KyeUatocEYZ3J5vyE7HDgp+JcBbUm4UwXI5oGR2liIsWogB7C7qVGBa/p5ugU0J8QnJN23lznotccLK5GkK39O4vF05Rk9rnWZpLCz5QNnB8/TLGw+bZIufPiVabSQE7RKvA/59rZ/fNm8Ve7rp32GxvX2Xv7LoE31O7psqkQKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJvqZauq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA2EC2BD10;
+	Thu,  6 Jun 2024 14:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683193;
-	bh=OcxxCcrQkwjO/qLR7AzifQEBl4mWn1rD9y8Z9jbZ16I=;
+	s=korg; t=1717683383;
+	bh=sPpqdieAXWvXBcvQ0mWRTO8X5qNw1/67pRfNJuRJFgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KY9HZ3P75KgAHFqG+S4DFt5erZo5u1GSxwoEruHRGY6T47cj4Fuipq15saZL4ms7o
-	 dFk8KDnh8vtR1CEBTqzm1nm0reGUWzrZ4ksHLPxBUTm3WuFWzK7hrDU9H6u4M4Lv6D
-	 igsctdm9J0zmtgqC0bWynbyeqqYrH+uZyi5CXnjk=
+	b=iJvqZauqLXQWiEIjgZEk6p3g3vmfWBc8rn08miXA3X6lZbnXuAzbGr+dbqYpY4CmP
+	 e4rAgjqsbuwUyuhbkiYTkcKioXHm1qCAcC4vb6PiledJVu4woK9scH4k8P1B9gJAl0
+	 aAWiJieWixO0/yIADd0oqRsHbUCa73o/uJc6karg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/473] crypto: bcm - Fix pointer arithmetic
+Subject: [PATCH 6.6 324/744] drm/bridge: tc358775: Dont log an error when DSI host cant be found
 Date: Thu,  6 Jun 2024 15:59:56 +0200
-Message-ID: <20240606131702.094665322@linuxfoundation.org>
+Message-ID: <20240606131742.830031100@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 2b3460cbf454c6b03d7429e9ffc4fe09322eb1a9 ]
+[ Upstream commit 272377aa0e3dddeec3f568c8bb9d12c7a79d8ef5 ]
 
-In spu2_dump_omd() value of ptr is increased by ciph_key_len
-instead of hash_iv_len which could lead to going beyond the
-buffer boundaries.
-Fix this bug by changing ciph_key_len to hash_iv_len.
+Given that failing to find a DSI host causes the driver to defer probe,
+make use of dev_err_probe() to log the reason. This makes the defer
+probe reason available and avoids alerting userspace about something
+that is not necessarily an error.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 9d12ba86f818 ("crypto: brcm - Add Broadcom SPU driver")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: b26975593b17 ("display/drm/bridge: TC358775 DSI/LVDS driver")
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-6-619a28148e5c@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/bcm/spu2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/tc358775.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/bcm/spu2.c b/drivers/crypto/bcm/spu2.c
-index 07989bb8c220a..3fdc64b5a65e7 100644
---- a/drivers/crypto/bcm/spu2.c
-+++ b/drivers/crypto/bcm/spu2.c
-@@ -495,7 +495,7 @@ static void spu2_dump_omd(u8 *omd, u16 hash_key_len, u16 ciph_key_len,
- 	if (hash_iv_len) {
- 		packet_log("  Hash IV Length %u bytes\n", hash_iv_len);
- 		packet_dump("  hash IV: ", ptr, hash_iv_len);
--		ptr += ciph_key_len;
-+		ptr += hash_iv_len;
- 	}
+diff --git a/drivers/gpu/drm/bridge/tc358775.c b/drivers/gpu/drm/bridge/tc358775.c
+index 90a89d70d8328..fea4f00a20f83 100644
+--- a/drivers/gpu/drm/bridge/tc358775.c
++++ b/drivers/gpu/drm/bridge/tc358775.c
+@@ -610,10 +610,8 @@ static int tc_attach_host(struct tc_data *tc)
+ 						};
  
- 	if (ciph_iv_len) {
+ 	host = of_find_mipi_dsi_host_by_node(tc->host_node);
+-	if (!host) {
+-		dev_err(dev, "failed to find dsi host\n");
+-		return -EPROBE_DEFER;
+-	}
++	if (!host)
++		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
+ 
+ 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
+ 	if (IS_ERR(dsi)) {
 -- 
 2.43.0
 
