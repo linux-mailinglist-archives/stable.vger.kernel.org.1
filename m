@@ -1,115 +1,129 @@
-Return-Path: <stable+bounces-49932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7488FF66C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 23:08:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 104798FF6A5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 23:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07E3C1F257EF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 21:08:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93930286C39
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 21:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3E6198821;
-	Thu,  6 Jun 2024 21:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6C3196DA7;
+	Thu,  6 Jun 2024 21:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="C1KmBMlN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nzp9e4aW"
 X-Original-To: stable@vger.kernel.org
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6247196C7D
-	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 21:07:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7341DFD1;
+	Thu,  6 Jun 2024 21:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717708065; cv=none; b=lBWG8Qh8bENjjld9IQvdGg7J4293IMK7WErRrFVfJkyrul7jh2jjz3Udy2wrktABg85oRAj2GBZ1KgkPbcj++EcypcznBM3Xr9wRqPggrm3U7M09HtrS/4DhRcC493yuIY9dlpZ2FU05WN2+V07WRyVmePQrpHo3AG3QHIUrq+k=
+	t=1717709007; cv=none; b=hIKUk6Qa8PcOrwG0iYu1c1Cu6g2mzVIcdAmkyp0P2S8+P1G+Ur+dXP7VaI+/qPqPNqPmCqLjUgwUKk5WGmj7czUnJLBs7K0rhAEVreXvl6xsn0+IAS6QU0ygDUANItvoEKFNAy0JQ/i4qD/Whr9Uh4UHVPFvxp2eWNLsZG6wPKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717708065; c=relaxed/simple;
-	bh=kfLw+bVyjNw6GeEFlaVUCx19iTE0rZqESzVAYMUqHgE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bJ791o9CRV1Lxl9QmJlY96XIMltvQId7Jfxt8RxSYk/ogLeCvDpz5o41KiyvGlUhXTwS5Lx7Mrc6P81RIm0p+zZT8TMJdXmpGaTaBpyP9WgRjXPY/B+5l4HHaH/UlzF+un4J/GgSYrxssTk7pJ9dDb/rlV++E4Tmp/nOf4KZVE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=C1KmBMlN; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from macsyma.thunk.org (unn-149-40-50-16.datapacket.com [149.40.50.16] (may be forged))
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 456L78xL032294
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 6 Jun 2024 17:07:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1717708036; bh=UyShpUtUk4n/tOAijLCzOMsxjsiHJiQC0A8h/B78v+8=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=C1KmBMlNsdZMP0fUtx3mu2tMmvWurhYntomQSE50Kvix41Qfgnjdmyjy7MFc2SHKf
-	 QhcOUsLGITIhea0u3PZyMsVUl3y9/fFS9XRJp/T8kFAh71eesmCfF+K/XiunWtGTdV
-	 LWtSacRNqpFB4pgzkKEfO8zqrMLvlbK48Alz5bkI80uLGRx5o/lGXCCqagf5C0TA+g
-	 FeTc0W0eBvZMo4vvs4GlGPJOQxgdCXdGJmWZpdOnnllMY5OEghZTHTE6pjwbwxuRjg
-	 lMrumNWMlO113QPkT666zuWOZ7unNLFpM2/lyrdlZ+zQxVa00k531AUg4l0Au0jcw0
-	 DY0luLnAb/JMA==
-Received: by macsyma.thunk.org (Postfix, from userid 15806)
-	id F33DC340578; Thu, 06 Jun 2024 23:07:06 +0200 (CEST)
-Date: Thu, 6 Jun 2024 23:07:06 +0200
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: =?utf-8?B?0LzQuNGI0LAg0YPRhdC40L0=?= <mish.uxin2012@yandex.ru>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        "linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Michail Ivanov <iwanov-23@bk.ru>,
-        Pavel Koshutin <koshutin.pavel@yandex.ru>,
-        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        Artem Sadovnikov <ancowi69@gmail.com>
-Subject: Re: [PATCH v2] ext4: fix i_data_sem unlock order in
- ext4_ind_migrate()
-Message-ID: <20240606210706.GE4182@mit.edu>
-References: <20240405210803.9152-1-mish.uxin2012@yandex.ru>
- <20240509145124.GH3620298@mit.edu>
- <3159311717621748@mail.yandex.ru>
+	s=arc-20240116; t=1717709007; c=relaxed/simple;
+	bh=18ErmTQ+WGncl+Pa0OIgOMyrs4urCsczi4HxtdcrsRU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=flK/rvvjm7iWotP/Yhhlb2ALXpH7WrukyNb63g38L92h44h9VagqX6B92qk0KVATXkLQ6np5PoXiDwdG+UpgKgsDGAliOezUXK9h+rRQWgBNHTp9zN8D2jZSzbsQhln+FIVCg8+r0/LSYx/GK9MyRIz99onSap+LsIBY0LLOLdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nzp9e4aW; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2eab19e7034so23284141fa.0;
+        Thu, 06 Jun 2024 14:23:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717709004; x=1718313804; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=18ErmTQ+WGncl+Pa0OIgOMyrs4urCsczi4HxtdcrsRU=;
+        b=Nzp9e4aWVJ6OGPC7/Rv90fZ1IeTfB20ysO9DWi4FA4Rv+jVFf4qdxRYtCsNFamPti7
+         rywlm/Id2AbvczOCTNFh1u9Q3aXjpxB3cqrZAuZI/93gRWrUg5iKgpvZEN7BRY8CCZFI
+         Gc++LBrEoAvtgmdS8RVw9DFlhJAA9fi8lI7x8rwMXNWVIbHufxGM0j6eugaiYD9xT3wK
+         oR+tnYnfQJrWEBpbzcxy7riq6XrZTkf4j9vHyFvF+/+ed7Tq4acDf7He5d1TxJ86vhjX
+         SYw5PQCbcYg6QohDZq/UOcDtToRk/mBPwe2kaHxjlnXhnE47n21LlLgJx3wNfe9aLflp
+         5f+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717709004; x=1718313804;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=18ErmTQ+WGncl+Pa0OIgOMyrs4urCsczi4HxtdcrsRU=;
+        b=lRI3BfZVZcS4pgB9Jh8X4rnWCkKL0uTGseezNVLHDujaunBpejKNqPx2LYHwVIHAQv
+         dqMbz4HHJIjssDZaggN9JegtFHYO+y6n/DZP3coIpJ82cyIQaTP/T1vOG6AXZPVPV+fx
+         /F8PowvjWmvH+MEzaUjzBxlxsSjcO++MMs3TF2c2/jnJNegvZempzAUY5+NFbcksWJiY
+         cxXTLc3N/Pu60nnAj6B/4OV6N099lMKs9/AQgupg7LT6pCKf/59+dvIpO8jbOyhAqIcv
+         QVxtQ6zXOgqsQHtO9USMhb5WwnSpR9UxTqAuFXJlpplowM/6CLUHsEjNCbrnZiGmtp0Y
+         jZoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWZVG/KuhUNaoMprI5UnlLsaz+rt0/xtO8N3qRTjsScK1ICp6o9s7PXXeZP94KbIfeXO/TdiY/x89w6oCVwCq74wNvmN5evkeZIZjnLKFc7
+X-Gm-Message-State: AOJu0YwU32pFAE5jd5vqZmYCCYEBUsIuHrUopDQtiFwmoxM/ZqlACvQ+
+	fYDZJiRZOToD9dSbQJR26Gk4QZPoeMez6yGumh4NIJV9L/B6kJfL/Bj6DSPIFaYQVYfzoAokRws
+	aDXL3LAU8ccpSgshfOR6GaENGN6A=
+X-Google-Smtp-Source: AGHT+IG2uNcusRrlYiy5pSN/MoSZfc+1gv2u2voDfSUD2LA4yyPyxkGk9q2e9tLZT7lM4NLeRsHMKiBiDHCj2x0EHXw=
+X-Received: by 2002:a2e:9e4a:0:b0:2e3:331e:e33d with SMTP id
+ 38308e7fff4ca-2ead00b8920mr10688881fa.11.1717709003796; Thu, 06 Jun 2024
+ 14:23:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3159311717621748@mail.yandex.ru>
+References: <CAGew7BttU+g40uRnSCN5XmbXs1KX1ZBbz+xyXC_nw5p4dR2dGA@mail.gmail.com>
+In-Reply-To: <CAGew7BttU+g40uRnSCN5XmbXs1KX1ZBbz+xyXC_nw5p4dR2dGA@mail.gmail.com>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Thu, 6 Jun 2024 17:23:11 -0400
+Message-ID: <CABBYNZLE9uYiRM-baoBt=RQktq__TguMETgmVWGzfeorARfm4w@mail.gmail.com>
+Subject: Re: Bluetooth Kernel Bug: After connecting either HFP/HSP or A2DP is
+ not available (Regression in 6.9.3, 6.8.12)
+To: =?UTF-8?Q?Timo_Schr=C3=B6der?= <der.timosch@gmail.com>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
+	linux-bluetooth@vger.kernel.org, luiz.von.dentz@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 06, 2024 at 12:14:22AM +0300, миша ухин wrote:
-> <div><div>Thank you for the comment.<br />It seems there might be a misunderstanding.<br />The commit 00d873c17e29 ("ext4: avoid deadlock in fs reclaim with page writeback") you mentioned introduces the use of memalloc_nofs_save()/memalloc_nofs_restore() when acquiring the EXT4_SB(sb)-&gt;s_writepages_rwsem lock.<br />On the other hand the patch we proposed corrects the order of locking/unlocking resources with calls to the functions ext4_journal_start()/ext4_journal_stop() and down_write(&amp;EXT4_I(inode)-&gt;i_data_sem)/up_write(&amp;EXT4_I(inode)-&gt;i_data_sem).<br />These patches do not appear to resolve the same issue, and the code changes are different.</div><div> </div><div>- <span style="white-space:pre-wrap">Mikhail Ukhin</span></div></div>
+Hi Timo,
 
-PLEASE do not send HTML messages to the linux-kernel mailing list.  It
-looks like garbage when read on a text mail reader.
+On Thu, Jun 6, 2024 at 4:46=E2=80=AFPM Timo Schr=C3=B6der <der.timosch@gmai=
+l.com> wrote:
+>
+> Hallo,
+> on my two notebooks, one with Ubuntu (Mainline Kernel 6.9.3, bluez
+> 5.7.2) and the other one with Manjaro (6.9.3, bluez 5.7.6) I'm having
+> problems with my Sony WH-1000XM3 and Shure BT1. Either A2DP or HFP/HSP
+> is not available after the connection has been established after a
+> reboot or a reconnection. It's reproducible that with the WH-1000XM3
+> the A2DP profiles are missing and with the Shure BT1 HFP/HSP profiles
+> are missing. It also takes longer than usual to connect and I have a
+> log message in the journal:
+>
+> Jun 06 16:28:10 liebig bluetoothd[854]:
+> profiles/audio/avdtp.c:cancel_request() Discover: Connection timed out
+> (110)
+>
+> When I disable and re-enable bluetooth (while the Headsets are still
+> on) and trigger a reconnect from the notebooks, A2DP and HFP/HSP
+> Profiles are available again.
+>
+> I also tested it with 6.8.12 and it's the same problem. 6.8.11 and
+> 6.9.2 don't have the problem.
+> So I did a bisection. After reverting commit
+> af1d425b6dc67cd67809f835dd7afb6be4d43e03 "Bluetooth: HCI: Remove
+> HCI_AMP support" for 6.9.3 it's working again without problems.
+>
+> Let me know if you need anything from me.
 
-In any case, you're correct.  I had misremembered the issue with this
-patch.  The complaint that I had made with the V1 of the patch has not
-been corrected, which is that the assertion made in the commit
-description "the order of unlocking must be the reverse of the order
-of locking" is errant nonsense.  It is simply is technically
-incorrect; the order in which locks are released doesn't matter.  (And
-a jbd2 handle is not a lock.)
+Wait what, that patch has nothing to do with any of these profiles not
+really sure how that would cause a regression really, are you sure you
+don't have actual connection timeout happening at the link layer and
+that by some chance didn't happen when running with HCI_AMP reverted?
 
-The syzkaller report which apparntly triggered this failure was
-supplied by Artem here[1], and the explanation should include that it
-was triggered by an EXT4_IOC_MIGRATE ioctl which was set to require
-synchornous update because the file descriptor was opened with O_SYNC,
-and this could result in the jbd2_journal_stop() function calling
-jbd2_might_wait_for_commit() which could potentially trigger a
-deadlock if the EXT4_IOC_MIGRATE call is racing with write(2) system
-call.
+I'd be surprised that HCI_AMP has any effect in most controllers
+anyway, only virtual controllers was using that afaik.
 
-[1] https://lore.kernel.org/r/1845977.e0hk0VWMCB@cherry
 
-In any case, this is a low priority issue since the only program which
-uses EXT4_IOC_MIGRATE is e4defrag, and it doesn't open files with
-O_SYNC, so this isn't going to happen in real life.  And so why don't
-you use this as an opportunity to practice writing a technically valid
-and correct commit description, and how to properlty submit patches
-and send valid (non-HTML) messages to the Linux kernel mailing list?
-
-Cheers,
-
-						- Ted
+--=20
+Luiz Augusto von Dentz
 
