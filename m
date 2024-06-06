@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-48925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725258FEB20
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2CCB8FEB22
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1202D1F26C59
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51B3F1F26F0F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA981A2FB0;
-	Thu,  6 Jun 2024 14:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B2E199385;
+	Thu,  6 Jun 2024 14:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUQF2Nsv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQHEG3AS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF67199384;
-	Thu,  6 Jun 2024 14:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC41E199381;
+	Thu,  6 Jun 2024 14:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683214; cv=none; b=oXdxThgnm1FqVzfZBg6GtVBV5G2NendpAbkGdOdGtoXjfzsO1gwzpuEX8OeiGraSIMW/X3vVCksmVoCIZc/dP5lh4/AXtw1bK35aR2XgKdjhFQOMxtgVmc2fXkmpeRFeAwN5Midoo499HmqJnmjDNMeMCW2z98knSO5TRJ7WNvI=
+	t=1717683215; cv=none; b=q50Ub6oTRca84WxamRSCuo4Z0BGc5+t0FmVbsscw3lNuOKSfclnM3FriThU6GFgJtDrRaf5iA9UKmVJM8WpMd1I8xf17pqnOeHVX2EoACmnTIQnfP9Rjlj87DrTDU7xaDc7tDTIr6kzngV4ub+NfCDO9d0/EYCGx8BF1qHOwsdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683214; c=relaxed/simple;
-	bh=3WtBLbz47Flachn3Ae+6fMBm2nFIsxpHecrOgC1QDaQ=;
+	s=arc-20240116; t=1717683215; c=relaxed/simple;
+	bh=vftM7ZTC1Ml7VjIuB+PER6S09CIX/FaF6WI5cgSyV8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+OxnsZvNmxfp7yQ+sWqRI4RyP9iMjM5hlQfDfKRSfJlCQE5jFSdYZWT31unPZfkBjrkC0UjnIfkctHE47UEQEeemtJeaCNOuWu9fSvs8r2EeKOeT0LGsxv8nFmWvSDWd1ZYRlUK9oRrv1+lJlvIvZTAaoIcR1f+BgCcZ+9ZQ9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUQF2Nsv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674E5C2BD10;
-	Thu,  6 Jun 2024 14:13:34 +0000 (UTC)
+	 MIME-Version; b=ocpqC4b4osFwsiMF9KWKkA9nnK6aUpH9Nat4l2+LlCCHsqAxkOS0D9L69LofhhDR5CQdDvrBaKplF646/ApamkHH+0OGtK3er+CuN5ZBHDsoDWjgUX+K15r3QJKhBzyHVDH+ZWPUHOJQrBuBfXONlaZW7D5SDdeYfrpY07ISpdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQHEG3AS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CCAC2BD10;
+	Thu,  6 Jun 2024 14:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683214;
-	bh=3WtBLbz47Flachn3Ae+6fMBm2nFIsxpHecrOgC1QDaQ=;
+	s=korg; t=1717683215;
+	bh=vftM7ZTC1Ml7VjIuB+PER6S09CIX/FaF6WI5cgSyV8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OUQF2Nsv7xYe0tQcQ4oizI1CMamQ5xkiLwXI9nDlbmYGPN29vcTQMp4bn6QhRa9g1
-	 xBKJ6mTWYURoHHwklH3HtMewnQ+U8wgcPBN1Q4t72SW0+OV88u8Iq9JIZeYPxB5Lrk
-	 eJeskzjFOXmRFbV2Qu10rcP2+oofZJYGo+RXRrmk=
+	b=oQHEG3ASjmc8PHYWCpbMwLHZpdEewNho54luSCAykP5HqWq5nndbjb2mTnEY/oicS
+	 nbIcWe3G+XfA7ZlOYfZjtddKIqEOz/DxmVkuPbU+fU1iEqK91eiV9b8+8+u3f+CCPv
+	 tK3zLq7meclQEJfNedm5BDBYbGo8wI+zzAYjzHwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Can Guo <quic_cang@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Andrew Halaney <ahalaney@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 157/744] scsi: ufs: core: Perform read back after disabling UIC_COMMAND_COMPL
-Date: Thu,  6 Jun 2024 15:57:09 +0200
-Message-ID: <20240606131737.463091283@linuxfoundation.org>
+Subject: [PATCH 6.6 158/744] ACPI: LPSS: Advertise number of chip selects via property
+Date: Thu,  6 Jun 2024 15:57:10 +0200
+Message-ID: <20240606131737.498385251@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,50 +67,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrew Halaney <ahalaney@redhat.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 4bf3855497b60765ca03b983d064b25e99b97657 ]
+[ Upstream commit 07b73ee599428b41d0240f2f7b31b524eba07dd0 ]
 
-Currently, the UIC_COMMAND_COMPL interrupt is disabled and a wmb() is used
-to complete the register write before any following writes.
+Advertise number of chip selects via property for Intel Braswell.
 
-wmb() ensures the writes complete in that order, but completion doesn't
-mean that it isn't stored in a buffer somewhere. The recommendation for
-ensuring this bit has taken effect on the device is to perform a read back
-to force it to make it all the way to the device. This is documented in
-device-io.rst and a talk by Will Deacon on this can be seen over here:
-
-    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
-
-Let's do that to ensure the bit hits the device. Because the wmb()'s
-purpose wasn't to add extra ordering (on top of the ordering guaranteed by
-writel()/readl()), it can safely be removed.
-
-Fixes: d75f7fe495cf ("scsi: ufs: reduce the interrupts for power mode change requests")
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Can Guo <quic_cang@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-9-181252004586@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 620c803f42de ("ACPI: LPSS: Provide an SSP type to the driver")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpi_lpss.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 2371b00c56be9..589c90f4d4021 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -4136,7 +4136,7 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
- 		 * Make sure UIC command completion interrupt is disabled before
- 		 * issuing UIC command.
- 		 */
--		wmb();
-+		ufshcd_readl(hba, REG_INTERRUPT_ENABLE);
- 		reenable_intr = true;
- 	}
- 	spin_unlock_irqrestore(hba->host->host_lock, flags);
+diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+index a052e0ab19e4c..98a2ab3b68442 100644
+--- a/drivers/acpi/acpi_lpss.c
++++ b/drivers/acpi/acpi_lpss.c
+@@ -333,6 +333,7 @@ static const struct lpss_device_desc bsw_i2c_dev_desc = {
+ 
+ static const struct property_entry bsw_spi_properties[] = {
+ 	PROPERTY_ENTRY_U32("intel,spi-pxa2xx-type", LPSS_BSW_SSP),
++	PROPERTY_ENTRY_U32("num-cs", 2),
+ 	{ }
+ };
+ 
 -- 
 2.43.0
 
