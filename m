@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 255A28FEDD3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E064D8FE9FF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6A8DB29A37
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D37301F241FE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565831BE226;
-	Thu,  6 Jun 2024 14:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE34F1974EC;
+	Thu,  6 Jun 2024 14:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHcJkSyQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4BdcqT3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150941BD51C;
-	Thu,  6 Jun 2024 14:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA4419D08D;
+	Thu,  6 Jun 2024 14:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683529; cv=none; b=dcVcU0rkhpGdRCyC18LRJ1wcxIWSU4dToM2elpg6RH3msU6l8IXUgNw5JJ9+lYJ16Txay99fIymtihmSmKA8i0tbL2AeOM2lVsp5BlSTqmmIpzMz5ZPqJfdicll7nndlAAv1i8Xfnz2uMwaeo19b6DGHThDiHEABjdPzMPx5FDo=
+	t=1717683089; cv=none; b=MSUbZgJwiqviCPMYPdX0Y79ya7DLenYCUNL2VgLbY8195kb91Tc+ACPICFIOtCzi+hXtWxMIcFa3oGIelBDZjgS8vIgGzsrhfwhEFPNtRntle4gYhgoJ3PpnUtW0AF/muHNyY7g1QVfbpswMiwSfD4eEJ5RcyJ82yja55OQQsso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683529; c=relaxed/simple;
-	bh=SiUvCmV8VEGrZ7CsA6MNrWVvyd4wo2JkgcdFZ6YfeGo=;
+	s=arc-20240116; t=1717683089; c=relaxed/simple;
+	bh=owqWxyCZ1oeiggLyQr+OaEYTfjwCDWiS3r8/s4D59KA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJWjlj9xAFf0ymDxqhSmrOeeilObDUdcojadvkiyqwJ44ohcPP5U9zE5xteZyv6ke4sb0Zfc+NyAHxf7CfT4suBtWgcw9EaXjf1O1Mube3gSxjLo9p3t86OnPfjzTG4OqySjfi4xH1Zcvfqz8a4yxI2zOhB2wgTaOG7AQqPABeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHcJkSyQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FB6C2BD10;
-	Thu,  6 Jun 2024 14:18:48 +0000 (UTC)
+	 MIME-Version; b=LHNTu9VHmgV9c37a2wtUC/3GH/EFJ8uEjL2FuBOaUKGJ6XiAYFQwf8KlxW/a+GY96BQhO+PeA4/2Pp0Qs8ACbfnEESFvhG7DBiDN6GHn4AeuU4hCEXnMF9xgKC3EEuN3MP42IMYeyHmQygRI9sqqKhj9vnu0ey1zeF2TCjjmxFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4BdcqT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBC6C32781;
+	Thu,  6 Jun 2024 14:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683529;
-	bh=SiUvCmV8VEGrZ7CsA6MNrWVvyd4wo2JkgcdFZ6YfeGo=;
+	s=korg; t=1717683089;
+	bh=owqWxyCZ1oeiggLyQr+OaEYTfjwCDWiS3r8/s4D59KA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHcJkSyQxmZmHZjO+HlgIffieXlq0nY7TJKGWeQRyYrEvM1UenOCgDu75TllQIBeM
-	 ocZKJVcgKTsxj2ZE1vno/2t9G7JQnJe26dAI50Mr8lJhzm1vHrrQaS2O18ggoNp+JV
-	 quSB3ksHB5F9K93FMGiL2ufQfnXWyN70mNa7FZ0U=
+	b=Y4BdcqT3+fJUmWUdH9dp9eBTSAxT5U1DVHqolm9aYo7iNBalWe+b+71wZkCzYFw0h
+	 RUMsu96H6wq5TjSVQNsl7v5OZ+0Ja61CJe7bDQF3jYxmGJ1AzVi0YLKeLnT37G2HEs
+	 KDzWq27F9RtaR++CWqQbLnFagbNEASpvPgI6cXKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Bystrin <dev.mbstr@gmail.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 420/473] riscv: stacktrace: fixed walk_stackframe()
-Date: Thu,  6 Jun 2024 16:05:49 +0200
-Message-ID: <20240606131713.659647008@linuxfoundation.org>
+	Peter Schneider <pschneider1968@googlemail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.9 371/374] x86/topology/intel: Unlock CPUID before evaluating anything
+Date: Thu,  6 Jun 2024 16:05:50 +0200
+Message-ID: <20240606131704.313429144@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,137 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Bystrin <dev.mbstr@gmail.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit a2a4d4a6a0bf5eba66f8b0b32502cc20d82715a0 ]
+commit 0c2f6d04619ec2b53ad4b0b591eafc9389786e86 upstream.
 
-If the load access fault occures in a leaf function (with
-CONFIG_FRAME_POINTER=y), when wrong stack trace will be displayed:
+Intel CPUs have a MSR bit to limit CPUID enumeration to leaf two. If
+this bit is set by the BIOS then CPUID evaluation including topology
+enumeration does not work correctly as the evaluation code does not try
+to analyze any leaf greater than two.
 
-[<ffffffff804853c2>] regmap_mmio_read32le+0xe/0x1c
----[ end trace 0000000000000000 ]---
+This went unnoticed before because the original topology code just
+repeated evaluation several times and managed to overwrite the initial
+limited information with the correct one later. The new evaluation code
+does it once and therefore ends up with the limited and wrong
+information.
 
-Registers dump:
-    ra     0xffffffff80485758 <regmap_mmio_read+36>
-    sp     0xffffffc80200b9a0
-    fp     0xffffffc80200b9b0
-    pc     0xffffffff804853ba <regmap_mmio_read32le+6>
+Cure this by unlocking CPUID right before evaluating anything which
+depends on the maximum CPUID leaf being greater than two instead of
+rereading stuff after unlock.
 
-Stack dump:
-    0xffffffc80200b9a0:  0xffffffc80200b9e0  0xffffffc80200b9e0
-    0xffffffc80200b9b0:  0xffffffff8116d7e8  0x0000000000000100
-    0xffffffc80200b9c0:  0xffffffd8055b9400  0xffffffd8055b9400
-    0xffffffc80200b9d0:  0xffffffc80200b9f0  0xffffffff8047c526
-    0xffffffc80200b9e0:  0xffffffc80200ba30  0xffffffff8047fe9a
-
-The assembler dump of the function preambula:
-    add     sp,sp,-16
-    sd      s0,8(sp)
-    add     s0,sp,16
-
-In the fist stack frame, where ra is not stored on the stack we can
-observe:
-
-        0(sp)                  8(sp)
-        .---------------------------------------------.
-    sp->|       frame->fp      | frame->ra (saved fp) |
-        |---------------------------------------------|
-    fp->|         ....         |         ....         |
-        |---------------------------------------------|
-        |                      |                      |
-
-and in the code check is performed:
-	if (regs && (regs->epc == pc) && (frame->fp & 0x7))
-
-I see no reason to check frame->fp value at all, because it is can be
-uninitialized value on the stack. A better way is to check frame->ra to
-be an address on the stack. After the stacktrace shows as expect:
-
-[<ffffffff804853c2>] regmap_mmio_read32le+0xe/0x1c
-[<ffffffff80485758>] regmap_mmio_read+0x24/0x52
-[<ffffffff8047c526>] _regmap_bus_reg_read+0x1a/0x22
-[<ffffffff8047fe9a>] _regmap_read+0x5c/0xea
-[<ffffffff80480376>] _regmap_update_bits+0x76/0xc0
-...
----[ end trace 0000000000000000 ]---
-As pointed by Samuel Holland it is incorrect to remove check of the stackframe
-entirely.
-
-Changes since v2 [2]:
- - Add accidentally forgotten curly brace
-
-Changes since v1 [1]:
- - Instead of just dropping frame->fp check, replace it with validation of
-   frame->ra, which should be a stack address.
- - Move frame pointer validation into the separate function.
-
-[1] https://lore.kernel.org/linux-riscv/20240426072701.6463-1-dev.mbstr@gmail.com/
-[2] https://lore.kernel.org/linux-riscv/20240521131314.48895-1-dev.mbstr@gmail.com/
-
-Fixes: f766f77a74f5 ("riscv/stacktrace: Fix stack output without ra on the stack top")
-Signed-off-by: Matthew Bystrin <dev.mbstr@gmail.com>
-Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://lore.kernel.org/r/20240521191727.62012-1-dev.mbstr@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 22d63660c35e ("x86/cpu: Use common topology code for Intel")
+Reported-by: Peter Schneider <pschneider1968@googlemail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/fd3f73dc-a86f-4bcf-9c60-43556a21eb42@googlemail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/stacktrace.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ arch/x86/kernel/cpu/common.c |    3 ++-
+ arch/x86/kernel/cpu/cpu.h    |    2 ++
+ arch/x86/kernel/cpu/intel.c  |   25 ++++++++++++++++---------
+ 3 files changed, 20 insertions(+), 10 deletions(-)
 
-diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
-index 64a9c093aef93..528ec7cc9a622 100644
---- a/arch/riscv/kernel/stacktrace.c
-+++ b/arch/riscv/kernel/stacktrace.c
-@@ -18,6 +18,16 @@
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1589,6 +1589,7 @@ static void __init early_identify_cpu(st
+ 	if (have_cpuid_p()) {
+ 		cpu_detect(c);
+ 		get_cpu_vendor(c);
++		intel_unlock_cpuid_leafs(c);
+ 		get_cpu_cap(c);
+ 		setup_force_cpu_cap(X86_FEATURE_CPUID);
+ 		get_cpu_address_sizes(c);
+@@ -1748,7 +1749,7 @@ static void generic_identify(struct cpui
+ 	cpu_detect(c);
  
- extern asmlinkage void ret_from_exception(void);
+ 	get_cpu_vendor(c);
+-
++	intel_unlock_cpuid_leafs(c);
+ 	get_cpu_cap(c);
  
-+static inline int fp_is_valid(unsigned long fp, unsigned long sp)
+ 	get_cpu_address_sizes(c);
+--- a/arch/x86/kernel/cpu/cpu.h
++++ b/arch/x86/kernel/cpu/cpu.h
+@@ -61,9 +61,11 @@ extern __ro_after_init enum tsx_ctrl_sta
+ 
+ extern void __init tsx_init(void);
+ void tsx_ap_init(void);
++void intel_unlock_cpuid_leafs(struct cpuinfo_x86 *c);
+ #else
+ static inline void tsx_init(void) { }
+ static inline void tsx_ap_init(void) { }
++static inline void intel_unlock_cpuid_leafs(struct cpuinfo_x86 *c) { }
+ #endif /* CONFIG_CPU_SUP_INTEL */
+ 
+ extern void init_spectral_chicken(struct cpuinfo_x86 *c);
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -268,19 +268,26 @@ detect_keyid_bits:
+ 	c->x86_phys_bits -= keyid_bits;
+ }
+ 
++void intel_unlock_cpuid_leafs(struct cpuinfo_x86 *c)
 +{
-+	unsigned long low, high;
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
++		return;
 +
-+	low = sp + sizeof(struct stackframe);
-+	high = ALIGN(sp, THREAD_SIZE);
++	if (c->x86 < 6 || (c->x86 == 6 && c->x86_model < 0xd))
++		return;
 +
-+	return !(fp < low || fp > high || fp & 0x07);
++	/*
++	 * The BIOS can have limited CPUID to leaf 2, which breaks feature
++	 * enumeration. Unlock it and update the maximum leaf info.
++	 */
++	if (msr_clear_bit(MSR_IA32_MISC_ENABLE, MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT) > 0)
++		c->cpuid_level = cpuid_eax(0);
 +}
 +
- void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 			     bool (*fn)(void *, unsigned long), void *arg)
+ static void early_init_intel(struct cpuinfo_x86 *c)
  {
-@@ -41,21 +51,19 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 	}
+ 	u64 misc_enable;
  
- 	for (;;) {
--		unsigned long low, high;
- 		struct stackframe *frame;
- 
- 		if (unlikely(!__kernel_text_address(pc) || (level++ >= 0 && !fn(arg, pc))))
- 			break;
- 
--		/* Validate frame pointer */
--		low = sp + sizeof(struct stackframe);
--		high = ALIGN(sp, THREAD_SIZE);
--		if (unlikely(fp < low || fp > high || fp & 0x7))
-+		if (unlikely(!fp_is_valid(fp, sp)))
- 			break;
-+
- 		/* Unwind stack frame */
- 		frame = (struct stackframe *)fp - 1;
- 		sp = fp;
--		if (regs && (regs->epc == pc) && (frame->fp & 0x7)) {
-+		if (regs && (regs->epc == pc) && fp_is_valid(frame->ra, sp)) {
-+			/* We hit function where ra is not saved on the stack */
- 			fp = frame->ra;
- 			pc = regs->ra;
- 		} else {
--- 
-2.43.0
-
+-	/* Unmask CPUID levels if masked: */
+-	if (c->x86 > 6 || (c->x86 == 6 && c->x86_model >= 0xd)) {
+-		if (msr_clear_bit(MSR_IA32_MISC_ENABLE,
+-				  MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT) > 0) {
+-			c->cpuid_level = cpuid_eax(0);
+-			get_cpu_cap(c);
+-		}
+-	}
+-
+ 	if ((c->x86 == 0xf && c->x86_model >= 0x03) ||
+ 		(c->x86 == 0x6 && c->x86_model >= 0x0e))
+ 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
 
 
 
