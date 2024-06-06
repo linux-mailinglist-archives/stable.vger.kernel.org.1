@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-48855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B2008FEAD4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C678FEAD6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A1B2B240FD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE7D2B24219
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0871A1860;
-	Thu,  6 Jun 2024 14:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F481A1868;
+	Thu,  6 Jun 2024 14:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmx/7ui6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeuqO8sn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3031A1864;
-	Thu,  6 Jun 2024 14:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DB019922D;
+	Thu,  6 Jun 2024 14:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683180; cv=none; b=YabEOM/EBlbFt2IFAoC+lAPcfqqFWGNa4uEtBd/gJRq+2EUSNDNZVJJ+CuShXlrMJCcnF7mU+P9acZCgUabpHX3mUV8lwQxSCvCaA0e/P/pwx8A8TM7yzXZnHByrt7ZWw0n1u/mJSTi7A6epNmVU0th3T/ZxfJ/PKKT9Sj7JbPU=
+	t=1717683181; cv=none; b=ilaAXmRigq4b9yZYcvIYygbimE5C+/Xh4Z9ipOyecMtqeKa9+6TKFe/dxfPLKFuruAOTpAfJYO0Jd3WS+SPplIjgpc9DG4hwKuTYUZh0ASRsx67kbWkcn2snPelmi0WAfcgiiw2xvbs62gsz5eQ6n8Oza8UzN8zGYaVJEnW2W14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683180; c=relaxed/simple;
-	bh=rb/DIGTkwxARX/NR5xSvx8KT+bg3Sd6f/dsnnFXlTRY=;
+	s=arc-20240116; t=1717683181; c=relaxed/simple;
+	bh=kE9iYZSrxeJTNyBmvGt+YHzrEPbDQNyHW0cRBPpxOJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9mgOzw0Nk0ZsRkOYy/YSI8lOn6CBpBTTcNpGKEtnQQmzEnaZMdb84qxAbsxLkyEwyCgljgSc6/MaA0ModPxmno32AibOhlmqd0TfO/PSwTq+aOcWdwiQQRIH2CQa8zG0qu29FXiW4qV2ZKyls+/tVs3V4zEdN+zctX8r7oK6+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmx/7ui6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9B3C32781;
-	Thu,  6 Jun 2024 14:13:00 +0000 (UTC)
+	 MIME-Version; b=ZLUzX1o0191bZY5irw+yiwCLo7+6XB6kazy2DCRaz1DdIOLnE3gLpb9Pg844NL8HgNc1CN0eUY0O5ZsGo9ae4nfektGJ+UgMFAacAfPSZb8RQtwYPt5/pCzwfHsmqzhJ6foVh3vjHg4a8k6RVPNIJFtYOagNA4MR+LKvxR2FqEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UeuqO8sn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12863C32781;
+	Thu,  6 Jun 2024 14:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683180;
-	bh=rb/DIGTkwxARX/NR5xSvx8KT+bg3Sd6f/dsnnFXlTRY=;
+	s=korg; t=1717683181;
+	bh=kE9iYZSrxeJTNyBmvGt+YHzrEPbDQNyHW0cRBPpxOJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmx/7ui66Qn2v5+9j+HqG4xe1Q9jSeorH2eA/n2L6j/B/TjgNcWy/ThO8jjbM7RQb
-	 5+H25eqv8hRjv5NrkVGIXPfUiAyFAgxWlJKfLdRsE59AWgBKB5MVTuDsTKVeWyYhSl
-	 Mnb745nC8fMiGQZNQR3/z7DTiuPcPLyT1GujW5vI=
+	b=UeuqO8snpfrIgKPKvFDpAq23XYQFJEdknbAv9bF2qGdCEbKwQkgS4QYiaZ7rl7mGO
+	 antko5MjoFj397DAxMPkohEcIwpX968VAzp2dXruMKF7+ygolihlMf8Vv52bVYaGRA
+	 pCNByfyBpW5PQDZdTQnGl6IsGNgMoVOI89UxKf0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiro Aota <naota@elisp.net>,
-	INAGAKI Hiroshi <musashino.open@gmail.com>,
-	Daniel Golle <daniel@makrotopia.org>,
+	Yu Kuai <yukuai3@huawei.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/744] block: fix and simplify blkdevparts= cmdline parsing
-Date: Thu,  6 Jun 2024 15:56:36 +0200
-Message-ID: <20240606131736.392215618@linuxfoundation.org>
+Subject: [PATCH 6.6 125/744] block: support to account io_ticks precisely
+Date: Thu,  6 Jun 2024 15:56:37 +0200
+Message-ID: <20240606131736.427046096@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,206 +66,150 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: INAGAKI Hiroshi <musashino.open@gmail.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit bc2e07dfd2c49aaa4b52302cf7b55cf94e025f79 ]
+[ Upstream commit 99dc422335d8b2bd4d105797241d3e715bae90e9 ]
 
-Fix the cmdline parsing of the "blkdevparts=" parameter using strsep(),
-which makes the code simpler.
+Currently, io_ticks is accounted based on sampling, specifically
+update_io_ticks() will always account io_ticks by 1 jiffies from
+bdev_start_io_acct()/blk_account_io_start(), and the result can be
+inaccurate, for example(HZ is 250):
 
-Before commit 146afeb235cc ("block: use strscpy() to instead of
-strncpy()"), we used a strncpy() to copy a block device name and partition
-names. The commit simply replaced a strncpy() and NULL termination with
-a strscpy(). It did not update calculations of length passed to strscpy().
-While the length passed to strncpy() is just a length of valid characters
-without NULL termination ('\0'), strscpy() takes it as a length of the
-destination buffer, including a NULL termination.
+Test script:
+fio -filename=/dev/sda -bs=4k -rw=write -direct=1 -name=test -thinktime=4ms
 
-Since the source buffer is not necessarily NULL terminated, the current
-code copies "length - 1" characters and puts a NULL character in the
-destination buffer. It replaces the last character with NULL and breaks
-the parsing.
+Test result: util is about 90%, while the disk is really idle.
 
-As an example, that buffer will be passed to parse_parts() and breaks
-parsing sub-partitions due to the missing ')' at the end, like the
-following.
+This behaviour is introduced by commit 5b18b5a73760 ("block: delete
+part_round_stats and switch to less precise counting"), however, there
+was a key point that is missed that this patch also improve performance
+a lot:
 
-example (Check Point V-80 & OpenWrt):
+Before the commit:
+part_round_stats:
+  if (part->stamp != now)
+   stats |= 1;
 
-- Linux Kernel 6.6
+  part_in_flight()
+  -> there can be lots of task here in 1 jiffies.
+  part_round_stats_single()
+   __part_stat_add()
+  part->stamp = now;
 
-  [    0.000000] Kernel command line: console=ttyS0,115200 earlycon=uart8250,mmio32,0xf0512000 crashkernel=30M mvpp2x.queue_mode=1 blkdevparts=mmcblk1:48M@10M(kernel-1),1M(dtb-1),720M(rootfs-1),48M(kernel-2),1M(dtb-2),720M(rootfs-2),300M(default_sw),650M(logs),1M(preset_cfg),1M(adsl),-(storage) maxcpus=4
-  ...
-  [    0.884016] mmc1: new HS200 MMC card at address 0001
-  [    0.889951] mmcblk1: mmc1:0001 004GA0 3.69 GiB
-  [    0.895043] cmdline partition format is invalid.
-  [    0.895704]  mmcblk1: p1
-  [    0.903447] mmcblk1boot0: mmc1:0001 004GA0 2.00 MiB
-  [    0.908667] mmcblk1boot1: mmc1:0001 004GA0 2.00 MiB
-  [    0.913765] mmcblk1rpmb: mmc1:0001 004GA0 512 KiB, chardev (248:0)
+After the commit:
+update_io_ticks:
+  stamp = part->bd_stamp;
+  if (time_after(now, stamp))
+   if (try_cmpxchg())
+    __part_stat_add()
+    -> only one task can reach here in 1 jiffies.
 
-  1. "48M@10M(kernel-1),..." is passed to strscpy() with length=17
-     from parse_parts()
-  2. strscpy() returns -E2BIG and the destination buffer has
-     "48M@10M(kernel-1\0"
-  3. "48M@10M(kernel-1\0" is passed to parse_subpart()
-  4. parse_subpart() fails to find ')' when parsing a partition name,
-     and returns error
+Hence in order to account io_ticks precisely, we only need to know if
+there are IO inflight at most once in one jiffies. Noted that for
+rq-based device, iterating tags should not be used here because
+'tags->lock' is grabbed in blk_mq_find_and_get_req(), hence
+part_stat_lock_inc/dec() and part_in_flight() is used to trace inflight.
+The additional overhead is quite little:
 
-- Linux Kernel 6.1
+ - per cpu add/dec for each IO for rq-based device;
+ - per cpu sum for each jiffies;
 
-  [    0.000000] Kernel command line: console=ttyS0,115200 earlycon=uart8250,mmio32,0xf0512000 crashkernel=30M mvpp2x.queue_mode=1 blkdevparts=mmcblk1:48M@10M(kernel-1),1M(dtb-1),720M(rootfs-1),48M(kernel-2),1M(dtb-2),720M(rootfs-2),300M(default_sw),650M(logs),1M(preset_cfg),1M(adsl),-(storage) maxcpus=4
-  ...
-  [    0.953142] mmc1: new HS200 MMC card at address 0001
-  [    0.959114] mmcblk1: mmc1:0001 004GA0 3.69 GiB
-  [    0.964259]  mmcblk1: p1(kernel-1) p2(dtb-1) p3(rootfs-1) p4(kernel-2) p5(dtb-2) 6(rootfs-2) p7(default_sw) p8(logs) p9(preset_cfg) p10(adsl) p11(storage)
-  [    0.979174] mmcblk1boot0: mmc1:0001 004GA0 2.00 MiB
-  [    0.984674] mmcblk1boot1: mmc1:0001 004GA0 2.00 MiB
-  [    0.989926] mmcblk1rpmb: mmc1:0001 004GA0 512 KiB, chardev (248:0
+And it's verified by null-blk that there are no performance degration
+under heavy IO pressure.
 
-By the way, strscpy() takes a length of destination buffer and it is
-often confusing when copying characters with a specified length. Using
-strsep() helps to separate the string by the specified character. Then,
-we can use strscpy() naturally with the size of the destination buffer.
-
-Separating the string on the fly is also useful to omit the redundant
-string copy, reducing memory usage and improve the code readability.
-
-Fixes: 146afeb235cc ("block: use strscpy() to instead of strncpy()")
-Suggested-by: Naohiro Aota <naota@elisp.net>
-Signed-off-by: INAGAKI Hiroshi <musashino.open@gmail.com>
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/20240421074005.565-1-musashino.open@gmail.com
+Fixes: 5b18b5a73760 ("block: delete part_round_stats and switch to less precise counting")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240509123717.3223892-2-yukuai1@huaweicloud.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/partitions/cmdline.c | 49 ++++++++++----------------------------
- 1 file changed, 12 insertions(+), 37 deletions(-)
+ block/blk-core.c  | 9 +++++----
+ block/blk-merge.c | 2 ++
+ block/blk-mq.c    | 4 ++++
+ block/blk.h       | 1 +
+ block/genhd.c     | 2 +-
+ 5 files changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/block/partitions/cmdline.c b/block/partitions/cmdline.c
-index c03bc105e5753..152c85df92b20 100644
---- a/block/partitions/cmdline.c
-+++ b/block/partitions/cmdline.c
-@@ -70,8 +70,8 @@ static int parse_subpart(struct cmdline_subpart **subpart, char *partdef)
+diff --git a/block/blk-core.c b/block/blk-core.c
+index a3726d8cf8738..bf058cea9016a 100644
+--- a/block/blk-core.c
++++ b/block/blk-core.c
+@@ -950,10 +950,11 @@ void update_io_ticks(struct block_device *part, unsigned long now, bool end)
+ 	unsigned long stamp;
+ again:
+ 	stamp = READ_ONCE(part->bd_stamp);
+-	if (unlikely(time_after(now, stamp))) {
+-		if (likely(try_cmpxchg(&part->bd_stamp, &stamp, now)))
+-			__part_stat_add(part, io_ticks, end ? now - stamp : 1);
+-	}
++	if (unlikely(time_after(now, stamp)) &&
++	    likely(try_cmpxchg(&part->bd_stamp, &stamp, now)) &&
++	    (end || part_in_flight(part)))
++		__part_stat_add(part, io_ticks, now - stamp);
++
+ 	if (part->bd_partno) {
+ 		part = bdev_whole(part);
+ 		goto again;
+diff --git a/block/blk-merge.c b/block/blk-merge.c
+index 65e75efa9bd36..07bf758c523a9 100644
+--- a/block/blk-merge.c
++++ b/block/blk-merge.c
+@@ -783,6 +783,8 @@ static void blk_account_io_merge_request(struct request *req)
+ 	if (blk_do_io_stat(req)) {
+ 		part_stat_lock();
+ 		part_stat_inc(req->part, merges[op_stat_group(req_op(req))]);
++		part_stat_local_dec(req->part,
++				    in_flight[op_is_write(req_op(req))]);
+ 		part_stat_unlock();
  	}
+ }
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 257b0addd47e5..4c91889affa7c 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -994,6 +994,8 @@ static inline void blk_account_io_done(struct request *req, u64 now)
+ 		update_io_ticks(req->part, jiffies, true);
+ 		part_stat_inc(req->part, ios[sgrp]);
+ 		part_stat_add(req->part, nsecs[sgrp], now - req->start_time_ns);
++		part_stat_local_dec(req->part,
++				    in_flight[op_is_write(req_op(req))]);
+ 		part_stat_unlock();
+ 	}
+ }
+@@ -1016,6 +1018,8 @@ static inline void blk_account_io_start(struct request *req)
  
- 	if (*partdef == '(') {
--		int length;
--		char *next = strchr(++partdef, ')');
-+		partdef++;
-+		char *next = strsep(&partdef, ")");
+ 		part_stat_lock();
+ 		update_io_ticks(req->part, jiffies, false);
++		part_stat_local_inc(req->part,
++				    in_flight[op_is_write(req_op(req))]);
+ 		part_stat_unlock();
+ 	}
+ }
+diff --git a/block/blk.h b/block/blk.h
+index 08a358bc0919e..67915b04b3c17 100644
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -344,6 +344,7 @@ static inline bool blk_do_io_stat(struct request *rq)
+ }
  
- 		if (!next) {
- 			pr_warn("cmdline partition format is invalid.");
-@@ -79,11 +79,7 @@ static int parse_subpart(struct cmdline_subpart **subpart, char *partdef)
- 			goto fail;
- 		}
+ void update_io_ticks(struct block_device *part, unsigned long now, bool end);
++unsigned int part_in_flight(struct block_device *part);
  
--		length = min_t(int, next - partdef,
--			       sizeof(new_subpart->name) - 1);
--		strscpy(new_subpart->name, partdef, length);
--
--		partdef = ++next;
-+		strscpy(new_subpart->name, next, sizeof(new_subpart->name));
- 	} else
- 		new_subpart->name[0] = '\0';
- 
-@@ -117,14 +113,12 @@ static void free_subpart(struct cmdline_parts *parts)
+ static inline void req_set_nomerge(struct request_queue *q, struct request *req)
+ {
+diff --git a/block/genhd.c b/block/genhd.c
+index 2ef1e08d70ecd..33b1ebf6ef82d 100644
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -118,7 +118,7 @@ static void part_stat_read_all(struct block_device *part,
  	}
  }
  
--static int parse_parts(struct cmdline_parts **parts, const char *bdevdef)
-+static int parse_parts(struct cmdline_parts **parts, char *bdevdef)
+-static unsigned int part_in_flight(struct block_device *part)
++unsigned int part_in_flight(struct block_device *part)
  {
- 	int ret = -EINVAL;
- 	char *next;
--	int length;
- 	struct cmdline_subpart **next_subpart;
- 	struct cmdline_parts *newparts;
--	char buf[BDEVNAME_SIZE + 32 + 4];
- 
- 	*parts = NULL;
- 
-@@ -132,28 +126,19 @@ static int parse_parts(struct cmdline_parts **parts, const char *bdevdef)
- 	if (!newparts)
- 		return -ENOMEM;
- 
--	next = strchr(bdevdef, ':');
-+	next = strsep(&bdevdef, ":");
- 	if (!next) {
- 		pr_warn("cmdline partition has no block device.");
- 		goto fail;
- 	}
- 
--	length = min_t(int, next - bdevdef, sizeof(newparts->name) - 1);
--	strscpy(newparts->name, bdevdef, length);
-+	strscpy(newparts->name, next, sizeof(newparts->name));
- 	newparts->nr_subparts = 0;
- 
- 	next_subpart = &newparts->subpart;
- 
--	while (next && *(++next)) {
--		bdevdef = next;
--		next = strchr(bdevdef, ',');
--
--		length = (!next) ? (sizeof(buf) - 1) :
--			min_t(int, next - bdevdef, sizeof(buf) - 1);
--
--		strscpy(buf, bdevdef, length);
--
--		ret = parse_subpart(next_subpart, buf);
-+	while ((next = strsep(&bdevdef, ","))) {
-+		ret = parse_subpart(next_subpart, next);
- 		if (ret)
- 			goto fail;
- 
-@@ -199,24 +184,17 @@ static int cmdline_parts_parse(struct cmdline_parts **parts,
- 
- 	*parts = NULL;
- 
--	next = pbuf = buf = kstrdup(cmdline, GFP_KERNEL);
-+	pbuf = buf = kstrdup(cmdline, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
- 
- 	next_parts = parts;
- 
--	while (next && *pbuf) {
--		next = strchr(pbuf, ';');
--		if (next)
--			*next = '\0';
--
--		ret = parse_parts(next_parts, pbuf);
-+	while ((next = strsep(&pbuf, ";"))) {
-+		ret = parse_parts(next_parts, next);
- 		if (ret)
- 			goto fail;
- 
--		if (next)
--			pbuf = ++next;
--
- 		next_parts = &(*next_parts)->next_parts;
- 	}
- 
-@@ -250,7 +228,6 @@ static struct cmdline_parts *bdev_parts;
- static int add_part(int slot, struct cmdline_subpart *subpart,
- 		struct parsed_partitions *state)
- {
--	int label_min;
- 	struct partition_meta_info *info;
- 	char tmp[sizeof(info->volname) + 4];
- 
-@@ -262,9 +239,7 @@ static int add_part(int slot, struct cmdline_subpart *subpart,
- 
- 	info = &state->parts[slot].info;
- 
--	label_min = min_t(int, sizeof(info->volname) - 1,
--			  sizeof(subpart->name));
--	strscpy(info->volname, subpart->name, label_min);
-+	strscpy(info->volname, subpart->name, sizeof(info->volname));
- 
- 	snprintf(tmp, sizeof(tmp), "(%s)", info->volname);
- 	strlcat(state->pp_buf, tmp, PAGE_SIZE);
+ 	unsigned int inflight = 0;
+ 	int cpu;
 -- 
 2.43.0
 
