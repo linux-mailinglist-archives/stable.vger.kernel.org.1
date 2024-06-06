@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDFAD8FEF0B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD898FEA00
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53921B258A8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB78A1F2299A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4943C1C95DF;
-	Thu,  6 Jun 2024 14:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF33E19D093;
+	Thu,  6 Jun 2024 14:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y11CN85q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHEPfQgC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D171A1894;
-	Thu,  6 Jun 2024 14:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E97F198E86;
+	Thu,  6 Jun 2024 14:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683730; cv=none; b=Cj1Cs4jAziJjOhPV28d6E4FVFDF4CDn0L3+EGfa3wSD9HAe8uIzJL7NWdjuiveTa2jogIS+M25R2xgVZwk3jS7J0ma2aoL/s7R0/NGZo1W1ymjKHSZfxknrg4BjQCmSOCCF3vegGX7rWuDbOQL62X6MxFSsA36DEy3nCXjZBesE=
+	t=1717683090; cv=none; b=TFWqLRWkTOT3lD/2Zh32yl/fcUOUanRY+gXi/iMnieCPLGDJuPGG9oD/JwDiXFLlBnYEBd0LyHWxjja8iFYjZqyUlLU+LVJFy2USRBj9TGRds2qPLQG1SosEC13DifK/QEL7V/iX/8G0DfuLr6HJ47eSw8DHDOlhq1lt+qQGZkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683730; c=relaxed/simple;
-	bh=KolspdsRc4dZx+NkQDpNg0I151Eqzkr6Ny9cbIAOPgs=;
+	s=arc-20240116; t=1717683090; c=relaxed/simple;
+	bh=FwmJSfd+KKj2jHumXHMwAkHPeRkr9T81I1TK1oulhgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M7jPXt59d168sRAD7osPYfXdcjmfLs/IuAO7q/VnOJxvH3xWqq4Fq6E6z+ECtZnbgFF1hroOZ+vwz51ox1OyIkrf4ZHLvUSAcEpmAMSWIchzIYwf3x990SFowIL/Pqtk5IZSvtfGzqEfuFpORAF7D5o26qrTfj/rVa01s7rBuIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y11CN85q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC09DC2BD10;
-	Thu,  6 Jun 2024 14:22:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pL/NdJn44mTruS4+z8if7ehMi2Q5yy1xGXZ9zIg0ATGBJQN513I5571Ig0EcOo15z9OrYqvDlRMVC1vm9mdxyrr5zrtuvhKBfbfWzcKwSzrfVEw8uo51PghvZ0iBhNEjZwKkUSb2mm2Fu2lib9BKaVJdTayQC0azoJsl2VPPhR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHEPfQgC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B853C2BD10;
+	Thu,  6 Jun 2024 14:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683729;
-	bh=KolspdsRc4dZx+NkQDpNg0I151Eqzkr6Ny9cbIAOPgs=;
+	s=korg; t=1717683090;
+	bh=FwmJSfd+KKj2jHumXHMwAkHPeRkr9T81I1TK1oulhgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y11CN85qf2sECUzOiFMO9wOJXqBTeyBMTOmUYp/Kfma1kBT2LMVgFCo8Q8xoJcFyf
-	 x/UigT2nkcZgGT/cBseFwZOTnV0MmFxpSSMqpODp9CHht471K+ghlAN6ihN0ureQRM
-	 LYpcWbZNUcnKKCfSQvQPNbXj86HY7p+feY2yNWS0=
+	b=tHEPfQgCOwuM7Ej4pf7UNBZ5YjzNi9GFVs+CpPOKjg1zBiDzKPWpAtuAy+GW0EV+r
+	 ZfCc/GF11VmtGmH5BCV/uM2ikD0B30r6Deqgsqv5t9/qoSQ38hXNPaiqCOuoQSaxe0
+	 muvEiM8SKVT8rAUHzsRbEt8w5uctckluGarhtwKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 680/744] nvme-tcp: add definitions for TLS cipher suites
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.9 373/374] platform/x86/intel/tpmi: Handle error from tpmi_process_info()
 Date: Thu,  6 Jun 2024 16:05:52 +0200
-Message-ID: <20240606131754.297206917@linuxfoundation.org>
+Message-ID: <20240606131704.385726123@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit a86062aac34d100a3117c0fff91ee1892ebfb460 ]
+commit 2920141fc149f71bad22361946417bc43783ed7f upstream.
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Stable-dep-of: a2e4c5f5f68d ("nvme-multipath: fix io accounting on failover")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When tpmi_process_info() returns error, fail to load the driver.
+This can happen if call to ioremap() returns error.
+
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: stable@vger.kernel.org # v6.3+
+Link: https://lore.kernel.org/r/20240423204619.3946901-2-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/nvme-tcp.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/platform/x86/intel/tpmi.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/nvme-tcp.h b/include/linux/nvme-tcp.h
-index 57ebe1267f7fb..e07e8978d691b 100644
---- a/include/linux/nvme-tcp.h
-+++ b/include/linux/nvme-tcp.h
-@@ -18,6 +18,12 @@ enum nvme_tcp_pfv {
- 	NVME_TCP_PFV_1_0 = 0x0,
- };
+--- a/drivers/platform/x86/intel/tpmi.c
++++ b/drivers/platform/x86/intel/tpmi.c
+@@ -763,8 +763,11 @@ static int intel_vsec_tpmi_init(struct a
+ 		 * when actual device nodes created outside this
+ 		 * loop via tpmi_create_devices().
+ 		 */
+-		if (pfs->pfs_header.tpmi_id == TPMI_INFO_ID)
+-			tpmi_process_info(tpmi_info, pfs);
++		if (pfs->pfs_header.tpmi_id == TPMI_INFO_ID) {
++			ret = tpmi_process_info(tpmi_info, pfs);
++			if (ret)
++				return ret;
++		}
  
-+enum nvme_tcp_tls_cipher {
-+	NVME_TCP_TLS_CIPHER_INVALID     = 0,
-+	NVME_TCP_TLS_CIPHER_SHA256      = 1,
-+	NVME_TCP_TLS_CIPHER_SHA384      = 2,
-+};
-+
- enum nvme_tcp_fatal_error_status {
- 	NVME_TCP_FES_INVALID_PDU_HDR		= 0x01,
- 	NVME_TCP_FES_PDU_SEQ_ERR		= 0x02,
--- 
-2.43.0
-
+ 		if (pfs->pfs_header.tpmi_id == TPMI_CONTROL_ID)
+ 			tpmi_set_control_base(auxdev, tpmi_info, pfs);
 
 
 
