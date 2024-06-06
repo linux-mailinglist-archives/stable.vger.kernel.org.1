@@ -1,68 +1,58 @@
-Return-Path: <stable+bounces-49350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C2678FECE6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D429F8FEE89
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C7C6286387
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 708A3B214F3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90E51B3740;
-	Thu,  6 Jun 2024 14:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180401C5393;
+	Thu,  6 Jun 2024 14:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ief5pS10"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zU2U7uFi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EB01B3739;
-	Thu,  6 Jun 2024 14:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBDF1C5392;
+	Thu,  6 Jun 2024 14:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683422; cv=none; b=XWtc2DSZJXceE/0Cc/0h04rD6BhFrvBWXm1QoDP7Ng7Xc3Vd1THB9QEimo1TYPhN7NoUzE+4flIfJ2jdnLoM266+vHyg3EqcXp2dRITKOAr9xoCenI9VsobtSx7J8OuRUGfYc6qgEXO9frPYiprK/o8WdiLjSfcRBO7GLwDJAdw=
+	t=1717683671; cv=none; b=DM67K0OghZApAtvPLPf9BLNo/xiuS1AAxMIjEybk+ua9S4FZxwthpDAIlSSObrYxRew3+/CDzX3S43yMbmUYHaI197tgJLAyXXyhvpluswSlpbCohlHLPvSdWe0f0OrGlesNe+kSvqYA3HxWRVR+z4gHDgugHyFsyjatddkNOhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683422; c=relaxed/simple;
-	bh=JdLV5T89apanJB114zcbkfBvw57lMzFYFZj3F35VvFI=;
+	s=arc-20240116; t=1717683671; c=relaxed/simple;
+	bh=DtnE0Us0uYr2QmwNK+kPaICt5TeNdw1gGdeRpXFKEqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQK56pyM8+q6imbF/PFeAnX7wbrsRUiCcO/PnRNB3+W/ZWOcvB2r+8cvSDHLLye6DCNEaUXnBG0kEMQ91T4EWzslHC6Nc0d/KcysrypxLwysJIZjVc/mGUg0iHCGBIv/kxvRLA27BkpG3pXC3b67CjfIe5xrJLTQipdyyFcyMgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ief5pS10; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D0AC32781;
-	Thu,  6 Jun 2024 14:17:02 +0000 (UTC)
+	 MIME-Version; b=d4zAeJs25IrrcPCqln2r681+fkT3I4cP9bxJRq0DBBKgG0OBWTD5Uyx20lyIvUCF+YAOCL5d5bbBxRqcHadqeXKQVV1FWNY1ZavKn4ug2BsbLu7pIfXDFSY1AkPvzVADV7UJOUORjzq9fHUOGI1+yPCIm9NZ488o5HUd5nzQmSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zU2U7uFi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8657C32781;
+	Thu,  6 Jun 2024 14:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683422;
-	bh=JdLV5T89apanJB114zcbkfBvw57lMzFYFZj3F35VvFI=;
+	s=korg; t=1717683671;
+	bh=DtnE0Us0uYr2QmwNK+kPaICt5TeNdw1gGdeRpXFKEqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ief5pS10S2gtIPD3XXRchEdCu2DGBa24ximc6yYvlGZYKksbiY37NMYX6hldDf5GM
-	 lyhK8Vf3EZhI9RXIUvJd3IgFUbZZI4QO84huRL8PkkpQXs+WPZ3RfCD6aL2UQvnUCl
-	 vIj5iUkDjXyDZKMnKP5TOvGMKYk7UuqnZEhptCTM=
+	b=zU2U7uFixYrt1FrCeh3uXOxS35Xt0041ZRFtPdRGsVGuPhjdt8TTvkSsnOFa/5axK
+	 IP6MZBk9seBMESowV0hxrLV4jw77HDEeu09qIxbgRgthEKh6qE7f4HAGeTIr2errpM
+	 SOjbcpZbwt0uCALrNIO1j1cR3JJaoHwfOIGdE+1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Judith Mendez <jm@ti.com>,
+	Andrew Davis <afd@ti.com>,
 	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Leo Yan <leo.yan@linux.dev>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Spoorthy S <spoorts2@in.ibm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 304/473] perf tests: Make "test data symbol" more robust on Neoverse N1
+Subject: [PATCH 6.6 561/744] mmc: sdhci_am654: Write ITAPDLY for DDR52 timing
 Date: Thu,  6 Jun 2024 16:03:53 +0200
-Message-ID: <20240606131709.980054641@linuxfoundation.org>
+Message-ID: <20240606131750.457417467@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,71 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit 256ef072b3842273ce703db18b603b051aca95fe ]
+[ Upstream commit d465234493bb6ad1b9c10a0c9ef9881b8d85081a ]
 
-To prevent anyone from seeing a test failure appear as a regression and
-thinking that it was caused by their code change, insert some noise into
-the loop which makes it immune to sampling bias issues (errata 1694299).
+For DDR52 timing, DLL is enabled but tuning is not carried
+out, therefore the ITAPDLY value in PHY CTRL 4 register is
+not correct. Fix this by writing ITAPDLY after enabling DLL.
 
-The "test data symbol" test can fail with any unrelated change that
-shifts the loop into an unfortunate position in the Perf binary which is
-almost impossible to debug as the root cause of the test failure.
-Ultimately it's caused by the referenced errata.
-
-Fixes: 60abedb8aa902b06 ("perf test: Introduce script for data symbol testing")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@arm.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Leo Yan <leo.yan@linux.dev>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Spoorthy S <spoorts2@in.ibm.com>
-Link: https://lore.kernel.org/r/20240410103458.813656-2-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: a161c45f2979 ("mmc: sdhci_am654: Enable DLL only for some speed modes")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Andrew Davis <afd@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240320223837.959900-3-jm@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/workloads/datasym.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/mmc/host/sdhci_am654.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/tests/workloads/datasym.c b/tools/perf/tests/workloads/datasym.c
-index ddd40bc63448a..8e08fc75a973e 100644
---- a/tools/perf/tests/workloads/datasym.c
-+++ b/tools/perf/tests/workloads/datasym.c
-@@ -16,6 +16,22 @@ static int datasym(int argc __maybe_unused, const char **argv __maybe_unused)
- {
- 	for (;;) {
- 		buf1.data1++;
-+		if (buf1.data1 == 123) {
-+			/*
-+			 * Add some 'noise' in the loop to work around errata
-+			 * 1694299 on Arm N1.
-+			 *
-+			 * Bias exists in SPE sampling which can cause the load
-+			 * and store instructions to be skipped entirely. This
-+			 * comes and goes randomly depending on the offset the
-+			 * linker places the datasym loop at in the Perf binary.
-+			 * With an extra branch in the middle of the loop that
-+			 * isn't always taken, the instruction stream is no
-+			 * longer a continuous repeating pattern that interacts
-+			 * badly with the bias.
-+			 */
-+			buf1.data1++;
-+		}
- 		buf1.data2 += buf1.data1;
- 	}
- 	return 0;
+diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+index c3b07957736e9..f38fa28b99141 100644
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -305,6 +305,7 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
+ 	if (timing > MMC_TIMING_UHS_SDR25 && clock >= CLOCK_TOO_SLOW_HZ) {
+ 		sdhci_am654_setup_dll(host, clock);
+ 		sdhci_am654->dll_enable = true;
++		sdhci_am654_write_itapdly(sdhci_am654, sdhci_am654->itap_del_sel[timing]);
+ 	} else {
+ 		sdhci_am654_setup_delay_chain(sdhci_am654, timing);
+ 		sdhci_am654->dll_enable = false;
 -- 
 2.43.0
 
