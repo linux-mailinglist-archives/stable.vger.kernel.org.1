@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AAA08FE914
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B58DE8FEDBF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EBFF1C24416
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 565F71F2220E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDA41991D0;
-	Thu,  6 Jun 2024 14:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79ABE1BD4F9;
+	Thu,  6 Jun 2024 14:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IQeOZCJK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nA6wGjeg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD52E196C9F;
-	Thu,  6 Jun 2024 14:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F8C1BD4ED;
+	Thu,  6 Jun 2024 14:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682976; cv=none; b=X7GJpZFpOsjrUeSuIydTmpeGRCNMqEIPPGHzN4zyXRyFSarctGR1i//wrUszO/IFLgzm0RSl2l4eb3QNOGjDsUlfbhw296fL56JAMWkvdL9VYlECQYYvULRho5CnsGFlnrJbM8VyqRntmXATOxrAhqgkDErpgcdebFn0A9nOmZQ=
+	t=1717683521; cv=none; b=rFbSHncQf5Dtz0S0GAMvBQ3GJ2c6rwFp+fm7WtRsIjs4bQXq/C9Cz0d6tAC1uzvHxhDFzrvROdBU7UBB6NDXVjfpxHp1pqFVdlNueCIE5Nffc7tmGHk25oJCQ/sz9i38xUpXz8McrxMj8gIX5IMO41rvfraTBfmlLF4QqLMgPjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682976; c=relaxed/simple;
-	bh=WjJuIWFivty6dMKZBbSWxvRszunvXNelEaCN9XrgJRw=;
+	s=arc-20240116; t=1717683521; c=relaxed/simple;
+	bh=48GOCwA3acNuK6MfLJ6IXO9wgE7HKZr7fnKB9gUPY4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LVUKPnbBBPvNhKpsPcWGQb7iHTOudBJUyOQAc5BkGqZ4wkxQkD8cJ60BVeERQ5p4Nz0ZeDu5K4evxd5XEtWs296HS7BYZXpPCGqIZgQCv5Yd5/8o7RerQQCfZk0YjEw1tGK6WtNopPHwmJUboQHCHb5A/Zswc2iERTDrxim3JQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IQeOZCJK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C03DC2BD10;
-	Thu,  6 Jun 2024 14:09:36 +0000 (UTC)
+	 MIME-Version; b=cArzxjS8RTJK301OVvEYH3dbpD4TknlUPm8+FCW3lRE20DuejYsrR3nVKJLF73EHB/fAFaJpr3JuvxusGf3zvsUcOBi5mmp2HeSUNVQpZVRtcovY2jQlYJjgWo32fmX6lvds59rDN5YUiCI8OZLmDjWIUDCmGpiE2mjLdsG0FiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nA6wGjeg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167D7C4AF09;
+	Thu,  6 Jun 2024 14:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682976;
-	bh=WjJuIWFivty6dMKZBbSWxvRszunvXNelEaCN9XrgJRw=;
+	s=korg; t=1717683521;
+	bh=48GOCwA3acNuK6MfLJ6IXO9wgE7HKZr7fnKB9gUPY4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IQeOZCJKahXxGTXSRjE5KQPZR9d9oT275iVWPyBf5Jk+mfDJ4msf1bonsDd8Q/U+m
-	 WqYZMWTR5wCIhP1GfTOsQCLvqXfPBhZIHH+iY+JU3lGiqG3YdGNwwX2H/06hJ6Dmss
-	 pnoxg8znk3vH0KEBsUqonguRDQU/jbNGRN+6hwF0=
+	b=nA6wGjegOsibLVXENDv0NWpx1dlRAgcXJLGzbfRXPXqpRILyODqk0q/vIIEjNJs7x
+	 0hU2I+4BRLVfod50zur7L9dP0Th8aAhOsjenz3SAbkqDofNrQDiByAqQYoDQ7DJ4i/
+	 0ls43z54QD0RyM/PdDI0J2ZDgTKmNHhK++5LLa/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 155/374] phy: qcom: qmp-combo: fix sm8650 voltage swing table
+Subject: [PATCH 6.6 462/744] udf: Convert udf_expand_file_adinicb() to use a folio
 Date: Thu,  6 Jun 2024 16:02:14 +0200
-Message-ID: <20240606131657.110685109@linuxfoundation.org>
+Message-ID: <20240606131747.294526243@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit f320268fcebcbab02631d2070fa19ad4856a5a5e ]
+[ Upstream commit db6754090a4f99c67e05ae6b87343ba6e013531f ]
 
-The QMP USB3/DP PHY found in the SM8650 SoC requires a slightly
-different Voltage Swing table for HBR/RBR link speeds.
+Use the folio APIs throughout this function.
 
-Add a new hbr/rbr voltage switch table named "v6" used in a new
-sm8650 qmp_phy_cfg struct replacing the sm8550 fallback used for
-the sm8650 compatible.
-
-Fixes: 80c1afe8c5fe ("phy: qcom: qmp-combo: add QMP USB3/DP PHY tables for SM8650")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240226-topic-sm8650-upstream-combo-phy-swing-update-v1-1-08707ebca92a@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Fixes: 1eeceaec794e ("udf: Convert udf_expand_file_adinicb() to avoid kmap_atomic()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20240417150416.752929-4-willy@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-combo.c | 54 ++++++++++++++++++++++-
- 1 file changed, 53 insertions(+), 1 deletion(-)
+ fs/udf/inode.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-index c21cdb8dbfe74..acc2b5b9ea255 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-@@ -1382,6 +1382,13 @@ static const u8 qmp_dp_v5_voltage_swing_hbr_rbr[4][4] = {
- 	{ 0x3f, 0xff, 0xff, 0xff }
- };
- 
-+static const u8 qmp_dp_v6_voltage_swing_hbr_rbr[4][4] = {
-+	{ 0x27, 0x2f, 0x36, 0x3f },
-+	{ 0x31, 0x3e, 0x3f, 0xff },
-+	{ 0x36, 0x3f, 0xff, 0xff },
-+	{ 0x3f, 0xff, 0xff, 0xff }
-+};
-+
- static const u8 qmp_dp_v6_pre_emphasis_hbr_rbr[4][4] = {
- 	{ 0x20, 0x2d, 0x34, 0x3a },
- 	{ 0x20, 0x2e, 0x35, 0xff },
-@@ -2001,6 +2008,51 @@ static const struct qmp_phy_cfg sm8550_usb3dpphy_cfg = {
- 	.num_vregs		= ARRAY_SIZE(qmp_phy_vreg_l),
- };
- 
-+static const struct qmp_phy_cfg sm8650_usb3dpphy_cfg = {
-+	.offsets		= &qmp_combo_offsets_v3,
-+
-+	.serdes_tbl		= sm8550_usb3_serdes_tbl,
-+	.serdes_tbl_num		= ARRAY_SIZE(sm8550_usb3_serdes_tbl),
-+	.tx_tbl			= sm8550_usb3_tx_tbl,
-+	.tx_tbl_num		= ARRAY_SIZE(sm8550_usb3_tx_tbl),
-+	.rx_tbl			= sm8550_usb3_rx_tbl,
-+	.rx_tbl_num		= ARRAY_SIZE(sm8550_usb3_rx_tbl),
-+	.pcs_tbl		= sm8550_usb3_pcs_tbl,
-+	.pcs_tbl_num		= ARRAY_SIZE(sm8550_usb3_pcs_tbl),
-+	.pcs_usb_tbl		= sm8550_usb3_pcs_usb_tbl,
-+	.pcs_usb_tbl_num	= ARRAY_SIZE(sm8550_usb3_pcs_usb_tbl),
-+
-+	.dp_serdes_tbl		= qmp_v6_dp_serdes_tbl,
-+	.dp_serdes_tbl_num	= ARRAY_SIZE(qmp_v6_dp_serdes_tbl),
-+	.dp_tx_tbl		= qmp_v6_dp_tx_tbl,
-+	.dp_tx_tbl_num		= ARRAY_SIZE(qmp_v6_dp_tx_tbl),
-+
-+	.serdes_tbl_rbr		= qmp_v6_dp_serdes_tbl_rbr,
-+	.serdes_tbl_rbr_num	= ARRAY_SIZE(qmp_v6_dp_serdes_tbl_rbr),
-+	.serdes_tbl_hbr		= qmp_v6_dp_serdes_tbl_hbr,
-+	.serdes_tbl_hbr_num	= ARRAY_SIZE(qmp_v6_dp_serdes_tbl_hbr),
-+	.serdes_tbl_hbr2	= qmp_v6_dp_serdes_tbl_hbr2,
-+	.serdes_tbl_hbr2_num	= ARRAY_SIZE(qmp_v6_dp_serdes_tbl_hbr2),
-+	.serdes_tbl_hbr3	= qmp_v6_dp_serdes_tbl_hbr3,
-+	.serdes_tbl_hbr3_num	= ARRAY_SIZE(qmp_v6_dp_serdes_tbl_hbr3),
-+
-+	.swing_hbr_rbr		= &qmp_dp_v6_voltage_swing_hbr_rbr,
-+	.pre_emphasis_hbr_rbr	= &qmp_dp_v6_pre_emphasis_hbr_rbr,
-+	.swing_hbr3_hbr2	= &qmp_dp_v5_voltage_swing_hbr3_hbr2,
-+	.pre_emphasis_hbr3_hbr2 = &qmp_dp_v5_pre_emphasis_hbr3_hbr2,
-+
-+	.dp_aux_init		= qmp_v4_dp_aux_init,
-+	.configure_dp_tx	= qmp_v4_configure_dp_tx,
-+	.configure_dp_phy	= qmp_v4_configure_dp_phy,
-+	.calibrate_dp_phy	= qmp_v4_calibrate_dp_phy,
-+
-+	.regs			= qmp_v6_usb3phy_regs_layout,
-+	.reset_list		= msm8996_usb3phy_reset_l,
-+	.num_resets		= ARRAY_SIZE(msm8996_usb3phy_reset_l),
-+	.vreg_list		= qmp_phy_vreg_l,
-+	.num_vregs		= ARRAY_SIZE(qmp_phy_vreg_l),
-+};
-+
- static int qmp_combo_dp_serdes_init(struct qmp_combo *qmp)
+diff --git a/fs/udf/inode.c b/fs/udf/inode.c
+index 7f7610dddcba1..1ff8c1f17f9e6 100644
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -341,7 +341,7 @@ const struct address_space_operations udf_aops = {
+  */
+ int udf_expand_file_adinicb(struct inode *inode)
  {
- 	const struct qmp_phy_cfg *cfg = qmp->cfg;
-@@ -3631,7 +3683,7 @@ static const struct of_device_id qmp_combo_of_match_table[] = {
- 	},
- 	{
- 		.compatible = "qcom,sm8650-qmp-usb3-dp-phy",
--		.data = &sm8550_usb3dpphy_cfg,
-+		.data = &sm8650_usb3dpphy_cfg,
- 	},
- 	{
- 		.compatible = "qcom,x1e80100-qmp-usb3-dp-phy",
+-	struct page *page;
++	struct folio *folio;
+ 	struct udf_inode_info *iinfo = UDF_I(inode);
+ 	int err;
+ 
+@@ -357,12 +357,13 @@ int udf_expand_file_adinicb(struct inode *inode)
+ 		return 0;
+ 	}
+ 
+-	page = find_or_create_page(inode->i_mapping, 0, GFP_KERNEL);
+-	if (!page)
+-		return -ENOMEM;
++	folio = __filemap_get_folio(inode->i_mapping, 0,
++			FGP_LOCK | FGP_ACCESSED | FGP_CREAT, GFP_KERNEL);
++	if (IS_ERR(folio))
++		return PTR_ERR(folio);
+ 
+-	if (!PageUptodate(page))
+-		udf_adinicb_readpage(page);
++	if (!folio_test_uptodate(folio))
++		udf_adinicb_readpage(&folio->page);
+ 	down_write(&iinfo->i_data_sem);
+ 	memset(iinfo->i_data + iinfo->i_lenEAttr, 0x00,
+ 	       iinfo->i_lenAlloc);
+@@ -371,22 +372,22 @@ int udf_expand_file_adinicb(struct inode *inode)
+ 		iinfo->i_alloc_type = ICBTAG_FLAG_AD_SHORT;
+ 	else
+ 		iinfo->i_alloc_type = ICBTAG_FLAG_AD_LONG;
+-	set_page_dirty(page);
+-	unlock_page(page);
++	folio_mark_dirty(folio);
++	folio_unlock(folio);
+ 	up_write(&iinfo->i_data_sem);
+ 	err = filemap_fdatawrite(inode->i_mapping);
+ 	if (err) {
+ 		/* Restore everything back so that we don't lose data... */
+-		lock_page(page);
++		folio_lock(folio);
+ 		down_write(&iinfo->i_data_sem);
+-		memcpy_to_page(page, 0, iinfo->i_data + iinfo->i_lenEAttr,
+-			       inode->i_size);
+-		unlock_page(page);
++		memcpy_from_folio(iinfo->i_data + iinfo->i_lenEAttr,
++				folio, 0, inode->i_size);
++		folio_unlock(folio);
+ 		iinfo->i_alloc_type = ICBTAG_FLAG_AD_IN_ICB;
+ 		iinfo->i_lenAlloc = inode->i_size;
+ 		up_write(&iinfo->i_data_sem);
+ 	}
+-	put_page(page);
++	folio_put(folio);
+ 	mark_inode_dirty(inode);
+ 
+ 	return err;
 -- 
 2.43.0
 
