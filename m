@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE178FEE79
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FFC48FECC9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15D591F24681
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 098EEB2875F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0926A1991CD;
-	Thu,  6 Jun 2024 14:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74511B29C0;
+	Thu,  6 Jun 2024 14:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m26L3ty7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qx9puoIR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC258197532;
-	Thu,  6 Jun 2024 14:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664B5198A3B;
+	Thu,  6 Jun 2024 14:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683664; cv=none; b=Lxmzl1LmqXsyCPEYI0RBCQJGy+vMDnuivnWId7wewWceu1QvM8VqxBYJ+TqkBQealKNfSI+nVbLNWgKCokeB24jAbubld/GJ4C/1+wsfI2Z7DAflZx0vUra1W3kGLKj5D9pZMWSL3Rw9dTPcnpRtKVhwdvUt80IgPknkrwROJQY=
+	t=1717683408; cv=none; b=Y1yh+XQFCMQi7hVPXWuzExNb/MHpwsiGmXW7zOr1D0pgPP6sIn/Dg+Qr6+YhkoqvEC3PhLt1Bu7DZ8sQy0eMgjrIwNyYYvJhLoQMS+NB6zrMukPG/xK4YVooSI0bIULY2kAltfH8LnAoHdeL3ZLLc4HVnA/muZDuFcfYHn5beCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683664; c=relaxed/simple;
-	bh=x2enZijaakRXMW4DAELw+z8iVw9ahfWMGJaSsc+QH0g=;
+	s=arc-20240116; t=1717683408; c=relaxed/simple;
+	bh=U/T+lo9ZN/r9q8cYwuRFMQ+9EXqLwqeik2W9ThzV+5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s03U4LD42zwn34edlNdwt5VVZ3vbyRIdEQU6Tq82aLj+y1juC68QKD/V22t2TRsdh/oZPVi3Mzv03wNtoRPptrCOxca7n1bkMzVJhyA3vMRN+N5JW36tkslwwG8knkGeUTwfXjvEhhHigRlLAeT6CZnUCiVgr1CjN/mbfGIiphA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m26L3ty7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98804C2BD10;
-	Thu,  6 Jun 2024 14:21:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qIliiRd9D525lhZ2gUyStqkTfQ7ovSbIOjyQYP3lZSFZOqyuxcpI1AH8ErvqhN4JmGpj1RsTHuv8quN5oONGuBVjVWMkkJLQ6m3UZHNP+oQlqpq33egomJZhLD3rzLJ0h6MoO4msiUJJ4vrlWScr3vbZbkrVGHU0o8xwznRxQeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qx9puoIR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46570C32782;
+	Thu,  6 Jun 2024 14:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683664;
-	bh=x2enZijaakRXMW4DAELw+z8iVw9ahfWMGJaSsc+QH0g=;
+	s=korg; t=1717683408;
+	bh=U/T+lo9ZN/r9q8cYwuRFMQ+9EXqLwqeik2W9ThzV+5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m26L3ty70sUQX3hUdeBeZAuieJZDrWC0QE7emLE1cEKY1gr13i26jFwgBEvN3lYKI
-	 PDP9PK88Kpnx96/4ZfQel65gsd01tTf2UUv0V4Jbotgy7ALfa29vaeUvugQe7rRupV
-	 rfzDUI487e9MLA3jULGd55VDUS2Dw2rUh1NIxAT8=
+	b=qx9puoIRGE+RZNpeJP/ZvnyZ4VfQJuo8w5sSUJPczuO60FnfzF0Of250X0SRDlAIl
+	 JjVRgkFYzMtfZVIPwd0nmh7pGppyt0s4jXYaKtXGNXaGtxvjpEg0tUU8NJfJa7lDG5
+	 oL0Xa0BksAbZwG6MViE9dRGPjumOWCGcFj76iEO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 548/744] iio: accel: mxc4005: Reset chip on probe() and resume()
+Subject: [PATCH 6.1 291/473] serial: max3100: Update uart_driver_registered on driver removal
 Date: Thu,  6 Jun 2024 16:03:40 +0200
-Message-ID: <20240606131750.028017965@linuxfoundation.org>
+Message-ID: <20240606131709.503682016@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,161 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 6b8cffdc4a31e4a72f75ecd1bc13fbf0dafee390 ]
+[ Upstream commit 712a1fcb38dc7cac6da63ee79a88708fbf9c45ec ]
 
-On some designs the chip is not properly reset when powered up at boot or
-after a suspend/resume cycle.
+The removal of the last MAX3100 device triggers the removal of
+the driver. However, code doesn't update the respective global
+variable and after insmod — rmmod — insmod cycle the kernel
+oopses:
 
-Use the sw-reset feature to ensure that the chip is in a clean state
-after probe() / resume() and in the case of resume() restore the settings
-(scale, trigger-enabled).
+  max3100 spi-PRP0001:01: max3100_probe: adding port 0
+  BUG: kernel NULL pointer dereference, address: 0000000000000408
+  ...
+  RIP: 0010:serial_core_register_port+0xa0/0x840
+  ...
+   max3100_probe+0x1b6/0x280 [max3100]
+   spi_probe+0x8d/0xb0
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218578
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240326113700.56725-3-hdegoede@redhat.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Update the actual state so next time UART driver will be registered
+again.
+
+Hugo also noticed, that the error path in the probe also affected
+by having the variable set, and not cleared. Instead of clearing it
+move the assignment after the successfull uart_register_driver() call.
+
+Fixes: 7831d56b0a35 ("tty: MAX3100")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240402195306.269276-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/mxc4005.c | 68 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+ drivers/tty/serial/max3100.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
-index 88f0bf2cc1d3f..49e30b87732f5 100644
---- a/drivers/iio/accel/mxc4005.c
-+++ b/drivers/iio/accel/mxc4005.c
-@@ -5,6 +5,7 @@
-  * Copyright (c) 2014, Intel Corporation.
-  */
+diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
+index 1c4a2b1b1f690..b71676e1f612f 100644
+--- a/drivers/tty/serial/max3100.c
++++ b/drivers/tty/serial/max3100.c
+@@ -750,13 +750,14 @@ static int max3100_probe(struct spi_device *spi)
+ 	mutex_lock(&max3100s_lock);
  
-+#include <linux/delay.h>
- #include <linux/module.h>
- #include <linux/i2c.h>
- #include <linux/iio/iio.h>
-@@ -36,6 +37,7 @@
- 
- #define MXC4005_REG_INT_CLR1		0x01
- #define MXC4005_REG_INT_CLR1_BIT_DRDYC	0x01
-+#define MXC4005_REG_INT_CLR1_SW_RST	0x10
- 
- #define MXC4005_REG_CONTROL		0x0D
- #define MXC4005_REG_CONTROL_MASK_FSR	GENMASK(6, 5)
-@@ -43,6 +45,9 @@
- 
- #define MXC4005_REG_DEVICE_ID		0x0E
- 
-+/* Datasheet does not specify a reset time, this is a conservative guess */
-+#define MXC4005_RESET_TIME_US		2000
+ 	if (!uart_driver_registered) {
+-		uart_driver_registered = 1;
+ 		retval = uart_register_driver(&max3100_uart_driver);
+ 		if (retval) {
+ 			printk(KERN_ERR "Couldn't register max3100 uart driver\n");
+ 			mutex_unlock(&max3100s_lock);
+ 			return retval;
+ 		}
 +
- enum mxc4005_axis {
- 	AXIS_X,
- 	AXIS_Y,
-@@ -66,6 +71,8 @@ struct mxc4005_data {
- 		s64 timestamp __aligned(8);
- 	} scan;
- 	bool trigger_enabled;
-+	unsigned int control;
-+	unsigned int int_mask1;
- };
- 
- /*
-@@ -349,6 +356,7 @@ static int mxc4005_set_trigger_state(struct iio_trigger *trig,
- 		return ret;
++		uart_driver_registered = 1;
  	}
  
-+	data->int_mask1 = val;
- 	data->trigger_enabled = state;
- 	mutex_unlock(&data->mutex);
+ 	for (i = 0; i < MAX_MAX3100; i++)
+@@ -842,6 +843,7 @@ static void max3100_remove(struct spi_device *spi)
+ 		}
+ 	pr_debug("removing max3100 driver\n");
+ 	uart_unregister_driver(&max3100_uart_driver);
++	uart_driver_registered = 0;
  
-@@ -384,6 +392,13 @@ static int mxc4005_chip_init(struct mxc4005_data *data)
- 
- 	dev_dbg(data->dev, "MXC4005 chip id %02x\n", reg);
- 
-+	ret = regmap_write(data->regmap, MXC4005_REG_INT_CLR1,
-+			   MXC4005_REG_INT_CLR1_SW_RST);
-+	if (ret < 0)
-+		return dev_err_probe(data->dev, ret, "resetting chip\n");
-+
-+	fsleep(MXC4005_RESET_TIME_US);
-+
- 	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
- 	if (ret < 0)
- 		return dev_err_probe(data->dev, ret, "writing INT_MASK0\n");
-@@ -479,6 +494,58 @@ static int mxc4005_probe(struct i2c_client *client)
- 	return devm_iio_device_register(&client->dev, indio_dev);
+ 	mutex_unlock(&max3100s_lock);
  }
- 
-+static int mxc4005_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct mxc4005_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	/* Save control to restore it on resume */
-+	ret = regmap_read(data->regmap, MXC4005_REG_CONTROL, &data->control);
-+	if (ret < 0)
-+		dev_err(data->dev, "failed to read reg_control\n");
-+
-+	return ret;
-+}
-+
-+static int mxc4005_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct mxc4005_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = regmap_write(data->regmap, MXC4005_REG_INT_CLR1,
-+			   MXC4005_REG_INT_CLR1_SW_RST);
-+	if (ret) {
-+		dev_err(data->dev, "failed to reset chip: %d\n", ret);
-+		return ret;
-+	}
-+
-+	fsleep(MXC4005_RESET_TIME_US);
-+
-+	ret = regmap_write(data->regmap, MXC4005_REG_CONTROL, data->control);
-+	if (ret) {
-+		dev_err(data->dev, "failed to restore control register\n");
-+		return ret;
-+	}
-+
-+	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
-+	if (ret) {
-+		dev_err(data->dev, "failed to restore interrupt 0 mask\n");
-+		return ret;
-+	}
-+
-+	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1, data->int_mask1);
-+	if (ret) {
-+		dev_err(data->dev, "failed to restore interrupt 1 mask\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static DEFINE_SIMPLE_DEV_PM_OPS(mxc4005_pm_ops, mxc4005_suspend, mxc4005_resume);
-+
- static const struct acpi_device_id mxc4005_acpi_match[] = {
- 	{"MXC4005",	0},
- 	{"MXC6655",	0},
-@@ -505,6 +572,7 @@ static struct i2c_driver mxc4005_driver = {
- 		.name = MXC4005_DRV_NAME,
- 		.acpi_match_table = ACPI_PTR(mxc4005_acpi_match),
- 		.of_match_table = mxc4005_of_match,
-+		.pm = pm_sleep_ptr(&mxc4005_pm_ops),
- 	},
- 	.probe		= mxc4005_probe,
- 	.id_table	= mxc4005_id,
 -- 
 2.43.0
 
