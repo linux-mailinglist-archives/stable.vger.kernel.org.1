@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-48653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0271E8FE9EF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6018FEDAB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61172B23129
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70DB4281E6C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E8E198E6C;
-	Thu,  6 Jun 2024 14:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5FC1BD013;
+	Thu,  6 Jun 2024 14:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqEnzuVM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ceIdYoxU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741A219D06F;
-	Thu,  6 Jun 2024 14:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6819B19E7D4;
+	Thu,  6 Jun 2024 14:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683081; cv=none; b=D9wUq9c+fxNNE/s1S6tNp8HRMkMcSTyegj217OJJlan8QwvE2785HvD8Y5DbVEVaDveX3TXInKU1PCmq25+PcSzmouL4cn7R+lvB/4TYlSGMMqdx0Et462CvhecLK/+WRQ3J4P9u65KSpghn3X61+vBhZ5OYyYgbwY5/a1zPlO0=
+	t=1717683514; cv=none; b=uID9LHwIOu+E1th/i525YrF8fmtphGFfn3CGR9ItgxB3sLOhjJ8B6JMmDQ57XtHIfupCxVp1HBxDcFNHtTjrU7BfFBysmNpGSXteJ8ktORpUEbdJGLZLQMxALh090jU2TB6uH7F92pyGGp/9Naq2O+M/c1TOAEaarg8aP71Ac/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683081; c=relaxed/simple;
-	bh=A7ownMMznEdeaj3THVeBzeKCOsx4z5eViHz11XsrvzU=;
+	s=arc-20240116; t=1717683514; c=relaxed/simple;
+	bh=49zhF7+ls6LY52PaJgBNqenvCgaY01ZqGZneCovRPcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sf9RHbajtjhsbbAxBNhrpkfQCGFDZ7l06bfs4mjk38QqHPpmGFvYY1ihpxcPMS3s3wd6mBXIUKV/Z/HXFpzwhaXUdUtbxilz8bxBRbZAi3gn0UiEXa4eZoUwncrLTKKXYw5Wp1fwTvfC5Aq/L6MmZNKKxc7JVWk6NwO/3mV+qMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqEnzuVM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F4FC4AF13;
-	Thu,  6 Jun 2024 14:11:21 +0000 (UTC)
+	 MIME-Version; b=fqFk2VlwkdL2a8YZ+b1Hr2Z9qYR9d9aAV4FrESbt/eizDDJrmu64J6R3quhzN1OIN5QBZTVvEFbeQWpGrxaI0WDVixd3bt4CdI0YvoL021zLp69Z4ztnYVjL2UnCnEpXDoZOnymNtWq3/Jx+CjuwSuq931h/N/rn/hS11lg3vek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ceIdYoxU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462E2C32781;
+	Thu,  6 Jun 2024 14:18:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683081;
-	bh=A7ownMMznEdeaj3THVeBzeKCOsx4z5eViHz11XsrvzU=;
+	s=korg; t=1717683514;
+	bh=49zhF7+ls6LY52PaJgBNqenvCgaY01ZqGZneCovRPcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqEnzuVMb6TRtz0FeXAT7uet6vFDEfT12I+vKloVjuPtq2UPntKFr8vniz2ArbW2A
-	 ipwHtP3bWQx6T9stV+JEqw3kGF6Lpwe/c3UIkT7kaIBTa3vOfHVogMfjW1E1oOgDI3
-	 fCOxFkLEQ6i1rvysuLqXohH8f6Aw6NGs7x6svr/8=
+	b=ceIdYoxUY4n0Fh6yDt2Ju2pVCf/blWfGrrpi9s4E1bMZAKdyjiVJhhjclmJLEu9U6
+	 TLWsWOAqZIB/sb1cH1PRoNdR/Mz65r8XQ7LtrszokRTKqCwPbWQQENP0WGeIzPHbnK
+	 qMiC+U2TGwtMhs4lygkCSKfqOjI3mZDS91GrOPaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Paul Greenwalt <paul.greenwalt@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stephen Langstaff <stephenlangstaff1@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 352/374] ice: fix 200G PHY types to link speed mapping
+Subject: [PATCH 6.1 402/473] net: Always descend into dsa/ folder with CONFIG_NET_DSA enabled
 Date: Thu,  6 Jun 2024 16:05:31 +0200
-Message-ID: <20240606131703.654984858@linuxfoundation.org>
+Message-ID: <20240606131713.105711739@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Greenwalt <paul.greenwalt@intel.com>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-[ Upstream commit 2a6d8f2de2224ac46df94dc40f43f8b9701f6703 ]
+[ Upstream commit b1fa60ec252fba39130107074becd12d0b3f83ec ]
 
-Commit 24407a01e57c ("ice: Add 200G speed/phy type use") added support
-for 200G PHY speeds, but did not include the mapping of 200G PHY types
-to link speed. As a result the driver is returning UNKNOWN link speed
-when setting 200G ethtool advertised link modes.
+Stephen reported that he was unable to get the dsa_loop driver to get
+probed, and the reason ended up being because he had CONFIG_FIXED_PHY=y
+in his kernel configuration. As Masahiro explained it:
 
-To fix this add 200G PHY types to link speed mapping to
-ice_get_link_speed_based_on_phy_type().
+  "obj-m += dsa/" means everything under dsa/ must be modular.
 
-Fixes: 24407a01e57c ("ice: Add 200G speed/phy type use")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20240528-net-2024-05-28-intel-net-fixes-v1-5-dc8593d2bbc6@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  If there is a built-in object under dsa/ with CONFIG_NET_DSA=m,
+  you cannot do  "obj-$(CONFIG_NET_DSA) += dsa/".
+
+  You need to change it back to "obj-y += dsa/".
+
+This was the case here whereby CONFIG_NET_DSA=m, and so the
+obj-$(CONFIG_FIXED_PHY) += dsa_loop_bdinfo.o rule is not executed and
+the DSA loop mdio_board info structure is not registered with the
+kernel, and eventually the device is simply not found.
+
+To preserve the intention of the original commit of limiting the amount
+of folder descending, conditionally descend into drivers/net/dsa when
+CONFIG_NET_DSA is enabled.
+
+Fixes: 227d72063fcc ("dsa: simplify Kconfig symbols and dependencies")
+Reported-by: Stephen Langstaff <stephenlangstaff1@gmail.com>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/Makefile | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index d9f6cc71d900a..e7d28432ba038 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -3135,6 +3135,16 @@ ice_get_link_speed_based_on_phy_type(u64 phy_type_low, u64 phy_type_high)
- 	case ICE_PHY_TYPE_HIGH_100G_AUI2:
- 		speed_phy_type_high = ICE_AQ_LINK_SPEED_100GB;
- 		break;
-+	case ICE_PHY_TYPE_HIGH_200G_CR4_PAM4:
-+	case ICE_PHY_TYPE_HIGH_200G_SR4:
-+	case ICE_PHY_TYPE_HIGH_200G_FR4:
-+	case ICE_PHY_TYPE_HIGH_200G_LR4:
-+	case ICE_PHY_TYPE_HIGH_200G_DR4:
-+	case ICE_PHY_TYPE_HIGH_200G_KR4_PAM4:
-+	case ICE_PHY_TYPE_HIGH_200G_AUI4_AOC_ACC:
-+	case ICE_PHY_TYPE_HIGH_200G_AUI4:
-+		speed_phy_type_high = ICE_AQ_LINK_SPEED_200GB;
-+		break;
- 	default:
- 		speed_phy_type_high = ICE_AQ_LINK_SPEED_UNKNOWN;
- 		break;
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 6ce076462dbfd..c2f4d4bbf65aa 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -48,7 +48,9 @@ obj-$(CONFIG_ARCNET) += arcnet/
+ obj-$(CONFIG_DEV_APPLETALK) += appletalk/
+ obj-$(CONFIG_CAIF) += caif/
+ obj-$(CONFIG_CAN) += can/
+-obj-$(CONFIG_NET_DSA) += dsa/
++ifdef CONFIG_NET_DSA
++obj-y += dsa/
++endif
+ obj-$(CONFIG_ETHERNET) += ethernet/
+ obj-$(CONFIG_FDDI) += fddi/
+ obj-$(CONFIG_HIPPI) += hippi/
 -- 
 2.43.0
 
