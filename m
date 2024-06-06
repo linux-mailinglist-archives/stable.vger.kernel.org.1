@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D7448FECCD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C857C8FEB2D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BFCB282086
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C14521C264F2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212F819B5B4;
-	Thu,  6 Jun 2024 14:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C531A2FC8;
+	Thu,  6 Jun 2024 14:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCSR2uiV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ors5DQkV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CBA198A39;
-	Thu,  6 Jun 2024 14:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F007E199399;
+	Thu,  6 Jun 2024 14:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683410; cv=none; b=RWVbcxY+gUp3apQR9r4Xi+XI2P1E82XpIDWQNlEWP3tE+9GFs+JzUlXxrCaoOwGbICFiSnCuVoI7Zr1Z9g/TXTDKxte9I4pOWIEP/mV8XyOICj7xdLcf4BwZSMl5QeC9Cq1n/9rnZAESzIL8AcIltSlAR4fHIsMW4I3C950MNG8=
+	t=1717683221; cv=none; b=JywobbdFh1u1/jxcKIw2JhLwcbCkQzhGOHufnNIJEv/VE8SEQ2D6ZLPxeGu2zh0AOR2TBdDNp+3cIjjhs+nF7ABPgt+MnB6MVSiJyanx4a30HjmyXrV8clpge8BXwOKMN+04lcIgV8mGHwX8QHWV0AV/jmyH+qsrqWm04c+IK/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683410; c=relaxed/simple;
-	bh=q64NQL2DLBgn5QECm+y0JBzSP2TwQhnkOiOY8S+UzyE=;
+	s=arc-20240116; t=1717683221; c=relaxed/simple;
+	bh=2tNo4PpblXLc58I0NXqqRb0QVuSnEkcn5G9IPY7WSvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fdrIkvScdZcMxMV7AcVKSIuMaaPkCnj+MwT2+H8Y2zDRheTuh+C86pETpR27jUZ2s3nkWuU98jM6WYtJHqFhNodeQ28Yd4dhuo+0e/4L5Q7Whztz5rOSHW+ZfUDMGbiA4ojN15ELFu0FOzWK6BszywGFEtRs8fjaYlbwhAiU1Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCSR2uiV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB511C2BD10;
-	Thu,  6 Jun 2024 14:16:50 +0000 (UTC)
+	 MIME-Version; b=RBddlqS25NvgtKUOt+ERxCpMgh+he0Z7w8mBbD5irnW9/Aqic9ou6+iKKp5A0K3YkQwAeKnteTAQKV0aUnn5FL6mF49UT2Hbaxg9wtQez//ZdrtpKD/HfIBD8P2AffcXuhp+OpCjwoX2lAMOSuCZIJeby7sOjcUkPjcTJDM1NSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ors5DQkV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81038C2BD10;
+	Thu,  6 Jun 2024 14:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683410;
-	bh=q64NQL2DLBgn5QECm+y0JBzSP2TwQhnkOiOY8S+UzyE=;
+	s=korg; t=1717683220;
+	bh=2tNo4PpblXLc58I0NXqqRb0QVuSnEkcn5G9IPY7WSvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCSR2uiVp0f8DcPJs4ah1DT9BtNGso2wQsmtKERZX/BAASCQigjrryHo5oI9v/7BO
-	 cnvAR0CEudW7Mp9mNcWFeDrA0Oek0e/nKcewus74ZCSZPjwvYLpWrcP1hjN1AvRWS8
-	 KFvS8QcgejMJsCQbat06R61zJhHSf18DYnWhB+9g=
+	b=Ors5DQkVdz29RFwwuV9YGcIIlA1Fs0PIq244sh41yA3WoU26YgTn1K6XE2LjakhVQ
+	 XsyIbxAfmnfG6tNYgkT5lhsOqITMPbPY3reWNDSplx8POWLI6ItM7EJQtYoglN4rDh
+	 UyLDXDnL3KdzwtWpcUokuk+tzwI2EDcrSxRS1zYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 354/744] lib/test_hmm.c: handle src_pfns and dst_pfns allocation failure
+Subject: [PATCH 6.1 097/473] qed: avoid truncating work queue length
 Date: Thu,  6 Jun 2024 16:00:26 +0200
-Message-ID: <20240606131743.833495335@linuxfoundation.org>
+Message-ID: <20240606131703.103032010@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit c2af060d1c18beaec56351cf9c9bcbbc5af341a3 ]
+[ Upstream commit 954fd908f177604d4cce77e2a88cc50b29bad5ff ]
 
-The kcalloc() in dmirror_device_evict_chunk() will return null if the
-physical memory has run out.  As a result, if src_pfns or dst_pfns is
-dereferenced, the null pointer dereference bug will happen.
+clang complains that the temporary string for the name passed into
+alloc_workqueue() is too short for its contents:
 
-Moreover, the device is going away.  If the kcalloc() fails, the pages
-mapping a chunk could not be evicted.  So add a __GFP_NOFAIL flag in
-kcalloc().
+drivers/net/ethernet/qlogic/qed/qed_main.c:1218:3: error: 'snprintf' will always be truncated; specified size is 16, but format string expands to at least 18 [-Werror,-Wformat-truncation]
 
-Finally, as there is no need to have physically contiguous memory, Switch
-kcalloc() to kvcalloc() in order to avoid failing allocations.
+There is no need for a temporary buffer, and the actual name of a workqueue
+is 32 bytes (WQ_NAME_LEN), so just use the interface as intended to avoid
+the truncation.
 
-Link: https://lkml.kernel.org/r/20240312005905.9939-1-duoming@zju.edu.cn
-Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Cc: Jérôme Glisse <jglisse@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 59ccf86fe69a ("qed: Add driver infrastucture for handling mfw requests.")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240326223825.4084412-4-arnd@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_hmm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/qlogic/qed/qed_main.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 717dcb8301273..b823ba7cb6a15 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -1226,8 +1226,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
- 	unsigned long *src_pfns;
- 	unsigned long *dst_pfns;
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_main.c b/drivers/net/ethernet/qlogic/qed/qed_main.c
+index 25d9c254288b5..956ae0206a1f9 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_main.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_main.c
+@@ -1215,7 +1215,6 @@ static void qed_slowpath_task(struct work_struct *work)
+ static int qed_slowpath_wq_start(struct qed_dev *cdev)
+ {
+ 	struct qed_hwfn *hwfn;
+-	char name[NAME_SIZE];
+ 	int i;
  
--	src_pfns = kcalloc(npages, sizeof(*src_pfns), GFP_KERNEL);
--	dst_pfns = kcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL);
-+	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
-+	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
+ 	if (IS_VF(cdev))
+@@ -1224,11 +1223,11 @@ static int qed_slowpath_wq_start(struct qed_dev *cdev)
+ 	for_each_hwfn(cdev, i) {
+ 		hwfn = &cdev->hwfns[i];
  
- 	migrate_device_range(src_pfns, start_pfn, npages);
- 	for (i = 0; i < npages; i++) {
-@@ -1250,8 +1250,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
- 	}
- 	migrate_device_pages(src_pfns, dst_pfns, npages);
- 	migrate_device_finalize(src_pfns, dst_pfns, npages);
--	kfree(src_pfns);
--	kfree(dst_pfns);
-+	kvfree(src_pfns);
-+	kvfree(dst_pfns);
- }
+-		snprintf(name, NAME_SIZE, "slowpath-%02x:%02x.%02x",
+-			 cdev->pdev->bus->number,
+-			 PCI_SLOT(cdev->pdev->devfn), hwfn->abs_pf_id);
++		hwfn->slowpath_wq = alloc_workqueue("slowpath-%02x:%02x.%02x",
++					 0, 0, cdev->pdev->bus->number,
++					 PCI_SLOT(cdev->pdev->devfn),
++					 hwfn->abs_pf_id);
  
- /* Removes free pages from the free list so they can't be re-allocated */
+-		hwfn->slowpath_wq = alloc_workqueue(name, 0, 0);
+ 		if (!hwfn->slowpath_wq) {
+ 			DP_NOTICE(hwfn, "Cannot create slowpath workqueue\n");
+ 			return -ENOMEM;
 -- 
 2.43.0
 
