@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-48784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB898FEA84
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D7078FEA87
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 410B61F24DBD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4687F1C25636
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF471A01C8;
-	Thu,  6 Jun 2024 14:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2821991AF;
+	Thu,  6 Jun 2024 14:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7ugljYN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BX6tSoAx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32841A01C7;
-	Thu,  6 Jun 2024 14:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0841A01CC;
+	Thu,  6 Jun 2024 14:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683146; cv=none; b=dlJJJSbfo6tR+UtqCouUdUSBexDsLjq0vZIC87uZ6avkKebRv3F2eVHRghkS6iKczb2NC2VP/CNiZ8GxwqIbhaERTAsbTq0Cyqz9b2Lgke+mCJfy/BAc6mK7UvXYkxpHqQjgsPKfO3BW3sN+Iq+JnW/379j1HcMC+0u6IYNaQ4k=
+	t=1717683147; cv=none; b=uwRtJ5guA/7/Z7ViGco1reo6J/WYQm5E63u04s+3EQqTzPDaQBumYEOuZQ2tj0ugIz8FLEN9P7aimaGhsUNX4MPj2Bn9hZzrUkQAd8FJyURttzmF+72OPsq+i387/aOAgsdRFKgctr2fe/v+bFLzEOLPAmWPOP0Xg2ehF1Lasus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683146; c=relaxed/simple;
-	bh=Q9xvA97SENlAhfm3sv9dhhifCWzlW/yP0T7W2iyR3go=;
+	s=arc-20240116; t=1717683147; c=relaxed/simple;
+	bh=mC0v4VcvrWsgEPeI3UZWnRXLpuQucSdhP184y/CTer4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HeJr1ThYQJfFs575O5ioC0Dr9XJvUWDLVO9Cu6Q5o2e56IKbg8HL8lZQZW0oZEYsIPOM81r06gLWuMnF2yVllpk/U48ltyN8INlFRvUunpwHYOXZZlMa+iHjNk9ove3/kCGfgaJdXjJ24V2RWJW04oLt9U7j1Yuvp9715jdHzZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7ugljYN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B03C2BD10;
-	Thu,  6 Jun 2024 14:12:25 +0000 (UTC)
+	 MIME-Version; b=mG2ZxlS5wt8bgEJCvqCkzdvZw0UPNb/cH08klu2B+Uo+m0eT3kU/tDEn6kAX8+WzT+3BNPek2BBRwwFejz+/y5bB2gU++yIsMgSz52bN7gZsCQVTBatL2tumBPTm4/ORG5UJpHBQOxvBYBLIUVKRJBtZIP4fEkvYwI0LmtnzcJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BX6tSoAx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE3BC2BD10;
+	Thu,  6 Jun 2024 14:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683145;
-	bh=Q9xvA97SENlAhfm3sv9dhhifCWzlW/yP0T7W2iyR3go=;
+	s=korg; t=1717683147;
+	bh=mC0v4VcvrWsgEPeI3UZWnRXLpuQucSdhP184y/CTer4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e7ugljYNbsljVQFdAPQ8snmloo6i021s6+32OIet40uKKqiDv6m9bNVpiU9tRh4R7
-	 nZD6Jw8RigchzUuIYUDLsoLkPVSpK2uEhyHkXIO6jNvVPgSp66/UsRmmTTanprNxBf
-	 lK8Uyg55+ezAPchoccL3EaxCrjiiTZ/FlNXGl4ok=
+	b=BX6tSoAxrBY8NGiECokCEmTH1eFFoO3ZepPSJi4aQd2y4tnbpG8KV24Doi87851Vl
+	 36tunJKTrRDnfhzu3BJD9pIQVPnrKYn7sR9zMFf0AmLO0JhLLwA9b86dj9LkbRU9qB
+	 7YUdRwZi7x9ZPEt+p+3LQRl8ofyoe8M0JSTh7aiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
 	Dan Carpenter <dan.carpenter@linaro.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/744] ksmbd: fix uninitialized symbol share in smb2_tree_connect()
-Date: Thu,  6 Jun 2024 15:56:03 +0200
-Message-ID: <20240606131735.315661915@linuxfoundation.org>
+Subject: [PATCH 6.6 092/744] nvmet: prevent sprintf() overflow in nvmet_subsys_nsid_exists()
+Date: Thu,  6 Jun 2024 15:56:04 +0200
+Message-ID: <20240606131735.346606734@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,44 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit bc642d7bfdac3bfd838a1cd6651955ae2eb8535a ]
+[ Upstream commit d15dcd0f1a4753b57e66c64c8dc2a9779ff96aab ]
 
-Fix uninitialized symbol 'share' in smb2_tree_connect().
+The nsid value is a u32 that comes from nvmet_req_find_ns().  It's
+endian data and we're on an error path and both of those raise red
+flags.  So let's make this safer.
 
-Fixes: e9d8c2f95ab8 ("ksmbd: add continuous availability share parameter")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+1) Make the buffer large enough for any u32.
+2) Remove the unnecessary initialization.
+3) Use snprintf() instead of sprintf() for even more safety.
+4) The sprintf() function returns the number of bytes printed, not
+   counting the NUL terminator. It is impossible for the return value to
+   be <= 0 so delete that.
+
+Fixes: 505363957fad ("nvmet: fix nvme status code when namespace is disabled")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/target/configfs.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 1e536ae277618..6a15c5d64f415 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1926,7 +1926,7 @@ int smb2_tree_connect(struct ksmbd_work *work)
- 	struct ksmbd_session *sess = work->sess;
- 	char *treename = NULL, *name = NULL;
- 	struct ksmbd_tree_conn_status status;
--	struct ksmbd_share_config *share;
-+	struct ksmbd_share_config *share = NULL;
- 	int rc = -EINVAL;
+diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
+index 3670a1103863b..f999e18e4561d 100644
+--- a/drivers/nvme/target/configfs.c
++++ b/drivers/nvme/target/configfs.c
+@@ -619,10 +619,9 @@ static struct configfs_attribute *nvmet_ns_attrs[] = {
+ bool nvmet_subsys_nsid_exists(struct nvmet_subsys *subsys, u32 nsid)
+ {
+ 	struct config_item *ns_item;
+-	char name[4] = {};
++	char name[12];
  
- 	WORK_BUFFERS(work, req, rsp);
-@@ -1988,7 +1988,7 @@ int smb2_tree_connect(struct ksmbd_work *work)
- 	write_unlock(&sess->tree_conns_lock);
- 	rsp->StructureSize = cpu_to_le16(16);
- out_err1:
--	if (server_conf.flags & KSMBD_GLOBAL_FLAG_DURABLE_HANDLE &&
-+	if (server_conf.flags & KSMBD_GLOBAL_FLAG_DURABLE_HANDLE && share &&
- 	    test_share_config_flag(share,
- 				   KSMBD_SHARE_FLAG_CONTINUOUS_AVAILABILITY))
- 		rsp->Capabilities = SMB2_SHARE_CAP_CONTINUOUS_AVAILABILITY;
+-	if (sprintf(name, "%u", nsid) <= 0)
+-		return false;
++	snprintf(name, sizeof(name), "%u", nsid);
+ 	mutex_lock(&subsys->namespaces_group.cg_subsys->su_mutex);
+ 	ns_item = config_group_find_item(&subsys->namespaces_group, name);
+ 	mutex_unlock(&subsys->namespaces_group.cg_subsys->su_mutex);
 -- 
 2.43.0
 
