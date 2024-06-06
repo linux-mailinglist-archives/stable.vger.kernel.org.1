@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-48596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF7F88FE9AC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C270A8FEEB7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D485288B3E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C5DCB214FB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4EAB198A19;
-	Thu,  6 Jun 2024 14:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63345199226;
+	Thu,  6 Jun 2024 14:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cE5J7BAJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgJCtMNi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9213B198A16;
-	Thu,  6 Jun 2024 14:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DB61C617F;
+	Thu,  6 Jun 2024 14:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683053; cv=none; b=DhI8u3gaHLKgvIiDQ2XBky48YzqyHskcFnFXhvh0TIS9s2VDAbggzPJLJpEUVxu/Gf1GnFHiDT8Ljm8wKuI1uFA5BDMteQZGmQ4Qk+OO7xWb5d63NazogwQPfsXYyAmkUqnOOK7tHkLPvS6LsCY7jOFvUhs6g8Pc72kNdCN6+mY=
+	t=1717683693; cv=none; b=Ea7Vfh8E4+MGqGl+1M6ZoQbxEqkcoWfoXzBznswGDciM2bJIKV+eFZqHTn1skHiYD3pCvThM4ZwRpli/e3Ow6fsKNYBNRziKOLg7lXxt3lBKmSO2vec+R1T0YQqePeSpZ4L6APZnD3an4EOPZQnL0CrM2YOAXXb7tnmKjIT3S7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683053; c=relaxed/simple;
-	bh=PaqVYdCi6PYxcip1gQiGoSVuRnhP1krP94sxBScjzSk=;
+	s=arc-20240116; t=1717683693; c=relaxed/simple;
+	bh=VRcGj2IPDdCJDbbAweftXFcQ0aDFIEfPs+KTC+tpf5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rk2YpwPIRwxeb5vp/u4NfB8Fd+/2Lin6M/uHtQl6WdbCOBvVd4lSN5o0cCnubjkbKsQsoulKboAvWJNasyfYhodm4Y2U3QdD2WSkjyCGXlMwWFd5eOMVoesaZzpBwlPPcT9XsYWDyN9nDCPHumdN8v9IExM3Y6rV2JCfhwxbm64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cE5J7BAJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF84C4AF19;
-	Thu,  6 Jun 2024 14:10:53 +0000 (UTC)
+	 MIME-Version; b=awcDmeV2Xq7nMhQypjTep3TUK6FthUmW7k8C1Yw4LuRlY3GBpGoBefpA9e5/rutIwfBSJ/jad0qQ7wuK8MCmRVfHZIzDLTgrj6AxSt6fjZWWj/m2TFVqFcw4u3AgahszIhZCriZAzu8NS3JHmVKMEWDMZ34rJ9mQdZX2xy1MlD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgJCtMNi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3595C32782;
+	Thu,  6 Jun 2024 14:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683053;
-	bh=PaqVYdCi6PYxcip1gQiGoSVuRnhP1krP94sxBScjzSk=;
+	s=korg; t=1717683693;
+	bh=VRcGj2IPDdCJDbbAweftXFcQ0aDFIEfPs+KTC+tpf5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cE5J7BAJJ+NTK6vCnQ5vIvhyluOf0yhOcT+T3AfG8htuPy3weHi5vhngnBLS2vHUE
-	 MU3jFHHwgwRF/oaVWRoZzUb8X6EX02E2zsnRJz0856bsRB5PxGSNY5VDFF8vb0Z8Ka
-	 OvmpUiIZPfeiswKliSe5x2gOKVRdiv+ew3heIeLE=
+	b=UgJCtMNit1zJERQhrTB8O1mLtuC9BbkhV8kIfKSK3RlmFueJ200nFS7WU1UBFdMMU
+	 kulZ9uT76HmdaWuqx6O5R9oMvs/hPjpkRDhfpQB6Ze0FSndxdk2Ya0rMld9efeB2qf
+	 x+4CMFfTVw40DxHQjk03OV0wA64sA8sfwcBtdztQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Shiyang Ruan <ruansy.fnst@fujitsu.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 296/374] net/mlx5: Lag, do bond only if slaves agree on roce state
-Date: Thu,  6 Jun 2024 16:04:35 +0200
-Message-ID: <20240606131701.789374276@linuxfoundation.org>
+Subject: [PATCH 6.6 604/744] cxl/trace: Correct DPA field masks for general_media & dram events
+Date: Thu,  6 Jun 2024 16:04:36 +0200
+Message-ID: <20240606131751.858551050@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maher Sanalla <msanalla@nvidia.com>
+From: Alison Schofield <alison.schofield@intel.com>
 
-[ Upstream commit 51ef9305b8f40946d65c40368ffb4c14636d369a ]
+[ Upstream commit 2042d11cb57b7e0cbda7910e5ff80e9e8bf0ae17 ]
 
-Currently, the driver does not enforce that lag bond slaves must have
-matching roce capabilities. Yet, in mlx5_do_bond(), the driver attempts
-to enable roce on all vports of the bond slaves, causing the following
-syndrome when one slave has no roce fw support:
+The length of Physical Address in General Media and DRAM event
+records is 64-bit, so the field mask for extracting the DPA should
+be 64-bit also, otherwise the trace event reports DPA's with the
+upper 32 bits of a DPA address masked off. If users do DPA-to-HPA
+translations this could lead to incorrect page retirement decisions.
 
-mlx5_cmd_out_err:809:(pid 25427): MODIFY_NIC_VPORT_CONTEXT(0×755) op_mod(0×0)
-failed, status bad parameter(0×3), syndrome (0xc1f678), err(-22)
+Use GENMASK_ULL() for CXL_DPA_MASK to get all the DPA address bits.
 
-Thus, create HW lag only if bond's slaves agree on roce state,
-either all slaves have roce support resulting in a roce lag bond,
-or none do, resulting in a raw eth bond.
+Tidy up CXL_DPA_FLAGS_MASK by using GENMASK() to only mask the exact
+flag bits.
 
-Fixes: 7907f23adc18 ("net/mlx5: Implement RoCE LAG feature")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+These bits are defined as part of the event record physical address
+descriptions of General Media and DRAM events in CXL Spec 3.1
+Section 8.2.9.2 Events.
+
+Fixes: d54a531a430b ("cxl/mem: Trace General Media Event Record")
+Co-developed-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/r/2867fc43c57720a4a15a3179431829b8dbd2dc16.1714496730.git.alison.schofield@intel.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/cxl/core/trace.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-index 37598d116f3b8..58a452d20daf7 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-@@ -720,6 +720,7 @@ bool mlx5_lag_check_prereq(struct mlx5_lag *ldev)
- 	struct mlx5_core_dev *dev;
- 	u8 mode;
- #endif
-+	bool roce_support;
- 	int i;
+diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
+index f01d0709c9c32..bdf24867d5174 100644
+--- a/drivers/cxl/core/trace.h
++++ b/drivers/cxl/core/trace.h
+@@ -252,8 +252,8 @@ TRACE_EVENT(cxl_generic_event,
+  * DRAM Event Record
+  * CXL rev 3.0 section 8.2.9.2.1.2; Table 8-44
+  */
+-#define CXL_DPA_FLAGS_MASK			0x3F
+-#define CXL_DPA_MASK				(~CXL_DPA_FLAGS_MASK)
++#define CXL_DPA_FLAGS_MASK			GENMASK(1, 0)
++#define CXL_DPA_MASK				GENMASK_ULL(63, 6)
  
- 	for (i = 0; i < ldev->ports; i++)
-@@ -746,6 +747,11 @@ bool mlx5_lag_check_prereq(struct mlx5_lag *ldev)
- 		if (mlx5_sriov_is_enabled(ldev->pf[i].dev))
- 			return false;
- #endif
-+	roce_support = mlx5_get_roce_state(ldev->pf[MLX5_LAG_P1].dev);
-+	for (i = 1; i < ldev->ports; i++)
-+		if (mlx5_get_roce_state(ldev->pf[i].dev) != roce_support)
-+			return false;
-+
- 	return true;
- }
- 
-@@ -913,8 +919,10 @@ static void mlx5_do_bond(struct mlx5_lag *ldev)
- 		} else if (roce_lag) {
- 			dev0->priv.flags &= ~MLX5_PRIV_FLAGS_DISABLE_IB_ADEV;
- 			mlx5_rescan_drivers_locked(dev0);
--			for (i = 1; i < ldev->ports; i++)
--				mlx5_nic_vport_enable_roce(ldev->pf[i].dev);
-+			for (i = 1; i < ldev->ports; i++) {
-+				if (mlx5_get_roce_state(ldev->pf[i].dev))
-+					mlx5_nic_vport_enable_roce(ldev->pf[i].dev);
-+			}
- 		} else if (shared_fdb) {
- 			int i;
- 
+ #define CXL_DPA_VOLATILE			BIT(0)
+ #define CXL_DPA_NOT_REPAIRABLE			BIT(1)
 -- 
 2.43.0
 
