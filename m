@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-49901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A387A8FEF51
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C84E8FEF50
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 941C91C2096D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88F2C1C23A8D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00601CBE99;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1371CBE9A;
 	Thu,  6 Jun 2024 14:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLfDeHFp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5kFZhMR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED671A254F;
-	Thu,  6 Jun 2024 14:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE0F1A254F;
+	Thu,  6 Jun 2024 14:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683767; cv=none; b=Gg2JGCl2QkcJFfb33EiWirnbt0FGDdvmtkFYxH0VQtIOjBzUNYwSbETjXNLVdZVEH/iyUnxMtwBeIP4WbrX694dDIa+AVK9NDW+m3QeMbkcMOa5ss0AF+QNMKfocuDf+dKLgNbapLoh+hNoTDcrs6Kn3br08oJzfFycON8C9bJU=
+	t=1717683767; cv=none; b=aGfIP3XVLdlPvJudZ23NcK+Oi6Y4Wi1sWgZ70xe9OES4zYnoSz+wMZC1zkrzvdSgoW+mpXvs11qGInT6dhxLUVUKkSRdKGj+bw/w9mqHXoQtGEGUXqInPteHohJ/uJxkErvSipoJ8X0DikMwhiWHWma7PXfXzxBV3HQ/tMN9Cho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717683767; c=relaxed/simple;
-	bh=UtfRzWXnTe7h6eqwL3Tpk3H03ScXsx71cdOv11VOjGk=;
+	bh=sI/ffrj9UIFzdeacXAdfFyEWEpW2TlqyjrxOfKc8t1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AtLTE3xabhgBEOnoEjtZHih82SrDSDCMeA2Q4VdiH0c87XeVJWSXSCUG5kiuAZnsueO7XXSguSV1P7a6aGG4Ljbhq3u5pbUCjupwiNNBPZMpQU9eJ2xo06lGmrzVK30hSsS8Pk94qDhIQCcaRzb0rYBTZOLcOJ66UJChfv2zVYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLfDeHFp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D2AC2BD10;
-	Thu,  6 Jun 2024 14:22:47 +0000 (UTC)
+	 MIME-Version; b=RX/kGYQSqDEFnjhsjZvjkY6Va6N2rge3VhcRNv/8SJrwMdpkF4wOTfavWd4ykC+G45FSPDNMFDRvyI2CSWNekw1AMD+Vr2b7digSqbMW8MYHUaKvM8F3NYBEiyhz9EBfZ+ee0Hexv7Pk/9tq+CENnVS8/1IK3w6QMdX5opb6aw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5kFZhMR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB05EC2BD10;
+	Thu,  6 Jun 2024 14:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683767;
-	bh=UtfRzWXnTe7h6eqwL3Tpk3H03ScXsx71cdOv11VOjGk=;
+	s=korg; t=1717683766;
+	bh=sI/ffrj9UIFzdeacXAdfFyEWEpW2TlqyjrxOfKc8t1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DLfDeHFpJbSSIMTZLKKGAanG5LGhP89GURqoTE8GV7vk8UygHdKbmxLs8gyTfIQTZ
-	 zs6jWuG1fR2/6KUBg5tc5ZeXrM1poxVXLj1tDIWvj2QHMG0lcf8i2jzplE4QSRD5Qe
-	 tY0KEuD3AcHNCKo9aylk2zW1dSeU6S+YbUS1stsA=
+	b=z5kFZhMR0fK7zf4IgVeFQyQHzKfu1FPR7RB0DhcRkejUHfClKCUprFAFp3qS1avpA
+	 SoYrzQPcSsm8G2o/yOdoqAerRJTy7SVOH6U4k2HyktncPdNLWzBeWxWav3VPGZG6Pr
+	 5SnlM+XaP8l8wWE/jqZ/xFxhrf1pzLKLKkHEsAhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.6 743/744] platform/x86/intel/tpmi: Handle error from tpmi_process_info()
-Date: Thu,  6 Jun 2024 16:06:55 +0200
-Message-ID: <20240606131756.308704113@linuxfoundation.org>
+Subject: [PATCH 6.6 744/744] platform/x86/intel-uncore-freq: Dont present root domain on error
+Date: Thu,  6 Jun 2024 16:06:56 +0200
+Message-ID: <20240606131756.337159958@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -60,7 +59,6 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
@@ -69,38 +67,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-commit 2920141fc149f71bad22361946417bc43783ed7f upstream.
+commit db643cb7ebe524d17b4b13583dda03485d4a1bc0 upstream.
 
-When tpmi_process_info() returns error, fail to load the driver.
-This can happen if call to ioremap() returns error.
+If none of the clusters are added because of some error, fail to load
+driver without presenting root domain. In this case root domain will
+present invalid data.
 
 Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: stable@vger.kernel.org # v6.3+
-Link: https://lore.kernel.org/r/20240423204619.3946901-2-srinivas.pandruvada@linux.intel.com
+Fixes: 01c10f88c9b7 ("platform/x86/intel-uncore-freq: tpmi: Provide cluster level control")
+Cc: <stable@vger.kernel.org> # 6.5+
+Link: https://lore.kernel.org/r/20240415215210.2824868-1-srinivas.pandruvada@linux.intel.com
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/tpmi.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/platform/x86/intel/tpmi.c
-+++ b/drivers/platform/x86/intel/tpmi.c
-@@ -733,8 +733,11 @@ static int intel_vsec_tpmi_init(struct a
- 		 * when actual device nodes created outside this
- 		 * loop via tpmi_create_devices().
- 		 */
--		if (pfs->pfs_header.tpmi_id == TPMI_INFO_ID)
--			tpmi_process_info(tpmi_info, pfs);
-+		if (pfs->pfs_header.tpmi_id == TPMI_INFO_ID) {
-+			ret = tpmi_process_info(tpmi_info, pfs);
-+			if (ret)
-+				return ret;
-+		}
+--- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
++++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
+@@ -234,6 +234,7 @@ static int uncore_probe(struct auxiliary
+ {
+ 	struct intel_tpmi_plat_info *plat_info;
+ 	struct tpmi_uncore_struct *tpmi_uncore;
++	bool uncore_sysfs_added = false;
+ 	int ret, i, pkg = 0;
+ 	int num_resources;
  
- 		if (pfs->pfs_header.tpmi_id == TPMI_CONTROL_ID)
- 			tpmi_set_control_base(auxdev, tpmi_info, pfs);
+@@ -359,9 +360,15 @@ static int uncore_probe(struct auxiliary
+ 			}
+ 			/* Point to next cluster offset */
+ 			cluster_offset >>= UNCORE_MAX_CLUSTER_PER_DOMAIN;
++			uncore_sysfs_added = true;
+ 		}
+ 	}
+ 
++	if (!uncore_sysfs_added) {
++		ret = -ENODEV;
++		goto remove_clusters;
++	}
++
+ 	auxiliary_set_drvdata(auxdev, tpmi_uncore);
+ 
+ 	tpmi_uncore->root_cluster.root_domain = true;
 
 
 
