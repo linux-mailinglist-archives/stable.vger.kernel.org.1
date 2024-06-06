@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-48861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A568FEAD7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF8A8FEADC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 620921C25989
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BE39285859
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB1D1A186E;
-	Thu,  6 Jun 2024 14:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB53197548;
+	Thu,  6 Jun 2024 14:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lz7c6PBE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Me93YK21"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAD7199227;
-	Thu,  6 Jun 2024 14:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C506199231;
+	Thu,  6 Jun 2024 14:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683183; cv=none; b=YWpvI3JUJ5hGbSULcENBlRluBIpXyymI/rw2qRrl7avxm6H4phyzKrCI6bL7+f3FfmGDnGoLJV2Xy+i5apG6srvdmupzz4Xd6902m4fqzjnGT5kSivJzB6MljK/KkM3vfu8g+0yXc5Saz2KJQqixDu80T20Za7UQcWRhVV6vY+o=
+	t=1717683184; cv=none; b=mfoiQOWVXioEoyt9Zr6NETjWVFmmACioVZukpOH4I6butAwURmgDDRje3JrczevN+ywmDPoU6UxN3DvxHx4zAwEnSgDBiEIAaP7+5Ga7/gUmJ7tnipy8hdLkWtf4LUae24fJMBcyYl6y4q4K5+leNslXFfvTHEV72Axa3DAw98c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683183; c=relaxed/simple;
-	bh=E01z3fhCHeitaRIUKpI6cnZYtWVB1y/aOj2SRCu+eIo=;
+	s=arc-20240116; t=1717683184; c=relaxed/simple;
+	bh=fXU9QkWb1q7e9Lhq7c7mTuQBM6uifCW3nHMAZpR0T94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+iMsEGyARvxwL2UtfCIGXoQIU1aIqJ/H4avrkBf3fcWIMuXzqfmgrekdDe2haODVVk0xZmUh3bHJuZmzzEVgAZak/LGT4GL82h0kdPAC0gLOylEWyxkY41VlgkacqNKX7pyLiqM6Mjn96ToOai6bP8XC7WfiQQcpSJRkFYpXGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lz7c6PBE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16197C2BD10;
-	Thu,  6 Jun 2024 14:13:03 +0000 (UTC)
+	 MIME-Version; b=a3xa3H2/tf469DLo//SUNUUww9OATgXFhc63xei0wH7VUHq/XznX0sbVU/uIIuSXRfhv2wU6g9ce7RCV46t1MzweWno1ow+bEXeHFj2MVtnTnk5P21iaemjNrkZTKQrcLO6vT+iHOiKC/PJosztobupZfFdTv1zznsZt5QcZtWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Me93YK21; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79FBAC2BD10;
+	Thu,  6 Jun 2024 14:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683183;
-	bh=E01z3fhCHeitaRIUKpI6cnZYtWVB1y/aOj2SRCu+eIo=;
+	s=korg; t=1717683184;
+	bh=fXU9QkWb1q7e9Lhq7c7mTuQBM6uifCW3nHMAZpR0T94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lz7c6PBEydlyDNzbNUfv+wrS8gzomc08tyN2XVGCX8eALeEZo/TqVrwe53Fkffw6p
-	 7VzzMafzqOGDmvDT2nyEWr7znP/jtbRxfBFUvkGLb0GJr6o9wEMheWr5+jb/1WJnjC
-	 peJScLpR2LC9IysP+U7IyVa68mVrHzIxUhS7tGMc=
+	b=Me93YK21HaCxlNOLEmjhzv/vpszDDsWEQpL1BfI7dxIqhThg90g+cpeSa9s//QMJP
+	 dmjgusTT6WouRWl6fUmFa+P/sJui+whRFiWpNIJGn70Zz2R3EtPVs+ffwqk8pMLhzV
+	 /4t2tcNJB0xmdtpAWvXI/g+nLyJyM7OhXJRrT+0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Kalle Valo <kvalo@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 127/744] wifi: brcmfmac: pcie: handle randbuf allocation failure
-Date: Thu,  6 Jun 2024 15:56:39 +0200
-Message-ID: <20240606131736.496598363@linuxfoundation.org>
+Subject: [PATCH 6.6 128/744] wifi: ath11k: dont force enable power save on non-running vdevs
+Date: Thu,  6 Jun 2024 15:56:40 +0200
+Message-ID: <20240606131736.529752014@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,69 +66,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 316f790ebcf94bdf59f794b7cdea4068dc676d4c ]
+[ Upstream commit 01296b39d3515f20a1db64d3c421c592b1e264a0 ]
 
-The kzalloc() in brcmf_pcie_download_fw_nvram() will return null
-if the physical memory has run out. As a result, if we use
-get_random_bytes() to generate random bytes in the randbuf, the
-null pointer dereference bug will happen.
+Currently we force enable power save on non-running vdevs, this results
+in unexpected ping latency in below scenarios:
+	1. disable power save from userspace.
+	2. trigger suspend/resume.
 
-In order to prevent allocation failure, this patch adds a separate
-function using buffer on kernel stack to generate random bytes in
-the randbuf, which could prevent the kernel stack from overflow.
+With step 1 power save is disabled successfully and we get a good latency:
 
-Fixes: 91918ce88d9f ("wifi: brcmfmac: pcie: Provide a buffer of random bytes to the device")
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240306140437.18177-1-duoming@zju.edu.cn
+PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
+64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=5.13 ms
+64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=5.45 ms
+64 bytes from 192.168.1.1: icmp_seq=3 ttl=64 time=5.99 ms
+64 bytes from 192.168.1.1: icmp_seq=4 ttl=64 time=6.34 ms
+64 bytes from 192.168.1.1: icmp_seq=5 ttl=64 time=4.47 ms
+64 bytes from 192.168.1.1: icmp_seq=6 ttl=64 time=6.45 ms
+
+While after step 2, the latency becomes much larger:
+
+PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
+64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=17.7 ms
+64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=15.0 ms
+64 bytes from 192.168.1.1: icmp_seq=3 ttl=64 time=14.3 ms
+64 bytes from 192.168.1.1: icmp_seq=4 ttl=64 time=16.5 ms
+64 bytes from 192.168.1.1: icmp_seq=5 ttl=64 time=20.1 ms
+
+The reason is, with step 2, power save is force enabled due to vdev not
+running, although mac80211 was trying to disable it to honor userspace
+configuration:
+
+ath11k_pci 0000:03:00.0: wmi cmd sta powersave mode psmode 1 vdev id 0
+Call Trace:
+ ath11k_wmi_pdev_set_ps_mode
+ ath11k_mac_op_bss_info_changed
+ ieee80211_bss_info_change_notify
+ ieee80211_reconfig
+ ieee80211_resume
+ wiphy_resume
+
+This logic is taken from ath10k where it was added due to below comment:
+
+	Firmware doesn't behave nicely and consumes more power than
+	necessary if PS is disabled on a non-started vdev.
+
+However we don't know whether such an issue also occurs to ath11k firmware
+or not. But even if it does, it's not appropriate because it goes against
+userspace, even cfg/mac80211 don't know we have enabled it in fact.
+
+Remove it to fix this issue. In this way we not only get a better latency,
+but also, and the most important, keeps the consistency between userspace
+and kernel/driver. The biggest price for that would be the power consumption,
+which is not that important, compared with the consistency.
+
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+
+Fixes: b2beffa7d9a6 ("ath11k: enable 802.11 power save mode in station mode")
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240309113115.11498-1-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/broadcom/brcm80211/brcmfmac/pcie.c   | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index 80220685f5e45..a43af82691401 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -1675,6 +1675,15 @@ struct brcmf_random_seed_footer {
- #define BRCMF_RANDOM_SEED_MAGIC		0xfeedc0de
- #define BRCMF_RANDOM_SEED_LENGTH	0x100
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index b75cb49c27466..445f59ad1fc08 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -1233,14 +1233,7 @@ static int ath11k_mac_vif_setup_ps(struct ath11k_vif *arvif)
  
-+static noinline_for_stack void
-+brcmf_pcie_provide_random_bytes(struct brcmf_pciedev_info *devinfo, u32 address)
-+{
-+	u8 randbuf[BRCMF_RANDOM_SEED_LENGTH];
-+
-+	get_random_bytes(randbuf, BRCMF_RANDOM_SEED_LENGTH);
-+	memcpy_toio(devinfo->tcm + address, randbuf, BRCMF_RANDOM_SEED_LENGTH);
-+}
-+
- static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
- 					const struct firmware *fw, void *nvram,
- 					u32 nvram_len)
-@@ -1717,7 +1726,6 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
- 				.length = cpu_to_le32(rand_len),
- 				.magic = cpu_to_le32(BRCMF_RANDOM_SEED_MAGIC),
- 			};
--			void *randbuf;
+ 	enable_ps = arvif->ps;
  
- 			/* Some Apple chips/firmwares expect a buffer of random
- 			 * data to be present before NVRAM
-@@ -1729,10 +1737,7 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
- 				    sizeof(footer));
+-	if (!arvif->is_started) {
+-		/* mac80211 can update vif powersave state while disconnected.
+-		 * Firmware doesn't behave nicely and consumes more power than
+-		 * necessary if PS is disabled on a non-started vdev. Hence
+-		 * force-enable PS for non-running vdevs.
+-		 */
+-		psmode = WMI_STA_PS_MODE_ENABLED;
+-	} else if (enable_ps) {
++	if (enable_ps) {
+ 		psmode = WMI_STA_PS_MODE_ENABLED;
+ 		param = WMI_STA_PS_PARAM_INACTIVITY_TIME;
  
- 			address -= rand_len;
--			randbuf = kzalloc(rand_len, GFP_KERNEL);
--			get_random_bytes(randbuf, rand_len);
--			memcpy_toio(devinfo->tcm + address, randbuf, rand_len);
--			kfree(randbuf);
-+			brcmf_pcie_provide_random_bytes(devinfo, address);
- 		}
- 	} else {
- 		brcmf_dbg(PCIE, "No matching NVRAM file found %s\n",
 -- 
 2.43.0
 
