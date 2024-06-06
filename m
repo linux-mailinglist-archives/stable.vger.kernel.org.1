@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B1FD8FEC53
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D03918FEE60
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3977D1F29951
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FD87B20B8F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A041A19AD93;
-	Thu,  6 Jun 2024 14:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0BA1C370D;
+	Thu,  6 Jun 2024 14:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRXicqGg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SwIjg1pA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0E919AD95;
-	Thu,  6 Jun 2024 14:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFF11C370C;
+	Thu,  6 Jun 2024 14:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683354; cv=none; b=G2xvmociLaAPdDTCmrV7FnG9zq59H5OqgJ6RYu15xW7engFBpH4n5x5PLnPr5rjzmPWRMRFRZH/lfhhIirNwlV86yPTTek3q5DKsVmAa4EXBU0P4Baqgx3Fr6vkCMlfNcW1PyXly8a+bH34eTmPXjb0Qu8etJgC2sTuFlwTdAoc=
+	t=1717683651; cv=none; b=rs1Vn947Zimb7yTwk5fj/WvPejtpA4tjBnd3MUc4FV+7FmBJl7OLMiblj6y+1Ki2wewLZP5wq6dednfaFzDN+uQg5J0Uljuv0XjNsNKhlk2cBYwTtpKNBO6Ht9dG0bhbSaGED4sK4gznUII8n9TiPoew9A+/wfUi1u1JuqWUqJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683354; c=relaxed/simple;
-	bh=z4aRGPAVQACr0NGriOSnI5PoOzqX55otaCpUtZWH9aM=;
+	s=arc-20240116; t=1717683651; c=relaxed/simple;
+	bh=mV1ndGEHaJmnB6AVU/WKLlbpJozYlhvQ17eH3G9/Mek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPWZaQUD6AITkIlPKWSZMGGLwjtoWc2uCywncMWm1yrBBpb9POYiL1seFusTU9w9UsYMMvzAYl23+DsiifSa90YLv2KdNYQaavOInLJTHFQDzrRO3VebWxeUTUf9NsCsJckkWurnVmsieVT2kEcT9J7aLOP4xDX/cy6fBxMemdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRXicqGg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3671DC4AF07;
-	Thu,  6 Jun 2024 14:15:54 +0000 (UTC)
+	 MIME-Version; b=UrbkbLlri4Zl2iS/weT6JM+YEhA4OqiY8cK1cUWEnVzjKOnlaNdslfd7F75e76GlppHR2CyOLxF0EfwJEr4Zx9r9UhgmV2MAuXZTYt4uZT8Ds1oATVMbTC2sKulYjDhY964rauHeqenRE4YGXaslAcjm0Z3PP7RtINASb6BP+cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SwIjg1pA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAADC2BD10;
+	Thu,  6 Jun 2024 14:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683354;
-	bh=z4aRGPAVQACr0NGriOSnI5PoOzqX55otaCpUtZWH9aM=;
+	s=korg; t=1717683651;
+	bh=mV1ndGEHaJmnB6AVU/WKLlbpJozYlhvQ17eH3G9/Mek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QRXicqGgxwiLPPAXrxjhgkX60xZtnuk/9ldolK/Dx+ILYGIhzW28iLzvtJLui2ueJ
-	 DHXZ6lUxJB7DlwIzyBfvCsUShqgfUjYPWAS/Sb+1QB8ZQ2rN+m1f1ez986X1wqS3/W
-	 y6akRiekc3eqwrZVPX0B9yB7f4Tl2DC78hP/MC9E=
+	b=SwIjg1pA2suzayLEnUoEbRY524rCHOC4KJ3Ix29zHYC8ti1FR+XgQN+BkQwomy+cv
+	 35OndcnOp5ganRbGQLLWN22+iGyQEATb9h9rrbLm3up1JisR1rWHoE02bjehJWGANr
+	 j07QLIK375H3F4Ic/Z5UyURT98t1GJV6t0E+P4qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaewon Kim <jaewon02.kim@samsung.com>,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 235/473] clk: samsung: exynosautov9: fix wrong pll clock id value
-Date: Thu,  6 Jun 2024 16:02:44 +0200
-Message-ID: <20240606131707.606598285@linuxfoundation.org>
+Subject: [PATCH 6.6 493/744] i2c: synquacer: Fix an error handling path in synquacer_i2c_probe()
+Date: Thu,  6 Jun 2024 16:02:45 +0200
+Message-ID: <20240606131748.256709334@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaewon Kim <jaewon02.kim@samsung.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 04ee3a0b44e3d18cf6b0c712d14b98624877fd26 ]
+[ Upstream commit 55750148e5595bb85605e8fbb40b2759c2c4c2d7 ]
 
-All PLL id values of CMU_TOP were incorrectly set to FOUT_SHARED0_PLL.
-It modified to the correct PLL clock id value.
+If an error occurs after the clk_prepare_enable() call, it should be undone
+by a corresponding clk_disable_unprepare() call, as already done in the
+remove() function.
 
-Fixes: 6587c62f69dc ("clk: samsung: add top clock support for Exynos Auto v9 SoC")
-Signed-off-by: Jaewon Kim <jaewon02.kim@samsung.com>
-Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
-Link: https://lore.kernel.org/r/20240328091000.17660-1-jaewon02.kim@samsung.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+As devm_clk_get() is used, we can switch to devm_clk_get_enabled() to
+handle it automatically and fix the probe.
+
+Update the remove() function accordingly and remove the now useless
+clk_disable_unprepare() call.
+
+Fixes: 0d676a6c4390 ("i2c: add support for Socionext SynQuacer I2C controller")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/samsung/clk-exynosautov9.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-synquacer.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/clk/samsung/clk-exynosautov9.c b/drivers/clk/samsung/clk-exynosautov9.c
-index 7b16320bba667..c360639562755 100644
---- a/drivers/clk/samsung/clk-exynosautov9.c
-+++ b/drivers/clk/samsung/clk-exynosautov9.c
-@@ -343,13 +343,13 @@ static const struct samsung_pll_clock top_pll_clks[] __initconst = {
- 	/* CMU_TOP_PURECLKCOMP */
- 	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared0_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED0, PLL_CON3_PLL_SHARED0, NULL),
--	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared1_pll", "oscclk",
-+	PLL(pll_0822x, FOUT_SHARED1_PLL, "fout_shared1_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED1, PLL_CON3_PLL_SHARED1, NULL),
--	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared2_pll", "oscclk",
-+	PLL(pll_0822x, FOUT_SHARED2_PLL, "fout_shared2_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED2, PLL_CON3_PLL_SHARED2, NULL),
--	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared3_pll", "oscclk",
-+	PLL(pll_0822x, FOUT_SHARED3_PLL, "fout_shared3_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED3, PLL_CON3_PLL_SHARED3, NULL),
--	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared4_pll", "oscclk",
-+	PLL(pll_0822x, FOUT_SHARED4_PLL, "fout_shared4_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED4, PLL_CON3_PLL_SHARED4, NULL),
+diff --git a/drivers/i2c/busses/i2c-synquacer.c b/drivers/i2c/busses/i2c-synquacer.c
+index bbea521b05dda..a73f5bb9a1645 100644
+--- a/drivers/i2c/busses/i2c-synquacer.c
++++ b/drivers/i2c/busses/i2c-synquacer.c
+@@ -550,17 +550,13 @@ static int synquacer_i2c_probe(struct platform_device *pdev)
+ 	device_property_read_u32(&pdev->dev, "socionext,pclk-rate",
+ 				 &i2c->pclkrate);
+ 
+-	i2c->pclk = devm_clk_get(&pdev->dev, "pclk");
+-	if (PTR_ERR(i2c->pclk) == -EPROBE_DEFER)
+-		return -EPROBE_DEFER;
+-	if (!IS_ERR_OR_NULL(i2c->pclk)) {
+-		dev_dbg(&pdev->dev, "clock source %p\n", i2c->pclk);
+-
+-		ret = clk_prepare_enable(i2c->pclk);
+-		if (ret)
+-			return dev_err_probe(&pdev->dev, ret, "failed to enable clock\n");
+-		i2c->pclkrate = clk_get_rate(i2c->pclk);
+-	}
++	i2c->pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
++	if (IS_ERR(i2c->pclk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(i2c->pclk),
++				     "failed to get and enable clock\n");
++
++	dev_dbg(&pdev->dev, "clock source %p\n", i2c->pclk);
++	i2c->pclkrate = clk_get_rate(i2c->pclk);
+ 
+ 	if (i2c->pclkrate < SYNQUACER_I2C_MIN_CLK_RATE ||
+ 	    i2c->pclkrate > SYNQUACER_I2C_MAX_CLK_RATE)
+@@ -615,8 +611,6 @@ static void synquacer_i2c_remove(struct platform_device *pdev)
+ 	struct synquacer_i2c *i2c = platform_get_drvdata(pdev);
+ 
+ 	i2c_del_adapter(&i2c->adapter);
+-	if (!IS_ERR(i2c->pclk))
+-		clk_disable_unprepare(i2c->pclk);
  };
  
+ static const struct of_device_id synquacer_i2c_dt_ids[] __maybe_unused = {
 -- 
 2.43.0
 
