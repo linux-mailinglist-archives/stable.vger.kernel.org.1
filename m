@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25138FEAB1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A09A18FEAB2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D1441C22207
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C78631C259D3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C11C1A0DCB;
-	Thu,  6 Jun 2024 14:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096E41A0DD2;
+	Thu,  6 Jun 2024 14:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2hC4NAn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cT3710xL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF771A0DC6;
-	Thu,  6 Jun 2024 14:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA321991CE;
+	Thu,  6 Jun 2024 14:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683165; cv=none; b=GYpE2INFjponepel1AkGNf1jTra8bbGCG6nw983Y5CpgGGiUiD4awdjl02MK5sk013S38qhUfypGroxxnDaiSdAihSvMraVg8ts8G179Lu8kZuSKEjFBu9Rv6I+Q2IkCJrbh5dNYiyS6idK2IEXaxg5CC1Kwp41gvIJokpKvpE4=
+	t=1717683166; cv=none; b=YmWToN61GI0v6JADeoEMG01Jlv2wHQwp6TYWfjt47UEjuJZURgVdrOr/uO9b8Vnc42CyZMr12LkCxaW5VT2P0xphm1Th/cbvubda+gMUvtvPZnjfkniArmDq+pRoSFy9ZyCQCVvXvU21ZNu3eK/gw+0RbqENbUs/VACY9sRj6qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683165; c=relaxed/simple;
-	bh=sC3DSI0dxttBFCBl3a6ZLBhQjs6EdsNgyE6pmOYHUJE=;
+	s=arc-20240116; t=1717683166; c=relaxed/simple;
+	bh=iOZe5F6jCHlIxR1E7nphmlmdMJsZc4nW/uKBFjOxKSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lgt5u8MKsBDkYas8wSvwQamjMqR2dQjnDMaatHhIJDTOY8StnOjkP2FZ5OkmkM/AroRDZ3WdzTKO/uLysDJ2buyrZO84nRpfyzafi3lXdfQTi1U8phxy07/Lpo4z4mzEGLj0F5gYO3cmJVKdr0169Rco6JSkN4SDy59EFxMvJPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2hC4NAn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BDEC2BD10;
-	Thu,  6 Jun 2024 14:12:45 +0000 (UTC)
+	 MIME-Version; b=M4Sp2W+ho4Yp6Y8i3tM0crxxJbGlfx8HBtYXQMTc5PrfhqzMq9LRHNoiemhnnsLZJxLJB29Wi8z3k+Wpapxn7u740h3G3WLJ3Jwcc7c2tQtr20fbvUflB1kqIJJ/g9ZBLTTfSoXnto3gK+zhjHywCS1q1zk5fLU74MIbKCQ3nKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cT3710xL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B845C2BD10;
+	Thu,  6 Jun 2024 14:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683165;
-	bh=sC3DSI0dxttBFCBl3a6ZLBhQjs6EdsNgyE6pmOYHUJE=;
+	s=korg; t=1717683166;
+	bh=iOZe5F6jCHlIxR1E7nphmlmdMJsZc4nW/uKBFjOxKSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2hC4NAnIFDlyJ8tlrYlhwMfpVxE0KkyZglbqIl/IsyJUCYhHDTB/UcLf1jLnLuWX
-	 rRbE+rG/L3/z0ev/CmOSXTWrtmQhsQeI9lRSGxQ4+u3mViFdfLe7heu1FpWx7J7YHv
-	 k7dckzSk7Y/ELsmWx5yQzlNiT4cOwbIw2gwI4iLw=
+	b=cT3710xLLYZg65pkAil880I90s9wLA39SBhiFNUhM5INEwiHkMCQeP+BSctk/YoA3
+	 DkIRyWw1c11R0EbH5GBqCoznjGAepYmn9S4PZDhs45lpaQVcvbt5ff3ydNMsUI+bn+
+	 rvKyecsgY9Ly3wMUdIVyKuavCpalQDSjbBptXjPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alvin Lee <alvin.lee2@amd.com>,
+	Anthony Koo <anthony.koo@amd.com>,
 	Wayne Lin <wayne.lin@amd.com>,
-	Leo Ma <hanghong.ma@amd.com>,
+	Sung Joon Kim <sungjoon.kim@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/744] drm/amd/display: Fix DC mode screen flickering on DCN321
-Date: Thu,  6 Jun 2024 15:55:52 +0200
-Message-ID: <20240606131734.968393180@linuxfoundation.org>
+Subject: [PATCH 6.6 081/744] drm/amd/display: Disable seamless boot on 128b/132b encoding
+Date: Thu,  6 Jun 2024 15:55:53 +0200
+Message-ID: <20240606131735.001691001@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,59 +69,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Leo Ma <hanghong.ma@amd.com>
+From: Sung Joon Kim <sungjoon.kim@amd.com>
 
-[ Upstream commit ce649bd2d834db83ecc2756a362c9a1ec61658a5 ]
+[ Upstream commit 6f0c228ed9184287031a66b46a79e5a3d2e73a86 ]
 
-[Why && How]
-Screen flickering saw on 4K@60 eDP with high refresh rate external
-monitor when booting up in DC mode. DC Mode Capping is disabled
-which caused wrong UCLK being used.
+[why]
+preOS will not support display mode programming and link training
+for UHBR rates.
 
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+[how]
+If we detect a sink that's UHBR capable, disable seamless boot
+
+Reviewed-by: Anthony Koo <anthony.koo@amd.com>
 Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Leo Ma <hanghong.ma@amd.com>
+Signed-off-by: Sung Joon Kim <sungjoon.kim@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c  | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
-index e9345f6554dbc..2428a4763b85f 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
-@@ -547,8 +547,12 @@ static void dcn32_update_clocks(struct clk_mgr *clk_mgr_base,
- 					 * since we calculate mode support based on softmax being the max UCLK
- 					 * frequency.
- 					 */
--					dcn32_smu_set_hard_min_by_freq(clk_mgr, PPCLK_UCLK,
--							dc->clk_mgr->bw_params->dc_mode_softmax_memclk);
-+					if (dc->debug.disable_dc_mode_overwrite) {
-+						dcn30_smu_set_hard_max_by_freq(clk_mgr, PPCLK_UCLK, dc->clk_mgr->bw_params->max_memclk_mhz);
-+						dcn32_smu_set_hard_min_by_freq(clk_mgr, PPCLK_UCLK, dc->clk_mgr->bw_params->max_memclk_mhz);
-+					} else
-+						dcn32_smu_set_hard_min_by_freq(clk_mgr, PPCLK_UCLK,
-+								dc->clk_mgr->bw_params->dc_mode_softmax_memclk);
- 				} else {
- 					dcn32_smu_set_hard_min_by_freq(clk_mgr, PPCLK_UCLK, dc->clk_mgr->bw_params->max_memclk_mhz);
- 				}
-@@ -581,8 +585,13 @@ static void dcn32_update_clocks(struct clk_mgr *clk_mgr_base,
- 		/* set UCLK to requested value if P-State switching is supported, or to re-enable P-State switching */
- 		if (clk_mgr_base->clks.p_state_change_support &&
- 				(update_uclk || !clk_mgr_base->clks.prev_p_state_change_support) &&
--				!dc->work_arounds.clock_update_disable_mask.uclk)
-+				!dc->work_arounds.clock_update_disable_mask.uclk) {
-+			if (dc->clk_mgr->dc_mode_softmax_enabled && dc->debug.disable_dc_mode_overwrite)
-+				dcn30_smu_set_hard_max_by_freq(clk_mgr, PPCLK_UCLK,
-+						max((int)dc->clk_mgr->bw_params->dc_mode_softmax_memclk, khz_to_mhz_ceil(clk_mgr_base->clks.dramclk_khz)));
-+
- 			dcn32_smu_set_hard_min_by_freq(clk_mgr, PPCLK_UCLK, khz_to_mhz_ceil(clk_mgr_base->clks.dramclk_khz));
-+		}
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 46b10ff8f6d41..72db370e2f21f 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -1710,6 +1710,9 @@ bool dc_validate_boot_timing(const struct dc *dc,
+ 		return false;
+ 	}
  
- 		if (clk_mgr_base->clks.num_ways != new_clocks->num_ways &&
- 				clk_mgr_base->clks.num_ways > new_clocks->num_ways) {
++	if (link->dpcd_caps.channel_coding_cap.bits.DP_128b_132b_SUPPORTED)
++		return false;
++
+ 	if (dc->link_srv->edp_is_ilr_optimization_required(link, crtc_timing)) {
+ 		DC_LOG_EVENT_LINK_TRAINING("Seamless boot disabled to optimize eDP link rate\n");
+ 		return false;
 -- 
 2.43.0
 
