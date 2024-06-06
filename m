@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-49207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 618478FEC54
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE0188FEC55
 	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3DCAB27E1C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39AD728286D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C40519AD89;
-	Thu,  6 Jun 2024 14:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9961B0108;
+	Thu,  6 Jun 2024 14:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRDyy2Eu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cq/HxYCW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9AD19AD93;
-	Thu,  6 Jun 2024 14:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF04D1B0112;
+	Thu,  6 Jun 2024 14:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683354; cv=none; b=OHztKXwHTeVPXNZMQlW+xihcR49ZDauPPVLdi5hAXPQ++2O9HP5cjAq36MC7be4z+piyCszaaO1xFjIKfJt7keb08Dt1t35YOi8Le/OQl+6XSgivbRaoBQR4bshHLHsD6I4GBI1hBSIBRLo+KxsIk5eyXXzJEbou++FB90zh42E=
+	t=1717683354; cv=none; b=B4fY5Fq1TEcW+RMgYW630uZgK6QNM+YnntAP/bBqHfbEdu1MUwhdgjrlgenTAWZdUU8kjCPLuAy8v7NFWSmsAXp6cK9biv4HkNSBJyHghvweN0iFIXoJaoGNMH3vSnI+pkP59nzgL04T1A6xlCgSRpYntoxOIlHJ3YJs6/Xw19I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717683354; c=relaxed/simple;
-	bh=wo8hgLVWYcWWWnKzewFS43v2s54GX0IHHXxjRZ2h+2g=;
+	bh=TvLqWJ92wVTozJkUgxMQwO+4ghNB0EEB+klfAER45n8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1N/gBt4t8gTWokuidwsw0Oy2cKUHXhCc0Hp+KPYHuvf6B/bwDPjDf/1vZ7W3G72ZTuvlSQW/6BS5DOzxDOQSYVZtx3jBru4987h73IhwspstmC56pi0hvMsCPqvmBup3bgz7ympAy0DETpwDr26Z/EO951UoudWjvlfEPVdgLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRDyy2Eu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF798C2BD10;
-	Thu,  6 Jun 2024 14:15:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qGYpaAVOky3tA6t3z41xKJKuZ2CqFfb/gPoQU/TwtDnimQ5ACnJ9ss9gBs69mxeLda1/nTEp8gcrJahp7oHB6xenplexSANM27pNjedJNV1pFnnYEIP1P842RCX7hgPfLxPEx3RiIdX0xUW/oLocPs3W/hhmD2ygqe1sAijF77s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cq/HxYCW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC037C32781;
+	Thu,  6 Jun 2024 14:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683353;
-	bh=wo8hgLVWYcWWWnKzewFS43v2s54GX0IHHXxjRZ2h+2g=;
+	s=korg; t=1717683354;
+	bh=TvLqWJ92wVTozJkUgxMQwO+4ghNB0EEB+klfAER45n8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wRDyy2EuHYrBXZfxUrsx10gU+Wl0JlTVDFAmfqbyH+D5L2SvSdu1ys9DPhimXLTVz
-	 84yhno+CxpKrMmvECo3ZbsQ7FSlxuysMs0KwWejQw4HVv0H8nCTomTqYXvGUjVcwKd
-	 T0SnbozWd9GbQ1V/7kHeKMVY9gMdU+JGOBXwtsWw=
+	b=cq/HxYCW8JYz8wDG2boxV2AvsjYTFQ8eYBWtU78tuyC4Hz6KddFAAA+pnRDMsv3sN
+	 HUzXFqsKq4/Ww1V9nNGG8tDseFrVOmO9u4j8O/A4SHqeDV2amXyrJZetldtkohfVZw
+	 2wiLf6z7EXmkcya7s2iyH/seMxEo3IIv8Pe46ako=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Rander Wang <rander.wang@intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Yong Zhi <yong.zhi@intel.com>,
 	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 294/744] ASoC: SOF: Intel: lnl: Correct rom_status_reg
-Date: Thu,  6 Jun 2024 15:59:26 +0200
-Message-ID: <20240606131741.831884904@linuxfoundation.org>
+Subject: [PATCH 6.6 295/744] ASoC: SOF: Intel: mtl: call dsp dump when boot retry fails
+Date: Thu,  6 Jun 2024 15:59:27 +0200
+Message-ID: <20240606131741.858271286@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -64,83 +62,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Yong Zhi <yong.zhi@intel.com>
 
-[ Upstream commit b852574c671a9983dd51c81582c8c5085f3dc382 ]
+[ Upstream commit d5070d0c10326e09276c34568b9a19fb9a727b6e ]
 
-ACE2 architecture changed the place where the ROM updates the status code
-from the shared SRAM window (and HFFLGP1QW0 in ACE1) to HFDSC register for
-the status and HFDEC (HFDSC + 4) for the error code.
+Call snd_sof_dsp_dbg_dump() with the same flags/dump_msg
+as used in function hda_loader.c/cl_dsp_init().
 
-The rom_status_reg is not used on LNL because it was wrongly assigned based
-on older platform convention (SRAM window) and it was giving inconsistent
-readings.
-
-Add new header file for lnl specific register definitions.
-
-Fixes: 64a63d9914a5 ("ASoC: SOF: Intel: LNL: Add support for Lunarlake platform")
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Yong Zhi <yong.zhi@intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Link: https://msgid.link/r/20240403105210.17949-4-peter.ujfalusi@linux.intel.com
+Link: https://lore.kernel.org/r/20231127105235.30071-1-peter.ujfalusi@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 26187f44aabd ("ASoC: SOF: Intel: mtl: Disable interrupts when firmware boot failed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/lnl.c |  3 ++-
- sound/soc/sof/intel/lnl.h | 15 +++++++++++++++
- 2 files changed, 17 insertions(+), 1 deletion(-)
- create mode 100644 sound/soc/sof/intel/lnl.h
+ sound/soc/sof/intel/mtl.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sof/intel/lnl.c b/sound/soc/sof/intel/lnl.c
-index db94b45e53af8..822f857723208 100644
---- a/sound/soc/sof/intel/lnl.c
-+++ b/sound/soc/sof/intel/lnl.c
-@@ -16,6 +16,7 @@
- #include "hda-ipc.h"
- #include "../sof-audio.h"
- #include "mtl.h"
-+#include "lnl.h"
- #include <sound/hda-mlink.h>
+diff --git a/sound/soc/sof/intel/mtl.c b/sound/soc/sof/intel/mtl.c
+index 834eb31cd9332..19709588aa5c2 100644
+--- a/sound/soc/sof/intel/mtl.c
++++ b/sound/soc/sof/intel/mtl.c
+@@ -437,7 +437,8 @@ int mtl_dsp_cl_init(struct snd_sof_dev *sdev, int stream_tag, bool imr_boot)
+ 	struct sof_intel_hda_dev *hda = sdev->pdata->hw_pdata;
+ 	const struct sof_intel_dsp_desc *chip = hda->desc;
+ 	unsigned int status;
+-	u32 ipc_hdr;
++	u32 ipc_hdr, flags;
++	char *dump_msg;
+ 	int ret;
  
- /* LunarLake ops */
-@@ -172,7 +173,7 @@ const struct sof_intel_dsp_desc lnl_chip_info = {
- 	.ipc_ack = MTL_DSP_REG_HFIPCXIDA,
- 	.ipc_ack_mask = MTL_DSP_REG_HFIPCXIDA_DONE,
- 	.ipc_ctl = MTL_DSP_REG_HFIPCXCTL,
--	.rom_status_reg = MTL_DSP_ROM_STS,
-+	.rom_status_reg = LNL_DSP_REG_HFDSC,
- 	.rom_init_timeout = 300,
- 	.ssp_count = MTL_SSP_COUNT,
- 	.d0i3_offset = MTL_HDA_VS_D0I3C,
-diff --git a/sound/soc/sof/intel/lnl.h b/sound/soc/sof/intel/lnl.h
-new file mode 100644
-index 0000000000000..4f4734fe7e089
---- /dev/null
-+++ b/sound/soc/sof/intel/lnl.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-3-Clause) */
-+/*
-+ * This file is provided under a dual BSD/GPLv2 license.  When using or
-+ * redistributing this file, you may do so under either license.
-+ *
-+ * Copyright(c) 2024 Intel Corporation. All rights reserved.
-+ */
+ 	/* step 1: purge FW request */
+@@ -490,8 +491,18 @@ int mtl_dsp_cl_init(struct snd_sof_dev *sdev, int stream_tag, bool imr_boot)
+ 	return 0;
+ 
+ err:
+-	snd_sof_dsp_dbg_dump(sdev, "MTL DSP init fail", 0);
++	flags = SOF_DBG_DUMP_PCI | SOF_DBG_DUMP_MBOX | SOF_DBG_DUMP_OPTIONAL;
 +
-+#ifndef __SOF_INTEL_LNL_H
-+#define __SOF_INTEL_LNL_H
++	/* after max boot attempts make sure that the dump is printed */
++	if (hda->boot_iteration == HDA_FW_BOOT_ATTEMPTS)
++		flags &= ~SOF_DBG_DUMP_OPTIONAL;
 +
-+#define LNL_DSP_REG_HFDSC		0x160200 /* DSP core0 status */
-+#define LNL_DSP_REG_HFDEC		0x160204 /* DSP core0 error */
++	dump_msg = kasprintf(GFP_KERNEL, "Boot iteration failed: %d/%d",
++			     hda->boot_iteration, HDA_FW_BOOT_ATTEMPTS);
++	snd_sof_dsp_dbg_dump(sdev, dump_msg, flags);
+ 	mtl_dsp_core_power_down(sdev, SOF_DSP_PRIMARY_CORE);
 +
-+#endif /* __SOF_INTEL_LNL_H */
++	kfree(dump_msg);
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
