@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-49853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACAE08FEF21
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5B38FEEF2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD5631C22CDC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F7731C22C66
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADABE1C9EB3;
-	Thu,  6 Jun 2024 14:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547551C8FA5;
+	Thu,  6 Jun 2024 14:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KJN0C8M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTp+7Aj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFA11A2555;
-	Thu,  6 Jun 2024 14:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A8419754E;
+	Thu,  6 Jun 2024 14:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683742; cv=none; b=fpYHwYHkAoPrH/IO/hNwGEVW1CG14HpAAn+EObIJvX+cTW5T3HFETYd6+J/AiCs2tPDsBfYoRkf3Ma3jqqDcQERpkjiLZuANUW1/77YIct6HOxFoBXznQo9Gr8T8QPKRotuS0xG45ylfCn3rYLYl2jIdxRJEnEXLB8BejpfxIZc=
+	t=1717683720; cv=none; b=XEJCODgIMHt26Kpo6/rV6QC3tb0+D5hy5GtfAoXBD5SEHSvNrSeGHCfiGUZWUOLe1jmPIUg18eurwDrK8hfDo87jzAlyUIWYYRKlHPIaFlVdM75XxWzaACOCj3ztZ0e18WWuasPs+LFT06Po6P09C8qbPahtxY5CMLBSD1p/uiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683742; c=relaxed/simple;
-	bh=WyintSlbMKC4KUz+kkCXfiqrBhaasU5Ll0/AvhRtMgg=;
+	s=arc-20240116; t=1717683720; c=relaxed/simple;
+	bh=PZIUx6y2Nxvg2T5BLF+woZg444nS4Ri0RjifHuWI0uU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JyD349HGdF368ojs1ByQ9KPAckJJ5iAqALYEZ9ochf55Wiyu7JwcEcx/nT7WGnizTcd5gLx8XPcuyN5/7AhElv69mZnxF0x7xGwOeS5djeg6VBskFvq3k5M1WChp+CZPM2HrsK60AGuHkNiXu6gEdGvk2jUOZVmrjIgd5FWxdN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KJN0C8M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A68C32781;
-	Thu,  6 Jun 2024 14:22:22 +0000 (UTC)
+	 MIME-Version; b=aNTmVEv6fBullNv8Cu36q0OC5G2KfE7t3KOnSTeRwAgLXrLhIqR2Us1Z48KCnbgHQODjYbOH7aT0HdEq4pEcg4JvjdAcOImUuq4OnVDJw3/VQ5CpbOlFWNpr4argY6PxGUMR39LxY+CS8CETIvlu8qwh7IHu8f+YrYT21ohu0bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTp+7Aj/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0752C2BD10;
+	Thu,  6 Jun 2024 14:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683742;
-	bh=WyintSlbMKC4KUz+kkCXfiqrBhaasU5Ll0/AvhRtMgg=;
+	s=korg; t=1717683719;
+	bh=PZIUx6y2Nxvg2T5BLF+woZg444nS4Ri0RjifHuWI0uU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1KJN0C8MNcl3gytqdKfqisuXQi+p0FzVZfqBKCCfSz2UOnIEjkE3EBagcC/DCktu/
-	 6QdzUCeyvw6SycZw2OSwOl5MCA+KIr45nKEpv5aGHOKZrCDcZVjdvWQVrDyU63wk7L
-	 T8GdVz9dCzwSwLJF22pLOCvxHYvZRugqMcXAyKrQ=
+	b=WTp+7Aj/q/2KhCalqnstLuchqrJ5tYJb/a67DkvUMuG8eMpF0oW7LqFkmRCMHYXXv
+	 uW3w5Fdw5z7olpRkngirUXPos/cbn4K6yoQfsUiUvEDCMRRdB0BDzpIqgrVIcxjy11
+	 WKNoRx9OhHz/OkrzvzeSiKvMIoBvlNX4Nng1nlf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Li <yang.lee@linux.alibaba.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 652/744] rv: Update rv_en(dis)able_monitor doc to match kernel-doc
-Date: Thu,  6 Jun 2024 16:05:24 +0200
-Message-ID: <20240606131753.382180831@linuxfoundation.org>
+Subject: [PATCH 6.6 653/744] net: lan966x: Remove ptp traps in case the ptp is not enabled.
+Date: Thu,  6 Jun 2024 16:05:25 +0200
+Message-ID: <20240606131753.412875086@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -66,43 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yang Li <yang.lee@linux.alibaba.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 1e8b7b3dbb3103d577a586ca72bc329f7b67120b ]
+[ Upstream commit eda40be3a5ff3fdce513d2bcfeaca8cc16cf962a ]
 
-The patch updates the function documentation comment for
-rv_en(dis)able_monitor to adhere to the kernel-doc specification.
+Lan966x is adding ptp traps to redirect the ptp frames to the CPU such
+that the HW will not forward these frames anywhere. The issue is that in
+case ptp is not enabled and the timestamping source is et to
+HWTSTAMP_SOURCE_NETDEV then these traps would not be removed on the
+error path.
+Fix this by removing the traps in this case as they are not needed.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240520054239.61784-1-yang.lee@linux.alibaba.com
-
-Fixes: 102227b970a15 ("rv: Add Runtime Verification (RV) interface")
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 54e1ed69c40a ("net: lan966x: convert to ndo_hwtstamp_get() and ndo_hwtstamp_set()")
+Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://lore.kernel.org/r/20240517135808.3025435-1-horatiu.vultur@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/rv/rv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/microchip/lan966x/lan966x_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/trace/rv/rv.c b/kernel/trace/rv/rv.c
-index 2f68e93fff0bc..df0745a42a3f3 100644
---- a/kernel/trace/rv/rv.c
-+++ b/kernel/trace/rv/rv.c
-@@ -245,6 +245,7 @@ static int __rv_disable_monitor(struct rv_monitor_def *mdef, bool sync)
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+index 3f1033abd462d..c3f6c10bc2393 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+@@ -474,14 +474,14 @@ static int lan966x_port_hwtstamp_set(struct net_device *dev,
+ 	    cfg->source != HWTSTAMP_SOURCE_PHYLIB)
+ 		return -EOPNOTSUPP;
  
- /**
-  * rv_disable_monitor - disable a given runtime monitor
-+ * @mdef: Pointer to the monitor definition structure.
-  *
-  * Returns 0 on success.
-  */
-@@ -256,6 +257,7 @@ int rv_disable_monitor(struct rv_monitor_def *mdef)
++	if (cfg->source == HWTSTAMP_SOURCE_NETDEV && !port->lan966x->ptp)
++		return -EOPNOTSUPP;
++
+ 	err = lan966x_ptp_setup_traps(port, cfg);
+ 	if (err)
+ 		return err;
  
- /**
-  * rv_enable_monitor - enable a given runtime monitor
-+ * @mdef: Pointer to the monitor definition structure.
-  *
-  * Returns 0 on success, error otherwise.
-  */
+ 	if (cfg->source == HWTSTAMP_SOURCE_NETDEV) {
+-		if (!port->lan966x->ptp)
+-			return -EOPNOTSUPP;
+-
+ 		err = lan966x_ptp_hwtstamp_set(port, cfg, extack);
+ 		if (err) {
+ 			lan966x_ptp_del_traps(port);
 -- 
 2.43.0
 
