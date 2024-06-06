@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 676A78FE9DF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E48B38FEEE3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06BCE1F26250
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 926491F259CA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6595319CCFF;
-	Thu,  6 Jun 2024 14:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F051C89FF;
+	Thu,  6 Jun 2024 14:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLL4i0qs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDZdLRrN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A9119CCF8;
-	Thu,  6 Jun 2024 14:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B1D1C89F8;
+	Thu,  6 Jun 2024 14:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683074; cv=none; b=bMFZtN+4WhgMvAqbpBLneaBkIJyhmrUuLCegf+cW+D+hM7Alm4i/mArza25pUwq9qxy6aPNX05izc1WGcFnm8bvaoD2eb/8hFzLEkdxav65RwK97t/TFIZnZe0Fq2/tZexeJsLj29WmaUC4NdL/DqNZZXoCcsD2LySA2J8OZL8I=
+	t=1717683712; cv=none; b=DWPL9hGQQO9Ds1W4Rbkfy1zKGROkpuVGrCSCeNgjX6GT/5sswQAR0G65bBhLO9cuFxhhcs5j6U6EEbZSGxR813u6zcBaNvJRqJ00O6HUMGBie0avqGq5oaDUylKQ92bHRoVVcr9HK7jbjHix+fKprRMUm3vIOGOV9roy1qTHrnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683074; c=relaxed/simple;
-	bh=n8KmhSGMDuRiOAeCPoISsGXQJf8MSOY/n42CTWACYvs=;
+	s=arc-20240116; t=1717683712; c=relaxed/simple;
+	bh=xJyCJfPQzw0xOLlVhcyaNd/peel69QArTffiTIivlMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VoneuVAgxP6npQA/CgBKPf73xvoKIatkcOlFNolYnVplCGkZjYOioKHxLGo4ZDDo/kAWsnFanYFtnydp80MbMhzOpxZpklg4fTlvaWy9Z4TowZIfsJaj0H9OHia7dS1+Qaq1KulBwadVbWU4sduAents60OJDjIRtyG/07slbRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLL4i0qs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F54BC32786;
-	Thu,  6 Jun 2024 14:11:13 +0000 (UTC)
+	 MIME-Version; b=t27MBA531qRT+hVJiyzfJ9YvDvViGvRDej5N+i8FawcRuDJozhn+yLUe1wp4GQrRT0WA97IBRFU2bh3flahf99p5jZGDKYCKVIzEHIrrqpTQj732/28FbcPR4Yqhi9iemlV1XRUI/Zf7Wq1cJqpM/fDldSFQKCqINmtTpAt4r6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDZdLRrN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683A1C2BD10;
+	Thu,  6 Jun 2024 14:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683073;
-	bh=n8KmhSGMDuRiOAeCPoISsGXQJf8MSOY/n42CTWACYvs=;
+	s=korg; t=1717683712;
+	bh=xJyCJfPQzw0xOLlVhcyaNd/peel69QArTffiTIivlMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gLL4i0qs9qy9vkMBOLNnRYunSAx70/WxRhd6v90R1Lu4FX4AmmYoG0XHvNVn5of3j
-	 8Ec/LKbZmw/r2nJ+S6XUG3tpFQn9ALoZ5G0q9Hr+b+CJZwlxJfEEZSUOYrYHkS7k+e
-	 h+HDlrrg4W06ifzo7FK1n+K5ipK2/jn2r56PMgKk=
+	b=VDZdLRrNkmbGiB+HSBhrNsg+cFjKPO3hWlGdxYKq2nJlVMZOVt1DlvZI8ibXNwftn
+	 mfzp5Hx2Dfiv5cUND725jPArK8Ho0N9LiTpzM8eRkmj83e38u62HYTw6Zla7b3uApR
+	 2aJdYqx/YGmbvptnoKGfkCJEy+iKQxxoMHcwGAI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Garver <eric@garver.life>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 337/374] netfilter: nft_fib: allow from forward/input without iif selector
+Subject: [PATCH 6.6 644/744] regulator: tps6287x: Force writing VSEL bit
 Date: Thu,  6 Jun 2024 16:05:16 +0200
-Message-ID: <20240606131703.141377654@linuxfoundation.org>
+Message-ID: <20240606131753.125995685@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Garver <eric@garver.life>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
 
-[ Upstream commit e8ded22ef0f4831279c363c264cd41cd9d59ca9e ]
+[ Upstream commit 1ace99d7c7c4c801c0660246f741ff846a9b8e3c ]
 
-This removes the restriction of needing iif selector in the
-forward/input hooks for fib lookups when requested result is
-oif/oifname.
+The data-sheet for TPS6287x-Q1
+https://www.ti.com/lit/ds/symlink/tps62873-q1.pdf
+states at chapter 9.3.6.1 Output Voltage Range:
 
-Removing this restriction allows "loose" lookups from the forward hooks.
+"Note that every change to the VRANGE[1:0] bits must be followed by a
+write to the VSET register, even if the value of the VSET[7:0] bits does
+not change."
 
-Fixes: be8be04e5ddb ("netfilter: nft_fib: reverse path filter for policy-based routing on iif")
-Signed-off-by: Eric Garver <eric@garver.life>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+The current implementation of the driver uses the
+regulator_set_voltage_sel_pickable_regmap() helper which further uses
+regmap_update_bits() to write the VSET-register. The
+regmap_update_bits() will not access the hardware if the new register
+value is same as old. It is worth noting that this is true also when the
+register is marked volatile, which I can't say is wrong because
+'read-mnodify-write'-cycle with a volatile register is in any case
+something user should carefully consider.
+
+The 'range_applied_by_vsel'-flag in regulator desc was added to force
+the vsel register upodates by using regmap_write_bits(). This variant
+will always unconditionally write the bits to the hardware.
+
+It is worth noting that the vsel is now forced to be written to the
+hardware, whether the range was changed or not. This may cause a
+performance drop if users are wrtiting same voltage value repeteadly.
+
+It would be possible to read the range register to determine if it was
+changed, but this would be a performance issue for users who don't use
+reg cache for vsel.
+
+Always write the VSET register to the hardware regardless the cache.
+
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Fixes: 7b0518fbf2be ("regulator: Add support for TI TPS6287x regulators")
+Link: https://msgid.link/r/ZktD50C5twF1EuKu@fedora
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_fib.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/regulator/tps6287x-regulator.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nft_fib.c b/net/netfilter/nft_fib.c
-index 37cfe6dd712d8..b58f62195ff3e 100644
---- a/net/netfilter/nft_fib.c
-+++ b/net/netfilter/nft_fib.c
-@@ -35,11 +35,9 @@ int nft_fib_validate(const struct nft_ctx *ctx, const struct nft_expr *expr,
- 	switch (priv->result) {
- 	case NFT_FIB_RESULT_OIF:
- 	case NFT_FIB_RESULT_OIFNAME:
--		hooks = (1 << NF_INET_PRE_ROUTING);
--		if (priv->flags & NFTA_FIB_F_IIF) {
--			hooks |= (1 << NF_INET_LOCAL_IN) |
--				 (1 << NF_INET_FORWARD);
--		}
-+		hooks = (1 << NF_INET_PRE_ROUTING) |
-+			(1 << NF_INET_LOCAL_IN) |
-+			(1 << NF_INET_FORWARD);
- 		break;
- 	case NFT_FIB_RESULT_ADDRTYPE:
- 		if (priv->flags & NFTA_FIB_F_IIF)
+diff --git a/drivers/regulator/tps6287x-regulator.c b/drivers/regulator/tps6287x-regulator.c
+index 9b7c3d77789e3..3c9d79e003e4b 100644
+--- a/drivers/regulator/tps6287x-regulator.c
++++ b/drivers/regulator/tps6287x-regulator.c
+@@ -115,6 +115,7 @@ static struct regulator_desc tps6287x_reg = {
+ 	.vsel_mask = 0xFF,
+ 	.vsel_range_reg = TPS6287X_CTRL2,
+ 	.vsel_range_mask = TPS6287X_CTRL2_VRANGE,
++	.range_applied_by_vsel = true,
+ 	.ramp_reg = TPS6287X_CTRL1,
+ 	.ramp_mask = TPS6287X_CTRL1_VRAMP,
+ 	.ramp_delay_table = tps6287x_ramp_table,
 -- 
 2.43.0
 
