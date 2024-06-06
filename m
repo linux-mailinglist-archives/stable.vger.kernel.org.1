@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 224E28FED2F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A41B8FEB91
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96520B28E5C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00C03B215A3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996011B5808;
-	Thu,  6 Jun 2024 14:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F8C1AB8E0;
+	Thu,  6 Jun 2024 14:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WR7m47yQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIABuE/4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596F319D078;
-	Thu,  6 Jun 2024 14:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956E1196DA0;
+	Thu,  6 Jun 2024 14:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683456; cv=none; b=CGqNSGA+24aX8E8UV91nd8E45WSJJE7bLBOPP8lVUjdf0Sg6QEw3PMF3e+PtE0ZKlhX/GgTdxXhpZYLMFqf6jDt3GnoC2ynq6AAQhx2fUxoDOM8NZg17sQPLEffG6Juu0o1z99jJj16VxA6NK0hNitgS0bXq2gh6F5wk0FhMcHo=
+	t=1717683265; cv=none; b=bcpoN26A/Ri9b+vVPUTauSHuTgfOeGXi7zXqd3UtDyCdkYTUgUJmPhGDUceNOkwDXca0Sfoltdx3xxWXB6L1tJjWWa4nvqXrTeK40sjr1lHyxAEmKfiGwr9MR1FA0hj2vhsjWhdPKmUTXRhKZp3SSDMWC9gA/GqcgKLEBOhU9ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683456; c=relaxed/simple;
-	bh=fF/c2KgDcCNruvGgUBrtpJmCgUcyzDWHc40O/vQkKP8=;
+	s=arc-20240116; t=1717683265; c=relaxed/simple;
+	bh=7M98OYLkhfudewC17PI9j41aSSkhMnvpxn1EnUz8xCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FIld6afn46RvnpEUUNXqbTfs8dVCb67naZc4B1x8yRRaguRXSsF5MpxHzXwQOnL0aeCrLMlu0R4e04bAe3VCf6RPjoaThCvhOGNroCLedn1gQcpvBSaS2zlZptdDwXTSMrGpIqLl3Us0gPmNgz7GeJIb/v3pe/3MWXZaGGgEm8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WR7m47yQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E88C2BD10;
-	Thu,  6 Jun 2024 14:17:36 +0000 (UTC)
+	 MIME-Version; b=udZyf4fKzevso/L89ArSTbG6B6OIj3R2QRmG7V/UHt+vhH8FfuSN+HzoOHwg6uTlWMfW9oQJvIFLzg0ApVP4XaZ3Uri+G0FYZbgXu916Zi06JvZ3FNDSaXDrRhuhkolrtUXkf0VGTo4/qZd3FD1mlEo1yQuoV98MwcIFgfxIzYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIABuE/4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73096C32782;
+	Thu,  6 Jun 2024 14:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683456;
-	bh=fF/c2KgDcCNruvGgUBrtpJmCgUcyzDWHc40O/vQkKP8=;
+	s=korg; t=1717683265;
+	bh=7M98OYLkhfudewC17PI9j41aSSkhMnvpxn1EnUz8xCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WR7m47yQ1TCx27sdWSTA9lw7ZVmkUDyTbZHKwv5vg3f72WerkFrc1mK4Ku7R5qeMX
-	 gL7Nc5opiDliWcocdFvI/2qvNH3A0ld8MfpyMQAC1y9HJQd8cuwAcDnpD8gDF4bBj9
-	 5gugbG0+6wytug3BDHlXqYM2cqmd6+e3e6c0GhXU=
+	b=pIABuE/4qsvRPB9yJzGf2lwyByRb85sfmY3+qVZxfMc+ZXf6CxGnBXxf+ENwPrN+L
+	 aLyZZs4ORrgH1f3iEZo8UVKKcr/5L/tsoZDesj5no6o07yIS+1jsDPILAXjxVIPqbx
+	 OVJIlm+V1QX59psgQvXr1U7gK8pRPjeIefxNdHvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 401/744] usb: typec: ucsi: always register a link to USB PD device
-Date: Thu,  6 Jun 2024 16:01:13 +0200
-Message-ID: <20240606131745.320144550@linuxfoundation.org>
+Subject: [PATCH 6.1 145/473] macintosh/via-macii: Fix "BUG: sleeping function called from invalid context"
+Date: Thu,  6 Jun 2024 16:01:14 +0200
+Message-ID: <20240606131704.741583097@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit c0f66d78f42353d38b9608c05f211cf0773d93ac ]
+[ Upstream commit d301a71c76ee4c384b4e03cdc320a55f5cf1df05 ]
 
-UCSI driver will attempt to set a USB PD device only if it was able to
-read PDOs from the firmware. This results in suboptimal behaviour, since
-the PD device will be created anyway. Move calls to
-typec_port_set_usb_power_delivery() out of conditional code and call it
-after reading capabilities.
+The via-macii ADB driver calls request_irq() after disabling hard
+interrupts. But disabling interrupts isn't necessary here because the
+VIA shift register interrupt was masked during VIA1 initialization.
 
-Fixes: b04e1747fbcc ("usb: typec: ucsi: Register USB Power Delivery Capabilities")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240329-qcom-ucsi-fixes-v2-4-0f5d37ed04db@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/419fcc09d0e563b425c419053d02236b044d86b0.1710298421.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/macintosh/via-macii.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index 7d2ca39ad7622..4aac2a719b7cd 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -1297,7 +1297,6 @@ static int ucsi_register_port(struct ucsi *ucsi, struct ucsi_connector *con)
- 		}
+diff --git a/drivers/macintosh/via-macii.c b/drivers/macintosh/via-macii.c
+index db9270da5b8e9..b6ddf1d47cb4e 100644
+--- a/drivers/macintosh/via-macii.c
++++ b/drivers/macintosh/via-macii.c
+@@ -140,24 +140,19 @@ static int macii_probe(void)
+ /* Initialize the driver */
+ static int macii_init(void)
+ {
+-	unsigned long flags;
+ 	int err;
  
- 		con->port_source_caps = pd_cap;
--		typec_port_set_usb_power_delivery(con->port, con->pd);
- 	}
+-	local_irq_save(flags);
+-
+ 	err = macii_init_via();
+ 	if (err)
+-		goto out;
++		return err;
  
- 	memset(&pd_caps, 0, sizeof(pd_caps));
-@@ -1314,9 +1313,10 @@ static int ucsi_register_port(struct ucsi *ucsi, struct ucsi_connector *con)
- 		}
+ 	err = request_irq(IRQ_MAC_ADB, macii_interrupt, 0, "ADB",
+ 			  macii_interrupt);
+ 	if (err)
+-		goto out;
++		return err;
  
- 		con->port_sink_caps = pd_cap;
--		typec_port_set_usb_power_delivery(con->port, con->pd);
- 	}
+ 	macii_state = idle;
+-out:
+-	local_irq_restore(flags);
+-	return err;
++	return 0;
+ }
  
-+	typec_port_set_usb_power_delivery(con->port, con->pd);
-+
- 	/* Alternate modes */
- 	ret = ucsi_register_altmodes(con, UCSI_RECIPIENT_CON);
- 	if (ret) {
+ /* initialize the hardware */
 -- 
 2.43.0
 
