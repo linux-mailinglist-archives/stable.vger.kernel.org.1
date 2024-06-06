@@ -1,55 +1,68 @@
-Return-Path: <stable+bounces-49108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EB758FEBE4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F878FED91
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A570BB27217
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16434B223F9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8C81AC226;
-	Thu,  6 Jun 2024 14:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F2D1BC068;
+	Thu,  6 Jun 2024 14:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWMXveod"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKmOaNOj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE99D197537;
-	Thu,  6 Jun 2024 14:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405EF1BC063;
+	Thu,  6 Jun 2024 14:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683305; cv=none; b=g9nn8Cd6yPDx+mHjRkyfVFCAUbOMX3P0zjy+MAcDxc7dhMz/b05i/Q0Wt9qKex1WRf7TJRgan5v2z1t5sv6J0Qy3EKsFusmDjYK/hzTyUpLRmnRo7pUg2p1mlB6Zh0pnJA+nccXcJ9VSqZdROTDeWEoPWI6S+Xd2khr4FuL5RN0=
+	t=1717683501; cv=none; b=eG9BoL6x3N5SmklhL8aohSr0Qys0TQKRvdcj+xVkiMjfe6MtXgmVkyPqQuddDNcHfAa/wt9s7lw0ULgyaBFIthPLAjh9ElpJxzPitzI28X8iPRqtVLXAyRfgRMiBhML49pnqL2Bo1Z/csD6jAZM2vsIZwvk6BjPZgND5GDJpleU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683305; c=relaxed/simple;
-	bh=uRrkQnbK4FF4wxPPw3rnh71TsxZLGQQYTPe87b6eKhg=;
+	s=arc-20240116; t=1717683501; c=relaxed/simple;
+	bh=zfmyJw2FKbj3Wmvu8Vosl6rFnS1OLCdQGBqXvWh9YE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ihu0ZfFGY7uTe27/wQcBbDVPDys8yUTZelLKGE99A3UUNtl/IZyjnHbmv7Q9U8tBWqoMS8Fgt8adU028L1JoY3CR+rjuXbgVhqmXQUllfSsdhu/sf3ITz9nq30X+SILAS+fibQwfaWhM5YnuYPcRZsrugm+0AXehqCr16VBSX6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWMXveod; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7C2C2BD10;
-	Thu,  6 Jun 2024 14:15:05 +0000 (UTC)
+	 MIME-Version; b=cUl9623NuM22LmhXYMxpGjFwQXBF612xnNOPkukM6aFs6rDMyHxop3+nKpnIdSGcJI+q77c+kilMJkWwwEGS5eC9DA2yuvBFRbhrYJ37jWtt5r93/RgaWYusWwOpgtENobmz+jrRsrUTlHG9exnOR0O3SClHrwlePep88YslfEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKmOaNOj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3E1C2BD10;
+	Thu,  6 Jun 2024 14:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683305;
-	bh=uRrkQnbK4FF4wxPPw3rnh71TsxZLGQQYTPe87b6eKhg=;
+	s=korg; t=1717683501;
+	bh=zfmyJw2FKbj3Wmvu8Vosl6rFnS1OLCdQGBqXvWh9YE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fWMXveodWFbyX4LtbM2vZrRNltZ4QdQLlnyelMUJGttScdFLC1WSxYBL1MdCcM2EB
-	 CEsgjwCG9EmjL3PINxXzhhcm6SMJaWJvV8DDvU5OK4NRxYw9b/PMSpeuAwnsq+FuH3
-	 APy6frDYyn0GToNa7ggF2pxwqsH5YpOsCNTvA/BA=
+	b=PKmOaNOjFSmR8REwP6AaJhybXos3E4HSgMbnX+OReiJDxFj3NLzjXPYQ9/sq3Itwv
+	 O8UP2eqvDPgUkdS4XOKGv4fx3XKBNxQ+mtFeCuqyEwoee5AomLeMVjWUeQaTpQVONC
+	 qkQkhQChO/q/BvPnwa+/Gi7h1EOBcTZH9COjNbsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Song Liu <song@kernel.org>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 186/473] Bluetooth: Consolidate code around sk_alloc into a helper function
+Subject: [PATCH 6.6 443/744] perf docs: Document bpf event modifier
 Date: Thu,  6 Jun 2024 16:01:55 +0200
-Message-ID: <20240606131706.081253328@linuxfoundation.org>
+Message-ID: <20240606131746.712736117@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,247 +74,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 6bfa273e533d7b25eee3d74e28a7fe8e6a8e7a93 ]
+[ Upstream commit eb4d27cf9aef3e6c9bcaf8fa1a1cadc2433d847b ]
 
-This consolidates code around sk_alloc into bt_sock_alloc which does
-take care of common initialization.
+Document that 'b' is used as a modifier to make an event use a BPF
+counter.
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: ce60b9231b66 ("Bluetooth: compute LE flow credits based on recvbuf space")
+Fixes: 01bd8efcec444468 ("perf stat: Introduce ':b' modifier")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Song Liu <song@kernel.org>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240416170014.985191-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/bluetooth.h |  2 ++
- net/bluetooth/af_bluetooth.c      | 21 +++++++++++++++++++++
- net/bluetooth/bnep/sock.c         | 10 +---------
- net/bluetooth/hci_sock.c          | 10 ++--------
- net/bluetooth/iso.c               | 10 +---------
- net/bluetooth/l2cap_sock.c        | 10 +---------
- net/bluetooth/rfcomm/sock.c       | 13 +++----------
- net/bluetooth/sco.c               | 10 +---------
- 8 files changed, 32 insertions(+), 54 deletions(-)
+ tools/perf/Documentation/perf-list.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
-index 5aaf7d7f3c6fa..c7f1dd34ea470 100644
---- a/include/net/bluetooth/bluetooth.h
-+++ b/include/net/bluetooth/bluetooth.h
-@@ -383,6 +383,8 @@ int  bt_sock_register(int proto, const struct net_proto_family *ops);
- void bt_sock_unregister(int proto);
- void bt_sock_link(struct bt_sock_list *l, struct sock *s);
- void bt_sock_unlink(struct bt_sock_list *l, struct sock *s);
-+struct sock *bt_sock_alloc(struct net *net, struct socket *sock,
-+			   struct proto *prot, int proto, gfp_t prio, int kern);
- int  bt_sock_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 		     int flags);
- int  bt_sock_stream_recvmsg(struct socket *sock, struct msghdr *msg,
-diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
-index 3f9ff02baafe3..b8b31b79904a8 100644
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -140,6 +140,27 @@ static int bt_sock_create(struct net *net, struct socket *sock, int proto,
- 	return err;
- }
+diff --git a/tools/perf/Documentation/perf-list.txt b/tools/perf/Documentation/perf-list.txt
+index d5f78e125efed..69c6d5e46ad88 100644
+--- a/tools/perf/Documentation/perf-list.txt
++++ b/tools/perf/Documentation/perf-list.txt
+@@ -67,6 +67,7 @@ counted. The following modifiers exist:
+  D - pin the event to the PMU
+  W - group is weak and will fallback to non-group if not schedulable,
+  e - group or event are exclusive and do not share the PMU
++ b - use BPF aggregration (see perf stat --bpf-counters)
  
-+struct sock *bt_sock_alloc(struct net *net, struct socket *sock,
-+			   struct proto *prot, int proto, gfp_t prio, int kern)
-+{
-+	struct sock *sk;
-+
-+	sk = sk_alloc(net, PF_BLUETOOTH, prio, prot, kern);
-+	if (!sk)
-+		return NULL;
-+
-+	sock_init_data(sock, sk);
-+	INIT_LIST_HEAD(&bt_sk(sk)->accept_q);
-+
-+	sock_reset_flag(sk, SOCK_ZAPPED);
-+
-+	sk->sk_protocol = proto;
-+	sk->sk_state    = BT_OPEN;
-+
-+	return sk;
-+}
-+EXPORT_SYMBOL(bt_sock_alloc);
-+
- void bt_sock_link(struct bt_sock_list *l, struct sock *sk)
- {
- 	write_lock(&l->lock);
-diff --git a/net/bluetooth/bnep/sock.c b/net/bluetooth/bnep/sock.c
-index 57d509d77cb46..00d47bcf4d7dc 100644
---- a/net/bluetooth/bnep/sock.c
-+++ b/net/bluetooth/bnep/sock.c
-@@ -205,21 +205,13 @@ static int bnep_sock_create(struct net *net, struct socket *sock, int protocol,
- 	if (sock->type != SOCK_RAW)
- 		return -ESOCKTNOSUPPORT;
- 
--	sk = sk_alloc(net, PF_BLUETOOTH, GFP_ATOMIC, &bnep_proto, kern);
-+	sk = bt_sock_alloc(net, sock, &bnep_proto, protocol, GFP_ATOMIC, kern);
- 	if (!sk)
- 		return -ENOMEM;
- 
--	sock_init_data(sock, sk);
--
- 	sock->ops = &bnep_sock_ops;
--
- 	sock->state = SS_UNCONNECTED;
- 
--	sock_reset_flag(sk, SOCK_ZAPPED);
--
--	sk->sk_protocol = protocol;
--	sk->sk_state	= BT_OPEN;
--
- 	bt_sock_link(&bnep_sk_list, sk);
- 	return 0;
- }
-diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
-index 484fc2a8e4baa..730e569cae36d 100644
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -2144,18 +2144,12 @@ static int hci_sock_create(struct net *net, struct socket *sock, int protocol,
- 
- 	sock->ops = &hci_sock_ops;
- 
--	sk = sk_alloc(net, PF_BLUETOOTH, GFP_ATOMIC, &hci_sk_proto, kern);
-+	sk = bt_sock_alloc(net, sock, &hci_sk_proto, protocol, GFP_ATOMIC,
-+			   kern);
- 	if (!sk)
- 		return -ENOMEM;
- 
--	sock_init_data(sock, sk);
--
--	sock_reset_flag(sk, SOCK_ZAPPED);
--
--	sk->sk_protocol = protocol;
--
- 	sock->state = SS_UNCONNECTED;
--	sk->sk_state = BT_OPEN;
- 	sk->sk_destruct = hci_sock_destruct;
- 
- 	bt_sock_link(&hci_sk_list, sk);
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 91e990accbf20..5fe1008799ab4 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -695,21 +695,13 @@ static struct sock *iso_sock_alloc(struct net *net, struct socket *sock,
- {
- 	struct sock *sk;
- 
--	sk = sk_alloc(net, PF_BLUETOOTH, prio, &iso_proto, kern);
-+	sk = bt_sock_alloc(net, sock, &iso_proto, proto, prio, kern);
- 	if (!sk)
- 		return NULL;
- 
--	sock_init_data(sock, sk);
--	INIT_LIST_HEAD(&bt_sk(sk)->accept_q);
--
- 	sk->sk_destruct = iso_sock_destruct;
- 	sk->sk_sndtimeo = ISO_CONN_TIMEOUT;
- 
--	sock_reset_flag(sk, SOCK_ZAPPED);
--
--	sk->sk_protocol = proto;
--	sk->sk_state    = BT_OPEN;
--
- 	/* Set address type as public as default src address is BDADDR_ANY */
- 	iso_pi(sk)->src_type = BDADDR_LE_PUBLIC;
- 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index e3c7029ec8a61..bca399a9d21be 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1847,21 +1847,13 @@ static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
- 	struct sock *sk;
- 	struct l2cap_chan *chan;
- 
--	sk = sk_alloc(net, PF_BLUETOOTH, prio, &l2cap_proto, kern);
-+	sk = bt_sock_alloc(net, sock, &l2cap_proto, proto, prio, kern);
- 	if (!sk)
- 		return NULL;
- 
--	sock_init_data(sock, sk);
--	INIT_LIST_HEAD(&bt_sk(sk)->accept_q);
--
- 	sk->sk_destruct = l2cap_sock_destruct;
- 	sk->sk_sndtimeo = L2CAP_CONN_TIMEOUT;
- 
--	sock_reset_flag(sk, SOCK_ZAPPED);
--
--	sk->sk_protocol = proto;
--	sk->sk_state = BT_OPEN;
--
- 	chan = l2cap_chan_create();
- 	if (!chan) {
- 		sk_free(sk);
-diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
-index 4397e14ff560f..b54e8a530f55a 100644
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -268,18 +268,16 @@ static struct proto rfcomm_proto = {
- 	.obj_size	= sizeof(struct rfcomm_pinfo)
- };
- 
--static struct sock *rfcomm_sock_alloc(struct net *net, struct socket *sock, int proto, gfp_t prio, int kern)
-+static struct sock *rfcomm_sock_alloc(struct net *net, struct socket *sock,
-+				      int proto, gfp_t prio, int kern)
- {
- 	struct rfcomm_dlc *d;
- 	struct sock *sk;
- 
--	sk = sk_alloc(net, PF_BLUETOOTH, prio, &rfcomm_proto, kern);
-+	sk = bt_sock_alloc(net, sock, &rfcomm_proto, proto, prio, kern);
- 	if (!sk)
- 		return NULL;
- 
--	sock_init_data(sock, sk);
--	INIT_LIST_HEAD(&bt_sk(sk)->accept_q);
--
- 	d = rfcomm_dlc_alloc(prio);
- 	if (!d) {
- 		sk_free(sk);
-@@ -298,11 +296,6 @@ static struct sock *rfcomm_sock_alloc(struct net *net, struct socket *sock, int
- 	sk->sk_sndbuf = RFCOMM_MAX_CREDITS * RFCOMM_DEFAULT_MTU * 10;
- 	sk->sk_rcvbuf = RFCOMM_MAX_CREDITS * RFCOMM_DEFAULT_MTU * 10;
- 
--	sock_reset_flag(sk, SOCK_ZAPPED);
--
--	sk->sk_protocol = proto;
--	sk->sk_state    = BT_OPEN;
--
- 	bt_sock_link(&rfcomm_sk_list, sk);
- 
- 	BT_DBG("sk %p", sk);
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index 301cf802d32c4..a3bbe04b11383 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -484,21 +484,13 @@ static struct sock *sco_sock_alloc(struct net *net, struct socket *sock,
- {
- 	struct sock *sk;
- 
--	sk = sk_alloc(net, PF_BLUETOOTH, prio, &sco_proto, kern);
-+	sk = bt_sock_alloc(net, sock, &sco_proto, proto, prio, kern);
- 	if (!sk)
- 		return NULL;
- 
--	sock_init_data(sock, sk);
--	INIT_LIST_HEAD(&bt_sk(sk)->accept_q);
--
- 	sk->sk_destruct = sco_sock_destruct;
- 	sk->sk_sndtimeo = SCO_CONN_TIMEOUT;
- 
--	sock_reset_flag(sk, SOCK_ZAPPED);
--
--	sk->sk_protocol = proto;
--	sk->sk_state    = BT_OPEN;
--
- 	sco_pi(sk)->setting = BT_VOICE_CVSD_16BIT;
- 	sco_pi(sk)->codec.id = BT_CODEC_CVSD;
- 	sco_pi(sk)->codec.cid = 0xffff;
+ The 'p' modifier can be used for specifying how precise the instruction
+ address should be. The 'p' modifier can be specified multiple times:
 -- 
 2.43.0
 
