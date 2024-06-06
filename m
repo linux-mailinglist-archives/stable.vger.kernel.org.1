@@ -1,109 +1,130 @@
-Return-Path: <stable+bounces-48296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076DA8FE722
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 15:07:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9339F8FE72F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 15:09:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0843C1C23E40
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 13:07:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3A3328361D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 13:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E6C5195F3F;
-	Thu,  6 Jun 2024 13:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D11195B0D;
+	Thu,  6 Jun 2024 13:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="HVEdj6k8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="unBYZXu6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3B2195F2E
-	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 13:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560DE153821
+	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 13:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717679232; cv=none; b=iQf3Bm/djK7WI0bXJ8WlmFzBj+ziEvkk9VRP5P748scfbZBFPTFkhp1/k4ZyYU8mDXFuGf38FZTu5mqlAUYbyIGkrwDRFDfXB1uRHHhrnXXT5ku8mDRUNQLH461rMTznLbtJeGmZdAfbP7X0/KOEkBnbp7f8usp5M2CLuyC76IE=
+	t=1717679365; cv=none; b=o/rUyackqI+Iv3Y9HDMflP1JLP5FvyEpO1xDyJGe+WO2g3RjBY4+vnOHKhRyuecwFzNdOPqITLl7ybComCtCNZsOvjW4Vl57xNax8LDXOdOgdxTbO7bV4o6TMRApJATG+40se7IltVtwBve/y2KZALmOegi6dxBCJaa3Pz0I64o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717679232; c=relaxed/simple;
-	bh=Etq3BFH0SUDQc3u7gbIgGA42LQ02usvZh0xzy0dG8VE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fNS5fPnkLEFS9l5sCHUzJF79+P+/+PgmK1us7rm8ibnmngW9yfBRXVM4isx77sInJAmFc5WAHz0u2WCEQnLt9AMV61yJHsMq0HdGGBSwts9o5iXCEJ/yaczr48BE9Q9D/2wdPBN0GIbTwLM/TgwEXDcvSxvuPIXJodk70lee7RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=HVEdj6k8; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-52b90038cf7so1472765e87.0
-        for <stable@vger.kernel.org>; Thu, 06 Jun 2024 06:07:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1717679229; x=1718284029; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:content-language
-         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=X7/YjkjE87q9fVWLbAbF50WpMhrk7+YRouKRmXLf4ss=;
-        b=HVEdj6k8ZweIWXWv63y8axEwQ/cJAkUQd/SjI2vIdYXS41l3wDskJETC+ZbU44KxqX
-         oEa6c3TaH/dKrbYTyGAh82e4vKJeWlMGDsRd3UrTqQDpukWtAYkSpPJieuO3iR4JIyC9
-         pAAidD/WILy4VhCzKFIDEPtcGnjY05m0F+iw7Xyp/C6awK0mjOyZLimiMP7DxvOiGM4v
-         b8HbiKD2b62AwDcJsvkRa8gLg6yIwnAkD8lNihGQGvd2GGOezqloibY8R6FW8ZKO4X1T
-         xh/r4zUWeXK8qUFUz/ej63kmrX8RYsExZpmEtcbrsnJEekRPfJkIMt6XpHN3pGsVDkO/
-         L8Xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717679229; x=1718284029;
-        h=content-transfer-encoding:in-reply-to:organization:content-language
-         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=X7/YjkjE87q9fVWLbAbF50WpMhrk7+YRouKRmXLf4ss=;
-        b=wzEgZzTHAS1KM8/Lkjo1awbH5wmbdW0EDfQQ8V1YtpbdgAW1FfdE8+GE+XlV2nNo9+
-         tlmQZuiReBpWMUpn+NwIDQJ9HJN+VkKO/K6iOrGu2A1CD7ONA0POWtw8zRx+N+qlXOtp
-         Ijilu6+SaMvaoNJqYxQcW+3z9PlGmb39lhTBvDiyEmZiemh2tFas+aBtFjN5I8NvM4vO
-         SGXignlnSvsWvp6dENdB6E6r70r2NpkItYceiWI5v+XuSqESdGlPP1q7sM1dVEHwooP9
-         459coAQ/mzwrjdPbNa4V0VEYT1hTvFVT4HCP9mvHaLIdhdq2u18kHjj36fcugFOrpDuS
-         2Q5A==
-X-Forwarded-Encrypted: i=1; AJvYcCUb3kikORieHho8mWfr/wZ+bSrtr3FuGOm8xHU5TTjc5ZxAJhJoBHB1wnFQMWdq/NVFxDJh9dNKr3srSiLNqcaOGxUgLNqU
-X-Gm-Message-State: AOJu0YwX6UZAJUqdvFshKgTWK8qKYEzonxknElsLbJbRZNXsDNF8IC1q
-	aahBU0s0ajBGo2iBUC8Ygh5QXMWfuywfKG7QpALzirWyUY8BwemJIfinOhFdwHk=
-X-Google-Smtp-Source: AGHT+IGLIp8RENe2geB0EOGlL/St+z0m6WGvSCPoo9gsCnSNdlZPwexPjET61pIuui0zOW6sPdb95A==
-X-Received: by 2002:a05:6512:b92:b0:529:593f:3f3c with SMTP id 2adb3069b0e04-52bab4f4c6bmr4590296e87.53.1717679228688;
-        Thu, 06 Jun 2024 06:07:08 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:b41:c160:ff33:6de4:d126:4280? ([2a01:e0a:b41:c160:ff33:6de4:d126:4280])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4215c1aad97sm21117195e9.20.2024.06.06.06.07.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Jun 2024 06:07:08 -0700 (PDT)
-Message-ID: <9def8383-55ba-407a-af58-838dff2f3e49@6wind.com>
-Date: Thu, 6 Jun 2024 15:07:07 +0200
+	s=arc-20240116; t=1717679365; c=relaxed/simple;
+	bh=erSn7Zm+WuhZb8LLd9MaR567X04aaDMFNDAVsDyfA1M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=d+j06K1fgm5haCviFTSTh/nFy2+SPu0WcTfVsqHy1emQMtPKlTRHoZluwA1Jh2F5wL7bg7t9KjZ0gnkCdq4UzSIlR6Osjt/u9zkFCHN9QFZB1HBaDw/1UxJV/k6HxsPoLtCn6LBEMHhii20hjsmbZAKxiGQ0c4zZExk1aO1fcAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=unBYZXu6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FC1C2BD10;
+	Thu,  6 Jun 2024 13:09:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1717679365;
+	bh=erSn7Zm+WuhZb8LLd9MaR567X04aaDMFNDAVsDyfA1M=;
+	h=Subject:To:Cc:From:Date:From;
+	b=unBYZXu6BfcurstLE6iTtjDFn8ieatR1oHOjv2SHWAguOwWGwO6nqPQczOHC3Lc6o
+	 A679Igz+i2wW4vGZSUrSoJJfG4gxopIF+3r9tO/O7IPRoNZJqX8mCl5UjaTAR4MgXs
+	 TENcwDekm6+pkbL2HD1UuZmVlwVDTD227AVMU09I=
+Subject: FAILED: patch "[PATCH] x86/topology/amd: Evaluate SMT in CPUID leaf 0x8000001e only" failed to apply to 6.9-stable tree
+To: tglx@linutronix.de,bp@alien8.de,christian@heusel.eu,teichmanntim@outlook.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 06 Jun 2024 15:09:24 +0200
+Message-ID: <2024060624-platinum-ladies-9214@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [PATCH nf] netfilter: restore default behavior for
- nf_conntrack_events
-To: Florian Westphal <fw@strlen.de>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, netdev@vger.kernel.org,
- netfilter-devel@vger.kernel.org, stable@vger.kernel.org
-References: <20240604135438.2613064-1-nicolas.dichtel@6wind.com>
- <ZmAn7VcLHsdAI8Xg@strlen.de> <c527582b-05dd-45bf-a9b1-2499b01280ee@6wind.com>
- <ZmCxb2MqzeQPDFZt@calendula> <1eafd4a6-8a7e-48d7-b0a5-6f0f328cf7db@6wind.com>
- <20240606085352.GB4688@breakpoint.cc>
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Content-Language: en-US
-Organization: 6WIND
-In-Reply-To: <20240606085352.GB4688@breakpoint.cc>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-Le 06/06/2024 à 10:53, Florian Westphal a écrit :
-> Nicolas Dichtel <nicolas.dichtel@6wind.com> wrote:
->> I understand it's "sad" to keep nf_conntrack_events=1, but this change breaks
->> the backward compatibility. A container migrated to a host with a recent kernel
->> is broken.
->> Usually, in the networking stack, sysctl are added to keep the legacy behavior
->> and enable new systems to use "modern" features. There are a lot of examples :)
-> 
-> Weeks of work down the drain.  I wonder if we can make any changes aside
-> from bug fixes in the future.
-The commit doesn't remove the optimization, it only keeps the existing behavior.
-Systems that require this optimization, could still turn nf_conntrack_event to 2.
+
+The patch below does not apply to the 6.9-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
+git checkout FETCH_HEAD
+git cherry-pick -x 34bf6bae3286a58762711cfbce2cf74ecd42e1b5
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024060624-platinum-ladies-9214@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
+
+Possible dependencies:
+
+34bf6bae3286 ("x86/topology/amd: Evaluate SMT in CPUID leaf 0x8000001e only on family 0x17 and greater")
+21f546a43a91 ("Merge branch 'x86/urgent' into x86/cpu, to resolve conflict")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 34bf6bae3286a58762711cfbce2cf74ecd42e1b5 Mon Sep 17 00:00:00 2001
+From: Thomas Gleixner <tglx@linutronix.de>
+Date: Tue, 28 May 2024 22:21:31 +0200
+Subject: [PATCH] x86/topology/amd: Evaluate SMT in CPUID leaf 0x8000001e only
+ on family 0x17 and greater
+
+The new AMD/HYGON topology parser evaluates the SMT information in CPUID leaf
+0x8000001e unconditionally while the original code restricted it to CPUs with
+family 0x17 and greater.
+
+This breaks family 0x15 CPUs which advertise that leaf and have a non-zero
+value in the SMT section. The machine boots, but the scheduler complains loudly
+about the mismatch of the core IDs:
+
+  WARNING: CPU: 1 PID: 0 at kernel/sched/core.c:6482 sched_cpu_starting+0x183/0x250
+  WARNING: CPU: 0 PID: 1 at kernel/sched/topology.c:2408 build_sched_domains+0x76b/0x12b0
+
+Add the condition back to cure it.
+
+  [ bp: Make it actually build because grandpa is not concerned with
+    trivial stuff. :-P ]
+
+Fixes: f7fb3b2dd92c ("x86/cpu: Provide an AMD/HYGON specific topology parser")
+Closes: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/56
+Reported-by: Tim Teichmann <teichmanntim@outlook.de>
+Reported-by: Christian Heusel <christian@heusel.eu>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Tim Teichmann <teichmanntim@outlook.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/7skhx6mwe4hxiul64v6azhlxnokheorksqsdbp7qw6g2jduf6c@7b5pvomauugk
+
+diff --git a/arch/x86/kernel/cpu/topology_amd.c b/arch/x86/kernel/cpu/topology_amd.c
+index d419deed6a48..7d476fa697ca 100644
+--- a/arch/x86/kernel/cpu/topology_amd.c
++++ b/arch/x86/kernel/cpu/topology_amd.c
+@@ -84,9 +84,9 @@ static bool parse_8000_001e(struct topo_scan *tscan, bool has_topoext)
+ 
+ 	/*
+ 	 * If leaf 0xb is available, then the domain shifts are set
+-	 * already and nothing to do here.
++	 * already and nothing to do here. Only valid for family >= 0x17.
+ 	 */
+-	if (!has_topoext) {
++	if (!has_topoext && tscan->c->x86 >= 0x17) {
+ 		/*
+ 		 * Leaf 0x80000008 set the CORE domain shift already.
+ 		 * Update the SMT domain, but do not propagate it.
+
 
