@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-48917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B0AD8FEB18
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2BA8FE884
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C3631C25748
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A17C12846A9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D4A1A2FA2;
-	Thu,  6 Jun 2024 14:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4DF196C6D;
+	Thu,  6 Jun 2024 14:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDCieT3A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sk7EMWLm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977B61A2FA1;
-	Thu,  6 Jun 2024 14:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE366196DAB;
+	Thu,  6 Jun 2024 14:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683210; cv=none; b=qOncKfHkTfjdF6CHLECP0fPS9RIklhPdvSGWMYaXjJNfOki95Q1QmUXZkTspwSVSHHN3EUwvrqSRmChb369Iw5R1cip23nvy8Nn/3I1e0rhkGOlMXHSZf4iYdFEKh2JXEXcBteJaytnqpQ/nOsK2KNi3F0REmmWfMJDE5//q1aU=
+	t=1717682902; cv=none; b=N18+xcCdHIMq/LnPg2mC/snfxcpYY4HbJzHKb9iCpj/bYcCEvBJD+FY1X0yUzZMFtZ1BGNPN/UZIajRPGVFqQ7DXJcd0KDtNj3ZYNb3KMpfU8UwbIrjCkNmB5OKLJUU6/OiUvdDXe/4M6p2iAwzNQkb1X0UDrmfch/ub9Qs1Wik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683210; c=relaxed/simple;
-	bh=FRZG1UHQZSG36m7BNOMMqTB9A8/OnBhdVykJvx9qyjw=;
+	s=arc-20240116; t=1717682902; c=relaxed/simple;
+	bh=ENOuyC0fCS+2pxetvsOKtKt0dmOeaRWyn79Cqm03mgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYFW7kryvXxjeOb+LW2mHj8Bbra+MdGlR1I1yQ/OWXqqFSudNW17aEXZkjLYezJeLsOOIVf/Gz6SYeZCpN9sJJWWuzn1kXhdzLQlwRiYaGLxhRKbzvgVBIJVxgDRqSvUFuhdMavniIyNkX2R6A1SfUX0WTGNAWzyhLNEp1Tu054=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDCieT3A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76608C2BD10;
-	Thu,  6 Jun 2024 14:13:30 +0000 (UTC)
+	 MIME-Version; b=KFSe+qU8Iuq8mtHOV28K2TWGgG5O6V4CLXaSKq2T+7TmFAkjyTAP6fa4065PPZ079Cl45NzKIQl/B1Mtd/NyRh25gifzw+NCoOw3oEamaXNqTu82zUaRv2xWXTKbg9uXkJ6gxBUbkOUOYhmMB/52GtNkBng/mDSXuArDw/gdAds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sk7EMWLm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F197C2BD10;
+	Thu,  6 Jun 2024 14:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683210;
-	bh=FRZG1UHQZSG36m7BNOMMqTB9A8/OnBhdVykJvx9qyjw=;
+	s=korg; t=1717682902;
+	bh=ENOuyC0fCS+2pxetvsOKtKt0dmOeaRWyn79Cqm03mgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FDCieT3AADxXjRTlfb7Lbm8sqpZN5GnhsjqfvjGZUd0gkgVBN3HclgK9HZVHk14Kh
-	 JcWsKhKJPiOLYhgiSIxoH1CnlZKw1IVVYtYSLB8Azb5mntywMzvyQuEE69ViqKpGrS
-	 eyXv48vdm/lBNyXK6ZIQX2vf9Xp1Ve9p//csWnzI=
+	b=sk7EMWLmAJ1KSHS7aVvWVzBtyua6E3VIQI3Ve++8BceZ+ttG1LTa9VdXv2DPWeqTU
+	 ks/r3YgSuMj8tuEqoP51PVEwD6Ex40a0GWoMLU2G9Xc+XmYt0CJozLBliCrrsjm+0l
+	 9yv9N76kzdAde6KaJ3G1QZW9JK+/tDmQeel3aj3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/473] crypto: x86/nh-avx2 - add missing vzeroupper
+Subject: [PATCH 6.9 024/374] serial: max3100: Lock port->lock when calling uart_handle_cts_change()
 Date: Thu,  6 Jun 2024 16:00:03 +0200
-Message-ID: <20240606131702.348673870@linuxfoundation.org>
+Message-ID: <20240606131652.617419020@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 4ad096cca942959871d8ff73826d30f81f856f6e ]
+[ Upstream commit 77ab53371a2066fdf9b895246505f5ef5a4b5d47 ]
 
-Since nh_avx2() uses ymm registers, execute vzeroupper before returning
-from it.  This is necessary to avoid reducing the performance of SSE
-code.
+uart_handle_cts_change() has to be called with port lock taken,
+Since we run it in a separate work, the lock may not be taken at
+the time of running. Make sure that it's taken by explicitly doing
+that. Without it we got a splat:
 
-Fixes: 0f961f9f670e ("crypto: x86/nhpoly1305 - add AVX2 accelerated NHPoly1305")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Acked-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+  WARNING: CPU: 0 PID: 10 at drivers/tty/serial/serial_core.c:3491 uart_handle_cts_change+0xa6/0xb0
+  ...
+  Workqueue: max3100-0 max3100_work [max3100]
+  RIP: 0010:uart_handle_cts_change+0xa6/0xb0
+  ...
+   max3100_handlerx+0xc5/0x110 [max3100]
+   max3100_work+0x12a/0x340 [max3100]
+
+Fixes: 7831d56b0a35 ("tty: MAX3100")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240402195306.269276-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/nh-avx2-x86_64.S | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/max3100.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/crypto/nh-avx2-x86_64.S b/arch/x86/crypto/nh-avx2-x86_64.S
-index 6a0b15e7196a8..54c0ee41209d5 100644
---- a/arch/x86/crypto/nh-avx2-x86_64.S
-+++ b/arch/x86/crypto/nh-avx2-x86_64.S
-@@ -153,5 +153,6 @@ SYM_FUNC_START(nh_avx2)
- 	vpaddq		T1, T0, T0
- 	vpaddq		T4, T0, T0
- 	vmovdqu		T0, (HASH)
-+	vzeroupper
- 	RET
- SYM_FUNC_END(nh_avx2)
+diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
+index 5efb2b593be33..45022f2909f0a 100644
+--- a/drivers/tty/serial/max3100.c
++++ b/drivers/tty/serial/max3100.c
+@@ -213,7 +213,7 @@ static int max3100_sr(struct max3100_port *s, u16 tx, u16 *rx)
+ 	return 0;
+ }
+ 
+-static int max3100_handlerx(struct max3100_port *s, u16 rx)
++static int max3100_handlerx_unlocked(struct max3100_port *s, u16 rx)
+ {
+ 	unsigned int status = 0;
+ 	int ret = 0, cts;
+@@ -254,6 +254,17 @@ static int max3100_handlerx(struct max3100_port *s, u16 rx)
+ 	return ret;
+ }
+ 
++static int max3100_handlerx(struct max3100_port *s, u16 rx)
++{
++	unsigned long flags;
++	int ret;
++
++	uart_port_lock_irqsave(&s->port, &flags);
++	ret = max3100_handlerx_unlocked(s, rx);
++	uart_port_unlock_irqrestore(&s->port, flags);
++	return ret;
++}
++
+ static void max3100_work(struct work_struct *w)
+ {
+ 	struct max3100_port *s = container_of(w, struct max3100_port, work);
 -- 
 2.43.0
 
