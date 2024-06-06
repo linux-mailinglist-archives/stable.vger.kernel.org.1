@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-48877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB30A8FEAEB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C68C48FEAED
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D5741F25BB0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E15351C260DA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368331A2555;
-	Thu,  6 Jun 2024 14:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382FA1A2554;
+	Thu,  6 Jun 2024 14:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaJIpfwt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8Q3OxfI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43DE1A254E;
-	Thu,  6 Jun 2024 14:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D2E1A186B;
+	Thu,  6 Jun 2024 14:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683191; cv=none; b=M2xK1BHvEJGa3Ri1oH8PzBLJanZ6BotElzdpOyCo3VRm5i4kE2nvE8EXCRX1vtYMdC5qL9FAGJcKXKXbpOO7KsA3D+0JRsJwbGWJqysp8N/i18e5HeKsrEc7XPF9ZXtU/MviXsKrvgaTIuPZ3/gDxU6CY1MD5Z2twsmoW26J83I=
+	t=1717683192; cv=none; b=myt8ReNd2x3fz+Skuhv7KXvFSThUjlT3ob5iRsuWqHJQw9ZCqFZQpvVdhKh4Pcg06oo8eoFxzis3L+g5mQzLwlAKhGYXJYmKhTIdcUHRYw4ljQmdMnYBKy3qzq4dmXi7W2/gOLvEr7m7Q0+GiIXA/DeEIpRkU1oxA5Ly3kFPKF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683191; c=relaxed/simple;
-	bh=1LpugzYX+8b7baNrsbY/2hhFsTRErMiskP9Dv8vTsqE=;
+	s=arc-20240116; t=1717683192; c=relaxed/simple;
+	bh=vakNZApLelEuaF9AHqRTF4/oFqUGizJ8PSqGhIIvHG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LfaQUmEXJwxfrGj4bPHfIzHvtXHad96/lS4isUVtIwHtpXLbNtxz4NTWyDV+gnJGH54vvfIyR0jPOE8wt/RMTR+wORwTq+7C32Wm0qglyxvTFHLxItgB1OlzEjf9DKMRSXkNZh5dTnL6FUVu7D+1lifzLZs2MsGcS2IcjT541tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaJIpfwt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C7CC2BD10;
-	Thu,  6 Jun 2024 14:13:10 +0000 (UTC)
+	 MIME-Version; b=krsk1Ped7s6UaDeI96lLMlkw/ESm8tgS3IyBd6YXdgXJLmS+5pFgR+Hp+PD+35YtFzLe4ZxZM0/tA/UsGmq2JiJMdzsemHYtVgZ3ZO02vYSBy+TPKIDshQ6vXHVJX88BKRFPXn0Wem7rfRBZq/dIkId7+Fs6b/KuzXKd0O8n+Gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8Q3OxfI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9495C2BD10;
+	Thu,  6 Jun 2024 14:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683190;
-	bh=1LpugzYX+8b7baNrsbY/2hhFsTRErMiskP9Dv8vTsqE=;
+	s=korg; t=1717683191;
+	bh=vakNZApLelEuaF9AHqRTF4/oFqUGizJ8PSqGhIIvHG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TaJIpfwtTdgqyOZIzD9sE39uhQZ+3BrNi7GRomKERg5Ue34CkAdRe8cTX4i0vLGWB
-	 Bb/ZzbzDMzvK3I1Xbv0BocQplNNkv7QzIitA/UnsUimvbqv60Ua678gz5TZ0TYOwF1
-	 HCjOYT/d2o91AKxlBGu9PkmzOKVbZlWSfIdWihXw=
+	b=C8Q3OxfI/162Wk3uhHUURtZ8b/pgX4ASpnIy43SxfNp6CVU21LAIhMKhdBaC8EP9L
+	 xsKPbtpjciHnNm3nHU8XqhC/RVgHH5ihw64005joSLi8InioD2+i0P4Uw2u2NZaJ4R
+	 w4kDo5Zup1rVSEmXbJ/uC1Khd0tx5OlVzDp2ClgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/744] wifi: iwlwifi: mvm: allocate STA links only for active links
-Date: Thu,  6 Jun 2024 15:56:46 +0200
-Message-ID: <20240606131736.719789222@linuxfoundation.org>
+Subject: [PATCH 6.6 135/744] wifi: iwlwifi: mvm: select STA mask only for active links
+Date: Thu,  6 Jun 2024 15:56:47 +0200
+Message-ID: <20240606131736.748671587@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,46 +68,68 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 62bdd97598f8be82a24f556f78336b05d1c3e84b ]
+[ Upstream commit 2783ab506eaa36dbef40bda0f96eb49fe149790e ]
 
-For the mvm driver, data structures match what's in the firmware,
-we allocate FW IDs for them already etc. During link switch we
-already allocate/free the STA links appropriately, but initially
-we'd allocate them always. Fix this to allocate memory, a STA ID,
-etc. only for active links.
+During reconfig, we might send keys, but those should be only
+sent to already active link stations. Iterate only active ones
+to fix that issue.
 
-Fixes: 57974a55d995 ("wifi: iwlwifi: mvm: refactor iwl_mvm_mac_sta_state_common()")
+Fixes: aea99650f731 ("wifi: iwlwifi: mvm: set STA mask for keys in MLO")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240319100755.f2093ff73465.Ie891e1cc9c9df09ae22be6aad5c143e376f40f0e@changeid
+Link: https://msgid.link/20240320232419.c6818d1c6033.I6357f05c55ef111002ddc169287eb356ca0c1b21@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-index 278454c116fee..3907707e87716 100644
+index 3907707e87716..8f5b8b26909da 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-@@ -582,14 +582,14 @@ static int iwl_mvm_mld_alloc_sta_links(struct iwl_mvm *mvm,
- 				       struct ieee80211_sta *sta)
+@@ -9,7 +9,9 @@
+ u32 iwl_mvm_sta_fw_id_mask(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 			   int filter_link_id)
  {
- 	struct iwl_mvm_sta *mvm_sta = iwl_mvm_sta_from_mac80211(sta);
 +	struct ieee80211_link_sta *link_sta;
+ 	struct iwl_mvm_sta *mvmsta;
++	struct ieee80211_vif *vif;
  	unsigned int link_id;
- 	int ret;
+ 	u32 result = 0;
  
- 	lockdep_assert_held(&mvm->mutex);
+@@ -17,26 +19,27 @@ u32 iwl_mvm_sta_fw_id_mask(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 		return 0;
  
--	for (link_id = 0; link_id < ARRAY_SIZE(sta->link); link_id++) {
--		if (!rcu_access_pointer(sta->link[link_id]) ||
--		    mvm_sta->link[link_id])
+ 	mvmsta = iwl_mvm_sta_from_mac80211(sta);
++	vif = mvmsta->vif;
+ 
+ 	/* it's easy when the STA is not an MLD */
+ 	if (!sta->valid_links)
+ 		return BIT(mvmsta->deflink.sta_id);
+ 
+ 	/* but if it is an MLD, get the mask of all the FW STAs it has ... */
+-	for (link_id = 0; link_id < ARRAY_SIZE(mvmsta->link); link_id++) {
+-		struct iwl_mvm_link_sta *link_sta;
 +	for_each_sta_active_link(vif, sta, link_sta, link_id) {
-+		if (WARN_ON(mvm_sta->link[link_id]))
++		struct iwl_mvm_link_sta *mvm_link_sta;
+ 
+ 		/* unless we have a specific link in mind */
+ 		if (filter_link_id >= 0 && link_id != filter_link_id)
  			continue;
  
- 		ret = iwl_mvm_mld_alloc_sta_link(mvm, vif, sta, link_id);
+-		link_sta =
++		mvm_link_sta =
+ 			rcu_dereference_check(mvmsta->link[link_id],
+ 					      lockdep_is_held(&mvm->mutex));
+ 		if (!link_sta)
+ 			continue;
+ 
+-		result |= BIT(link_sta->sta_id);
++		result |= BIT(mvm_link_sta->sta_id);
+ 	}
+ 
+ 	return result;
 -- 
 2.43.0
 
