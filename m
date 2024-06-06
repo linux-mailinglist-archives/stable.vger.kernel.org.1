@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-48876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408938FEAEA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 395CF8FE8A8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D64251F2597E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7D91284CDB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96B61A254C;
-	Thu,  6 Jun 2024 14:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D15197A6B;
+	Thu,  6 Jun 2024 14:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="as0WJnpq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJOTcoJ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F3C1A2548;
-	Thu,  6 Jun 2024 14:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9774F197A67;
+	Thu,  6 Jun 2024 14:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683190; cv=none; b=T5ZOkfIsybzEYLF/A0ql0Htvj4/P2+TFjbETLCF5j5Gey9w8ylXntkOYbwo39D59AytW6txDNEkRRFWVJusor0pTxkFnuUM/45jWN44gpdwrkzWgKSn8duUVYa4VB12g8XlSJL0SEp0TDTqllzhzFBRa+Zcv+Yg0nxGeFC4NQiw=
+	t=1717682919; cv=none; b=lLoZRtBK7qdQf1UxyKRyiOJEwsmfj+jZ4JrNOX+eEa7H2QIif/WpZ8t+x87yQ8W9oShlww1UTTdWP3jMJciDYBrwyV7ZWWdIS3koIFavXII1NEA7m7p7eBndGR/2GM0JcxlvcWyucJPJF9v8ZWUuSzVRXghceY07RYjPC7dJ/vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683190; c=relaxed/simple;
-	bh=KREnz5jN5VMEQcTd4eTgUUvNxz1vPBaJE88Djr5Rd9Y=;
+	s=arc-20240116; t=1717682919; c=relaxed/simple;
+	bh=62gBHaoQBqzfjI26ufyArHXKoUf5f7g5IjA/x7aCgdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLyc7QdnWtpVl3ssilm3GCc85RvI+SE+lqPsbQVhtOROY8lqtorYf7Q3cSUOry589kD6SJwToyrKrNE4ghYlFhpjsQVYGAyvzsd2ohn0PK4eqHFgWjpHqzciC3Eqv47KzteHttj+Vn6277vDigZYbq/78G1i/cpm1AERBZV164w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=as0WJnpq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4974CC32781;
-	Thu,  6 Jun 2024 14:13:10 +0000 (UTC)
+	 MIME-Version; b=RUkZsub3PZmy4m0uE2V/RBWZ7Px/wd3v2uXjCsOHWi/hYAmSSJuC29rfCmJccJ3A1hVblEi2/8aevlbFATqJ/nzrvXRqNUv9B0XxV4B/ilh8lUjdyQONW8OOSK1eRC52xqkuozOCmbMXBbd24hSME+uWMOC2++mHfxTn7cX+VOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJOTcoJ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7360FC32781;
+	Thu,  6 Jun 2024 14:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683190;
-	bh=KREnz5jN5VMEQcTd4eTgUUvNxz1vPBaJE88Djr5Rd9Y=;
+	s=korg; t=1717682919;
+	bh=62gBHaoQBqzfjI26ufyArHXKoUf5f7g5IjA/x7aCgdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=as0WJnpqNG3Epk5nbn8O9VjeXaxWWcrBmetT9B3JaZZl6Iv6YvEpWtHKLSvNku+bA
-	 jf1GnlWwHqnawfTqWlAeXBH68XV7dcABhqirzCM16YXke03AK9mY/EIyOo+7VMUlQI
-	 etOxVelwf2wppItxNm0MrgZN4A18dONwdKQGdRik=
+	b=FJOTcoJ2ONT0KxQYkxptdJYPdsnOY+7D1PCs6VfieoJks/5ElTaP2XO0zfAtKUqAd
+	 3PTL4nlwshhA3SYmbRxuS6iWOur/5ZcdTc7Zu6/+QdFCUETUueI9LleM+QY8DajLmf
+	 RamdTEJU+9zkSXh7MswbbpvbkZf6ktPWz13QhijU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/473] epoll: be better about file lifetimes
-Date: Thu,  6 Jun 2024 15:59:53 +0200
-Message-ID: <20240606131702.003832002@linuxfoundation.org>
+Subject: [PATCH 6.9 015/374] usb: typec: ucsi: allow non-partner GET_PDOS for Qualcomm devices
+Date: Thu,  6 Jun 2024 15:59:54 +0200
+Message-ID: <20240606131652.273128214@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 4efaa5acf0a1d2b5947f98abb3acf8bfd966422b ]
+[ Upstream commit 897d68d4ce7d50ca45a31e10c0e61597257b32d3 ]
 
-epoll can call out to vfs_poll() with a file pointer that may race with
-the last 'fput()'. That would make f_count go down to zero, and while
-the ep->mtx locking means that the resulting file pointer tear-down will
-be blocked until the poll returns, it means that f_count is already
-dead, and any use of it won't actually get a reference to the file any
-more: it's dead regardless.
+The name and description of the USB_NO_PARTNER_PDOS quirk specifies that
+only retrieving PDOS of the attached device is crashing. Retrieving PDOS
+of the UCSI device works. Fix the condition to limit the workaround only
+to is_partner cases.
 
-Make sure we have a valid ref on the file pointer before we call down to
-vfs_poll() from the epoll routines.
-
-Link: https://lore.kernel.org/lkml/0000000000002d631f0615918f1e@google.com/
-Reported-by: syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 1d103d6af241 ("usb: typec: ucsi: fix UCSI on buggy Qualcomm devices")
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240329-qcom-ucsi-fixes-v2-1-0f5d37ed04db@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 38 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index eccecd3fac90c..7221072f39fad 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -839,6 +839,34 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
- 	return res;
- }
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index bd6ae92aa39e7..7ec4fa4ff478f 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -619,7 +619,8 @@ static int ucsi_read_pdos(struct ucsi_connector *con,
+ 	u64 command;
+ 	int ret;
  
-+/*
-+ * The ffd.file pointer may be in the process of being torn down due to
-+ * being closed, but we may not have finished eventpoll_release() yet.
-+ *
-+ * Normally, even with the atomic_long_inc_not_zero, the file may have
-+ * been free'd and then gotten re-allocated to something else (since
-+ * files are not RCU-delayed, they are SLAB_TYPESAFE_BY_RCU).
-+ *
-+ * But for epoll, users hold the ep->mtx mutex, and as such any file in
-+ * the process of being free'd will block in eventpoll_release_file()
-+ * and thus the underlying file allocation will not be free'd, and the
-+ * file re-use cannot happen.
-+ *
-+ * For the same reason we can avoid a rcu_read_lock() around the
-+ * operation - 'ffd.file' cannot go away even if the refcount has
-+ * reached zero (but we must still not call out to ->poll() functions
-+ * etc).
-+ */
-+static struct file *epi_fget(const struct epitem *epi)
-+{
-+	struct file *file;
-+
-+	file = epi->ffd.file;
-+	if (!atomic_long_inc_not_zero(&file->f_count))
-+		file = NULL;
-+	return file;
-+}
-+
- /*
-  * Differs from ep_eventpoll_poll() in that internal callers already have
-  * the ep->mtx so we need to start from depth=1, such that mutex_lock_nested()
-@@ -847,14 +875,22 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
- static __poll_t ep_item_poll(const struct epitem *epi, poll_table *pt,
- 				 int depth)
- {
--	struct file *file = epi->ffd.file;
-+	struct file *file = epi_fget(epi);
- 	__poll_t res;
+-	if (ucsi->quirks & UCSI_NO_PARTNER_PDOS)
++	if (is_partner &&
++	    ucsi->quirks & UCSI_NO_PARTNER_PDOS)
+ 		return 0;
  
-+	/*
-+	 * We could return EPOLLERR | EPOLLHUP or something, but let's
-+	 * treat this more as "file doesn't exist, poll didn't happen".
-+	 */
-+	if (!file)
-+		return 0;
-+
- 	pt->_key = epi->event.events;
- 	if (!is_file_epoll(file))
- 		res = vfs_poll(file, pt);
- 	else
- 		res = __ep_eventpoll_poll(file, pt, depth);
-+	fput(file);
- 	return res & epi->event.events;
- }
- 
+ 	command = UCSI_COMMAND(UCSI_GET_PDOS) | UCSI_CONNECTOR_NUMBER(con->num);
 -- 
 2.43.0
 
