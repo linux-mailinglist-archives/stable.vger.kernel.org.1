@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-48914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0951C8FEB15
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36CA78FEB17
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11FF11C2624D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B1A51C254D4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708CF19755A;
-	Thu,  6 Jun 2024 14:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7901A2C3D;
+	Thu,  6 Jun 2024 14:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDcJHrmV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yhbfdj8l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C301A2C3A;
-	Thu,  6 Jun 2024 14:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEC5199383;
+	Thu,  6 Jun 2024 14:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683209; cv=none; b=gNBAIUk00XE1i1fBrVcsLmw2yZrMTmXbmY/uQVDucwvk6QAqzUJCwhP/4lku5FcVbZLYsYahyKg1WMsnd91Xo5h/LCVcrikxkW9qA4390FiNAHa1cPUZNjs1yRRnIfVwUngINZJ6qVVYsISrvyjSDXCt/7rUAb29dqDWJYHp5Dg=
+	t=1717683210; cv=none; b=mMDhJffbz7b1rEt/QU9zRccYaJbehH2H/ReJUm2dH4tTlZMrN/zS/Us/Qq3AVoL0dXv5XDo3ukud9ghEdCGdUtO5AWhNkfpa2hl1MLgbOwL1frD0Pv5/xzh2kderMjdlrpgVA9kcb7oabJHbcU+26sAlPHZ0xNAR8hLtFXoYzFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683209; c=relaxed/simple;
-	bh=dDxJFGgJH6sP+Ys79DPRk1CC58FMMT9ytRdoxnfLfMk=;
+	s=arc-20240116; t=1717683210; c=relaxed/simple;
+	bh=WLdAhBwbbMkRWXdH7ussoBoEQVd+HlgGp52khDa1D/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eekc7Kbygt4BD7b+mSE7AlLWA9p1xM+Fiu4HdmV1fKCTcThxmiceHrjJSKvky8KVByIm3bYDrEm2U/+2VG8E8lTyxXQlq3EW1cTSInS+gewoY3elPCqKWTO5YD1gp+yzjOt+FjBoJENmWA0sPzbuIinmOapDGPppC9FXlnP4h1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDcJHrmV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFFBC32781;
+	 MIME-Version; b=MwRj3IhBvOf6fhxPOZOqecJJgVSyp9F3dmgmNlwWCYD7KS7QK4q8Uw63rPntKhMcsIK1NSR1hX+99fHVEntJpeKEqcMrN9m2VF+9253oBHQNH2AydUW/I1EFY96Nzz5EwkSPdQZt8wrr3u3x6dApDmTPypL6O84K4DDMHxBQMPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yhbfdj8l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EB7C2BD10;
 	Thu,  6 Jun 2024 14:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683209;
-	bh=dDxJFGgJH6sP+Ys79DPRk1CC58FMMT9ytRdoxnfLfMk=;
+	s=korg; t=1717683210;
+	bh=WLdAhBwbbMkRWXdH7ussoBoEQVd+HlgGp52khDa1D/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDcJHrmVGR+gMpOVLfLP517SBr0jKlLiVNmL82oW87OpJc/Y4bvWUg1K1orA+YC0v
-	 crl0d4xNhluBKrLKVDjpJ48lSG31qYFVmBxy90VP2h7wTcM9XifOme6+9uVBrV4OTS
-	 oYUWbX4x5UG4J4443KbaNejA78g3id/ic0pG6Utk=
+	b=Yhbfdj8lbNLb9I+lOqBkCHdW8ukLxHShU/EdzXJzoHjWiw3pGX5mFqnsYUa+EQJXm
+	 we06NZrkBy3EzQyvnSk6uc1CKTS/gmkbzpguNE0cRLoc+ON4mruoU4Km8kEF9Lmn90
+	 yHfN9j/zEGWXYcr7bcQttLdcpUw9eMJ2FbhkxUJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Halaney <ahalaney@redhat.com>,
 	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 152/744] scsi: ufs: qcom: Perform read back after writing unipro mode
-Date: Thu,  6 Jun 2024 15:57:04 +0200
-Message-ID: <20240606131737.289121883@linuxfoundation.org>
+Subject: [PATCH 6.6 153/744] scsi: ufs: qcom: Perform read back after writing CGC enable
+Date: Thu,  6 Jun 2024 15:57:05 +0200
+Message-ID: <20240606131737.321046907@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,10 +70,10 @@ Content-Transfer-Encoding: 8bit
 
 From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit 823150ecf04f958213cf3bf162187cd1a91c885c ]
+[ Upstream commit d9488511b3ac7eb48a91bc5eded7027525525e03 ]
 
-Currently, the QUNIPRO_SEL bit is written to and then an mb() is used to
-ensure that completes before continuing.
+Currently, the CGC enable bit is written and then an mb() is used to ensure
+that completes before continuing.
 
 mb() ensures that the write completes, but completion doesn't mean that it
 isn't stored in a buffer somewhere. The recommendation for ensuring this
@@ -82,35 +83,34 @@ a talk by Will Deacon on this can be seen over here:
 
     https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
 
-But, there's really no reason to even ensure completion before
-continuing. The only requirement here is that this write is ordered to this
-endpoint (which readl()/writel() guarantees already). For that reason the
-mb() can be dropped altogether without anything forcing completion.
+Let's do that to ensure the bit hits the device. Because the mb()'s purpose
+wasn't to add extra ordering (on top of the ordering guaranteed by
+writel()/readl()), it can safely be removed.
 
-Fixes: f06fcc7155dc ("scsi: ufs-qcom: add QUniPro hardware support and power optimizations")
-Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-4-181252004586@redhat.com
 Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Fixes: 81c0fc51b7a7 ("ufs-qcom: add support for Qualcomm Technologies Inc platforms")
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-5-181252004586@redhat.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-qcom.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/ufs/host/ufs-qcom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index 559b4cab16a3e..1f2a64d797c79 100644
+index 1f2a64d797c79..922ae1d76d909 100644
 --- a/drivers/ufs/host/ufs-qcom.c
 +++ b/drivers/ufs/host/ufs-qcom.c
-@@ -373,9 +373,6 @@ static void ufs_qcom_select_unipro_mode(struct ufs_qcom_host *host)
+@@ -498,7 +498,7 @@ static void ufs_qcom_enable_hw_clk_gating(struct ufs_hba *hba)
+ 		REG_UFS_CFG2);
  
- 	if (host->hw_ver.major >= 0x05)
- 		ufshcd_rmwl(host->hba, QUNIPRO_G4_SEL, 0, REG_UFS_CFG0);
--
--	/* make sure above configuration is applied before we return */
+ 	/* Ensure that HW clock gating is enabled before next operations */
 -	mb();
++	ufshcd_readl(hba, REG_UFS_CFG2);
  }
  
- /*
+ static int ufs_qcom_hce_enable_notify(struct ufs_hba *hba,
 -- 
 2.43.0
 
