@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD0038FE8BA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82CE08FED03
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A56C285174
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 236CD1F212AD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B872F196C63;
-	Thu,  6 Jun 2024 14:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E7919CD0B;
+	Thu,  6 Jun 2024 14:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZADZWaq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrXdmYg3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719B5197A98;
-	Thu,  6 Jun 2024 14:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D0A198A36;
+	Thu,  6 Jun 2024 14:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682928; cv=none; b=QOT3+BRBjVWvfp3xWTx3zMQLseQLlXEuByB6cZjSHFaaHh+NHuC0vKMiomuezeaI3pMUsryzftYNdi3xU8REtKYDPg0clTJoJrm/Fx7tyQL66SY/6D9B+EU+mE+o0T+10C4xGg69shShSedAAWut+3TLyNdjWQjVl/rrNdHawcY=
+	t=1717683435; cv=none; b=Uu0Iypdkng9+iT9BdT+oA6AMGMYF4KqPGhlgHBibdYUp3uNr2hJ0b1wn0WLgdqoK745qt2s/wJfW7rZuScBVoTF28i60u8VdlQ2qqvY5alHWQLrAhPg0iWjBqq62M4eF6hgwVysqOgKQYOy79hkWd7ZMkPrz6u4R/H0AOuI7oaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682928; c=relaxed/simple;
-	bh=kdyH4egdLSDWpLbXwXCyseU76qaHFu8pNW/9xWUbusQ=;
+	s=arc-20240116; t=1717683435; c=relaxed/simple;
+	bh=PHe1+luYd7OTDZvsJJ59fxkKu+MdEPBQ5BzzeStM/Jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Es8OOrrNpzRV/yl4e+8eunRNjgVej//Fxw/KVyhT0EG9Iw5Edhi/Bg5NcfikOSBM6mSq34PEeN+hX8yCWQfXv524hN1ka5fqR5RA9alsuKgbRUQHf1jTS+jshwD8ExOfWNl8/O3WW5VQ0/yYbye3vzg8APVhExO+cIl9qp/miX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZADZWaq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E02BC32782;
-	Thu,  6 Jun 2024 14:08:48 +0000 (UTC)
+	 MIME-Version; b=V7zmQPs6MfVif2EMBFbGWDgLEvF++cbEBI0nvLankizKxBw0wIjdF4SS+YgJC0mP/2jQq7NkrzbAt1CUo58LohF/wQAGSdIuZmK8CuGa1TfTJr1EbIe0MPEE1KH20PPgXNHmc9A45+bNzaDO3jYscjRPhVj/0x98co8emV467qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrXdmYg3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87702C2BD10;
+	Thu,  6 Jun 2024 14:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682928;
-	bh=kdyH4egdLSDWpLbXwXCyseU76qaHFu8pNW/9xWUbusQ=;
+	s=korg; t=1717683435;
+	bh=PHe1+luYd7OTDZvsJJ59fxkKu+MdEPBQ5BzzeStM/Jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZADZWaqh4pdDSpSBBfw+pV0xNzRy9GReVWuXleiJ8hR+QLpPIxT1WO/fLnYUOboC
-	 XcEeNScBjSjHG8JBd/4JOaWH66v8Tl6qVvUAl3j2vf+sOJVmL91bssx0R08/eo5roj
-	 xCNOkwf5UZNDo0RYYENcLdacHB5/Wj0AjeNUwM0U=
+	b=CrXdmYg39KVBNKlFOvRHL7iwycZHjypnS/BZ0ENDAG5YTZAGHOP5/TDF7Shr1zyUG
+	 9kgCjCp/pL4BbnCcelky5J0g297E7jz80VZzgg482FBdaaT0sqykdj614pY8MGYuOA
+	 vIEIcpwvNX4ybqeYbJAMik8rl4M2JiCex56Mh634=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Wang Yao <wangyao@lemote.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 073/374] PCI: of_property: Return error for int_map allocation failure
+Subject: [PATCH 6.6 380/744] modules: Drop the .export_symbol section from the final modules
 Date: Thu,  6 Jun 2024 16:00:52 +0200
-Message-ID: <20240606131654.308025622@linuxfoundation.org>
+Message-ID: <20240606131744.663464014@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Wang Yao <wangyao@lemote.com>
 
-[ Upstream commit e6f7d27df5d208b50cae817a91d128fb434bb12c ]
+[ Upstream commit 8fe51b45c5645c259f759479c374648e9dfeaa03 ]
 
-Return -ENOMEM from of_pci_prop_intr_map() if kcalloc() fails to prevent a
-NULL pointer dereference in this case.
+Commit ddb5cdbafaaa ("kbuild: generate KSYMTAB entries by modpost")
+forget drop the .export_symbol section from the final modules.
 
-Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-Link: https://lore.kernel.org/r/20240303105729.78624-1-duoming@zju.edu.cn
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: ddb5cdbafaaa ("kbuild: generate KSYMTAB entries by modpost")
+Signed-off-by: Wang Yao <wangyao@lemote.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/of_property.c | 2 ++
- 1 file changed, 2 insertions(+)
+ scripts/module.lds.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/of_property.c b/drivers/pci/of_property.c
-index c2c7334152bc0..03539e5053720 100644
---- a/drivers/pci/of_property.c
-+++ b/drivers/pci/of_property.c
-@@ -238,6 +238,8 @@ static int of_pci_prop_intr_map(struct pci_dev *pdev, struct of_changeset *ocs,
- 		return 0;
+diff --git a/scripts/module.lds.S b/scripts/module.lds.S
+index bf5bcf2836d81..89ff01a22634f 100644
+--- a/scripts/module.lds.S
++++ b/scripts/module.lds.S
+@@ -13,6 +13,7 @@ SECTIONS {
+ 	/DISCARD/ : {
+ 		*(.discard)
+ 		*(.discard.*)
++		*(.export_symbol)
+ 	}
  
- 	int_map = kcalloc(map_sz, sizeof(u32), GFP_KERNEL);
-+	if (!int_map)
-+		return -ENOMEM;
- 	mapp = int_map;
- 
- 	list_for_each_entry(child, &pdev->subordinate->devices, bus_list) {
+ 	__ksymtab		0 : { *(SORT(___ksymtab+*)) }
 -- 
 2.43.0
 
