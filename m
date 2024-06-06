@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-49168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E798FEC25
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F59E8FEA89
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B0591F29777
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 660501C245DA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C281AD9D1;
-	Thu,  6 Jun 2024 14:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C711991AB;
+	Thu,  6 Jun 2024 14:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLWNth1o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fut9DC+3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531E619AD60;
-	Thu,  6 Jun 2024 14:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4C01A01D0;
+	Thu,  6 Jun 2024 14:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683335; cv=none; b=Jlvk2Z47oiYPoJM6hFJNxmDCQ9Y8QwHVnaue8fqVBiVVCBKmaK8k+kMHy3RqmIJ/rTBetsi2vLCgeNzkrpkSUDW8m1x8X5qst3eYPtz+mBQEi+gNOv6AEOEaezDHPpRsnuMSJrk12QFS8Pf/sIF4WOVEu0D/fvRfBEUleILqWBo=
+	t=1717683147; cv=none; b=lh2S2a/DnDe2xVV1SghTmqZzPewA0qb0K/eJzlM8+53cXDWyezmaVmk9yNxKDnAXzgLAsLAPQ9KYpBJRGkOztiXLf8TppuP8PuM8ZtbumnBDv/FY4Ebltfc/Yje4jAWX09BKPamCJrsb3Xm5GrI8K3OagIs8zKLn/JWz6VbG6QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683335; c=relaxed/simple;
-	bh=NJaix6YN262hgv0BiiflH3jLsqVGxxfCWyCu99OAOQo=;
+	s=arc-20240116; t=1717683147; c=relaxed/simple;
+	bh=VmzLJSRVZwD3YQ37IwxwonRjJTVdvMsaydT6yu4ebJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rYyV9V6hLa25g18ecIkI9M0kFpnH6klhJ4OuFalO3pyYIUCv1uJHgnO7Ia2VXJu4DO47yLCsAka7tNfa5JluTcPu90qQFuquhKwX8WLp0UuMD+Cy/Vvn6Z+ttgzXeOiAuN3PC4/UGe5wKOWYimGfUBwL3iolZrMyv/NKbl+vazk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLWNth1o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BD6C32781;
-	Thu,  6 Jun 2024 14:15:35 +0000 (UTC)
+	 MIME-Version; b=FANS+gQ96tqWSag9OE1urde+KBFrBJTalDZwYaYN3azFZQl9XW8PU2/mcn0xwtw6QXzC1megO84YvraNauHcHDHssFPPSVIPkaHYZWy/P7sy0D0N/pFHbpTwLbpq/RA+6UGFv8LRxJKeUgN9AOpbA9CbESFZnDxAVXEtzC2uHMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fut9DC+3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DEB4C2BD10;
+	Thu,  6 Jun 2024 14:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683335;
-	bh=NJaix6YN262hgv0BiiflH3jLsqVGxxfCWyCu99OAOQo=;
+	s=korg; t=1717683147;
+	bh=VmzLJSRVZwD3YQ37IwxwonRjJTVdvMsaydT6yu4ebJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLWNth1ovSbbKtlExeplQRYVON4T39yJy+/hbe2Ez+k7GvyMXoI+2BI/I9l9lgVI2
-	 fOeTozg3kgyhmM5GF+6HqIbqFfOCHg1t+5FJ0eFwUS8UHV68k6bGn00ZG/9wMU514e
-	 /VVzMulq02i1KnwNaTY7sQOCP0vkcWCDhH7gmbIE=
+	b=fut9DC+3S0/HpBNU3FQRE/pj9Y3HQD1ms08nVbiuObuhfjTgBol8SKQGWdvOCZgqX
+	 OxVLzjp3k6aeS+zwBf3996fyCOnsAC531iHAq7Dw/HQXbN/BCPHg/NxtMmZL+gMwp5
+	 5NOJcpuNEoOFHOq3t3xetueB9+q/j7sFf2OR2Af4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Ying <victor.liu@nxp.com>,
-	Marek Vasut <marex@denx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 276/744] drm/lcdif: Do not disable clocks on already suspended hardware
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 6.1 019/473] fs/ntfs3: Fix case when index is reused during tree transformation
 Date: Thu,  6 Jun 2024 15:59:08 +0200
-Message-ID: <20240606131741.241250047@linuxfoundation.org>
+Message-ID: <20240606131700.488791995@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 172695f145fb4798ab605e8a73f6e87711930124 ]
+commit 05afeeebcac850a016ec4fb1f681ceda11963562 upstream.
 
-In case the LCDIF is enabled in DT but unused, the clocks used by the
-LCDIF are not enabled. Those clocks may even have a use count of 0 in
-case there are no other users of those clocks. This can happen e.g. in
-case the LCDIF drives HDMI bridge which has no panel plugged into the
-HDMI connector.
+In most cases when adding a cluster to the directory index,
+they are placed at the end, and in the bitmap, this cluster corresponds
+to the last bit. The new directory size is calculated as follows:
 
-Do not attempt to disable clocks in the suspend callback and re-enable
-clocks in the resume callback unless the LCDIF is enabled and was in
-use before the system entered suspend, otherwise the driver might end
-up trying to disable clocks which are already disabled with use count
-0, and would trigger a warning from clock core about this condition.
+	data_size = (u64)(bit + 1) << indx->index_bits;
 
-Note that the lcdif_rpm_suspend() and lcdif_rpm_resume() functions
-internally perform the clocks disable and enable operations and act
-as runtime PM hooks too.
+In the case of reusing a non-final cluster from the index,
+data_size is calculated incorrectly, resulting in the directory size
+differing from the actual size.
 
-Reviewed-by: Liu Ying <victor.liu@nxp.com>
-Fixes: 9db35bb349a0 ("drm: lcdif: Add support for i.MX8MP LCDIF variant")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240226082644.32603-1-marex@denx.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A check for cluster reuse has been added, and the size update is skipped.
+
+Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mxsfb/lcdif_drv.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ntfs3/index.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-index 18de2f17e2491..6494e82707569 100644
---- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
-+++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-@@ -340,6 +340,9 @@ static int __maybe_unused lcdif_suspend(struct device *dev)
- 	if (ret)
- 		return ret;
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -1531,6 +1531,11 @@ static int indx_add_allocate(struct ntfs
+ 		goto out1;
+ 	}
  
-+	if (pm_runtime_suspended(dev))
-+		return 0;
++	if (data_size <= le64_to_cpu(alloc->nres.data_size)) {
++		/* Reuse index. */
++		goto out;
++	}
 +
- 	return lcdif_rpm_suspend(dev);
- }
+ 	/* Increase allocation. */
+ 	err = attr_set_size(ni, ATTR_ALLOC, in->name, in->name_len,
+ 			    &indx->alloc_run, data_size, &data_size, true,
+@@ -1541,6 +1546,7 @@ static int indx_add_allocate(struct ntfs
+ 		goto out1;
+ 	}
  
-@@ -347,7 +350,8 @@ static int __maybe_unused lcdif_resume(struct device *dev)
- {
- 	struct drm_device *drm = dev_get_drvdata(dev);
++out:
+ 	*vbn = bit << indx->idx2vbn_bits;
  
--	lcdif_rpm_resume(dev);
-+	if (!pm_runtime_suspended(dev))
-+		lcdif_rpm_resume(dev);
- 
- 	return drm_mode_config_helper_resume(drm);
- }
--- 
-2.43.0
-
+ 	return 0;
 
 
 
