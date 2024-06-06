@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-48867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD878FEADE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC36F8FEC87
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A35286705
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F373B28067
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E46196D8E;
-	Thu,  6 Jun 2024 14:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C357198A27;
+	Thu,  6 Jun 2024 14:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZNU7Em2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3YgwUVg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237D91A186B;
-	Thu,  6 Jun 2024 14:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC5F19B3CA;
+	Thu,  6 Jun 2024 14:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683186; cv=none; b=Ay1f/Dq4egKLMkXrvv/eQTLpZYwCmgv7/SvAKwpOULTmyVfVWpdOpMBSYWBsyZudb73P4A5ovgvlBzvDK14cNssD7xlHrBXbj9NBhQKYnjG2uYhp1BFZB5XGUGsykY1u62/WY0STMVofBwiA83B06iL0Jazn48+qmig7LV/zgrw=
+	t=1717683376; cv=none; b=UzXsWh7AdKeFCzAqG82bWyJiSQtcGkC0fMIEs+GWjiV/5zKjs3ePc+RDAo5SyPc/RWg2JKPxmXlgw2O3A+TrL2vOz6ZBq3zMoMPHwGJ7Dn2EJoahdbCnpsLrgVeOgJk1Gz8XxthOqp33JVq9Sxn4+0YRsEMUXeNOeocQglb2xSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683186; c=relaxed/simple;
-	bh=I6ErbXwUcXhcutZ07j0WwRY+YGXNGSdyH0vEDMY8W3s=;
+	s=arc-20240116; t=1717683376; c=relaxed/simple;
+	bh=2fY7OeN3E92U3PxTkQF1JADwruU45qREv8zCdwemmBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eztrkbw/g2+zDSG00ZKWJpOt7M89KQdUs/L//O58Dsc9rHWita/woN36+XMHhIWiWvBxy2hYab7JLc9e/OjH8eddO4rgtsvwqIG0etyfATr3DW0GByhHbcO+VBGYXj8TNZRQW4061WU2998r5bSFPNeDqQ3j0WJaRY3UOOga5z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZNU7Em2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22DBC2BD10;
-	Thu,  6 Jun 2024 14:13:05 +0000 (UTC)
+	 MIME-Version; b=r6vAn5OqcgU/S+Da/Bj18BFbwXr0Z3bTwKLwc8j4jHpuSl8B5Fh+bm90dFQVAdVsB408wQ1NstrhVRsQ+uqiZqmSLU4VEUQtqfy7TQW7QcREqoU6xRJkB4UsFqzbQMKdWLA4fPojfZTncOaHv5w6MqGP6ORFNLL8oB+LXnZpJJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3YgwUVg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBFDC2BD10;
+	Thu,  6 Jun 2024 14:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683186;
-	bh=I6ErbXwUcXhcutZ07j0WwRY+YGXNGSdyH0vEDMY8W3s=;
+	s=korg; t=1717683376;
+	bh=2fY7OeN3E92U3PxTkQF1JADwruU45qREv8zCdwemmBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xZNU7Em2AlGJEmUYuEEZD0kSPMCvIjJdN3OdajbqGjXjRv0onLimFr9W+faOhsiDz
-	 vwmxxRjk2pOdh6a9+lNiFYgfITuO1J0ce9pOMahdvXEgxtgcSCbPtabCBkildUfVnO
-	 g6mUd2mN9IESSiO0F9g8c08aBaTUGT51aC3Y95rc=
+	b=w3YgwUVgxnfcoW61gfUPwj9xG3dWpU9i5dW5CQoyiJpvvHpdRXH+WFCn2zk5w3SVV
+	 k3HQq6u98UR3unGgAECS8rphJeZ8GY8jqd6JC6pFH7HBRhdyg36yF7K92txvh+rmNQ
+	 wGMdtRRsIMOD48r4cRT/vomg9N8kcqHa2jgbDW9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/473] nvmet-auth: return the error code to the nvmet_auth_host_hash() callers
-Date: Thu,  6 Jun 2024 15:59:49 +0200
-Message-ID: <20240606131701.872650749@linuxfoundation.org>
+Subject: [PATCH 6.6 318/744] ASoC: tracing: Export SND_SOC_DAPM_DIR_OUT to its value
+Date: Thu,  6 Jun 2024 15:59:50 +0200
+Message-ID: <20240606131742.628732346@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 46b8f9f74f6d500871985e22eb19560b21f3bc81 ]
+[ Upstream commit 58300f8d6a48e58d1843199be743f819e2791ea3 ]
 
-If the nvmet_auth_host_hash() function fails, the error code should
-be returned to its callers.
+The string SND_SOC_DAPM_DIR_OUT is printed in the snd_soc_dapm_path trace
+event instead of its value:
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+   (((REC->path_dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
+
+User space cannot parse this, as it has no idea what SND_SOC_DAPM_DIR_OUT
+is. Use TRACE_DEFINE_ENUM() to convert it to its value:
+
+   (((REC->path_dir) == 1) ? "->" : "<-")
+
+So that user space tools, such as perf and trace-cmd, can parse it
+correctly.
+
+Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Fixes: 6e588a0d839b5 ("ASoC: dapm: Consolidate path trace events")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/r/20240416000303.04670cdf@rorschach.local.home
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/auth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/trace/events/asoc.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvme/target/auth.c b/drivers/nvme/target/auth.c
-index 4dcddcf95279b..1f7d492c4dc26 100644
---- a/drivers/nvme/target/auth.c
-+++ b/drivers/nvme/target/auth.c
-@@ -368,7 +368,7 @@ int nvmet_auth_host_hash(struct nvmet_req *req, u8 *response,
- 	kfree_sensitive(host_response);
- out_free_tfm:
- 	crypto_free_shash(shash_tfm);
--	return 0;
-+	return ret;
- }
+diff --git a/include/trace/events/asoc.h b/include/trace/events/asoc.h
+index 4d8ef71090af1..97a434d021356 100644
+--- a/include/trace/events/asoc.h
++++ b/include/trace/events/asoc.h
+@@ -12,6 +12,8 @@
+ #define DAPM_DIRECT "(direct)"
+ #define DAPM_ARROW(dir) (((dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
  
- int nvmet_auth_ctrl_hash(struct nvmet_req *req, u8 *response,
++TRACE_DEFINE_ENUM(SND_SOC_DAPM_DIR_OUT);
++
+ struct snd_soc_jack;
+ struct snd_soc_card;
+ struct snd_soc_dapm_widget;
 -- 
 2.43.0
 
