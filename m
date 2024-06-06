@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-49085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED7C8FEBCA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D208FEBCD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C9BF285A5D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12441B25D1C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D00C1ABCD7;
-	Thu,  6 Jun 2024 14:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BB819AA49;
+	Thu,  6 Jun 2024 14:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZncMbs3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXRr4Hgi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E097C197A91;
-	Thu,  6 Jun 2024 14:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E75197A91;
+	Thu,  6 Jun 2024 14:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683295; cv=none; b=biL6kotJC44XM/JiFL5y+7nYaigojsoEfEfPSaMPINAU3yNe7yX0EIwGSXT3stEafj8CN6t3+0Ap/WE8yZN5op0qpOlG+EUy4r832fp0LRcP9zwifaJAWi3ptyJVWpQXibfrxdhfHA7hGzvdKyNc2v3PHs+X15ljpwZ8HXDkiys=
+	t=1717683296; cv=none; b=mN7G2cypvlU2YlFv0PVs0I1hreBOyEea3Tn6HyzRSk4LCo9M30ECjJaoZ1Nv4m/LHaUVZwiJK99peJppV5AgKtNwGOZ/NTOKkMBAEFOzPFzk/nbKfyNNgvTqUGDBqpRCH8yxyyWh44ynbaCimvxuLQHtKq/gFLxVX2lkeyZY2es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683295; c=relaxed/simple;
-	bh=91i5QrzHG1G+vHB4Dgam1AMTHwio6ktz8VMRvQdcWik=;
+	s=arc-20240116; t=1717683296; c=relaxed/simple;
+	bh=Jda6frCktPjEszAw8LuEwN8CAmPWNAM0eceXuQsdKZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b6RNdqiNVqIzzLaBnDIA0uECmv2zQWtCID5KlEYNJPgHgJLpZzM7En+h79fZ5QODOrQZrQ51e3pR13NVTXVFdqpvW+NPhKLH8lZNyM8yOnhPJH0VqVblIJekVnarOL3dYAqoxwJeZPo6HtYjOGj5eOYnA/J3jUq0dDtNjHKXvIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZncMbs3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CD4C32782;
-	Thu,  6 Jun 2024 14:14:54 +0000 (UTC)
+	 MIME-Version; b=Z+YBLO5F1IyQwsYqeZLBErxnunu2iu0qOfT7/EbnJQprh+pL3hqdkBUN34OxZHqpnBqn/ii9+lcThJ04okE1LtGmMBD7j9jj6Sm/sIxXHSHSbNHGCSmIHmEZ/SPOsJYZCP/TykJCRZF+qvdcJi4VBXnoMVOaAhHVG/gZQZ3P9as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXRr4Hgi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF23DC2BD10;
+	Thu,  6 Jun 2024 14:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683294;
-	bh=91i5QrzHG1G+vHB4Dgam1AMTHwio6ktz8VMRvQdcWik=;
+	s=korg; t=1717683295;
+	bh=Jda6frCktPjEszAw8LuEwN8CAmPWNAM0eceXuQsdKZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZncMbs35MsnRzVB1Va8OfYL1wBCgyrgepvhCfu4i71cOjLeDJnvdS5yiCI9uJRkb
-	 bnkU/i7SdT7zFAfbCLwFLL2TypTV1hupOQ6NPJTC8/nSEPrrtN2lhlIEa3VfzHF2Ko
-	 VRo9T77bK1z3TWxlepU/iKTEoSNh9E0oO6KbNtls=
+	b=FXRr4HgiYqSBpEd0p+BUPLfDP7At4Eq09WggipnxeYXAI+xyx+Kvd+cOObv7HutSU
+	 W/9LZgHt51cCx1TeI3+Xs8HwVVwX6/C3Jm9BcvIqPZyesCBkpKykqh8M0O19h0u8WU
+	 ecLNhAoOzdC11O1EN1JdS6ew4U749TnRiyPWWGOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Michael Schmitz <schmitzmic@gmail.com>,
+	Finn Thain <fthain@linux-m68k.org>,
 	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 235/744] m68k: Fix spinlock race in kernel thread creation
-Date: Thu,  6 Jun 2024 15:58:27 +0200
-Message-ID: <20240606131739.928954461@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Stan Johnson <userm57@yahoo.com>
+Subject: [PATCH 6.6 236/744] m68k: mac: Fix reboot hang on Mac IIci
+Date: Thu,  6 Jun 2024 15:58:28 +0200
+Message-ID: <20240606131739.969635280@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,75 +67,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Schmitz <schmitzmic@gmail.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit da89ce46f02470ef08f0f580755d14d547da59ed ]
+[ Upstream commit 265a3b322df9a973ff1fc63da70af456ab6ae1d6 ]
 
-Context switching does take care to retain the correct lock owner across
-the switch from 'prev' to 'next' tasks.  This does rely on interrupts
-remaining disabled for the entire duration of the switch.
+Calling mac_reset() on a Mac IIci does reset the system, but what
+follows is a POST failure that requires a manual reset to resolve.
+Avoid that by using the 68030 asm implementation instead of the C
+implementation.
 
-This condition is guaranteed for normal process creation and context
-switching between already running processes, because both 'prev' and
-'next' already have interrupts disabled in their saved copies of the
-status register.
+Apparently the SE/30 has a similar problem as it has used the asm
+implementation since before git. This patch extends that solution to
+other systems with a similar ROM.
 
-The situation is different for newly created kernel threads.  The status
-register is set to PS_S in copy_thread(), which does leave the IPL at 0.
-Upon restoring the 'next' thread's status register in switch_to() aka
-resume(), interrupts then become enabled prematurely.  resume() then
-returns via ret_from_kernel_thread() and schedule_tail() where run queue
-lock is released (see finish_task_switch() and finish_lock_switch()).
+After this patch, the only systems still using the C implementation are
+68040 systems where adb_type is either MAC_ADB_IOP or MAC_ADB_II. This
+implies a 1 MiB Quadra ROM.
 
-A timer interrupt calling scheduler_tick() before the lock is released
-in finish_task_switch() will find the lock already taken, with the
-current task as lock owner.  This causes a spinlock recursion warning as
-reported by Guenter Roeck.
+This now includes the Quadra 900/950, which previously fell through to
+the "should never get here" catch-all.
 
-As far as I can ascertain, this race has been opened in commit
-533e6903bea0 ("m68k: split ret_from_fork(), simplify kernel_thread()")
-but I haven't done a detailed study of kernel history so it may well
-predate that commit.
-
-Interrupts cannot be disabled in the saved status register copy for
-kernel threads (init will complain about interrupts disabled when
-finally starting user space).  Disable interrupts temporarily when
-switching the tasks' register sets in resume().
-
-Note that a simple oriw 0x700,%sr after restoring sr is not enough here
-- this leaves enough of a race for the 'spinlock recursion' warning to
-still be observed.
-
-Tested on ARAnyM and qemu (Quadra 800 emulation).
-
-Fixes: 533e6903bea0 ("m68k: split ret_from_fork(), simplify kernel_thread()")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/all/07811b26-677c-4d05-aeb4-996cd880b789@roeck-us.net
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
 Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/20240411033631.16335-1-schmitzmic@gmail.com
+Link: https://lore.kernel.org/r/480ebd1249d229c6dc1f3f1c6d599b8505483fd8.1714797072.git.fthain@linux-m68k.org
 Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/kernel/entry.S | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/m68k/mac/misc.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/arch/m68k/kernel/entry.S b/arch/m68k/kernel/entry.S
-index 4dd2fd7acba9e..2e1e9ad4f98ca 100644
---- a/arch/m68k/kernel/entry.S
-+++ b/arch/m68k/kernel/entry.S
-@@ -433,7 +433,9 @@ resume:
- 	movec	%a0,%dfc
+diff --git a/arch/m68k/mac/misc.c b/arch/m68k/mac/misc.c
+index c7cb29f0ff016..29e06f46ab511 100644
+--- a/arch/m68k/mac/misc.c
++++ b/arch/m68k/mac/misc.c
+@@ -451,30 +451,18 @@ void mac_poweroff(void)
  
- 	/* restore status register */
--	movew	%a1@(TASK_THREAD+THREAD_SR),%sr
-+	movew	%a1@(TASK_THREAD+THREAD_SR),%d0
-+	oriw	#0x0700,%d0
-+	movew	%d0,%sr
+ void mac_reset(void)
+ {
+-	if (macintosh_config->adb_type == MAC_ADB_II &&
+-	    macintosh_config->ident != MAC_MODEL_SE30) {
+-		/* need ROMBASE in booter */
+-		/* indeed, plus need to MAP THE ROM !! */
+-
+-		if (mac_bi_data.rombase == 0)
+-			mac_bi_data.rombase = 0x40800000;
+-
+-		/* works on some */
+-		rom_reset = (void *) (mac_bi_data.rombase + 0xa);
+-
+-		local_irq_disable();
+-		rom_reset();
+ #ifdef CONFIG_ADB_CUDA
+-	} else if (macintosh_config->adb_type == MAC_ADB_EGRET ||
+-	           macintosh_config->adb_type == MAC_ADB_CUDA) {
++	if (macintosh_config->adb_type == MAC_ADB_EGRET ||
++	    macintosh_config->adb_type == MAC_ADB_CUDA) {
+ 		cuda_restart();
++	} else
+ #endif
+ #ifdef CONFIG_ADB_PMU
+-	} else if (macintosh_config->adb_type == MAC_ADB_PB2) {
++	if (macintosh_config->adb_type == MAC_ADB_PB2) {
+ 		pmu_restart();
++	} else
+ #endif
+-	} else if (CPU_IS_030) {
+-
++	if (CPU_IS_030) {
+ 		/* 030-specific reset routine.  The idea is general, but the
+ 		 * specific registers to reset are '030-specific.  Until I
+ 		 * have a non-030 machine, I can't test anything else.
+@@ -522,6 +510,18 @@ void mac_reset(void)
+ 		    "jmp %/a0@\n\t" /* jump to the reset vector */
+ 		    ".chip 68k"
+ 		    : : "r" (offset), "a" (rombase) : "a0");
++	} else {
++		/* need ROMBASE in booter */
++		/* indeed, plus need to MAP THE ROM !! */
++
++		if (mac_bi_data.rombase == 0)
++			mac_bi_data.rombase = 0x40800000;
++
++		/* works on some */
++		rom_reset = (void *)(mac_bi_data.rombase + 0xa);
++
++		local_irq_disable();
++		rom_reset();
+ 	}
  
- 	rts
- 
+ 	/* should never get here */
 -- 
 2.43.0
 
