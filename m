@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A938FE964
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 512498FEE0D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E83C1F21B20
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53F151C24932
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAFA19A298;
-	Thu,  6 Jun 2024 14:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720991BF904;
+	Thu,  6 Jun 2024 14:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yi+oKbGF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fya6Z8cy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2AA19A292;
-	Thu,  6 Jun 2024 14:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312411BF8FF;
+	Thu,  6 Jun 2024 14:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683014; cv=none; b=BR4ntMfyhbSPbMM5pZZwY36n0ib6GmrtrgHf7svp478HPe77yl9JqAr41+YnOXi/LU2FwbFRVNd5bZHKK4I5g81JGcPHVwfCuIRQO6hA8Ay9o4I20FliuYSjNGsEJlKldKg9m6omIIMImewBVPB4Y6dafliLlVmUOcs/09gSX44=
+	t=1717683554; cv=none; b=lZuJVb1X1RQK94JWAX9M7/iRfGzLgGsMyX9m4Rm+qKFPkqMVQRKXXJ3VeZZUChvNMzKwNY6Lcv19LvK8Ccq6hmnS3op/L415IysX+5MTHMp/qSm/+F5ehKHpMbQyPVzK0Wm0IQBJMDjgb5FJBoATL+m1R66MZDTak8+ImcSRlT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683014; c=relaxed/simple;
-	bh=Atax6XiikmgdOTgpAAz3qW6kAyJiEvTbbPAqiN7DFJo=;
+	s=arc-20240116; t=1717683554; c=relaxed/simple;
+	bh=Naofmm5cfyJ7UBJObjjWEucTmTmkSL03gl3ZXJhpeFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PvkBQ0bd/0FC3XvBcTKup2/OI6tH+01P2O1haHtGyBEg78aHYpPlNYMNs2JGbF6wofWEIifyF65a98t/yY2B+bxrsSin4s2EC5/Zizfrp2sLzeYYn7m+0hIdkoAC1fQgmo1AG5LBGr3J4rvtCO4FZcnRHqYeRFCpzjEJEWD256E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yi+oKbGF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A3C5C32781;
-	Thu,  6 Jun 2024 14:10:14 +0000 (UTC)
+	 MIME-Version; b=d0RaAPx0PFgMFnQiDi5SfPwtuE8o74B1V+v4iVuQvg/n9P0j43hx/J/e9KPfn458lVDFZiSVRHCRVxFmpOQKeDIhc3XSqTR5K5+wzVxy4gsA531MhSrsK9IWupYYCtmmmhIPQW7zxyU7Vm3BAXs/fd9TesnuQGd2+5VLFpZM+nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fya6Z8cy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F51EC32781;
+	Thu,  6 Jun 2024 14:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683014;
-	bh=Atax6XiikmgdOTgpAAz3qW6kAyJiEvTbbPAqiN7DFJo=;
+	s=korg; t=1717683554;
+	bh=Naofmm5cfyJ7UBJObjjWEucTmTmkSL03gl3ZXJhpeFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yi+oKbGF7XzSLHnBF0jMho4OEHqXXl/oG99l82SlMkZTBIWKMXGWfW8bDOK4T6Ji/
-	 Tg0c1/4D7uhq2O2cP9NbvGtfXmVz16UkvATvTebBQ01YXN+QP+nN7YSmr1OJsgx8AD
-	 DxDfVxpokcKvIWnSQzR9usiTybddYTltu7DWL+ZU=
+	b=fya6Z8cyN8gbCf4f4OeZthe98jWhgPtSlv7ioD4TMtzBydaA/Y1V3GN28HKCDU1L3
+	 m78MthBL5WxA/qE5BY3Yl4L+U18yMr4qadMzs40Wc0K804Qqrk9uaxZxaIe1INvnvd
+	 JR+tRnPxRzvFVBxQ7fcNlFMoUPvWb5TZ9EYJkFUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dongliang Mu <mudongliangabcd@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 189/374] media: flexcop-usb: fix sanity check of bNumEndpoints
+Subject: [PATCH 6.6 496/744] extcon: max8997: select IRQ_DOMAIN instead of depending on it
 Date: Thu,  6 Jun 2024 16:02:48 +0200
-Message-ID: <20240606131658.201686118@linuxfoundation.org>
+Message-ID: <20240606131748.349965959@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongliang Mu <mudongliangabcd@gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit f62dc8f6bf82d1b307fc37d8d22cc79f67856c2f ]
+[ Upstream commit b1781d0a1458070d40134e4f3412ec9d70099bec ]
 
-Commit d725d20e81c2 ("media: flexcop-usb: sanity checking of endpoint type
-") adds a sanity check for endpoint[1], but fails to modify the sanity
-check of bNumEndpoints.
+IRQ_DOMAIN is a hidden (not user visible) symbol. Users cannot set
+it directly thru "make *config", so drivers should select it instead
+of depending on it if they need it.
+Relying on it being set for a dependency is risky.
 
-Fix this by modifying the sanity check of bNumEndpoints to 2.
+Consistently using "select" or "depends on" can also help reduce
+Kconfig circular dependency issues.
 
-Link: https://lore.kernel.org/linux-media/20220602055027.849014-1-dzm91@hust.edu.cn
-Fixes: d725d20e81c2 ("media: flexcop-usb: sanity checking of endpoint type")
-Signed-off-by: Dongliang Mu <mudongliangabcd@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Therefore, change EXTCON_MAX8997's use of "depends on" for
+IRQ_DOMAIN to "select".
+
+Link: https://lore.kernel.org/lkml/20240213060028.9744-1-rdunlap@infradead.org/
+Fixes: dca1a71e4108 ("extcon: Add support irq domain for MAX8997 muic")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/b2c2/flexcop-usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/extcon/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/b2c2/flexcop-usb.c b/drivers/media/usb/b2c2/flexcop-usb.c
-index 790787f0eba84..bcb24d8964981 100644
---- a/drivers/media/usb/b2c2/flexcop-usb.c
-+++ b/drivers/media/usb/b2c2/flexcop-usb.c
-@@ -515,7 +515,7 @@ static int flexcop_usb_init(struct flexcop_usb *fc_usb)
+diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
+index 8de9023c2a387..cf472e44c5ff9 100644
+--- a/drivers/extcon/Kconfig
++++ b/drivers/extcon/Kconfig
+@@ -116,7 +116,8 @@ config EXTCON_MAX77843
  
- 	alt = fc_usb->uintf->cur_altsetting;
- 
--	if (alt->desc.bNumEndpoints < 1)
-+	if (alt->desc.bNumEndpoints < 2)
- 		return -ENODEV;
- 	if (!usb_endpoint_is_isoc_in(&alt->endpoint[0].desc))
- 		return -ENODEV;
+ config EXTCON_MAX8997
+ 	tristate "Maxim MAX8997 EXTCON Support"
+-	depends on MFD_MAX8997 && IRQ_DOMAIN
++	depends on MFD_MAX8997
++	select IRQ_DOMAIN
+ 	help
+ 	  If you say yes here you get support for the MUIC device of
+ 	  Maxim MAX8997 PMIC. The MAX8997 MUIC is a USB port accessory
 -- 
 2.43.0
 
