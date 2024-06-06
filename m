@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-48872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE24C8FEAE6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4748F8FEAE9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFC851C25F1B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBEDE1F2564B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3351A1894;
-	Thu,  6 Jun 2024 14:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44DFC1A188E;
+	Thu,  6 Jun 2024 14:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2O3vEb89"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qO3mVx1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A20F1A187A;
-	Thu,  6 Jun 2024 14:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A001A189E;
+	Thu,  6 Jun 2024 14:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683188; cv=none; b=je6u2FpiMTlB9X5u8RMyPE3n9sUZ14nCrLNUpWM2G9IJbPcHfbBMNX3gSRkeERH9MlCCmosnn0y4A/NbKe5LJOTV1cYDUw+shuHtzu5YqX4WW7gOL4zuereq4wgTevd5786GNjfY+pdUMDO8PdDL9j9Ga2p7FOCq3A+G+PmLZL8=
+	t=1717683190; cv=none; b=ar6EE5GPJ8dMWvaKAVDb1DjMwncM75i82517l1GPRMxo2ZbDDRtBuX2+a+a2457YUNxO9+Gbg65Lbl7wFtF+asqIWIqZlqJUNB0UdBO+z2bwITywDcK/SKn8v2XvenqzESCzMhf/2xVoyK5Lxmyl1N+2b5degQnTfSVHqgNX15U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683188; c=relaxed/simple;
-	bh=BxXGsT+MbPtesKAk7HYa7KQ7KFmyVnGg4Oa0bUDSTbg=;
+	s=arc-20240116; t=1717683190; c=relaxed/simple;
+	bh=vhSMXx7WUpfi7of4BSmgYMrh6Sh0zez/ygCZrHG3UWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R43E89kM2IhyD9NYccvy7on586KmjxR/eCrxjlzqURdMJUIRBXSmMJWm4PLCLm8bPTbS8iI/qBj6eaM1kjHRy61BLrPgORRWe2GONCG8nSCl6i55Ubae36PQ9vBuKc/i7zALZ0TTD1PfCqmmmbn0O8SPis4cXGu9k10xuKNvhjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2O3vEb89; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652DAC2BD10;
-	Thu,  6 Jun 2024 14:13:08 +0000 (UTC)
+	 MIME-Version; b=p3jl8cJZv5jl0ZXUW5v2AJdnZmVCrWFB+TmlGWIUqcU8rGn1luKhq7EnF12OAwQGmIu/3OF3ife6nsZno3dIcCT+bLkkDQvLAn5+Y1Siz+GxfWTCeUFhwFtVjBTIRiK+Usm6s7cwkV4mkl//hxzy9BnSlgR9w6FpV0IdnpXBb34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qO3mVx1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EFCC2BD10;
+	Thu,  6 Jun 2024 14:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683188;
-	bh=BxXGsT+MbPtesKAk7HYa7KQ7KFmyVnGg4Oa0bUDSTbg=;
+	s=korg; t=1717683189;
+	bh=vhSMXx7WUpfi7of4BSmgYMrh6Sh0zez/ygCZrHG3UWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2O3vEb89NmXHVoIw9Qe9lVMV1DHuwpR5mnsdMtV/SeMiNUjmyI1WNUNWzuBx09yEu
-	 /cEXPdSXI0OEVKA6Y7hEVAO+tdgeAMFjruG1kIc6ypHgepehlJqYTroL5DMgTAAKqA
-	 6MqUXMGM+IJ4p2/Q5uBLsyqzKXXpGZWYJxol9CgQ=
+	b=qO3mVx1m0B+HBOISCYM4gjXFtNEGtl5XSysFyVVbjqguez+Jhi9Big9xGOSqg4ohZ
+	 Yj4mfEC0FdTwzZFemJt9lBkeJvemHDlbJeB1B7JyWMnbDSyZCz/WYWxB1dixcunWvh
+	 Lc1q05p45joq8r4Jx3nOGi3JRMe0K6/qdQTolo8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guixiong Wei <weiguixiong@bytedance.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/744] x86/boot: Ignore relocations in .notes sections in walk_relocs() too
-Date: Thu,  6 Jun 2024 15:56:44 +0200
-Message-ID: <20240606131736.659603699@linuxfoundation.org>
+Subject: [PATCH 6.6 133/744] wifi: ieee80211: fix ieee80211_mle_basic_sta_prof_size_ok()
+Date: Thu,  6 Jun 2024 15:56:45 +0200
+Message-ID: <20240606131736.691367351@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,52 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Guixiong Wei <weiguixiong@bytedance.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 76e9762d66373354b45c33b60e9a53ef2a3c5ff2 ]
+[ Upstream commit c121514df0daa800cc500dc2738e0b8a1c54af98 ]
 
-Commit:
+If there was a possibility of an MLE basic STA profile without
+subelements, we might reject it because we account for the one
+octet for sta_info_len twice (it's part of itself, and in the
+fixed portion). Like in ieee80211_mle_reconf_sta_prof_size_ok,
+subtract 1 to adjust that.
 
-  aaa8736370db ("x86, relocs: Ignore relocations in .notes section")
+When reading the elements we did take this into account, and
+since there are always elements, this never really mattered.
 
-... only started ignoring the .notes sections in print_absolute_relocs(),
-but the same logic should also by applied in walk_relocs() to avoid
-such relocations.
-
-[ mingo: Fixed various typos in the changelog, removed extra curly braces from the code. ]
-
-Fixes: aaa8736370db ("x86, relocs: Ignore relocations in .notes section")
-Fixes: 5ead97c84fa7 ("xen: Core Xen implementation")
-Fixes: da1a679cde9b ("Add /sys/kernel/notes")
-Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20240317150547.24910-1-weiguixiong@bytedance.com
+Fixes: 7b6f08771bf6 ("wifi: ieee80211: Support validating ML station profile length")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240318184907.00bb0b20ed60.I8c41dd6fc14c4b187ab901dea15ade73c79fb98c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/tools/relocs.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/linux/ieee80211.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
-index e7013283640f5..a2cfd19c11eea 100644
---- a/arch/x86/tools/relocs.c
-+++ b/arch/x86/tools/relocs.c
-@@ -746,6 +746,15 @@ static void walk_relocs(int (*process)(struct section *sec, Elf_Rel *rel,
- 		if (!(sec_applies->shdr.sh_flags & SHF_ALLOC)) {
- 			continue;
- 		}
-+
-+		/*
-+		 * Do not perform relocations in .notes sections; any
-+		 * values there are meant for pre-boot consumption (e.g.
-+		 * startup_xen).
-+		 */
-+		if (sec_applies->shdr.sh_type == SHT_NOTE)
-+			continue;
-+
- 		sh_symtab = sec_symtab->symtab;
- 		sym_strtab = sec_symtab->link->strtab;
- 		for (j = 0; j < sec->shdr.sh_size/sizeof(Elf_Rel); j++) {
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 2fa186258e359..aaaa5b90bfe25 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -5081,7 +5081,7 @@ static inline bool ieee80211_mle_basic_sta_prof_size_ok(const u8 *data,
+ 		info_len += 1;
+ 
+ 	return prof->sta_info_len >= info_len &&
+-	       fixed + prof->sta_info_len <= len;
++	       fixed + prof->sta_info_len - 1 <= len;
+ }
+ 
+ /**
 -- 
 2.43.0
 
