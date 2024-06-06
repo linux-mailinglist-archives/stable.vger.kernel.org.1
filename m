@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D8A48FED94
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0487C8FEED3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F5AE282BAB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A9001C25D93
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4831BC07D;
-	Thu,  6 Jun 2024 14:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3661A1865;
+	Thu,  6 Jun 2024 14:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZUM8To4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jl8HN/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF66A1BC063;
-	Thu,  6 Jun 2024 14:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7F41C7D8C;
+	Thu,  6 Jun 2024 14:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683502; cv=none; b=m8gn5WiIlAI8NFdNbzETGqLL8N/2Ju9P9Y35xqKioZHWDl9/2dUUx03YIy+BG/fxj5uOYSQNNAKHJ21DJFdboDjCWc6b4X5OBok8O1sEzAszEeLDbhpLJUqslOkW3suDeknGl9vGEw87+hskSoxRkRVTHlWvwVWr3xCkOa4b1DE=
+	t=1717683706; cv=none; b=KHZKnM3H48bHPYdw6nGcm9i/Mn96VAdFVZcRMl4bRuDw17JTOgcgxDXVLv8Ocdx8hwjo67hpCaUsSWPWetkD0IQ023W/dNezEsYoMYyvjTcsAnMbbSsdPm/MsQNU6Q+sHH7f6po8nJcv1uQ90lbyxKH8OKUnxMMUCDYqwAz4mIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683502; c=relaxed/simple;
-	bh=dxKykkCqzGoQ87HvM1dIKDTygYFPHr0U059n7FSFv9o=;
+	s=arc-20240116; t=1717683706; c=relaxed/simple;
+	bh=1+GBoEwEHCE3yRZwPKkUE6ft2rA3SXWp/CdrbcS/1aU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/uwSaQIoBeZoMmwAP7vC2M2QXld4IWpnKMkz3l/XoONWAi8Hk9ilIcKa4w2X+RKhMnZTWsRUGktDVTapZLrHsF4Bp7L0v8Zn+NueDYMHW1Nh/FcgKcEaSQ4eFwYBsXEoNkFOA2x1S6q4eiVQ1z++5JKnwThr3d5TbXbM5OB9yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZUM8To4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95912C32782;
-	Thu,  6 Jun 2024 14:18:22 +0000 (UTC)
+	 MIME-Version; b=SJ8Blg4PxoHMxYD1klELvK8dxCJ/71NF9SBKSaKish2nwh4exYff8kP63Qy4uBKNtBTl1RgmulLizXvkAOLGi9M7zx30LD52q+C9xaqMejfpEqGIJMu6cfKNe7TM72pEU1KB5lExrdXa6oktrjfMCeXOWnfUKo6FTLQme9TGusY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jl8HN/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF57C2BD10;
+	Thu,  6 Jun 2024 14:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683502;
-	bh=dxKykkCqzGoQ87HvM1dIKDTygYFPHr0U059n7FSFv9o=;
+	s=korg; t=1717683706;
+	bh=1+GBoEwEHCE3yRZwPKkUE6ft2rA3SXWp/CdrbcS/1aU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gZUM8To48MeSJofdFu9KHDxtCdK2QC4O+UhTU91CiqW4Iri1ZRl+mZX+WpkKD9O8X
-	 4OXNqogfMS9S5K6wpP195pZe09WeSsKHGNwXQIQAN7mqZAwFL7zWVjCa9kBANZfZsg
-	 qAJGOOJ9Tb1t6j5RFQ68G3sR1BPtfh/D7sprvXqM=
+	b=2jl8HN/Yb1u+/jifCW38uzVUFT67WCWlaVoc6+iWbGd40ElbZXOe/VXmLPn7VTEZa
+	 UPcnvm34Fl1SWBQ2YlL58ei1R/69KOJJiyhgGnl3OYl5gYHrBzjOeTWjigEN8xUMxS
+	 CaWm4iOQ4gIry8jVV4DeyqKUAtN+Fc2lDIuDVMYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Richard Weinberger <richard@nod.at>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 374/473] um: Add winch to winch_handlers before registering winch IRQ
-Date: Thu,  6 Jun 2024 16:05:03 +0200
-Message-ID: <20240606131712.250905021@linuxfoundation.org>
+Subject: [PATCH 6.6 632/744] x86/kconfig: Select ARCH_WANT_FRAME_POINTERS again when UNWINDER_FRAME_POINTER=y
+Date: Thu,  6 Jun 2024 16:05:04 +0200
+Message-ID: <20240606131752.744166418@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit a0fbbd36c156b9f7b2276871d499c9943dfe5101 ]
+[ Upstream commit 66ee3636eddcc82ab82b539d08b85fb5ac1dff9b ]
 
-Registering a winch IRQ is racy, an interrupt may occur before the winch is
-added to the winch_handlers list.
+It took me some time to understand the purpose of the tricky code at
+the end of arch/x86/Kconfig.debug.
 
-If that happens, register_winch_irq() adds to that list a winch that is
-scheduled to be (or has already been) freed, causing a panic later in
-winch_cleanup().
+Without it, the following would be shown:
 
-Avoid the race by adding the winch to the winch_handlers list before
-registering the IRQ, and rolling back if um_request_irq() fails.
+  WARNING: unmet direct dependencies detected for FRAME_POINTER
 
-Fixes: 42a359e31a0e ("uml: SIGIO support cleanup")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+because
+
+  81d387190039 ("x86/kconfig: Consolidate unwinders into multiple choice selection")
+
+removed 'select ARCH_WANT_FRAME_POINTERS'.
+
+The correct and more straightforward approach should have been to move
+it where 'select FRAME_POINTER' is located.
+
+Several architectures properly handle the conditional selection of
+ARCH_WANT_FRAME_POINTERS. For example, 'config UNWINDER_FRAME_POINTER'
+in arch/arm/Kconfig.debug.
+
+Fixes: 81d387190039 ("x86/kconfig: Consolidate unwinders into multiple choice selection")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20240204122003.53795-1-masahiroy@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/line.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ arch/x86/Kconfig.debug | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/um/drivers/line.c b/arch/um/drivers/line.c
-index 02b0befd67632..95ad6b190d1d1 100644
---- a/arch/um/drivers/line.c
-+++ b/arch/um/drivers/line.c
-@@ -673,24 +673,26 @@ void register_winch_irq(int fd, int tty_fd, int pid, struct tty_port *port,
- 		goto cleanup;
- 	}
+diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
+index c5d614d28a759..74777a97e394a 100644
+--- a/arch/x86/Kconfig.debug
++++ b/arch/x86/Kconfig.debug
+@@ -248,6 +248,7 @@ config UNWINDER_ORC
  
--	*winch = ((struct winch) { .list  	= LIST_HEAD_INIT(winch->list),
--				   .fd  	= fd,
-+	*winch = ((struct winch) { .fd  	= fd,
- 				   .tty_fd 	= tty_fd,
- 				   .pid  	= pid,
- 				   .port 	= port,
- 				   .stack	= stack });
+ config UNWINDER_FRAME_POINTER
+ 	bool "Frame pointer unwinder"
++	select ARCH_WANT_FRAME_POINTERS
+ 	select FRAME_POINTER
+ 	help
+ 	  This option enables the frame pointer unwinder for unwinding kernel
+@@ -271,7 +272,3 @@ config UNWINDER_GUESS
+ 	  overhead.
  
-+	spin_lock(&winch_handler_lock);
-+	list_add(&winch->list, &winch_handlers);
-+	spin_unlock(&winch_handler_lock);
-+
- 	if (um_request_irq(WINCH_IRQ, fd, IRQ_READ, winch_interrupt,
- 			   IRQF_SHARED, "winch", winch) < 0) {
- 		printk(KERN_ERR "register_winch_irq - failed to register "
- 		       "IRQ\n");
-+		spin_lock(&winch_handler_lock);
-+		list_del(&winch->list);
-+		spin_unlock(&winch_handler_lock);
- 		goto out_free;
- 	}
- 
--	spin_lock(&winch_handler_lock);
--	list_add(&winch->list, &winch_handlers);
--	spin_unlock(&winch_handler_lock);
+ endchoice
 -
- 	return;
- 
-  out_free:
+-config FRAME_POINTER
+-	depends on !UNWINDER_ORC && !UNWINDER_GUESS
+-	bool
 -- 
 2.43.0
 
