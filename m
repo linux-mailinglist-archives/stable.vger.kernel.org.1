@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-48660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A21248FE9F4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA288FED65
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4057F284CDA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B3E9B2596E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAA119D07D;
-	Thu,  6 Jun 2024 14:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D5C1BA890;
+	Thu,  6 Jun 2024 14:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsZVK9DQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2BdBJYR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFE4198E7E;
-	Thu,  6 Jun 2024 14:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844791BA874;
+	Thu,  6 Jun 2024 14:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683084; cv=none; b=BbtbHldxb/UV+5hiEUL7H2dsnAliGFNsNold5C714GBgWqFCSdjlfWcStT/vUo4KbcUB6z09Y6Dw9deamL5AanNke8ukdVNfIDAjWHSA6g0OC8aUazBN/0T4g4bcStJ2Nabo75tNcHs30Xc/eUiYlT3JHnoBGhnMLJ3ibsgU9aI=
+	t=1717683483; cv=none; b=ntvxt/2xv7BrLPEyhVnUNhjkO+n5noGSowAV4rsG5SngdRyApwhmOkojQT9zoTYk5tJLB81ined4hrpRdOGr48GqCtlE0L6S5FOIHmUMuZksVdD+gW3vp17RekMKc7BtHX9flOfkQl68neghNCN0kxTBxy0qXNAPxSfQ8oDDIb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683084; c=relaxed/simple;
-	bh=9KmqFYQAuRPmOWrqITrH6NzXAT7Uly0pupcjt0/0TvI=;
+	s=arc-20240116; t=1717683483; c=relaxed/simple;
+	bh=SHKkdLz7bOqiN5cur+l/k2JOaQLbR8gi0M9Lx/xvqMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WIOMpeBC+kaahk41d87Lo7oivviX+tYTFBvrbnUdqJK3n4lDUcYlDSDbD8P3kuEMkmlOF7Rn76Bd4h2HAlCc5uyBVFUF7tk6sWQ7/BMxxd0pC5i8A7f1MbEeqHFViILy2twV162NM5VgzTl+Asyl7SAh0+Fupdeny9r6xyNCRDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsZVK9DQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF605C4AF0F;
-	Thu,  6 Jun 2024 14:11:24 +0000 (UTC)
+	 MIME-Version; b=B1eHx+EPI354CODqo40MV65Oy/gOgspBgTtw3EZrcmCDTcjbaJsTumQkvRolH3dyeMTIv/AzPlHLSHUEkW027CgIixG+RjroUkFXpn7ZEwuD5skXpte7cRRd6k4+F65aHvv9pQUTqw6oJa0APFnnP/VKeSqm2ObeWdrjrru0fOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2BdBJYR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6352BC32781;
+	Thu,  6 Jun 2024 14:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683084;
-	bh=9KmqFYQAuRPmOWrqITrH6NzXAT7Uly0pupcjt0/0TvI=;
+	s=korg; t=1717683483;
+	bh=SHKkdLz7bOqiN5cur+l/k2JOaQLbR8gi0M9Lx/xvqMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qsZVK9DQK7XyTdBwu5UZyrJiFBNJtIn/OYK6j1zG14le/tO/Bb9ZP/Aqp7C8V2tjD
-	 FY0IvxCfWfAkXuFqvBbwh76MBOG3aYZ4t+KJc8pfsuApiHSQWQ3s6o/+Takq5wNvQw
-	 Wl5iK5cSpU6/PB1MbXEifcmqQiCeUDfMoxJ9kQNo=
+	b=d2BdBJYReSqlu2KaU8ZvclHcegZ8Dx0yefFa0r+iMu1psxi2nxhGUaUAetP20kJ0E
+	 TlFkZ2HfopEWe0Uz68OqCJE1NylBaw9oqXyUAJQIZCevv4KFU1djZml1x4KZBrV8bX
+	 jtEWgJOxxD70V9rd/j3W24hnZ8aOTax9xm07Y+mM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Suman Ghosh <sumang@marvell.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 319/374] net: micrel: Fix lan8841_config_intr after getting out of sleep mode
+Subject: [PATCH 6.1 369/473] drm/msm/dpu: Always flush the slave INTF on the CTL
 Date: Thu,  6 Jun 2024 16:04:58 +0200
-Message-ID: <20240606131702.559514690@linuxfoundation.org>
+Message-ID: <20240606131712.096850693@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,64 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-[ Upstream commit 4fb679040d9f758eeb3b4d01bbde6405bf20e64e ]
+[ Upstream commit 2b938c3ab0a69ec6ea587bbf6fc2aec3db4a8736 ]
 
-When the interrupt is enabled, the function lan8841_config_intr tries to
-clear any pending interrupts by reading the interrupt status, then
-checks the return value for errors and then continue to enable the
-interrupt. It has been seen that once the system gets out of sleep mode,
-the interrupt status has the value 0x400 meaning that the PHY detected
-that the link was in low power. That is correct value but the problem is
-that the check is wrong.  We try to check for errors but we return an
-error also in this case which is not an error. Therefore fix this by
-returning only when there is an error.
+As we can clearly see in a downstream kernel [1], flushing the slave INTF
+is skipped /only if/ the PPSPLIT topology is active.
 
-Fixes: a8f1a19d27ef ("net: micrel: Add support for lan8841 PHY")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Suman Ghosh <sumang@marvell.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://lore.kernel.org/r/20240524085350.359812-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+However, when DPU was originally submitted to mainline PPSPLIT was no
+longer part of it (seems to have been ripped out before submission), but
+this clause was incorrectly ported from the original SDE driver.  Given
+that there is no support for PPSPLIT (currently), flushing the slave
+INTF should /never/ be skipped (as the `if (ppsplit && !master) goto
+skip;` clause downstream never becomes true).
+
+[1]: https://git.codelinaro.org/clo/la/platform/vendor/opensource/display-drivers/-/blob/display-kernel.lnx.5.4.r1-rel/msm/sde/sde_encoder_phys_cmd.c?ref_type=heads#L1131-1139
+
+Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/589901/
+Link: https://lore.kernel.org/r/20240417-drm-msm-initial-dualpipe-dsc-fixes-v1-3-78ae3ee9a697@somainline.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 18dee364e2b31..13370439a7cae 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -3516,7 +3516,7 @@ static int lan8841_config_intr(struct phy_device *phydev)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+index ae28b2b93e697..ce58d97818bcd 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+@@ -439,9 +439,6 @@ static void dpu_encoder_phys_cmd_enable_helper(
  
- 	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
- 		err = phy_read(phydev, LAN8814_INTS);
--		if (err)
-+		if (err < 0)
- 			return err;
+ 	_dpu_encoder_phys_cmd_pingpong_config(phys_enc);
  
- 		/* Enable / disable interrupts. It is OK to enable PTP interrupt
-@@ -3532,6 +3532,14 @@ static int lan8841_config_intr(struct phy_device *phydev)
- 			return err;
- 
- 		err = phy_read(phydev, LAN8814_INTS);
-+		if (err < 0)
-+			return err;
-+
-+		/* Getting a positive value doesn't mean that is an error, it
-+		 * just indicates what was the status. Therefore make sure to
-+		 * clear the value and say that there is no error.
-+		 */
-+		err = 0;
- 	}
- 
- 	return err;
+-	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
+-		return;
+-
+ 	ctl = phys_enc->hw_ctl;
+ 	ctl->ops.update_pending_flush_intf(ctl, phys_enc->intf_idx);
+ }
 -- 
 2.43.0
 
