@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-49136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D788FEC01
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 743D18FEC15
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 229861C20CE9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11FDB1F29937
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B379F198825;
-	Thu,  6 Jun 2024 14:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35AB19AD4D;
+	Thu,  6 Jun 2024 14:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acgV3/Li"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gK8lsGDS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736B719AA75;
-	Thu,  6 Jun 2024 14:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AB81AC44F;
+	Thu,  6 Jun 2024 14:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683319; cv=none; b=mqe1HnPcK2wLrrxBALWZ9zeOMQA8n2kbYcQpQpNuSwIQvFu2ps0mDQU35rmBPNv8UioGAaTljDRS5SDKtAubOWGpCy8gdnScruISdWmCRBVAZpAFOz7lF5SYTAhYlmqbgMzGapNmlOzfAa4jJCsjni8p3BLN0afOurYErQwPelI=
+	t=1717683327; cv=none; b=Rh60XMv4/Uuf5y+08LVuupO9vNxEdgVtiltMA48geH82j2XTjgBaL4n8CRaAG4MxmJ62J2lnYBTZi2AgY/HTJ6hnn0VbKeWAmEMHgr1n3BElsx66I3ber1toB6otDkPkFieU/xD1XfEUCbVXoSU0NMzU81nuTZW01wJWGJ5Cwug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683319; c=relaxed/simple;
-	bh=irxqmSiqAcLTtXw8BYUM+d/EEZLdUAT1LkCo9O2q5+E=;
+	s=arc-20240116; t=1717683327; c=relaxed/simple;
+	bh=AGSJeRARp39mKLL1CnSQvrElsyInvdntORaIMrRR7qI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJMdEUeOU/5C5XC9dg6BAsWz2r7vowXtPmelOhOLJqSvKzz+Lm7IE2HWsHCsdFkqVoPaSUUEBnjcIf45UIMZnzfOu4c2pNSvwfIywwiEEZH57rYEynwqPXtrzOOE2WG+SbzQU2dXv/UbzLCHABua8FhsgKliU6d0vD9jVY30yTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acgV3/Li; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD83C2BD10;
-	Thu,  6 Jun 2024 14:15:19 +0000 (UTC)
+	 MIME-Version; b=bPDe4PDC7yQfTnhb9UhiGvhRKCy4c+1R1vamn9paxdy/nQupMu+hD8FXcYSifYPERPjwlTMhBdzWnPXqT13MTO4mk6KSSegQAu2ohOMu5TkdxOFoRi/HZAtVbseFzz5COx4gKobD2yyRGdoc6/7oOXSKKUOgDAaED9IPRIWVwXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gK8lsGDS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429DCC32782;
+	Thu,  6 Jun 2024 14:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683319;
-	bh=irxqmSiqAcLTtXw8BYUM+d/EEZLdUAT1LkCo9O2q5+E=;
+	s=korg; t=1717683327;
+	bh=AGSJeRARp39mKLL1CnSQvrElsyInvdntORaIMrRR7qI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=acgV3/Lib2lgIYHeWckCEN/ZrLiGjLIIdI0yg+bGM8gdGZtkIxwHI7fnI0fx2ExEi
-	 x2GbG5n1AWw4LpbBF1s894vlHYnrgkzZuakyXpZ4z1LXXNFdt2on+uqVTYmRcKSetM
-	 p1wQMYQePHShrE96a5qNPFR9+acAEvl1D2a8h4Z0=
+	b=gK8lsGDS2aZQjERQh2jriW/xQJaDKd6pE4dX4bD/FfHmJQ80FrhC3L7Ljmn+0GEA8
+	 n3B0tPlKxzOeQOr4LLV7dos3TOzB/70+Lr+ZVW1/kjaw7rOYOg7pI8jl7Mm0l0NOhO
+	 brhinurKqmnQ+CZnRnExat7WVgmPGEmV2gSe1WCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xingwang <gaoxingwang1@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 237/744] net: ipv6: fix wrong start position when receive hop-by-hop fragment
-Date: Thu,  6 Jun 2024 15:58:29 +0200
-Message-ID: <20240606131740.002630273@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Erhard Furtner <erhard_f@mailbox.org>
+Subject: [PATCH 6.6 238/744] eth: sungem: remove .ndo_poll_controller to avoid deadlocks
+Date: Thu,  6 Jun 2024 15:58:30 +0200
+Message-ID: <20240606131740.035117561@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -66,39 +67,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: gaoxingwang <gaoxingwang1@huawei.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 1cd354fe1e4864eeaff62f66ee513080ec946f20 ]
+[ Upstream commit ac0a230f719b02432d8c7eba7615ebd691da86f4 ]
 
-In IPv6, ipv6_rcv_core will parse the hop-by-hop type extension header and increase skb->transport_header by one extension header length.
-But if there are more other extension headers like fragment header at this time, the skb->transport_header points to the second extension header,
-not the transport layer header or the first extension header.
+Erhard reports netpoll warnings from sungem:
 
-This will result in the start and nexthdrp variable not pointing to the same position in ipv6frag_thdr_trunced,
-and ipv6_skip_exthdr returning incorrect offset and frag_off.Sometimes,the length of the last sharded packet is smaller than the calculated incorrect offset, resulting in packet loss.
-We can use network header to offset and calculate the correct position to solve this problem.
+  netpoll_send_skb_on_dev(): eth0 enabled interrupts in poll (gem_start_xmit+0x0/0x398)
+  WARNING: CPU: 1 PID: 1 at net/core/netpoll.c:370 netpoll_send_skb+0x1fc/0x20c
 
-Fixes: 9d9e937b1c8b (ipv6/netfilter: Discard first fragment not including all headers)
-Signed-off-by: Gao Xingwang <gaoxingwang1@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+gem_poll_controller() disables interrupts, which may sleep.
+We can't sleep in netpoll, it has interrupts disabled completely.
+Strangely, gem_poll_controller() doesn't even poll the completions,
+and instead acts as if an interrupt has fired so it just schedules
+NAPI and exits. None of this has been necessary for years, since
+netpoll invokes NAPI directly.
+
+Fixes: fe09bb619096 ("sungem: Spring cleaning and GRO support")
+Reported-and-tested-by: Erhard Furtner <erhard_f@mailbox.org>
+Link: https://lore.kernel.org/all/20240428125306.2c3080ef@legion
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240508134504.3560956-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/reassembly.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/sun/sungem.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
-index 5ebc47da1000c..2af98edef87ee 100644
---- a/net/ipv6/reassembly.c
-+++ b/net/ipv6/reassembly.c
-@@ -369,7 +369,7 @@ static int ipv6_frag_rcv(struct sk_buff *skb)
- 	 * the source of the fragment, with the Pointer field set to zero.
- 	 */
- 	nexthdr = hdr->nexthdr;
--	if (ipv6frag_thdr_truncated(skb, skb_transport_offset(skb), &nexthdr)) {
-+	if (ipv6frag_thdr_truncated(skb, skb_network_offset(skb) + sizeof(struct ipv6hdr), &nexthdr)) {
- 		__IP6_INC_STATS(net, __in6_dev_get_safely(skb->dev),
- 				IPSTATS_MIB_INHDRERRORS);
- 		icmpv6_param_prob(skb, ICMPV6_HDR_INCOMP, 0);
+diff --git a/drivers/net/ethernet/sun/sungem.c b/drivers/net/ethernet/sun/sungem.c
+index 9bd1df8308d24..d3a2fbb14140e 100644
+--- a/drivers/net/ethernet/sun/sungem.c
++++ b/drivers/net/ethernet/sun/sungem.c
+@@ -949,17 +949,6 @@ static irqreturn_t gem_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-static void gem_poll_controller(struct net_device *dev)
+-{
+-	struct gem *gp = netdev_priv(dev);
+-
+-	disable_irq(gp->pdev->irq);
+-	gem_interrupt(gp->pdev->irq, dev);
+-	enable_irq(gp->pdev->irq);
+-}
+-#endif
+-
+ static void gem_tx_timeout(struct net_device *dev, unsigned int txqueue)
+ {
+ 	struct gem *gp = netdev_priv(dev);
+@@ -2839,9 +2828,6 @@ static const struct net_device_ops gem_netdev_ops = {
+ 	.ndo_change_mtu		= gem_change_mtu,
+ 	.ndo_validate_addr	= eth_validate_addr,
+ 	.ndo_set_mac_address    = gem_set_mac_address,
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-	.ndo_poll_controller    = gem_poll_controller,
+-#endif
+ };
+ 
+ static int gem_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 -- 
 2.43.0
 
