@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-48433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD5C8FE8FD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3392B8FED87
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 704951F25296
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FDFBB2612E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395B01990D3;
-	Thu,  6 Jun 2024 14:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2501BBBE6;
+	Thu,  6 Jun 2024 14:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YprnaJfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azz6Z3BM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED36C197525;
-	Thu,  6 Jun 2024 14:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD34619DF69;
+	Thu,  6 Jun 2024 14:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682964; cv=none; b=eJ0FIlrOfB/40IFLQ08HcRfWqoAR+Fw66d1XkN76Ak27GknTpxjW6TQ77pW3ioFjLlYlp0LYm1LV++Rr7EQY0I58cZ6MeRb/pnFAGYsj4wFjAbSK8UhW7uycN0NB10FCNQtRUHWnmMb6AFW4NTaqelC40jX7LzFZ8Et7QKF7nbg=
+	t=1717683496; cv=none; b=dSVSwqkmUzlCS3zuCZfPgsc/KLdBMB0KjzfK52y0p5QyKYsPK0VV9VrtIvS7cBZ+a5ZKRmUU2s8WkmCikdOunXd/lbhVOFFA0pg73DQAsiFVRfRB3N7v4dO0UKm0MudFe79JMSSAg3QQ/bQvuSDiZx6wAJ0JeR8CUMeZealvU0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682964; c=relaxed/simple;
-	bh=AgVUPRfl/LcWyV2gnjP82G6/B6jiU8NBo7RHr+uSKy0=;
+	s=arc-20240116; t=1717683496; c=relaxed/simple;
+	bh=E0MQZEi3m0BrJlAkg8PpK0p2VdjUmd8CqBccF1GYeGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vzgz80/9598B0UduTPnnIgpj3oKv14Gp8HHqlz/kVWzRd1We6lUooHvDOWZBuOSQs9fL3h0m+qoxe7gOUQfwdTvW1orpAD7/UDd89rcOyX+vS7NMS/Tr7gA0IrX4XHGMJF6cjoT/GlKBI5r8lAptQyYGUwVC9nZtLDuBof3rpEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YprnaJfe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1901C32781;
-	Thu,  6 Jun 2024 14:09:23 +0000 (UTC)
+	 MIME-Version; b=Y0yi30qFgE1vs0Xa1aF13opqm62dyVIX78xogCHrxg76wrPMNchCqe9hF9nJZQlOHDrNHMTu3v2W8q6P+6gWo82V97Wr9OJXDiYELGCEgXgcBByeRP9p9O7Dws1Qxq+fcAzqWFiDSDVnUsiK+46o88bJQPjIAb/r5McvZVq7d40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azz6Z3BM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D90EC2BD10;
+	Thu,  6 Jun 2024 14:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682963;
-	bh=AgVUPRfl/LcWyV2gnjP82G6/B6jiU8NBo7RHr+uSKy0=;
+	s=korg; t=1717683496;
+	bh=E0MQZEi3m0BrJlAkg8PpK0p2VdjUmd8CqBccF1GYeGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YprnaJfe/+PRZMhc3hWLsmnNZR9Pq2caQY6xSDAQygi1zOseoKNcrfGTagb1mSKRm
-	 27PsGijZsJJHp4J8r3iem58T2j9/c5XrVWgn6GWOebaJoU7wbEY99wsvnjaR/AaqTJ
-	 qwkUyvZgmG113Fux/hnDsnUutgG1GJT7BPn6lDbc=
+	b=azz6Z3BMmrdvuOeqKu04Gs0/CPCW6a5VkdAP34M7GD/fVPgXclPVYyQKEU9u1L4XX
+	 IbvQJjQBBC44BUuXUTgZvf85cDwymLNOiKIT3dVe2W6yKKxSsWt40bISkMMdal0O4C
+	 GaLU8zNc5oVkzf1FpkCCGBVTjukiW/aQWTLThj7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Remus <jremus@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Jan Kara <jack@suse.cz>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 132/374] s390/stacktrace: Skip first user stack frame
+Subject: [PATCH 6.6 439/744] splice: remove permission hook from iter_file_splice_write()
 Date: Thu,  6 Jun 2024 16:01:51 +0200
-Message-ID: <20240606131656.324836011@linuxfoundation.org>
+Message-ID: <20240606131746.563882173@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 87eceb17a987802aeee718be4decd19b56fc8e33 ]
+[ Upstream commit d53471ba6f7ae97a4e223539029528108b705af1 ]
 
-When walking user stack frames the first stack frame (where the stack
-pointer points to) should be skipped: the return address of the current
-function is saved in the previous stack frame, not the current stack frame,
-which is allocated for to be called functions.
+All the callers of ->splice_write(), (e.g. do_splice_direct() and
+do_splice()) already check rw_verify_area() for the entire range
+and perform all the other checks that are in vfs_write_iter().
 
-Fixes: aa44433ac4ee ("s390: add USER_STACKTRACE support")
-Reviewed-by: Jens Remus <jremus@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Instead of creating another tiny helper for special caller, just
+open-code it.
+
+This is needed for fanotify "pre content" events.
+
+Suggested-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://lore.kernel.org/r/20231122122715.2561213-6-amir73il@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 7c98f7cb8fda ("remove call_{read,write}_iter() functions")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/stacktrace.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/splice.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/s390/kernel/stacktrace.c b/arch/s390/kernel/stacktrace.c
-index e580d4cd2729a..1c9e3b7739a22 100644
---- a/arch/s390/kernel/stacktrace.c
-+++ b/arch/s390/kernel/stacktrace.c
-@@ -95,6 +95,10 @@ void arch_stack_walk_user_common(stack_trace_consume_fn consume_entry, void *coo
- 	while (1) {
- 		if (__get_user(sp, &sf->back_chain))
- 			break;
-+		/* Sanity check: ABI requires SP to be 8 byte aligned. */
-+		if (!sp || sp & 0x7)
-+			break;
-+		sf = (void __user *)sp;
- 		if (__get_user(ip, &sf->gprs[8]))
- 			break;
- 		if (ip & 0x1) {
-@@ -110,10 +114,6 @@ void arch_stack_walk_user_common(stack_trace_consume_fn consume_entry, void *coo
+diff --git a/fs/splice.c b/fs/splice.c
+index d983d375ff113..a8f97c5e8cf0e 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -673,10 +673,13 @@ iter_file_splice_write(struct pipe_inode_info *pipe, struct file *out,
+ 		.u.file = out,
+ 	};
+ 	int nbufs = pipe->max_usage;
+-	struct bio_vec *array = kcalloc(nbufs, sizeof(struct bio_vec),
+-					GFP_KERNEL);
++	struct bio_vec *array;
+ 	ssize_t ret;
+ 
++	if (!out->f_op->write_iter)
++		return -EINVAL;
++
++	array = kcalloc(nbufs, sizeof(struct bio_vec), GFP_KERNEL);
+ 	if (unlikely(!array))
+ 		return -ENOMEM;
+ 
+@@ -684,6 +687,7 @@ iter_file_splice_write(struct pipe_inode_info *pipe, struct file *out,
+ 
+ 	splice_from_pipe_begin(&sd);
+ 	while (sd.total_len) {
++		struct kiocb kiocb;
+ 		struct iov_iter from;
+ 		unsigned int head, tail, mask;
+ 		size_t left;
+@@ -733,7 +737,10 @@ iter_file_splice_write(struct pipe_inode_info *pipe, struct file *out,
  		}
- 		if (!store_ip(consume_entry, cookie, entry, perf, ip))
- 			return;
--		/* Sanity check: ABI requires SP to be aligned 8 bytes. */
--		if (!sp || sp & 0x7)
--			break;
--		sf = (void __user *)sp;
- 		first = false;
- 	}
- 	pagefault_enable();
+ 
+ 		iov_iter_bvec(&from, ITER_SOURCE, array, n, sd.total_len - left);
+-		ret = vfs_iter_write(out, &from, &sd.pos, 0);
++		init_sync_kiocb(&kiocb, out);
++		kiocb.ki_pos = sd.pos;
++		ret = call_write_iter(out, &kiocb, &from);
++		sd.pos = kiocb.ki_pos;
+ 		if (ret <= 0)
+ 			break;
+ 
 -- 
 2.43.0
 
