@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-48404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C648FE8E0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7178FEBA8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BD751C24E3C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C223B22153
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146A3198E8C;
-	Thu,  6 Jun 2024 14:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206931AB91B;
+	Thu,  6 Jun 2024 14:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTvfbVTa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToGS8BR+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CD41974F3;
-	Thu,  6 Jun 2024 14:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D388F19A2A4;
+	Thu,  6 Jun 2024 14:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682945; cv=none; b=J49hJOSJG4HfuPfTHfgyxh7T5wBGM1E3QvwLI7qOPF9VQznrEgT5aUxIPItddTE76ZPau+9j7jSUNDoKhvsKqqYzf73cLTvAdk2vRtVfWvD2HDiEtxqO5YMukIXVf4R27hTu455xTjmfCIPdKZridSMusN45x/arO5gPAAwtQ8k=
+	t=1717683277; cv=none; b=EUiU3hpp4axurXmRr4ZT0/pos+KCbKXmNcSjZmgPcdif5xOBR9XLmQcYcjIyjpq7w0LdN+o6rr/q3UMZNHGY76iCbu8rLZaqd+4BrLV4orCmbZtMYH6lhtfdSHoIo8rufqVdegLqCuo/UUqyqD0XHKsP0jrrOmsTVacMrrFGkas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682945; c=relaxed/simple;
-	bh=7rD5DQz9o8x0Atbb1scwJdg9Hp+3+1I3bQnCB1pUpzg=;
+	s=arc-20240116; t=1717683277; c=relaxed/simple;
+	bh=WkMGRVT0b9mYOnIfDvuZpNg8goUCZ/FUixpAvMY5+L0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rK46oe609A1yMKjZg3Si/NhPILstcxuq0O0qelzjdV6MwmCB6Huw8Nxy9Iu/VgK3uMj5inmWnPR5M9GhuiGsj9yADZMBBmIfIKytAX/eigxio5LAVFYIjTsEPRS1tHQFA+RVvXyOomT0/TokRReT3j84uOiV82mOrMQYv/NgnBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTvfbVTa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D778C2BD10;
-	Thu,  6 Jun 2024 14:09:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=urZjuMVOQDKBMK1d5Cv9rI6k0p/aWQFm70Bfeg85t/RT9idiyJAkpn44jUwUq+iendraDw/YYWHwDx0nh1Sy4rQL0xhOaMfvlnUahrtLyxdYLtMuXren++NlZANxfucLMSuQnR3GMHURp0CCAAQOXo/8kpqxTJ7sLB48uegIGUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToGS8BR+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA525C32781;
+	Thu,  6 Jun 2024 14:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682945;
-	bh=7rD5DQz9o8x0Atbb1scwJdg9Hp+3+1I3bQnCB1pUpzg=;
+	s=korg; t=1717683277;
+	bh=WkMGRVT0b9mYOnIfDvuZpNg8goUCZ/FUixpAvMY5+L0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTvfbVTallrJpxllwoGUuJp8oF+x3jTaAUT5cM1DaYmovVWTWoz4KO6jnVXB96CGT
-	 HTqPsoAJRqDncMgk17s6nYmfw/7+7qbmJIgWWCiv4/s5C6zA2za5cjfHd4VkFozb4s
-	 nom7jj78aqcQxecJUayWy2PAthzPygPoF8PmCfZw=
+	b=ToGS8BR+y8d13RDbdt0yIJLMYDY/8R4T3XPRjutQSAG1c3GKe1Onuoh5JokFCJ1Ip
+	 R5x7VJ+EZEnSX5Lg/INGIkzD0pFVUu8zv+FeXWo4BywOySAlsoCAUn2yQXrLq8tv0o
+	 DR5/5ksA2UmMgjMsYtm6P0iAImpuCby5KSxm2LhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@arm.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Brendan Higgins <brendanhiggins@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	David Gow <davidgow@google.com>,
+	Rae Moar <rmoar@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 105/374] perf symbols: Update kcore map before merging in remaining symbols
+Subject: [PATCH 6.1 155/473] kunit: Fix kthread reference
 Date: Thu,  6 Jun 2024 16:01:24 +0200
-Message-ID: <20240606131655.444177936@linuxfoundation.org>
+Message-ID: <20240606131705.083879875@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,114 +64,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit f30232b20fadea8c0f2f43f764bc06e51e8cfcdf ]
+[ Upstream commit f8aa1b98ce40184521ed95ec26cc115a255183b2 ]
 
-When loading kcore, the main vmlinux map is updated in the same loop
-that merges the remaining maps. If a map that overlaps is merged in
-before kcore, the list can become unsortable when the main map addresses
-are updated. This will later trigger the check_invariants() assert:
+There is a race condition when a kthread finishes after the deadline and
+before the call to kthread_stop(), which may lead to use after free.
 
-  $ perf record
-  $ perf report
-
-  util/maps.c:96: check_invariants: Assertion `map__end(prev) <=
-    map__start(map) || map__start(prev) == map__start(map)' failed.
-  Aborted
-
-Fix it by moving the main map update prior to the loop so that
-maps__merge_in() can split it if necessary.
-
-Fixes: 659ad3492b913c90 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
-Signed-off-by: James Clark <james.clark@arm.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240507141210.195939-4-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Brendan Higgins <brendanhiggins@google.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Fixes: adf505457032 ("kunit: fix UAF when run kfence test case test_gfpzero")
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Rae Moar <rmoar@google.com>
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Link: https://lore.kernel.org/r/20240408074625.65017-3-mic@digikod.net
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/symbol.c | 40 +++++++++++++++++++++-------------------
- 1 file changed, 21 insertions(+), 19 deletions(-)
+ lib/kunit/try-catch.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index cd825241e07d9..a1ca1b8156fe5 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -1287,7 +1287,7 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
- {
- 	struct maps *kmaps = map__kmaps(map);
- 	struct kcore_mapfn_data md;
--	struct map *replacement_map = NULL;
-+	struct map *map_ref, *replacement_map = NULL;
- 	struct machine *machine;
- 	bool is_64_bit;
- 	int err, fd;
-@@ -1365,6 +1365,24 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
- 	if (!replacement_map)
- 		replacement_map = list_entry(md.maps.next, struct map_list_node, node)->map;
+diff --git a/lib/kunit/try-catch.c b/lib/kunit/try-catch.c
+index f7825991d576a..d9d1df28cc52e 100644
+--- a/lib/kunit/try-catch.c
++++ b/lib/kunit/try-catch.c
+@@ -11,6 +11,7 @@
+ #include <linux/completion.h>
+ #include <linux/kernel.h>
+ #include <linux/kthread.h>
++#include <linux/sched/task.h>
  
-+	/*
-+	 * Update addresses of vmlinux map. Re-insert it to ensure maps are
-+	 * correctly ordered. Do this before using maps__merge_in() for the
-+	 * remaining maps so vmlinux gets split if necessary.
-+	 */
-+	map_ref = map__get(map);
-+	maps__remove(kmaps, map_ref);
-+
-+	map__set_start(map_ref, map__start(replacement_map));
-+	map__set_end(map_ref, map__end(replacement_map));
-+	map__set_pgoff(map_ref, map__pgoff(replacement_map));
-+	map__set_mapping_type(map_ref, map__mapping_type(replacement_map));
-+
-+	err = maps__insert(kmaps, map_ref);
-+	map__put(map_ref);
-+	if (err)
-+		goto out_err;
-+
- 	/* Add new maps */
- 	while (!list_empty(&md.maps)) {
- 		struct map_list_node *new_node = list_entry(md.maps.next, struct map_list_node, node);
-@@ -1372,24 +1390,8 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
+ #include "try-catch-impl.h"
  
- 		list_del_init(&new_node->node);
+@@ -65,13 +66,14 @@ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context)
+ 	try_catch->context = context;
+ 	try_catch->try_completion = &try_completion;
+ 	try_catch->try_result = 0;
+-	task_struct = kthread_run(kunit_generic_run_threadfn_adapter,
+-				  try_catch,
+-				  "kunit_try_catch_thread");
++	task_struct = kthread_create(kunit_generic_run_threadfn_adapter,
++				     try_catch, "kunit_try_catch_thread");
+ 	if (IS_ERR(task_struct)) {
+ 		try_catch->catch(try_catch->context);
+ 		return;
+ 	}
++	get_task_struct(task_struct);
++	wake_up_process(task_struct);
  
--		if (RC_CHK_EQUAL(new_map, replacement_map)) {
--			struct map *map_ref;
--
--			/* Ensure maps are correctly ordered */
--			map_ref = map__get(map);
--			maps__remove(kmaps, map_ref);
--
--			map__set_start(map_ref, map__start(new_map));
--			map__set_end(map_ref, map__end(new_map));
--			map__set_pgoff(map_ref, map__pgoff(new_map));
--			map__set_mapping_type(map_ref, map__mapping_type(new_map));
--
--			err = maps__insert(kmaps, map_ref);
--			map__put(map_ref);
--			map__put(new_map);
--			if (err)
--				goto out_err;
--		} else {
-+		/* skip if replacement_map, already inserted above */
-+		if (!RC_CHK_EQUAL(new_map, replacement_map)) {
- 			/*
- 			 * Merge kcore map into existing maps,
- 			 * and ensure that current maps (eBPF)
+ 	time_remaining = wait_for_completion_timeout(&try_completion,
+ 						     kunit_test_timeout());
+@@ -81,6 +83,7 @@ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context)
+ 		kthread_stop(task_struct);
+ 	}
+ 
++	put_task_struct(task_struct);
+ 	exit_code = try_catch->try_result;
+ 
+ 	if (!exit_code)
 -- 
 2.43.0
 
