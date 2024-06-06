@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F118FECCE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D8A8FEE7C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8957D1C262A5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 730391F24C40
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B8B1B29D0;
-	Thu,  6 Jun 2024 14:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8464E1C373F;
+	Thu,  6 Jun 2024 14:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGejTWeS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/H884JZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5415C1B29CF;
-	Thu,  6 Jun 2024 14:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D93196D90;
+	Thu,  6 Jun 2024 14:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683411; cv=none; b=l4IvboxqVWJrCxr9ztGnokti3rdf002pEN1gWKeB6lj3plkuhCLYoS1aB8GT9AWzuJKSpcU0QdmfRiZsSC1H414NdUdcenqfkx9ron2lGCIfACuE2wlq70RfDXhGOlLNZRoCepNEgRP+jX/A+bTMwxF4LLuZ2h8qsNve2eRNy8g=
+	t=1717683666; cv=none; b=Sua99W9otht5Do7BoUDV6BYdm/UeE+8GBsTrN5N+vXLaCWl+16FclizK2CUxfjd2wu3K7O2FZ2p/fDigV05ndfTiFP37IQFi3Kzli97o//cQnoyDMXOTeYWUbmT3srAKQTq6IuvPvuNSJQrBY9RXVBaOszXP9pJ/MyFdLY7JwRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683411; c=relaxed/simple;
-	bh=30zUgdENfmXw7bvscPXFkKFnd/5Yl/nQJGc2UzX91gc=;
+	s=arc-20240116; t=1717683666; c=relaxed/simple;
+	bh=4wlpuHcgZAX6Dk8oma2Nc0O8b/gdiX1ednA2ptRipz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mV06YBh9oOO5ezrzACTEwZfD2oeL1/ZVTv0Uf3vQpjC+ZYS3BklJcJIVZYhquv1I7JDGvs2oCIgk8P9P8Pvd4nt5IdWiEzhuo0U6Aiju2ir+Xu2ne5LpPI6XgoHXihXuvPcmid9xBeXbnrdnRyzHNszgjYr54X6SU4PrF4QTDAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGejTWeS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B56FC2BD10;
-	Thu,  6 Jun 2024 14:16:51 +0000 (UTC)
+	 MIME-Version; b=TjvFQWY92jUnmF6TnVSwsQlDelLgSUvvpE7tO1phtChMEwMOi84Rf2A8fvO1E2hJ8Er2BuawC659STaqtvjzqN2XvVVYeGaZd6MGJhb8TI+JKTm/r0/KH7hQ7VomlRDvK6YT0T2+5/uQ1NN0hHUMXOqBHBxQfeAdZAYS2y+bAo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/H884JZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D1AC2BD10;
+	Thu,  6 Jun 2024 14:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683411;
-	bh=30zUgdENfmXw7bvscPXFkKFnd/5Yl/nQJGc2UzX91gc=;
+	s=korg; t=1717683666;
+	bh=4wlpuHcgZAX6Dk8oma2Nc0O8b/gdiX1ednA2ptRipz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tGejTWeSpL/CkkjjmhqIqYvOAYu6GHmtTM2PJo594D2xbXYPfdD1rSyMPy1sm3ycs
-	 hJijwpq3NyTpdzS14S26gDrFtXM61hg1a/K9jCbOxLmdFHSMMP4zYtw5nyyDQyWGnd
-	 BdgPpX+u9njaYsm4Y87S3RJfG9A66WwJjTBYyA8A=
+	b=G/H884JZDEkJrpX1HkhGy3FR1JOF85zNRyOgAlJUaEkg+nz3nJhL6nIBoJTvcz0qL
+	 6wBYo4hbhT7OP8LJs3eMsazDRxCx7ZjeDYFK4kIqQtyyfaR8EtrITPhY18pf/Pjg/C
+	 OMVCGgQUs+x2Rea+4WvlTK3RbPil+VWguHgi2Nvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 294/473] PCI: tegra194: Fix probe path for Endpoint mode
+Subject: [PATCH 6.6 551/744] serial: sc16is7xx: replace hardcoded divisor value with BIT() macro
 Date: Thu,  6 Jun 2024 16:03:43 +0200
-Message-ID: <20240606131709.598611138@linuxfoundation.org>
+Message-ID: <20240606131750.131177062@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 19326006a21da26532d982254677c892dae8f29b ]
+[ Upstream commit 2e57cefc4477659527f7adab1f87cdbf60ef1ae6 ]
 
-Tegra194 PCIe probe path is taking failure path in success case for
-Endpoint mode. Return success from the switch case instead of going
-into the failure path.
+To better show why the limit is what it is, since we have only 16 bits for
+the divisor.
 
-Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
-Link: https://lore.kernel.org/linux-pci/20240408093053.3948634-1-vidyas@nvidia.com
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231221231823.2327894-13-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 8492bd91aa05 ("serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/serial/sc16is7xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 5d1ae2706f6ea..0839454fe4994 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -2250,11 +2250,14 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
- 		ret = tegra_pcie_config_ep(pcie, pdev);
- 		if (ret < 0)
- 			goto fail;
-+		else
-+			return 0;
- 		break;
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 89eea1b8070fb..26ab1f042f5b8 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -489,7 +489,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 	u8 prescaler = 0;
+ 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
  
- 	default:
- 		dev_err(dev, "Invalid PCIe device type %d\n",
- 			pcie->of_data->mode);
-+		ret = -EINVAL;
+-	if (div > 0xffff) {
++	if (div >= BIT(16)) {
+ 		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
+ 		div /= 4;
  	}
- 
- fail:
 -- 
 2.43.0
 
