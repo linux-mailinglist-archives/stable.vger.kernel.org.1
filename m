@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277A08FEBE9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 158238FED96
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36662B274E0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFB5E1F216D3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E98911AC237;
-	Thu,  6 Jun 2024 14:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EDA1BC084;
+	Thu,  6 Jun 2024 14:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0XuSnOG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PbYwExal"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F371AC242;
-	Thu,  6 Jun 2024 14:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9D01BC07F;
+	Thu,  6 Jun 2024 14:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683307; cv=none; b=ii40zGfCslGT2b64b8vxoZ3Aa4U0bfQE+wEC7rg5ol/uS6wNkLr2HYx6INYlEVMXOqXkkjFpL9pp5gZf+6LN3ahHliib2o91p6tvf7qEEUTGDwqqAEEuyYHRL1H5zDCweRHgJ1rD4gZj5y33jxhdxEylk7VysCvJgdzrhu4r9lw=
+	t=1717683503; cv=none; b=F+v+6g2LcbwAuwS5s9MgyS4j/8QA6PxGokoHzFswfIO5Etx3cVAki6hxmgIxUnOi7SO/N/EKZZEoYIHiREhne7V+v2QhiVkDapmPi0L4TjEKvnz//vHtuEW69BIKgd3FqvYCi6zu+0YCrJefHHKewE/wpw8U5Intp8luCKU3aMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683307; c=relaxed/simple;
-	bh=vlGrCpPvbz5Zx+vqw/v7cUl+Z6abbVLj0MwTdwxs0yY=;
+	s=arc-20240116; t=1717683503; c=relaxed/simple;
+	bh=X1t8fTDIMTZBIlSqTKy9ZNfvNOHMhkYxpMWkfqOc0FM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ymi/auacdoR9KLNKrnLfXWvn9GkDjTm1PjxkpnOAJiXnJ8ENMMqNRCiILrl2elT5MOZW086k9m76jwoOOk+fIJ51U+oPxRjoriJNAdJ37bMcizrJqWMPI6FkuCj1fo/oj/BMpr2CQrVTBjlk2il7QN/S2OpYWlcAK0+1ZJFgcps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0XuSnOG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80CEAC2BD10;
-	Thu,  6 Jun 2024 14:15:07 +0000 (UTC)
+	 MIME-Version; b=QZnCYyu2zXXm3+BKdD9Q5Z3+EorTKoeBx/KL+IpOLqVh/ILCZ3j6fThQAK1/btM1VMv2CjbO72QvsRMnaO/DvcYXgkHrG36PKNJz1Ebv9cBeUR71Z01SmmxB4/lznvQyGetZ49md90nPfgnFSHJnZleygi1oX8iWDlIcIJ+g3kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PbYwExal; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D14DC2BD10;
+	Thu,  6 Jun 2024 14:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683307;
-	bh=vlGrCpPvbz5Zx+vqw/v7cUl+Z6abbVLj0MwTdwxs0yY=;
+	s=korg; t=1717683503;
+	bh=X1t8fTDIMTZBIlSqTKy9ZNfvNOHMhkYxpMWkfqOc0FM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0XuSnOGkFDHN9hYpc2k+m4Jj9Ccnsv/KYB/O0roo8v2LKZmYKX/q6pHSOy7uSAMe
-	 6Y0JDmFctZqqqafDQ1XKoyqNTn/KiG20faRH70u09IqJyeorBZL6M2LhQgLcX3+0QQ
-	 6s+YH2dklOFkcJWlyRhWu58+I/HIoNK3X0gtuOME=
+	b=PbYwExalysE4jLplehyZ4EKkZo81aQpNXhYRBpDltrTV6fOU2SQuvsAtvIg05TPqe
+	 hL4pFvtYHibzzM2IgOKfVdA/CL4nRHpB891KEmb/0JfGUdiFFaAhpsNck+avfKvka7
+	 O/iO7TMeB6BYBRaDhOcVhmCuB38XjF5Hsms1pRLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 188/473] Bluetooth: qca: Fix error code in qca_read_fw_build_info()
+Subject: [PATCH 6.6 445/744] iio: pressure: dps310: support negative temperature values
 Date: Thu,  6 Jun 2024 16:01:57 +0200
-Message-ID: <20240606131706.146119909@linuxfoundation.org>
+Message-ID: <20240606131746.776056607@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
 
-[ Upstream commit a189f0ee6685457528db7a36ded3085e5d13ddc3 ]
+[ Upstream commit 9dd6b32e76ff714308964cd9ec91466a343dcb8b ]
 
-Return -ENOMEM on allocation failure.  Don't return success.
+The current implementation interprets negative values returned from
+`dps310_calculate_temp` as error codes.
+This has a side effect that when negative temperature values are
+calculated, they are interpreted as error.
 
-Fixes: cda0d6a198e2 ("Bluetooth: qca: fix info leak when fetching fw build id")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fix this by using the return value only for error handling and passing a
+pointer for the value.
+
+Fixes: ba6ec48e76bc ("iio: Add driver for Infineon DPS310")
+Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+Link: https://lore.kernel.org/r/20240415105030.1161770-2-thomas.haemmerle@leica-geosystems.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iio/pressure/dps310.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index a0fadde993d70..2dda94a0875a6 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -148,8 +148,10 @@ static int qca_read_fw_build_info(struct hci_dev *hdev)
+diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
+index 1ff091b2f764d..d0a516d56da47 100644
+--- a/drivers/iio/pressure/dps310.c
++++ b/drivers/iio/pressure/dps310.c
+@@ -730,7 +730,7 @@ static int dps310_read_pressure(struct dps310_data *data, int *val, int *val2,
  	}
+ }
  
- 	build_label = kstrndup(&edl->data[1], build_lbl_len, GFP_KERNEL);
--	if (!build_label)
-+	if (!build_label) {
-+		err = -ENOMEM;
- 		goto out;
-+	}
+-static int dps310_calculate_temp(struct dps310_data *data)
++static int dps310_calculate_temp(struct dps310_data *data, int *val)
+ {
+ 	s64 c0;
+ 	s64 t;
+@@ -746,7 +746,9 @@ static int dps310_calculate_temp(struct dps310_data *data)
+ 	t = c0 + ((s64)data->temp_raw * (s64)data->c1);
  
- 	hci_set_fw_info(hdev, "%s", build_label);
+ 	/* Convert to milliCelsius and scale the temperature */
+-	return (int)div_s64(t * 1000LL, kt);
++	*val = (int)div_s64(t * 1000LL, kt);
++
++	return 0;
+ }
  
+ static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
+@@ -768,11 +770,10 @@ static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
+ 		if (rc)
+ 			return rc;
+ 
+-		rc = dps310_calculate_temp(data);
+-		if (rc < 0)
++		rc = dps310_calculate_temp(data, val);
++		if (rc)
+ 			return rc;
+ 
+-		*val = rc;
+ 		return IIO_VAL_INT;
+ 
+ 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
 -- 
 2.43.0
 
