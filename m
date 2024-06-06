@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 466888FE8FF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B66848FEBDB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9ECE1F24B7E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B93521C24932
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10641990C8;
-	Thu,  6 Jun 2024 14:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B501ABE41;
+	Thu,  6 Jun 2024 14:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slGb6Lh/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrS98yJ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0AC196DBD;
-	Thu,  6 Jun 2024 14:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E851ABE3A;
+	Thu,  6 Jun 2024 14:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682965; cv=none; b=c906XMM6nyDDyqp0iYHJ5Tp7uF0n+2DDIcTfOD/8yBSEudMz+m+9eGzfZCzXJxO+E8Leq2gQvhibkkob+QVNk7YsGNOYtnx9TTYsJWgPQAUSiv1F2ptSf/itU4zkA4UQ/4774w4iOp8a4fGPR7vTqnyTUtD9fp3R6Aler2gRIfU=
+	t=1717683302; cv=none; b=QtcKj+M+/UWbpjz3vvP0irex/53lSdk5dVuDkEFQdJgqnzijeXzoVon4azCclx2nQhZ6wxlnNEBvFJFitGx+uoFekzbYmNVvE5neHSXlfFiKl7YjviBJn8NNvsAfdHMcRTut90TVRhBFYynhR7YkB+AddNzk6vWIGUGDlZY85IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682965; c=relaxed/simple;
-	bh=F/6xiXzz8i4lY2PxmgXn1KhjtrwgWn3E/KvrabuG9N4=;
+	s=arc-20240116; t=1717683302; c=relaxed/simple;
+	bh=0vLShWbYH/yzkuRmbSG8y+ITUC31b/qqBv1LJBvaFJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kzR0hELcx27l0VzobUGWaD16vdIMMC7/NU/nJuxRJQj4GWH5zg2k/4yXEkxC93NWYssNexu5u8pdIBdexGgnlFxSqRS+fMGVizo8SNr+vD4nMLNioWMBVmpuQTccmJlJ8RKGCCWlzmI8V1cl+YODiAGz3h80lddSBGfik1GwVQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slGb6Lh/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E4A0C2BD10;
-	Thu,  6 Jun 2024 14:09:25 +0000 (UTC)
+	 MIME-Version; b=fyBwGDj4WBjEmKkT+P8W76XrIFMEYy48nYQNPAGMqDZxQHD7TjbRyGBlodKWHwPAtc6kqONle6r0BGoaN62JArlRNMkZqu6oeFmy0+CKe6skV2trdiJ9gGLm9Pbb91uh5Q+uqwOLohjyNhO1tp25qhtwv5Rt9KpphdCQoQGZrZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrS98yJ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E13C2BD10;
+	Thu,  6 Jun 2024 14:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682965;
-	bh=F/6xiXzz8i4lY2PxmgXn1KhjtrwgWn3E/KvrabuG9N4=;
+	s=korg; t=1717683302;
+	bh=0vLShWbYH/yzkuRmbSG8y+ITUC31b/qqBv1LJBvaFJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=slGb6Lh/Zb6vwRgzCuBjQAcZE/LMu4KPAGqqB21sxB0x2gmd1hr/S/mt91OZnSeGY
-	 RoLOes3vsAMpa+9dPtenfNWd3DxiPcmLS9MH/kUi9iNnJKJ/b5BbqYqQgzLV4JNo5R
-	 eKIjNRXriKDkUuafg7fdqD5n893reAoJdBZmXCsc=
+	b=RrS98yJ429iRbzXoayq4DUbI/w1fqhRUp7CIv8NRBNi9pS+htg0JguEf49XUIgPTI
+	 R5BHbZTn4t/eTRXHQaCkvSUO6ru2+nuIm6AeS/2Z5Ir8/9E6snQL+yX8q+BLaqcAaJ
+	 5uOO34dHYa3SjUSaZDFJkEw5JkwdkKifB9H1Wmtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Remus <jremus@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 133/374] s390/stacktrace: Improve detection of invalid instruction pointers
+Subject: [PATCH 6.1 183/473] ax25: Fix reference count leak issues of ax25_dev
 Date: Thu,  6 Jun 2024 16:01:52 +0200
-Message-ID: <20240606131656.357635533@linuxfoundation.org>
+Message-ID: <20240606131705.983215755@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit cd58109283944ea8bdcd0a8211a86cbd2450716a ]
+[ Upstream commit b505e0319852b08a3a716b64620168eab21f4ced ]
 
-Add basic checks to identify invalid instruction pointers when walking
-stack frames:
+The ax25_addr_ax25dev() and ax25_dev_device_down() exist a reference
+count leak issue of the object "ax25_dev".
 
-Instruction pointers must
+Memory leak issue in ax25_addr_ax25dev():
 
-- have even addresses
-- be larger than mmap_min_addr
-- lower than the asce_limit of the process
+The reference count of the object "ax25_dev" can be increased multiple
+times in ax25_addr_ax25dev(). This will cause a memory leak.
 
-Alternatively it would also be possible to walk page tables similar to fast
-GUP and verify that the mapping of the corresponding page is executable,
-however that seems to be overkill.
+Memory leak issues in ax25_dev_device_down():
 
-Fixes: aa44433ac4ee ("s390: add USER_STACKTRACE support")
-Reviewed-by: Jens Remus <jremus@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+The reference count of ax25_dev is set to 1 in ax25_dev_device_up() and
+then increase the reference count when ax25_dev is added to ax25_dev_list.
+As a result, the reference count of ax25_dev is 2. But when the device is
+shutting down. The ax25_dev_device_down() drops the reference count once
+or twice depending on if we goto unlock_put or not, which will cause
+memory leak.
+
+As for the issue of ax25_addr_ax25dev(), it is impossible for one pointer
+to be on a list twice. So add a break in ax25_addr_ax25dev(). As for the
+issue of ax25_dev_device_down(), increase the reference count of ax25_dev
+once in ax25_dev_device_up() and decrease the reference count of ax25_dev
+after it is removed from the ax25_dev_list.
+
+Fixes: d01ffb9eee4a ("ax25: add refcount in ax25_dev to avoid UAF bugs")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/361bbf2a4b091e120006279ec3b382d73c4a0c17.1715247018.git.duoming@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/stacktrace.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+ net/ax25/ax25_dev.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/stacktrace.c b/arch/s390/kernel/stacktrace.c
-index 1c9e3b7739a22..b4485b0c7f06b 100644
---- a/arch/s390/kernel/stacktrace.c
-+++ b/arch/s390/kernel/stacktrace.c
-@@ -77,6 +77,21 @@ static inline bool store_ip(stack_trace_consume_fn consume_entry, void *cookie,
- 	return consume_entry(cookie, ip);
- }
- 
-+static inline bool ip_invalid(unsigned long ip)
-+{
-+	/*
-+	 * Perform some basic checks if an instruction address taken
-+	 * from unreliable source is invalid.
-+	 */
-+	if (ip & 1)
-+		return true;
-+	if (ip < mmap_min_addr)
-+		return true;
-+	if (ip >= current->mm->context.asce_limit)
-+		return true;
-+	return false;
-+}
-+
- void arch_stack_walk_user_common(stack_trace_consume_fn consume_entry, void *cookie,
- 				 struct perf_callchain_entry_ctx *entry,
- 				 const struct pt_regs *regs, bool perf)
-@@ -87,6 +102,8 @@ void arch_stack_walk_user_common(stack_trace_consume_fn consume_entry, void *coo
- 
- 	if (is_compat_task())
- 		return;
-+	if (!current->mm)
-+		return;
- 	ip = instruction_pointer(regs);
- 	if (!store_ip(consume_entry, cookie, entry, perf, ip))
- 		return;
-@@ -101,15 +118,16 @@ void arch_stack_walk_user_common(stack_trace_consume_fn consume_entry, void *coo
- 		sf = (void __user *)sp;
- 		if (__get_user(ip, &sf->gprs[8]))
- 			break;
--		if (ip & 0x1) {
-+		if (ip_invalid(ip)) {
- 			/*
- 			 * If the instruction address is invalid, and this
- 			 * is the first stack frame, assume r14 has not
- 			 * been written to the stack yet. Otherwise exit.
- 			 */
--			if (first && !(regs->gprs[14] & 0x1))
--				ip = regs->gprs[14];
--			else
-+			if (!first)
-+				break;
-+			ip = regs->gprs[14];
-+			if (ip_invalid(ip))
- 				break;
+diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
+index a56d12fae464b..dd1d616dab367 100644
+--- a/net/ax25/ax25_dev.c
++++ b/net/ax25/ax25_dev.c
+@@ -39,6 +39,7 @@ ax25_dev *ax25_addr_ax25dev(ax25_address *addr)
+ 		if (ax25cmp(addr, (const ax25_address *)ax25_dev->dev->dev_addr) == 0) {
+ 			res = ax25_dev;
+ 			ax25_dev_hold(ax25_dev);
++			break;
  		}
- 		if (!store_ip(consume_entry, cookie, entry, perf, ip))
+ 	spin_unlock_bh(&ax25_dev_lock);
+ 
+@@ -88,7 +89,6 @@ void ax25_dev_device_up(struct net_device *dev)
+ 	list_add(&ax25_dev->list, &ax25_dev_list);
+ 	dev->ax25_ptr     = ax25_dev;
+ 	spin_unlock_bh(&ax25_dev_lock);
+-	ax25_dev_hold(ax25_dev);
+ 
+ 	ax25_register_dev_sysctl(ax25_dev);
+ }
+@@ -129,7 +129,6 @@ void ax25_dev_device_down(struct net_device *dev)
+ unlock_put:
+ 	dev->ax25_ptr = NULL;
+ 	spin_unlock_bh(&ax25_dev_lock);
+-	ax25_dev_put(ax25_dev);
+ 	netdev_put(dev, &ax25_dev->dev_tracker);
+ 	ax25_dev_put(ax25_dev);
+ }
 -- 
 2.43.0
 
