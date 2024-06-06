@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-49400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F04078FED19
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D04D78FE999
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7262A2821E9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C8AB286C68
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2881B4C45;
-	Thu,  6 Jun 2024 14:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E11419AD64;
+	Thu,  6 Jun 2024 14:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDEtikzo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrsiJqHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0958919CD19;
-	Thu,  6 Jun 2024 14:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF4C198853;
+	Thu,  6 Jun 2024 14:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683447; cv=none; b=SuNG4Jyrk9wFXVrngUUaA3FjSSD6YdZByAJuM/2wkL4LIRRm861mbmM2dRv00DM9DXr7ZQtTilV4wpPfsNrGPQ031jVQVcD80gnHjglk2jC201D2ysRnDh29PRfR4nN5NpnBIUcNGQtmD5I9kpcWBkXqRSLdwS3rlmLOaJbgYQI=
+	t=1717683044; cv=none; b=N4h2FHfmfG9LU4gIWG8C/4mmrqk7oeY8dmqrqFXJA8HKu7A9d1XkaVmOWJCZum0fIHhk/eSDwiAOVIguF45W1zXw65HU8tKs3oj0LYaSWIwKucVv/UTvTNSzPSVRS830akNfObqEPC/yj5ctNYIK02PUHMz71phCm2BAcl8di6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683447; c=relaxed/simple;
-	bh=mVc7koPVshe8mIpbrDQ9x6jGLT2bu2mGx5Du69LiUBA=;
+	s=arc-20240116; t=1717683044; c=relaxed/simple;
+	bh=6NuEWt/8e4XhGjFGNCZ+BwPTy6e/h37/CrJJDgSdDjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QmT5P7datBomOlYolGHlIzMlvxp+jLpksxocrnjZl9Z/KGCCQI0IVx5Ru52hZN36IAvuvgaaN++XoDGzJ6+uYgxeY/qTy7zA5Uv1k+kErukIzphCnIJMdm/Hkl/1BTHgUd6GwqD4+hf0zoGYrTyrdMsa0wzftWj9i9dfPIKYpbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDEtikzo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB992C2BD10;
-	Thu,  6 Jun 2024 14:17:26 +0000 (UTC)
+	 MIME-Version; b=pNsIZLrvQXpL9OlhT+hx8vQfjdNcF5UxEe9aPxSFIXMPYCf8ZSbl7M1CRio1m3lxaU5lW2sH0dfF7PSykNdZYYltStL9awM2ObQ3hdZjnWnIBm5SPOax9/qGdYAdUhhSBuebbbpPQqiWQMhRTD7mkJsBIBmJ/q3ja5N8KWbfBK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrsiJqHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99638C32781;
+	Thu,  6 Jun 2024 14:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683446;
-	bh=mVc7koPVshe8mIpbrDQ9x6jGLT2bu2mGx5Du69LiUBA=;
+	s=korg; t=1717683043;
+	bh=6NuEWt/8e4XhGjFGNCZ+BwPTy6e/h37/CrJJDgSdDjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDEtikzoBWFgmZpY8k/4hC7Qtpo9AppsNuiLoOv4zz9hLa3BuJg8IpRQyelg19or7
-	 s1+k5Bg1CjzT+M3ZQS/Fvn3D1PHPaixZcyeuVaE50l9goiy9knwuJPgA/dRAT859Du
-	 yYeKE91xZSw0z0EhxBWsEEgpKX5XUeimbTvwiLOY=
+	b=WrsiJqHWVhSoDtHfvUCe80zC8M7aYEjvcFoJIgNAh7piXU71nF+Focsgh/dZYufK/
+	 8LV4lyLYPsHPLd0qBxqy0/lwJJsRk03OHq1Z3MVkfCAjY+0O2L7+rIO7EqgctIh+wx
+	 NrCVVpvd8CjYbVaLATkEm+M54Kos4y/QYsFStex4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	"Matthew R. Ochs" <mochs@nvidia.com>,
+	Carol Soto <csoto@nvidia.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 331/473] stm class: Fix a double free in stm_register_device()
+Subject: [PATCH 6.9 281/374] tpm_tis_spi: Account for SPI header when allocating TPM SPI xfer buffer
 Date: Thu,  6 Jun 2024 16:04:20 +0200
-Message-ID: <20240606131710.873838540@linuxfoundation.org>
+Message-ID: <20240606131701.312661443@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Matthew R. Ochs <mochs@nvidia.com>
 
-[ Upstream commit 3df463865ba42b8f88a590326f4c9ea17a1ce459 ]
+[ Upstream commit 195aba96b854dd664768f382cd1db375d8181f88 ]
 
-The put_device(&stm->dev) call will trigger stm_device_release() which
-frees "stm" so the vfree(stm) on the next line is a double free.
+The TPM SPI transfer mechanism uses MAX_SPI_FRAMESIZE for computing the
+maximum transfer length and the size of the transfer buffer. As such, it
+does not account for the 4 bytes of header that prepends the SPI data
+frame. This can result in out-of-bounds accesses and was confirmed with
+KASAN.
 
-Fixes: 389b6699a2aa ("stm class: Fix stm device initialization order")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Link: https://lore.kernel.org/r/20240429130119.1518073-2-alexander.shishkin@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Introduce SPI_HDRSIZE to account for the header and use to allocate the
+transfer buffer.
+
+Fixes: a86a42ac2bd6 ("tpm_tis_spi: Add hardware wait polling")
+Signed-off-by: Matthew R. Ochs <mochs@nvidia.com>
+Tested-by: Carol Soto <csoto@nvidia.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/stm/core.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/char/tpm/tpm_tis_spi_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/stm/core.c b/drivers/hwtracing/stm/core.c
-index 2712e699ba08c..ae9ea3a1fa2aa 100644
---- a/drivers/hwtracing/stm/core.c
-+++ b/drivers/hwtracing/stm/core.c
-@@ -868,8 +868,11 @@ int stm_register_device(struct device *parent, struct stm_data *stm_data,
+diff --git a/drivers/char/tpm/tpm_tis_spi_main.c b/drivers/char/tpm/tpm_tis_spi_main.c
+index 3f9eaf27b41b8..c9eca24bbad47 100644
+--- a/drivers/char/tpm/tpm_tis_spi_main.c
++++ b/drivers/char/tpm/tpm_tis_spi_main.c
+@@ -37,6 +37,7 @@
+ #include "tpm_tis_spi.h"
+ 
+ #define MAX_SPI_FRAMESIZE 64
++#define SPI_HDRSIZE 4
+ 
+ /*
+  * TCG SPI flow control is documented in section 6.4 of the spec[1]. In short,
+@@ -247,7 +248,7 @@ static int tpm_tis_spi_write_bytes(struct tpm_tis_data *data, u32 addr,
+ int tpm_tis_spi_init(struct spi_device *spi, struct tpm_tis_spi_phy *phy,
+ 		     int irq, const struct tpm_tis_phy_ops *phy_ops)
+ {
+-	phy->iobuf = devm_kmalloc(&spi->dev, MAX_SPI_FRAMESIZE, GFP_KERNEL);
++	phy->iobuf = devm_kmalloc(&spi->dev, SPI_HDRSIZE + MAX_SPI_FRAMESIZE, GFP_KERNEL);
+ 	if (!phy->iobuf)
  		return -ENOMEM;
  
- 	stm->major = register_chrdev(0, stm_data->name, &stm_fops);
--	if (stm->major < 0)
--		goto err_free;
-+	if (stm->major < 0) {
-+		err = stm->major;
-+		vfree(stm);
-+		return err;
-+	}
- 
- 	device_initialize(&stm->dev);
- 	stm->dev.devt = MKDEV(stm->major, 0);
-@@ -913,10 +916,8 @@ int stm_register_device(struct device *parent, struct stm_data *stm_data,
- err_device:
- 	unregister_chrdev(stm->major, stm_data->name);
- 
--	/* matches device_initialize() above */
-+	/* calls stm_device_release() */
- 	put_device(&stm->dev);
--err_free:
--	vfree(stm);
- 
- 	return err;
- }
 -- 
 2.43.0
 
