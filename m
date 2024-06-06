@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-49124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127AB8FEBF5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 790098FEBF7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A76EC1F2994A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9441F1C20F4C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0631E1ABE5B;
-	Thu,  6 Jun 2024 14:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6F519AA6C;
+	Thu,  6 Jun 2024 14:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hx1/f9b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zY7CMHQJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B892A19883B;
-	Thu,  6 Jun 2024 14:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392EC196C77;
+	Thu,  6 Jun 2024 14:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683313; cv=none; b=c6v263KBt6FQUe+98sgvmNx95MiALFViOocbfTTI/SyfmDiJd6kyEK/h+6ZOhRJsoSAvo1eM6AHzhGRcZVRlqKeheAnbxUIyCvvwLR2F43HEXZGNwjgQjuaHDEXLe4oCzuVeWfvjsa8Sbk94jTselxEedGVyx5hdTPmwDd4mTuc=
+	t=1717683315; cv=none; b=ANXqdjf5hXMLnZT0BwG4D6noxZ2LaCAZHT4ds8Detpchl7cOHE//fIkRohFqHk8zwh+5IbMy1Z5lmpf0CIFf0KTBR37IDIF24Fy/bjYlQWhFdCGuJfQfh5RvUbbhAqmZIRD/II3Yb1veHkaERWXM0MpRhTC4SErV+Qoam5qNss4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683313; c=relaxed/simple;
-	bh=WWR9XduRrxt6TrAf9GjoywQNrM4qgy/T4/fkRKozIws=;
+	s=arc-20240116; t=1717683315; c=relaxed/simple;
+	bh=bWnbB5u6WVc5K+2UwOX4RtiSlSmd+d5BYDY0fc5iSS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NcwJEBvC8LvCBdVTLeEWHX0XGffKpZDYzS4ajX1pjXchFjG29ozlIIHeI4dtRu32pICYrgg0PS8HgiB5bfqfaj8QbAHp2Bv62xaLzMtDm8vlu9nXQ2rOJbbSI+hP2Ht7xPYTREBrJ9QJ6xSl6ll95ZvAtKYxm8ODAX7dBhmX/5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hx1/f9b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954C5C2BD10;
-	Thu,  6 Jun 2024 14:15:13 +0000 (UTC)
+	 MIME-Version; b=QORnoOKKt4ZfP5kb9cQpTOzRXvPa3VuH0+xooO8aE1fTCwv5twnD0ZJVzKvl2cl8FZ/OJ51rYrqhwAo7zUtI+T6TG7hefwLvu4ARSpjqAx7KgPDexwJn877woOhVTdVDF57LLMSgXkxm29bU247o67vEtnWqQJwW+RmN09jBvGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zY7CMHQJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160A5C4AF08;
+	Thu,  6 Jun 2024 14:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683313;
-	bh=WWR9XduRrxt6TrAf9GjoywQNrM4qgy/T4/fkRKozIws=;
+	s=korg; t=1717683315;
+	bh=bWnbB5u6WVc5K+2UwOX4RtiSlSmd+d5BYDY0fc5iSS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0hx1/f9boyLRUCnaXaAFCL2o57cy0a1HqZqW/XkenyZNDsX2Sz3B1Vho1JL9DQ6a/
-	 uhHE+hlXUcZ/a1jSlf/vCbix3/F7m1pNf8Yl2OkGqHhnlaF0CpWTVHNO30DflpoGaP
-	 GdRc42NgRKHk8bUpxlrrTttMcYCGkgth7XGhOTnA=
+	b=zY7CMHQJpBUYy7Co/6fElmd0DVC1/CsSvzGeNiW/znf6TCOP0d7o8GLc39f6jn1m+
+	 6+k9YOsOTXWQzluW5+pFMpcDKszHN9l0cLv7oSstkZy8GHg1LuwIZRYP/pc3NxbdH1
+	 IScrGhMU4HnuQ8meOoUpechbfp9odFiIZ5/x5Hww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Pu Lehui <pulehui@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 254/744] riscv, bpf: make some atomic operations fully ordered
-Date: Thu,  6 Jun 2024 15:58:46 +0200
-Message-ID: <20240606131740.547670962@linuxfoundation.org>
+Subject: [PATCH 6.6 255/744] ax25: Use kernel universal linked list to implement ax25_dev_list
+Date: Thu,  6 Jun 2024 15:58:47 +0200
+Message-ID: <20240606131740.586617046@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,95 +67,161 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 20a759df3bba35bf5c3ddec0c02ad69b603b584c ]
+[ Upstream commit a7d6e36b9ad052926ba2ecba3a59d8bb67dabcb4 ]
 
-The BPF atomic operations with the BPF_FETCH modifier along with
-BPF_XCHG and BPF_CMPXCHG are fully ordered but the RISC-V JIT implements
-all atomic operations except BPF_CMPXCHG with relaxed ordering.
+The origin ax25_dev_list implements its own single linked list,
+which is complicated and error-prone. For example, when deleting
+the node of ax25_dev_list in ax25_dev_device_down(), we have to
+operate on the head node and other nodes separately.
 
-Section 8.1 of the "The RISC-V Instruction Set Manual Volume I:
-Unprivileged ISA" [1], titled, "Specifying Ordering of Atomic
-Instructions" says:
+This patch uses kernel universal linked list to replace original
+ax25_dev_list, which make the operation of ax25_dev_list easier.
 
-| To provide more efficient support for release consistency [5], each
-| atomic instruction has two bits, aq and rl, used to specify additional
-| memory ordering constraints as viewed by other RISC-V harts.
+We should do "dev->ax25_ptr = ax25_dev;" and "dev->ax25_ptr = NULL;"
+while holding the spinlock, otherwise the ax25_dev_device_up() and
+ax25_dev_device_down() could race.
 
-and
-
-| If only the aq bit is set, the atomic memory operation is treated as
-| an acquire access.
-| If only the rl bit is set, the atomic memory operation is treated as a
-| release access.
-|
-| If both the aq and rl bits are set, the atomic memory operation is
-| sequentially consistent.
-
-Fix this by setting both aq and rl bits as 1 for operations with
-BPF_FETCH and BPF_XCHG.
-
-[1] https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf
-
-Fixes: dd642ccb45ec ("riscv, bpf: Implement more atomic operations for RV64")
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Reviewed-by: Pu Lehui <pulehui@huawei.com>
-Link: https://lore.kernel.org/r/20240505201633.123115-1-puranjay@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/85bba3af651ca0e1a519da8d0d715b949891171c.1715247018.git.duoming@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: b505e0319852 ("ax25: Fix reference count leak issues of ax25_dev")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/net/bpf_jit_comp64.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ include/net/ax25.h  |  3 +--
+ net/ax25/ax25_dev.c | 40 +++++++++++++++-------------------------
+ 2 files changed, 16 insertions(+), 27 deletions(-)
 
-diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
-index b3990874e4818..2f041b5cea970 100644
---- a/arch/riscv/net/bpf_jit_comp64.c
-+++ b/arch/riscv/net/bpf_jit_comp64.c
-@@ -516,33 +516,33 @@ static void emit_atomic(u8 rd, u8 rs, s16 off, s32 imm, bool is64,
- 		break;
- 	/* src_reg = atomic_fetch_<op>(dst_reg + off16, src_reg) */
- 	case BPF_ADD | BPF_FETCH:
--		emit(is64 ? rv_amoadd_d(rs, rs, rd, 0, 0) :
--		     rv_amoadd_w(rs, rs, rd, 0, 0), ctx);
-+		emit(is64 ? rv_amoadd_d(rs, rs, rd, 1, 1) :
-+		     rv_amoadd_w(rs, rs, rd, 1, 1), ctx);
- 		if (!is64)
- 			emit_zext_32(rs, ctx);
- 		break;
- 	case BPF_AND | BPF_FETCH:
--		emit(is64 ? rv_amoand_d(rs, rs, rd, 0, 0) :
--		     rv_amoand_w(rs, rs, rd, 0, 0), ctx);
-+		emit(is64 ? rv_amoand_d(rs, rs, rd, 1, 1) :
-+		     rv_amoand_w(rs, rs, rd, 1, 1), ctx);
- 		if (!is64)
- 			emit_zext_32(rs, ctx);
- 		break;
- 	case BPF_OR | BPF_FETCH:
--		emit(is64 ? rv_amoor_d(rs, rs, rd, 0, 0) :
--		     rv_amoor_w(rs, rs, rd, 0, 0), ctx);
-+		emit(is64 ? rv_amoor_d(rs, rs, rd, 1, 1) :
-+		     rv_amoor_w(rs, rs, rd, 1, 1), ctx);
- 		if (!is64)
- 			emit_zext_32(rs, ctx);
- 		break;
- 	case BPF_XOR | BPF_FETCH:
--		emit(is64 ? rv_amoxor_d(rs, rs, rd, 0, 0) :
--		     rv_amoxor_w(rs, rs, rd, 0, 0), ctx);
-+		emit(is64 ? rv_amoxor_d(rs, rs, rd, 1, 1) :
-+		     rv_amoxor_w(rs, rs, rd, 1, 1), ctx);
- 		if (!is64)
- 			emit_zext_32(rs, ctx);
- 		break;
- 	/* src_reg = atomic_xchg(dst_reg + off16, src_reg); */
- 	case BPF_XCHG:
--		emit(is64 ? rv_amoswap_d(rs, rs, rd, 0, 0) :
--		     rv_amoswap_w(rs, rs, rd, 0, 0), ctx);
-+		emit(is64 ? rv_amoswap_d(rs, rs, rd, 1, 1) :
-+		     rv_amoswap_w(rs, rs, rd, 1, 1), ctx);
- 		if (!is64)
- 			emit_zext_32(rs, ctx);
- 		break;
+diff --git a/include/net/ax25.h b/include/net/ax25.h
+index 0d939e5aee4ec..c2a85fd3f5ea4 100644
+--- a/include/net/ax25.h
++++ b/include/net/ax25.h
+@@ -216,7 +216,7 @@ typedef struct {
+ struct ctl_table;
+ 
+ typedef struct ax25_dev {
+-	struct ax25_dev		*next;
++	struct list_head	list;
+ 
+ 	struct net_device	*dev;
+ 	netdevice_tracker	dev_tracker;
+@@ -330,7 +330,6 @@ int ax25_addr_size(const ax25_digi *);
+ void ax25_digi_invert(const ax25_digi *, ax25_digi *);
+ 
+ /* ax25_dev.c */
+-extern ax25_dev *ax25_dev_list;
+ extern spinlock_t ax25_dev_lock;
+ 
+ #if IS_ENABLED(CONFIG_AX25)
+diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
+index 282ec581c0720..f16ee5c09d07a 100644
+--- a/net/ax25/ax25_dev.c
++++ b/net/ax25/ax25_dev.c
+@@ -22,11 +22,12 @@
+ #include <net/sock.h>
+ #include <linux/uaccess.h>
+ #include <linux/fcntl.h>
++#include <linux/list.h>
+ #include <linux/mm.h>
+ #include <linux/interrupt.h>
+ #include <linux/init.h>
+ 
+-ax25_dev *ax25_dev_list;
++static LIST_HEAD(ax25_dev_list);
+ DEFINE_SPINLOCK(ax25_dev_lock);
+ 
+ ax25_dev *ax25_addr_ax25dev(ax25_address *addr)
+@@ -34,7 +35,7 @@ ax25_dev *ax25_addr_ax25dev(ax25_address *addr)
+ 	ax25_dev *ax25_dev, *res = NULL;
+ 
+ 	spin_lock_bh(&ax25_dev_lock);
+-	for (ax25_dev = ax25_dev_list; ax25_dev != NULL; ax25_dev = ax25_dev->next)
++	list_for_each_entry(ax25_dev, &ax25_dev_list, list)
+ 		if (ax25cmp(addr, (const ax25_address *)ax25_dev->dev->dev_addr) == 0) {
+ 			res = ax25_dev;
+ 			ax25_dev_hold(ax25_dev);
+@@ -59,7 +60,6 @@ void ax25_dev_device_up(struct net_device *dev)
+ 	}
+ 
+ 	refcount_set(&ax25_dev->refcount, 1);
+-	dev->ax25_ptr     = ax25_dev;
+ 	ax25_dev->dev     = dev;
+ 	netdev_hold(dev, &ax25_dev->dev_tracker, GFP_KERNEL);
+ 	ax25_dev->forward = NULL;
+@@ -85,8 +85,8 @@ void ax25_dev_device_up(struct net_device *dev)
+ #endif
+ 
+ 	spin_lock_bh(&ax25_dev_lock);
+-	ax25_dev->next = ax25_dev_list;
+-	ax25_dev_list  = ax25_dev;
++	list_add(&ax25_dev->list, &ax25_dev_list);
++	dev->ax25_ptr     = ax25_dev;
+ 	spin_unlock_bh(&ax25_dev_lock);
+ 	ax25_dev_hold(ax25_dev);
+ 
+@@ -111,32 +111,25 @@ void ax25_dev_device_down(struct net_device *dev)
+ 	/*
+ 	 *	Remove any packet forwarding that points to this device.
+ 	 */
+-	for (s = ax25_dev_list; s != NULL; s = s->next)
++	list_for_each_entry(s, &ax25_dev_list, list)
+ 		if (s->forward == dev)
+ 			s->forward = NULL;
+ 
+-	if ((s = ax25_dev_list) == ax25_dev) {
+-		ax25_dev_list = s->next;
+-		goto unlock_put;
+-	}
+-
+-	while (s != NULL && s->next != NULL) {
+-		if (s->next == ax25_dev) {
+-			s->next = ax25_dev->next;
++	list_for_each_entry(s, &ax25_dev_list, list) {
++		if (s == ax25_dev) {
++			list_del(&s->list);
+ 			goto unlock_put;
+ 		}
+-
+-		s = s->next;
+ 	}
+-	spin_unlock_bh(&ax25_dev_lock);
+ 	dev->ax25_ptr = NULL;
++	spin_unlock_bh(&ax25_dev_lock);
+ 	ax25_dev_put(ax25_dev);
+ 	return;
+ 
+ unlock_put:
++	dev->ax25_ptr = NULL;
+ 	spin_unlock_bh(&ax25_dev_lock);
+ 	ax25_dev_put(ax25_dev);
+-	dev->ax25_ptr = NULL;
+ 	netdev_put(dev, &ax25_dev->dev_tracker);
+ 	ax25_dev_put(ax25_dev);
+ }
+@@ -200,16 +193,13 @@ struct net_device *ax25_fwd_dev(struct net_device *dev)
+  */
+ void __exit ax25_dev_free(void)
+ {
+-	ax25_dev *s, *ax25_dev;
++	ax25_dev *s, *n;
+ 
+ 	spin_lock_bh(&ax25_dev_lock);
+-	ax25_dev = ax25_dev_list;
+-	while (ax25_dev != NULL) {
+-		s        = ax25_dev;
+-		netdev_put(ax25_dev->dev, &ax25_dev->dev_tracker);
+-		ax25_dev = ax25_dev->next;
++	list_for_each_entry_safe(s, n, &ax25_dev_list, list) {
++		netdev_put(s->dev, &s->dev_tracker);
++		list_del(&s->list);
+ 		kfree(s);
+ 	}
+-	ax25_dev_list = NULL;
+ 	spin_unlock_bh(&ax25_dev_lock);
+ }
 -- 
 2.43.0
 
