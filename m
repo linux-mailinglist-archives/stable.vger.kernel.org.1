@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-49500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9508FED85
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B8D8FED88
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ADF5282676
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02416B2903A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC0E1BBBE1;
-	Thu,  6 Jun 2024 14:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064F019DF69;
+	Thu,  6 Jun 2024 14:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0sfR8GPy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUOvuULL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A62219DF67;
-	Thu,  6 Jun 2024 14:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B648F19DF6B;
+	Thu,  6 Jun 2024 14:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683496; cv=none; b=UQ0hChXLv5L2l7B+fGgm91BzcDHHSllyRuR+YkpsZm4RR5BcUD+1httW1DkdQFqJQaKmbzJ0MwmBGuFRnogY0NSz6C18UuDkWaz/i2C4SWOCcon3uMOH63PxSDZYYRMfzxUAUE93txkdVf3XobsY11O23C/6eHsloHUV3ulAdNg=
+	t=1717683497; cv=none; b=AICE+L3kyq7IP2996zJAR3pQiJUJke9BijNdtFbiJSWimQRkQtdYQ5kmhWJ7zF0sRnC6GILXY5JlGAkPsP+h4uj+iDgaKK0hAi7lX6dYs7wJGgfmAeGjFbKXq3LjeN9mJDrx6bZH7oJ2DPbRN2WYJxmwoGtobepJfGY+N4tdflU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683496; c=relaxed/simple;
-	bh=Snr7mB1LymYMymSvudC1cg40CH1oHrHO7mvsoIE2cHA=;
+	s=arc-20240116; t=1717683497; c=relaxed/simple;
+	bh=TNNt4GPtA88Qg8VzOgX3Zwhn8+aM//exB3zQDTlzc+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kx4+Fg/u7UfeL96qiFV7OypQTQsSqe5xE4WZznYhTiZJ1zsATZdgf3JWpm4nswdqYaJhZ5kJIz3znXaHv0yxABn20JgXOQYBKy7lEBxVznvm2XL3tFvO3RE00+1UaQ4wyTD2LOI5cMdhwK8AqBKcthWKoDQ9mFyny9t7DgFOimg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0sfR8GPy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059E3C32781;
-	Thu,  6 Jun 2024 14:18:16 +0000 (UTC)
+	 MIME-Version; b=Jx6V8sSRvKn064zCC46eBfIoOVNt7G/fKtDheF8pr2t6VwlfvIn7vk0eNazj/E6MKlbJab9WLPT0Se0dAgzEL1sDyOoPm0RbZXpavvc6hPg63mtR9SaNIFA9PIBBg5fA5o52qplkvH2OwWRZ/HSWUCJoPmkD+z0MkKFVNFi8658=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUOvuULL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9135FC2BD10;
+	Thu,  6 Jun 2024 14:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683496;
-	bh=Snr7mB1LymYMymSvudC1cg40CH1oHrHO7mvsoIE2cHA=;
+	s=korg; t=1717683497;
+	bh=TNNt4GPtA88Qg8VzOgX3Zwhn8+aM//exB3zQDTlzc+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0sfR8GPy+9aG5lapNUvAqviCjqSKBNpNL1YAVc5Zxr7FHY5iu1870IQJ3zANvZG8y
-	 O8wWDg+ZJ6B85dM3MDGLoLc6aopWOyX+28/N6WV1+5ukvQB0vS5qWmZwUjXJgBAiuo
-	 hsBUyji/uJ9vA1PKTQOIqASAi+p0TivFuehQ9ACY=
+	b=NUOvuULLSYzdRTgLda8rVjHSirmN9DcDDwD6ZnZigZFyeLSNRQzcwTb7P/s+BI3Fh
+	 +hQqjzPZQOyi2I6CkNz/GrOc2gIZRKzgTvdNOrE7xGNgtKJwcecbuCvYMCseQa6KcN
+	 khZySegKFF3vGIWty+reh9dqIptiJm3gJyqLvU/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Richard Weinberger <richard@nod.at>,
+	kernel test robot <lkp@intel.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 386/473] um: Fix the declaration of kasan_map_memory
-Date: Thu,  6 Jun 2024 16:05:15 +0200
-Message-ID: <20240606131712.613993056@linuxfoundation.org>
+Subject: [PATCH 6.1 387/473] media: sunxi: a83-mips-csi2: also select GENERIC_PHY
+Date: Thu,  6 Jun 2024 16:05:16 +0200
+Message-ID: <20240606131712.649369955@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -66,59 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 6a85e34c4d07d2ec0c153067baff338ac0db55ca ]
+[ Upstream commit 8237026159cb6760ad22e28d57b9a1c53b612d3a ]
 
-Make it match its definition (size_t vs unsigned long). And declare
-it in a shared header to fix the -Wmissing-prototypes warning, as it
-is defined in the user code and called in the kernel code.
+When selecting GENERIC_PHY_MIPI_DPHY, also select GENERIC_PHY to
+prevent kconfig warnings:
 
-Fixes: 5b301409e8bc ("UML: add support for KASAN under x86_64")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+WARNING: unmet direct dependencies detected for GENERIC_PHY_MIPI_DPHY
+  Depends on [n]: GENERIC_PHY [=n]
+  Selected by [y]:
+  - VIDEO_SUN8I_A83T_MIPI_CSI2 [=y] && MEDIA_SUPPORT [=y] && MEDIA_PLATFORM_SUPPORT [=y] && MEDIA_PLATFORM_DRIVERS [=y] && V4L_PLATFORM_DRIVERS [=y] && VIDEO_DEV [=y] && (ARCH_SUNXI || COMPILE_TEST [=y]) && PM [=y] && COMMON_CLK [=y] && RESET_CONTROLLER [=y]
+
+Fixes: 94d7fd9692b5 ("media: sunxi: Depend on GENERIC_PHY_MIPI_DPHY")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/ZQ/WS8HC1A3F0Qn8@rli9-mobl
+Link: https://lore.kernel.org/linux-media/20230927040438.5589-1-rdunlap@infradead.org
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/include/asm/kasan.h        | 1 -
- arch/um/include/shared/kern_util.h | 2 ++
- arch/um/os-Linux/mem.c             | 1 +
- 3 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/platform/sunxi/sun8i-a83t-mipi-csi2/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
-index 0d6547f4ec85c..f97bb1f7b8514 100644
---- a/arch/um/include/asm/kasan.h
-+++ b/arch/um/include/asm/kasan.h
-@@ -24,7 +24,6 @@
- 
- #ifdef CONFIG_KASAN
- void kasan_init(void);
--void kasan_map_memory(void *start, unsigned long len);
- extern int kasan_um_is_ready;
- 
- #ifdef CONFIG_STATIC_LINK
-diff --git a/arch/um/include/shared/kern_util.h b/arch/um/include/shared/kern_util.h
-index 444bae755b16a..7372746c16875 100644
---- a/arch/um/include/shared/kern_util.h
-+++ b/arch/um/include/shared/kern_util.h
-@@ -67,4 +67,6 @@ extern void fatal_sigsegv(void) __attribute__ ((noreturn));
- 
- void um_idle_sleep(void);
- 
-+void kasan_map_memory(void *start, size_t len);
-+
- #endif
-diff --git a/arch/um/os-Linux/mem.c b/arch/um/os-Linux/mem.c
-index 8530b2e086049..c6c9495b14321 100644
---- a/arch/um/os-Linux/mem.c
-+++ b/arch/um/os-Linux/mem.c
-@@ -15,6 +15,7 @@
- #include <sys/vfs.h>
- #include <linux/magic.h>
- #include <init.h>
-+#include <kern_util.h>
- #include <os.h>
- 
- /*
+diff --git a/drivers/media/platform/sunxi/sun8i-a83t-mipi-csi2/Kconfig b/drivers/media/platform/sunxi/sun8i-a83t-mipi-csi2/Kconfig
+index 47a8c0fb7eb9f..99c401e653bc4 100644
+--- a/drivers/media/platform/sunxi/sun8i-a83t-mipi-csi2/Kconfig
++++ b/drivers/media/platform/sunxi/sun8i-a83t-mipi-csi2/Kconfig
+@@ -8,6 +8,7 @@ config VIDEO_SUN8I_A83T_MIPI_CSI2
+ 	select VIDEO_V4L2_SUBDEV_API
+ 	select V4L2_FWNODE
+ 	select REGMAP_MMIO
++	select GENERIC_PHY
+ 	select GENERIC_PHY_MIPI_DPHY
+ 	help
+ 	   Support for the Allwinner A83T MIPI CSI-2 controller and D-PHY.
 -- 
 2.43.0
 
