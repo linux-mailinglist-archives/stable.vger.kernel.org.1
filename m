@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-49605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CAE28FEE01
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F848FEE33
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DD251F227FA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 682691C20A98
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86EAB1BF8E1;
-	Thu,  6 Jun 2024 14:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6D21991AD;
+	Thu,  6 Jun 2024 14:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlR3se2u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5UVz8M/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E9E1BE87D;
-	Thu,  6 Jun 2024 14:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA26E19FA9C;
+	Thu,  6 Jun 2024 14:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683549; cv=none; b=r4b6tewmvdwcgp7bjfFfQAgzx+Co2SN3LdKxX6sRjyvvAc1BznH2MnlFNWixrsbOgxxMy1VCGuMkrULAKGfvlQD8iw9HaHuhDXOQ27mN4SRr52TAhYheta1WBecQ95WS53mElHueuPmNJUn+SkTN2GszTPCMYSduV7FvwA1+qZc=
+	t=1717683631; cv=none; b=q7IBl5zBVO4OBiUlzl190SwR8VTCOUB/BmVhngCTzDaMo4G0zViq1AzQyAb27i3J6LImTYMXDjHnmrbaZjvIfXXGOGKtt1i3v0Qeqej8/2SW4g1l3ujcf3EGcJusVW1otAEqEkirHHnKMt5KNIbjzHP+khm5lu2csoBrvvBZFbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683549; c=relaxed/simple;
-	bh=JMyNnHXN1YDejErouLNJ72cGJuKxbPx4c1m3/iz2uVI=;
+	s=arc-20240116; t=1717683631; c=relaxed/simple;
+	bh=/cE+X/+97EYafsoYhuJZFsGMYpcZaHlflMw/WZjP9is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iZ5AXaY/aWRsJdpUE6/7Fmcy1md83N8AMiYME+1D06siYmdOcqMX+5Ug7tVuQQEq2rNctIw/5kf06oAWcJSXVYYPnGs1YYTK+Dox4MyDaA4VDPWe3Tl5qJPsy5UslL0k4ONWL3GUL8L0tIo8UMwy/I9AVqE3ahiOPy4Rjc01TLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlR3se2u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A7CC32782;
-	Thu,  6 Jun 2024 14:19:09 +0000 (UTC)
+	 MIME-Version; b=dp7TqWNHktFpw03KLa0g9ZvF8KIHgV2vAV+fXE5EsZM1WqliRlqJKZeYRATOfH+9i1ntE/0aF+Haai5IQdQe8XI/Xrm1At/OKNHUmoIgu7WUDWdsU5FZtElne9pzOv+2SHYqCoDwBL4Wl62qh1CakjH5R6MolZxt1tYSZhYZIhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5UVz8M/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4576BC32781;
+	Thu,  6 Jun 2024 14:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683549;
-	bh=JMyNnHXN1YDejErouLNJ72cGJuKxbPx4c1m3/iz2uVI=;
+	s=korg; t=1717683631;
+	bh=/cE+X/+97EYafsoYhuJZFsGMYpcZaHlflMw/WZjP9is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlR3se2ufoU75il1PmFKyYOM4equ2URMIzMdXvO0AJ3Z2K+GjVS7O6kDYI83eTtgP
-	 LiLbK6sbebfvGjvkFekD282ADNb42ltUK0GoLrWGh9vz11xprPCc0pOfEFuayBPkou
-	 q1z+tLufs0iTvtyabs2Q9fBWmuYKVfw1XHB104rs=
+	b=p5UVz8M/mz6P3+/jhpaOI9Xh+l6twsEe0a79KU6LM75Hy9FMGAtLVypRARKm+6B/t
+	 DIV5BcYPcyd0QAZTOVJqVJjA8Mbh7IdtYMdQCu58Wcao6bcRQnMJmhDx/EilN0dgH5
+	 a0nqRv2cLPysudWvjbD5CcvG9Bpw21AqsoICHPg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maher Sanalla <msanalla@nvidia.com>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
 	Tariq Toukan <tariqt@nvidia.com>,
 	Simon Horman <horms@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 438/473] net/mlx5: Lag, do bond only if slaves agree on roce state
-Date: Thu,  6 Jun 2024 16:06:07 +0200
-Message-ID: <20240606131714.211163271@linuxfoundation.org>
+Subject: [PATCH 6.1 439/473] net/mlx5e: Fix IPsec tunnel mode offload feature check
+Date: Thu,  6 Jun 2024 16:06:08 +0200
+Message-ID: <20240606131714.243080584@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -62,76 +62,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maher Sanalla <msanalla@nvidia.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-[ Upstream commit 51ef9305b8f40946d65c40368ffb4c14636d369a ]
+[ Upstream commit 9a52f6d44f4521773b4699b4ed34b8e21d5a175c ]
 
-Currently, the driver does not enforce that lag bond slaves must have
-matching roce capabilities. Yet, in mlx5_do_bond(), the driver attempts
-to enable roce on all vports of the bond slaves, causing the following
-syndrome when one slave has no roce fw support:
+Remove faulty check disabling checksum offload and GSO for offload of
+simple IPsec tunnel L4 traffic. Comment previously describing the deleted
+code incorrectly claimed the check prevented double tunnel (or three layers
+of ip headers).
 
-mlx5_cmd_out_err:809:(pid 25427): MODIFY_NIC_VPORT_CONTEXT(0×755) op_mod(0×0)
-failed, status bad parameter(0×3), syndrome (0xc1f678), err(-22)
-
-Thus, create HW lag only if bond's slaves agree on roce state,
-either all slaves have roce support resulting in a roce lag bond,
-or none do, resulting in a raw eth bond.
-
-Fixes: 7907f23adc18 ("net/mlx5: Implement RoCE LAG feature")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Fixes: f1267798c980 ("net/mlx5: Fix checksum issue of VXLAN and IPsec crypto offload")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ .../mellanox/mlx5/core/en_accel/ipsec_rxtx.h    | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-index 01c0e1ee918d8..a283d8ae466b6 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-@@ -696,6 +696,7 @@ static bool mlx5_lag_check_prereq(struct mlx5_lag *ldev)
- 	struct mlx5_core_dev *dev;
- 	u8 mode;
- #endif
-+	bool roce_support;
- 	int i;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h
+index 1878a70b9031d..43ccdf0e6cff8 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h
+@@ -97,18 +97,11 @@ mlx5e_ipsec_feature_check(struct sk_buff *skb, netdev_features_t features)
+ 		if (!x || !x->xso.offload_handle)
+ 			goto out_disable;
  
- 	for (i = 0; i < ldev->ports; i++)
-@@ -722,6 +723,11 @@ static bool mlx5_lag_check_prereq(struct mlx5_lag *ldev)
- 		if (mlx5_sriov_is_enabled(ldev->pf[i].dev))
- 			return false;
- #endif
-+	roce_support = mlx5_get_roce_state(ldev->pf[MLX5_LAG_P1].dev);
-+	for (i = 1; i < ldev->ports; i++)
-+		if (mlx5_get_roce_state(ldev->pf[i].dev) != roce_support)
-+			return false;
-+
- 	return true;
- }
+-		if (xo->inner_ipproto) {
+-			/* Cannot support tunnel packet over IPsec tunnel mode
+-			 * because we cannot offload three IP header csum
+-			 */
+-			if (x->props.mode == XFRM_MODE_TUNNEL)
+-				goto out_disable;
+-
+-			/* Only support UDP or TCP L4 checksum */
+-			if (xo->inner_ipproto != IPPROTO_UDP &&
+-			    xo->inner_ipproto != IPPROTO_TCP)
+-				goto out_disable;
+-		}
++		/* Only support UDP or TCP L4 checksum */
++		if (xo->inner_ipproto &&
++		    xo->inner_ipproto != IPPROTO_UDP &&
++		    xo->inner_ipproto != IPPROTO_TCP)
++			goto out_disable;
  
-@@ -884,8 +890,10 @@ static void mlx5_do_bond(struct mlx5_lag *ldev)
- 		} else if (roce_lag) {
- 			dev0->priv.flags &= ~MLX5_PRIV_FLAGS_DISABLE_IB_ADEV;
- 			mlx5_rescan_drivers_locked(dev0);
--			for (i = 1; i < ldev->ports; i++)
--				mlx5_nic_vport_enable_roce(ldev->pf[i].dev);
-+			for (i = 1; i < ldev->ports; i++) {
-+				if (mlx5_get_roce_state(ldev->pf[i].dev))
-+					mlx5_nic_vport_enable_roce(ldev->pf[i].dev);
-+			}
- 		} else if (shared_fdb) {
- 			dev0->priv.flags &= ~MLX5_PRIV_FLAGS_DISABLE_IB_ADEV;
- 			mlx5_rescan_drivers_locked(dev0);
+ 		return features;
+ 
 -- 
 2.43.0
 
