@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0487C8FEED3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C47878FEDAC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A9001C25D93
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6284BB29367
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3661A1865;
-	Thu,  6 Jun 2024 14:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821751BD009;
+	Thu,  6 Jun 2024 14:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jl8HN/Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYFrGwzr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7F41C7D8C;
-	Thu,  6 Jun 2024 14:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E6D19E7CA;
+	Thu,  6 Jun 2024 14:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683706; cv=none; b=KHZKnM3H48bHPYdw6nGcm9i/Mn96VAdFVZcRMl4bRuDw17JTOgcgxDXVLv8Ocdx8hwjo67hpCaUsSWPWetkD0IQ023W/dNezEsYoMYyvjTcsAnMbbSsdPm/MsQNU6Q+sHH7f6po8nJcv1uQ90lbyxKH8OKUnxMMUCDYqwAz4mIg=
+	t=1717683514; cv=none; b=mG7Xo9HyIGmqiFpGAXt/h+A9lc8Z2aZdaGCGNSIZ80shnmm+kP5C22mpJ9IrnIUC2nnbjV0VoL7dtGodwykTgev1hLHlUsh7nGm/yffk1LqpRCbw8myYUEcI4LzEuiKATici8szm/osepdTTHKpwwa46u5KqjVLQzF6WIE0EgTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683706; c=relaxed/simple;
-	bh=1+GBoEwEHCE3yRZwPKkUE6ft2rA3SXWp/CdrbcS/1aU=;
+	s=arc-20240116; t=1717683514; c=relaxed/simple;
+	bh=1X410vDOZGnuuwhzj8fcpOZwLWHhRaluLbuzQoPpS1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SJ8Blg4PxoHMxYD1klELvK8dxCJ/71NF9SBKSaKish2nwh4exYff8kP63Qy4uBKNtBTl1RgmulLizXvkAOLGi9M7zx30LD52q+C9xaqMejfpEqGIJMu6cfKNe7TM72pEU1KB5lExrdXa6oktrjfMCeXOWnfUKo6FTLQme9TGusY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jl8HN/Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF57C2BD10;
-	Thu,  6 Jun 2024 14:21:45 +0000 (UTC)
+	 MIME-Version; b=FEAs5yGLfikWExqqOc/pS4ogNUufyMaxUpXR30Et9JyJsxyHhbxPmQusHiLBcx8x15BTO2+5L+RbKErP3FN+XgUvPiY9wQFm0Isl5Hx2XWh/jwekwN8oVoSebhd3c8kldB5EShT+QUd13bm730CzUKNZvalS+uIT3cjxDXQJUTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYFrGwzr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF520C32786;
+	Thu,  6 Jun 2024 14:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683706;
-	bh=1+GBoEwEHCE3yRZwPKkUE6ft2rA3SXWp/CdrbcS/1aU=;
+	s=korg; t=1717683513;
+	bh=1X410vDOZGnuuwhzj8fcpOZwLWHhRaluLbuzQoPpS1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2jl8HN/Yb1u+/jifCW38uzVUFT67WCWlaVoc6+iWbGd40ElbZXOe/VXmLPn7VTEZa
-	 UPcnvm34Fl1SWBQ2YlL58ei1R/69KOJJiyhgGnl3OYl5gYHrBzjOeTWjigEN8xUMxS
-	 CaWm4iOQ4gIry8jVV4DeyqKUAtN+Fc2lDIuDVMYc=
+	b=LYFrGwzr2rRRasbXIhGdODBBho7uzQUZw5EOmmF0OoefIMjnKfvDZJtKYXgSyqE2f
+	 Han4dQXFxEGMOjPlHUUBix8cnYeBKJqSgvteJdE+GsIrjXYNux7rE/BfiE37To/HGv
+	 /lfKbvtCJbw8mg7QF32FxqDEXNjhJ3hAELVBMeGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 632/744] x86/kconfig: Select ARCH_WANT_FRAME_POINTERS again when UNWINDER_FRAME_POINTER=y
+Subject: [PATCH 6.1 375/473] um: vector: fix bpfflash parameter evaluation
 Date: Thu,  6 Jun 2024 16:05:04 +0200
-Message-ID: <20240606131752.744166418@linuxfoundation.org>
+Message-ID: <20240606131712.281793915@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 66ee3636eddcc82ab82b539d08b85fb5ac1dff9b ]
+[ Upstream commit 584ed2f76ff5fe360d87a04d17b6520c7999e06b ]
 
-It took me some time to understand the purpose of the tricky code at
-the end of arch/x86/Kconfig.debug.
+With W=1 the build complains about a pointer compared to
+zero, clearly the result should've been compared.
 
-Without it, the following would be shown:
-
-  WARNING: unmet direct dependencies detected for FRAME_POINTER
-
-because
-
-  81d387190039 ("x86/kconfig: Consolidate unwinders into multiple choice selection")
-
-removed 'select ARCH_WANT_FRAME_POINTERS'.
-
-The correct and more straightforward approach should have been to move
-it where 'select FRAME_POINTER' is located.
-
-Several architectures properly handle the conditional selection of
-ARCH_WANT_FRAME_POINTERS. For example, 'config UNWINDER_FRAME_POINTER'
-in arch/arm/Kconfig.debug.
-
-Fixes: 81d387190039 ("x86/kconfig: Consolidate unwinders into multiple choice selection")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20240204122003.53795-1-masahiroy@kernel.org
+Fixes: 9807019a62dc ("um: Loadable BPF "Firmware" for vector drivers")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig.debug | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/um/drivers/vector_kern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
-index c5d614d28a759..74777a97e394a 100644
---- a/arch/x86/Kconfig.debug
-+++ b/arch/x86/Kconfig.debug
-@@ -248,6 +248,7 @@ config UNWINDER_ORC
+diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
+index 131b7cb295767..94a4dfac6c236 100644
+--- a/arch/um/drivers/vector_kern.c
++++ b/arch/um/drivers/vector_kern.c
+@@ -141,7 +141,7 @@ static bool get_bpf_flash(struct arglist *def)
  
- config UNWINDER_FRAME_POINTER
- 	bool "Frame pointer unwinder"
-+	select ARCH_WANT_FRAME_POINTERS
- 	select FRAME_POINTER
- 	help
- 	  This option enables the frame pointer unwinder for unwinding kernel
-@@ -271,7 +272,3 @@ config UNWINDER_GUESS
- 	  overhead.
- 
- endchoice
--
--config FRAME_POINTER
--	depends on !UNWINDER_ORC && !UNWINDER_GUESS
--	bool
+ 	if (allow != NULL) {
+ 		if (kstrtoul(allow, 10, &result) == 0)
+-			return (allow > 0);
++			return result > 0;
+ 	}
+ 	return false;
+ }
 -- 
 2.43.0
 
