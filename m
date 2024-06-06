@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-48965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD4B8FEB4C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C77C8FEB4D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FBEDB252F4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CBC01F28096
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF9D1A3BAA;
-	Thu,  6 Jun 2024 14:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521371A3BAE;
+	Thu,  6 Jun 2024 14:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIj7ADQk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvfhoV42"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEC5197A7B;
-	Thu,  6 Jun 2024 14:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116B21993B4;
+	Thu,  6 Jun 2024 14:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683234; cv=none; b=Dv4eNwSQ1Te1pnOJOoW/rI2WxVgwGZecjH4iiI2JujJNPWcfxaQyOR1EVOZis1B3mj3p0M+tLUbsU+wubuVxL4+HIGQP2LVRPrbXAHutoD5kceYvjlNeP3EzDD5T7BYW5h1798Oo+3RWx33Qej7Nm0pXbhe5ScAu9eK+Vk63g9E=
+	t=1717683235; cv=none; b=NnDK4iTu/8OOgcMN3vMG/tuj89xbOCdK5dLoTBH6Zgz+Uc5LSuMjTCsl29gOe+I+mjPXKkmvmilPo03Dj+qanJlVUhoqq3L++NQWlfDYiGjQuwP+sYtnBAyvWjGI6orN7/amCp4msy7qhkslXc3//lsELCHReE+aijJKmSh+2mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683234; c=relaxed/simple;
-	bh=XdNw/OqZuUONajpf601cwdDW0BdBD+K3uQZ7+QoD6Uk=;
+	s=arc-20240116; t=1717683235; c=relaxed/simple;
+	bh=HpFkgWdg/qCq4Xr6sOkY6TIJJ2NjW9UKVaCfce9rL4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJYqJKwO+0MYvh9zYYl50DLvn/ymESWFDPJz4d5WEwR1vO/nvS4evPGLj2nqOyALLDE4NX130Ab6HA55vxEvLq0+og9Y32Oj+imznkot8y8ga+TgdxGnsQfB1XVjqENbhzuk8N9A6aSIcNkfL3bU5YDDqZRd+KDfWVffhoTgGoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIj7ADQk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE48C2BD10;
+	 MIME-Version; b=avqF9lTLnMZy8ZoKfwI0u38Jx5QSPfcFZ3jO9zZVZ6rHAh3e9gMxbGO7YAyk59BkUxw6itHV9uQnNcbeoSTiKg7xpGYKMqoP0CXEw8vgu6EI8rdu1i2F/TpMJh+hfsRqb2obGqu+7SVF85lzwWDAE0OngmLTHJgGfAtt/IRzdpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvfhoV42; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6530C2BD10;
 	Thu,  6 Jun 2024 14:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683234;
-	bh=XdNw/OqZuUONajpf601cwdDW0BdBD+K3uQZ7+QoD6Uk=;
+	s=korg; t=1717683235;
+	bh=HpFkgWdg/qCq4Xr6sOkY6TIJJ2NjW9UKVaCfce9rL4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oIj7ADQkEH72S6pbMPwaaCmLiNPwyZvrJzoLioJoQ+WamEesS1EstCFv1EaDBSB6M
-	 gKCfwK7qiNVzj1m78yN55USX4xY/gZi/sCfghU+rBaeWaN6YswCnOreyQewgF8jn7g
-	 93jkSNbUbfiKRtsI8v2tVeNeKOyPet5ZtezaO2OQ=
+	b=cvfhoV42zJEh8/XHCihEfE7OH5sdnhc5rOP/pazk9ZvsL2FsmfcYbD6o0+3iGZk4R
+	 g8HwMiXsbZjt629yRV343A/ewGQdA16VhlY3fq80Tm0DuyszpJHQRvZxsl2pKQpa0r
+	 zoTdItcN/UiCek0Ea4ZZASCg04NwpRaWtOpxZSaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Fangrui Song <maskray@google.com>,
-	Nick Desaulniers <ndesaulniers@google.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/744] x86/purgatory: Switch to the position-independent small code model
-Date: Thu,  6 Jun 2024 15:57:31 +0200
-Message-ID: <20240606131738.175875310@linuxfoundation.org>
+Subject: [PATCH 6.6 180/744] wifi: ath12k: fix out-of-bound access of qmi_invoke_handler()
+Date: Thu,  6 Jun 2024 15:57:32 +0200
+Message-ID: <20240606131738.207276119@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,79 +67,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
 
-[ Upstream commit cba786af84a0f9716204e09f518ce3b7ada8555e ]
+[ Upstream commit e1bdff48a1bb4a4ac660c19c55a820968c48b3f2 ]
 
-On x86, the ordinary, position dependent small and kernel code models
-only support placement of the executable in 32-bit addressable memory,
-due to the use of 32-bit signed immediates to generate references to
-global variables. For the kernel, this implies that all global variables
-must reside in the top 2 GiB of the kernel virtual address space, where
-the implicit address bits 63:32 are equal to sign bit 31.
+Currently, there is no terminator entry for ath12k_qmi_msg_handlers hence
+facing below KASAN warning,
 
-This means the kernel code model is not suitable for other bare metal
-executables such as the kexec purgatory, which can be placed arbitrarily
-in the physical address space, where its address may no longer be
-representable as a sign extended 32-bit quantity. For this reason,
-commit
+ ==================================================================
+ BUG: KASAN: global-out-of-bounds in qmi_invoke_handler+0xa4/0x148
+ Read of size 8 at addr ffffffd00a6428d8 by task kworker/u8:2/1273
 
-  e16c2983fba0 ("x86/purgatory: Change compiler flags from -mcmodel=kernel to -mcmodel=large to fix kexec relocation errors")
+ CPU: 0 PID: 1273 Comm: kworker/u8:2 Not tainted 5.4.213 #0
+ Workqueue: qmi_msg_handler qmi_data_ready_work
+ Call trace:
+  dump_backtrace+0x0/0x20c
+  show_stack+0x14/0x1c
+  dump_stack+0xe0/0x138
+  print_address_description.isra.5+0x30/0x330
+  __kasan_report+0x16c/0x1bc
+  kasan_report+0xc/0x14
+  __asan_load8+0xa8/0xb0
+  qmi_invoke_handler+0xa4/0x148
+  qmi_handle_message+0x18c/0x1bc
+  qmi_data_ready_work+0x4ec/0x528
+  process_one_work+0x2c0/0x440
+  worker_thread+0x324/0x4b8
+  kthread+0x210/0x228
+  ret_from_fork+0x10/0x18
 
-switched to the large code model, which uses 64-bit immediates for all
-symbol references, including function calls, in order to avoid relying
-on any assumptions regarding proximity of symbols in the final
-executable.
+ The address belongs to the variable:
+  ath12k_mac_mon_status_filter_default+0x4bd8/0xfffffffffffe2300 [ath12k]
+ [...]
+ ==================================================================
 
-The large code model is rarely used, clunky and the least likely to
-operate in a similar fashion when comparing GCC and Clang, so it is best
-avoided. This is especially true now that Clang 18 has started to emit
-executable code in two separate sections (.text and .ltext), which
-triggers an issue in the kexec loading code at runtime.
+Add a dummy terminator entry at the end to assist the qmi_invoke_handler()
+in traversing up to the terminator entry without accessing an
+out-of-boundary index.
 
-The SUSE bugzilla fixes tag points to gcc 13 having issues with the
-large model too and that perhaps the large model should simply not be
-used at all.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
-Instead, use the position independent small code model, which makes no
-assumptions about placement but only about proximity, where all
-referenced symbols must be within -/+ 2 GiB, i.e., in range for a
-RIP-relative reference. Use hidden visibility to suppress the use of a
-GOT, which carries absolute addresses that are not covered by static ELF
-relocations, and is therefore incompatible with the kexec loader's
-relocation logic.
-
-  [ bp: Massage commit message. ]
-
-Fixes: e16c2983fba0 ("x86/purgatory: Change compiler flags from -mcmodel=kernel to -mcmodel=large to fix kexec relocation errors")
-Fixes: https://bugzilla.suse.com/show_bug.cgi?id=1211853
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2016
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Fangrui Song <maskray@google.com>
-Acked-by: Nick Desaulniers <ndesaulniers@google.com>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/all/20240417-x86-fix-kexec-with-llvm-18-v1-0-5383121e8fb7@kernel.org/
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240416080234.2882725-1-quic_kathirve@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/purgatory/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/qmi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
-index 08aa0f25f12a0..8d1c82795ea1d 100644
---- a/arch/x86/purgatory/Makefile
-+++ b/arch/x86/purgatory/Makefile
-@@ -42,7 +42,8 @@ KCOV_INSTRUMENT := n
- # make up the standalone purgatory.ro
+diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
+index 87de25b87196d..e68accbc837f4 100644
+--- a/drivers/net/wireless/ath/ath12k/qmi.c
++++ b/drivers/net/wireless/ath/ath12k/qmi.c
+@@ -2935,6 +2935,9 @@ static const struct qmi_msg_handler ath12k_qmi_msg_handlers[] = {
+ 		.decoded_size = sizeof(struct qmi_wlanfw_fw_ready_ind_msg_v01),
+ 		.fn = ath12k_qmi_msg_fw_ready_cb,
+ 	},
++
++	/* end of list */
++	{},
+ };
  
- PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel
--PURGATORY_CFLAGS := -mcmodel=large -ffreestanding -fno-zero-initialized-in-bss -g0
-+PURGATORY_CFLAGS := -mcmodel=small -ffreestanding -fno-zero-initialized-in-bss -g0
-+PURGATORY_CFLAGS += -fpic -fvisibility=hidden
- PURGATORY_CFLAGS += $(DISABLE_STACKLEAK_PLUGIN) -DDISABLE_BRANCH_PROFILING
- PURGATORY_CFLAGS += -fno-stack-protector
- 
+ static int ath12k_qmi_ops_new_server(struct qmi_handle *qmi_hdl,
 -- 
 2.43.0
 
