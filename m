@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3558FEEC1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 518558FECF7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F12AB20BBD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 624BB1C2316C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6BE1C6199;
-	Thu,  6 Jun 2024 14:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C27B1B3F1A;
+	Thu,  6 Jun 2024 14:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCuo7Mpx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GlRRsFtR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE9C1A0DF8;
-	Thu,  6 Jun 2024 14:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F018A1B3F18;
+	Thu,  6 Jun 2024 14:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683697; cv=none; b=DA2Na5rrdxT2MqVxG9Yq2nyHDvN352C89f1HEKCnRADz1fA+m2Zk//Ik4iFo/EuKqvWGw7Ug7acq8LjaWp/rYYxXC03Mu2oEBpUovOeRA1Dn0HQsmTwRfm1Yg2sMLpWcFcujE2O5cRuL0Iz09P41og6xKvtutAA6FzKkRlUvB3o=
+	t=1717683430; cv=none; b=I84KkjH+iKRkBQLkgFFKY03RH4HuK5OVT/jrYCF88vUcwftyntz/UUzFX+AGFE5vTi2gZmeAaslEhssyixVlWyCsp99aWmtywIMIOcLRciny9EMavB+33dmwFxH10bF+GCF3FdrjjXIpBWDiOHbo2Mst1pYZ5StiarEG4WB/WNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683697; c=relaxed/simple;
-	bh=j605snKw3ExaqAjAYUKKZhGffduUYlUd6tW53Fex8Bs=;
+	s=arc-20240116; t=1717683430; c=relaxed/simple;
+	bh=1ywmh6MHD2f6sTfvLphYHUGuAV8U04LmFP8kVoKk4gU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PRTVGjfa7sosuQS5hjZL5Df6rS6InErwq5DfWg2rGuI8cGNUu1FEBkmYNHEEe6yKMof4c5x6w13HBY22CsC0KSSWEZhmcfYjaDpzRXUR3Q98dgYFdvzFips6GOWB4bC0Ig/dl7ZV2duB0rsN308hFQbPls8QcSGIPq9Dw7H/iFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCuo7Mpx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E7FC2BD10;
-	Thu,  6 Jun 2024 14:21:36 +0000 (UTC)
+	 MIME-Version; b=gwTdAYvC44TlzTxIKZG7VkwawjEbSKN9Yx/9BcAvMNV4G19q2Usc5e2zpu50wjAV6qgJRNMDkW3lZHtlcTK+t+Xi4XqnCvGR6YI8GYCecK0fXuxoiMB9QebObbnfPv9/q+g792B+eQn9gukHo/ags457/6pXS3t3Q3HZ4uBDcJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GlRRsFtR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0245C2BD10;
+	Thu,  6 Jun 2024 14:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683696;
-	bh=j605snKw3ExaqAjAYUKKZhGffduUYlUd6tW53Fex8Bs=;
+	s=korg; t=1717683429;
+	bh=1ywmh6MHD2f6sTfvLphYHUGuAV8U04LmFP8kVoKk4gU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HCuo7MpxvfJ8StpwuX3bGAcle4V8xU31T8cuG7s5ic1EqBIJdVtUNvD4Au/H0t/Tt
-	 eLH/GEYdVGro9zglzizln/vavrtLRZDeUF7HUqjLDGF+fl61fE0a5Ovm6YCO0jE2Ox
-	 f3hevevwsHCRtnneXftiXGTZUdezUE+39sc9YEqQ=
+	b=GlRRsFtRwUELKw5kB9BsyAhLN3L2feAXA9zmwiyL78YDtsn23QzkV7G0TtLpIT8a/
+	 T0Gem1Ca3RWyuLJUNFWTk9VOL8l8ycZzVu9GVQr6TYHu5I63BOT0bRNj5ChKvGEoCj
+	 ucCGZwIrRV8HJcltL5aXh6MgBXC43mqSrn6wadvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 572/744] drm/msm/dsi: Print dual-DSI-adjusted pclk instead of original mode pclk
+Subject: [PATCH 6.1 315/473] iio: pressure: dps310: support negative temperature values
 Date: Thu,  6 Jun 2024 16:04:04 +0200
-Message-ID: <20240606131750.801910181@linuxfoundation.org>
+Message-ID: <20240606131710.347903726@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
 
-[ Upstream commit f12e0e12524a34bf145f7b80122e653ffe3d130a ]
+[ Upstream commit 9dd6b32e76ff714308964cd9ec91466a343dcb8b ]
 
-When dual-DSI (bonded DSI) was added in commit ed9976a09b48
-("drm/msm/dsi: adjust dsi timing for dual dsi mode") some DBG() prints
-were not updated, leading to print the original mode->clock rather
-than the adjusted (typically the mode clock divided by two, though more
-recently also adjusted for DSC compression) msm_host->pixel_clk_rate
-which is passed to clk_set_rate() just below.  Fix that by printing the
-actual pixel_clk_rate that is being set.
+The current implementation interprets negative values returned from
+`dps310_calculate_temp` as error codes.
+This has a side effect that when negative temperature values are
+calculated, they are interpreted as error.
 
-Fixes: ed9976a09b48 ("drm/msm/dsi: adjust dsi timing for dual dsi mode")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/589896/
-Link: https://lore.kernel.org/r/20240417-drm-msm-initial-dualpipe-dsc-fixes-v1-1-78ae3ee9a697@somainline.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fix this by using the return value only for error handling and passing a
+pointer for the value.
+
+Fixes: ba6ec48e76bc ("iio: Add driver for Infineon DPS310")
+Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+Link: https://lore.kernel.org/r/20240415105030.1161770-2-thomas.haemmerle@leica-geosystems.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/iio/pressure/dps310.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index 470866896b9b8..ab393bdaba6cd 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -366,8 +366,8 @@ int dsi_link_clk_set_rate_6g(struct msm_dsi_host *msm_host)
+diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
+index db1b1e48225aa..519fcd425b6a3 100644
+--- a/drivers/iio/pressure/dps310.c
++++ b/drivers/iio/pressure/dps310.c
+@@ -730,7 +730,7 @@ static int dps310_read_pressure(struct dps310_data *data, int *val, int *val2,
+ 	}
+ }
+ 
+-static int dps310_calculate_temp(struct dps310_data *data)
++static int dps310_calculate_temp(struct dps310_data *data, int *val)
  {
- 	int ret;
+ 	s64 c0;
+ 	s64 t;
+@@ -746,7 +746,9 @@ static int dps310_calculate_temp(struct dps310_data *data)
+ 	t = c0 + ((s64)data->temp_raw * (s64)data->c1);
  
--	DBG("Set clk rates: pclk=%d, byteclk=%lu",
--		msm_host->mode->clock, msm_host->byte_clk_rate);
-+	DBG("Set clk rates: pclk=%lu, byteclk=%lu",
-+	    msm_host->pixel_clk_rate, msm_host->byte_clk_rate);
+ 	/* Convert to milliCelsius and scale the temperature */
+-	return (int)div_s64(t * 1000LL, kt);
++	*val = (int)div_s64(t * 1000LL, kt);
++
++	return 0;
+ }
  
- 	ret = dev_pm_opp_set_rate(&msm_host->pdev->dev,
- 				  msm_host->byte_clk_rate);
-@@ -440,9 +440,9 @@ int dsi_link_clk_set_rate_v2(struct msm_dsi_host *msm_host)
- {
- 	int ret;
+ static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
+@@ -768,11 +770,10 @@ static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
+ 		if (rc)
+ 			return rc;
  
--	DBG("Set clk rates: pclk=%d, byteclk=%lu, esc_clk=%lu, dsi_src_clk=%lu",
--		msm_host->mode->clock, msm_host->byte_clk_rate,
--		msm_host->esc_clk_rate, msm_host->src_clk_rate);
-+	DBG("Set clk rates: pclk=%lu, byteclk=%lu, esc_clk=%lu, dsi_src_clk=%lu",
-+	    msm_host->pixel_clk_rate, msm_host->byte_clk_rate,
-+	    msm_host->esc_clk_rate, msm_host->src_clk_rate);
+-		rc = dps310_calculate_temp(data);
+-		if (rc < 0)
++		rc = dps310_calculate_temp(data, val);
++		if (rc)
+ 			return rc;
  
- 	ret = clk_set_rate(msm_host->byte_clk, msm_host->byte_clk_rate);
- 	if (ret) {
+-		*val = rc;
+ 		return IIO_VAL_INT;
+ 
+ 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
 -- 
 2.43.0
 
