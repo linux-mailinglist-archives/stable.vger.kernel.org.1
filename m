@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-49156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E668FEC19
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0EB58FEDC4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F70028249B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 033631C22D84
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B275319AD55;
-	Thu,  6 Jun 2024 14:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D5319E7E5;
+	Thu,  6 Jun 2024 14:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozPeuPkB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBUUy6id"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C8819AA7F;
-	Thu,  6 Jun 2024 14:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186881BD501;
+	Thu,  6 Jun 2024 14:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683329; cv=none; b=VTjLuczDRfjMoakQVcBBv4gvZSG3muHGK80sRRGbcauWK4H9wO4Wuk24W19KKcZGkoeoxs1QuV/4bEA5Kw1AkxEt2kOXS1gXwqSrlpR6ygMmbtQ57KMas/VY28NkIWf+9Mad8iOO9Srq0laTsJDMBoZSLxwV6fpFs/flnsv2xFU=
+	t=1717683523; cv=none; b=eS6LfCtSCwK2juIp6lF5uAiZZmcyJ7K9U2eJjmvFeHJHmxvQ8icbsZlOF3Y8bxM2MTleJNd+cOkr/jzRg5cNsVfvsZAiOrG+bScyHYox/CUrzPnVhCWZKLhS495OMQHOeePj2HWwEDLPTIDdjBJwgphwr7Dgju8FVwf5KIn1AF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683329; c=relaxed/simple;
-	bh=omVtpLQIeygE6+Beodz26vUiVloQ9Kr2qD3iTXDa0sA=;
+	s=arc-20240116; t=1717683523; c=relaxed/simple;
+	bh=4hT7IC9fOEhwpe5bcOlD6nWlisBdRg74Vu7xFZBfHo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfLh09+3DSmghCbpP0F+kKLE0C2EFvjkVrMPUXQjDFUt4Pq7qDjdSdsozNk8gsoURegHARvJLqakeH/ZREGenV+5V41x8WDPiEp8Vq1k0J7+iST/+ds3ugdz0jl71rOetucPq+nLEBDlsxqh3asH5p5EugDA/yxhR6F1YGG8Kzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozPeuPkB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F508C2BD10;
-	Thu,  6 Jun 2024 14:15:29 +0000 (UTC)
+	 MIME-Version; b=X0BYd+KGeeZWIIMvxuWL6nfdnazC6YDfVNpA1gmH3/6JsJLHIspLeFzjUhA24NT3+AYd/YSE7UIpmigK9Ekq4DIZE0hw8psg9gYAEPrMldXNJwqUwLLkcHAfWDzx0wBhzAy8pTsrplpJ0cuZieWmL/XOG89UxJIS0dDCw65Ezp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBUUy6id; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A28C4AF07;
+	Thu,  6 Jun 2024 14:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683329;
-	bh=omVtpLQIeygE6+Beodz26vUiVloQ9Kr2qD3iTXDa0sA=;
+	s=korg; t=1717683523;
+	bh=4hT7IC9fOEhwpe5bcOlD6nWlisBdRg74Vu7xFZBfHo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ozPeuPkBr909MgVXi0VeqFiZZ+tdjQdf7lT250Cjze1gf2JFUQvh/HMLZbHpLCZXc
-	 Cu7uwtA5qCRs5jKlU8oZlcDFXclHt4kJ6jfpGkeeZZRDGjgcprJc75y/7NHyx/zhO1
-	 JsqehlOkLLteZRFCDRovf85cbs2mvtLQfBulDp+s=
+	b=lBUUy6idCieQn5L9nu4tHal38QqDlAFD3MKdVUPQgxBo7rRu99W6BtybD5HQRSr/A
+	 tCT+jjGlyzCJZc8OCa5Pj9qCAALzKIAUWUlzHJ9gnXLqzhgpStaVdOfT4xunSu/2m3
+	 wOPLJaF2W6tP7HREf/H74ABpBfkeBQbb9OputIeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 207/473] ASoC: Intel: avs: Fix ASRC module initialization
+Subject: [PATCH 6.6 464/744] microblaze: Remove gcc flag for non existing early_printk.c file
 Date: Thu,  6 Jun 2024 16:02:16 +0200
-Message-ID: <20240606131706.772115416@linuxfoundation.org>
+Message-ID: <20240606131747.354529095@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Michal Simek <michal.simek@amd.com>
 
-[ Upstream commit 9d2e26f31c7cc3fa495c423af9b4902ec0dc7be3 ]
+[ Upstream commit edc66cf0c4164aa3daf6cc55e970bb94383a6a57 ]
 
-The ASRC module configuration consists of several reserved fields. Zero
-them out when initializing the module to avoid sending invalid data.
+early_printk support for removed long time ago but compilation flag for
+ftrace still points to already removed file that's why remove that line
+too.
 
-Fixes: 274d79e51875 ("ASoC: Intel: avs: Configure modules according to their type")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://msgid.link/r/20240405090929.1184068-6-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 96f0e6fcc9ad ("microblaze: remove redundant early_printk support")
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/r/5493467419cd2510a32854e2807bcd263de981a0.1712823702.git.michal.simek@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/path.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/microblaze/kernel/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/sound/soc/intel/avs/path.c b/sound/soc/intel/avs/path.c
-index ce157a8d65520..989a7a4127cdd 100644
---- a/sound/soc/intel/avs/path.c
-+++ b/sound/soc/intel/avs/path.c
-@@ -308,6 +308,7 @@ static int avs_asrc_create(struct avs_dev *adev, struct avs_path_module *mod)
- 	struct avs_tplg_module *t = mod->template;
- 	struct avs_asrc_cfg cfg;
- 
-+	memset(&cfg, 0, sizeof(cfg));
- 	cfg.base.cpc = t->cfg_base->cpc;
- 	cfg.base.ibs = t->cfg_base->ibs;
- 	cfg.base.obs = t->cfg_base->obs;
+diff --git a/arch/microblaze/kernel/Makefile b/arch/microblaze/kernel/Makefile
+index 4393bee64eaf8..85c4d29ef43e9 100644
+--- a/arch/microblaze/kernel/Makefile
++++ b/arch/microblaze/kernel/Makefile
+@@ -7,7 +7,6 @@ ifdef CONFIG_FUNCTION_TRACER
+ # Do not trace early boot code and low level code
+ CFLAGS_REMOVE_timer.o = -pg
+ CFLAGS_REMOVE_intc.o = -pg
+-CFLAGS_REMOVE_early_printk.o = -pg
+ CFLAGS_REMOVE_ftrace.o = -pg
+ CFLAGS_REMOVE_process.o = -pg
+ endif
 -- 
 2.43.0
 
