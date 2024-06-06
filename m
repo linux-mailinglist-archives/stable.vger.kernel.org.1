@@ -1,129 +1,118 @@
-Return-Path: <stable+bounces-49933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 104798FF6A5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 23:24:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C155B8FF70C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 23:52:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93930286C39
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 21:24:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CD0F1F2348F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 21:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6C3196DA7;
-	Thu,  6 Jun 2024 21:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB816F06E;
+	Thu,  6 Jun 2024 21:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nzp9e4aW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfXW3Keo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7341DFD1;
-	Thu,  6 Jun 2024 21:23:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE0961FE3
+	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 21:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717709007; cv=none; b=hIKUk6Qa8PcOrwG0iYu1c1Cu6g2mzVIcdAmkyp0P2S8+P1G+Ur+dXP7VaI+/qPqPNqPmCqLjUgwUKk5WGmj7czUnJLBs7K0rhAEVreXvl6xsn0+IAS6QU0ygDUANItvoEKFNAy0JQ/i4qD/Whr9Uh4UHVPFvxp2eWNLsZG6wPKg=
+	t=1717710732; cv=none; b=V8pvZTClEKGzgNnTQKeg++aJJapR/u28DecxRuVCCqdrRqN0nBQre2RGD1cbroIhH5MzN4aNRE8wMSmlvLxxL+pVwrdG6GTRzFz+5jfxIPwOZUMEX/yGWIlsGNu9TDe/c4jSHn3TSq5qmss+wNde2EDwFIJj5yZwtQv1Dmanyn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717709007; c=relaxed/simple;
-	bh=18ErmTQ+WGncl+Pa0OIgOMyrs4urCsczi4HxtdcrsRU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=flK/rvvjm7iWotP/Yhhlb2ALXpH7WrukyNb63g38L92h44h9VagqX6B92qk0KVATXkLQ6np5PoXiDwdG+UpgKgsDGAliOezUXK9h+rRQWgBNHTp9zN8D2jZSzbsQhln+FIVCg8+r0/LSYx/GK9MyRIz99onSap+LsIBY0LLOLdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nzp9e4aW; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2eab19e7034so23284141fa.0;
-        Thu, 06 Jun 2024 14:23:25 -0700 (PDT)
+	s=arc-20240116; t=1717710732; c=relaxed/simple;
+	bh=1wzuCCFG6zJQG4/yIoPNBCKWEOwr1cjoHnLTYAP3xpY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cL//8OdwMG/ojKCnc5Tyhg1kG5K4xC4/1es47L/GPRnbmHFasBsN+PH6wDlL0+JFsDMMole92N2DgleW+9e5J9K+GCEfh0YYmbBN9Q1xqxLxGlpGVmgQ8078zYS3vpFqALXtdn8qNJmO4eTKivvhduQ6GF0bfr/OBm3Tf1ZzMQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfXW3Keo; arc=none smtp.client-ip=209.85.166.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-36da87c973cso792745ab.0
+        for <stable@vger.kernel.org>; Thu, 06 Jun 2024 14:52:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717709004; x=1718313804; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=18ErmTQ+WGncl+Pa0OIgOMyrs4urCsczi4HxtdcrsRU=;
-        b=Nzp9e4aWVJ6OGPC7/Rv90fZ1IeTfB20ysO9DWi4FA4Rv+jVFf4qdxRYtCsNFamPti7
-         rywlm/Id2AbvczOCTNFh1u9Q3aXjpxB3cqrZAuZI/93gRWrUg5iKgpvZEN7BRY8CCZFI
-         Gc++LBrEoAvtgmdS8RVw9DFlhJAA9fi8lI7x8rwMXNWVIbHufxGM0j6eugaiYD9xT3wK
-         oR+tnYnfQJrWEBpbzcxy7riq6XrZTkf4j9vHyFvF+/+ed7Tq4acDf7He5d1TxJ86vhjX
-         SYw5PQCbcYg6QohDZq/UOcDtToRk/mBPwe2kaHxjlnXhnE47n21LlLgJx3wNfe9aLflp
-         5f+w==
+        d=linuxfoundation.org; s=google; t=1717710730; x=1718315530; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1KDsYqliGZduGqwNg2P/Pec7wrzaXiUOB9FmAhmIDXY=;
+        b=MfXW3Keo4CEV8PGH8krrPFdZaRx8Btrb0YtOhnHYlREpfwOwxUkSCf5jxFapqU/I5j
+         5kltEWD0/rDnBF6pn2W+f4I+1NL8bBzsfiK4JYCX/54jCtVdb0FmBT0QNCbvj2iMQRri
+         oefBrURikHeGOhLYHQgZZYM5wSeELnUnuIh2g=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717709004; x=1718313804;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=18ErmTQ+WGncl+Pa0OIgOMyrs4urCsczi4HxtdcrsRU=;
-        b=lRI3BfZVZcS4pgB9Jh8X4rnWCkKL0uTGseezNVLHDujaunBpejKNqPx2LYHwVIHAQv
-         dqMbz4HHJIjssDZaggN9JegtFHYO+y6n/DZP3coIpJ82cyIQaTP/T1vOG6AXZPVPV+fx
-         /F8PowvjWmvH+MEzaUjzBxlxsSjcO++MMs3TF2c2/jnJNegvZempzAUY5+NFbcksWJiY
-         cxXTLc3N/Pu60nnAj6B/4OV6N099lMKs9/AQgupg7LT6pCKf/59+dvIpO8jbOyhAqIcv
-         QVxtQ6zXOgqsQHtO9USMhb5WwnSpR9UxTqAuFXJlpplowM/6CLUHsEjNCbrnZiGmtp0Y
-         jZoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWZVG/KuhUNaoMprI5UnlLsaz+rt0/xtO8N3qRTjsScK1ICp6o9s7PXXeZP94KbIfeXO/TdiY/x89w6oCVwCq74wNvmN5evkeZIZjnLKFc7
-X-Gm-Message-State: AOJu0YwU32pFAE5jd5vqZmYCCYEBUsIuHrUopDQtiFwmoxM/ZqlACvQ+
-	fYDZJiRZOToD9dSbQJR26Gk4QZPoeMez6yGumh4NIJV9L/B6kJfL/Bj6DSPIFaYQVYfzoAokRws
-	aDXL3LAU8ccpSgshfOR6GaENGN6A=
-X-Google-Smtp-Source: AGHT+IG2uNcusRrlYiy5pSN/MoSZfc+1gv2u2voDfSUD2LA4yyPyxkGk9q2e9tLZT7lM4NLeRsHMKiBiDHCj2x0EHXw=
-X-Received: by 2002:a2e:9e4a:0:b0:2e3:331e:e33d with SMTP id
- 38308e7fff4ca-2ead00b8920mr10688881fa.11.1717709003796; Thu, 06 Jun 2024
- 14:23:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1717710730; x=1718315530;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1KDsYqliGZduGqwNg2P/Pec7wrzaXiUOB9FmAhmIDXY=;
+        b=njab5hny3JXE57Q+5qlNo1Wi5U3rwO6aQ2bbj/bl5jfsMCLynCe9/EyMA5FuDsyN/W
+         LUQjNstONDII5XfgSnNAlvIP4Sc0I0LkNl551e0kyxEkPNjP0xSs70iQlo5bSQwQ/5ka
+         e7hUpAlZF0d5B3Tz/9/YCvBFTEfm8tyDn835U4VdAuH0ROYw2iKkUFzM6EKXKuwk+oyx
+         hnkZ60z2GvuggVHoASA6ov87G3cAqchKhz5HERbZWtT0AJJ5bHmV0xTn9MH8XghSTQ+O
+         7ID/JpqCiaVS6N6xyWndxiTl1aSOzqYMu6mz+qF9oUwtGxk0kb9eF1S0CXttmOnvT5RS
+         QDxw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUaQDlVe7jXFUXQYx08vVFyHEaJ45jNkIRIlSpT3cYT1qu+mdSOLpe/1mJV+vbU+O0yZNBRaaoiN5D9KJV3tNcZ1hsDrj0
+X-Gm-Message-State: AOJu0YwvxnoNVXg642v5u3/vAs73SFQoKMLWKglhdddBJ7c1890SqCql
+	p+gK+/3bKjFzAImHOaFDrE2Vi6HMjaOJfeTPwGEqMP2hCnhbxUX7rdDZV/bmfsc=
+X-Google-Smtp-Source: AGHT+IHFAu/m5GExcl5dKYmmFZVcJ+UraGl6QR4X2bxMouTEWbj98AEA6rlHA2Jcl97lTwB90wbSoA==
+X-Received: by 2002:a05:6e02:20c5:b0:374:a102:2948 with SMTP id e9e14a558f8ab-37580391276mr10011895ab.3.1717710729892;
+        Thu, 06 Jun 2024 14:52:09 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-374bc15dc9asm4891715ab.45.2024.06.06.14.52.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Jun 2024 14:52:09 -0700 (PDT)
+Message-ID: <cffcd021-7a8c-4a33-b07d-f0ab21af3983@linuxfoundation.org>
+Date: Thu, 6 Jun 2024 15:52:08 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAGew7BttU+g40uRnSCN5XmbXs1KX1ZBbz+xyXC_nw5p4dR2dGA@mail.gmail.com>
-In-Reply-To: <CAGew7BttU+g40uRnSCN5XmbXs1KX1ZBbz+xyXC_nw5p4dR2dGA@mail.gmail.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Thu, 6 Jun 2024 17:23:11 -0400
-Message-ID: <CABBYNZLE9uYiRM-baoBt=RQktq__TguMETgmVWGzfeorARfm4w@mail.gmail.com>
-Subject: Re: Bluetooth Kernel Bug: After connecting either HFP/HSP or A2DP is
- not available (Regression in 6.9.3, 6.8.12)
-To: =?UTF-8?Q?Timo_Schr=C3=B6der?= <der.timosch@gmail.com>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
-	linux-bluetooth@vger.kernel.org, luiz.von.dentz@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.9 000/374] 6.9.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Timo,
+On 6/6/24 07:59, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.9.4 release.
+> There are 374 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 08 Jun 2024 13:15:55 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.4-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-On Thu, Jun 6, 2024 at 4:46=E2=80=AFPM Timo Schr=C3=B6der <der.timosch@gmai=
-l.com> wrote:
->
-> Hallo,
-> on my two notebooks, one with Ubuntu (Mainline Kernel 6.9.3, bluez
-> 5.7.2) and the other one with Manjaro (6.9.3, bluez 5.7.6) I'm having
-> problems with my Sony WH-1000XM3 and Shure BT1. Either A2DP or HFP/HSP
-> is not available after the connection has been established after a
-> reboot or a reconnection. It's reproducible that with the WH-1000XM3
-> the A2DP profiles are missing and with the Shure BT1 HFP/HSP profiles
-> are missing. It also takes longer than usual to connect and I have a
-> log message in the journal:
->
-> Jun 06 16:28:10 liebig bluetoothd[854]:
-> profiles/audio/avdtp.c:cancel_request() Discover: Connection timed out
-> (110)
->
-> When I disable and re-enable bluetooth (while the Headsets are still
-> on) and trigger a reconnect from the notebooks, A2DP and HFP/HSP
-> Profiles are available again.
->
-> I also tested it with 6.8.12 and it's the same problem. 6.8.11 and
-> 6.9.2 don't have the problem.
-> So I did a bisection. After reverting commit
-> af1d425b6dc67cd67809f835dd7afb6be4d43e03 "Bluetooth: HCI: Remove
-> HCI_AMP support" for 6.9.3 it's working again without problems.
->
-> Let me know if you need anything from me.
+Compiled and booted on my test system. No dmesg regressions.
 
-Wait what, that patch has nothing to do with any of these profiles not
-really sure how that would cause a regression really, are you sure you
-don't have actual connection timeout happening at the link layer and
-that by some chance didn't happen when running with HCI_AMP reverted?
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-I'd be surprised that HCI_AMP has any effect in most controllers
-anyway, only virtual controllers was using that afaik.
-
-
---=20
-Luiz Augusto von Dentz
+thanks,
+-- Shuah
 
