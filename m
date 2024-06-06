@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-48786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7ED8FEA88
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E798FEC25
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC99BB22E5A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B0591F29777
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26FE61991A4;
-	Thu,  6 Jun 2024 14:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C281AD9D1;
+	Thu,  6 Jun 2024 14:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fi6blKCT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLWNth1o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA88A196C68;
-	Thu,  6 Jun 2024 14:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531E619AD60;
+	Thu,  6 Jun 2024 14:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683146; cv=none; b=IIsxw0hXioE5ReFiuKF+nQANeTBe4nvBVRLt6JZmHJr33kPRN/r8mc9/NmwIhLQlp7OWdSuHP8KvkXSA1Nt0jDU9EtlFVNgHo5byUGH/nsrZS79xB/CPYuS3xA9W37N0gTTdJWlLjkO8CAJAzU9+cfL/LvnaqaOfye7xMlpsqKM=
+	t=1717683335; cv=none; b=Jlvk2Z47oiYPoJM6hFJNxmDCQ9Y8QwHVnaue8fqVBiVVCBKmaK8k+kMHy3RqmIJ/rTBetsi2vLCgeNzkrpkSUDW8m1x8X5qst3eYPtz+mBQEi+gNOv6AEOEaezDHPpRsnuMSJrk12QFS8Pf/sIF4WOVEu0D/fvRfBEUleILqWBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683146; c=relaxed/simple;
-	bh=rRCGLEomZDDrkuMmgTwiXAaqj4zPx3uY783UxhMl/Ks=;
+	s=arc-20240116; t=1717683335; c=relaxed/simple;
+	bh=NJaix6YN262hgv0BiiflH3jLsqVGxxfCWyCu99OAOQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHpf1R7brg7eINDFpZGrDFZ3EOX2X/VV0cYLXCFM1KwyXpFMbbqFckALFKRpznabS/K3yfZZeHXgBxq00tvIurkrdS4EapztFwljw5n9Ctk8o48JnIBmDGh6iUlZFPeWCPn65n/nG9M4lZYcRwTN8nfjFwwQ1cxWH2WIeN0K3Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fi6blKCT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2937C2BD10;
-	Thu,  6 Jun 2024 14:12:26 +0000 (UTC)
+	 MIME-Version; b=rYyV9V6hLa25g18ecIkI9M0kFpnH6klhJ4OuFalO3pyYIUCv1uJHgnO7Ia2VXJu4DO47yLCsAka7tNfa5JluTcPu90qQFuquhKwX8WLp0UuMD+Cy/Vvn6Z+ttgzXeOiAuN3PC4/UGe5wKOWYimGfUBwL3iolZrMyv/NKbl+vazk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLWNth1o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BD6C32781;
+	Thu,  6 Jun 2024 14:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683146;
-	bh=rRCGLEomZDDrkuMmgTwiXAaqj4zPx3uY783UxhMl/Ks=;
+	s=korg; t=1717683335;
+	bh=NJaix6YN262hgv0BiiflH3jLsqVGxxfCWyCu99OAOQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fi6blKCTSLSL3JNwVZokW90ele/hEU+vkec/hEna7gSkQjVtdsW+RtObCTay1Ddix
-	 AKeolW8dd26PeMvLheH4Hl3tQ1pKdG3Dcg2E6aR57sMf7wR9/jzn49zeE1JYtGgrPa
-	 BQHQ33UWn27ueLcQhZjczN6KB2zIWwppTohfBL58=
+	b=kLWNth1ovSbbKtlExeplQRYVON4T39yJy+/hbe2Ez+k7GvyMXoI+2BI/I9l9lgVI2
+	 fOeTozg3kgyhmM5GF+6HqIbqFfOCHg1t+5FJ0eFwUS8UHV68k6bGn00ZG/9wMU514e
+	 /VVzMulq02i1KnwNaTY7sQOCP0vkcWCDhH7gmbIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 6.1 018/473] fs/ntfs3: Taking DOS names into account during link counting
-Date: Thu,  6 Jun 2024 15:59:07 +0200
-Message-ID: <20240606131700.445828652@linuxfoundation.org>
+	Liu Ying <victor.liu@nxp.com>,
+	Marek Vasut <marex@denx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 276/744] drm/lcdif: Do not disable clocks on already suspended hardware
+Date: Thu,  6 Jun 2024 15:59:08 +0200
+Message-ID: <20240606131741.241250047@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,101 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Marek Vasut <marex@denx.de>
 
-commit 110b24eb1a749bea3440f3ca2ff890a26179050a upstream.
+[ Upstream commit 172695f145fb4798ab605e8a73f6e87711930124 ]
 
-When counting and checking hard links in an ntfs file record,
+In case the LCDIF is enabled in DT but unused, the clocks used by the
+LCDIF are not enabled. Those clocks may even have a use count of 0 in
+case there are no other users of those clocks. This can happen e.g. in
+case the LCDIF drives HDMI bridge which has no panel plugged into the
+HDMI connector.
 
-  struct MFT_REC {
-    struct NTFS_RECORD_HEADER rhdr; // 'FILE'
-    __le16 seq;		    // 0x10: Sequence number for this record.
->>  __le16 hard_links;	// 0x12: The number of hard links to record.
-    __le16 attr_off;	// 0x14: Offset to attributes.
-  ...
+Do not attempt to disable clocks in the suspend callback and re-enable
+clocks in the resume callback unless the LCDIF is enabled and was in
+use before the system entered suspend, otherwise the driver might end
+up trying to disable clocks which are already disabled with use count
+0, and would trigger a warning from clock core about this condition.
 
-the ntfs3 driver ignored short names (DOS names), causing the link count
-to be reduced by 1 and messages to be output to dmesg.
+Note that the lcdif_rpm_suspend() and lcdif_rpm_resume() functions
+internally perform the clocks disable and enable operations and act
+as runtime PM hooks too.
 
-For Windows, such a situation is a minor error, meaning chkdsk does not report
-errors on such a volume, and in the case of using the /f switch, it silently
-corrects them, reporting that no errors were found. This does not affect
-the consistency of the file system.
-
-Nevertheless, the behavior in the ntfs3 driver is incorrect and
-changes the content of the file system. This patch should fix that.
-
-PS: most likely, there has been a confusion of concepts
-MFT_REC::hard_links and inode::__i_nlink.
-
-Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Liu Ying <victor.liu@nxp.com>
+Fixes: 9db35bb349a0 ("drm: lcdif: Add support for i.MX8MP LCDIF variant")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240226082644.32603-1-marex@denx.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c  |    7 ++++---
- fs/ntfs3/record.c |   11 ++---------
- 2 files changed, 6 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/mxsfb/lcdif_drv.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -37,7 +37,7 @@ static struct inode *ntfs_read_mft(struc
- 	bool is_dir;
- 	unsigned long ino = inode->i_ino;
- 	u32 rp_fa = 0, asize, t32;
--	u16 roff, rsize, names = 0;
-+	u16 roff, rsize, names = 0, links = 0;
- 	const struct ATTR_FILE_NAME *fname = NULL;
- 	const struct INDEX_ROOT *root;
- 	struct REPARSE_DATA_BUFFER rp; // 0x18 bytes
-@@ -190,11 +190,12 @@ next_attr:
- 		    rsize < SIZEOF_ATTRIBUTE_FILENAME)
- 			goto out;
+diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+index 18de2f17e2491..6494e82707569 100644
+--- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
++++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+@@ -340,6 +340,9 @@ static int __maybe_unused lcdif_suspend(struct device *dev)
+ 	if (ret)
+ 		return ret;
  
-+		names += 1;
- 		fname = Add2Ptr(attr, roff);
- 		if (fname->type == FILE_NAME_DOS)
- 			goto next_attr;
++	if (pm_runtime_suspended(dev))
++		return 0;
++
+ 	return lcdif_rpm_suspend(dev);
+ }
  
--		names += 1;
-+		links += 1;
- 		if (name && name->len == fname->name_len &&
- 		    !ntfs_cmp_names_cpu(name, (struct le_str *)&fname->name_len,
- 					NULL, false))
-@@ -421,7 +422,7 @@ end_enum:
- 		ni->mi.dirty = true;
- 	}
+@@ -347,7 +350,8 @@ static int __maybe_unused lcdif_resume(struct device *dev)
+ {
+ 	struct drm_device *drm = dev_get_drvdata(dev);
  
--	set_nlink(inode, names);
-+	set_nlink(inode, links);
+-	lcdif_rpm_resume(dev);
++	if (!pm_runtime_suspended(dev))
++		lcdif_rpm_resume(dev);
  
- 	if (S_ISDIR(mode)) {
- 		ni->std_fa |= FILE_ATTRIBUTE_DIRECTORY;
---- a/fs/ntfs3/record.c
-+++ b/fs/ntfs3/record.c
-@@ -485,16 +485,9 @@ bool mi_remove_attr(struct ntfs_inode *n
- 	if (aoff + asize > used)
- 		return false;
- 
--	if (ni && is_attr_indexed(attr)) {
-+	if (ni && is_attr_indexed(attr) && attr->type == ATTR_NAME) {
- 		u16 links = le16_to_cpu(ni->mi.mrec->hard_links);
--		struct ATTR_FILE_NAME *fname =
--			attr->type != ATTR_NAME ?
--				NULL :
--				resident_data_ex(attr,
--						 SIZEOF_ATTRIBUTE_FILENAME);
--		if (fname && fname->type == FILE_NAME_DOS) {
--			/* Do not decrease links count deleting DOS name. */
--		} else if (!links) {
-+		if (!links) {
- 			/* minor error. Not critical. */
- 		} else {
- 			ni->mi.mrec->hard_links = cpu_to_le16(links - 1);
+ 	return drm_mode_config_helper_resume(drm);
+ }
+-- 
+2.43.0
+
 
 
 
