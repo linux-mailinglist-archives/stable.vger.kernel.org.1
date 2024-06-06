@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-48366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4E38FE8B1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9024E8FECF6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBD311F239AA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00E2528714E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F58196DA7;
-	Thu,  6 Jun 2024 14:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DCD198A3F;
+	Thu,  6 Jun 2024 14:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQhCRs1N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfOB1vce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E755C196D9C;
-	Thu,  6 Jun 2024 14:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A301B3F0E;
+	Thu,  6 Jun 2024 14:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682925; cv=none; b=WQVCTRmRev0wcrfqMa7pG/tuFqKQc8ULmjeRSXQU0vnTbaBda/cxV1ZM2/iOGm1HE4yZrZ+8VgiUAf2RS9UE8jkKrf5cpO1E9A5K0r46J5UHKfsSqebI7gg06fPRWmnE2YziO6EZz8jcdeXucoMyLmiU/+nfmTvW9G7KIZNTLe4=
+	t=1717683429; cv=none; b=LUYQVNIzEE64VGAw8sFrSAMOqAmMpBLF7PQ1kzOUMIIrRG902NFHCBi8Z/z1Nm9b3P0ycrkyp49N8qglMCMLe+ZNuJ8F0/M90f5DPrwAQeK5NzoEp8EtOwU7vHhRvUXdAFEKg8/5Hm3c84GXdc32gTpWoxmJTeGmMINtUAS9z34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682925; c=relaxed/simple;
-	bh=6p7eu67FuUiWZ0N6Uik2NfYF/4vSBDo/jH+VP5ead3U=;
+	s=arc-20240116; t=1717683429; c=relaxed/simple;
+	bh=K8OBQC1OUCr/GwGN4rtmP50qRV+7BeVWKkk6kNmGtS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jFMcWJBS0K4+LwXAFx3vzQe4UN/1YTQjxRLmGSlsqCyThRlqP/0bMIuE7K51V5xYqj7dWwrMMPT8cwuTfz3xTBzTFCPsrfgI/13yMRek8O4I4eHncAuKYorfWDoeJNXkG9vXM8NLj1iCH4DSVfl0Yir776M2PDQzHsCyzD4jSc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQhCRs1N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4620C32782;
-	Thu,  6 Jun 2024 14:08:44 +0000 (UTC)
+	 MIME-Version; b=sL/hJHxi4bz6BzGgpKBJNWc50hlxjjsRgDvMqmKTOXrl/vioEFHKT0VrxLI7U8xulqFxq8r1agsOEe4Eq0C6rCUzgo3tfDFuurF8zNRYld69v9jqX7bo36HBECrfxhGR3blqvgBRVjJ2B3pVmswf66eF/yfYPQRjxHWrdV5q2mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfOB1vce; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FDFC2BD10;
+	Thu,  6 Jun 2024 14:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682924;
-	bh=6p7eu67FuUiWZ0N6Uik2NfYF/4vSBDo/jH+VP5ead3U=;
+	s=korg; t=1717683429;
+	bh=K8OBQC1OUCr/GwGN4rtmP50qRV+7BeVWKkk6kNmGtS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SQhCRs1ND0QRwjben8UC8ragKHiabSAdQru+0KyRSpu2eW+RzrjbFSLGSlSJfYMSh
-	 Y4+9gTfWXMKpCgkzMhPfuLGpKSat75gtv16ggBmmxBUM0jf9BZC8uUmRprbEZgVrwg
-	 M7KlxiglSgx4ChUvHK97Q+Xavhqvcp3jAVV9gJKk=
+	b=pfOB1vceUU0S6LnRb3RFJ5J2kOmbZ56WtinJcvYzbDvLHiD21hCQHlTrFLePlf91c
+	 vvVQYZ0yqjnXhfo73cvOiw3wsiODMyYq9Hcoh1qaJ72y2YBJ6+QoInltfgHkiVx2XU
+	 4SBlmrhdl2qkZN2bjxYNCosmJiFMwgjuGFMcohos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Edward Liaw <edliaw@google.com>,
+	Cyrill Gorcunov <gorcunov@gmail.com>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 067/374] perf intel-pt: Fix unassigned instruction op (discovered by MemorySanitizer)
+Subject: [PATCH 6.6 374/744] selftests/kcmp: remove unused open mode
 Date: Thu,  6 Jun 2024 16:00:46 +0200
-Message-ID: <20240606131654.079540047@linuxfoundation.org>
+Message-ID: <20240606131744.474829089@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Edward Liaw <edliaw@google.com>
 
-[ Upstream commit e101a05f79fd4ee3e89d2f3fb716493c33a33708 ]
+[ Upstream commit eb59a58113717df04b8a8229befd8ab1e5dbf86e ]
 
-MemorySanitizer discovered instances where the instruction op value was
-not assigned.:
+Android bionic warns that open modes are ignored if O_CREAT or O_TMPFILE
+aren't specified.  The permissions for the file are set above:
 
-  WARNING: MemorySanitizer: use-of-uninitialized-value
-    #0 0x5581c00a76b3 in intel_pt_sample_flags tools/perf/util/intel-pt.c:1527:17
-  Uninitialized value was stored to memory at
-    #0 0x5581c005ddf8 in intel_pt_walk_insn tools/perf/util/intel-pt-decoder/intel-pt-decoder.c:1256:25
+	fd1 = open(kpath, O_RDWR | O_CREAT | O_TRUNC, 0644);
 
-The op value is used to set branch flags for branch instructions
-encountered when walking the code, so fix by setting op to
-INTEL_PT_OP_OTHER in other cases.
-
-Fixes: 4c761d805bb2d2ea ("perf intel-pt: Fix intel_pt_fup_event() assumptions about setting state type")
-Reported-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Closes: https://lore.kernel.org/linux-perf-users/20240320162619.1272015-1-irogers@google.com/
-Link: https://lore.kernel.org/r/20240326083223.10883-1-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Link: https://lkml.kernel.org/r/20240429234610.191144-1-edliaw@google.com
+Fixes: d97b46a64674 ("syscalls, x86: add __NR_kcmp syscall")
+Signed-off-by: Edward Liaw <edliaw@google.com>
+Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/intel-pt-decoder/intel-pt-decoder.c | 2 ++
- tools/perf/util/intel-pt.c                          | 2 ++
- 2 files changed, 4 insertions(+)
+ tools/testing/selftests/kcmp/kcmp_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c b/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
-index b450178e3420b..e733f6b1f7ac5 100644
---- a/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
-+++ b/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
-@@ -1319,6 +1319,8 @@ static bool intel_pt_fup_event(struct intel_pt_decoder *decoder, bool no_tip)
- 	bool ret = false;
+diff --git a/tools/testing/selftests/kcmp/kcmp_test.c b/tools/testing/selftests/kcmp/kcmp_test.c
+index 25110c7c0b3ed..d7a8e321bb16b 100644
+--- a/tools/testing/selftests/kcmp/kcmp_test.c
++++ b/tools/testing/selftests/kcmp/kcmp_test.c
+@@ -91,7 +91,7 @@ int main(int argc, char **argv)
+ 		ksft_print_header();
+ 		ksft_set_plan(3);
  
- 	decoder->state.type &= ~INTEL_PT_BRANCH;
-+	decoder->state.insn_op = INTEL_PT_OP_OTHER;
-+	decoder->state.insn_len = 0;
- 
- 	if (decoder->set_fup_cfe_ip || decoder->set_fup_cfe) {
- 		bool ip = decoder->set_fup_cfe_ip;
-diff --git a/tools/perf/util/intel-pt.c b/tools/perf/util/intel-pt.c
-index f38893e0b0369..4db9a098f5926 100644
---- a/tools/perf/util/intel-pt.c
-+++ b/tools/perf/util/intel-pt.c
-@@ -764,6 +764,7 @@ static int intel_pt_walk_next_insn(struct intel_pt_insn *intel_pt_insn,
- 
- 	addr_location__init(&al);
- 	intel_pt_insn->length = 0;
-+	intel_pt_insn->op = INTEL_PT_OP_OTHER;
- 
- 	if (to_ip && *ip == to_ip)
- 		goto out_no_cache;
-@@ -898,6 +899,7 @@ static int intel_pt_walk_next_insn(struct intel_pt_insn *intel_pt_insn,
- 
- 			if (to_ip && *ip == to_ip) {
- 				intel_pt_insn->length = 0;
-+				intel_pt_insn->op = INTEL_PT_OP_OTHER;
- 				goto out_no_cache;
- 			}
- 
+-		fd2 = open(kpath, O_RDWR, 0644);
++		fd2 = open(kpath, O_RDWR);
+ 		if (fd2 < 0) {
+ 			perror("Can't open file");
+ 			ksft_exit_fail();
 -- 
 2.43.0
 
