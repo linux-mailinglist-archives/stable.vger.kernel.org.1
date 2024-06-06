@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-49374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459058FECFF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B066A8FE9CA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D8AE1C210AB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C58DE1C25F64
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8318319CD05;
-	Thu,  6 Jun 2024 14:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5B419B59F;
+	Thu,  6 Jun 2024 14:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/d/8/v3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vcsu2v9H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4260E1B3F32;
-	Thu,  6 Jun 2024 14:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1563198A30;
+	Thu,  6 Jun 2024 14:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683434; cv=none; b=EFG1XgwAqtAgMP1IDCCc9LdsH4kT0FwV5Fj2VRX3COj0PBTdX5O1lki60YHlFXqrdAu1O+/R1i229pXFNnU0QjmgLTBckWO5lMfrKgEJhSfSfqQC8EcdkGrYztbGUJeAqQ51tTcT98UivzE1g8RZys2ABvROIDCUTRKqLHmXJk0=
+	t=1717683065; cv=none; b=PBVDaXvMSoMhZYjb0Wip34zv3KZad1f7tcdsUysu1ZUdS2DLuzvuF6ocGeThKcppI2zkHd9UAWzzl/o1sQee9lwQyykwqQpbg0DaPwO3GZ2SAFwzuImWVBU3iSGFP/WIIla8//LSGDCPd1Ye2Axf7AmmdXjR4Qko0BFHfczxeu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683434; c=relaxed/simple;
-	bh=sExuCXoCSxixjQo/Q0jLJAjZZZ+X6r4JCnD+IRHKjCw=;
+	s=arc-20240116; t=1717683065; c=relaxed/simple;
+	bh=RA3O63zmGc5RQr4wu2ZhVs+xzcX1mEP+v0itS1ChMdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbEGqUkAriqOqPdAWRez/7khiUqWgNMyHWFwJ1IbazwTOQHoPyoBpeIshLSwZH2gqmGNlBnNkFup9WjlLoz4wieTjYX3veA5p7iYkYiptqI5YGMGW1vI/WlfqI5aalI1+oShAoCC0Ba+UDgPn4B1oOJqyIr0RtSTSqRgtYw1lRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/d/8/v3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19002C32781;
-	Thu,  6 Jun 2024 14:17:14 +0000 (UTC)
+	 MIME-Version; b=IANptRFtLqBZY7PT9KHoyFLAxjz6Z4r/T+eN10kay2tmejTGndjqE5G9kBkSFjqkr1qnY1+pOJsKDVvyvXVk8tA0DzONSDtzaxcK0deaRS6xkQSWbvsyNq5aP7XQS4OgAmbfHrxX+colwTeOUBrUEyr/DBEymOGmBzobyBM5bPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vcsu2v9H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1945C4AF0A;
+	Thu,  6 Jun 2024 14:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683434;
-	bh=sExuCXoCSxixjQo/Q0jLJAjZZZ+X6r4JCnD+IRHKjCw=;
+	s=korg; t=1717683065;
+	bh=RA3O63zmGc5RQr4wu2ZhVs+xzcX1mEP+v0itS1ChMdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t/d/8/v39QylCVngaMByFtbNxR37NkYTrfSe1uweNjYbOSaCAROVjqgkNFj1CtvGn
-	 HZ583RHIWhFxWdAL5IEy7sJmMnSZ0GD6kW+uQIuIz/J1Kv1EDUb0m9kdVAyrKsrYoX
-	 gG2lp2rxcPgr5mAp0aZmdA52w+lodIDwiUDJCQec=
+	b=Vcsu2v9H0IBShEMrAfvtm0HgTxASSxzvb3Vw+M83EQ8z34lj4ACKnNPoWvCSkyS5W
+	 OujJrpZEk5rLiI5zw80YCovE492YN7MN9V96Q9xyPeNNrdo9rncjyMVkyqYu9GZkAj
+	 YwmsSnXuei82c2WcYtYpYT7drRJ8BiohWUSeSW3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yabin Cui <yabinc@google.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
+	Jason Xing <kernelxing@tencent.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 319/473] coresight: etm4x: Fix access to resource selector registers
+Subject: [PATCH 6.9 269/374] tcp: remove 64 KByte limit for initial tp->rcv_wnd value
 Date: Thu,  6 Jun 2024 16:04:08 +0200
-Message-ID: <20240606131710.477139507@linuxfoundation.org>
+Message-ID: <20240606131700.916314597@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit d6fc00d0f640d6010b51054aa8b0fd191177dbc9 ]
+[ Upstream commit 378979e94e953c2070acb4f0e0c98d29260bd09d ]
 
-Resource selector pair 0 is always implemented and reserved. We must not
-touch it, even during save/restore for CPU Idle. Rest of the driver is
-well behaved. Fix the offending ones.
+Recently, we had some servers upgraded to the latest kernel and noticed
+the indicator from the user side showed worse results than before. It is
+caused by the limitation of tp->rcv_wnd.
 
-Reported-by: Yabin Cui <yabinc@google.com>
-Fixes: f188b5e76aae ("coresight: etm4x: Save/restore state across CPU low power states")
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Tested-by: Yabin Cui <yabinc@google.com>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Link: https://lore.kernel.org/r/20240412142702.2882478-5-suzuki.poulose@arm.com
+In 2018 commit a337531b942b ("tcp: up initial rmem to 128KB and SYN rwin
+to around 64KB") limited the initial value of tp->rcv_wnd to 65535, most
+CDN teams would not benefit from this change because they cannot have a
+large window to receive a big packet, which will be slowed down especially
+in long RTT. Small rcv_wnd means slow transfer speed, to some extent. It's
+the side effect for the latency/time-sensitive users.
+
+To avoid future confusion, current change doesn't affect the initial
+receive window on the wire in a SYN or SYN+ACK packet which are set within
+65535 bytes according to RFC 7323 also due to the limit in
+__tcp_transmit_skb():
+
+    th->window      = htons(min(tp->rcv_wnd, 65535U));
+
+In one word, __tcp_transmit_skb() already ensures that constraint is
+respected, no matter how large tp->rcv_wnd is. The change doesn't violate
+RFC.
+
+Let me provide one example if with or without the patch:
+Before:
+client   --- SYN: rwindow=65535 ---> server
+client   <--- SYN+ACK: rwindow=65535 ----  server
+client   --- ACK: rwindow=65536 ---> server
+Note: for the last ACK, the calculation is 512 << 7.
+
+After:
+client   --- SYN: rwindow=65535 ---> server
+client   <--- SYN+ACK: rwindow=65535 ----  server
+client   --- ACK: rwindow=175232 ---> server
+Note: I use the following command to make it work:
+ip route change default via [ip] dev eth0 metric 100 initrwnd 120
+For the last ACK, the calculation is 1369 << 7.
+
+When we apply such a patch, having a large rcv_wnd if the user tweak this
+knob can help transfer data more rapidly and save some rtts.
+
+Fixes: a337531b942b ("tcp: up initial rmem to 128KB and SYN rwin to around 64KB")
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Link: https://lore.kernel.org/r/20240521134220.12510-1-kerneljasonxing@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_output.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index e2e5b1422cdb7..354267edcb45f 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -1641,7 +1641,8 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 		state->trccntvr[i] = etm4x_read32(csa, TRCCNTVRn(i));
- 	}
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 02caeb7bcf634..16ef24a37c498 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -229,7 +229,7 @@ void tcp_select_initial_window(const struct sock *sk, int __space, __u32 mss,
+ 	if (READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_workaround_signed_windows))
+ 		(*rcv_wnd) = min(space, MAX_TCP_WINDOW);
+ 	else
+-		(*rcv_wnd) = min_t(u32, space, U16_MAX);
++		(*rcv_wnd) = space;
  
--	for (i = 0; i < drvdata->nr_resource * 2; i++)
-+	/* Resource selector pair 0 is reserved */
-+	for (i = 2; i < drvdata->nr_resource * 2; i++)
- 		state->trcrsctlr[i] = etm4x_read32(csa, TRCRSCTLRn(i));
- 
- 	for (i = 0; i < drvdata->nr_ss_cmp; i++) {
-@@ -1772,7 +1773,8 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- 		etm4x_relaxed_write32(csa, state->trccntvr[i], TRCCNTVRn(i));
- 	}
- 
--	for (i = 0; i < drvdata->nr_resource * 2; i++)
-+	/* Resource selector pair 0 is reserved */
-+	for (i = 2; i < drvdata->nr_resource * 2; i++)
- 		etm4x_relaxed_write32(csa, state->trcrsctlr[i], TRCRSCTLRn(i));
- 
- 	for (i = 0; i < drvdata->nr_ss_cmp; i++) {
+ 	if (init_rcv_wnd)
+ 		*rcv_wnd = min(*rcv_wnd, init_rcv_wnd * mss);
 -- 
 2.43.0
 
