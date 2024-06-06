@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-49879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4166D8FEF3B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 350C68FEE6C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7308285E07
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADD4B2823F6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63591A2564;
-	Thu,  6 Jun 2024 14:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2EB1A0B11;
+	Thu,  6 Jun 2024 14:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SaSqt5mm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/6ovY6O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9931A256C;
-	Thu,  6 Jun 2024 14:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10201991C4;
+	Thu,  6 Jun 2024 14:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683756; cv=none; b=DEKLn2EHbwfRPgCGLbS1sNRa0OEincQXO7+wg0UQSxw2ikkTGip4FhYPcdXhduUeMjC9Ucoa67fMlbbRCIrLgkb1EGj6+SKWL5yA5UnlFtR8bEgIbcGNj/xyhBOxJ0hHNgq3AcrAjEfVU28hqSUGxS90qFwz7WsaN0BISsfG9Zw=
+	t=1717683659; cv=none; b=m/jPzDWP9quNB+GWbOqYazR7YlK++GKkWvkDtbJJP35E5TsdKLMY5khkCVLFCALdUlKwa+K5/PsSewW7KVSqDiE9EGfYHbMsPaVVRKypE4GDpGAbJeKLV+9jSghLKYLgIC3Hk6iVX2mhkvfHgfjycxLypkFgLL5xmwhlBRNsFRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683756; c=relaxed/simple;
-	bh=LWfIVKmrnJBBN/9bX7ycPYHrHAaCoGha6kSZnfeHWZg=;
+	s=arc-20240116; t=1717683659; c=relaxed/simple;
+	bh=Sj8vSD6sCakhz0yspM+kw/uc+3miWQ97I+sUUGsdI6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQA+cTedccUFb5yrNJpNUeo5ZbiiIxSQC4Uj0Sq3eNpmOjHJPToMBLoWplCqKFmOEmXOAvvr1ZYrJth4reGMf2hgDvFLTDCLCzbDwxeJ/UroeHdjC95wXp8o0+N/GO8h+MX+nqHSnkyZsALJ10q+kMYnnOWGBo5r3lARKkB7MfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SaSqt5mm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 512E0C2BD10;
-	Thu,  6 Jun 2024 14:22:36 +0000 (UTC)
+	 MIME-Version; b=GnUowsBoVM1RPmniZmZ+lLCH1+dCvqxfNEYd5gKWreq8g4PqipbAxkd3Ob5PxNqzYlzPuoQWMFLCrAqdVdgMHoZZNoEgi+O23+A88I7kMk3z5TVQO1pPL1AoS+sYhUxOQbOqf6IABmcTBMH/G+j06sh59jkVjBIe58O1kLA15Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/6ovY6O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE78DC32781;
+	Thu,  6 Jun 2024 14:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683756;
-	bh=LWfIVKmrnJBBN/9bX7ycPYHrHAaCoGha6kSZnfeHWZg=;
+	s=korg; t=1717683658;
+	bh=Sj8vSD6sCakhz0yspM+kw/uc+3miWQ97I+sUUGsdI6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SaSqt5mmHuR/Dwb/cojQTX6tEfNitCHvNiJnknB+cN0iZhR/K645LLqCWrr/N4Tqo
-	 EWyOBpNbY7Os2g68svZRpoNd/0Q06+p6e+EC/TSZJFk53Vdc4qwjvC0PylKSaPtuw4
-	 3PMd05TtGTPqF/Gwq4K5VNOtMSSBcXD4eEVMNRBI=
+	b=Z/6ovY6OOBGVErfAeDcR2GKzCBVAfOUES9QpFzKkVia4eHzznb9h1tcu9Z7miVELQ
+	 Wm7tvZsZ0jhtkQUxXNaGs76fqlIAJi9aMze98dv+CXrQVjO3MuK+nyqXH8bDuiBy58
+	 dlLrm4BK7NtVy6hY97nKg7Jkzyjq+AYExfzrFIAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Sergey Matyukevich <sergey.matyukevich@syntacore.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 729/744] powerpc/uaccess: Use YZ asm constraint for ld
+Subject: [PATCH 6.1 472/473] riscv: prevent pt_regs corruption for secondary idle threads
 Date: Thu,  6 Jun 2024 16:06:41 +0200
-Message-ID: <20240606131755.849411796@linuxfoundation.org>
+Message-ID: <20240606131715.289227358@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Sergey Matyukevich <sergey.matyukevich@syntacore.com>
 
-[ Upstream commit 50934945d54238d2d6d8db4b7c1d4c90d2696c57 ]
+[ Upstream commit a638b0461b58aa3205cd9d5f14d6f703d795b4af ]
 
-The 'ld' instruction requires a 4-byte aligned displacement because it
-is a DS-form instruction. But the "m" asm constraint doesn't enforce
-that.
+Top of the kernel thread stack should be reserved for pt_regs. However
+this is not the case for the idle threads of the secondary boot harts.
+Their stacks overlap with their pt_regs, so both may get corrupted.
 
-Add a special case of __get_user_asm2_goto() so that the "YZ" constraint
-can be used for "ld".
+Similar issue has been fixed for the primary hart, see c7cdd96eca28
+("riscv: prevent stack corruption by reserving task_pt_regs(p) early").
+However that fix was not propagated to the secondary harts. The problem
+has been noticed in some CPU hotplug tests with V enabled. The function
+smp_callin stored several registers on stack, corrupting top of pt_regs
+structure including status field. As a result, kernel attempted to save
+or restore inexistent V context.
 
-The "Z" constraint is documented in the GCC manual PowerPC machine
-constraints, and specifies a "memory operand accessed with indexed or
-indirect addressing". "Y" is not documented in the manual but specifies
-a "memory operand for a DS-form instruction". Using both allows the
-compiler to generate a DS-form "ld" or X-form "ldx" as appropriate.
-
-The change has to be conditional on CONFIG_PPC_KERNEL_PREFIXED because
-the "Y" constraint does not guarantee 4-byte alignment when prefixed
-instructions are enabled.
-
-No build errors have been reported due to this, but the possibility is
-there depending on compiler code generation decisions.
-
-Fixes: c20beffeec3c ("powerpc/uaccess: Use flexible addressing with __put_user()/__get_user()")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240529123029.146953-2-mpe@ellerman.id.au
+Fixes: 9a2451f18663 ("RISC-V: Avoid using per cpu array for ordered booting")
+Fixes: 2875fe056156 ("RISC-V: Add cpu_ops and modify default booting method")
+Signed-off-by: Sergey Matyukevich <sergey.matyukevich@syntacore.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240523084327.2013211-1-geomatsi@gmail.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/uaccess.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/riscv/kernel/cpu_ops_sbi.c      | 2 +-
+ arch/riscv/kernel/cpu_ops_spinwait.c | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 4c96de9cd1e99..ad8e5f72c59a0 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -165,8 +165,19 @@ do {								\
- #endif
+diff --git a/arch/riscv/kernel/cpu_ops_sbi.c b/arch/riscv/kernel/cpu_ops_sbi.c
+index efa0f0816634c..93cbc38d18057 100644
+--- a/arch/riscv/kernel/cpu_ops_sbi.c
++++ b/arch/riscv/kernel/cpu_ops_sbi.c
+@@ -72,7 +72,7 @@ static int sbi_cpu_start(unsigned int cpuid, struct task_struct *tidle)
+ 	/* Make sure tidle is updated */
+ 	smp_mb();
+ 	bdata->task_ptr = tidle;
+-	bdata->stack_ptr = task_stack_page(tidle) + THREAD_SIZE;
++	bdata->stack_ptr = task_pt_regs(tidle);
+ 	/* Make sure boot data is updated */
+ 	smp_mb();
+ 	hsm_data = __pa(bdata);
+diff --git a/arch/riscv/kernel/cpu_ops_spinwait.c b/arch/riscv/kernel/cpu_ops_spinwait.c
+index d98d19226b5f5..691e0c5366d2b 100644
+--- a/arch/riscv/kernel/cpu_ops_spinwait.c
++++ b/arch/riscv/kernel/cpu_ops_spinwait.c
+@@ -34,8 +34,7 @@ static void cpu_update_secondary_bootdata(unsigned int cpuid,
  
- #ifdef __powerpc64__
-+#ifdef CONFIG_PPC_KERNEL_PREFIXED
- #define __get_user_asm2_goto(x, addr, label)			\
- 	__get_user_asm_goto(x, addr, label, "ld")
-+#else
-+#define __get_user_asm2_goto(x, addr, label)			\
-+	asm_goto_output(					\
-+		"1:	ld%U1%X1 %0, %1	# get_user\n"		\
-+		EX_TABLE(1b, %l2)				\
-+		: "=r" (x)					\
-+		: DS_FORM_CONSTRAINT (*addr)			\
-+		:						\
-+		: label)
-+#endif // CONFIG_PPC_KERNEL_PREFIXED
- #else /* __powerpc64__ */
- #define __get_user_asm2_goto(x, addr, label)			\
- 	asm_goto_output(					\
+ 	/* Make sure tidle is updated */
+ 	smp_mb();
+-	WRITE_ONCE(__cpu_spinwait_stack_pointer[hartid],
+-		   task_stack_page(tidle) + THREAD_SIZE);
++	WRITE_ONCE(__cpu_spinwait_stack_pointer[hartid], task_pt_regs(tidle));
+ 	WRITE_ONCE(__cpu_spinwait_task_pointer[hartid], tidle);
+ }
+ 
 -- 
 2.43.0
 
