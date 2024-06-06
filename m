@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-48637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D8C8FE9DE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9397F8FED89
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED748289B53
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B16A1F23576
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C6219CCFE;
-	Thu,  6 Jun 2024 14:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0783F1BBBEE;
+	Thu,  6 Jun 2024 14:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqmo1SE6"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gy6FpJhe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A2B198E6D;
-	Thu,  6 Jun 2024 14:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA9E1BBBED;
+	Thu,  6 Jun 2024 14:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683074; cv=none; b=EElh26M5ii1ckEmjX9d8OEoTjWSsnuDC40ONDcL22f738v3MFAQZIbPv8km8xPOcIbtkAZFdd5fKQV1eQ5f9aEe/G6o/JwDZOQo4vOSVCQdbALZ9/dx5SCD5Ql9887sdlIbge9M+Imk9SxRRs4W1HAooG6Vs7UXGRiIUahOogDc=
+	t=1717683498; cv=none; b=YmXcmgRYd8TARuQShWhewPFsKj2U5of8CZkbUYl6gf+GvX5x2dXBS8G2fegqfOVK/iVJ4Zj1L7jLdE9kW8vrG9or4aJEEs+EiXQ717OPXDLK+c/DTXSpVxnhlvIVbWWpNbWjHV7YNuKKLVehUtHbnGpjt+I4YU5vbjdIyOOTIW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683074; c=relaxed/simple;
-	bh=Z1k2fjbLmC4Da5zyC+mjU4GcmAlAICBH4s+e362hqO4=;
+	s=arc-20240116; t=1717683498; c=relaxed/simple;
+	bh=Y/ZL0wGfhiZWp9HsYYQsT6LxGVdq2XYA79msaeNOfZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VPf7Wx6K2SHb0q2qrEUM0VWPYdr7PVIhqKSV6ZgLM//k2hLCc7LvkjS+valjOOL41nnP/65af1Gj8UnQImfnk3DZSny0SQzK3TdlI4EMgfhuP8mpMe2gyGQMaA0UAurn3rq4eFSF0qLyTl5Z3LHGwlc/WkCoBavgebhYO/dewm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqmo1SE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E80BAC4AF13;
-	Thu,  6 Jun 2024 14:11:13 +0000 (UTC)
+	 MIME-Version; b=rOjNgRMTM7a27+klZNxzzZQmQkNUvuL7NcEUucIGmCUkEg5ZxStGBFOYLYBI3VwJUW6G+ZxK4QvIeY1g6DyKtTVEKrWnRuHamoznUOKH2blQpUD55ipwEkIidM3OQswfbCmBpJgXBz1J8kW8GCO4VFhiayPPEB13Ons4WYBqugI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gy6FpJhe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C73C2BD10;
+	Thu,  6 Jun 2024 14:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683074;
-	bh=Z1k2fjbLmC4Da5zyC+mjU4GcmAlAICBH4s+e362hqO4=;
+	s=korg; t=1717683498;
+	bh=Y/ZL0wGfhiZWp9HsYYQsT6LxGVdq2XYA79msaeNOfZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nqmo1SE6yhSrppYQzaT3y50mbWlmjs+/Rvq6z1Bz1nEhvzKXWlCNvqDgd+nkL5ncj
-	 tD7GXQsPqUPNgcdmyuroKqv/mWgaX19GCi+R1Zlu2zk7UXHe/83gh/O/OWc4IMkaFu
-	 pDgZDbpyzHgLaFUAkNDfhIIj97I4IZXrh1hOctaU=
+	b=gy6FpJheJjfEL8X5cC04aKndMIdjFwHkgW6fYW+ebjOq0GssyjbWWo6+Xa9K4UvIQ
+	 +yeeqZK/farHvbOmW3Sddn/60iMERhc0LaIOF4+EjF78IMWFT9U/mvCE/Fa6IDDOTL
+	 pKA9byGKjyjsAffgnPTwgv30lUyOX5cX80UO6/Ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 338/374] net/sched: taprio: make q->picos_per_byte available to fill_sched_entry()
+	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	"Yang, Chenyuan" <cy54@illinois.edu>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
+Subject: [PATCH 6.1 388/473] media: cec: cec-adap: always cancel work in cec_transmit_msg_fh
 Date: Thu,  6 Jun 2024 16:05:17 +0200
-Message-ID: <20240606131703.175907376@linuxfoundation.org>
+Message-ID: <20240606131712.679053283@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit e634134180885574d1fe7aa162777ba41e7fcd5b ]
+[ Upstream commit 9fe2816816a3c765dff3b88af5b5c3d9bbb911ce ]
 
-In commit b5b73b26b3ca ("taprio: Fix allowing too small intervals"), a
-comparison of user input against length_to_duration(q, ETH_ZLEN) was
-introduced, to avoid RCU stalls due to frequent hrtimers.
+Do not check for !data->completed, just always call
+cancel_delayed_work_sync(). This fixes a small race condition.
 
-The implementation of length_to_duration() depends on q->picos_per_byte
-being set for the link speed. The blamed commit in the Fixes: tag has
-moved this too late, so the checks introduced above are ineffective.
-The q->picos_per_byte is zero at parse_taprio_schedule() ->
-parse_sched_list() -> parse_sched_entry() -> fill_sched_entry() time.
-
-Move the taprio_set_picos_per_byte() call as one of the first things in
-taprio_change(), before the bulk of the netlink attribute parsing is
-done. That's because it is needed there.
-
-Add a selftest to make sure the issue doesn't get reintroduced.
-
-Fixes: 09dbdf28f9f9 ("net/sched: taprio: fix calculation of maximum gate durations")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240527153955.553333-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Yang, Chenyuan <cy54@illinois.edu>
+Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
+Fixes: 490d84f6d73c ("media: cec: forgot to cancel delayed work")
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c                        |  4 +++-
- .../tc-testing/tc-tests/qdiscs/taprio.json    | 22 +++++++++++++++++++
- 2 files changed, 25 insertions(+), 1 deletion(-)
+ drivers/media/cec/core/cec-adap.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index a0d54b422186f..631140c1f6e5f 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -1851,6 +1851,9 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
- 	}
- 	q->flags = taprio_flags;
+diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
+index c761ac35e120d..6f6c7437b61bc 100644
+--- a/drivers/media/cec/core/cec-adap.c
++++ b/drivers/media/cec/core/cec-adap.c
+@@ -909,8 +909,7 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
+ 	 */
+ 	mutex_unlock(&adap->lock);
+ 	wait_for_completion_killable(&data->c);
+-	if (!data->completed)
+-		cancel_delayed_work_sync(&data->work);
++	cancel_delayed_work_sync(&data->work);
+ 	mutex_lock(&adap->lock);
  
-+	/* Needed for length_to_duration() during netlink attribute parsing */
-+	taprio_set_picos_per_byte(dev, q);
-+
- 	err = taprio_parse_mqprio_opt(dev, mqprio, extack, q->flags);
- 	if (err < 0)
- 		return err;
-@@ -1910,7 +1913,6 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
- 	if (err < 0)
- 		goto free_sched;
- 
--	taprio_set_picos_per_byte(dev, q);
- 	taprio_update_queue_max_sdu(q, new_admin, stab);
- 
- 	if (FULL_OFFLOAD_IS_ENABLED(q->flags))
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/taprio.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/taprio.json
-index 12da0a939e3e5..8f12f00a4f572 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/taprio.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/taprio.json
-@@ -132,6 +132,28 @@
-             "echo \"1\" > /sys/bus/netdevsim/del_device"
-         ]
-     },
-+    {
-+        "id": "6f62",
-+        "name": "Add taprio Qdisc with too short interval",
-+        "category": [
-+            "qdisc",
-+            "taprio"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "echo \"1 1 8\" > /sys/bus/netdevsim/new_device"
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $ETH root handle 1: taprio num_tc 2 queues 1@0 1@1 sched-entry S 01 300 sched-entry S 02 1700 clockid CLOCK_TAI",
-+        "expExitCode": "2",
-+        "verifyCmd": "$TC qdisc show dev $ETH",
-+        "matchPattern": "qdisc taprio 1: root refcnt",
-+        "matchCount": "0",
-+        "teardown": [
-+            "echo \"1\" > /sys/bus/netdevsim/del_device"
-+        ]
-+    },
-     {
-         "id": "3e1e",
-         "name": "Add taprio Qdisc with an invalid cycle-time",
+ 	/* Cancel the transmit if it was interrupted */
 -- 
 2.43.0
 
