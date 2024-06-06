@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-48353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C24128FE8A5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 680618FEC89
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B131284BA0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8257B23DBD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B72C197551;
-	Thu,  6 Jun 2024 14:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4F2198A2C;
+	Thu,  6 Jun 2024 14:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOD3ruB8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C23veXZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29593197544;
-	Thu,  6 Jun 2024 14:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7BF196DAB;
+	Thu,  6 Jun 2024 14:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682918; cv=none; b=DOVVAUc8hjgEVKMVwC+Rc1cQDI1l1d3Of7I+FWn0kAIM4lfl16o+yNgRqEriAPf1OuimZ28Wm8I0LzWF6yU72sDxDDcaWHoOTYrN2vzp8emNl2Ge+Dv0KnYZMxQkMCERjCmL4cjyk2rKziyVtrbF2wr7owITZiOgDHkPQZrfJV8=
+	t=1717683377; cv=none; b=JIewLAz0C4kNQHaL0Mksn+VTUVp+lAk+Ix+wEl+/16SFN1aYZPhZj8JKDoVxKtGRuUZum606HMlJapvJ9AL/ULuxq7RknuUJR8Z0GExSQeyQTaZU4FAncSsXGTVCbHipT6ZrHMBVd+UBRy2fbP6KJBtJGlMK8OcSIMCKrRZGTT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682918; c=relaxed/simple;
-	bh=X/uEqX8d5ctnkJv/FABNLg5apQ6oMu+U9mqb8NW6oaE=;
+	s=arc-20240116; t=1717683377; c=relaxed/simple;
+	bh=IVFzU9tsVgJmaEH+mymawBnpWmY/Gcv/W+hF+iY4OOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i4bJx9giC6w4yhzSE6+uSe20kcxG4hFgVfyYIV2Ip9fy0SQMwqMg1CfZQWrlNifw4NrOuqMKjxKPI+QfSThSmJge+/YYxBNB2n8sYQWwH2OTDT0lQ7OssZv3hym8WB6WsDvj+4zoLGMD/a2cxCDafbljGjq4pPc/T99tohKnHzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOD3ruB8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F7AC32781;
-	Thu,  6 Jun 2024 14:08:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fjzOeY/tXXfTw9yfbpxCZWkHYyC22NQTp+LBdkS7kZ1pX61hFIsbvrtJhLEnz7UR9mjdh9LQQz4sZQ2uy46sNjlNf4qt+xEWaQ+4+d7nrO0oYJWHjMRVJiVe7RUlDnjo2nbEPaQzmfwwKs+M93zSkJZbEZPx2x2NbEygpPeqeTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C23veXZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE8FC32786;
+	Thu,  6 Jun 2024 14:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682918;
-	bh=X/uEqX8d5ctnkJv/FABNLg5apQ6oMu+U9mqb8NW6oaE=;
+	s=korg; t=1717683377;
+	bh=IVFzU9tsVgJmaEH+mymawBnpWmY/Gcv/W+hF+iY4OOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gOD3ruB8vjJV8kGkm7eS2GVBlzbmyQytgfuFGUnFxBFHQIlVJUa2AixsO6lnYpZls
-	 MLfd6JUETlyNstfq53bPKkRpRozeJcbwyjjHDLljzkc6b0lE9WzQF2DkxLtlhYAO/y
-	 v6YRPnxDyhbeHblCFAdsO/OxITsAxbryo4JAv6s0=
+	b=C23veXZA7Nj3sYS4tFgxNvuYThuM2pJE1irsssGuX+Q4FIOvpG/5bguZDyKA9f3oY
+	 FT1Up9HXr9ykM83oIkPNGaih6NYLYM8PUn0LJyrbRhP3vVtliLVxtDyh7M6QoBsnuT
+	 lGGXv8k278RPGley3VRuf6dw1RB31lUPlzrnUePM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	William Breathitt Gray <william.gray@linaro.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 012/374] counter: linux/counter.h: fix Excess kernel-doc description warning
+Subject: [PATCH 6.6 319/744] drm/bridge: anx7625: Dont log an error when DSI host cant be found
 Date: Thu,  6 Jun 2024 15:59:51 +0200
-Message-ID: <20240606131652.174698138@linuxfoundation.org>
+Message-ID: <20240606131742.659779858@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +63,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 416bdb89605d960405178b9bf04df512d1ace1a3 ]
+[ Upstream commit ef4a9204d594fe959cdbc7418273caf4001535c8 ]
 
-Remove the @priv: line to prevent the kernel-doc warning:
+Given that failing to find a DSI host causes the driver to defer probe,
+make use of dev_err_probe() to log the reason. This makes the defer
+probe reason available and avoids alerting userspace about something
+that is not necessarily an error.
 
-include/linux/counter.h:400: warning: Excess struct member 'priv' description in 'counter_device'
-
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Fixes: f2ee4759fb70 ("counter: remove old and now unused registration API")
-Link: https://lore.kernel.org/r/20231223050511.13849-1-rdunlap@infradead.org
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+Fixes: 269332997a16 ("drm/bridge: anx7625: Return -EPROBE_DEFER if the dsi host was not found")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-1-619a28148e5c@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/counter.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/counter.h b/include/linux/counter.h
-index 702e9108bbb44..b767b5c821f58 100644
---- a/include/linux/counter.h
-+++ b/include/linux/counter.h
-@@ -359,7 +359,6 @@ struct counter_ops {
-  * @num_counts:		number of Counts specified in @counts
-  * @ext:		optional array of Counter device extensions
-  * @num_ext:		number of Counter device extensions specified in @ext
-- * @priv:		optional private data supplied by driver
-  * @dev:		internal device structure
-  * @chrdev:		internal character device structure
-  * @events_list:	list of current watching Counter events
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index 29d91493b101a..4ee5614a26236 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -2076,10 +2076,8 @@ static int anx7625_setup_dsi_device(struct anx7625_data *ctx)
+ 	};
+ 
+ 	host = of_find_mipi_dsi_host_by_node(ctx->pdata.mipi_host_node);
+-	if (!host) {
+-		DRM_DEV_ERROR(dev, "fail to find dsi host.\n");
+-		return -EPROBE_DEFER;
+-	}
++	if (!host)
++		return dev_err_probe(dev, -EPROBE_DEFER, "fail to find dsi host.\n");
+ 
+ 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
+ 	if (IS_ERR(dsi)) {
 -- 
 2.43.0
 
