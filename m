@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-48844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3FD48FEAC6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEDF78FEAC9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70C711F21B68
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D92211C22D77
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2815A1A0DE6;
-	Thu,  6 Jun 2024 14:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256961A0DF1;
+	Thu,  6 Jun 2024 14:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RypamGbZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gggrSR1u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC86196D91;
-	Thu,  6 Jun 2024 14:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9132196D91;
+	Thu,  6 Jun 2024 14:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683174; cv=none; b=K0SkvARwbKICwiK+H598jQSNRmFTWUt2uzRV3LF/UCrL66K9O/8AEplYohvHAGmvcBNKZRW/O1YhTP01TPiJFuNUdHRjkE1JUrIvu3ILeO/goBuAY6B6HNZCs/Nd7bmtFC+zSKtRTHUibfoOE9BNGq4BGBo8Ut/PzCBL2pmxeC8=
+	t=1717683175; cv=none; b=n38uf5839yw/oItgQP0W8b9TmOrtZszavLZWg/4ke4gwbLRgRsIM2TficN6e65eVUu9LFhoGgaE1P7Sa6IT+7ncJnpKrydifckgLnmkzPsW1CXzPJvSrL2LwtP2fOzHIgVc/N48UX3MoP5QHoSPJiaIm0vr+0waI8jQFaLC4WBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683174; c=relaxed/simple;
-	bh=HRGSynTMhieyPRtj29S4wUGCf1/SL+4Is4Og9ZMijFw=;
+	s=arc-20240116; t=1717683175; c=relaxed/simple;
+	bh=be2jGWO2UYlif67mQ3JdUW6wYbcmyBPHl4PlYdP5AJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2Cdq7A+XDjVPcGc/+rVe9Z/l+xp4mLkvJ5cg+NlFLutb/ERGYLP6sT0bIWkJL2lYfA4mFbMzbgTzx63mrMwDkvBYxmfKYqNGKgCYC3EiI6viFwstcuqifVO7bwbiFA8emib9+7WihN8c3w1EWPnk0p7yX/hxDjBUX2XX4fGMpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RypamGbZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA0BC2BD10;
-	Thu,  6 Jun 2024 14:12:54 +0000 (UTC)
+	 MIME-Version; b=Et2hFtfx1g8kpOL/HG7+1zrbH5pBx0/svh96uyFOD26K26dLkbHm6XxcDOqLP/u5f1YHYtKzNVPRHL1zjc9ozpDkGk9uSppKLZaqRK9wmB7MbYfM+Yu7AiYz5i0W8QpHeQtkdLBVt0/GzjFkzVb+YGykNoaS20YiLNYB2MPV15Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gggrSR1u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B967FC2BD10;
+	Thu,  6 Jun 2024 14:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683174;
-	bh=HRGSynTMhieyPRtj29S4wUGCf1/SL+4Is4Og9ZMijFw=;
+	s=korg; t=1717683175;
+	bh=be2jGWO2UYlif67mQ3JdUW6wYbcmyBPHl4PlYdP5AJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RypamGbZu/Uaxe2xe4UFR0pd3fD5ocYKJ9HbTd3vIolVvmHQgE97EkanJ23FSwkoT
-	 W6whEfFjsWxAaK1Y0Fmps3WthksVkPv4iPVwUZgnNX4jKBOCm2ZcXUYiDCFHVknQc4
-	 HD2SSWrdzxY5aNZrCVWHGpxzFBROG2UuU6zrKbCI=
+	b=gggrSR1ulFd2eNXF01VGP38ETjeeSQUKsNEFSn5eD+sTidquVo58HbrRu83uNcKkz
+	 DVwEr6Rhdd+tvBB9A9e+d4aKMzwYyMN441o4uwfcZmvIFzX27+YTXhGUYGIcrt5NPV
+	 MSnRboMgCTHFsAjTJK6t25QoLlD2tU8liSIsuMGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/744] soc: qcom: pmic_glink: Make client-lock non-sleeping
-Date: Thu,  6 Jun 2024 15:56:31 +0200
-Message-ID: <20240606131736.226082612@linuxfoundation.org>
+Subject: [PATCH 6.6 120/744] lkdtm: Disable CFI checking for perms functions
+Date: Thu,  6 Jun 2024 15:56:32 +0200
+Message-ID: <20240606131736.257905084@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,140 +66,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 9329933699b32d467a99befa20415c4b2172389a ]
+[ Upstream commit fb28a8862dc4b5bf8e44578338f35d9c6c68339d ]
 
-The recently introduced commit '635ce0db8956 ("soc: qcom: pmic_glink:
-don't traverse clients list without a lock")' ensured that the clients
-list is not modified while traversed.
+The EXEC_RODATA test plays a lot of tricks to live in the .rodata section,
+and once again ran into objtool's (completely reasonable) assumptions
+that executable code should live in an executable section. However, this
+manifested only under CONFIG_CFI_CLANG=y, as one of the .cfi_sites was
+pointing into the .rodata section.
 
-But the callback is made from the GLINK IRQ handler and as such this
-mutual exclusion can not be provided by a (sleepable) mutex.
+Since we're testing non-CFI execution properties in perms.c (and
+rodata.c), we can disable CFI for the involved functions, and remove the
+CFI arguments from rodata.c entirely.
 
-Replace the mutex with a spinlock.
-
-Fixes: 635ce0db8956 ("soc: qcom: pmic_glink: don't traverse clients list without a lock")
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240430-pmic-glink-sleep-while-atomic-v1-1-88fb493e8545@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202308301532.d7acf63e-oliver.sang@intel.com
+Fixes: 6342a20efbd8 ("objtool: Add elf_create_section_pair()")
+Link: https://lore.kernel.org/r/20240430234953.work.760-kees@kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/pmic_glink.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ drivers/misc/lkdtm/Makefile | 2 +-
+ drivers/misc/lkdtm/perms.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
-index 062ff7b12de6a..61a359938b6c4 100644
---- a/drivers/soc/qcom/pmic_glink.c
-+++ b/drivers/soc/qcom/pmic_glink.c
-@@ -11,6 +11,7 @@
- #include <linux/slab.h>
- #include <linux/soc/qcom/pdr.h>
- #include <linux/soc/qcom/pmic_glink.h>
-+#include <linux/spinlock.h>
+diff --git a/drivers/misc/lkdtm/Makefile b/drivers/misc/lkdtm/Makefile
+index 95ef971b5e1cb..b28701138b4bc 100644
+--- a/drivers/misc/lkdtm/Makefile
++++ b/drivers/misc/lkdtm/Makefile
+@@ -19,7 +19,7 @@ KASAN_SANITIZE_rodata.o			:= n
+ KCSAN_SANITIZE_rodata.o			:= n
+ KCOV_INSTRUMENT_rodata.o		:= n
+ OBJECT_FILES_NON_STANDARD_rodata.o	:= y
+-CFLAGS_REMOVE_rodata.o			+= $(CC_FLAGS_LTO) $(RETHUNK_CFLAGS)
++CFLAGS_REMOVE_rodata.o			+= $(CC_FLAGS_LTO) $(RETHUNK_CFLAGS) $(CC_FLAGS_CFI)
  
- enum {
- 	PMIC_GLINK_CLIENT_BATT = 0,
-@@ -39,7 +40,7 @@ struct pmic_glink {
- 	unsigned int pdr_state;
- 
- 	/* serializing clients list updates */
--	struct mutex client_lock;
-+	spinlock_t client_lock;
- 	struct list_head clients;
- };
- 
-@@ -61,10 +62,11 @@ static void _devm_pmic_glink_release_client(struct device *dev, void *res)
- {
- 	struct pmic_glink_client *client = (struct pmic_glink_client *)res;
- 	struct pmic_glink *pg = client->pg;
-+	unsigned long flags;
- 
--	mutex_lock(&pg->client_lock);
-+	spin_lock_irqsave(&pg->client_lock, flags);
- 	list_del(&client->node);
--	mutex_unlock(&pg->client_lock);
-+	spin_unlock_irqrestore(&pg->client_lock, flags);
+ OBJCOPYFLAGS :=
+ OBJCOPYFLAGS_rodata_objcopy.o	:= \
+diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
+index b93404d656509..5b861dbff27e9 100644
+--- a/drivers/misc/lkdtm/perms.c
++++ b/drivers/misc/lkdtm/perms.c
+@@ -61,7 +61,7 @@ static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
+ 	return fdesc;
  }
  
- struct pmic_glink_client *devm_pmic_glink_register_client(struct device *dev,
-@@ -75,6 +77,7 @@ struct pmic_glink_client *devm_pmic_glink_register_client(struct device *dev,
+-static noinline void execute_location(void *dst, bool write)
++static noinline __nocfi void execute_location(void *dst, bool write)
  {
- 	struct pmic_glink_client *client;
- 	struct pmic_glink *pg = dev_get_drvdata(dev->parent);
-+	unsigned long flags;
- 
- 	client = devres_alloc(_devm_pmic_glink_release_client, sizeof(*client), GFP_KERNEL);
- 	if (!client)
-@@ -87,12 +90,12 @@ struct pmic_glink_client *devm_pmic_glink_register_client(struct device *dev,
- 	client->priv = priv;
- 
- 	mutex_lock(&pg->state_lock);
--	mutex_lock(&pg->client_lock);
-+	spin_lock_irqsave(&pg->client_lock, flags);
- 
- 	list_add(&client->node, &pg->clients);
- 	client->pdr_notify(client->priv, pg->client_state);
- 
--	mutex_unlock(&pg->client_lock);
-+	spin_unlock_irqrestore(&pg->client_lock, flags);
- 	mutex_unlock(&pg->state_lock);
- 
- 	devres_add(dev, client);
-@@ -115,6 +118,7 @@ static int pmic_glink_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
- 	struct pmic_glink_client *client;
- 	struct pmic_glink_hdr *hdr;
- 	struct pmic_glink *pg = dev_get_drvdata(&rpdev->dev);
-+	unsigned long flags;
- 
- 	if (len < sizeof(*hdr)) {
- 		dev_warn(pg->dev, "ignoring truncated message\n");
-@@ -123,12 +127,12 @@ static int pmic_glink_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
- 
- 	hdr = data;
- 
--	mutex_lock(&pg->client_lock);
-+	spin_lock_irqsave(&pg->client_lock, flags);
- 	list_for_each_entry(client, &pg->clients, node) {
- 		if (client->id == le32_to_cpu(hdr->owner))
- 			client->cb(data, len, client->priv);
- 	}
--	mutex_unlock(&pg->client_lock);
-+	spin_unlock_irqrestore(&pg->client_lock, flags);
- 
- 	return 0;
- }
-@@ -168,6 +172,7 @@ static void pmic_glink_state_notify_clients(struct pmic_glink *pg)
- {
- 	struct pmic_glink_client *client;
- 	unsigned int new_state = pg->client_state;
-+	unsigned long flags;
- 
- 	if (pg->client_state != SERVREG_SERVICE_STATE_UP) {
- 		if (pg->pdr_state == SERVREG_SERVICE_STATE_UP && pg->ept)
-@@ -178,10 +183,10 @@ static void pmic_glink_state_notify_clients(struct pmic_glink *pg)
- 	}
- 
- 	if (new_state != pg->client_state) {
--		mutex_lock(&pg->client_lock);
-+		spin_lock_irqsave(&pg->client_lock, flags);
- 		list_for_each_entry(client, &pg->clients, node)
- 			client->pdr_notify(client->priv, new_state);
--		mutex_unlock(&pg->client_lock);
-+		spin_unlock_irqrestore(&pg->client_lock, flags);
- 		pg->client_state = new_state;
- 	}
- }
-@@ -268,7 +273,7 @@ static int pmic_glink_probe(struct platform_device *pdev)
- 	pg->dev = &pdev->dev;
- 
- 	INIT_LIST_HEAD(&pg->clients);
--	mutex_init(&pg->client_lock);
-+	spin_lock_init(&pg->client_lock);
- 	mutex_init(&pg->state_lock);
- 
- 	match_data = (unsigned long *)of_device_get_match_data(&pdev->dev);
+ 	void (*func)(void);
+ 	func_desc_t fdesc;
 -- 
 2.43.0
 
