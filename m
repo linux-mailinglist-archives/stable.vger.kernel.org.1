@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-48479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41DE8FE92C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 283EF8FEC41
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89BCB1F22F43
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0A9A1F299AF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C9219924A;
-	Thu,  6 Jun 2024 14:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32B01AED48;
+	Thu,  6 Jun 2024 14:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stXVwGDX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKa6K5Vq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC93F199242;
-	Thu,  6 Jun 2024 14:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BB41AED3E;
+	Thu,  6 Jun 2024 14:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682988; cv=none; b=B07scwu1Y1evck1oUzDz8jMKVxZ0e+4wTtyIlVQ0eSfVnwobqlk5SAY5k7cAXmZSRjwAaYGhJGYAEWQYlB8RgPxG4DF7fDQIXUUlVSeqN2T/XDw8fhRk7Jm/19AghIx3OFYCLhNlr1NaIRty2utNsNL+VSnZ6TQzhLEJOPkY6lc=
+	t=1717683346; cv=none; b=r8ZHyxxSwO0qMFslgsNmsWoTNU1ffUKLMHWm3ZWsmaVpKXyOTECdoD8kziyXLLwVc4SBeyNTlfYa5HDlImbXMjFlcs1KEHzlle9ksXw7fgmkRulnTLIjG5fXogtsIs2hpHG5mZtv+NJevi+VDDxsGvVD+Bec6RnjKw54MT02kiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682988; c=relaxed/simple;
-	bh=w5w+YNHbPYAAXcZLL68VMGenVf8z7N6ArYf5Nz+rHkA=;
+	s=arc-20240116; t=1717683346; c=relaxed/simple;
+	bh=MobqiRQIdbLWudOWhp3MBy1o6LtCWqsC5QHbZyQHO8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cBYJ8xZ2WPoqA1lY1i4KOhEfq9CFIIGoxyrG8gqqMU+iQv3XvLUZ1070NkOS4iu7lZ3aAZnAvn9L2oYla6fQ+EtMfEK3ITLsIKeqa0d6RqlcsE+XaYY5suanAzsYY5CcVwo/B9I3ANSX7oVHsV1EiqThM2oAPBJIIM8cdy1jQ/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stXVwGDX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE499C32782;
-	Thu,  6 Jun 2024 14:09:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pifc/5Echy9q2BqQsSgU8atSjF5mUdQL32qWZVN9i1wwCTb5fGbWyBUrB5TLw0Px1q7+I1mDTnTrYB8jrfifJz9r8bKrwh+OiEi2p0u4hHDjMscyWMHxPWE7nzQdDJZvczeKAEH4I97cy4A/jTOjU6KyAwdqfjXIjp9+rKuWopE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKa6K5Vq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39AADC4AF08;
+	Thu,  6 Jun 2024 14:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682988;
-	bh=w5w+YNHbPYAAXcZLL68VMGenVf8z7N6ArYf5Nz+rHkA=;
+	s=korg; t=1717683346;
+	bh=MobqiRQIdbLWudOWhp3MBy1o6LtCWqsC5QHbZyQHO8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=stXVwGDX657xPrnLWV6cBCNz/lCtPZCDQ3WWQdOdB9v1Y+OEDX2/YLl93GEhWzU4/
-	 oL6VrxRR8PKeSv88Rcxt7lg3/qhzb/KmR+Kprzhhtzjvyt08ClAqLVR24QxTo/GQAN
-	 FOWJp5gDZi3cYF8wYpRChbrq+hAICWFH87ZWr+Ec=
+	b=dKa6K5VqGL6jgvb7nxmMwHL8IrACBMWwa/0d/lHwWKwJLlxbQe64i7lemS+kwUa7b
+	 LE5AO5lVVr7z9V7tORIULd/B/ILJzhXUqHLjj5KZZeGYdf2EitfM/NvHZCFRst0aV9
+	 DE4drD11arNZTrY30eJj2/+WRnwoY5hKSh4gh8iU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Adam Ford <aford173@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 177/374] drm/bridge: imx: Fix unmet depenency for PHY_FSL_SAMSUNG_HDMI_PHY
+Subject: [PATCH 6.1 227/473] drm/bridge: lt9611: Dont log an error when DSI host cant be found
 Date: Thu,  6 Jun 2024 16:02:36 +0200
-Message-ID: <20240606131657.809169429@linuxfoundation.org>
+Message-ID: <20240606131707.377743082@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit cbdbd9ca718e6efbc77b97ddf0b19b0cd46ac36c ]
+[ Upstream commit cd0a2c6a081ff67007323725b9ff07d9934b1ed8 ]
 
-When enabling i.MX8MP DWC HDMI driver, it automatically selects
-PHY_FSL_SAMSUNG_HDMI_PHY, since it wont' work without the phy.
-This may cause some Kconfig warnings during various build tests.
-Fix this by implying the phy instead of selecting the phy.
+Given that failing to find a DSI host causes the driver to defer probe,
+make use of dev_err_probe() to log the reason. This makes the defer
+probe reason available and avoids alerting userspace about something
+that is not necessarily an error.
 
-To prevent this from happening with the DRM_IMX8MP_HDMI_PVI, also
-imply it instead of selecting it.
-
-Fixes: 1f36d634670d ("drm/bridge: imx: add bridge wrapper driver for i.MX8MP DWC HDMI")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202404190103.lLm8LtuP-lkp@intel.com/
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: 23278bf54afe ("drm/bridge: Introduce LT9611 DSI to HDMI bridge")
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240422103352.8886-1-aford173@gmail.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-4-619a28148e5c@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/imx/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt9611.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
-index 7687ed652df5b..13142a6b85905 100644
---- a/drivers/gpu/drm/bridge/imx/Kconfig
-+++ b/drivers/gpu/drm/bridge/imx/Kconfig
-@@ -8,8 +8,8 @@ config DRM_IMX8MP_DW_HDMI_BRIDGE
- 	depends on COMMON_CLK
- 	depends on DRM_DW_HDMI
- 	depends on OF
--	select DRM_IMX8MP_HDMI_PVI
--	select PHY_FSL_SAMSUNG_HDMI_PHY
-+	imply DRM_IMX8MP_HDMI_PVI
-+	imply PHY_FSL_SAMSUNG_HDMI_PHY
- 	help
- 	  Choose this to enable support for the internal HDMI encoder found
- 	  on the i.MX8MP SoC.
+diff --git a/drivers/gpu/drm/bridge/lontium-lt9611.c b/drivers/gpu/drm/bridge/lontium-lt9611.c
+index ae8c6d9d4095f..e40ceb56ff55f 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt9611.c
++++ b/drivers/gpu/drm/bridge/lontium-lt9611.c
+@@ -777,10 +777,8 @@ static struct mipi_dsi_device *lt9611_attach_dsi(struct lt9611 *lt9611,
+ 	int ret;
+ 
+ 	host = of_find_mipi_dsi_host_by_node(dsi_node);
+-	if (!host) {
+-		dev_err(lt9611->dev, "failed to find dsi host\n");
+-		return ERR_PTR(-EPROBE_DEFER);
+-	}
++	if (!host)
++		return ERR_PTR(dev_err_probe(lt9611->dev, -EPROBE_DEFER, "failed to find dsi host\n"));
+ 
+ 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
+ 	if (IS_ERR(dsi)) {
 -- 
 2.43.0
 
