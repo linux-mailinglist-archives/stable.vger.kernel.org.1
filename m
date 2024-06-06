@@ -1,116 +1,85 @@
-Return-Path: <stable+bounces-48252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C6E98FDB6A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 02:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD118FDBFC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 03:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B1222856F8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 00:25:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B7E7284532
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 01:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71109567D;
-	Thu,  6 Jun 2024 00:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2A7748F;
+	Thu,  6 Jun 2024 01:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="XXAxGoeQ"
+	dkim=pass (1024-bit key) header.d=raptorengineering.com header.i=@raptorengineering.com header.b="R3+CQ+dg"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2AF2563;
-	Thu,  6 Jun 2024 00:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D009CA6B
+	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 01:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.155.224.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717633519; cv=none; b=SKnF/45GtFWDQfGOqLi5NPfOoZnuPmldHAgB0NVlxcB+NVzAm6q33zStcS+6ipedTUIBo1a81SeMP9hCSRzMTFXOQo436BnQ2fnrj+WTsvGN6asGhN9jRpkaHh8DE6bcConQlI+qyi1OWAwN7NFWhsoBf9xXHxYjs6qx8FE32Mg=
+	t=1717635690; cv=none; b=JyhhkAeQ+gHviHGkch8HEEesM+Hm2ABSFIZ8GzJgNtSJFdmAfNoC1LlwRPe0tZFKaMfK9W7ZkIo6RJEJLVe7yNUPMKv7tePghPx9s4WSTTbzpOuTysyKks5xdfPl/98AqnFHoxkVOnKU0zUylaJonCHFG8luiyBef4BVOdCO8Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717633519; c=relaxed/simple;
-	bh=3wZVavp6tao9ffC1YphaeS9zPVgycL7M4c8WdP2SgWA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dumPdWXo4Uxi0lHZV6UR74bdgmERBrPsPBMPpQC2HxmPDccMobzUf8CDv+XqBGk2MYh4IDQtlTCBqB0VppQMHCh/BA9QgEQO3AgExq845CzoidcZvZRteUtmdcK1x0YSn7ug0vfZy7ogTCV110C++DSVv6A7GM5QhH9IPFBzxJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=XXAxGoeQ; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 455JINiP015747;
-	Thu, 6 Jun 2024 00:24:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc :
- content-transfer-encoding : content-type : date : from : in-reply-to :
- message-id : mime-version : references : subject : to; s=corp-2023-11-20;
- bh=1Ww9Rdq98RgqCia4UdhAvlzFlQ7oc3WmT+CLtqus8As=;
- b=XXAxGoeQxY1ylnW621TgDu2TX7CRHbPEikIp5gxSzri56vfRkviA+lFrcCmVYmJ5Fh1g
- ov1BQ7xKbLgZtktlOzKlAhqbx6hnVjt9Fe+PFHIZIoDO0qfJjBh2v9E53rzg2BpPBbH4
- LUcxtvf2QdhtaAXTsMX9etjK4/fOfzld5hcjrkf9n9KXZQAisrl2FvClCaX+62OqqBTS
- VkUwpIYZhttx43q6+WByP3EzU8g3NzCaB2QMVZ5xjJGN9+ZbTlhXU+5xofK66MkDl+tV
- pMMBTr0rEQukzrNEt+Ywjla4O03Ct3+Qd5KyJcR+TRBTn4s/aOoRoY0zY8RvDXeQ0ttS 3Q== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3yjbsyaf9w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 06 Jun 2024 00:24:59 +0000
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 455Mat8Y015719;
-	Thu, 6 Jun 2024 00:24:58 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3ygrjeg0qq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 06 Jun 2024 00:24:58 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4560OwH0004414;
-	Thu, 6 Jun 2024 00:24:58 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3ygrjeg0py-1;
-	Thu, 06 Jun 2024 00:24:57 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: Sathya Prakash <sathya.prakash@broadcom.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Chaitra P B <chaitra.basappa@broadcom.com>,
-        Breno Leitao <leitao@debian.org>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>, leit@meta.com,
-        stable@vger.kernel.org, Keith Busch <kbusch@kernel.org>,
-        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mpt3sas: Avoid test/set_bit() operating in non-allocated memory
-Date: Wed,  5 Jun 2024 20:24:19 -0400
-Message-ID: <171763343411.4164272.12258794227278624618.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240605085530.499432-1-leitao@debian.org>
-References: <20240605085530.499432-1-leitao@debian.org>
+	s=arc-20240116; t=1717635690; c=relaxed/simple;
+	bh=WfW0iDxYmYUIcxa3+/dC/7LsSHJsBqXDLA474zSAgwo=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=PMo5wvEiK/n+6ijU7GtVpL4OatTjJ4jUHahYKWl6wLtSnUTEZ4c75VFecgVqK8cd4TvVzZxDStgDUGICI3j7EVJK/hF3veg/T4zpHvQIy1q2opIG09nXcR8CT56gyLgBEtgjsk+B67J9Wzq1NAYzmXA549jz29w/lpQublUBpG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com; spf=pass smtp.mailfrom=raptorengineering.com; dkim=pass (1024-bit key) header.d=raptorengineering.com header.i=@raptorengineering.com header.b=R3+CQ+dg; arc=none smtp.client-ip=23.155.224.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raptorengineering.com
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id CFC228286FA4
+	for <stable@vger.kernel.org>; Wed,  5 Jun 2024 20:01:27 -0500 (CDT)
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id 2VFYDikC4ytw; Wed,  5 Jun 2024 20:01:27 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 648ED82858AF;
+	Wed,  5 Jun 2024 20:01:27 -0500 (CDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 648ED82858AF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
+	t=1717635687; bh=WfW0iDxYmYUIcxa3+/dC/7LsSHJsBqXDLA474zSAgwo=;
+	h=Message-ID:Date:MIME-Version:From:To;
+	b=R3+CQ+dgG4LrqLeA4WMIDLcJLR+7MxISPiCBULL9vqWwHK3o1GeBhy+sZiVqVuYBc
+	 tPwIRtMxFbEbytlqyL+eoOv9sqWkewmkJdFsHHsZl7qtcCk4oxVKPDTru7Ojgx/Bz8
+	 vzy0xVhMRbW84ef5NM4AFXHaJurhgHVODuMS7UUE=
+X-Virus-Scanned: amavisd-new at rptsys.com
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id nkE8dtAyGUU2; Wed,  5 Jun 2024 20:01:27 -0500 (CDT)
+Received: from [10.11.0.2] (5.edge.rptsys.com [23.155.224.38])
+	by mail.rptsys.com (Postfix) with ESMTPSA id 0026A82856E0;
+	Wed,  5 Jun 2024 20:01:26 -0500 (CDT)
+Message-ID: <b7df9808-9a26-4e80-8137-d72e392b177e@raptorengineering.com>
+Date: Wed, 5 Jun 2024 20:01:26 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-05_02,2024-06-05_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=586 phishscore=0
- adultscore=0 bulkscore=0 spamscore=0 malwarescore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2406060001
-X-Proofpoint-GUID: HNWNmYom_xalhO768Wrbf1PkPwmQ6GyN
-X-Proofpoint-ORIG-GUID: HNWNmYom_xalhO768Wrbf1PkPwmQ6GyN
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Shawn Anastasio <sanastasio@raptorengineering.com>
+To: stable@vger.kernel.org
+Cc: Timothy Pearson <tpearson@raptorengineering.com>
+Subject: Backport request for "powerpc/iommu: Add iommu_ops to report
+ capabilities and allow blocking domains"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, 05 Jun 2024 01:55:29 -0700, Breno Leitao wrote:
+Hello,
 
-> There is a potential out-of-bounds access when using test_bit() on a
-> single word. The test_bit() and set_bit() functions operate on long
-> values, and when testing or setting a single word, they can exceed the
-> word boundary. KASAN detects this issue and produces a dump:
-> 
-> 	 BUG: KASAN: slab-out-of-bounds in _scsih_add_device.constprop.0 (./arch/x86/include/asm/bitops.h:60 ./include/asm-generic/bitops/instrumented-atomic.h:29 drivers/scsi/mpt3sas/mpt3sas_scsih.c:7331) mpt3sas
-> 
-> [...]
+Commit a940904443e432623579245babe63e2486ff327b ("powerpc/iommu: Add
+iommu_ops to report capabilities and allow blocking domains") fixes a
+regression that prevents attaching PCI devices to the vfio-pci driver on
+PPC64. Its inclusion in 6.1 would open the door for restoring VFIO and
+KVM PCI passthrough support on distros that rely on this LTS kernel.
 
-Applied to 6.10/scsi-fixes, thanks!
-
-[1/1] mpt3sas: Avoid test/set_bit() operating in non-allocated memory
-      https://git.kernel.org/mkp/scsi/c/4254dfeda82f
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Thanks,
+Shawn
 
