@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD0E8FEB27
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CDE8FE89B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9252028A69C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EC2D1C23E19
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC151A2FB2;
-	Thu,  6 Jun 2024 14:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85E619752F;
+	Thu,  6 Jun 2024 14:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yrl1G3m9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkHy23EI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6E5197A68;
-	Thu,  6 Jun 2024 14:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F56196C82;
+	Thu,  6 Jun 2024 14:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683217; cv=none; b=M1RzuM1zivm//MPDsOWaqZdEmwq4/u9JEYJ0HOBnzmwcombhuq5i34HGVDVkEJ0tpwdNB9KCVCikRdBk/zTOA7TIQFomj1URfzoQf2osnlSsH7iUbaLzYRuiJCsx1q0c0N87M7w6OYjb3DNgDKU43G2K/WgKbeVyeXdqF8ecpWc=
+	t=1717682914; cv=none; b=Zdskf8tbWq8qvhN8NHCMweRZ2nXxTMLNfV06CW1dS1vlrd6hbkKanfhzWdDqr8nao0yDs49HdxRNQOPODFVZVwpUWNBXdh5ZetQftzdMPJ5Y8PCJUDnyutN+g5lrKHedgwdcpJGskychJchLf7QDV/CHoordwGu+N59SgE3erFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683217; c=relaxed/simple;
-	bh=IZlpXCdWUg6UpjqO/WKMPOYPmxPo1Jqvkz2NYgl/fsc=;
+	s=arc-20240116; t=1717682914; c=relaxed/simple;
+	bh=YtQOr2nupnuhUP9xqQKBxyc/TaNZt49Q8vDbSSgBMyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2j6rZ9kSI/a23kUAi1PSXUA4Qwz+e2JqY/7MIMfQVhmYOTDy6Crqr7YeoUlULb9BNwhdxIp+ZsvChJzV2wliyfH+l99b+8OEHVTD7siCUrRBAxtByMShstNT3zH2mVqyvixhwgmq9+74r+7bfDHvqHs++kp9xdDdCXAUFCJFrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yrl1G3m9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C35C2BD10;
-	Thu,  6 Jun 2024 14:13:37 +0000 (UTC)
+	 MIME-Version; b=C7Qgvf7YKMq4T1etwMr5fi7+8QD/Z+I1iMU2GCVDAdFoSSRS2rOzLED/w5aopkfOcMw/mandr54K6P+mpGmFmCpMQ7eeRNN5Zx4YSSJgmVrBVWtoLhpB2RINr8mdDAe2Y6nlca1Xhl3lUYxT3eq4urYcdsnRHDpuV15JI66FxVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkHy23EI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705A2C2BD10;
+	Thu,  6 Jun 2024 14:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683217;
-	bh=IZlpXCdWUg6UpjqO/WKMPOYPmxPo1Jqvkz2NYgl/fsc=;
+	s=korg; t=1717682914;
+	bh=YtQOr2nupnuhUP9xqQKBxyc/TaNZt49Q8vDbSSgBMyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yrl1G3m9ZQLSdMKQWnqLncwetfv2p9w9sKSnvSCVv3uQTKgTI4JLZ9ZcbL10qFB1i
-	 feg+00dHSZHe4od9M1G1ugEF+5iBaKUncAb2qE2e5UC3ey4cIrrC2A7K51AhTTMGAm
-	 KEQea3QuqhSUFsgslwYJSyccTN1w3zCea9DlUY6Y=
+	b=qkHy23EIwW9gldy0rnXJ+AC+atrRjPCtUKe5qK8PbSgnx2mo0JNfKYe1HZ3vG0gz0
+	 dypSF5h1zGyubQYbjim64+FylTtK/YJaXrpS2U1EsdEC/zwpiV0YPiaKUp73HQS26D
+	 8yCHpX8ATmhAqxUiO+n+xiQWRh0Enmo3pJ4joQQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guixiong Wei <weiguixiong@bytedance.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 094/473] x86/boot: Ignore relocations in .notes sections in walk_relocs() too
-Date: Thu,  6 Jun 2024 16:00:23 +0200
-Message-ID: <20240606131703.014422765@linuxfoundation.org>
+Subject: [PATCH 6.9 045/374] iio: adc: stm32: Fixing err code to not indicate success
+Date: Thu,  6 Jun 2024 16:00:24 +0200
+Message-ID: <20240606131653.318027961@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guixiong Wei <weiguixiong@bytedance.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit 76e9762d66373354b45c33b60e9a53ef2a3c5ff2 ]
+[ Upstream commit 3735ca0b072656c3aa2cedc617a5e639b583a472 ]
 
-Commit:
+This path would result in returning 0 / success on an error path.
 
-  aaa8736370db ("x86, relocs: Ignore relocations in .notes section")
-
-... only started ignoring the .notes sections in print_absolute_relocs(),
-but the same logic should also by applied in walk_relocs() to avoid
-such relocations.
-
-[ mingo: Fixed various typos in the changelog, removed extra curly braces from the code. ]
-
-Fixes: aaa8736370db ("x86, relocs: Ignore relocations in .notes section")
-Fixes: 5ead97c84fa7 ("xen: Core Xen implementation")
-Fixes: da1a679cde9b ("Add /sys/kernel/notes")
-Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20240317150547.24910-1-weiguixiong@bytedance.com
+Cc: Olivier Moysan <olivier.moysan@foss.st.com>
+Fixes: 95bc818404b2 ("iio: adc: stm32-adc: add support of generic channels binding")
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://lore.kernel.org/r/20240330185305.1319844-4-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/tools/relocs.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/iio/adc/stm32-adc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
-index 9a5b101c45023..4fd824a448245 100644
---- a/arch/x86/tools/relocs.c
-+++ b/arch/x86/tools/relocs.c
-@@ -746,6 +746,15 @@ static void walk_relocs(int (*process)(struct section *sec, Elf_Rel *rel,
- 		if (!(sec_applies->shdr.sh_flags & SHF_ALLOC)) {
- 			continue;
- 		}
-+
-+		/*
-+		 * Do not perform relocations in .notes sections; any
-+		 * values there are meant for pre-boot consumption (e.g.
-+		 * startup_xen).
-+		 */
-+		if (sec_applies->shdr.sh_type == SHT_NOTE)
-+			continue;
-+
- 		sh_symtab = sec_symtab->symtab;
- 		sym_strtab = sec_symtab->link->strtab;
- 		for (j = 0; j < sec->shdr.sh_size/sizeof(Elf_Rel); j++) {
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index b5d3c9cea5c4e..283c207571064 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -2234,6 +2234,7 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+ 			if (vin[0] != val || vin[1] >= adc_info->max_channels) {
+ 				dev_err(&indio_dev->dev, "Invalid channel in%d-in%d\n",
+ 					vin[0], vin[1]);
++				ret = -EINVAL;
+ 				goto err;
+ 			}
+ 		} else if (ret != -EINVAL) {
 -- 
 2.43.0
 
