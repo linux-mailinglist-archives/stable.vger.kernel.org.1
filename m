@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-49576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C108FEDE0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB87B8FEF0E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DA80B29B6C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86FECB257DB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33D319E7F5;
-	Thu,  6 Jun 2024 14:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F321A1894;
+	Thu,  6 Jun 2024 14:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGJB5LpM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ycK4Hfty"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7B21BE253;
-	Thu,  6 Jun 2024 14:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380AE1A189D;
+	Thu,  6 Jun 2024 14:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683534; cv=none; b=m9mwSf3axSJYl+2ZGDYGWjYrzA8Z3jjGV/sjkHq6rGh8cDIw314kpsKP2uPosZFMQmxFFwC+d6D6pyyQzLPumrRI4ULEpLczhLON2KW3QTIwKAHWrvZiBEYaHRPLIxxBQZWj7jsS8GBIOfmQaGPugAiJJWAiodO+EdexZEtCQ0A=
+	t=1717683732; cv=none; b=kSqkIqQZQz9Z8NbA0vH7FGDJQNYkrlazk7DZ7cvU6krPt5gn1iVfgMtDh3ArxrP1HJi28Pfhr3I9mwBJZ/+ClBhtQzVZnJ8B+2T7G935DKcF2LzsgLXq7YM0EVZ70ZCDTbwXyPFvBFC9CtnD0f4+NWi0gcgSX7WMZ1s1nb+gXxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683534; c=relaxed/simple;
-	bh=135WcnQcoUrY/hyuz8QJLQYDPXy5F8fEpI0OMIG0K28=;
+	s=arc-20240116; t=1717683732; c=relaxed/simple;
+	bh=+Bco33hkzeS2QCbFWkYG591uez6ifuruwHK3jYE4mBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQ4mayvHOD/FK56HJ6dNUnmJzrQm++LwoCzIZNxiiRW7N6ITuSBtXcRqTvcDB54PFFl2iT3HtVVp9UC3KK9K8msQMCwJ5Slf+cP7dGNsmSzrBCHzGt0sXMrZ8+OgnrmfcCrquATujz8XbW8MlZeC1cMnwPVBGKCOuwxFIk0Cn3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGJB5LpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC9EC2BD10;
-	Thu,  6 Jun 2024 14:18:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lQhXEQaClay87LsfCsWl5ou6ZfBqXFDmQlekihYo0UflVh9yOs6gIgH15pFwAaNnSBjqvi06Eb/T91zEcXR38IDl9hSPx8tYJkcoxAQobI8VPYvUPi14X0Ikk3D1aBMr+VDqilQCWO5JP2J8ZdMZ5LEP5dJ5F1D5MQUruY3XjnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycK4Hfty; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF2BC32782;
+	Thu,  6 Jun 2024 14:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683534;
-	bh=135WcnQcoUrY/hyuz8QJLQYDPXy5F8fEpI0OMIG0K28=;
+	s=korg; t=1717683731;
+	bh=+Bco33hkzeS2QCbFWkYG591uez6ifuruwHK3jYE4mBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gGJB5LpMaTo7nY7USLBeOy8lfJ4XMtHFI44ApzzTGgDnnuUXmcLUbb8q3ivBvocHz
-	 ZhlmaVdbk7pL/unLIJJBIlMgcDm+VRQQSrDZoe1TVTn+wntcrRwkVRoJ2Jd7Y5QuI5
-	 jSf5CXJIDcemKNKwXZYeMOaLOYvLoT4PyMehMWV4=
+	b=ycK4Hfty3uZkT29CGRTAGbdK1DloNL5fVGs64fPpzBsEogbHZ5BomE9BTNdeFTRK/
+	 +7DWcO+DNfKD7HmnWYQFSQS2qRTWn056c+8Ddikjx4xchNwfEuC/ik2hwgsIDAXj3i
+	 4djcrMpl+QVuWSMWdenu80Cp5JfVXe0lH6jMev8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthieu Baerts <matthieu.baerts@tessares.net>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 425/473] inet: factor out locked section of inet_accept() in a new helper
-Date: Thu,  6 Jun 2024 16:05:54 +0200
-Message-ID: <20240606131713.812006802@linuxfoundation.org>
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Tyler Schneider <tyler.schneider@amd.com>
+Subject: [PATCH 6.6 683/744] drm/amd/display: Enable colorspace property for MST connectors
+Date: Thu,  6 Jun 2024 16:05:55 +0200
+Message-ID: <20240606131754.394360723@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +63,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 711bdd5141d81ab21dbe0a533024d594210d5ba4 ]
+[ Upstream commit 8195979d2dd995d60c2663adf54c69c1bf4eadd1 ]
 
-No functional changes intended. The new helper will be used
-by the MPTCP protocol in the next patch to avoid duplicating
-a few LoC.
+MST colorspace property support was disabled due to a series of warnings
+that came up when the device was plugged in since the properties weren't
+made at device creation. Create the properties in advance instead.
 
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 26afda78cda3 ("net: relax socket state check at accept time.")
+Suggested-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Fixes: 69a959610229 ("drm/amd/display: Temporary Disable MST DP Colorspace Property").
+Reported-and-tested-by: Tyler Schneider <tyler.schneider@amd.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3353
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet_common.h |  2 ++
- net/ipv4/af_inet.c        | 32 +++++++++++++++++---------------
- 2 files changed, 19 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/net/inet_common.h b/include/net/inet_common.h
-index 4673bbfd2811f..a75333342c4ec 100644
---- a/include/net/inet_common.h
-+++ b/include/net/inet_common.h
-@@ -31,6 +31,8 @@ int inet_dgram_connect(struct socket *sock, struct sockaddr *uaddr,
- 		       int addr_len, int flags);
- int inet_accept(struct socket *sock, struct socket *newsock, int flags,
- 		bool kern);
-+void __inet_accept(struct socket *sock, struct socket *newsock,
-+		   struct sock *newsk);
- int inet_send_prepare(struct sock *sk);
- int inet_sendmsg(struct socket *sock, struct msghdr *msg, size_t size);
- void inet_splice_eof(struct socket *sock);
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 9408dc3bb42d3..56d4ec955b851 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -744,6 +744,20 @@ int inet_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- }
- EXPORT_SYMBOL(inet_stream_connect);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index 10dd4cd6f59c9..2104511f3b863 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -606,6 +606,9 @@ dm_dp_add_mst_connector(struct drm_dp_mst_topology_mgr *mgr,
+ 		&connector->base,
+ 		dev->mode_config.tile_property,
+ 		0);
++	connector->colorspace_property = master->base.colorspace_property;
++	if (connector->colorspace_property)
++		drm_connector_attach_colorspace_property(connector);
  
-+void __inet_accept(struct socket *sock, struct socket *newsock, struct sock *newsk)
-+{
-+	sock_rps_record_flow(newsk);
-+	WARN_ON(!((1 << newsk->sk_state) &
-+		  (TCPF_ESTABLISHED | TCPF_SYN_RECV |
-+		  TCPF_CLOSE_WAIT | TCPF_CLOSE)));
-+
-+	if (test_bit(SOCK_SUPPORT_ZC, &sock->flags))
-+		set_bit(SOCK_SUPPORT_ZC, &newsock->flags);
-+	sock_graft(newsk, newsock);
-+
-+	newsock->state = SS_CONNECTED;
-+}
-+
- /*
-  *	Accept a pending connection. The TCP layer now gives BSD semantics.
-  */
-@@ -757,24 +771,12 @@ int inet_accept(struct socket *sock, struct socket *newsock, int flags,
- 	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
- 	sk2 = READ_ONCE(sk1->sk_prot)->accept(sk1, flags, &err, kern);
- 	if (!sk2)
--		goto do_err;
-+		return err;
- 
- 	lock_sock(sk2);
--
--	sock_rps_record_flow(sk2);
--	WARN_ON(!((1 << sk2->sk_state) &
--		  (TCPF_ESTABLISHED | TCPF_SYN_RECV |
--		  TCPF_CLOSE_WAIT | TCPF_CLOSE)));
--
--	if (test_bit(SOCK_SUPPORT_ZC, &sock->flags))
--		set_bit(SOCK_SUPPORT_ZC, &newsock->flags);
--	sock_graft(sk2, newsock);
--
--	newsock->state = SS_CONNECTED;
--	err = 0;
-+	__inet_accept(sock, newsock, sk2);
- 	release_sock(sk2);
--do_err:
--	return err;
-+	return 0;
- }
- EXPORT_SYMBOL(inet_accept);
+ 	drm_connector_set_path_property(connector, pathprop);
  
 -- 
 2.43.0
