@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-48564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA5AA8FE988
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AB78FECF5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 959701F248A6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F612B251FA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB7B19AA79;
-	Thu,  6 Jun 2024 14:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478F719CCF7;
+	Thu,  6 Jun 2024 14:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSVyYXhc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Amy4F1oI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF1219883C;
-	Thu,  6 Jun 2024 14:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0612013BAEB;
+	Thu,  6 Jun 2024 14:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683036; cv=none; b=S4LiYJ1wvjMEHLsJniX7KTupc2+jc8c5vqit4zBC/rZQKTBY0jFQJIHAiKh0GrfTIkMQ3JkZygD2vXXzJPz22I7VdT8tMA1pEzkRfGJIjmPCtEd5VXywt6Y2HE2AOzLuvZBIMIw4jPZNFIguNB1Q30AXeh+dpgTM+m5cx4z0/C0=
+	t=1717683429; cv=none; b=bPQrzNiVZeQDhHM5Ks6Mle9P22CII4A+W3BvodGnDZIs53XufbOqo5jY23S2uMq6eO40WgrNZaP5YuaRa0WdVx5E+yXoSqCRfJVdqD61g6P/N1BAsPdfGKAYR++QwZFJnQIJb4G3XpXcX1SF4xAB5kyqPhBTdYGrUjKIYFzOKuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683036; c=relaxed/simple;
-	bh=X44lgXNLlXe0zzlP4UUoUz/EkCD18w4nv8nYRP89zMg=;
+	s=arc-20240116; t=1717683429; c=relaxed/simple;
+	bh=7A+fG8RMS1ovUq6lS2F3PAaP2ZrWfEv+gIQdX+QtxNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZfG3GmS6r4e5adG6Fv//dba/ZIP7uAGxJ9mr34wQyCCcN7yeWqaBYnaPoYdX73YJqdnywUlZTI4wwD+2ayT4mMFEuCn3/GdA0pnhqohH3bJPJgXIIHfkHVXUj02fQ7GBbgTZ5fS9hPSuLpZeehwvMnhJKqo6lFt3qyi0XGsAW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSVyYXhc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D97C4AF50;
-	Thu,  6 Jun 2024 14:10:35 +0000 (UTC)
+	 MIME-Version; b=BpLoTLukWpkBtTbvG7ks7z1BEZMBmLvcqwkXNA0+dKOFHSWx829hNOg7uGlkf+AKkfQMoYAUDsRi+95M06zrEWf9S/QmrTr5GbaxS3yenLdfd90qGSPwpUeDfu7WJrQ3bIEYS8MqmBS6jFnBNhICIYRtyoELv0os/H5n9ABJZ+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Amy4F1oI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75E2C32781;
+	Thu,  6 Jun 2024 14:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683035;
-	bh=X44lgXNLlXe0zzlP4UUoUz/EkCD18w4nv8nYRP89zMg=;
+	s=korg; t=1717683428;
+	bh=7A+fG8RMS1ovUq6lS2F3PAaP2ZrWfEv+gIQdX+QtxNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aSVyYXhcmFcga/6MHc7zIsuD1aUD6lj+s4miXnwS5YfilTLMHOMfMLBBpL6CtMU9q
-	 N8PaCLHyiloSSH7FyvtS8w3TR3P3rIiioUx2B/lopyfXPjp28henKKSE8uPk64z4yr
-	 2mzg0RDt71RhJvfCychQzktvzrJdge+wkp2r4l04=
+	b=Amy4F1oIzPmHgeTKAjJT0MN+KG6Zub/cTP72dUTXnnBSAatWXDZ+Rg3VVFI5o9NSi
+	 t02T1Ov+domMdsRVsbdgDtxffU3JOdvmdJKU6TE6pP5syVBGoMNk1967c6vSQCG4dE
+	 1iIq96zH5FhuiAQZ4IXHqHJIFtsPmcuh50cr4U/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Song Liu <song@kernel.org>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 263/374] i3c: master: svc: change ENXIO to EAGAIN when IBI occurs during start frame
-Date: Thu,  6 Jun 2024 16:04:02 +0200
-Message-ID: <20240606131700.704236389@linuxfoundation.org>
+Subject: [PATCH 6.1 314/473] perf docs: Document bpf event modifier
+Date: Thu,  6 Jun 2024 16:04:03 +0200
+Message-ID: <20240606131710.318009104@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +74,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 7f3d633b460be5553a65a247def5426d16805e72 ]
+[ Upstream commit eb4d27cf9aef3e6c9bcaf8fa1a1cadc2433d847b ]
 
-svc_i3c_master_xfer() returns error ENXIO if an In-Band Interrupt (IBI)
-occurs when the host starts the frame.
+Document that 'b' is used as a modifier to make an event use a BPF
+counter.
 
-Change error code to EAGAIN to inform the client driver that this
-situation has occurred and to try again sometime later.
-
-Fixes: 5e5e3c92e748 ("i3c: master: svc: fix wrong data return when IBI happen during start frame")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20240506164009.21375-2-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 01bd8efcec444468 ("perf stat: Introduce ':b' modifier")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Song Liu <song@kernel.org>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240416170014.985191-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/Documentation/perf-list.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 5ee4db68988e2..a2298ab460a37 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1080,7 +1080,7 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
- 	 * and yield the above events handler.
- 	 */
- 	if (SVC_I3C_MSTATUS_IBIWON(reg)) {
--		ret = -ENXIO;
-+		ret = -EAGAIN;
- 		*actual_len = 0;
- 		goto emit_stop;
- 	}
+diff --git a/tools/perf/Documentation/perf-list.txt b/tools/perf/Documentation/perf-list.txt
+index 57384a97c04f4..3dae696b748a6 100644
+--- a/tools/perf/Documentation/perf-list.txt
++++ b/tools/perf/Documentation/perf-list.txt
+@@ -63,6 +63,7 @@ counted. The following modifiers exist:
+  D - pin the event to the PMU
+  W - group is weak and will fallback to non-group if not schedulable,
+  e - group or event are exclusive and do not share the PMU
++ b - use BPF aggregration (see perf stat --bpf-counters)
+ 
+ The 'p' modifier can be used for specifying how precise the instruction
+ address should be. The 'p' modifier can be specified multiple times:
 -- 
 2.43.0
 
