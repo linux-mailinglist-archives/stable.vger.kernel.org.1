@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-48413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478738FE8EA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122FF8FEBB9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9221B2194A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 908EAB26792
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 730BC1990A6;
-	Thu,  6 Jun 2024 14:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26011ABCC0;
+	Thu,  6 Jun 2024 14:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPLqnIn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RB4I+2k7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A3A196C8D;
-	Thu,  6 Jun 2024 14:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18DF1ABCB8;
+	Thu,  6 Jun 2024 14:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682950; cv=none; b=dqqZmEgJ9DaOKjPnp7yXMgbUXchD9KsF0MOBSQ5udFQ6KtmwYAILhPO7tvLcFOeOotSRlmpkGJWMyf0vMrbcYQoGTQH3VJup9KN7MPEJHcrJY1QgUUus5jSE9Ucd8Q5ErlvdChnl2zqqW71KyxP2sfK4IrccG2HWkNtoYDV55GA=
+	t=1717683286; cv=none; b=ddvJiaRsDBGMJDS3kc/lmlsgl3OXqTlpx0jiFN8b9avh/A4aYCvoYwSSHResRj+ROG9VtL04NL6rpQcHTaEUQLw5OZOvep6ms3f9vjX3GTrV3qpDhw/dH2xHnWHL5juJNeghnlXrHWNn7p6EJMHNZLCXBCrHpxA9b+n2OCtIvKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682950; c=relaxed/simple;
-	bh=zFPWwVjlS7jWIcYTpbo6tod+ebIUaaW74tZ+5Q3Huus=;
+	s=arc-20240116; t=1717683286; c=relaxed/simple;
+	bh=Oz9SwYWEaL9PyJX9kCK3Sx8PBnPK2n6iznyJmmP8C9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CdTfrLrB52uh7l3BCSTVHE1LDqZKwqMIfuV11Ic1aaEL56aEwkD6lHcjlL+nuGKBTz9iUlbTW2WxzjAk8Gok3AQXW9/LW7071HcyZ5PhMbTLZVdfZe5Cu+Yv/3BuuFrk/4L78QufdSTkA9N+V95iAbnym0tSFY8vCSdoXVFrSkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPLqnIn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0984DC2BD10;
-	Thu,  6 Jun 2024 14:09:10 +0000 (UTC)
+	 MIME-Version; b=XE1vtyNa6yZskKPiTcj2klykx8CvKmb8Y7/jaZnpweU4ntugOBbkW7LTXJzB4TTLrZD6gCv/NJCJdVsBhVdgI38PHkT5GwdeAOuFUUtBF3XivqNtSvb2bWn4D9lr5xtrpn2DtVeq8p4aVjiQYhFqMvVLSk0G4BQ67atcFKyD7d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RB4I+2k7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E064C2BD10;
+	Thu,  6 Jun 2024 14:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682950;
-	bh=zFPWwVjlS7jWIcYTpbo6tod+ebIUaaW74tZ+5Q3Huus=;
+	s=korg; t=1717683286;
+	bh=Oz9SwYWEaL9PyJX9kCK3Sx8PBnPK2n6iznyJmmP8C9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPLqnIn4Fpx7/5Wp1FMKFYanWV2RV+7TbnjuzocwW/sdzPpG82730qS+V+cZ0IVDW
-	 k6mO12nnoDIXJupt16+JuxTUz5BdmeaS/h0jw9TR++61hdN/vRrtQa+cRnL/O4cOzz
-	 UUsnuzSbqjB2KYY2neTe4btQ1iduNuqa0nQX/Bh4=
+	b=RB4I+2k7zp7JFgt1YB/8cKebmlb7+TImS1p+/GLbCsfL8uX7Jv6bivdmKchtGBpvw
+	 KVnplVDQiRqkPzTD9hvqoZzXHZTlj4SjENgRuhe9KnfpDkZe5F6uX79rNZuUhs6/NN
+	 +d/aCqtc/kOkx8aAmy4YDbtH0D1cevKoC/D+lLus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	xingwei lee <xrivendell7@gmail.com>,
-	yue sun <samsun1006219@gmail.com>,
-	Hou Tao <houtao1@huawei.com>,
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 113/374] fuse: clear FR_SENT when re-adding requests into pending list
+Subject: [PATCH 6.1 163/473] HID: amd_sfh: Handle "no sensors" in PM operations
 Date: Thu,  6 Jun 2024 16:01:32 +0200
-Message-ID: <20240606131655.717047985@linuxfoundation.org>
+Message-ID: <20240606131705.336348325@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit 246014876d782bbf2e652267482cd2e799fb5fcd ]
+[ Upstream commit 077e3e3bc84a51891e732507bbbd9acf6e0e4c8b ]
 
-The following warning was reported by lee bruce:
+Resume or suspend each sensor device based on the num_hid_devices.
+Therefore, add a check to handle the special case where no sensors are
+present.
 
-  ------------[ cut here ]------------
-  WARNING: CPU: 0 PID: 8264 at fs/fuse/dev.c:300
-  fuse_request_end+0x685/0x7e0 fs/fuse/dev.c:300
-  Modules linked in:
-  CPU: 0 PID: 8264 Comm: ab2 Not tainted 6.9.0-rc7
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-  RIP: 0010:fuse_request_end+0x685/0x7e0 fs/fuse/dev.c:300
-  ......
-  Call Trace:
-  <TASK>
-  fuse_dev_do_read.constprop.0+0xd36/0x1dd0 fs/fuse/dev.c:1334
-  fuse_dev_read+0x166/0x200 fs/fuse/dev.c:1367
-  call_read_iter include/linux/fs.h:2104 [inline]
-  new_sync_read fs/read_write.c:395 [inline]
-  vfs_read+0x85b/0xba0 fs/read_write.c:476
-  ksys_read+0x12f/0x260 fs/read_write.c:619
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xce/0x260 arch/x86/entry/common.c:83
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  ......
-  </TASK>
-
-The warning is due to the FUSE_NOTIFY_RESEND notify sent by the write()
-syscall in the reproducer program and it happens as follows:
-
-(1) calls fuse_dev_read() to read the INIT request
-The read succeeds. During the read, bit FR_SENT will be set on the
-request.
-(2) calls fuse_dev_write() to send an USE_NOTIFY_RESEND notify
-The resend notify will resend all processing requests, so the INIT
-request is moved from processing list to pending list again.
-(3) calls fuse_dev_read() with an invalid output address
-fuse_dev_read() will try to copy the same INIT request to the output
-address, but it will fail due to the invalid address, so the INIT
-request is ended and triggers the warning in fuse_request_end().
-
-Fix it by clearing FR_SENT when re-adding requests into pending list.
-
-Acked-by: Miklos Szeredi <mszeredi@redhat.com>
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Closes: https://lore.kernel.org/linux-fsdevel/58f13e47-4765-fce4-daf4-dffcc5ae2330@huaweicloud.com/T/#m091614e5ea2af403b259e7cea6a49e51b9ee07a7
-Fixes: 760eac73f9f6 ("fuse: Introduce a new notification type for resend pending requests")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Fixes: 93ce5e0231d7 ("HID: amd_sfh: Implement SFH1.1 functionality")
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/dev.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
-index 8eb2ce7c0b012..9eb191b5c4de1 100644
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -1814,6 +1814,7 @@ static void fuse_resend(struct fuse_conn *fc)
+diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+index bb8bd7892b674..eda888f75f165 100644
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+@@ -222,6 +222,11 @@ static void amd_sfh_resume(struct amd_mp2_dev *mp2)
+ 	struct amd_mp2_sensor_info info;
+ 	int i, status;
  
- 	list_for_each_entry_safe(req, next, &to_queue, list) {
- 		set_bit(FR_PENDING, &req->flags);
-+		clear_bit(FR_SENT, &req->flags);
- 		/* mark the request as resend request */
- 		req->in.h.unique |= FUSE_UNIQUE_RESEND;
- 	}
++	if (!cl_data->is_any_sensor_enabled) {
++		amd_sfh_clear_intr(mp2);
++		return;
++	}
++
+ 	for (i = 0; i < cl_data->num_hid_devices; i++) {
+ 		if (cl_data->sensor_sts[i] == SENSOR_DISABLED) {
+ 			info.sensor_idx = cl_data->sensor_idx[i];
+@@ -247,6 +252,11 @@ static void amd_sfh_suspend(struct amd_mp2_dev *mp2)
+ 	struct amdtp_cl_data *cl_data = mp2->cl_data;
+ 	int i, status;
+ 
++	if (!cl_data->is_any_sensor_enabled) {
++		amd_sfh_clear_intr(mp2);
++		return;
++	}
++
+ 	for (i = 0; i < cl_data->num_hid_devices; i++) {
+ 		if (cl_data->sensor_idx[i] != HPD_IDX &&
+ 		    cl_data->sensor_sts[i] == SENSOR_ENABLED) {
 -- 
 2.43.0
 
