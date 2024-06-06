@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-49597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F21858FEDF6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9028FEC43
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DF3B1F20FF6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 624AFB230CF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89259197514;
-	Thu,  6 Jun 2024 14:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA241AED4C;
+	Thu,  6 Jun 2024 14:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1nCoORm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaKkVF0V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E8B1990B7;
-	Thu,  6 Jun 2024 14:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B33A1AED4B;
+	Thu,  6 Jun 2024 14:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683545; cv=none; b=mqygDnbZihXgC80te2k/HRLUlb0w231i4aOrORRBOIKrhOf0paKAAxuPvdejmcnDECkxPmt00AUnKNUukzQdzOnUw6ka4Lkt7PPMikOyjBRqforeRZ2qt4pLuCXhTXerCiZPTULOfGzVsZS+/t6CGdiZdUtcL1hx+KhkjsPgZig=
+	t=1717683347; cv=none; b=ot1IxshlndUlGZFWDkRvoOn3omueOe5cGdqrrozMUV+MDT5TnyJozw6X7d2wANRzaMS/Pl/CBcpOhZY+797Omnk2KbSg6TffWTMwOOONEiC5yOOVSUbZjuNxWnLUfcgD8HYBqxVfI8egaA/dHlf7av4Xck5ZCK6fSlNSgisQfmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683545; c=relaxed/simple;
-	bh=M6Uwt9ci9pqRrawe+EvKQqOvaJdYdXzt0znlRmPmq1o=;
+	s=arc-20240116; t=1717683347; c=relaxed/simple;
+	bh=aSNdwmlWliPQMY08SDBvRCzaIoPTuIIG5gi8iS8wuq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eDb86LdGRxLLbg8rjywEsL4LhmwRrD4WelKxeHCclOZGQkkQle6u54WoYLP/h2+EXfoSTsTrzpD+aiPCKuS0e6Y/ZLS8XFlrYEASlcaYeqHPklIsOnyyJsc0IzSdiwmjhBKgEchr3KRHquY2tOKNBRqIM8N08qoOZ8pcbgtr+Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1nCoORm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 287FCC2BD10;
-	Thu,  6 Jun 2024 14:19:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PPlb20YGJf96UJjIWnsOXA4y+fzZ1r9cGT5nm+FhBmM9qwEl5iwFHDQb8Qdj20DmORSY1d/k+Eu4jXeASXwBBa1vM4FHMkipuGYZkHfYL9sAavlZun7ZbpXAno30kMBMaZvzce3O9qjpad6tz0uFoo8r0NOm0C8TsQJn9/X4G0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaKkVF0V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BACBC2BD10;
+	Thu,  6 Jun 2024 14:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683545;
-	bh=M6Uwt9ci9pqRrawe+EvKQqOvaJdYdXzt0znlRmPmq1o=;
+	s=korg; t=1717683347;
+	bh=aSNdwmlWliPQMY08SDBvRCzaIoPTuIIG5gi8iS8wuq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E1nCoORmdMtX0xlWcAVZVJ/XMwd5cqNOeVeV0CsL7zihT/Z+HcPph8l/gJy+9i7fO
-	 F1TLW07EDJPBhVflMlOzMIhJb5eGqUofSRSLkKHTtNdhvao7d3bdxY8DAVP7LAAmi+
-	 ix5U/tzRo5jQUTyg3DGzhGvnRJBTAgJJXJkwO9x4=
+	b=oaKkVF0VZFZ3Sh2z5j/I1sPc7w7qAWiar0MnwEuGpwIw/owzlYBZuRTMXWUA5Tsur
+	 xFKZsi0vzwMcRyzkT7PWXB6jfwV3eD4WYfKix6DisjyfxdLF4ytOXCg1w73I96t6eH
+	 7wDGkKR6kbQQLeRkFPgzrHy5wRI270gFajRnuIRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 484/744] dt-bindings: phy: qcom,sc8280xp-qmp-ufs-phy: fix msm899[68] power-domains
-Date: Thu,  6 Jun 2024 16:02:36 +0200
-Message-ID: <20240606131747.987478157@linuxfoundation.org>
+Subject: [PATCH 6.1 228/473] drm/bridge: lt9611uxc: Dont log an error when DSI host cant be found
+Date: Thu,  6 Jun 2024 16:02:37 +0200
+Message-ID: <20240606131707.404028586@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +63,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 59e377a124dc9039d9554d823b1cb4942bcee9a0 ]
+[ Upstream commit 6d9e877cde7e9b516a9a99751b8222c87557436d ]
 
-The Qualcomm MSM8996 and MSM8998 platforms don't have separate power
-domain for the UFS PHY. Replace required:power-domains with the
-conditional schema.
+Given that failing to find a DSI host causes the driver to defer probe,
+make use of dev_err_probe() to log the reason. This makes the defer
+probe reason available and avoids alerting userspace about something
+that is not necessarily an error.
 
-Fixes: dc5cb63592bd ("dt-bindings: phy: migrate QMP UFS PHY bindings to qcom,sc8280xp-qmp-ufs-phy.yaml")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-2-f1fd15c33fb3@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 0cbbd5b1a012 ("drm: bridge: add support for lontium LT9611UXC bridge")
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-5-619a28148e5c@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml  | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/lontium-lt9611uxc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml
-index d981d77e82e40..a6244c33faf61 100644
---- a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml
-+++ b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml
-@@ -71,7 +71,6 @@ required:
-   - reg
-   - clocks
-   - clock-names
--  - power-domains
-   - resets
-   - reset-names
-   - vdda-phy-supply
-@@ -130,6 +129,21 @@ allOf:
-         clock-names:
-           maxItems: 1
+diff --git a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
+index 818848b2c04dd..cb75da940b890 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
++++ b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
+@@ -263,10 +263,8 @@ static struct mipi_dsi_device *lt9611uxc_attach_dsi(struct lt9611uxc *lt9611uxc,
+ 	int ret;
  
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - qcom,msm8996-qmp-ufs-phy
-+              - qcom,msm8998-qmp-ufs-phy
-+    then:
-+      properties:
-+        power-domains:
-+          false
-+    else:
-+      required:
-+        - power-domains
-+
- additionalProperties: false
+ 	host = of_find_mipi_dsi_host_by_node(dsi_node);
+-	if (!host) {
+-		dev_err(dev, "failed to find dsi host\n");
+-		return ERR_PTR(-EPROBE_DEFER);
+-	}
++	if (!host)
++		return ERR_PTR(dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n"));
  
- examples:
+ 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
+ 	if (IS_ERR(dsi)) {
 -- 
 2.43.0
 
