@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73EAC8FED64
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0865B8FEECB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D19D6B25636
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E4752863DA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE889198E82;
-	Thu,  6 Jun 2024 14:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F201C7D7D;
+	Thu,  6 Jun 2024 14:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEOum1JR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N87DcjBJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA0019D09F;
-	Thu,  6 Jun 2024 14:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F57B1A1866;
+	Thu,  6 Jun 2024 14:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683482; cv=none; b=CE1mq6ChM6y94A1CMnYOLcHevvlHyxgsldGY6b5tBIossQJ8rKmvS1hUuv2iS4K5M+lPHO4WCTVIJq7P+Q/lQItF6ojjnser6jTj4C+9FXA6nz7Ia2642N/pDuGVl8wENFTCArcA2tb+vkm82NaKP2GD4CGr+ki1aiqLP8U9Ens=
+	t=1717683702; cv=none; b=g6SrtlOI+Ap6e6lHvOtxcTBEIdA3bitBQgi0A5MW2glKqchncEWqyyPkaGCYK/yVt/cit4I1TBdhf4c7kdnuh49YfdsgGrGVokWnVv+5wbQ5ax8iNbZr5JJGGa8aQsGxRJ8QGepmMtEpQzsPpMW3jB4IXltDH2BtYxsHENQ7QI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683482; c=relaxed/simple;
-	bh=ghjBF2UdqH90nns3NcaVpeBBvnlSZLhbBC1pBhfS9Ho=;
+	s=arc-20240116; t=1717683702; c=relaxed/simple;
+	bh=HR+NIUSKOVxwVSR/KZ+XKbGrfjVYrurA+a/V6+qnXMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SxX6EjtaE4J+FlUWfBOLdl8gJ/PhFggCS2Gr1nSBmo+qTUNaN5ciA3HNA50UDHZB1+bbfs1A/2pox+H8F85hJx+Ns++QStS+adu4MGtz6C/iER/sgtFaV/PfzaZ3zoJgbbX5cwyF7ZDsd8yY/5aPaiDaCcBNCICEIBZLJAsGe/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEOum1JR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CA5C2BD10;
-	Thu,  6 Jun 2024 14:18:02 +0000 (UTC)
+	 MIME-Version; b=fr35XEI6szfqjOlgsSk80Y9eQGWlvw4RJ7Dm7bZmz3o15Js25bqoRvVR7lzquQIHCUbA4RsZSrdWF6rGIlP0Gco18u3oqpDHTL6kYlFRydCmhxcJOiFq7paf12DjTzR9aapGUes9g54Ny7OcKWZJ6a12kDFu3RdQnHfRBTCbs9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N87DcjBJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D0FC2BD10;
+	Thu,  6 Jun 2024 14:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683482;
-	bh=ghjBF2UdqH90nns3NcaVpeBBvnlSZLhbBC1pBhfS9Ho=;
+	s=korg; t=1717683702;
+	bh=HR+NIUSKOVxwVSR/KZ+XKbGrfjVYrurA+a/V6+qnXMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uEOum1JR3VPN1cV34nFeVySuROAFiepHN6Kb3UIANMkaJAGFBM4uXZz7P81OhYNq9
-	 ryZEeH/cFuI1LzhLYVE8LGa2atgTx+NzfwLuGC8b9Fh3aleEdKgx3LkcMmL2paCNvq
-	 Q796PA1okNig9HeQOxds8apnPnuFNtKeXbnmi86c=
+	b=N87DcjBJCTV79Dei4ojWiDk0b/NqvizsjU+/bn297l+v5WLhJDaDmTHiP3T65I3Jl
+	 LuUvZCG59Drwtk0e7Pj0Hf/kF5dTSQmX5ZL/1mZKzdHCcuLH01B3pEkc7b33inFC5y
+	 MF2L2qusahHs+9qEmvUY0PJod1ykiXsx4xtp7QUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Mohamed Ahmed <mohamedahmedegypt2001@gmail.com>,
+	Faith Ekstrand <faith.ekstrand@collabora.com>,
+	Danilo Krummrich <dakr@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 368/473] drm/msm/dsi: Print dual-DSI-adjusted pclk instead of original mode pclk
+Subject: [PATCH 6.6 625/744] drm/nouveau: use tile_mode and pte_kind for VM_BIND bo allocations
 Date: Thu,  6 Jun 2024 16:04:57 +0200
-Message-ID: <20240606131712.067925725@linuxfoundation.org>
+Message-ID: <20240606131752.543024025@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Mohamed Ahmed <mohamedahmedegypt2001@gmail.com>
 
-[ Upstream commit f12e0e12524a34bf145f7b80122e653ffe3d130a ]
+[ Upstream commit aed9a1a4f7106ff99a882ad06318cebfa71016a2 ]
 
-When dual-DSI (bonded DSI) was added in commit ed9976a09b48
-("drm/msm/dsi: adjust dsi timing for dual dsi mode") some DBG() prints
-were not updated, leading to print the original mode->clock rather
-than the adjusted (typically the mode clock divided by two, though more
-recently also adjusted for DSC compression) msm_host->pixel_clk_rate
-which is passed to clk_set_rate() just below.  Fix that by printing the
-actual pixel_clk_rate that is being set.
+Allow PTE kind and tile mode on BO create with VM_BIND, and add a
+GETPARAM to indicate this change. This is needed to support modifiers in
+NVK and ensure correctness when dealing with the nouveau GL driver.
 
-Fixes: ed9976a09b48 ("drm/msm/dsi: adjust dsi timing for dual dsi mode")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/589896/
-Link: https://lore.kernel.org/r/20240417-drm-msm-initial-dualpipe-dsc-fixes-v1-1-78ae3ee9a697@somainline.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+The userspace modifiers implementation this is for can be found here:
+https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/24795
+
+Fixes: b88baab82871 ("drm/nouveau: implement new VM_BIND uAPI")
+Signed-off-by: Mohamed Ahmed <mohamedahmedegypt2001@gmail.com>
+Reviewed-by: Faith Ekstrand <faith.ekstrand@collabora.com>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240509204352.7597-1-mohamedahmedegypt2001@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_abi16.c |  3 ++
+ drivers/gpu/drm/nouveau/nouveau_bo.c    | 44 +++++++++++--------------
+ include/uapi/drm/nouveau_drm.h          |  7 ++++
+ 3 files changed, 29 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index a7c6e8a1754de..cd9ca36901611 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -402,8 +402,8 @@ int dsi_link_clk_set_rate_6g(struct msm_dsi_host *msm_host)
- 	unsigned long byte_intf_rate;
- 	int ret;
+diff --git a/drivers/gpu/drm/nouveau/nouveau_abi16.c b/drivers/gpu/drm/nouveau/nouveau_abi16.c
+index 0fbc9c841666e..b3f0e10f83fef 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_abi16.c
++++ b/drivers/gpu/drm/nouveau/nouveau_abi16.c
+@@ -277,6 +277,9 @@ nouveau_abi16_ioctl_getparam(ABI16_IOCTL_ARGS)
+ 		getparam->value = (u64)ttm_resource_manager_usage(vram_mgr) << PAGE_SHIFT;
+ 		break;
+ 	}
++	case NOUVEAU_GETPARAM_HAS_VMA_TILEMODE:
++		getparam->value = 1;
++		break;
+ 	default:
+ 		NV_PRINTK(dbg, cli, "unknown parameter %lld\n", getparam->param);
+ 		return -EINVAL;
+diff --git a/drivers/gpu/drm/nouveau/nouveau_bo.c b/drivers/gpu/drm/nouveau/nouveau_bo.c
+index 254d6c9ef2023..3a7f4ce34aa31 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_bo.c
++++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
+@@ -234,28 +234,28 @@ nouveau_bo_alloc(struct nouveau_cli *cli, u64 *size, int *align, u32 domain,
+ 	}
  
--	DBG("Set clk rates: pclk=%d, byteclk=%lu",
--		msm_host->mode->clock, msm_host->byte_clk_rate);
-+	DBG("Set clk rates: pclk=%lu, byteclk=%lu",
-+	    msm_host->pixel_clk_rate, msm_host->byte_clk_rate);
+ 	nvbo->contig = !(tile_flags & NOUVEAU_GEM_TILE_NONCONTIG);
+-	if (!nouveau_cli_uvmm(cli) || internal) {
+-		/* for BO noVM allocs, don't assign kinds */
+-		if (cli->device.info.family >= NV_DEVICE_INFO_V0_FERMI) {
+-			nvbo->kind = (tile_flags & 0x0000ff00) >> 8;
+-			if (!nvif_mmu_kind_valid(mmu, nvbo->kind)) {
+-				kfree(nvbo);
+-				return ERR_PTR(-EINVAL);
+-			}
  
- 	ret = dev_pm_opp_set_rate(&msm_host->pdev->dev,
- 				  msm_host->byte_clk_rate);
-@@ -482,9 +482,9 @@ int dsi_link_clk_set_rate_v2(struct msm_dsi_host *msm_host)
- {
- 	int ret;
+-			nvbo->comp = mmu->kind[nvbo->kind] != nvbo->kind;
+-		} else if (cli->device.info.family >= NV_DEVICE_INFO_V0_TESLA) {
+-			nvbo->kind = (tile_flags & 0x00007f00) >> 8;
+-			nvbo->comp = (tile_flags & 0x00030000) >> 16;
+-			if (!nvif_mmu_kind_valid(mmu, nvbo->kind)) {
+-				kfree(nvbo);
+-				return ERR_PTR(-EINVAL);
+-			}
+-		} else {
+-			nvbo->zeta = (tile_flags & 0x00000007);
++	if (cli->device.info.family >= NV_DEVICE_INFO_V0_FERMI) {
++		nvbo->kind = (tile_flags & 0x0000ff00) >> 8;
++		if (!nvif_mmu_kind_valid(mmu, nvbo->kind)) {
++			kfree(nvbo);
++			return ERR_PTR(-EINVAL);
++		}
++
++		nvbo->comp = mmu->kind[nvbo->kind] != nvbo->kind;
++	} else if (cli->device.info.family >= NV_DEVICE_INFO_V0_TESLA) {
++		nvbo->kind = (tile_flags & 0x00007f00) >> 8;
++		nvbo->comp = (tile_flags & 0x00030000) >> 16;
++		if (!nvif_mmu_kind_valid(mmu, nvbo->kind)) {
++			kfree(nvbo);
++			return ERR_PTR(-EINVAL);
+ 		}
+-		nvbo->mode = tile_mode;
++	} else {
++		nvbo->zeta = (tile_flags & 0x00000007);
++	}
++	nvbo->mode = tile_mode;
  
--	DBG("Set clk rates: pclk=%d, byteclk=%lu, esc_clk=%lu, dsi_src_clk=%lu",
--		msm_host->mode->clock, msm_host->byte_clk_rate,
--		msm_host->esc_clk_rate, msm_host->src_clk_rate);
-+	DBG("Set clk rates: pclk=%lu, byteclk=%lu, esc_clk=%lu, dsi_src_clk=%lu",
-+	    msm_host->pixel_clk_rate, msm_host->byte_clk_rate,
-+	    msm_host->esc_clk_rate, msm_host->src_clk_rate);
++	if (!nouveau_cli_uvmm(cli) || internal) {
+ 		/* Determine the desirable target GPU page size for the buffer. */
+ 		for (i = 0; i < vmm->page_nr; i++) {
+ 			/* Because we cannot currently allow VMM maps to fail
+@@ -297,12 +297,6 @@ nouveau_bo_alloc(struct nouveau_cli *cli, u64 *size, int *align, u32 domain,
+ 		}
+ 		nvbo->page = vmm->page[pi].shift;
+ 	} else {
+-		/* reject other tile flags when in VM mode. */
+-		if (tile_mode)
+-			return ERR_PTR(-EINVAL);
+-		if (tile_flags & ~NOUVEAU_GEM_TILE_NONCONTIG)
+-			return ERR_PTR(-EINVAL);
+-
+ 		/* Determine the desirable target GPU page size for the buffer. */
+ 		for (i = 0; i < vmm->page_nr; i++) {
+ 			/* Because we cannot currently allow VMM maps to fail
+diff --git a/include/uapi/drm/nouveau_drm.h b/include/uapi/drm/nouveau_drm.h
+index 77d7ff0d5b110..c3d8dc7512971 100644
+--- a/include/uapi/drm/nouveau_drm.h
++++ b/include/uapi/drm/nouveau_drm.h
+@@ -68,6 +68,13 @@ extern "C" {
+  */
+ #define NOUVEAU_GETPARAM_VRAM_USED 19
  
- 	ret = clk_set_rate(msm_host->byte_clk, msm_host->byte_clk_rate);
- 	if (ret) {
++/*
++ * NOUVEAU_GETPARAM_HAS_VMA_TILEMODE
++ *
++ * Query whether tile mode and PTE kind are accepted with VM allocs or not.
++ */
++#define NOUVEAU_GETPARAM_HAS_VMA_TILEMODE 20
++
+ struct drm_nouveau_getparam {
+ 	__u64 param;
+ 	__u64 value;
 -- 
 2.43.0
 
