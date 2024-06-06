@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-48933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6CE18FEB28
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C0568FE89D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81D6628A6AA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E5571C22FEA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05EEB199389;
-	Thu,  6 Jun 2024 14:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10B5197533;
+	Thu,  6 Jun 2024 14:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rINe5h57"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkKsIq98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BB3197A6A;
-	Thu,  6 Jun 2024 14:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF2F19643E;
+	Thu,  6 Jun 2024 14:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683218; cv=none; b=MSUL3d+4DuqgQU7w9QdvyRIVzcNl40yaAhxQtudfGKDP9IvnqosnOT0EWamkxIahVwCG5Ms9ZMOMzOjiRryhSk8lOGA0oE4gaPYO5QbXEamyJlkFfi+PogFc9qcW0ujIuQn32eXZvaSmGQ23rsUGG6eLOXd7yS3R3R9FEHqmdZ8=
+	t=1717682915; cv=none; b=oD5JvFT6mqjbsJhU1n9pg41AhhNezuHDLXvf5thQZyX6nPTrAo/Vd6vLne6NMdv/zSRHtQ/0OU7mgicg4SrSLeoYUdAdlotOwZ+JmtlTBhEWkEoBVSqDSVtnTyJP41ebbS2p1hctl3V/6qbwsxNTfF93LSgdxHKAULL4Q41Rvi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683218; c=relaxed/simple;
-	bh=9zraqSdM8itUR4iLBttT/uqJf8fiImL/wGzingPOoOA=;
+	s=arc-20240116; t=1717682915; c=relaxed/simple;
+	bh=sZZCR4ftEFYxtVj4cKsBISLgZ6L+h4P5uMGtAMJINIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lqU/k6lr650aDrFgF15LRDrV4dSlqovwZaYb0VsSrISKfamjSpNxrp/cR8mJgGRM1+ePcXwIet+v5sMC4FDP16at3wTS9dgeM+4wqLz55jCtdnlBY3AXvhDuG4YOjUc74Nxl2h2KB5pr8csRTLgujMzpJhaI6WYC6Gi6cy9Nw8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rINe5h57; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E2FC32782;
-	Thu,  6 Jun 2024 14:13:38 +0000 (UTC)
+	 MIME-Version; b=rimhUUpduopq3c7LR8jyYQ795pdbUjYxKmu5jwIwiPX8omhX/CNpThYR77gORgddrBnI3ikzm51cVcS4J5hNJz/yted8IRmLFdEZnn0ep2ycAcc6/01tm7EiOfh/7PfuVSWl7KudXpSAt3aCFLBPgMyp4kxEGzrmUJTrP6Dw4bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkKsIq98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC08C2BD10;
+	Thu,  6 Jun 2024 14:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683218;
-	bh=9zraqSdM8itUR4iLBttT/uqJf8fiImL/wGzingPOoOA=;
+	s=korg; t=1717682915;
+	bh=sZZCR4ftEFYxtVj4cKsBISLgZ6L+h4P5uMGtAMJINIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rINe5h57U2dTfS+GnIk9zq2dNlDU6snlGuzYp3ErlYo+iB2tH+dyuMK2jPvWTY2UD
-	 T2NPQ/vFNwo1+xSXlHe4L9V9Tmr3oEjRVw6THAv5uTMkFxOTWH0EZNQDUn1KU+6jrY
-	 zQT8HBaKWuM0rHOwHynBxbj6hoUzjU/wwv/RGfwk=
+	b=zkKsIq98PdgP44rW2ON+7iJpheDakqEyQK5QJfNaOgJYAavfcfp4bp41NxR/eOlUK
+	 7Gsj8w5PpA3P+1RZ6uUuRWAvP5S6/MVZCebuV/5Df/lcfWfOag0P4y4ICSz/1dcsTp
+	 Fvr7G2gdmpXcgaHAgaEWouxSf9O/YWYvWR9BO5Lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Qais Yousef <qyousef@layalina.io>,
-	Srikar Dronamraju <srikar@linux.ibm.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
+	Hannah Peuckmann <hannah.peuckmann@canonical.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/473] sched/fair: Add EAS checks before updating root_domain::overutilized
-Date: Thu,  6 Jun 2024 16:00:24 +0200
-Message-ID: <20240606131703.046519127@linuxfoundation.org>
+Subject: [PATCH 6.9 046/374] riscv: dts: starfive: visionfive 2: Remove non-existing TDM hardware
+Date: Thu,  6 Jun 2024 16:00:25 +0200
+Message-ID: <20240606131653.356568416@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,150 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
+From: Hannah Peuckmann <hannah.peuckmann@canonical.com>
 
-[ Upstream commit be3a51e68f2f1b17250ce40d8872c7645b7a2991 ]
+[ Upstream commit dcde4e97b122ac318aaa71e8bcd2857dc28a0d12 ]
 
-root_domain::overutilized is only used for EAS(energy aware scheduler)
-to decide whether to do load balance or not. It is not used if EAS
-not possible.
+This partially reverts
+commit e7c304c0346d ("riscv: dts: starfive: jh7110: add the node and pins configuration for tdm")
 
-Currently enqueue_task_fair and task_tick_fair accesses, sometime updates
-this field. In update_sd_lb_stats it is updated often. This causes cache
-contention due to true sharing and burns a lot of cycles. ::overload and
-::overutilized are part of the same cacheline. Updating it often invalidates
-the cacheline. That causes access to ::overload to slow down due to
-false sharing. Hence add EAS check before accessing/updating this field.
-EAS check is optimized at compile time or it is a static branch.
-Hence it shouldn't cost much.
+This added device tree nodes for TDM hardware that is not actually on the
+VisionFive 2 board, but connected on the 40pin header. Many different extension
+boards could be added on those pins, so this should be handled by overlays
+instead.
+This also conflicts with the I2S node which also attempts to grab GPIO 44:
 
-With the patch, both enqueue_task_fair and newidle_balance don't show
-up as hot routines in perf profile.
+  starfive-jh7110-sys-pinctrl 13040000.pinctrl: pin GPIO44 already requested by 10090000.tdm; cannot claim for 120c0000.i2s
 
-  6.8-rc4:
-  7.18%  swapper          [kernel.vmlinux]              [k] enqueue_task_fair
-  6.78%  s                [kernel.vmlinux]              [k] newidle_balance
-
-  +patch:
-  0.14%  swapper          [kernel.vmlinux]              [k] enqueue_task_fair
-  0.00%  swapper          [kernel.vmlinux]              [k] newidle_balance
-
-While at it: trace_sched_overutilized_tp expect that second argument to
-be bool. So do a int to bool conversion for that.
-
-Fixes: 2802bf3cd936 ("sched/fair: Add over-utilization/tipping point indicator")
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Qais Yousef <qyousef@layalina.io>
-Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20240307085725.444486-2-sshegde@linux.ibm.com
+Fixes: e7c304c0346d ("riscv: dts: starfive: jh7110: add the node and pins configuration for tdm")
+Signed-off-by: Hannah Peuckmann <hannah.peuckmann@canonical.com>
+Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Tested-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 53 +++++++++++++++++++++++++++++----------------
- 1 file changed, 34 insertions(+), 19 deletions(-)
+ .../jh7110-starfive-visionfive-2.dtsi         | 40 -------------------
+ 1 file changed, 40 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 91c101ecfef9f..0de8354d5ad0a 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6020,22 +6020,42 @@ static inline void hrtick_update(struct rq *rq)
- #ifdef CONFIG_SMP
- static inline bool cpu_overutilized(int cpu)
- {
--	unsigned long rq_util_min = uclamp_rq_get(cpu_rq(cpu), UCLAMP_MIN);
--	unsigned long rq_util_max = uclamp_rq_get(cpu_rq(cpu), UCLAMP_MAX);
-+	unsigned long  rq_util_min, rq_util_max;
-+
-+	if (!sched_energy_enabled())
-+		return false;
-+
-+	rq_util_min = uclamp_rq_get(cpu_rq(cpu), UCLAMP_MIN);
-+	rq_util_max = uclamp_rq_get(cpu_rq(cpu), UCLAMP_MAX);
+diff --git a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
+index 45b58b6f3df88..d89eef6e26335 100644
+--- a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
++++ b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
+@@ -622,40 +622,6 @@ GPOEN_ENABLE,
+ 		};
+ 	};
  
- 	/* Return true only if the utilization doesn't fit CPU's capacity */
- 	return !util_fits_cpu(cpu_util_cfs(cpu), rq_util_min, rq_util_max, cpu);
- }
- 
--static inline void update_overutilized_status(struct rq *rq)
-+static inline void set_rd_overutilized_status(struct root_domain *rd,
-+					      unsigned int status)
- {
--	if (!READ_ONCE(rq->rd->overutilized) && cpu_overutilized(rq->cpu)) {
--		WRITE_ONCE(rq->rd->overutilized, SG_OVERUTILIZED);
--		trace_sched_overutilized_tp(rq->rd, SG_OVERUTILIZED);
--	}
-+	if (!sched_energy_enabled())
-+		return;
-+
-+	WRITE_ONCE(rd->overutilized, status);
-+	trace_sched_overutilized_tp(rd, !!status);
-+}
-+
-+static inline void check_update_overutilized_status(struct rq *rq)
-+{
-+	/*
-+	 * overutilized field is used for load balancing decisions only
-+	 * if energy aware scheduler is being used
-+	 */
-+	if (!sched_energy_enabled())
-+		return;
-+
-+	if (!READ_ONCE(rq->rd->overutilized) && cpu_overutilized(rq->cpu))
-+		set_rd_overutilized_status(rq->rd, SG_OVERUTILIZED);
- }
- #else
--static inline void update_overutilized_status(struct rq *rq) { }
-+static inline void check_update_overutilized_status(struct rq *rq) { }
- #endif
- 
- /* Runqueue only has SCHED_IDLE tasks enqueued */
-@@ -6147,7 +6167,7 @@ enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)
- 	 * and the following generally works well enough in practice.
- 	 */
- 	if (!task_new)
--		update_overutilized_status(rq);
-+		check_update_overutilized_status(rq);
- 
- enqueue_throttle:
- 	assert_list_leaf_cfs_rq(rq);
-@@ -9923,19 +9943,14 @@ static inline void update_sd_lb_stats(struct lb_env *env, struct sd_lb_stats *sd
- 		env->fbq_type = fbq_classify_group(&sds->busiest_stat);
- 
- 	if (!env->sd->parent) {
--		struct root_domain *rd = env->dst_rq->rd;
+-	tdm_pins: tdm-0 {
+-		tx-pins {
+-			pinmux = <GPIOMUX(44, GPOUT_SYS_TDM_TXD,
+-					      GPOEN_ENABLE,
+-					      GPI_NONE)>;
+-			bias-pull-up;
+-			drive-strength = <2>;
+-			input-disable;
+-			input-schmitt-disable;
+-			slew-rate = <0>;
+-		};
 -
- 		/* update overload indicator if we are at root domain */
--		WRITE_ONCE(rd->overload, sg_status & SG_OVERLOAD);
-+		WRITE_ONCE(env->dst_rq->rd->overload, sg_status & SG_OVERLOAD);
- 
- 		/* Update over-utilization (tipping point, U >= 0) indicator */
--		WRITE_ONCE(rd->overutilized, sg_status & SG_OVERUTILIZED);
--		trace_sched_overutilized_tp(rd, sg_status & SG_OVERUTILIZED);
-+		set_rd_overutilized_status(env->dst_rq->rd,
-+					   sg_status & SG_OVERUTILIZED);
- 	} else if (sg_status & SG_OVERUTILIZED) {
--		struct root_domain *rd = env->dst_rq->rd;
+-		rx-pins {
+-			pinmux = <GPIOMUX(61, GPOUT_HIGH,
+-					      GPOEN_DISABLE,
+-					      GPI_SYS_TDM_RXD)>;
+-			input-enable;
+-		};
 -
--		WRITE_ONCE(rd->overutilized, SG_OVERUTILIZED);
--		trace_sched_overutilized_tp(rd, SG_OVERUTILIZED);
-+		set_rd_overutilized_status(env->dst_rq->rd, SG_OVERUTILIZED);
- 	}
+-		sync-pins {
+-			pinmux = <GPIOMUX(63, GPOUT_HIGH,
+-					      GPOEN_DISABLE,
+-					      GPI_SYS_TDM_SYNC)>;
+-			input-enable;
+-		};
+-
+-		pcmclk-pins {
+-			pinmux = <GPIOMUX(38, GPOUT_HIGH,
+-					      GPOEN_DISABLE,
+-					      GPI_SYS_TDM_CLK)>;
+-			input-enable;
+-		};
+-	};
+-
+ 	uart0_pins: uart0-0 {
+ 		tx-pins {
+ 			pinmux = <GPIOMUX(5, GPOUT_SYS_UART0_TX,
+@@ -681,12 +647,6 @@ GPOEN_DISABLE,
+ 	};
+ };
  
- 	update_idle_cpu_scan(env, sum_util);
-@@ -11849,7 +11864,7 @@ static void task_tick_fair(struct rq *rq, struct task_struct *curr, int queued)
- 		task_tick_numa(rq, curr);
- 
- 	update_misfit_status(curr, rq);
--	update_overutilized_status(task_rq(curr));
-+	check_update_overutilized_status(task_rq(curr));
- 
- 	task_tick_core(rq, curr);
- }
+-&tdm {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&tdm_pins>;
+-	status = "okay";
+-};
+-
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pins>;
 -- 
 2.43.0
 
