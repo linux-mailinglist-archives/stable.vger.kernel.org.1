@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E498FEBCF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 224E28FED2F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88F491F2967E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96520B28E5C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4441ABE26;
-	Thu,  6 Jun 2024 14:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996011B5808;
+	Thu,  6 Jun 2024 14:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pM25DfSR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WR7m47yQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA148197537;
-	Thu,  6 Jun 2024 14:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596F319D078;
+	Thu,  6 Jun 2024 14:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683297; cv=none; b=lkSch5xLDretFhg7kVs9ksiS7mED8DcEoZmwEfv6vsIjoWCAiZAHJrATs+BRsL4nSVEwNi3+N2MhxM0YdZ9j1Uxs5GEUuuQbzqtgczqzaLwxNKyRqrNyWlFcVAvzLNNbk13iyJI/H7w1Dx49mbSadwPhDyAwBUhdjqeCDRD0gFc=
+	t=1717683456; cv=none; b=CGqNSGA+24aX8E8UV91nd8E45WSJJE7bLBOPP8lVUjdf0Sg6QEw3PMF3e+PtE0ZKlhX/GgTdxXhpZYLMFqf6jDt3GnoC2ynq6AAQhx2fUxoDOM8NZg17sQPLEffG6Juu0o1z99jJj16VxA6NK0hNitgS0bXq2gh6F5wk0FhMcHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683297; c=relaxed/simple;
-	bh=EFpBHNmvFDjRkMQOlaT+kDKy2PaKbzg7VSNCuXtfKO0=;
+	s=arc-20240116; t=1717683456; c=relaxed/simple;
+	bh=fF/c2KgDcCNruvGgUBrtpJmCgUcyzDWHc40O/vQkKP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fITQYG5CPRH3XrUkyjVW4sLewXL7QV7fVjzzoDDZJ8e4wZKGQXhAgymJjejQiL+yVsCfQeNmHZl8fa/8beHQ/v7y4czn7Lf5/CKG5CYQ9ecwop7o19JYs7g0nAwXfglZVulR7+oCfVDxdClIa6L1e2RiTv4ysd926twOiFcCvHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pM25DfSR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB3DC2BD10;
-	Thu,  6 Jun 2024 14:14:57 +0000 (UTC)
+	 MIME-Version; b=FIld6afn46RvnpEUUNXqbTfs8dVCb67naZc4B1x8yRRaguRXSsF5MpxHzXwQOnL0aeCrLMlu0R4e04bAe3VCf6RPjoaThCvhOGNroCLedn1gQcpvBSaS2zlZptdDwXTSMrGpIqLl3Us0gPmNgz7GeJIb/v3pe/3MWXZaGGgEm8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WR7m47yQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E88C2BD10;
+	Thu,  6 Jun 2024 14:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683297;
-	bh=EFpBHNmvFDjRkMQOlaT+kDKy2PaKbzg7VSNCuXtfKO0=;
+	s=korg; t=1717683456;
+	bh=fF/c2KgDcCNruvGgUBrtpJmCgUcyzDWHc40O/vQkKP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pM25DfSRKHwA5tUn7SJwjz1lWVAGhqHrHNxQ1w+JJqwRl9Ml8/I4nXAu7P6M5qMCi
-	 gScdBgxHUIJZKFhhbwyyntMich81ytJYrpq8nvu02AMfbqu7oSpsD6XzJvaLWYaVSD
-	 uch0NPpUybUlDOtaVCk5BYbxHvXc4STO5fZRuxzg=
+	b=WR7m47yQ1TCx27sdWSTA9lw7ZVmkUDyTbZHKwv5vg3f72WerkFrc1mK4Ku7R5qeMX
+	 gL7Nc5opiDliWcocdFvI/2qvNH3A0ld8MfpyMQAC1y9HJQd8cuwAcDnpD8gDF4bBj9
+	 5gugbG0+6wytug3BDHlXqYM2cqmd6+e3e6c0GhXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 144/473] net: give more chances to rcu in netdev_wait_allrefs_any()
+Subject: [PATCH 6.6 401/744] usb: typec: ucsi: always register a link to USB PD device
 Date: Thu,  6 Jun 2024 16:01:13 +0200
-Message-ID: <20240606131704.699134428@linuxfoundation.org>
+Message-ID: <20240606131745.320144550@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit cd42ba1c8ac9deb9032add6adf491110e7442040 ]
+[ Upstream commit c0f66d78f42353d38b9608c05f211cf0773d93ac ]
 
-This came while reviewing commit c4e86b4363ac ("net: add two more
-call_rcu_hurry()").
+UCSI driver will attempt to set a USB PD device only if it was able to
+read PDOs from the firmware. This results in suboptimal behaviour, since
+the PD device will be created anyway. Move calls to
+typec_port_set_usb_power_delivery() out of conditional code and call it
+after reading capabilities.
 
-Paolo asked if adding one synchronize_rcu() would help.
-
-While synchronize_rcu() does not help, making sure to call
-rcu_barrier() before msleep(wait) is definitely helping
-to make sure lazy call_rcu() are completed.
-
-Instead of waiting ~100 seconds in my tests, the ref_tracker
-splats occurs one time only, and netdev_wait_allrefs_any()
-latency is reduced to the strict minimum.
-
-Ideally we should audit our call_rcu() users to make sure
-no refcount (or cascading call_rcu()) is held too long,
-because rcu_barrier() is quite expensive.
-
-Fixes: 0e4be9e57e8c ("net: use exponential backoff in netdev_wait_allrefs")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/all/28bbf698-befb-42f6-b561-851c67f464aa@kernel.org/T/#m76d73ed6b03cd930778ac4d20a777f22a08d6824
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: b04e1747fbcc ("usb: typec: ucsi: Register USB Power Delivery Capabilities")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240329-qcom-ucsi-fixes-v2-4-0f5d37ed04db@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 65284eeec7de5..20d8b9195ef60 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -10300,8 +10300,9 @@ static struct net_device *netdev_wait_allrefs_any(struct list_head *list)
- 			rebroadcast_time = jiffies;
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 7d2ca39ad7622..4aac2a719b7cd 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1297,7 +1297,6 @@ static int ucsi_register_port(struct ucsi *ucsi, struct ucsi_connector *con)
  		}
  
-+		rcu_barrier();
+ 		con->port_source_caps = pd_cap;
+-		typec_port_set_usb_power_delivery(con->port, con->pd);
+ 	}
+ 
+ 	memset(&pd_caps, 0, sizeof(pd_caps));
+@@ -1314,9 +1313,10 @@ static int ucsi_register_port(struct ucsi *ucsi, struct ucsi_connector *con)
+ 		}
+ 
+ 		con->port_sink_caps = pd_cap;
+-		typec_port_set_usb_power_delivery(con->port, con->pd);
+ 	}
+ 
++	typec_port_set_usb_power_delivery(con->port, con->pd);
 +
- 		if (!wait) {
--			rcu_barrier();
- 			wait = WAIT_REFS_MIN_MSECS;
- 		} else {
- 			msleep(wait);
+ 	/* Alternate modes */
+ 	ret = ucsi_register_altmodes(con, UCSI_RECIPIENT_CON);
+ 	if (ret) {
 -- 
 2.43.0
 
