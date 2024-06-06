@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-48887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF89D8FEAF8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9D98FEC98
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 242231C26178
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94384286821
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267251A2C06;
-	Thu,  6 Jun 2024 14:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487FE1B14EE;
+	Thu,  6 Jun 2024 14:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqsgYCEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHUSXnpE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90DC197544;
-	Thu,  6 Jun 2024 14:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BE71B1434;
+	Thu,  6 Jun 2024 14:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683195; cv=none; b=IlSvDFJLFTa6tfOA4ND7jErde94B5dEM/zbxoOqyj1pAcDQZc6ncifSwZqt4H3aBNXLPzKlSge65zej9P3QcVT3BX4+KpbsAdewBaJiL49V7dC291FeJ7DpOmLZJ8fMkGCXjAOA7pCt+RPswkEc1ItEH/0H/1q3KUtVS/KHJylw=
+	t=1717683386; cv=none; b=R04IW2uTMQk9rRlnF+tbCP3UKg/LNFdp8ZrGLizVhjXrujqAeEJ2xhJ+8EslBqXwP5aBqePdHlJleptYBoks5619EFTs4rvp26QPteA1sNnl0yod0W/9y43+2I6h4pUURDHW+wW4VbP5CETdYHqJJmBB8bzwsWXUPvmbDJhCfuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683195; c=relaxed/simple;
-	bh=Gg1Wqf/2q+MQ1xW9v6cxGysBM7LySjTfiuH23GzPmVo=;
+	s=arc-20240116; t=1717683386; c=relaxed/simple;
+	bh=yjxjfu2Dmw2QiNmp8IAKKTboVJBPqNiTzyHohj+z35Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MSvVC2byBUP/meB2+3nEV+gjo0usfGzRDXOJqOxKMrkQxkYci1nMk4J5xHEUv1/T0LMAbxUFH1qVapBVzM0A/YnFHzz/FAyg0WF5PAuyhA8sdhxNjKlQAVEbXBjAIom4cArPmiP29SG8Q0tJu8fHjbjQ107Y5W75WCOPqJnbOsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqsgYCEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0476C32786;
-	Thu,  6 Jun 2024 14:13:15 +0000 (UTC)
+	 MIME-Version; b=OIhTQMn7eu68legK0NmbPPKHVHn+Z8mVgeIJjCTztuOcZbPBRVw+RE8WpviAImkGAk+/QrF24mfa/nMvmIb87v9pdD9hmR2CbNjT7oSOe7qzWQqfRK3ztNa7FIalO6dyawE+mzZN+0QtB93ACb5L//QiPwpxF/e1GBu11rE1LDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHUSXnpE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D848CC2BD10;
+	Thu,  6 Jun 2024 14:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683195;
-	bh=Gg1Wqf/2q+MQ1xW9v6cxGysBM7LySjTfiuH23GzPmVo=;
+	s=korg; t=1717683385;
+	bh=yjxjfu2Dmw2QiNmp8IAKKTboVJBPqNiTzyHohj+z35Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wqsgYCEF4JT6j+WFSkSuH/Yh5xPjS5gvp78Ix0iQwgSTFnIfg9pFbkeIEopVZxSQG
-	 z5UoCQ4mUmXba4ZEQMU+afH5Cr2Or9l4cPGV+lPdhDhN7I9CvgneC0jeOPuVbuAmic
-	 w4mdDkl0t8WdsQBwmswKPW2h966EvMMEbU2YxO98=
+	b=FHUSXnpE+iuommYl63bWZDtr1e28AhZRaO7iGx2HPU3bB8f8bONbLViPl6K9PAWeD
+	 ypPz/X28/XkJAU/CzMtsZKLlZeyJn1qNno301+6RRcRuQcXd1OL9eC1Qf4k6E+fIEw
+	 mp7hu9CeSqT3PZ9t7rDj3uo68omI+4m7cnGbSI+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	"Ivan T. Ivanov" <iivanov@suse.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/473] firmware: raspberrypi: Use correct device for DMA mappings
-Date: Thu,  6 Jun 2024 15:59:58 +0200
-Message-ID: <20240606131702.164269177@linuxfoundation.org>
+Subject: [PATCH 6.6 327/744] drm/bridge: anx7625: Update audio status while detecting
+Date: Thu,  6 Jun 2024 15:59:59 +0200
+Message-ID: <20240606131742.924974471@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit df518a0ae1b982a4dcf2235464016c0c4576a34d ]
+[ Upstream commit a665b4e60369867cddf50f37f16169a3e2f434ad ]
 
-The buffer used to transfer data over the mailbox interface is mapped
-using the client's device. This is incorrect, as the device performing
-the DMA transfer is the mailbox itself. Fix it by using the mailbox
-controller device instead.
+Previously, the audio status was not updated during detection, leading
+to a persistent audio despite hot plugging events. To resolve this
+issue, update the audio status during detection.
 
-This requires including the mailbox_controller.h header to dereference
-the mbox_chan and mbox_controller structures. The header is not meant to
-be included by clients. This could be fixed by extending the client API
-with a function to access the controller's device.
-
-Fixes: 4e3d60656a72 ("ARM: bcm2835: Add the Raspberry Pi firmware driver")
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Tested-by: Ivan T. Ivanov <iivanov@suse.de>
-Link: https://lore.kernel.org/r/20240326195807.15163-3-laurent.pinchart@ideasonboard.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 566fef1226c1 ("drm/bridge: anx7625: add HDMI audio function")
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240416-anx7625-v3-1-f916ae31bdd7@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/raspberrypi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/raspberrypi.c b/drivers/firmware/raspberrypi.c
-index dba315f675bc7..ec223976c972d 100644
---- a/drivers/firmware/raspberrypi.c
-+++ b/drivers/firmware/raspberrypi.c
-@@ -9,6 +9,7 @@
- #include <linux/dma-mapping.h>
- #include <linux/kref.h>
- #include <linux/mailbox_client.h>
-+#include <linux/mailbox_controller.h>
- #include <linux/module.h>
- #include <linux/of_platform.h>
- #include <linux/platform_device.h>
-@@ -96,8 +97,8 @@ int rpi_firmware_property_list(struct rpi_firmware *fw,
- 	if (size & 3)
- 		return -EINVAL;
- 
--	buf = dma_alloc_coherent(fw->cl.dev, PAGE_ALIGN(size), &bus_addr,
--				 GFP_ATOMIC);
-+	buf = dma_alloc_coherent(fw->chan->mbox->dev, PAGE_ALIGN(size),
-+				 &bus_addr, GFP_ATOMIC);
- 	if (!buf)
- 		return -ENOMEM;
- 
-@@ -125,7 +126,7 @@ int rpi_firmware_property_list(struct rpi_firmware *fw,
- 		ret = -EINVAL;
- 	}
- 
--	dma_free_coherent(fw->cl.dev, PAGE_ALIGN(size), buf, bus_addr);
-+	dma_free_coherent(fw->chan->mbox->dev, PAGE_ALIGN(size), buf, bus_addr);
- 
- 	return ret;
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index 4ee5614a26236..c1191ef5e8e67 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -2479,15 +2479,22 @@ static void anx7625_bridge_atomic_disable(struct drm_bridge *bridge,
+ 	mutex_unlock(&ctx->aux_lock);
  }
+ 
++static void
++anx7625_audio_update_connector_status(struct anx7625_data *ctx,
++				      enum drm_connector_status status);
++
+ static enum drm_connector_status
+ anx7625_bridge_detect(struct drm_bridge *bridge)
+ {
+ 	struct anx7625_data *ctx = bridge_to_anx7625(bridge);
+ 	struct device *dev = ctx->dev;
++	enum drm_connector_status status;
+ 
+ 	DRM_DEV_DEBUG_DRIVER(dev, "drm bridge detect\n");
+ 
+-	return anx7625_sink_detect(ctx);
++	status = anx7625_sink_detect(ctx);
++	anx7625_audio_update_connector_status(ctx, status);
++	return status;
+ }
+ 
+ static struct edid *anx7625_bridge_get_edid(struct drm_bridge *bridge,
 -- 
 2.43.0
 
