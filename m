@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823488FED83
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93CAD8FE9DD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F0551C2353C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DB14289B0F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CED81BBBDA;
-	Thu,  6 Jun 2024 14:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C9519CCFB;
+	Thu,  6 Jun 2024 14:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2NJKWz3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dyy7Iwc3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0A41BB6AF;
-	Thu,  6 Jun 2024 14:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2008119CCF7;
+	Thu,  6 Jun 2024 14:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683495; cv=none; b=Atg1BO0bLhHdVvsYsFvRsdb2fEtCzUQ4zBzA57aCGNTEZ2u0tk07an9HY0Yc2Erg/IPl/iZvBESzD7R9m1iQdjIdo2uJV0oM24plTh1XbbIzgBmNY7AM/wPds2Ya5FMb7IPmFamwlveBC/PKIT0N66aMilw7NT72Xmhknrq4LM0=
+	t=1717683073; cv=none; b=KvnwdfiFc8UCUtB8AIhpinAAeUXTzumumgOH0ouYxmmL709wgMnsAXoI6iwruB8ft3/j/VgK6dmPSsMDAp24EY19OPbpzd4VIvcuBgNB5r8hKgkriY2FDBZ94Fd7TGzXYypj8shZgcx14O6YHAiSIpn2D1dGJ+YLcVgPQl9us+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683495; c=relaxed/simple;
-	bh=FePEf7JIe25GawnGZVvpldCHODjw5P41rilk38w8KPE=;
+	s=arc-20240116; t=1717683073; c=relaxed/simple;
+	bh=ne633U5fhps823OETao3Tvpz8T9TextCbEOghGig6J4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iITK1ff10hSEDQxwKzUVCIeaFYQmOzwJT80vbj1Ze9m4gz2ve7PTxyAPes9s8uJCf+N2D63Z9TYjetX6sEkam2VlOAUuDBYYTVWJQDg1v+pTWzooQdqJqoot8vhgI3B3VlykkpBHw4hSPDb77cdfmS5y/gjWBswr9/xi/1wTBIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2NJKWz3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C03C2BD10;
-	Thu,  6 Jun 2024 14:18:15 +0000 (UTC)
+	 MIME-Version; b=c6z7VinqY1lZqGYGLYBguJusNs9SUwevhf65nlgueF8mvtY1ATVTy5HIZGmjETnK3pxCsGccFxIADv2Lg51keAhBGb8Svy7Qv5rom+lhFaJnf3DA9jDSaNO6OlvD2gt4lk6Yysg7aPM30dcAC2veGOQtU1CMMXR2RwM8LL1EKl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dyy7Iwc3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00DF5C4AF08;
+	Thu,  6 Jun 2024 14:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683495;
-	bh=FePEf7JIe25GawnGZVvpldCHODjw5P41rilk38w8KPE=;
+	s=korg; t=1717683073;
+	bh=ne633U5fhps823OETao3Tvpz8T9TextCbEOghGig6J4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2NJKWz3JFGoJzAPMXckH7k4qUbTf9APDoNycYgfCuhmHprJ+1SDDHEGtpo2quY8G
-	 Q7HSzFVvcZ8R08ozxpzXnewSjt0GwULRcB4Mbh25vjj9T4+cSxgkyvF8oJ+H9O9/KI
-	 X3mSZJC3ts9Jz0ewptE+AmnGrp3K/yJlVMTqUcfI=
+	b=Dyy7Iwc3ZCRDvP0Jo12I1CmbPb0LxVKWRQ7RCE5pXMf9VjliKjnc0TM5sFNzB0TIX
+	 mbJF9U1mREsndzJBVhQswbz5j0ga7sLJgGhmgwfiTHy1tT5GntKgbpGS+CJP0cIUzH
+	 MXKaucSBfqGkOIizIN6cbN+6vERnQojnO+AMPKNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Richard Weinberger <richard@nod.at>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 385/473] um: Fix the -Wmissing-prototypes warning for get_thread_reg
-Date: Thu,  6 Jun 2024 16:05:14 +0200
-Message-ID: <20240606131712.583559698@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+b94a6818504ea90d7661@syzkaller.appspotmail.com
+Subject: [PATCH 6.9 336/374] netfilter: tproxy: bail out if IP has been disabled on the device
+Date: Thu,  6 Jun 2024 16:05:15 +0200
+Message-ID: <20240606131703.112160687@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 3144013e48f4f6e5127223c4ebc488016815dedb ]
+[ Upstream commit 21a673bddc8fd4873c370caf9ae70ffc6d47e8d3 ]
 
-The get_thread_reg function is defined in the user code, and is
-called by the kernel code. It should be declared in a shared header.
+syzbot reports:
+general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+[..]
+RIP: 0010:nf_tproxy_laddr4+0xb7/0x340 net/ipv4/netfilter/nf_tproxy_ipv4.c:62
+Call Trace:
+ nft_tproxy_eval_v4 net/netfilter/nft_tproxy.c:56 [inline]
+ nft_tproxy_eval+0xa9a/0x1a00 net/netfilter/nft_tproxy.c:168
 
-Fixes: dbba7f704aa0 ("um: stop polluting the namespace with registers.h contents")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+__in_dev_get_rcu() can return NULL, so check for this.
+
+Reported-and-tested-by: syzbot+b94a6818504ea90d7661@syzkaller.appspotmail.com
+Fixes: cc6eb4338569 ("tproxy: use the interface primary IP address as a default value for --on-ip")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/include/asm/processor-generic.h | 1 -
- arch/x86/um/shared/sysdep/archsetjmp.h  | 7 +++++++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ net/ipv4/netfilter/nf_tproxy_ipv4.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/um/include/asm/processor-generic.h b/arch/um/include/asm/processor-generic.h
-index bb5f06480da95..9adfcef579c1c 100644
---- a/arch/um/include/asm/processor-generic.h
-+++ b/arch/um/include/asm/processor-generic.h
-@@ -95,7 +95,6 @@ extern struct cpuinfo_um boot_cpu_data;
- #define current_cpu_data boot_cpu_data
- #define cache_line_size()	(boot_cpu_data.cache_alignment)
+diff --git a/net/ipv4/netfilter/nf_tproxy_ipv4.c b/net/ipv4/netfilter/nf_tproxy_ipv4.c
+index 69e3317996043..73e66a088e25e 100644
+--- a/net/ipv4/netfilter/nf_tproxy_ipv4.c
++++ b/net/ipv4/netfilter/nf_tproxy_ipv4.c
+@@ -58,6 +58,8 @@ __be32 nf_tproxy_laddr4(struct sk_buff *skb, __be32 user_laddr, __be32 daddr)
  
--extern unsigned long get_thread_reg(int reg, jmp_buf *buf);
- #define KSTK_REG(tsk, reg) get_thread_reg(reg, &tsk->thread.switch_buf)
- extern unsigned long __get_wchan(struct task_struct *p);
+ 	laddr = 0;
+ 	indev = __in_dev_get_rcu(skb->dev);
++	if (!indev)
++		return daddr;
  
-diff --git a/arch/x86/um/shared/sysdep/archsetjmp.h b/arch/x86/um/shared/sysdep/archsetjmp.h
-index 166cedbab9266..8c81d1a604a94 100644
---- a/arch/x86/um/shared/sysdep/archsetjmp.h
-+++ b/arch/x86/um/shared/sysdep/archsetjmp.h
-@@ -1,6 +1,13 @@
- /* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __X86_UM_SYSDEP_ARCHSETJMP_H
-+#define __X86_UM_SYSDEP_ARCHSETJMP_H
-+
- #ifdef __i386__
- #include "archsetjmp_32.h"
- #else
- #include "archsetjmp_64.h"
- #endif
-+
-+unsigned long get_thread_reg(int reg, jmp_buf *buf);
-+
-+#endif /* __X86_UM_SYSDEP_ARCHSETJMP_H */
+ 	in_dev_for_each_ifa_rcu(ifa, indev) {
+ 		if (ifa->ifa_flags & IFA_F_SECONDARY)
 -- 
 2.43.0
 
