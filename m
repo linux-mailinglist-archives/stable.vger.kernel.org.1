@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-48450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E02938FE910
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC9F8FEDF8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EEFE2835F3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA509285B9C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3258197538;
-	Thu,  6 Jun 2024 14:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839C21BE869;
+	Thu,  6 Jun 2024 14:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcchwRsz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsUYmBRL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15CD196C9C;
-	Thu,  6 Jun 2024 14:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411541BE862;
+	Thu,  6 Jun 2024 14:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682974; cv=none; b=Kv9bwSxJOzeWuYQeHys7Uk65IbKI6Mc2Z436OOM+rgsxxLTsPTKVZ3uyWwM02OTiDdc522fvEBIgvv1H9iWhRF0F+L8K1c/lM7GChM67d0/P/6cCsSV6MgbHWp3iBqkQ27GgpVHBP1eeflmVPYhbZD3zKwWOnvvJQmVdUn9ti6A=
+	t=1717683546; cv=none; b=WZEq+jCBYxQHoFLgafxb3SK59rVaUAknDciAkLYrsk/LMXaWHjil9KUyhnQBMUxfuzbLRSK5/PnSOUxnHdEbRaItYpGRnmUeNghhDcWyw5J8F+xUphnbZ+rjUd9icPvSTdTvvU/ot2TVup0izeZGIaxUf4hw5damyCZtdntgqyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682974; c=relaxed/simple;
-	bh=y4s/UobXaVwMB5TjdH8M+cRj4BMQH9bZlVs2rIjvsns=;
+	s=arc-20240116; t=1717683546; c=relaxed/simple;
+	bh=U2dTqW78BBUwRKBXi8N9FZituDOtefBzfUqwXKpzLog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9gpPHvcfq8lHxCdaTx7M2UbUDewyk9yXKXKLzjUjqD2OarVtygbnWUnObxzx4zsS5g9te0N19P2Tyk+o7HrZgDhDqPOvYKf56eDnQxddoXzBJEbpq8rdFXvqgi0PDfNMIUOBMvcGk2H1RMaqVXOOkOGBE5vhv6i2qtiqbkiLCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcchwRsz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6ECC2BD10;
-	Thu,  6 Jun 2024 14:09:34 +0000 (UTC)
+	 MIME-Version; b=sOMWMVTw+76LNJxtC2O4EEjcAsqdezr7KII1aRsgs4p2lek4cr/FLjUYH1CDW1IR+AlPMd9cVszuFDjk5N2InBSpljsaEuOldXNJUuENFS4+wAjD3jHVYhM2uCuYPsLn08aak3C9JiRvITgw9Juvm39bZVPIAjf/64NFdYvPrWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsUYmBRL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6FDC2BD10;
+	Thu,  6 Jun 2024 14:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682974;
-	bh=y4s/UobXaVwMB5TjdH8M+cRj4BMQH9bZlVs2rIjvsns=;
+	s=korg; t=1717683546;
+	bh=U2dTqW78BBUwRKBXi8N9FZituDOtefBzfUqwXKpzLog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LcchwRszP2pvrpFjTqli8nY9uagcS8+E2aqm7RzR9oQ4OiCWTaBHYN4E7lMrSLVic
-	 /CK8wIjKkykCvZqnZENd3Wm9c+ynp0uhbBb+Gh66AHAh5sd8l1x1XVnl12jEonYxXM
-	 IaWA8iP0h4Q/cKgL8RjZbDTMcQG0Tq5gCked2OCE=
+	b=VsUYmBRLfy6xkniA2OqZXF0b3p2BzngDZBAztqpm4pRyGHB/TcE1lb6KyxEm045FZ
+	 IQ6a2mFj9juZZIzGU6OMXE0idVt/R/A/cTbLa7ZqtJzbmHjHUioVCxzqdzdwNP8CrI
+	 OY3u4lGWK7Ct/gFRBwOubZvXGhRkx3pD46TqxOzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Jan Kara <jack@suse.cz>,
+	Zhenyu Wang <zhenyuw@linux.intel.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 151/374] mmc: sdhci_am654: Add ITAPDLYSEL in sdhci_j721e_4bit_set_clock
+Subject: [PATCH 6.6 458/744] i915: make inject_virtual_interrupt() void
 Date: Thu,  6 Jun 2024 16:02:10 +0200
-Message-ID: <20240606131656.982982633@linuxfoundation.org>
+Message-ID: <20240606131747.155571564@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 9dff65bb5e09903c27d9cff947dff4d22b6ea6a1 ]
+[ Upstream commit 85884871921000b9bca2184077b1159771e50047 ]
 
-Add ITAPDLYSEL to sdhci_j721e_4bit_set_clock function.
-This allows to set the correct ITAPDLY for timings that
-do not carry out tuning.
+The single caller of inject_virtual_interrupt() ignores the return value
+anyway. This allows us to simplify eventfd_signal() in follow-up
+patches.
 
-Fixes: 1accbced1c32 ("mmc: sdhci_am654: Add Support for 4 bit IP on J721E")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240320223837.959900-7-jm@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20231122-vfs-eventfd-signal-v2-1-bd549b14ce0c@kernel.org
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhenyu Wang <zhenyuw@linux.intel.com>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 82b951e6fbd3 ("vfio/pci: fix potential memory leak in vfio_intx_enable()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci_am654.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/gvt/interrupt.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-index 888bfda0ebc0e..884d1b53180d7 100644
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -320,6 +320,7 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
- 	unsigned char timing = host->mmc->ios.timing;
- 	u32 otap_del_sel;
- 	u32 itap_del_ena;
-+	u32 itap_del_sel;
- 	u32 mask, val;
+diff --git a/drivers/gpu/drm/i915/gvt/interrupt.c b/drivers/gpu/drm/i915/gvt/interrupt.c
+index 68eca023bbc68..80301472ac988 100644
+--- a/drivers/gpu/drm/i915/gvt/interrupt.c
++++ b/drivers/gpu/drm/i915/gvt/interrupt.c
+@@ -405,7 +405,7 @@ static void init_irq_map(struct intel_gvt_irq *irq)
+ #define MSI_CAP_DATA(offset) (offset + 8)
+ #define MSI_CAP_EN 0x1
  
- 	/* Setup DLL Output TAP delay */
-@@ -329,13 +330,18 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
- 	val = (0x1 << OTAPDLYENA_SHIFT) |
- 	      (otap_del_sel << OTAPDLYSEL_SHIFT);
+-static int inject_virtual_interrupt(struct intel_vgpu *vgpu)
++static void inject_virtual_interrupt(struct intel_vgpu *vgpu)
+ {
+ 	unsigned long offset = vgpu->gvt->device_info.msi_cap_offset;
+ 	u16 control, data;
+@@ -417,10 +417,10 @@ static int inject_virtual_interrupt(struct intel_vgpu *vgpu)
  
-+	/* Setup Input TAP delay */
- 	itap_del_ena = sdhci_am654->itap_del_ena[timing];
-+	itap_del_sel = sdhci_am654->itap_del_sel[timing];
+ 	/* Do not generate MSI if MSIEN is disabled */
+ 	if (!(control & MSI_CAP_EN))
+-		return 0;
++		return;
  
--	mask |= ITAPDLYENA_MASK;
--	val |= (itap_del_ena << ITAPDLYENA_SHIFT);
-+	mask |= ITAPDLYENA_MASK | ITAPDLYSEL_MASK;
-+	val |= (itap_del_ena << ITAPDLYENA_SHIFT) |
-+	       (itap_del_sel << ITAPDLYSEL_SHIFT);
+ 	if (WARN(control & GENMASK(15, 1), "only support one MSI format\n"))
+-		return -EINVAL;
++		return;
  
-+	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPCHGWIN_MASK,
-+			   1 << ITAPCHGWIN_SHIFT);
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, mask, val);
--
-+	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPCHGWIN_MASK, 0);
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL5, CLKBUFSEL_MASK,
- 			   sdhci_am654->clkbuf_sel);
+ 	trace_inject_msi(vgpu->id, addr, data);
  
+@@ -434,10 +434,9 @@ static int inject_virtual_interrupt(struct intel_vgpu *vgpu)
+ 	 * returned and don't inject interrupt into guest.
+ 	 */
+ 	if (!test_bit(INTEL_VGPU_STATUS_ATTACHED, vgpu->status))
+-		return -ESRCH;
+-	if (vgpu->msi_trigger && eventfd_signal(vgpu->msi_trigger, 1) != 1)
+-		return -EFAULT;
+-	return 0;
++		return;
++	if (vgpu->msi_trigger)
++		eventfd_signal(vgpu->msi_trigger, 1);
+ }
+ 
+ static void propagate_event(struct intel_gvt_irq *irq,
 -- 
 2.43.0
 
