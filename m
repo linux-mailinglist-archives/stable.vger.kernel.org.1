@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A47878FEEB2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7358A8FED2C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4333F1F22D17
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 169632858B5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E78198A04;
-	Thu,  6 Jun 2024 14:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC191B5806;
+	Thu,  6 Jun 2024 14:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1yJMZU+K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxLAX0BD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A778A1AED39;
-	Thu,  6 Jun 2024 14:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D127E1B5805;
+	Thu,  6 Jun 2024 14:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683690; cv=none; b=OkZNkhDvZYDXYgK0NnCyLNxQJ0nZu+id+VC8CngOmOc5jcIaAe32ojMSKyAFRTa2MA20OLCeW++Lz5zL7Jx/nrd+Vkh5bXynAtBucGiQ+z3D0j+Tz1bkfT8MBY1lc1PaakQTogW90sk485A5jcCEhx89hnIsl/RwxD4BYSdtCK0=
+	t=1717683455; cv=none; b=Nn1gJBxkr16dYuipXFdY0MXDPKMG8kZlBMZCW1ltrM4xk4s0eq1PFIcBXqVOdxB4IGJ5/LIXRZJ/3fave+m+cukpiX0Lv3jIuLfEwciBl0P+ZFvpN1PfprtSzv+X9DrxdVgN3Fdfpmrcgcubhjl4fr8ork6IpZHLt2d10xN8LYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683690; c=relaxed/simple;
-	bh=D+gK77iuslsXVJ+q9R3wCVlAgv41qLFgzAUVEUabaLw=;
+	s=arc-20240116; t=1717683455; c=relaxed/simple;
+	bh=B2lXsrUt8avfhaRMDXWrkogQrwXFeSmvhvba+FQXFCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FBXwCI6QauoYwz2a10jy0koLC30Xszz3Y2NSDrlhUOSex68XTmlaLtYiF54keL52knGQ7DSsDh81zke7OgqAojYfuWD120myZ09f48QLnCPzGgYeZ9/lzupp5xBNed1B/flziiLxGyz32a9DMVqdNLzEZLo5CQFaL+Gr0jv08VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1yJMZU+K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5C5C32781;
-	Thu,  6 Jun 2024 14:21:30 +0000 (UTC)
+	 MIME-Version; b=Yt1fYStvmI4Iih2O1UPvJAncKo8v3Ilei3nSZTEJUDR7mT4sAS49rJV2ZUQNQ6iTFZKgELTr09gGNUktEsmE/5/cmD5GG6UC7r2FKo3rjweWsbFcXw0jDAjYUmwhcn/nu0dUrqiUxdomLtEZC76+Ml+qz4F2btyK8t2f+hLWJNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxLAX0BD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0736C2BD10;
+	Thu,  6 Jun 2024 14:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683690;
-	bh=D+gK77iuslsXVJ+q9R3wCVlAgv41qLFgzAUVEUabaLw=;
+	s=korg; t=1717683455;
+	bh=B2lXsrUt8avfhaRMDXWrkogQrwXFeSmvhvba+FQXFCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1yJMZU+KQYUkQolHTs5qQLhNXGmJ2bmsyqDsGlWC4txlTdDJIx2UKSG/uhIvdHl4+
-	 ti5D44fYL9+/ejydPj/K+K8GcBQTe+lp+S58qbQefdRiRlh7K8Vi47bSRpWAMxz7Uw
-	 kQGnHK+cfmImFEV4KsFSiawJBwL58uHCm9YpH6vs=
+	b=yxLAX0BDf/8IcECAxDQuANRWVmhczNamaXgbl5bCw+XFF+BEz7MXbxp1GohQW4V9j
+	 BWoVIcaE5cdqZ7qQsbPeGXMezkET7o2r03Z6/k9KsSnmtHPVqMGmhdBO64Is+QY8Tr
+	 0EOpGRyS0NmQrN/z0iVMLKCeVqUq12Jc5dQaAe7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 600/744] powerpc/pseries: Add failure related checks for h_get_mpp and h_get_ppp
+Subject: [PATCH 6.1 343/473] f2fs: fix to release node block count in error path of f2fs_new_node_page()
 Date: Thu,  6 Jun 2024 16:04:32 +0200
-Message-ID: <20240606131751.721416742@linuxfoundation.org>
+Message-ID: <20240606131711.252349259@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 6d4341638516bf97b9a34947e0bd95035a8230a5 ]
+[ Upstream commit 0fa4e57c1db263effd72d2149d4e21da0055c316 ]
 
-Couple of Minor fixes:
+It missed to call dec_valid_node_count() to release node block count
+in error path, fix it.
 
-- hcall return values are long. Fix that for h_get_mpp, h_get_ppp and
-parse_ppp_data
-
-- If hcall fails, values set should be at-least zero. It shouldn't be
-uninitialized values. Fix that for h_get_mpp and h_get_ppp
-
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240412092047.455483-3-sshegde@linux.ibm.com
+Fixes: 141170b759e0 ("f2fs: fix to avoid use f2fs_bug_on() in f2fs_new_node_page()")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/hvcall.h        | 2 +-
- arch/powerpc/platforms/pseries/lpar.c    | 6 +++---
- arch/powerpc/platforms/pseries/lparcfg.c | 6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ fs/f2fs/node.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index c099780385dd3..92ea0fa17ff41 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -540,7 +540,7 @@ struct hvcall_mpp_data {
- 	unsigned long backing_mem;
- };
- 
--int h_get_mpp(struct hvcall_mpp_data *);
-+long h_get_mpp(struct hvcall_mpp_data *mpp_data);
- 
- struct hvcall_mpp_x_data {
- 	unsigned long coalesced_bytes;
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 47d9a65324472..c3585e90c6db6 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -1886,10 +1886,10 @@ notrace void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
-  * h_get_mpp
-  * H_GET_MPP hcall returns info in 7 parms
-  */
--int h_get_mpp(struct hvcall_mpp_data *mpp_data)
-+long h_get_mpp(struct hvcall_mpp_data *mpp_data)
- {
--	int rc;
--	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
-+	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
-+	long rc;
- 
- 	rc = plpar_hcall9(H_GET_MPP, retbuf);
- 
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index 1c151d77e74b3..f04bfea1a97bd 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -113,8 +113,8 @@ struct hvcall_ppp_data {
-  */
- static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
- {
--	unsigned long rc;
--	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
-+	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
-+	long rc;
- 
- 	rc = plpar_hcall9(H_GET_PPP, retbuf);
- 
-@@ -193,7 +193,7 @@ static void parse_ppp_data(struct seq_file *m)
- 	struct hvcall_ppp_data ppp_data;
- 	struct device_node *root;
- 	const __be32 *perf_level;
--	int rc;
-+	long rc;
- 
- 	rc = h_get_ppp(&ppp_data);
- 	if (rc)
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index fcf22a50ff5db..745ecf5523c9b 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1307,6 +1307,7 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 	}
+ 	if (unlikely(new_ni.blk_addr != NULL_ADDR)) {
+ 		err = -EFSCORRUPTED;
++		dec_valid_node_count(sbi, dn->inode, !ofs);
+ 		set_sbi_flag(sbi, SBI_NEED_FSCK);
+ 		f2fs_handle_error(sbi, ERROR_INVALID_BLKADDR);
+ 		goto fail;
+@@ -1333,7 +1334,6 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 	if (ofs == 0)
+ 		inc_valid_inode_count(sbi);
+ 	return page;
+-
+ fail:
+ 	clear_node_page_dirty(page);
+ 	f2fs_put_page(page, 1);
 -- 
 2.43.0
 
