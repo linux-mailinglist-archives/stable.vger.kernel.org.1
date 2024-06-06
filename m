@@ -1,93 +1,100 @@
-Return-Path: <stable+bounces-49911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 818C88FF098
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 17:25:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DCEB8FF0E7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 17:40:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91F711C22EC3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 15:25:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1E181F25CA3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 15:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60AF19750B;
-	Thu,  6 Jun 2024 15:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82574197525;
+	Thu,  6 Jun 2024 15:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="f6LE7G9J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEPwr7FX"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2193B195FC4;
-	Thu,  6 Jun 2024 15:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7781667E6;
+	Thu,  6 Jun 2024 15:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717687452; cv=none; b=H3CMHlLdi4TSBZ3h6FoBARdXfv3nYjOHmFPEpWoTviKlvv3fQletkBXDEiI4HL5QyHsiX7n1Fdp2WltByI1FDwspGLNg13nDARNBMdM4sIx5KSf/biGkVDCCA5XeQb2/D52Klbte/UiwX16j92I8c+TjnustEeDyqAxw5Ly+wR0=
+	t=1717688430; cv=none; b=T598l6q8l1XrSGpktGciCC47QSaHFNmCC5pvt2voQjT+5NZzazFki5aMckGrsdCTe0XNtqbYLGUeiXe5/mlprEDXWraP3T9O/ON4/KhuIKTYYNLsbfDhlOubwZiuo+XBAetaK25OgHr2JbhfXlTL9U45HH4pxY+3eUpZotxfchM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717687452; c=relaxed/simple;
-	bh=dmMdDLN3YgL1qMEqV22WwccWKGPvTDnUyQtKaq9KA84=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=lgggtE++19xcmYvMEqSzyq6Jd7SCdPdbAHR/HSwMIohEMgj2hUfmptC3JJGaPs36tupGoVvSIs22akWUHN66UiO7/u3DHq/mac0U7tej4Jq2Oo79veBWEOJF19RfbCNSmSS5mxg2h8asg9JTPapDA64Eua0aiFKCZO/o2asymfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=f6LE7G9J; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1717687447; x=1718292247; i=rwarsow@gmx.de;
-	bh=dmMdDLN3YgL1qMEqV22WwccWKGPvTDnUyQtKaq9KA84=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
-	 Subject:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=f6LE7G9J51x7ZNPzr/qbXfyfG4I2b+iCi35jN/KhEF7P9njurWsu5aINj9KJdK7n
-	 jtsLPoxvytwSMZ3MD9fj8Alj/AJ+26MIbYcmLby0GWps1Fv0diEE54kJgtk8gzgRb
-	 D5siftXrQaBenp2nEhHBvgnTk5rFVcMQYYiot7reSmp+EQjgd4M72J6Snwojm6NSd
-	 EYrUKTtoBTz/kJFzBamUl3e5CVUGXPT3Db8YL8U1Kqomoes8xuA3tCu6C3ogHHdTb
-	 e7rdAX2TmJKssomsYnhPpqCLSDjVNFqOwUn40hItnat8IHzbE0DKeCj/cyiCExgif
-	 GBckdDCynXrskK3FEA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([87.122.70.213]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M8hV5-1sJLhW2jYn-00Bt54; Thu, 06
- Jun 2024 17:24:07 +0200
-Message-ID: <1be3f6b5-097e-4021-b2eb-b82658047c33@gmx.de>
-Date: Thu, 6 Jun 2024 17:24:07 +0200
+	s=arc-20240116; t=1717688430; c=relaxed/simple;
+	bh=bOtc9xpVQTwyQV8Z4EEgfw4s9RXLbG1zVlhp5cDRID4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=RMj4Pjvci63WpelpAjHjGIwmU/Qh0FE/2oJbHKm8RKLe7wLmbyZXNu+v3KVBPp9gxecZxJ9/py1Irm69HKE8eS9QNeYF/N3LfANzu3URF/jpnvSkOg126Jsr7Mzbd/BOuL4pFje9GlDzgHj3rSz6oaUl+sIo2W3lEyO7YsryLo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEPwr7FX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AEAEDC32781;
+	Thu,  6 Jun 2024 15:40:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717688429;
+	bh=bOtc9xpVQTwyQV8Z4EEgfw4s9RXLbG1zVlhp5cDRID4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=SEPwr7FX0HO8InWEnb9M1muMB5t3cu9RxHr1O32+4uK1/KoTf75dY16jTu2f9kpfq
+	 xuZ7lcjYgUh2+NeszzhRILShEYeP4XOdigtWRbKe9H2jw6GFxJYGan/O50z2jSnABg
+	 2MqN5BBeYXFmIPBomJ1xHqbymRC7DkL31oCvk5HLeWP9sBgIvWF2sTTvZ2z885HJ0/
+	 iUqycHoQbMKs4rHN08ikwfO3C/sLTfnztUhwHXF3yq7OSIL3Ge6R4Pcuqx06IoVWeR
+	 BhQ04UYSwuXEC+pvC+QNzURR6Du9aUIVLo9JWZZQfT/7FVHLIKSlZUcbpZH9MqI6Vn
+	 kzq9xRgTAGjfg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 99D3BD20380;
+	Thu,  6 Jun 2024 15:40:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ronald Warsow <rwarsow@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.9 000/374] 6.9.4-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:TFn5+pAQ9qs1rYEiLy6WJ5wI8sO1kB9yYoyxWNzNcWYWZwdLg8l
- dyH/1JJGGFPMuK9OaO/XKxeONVJnHcfoWCHVEjx/cHiTrFCVTLCWRvfGjg37Thriagn7EWA
- 0oZ1wsiW9XI5O+uohZWk50VN1GhYPp40DgwrmkLxh7EElcBmXBNAp3A1SbgDIZrknjFN9xX
- lXy3CsteRoLNfZTvz+fmQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ovm+qdVJBG4=;V/+QDTg3fv/U3ewQ0WvB7iXHNP9
- 0vzZB2im2yfd/I8g3s7RwDwyE7uLTHVr2Ih9taeiZSPTTYAYassAEB5GsntAnDcAPmHGYo6JL
- N0ThxVhjIkcDScv3lC7MwesH6RGry8ruS5uyQndK7AJob2sfqUBKjisKGu/B4jzqw/jBVp3BN
- 60/31I4684EykCL7uHqX+dTsOxsUj206Lgucs9JoAYlW9U/wjFNI8+BBVvdR9+AmDM1+9AspM
- gyX4vEiBcfq49A7zZJU087TdMR0oxV6DJhWQfGnLzVSl09aSKMyS05Pvp4Q8fWKbncmxKbABI
- 5S0Emk/3EgoqZLpwW8nUUKq9ZyyBRmDBOrl3ecQQcazaOdX8+1ugvX6CtVSD+rb6Jc62Oo0JE
- A8vvRJoCVYk2kK4ZqFG3XtKKp7U1hOI1YaZke3EZW/cLXnJ9wK/IBKLFr3zJCXt0wySz2J04A
- y74x5GMjjzQT42yns1M3mQth46SeMvztAjzKhEkB/J+gIfgOILiPzjz7gSoy4ZqThiqlPUl3P
- fM3IcddLjKa4uV97hMmeK2HEjmxVRcQs7veuST5fLn2oqmj5ffvMV13/wgq7mgJU0UMb8ehDt
- 0S4KfuA1XuP97RNKvL7aOB4fX+BA2anxMBUouwPcH1/syJuHVobV0u9enP/QI8eGCmHsZtwZo
- ET70ZB8xf89TEk4MPrMk8g82QUKDcxpcAmMy5GRhX28yBMLH2F7p1z2V1LqWpjK3XKUeNd/d7
- hJQFnIZMOOplSkPuDNEAeOKK1EhpSAx/ZNZcmhse50lAmst0sTFcu/2DmW3eR2xcWDp1LmxsS
- I5zqZW8iGu9Tir7G0C6cr6tmXXkdy3yAiyTYtk3UyECxM=
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/3] selftests: net: lib: small fixes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <171768842962.28804.8836141710421199665.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Jun 2024 15:40:29 +0000
+References: <20240605-upstream-net-20240605-selftests-net-lib-fixes-v1-0-b3afadd368c9@kernel.org>
+In-Reply-To: <20240605-upstream-net-20240605-selftests-net-lib-fixes-v1-0-b3afadd368c9@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org, petrm@nvidia.com,
+ liuhangbin@gmail.com, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, geliang@kernel.org
 
-Hi Greg
+Hello:
 
-*no* regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Thanks
+On Wed, 05 Jun 2024 11:21:15 +0200 you wrote:
+> While looking at using 'lib.sh' for the MPTCP selftests [1], we found
+> some small issues with 'lib.sh'. Here they are:
+> 
+> - Patch 1: fix 'errexit' (set -e) support with busywait. 'errexit' is
+>   supported in some functions, not all. A fix for v6.8+.
+> 
+> - Patch 2: avoid confusing error messages linked to the cleaning part
+>   when the netns setup fails. A fix for v6.8+.
+> 
+> [...]
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Here is the summary with links:
+  - [net,1/3] selftests: net: lib: support errexit with busywait
+    https://git.kernel.org/netdev/net/c/41b02ea4c0ad
+  - [net,2/3] selftests: net: lib: avoid error removing empty netns name
+    https://git.kernel.org/netdev/net/c/79322174bcc7
+  - [net,3/3] selftests: net: lib: set 'i' as local
+    https://git.kernel.org/netdev/net/c/84a8bc3ec225
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
