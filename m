@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-49152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 743D18FEC15
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2853B8FEC17
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11FDB1F29937
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2A291F2997C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35AB19AD4D;
-	Thu,  6 Jun 2024 14:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E0A197A9F;
+	Thu,  6 Jun 2024 14:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gK8lsGDS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLFQX9Zw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AB81AC44F;
-	Thu,  6 Jun 2024 14:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C7D19AA7F;
+	Thu,  6 Jun 2024 14:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683327; cv=none; b=Rh60XMv4/Uuf5y+08LVuupO9vNxEdgVtiltMA48geH82j2XTjgBaL4n8CRaAG4MxmJ62J2lnYBTZi2AgY/HTJ6hnn0VbKeWAmEMHgr1n3BElsx66I3ber1toB6otDkPkFieU/xD1XfEUCbVXoSU0NMzU81nuTZW01wJWGJ5Cwug=
+	t=1717683328; cv=none; b=awRQ1lfsnAjTQMGaadLMZn87QuI9yiTQr+1sqEAAA7ydEny4U0uQbvZqNszD4MOmEZdQUFxc5sn02RduuHAoWkD64aIZHeUe+4sRNQWB8z8uoLuRw3ik4BK69tTVRja43sewoiplj7Uj40i6n2kim3vL6tFKravUrK80Iw11ARg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683327; c=relaxed/simple;
-	bh=AGSJeRARp39mKLL1CnSQvrElsyInvdntORaIMrRR7qI=;
+	s=arc-20240116; t=1717683328; c=relaxed/simple;
+	bh=LS3yPtAdbZZlVj45aaWmo7VVyo4dbouIB8GGaAlhwpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bPDe4PDC7yQfTnhb9UhiGvhRKCy4c+1R1vamn9paxdy/nQupMu+hD8FXcYSifYPERPjwlTMhBdzWnPXqT13MTO4mk6KSSegQAu2ohOMu5TkdxOFoRi/HZAtVbseFzz5COx4gKobD2yyRGdoc6/7oOXSKKUOgDAaED9IPRIWVwXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gK8lsGDS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429DCC32782;
-	Thu,  6 Jun 2024 14:15:27 +0000 (UTC)
+	 MIME-Version; b=L9Ll+GIwPoDtunMD5mJ20Q+ot8OS7qlkkFhWui7rZofWyWmJHjo3TCdWjiZ2wWK5zYQjMFSabgLYji4aLO4s755D7ppDJ0l/tLM8fnY++iGnQDjorOdxw72KBeRMLZh68+vF3/vF9DAuQkROFYHjrA2DcWDFcQ4VZHi/G5ueU64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLFQX9Zw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451E9C2BD10;
+	Thu,  6 Jun 2024 14:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683327;
-	bh=AGSJeRARp39mKLL1CnSQvrElsyInvdntORaIMrRR7qI=;
+	s=korg; t=1717683328;
+	bh=LS3yPtAdbZZlVj45aaWmo7VVyo4dbouIB8GGaAlhwpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gK8lsGDS2aZQjERQh2jriW/xQJaDKd6pE4dX4bD/FfHmJQ80FrhC3L7Ljmn+0GEA8
-	 n3B0tPlKxzOeQOr4LLV7dos3TOzB/70+Lr+ZVW1/kjaw7rOYOg7pI8jl7Mm0l0NOhO
-	 brhinurKqmnQ+CZnRnExat7WVgmPGEmV2gSe1WCM=
+	b=MLFQX9ZwfA3GsnbBdiu78yyyYu68kxnBXay+7S/2DF3uqxIPpwbzRJTLgBgD/gars
+	 pYvayJIw8IJ9BF9iTfWxD/DgliXe0Zqfaw0DQ8X2+7Mg+AlWQFB00c+i037vG5FTS7
+	 kPaE2ZD+GroN58hLJEe5BMdXkukSVx0jnxrBNjRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Paolo Abeni <pabeni@redhat.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Erhard Furtner <erhard_f@mailbox.org>
-Subject: [PATCH 6.6 238/744] eth: sungem: remove .ndo_poll_controller to avoid deadlocks
-Date: Thu,  6 Jun 2024 15:58:30 +0200
-Message-ID: <20240606131740.035117561@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 239/744] selftests: net: add more missing kernel config
+Date: Thu,  6 Jun 2024 15:58:31 +0200
+Message-ID: <20240606131740.066442570@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,65 +67,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit ac0a230f719b02432d8c7eba7615ebd691da86f4 ]
+[ Upstream commit 02d9009f4e8c27dcf10c3e39bc0666436686a219 ]
 
-Erhard reports netpoll warnings from sungem:
+The reuseport_addr_any.sh is currently skipping DCCP tests and
+pmtu.sh is skipping all the FOU/GUE related cases: add the missing
+options.
 
-  netpoll_send_skb_on_dev(): eth0 enabled interrupts in poll (gem_start_xmit+0x0/0x398)
-  WARNING: CPU: 1 PID: 1 at net/core/netpoll.c:370 netpoll_send_skb+0x1fc/0x20c
-
-gem_poll_controller() disables interrupts, which may sleep.
-We can't sleep in netpoll, it has interrupts disabled completely.
-Strangely, gem_poll_controller() doesn't even poll the completions,
-and instead acts as if an interrupt has fired so it just schedules
-NAPI and exits. None of this has been necessary for years, since
-netpoll invokes NAPI directly.
-
-Fixes: fe09bb619096 ("sungem: Spring cleaning and GRO support")
-Reported-and-tested-by: Erhard Furtner <erhard_f@mailbox.org>
-Link: https://lore.kernel.org/all/20240428125306.2c3080ef@legion
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240508134504.3560956-1-kuba@kernel.org
+Link: https://lore.kernel.org/r/38d3ca7f909736c1aef56e6244d67c82a9bba6ff.1707326987.git.pabeni@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: c499fe96d3f7 ("selftests: net: add missing config for amt.sh")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/sun/sungem.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ tools/testing/selftests/net/config | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/sun/sungem.c b/drivers/net/ethernet/sun/sungem.c
-index 9bd1df8308d24..d3a2fbb14140e 100644
---- a/drivers/net/ethernet/sun/sungem.c
-+++ b/drivers/net/ethernet/sun/sungem.c
-@@ -949,17 +949,6 @@ static irqreturn_t gem_interrupt(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
--#ifdef CONFIG_NET_POLL_CONTROLLER
--static void gem_poll_controller(struct net_device *dev)
--{
--	struct gem *gp = netdev_priv(dev);
--
--	disable_irq(gp->pdev->irq);
--	gem_interrupt(gp->pdev->irq, dev);
--	enable_irq(gp->pdev->irq);
--}
--#endif
--
- static void gem_tx_timeout(struct net_device *dev, unsigned int txqueue)
- {
- 	struct gem *gp = netdev_priv(dev);
-@@ -2839,9 +2828,6 @@ static const struct net_device_ops gem_netdev_ops = {
- 	.ndo_change_mtu		= gem_change_mtu,
- 	.ndo_validate_addr	= eth_validate_addr,
- 	.ndo_set_mac_address    = gem_set_mac_address,
--#ifdef CONFIG_NET_POLL_CONTROLLER
--	.ndo_poll_controller    = gem_poll_controller,
--#endif
- };
- 
- static int gem_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+index 3b749addd3640..5e4390cac17ed 100644
+--- a/tools/testing/selftests/net/config
++++ b/tools/testing/selftests/net/config
+@@ -24,10 +24,14 @@ CONFIG_IFB=y
+ CONFIG_INET_DIAG=y
+ CONFIG_INET_ESP=y
+ CONFIG_INET_ESP_OFFLOAD=y
++CONFIG_NET_FOU=y
++CONFIG_NET_FOU_IP_TUNNELS=y
+ CONFIG_IP_GRE=m
+ CONFIG_NETFILTER=y
+ CONFIG_NETFILTER_ADVANCED=y
+ CONFIG_NF_CONNTRACK=m
++CONFIG_IPV6_SIT=y
++CONFIG_IP_DCCP=m
+ CONFIG_NF_NAT=m
+ CONFIG_IP6_NF_IPTABLES=m
+ CONFIG_IP_NF_IPTABLES=m
+@@ -62,6 +66,7 @@ CONFIG_NET_CLS_MATCHALL=m
+ CONFIG_NET_CLS_U32=m
+ CONFIG_NET_IPGRE_DEMUX=m
+ CONFIG_NET_IPGRE=m
++CONFIG_NET_IPIP=y
+ CONFIG_NET_SCH_FQ_CODEL=m
+ CONFIG_NET_SCH_HTB=m
+ CONFIG_NET_SCH_FQ=m
+@@ -78,7 +83,6 @@ CONFIG_TLS=m
+ CONFIG_TRACEPOINTS=y
+ CONFIG_NET_DROP_MONITOR=m
+ CONFIG_NETDEVSIM=m
+-CONFIG_NET_FOU=m
+ CONFIG_MPLS_ROUTING=m
+ CONFIG_MPLS_IPTUNNEL=m
+ CONFIG_NET_SCH_INGRESS=m
 -- 
 2.43.0
 
