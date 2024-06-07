@@ -1,192 +1,131 @@
-Return-Path: <stable+bounces-50012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 310EB900D7C
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 23:23:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4062900D80
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 23:26:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 983091F22D4A
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 21:23:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63C8D1F22DA4
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 21:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C4815531C;
-	Fri,  7 Jun 2024 21:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C49155327;
+	Fri,  7 Jun 2024 21:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Nn2ZDATk"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="iRxgpEEt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E806514533D;
-	Fri,  7 Jun 2024 21:23:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCD413DDCA
+	for <stable@vger.kernel.org>; Fri,  7 Jun 2024 21:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717795431; cv=none; b=t/XpI+XPU7mUwyIV0v03x6oVr5nCDFcOrGJ4ddFoJNMvaaql6LlDZGOQ+jcvd8HKPIX3T6+1F9/mrer0kGXU0dnun9MTFSbkZIan6p3gKXfEZZJdmCNRf7TNh6OW1E0w8yr8P1dusWvu7TH/nsbzmVV1Q3mLUjmj9x3qBEE9/jw=
+	t=1717795575; cv=none; b=YYUNE19LvDDIo06RE8eXhPNDbkpDxHmNiAJ01ds7pLrq71fvlAxxJuLhu5dN7YImi7Sdl3wSej+FfvnC7IiDltAnzkkMuCtnvESVkWsrAZa0iRu8yKMKCZmRwOz9URwySbeBE8XaiWSdj634+mqzmBruhLkEaNaoCXKtEql43J8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717795431; c=relaxed/simple;
-	bh=AzfoMd7Vrdbm3neppm8ZksaqNiv/rklfvUlP6pdryp0=;
-	h=Date:To:From:Subject:Message-Id; b=cmqcay84Juf0HhWyIMOz/l9VDNrhRgspSLQd644CpuWxiyr03Hl2rN/O1D6X3d+raDp8OwqRIVhcjM8JzyHjiYz02UmqxbcmvVt0V0BSVOYLuZ6n8ePmJdt+FFB05BSbzWH/K2i5M8+tm6pmKmBS7unLSnrvMoAPzZ4XEG3Z1iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Nn2ZDATk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A640C2BBFC;
-	Fri,  7 Jun 2024 21:23:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1717795430;
-	bh=AzfoMd7Vrdbm3neppm8ZksaqNiv/rklfvUlP6pdryp0=;
-	h=Date:To:From:Subject:From;
-	b=Nn2ZDATkqBZ4hh8Aec5j+xJ54IIcOQNHYx9EEndeh1imsf8N2LykpgR3E849j9Cot
-	 dCyAF2v7UwpgL9X2YTwZAgokKgYqK6nrVvS1eWxlGxKBC9f+fuaZ/QSo4Wmji0Wunv
-	 hDv96qVH/+yWsIdwRjX/4HFhhxEU0nnDx8gheOUI=
-Date: Fri, 07 Jun 2024 14:23:49 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,yang.yang29@zte.com.cn,xu.xin16@zte.com.cn,stable@vger.kernel.org,mhocko@kernel.org,david@redhat.com,baohua@kernel.org,ran.xiaokai@zte.com.cn,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-huge_memory-fix-misused-mapping_large_folio_support-for-anon-folios.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240607212350.5A640C2BBFC@smtp.kernel.org>
+	s=arc-20240116; t=1717795575; c=relaxed/simple;
+	bh=ZPuFZKttfZPulV5IaRPANoOhqXpJ70gy/fKhUuaahTs=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=KmUjWa8IInbcGUrDZhyp55WnQsSxncmWUi2kwhDs/IQmFTIUSiNUMNvQsbRpHO1839rvec061dlxuv2bKMzF7uDEWIQsTaOe1ZQSnHDebCnWaH1FNArOCZtoRKKJ5YT3Vl9b0aI9IE1QUi1pu4ntRiR3wQPK1YTffrN9mD3FzM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=iRxgpEEt; arc=none smtp.client-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5007a.ext.cloudfilter.net ([10.0.29.141])
+	by cmsmtp with ESMTPS
+	id FeKisoqBOSqshFh65sIyfw; Fri, 07 Jun 2024 21:26:05 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id Fh64sFqrBQJKPFh65soRKN; Fri, 07 Jun 2024 21:26:05 +0000
+X-Authority-Analysis: v=2.4 cv=EeHOQumC c=1 sm=1 tr=0 ts=66637aed
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=T1WGqf2p2xoA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=3U1NTj930rUM-GEF0QgA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=5LHh8fR0sES3yiMjx4HDlmOjuaAq21T/2pjAOVMpoBc=; b=iRxgpEEtjLWEugBtH3LOh2yAMe
+	aKUBO4XRcXk80J+Cn0rjlQ0r5uy7GojX1/LY4dMRGy6JNAm2BRyRlS7DgZ/Kprtf0XZ6gGuFQ5nS4
+	+OzsAfK0zsVdmkIpCCTgrpMJtwleonRIHc9j+ym0/tz3KKdGfxQb3lvOsJsNIgJFWD+1S7/gfSNDB
+	fYdegESGn8f7FKlC8Ap0QjclRBErbCwS02+VYnTzgore8bahxk+BtS9HW00i8R/U60i4zK4vfyGwM
+	xcmej7semBJmr86qTYHOlNXoNdQdYC5JQTZQ7PuRcdL0+RPcM1fkm6RR+4Plv5TjpPI5bI8OMIxtP
+	rYJhPVhA==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:42382 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1sFh60-000pSF-0o;
+	Fri, 07 Jun 2024 15:26:00 -0600
+Subject: Re: [PATCH 6.9 000/374] 6.9.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <d5e4d0aa-438b-7f76-0bdb-471d6569baef@w6rz.net>
+Date: Fri, 7 Jun 2024 14:25:54 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1sFh60-000pSF-0o
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:42382
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfOcKPJPKtZh3Z6lO94UXAXC4/v6V5W2VfMy74xIvc6Babo1kwXPBi0PRXfwx5qIDhyfHFJ31HZtdai0babMfLkoRqrHXYVUqumpGPyWb8H/3IbTvCRwc
+ eDGIj9SQhUl1eebngy7Mn15AV3zfR9VZR8IO30VZ1ngH7XhZn6orGHbHNIGxDnVk6t+6IkLjM661Xg==
 
+On 6/6/24 6:59 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.9.4 release.
+> There are 374 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 08 Jun 2024 13:15:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.4-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-The patch titled
-     From: <xu.xin16@zte.com.cn>
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-huge_memory-fix-misused-mapping_large_folio_support-for-anon-folios.patch
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-fix-misused-mapping_large_folio_support-for-anon-folios.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Subject: mm: huge_memory: fix misused mapping_large_folio_support() for anon folios
-Date: Fri, 7 Jun 2024 17:40:48 +0800 (CST)
-
-When I did a large folios split test, a WARNING "[ 5059.122759][ T166]
-Cannot split file folio to non-0 order" was triggered.  But the test cases
-are only for anonmous folios.  while mapping_large_folio_support() is only
-reasonable for page cache folios.
-
-In split_huge_page_to_list_to_order(), the folio passed to
-mapping_large_folio_support() maybe anonmous folio.  The folio_test_anon()
-check is missing.  So the split of the anonmous THP is failed.  This is
-also the same for shmem_mapping().  We'd better add a check for both.  But
-the shmem_mapping() in __split_huge_page() is not involved, as for
-anonmous folios, the end parameter is set to -1, so (head[i].index >= end)
-is always false.  shmem_mapping() is not called.
-
-Also add a VM_WARN_ON_ONCE() in mapping_large_folio_support() for anon
-mapping, So we can detect the wrong use more easily.
-
-THP folios maybe exist in the pagecache even the file system doesn't
-support large folio, it is because when CONFIG_TRANSPARENT_HUGEPAGE is
-enabled, khugepaged will try to collapse read-only file-backed pages to
-THP.  But the mapping does not actually support multi order large folios
-properly.
-
-Using /sys/kernel/debug/split_huge_pages to verify this, with this patch,
-large anon THP is successfully split and the warning is ceased.
-
-Link: https://lkml.kernel.org/r/202406071740485174hcFl7jRxncsHDtI-Pz-o@zte.com.cn
-Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: Yang Yang <yang.yang29@zte.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/pagemap.h |    4 ++++
- mm/huge_memory.c        |   28 +++++++++++++++++-----------
- 2 files changed, 21 insertions(+), 11 deletions(-)
-
---- a/include/linux/pagemap.h~mm-huge_memory-fix-misused-mapping_large_folio_support-for-anon-folios
-+++ a/include/linux/pagemap.h
-@@ -368,6 +368,10 @@ static inline void mapping_set_large_fol
-  */
- static inline bool mapping_large_folio_support(struct address_space *mapping)
- {
-+	/* AS_LARGE_FOLIO_SUPPORT is only reasonable for pagecache folios */
-+	VM_WARN_ONCE((unsigned long)mapping & PAGE_MAPPING_ANON,
-+			"Anonymous mapping always supports large folio");
-+
- 	return IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
- 		test_bit(AS_LARGE_FOLIO_SUPPORT, &mapping->flags);
- }
---- a/mm/huge_memory.c~mm-huge_memory-fix-misused-mapping_large_folio_support-for-anon-folios
-+++ a/mm/huge_memory.c
-@@ -3009,30 +3009,36 @@ int split_huge_page_to_list_to_order(str
- 	if (new_order >= folio_order(folio))
- 		return -EINVAL;
- 
--	/* Cannot split anonymous THP to order-1 */
--	if (new_order == 1 && folio_test_anon(folio)) {
--		VM_WARN_ONCE(1, "Cannot split to order-1 folio");
--		return -EINVAL;
--	}
--
--	if (new_order) {
--		/* Only swapping a whole PMD-mapped folio is supported */
--		if (folio_test_swapcache(folio))
-+	if (folio_test_anon(folio)) {
-+		/* order-1 is not supported for anonymous THP. */
-+		if (new_order == 1) {
-+			VM_WARN_ONCE(1, "Cannot split to order-1 folio");
- 			return -EINVAL;
-+		}
-+	} else if (new_order) {
- 		/* Split shmem folio to non-zero order not supported */
- 		if (shmem_mapping(folio->mapping)) {
- 			VM_WARN_ONCE(1,
- 				"Cannot split shmem folio to non-0 order");
- 			return -EINVAL;
- 		}
--		/* No split if the file system does not support large folio */
--		if (!mapping_large_folio_support(folio->mapping)) {
-+		/*
-+		 * No split if the file system does not support large folio.
-+		 * Note that we might still have THPs in such mappings due to
-+		 * CONFIG_READ_ONLY_THP_FOR_FS. But in that case, the mapping
-+		 * does not actually support large folios properly.
-+		 */
-+		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-+		    !mapping_large_folio_support(folio->mapping)) {
- 			VM_WARN_ONCE(1,
- 				"Cannot split file folio to non-0 order");
- 			return -EINVAL;
- 		}
- 	}
- 
-+	/* Only swapping a whole PMD-mapped folio is supported */
-+	if (folio_test_swapcache(folio) && new_order)
-+		return -EINVAL;
- 
- 	is_hzp = is_huge_zero_folio(folio);
- 	if (is_hzp) {
-_
-
-Patches currently in -mm which might be from ran.xiaokai@zte.com.cn are
-
-mm-huge_memory-fix-misused-mapping_large_folio_support-for-anon-folios.patch
-mm-huge_memory-mark-racy-access-onhuge_anon_orders_always.patch
+Tested-by: Ron Economos <re@w6rz.net>
 
 
