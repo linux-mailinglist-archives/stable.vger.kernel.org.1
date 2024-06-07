@@ -1,151 +1,160 @@
-Return-Path: <stable+bounces-50018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADACE900DA3
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 23:42:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DEF2900DA7
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 23:42:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BE5D287FAA
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 21:41:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A622C28825E
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 21:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99268155C81;
-	Fri,  7 Jun 2024 21:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328FC155725;
+	Fri,  7 Jun 2024 21:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Z9DKg3SF"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="R5iMop9D"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E3D155308
-	for <stable@vger.kernel.org>; Fri,  7 Jun 2024 21:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1361553B4;
+	Fri,  7 Jun 2024 21:41:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717796481; cv=none; b=kyCjoZm96vwr0LLPsnWHiROHR2Hs9/kvrcLvngtjc4X7lLKJ4gSqZ3PViffjMyx4Ch0jr8+7gx2rjXFJ3f52XuT2+lmUML9WfBgtwbh1JrrYEIysIFrdk4KKdjmiwRRTkF1P9dnG/mEZPikmhtnGMomt0Hv3dBRz1HrHMy7YSrg=
+	t=1717796519; cv=none; b=G671bl1a3/q1+NxWxdIQ5Iu7BpYoNOdai5EEdiPXLfq+j/M00A1hG7CafZxrTOsXBJWegctXYUfIA2opQpdP3Uvur75u89wYElrIpzpcU9GbjP2O8Yfy8qLVU9u9ZQUO8zY8diVRumjMvtQZYBijZBcKFauLH45BkIFfBMgc9wQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717796481; c=relaxed/simple;
-	bh=+zDHm0gqEYnNElTfpQqNXDS5sE+4HW2XfxQCpQQCbSE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LL2SGfx2tVdnA+q/MBcDdQEoE/+my6NEhslPMUbTEZ0oZQYseTdkqZ/XyYsMOzaVCJRkfbr0i4Bqrx1mSzWam13IYpymk55NBgetIVazR+cDVUud8Pg8qEKb5HjmpbcR0QgHO5CWUeyGh6kwDlqwHPhDZvsnLz6SKtBInuhh3lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Z9DKg3SF; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1f6b941844dso20866385ad.2
-        for <stable@vger.kernel.org>; Fri, 07 Jun 2024 14:41:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1717796478; x=1718401278; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M6hr5Pgg5LYV8IvTkAUUqijfPi8ple/giWX7dtweBwU=;
-        b=Z9DKg3SFZv5D/L1UQYIGoZFTmyjArQ+DavEzSWG/A77KkhIYYrzIKCXeChJFXL3HrI
-         q0ocBiSI0p7j7VheYjrOKzdy91QRGaZSsGsZF+6Pa05N38HKd1k0NA6l+2MyX5ehLhhh
-         uxYxtc/y64gC8zpMQUhC7YDDSQhWokBTiKfsA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717796478; x=1718401278;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=M6hr5Pgg5LYV8IvTkAUUqijfPi8ple/giWX7dtweBwU=;
-        b=JoA1/toQPJXmdC40IeLnKJMOf1X9NM0/S4YLqbC+rnfhcuaLsHRC4F7J//PM9lXiA6
-         J6xFov6AZlPWlEPVcBqwBcJ7W6WrUDa9RuMeq40HNq9NBuwwXBDOiOuMDAByuKGAPVbq
-         gjWURiuiuLZDqeVLSdt6sN+lKhXt+fv7r04bFpQWHDGX9fiRjc1VoR+kaK16wP+9clk0
-         r4GrcOZ2SwBykDjNakpPAAaRBW38d3MLUL5tUJFIawMWNkayHy9gjArcoDB/cY2yYzBd
-         o1MHvWXEpHrGv96SUChYzz82r+P1o7zqbpqBZrla0AH8qXrX8C/Svshp7qWSo9ydHrkh
-         iU8A==
-X-Gm-Message-State: AOJu0YxYnNqdqJYm/pLkqtaiZkYfRCBoKACKH9/4QcxlCjLyPxOpAkZL
-	xHQ8luOD6ClJ9G8FTJmH5xgVu8g5m1BibrmMoUMIrIIxxZX2QROPwGVqqa21NdPuSgYl8ecShiy
-	gTc2hzrt7c2FtSTPYT/8EOswMfR1ZV2CcxyIHks7dbeEDSZdBYn7jvL+BQtHfOPpS/SZoXutvMr
-	A8u8fjDYr9PGzhTCQeCT2S2jff/KMNZAEQhOlWK48bZNI=
-X-Google-Smtp-Source: AGHT+IGiZCcvwDTTBj7Ig57bQR4C0/0ASjRxvCbyRtjYCP4HgXPQ023nqZONfn0Hr6ef/ygn+LzbUg==
-X-Received: by 2002:a17:902:c94f:b0:1f6:8a19:4562 with SMTP id d9443c01a7336-1f6dfc426d6mr27231345ad.24.1717796478156;
-        Fri, 07 Jun 2024 14:41:18 -0700 (PDT)
-Received: from ubuntu-vm.dhcp.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd7e189fsm38946805ad.215.2024.06.07.14.41.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 14:41:17 -0700 (PDT)
-From: Kuntal Nayak <kuntal.nayak@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: pablo@netfilter.org,
-	kadlec@netfilter.org,
-	fw@strlen.de,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vasavi.sirnapalli@broadcom.com,
-	Ziyang Xuan <william.xuanziyang@huawei.com>,
-	Kuntal Nayak <kuntal.nayak@broadcom.com>
-Subject: [PATCH 2/2 v5.10] netfilter: nf_tables: Fix potential data-race in __nft_obj_type_get()
-Date: Fri,  7 Jun 2024 14:37:35 -0700
-Message-Id: <20240607213735.46127-2-kuntal.nayak@broadcom.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240607213735.46127-1-kuntal.nayak@broadcom.com>
-References: <20240607213735.46127-1-kuntal.nayak@broadcom.com>
+	s=arc-20240116; t=1717796519; c=relaxed/simple;
+	bh=OuA/cNeJGIxEaUjitR2IhUcrlBfny5ZFFd/ayhWbT8I=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TnOA6fMWbB4kjG9Ppwb5CrTgIRpCtPoLx3KeKQXgQEgosGr4lv2+7Ov+D/y5uzZ8YQUTR6iQ4lMMgjiD+FquEAA4y2MXNsTjKh23qqtAzzgo4YZ22nHJ0TB2nJI3LqnzMpLyL5TD+zx9ZCam/6upFkp7VMdgNKxT0N+fGaiMp8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=R5iMop9D; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1717796514; x=1718055714;
+	bh=XyoIRaw4nzp+JTQlueWeFgCFHVypWtZ2IYQLlnxgLXo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=R5iMop9DHW7Ownvb2JoktckLjiBLCA+aAtm4fsxpZ/bO/K0f4OjumvLQl1n7EcoA7
+	 ahhxO88lOIOqQRJMNnTomfsxxCQs7R+d3PpyGLUF01TgylAOyCgGTvB7IR6vt+RBrW
+	 brbknFztOOOPYRR0xxkoO+TUCtodh3Bf0MCk3NO+h5Y/ULlrPYV7vjJHmQKNPBhIrt
+	 U+l9HYibXjl0t5ZOPqlPDq46CHUIwtW2aHU5/CoksPmJ1aiLZJ/BbomOkZHMu0h8yi
+	 PtViuhLrX0jxnhvvdFW8nfIk49z2RrLIlbb/WFfn8h2DPHK+PZ3f/Qnk/bddQG2mtL
+	 U819ZdQNvzspg==
+Date: Fri, 07 Jun 2024 21:41:51 +0000
+To: jeffxu@chromium.org
+From: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Cc: akpm@linux-foundation.org, cyphar@cyphar.com, david@readahead.eu, dmitry.torokhov@gmail.com, dverkamp@chromium.org, hughd@google.com, jeffxu@google.com, jorgelo@chromium.org, keescook@chromium.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-mm@kvack.org, skhan@linuxfoundation.org, stable@vger.kernel.org
+Subject: Re: [PATCH v1 0/1] mm/memfd: add documentation for MFD_NOEXEC_SEAL
+Message-ID: <ERhTlU0qgh7_BDdbPy2XWV0pYgJkVYImFQZVPIfvx9F9uyhfaopo8FMZa8WZ9Txx1bzq8qEez4QQ8sOQIwKeQEdn1rym1JgDmvG3zOKdpeQ=@protonmail.com>
+In-Reply-To: <20240607203543.2151433-1-jeffxu@google.com>
+References: <20240607203543.2151433-1-jeffxu@google.com>
+Feedback-ID: 20568564:user:proton
+X-Pm-Message-ID: 7824bcd3ec0219abcc9292ba531faca6c127f3cf
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+Hi
 
-[ upstream commit d78d867dcea69c328db30df665be5be7d0148484 ]
 
-nft_unregister_obj() can concurrent with __nft_obj_type_get(),
-and there is not any protection when iterate over nf_tables_objects
-list in __nft_obj_type_get(). Therefore, there is potential data-race
-of nf_tables_objects list entry.
+2024. j=C3=BAnius 7., p=C3=A9ntek 22:35 keltez=C3=A9ssel, jeffxu@chromium.o=
+rg <jeffxu@chromium.org> =C3=ADrta:
 
-Use list_for_each_entry_rcu() to iterate over nf_tables_objects
-list in __nft_obj_type_get(), and use rcu_read_lock() in the caller
-nft_obj_type_get() to protect the entire type query process.
+> From: Jeff Xu <jeffxu@chromium.org>
+>=20
+> When MFD_NOEXEC_SEAL was introduced, there was one big mistake: it
+> didn't have proper documentation. This led to a lot of confusion,
+> especially about whether or not memfd created with the MFD_NOEXEC_SEAL
+> flag is sealable. Before MFD_NOEXEC_SEAL, memfd had to explicitly set
+> MFD_ALLOW_SEALING to be sealable, so it's a fair question.
+>=20
+> As one might have noticed, unlike other flags in memfd_create,
+> MFD_NOEXEC_SEAL is actually a combination of multiple flags. The idea
+> is to make it easier to use memfd in the most common way, which is
+> NOEXEC + F_SEAL_EXEC + MFD_ALLOW_SEALING. This works with sysctl
+> vm.noexec to help existing applications move to a more secure way of
+> using memfd.
+>=20
+> Proposals have been made to put MFD_NOEXEC_SEAL non-sealable, unless
+> MFD_ALLOW_SEALING is set, to be consistent with other flags [1] [2],
+> Those are based on the viewpoint that each flag is an atomic unit,
+> which is a reasonable assumption. However, MFD_NOEXEC_SEAL was
+> designed with the intent of promoting the most secure method of using
+> memfd, therefore a combination of multiple functionalities into one
+> bit.
+>=20
+> Furthermore, the MFD_NOEXEC_SEAL has been added for more than one
+> year, and multiple applications and distributions have backported and
+> utilized it. Altering ABI now presents a degree of risk and may lead
+> to disruption.
 
-Fixes: e50092404c1b ("netfilter: nf_tables: add stateful objects")
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Kuntal Nayak <kuntal.nayak@broadcom.com>
----
- net/netfilter/nf_tables_api.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+I feel compelled to mention again that based on my investigation the risk i=
+s
+minimal. Not to mention that it can easily be reverted if need be.
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index de56f25dc..f3cb5c920 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6238,7 +6238,7 @@ static const struct nft_object_type *__nft_obj_type_get(u32 objtype, u8 family)
- {
- 	const struct nft_object_type *type;
- 
--	list_for_each_entry(type, &nf_tables_objects, list) {
-+	list_for_each_entry_rcu(type, &nf_tables_objects, list) {
- 		if (type->family != NFPROTO_UNSPEC &&
- 		    type->family != family)
- 			continue;
-@@ -6254,9 +6254,13 @@ nft_obj_type_get(struct net *net, u32 objtype, u8 family)
- {
- 	const struct nft_object_type *type;
- 
-+	rcu_read_lock();
- 	type = __nft_obj_type_get(objtype, family);
--	if (type != NULL && try_module_get(type->owner))
-+	if (type != NULL && try_module_get(type->owner)) {
-+		rcu_read_unlock();
- 		return type;
-+	}
-+	rcu_read_unlock();
- 
- 	lockdep_nfnl_nft_mutex_not_held();
- #ifdef CONFIG_MODULES
--- 
-2.39.3
+In my view, it is better to fix the inconsistency than to document it. I wo=
+uld
+argue that "`MFD_ALLOW_SEALING` is needed to enable sealing except that XYZ=
+"
+is unintuitive and confusing for a non-significant amount of people.
 
+In conclusion, I think it would be unfortunate if the inconsistency was not=
+ fixed and
+the problem was considered "solved" by a passing mention in the documentati=
+on.
+
+
+Regards,
+Barnab=C3=A1s P=C5=91cze
+
+>=20
+> MFD_NOEXEC_SEAL is a new flag, and applications must change their code
+> to use it. There is no backward compatibility problem.
+>=20
+> When sysctl vm.noexec =3D=3D 1 or 2, applications that don't set
+> MFD_NOEXEC_SEAL or MFD_EXEC will get MFD_NOEXEC_SEAL memfd. And
+> old-application might break, that is by-design, in such a system
+> vm.noexec =3D 0 shall be used. Also no backward compatibility problem.
+>=20
+> I propose to include this documentation patch to assist in clarifying
+> the semantics of MFD_NOEXEC_SEAL, thereby preventing any potential
+> future confusion.
+>=20
+> This patch supersede previous patch which is trying different
+> direction [3], and please remove [2] from mm-unstable branch when
+> applying this patch.
+>=20
+> Finally, I would like to express my gratitude to David Rheinsberg and
+> Barnab=C3=A1s P=C5=91cze for initiating the discussion on the topic of se=
+alability.
+>=20
+> [1]
+> https://lore.kernel.org/lkml/20230714114753.170814-1-david@readahead.eu/
+>=20
+> [2]
+> https://lore.kernel.org/lkml/20240513191544.94754-1-pobrn@protonmail.com/
+>=20
+> [3]
+> https://lore.kernel.org/lkml/20240524033933.135049-1-jeffxu@google.com/
+>=20
+> Jeff Xu (1):
+>   mm/memfd: add documentation for MFD_NOEXEC_SEAL MFD_EXEC
+>=20
+>  Documentation/userspace-api/index.rst      |  1 +
+>  Documentation/userspace-api/mfd_noexec.rst | 86 ++++++++++++++++++++++
+>  2 files changed, 87 insertions(+)
+>  create mode 100644 Documentation/userspace-api/mfd_noexec.rst
+>=20
+> --
+> 2.45.2.505.gda0bf45e8d-goog
+>=20
+> 
 
