@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-50001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E9F900C3D
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 21:06:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C079900C3F
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 21:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B21561C21CD8
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 19:06:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8327B22469
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 19:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D16143865;
-	Fri,  7 Jun 2024 19:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2325E13E8BE;
+	Fri,  7 Jun 2024 19:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWJcFHAP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kuLZY/zC"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F7813E3FD
-	for <Stable@vger.kernel.org>; Fri,  7 Jun 2024 19:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D735061FF6
+	for <Stable@vger.kernel.org>; Fri,  7 Jun 2024 19:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717787209; cv=none; b=RyejdtmbIuni9C2Wx4rl4jVJVAj580u6Q4qjw2/QttdZLlE6feC8V5f0yMYlwiDULeeidxpNUcfa1iaYVRgjcEQjyxzSWjfDESl+lybcBD5TRN0hFiUFIznLOD+ZK/+djBWEbI55OdI15V2lOup1nXCc9VwyhHi/0whGbtQL0/4=
+	t=1717787210; cv=none; b=UWXMmWvhFkhWjNgLYyHmuhIYavMN+lyXSijRA42Xkn55rVE4nMWtbKf7tgWxXxyWOBmDiPCjDufhbRWJ4ZGeqBjACsOwx2KcdJycDmsroAB6WdTiX/NZawOl4vhzuzTZJQcgQXU7wUnYSeiqYcc6y+HjqndfS82SM9HJxlI3nrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717787209; c=relaxed/simple;
-	bh=gFtJYpfyHTvtnZNU3gZuIF0XqeRFnFsv3u4VA5O69fA=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=Xs2nBZ/R/cwLNoc7JO7n351H7clj/XOV+4VRqUXE0x0wHhkgMTIO8BbDM5XF7pRbyO3Mw7PhfwkMw3iC1hLSSAA5yb5vluHmT7YKOvhiFpm+7dSL23z+tcio6ZOFdDJq2yGwC4RLAFXc4rU9vKrSoOBpmB35+VGtjuEkklam194=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWJcFHAP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B96AC32781;
-	Fri,  7 Jun 2024 19:06:48 +0000 (UTC)
+	s=arc-20240116; t=1717787210; c=relaxed/simple;
+	bh=gQEMazL5tEeC6AZUPPc68RbwLd0tUxL569yE/5fWAaY=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=jlzn3DR36qbz0RnWy70r8WJGlPCxYBqshVJXCYVzWDikN/PxPGN44AICS2MvYP370n5M7OErdX9eOzVYuKc2gHhurt+wzVe8pubTbcGIP3hUk2ls+rkCuntWr/63kPoW9qZtb2Zh9woh9B0imqZ0CjQxQYo6jwPzurlOjaQGM70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kuLZY/zC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACF7C32781;
+	Fri,  7 Jun 2024 19:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717787208;
-	bh=gFtJYpfyHTvtnZNU3gZuIF0XqeRFnFsv3u4VA5O69fA=;
+	s=korg; t=1717787210;
+	bh=gQEMazL5tEeC6AZUPPc68RbwLd0tUxL569yE/5fWAaY=;
 	h=Subject:To:From:Date:From;
-	b=bWJcFHAPpwN4iQCaTP68m3uX+MW5Uf4ISDvByPw0CVlWZ9I1TQYYRDmXw4xc4UTht
-	 GsX+Ei9yzCJoe/a5mDFx2b6cyMCenmC99mMHsR3F72Vilvr/ZTJMrAJNs2ZR3C2Ht5
-	 ZlD95nQe19Hbjmce1U/mtPlHciIP3A5ToGmcv6SU=
-Subject: patch "iio: pressure: bmp280: Fix BMP580 temperature reading" added to char-misc-linus
-To: ajarizzo@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,ang.iglesiasg@gmail.com,vassilisamir@gmail.com
+	b=kuLZY/zCOp9M0bHQaKUdJWXmlp/pmED0Zp+4i98GGdySCH4wQfdMHxuHrKf/ZgHJh
+	 9gjHBRYg0o168PIe/zWaB1GD3mfPII3V8+UxhnNdjuaZf0i9D4JxvN6ISlO/qgMauB
+	 P7+tidf4yEHO8T5GKffd+C3Fe6HkQhxCImi2XZhY=
+Subject: patch "iio: dac: ad5592r: fix temperature channel scaling value" added to char-misc-linus
+To: marc.ferland@sonatest.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 07 Jun 2024 21:06:47 +0200
-Message-ID: <2024060746-recede-getaway-6e40@gregkh>
+Date: Fri, 07 Jun 2024 21:06:48 +0200
+Message-ID: <2024060748-compost-refueling-740b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: pressure: bmp280: Fix BMP580 temperature reading
+    iio: dac: ad5592r: fix temperature channel scaling value
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,46 +69,69 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 0f0f6306617cb4b6231fc9d4ec68ab9a56dba7c0 Mon Sep 17 00:00:00 2001
-From: Adam Rizkalla <ajarizzo@gmail.com>
-Date: Thu, 25 Apr 2024 01:22:49 -0500
-Subject: iio: pressure: bmp280: Fix BMP580 temperature reading
+From 279428df888319bf68f2686934897301a250bb84 Mon Sep 17 00:00:00 2001
+From: Marc Ferland <marc.ferland@sonatest.com>
+Date: Wed, 1 May 2024 11:05:54 -0400
+Subject: iio: dac: ad5592r: fix temperature channel scaling value
 
-Fix overflow issue when storing BMP580 temperature reading and
-properly preserve sign of 24-bit data.
+The scale value for the temperature channel is (assuming Vref=2.5 and
+the datasheet):
 
-Signed-off-by: Adam Rizkalla <ajarizzo@gmail.com>
-Tested-By: Vasileios Amoiridis <vassilisamir@gmail.com>
-Acked-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-Link: https://lore.kernel.org/r/Zin2udkXRD0+GrML@adam-asahi.lan
+    376.7897513
+
+When calculating both val and val2 for the temperature scale we
+use (3767897513/25) and multiply it by Vref (here I assume 2500mV) to
+obtain:
+
+  2500 * (3767897513/25) ==> 376789751300
+
+Finally we divide with remainder by 10^9 to get:
+
+    val = 376
+    val2 = 789751300
+
+However, we return IIO_VAL_INT_PLUS_MICRO (should have been NANO) as
+the scale type. So when converting the raw temperature value to the
+'processed' temperature value we will get (assuming raw=810,
+offset=-753):
+
+    processed = (raw + offset) * scale_val
+              = (810 + -753) * 376
+	      = 21432
+
+    processed += div((raw + offset) * scale_val2, 10^6)
+              += div((810 + -753) * 789751300, 10^6)
+	      += 45015
+    ==> 66447
+    ==> 66.4 Celcius
+
+instead of the expected 21.5 Celsius.
+
+Fix this issue by changing IIO_VAL_INT_PLUS_MICRO to
+IIO_VAL_INT_PLUS_NANO.
+
+Fixes: 56ca9db862bf ("iio: dac: Add support for the AD5592R/AD5593R ADCs/DACs")
+Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
+Link: https://lore.kernel.org/r/20240501150554.1871390-1-marc.ferland@sonatest.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/pressure/bmp280-core.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/iio/dac/ad5592r-base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 09f53d987c7d..221fa2c552ae 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1394,12 +1394,12 @@ static int bmp580_read_temp(struct bmp280_data *data, int *val, int *val2)
+diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
+index 076bc9ecfb49..4763402dbcd6 100644
+--- a/drivers/iio/dac/ad5592r-base.c
++++ b/drivers/iio/dac/ad5592r-base.c
+@@ -415,7 +415,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
+ 			s64 tmp = *val * (3767897513LL / 25LL);
+ 			*val = div_s64_rem(tmp, 1000000000LL, val2);
  
- 	/*
- 	 * Temperature is returned in Celsius degrees in fractional
--	 * form down 2^16. We rescale by x1000 to return milli Celsius
--	 * to respect IIO ABI.
-+	 * form down 2^16. We rescale by x1000 to return millidegrees
-+	 * Celsius to respect IIO ABI.
- 	 */
--	*val = raw_temp * 1000;
--	*val2 = 16;
--	return IIO_VAL_FRACTIONAL_LOG2;
-+	raw_temp = sign_extend32(raw_temp, 23);
-+	*val = ((s64)raw_temp * 1000) / (1 << 16);
-+	return IIO_VAL_INT;
- }
+-			return IIO_VAL_INT_PLUS_MICRO;
++			return IIO_VAL_INT_PLUS_NANO;
+ 		}
  
- static int bmp580_read_press(struct bmp280_data *data, int *val, int *val2)
+ 		mutex_lock(&st->lock);
 -- 
 2.45.2
 
