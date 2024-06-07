@@ -1,48 +1,61 @@
-Return-Path: <stable+bounces-49969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1879002AC
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 13:53:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBDC19002F4
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 14:04:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51E1B1C228BC
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 11:53:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56FCCB235BB
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 12:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9801B18F2F4;
-	Fri,  7 Jun 2024 11:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77B618F2F4;
+	Fri,  7 Jun 2024 12:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="1fmq3d+v"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68881847;
-	Fri,  7 Jun 2024 11:53:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66C21847;
+	Fri,  7 Jun 2024 12:03:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717761198; cv=none; b=hBgqnwRP1e3cu0Qd/GHkBSOFJjXqMrUiuV66NXlV9T39cEgqXjMHmifzt40f51fdnDVPEU0onG6VvXmrQ/AmpeEVYnmlAluUli2aGAD+Pjus9KvC7tVxJCBXnjI5NaReX8SWbnKpCzjQTfVx/0Wngr0Y9u6fETIlbHyVEyTkO/c=
+	t=1717761835; cv=none; b=IV9SqIK150jmO5lIwztl7W17BqV1hVQrQKk6aqKSl0M2EE/3ngaYFs0suIEd3SL2tqBe82kWEfFFerT5Q6BPB3kprPldcrBHAvAs8k7sK2J0Yu3eSowEdcs6z/fIpJRfgZLc26RxfwmHCl+MDbaDnAc7vNUCnhlzZJM1X5Kiomg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717761198; c=relaxed/simple;
-	bh=ic5oUjYcQFZahlr2HCLFRnMbQ0rxTmKGaLjzGnF52Uc=;
+	s=arc-20240116; t=1717761835; c=relaxed/simple;
+	bh=8RXWDjhK3t1FOsHs4nQJKMEJJnFPojVt1t45K4Yfx+M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qpmVfiFwPCG+x1t/xjsf/YCDgv991j62U+obA+EMZ1LvBMjZlqTTzG1xjv8Y6SvY4ckmK02QcUtGcSAFkAmoMdoL6+jx/WDLdxBewV1H8kTMQ2pmXC5CPShlGmY4KwLYZ8EURCeZuyI73Aaek0U+xBZeypvg9V667V5qL8DZnWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1sFY9R-006p8p-1G;
-	Fri, 07 Jun 2024 19:52:58 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 07 Jun 2024 19:52:59 +0800
-Date: Fri, 7 Jun 2024 19:52:59 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Olivia Mackall <olivia@selenic.com>, Michael Buesch <mb@bu3sch.de>,
-	Andrew Morton <akpm@osdl.org>, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] hwrng: amd - Convert PCIBIOS_* return codes to errnos
-Message-ID: <ZmL0m6xaL9JXb2mu@gondor.apana.org.au>
-References: <20240527132615.14170-1-ilpo.jarvinen@linux.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=kyjfWRdoOCt8y401zW9mx4+fGy2GaA49ZOV0byQUWXyiMrLh2512s0Fufj1npPnEum9YKVfVXiH3d3jeQR5EWNGyTyK976/N/LibogOy7zYUxBQb4q7o8jYD2HCRxTldDlEF9r2I3YzGfCet1hYOFW6Ts+ONHohH9f3wsTwiEA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=1fmq3d+v; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=UispkbW6TtP1txrIUy9EHkoFg+mrkMRv4JCZa8iHpGY=; b=1f
+	mq3d+vqgjfQm+rKJAprJxKkYpK1ffuwCq9Ac7DixlRuJpaH4sq4uOj5Xlm9dS2NMcq9hbTyVUU3ym
+	qnZR4DAv80vmqD9m0H/q2ET4YfLcMr1l9nu2BOiUqp+oeqS9YNED8Ru6C7Ii9i09mjcTACjn0RK9v
+	z7k+Oc8+NVyRIR4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1sFYJv-00H7Qi-DJ; Fri, 07 Jun 2024 14:03:47 +0200
+Date: Fri, 7 Jun 2024 14:03:47 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>, regressions@lists.linux.dev,
+	linux-leds@vger.kernel.org, Genes Lists <lists@sapience.com>,
+	Johannes =?iso-8859-1?Q?W=FCller?= <johanneswueller@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] leds: class: Revert: "If no default trigger is given,
+ make hw_control trigger the default trigger"
+Message-ID: <6ebdcaca-c95a-48bc-b1ca-51cc1d7a86a5@lunn.ch>
+References: <20240607101847.23037-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,26 +65,37 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240527132615.14170-1-ilpo.jarvinen@linux.intel.com>
+In-Reply-To: <20240607101847.23037-1-hdegoede@redhat.com>
 
-On Mon, May 27, 2024 at 04:26:15PM +0300, Ilpo Järvinen wrote:
-> amd_rng_mod_init() uses pci_read_config_dword() that returns PCIBIOS_*
-> codes. The return code is then returned as is but amd_rng_mod_init() is
-> a module_init() function that should return normal errnos.
+On Fri, Jun 07, 2024 at 12:18:47PM +0200, Hans de Goede wrote:
+> Commit 66601a29bb23 ("leds: class: If no default trigger is given, make
+> hw_control trigger the default trigger") causes ledtrig-netdev to get
+> set as default trigger on various network LEDs.
 > 
-> Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-> errno before returning it.
+> This causes users to hit a pre-existing AB-BA deadlock issue in
+> ledtrig-netdev between the LED-trigger locks and the rtnl mutex,
+> resulting in hung tasks in kernels >= 6.9.
 > 
-> Fixes: 96d63c0297cc ("[PATCH] Add AMD HW RNG driver")
+> Solving the deadlock is non trivial, so for now revert the change to
+> set the hw_control trigger as default trigger, so that ledtrig-netdev
+> no longer gets activated automatically for various network LEDs.
+> 
+> The netdev trigger is not needed because the network LEDs are usually under
+> hw-control and the netdev trigger tries to leave things that way so setting
+> it as the active trigger for the LED class device is a no-op.
+> 
+> Fixes: 66601a29bb23 ("leds: class: If no default trigger is given, make hw_control trigger the default trigger")
+> Reported-by: Genes Lists <lists@sapience.com>
+> Closes: https://lore.kernel.org/all/9d189ec329cfe68ed68699f314e191a10d4b5eda.camel@sapience.com/
+> Reported-by: "Johannes Wüller" <johanneswueller@gmail.com>
+> Closes: https://lore.kernel.org/lkml/e441605c-eaf2-4c2d-872b-d8e541f4cf60@gmail.com/
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> ---
->  drivers/char/hw_random/amd-rng.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+I'm not sure i agree with the Closes: All this does is make it less
+likely to deadlock. The deadlock is still there. But:
+
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+    Andrew
 
