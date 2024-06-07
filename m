@@ -1,100 +1,101 @@
-Return-Path: <stable+bounces-49943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBAF8FFA38
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 05:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F073B8FFA49
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 05:56:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 714CF2862A9
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 03:40:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 428BA2868E3
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 03:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6FA175B1;
-	Fri,  7 Jun 2024 03:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E4ows6Lz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D65817BA3;
+	Fri,  7 Jun 2024 03:56:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1F179DC
-	for <stable@vger.kernel.org>; Fri,  7 Jun 2024 03:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F23FC1D;
+	Fri,  7 Jun 2024 03:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717731626; cv=none; b=HZZ1EsZOCK+GTME5ykr7N4f7Pcdx3JhplipDsf6/T4nLN7VsGUShBQj+f2gxnwvVAuy2VojxCbHHLUqFybGnbax97gBz+m210ydrMhet0EBLz9GwR0+RzBSL293zFxN/HFdUezK6TWIJbn4pqiGh7L2pUvk2qmbkgewbfBQwc4k=
+	t=1717732563; cv=none; b=Gs/8+RZexSImKVdmDq2ZDw3mp1rhE32jzzoAzpNRx8nOkmgNrjx7MedlRA9dbxvHs7QOCGSguWvZ3ptoQk77/MM+8CP/k6B79Bb1/G4Y8GbjCPa8nwYE/zK6XPEJI95NkPNmcqRr0nc4J+Fpas9yF2hclXPmuP7xD2j0vHJlk2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717731626; c=relaxed/simple;
-	bh=rPJ5ufAViNYhCGjh+ZuXBltquKOKg7geswHuJeUpgpY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=MYivKxzaRpEdN2vJAqg1NGW2HNoqOe6NvP/8bLwaPOVS19bMiVIU7n0QS9a6L7tA3zpYuAzqkKnRmUtbpMG5vfRA03VmDaqwJ0M2MdzotFsQZKEzzt0tO7+SXaA8+r7cR3RKB04LgmERH5aIgbru2bS/8Oe69IO0BJmYiah+nNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E4ows6Lz; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717731623; x=1749267623;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=rPJ5ufAViNYhCGjh+ZuXBltquKOKg7geswHuJeUpgpY=;
-  b=E4ows6Lz6PP7iYfUGRLVa9nmgFhzcefjY17SRO3Xbk8CK/ikID6GSQbk
-   NnyayZpv7aDsszOY2BxScO0hV4nLsApZTb+vV/KR3mJydF5CpYrTShk6J
-   QLGFA5leOistqwqSBGiR35I73NOxDWq9GAqhcqF4UGBxA1MDJE9YCggmB
-   NcXS8Yspsz3VmeLDRJfMoipWIsn6CKsP/9Ovmv8b/h9t5EOW2xzWvXjJ/
-   2bOqMeJCimV0mo4tU6nF6UhzojgYxF+EewiEtS0EE49CqxYTZsyPF3ecu
-   TevRjtX6sZAcDcmFGbRrnqqbmBvWKXiRdZcMm0zGvavZjYfME7T6J2tt0
-   Q==;
-X-CSE-ConnectionGUID: k4HBJe5GSpmc5RZpUD7kLA==
-X-CSE-MsgGUID: wr+OTyIySZWeCIoDPaJY3g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="31981899"
-X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; 
-   d="scan'208";a="31981899"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 20:40:07 -0700
-X-CSE-ConnectionGUID: V+Y5JIl2Rp2SBL9aKz9Azg==
-X-CSE-MsgGUID: 1WaOr71cQROGxp4tEIjeJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; 
-   d="scan'208";a="38123056"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 06 Jun 2024 20:40:07 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sFQSS-0003zD-2Z;
-	Fri, 07 Jun 2024 03:40:04 +0000
-Date: Fri, 7 Jun 2024 11:37:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [Resend PATCHv4 1/1] mm: fix incorrect vbq reference in
- purge_fragmented_block
-Message-ID: <ZmKAez4QQawL3dSg@242c30a86391>
+	s=arc-20240116; t=1717732563; c=relaxed/simple;
+	bh=/vSZv0xz0fYaeyMGOavT8gPXtL9VXswBqH5VNvM0oaU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oxSsiJ6Zs5ELAxXbXvi1GYGAfh3NDfK+SKHmpBBcK67Nnx5QeZI79qrbHQd0LbJzmzcMVV6A3Q6cC3mrGLwIkgj8NEGrfbAH3F/oSQMELEZiuvrw6ugZTroWc0g3PXffraHPuUekGeuKevU4GsnM+//yXkBmA/EhA5inOcMmGtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [192.168.0.224] (ip5f5aee92.dynamic.kabel-deutschland.de [95.90.238.146])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id B015B61E646E4;
+	Fri,  7 Jun 2024 05:55:28 +0200 (CEST)
+Message-ID: <250a5988-271a-4a64-8fee-5aa48592c6ef@molgen.mpg.de>
+Date: Fri, 7 Jun 2024 05:55:27 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240607023116.1720640-1-zhaoyang.huang@unisoc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Bluetooth Kernel Bug: After connecting either HFP/HSP or A2DP is
+ not available (Regression in 6.9.3, 6.8.12)
+To: =?UTF-8?Q?Timo_Schr=C3=B6der?= <der.timosch@gmail.com>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ linux-bluetooth@vger.kernel.org, luiz.von.dentz@intel.com
+References: <CAGew7BttU+g40uRnSCN5XmbXs1KX1ZBbz+xyXC_nw5p4dR2dGA@mail.gmail.com>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <CAGew7BttU+g40uRnSCN5XmbXs1KX1ZBbz+xyXC_nw5p4dR2dGA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi,
-
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [Resend PATCHv4 1/1] mm: fix incorrect vbq reference in purge_fragmented_block
-Link: https://lore.kernel.org/stable/20240607023116.1720640-1-zhaoyang.huang%40unisoc.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+#regzbot ^introduced: af1d425b6dc6
 
 
+Dear Timo,
 
+
+Am 06.06.24 um 22:46 schrieb Timo Schröder:
+
+> on my two notebooks, one with Ubuntu (Mainline Kernel 6.9.3, bluez
+> 5.7.2) and the other one with Manjaro (6.9.3, bluez 5.7.6) I'm having
+> problems with my Sony WH-1000XM3 and Shure BT1. Either A2DP or HFP/HSP
+> is not available after the connection has been established after a
+> reboot or a reconnection. It's reproducible that with the WH-1000XM3
+> the A2DP profiles are missing and with the Shure BT1 HFP/HSP profiles
+> are missing. It also takes longer than usual to connect and I have a
+> log message in the journal:
+> 
+> Jun 06 16:28:10 liebig bluetoothd[854]: profiles/audio/avdtp.c:cancel_request() Discover: Connection timed out (110)
+> 
+> When I disable and re-enable bluetooth (while the Headsets are still
+> on) and trigger a reconnect from the notebooks, A2DP and HFP/HSP
+> Profiles are available again.
+> 
+> I also tested it with 6.8.12 and it's the same problem. 6.8.11 and
+> 6.9.2 don't have the problem.
+> So I did a bisection. After reverting commit
+> af1d425b6dc67cd67809f835dd7afb6be4d43e03 "Bluetooth: HCI: Remove
+> HCI_AMP support" for 6.9.3 it's working again without problems.
+
+Thank you for bisecting the issue.
+
+> Let me know if you need anything from me.
+
+If you could test the master branch or bluetooth-next, and, if 
+reproducible, also with the upstream commit 
+84a4bb6548a29326564f0e659fb8064503ecc1c7 reverted, that’d be great.
+
+
+Kind regards,
+
+Paul
 
