@@ -1,291 +1,122 @@
-Return-Path: <stable+bounces-49987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885789009C9
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 17:59:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EA849009E3
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 18:05:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 092CA287EA0
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 15:59:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1F1D1F25EB0
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 16:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467FC199EB5;
-	Fri,  7 Jun 2024 15:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41BC19A2BB;
+	Fri,  7 Jun 2024 16:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="nmznvAS0"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HKJG1Mml"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA7919A29C
-	for <stable@vger.kernel.org>; Fri,  7 Jun 2024 15:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25B1199EB9
+	for <stable@vger.kernel.org>; Fri,  7 Jun 2024 16:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717775974; cv=none; b=VR8VuCXOKeEcyQHwst6v9gcuNRMTL9n9mWjcjlH1siG0k2liufIA60MVmsaHsmg/lHVptFzmDTrOaaD24SWcVZJzF0KAtRbzzSKMs8QHnuCm3CM8utpUrsR5UcWSvVgMCIdWUHhFTCMbyq1KBHa6U07vLujddDGPbkhclEU2g5Y=
+	t=1717776320; cv=none; b=tKF/EGzMqdzvd1hTdC5mxAVZcwhp8aa9loE/Dvdd9yEn3AcY0rlFMwnTVD6dyNpcM92IUHlJ1ZVayBORyG9tknYyKtAfev8VCTYD0mzJPx8sKaq02DuvmF43r//pL6+yKDMTvZrMM/RjMvor8iE14Yg+zxS11mF4m+xCJLKh5xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717775974; c=relaxed/simple;
-	bh=iq3vgahPJc1R2sFSNT7KHSLa4eLNSlV+Str2BooQvkM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kgM752+LmqihKCIDn6e41QkaguJQokGq8Qn/zXbSziNawMN+5zihp7j8/xlj9Q44YbISx/swMJZG+PRSvSU+pI2eDICzaSY0RTYyp4kuk80BMDkwRPW6iwoKPE2b91c5wUwpKyABkfyAhxW7B8PBaDyHH187F50hvxhkxnTx5HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=nmznvAS0; arc=none smtp.client-ip=209.85.160.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-2510648fbacso1202629fac.1
-        for <stable@vger.kernel.org>; Fri, 07 Jun 2024 08:59:32 -0700 (PDT)
+	s=arc-20240116; t=1717776320; c=relaxed/simple;
+	bh=PkhT36oQfIFSxnsTi/xZYEC1/Wh+3xFYb2O/Bmxgk7U=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=YuyF8280oypuzPUtWE8DhPFA0scqyyq+iMtl/PtgPjBc2GKkxdSf0E9VgNa/VUYHJAph+J0MLRFccpFmlGC3TgVM76rfwDJUJOuovLNPdi/WqFdiLBiddGCMIDrkiR2iMolxnW/WVCOK4poKj8JwIq/QwskD2s186leG1ZU+HSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joychakr.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HKJG1Mml; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joychakr.bounces.google.com
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-627956be166so42841547b3.0
+        for <stable@vger.kernel.org>; Fri, 07 Jun 2024 09:05:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1717775971; x=1718380771; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6NHMt+xVhVtjzNsRDYJ5h2jc+BN/nMBD6W7NvHLgmaM=;
-        b=nmznvAS04yaaxDle7fLdSmnrgWW28hcYRKk3T0IqZaYucQfYz3UO9Tm32BGxvENW2F
-         xbJ4UbwPPnQoA8ZUyU7d3RlQb3T4L6is24FTY+uz47Zo/Ipi+BYlrjZ/YmL4JIg2uKak
-         m+OV629T3A0xIAf6rvUbHvUPEn4m5JZapr9S4=
+        d=google.com; s=20230601; t=1717776317; x=1718381117; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NJQYxePR0iHdVpyH6KgKy957kewW8MXS1xiZJc94kzM=;
+        b=HKJG1MmlycUEQDyL7jY33NzWkNKxhRRLuKxGZXmBpzj6QVrFwDJig+UgEbiI7RWz8L
+         petq5ML37LaxiKkdhHlAX/RQxvhy59E2mzHysH6NpQpwycLZzqhZIl/C7jB4sV+cZr/P
+         2VznYLlgfoMrcsDdziCW/ZFZWAboSJR/gca3F1SiFG2/NusZ12195zphjErARRWdFFZX
+         /1s7f1elB/agXfYYBzCRLLomEBwjo2VOnJiFJojk6VQY4gXoE3cRVOjNDNCID4pIyJW/
+         5d8vUPu5fCTxAUEdVzjqPPBnNR+fN2I20MucDYw0BJD8JUrr1yU2/3Ui8r13ltYn8oOV
+         m7KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717775971; x=1718380771;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6NHMt+xVhVtjzNsRDYJ5h2jc+BN/nMBD6W7NvHLgmaM=;
-        b=dG/OpOrja3daj1ScwsiZhQnqAXZZBg5osi1+vmRJVVAyen+ghWf7BIkqRcuJ3YKnUT
-         hbCLH5gOUCoLx8ODmQLbrt4MMSjyNvQfr1ReNCNEq/E18Sj9f2xAiN+ZH6RZHrnp2/2O
-         wwfO5LFSPHaZKjzD15cVrLgnZQn1KWLJdewTcou8hCMF/8U0vWDqAskEskNc9bqEWuNi
-         37qKV4KxhgAcJysFKFXQXz6y3EhXhRzEm8ZYZeDyXrJAExeb1G4uUd6G3gHbCFmfvDDb
-         oL3XWd+2xkljcgmDp55vEcpmElCiusBIVNWVvQCPl92dNCxBFZ1V0BcwKSksKGFJ0179
-         dCTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUO5691m0s0D0eb7jGcUf5yQwYP3LYPSryvWi5ZjXXBmQAvT7m12Ca271qqB16T/Rk7YbjX2zDHI0Bjd417CGGXTLjqVNHz
-X-Gm-Message-State: AOJu0YyTnZe6imiCj6yi+nAu31KgJLlDW5XwiCt6OkD66H7+Vxa9NrgF
-	OFHSQk7OxymRnDqHS1eZr8eRK09ki+EzwFdp1uPOcJU+SCM23jMGlVwoVQ+LtUFhG8OhRaswm8O
-	Czw7mjtcs9bEW9eNRZ6G+YDxVe6PTmw509/C3
-X-Google-Smtp-Source: AGHT+IEC31nw9ObtnGzw3zJl6fKelGiEgC9ZoPCarB7OMc+eN9hRyWGo2K+eWFqjbDdWgwjsJsikOOzysaE0DDaqvi0=
-X-Received: by 2002:a05:6870:c687:b0:229:f022:ef83 with SMTP id
- 586e51a60fabf-25464684289mr3475878fac.43.1717775971301; Fri, 07 Jun 2024
- 08:59:31 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1717776317; x=1718381117;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NJQYxePR0iHdVpyH6KgKy957kewW8MXS1xiZJc94kzM=;
+        b=IQ2XbyWq+Vb3gCIouv/2XiRwdVl2DF87rKii1XhGB15AdjIA/OXRRYFFInc8j6ubDA
+         9+wRjTBsuTvrwphDfrbFDyRDlljnWDnJmb4cs83Qhx9HHslHGi+nkbOVnjVOIHGhDNxD
+         Qys66bxGU1ZXmD6mAAx58IrjBApTevk4Z0kfzjsr/SZF/WmCL3CMPY7UgXK3sR9Qmtbk
+         8bv9brz3KpSM8sSWfVkdSBvyMr60ZkLcolPZAqs5Kken1JUjh5aW+D6LASNuWl5IxLeo
+         0UU7VD8z+XYdh7QkApew/r+GJ+dLVD7KasZFrf6SgcTg7gj6ppByzUjOf+uPT28LyXOD
+         ROtg==
+X-Forwarded-Encrypted: i=1; AJvYcCUy0B2kqXsQOAArsB8GhZhf5j9Bd4jwuxUaUSPRrnlI2/WRRExsck3i/UNzGDjmjPRuSnZxQlQ5gPcAUh05BquhniB02E8V
+X-Gm-Message-State: AOJu0YzSBWnMUYEEOpxX7HJMlkW4jsS6sEspL6i+5sAmxgMZCkUtPdOt
+	iYD/dOkY6uBjBqAwdh64liMM5cUlmrKJ+8kVa5pwrir8GDg2dvJJdIDrTrt7qNgSBwpw+74pS6C
+	2f5HoFQRuTg==
+X-Google-Smtp-Source: AGHT+IG64lqY0yQa0AokSTX2EMstB+TXXJ/qbAvxRcK+iiBrZnFLE+9N9olvbSBYlkiqAXRbb2EBxdF56b8qVw==
+X-Received: from joychakr.c.googlers.com ([fda3:e722:ac3:cc00:4f:4b78:c0a8:6ea])
+ (user=joychakr job=sendgmr) by 2002:a05:690c:6410:b0:62c:c56c:94c3 with SMTP
+ id 00721157ae682-62cd546f5e8mr7536837b3.0.1717776317494; Fri, 07 Jun 2024
+ 09:05:17 -0700 (PDT)
+Date: Fri,  7 Jun 2024 16:05:10 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240524033933.135049-1-jeffxu@google.com> <20240524033933.135049-2-jeffxu@google.com>
- <79b3aa3e-bc70-410e-9646-0b6880a4a74b@app.fastmail.com> <CALmYWFu61FkbboWkXUSKBGmXeiNtBwrgfizS5kNvPMx4ByUqPQ@mail.gmail.com>
- <b8cGJnU5ofWgsiKD5z8RGlW-2ijs7IW9h4LUg1tzFBu3agFinCvdxuiSaUDG_DfVen2vCDNu-QbGfOR7DeARf4jsy3CNNTfzQGMX1HfqHdo=@protonmail.com>
- <CALmYWFv+Tsqwv96oB4rTrJ7_ZC3CoNZFjmKFYKQgGZuceqZ6vg@mail.gmail.com> <2fQi6XI7TmRN_qi9xldglgYFujpzMvr0bbkxhYNJhY6VRYjDsyTDqavR6OPU6DNBtCKAPgBVKxV0SMo7WnjUaDit-zxsBZauGavgKzqcNy8=@protonmail.com>
-In-Reply-To: <2fQi6XI7TmRN_qi9xldglgYFujpzMvr0bbkxhYNJhY6VRYjDsyTDqavR6OPU6DNBtCKAPgBVKxV0SMo7WnjUaDit-zxsBZauGavgKzqcNy8=@protonmail.com>
-From: Jeff Xu <jeffxu@chromium.org>
-Date: Fri, 7 Jun 2024 08:59:20 -0700
-Message-ID: <CABi2SkXyHegwpZKF7ZVDAOsqzaHE4BdDQOMmbuJ+51HkQ3CmJg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] memfd: fix MFD_NOEXEC_SEAL to be non-sealable by default
-To: =?UTF-8?B?QmFybmFiw6FzIFDFkWN6ZQ==?= <pobrn@protonmail.com>
-Cc: Jeff Xu <jeffxu@google.com>, David Rheinsberg <david@readahead.eu>, 
-	Andrew Morton <akpm@linux-foundation.org>, cyphar@cyphar.com, dmitry.torokhov@gmail.com, 
-	Daniel Verkamp <dverkamp@chromium.org>, hughd@google.com, jorgelo@chromium.org, 
-	Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	skhan@linuxfoundation.org, stable@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.2.505.gda0bf45e8d-goog
+Message-ID: <20240607160510.3968596-1-joychakr@google.com>
+Subject: [PATCH v3] nvmem: rmem: Fix return value of rmem_read()
+From: Joy Chakraborty <joychakr@google.com>
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Rob Herring <robh@kernel.org>, 
+	Nicolas Saenz Julienne <nsaenz@kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>
+Cc: linux-kernel@vger.kernel.org, manugautam@google.com, 
+	Joy Chakraborty <joychakr@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Barnab=C3=A1s
+reg_read() callback registered with nvmem core expects 0 on success and
+a negative value on error but rmem_read() returns the number of bytes
+read which is treated as an error at the nvmem core.
 
-On Fri, May 31, 2024 at 11:56=E2=80=AFAM Barnab=C3=A1s P=C5=91cze <pobrn@pr=
-otonmail.com> wrote:
->
-> 2024. m=C3=A1jus 30., cs=C3=BCt=C3=B6rt=C3=B6k 0:24 keltez=C3=A9ssel, Jef=
-f Xu <jeffxu@google.com> =C3=ADrta:
->
-> > On Wed, May 29, 2024 at 2:46=E2=80=AFPM Barnab=C3=A1s P=C5=91cze <pobrn=
-@protonmail.com> wrote:
-> > >
-> > > Hi
-> > >
-> > >
-> > > 2024. m=C3=A1jus 29., szerda 23:30 keltez=C3=A9ssel, Jeff Xu <jeffxu@=
-google.com> =C3=ADrta:
-> > >
-> > > > Hi David and Barnab=C3=A1s
-> > > >
-> > > > On Fri, May 24, 2024 at 7:15=E2=80=AFAM David Rheinsberg <david@rea=
-dahead.eu> wrote:
-> > > > >
-> > > > > Hi
-> > > > >
-> > > > > On Fri, May 24, 2024, at 5:39 AM, jeffxu@chromium.org wrote:
-> > > > > > From: Jeff Xu <jeffxu@google.com>
-> > > > > >
-> > > > > > By default, memfd_create() creates a non-sealable MFD, unless t=
-he
-> > > > > > MFD_ALLOW_SEALING flag is set.
-> > > > > >
-> > > > > > When the MFD_NOEXEC_SEAL flag is initially introduced, the MFD =
-created
-> > > > > > with that flag is sealable, even though MFD_ALLOW_SEALING is no=
-t set.
-> > > > > > This patch changes MFD_NOEXEC_SEAL to be non-sealable by defaul=
-t,
-> > > > > > unless MFD_ALLOW_SEALING is explicitly set.
-> > > > > >
-> > > > > > This is a non-backward compatible change. However, as MFD_NOEXE=
-C_SEAL
-> > > > > > is new, we expect not many applications will rely on the nature=
- of
-> > > > > > MFD_NOEXEC_SEAL being sealable. In most cases, the application =
-already
-> > > > > > sets MFD_ALLOW_SEALING if they need a sealable MFD.
-> > > > >
-> > > > > This does not really reflect the effort that went into this. Shou=
-ldn't this be something along the lines of:
-> > > > >
-> > > > >     This is a non-backward compatible change. However, MFD_NOEXEC=
-_SEAL
-> > > > >     was only recently introduced and a codesearch revealed no bre=
-aking
-> > > > >     users apart from dbus-broker unit-tests (which have a patch p=
-ending
-> > > > >     and explicitly support this change).
-> > > > >
-> > > > Actually, I think we might need to hold on to this change. With deb=
-ian
-> > > > code search, I found more codes that already use MFD_NOEXEC_SEAL
-> > > > without MFD_ALLOW_SEALING. e.g. systemd [1], [2] [3]
-> > >
-> > > Yes, I have looked at those as well, and as far as I could tell,
-> > > they are not affected. Have I missed something?
-> > >
-> > In the example, the MFD was created then passed into somewhere else
-> > (safe_fork_full, open_serialization_fd, etc.), the scope and usage of
-> > mfd isn't that clear to me, you might have checked all the user cases.
-> > In addition, MFD_NOEXEC_SEAL  exists in libc and rust and go lib.  I
-> > don't know if debian code search is sufficient to cover enough apps .
-> > There is a certain risk.
-> >
-> > Fundamentally, I'm not convinced that making MFD default-non-sealable
-> > has  meaningful benefit, especially when MFD_NOEXEC_SEAL is new.
->
-> Certainly, there is always a risk, I did not mean to imply that there isn=
-'t.
-> However, I believe this risk is low enough to at least warrant an attempt=
- at
-> eliminating this inconsistency. It can always be reverted if it turns out=
- that
-> the effects have been vastly underestimated by me.
->
-> So I would still like to see this change merged.
->
+This does not break when rmem is accessed using sysfs via
+bin_attr_nvmem_read()/write() but causes an error when accessed from
+places like nvmem_access_with_keepouts(), etc.
 
-The MFD_NOEXEC_SEAL is a new flag, technically, ABI is not broken.
-The sysctl vm.memfd_noexec=3D1 or 2, is meant to help
-migration/enforcement of MFD_NOEXEC_SEAL, so it will break application
-if it is used pre-maturely, that is by-design.
+Change to return 0 on success and error in case
+memory_read_from_buffer() returns an error or -EIO if bytes read do not
+match what was requested.
 
-I think the main problem here is lack of documentation, instead of a code b=
-ug.
-ABI change shouldn't be treated lightly, given the risk, I would like
-to keep the API the same and add the documentation instead. I think
-that is the best route forward.
+Fixes: 5a3fa75a4d9c ("nvmem: Add driver to expose reserved memory as nvmem")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joy Chakraborty <joychakr@google.com>
+---
+ drivers/nvmem/rmem.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Best Regards,
--Jeff
+diff --git a/drivers/nvmem/rmem.c b/drivers/nvmem/rmem.c
+index 752d0bf4445e..7f907c5a445e 100644
+--- a/drivers/nvmem/rmem.c
++++ b/drivers/nvmem/rmem.c
+@@ -46,7 +46,10 @@ static int rmem_read(void *context, unsigned int offset,
+ 
+ 	memunmap(addr);
+ 
+-	return count;
++	if (count < 0)
++		return count;
++
++	return count == bytes ? 0 : -EIO;
+ }
+ 
+ static int rmem_probe(struct platform_device *pdev)
+-- 
+2.45.2.505.gda0bf45e8d-goog
 
-
-
->
-> Regards,
-> Barnab=C3=A1s P=C5=91cze
->
->
-> >
-> >
-> > >
-> > > Regards,
-> > > Barnab=C3=A1s
-> > >
-> > >
-> > > >
-> > > > I'm not sure if this  will break  more applications not-knowingly t=
-hat
-> > > > have started relying on MFD_NOEXEC_SEAL being sealable. The feature
-> > > > has been out for more than a year.
-> > > >
-> > > > Would you consider my augments in [4] to make MFD to be sealable by=
- default ?
-> > > >
-> > > > At this moment, I'm willing to add a document to clarify that
-> > > > MFD_NOEXEC_SEAL is sealable by default, and that an app that needs
-> > > > non-sealable MFD can  set  SEAL_SEAL.  Because both MFD_NOEXEC_SEAL
-> > > > and vm.memfd_noexec are new,  I don't think it breaks the existing
-> > > > ABI, and vm.memfd_noexec=3D0 is there for backward compatibility
-> > > > reasons. Besides, I honestly think there is little reason that MFD
-> > > > needs to be non-sealable by default.  There might be few rare cases=
-,
-> > > > but the majority of apps don't need that.  On the flip side, the fa=
-ct
-> > > > that MFD is set up to be sealable by default is a nice bonus for an
-> > > > app - it makes it easier for apps to use the sealing feature.
-> > > >
-> > > > What do you think ?
-> > > >
-> > > > Thanks
-> > > > -Jeff
-> > > >
-> > > > [1] https://codesearch.debian.net/search?q=3DMFD_NOEXEC_SEAL
-> > > > [2] https://codesearch.debian.net/show?file=3Dsystemd_256~rc3-5%2Fs=
-rc%2Fhome%2Fhomed-home.c&line=3D1274
-> > > > [3] https://sources.debian.org/src/elogind/255.5-1debian1/src/share=
-d/serialize.c/?hl=3D558#L558
-> > > > [4] https://lore.kernel.org/lkml/CALmYWFuPBEM2DE97mQvB2eEgSO9Dvt=3D=
-uO9OewMhGfhGCY66Hbw@mail.gmail.com/
-> > > >
-> > > >
-> > > > > > Additionally, this enhances the useability of  pid namespace sy=
-sctl
-> > > > > > vm.memfd_noexec. When vm.memfd_noexec equals 1 or 2, the kernel=
- will
-> > > > > > add MFD_NOEXEC_SEAL if mfd_create does not specify MFD_EXEC or
-> > > > > > MFD_NOEXEC_SEAL, and the addition of MFD_NOEXEC_SEAL enables th=
-e MFD
-> > > > > > to be sealable. This means, any application that does not desir=
-e this
-> > > > > > behavior will be unable to utilize vm.memfd_noexec =3D 1 or 2 t=
-o
-> > > > > > migrate/enforce non-executable MFD. This adjustment ensures tha=
-t
-> > > > > > applications can anticipate that the sealable characteristic wi=
-ll
-> > > > > > remain unmodified by vm.memfd_noexec.
-> > > > > >
-> > > > > > This patch was initially developed by Barnab=C3=A1s P=C5=91cze,=
- and Barnab=C3=A1s
-> > > > > > used Debian Code Search and GitHub to try to find potential bre=
-akages
-> > > > > > and could only find a single one. Dbus-broker's memfd_create() =
-wrapper
-> > > > > > is aware of this implicit `MFD_ALLOW_SEALING` behavior, and tri=
-es to
-> > > > > > work around it [1]. This workaround will break. Luckily, this o=
-nly
-> > > > > > affects the test suite, it does not affect
-> > > > > > the normal operations of dbus-broker. There is a PR with a fix[=
-2]. In
-> > > > > > addition, David Rheinsberg also raised similar fix in [3]
-> > > > > >
-> > > > > > [1]:
-> > > > > > https://github.com/bus1/dbus-broker/blob/9eb0b7e5826fc76cad7b02=
-5bc46f267d4a8784cb/src/util/misc.c#L114
-> > > > > > [2]: https://github.com/bus1/dbus-broker/pull/366
-> > > > > > [3]:
-> > > > > > https://lore.kernel.org/lkml/20230714114753.170814-1-david@read=
-ahead.eu/
-> > > > > >
-> > > > > > Cc: stable@vger.kernel.org
-> > > > > > Fixes: 105ff5339f498a ("mm/memfd: add MFD_NOEXEC_SEAL and MFD_E=
-XEC")
-> > > > > > Signed-off-by: Barnab=C3=A1s P=C5=91cze <pobrn@protonmail.com>
-> > > > > > Signed-off-by: Jeff Xu <jeffxu@google.com>
-> > > > > > Reviewed-by: David Rheinsberg <david@readahead.eu>
-> > > > >
-> > > > > Looks good! Thanks!
-> > > > > David
-> > > >
 
