@@ -1,183 +1,225 @@
-Return-Path: <stable+bounces-49991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A55C900B43
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 19:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F38E900B3C
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 19:28:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83912288273
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 17:30:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A832D2889F4
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 17:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6D119B3EF;
-	Fri,  7 Jun 2024 17:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09AC19B580;
+	Fri,  7 Jun 2024 17:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LcL0g5Lo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EyjAmEG1"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEC6196C68;
-	Fri,  7 Jun 2024 17:30:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7C015ACB;
+	Fri,  7 Jun 2024 17:26:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717781410; cv=none; b=Qmy8uVc+XL52EXqqBE96RlLNHTHSMSKU5W92nPhdcppdiZ/BdeJXqDW9HaDbmqsLtK+yr99hLvbpHoag6HdRfihlsKJpwaiC+NVZowcDocuXqeWGElMvr7fP4mMPOyGsf1MFOdyAyp2DFfd2dmuAVEktZRgfhl2+lc3vfJAqLow=
+	t=1717781211; cv=none; b=WG+WMfkYEHsmF1Yv9mWLpNmb10VT37aGzapkwly9fq/Ss5IuQh7LO7lGezeMysQE6q1haydG4olXilT9aIZy/habhH0B7cptxL/1mi6IrlEQCDwXChQNDWv6iSOfVU4Mo5L1oEgZrQuaIL7KJCwVtZfr+L88/ZaetkjBg3bTLy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717781410; c=relaxed/simple;
-	bh=B9tO+B2hT8Xk/eYrXZW//gyZWpphBGJke5m1suqOmjk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dkrIbpe1NxUaN6LNBkYDj+yUGMDZn8ijsbt+7dY/CnJJW52MNc2t/KhS2REo7lxaKeA3hpHzVHyz5x+lpIBY8d9/BTkpKcejwqh+/0nBqHmcUTWoJyiTqitnsifffBMWcAQhewdZDLn4mHSgwY6zUnunq4HNlBhmisZI2zdq/28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LcL0g5Lo; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717781409; x=1749317409;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=B9tO+B2hT8Xk/eYrXZW//gyZWpphBGJke5m1suqOmjk=;
-  b=LcL0g5LoEeTTY7tXfPBb0kyWkeLx+oI2xDNZ2uvA4Fcrvc3nmoQWyQ1A
-   r/p7CYEnX2TfZ8nPmTweGBfQGldkaSAZpT90UmRdadouffc+bBy06SnNN
-   tMUQUSEvMoOXHicuP5AEaOa2S3qiY502myam72gmE+f/NYP0G9zfRuZAj
-   yFztSpLNkDu+1fTA8PInOGuiiTuLZ8AicCrLO616B8gwTiXwjOGAoDZ/S
-   RT/cOKD39Fqj1WSiP914SdbrGye28VFH1uGT+qbuIgcQQQex8lB/VMcZ5
-   TlCoQEG3itoDIANnUhDSIJeJAu1bvY538WhZXDVEL+8RgZOMCPp6Jbnm7
-   A==;
-X-CSE-ConnectionGUID: SyC4y/+MTW+/WX5lxrTsLQ==
-X-CSE-MsgGUID: SupNgW+NTPS6hREdBuN+bw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="18368118"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
-   d="scan'208";a="18368118"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 10:30:08 -0700
-X-CSE-ConnectionGUID: SpdaPTKvQbmoP0C/7JLRpw==
-X-CSE-MsgGUID: h0v3KNYvSseJzFH9vNCMuA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
-   d="scan'208";a="38472457"
-Received: from mehlow-prequal01.jf.intel.com ([10.54.102.156])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 10:30:07 -0700
-From: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
-To: dave.hansen@intel.com
-Cc: dave.hansen@linux.intel.com,
-	dmitrii.kuvaiskii@intel.com,
-	haitao.huang@linux.intel.com,
-	jarkko@kernel.org,
-	kai.huang@intel.com,
-	kailun.qin@intel.com,
-	linux-kernel@vger.kernel.org,
-	linux-sgx@vger.kernel.org,
-	mona.vij@intel.com,
-	reinette.chatre@intel.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] x86/sgx: Resolve EREMOVE page vs EAUG page data race
-Date: Fri,  7 Jun 2024 10:21:46 -0700
-Message-Id: <20240607172146.536993-1-dmitrii.kuvaiskii@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <01bb6519-680e-45bf-b8bd-34763658aa17@intel.com>
-References: <01bb6519-680e-45bf-b8bd-34763658aa17@intel.com>
+	s=arc-20240116; t=1717781211; c=relaxed/simple;
+	bh=t4eYmVKvDVi8V4oLcAvYetX8Ejzy2NF60PSbjvVWfKo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XrtW/R96Y+PvqYd/ycNLte7zUmfCruZDMMItKfLVYeKfDR0f1td8d+0T3YE7g4YTB5w5wfprnS+ThuLAQoNbu2r+WrDQj3obQP8dQBebB70io9VRYeBMH/2Ot2mNRBPpaIHSi9BRHWOKxFIM6zSvK4xZjUg8AaHQDQPkdC9irTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EyjAmEG1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE8FC2BBFC;
+	Fri,  7 Jun 2024 17:26:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717781211;
+	bh=t4eYmVKvDVi8V4oLcAvYetX8Ejzy2NF60PSbjvVWfKo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EyjAmEG1mTlciR+Q3Pcu6rKB451iaUX1ubjjD75vg2cCz5MHYoxTG9ISioIvBP9vu
+	 +9gtR0B7cdNs9zCQgLp7Dg/eonIRj075LWtGlj0+4VWRI+TJSoTN84IGAOVcYse93H
+	 IiLPbaaqQg3j76996tOqOQe/iow8c1mE6A3NZRap1GBsWlWeQxxtoj4JF1EPWoAk5s
+	 STZyiN6tQs/yhJ7cWa01+Hqi3xLTuakIZvDU1H+0xhxjSJZFhwhKtTQJo1nVg9azO5
+	 s0CLYSZwBMS7kudRlamI8p64Q/01LBuLRit/MQrid92i7uLtL34SwTDFACJuOLMM4l
+	 vdzeOqkD8mquA==
+Message-ID: <6ee2518b-81dd-4082-bdf5-322883895ffc@kernel.org>
+Date: Fri, 7 Jun 2024 19:26:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Deutschland GmbH - Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6.y] mm: ratelimit stat flush from workingset shrinker
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: stable@vger.kernel.org, yosryahmed@google.com, tj@kernel.org,
+ hannes@cmpxchg.org, lizefan.x@bytedance.com, cgroups@vger.kernel.org,
+ longman@redhat.com, linux-mm@kvack.org, kernel-team@cloudflare.com
+References: <171776806121.384105.7980809581420394573.stgit@firesoul>
+ <tge6txvuepcu3iy7nz3cuafbd5x2hmeprbaz3d3fzawvvzg3xr@f4utxxs2egxl>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <tge6txvuepcu3iy7nz3cuafbd5x2hmeprbaz3d3fzawvvzg3xr@f4utxxs2egxl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, May 28, 2024 at 09:23:13AM -0700, Dave Hansen wrote:
-> On 5/17/24 04:06, Dmitrii Kuvaiskii wrote:
-> ...
->
-> First, why is SGX so special here?  How is the SGX problem different
-> than what the core mm code does?
 
-Here is my understanding why SGX is so special and why I have to introduce
-a new bit SGX_ENCL_PAGE_BEING_REMOVED.
 
-In SGX's removal of the enclave page, two operations must happen
-atomically: the PTE entry must be removed and the page must be EREMOVE'd.
+On 07/06/2024 16.32, Shakeel Butt wrote:
+> On Fri, Jun 07, 2024 at 03:48:06PM GMT, Jesper Dangaard Brouer wrote:
+>> From: Shakeel Butt <shakeelb@google.com>
+>>
+>> commit d4a5b369ad6d8aae552752ff438dddde653a72ec upstream.
+>>
+>> One of our workloads (Postgres 14 + sysbench OLTP) regressed on newer
+>> upstream kernel and on further investigation, it seems like the cause is
+>> the always synchronous rstat flush in the count_shadow_nodes() added by
+>> the commit f82e6bf9bb9b ("mm: memcg: use rstat for non-hierarchical
+>> stats").  On further inspection it seems like we don't really need
+>> accurate stats in this function as it was already approximating the amount
+>> of appropriate shadow entries to keep for maintaining the refault
+>> information.  Since there is already 2 sec periodic rstat flush, we don't
+>> need exact stats here.  Let's ratelimit the rstat flush in this code path.
+>>
+>> Link: https://lkml.kernel.org/r/20231228073055.4046430-1-shakeelb@google.com
+>> Fixes: f82e6bf9bb9b ("mm: memcg: use rstat for non-hierarchical stats")
+>> Signed-off-by: Shakeel Butt <shakeelb@google.com>
+>> Cc: Johannes Weiner <hannes@cmpxchg.org>
+>> Cc: Yosry Ahmed <yosryahmed@google.com>
+>> Cc: Yu Zhao <yuzhao@google.com>
+>> Cc: Michal Hocko <mhocko@suse.com>
+>> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+>> Cc: Muchun Song <songmuchun@bytedance.com>
+>> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+>> Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+>>
+>> ---
+>> On production with kernel v6.6 we are observing issues with excessive
+>> cgroup rstat flushing due to the extra call to mem_cgroup_flush_stats()
+>> in count_shadow_nodes() introduced in commit f82e6bf9bb9b ("mm: memcg:
+>> use rstat for non-hierarchical stats") that commit is part of v6.6.
+>> We request backport of commit d4a5b369ad6d ("mm: ratelimit stat flush
+>> from workingset shrinker") as it have a fixes tag for this commit.
+>>
+>> IMHO it is worth explaining call path that makes count_shadow_nodes()
+>> cause excessive cgroup rstat flushing calls. Function shrink_node()
+>> calls mem_cgroup_flush_stats() on its own first, and then invokes
+>> shrink_node_memcgs(). Function shrink_node_memcgs() iterates over
+>> cgroups via mem_cgroup_iter() for each calling shrink_slab(). The
+>> shrink_slab() calls do_shrink_slab() that via shrinker->count_objects()
+>> invoke count_shadow_nodes(), and count_shadow_nodes() does
+>> a mem_cgroup_flush_stats() call, that seems unnecessary.
+>>
+> 
+> Actually at Meta production we have also replaced
+> mem_cgroup_flush_stats() in shrink_node() with
+> mem_cgroup_flush_stats_ratelimited() as it was causing too much flushing
+> issue. We have not observed any issue after the change. I will propose
+> that patch to upstream as well.
 
-Generally, to guarantee atomicity, encl->lock is acquired. Ideally, if
-this encl->lock could be acquired at the beginning of
-sgx_encl_remove_pages() and be released at the very end of this function,
-there would be no EREMOVE page vs EAUG page data race, and my bug fix
-(with SGX_ENCL_PAGE_BEING_REMOVED bit) wouldn't be needed.
+(Please Cc me as I'm not subscribed on cgroups@vger.kernel.org)
 
-However, the current implementation of sgx_encl_remove_pages() has to
-release encl->lock before removing the PTE entry. Releasing the lock is
-required because the function that removes the PTE entry --
-sgx_zap_enclave_ptes() -- acquires another, enclave-MM lock:
-mmap_read_lock(encl_mm->mm).
+Yes, we also see mem_cgroup_flush_stats() in shrink_node() cause issues.
 
-The two locks must be taken in this order:
-1. mmap_read_lock(encl_mm->mm)
-2. mutex_lock(&encl->lock)
+So, I can confirm the issue. What we see is that it originates from
+kswapd, which have a kthread per NUMA node that runs concurrently...  we
+measure cgroup rstat lock contention happening due to call in shrink_node().
 
-This lock order is apparent from e.g. sgx_encl_add_page(). This order also
-seems to make intuitive sense: VMA callbacks are called with the MM lock
-being held, so the MM lock should be the first in lock order.
+See call stacks I captured with bpftrace script[1]:
 
-So, if sgx_encl_remove_pages() would _not_ release encl->lock before
-calling sgx_zap_enclave_ptes(), this would violate the lock order and
-might lead to deadlocks. At the same time, releasing encl->lock in the
-middle of the two-operations flow leads to a data race that I found in
-this patch series.
+stack_wait[695, kswapd0, 1]:
+         __cgroup_rstat_lock+107
+         __cgroup_rstat_lock+107
+         cgroup_rstat_flush_locked+851
+         cgroup_rstat_flush+35
+         shrink_node+226
+         balance_pgdat+807
+         kswapd+521
+         kthread+228
+         ret_from_fork+48
+         ret_from_fork_asm+27
+@stack_wait[696, kswapd1, 1]:
+         __cgroup_rstat_lock+107
+         __cgroup_rstat_lock+107
+         cgroup_rstat_flush_locked+851
+         cgroup_rstat_flush+35
+         shrink_node+226
+         balance_pgdat+807
+         kswapd+521
+         kthread+228
+         ret_from_fork+48
+         ret_from_fork_asm+27
+@stack_wait[697, kswapd2, 1]:
+         __cgroup_rstat_lock+107
+         __cgroup_rstat_lock+107
+         cgroup_rstat_flush_locked+851
+         cgroup_rstat_flush+35
+         shrink_node+226
+         balance_pgdat+807
+         kswapd+521
+         kthread+228
+         ret_from_fork+48
+         ret_from_fork_asm+27
+@stack_wait[698, kswapd3, 1]:
+         __cgroup_rstat_lock+107
+         __cgroup_rstat_lock+107
+         cgroup_rstat_flush_locked+851
+         cgroup_rstat_flush+35
+         shrink_node+226
+         balance_pgdat+807
+         kswapd+521
+         kthread+228
+         ret_from_fork+48
+         ret_from_fork_asm+27
+@stack_wait[699, kswapd4, 1]:
+         __cgroup_rstat_lock+107
+         __cgroup_rstat_lock+107
+         cgroup_rstat_flush_locked+851
+         cgroup_rstat_flush+35
+         shrink_node+226
+         balance_pgdat+807
+         kswapd+521
+         kthread+228
+         ret_from_fork+48
+         ret_from_fork_asm+27
+@stack_wait[700, kswapd5, 1]:
+         __cgroup_rstat_lock+107
+         __cgroup_rstat_lock+107
+         cgroup_rstat_flush_locked+851
+         cgroup_rstat_flush+35
+         shrink_node+226
+         balance_pgdat+807
+         kswapd+521
+         kthread+228
+         ret_from_fork+48
+         ret_from_fork_asm+27
+@stack_wait[701, kswapd6, 1]:
+         __cgroup_rstat_lock+107
+         __cgroup_rstat_lock+107
+         cgroup_rstat_flush_locked+851
+         cgroup_rstat_flush+35
+         shrink_node+226
+         balance_pgdat+807
+         kswapd+521
+         kthread+228
+         ret_from_fork+48
+         ret_from_fork_asm+27
+@stack_wait[702, kswapd7, 1]:
+         __cgroup_rstat_lock+107
+         __cgroup_rstat_lock+107
+         cgroup_rstat_flush_locked+851
+         cgroup_rstat_flush+35
+         shrink_node+226
+         balance_pgdat+807
+         kswapd+521
+         kthread+228
+         ret_from_fork+48
+         ret_from_fork_asm+27
 
-Quick summary:
-- Removing the enclave page requires two operations: removing the PTE and
-  performing EREMOVE.
-- The complete flow of removing the enclave page cannot be protected by a
-  single encl->lock, because it would violate the lock order and would
-  lead to deadlocks.
-- The current upstream implementation thus breaks the flow into two
-  critical sections, releasing encl->lock before sgx_zap_enclave_ptes()
-  and re-acquiring this lock afterwards. This leads to a data race.
-- My patch restores "atomicity" of the flow by introducing a new flag
-  SGX_ENCL_PAGE_BEING_REMOVED.
+--Jesper
 
-> > --- a/arch/x86/kernel/cpu/sgx/encl.h
-> > +++ b/arch/x86/kernel/cpu/sgx/encl.h
-> > @@ -25,6 +25,9 @@
-> >  /* 'desc' bit marking that the page is being reclaimed. */
-> >  #define SGX_ENCL_PAGE_BEING_RECLAIMED  BIT(3)
-> >
-> > +/* 'desc' bit marking that the page is being removed. */
-> > +#define SGX_ENCL_PAGE_BEING_REMOVED    BIT(2)
->
-> Second, convince me that this _needs_ a new bit.  Why can't we just have
-> a bit that effectively means "return EBUSY if you see this bit when
-> handling a fault".
 
-As Haitao mentioned in his reply, the bit SGX_ENCL_PAGE_BEING_RECLAIMED is
-also used in reclaimer_writing_to_pcmd(). If we would re-use this bit to
-mark a page being removed, reclaimer_writing_to_pcmd() would incorrectly
-return 1, meaning that the reclaimer is about to write to the PCMD page,
-which is not true.
+[1] 
+https://github.com/xdp-project/xdp-project/blob/master/areas/latency/cgroup_rstat_latency.bt
 
-> >  struct sgx_encl_page {
-> >     unsigned long desc;
-> >     unsigned long vm_max_prot_bits:8;
-> > diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
-> > index 5d390df21440..de59219ae794 100644
-> > --- a/arch/x86/kernel/cpu/sgx/ioctl.c
-> > +++ b/arch/x86/kernel/cpu/sgx/ioctl.c
-> > @@ -1142,6 +1142,7 @@ static long sgx_encl_remove_pages(struct sgx_encl *encl,
-> >          * Do not keep encl->lock because of dependency on
-> >          * mmap_lock acquired in sgx_zap_enclave_ptes().
-> >          */
-> > +       entry->desc |= SGX_ENCL_PAGE_BEING_REMOVED;
->
-> This also needs a comment, no matter what.
-
-Ok, I will write something along the lines that we want to prevent a data
-race with an EAUG flow, and since we have to release encl->lock (which
-would otherwise prevent the data race) we instead set a bit to mark this
-enclave page as being in the process of removal, so that the EAUG flow
-backs off and retries later.
-
---
-Dmitrii Kuvaiskii
 
