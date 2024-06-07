@@ -1,119 +1,183 @@
-Return-Path: <stable+bounces-49989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C06900AAA
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 18:47:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A55C900B43
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 19:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D82861C218FC
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 16:47:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83912288273
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 17:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97B719AD62;
-	Fri,  7 Jun 2024 16:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6D119B3EF;
+	Fri,  7 Jun 2024 17:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="O6HnjGYK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LcL0g5Lo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275C219AA65
-	for <stable@vger.kernel.org>; Fri,  7 Jun 2024 16:47:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEC6196C68;
+	Fri,  7 Jun 2024 17:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717778834; cv=none; b=P0DuJACA1Zh2B8KezCm/PSB3XN3G1oBrC2hV9N/LfUR3Pawrapa6jAskxIxoRW0Cb9PBX3p5wCBF6RMwdSzDCLueXjfpSfq1y0+hi1DawkwYx49P8FYUZw8dtRcoP9wN36G6bOwcLM27KhiTWBQk6iXTyyluCQS5YvYXeA6BoxU=
+	t=1717781410; cv=none; b=Qmy8uVc+XL52EXqqBE96RlLNHTHSMSKU5W92nPhdcppdiZ/BdeJXqDW9HaDbmqsLtK+yr99hLvbpHoag6HdRfihlsKJpwaiC+NVZowcDocuXqeWGElMvr7fP4mMPOyGsf1MFOdyAyp2DFfd2dmuAVEktZRgfhl2+lc3vfJAqLow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717778834; c=relaxed/simple;
-	bh=yygfjpWf7c4mRu3wc8784otqW9r1u1MIqacYFxxAi/s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QfgTJukzb8pgpic52jfnexz03WCAE8sbl03cX1mPfcmtBzxH65QgnuGLzC5WIQaDuZiN4UJ8jca5EBT0/IK8wiJWTUknUiI+5Jj5BW0hD856s4c23Pm97OipNJflBw9Qs0WzLF8mLn5aV6ObdFIBL+P+7BaeMonYTPbCV0dMm44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=O6HnjGYK; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-52b8b638437so2666814e87.3
-        for <stable@vger.kernel.org>; Fri, 07 Jun 2024 09:47:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717778831; x=1718383631; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VEc27/+QDjvxPdxrPe9MQft414aDa0ng2g5tZw7JHxo=;
-        b=O6HnjGYKklXmJwur7DN9WWBSz670aIuc6FXFT0vE1sCHQvHND3ZvYqaeIyexF/P2z7
-         kxLJiyGFaj3XDyshOb4PDlLaNC6MTbUa2PymOPFHq/ECncaaDiA5kFRjW8kbbVPUWMUY
-         iWGpBw9NERdvzsMvjrxgQyzQHgoWf4+7jV77zUR+arDzxxZRBBB2AgAnGc/9mEOm6iut
-         nti2iCgu+IjqMLcMMC70PZn2OwMoIAGxCm5SccyoZYWSVKTnBPt15z5yzKkeROGuGSyL
-         fxMyPy6GfikIF/rmECDfy1zK/vxF9aCeLbR6OjPk8vmXtcmKpCE0+AQWcm/Ojk63vzt2
-         1dRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717778831; x=1718383631;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VEc27/+QDjvxPdxrPe9MQft414aDa0ng2g5tZw7JHxo=;
-        b=Uh63YeK3uiI1qd1yNoU8i771UlbRGcDrvd8S/FWjRGWEjq4zR/9pB10XfjPKgT+2g4
-         8VROPDAEwyMMU1iSsYQFbJXyZYZjaozilSlcd8uIrkUd6pgLnJdfzLCo4B8PZsFLIZzL
-         s2eGMD4fhKkmwchJNCnVQAkC/RhRImKSNAp+tLLXmCsvxeKj77oZZpoqmKMZlZOiWlhv
-         8pTPCHubCqC9M7pdypkEjiVFrnZgEKZFofOG5DLWwYun0qniZh75QwUpytI5MFDXJdPn
-         l8B7/XhWiRup0KTLDerdseBStPyjaYFJ/4M8qEj1zyA6x2Oy6douX4VrjmHtosVeBHbV
-         0+xA==
-X-Forwarded-Encrypted: i=1; AJvYcCV8+omv91+ZNOFHZOqwZ5r1eDwpL3moRPqA0noCOgKXTcuTsvvTjELCX0pLq0HTObm0KGWCKMXODBOjMJlPrj7h+1DHj7jP
-X-Gm-Message-State: AOJu0YzgaldED8TS7K+WaUGpnO25t6zfsBJgG3i3kGj8ra6kc9QZU2vX
-	qWW43VmGwNxeyzOSVynCbrGPDPpgZFJKSDf5xp1OygGf8NXG5oWV6EerlgzyUZo=
-X-Google-Smtp-Source: AGHT+IESCl691aQ/xAkEAiHxKXbz4d/ior2BLKSileBECqIsyor4crwcMeyTbLAuYXaItW8WP91YVA==
-X-Received: by 2002:ac2:5e91:0:b0:52b:c294:f005 with SMTP id 2adb3069b0e04-52bc294f418mr764139e87.12.1717778831114;
-        Fri, 07 Jun 2024 09:47:11 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c8058272bsm273700566b.18.2024.06.07.09.47.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 09:47:10 -0700 (PDT)
-Date: Fri, 7 Jun 2024 19:47:06 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Joy Chakraborty <joychakr@google.com>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Rob Herring <robh@kernel.org>,
-	Nicolas Saenz Julienne <nsaenz@kernel.org>,
-	linux-kernel@vger.kernel.org, manugautam@google.com,
+	s=arc-20240116; t=1717781410; c=relaxed/simple;
+	bh=B9tO+B2hT8Xk/eYrXZW//gyZWpphBGJke5m1suqOmjk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dkrIbpe1NxUaN6LNBkYDj+yUGMDZn8ijsbt+7dY/CnJJW52MNc2t/KhS2REo7lxaKeA3hpHzVHyz5x+lpIBY8d9/BTkpKcejwqh+/0nBqHmcUTWoJyiTqitnsifffBMWcAQhewdZDLn4mHSgwY6zUnunq4HNlBhmisZI2zdq/28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LcL0g5Lo; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717781409; x=1749317409;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=B9tO+B2hT8Xk/eYrXZW//gyZWpphBGJke5m1suqOmjk=;
+  b=LcL0g5LoEeTTY7tXfPBb0kyWkeLx+oI2xDNZ2uvA4Fcrvc3nmoQWyQ1A
+   r/p7CYEnX2TfZ8nPmTweGBfQGldkaSAZpT90UmRdadouffc+bBy06SnNN
+   tMUQUSEvMoOXHicuP5AEaOa2S3qiY502myam72gmE+f/NYP0G9zfRuZAj
+   yFztSpLNkDu+1fTA8PInOGuiiTuLZ8AicCrLO616B8gwTiXwjOGAoDZ/S
+   RT/cOKD39Fqj1WSiP914SdbrGye28VFH1uGT+qbuIgcQQQex8lB/VMcZ5
+   TlCoQEG3itoDIANnUhDSIJeJAu1bvY538WhZXDVEL+8RgZOMCPp6Jbnm7
+   A==;
+X-CSE-ConnectionGUID: SyC4y/+MTW+/WX5lxrTsLQ==
+X-CSE-MsgGUID: SupNgW+NTPS6hREdBuN+bw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="18368118"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
+   d="scan'208";a="18368118"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 10:30:08 -0700
+X-CSE-ConnectionGUID: SpdaPTKvQbmoP0C/7JLRpw==
+X-CSE-MsgGUID: h0v3KNYvSseJzFH9vNCMuA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
+   d="scan'208";a="38472457"
+Received: from mehlow-prequal01.jf.intel.com ([10.54.102.156])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 10:30:07 -0700
+From: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
+To: dave.hansen@intel.com
+Cc: dave.hansen@linux.intel.com,
+	dmitrii.kuvaiskii@intel.com,
+	haitao.huang@linux.intel.com,
+	jarkko@kernel.org,
+	kai.huang@intel.com,
+	kailun.qin@intel.com,
+	linux-kernel@vger.kernel.org,
+	linux-sgx@vger.kernel.org,
+	mona.vij@intel.com,
+	reinette.chatre@intel.com,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3] nvmem: rmem: Fix return value of rmem_read()
-Message-ID: <b4eddc66-9fe7-4f52-936a-7cfd8c2b424c@moroto.mountain>
-References: <20240607160510.3968596-1-joychakr@google.com>
+Subject: Re: [PATCH v3 2/2] x86/sgx: Resolve EREMOVE page vs EAUG page data race
+Date: Fri,  7 Jun 2024 10:21:46 -0700
+Message-Id: <20240607172146.536993-1-dmitrii.kuvaiskii@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <01bb6519-680e-45bf-b8bd-34763658aa17@intel.com>
+References: <01bb6519-680e-45bf-b8bd-34763658aa17@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240607160510.3968596-1-joychakr@google.com>
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Deutschland GmbH - Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 07, 2024 at 04:05:10PM +0000, Joy Chakraborty wrote:
-> reg_read() callback registered with nvmem core expects 0 on success and
-> a negative value on error but rmem_read() returns the number of bytes
-> read which is treated as an error at the nvmem core.
-> 
-> This does not break when rmem is accessed using sysfs via
-> bin_attr_nvmem_read()/write() but causes an error when accessed from
-> places like nvmem_access_with_keepouts(), etc.
-> 
-> Change to return 0 on success and error in case
-> memory_read_from_buffer() returns an error or -EIO if bytes read do not
-> match what was requested.
-> 
-> Fixes: 5a3fa75a4d9c ("nvmem: Add driver to expose reserved memory as nvmem")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joy Chakraborty <joychakr@google.com>
-> ---
+On Tue, May 28, 2024 at 09:23:13AM -0700, Dave Hansen wrote:
+> On 5/17/24 04:06, Dmitrii Kuvaiskii wrote:
+> ...
+>
+> First, why is SGX so special here?  How is the SGX problem different
+> than what the core mm code does?
 
-Thanks!
+Here is my understanding why SGX is so special and why I have to introduce
+a new bit SGX_ENCL_PAGE_BEING_REMOVED.
 
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+In SGX's removal of the enclave page, two operations must happen
+atomically: the PTE entry must be removed and the page must be EREMOVE'd.
 
-You mentioned some other functions that had similar bugs.  Could you
-fix those as well.
+Generally, to guarantee atomicity, encl->lock is acquired. Ideally, if
+this encl->lock could be acquired at the beginning of
+sgx_encl_remove_pages() and be released at the very end of this function,
+there would be no EREMOVE page vs EAUG page data race, and my bug fix
+(with SGX_ENCL_PAGE_BEING_REMOVED bit) wouldn't be needed.
 
-regards,
-dan carpenter
+However, the current implementation of sgx_encl_remove_pages() has to
+release encl->lock before removing the PTE entry. Releasing the lock is
+required because the function that removes the PTE entry --
+sgx_zap_enclave_ptes() -- acquires another, enclave-MM lock:
+mmap_read_lock(encl_mm->mm).
 
+The two locks must be taken in this order:
+1. mmap_read_lock(encl_mm->mm)
+2. mutex_lock(&encl->lock)
+
+This lock order is apparent from e.g. sgx_encl_add_page(). This order also
+seems to make intuitive sense: VMA callbacks are called with the MM lock
+being held, so the MM lock should be the first in lock order.
+
+So, if sgx_encl_remove_pages() would _not_ release encl->lock before
+calling sgx_zap_enclave_ptes(), this would violate the lock order and
+might lead to deadlocks. At the same time, releasing encl->lock in the
+middle of the two-operations flow leads to a data race that I found in
+this patch series.
+
+Quick summary:
+- Removing the enclave page requires two operations: removing the PTE and
+  performing EREMOVE.
+- The complete flow of removing the enclave page cannot be protected by a
+  single encl->lock, because it would violate the lock order and would
+  lead to deadlocks.
+- The current upstream implementation thus breaks the flow into two
+  critical sections, releasing encl->lock before sgx_zap_enclave_ptes()
+  and re-acquiring this lock afterwards. This leads to a data race.
+- My patch restores "atomicity" of the flow by introducing a new flag
+  SGX_ENCL_PAGE_BEING_REMOVED.
+
+> > --- a/arch/x86/kernel/cpu/sgx/encl.h
+> > +++ b/arch/x86/kernel/cpu/sgx/encl.h
+> > @@ -25,6 +25,9 @@
+> >  /* 'desc' bit marking that the page is being reclaimed. */
+> >  #define SGX_ENCL_PAGE_BEING_RECLAIMED  BIT(3)
+> >
+> > +/* 'desc' bit marking that the page is being removed. */
+> > +#define SGX_ENCL_PAGE_BEING_REMOVED    BIT(2)
+>
+> Second, convince me that this _needs_ a new bit.  Why can't we just have
+> a bit that effectively means "return EBUSY if you see this bit when
+> handling a fault".
+
+As Haitao mentioned in his reply, the bit SGX_ENCL_PAGE_BEING_RECLAIMED is
+also used in reclaimer_writing_to_pcmd(). If we would re-use this bit to
+mark a page being removed, reclaimer_writing_to_pcmd() would incorrectly
+return 1, meaning that the reclaimer is about to write to the PCMD page,
+which is not true.
+
+> >  struct sgx_encl_page {
+> >     unsigned long desc;
+> >     unsigned long vm_max_prot_bits:8;
+> > diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
+> > index 5d390df21440..de59219ae794 100644
+> > --- a/arch/x86/kernel/cpu/sgx/ioctl.c
+> > +++ b/arch/x86/kernel/cpu/sgx/ioctl.c
+> > @@ -1142,6 +1142,7 @@ static long sgx_encl_remove_pages(struct sgx_encl *encl,
+> >          * Do not keep encl->lock because of dependency on
+> >          * mmap_lock acquired in sgx_zap_enclave_ptes().
+> >          */
+> > +       entry->desc |= SGX_ENCL_PAGE_BEING_REMOVED;
+>
+> This also needs a comment, no matter what.
+
+Ok, I will write something along the lines that we want to prevent a data
+race with an EAUG flow, and since we have to release encl->lock (which
+would otherwise prevent the data race) we instead set a bit to mark this
+enclave page as being in the process of removal, so that the EAUG flow
+backs off and retries later.
+
+--
+Dmitrii Kuvaiskii
 
