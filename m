@@ -1,168 +1,418 @@
-Return-Path: <stable+bounces-50021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93456900DD4
-	for <lists+stable@lfdr.de>; Sat,  8 Jun 2024 00:01:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B78E7900E46
+	for <lists+stable@lfdr.de>; Sat,  8 Jun 2024 01:02:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D9671F23B85
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 22:01:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 215401F2309E
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 23:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6F114F9D8;
-	Fri,  7 Jun 2024 22:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6B161FC5;
+	Fri,  7 Jun 2024 23:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dCHOzLV5"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="N3+k46vr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0ABD12B93;
-	Fri,  7 Jun 2024 22:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A871CAAD
+	for <stable@vger.kernel.org>; Fri,  7 Jun 2024 23:02:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717797676; cv=none; b=Xesl4FzJ5azBFgwP3YRvOnMKRywEpDjBVKLC311PFSE8zKpu+LnIPEuZIBWf4C8dIX3Cl5L3ZA3iODghp8lzZj7svZ4pThkbSuEKeCTgNA2YdikyYCgM6EI+xWvAhaHvwDNMjW87wSEpVpPTZ7DDhy1BBX8MRGqcTQGghnuRpJk=
+	t=1717801347; cv=none; b=jwWxNJZqJ4s8CBO9FY0HN3x+i5LzVTT7Jt0KrcQtW5lflmxrcjSSCkdEwbjhxrFdmDkuI2yCSLjko1IxtIEfifA8NJ/CCRz7OWRToPf855MV4Kh/3dg/Tq/IDTUTcoyQjdkashgKrcUz86lRehfuE6c0vHhk9DZjakjsoJF0Log=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717797676; c=relaxed/simple;
-	bh=IDFRZUCaRgT+IPHYguEUg6g4GU6L1L1720EL+LDGYqs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kZ1xDJkziff/o8pCwQR9c6bw1A1CSE960ZHFMa7DoXMVplD2h5zwn1rz/uV1gbeVbF7E9LWdhAjezM9CeWvLl80PyuAiFOO+egLdaz6XePtXqPMhmIQ2gWtaS+BqdVTx8xsu5x7lP/sJfRNpIDk9VXV/4v9Fh3bSpNvCd+SLjS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dCHOzLV5; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2eacd7e7b38so27691751fa.2;
-        Fri, 07 Jun 2024 15:01:14 -0700 (PDT)
+	s=arc-20240116; t=1717801347; c=relaxed/simple;
+	bh=EsyqwKht6iI88gjk9LlG7t+qWQ8HgqRNU4avcg0nzr0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Pf8NAG7jgCuBosw96UTzm1sfAOoh9F5k0OYxh/tFLGlQsz7FUjXna7+ZBzenunYT0p2mN8m2+ebCyMEnYY8S5OSgJBJ0PLHpB90IqqI4a+jSEQ8J0m5EIS+j+ZSrL2HnsQamraBv/EwpigAarAwmidEWJ8DC9Em5sOzPLc8yVbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=N3+k46vr; arc=none smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-25074a27485so1514840fac.3
+        for <stable@vger.kernel.org>; Fri, 07 Jun 2024 16:02:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717797673; x=1718402473; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IDFRZUCaRgT+IPHYguEUg6g4GU6L1L1720EL+LDGYqs=;
-        b=dCHOzLV59f8/q9/KOp/eSJtI7jl1yiWPRWVt25SmW75xQN/+ONwGqKkrVVYErKqBOM
-         dmVyxXVS7lhIFwlpNFZqyXSrqYpNhAg/NZID6OIIqUW1rWm5yueIANZTndKR6isv1ME5
-         Gi6bYBvu6RG0AyFAk55ZLYnu8odTfdnSBqCM0WGk3VQPP3AH4F/5a6b4MXmLiuvScWPy
-         PZ7cnMf7Y2Y5xCn3fmfCoTd+ylBqmoaJ3FbBTCWyWzwD5vZlzET1d4TkCEYyV/ZKUVE1
-         zOOTwjN4vg2mBprQNON6lHmr/E50Osek1mrWXTdGnWdieI48v8etY29BM82S5Ll3hvkK
-         GYQw==
+        d=broadcom.com; s=google; t=1717801343; x=1718406143; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zlL/JZl1XZV1cOjn9hrGLfruPuOqI8kDA4KtcPFCazY=;
+        b=N3+k46vrV3/Bu1a4zpHqSp6lqqZMQqyEKITakvzm7cueS0tsGDbpbAcrTE7RA48flg
+         k7whj6oad8YIo3K5h/5YH0yoymo3g1eXoT9q5Vy40IaHQ11z2VEOYCmUsL2uLAXOGkIH
+         V1RlEAXd/kDJXFjx469bo/adUBRPlFWAAY9Ow=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717797673; x=1718402473;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IDFRZUCaRgT+IPHYguEUg6g4GU6L1L1720EL+LDGYqs=;
-        b=fkuOV47CxJXYpa876y8n+wtGdZeOepkXry2jmLuWvEWHxOEDbrtY5eGqRQAAXyPz2b
-         5AQ/AN46eLvzDy35emFZbe7opWiftfaPzhPBZEvAd3e39Jevh6xIlBnsILEFD0DxVH5q
-         F8VsMNX3e4lmlT8D4myBYkMLVyLzpi++2ruq5hPlt6KWJ+cp+1kTRuHDnvt20IANwDl/
-         0zoEWb/0V9aWHF3PECA6Ez0rzlrsNIIzZuglJptVz7yGeD7mCnj8cHWfIitvVoHjE/XP
-         vl1A1qF4znVykvAjbtYOUTxQCUWy/JeYdyrDSsWp8sahhRSpc2LFZh4L/Pd3pgEITAli
-         /tHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWEw6L0pxROmefuPYqip7DEUlqQr/1/nyqHae34sKol9s2p6vGa0FQ+ttDvZXHIPkeVmEc5QjlmfvkrH54cd7ZXmlm1AqXh3+99um27OcGs3g5GMTRMAZefkS8jTtjv5N7VLzvp297m
-X-Gm-Message-State: AOJu0Yz8I2gwi7bGo9we+kFMTMobinBDDFTBuMS6+3xYsufd5cbKXhMV
-	qv6yAMz9WWsSgOei2FdfQjGB2/cGhITBgyoJYqCVVfZJKfRLa/wdTOz1Pzduae7WVZyDNacuyfI
-	BWSsbUiWjttBQqN4dmxypFgQFnTs=
-X-Google-Smtp-Source: AGHT+IGZWRAamM1ugdxv9EnS9P+taqCrpoBBWYjXXXoAHxBvCQeQ0pVGsKHPxoHzv/iJ8bkc0F7OlA/lltsppFMR4Zc=
-X-Received: by 2002:a2e:8ec6:0:b0:2eb:4d6a:76f8 with SMTP id
- 38308e7fff4ca-2eb4d6a7c34mr5549651fa.40.1717797672179; Fri, 07 Jun 2024
- 15:01:12 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1717801343; x=1718406143;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zlL/JZl1XZV1cOjn9hrGLfruPuOqI8kDA4KtcPFCazY=;
+        b=eLaFOWaoWTxtbrndzr9GapFHoQtOzejy1aC2GjLE6H+YtIRijJpuCblOkrdvGnoe6E
+         9FuN7B/qERbcadXZ6D7oyifR2cMgRbmK+hXDBbxP5C1QUkQldsopc0HUML5SqFc2MXFt
+         duS+9DWmvc05nerYCV/QHGzKyg2R8kPL7YmJbsqVvc678meCQC36JAfTe4jPHiAA5tDp
+         O/icfaooJlIOON6sN5rEDtn0n66i19Od9zCpAAPcfW80YJ6mFEOMJvAxFwZpvBLzzbOe
+         7tSPpXSBTVcRDPR1cqZgvYVPfFI7On+wkHGTSsdJoY86c6PUwaYswACfBWDshOVp2vkZ
+         4JVA==
+X-Gm-Message-State: AOJu0Yw4WFGMIu88z/hVBTZV0h4VLmJETaP6R06KZkmWM/ZyaWdm/fVX
+	VcNzup5oTk4UMfnoxaJPXzCR0W/jwHVwMwuspw6NsEjPY5GdJ92AiVb74hfnzbycqkQBAnMUbxa
+	84d0qdIKHUdM3dQfdcRpZ/V6AiD1eMVJnpvVtHHkCcjP83//b8uHjiGKWtDbXRZZsR8j6UNB60E
+	xqftqj+AQAKrk3c/EBCFHl6QRFllCnD4yiwZMR+XjFp3c=
+X-Google-Smtp-Source: AGHT+IFWt2YLSPWsPUebr6RomLvWokqGO6a/Lt/RkscjauOQhia9gK7XfpQg64YGSj31ye6JVD504A==
+X-Received: by 2002:a05:6870:a104:b0:22e:de2d:8c00 with SMTP id 586e51a60fabf-254644f1e6cmr4342089fac.24.1717801343386;
+        Fri, 07 Jun 2024 16:02:23 -0700 (PDT)
+Received: from ubuntu-vm.dhcp.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-795330b7607sm209267185a.85.2024.06.07.16.02.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Jun 2024 16:02:22 -0700 (PDT)
+From: Kuntal Nayak <kuntal.nayak@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com,
+	pablo@netfilter.org,
+	kadlec@netfilter.org,
+	fw@strlen.de,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kuntal Nayak <kuntal.nayak@broadcom.com>
+Subject: [PATCH v6.1] netfilter: nf_tables: use timestamp to check for set element timeout
+Date: Fri,  7 Jun 2024 16:01:46 -0700
+Message-Id: <20240607230146.47222-1-kuntal.nayak@broadcom.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAGew7BttU+g40uRnSCN5XmbXs1KX1ZBbz+xyXC_nw5p4dR2dGA@mail.gmail.com>
- <CABBYNZLE9uYiRM-baoBt=RQktq__TguMETgmVWGzfeorARfm4w@mail.gmail.com>
- <212fca4c-fc1f-4da4-b48e-c6a4b64a2b35@leemhuis.info> <CAGew7BseJ18yjTu5AFWr=B3c41gXe4T=B0JqFWvXjQYvcDPfTA@mail.gmail.com>
-In-Reply-To: <CAGew7BseJ18yjTu5AFWr=B3c41gXe4T=B0JqFWvXjQYvcDPfTA@mail.gmail.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Fri, 7 Jun 2024 18:00:59 -0400
-Message-ID: <CABBYNZJqULvfnafB5vA4PHPtzs_qmEQK8JZ3C09Q=wmvSZqwBA@mail.gmail.com>
-Subject: Re: Bluetooth Kernel Bug: After connecting either HFP/HSP or A2DP is
- not available (Regression in 6.9.3, 6.8.12)
-To: =?UTF-8?Q?Timo_Schr=C3=B6der?= <der.timosch@gmail.com>
-Cc: regressions@leemhuis.info, stable@vger.kernel.org, 
-	regressions@lists.linux.dev, linux-bluetooth@vger.kernel.org, 
-	luiz.von.dentz@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Timo,
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-On Fri, Jun 7, 2024 at 5:43=E2=80=AFPM Timo Schr=C3=B6der <der.timosch@gmai=
-l.com> wrote:
->
-> Am Fr., 7. Juni 2024 um 08:10 Uhr schrieb Linux regression tracking
-> (Thorsten Leemhuis) <regressions@leemhuis.info>:
-> >
-> > On 06.06.24 23:23, Luiz Augusto von Dentz wrote:
-> > > On Thu, Jun 6, 2024 at 4:46=E2=80=AFPM Timo Schr=C3=B6der <der.timosc=
-h@gmail.com> wrote:
-> > >> on my two notebooks, one with Ubuntu (Mainline Kernel 6.9.3, bluez
-> > >> 5.7.2) and the other one with Manjaro (6.9.3, bluez 5.7.6) I'm havin=
-g
-> > >> problems with my Sony WH-1000XM3 and Shure BT1. Either A2DP or HFP/H=
-SP
-> > >> is not available after the connection has been established after a
-> > >> reboot or a reconnection. It's reproducible that with the WH-1000XM3
-> > >> the A2DP profiles are missing and with the Shure BT1 HFP/HSP profile=
-s
-> > >> are missing. It also takes longer than usual to connect and I have a
-> > >> log message in the journal:
-> > >>
-> > >> Jun 06 16:28:10 liebig bluetoothd[854]:
-> > >> profiles/audio/avdtp.c:cancel_request() Discover: Connection timed o=
-ut
-> > >> (110)
-> > >>
-> > >> When I disable and re-enable bluetooth (while the Headsets are still
-> > >> on) and trigger a reconnect from the notebooks, A2DP and HFP/HSP
-> > >> Profiles are available again.
-> > >>
-> > >> I also tested it with 6.8.12 and it's the same problem. 6.8.11 and
-> > >> 6.9.2 don't have the problem.
-> > >> So I did a bisection. After reverting commit
-> > >> af1d425b6dc67cd67809f835dd7afb6be4d43e03 "Bluetooth: HCI: Remove
-> > >> HCI_AMP support" for 6.9.3 it's working again without problems.
-> > >>
-> > >> Let me know if you need anything from me.
-> > >
-> > > Wait what, that patch has nothing to do with any of these profiles no=
-t
-> > > really sure how that would cause a regression really, are you sure yo=
-u
-> > > don't have actual connection timeout happening at the link layer and
-> > > that by some chance didn't happen when running with HCI_AMP reverted?
-> > >
-> > > I'd be surprised that HCI_AMP has any effect in most controllers
-> > > anyway, only virtual controllers was using that afaik.
-> >
-> > Stupid question from a bystander without knowledge in the field (so fee=
-l
-> > free to ignore this): is that patch maybe causing trouble because it ha=
-s
-> > some hidden dependency on a earlier change that was not backported to
-> > 6.9.y?
-> >
-> > Timo, to rule that out (and it's good to know in general, too) it would
-> > be good to known if current mainline (e.g. 6.10-rc) is affected as well=
-.
-> >
-> > Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat=
-)
-> > --
-> > Everything you wanna know about Linux kernel regression tracking:
-> > https://linux-regtracking.leemhuis.info/about/#tldr
-> > If I did something stupid, please tell me, as explained on that page.
->
-> Hallo Thorsten, I tried with 6.10-rc2 and it's the same problem on my sys=
-tems.
+commit 7395dfacfff65e9938ac0889dafa1ab01e987d15 upstream
 
-Could you please create a issue at
-https://github.com/bluez/bluez/issues and then attach btmon traces and
-bluetoothd? This is a really weird regression, also is your system
-using pulseaudio or pipewire?
+Add a timestamp field at the beginning of the transaction, store it
+in the nftables per-netns area.
 
---=20
-Luiz Augusto von Dentz
+Update set backend .insert, .deactivate and sync gc path to use the
+timestamp, this avoids that an element expires while control plane
+transaction is still unfinished.
+
+.lookup and .update, which are used from packet path, still use the
+current time to check if the element has expired. And .get path and dump
+also since this runs lockless under rcu read size lock. Then, there is
+async gc which also needs to check the current time since it runs
+asynchronously from a workqueue.
+
+Fixes: c3e1b005ed1c ("netfilter: nf_tables: add set element timeout support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[ KN: Backport patch according to v6.1.x source. 'tstamp' retrieved 
+      after reading 'net' in nft_rbtree_gc() unlike master where 'net' 
+      is being set twice. This would not change logical behavior 
+      of the function. ]
+Signed-off-by: Kuntal Nayak <kuntal.nayak@broadcom.com>
+---
+ include/net/netfilter/nf_tables.h | 16 ++++++++++++++--
+ net/netfilter/nf_tables_api.c     |  4 +++-
+ net/netfilter/nft_set_hash.c      |  8 +++++++-
+ net/netfilter/nft_set_pipapo.c    | 18 +++++++++++-------
+ net/netfilter/nft_set_rbtree.c    | 10 +++++++---
+ 5 files changed, 42 insertions(+), 14 deletions(-)
+
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 2fa344cb6..964cf7578 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -784,10 +784,16 @@ static inline struct nft_set_elem_expr *nft_set_ext_expr(const struct nft_set_ex
+ 	return nft_set_ext(ext, NFT_SET_EXT_EXPRESSIONS);
+ }
+ 
+-static inline bool nft_set_elem_expired(const struct nft_set_ext *ext)
++static inline bool __nft_set_elem_expired(const struct nft_set_ext *ext,
++					  u64 tstamp)
+ {
+ 	return nft_set_ext_exists(ext, NFT_SET_EXT_EXPIRATION) &&
+-	       time_is_before_eq_jiffies64(*nft_set_ext_expiration(ext));
++	       time_after_eq64(tstamp, *nft_set_ext_expiration(ext));
++}
++
++static inline bool nft_set_elem_expired(const struct nft_set_ext *ext)
++{
++	return __nft_set_elem_expired(ext, get_jiffies_64());
+ }
+ 
+ static inline struct nft_set_ext *nft_set_elem_ext(const struct nft_set *set,
+@@ -1711,6 +1717,7 @@ struct nftables_pernet {
+ 	struct list_head	notify_list;
+ 	struct mutex		commit_mutex;
+ 	u64			table_handle;
++	u64			tstamp;
+ 	unsigned int		base_seq;
+ 	u8			validate_state;
+ 	unsigned int		gc_seq;
+@@ -1723,6 +1730,11 @@ static inline struct nftables_pernet *nft_pernet(const struct net *net)
+ 	return net_generic(net, nf_tables_net_id);
+ }
+ 
++static inline u64 nft_net_tstamp(const struct net *net)
++{
++	return nft_pernet(net)->tstamp;
++}
++
+ #define __NFT_REDUCE_READONLY	1UL
+ #define NFT_REDUCE_READONLY	(void *)__NFT_REDUCE_READONLY
+ 
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 1c4b7a8ec..e838a6617 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9377,6 +9377,7 @@ struct nft_trans_gc *nft_trans_gc_catchall_async(struct nft_trans_gc *gc,
+ struct nft_trans_gc *nft_trans_gc_catchall_sync(struct nft_trans_gc *gc)
+ {
+ 	struct nft_set_elem_catchall *catchall, *next;
++	u64 tstamp = nft_net_tstamp(gc->net);
+ 	const struct nft_set *set = gc->set;
+ 	struct nft_set_elem elem;
+ 	struct nft_set_ext *ext;
+@@ -9386,7 +9387,7 @@ struct nft_trans_gc *nft_trans_gc_catchall_sync(struct nft_trans_gc *gc)
+ 	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
+ 		ext = nft_set_elem_ext(set, catchall->elem);
+ 
+-		if (!nft_set_elem_expired(ext))
++		if (!__nft_set_elem_expired(ext, tstamp))
+ 			continue;
+ 
+ 		gc = nft_trans_gc_queue_sync(gc, GFP_KERNEL);
+@@ -10138,6 +10139,7 @@ static bool nf_tables_valid_genid(struct net *net, u32 genid)
+ 	bool genid_ok;
+ 
+ 	mutex_lock(&nft_net->commit_mutex);
++	nft_net->tstamp = get_jiffies_64();
+ 
+ 	genid_ok = genid == 0 || nft_net->base_seq == genid;
+ 	if (!genid_ok)
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index 2013de934..1fd3b4133 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -35,6 +35,7 @@ struct nft_rhash_cmp_arg {
+ 	const struct nft_set		*set;
+ 	const u32			*key;
+ 	u8				genmask;
++	u64				tstamp;
+ };
+ 
+ static inline u32 nft_rhash_key(const void *data, u32 len, u32 seed)
+@@ -61,7 +62,7 @@ static inline int nft_rhash_cmp(struct rhashtable_compare_arg *arg,
+ 		return 1;
+ 	if (nft_set_elem_is_dead(&he->ext))
+ 		return 1;
+-	if (nft_set_elem_expired(&he->ext))
++	if (__nft_set_elem_expired(&he->ext, x->tstamp))
+ 		return 1;
+ 	if (!nft_set_elem_active(&he->ext, x->genmask))
+ 		return 1;
+@@ -86,6 +87,7 @@ bool nft_rhash_lookup(const struct net *net, const struct nft_set *set,
+ 		.genmask = nft_genmask_cur(net),
+ 		.set	 = set,
+ 		.key	 = key,
++		.tstamp  = get_jiffies_64(),
+ 	};
+ 
+ 	he = rhashtable_lookup(&priv->ht, &arg, nft_rhash_params);
+@@ -104,6 +106,7 @@ static void *nft_rhash_get(const struct net *net, const struct nft_set *set,
+ 		.genmask = nft_genmask_cur(net),
+ 		.set	 = set,
+ 		.key	 = elem->key.val.data,
++		.tstamp  = get_jiffies_64(),
+ 	};
+ 
+ 	he = rhashtable_lookup(&priv->ht, &arg, nft_rhash_params);
+@@ -127,6 +130,7 @@ static bool nft_rhash_update(struct nft_set *set, const u32 *key,
+ 		.genmask = NFT_GENMASK_ANY,
+ 		.set	 = set,
+ 		.key	 = key,
++		.tstamp  = get_jiffies_64(),
+ 	};
+ 
+ 	he = rhashtable_lookup(&priv->ht, &arg, nft_rhash_params);
+@@ -170,6 +174,7 @@ static int nft_rhash_insert(const struct net *net, const struct nft_set *set,
+ 		.genmask = nft_genmask_next(net),
+ 		.set	 = set,
+ 		.key	 = elem->key.val.data,
++		.tstamp	 = nft_net_tstamp(net),
+ 	};
+ 	struct nft_rhash_elem *prev;
+ 
+@@ -212,6 +217,7 @@ static void *nft_rhash_deactivate(const struct net *net,
+ 		.genmask = nft_genmask_next(net),
+ 		.set	 = set,
+ 		.key	 = elem->key.val.data,
++		.tstamp	 = nft_net_tstamp(net),
+ 	};
+ 
+ 	rcu_read_lock();
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 2299ced93..a56ed216c 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -504,6 +504,7 @@ bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
+  * @set:	nftables API set representation
+  * @data:	Key data to be matched against existing elements
+  * @genmask:	If set, check that element is active in given genmask
++ * @tstamp:	timestamp to check for expired elements
+  *
+  * This is essentially the same as the lookup function, except that it matches
+  * key data against the uncommitted copy and doesn't use preallocated maps for
+@@ -513,7 +514,8 @@ bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
+  */
+ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
+ 					  const struct nft_set *set,
+-					  const u8 *data, u8 genmask)
++					  const u8 *data, u8 genmask,
++					  u64 tstamp)
+ {
+ 	struct nft_pipapo_elem *ret = ERR_PTR(-ENOENT);
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+@@ -566,7 +568,7 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
+ 			goto out;
+ 
+ 		if (last) {
+-			if (nft_set_elem_expired(&f->mt[b].e->ext))
++			if (__nft_set_elem_expired(&f->mt[b].e->ext, tstamp))
+ 				goto next_match;
+ 			if ((genmask &&
+ 			     !nft_set_elem_active(&f->mt[b].e->ext, genmask)))
+@@ -603,7 +605,7 @@ static void *nft_pipapo_get(const struct net *net, const struct nft_set *set,
+ 			    const struct nft_set_elem *elem, unsigned int flags)
+ {
+ 	return pipapo_get(net, set, (const u8 *)elem->key.val.data,
+-			 nft_genmask_cur(net));
++			 nft_genmask_cur(net), get_jiffies_64());
+ }
+ 
+ /**
+@@ -1197,6 +1199,7 @@ static int nft_pipapo_insert(const struct net *net, const struct nft_set *set,
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+ 	struct nft_pipapo_match *m = priv->clone;
+ 	u8 genmask = nft_genmask_next(net);
++	u64 tstamp = nft_net_tstamp(net);
+ 	struct nft_pipapo_field *f;
+ 	const u8 *start_p, *end_p;
+ 	int i, bsize_max, err = 0;
+@@ -1206,7 +1209,7 @@ static int nft_pipapo_insert(const struct net *net, const struct nft_set *set,
+ 	else
+ 		end = start;
+ 
+-	dup = pipapo_get(net, set, start, genmask);
++	dup = pipapo_get(net, set, start, genmask, tstamp);
+ 	if (!IS_ERR(dup)) {
+ 		/* Check if we already have the same exact entry */
+ 		const struct nft_data *dup_key, *dup_end;
+@@ -1228,7 +1231,7 @@ static int nft_pipapo_insert(const struct net *net, const struct nft_set *set,
+ 
+ 	if (PTR_ERR(dup) == -ENOENT) {
+ 		/* Look for partially overlapping entries */
+-		dup = pipapo_get(net, set, end, nft_genmask_next(net));
++		dup = pipapo_get(net, set, end, nft_genmask_next(net), tstamp);
+ 	}
+ 
+ 	if (PTR_ERR(dup) != -ENOENT) {
+@@ -1581,6 +1584,7 @@ static void pipapo_gc(const struct nft_set *_set, struct nft_pipapo_match *m)
+ 	struct nft_set *set = (struct nft_set *) _set;
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+ 	struct net *net = read_pnet(&set->net);
++	u64 tstamp = nft_net_tstamp(net);
+ 	int rules_f0, first_rule = 0;
+ 	struct nft_pipapo_elem *e;
+ 	struct nft_trans_gc *gc;
+@@ -1615,7 +1619,7 @@ static void pipapo_gc(const struct nft_set *_set, struct nft_pipapo_match *m)
+ 		/* synchronous gc never fails, there is no need to set on
+ 		 * NFT_SET_ELEM_DEAD_BIT.
+ 		 */
+-		if (nft_set_elem_expired(&e->ext)) {
++		if (__nft_set_elem_expired(&e->ext, tstamp)) {
+ 			priv->dirty = true;
+ 
+ 			gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
+@@ -1786,7 +1790,7 @@ static void *pipapo_deactivate(const struct net *net, const struct nft_set *set,
+ {
+ 	struct nft_pipapo_elem *e;
+ 
+-	e = pipapo_get(net, set, data, nft_genmask_next(net));
++	e = pipapo_get(net, set, data, nft_genmask_next(net), nft_net_tstamp(net));
+ 	if (IS_ERR(e))
+ 		return NULL;
+ 
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 5bf5572e9..c4c92192c 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -314,6 +314,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	u8 cur_genmask = nft_genmask_cur(net);
+ 	u8 genmask = nft_genmask_next(net);
++	u64 tstamp = nft_net_tstamp(net);
+ 	int d;
+ 
+ 	/* Descend the tree to search for an existing element greater than the
+@@ -361,7 +362,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 		/* perform garbage collection to avoid bogus overlap reports
+ 		 * but skip new elements in this transaction.
+ 		 */
+-		if (nft_set_elem_expired(&rbe->ext) &&
++		if (__nft_set_elem_expired(&rbe->ext, tstamp) &&
+ 		    nft_set_elem_active(&rbe->ext, cur_genmask)) {
+ 			const struct nft_rbtree_elem *removed_end;
+ 
+@@ -548,6 +549,7 @@ static void *nft_rbtree_deactivate(const struct net *net,
+ 	const struct rb_node *parent = priv->root.rb_node;
+ 	struct nft_rbtree_elem *rbe, *this = elem->priv;
+ 	u8 genmask = nft_genmask_next(net);
++	u64 tstamp = nft_net_tstamp(net);
+ 	int d;
+ 
+ 	while (parent != NULL) {
+@@ -568,7 +570,7 @@ static void *nft_rbtree_deactivate(const struct net *net,
+ 				   nft_rbtree_interval_end(this)) {
+ 				parent = parent->rb_right;
+ 				continue;
+-			} else if (nft_set_elem_expired(&rbe->ext)) {
++			} else if (__nft_set_elem_expired(&rbe->ext, tstamp)) {
+ 				break;
+ 			} else if (!nft_set_elem_active(&rbe->ext, genmask)) {
+ 				parent = parent->rb_left;
+@@ -622,12 +624,14 @@ static void nft_rbtree_gc(struct work_struct *work)
+ 	struct nft_set *set;
+ 	unsigned int gc_seq;
+ 	struct net *net;
++	u64 tstamp;
+ 
+ 	priv = container_of(work, struct nft_rbtree, gc_work.work);
+ 	set  = nft_set_container_of(priv);
+ 	net  = read_pnet(&set->net);
+ 	nft_net = nft_pernet(net);
+ 	gc_seq  = READ_ONCE(nft_net->gc_seq);
++	tstamp = nft_net_tstamp(net);
+ 
+ 	if (nft_set_gc_is_pending(set))
+ 		goto done;
+@@ -659,7 +663,7 @@ static void nft_rbtree_gc(struct work_struct *work)
+ 			rbe_end = rbe;
+ 			continue;
+ 		}
+-		if (!nft_set_elem_expired(&rbe->ext))
++		if (!__nft_set_elem_expired(&rbe->ext, tstamp))
+ 			continue;
+ 
+ 		nft_set_elem_dead(&rbe->ext);
+-- 
+2.39.3
+
 
