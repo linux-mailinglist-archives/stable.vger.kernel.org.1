@@ -1,197 +1,140 @@
-Return-Path: <stable+bounces-49956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A2F8FFE9B
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 11:03:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 354EB8FFEB1
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 11:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BE6DB23E31
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 09:02:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB5821F2191F
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 09:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23DB15B54B;
-	Fri,  7 Jun 2024 09:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UWzn9Uqe"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7734215B968;
+	Fri,  7 Jun 2024 09:05:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2051.outbound.protection.outlook.com [40.107.102.51])
+Received: from mxout70.expurgate.net (mxout70.expurgate.net [91.198.224.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3187015B553;
-	Fri,  7 Jun 2024 09:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717750963; cv=fail; b=KK1atzrkj9khnQTmKNs/Q90bHvJF+jwbSZlEjx2qhzf6aPlz/Ov2hSpwwRqz6QJIwVaMcRC5Pz7X+KBTSw5OSb2KLvKgwe+9kf1Qw1Bfm8kRJBGb+gv47aECQLIgh9kQhwxkgjQ10gzbIjDSrcRS4uwqu1FYAIH16iQa4w8qiFk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717750963; c=relaxed/simple;
-	bh=0eP1vqwIzuTrLuACZFsabIIJvHvytzDKotmaUrAt03Y=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=ZiJD+rcZhtt+zqA75xuGfDyOGiNm4AsbFlQbi227cqsB7dTj8Q8xCdzMs+CQ5FSzxl5NV6vrRdDCVPQpcusrAVziH4oEeFDtyypsjVSkSn9edTm2Q9Q6GsT/SjgXtaJOVsrV+KghLpaE2yBiHkIsh8S83mcz76X/eTyo6vcBHE0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UWzn9Uqe; arc=fail smtp.client-ip=40.107.102.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nS2X+HyAeNf3RzS8kp9QyiDcaCe1eFzG9EV0ulVyHMRH8IhoDfcT1GkL7unsXO6tGzLIFM81V2TPMCdw5GWjGvGnB+DW/YckHY3KJsf0WmwuWWF0TT4EWuE1CLfPAaa6zbzMDA32o0Y6KI7tVzcMik1yamWb/63lDEDVUGKxqPJ7F7cYZqWimItA9byWAEE6Js7e3FtShNtBHVcZ5McyojTFCiZztl38oO7RUuThKgp2Ml/mT4UVaze5YBXb4LJpMMw5sQYTdpgFIMhddpPuKK2QxPPy1vYqe1j9tJQzG3jf4C6s6vGs4oTKYuTje49N1cgzCpPgFk4tzL/M+HGcQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8vqf3N90TSuxVMG/YpssE18ySkNEa7rE8aIMa4Q+LDc=;
- b=RBUODbi9i0DfO8JGrcTGDpT0Thx3N0Ox3taMjGAPyuXveXD9YDGyxSqJNtATfHXmFtL2FynWej54A6rqQe4+2ugp3K8f3mQ52DZBfNjcrbitLpJ2lurVAI4wEsKjI3jb2p2Kck86UI08cIhHwEKOXweRrCyQt+2kLFLd00FV6OHDlkOVi+GEky427CFYvlnBeAUip+y6OXwYKyzVNMbjHrAawVie59XUgXpZqR+VctjTZzYng6ADT0KNFixwZCKzTsU5JYxpnRtUoZD7wjTVl/M/guWTfKZT3iTtfVtmk0inpCLu7mJfVVcmVxtCS+WsKOr8SxCZFC98Geq1J7KkCQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8vqf3N90TSuxVMG/YpssE18ySkNEa7rE8aIMa4Q+LDc=;
- b=UWzn9Uqe+Sm5dh3Yzfm8dTIqRTu+KFCUWnudlWsDEVFKJf5cmLYgve+E0Gc3V7C8FLe+8WTk7JkvGFM5p0RX8QVdTpe2lsGqZVbfSy37dSshtwV65LWKSHLbOF/qF2QiNTTu/AC0PfK+xqpXU/A8Yn+RlHE8QOZlcshkVQnUKETlr2klI5J18kz1N/kpa7Rej3k+xyD5Jd36s6xgu1gXh8MuFmjnOmmjyAKrGmBy60TI3gBh4/xijM7W142JDOe4/LJ7jEvue41ZGDUl9qfaSMbxQO6qir+JH6tSxgCkvZqwpbafVGWcefjfZdSlPrV6dMg8tVqPR0622ZsXET8IhQ==
-Received: from BYAPR05CA0043.namprd05.prod.outlook.com (2603:10b6:a03:74::20)
- by IA0PR12MB7626.namprd12.prod.outlook.com (2603:10b6:208:438::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.35; Fri, 7 Jun
- 2024 09:02:39 +0000
-Received: from SJ1PEPF00001CDD.namprd05.prod.outlook.com
- (2603:10b6:a03:74:cafe::90) by BYAPR05CA0043.outlook.office365.com
- (2603:10b6:a03:74::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.13 via Frontend
- Transport; Fri, 7 Jun 2024 09:02:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SJ1PEPF00001CDD.mail.protection.outlook.com (10.167.242.5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7633.15 via Frontend Transport; Fri, 7 Jun 2024 09:02:38 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 7 Jun 2024
- 02:02:24 -0700
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 7 Jun 2024
- 02:02:24 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Fri, 7 Jun 2024 02:02:23 -0700
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
-	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.9 000/374] 6.9.4-rc1 review
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6217515B540;
+	Fri,  7 Jun 2024 09:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.198.224.70
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717751104; cv=none; b=eXTwYpA9nuZVfqjQvJDCjMT1nRsp6vCOXWCzs4A7oJItRnBuGaQIpXr+PKjoamf5D/LsEm3vhrqihOkQIcs8VsxCLWBivdtU1z0YdyOrG9bKdtacRlN9Lq6Y63WS28VjenJrcVjTmXEcKmlvP/iJ3l2QK0YBMe0KgnbIQ3sfwfs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717751104; c=relaxed/simple;
+	bh=yuFpd84XtrdmCusaDJjTM3sZmJosXeobQizTdbECW0o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JW8DpczgyJ1knDCEZi6AZbx63H0zJICaEfaBIXWwPce7YyR8ry6F+uA81Aop3U7YelXATR5u0qZ6X8/xCx0JJLHL17FbIThsvANCpMNZcXXj1s/03WFVwQ+c93fOH1IcbWIre7gpwUpCRi49CF0FEfYeaGDrt6vYTqxx/8IsRFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dev.tdt.de; spf=pass smtp.mailfrom=dev.tdt.de; arc=none smtp.client-ip=91.198.224.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dev.tdt.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dev.tdt.de
+Received: from [127.0.0.1] (helo=localhost)
+	by relay.expurgate.net with smtp (Exim 4.92)
+	(envelope-from <prvs=990276a841=ms@dev.tdt.de>)
+	id 1sFVWX-006OZD-Le; Fri, 07 Jun 2024 11:04:37 +0200
+Received: from [195.243.126.94] (helo=securemail.tdt.de)
+	by relay.expurgate.net with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ms@dev.tdt.de>)
+	id 1sFVWW-00CQZP-Lf; Fri, 07 Jun 2024 11:04:36 +0200
+Received: from securemail.tdt.de (localhost [127.0.0.1])
+	by securemail.tdt.de (Postfix) with ESMTP id 46AD5240053;
+	Fri,  7 Jun 2024 11:04:36 +0200 (CEST)
+Received: from mail.dev.tdt.de (unknown [10.2.4.42])
+	by securemail.tdt.de (Postfix) with ESMTP id 9DC06240050;
+	Fri,  7 Jun 2024 11:04:35 +0200 (CEST)
+Received: from mschiller1.dev.tdt.de (unknown [10.2.3.20])
+	by mail.dev.tdt.de (Postfix) with ESMTPSA id 25EAB37521;
+	Fri,  7 Jun 2024 11:04:35 +0200 (CEST)
+From: Martin Schiller <ms@dev.tdt.de>
+To: hauke@hauke-m.de,
+	dmitry.torokhov@gmail.com,
+	tsbogend@alpha.franken.de,
+	rdunlap@infradead.org,
+	robh@kernel.org,
+	bhelgaas@google.com
+Cc: linux-mips@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Martin Schiller <ms@dev.tdt.de>,
+	stable@vger.kernel.org
+Subject: [PATCH] MIPS: pci: lantiq: restore reset gpio polarity
+Date: Fri,  7 Jun 2024 11:04:00 +0200
+Message-ID: <20240607090400.1816612-1-ms@dev.tdt.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <58e78214-735a-44e9-8e2d-589e63627b3c@rnnvmail202.nvidia.com>
-Date: Fri, 7 Jun 2024 02:02:23 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CDD:EE_|IA0PR12MB7626:EE_
-X-MS-Office365-Filtering-Correlation-Id: 329cd8bc-3340-4016-6303-08dc86d094e3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|376005|7416005|36860700004|1800799015|82310400017;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Y0F0ZmRMOEZ1a2x0WGpxQ3VVNEdJbTJ4K1FtQllNSXBvSmZTeWZZYmVDaVBw?=
- =?utf-8?B?OGl2TnlxOHVDUzNDMVZIaUYwL1k3U09hTlJKL0JJNTJ0M1BKSlZjUTlaOVcw?=
- =?utf-8?B?L3hJVFI1Y1RBQktnRVoxdng5dnJiZm1UV1Y1dXhUT1ZaS280Mm5NTGlEOUM5?=
- =?utf-8?B?K0ZTVisrN2p6ZUpIdFNEREd3dERhOUJyS01odGxTQ1hucW52T1E0dVdDS3Bx?=
- =?utf-8?B?ZTBoMzk2d3FxcXNjWGpkQ1FaQnVDcWhiK1pjQUlmSmcxSDVnMytRWVlZeFp1?=
- =?utf-8?B?LzY4UWl3L3V3MG5DQkt5VXVmZUVsNXk1UWk3WXpUT2NaZlBIbU1LcE5FdkVB?=
- =?utf-8?B?dVAzbC9kQjRvaW1tc0F1ZlRPQk1jMW5qR1lMdnZwbGhmMkhJOVJkNFhSQ0dC?=
- =?utf-8?B?blU5Z1NZK1lrTy9aZUNjeTlsMVJyZEQxT0treTZxOXB4aVdXbnFYbEErL0p4?=
- =?utf-8?B?cE1zNzBYQVZIUG15Nml6TS81Y1FDMHRZMmRGTDBocm1jOWF0WXJBYVdIWkdY?=
- =?utf-8?B?czl6Y0JORS84ZWFpZGJWWjJUSXBmUklWd3ZkOURUUlROZS9ub3dIQWxabW1K?=
- =?utf-8?B?dnp4dWdyelhmWFVQek1GV2NYWE5ZbUlvL3BzVURXUnAxTVZsbWJzaG5ja01Y?=
- =?utf-8?B?Y0hJc0xISnFUU1J6UXpwdTJrd3c1dkVkSC91M1dCcmhiTzJrQUNKNmkrYnZi?=
- =?utf-8?B?R0l4eEhpb0QwOWdoaVNEamxCelJZeDk4MzJDbmxwSzRjYU5FdjJIKzdRK2lt?=
- =?utf-8?B?Rng4Q1FTRk9iUzZ1Yzk1a3dTS0I5MHUxRzNycW9SWENnU1VIWnRrY2xIdTA3?=
- =?utf-8?B?dHEzbjJkNy9GS0pHUVo0eU85czIyc01ZSzBLeXZvOUVPTG9BYW44Qzk2ZHZC?=
- =?utf-8?B?RzdkQmpuc2dSTkFCR0JJaUpUTzQ3RUgyZnBmdFEzNFFWLzFHaGhjNHh5WXNF?=
- =?utf-8?B?MHR6QlBVeHg2QWE2WmxrVWE5bDlxcFRIWWcxSEx2dmt3dzl1TW95UDBNQytv?=
- =?utf-8?B?SnU1T1lBM3RrRUptYUVkcWpjYW05U1pWYldlNVZTOTZNd3pZUUpqNEczMTVo?=
- =?utf-8?B?R294Mk1DSzRaY2hGMnJHUW5TdHR1VUNHcVF1OGxoeHZjOTRXRlkxSnpJMmQx?=
- =?utf-8?B?eGRVcThPQjhqZVUrRmJha1p3d01hMG45UUJFcTFCcEdMa3NhZ01KM25ZdmdU?=
- =?utf-8?B?VnFYSStaODFqZzQzVnhsOG9uOU9VckswNGpJeC9oZjZGTjFucnRQczAraCtq?=
- =?utf-8?B?ZU9veXAwbHZxS3hPOUxRaTN0WkNYdWtVdHpBS2FjNnZEa1Ewb3pzcHZTYlNh?=
- =?utf-8?B?b3BIUDdHd1NSWFA2emQ1RlRmOUZPdTBtQVVDWWtzTHkrQklham9majNSZHhp?=
- =?utf-8?B?bW5YL3R2WmYzZGJjeFNMbnlXVXZMVUdHLzR3a01ZTEpNTWw3S3JQV2R1Vmgy?=
- =?utf-8?B?bnVTbks0NVRzaEdIU2Q1NnpLbUtoZHUyazVsSUNlU0xWRDF1V0JBMEJ2QXlO?=
- =?utf-8?B?QVlKVDlIbUtZa1RTbTBWdWw0YkRxdml4REtUMEdrMHNxaVVwZ2tUSVltUjU3?=
- =?utf-8?B?cUIxVTkybllOYlNOazJWWXZSRGpkZ01uYkFESkZ0TGRycW5UckNwNnkwbitB?=
- =?utf-8?B?eFNOSmFRNC92VnJ5RlgrREVoUjl5ZjZ3b2szanJVK3d4ZEJWT2had3g1OFhB?=
- =?utf-8?B?K2xBamx6YUdJWlNDVDRUV0JFTDVHZ2lOOVZZL3J6VG8wN1YyTklNTXIzbzJN?=
- =?utf-8?B?WnRPYzRON1NCY3U2RENXdnZzdlRiVDJvN2gvUUpXd2VVT3Q3cEcwQVdYem5h?=
- =?utf-8?B?KzhZSklrODdrM1RILzYrSURsOFdyVTV1emdYaUphcEsxa1l2d241aDdyZ21Z?=
- =?utf-8?B?cmRRLzUrMDJqVzhkZ3JSR0hzcTd1TTYwc2h6STFlekJmalE9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(376005)(7416005)(36860700004)(1800799015)(82310400017);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2024 09:02:38.8548
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 329cd8bc-3340-4016-6303-08dc86d094e3
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CDD.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7626
+Content-Transfer-Encoding: quoted-printable
+X-purgate-ID: 151534::1717751077-B9ADCD95-D17CD154/0/0
+X-purgate: clean
+X-purgate-type: clean
 
-On Thu, 06 Jun 2024 15:59:39 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.9.4 release.
-> There are 374 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 08 Jun 2024 13:15:55 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.4-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Commit 90c2d2eb7ab5 ("MIPS: pci: lantiq: switch to using gpiod API") not
+only switched to the gpiod API, but also inverted / changed the polarity
+of the GPIO.
 
-All tests passing for Tegra ...
+According to the PCI specification, the RST# pin is an active-low
+signal. However, most of the device trees that have been widely used for
+a long time (mainly in the openWrt project) define this GPIO as
+active-high and the old driver code inverted the signal internally.
 
-Test results for stable-v6.9:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    116 tests:	116 pass, 0 fail
+Apparently there are actually boards where the reset gpio must be
+operated inverted. For this reason, we cannot use the GPIOD_OUT_LOW/HIGH
+flag for initialization. Instead, we must explicitly set the gpio to
+value 1 in order to take into account any "GPIO_ACTIVE_LOW" flag that
+may have been set.
 
-Linux version:	6.9.4-rc1-gfcbdac56b0ae
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
+In order to remain compatible with all these existing device trees, we
+should therefore keep the logic as it was before the commit.
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Fixes: 90c2d2eb7ab5 ("MIPS: pci: lantiq: switch to using gpiod API")
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin Schiller <ms@dev.tdt.de>
+---
+ arch/mips/pci/pci-lantiq.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Jon
+diff --git a/arch/mips/pci/pci-lantiq.c b/arch/mips/pci/pci-lantiq.c
+index 68a8cefed420..0844db34022e 100644
+--- a/arch/mips/pci/pci-lantiq.c
++++ b/arch/mips/pci/pci-lantiq.c
+@@ -124,14 +124,14 @@ static int ltq_pci_startup(struct platform_device *=
+pdev)
+ 		clk_disable(clk_external);
+=20
+ 	/* setup reset gpio used by pci */
+-	reset_gpio =3D devm_gpiod_get_optional(&pdev->dev, "reset",
+-					     GPIOD_OUT_LOW);
++	reset_gpio =3D devm_gpiod_get_optional(&pdev->dev, "reset", GPIOD_ASIS)=
+;
+ 	error =3D PTR_ERR_OR_ZERO(reset_gpio);
+ 	if (error) {
+ 		dev_err(&pdev->dev, "failed to request gpio: %d\n", error);
+ 		return error;
+ 	}
+ 	gpiod_set_consumer_name(reset_gpio, "pci_reset");
++	gpiod_direction_output(reset_gpio, 1);
+=20
+ 	/* enable auto-switching between PCI and EBU */
+ 	ltq_pci_w32(0xa, PCI_CR_CLK_CTRL);
+@@ -194,10 +194,10 @@ static int ltq_pci_startup(struct platform_device *=
+pdev)
+=20
+ 	/* toggle reset pin */
+ 	if (reset_gpio) {
+-		gpiod_set_value_cansleep(reset_gpio, 1);
++		gpiod_set_value_cansleep(reset_gpio, 0);
+ 		wmb();
+ 		mdelay(1);
+-		gpiod_set_value_cansleep(reset_gpio, 0);
++		gpiod_set_value_cansleep(reset_gpio, 1);
+ 	}
+ 	return 0;
+ }
+--=20
+2.39.2
+
 
