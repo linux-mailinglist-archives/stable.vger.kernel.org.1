@@ -1,130 +1,114 @@
-Return-Path: <stable+bounces-49999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67240900BE2
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 20:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC8A900C3C
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 21:06:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 881EB1C21BFC
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 18:27:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 729E81C21BA6
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 19:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454ED13D8BF;
-	Fri,  7 Jun 2024 18:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5261314036D;
+	Fri,  7 Jun 2024 19:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJ+P6kAh"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odwAGwD7"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00825A20;
-	Fri,  7 Jun 2024 18:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CE513E3FD
+	for <Stable@vger.kernel.org>; Fri,  7 Jun 2024 19:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717784833; cv=none; b=kvTmHPYa2BI7qBPSSYiusoPb/PyXlPK1i2r0SNqsk1T4DYWOMoEkoHGxhSI40KYhoKQjacqJB+rz6lbfNY8fcrnBt0rAAovXvca6PtlG16xwIWSwalwz+kYSdEtTt643MPW+ja0s/cvLv5qqWDOvd12WOdKvQhvA/RrlZRhcZIM=
+	t=1717787208; cv=none; b=S7qv7VTloDutfDms13qfyOfaY0LkZGV2Q+TwtlWCUTRTCnfkci9mOqcre1TQff0SxQPP/64YTtnvBaANYBRWkVUzXZ8Gk4ZqA04mwO4MFBU/ABbJjYNZy4wFgXUS8G1gKoBKXzgrONtwydGZeSjV6V1XWVZG2hQwkSAQEFLNSo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717784833; c=relaxed/simple;
-	bh=+d6eJOSptWCzzm26y7U5MbNGJfLQUzNJXPv4dUZf8Jo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tmMFJ4xoiYvCpm8eimGrVcLK75m29IjDzu/goOUy+dExUbXfUnl+AkIaoVNZ6wSFJRrKWKwch85eB87Z/4ITokrqGwU0F82KIICDGFuHvtR57ZMwP78naaivo51pwOj1XSk1drnIF//TFm1YtzrGyHJda8uN078QyTm0lpyHGHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJ+P6kAh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD17C32786;
-	Fri,  7 Jun 2024 18:27:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717784832;
-	bh=+d6eJOSptWCzzm26y7U5MbNGJfLQUzNJXPv4dUZf8Jo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sJ+P6kAhbtDhS7jZsR+y53cAyqJidkC3Tdaqg1EQi2Tgk6LdJeXefpIJBnBL+QfGu
-	 aiaASN7aB8foNZJ4zRSR9dhcJmC5T7+bCaBCk+JIkr0RmAz+jD9RntfhZHi3C6Cv4K
-	 UwZPIWdR137BYrgyQwegkfFQ/r2m1iNoz7Q/snadEWPbtPTvIWgGuJNpwopHG+8MPX
-	 z8YmXR0xcFfVHqAAC+QM0wBOLIzJX25nR2yPM4oFCPX3oQimF3iwvUoXHiBMvk/lfZ
-	 tTatCZ5mVKq3EZe9nNYQAdzzv67IYhdsL1QKHNeEoaiwrTGjXX3r4oBcfgRPqqHq6G
-	 QgTYFcE3wadhQ==
-Date: Fri, 7 Jun 2024 11:27:10 -0700
-From: Namhyung Kim <namhyung@kernel.org>
-To: kan.liang@linux.intel.com
-Cc: acme@kernel.org, irogers@google.com, jolsa@kernel.org,
-	adrian.hunter@intel.com, linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Khalil, Amiri" <amiri.khalil@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH V2] perf stat: Fix the hard-coded metrics calculation on
- the hybrid
-Message-ID: <ZmNQ_rxnz-lAKKPp@google.com>
-References: <20240606180316.4122904-1-kan.liang@linux.intel.com>
+	s=arc-20240116; t=1717787208; c=relaxed/simple;
+	bh=RYGio//Kpb3oIRWoIX9Uhi2eXSWxc11UOfKenoBESJ0=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=CU6r2EJVKbXeThtvEpZgy5frg/Et2TMl3kNo8ofrz4G26M9Rr0QcLSKwfNXluDKnmHDh1eNfFcHxTtRMqRtV17vkZW0SmPnfx5AlyBDH4N3B9Lf7PihFMw+f0ONr0/LHTEz9gpqB0gkXLBU6kaUpEXiGeZDmUUHLE1dWy7EUokM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odwAGwD7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B65C2BBFC;
+	Fri,  7 Jun 2024 19:06:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1717787207;
+	bh=RYGio//Kpb3oIRWoIX9Uhi2eXSWxc11UOfKenoBESJ0=;
+	h=Subject:To:From:Date:From;
+	b=odwAGwD7igBYl5qrfNeLlNRxaZ/TGvo4vq0F019G3OZXtRwzgNnSkcyxahOhUWI2F
+	 3JPN0lTwAnkQNuNNrq/zLK1dNkpcZAos8sPSF4vanbeoN5qgonMkz0/2n6kns9kZLX
+	 1pNHc4+a8hXPczGBQF9+10mfWK1/5JztH7LzOqLw=
+Subject: patch "iio: adc: ad9467: fix scan type sign" added to char-misc-linus
+To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 07 Jun 2024 21:06:45 +0200
+Message-ID: <2024060745-peroxide-curler-f43d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240606180316.4122904-1-kan.liang@linux.intel.com>
-
-On Thu, Jun 06, 2024 at 11:03:16AM -0700, kan.liang@linux.intel.com wrote:
-> From: Kan Liang <kan.liang@linux.intel.com>
-> 
-> The hard-coded metrics is wrongly calculated on the hybrid machine.
-> 
-> $ perf stat -e cycles,instructions -a sleep 1
-> 
->  Performance counter stats for 'system wide':
-> 
->         18,205,487      cpu_atom/cycles/
->          9,733,603      cpu_core/cycles/
->          9,423,111      cpu_atom/instructions/     #  0.52  insn per cycle
->          4,268,965      cpu_core/instructions/     #  0.23  insn per cycle
-> 
-> The insn per cycle for cpu_core should be 4,268,965 / 9,733,603 = 0.44.
-> 
-> When finding the metric events, the find_stat() doesn't take the PMU
-> type into account. The cpu_atom/cycles/ is wrongly used to calculate
-> the IPC of the cpu_core.
-> 
-> In the hard-coded metrics, the events from a different PMU are only
-> SW_CPU_CLOCK and SW_TASK_CLOCK. They both have the stat type,
-> STAT_NSECS. Except the SW CLOCK events, check the PMU type as well.
-> 
-> Fixes: 0a57b910807a ("perf stat: Use counts rather than saved_value")
-> Reported-by: "Khalil, Amiri" <amiri.khalil@intel.com>
-> Reviewed-by: Ian Rogers <irogers@google.com>
-> Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-> Cc: stable@vger.kernel.org
-
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-
-Thanks,
-Namhyung
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
-> ---
-> 
-> Changes since V1:
-> - Don't check the PMU of the SW CLOCK events 
-> 
->  tools/perf/util/stat-shadow.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
-> index 3466aa952442..6bb975e46de3 100644
-> --- a/tools/perf/util/stat-shadow.c
-> +++ b/tools/perf/util/stat-shadow.c
-> @@ -176,6 +176,13 @@ static double find_stat(const struct evsel *evsel, int aggr_idx, enum stat_type
->  		if (type != evsel__stat_type(cur))
->  			continue;
->  
-> +		/*
-> +		 * Except the SW CLOCK events,
-> +		 * ignore if not the PMU we're looking for.
-> +		 */
-> +		if ((type != STAT_NSECS) && (evsel->pmu != cur->pmu))
-> +			continue;
-> +
->  		aggr = &cur->stats->aggr[aggr_idx];
->  		if (type == STAT_NSECS)
->  			return aggr->counts.val;
-> -- 
-> 2.35.1
-> 
+This is a note to let you know that I've just added the patch titled
+
+    iio: adc: ad9467: fix scan type sign
+
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-linus branch.
+
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
+
+The patch will hopefully also be merged in Linus's tree for the
+next -rc kernel release.
+
+If you have any questions about this process, please let me know.
+
+
+From 8a01ef749b0a632f0e1f4ead0f08b3310d99fcb1 Mon Sep 17 00:00:00 2001
+From: David Lechner <dlechner@baylibre.com>
+Date: Fri, 3 May 2024 14:45:05 -0500
+Subject: iio: adc: ad9467: fix scan type sign
+
+According to the IIO documentation, the sign in the scan type should be
+lower case. The ad9467 driver was incorrectly using upper case.
+
+Fix by changing to lower case.
+
+Fixes: 4606d0f4b05f ("iio: adc: ad9467: add support for AD9434 high-speed ADC")
+Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20240503-ad9467-fix-scan-type-sign-v1-1-c7a1a066ebb9@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/adc/ad9467.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+index e85b763b9ffc..8f5b9c3f6e3d 100644
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -243,11 +243,11 @@ static void __ad9467_get_scale(struct ad9467_state *st, int index,
+ }
+ 
+ static const struct iio_chan_spec ad9434_channels[] = {
+-	AD9467_CHAN(0, 0, 12, 'S'),
++	AD9467_CHAN(0, 0, 12, 's'),
+ };
+ 
+ static const struct iio_chan_spec ad9467_channels[] = {
+-	AD9467_CHAN(0, 0, 16, 'S'),
++	AD9467_CHAN(0, 0, 16, 's'),
+ };
+ 
+ static const struct ad9467_chip_info ad9467_chip_tbl = {
+-- 
+2.45.2
+
+
 
