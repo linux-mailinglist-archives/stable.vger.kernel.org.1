@@ -1,174 +1,100 @@
-Return-Path: <stable+bounces-49942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EC88FF9F7
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 04:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBAF8FFA38
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 05:40:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBEB12866AC
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 02:34:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 714CF2862A9
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 03:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2A810799;
-	Fri,  7 Jun 2024 02:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6FA175B1;
+	Fri,  7 Jun 2024 03:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E4ows6Lz"
 X-Original-To: stable@vger.kernel.org
-Received: from SHSQR01.spreadtrum.com (mx1.unisoc.com [222.66.158.135])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E987411185
-	for <stable@vger.kernel.org>; Fri,  7 Jun 2024 02:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=222.66.158.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1F179DC
+	for <stable@vger.kernel.org>; Fri,  7 Jun 2024 03:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717727638; cv=none; b=qReTs3xnD6MQ1ySlO3f9Dt494nWoklRKfsaE+A2XW0OaH0DoPFn5h6wexV70QJji6QJtFz+b9gSazqtwqS/zWYUUwLcCxLweAIyJbUI2srkvFumiodXo3MoeS5cVHXXVw7HpUlf+YP4HP7XQDxWkU+QOqzKJul33Ewisj1tJv6M=
+	t=1717731626; cv=none; b=HZZ1EsZOCK+GTME5ykr7N4f7Pcdx3JhplipDsf6/T4nLN7VsGUShBQj+f2gxnwvVAuy2VojxCbHHLUqFybGnbax97gBz+m210ydrMhet0EBLz9GwR0+RzBSL293zFxN/HFdUezK6TWIJbn4pqiGh7L2pUvk2qmbkgewbfBQwc4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717727638; c=relaxed/simple;
-	bh=j7SmNnf2IJ7HtGtXQrqOdQgWBu66WrwLsS5J2Vr5gCE=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TWN/wlT6PCiuj/AVszd1wq69zuDX7c4PmbfVjPCWbcwCnMToMLsE1oDU3aELTwnQVxydtkXurATm/GlVe+6ny7Q5fr0bubWPziTSH6qdkN+ikFwnVqVIAnKblj4uKwJni6ng3qx4bhR/QJH2l3Upb/57A5wihsdE/zhz8BTEV+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unisoc.com; spf=pass smtp.mailfrom=unisoc.com; arc=none smtp.client-ip=222.66.158.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unisoc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unisoc.com
-Received: from dlp.unisoc.com ([10.29.3.86])
-	by SHSQR01.spreadtrum.com with ESMTP id 4572VNQe079441;
-	Fri, 7 Jun 2024 10:31:23 +0800 (+08)
-	(envelope-from zhaoyang.huang@unisoc.com)
-Received: from SHDLP.spreadtrum.com (bjmbx01.spreadtrum.com [10.0.64.7])
-	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4VwQ870Jdyz2QNRs5;
-	Fri,  7 Jun 2024 10:27:19 +0800 (CST)
-Received: from bj03382pcu01.spreadtrum.com (10.0.73.40) by
- BJMBX01.spreadtrum.com (10.0.64.7) with Microsoft SMTP Server (TLS) id
- 15.0.1497.23; Fri, 7 Jun 2024 10:31:20 +0800
-From: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        Uladzislau Rezki
-	<urezki@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Lorenzo Stoakes
-	<lstoakes@gmail.com>, Baoquan He <bhe@redhat.com>,
-        Thomas Gleixner
-	<tglx@linutronix.de>,
-        hailong liu <hailong.liu@oppo.com>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        Zhaoyang Huang <huangzhaoyang@gmail.com>, <steve.kang@unisoc.com>
-Subject: [Resend PATCHv4 1/1] mm: fix incorrect vbq reference in purge_fragmented_block
-Date: Fri, 7 Jun 2024 10:31:16 +0800
-Message-ID: <20240607023116.1720640-1-zhaoyang.huang@unisoc.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1717731626; c=relaxed/simple;
+	bh=rPJ5ufAViNYhCGjh+ZuXBltquKOKg7geswHuJeUpgpY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=MYivKxzaRpEdN2vJAqg1NGW2HNoqOe6NvP/8bLwaPOVS19bMiVIU7n0QS9a6L7tA3zpYuAzqkKnRmUtbpMG5vfRA03VmDaqwJ0M2MdzotFsQZKEzzt0tO7+SXaA8+r7cR3RKB04LgmERH5aIgbru2bS/8Oe69IO0BJmYiah+nNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E4ows6Lz; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717731623; x=1749267623;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=rPJ5ufAViNYhCGjh+ZuXBltquKOKg7geswHuJeUpgpY=;
+  b=E4ows6Lz6PP7iYfUGRLVa9nmgFhzcefjY17SRO3Xbk8CK/ikID6GSQbk
+   NnyayZpv7aDsszOY2BxScO0hV4nLsApZTb+vV/KR3mJydF5CpYrTShk6J
+   QLGFA5leOistqwqSBGiR35I73NOxDWq9GAqhcqF4UGBxA1MDJE9YCggmB
+   NcXS8Yspsz3VmeLDRJfMoipWIsn6CKsP/9Ovmv8b/h9t5EOW2xzWvXjJ/
+   2bOqMeJCimV0mo4tU6nF6UhzojgYxF+EewiEtS0EE49CqxYTZsyPF3ecu
+   TevRjtX6sZAcDcmFGbRrnqqbmBvWKXiRdZcMm0zGvavZjYfME7T6J2tt0
+   Q==;
+X-CSE-ConnectionGUID: k4HBJe5GSpmc5RZpUD7kLA==
+X-CSE-MsgGUID: wr+OTyIySZWeCIoDPaJY3g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="31981899"
+X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; 
+   d="scan'208";a="31981899"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 20:40:07 -0700
+X-CSE-ConnectionGUID: V+Y5JIl2Rp2SBL9aKz9Azg==
+X-CSE-MsgGUID: 1WaOr71cQROGxp4tEIjeJg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; 
+   d="scan'208";a="38123056"
+Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
+  by fmviesa006.fm.intel.com with ESMTP; 06 Jun 2024 20:40:07 -0700
+Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sFQSS-0003zD-2Z;
+	Fri, 07 Jun 2024 03:40:04 +0000
+Date: Fri, 7 Jun 2024 11:37:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [Resend PATCHv4 1/1] mm: fix incorrect vbq reference in
+ purge_fragmented_block
+Message-ID: <ZmKAez4QQawL3dSg@242c30a86391>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SHCAS01.spreadtrum.com (10.0.1.201) To
- BJMBX01.spreadtrum.com (10.0.64.7)
-X-MAIL:SHSQR01.spreadtrum.com 4572VNQe079441
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240607023116.1720640-1-zhaoyang.huang@unisoc.com>
 
-From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Hi,
 
-vmalloc area runs out in our ARM64 system during an erofs test as
-vm_map_ram failed[1]. By following the debug log, we find that
-vm_map_ram()->vb_alloc() will allocate new vb->va which corresponding
-to 4MB vmalloc area as list_for_each_entry_rcu returns immediately
-when vbq->free->next points to vbq->free. That is to say, 65536 times
-of page fault after the list's broken will run out of the whole
-vmalloc area. This should be introduced by one vbq->free->next point to
-vbq->free which makes list_for_each_entry_rcu can not iterate the list
-and find the BUG.
+Thanks for your patch.
 
-[1]
-PID: 1        TASK: ffffff80802b4e00  CPU: 6    COMMAND: "init"
- #0 [ffffffc08006afe0] __switch_to at ffffffc08111d5cc
- #1 [ffffffc08006b040] __schedule at ffffffc08111dde0
- #2 [ffffffc08006b0a0] schedule at ffffffc08111e294
- #3 [ffffffc08006b0d0] schedule_preempt_disabled at ffffffc08111e3f0
- #4 [ffffffc08006b140] __mutex_lock at ffffffc08112068c
- #5 [ffffffc08006b180] __mutex_lock_slowpath at ffffffc08111f8f8
- #6 [ffffffc08006b1a0] mutex_lock at ffffffc08111f834
- #7 [ffffffc08006b1d0] reclaim_and_purge_vmap_areas at ffffffc0803ebc3c
- #8 [ffffffc08006b290] alloc_vmap_area at ffffffc0803e83fc
- #9 [ffffffc08006b300] vm_map_ram at ffffffc0803e78c0
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Fixes: fc1e0d980037 ("mm/vmalloc: prevent stale TLBs in fully utilized blocks")
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-For detailed reason of broken list, please refer to below URL
-https://lore.kernel.org/all/20240531024820.5507-1-hailong.liu@oppo.com/
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [Resend PATCHv4 1/1] mm: fix incorrect vbq reference in purge_fragmented_block
+Link: https://lore.kernel.org/stable/20240607023116.1720640-1-zhaoyang.huang%40unisoc.com
 
-Suggested-by: Hailong.Liu <hailong.liu@oppo.com>
-Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
----
-v2: introduce cpu in vmap_block to record the right CPU number
-v3: use get_cpu/put_cpu to prevent schedule between core
-v4: replace get_cpu/put_cpu by another API to avoid disabling preemption
----
----
- mm/vmalloc.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 22aa63f4ef63..89eb034f4ac6 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2458,6 +2458,7 @@ struct vmap_block {
- 	struct list_head free_list;
- 	struct rcu_head rcu_head;
- 	struct list_head purge;
-+	unsigned int cpu;
- };
- 
- /* Queue of free and dirty vmap blocks, for allocation and flushing purposes */
-@@ -2585,8 +2586,15 @@ static void *new_vmap_block(unsigned int order, gfp_t gfp_mask)
- 		free_vmap_area(va);
- 		return ERR_PTR(err);
- 	}
--
--	vbq = raw_cpu_ptr(&vmap_block_queue);
-+	/*
-+	 * list_add_tail_rcu could happened in another core
-+	 * rather than vb->cpu due to task migration, which
-+	 * is safe as list_add_tail_rcu will ensure the list's
-+	 * integrity together with list_for_each_rcu from read
-+	 * side.
-+	 */
-+	vb->cpu = raw_smp_processor_id();
-+	vbq = per_cpu_ptr(&vmap_block_queue, vb->cpu);
- 	spin_lock(&vbq->lock);
- 	list_add_tail_rcu(&vb->free_list, &vbq->free);
- 	spin_unlock(&vbq->lock);
-@@ -2614,9 +2622,10 @@ static void free_vmap_block(struct vmap_block *vb)
- }
- 
- static bool purge_fragmented_block(struct vmap_block *vb,
--		struct vmap_block_queue *vbq, struct list_head *purge_list,
--		bool force_purge)
-+		struct list_head *purge_list, bool force_purge)
- {
-+	struct vmap_block_queue *vbq = &per_cpu(vmap_block_queue, vb->cpu);
-+
- 	if (vb->free + vb->dirty != VMAP_BBMAP_BITS ||
- 	    vb->dirty == VMAP_BBMAP_BITS)
- 		return false;
-@@ -2664,7 +2673,7 @@ static void purge_fragmented_blocks(int cpu)
- 			continue;
- 
- 		spin_lock(&vb->lock);
--		purge_fragmented_block(vb, vbq, &purge, true);
-+		purge_fragmented_block(vb, &purge, true);
- 		spin_unlock(&vb->lock);
- 	}
- 	rcu_read_unlock();
-@@ -2801,7 +2810,7 @@ static void _vm_unmap_aliases(unsigned long start, unsigned long end, int flush)
- 			 * not purgeable, check whether there is dirty
- 			 * space to be flushed.
- 			 */
--			if (!purge_fragmented_block(vb, vbq, &purge_list, false) &&
-+			if (!purge_fragmented_block(vb, &purge_list, false) &&
- 			    vb->dirty_max && vb->dirty != VMAP_BBMAP_BITS) {
- 				unsigned long va_start = vb->va->va_start;
- 				unsigned long s, e;
 -- 
-2.25.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
