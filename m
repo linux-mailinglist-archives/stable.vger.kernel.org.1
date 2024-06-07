@@ -1,117 +1,139 @@
-Return-Path: <stable+bounces-49971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 969B290035D
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 14:23:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC976900456
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 15:11:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E79A1F24CAB
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 12:23:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68D622852B4
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 13:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3537E190677;
-	Fri,  7 Jun 2024 12:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E63F1940AD;
+	Fri,  7 Jun 2024 13:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="ga6RQ8cN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmxXjMfc"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B45186E56;
-	Fri,  7 Jun 2024 12:23:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE33C194093;
+	Fri,  7 Jun 2024 13:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717763025; cv=none; b=We/yBCmA758qJTJb86ZWX1+9dAaCvDFc7bQu4FnQ7q+GkoWROFlHvqT8zBfDGjj92ttonRMzZyggduAu6mRFKRShDkHxX+wwnrM/OR0B1RqyIrMlW6ggUkX5jp5dULAAC+cCimgJyPtYUKL9wPyy4peeAlbnv3AfkSwzKeAzsTo=
+	t=1717765859; cv=none; b=X8c3OwEzvXRPnio1xcOAaup/BNMOVFwFE6Wg6fa3Q8qC4PEztl53r4bTM+rJ0ZSgtaq4P1VtU0FxujQ4g+TbnJH9wCsrVzwdQj0j4smlCq90srEg0QJsQOav1CHO8RouDYAC3Zd7TOMMWemKOzOeVAv16O3AgFejmUyvn+9lkxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717763025; c=relaxed/simple;
-	bh=KXaT31eEGTd1QHcbggRukrvi8jLZCohTrUf9ufQF3Io=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tbwUFFEmeelO7CVoyIvbZwBZrsNnIdZJzbhPye5O8u2VA3CCZEgZTknXLqxF7wLMvwBPm8bVow9+htmkys/tvGGrzDqT7t0seDRgJf71oM6cZdMgrRXfk7g+85sZkdeWb0OPLBVel2RlS9BvjBSGfx89jdXtj4VHRsJL78VBOUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=ga6RQ8cN; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1717762993; x=1718367793; i=markus.elfring@web.de;
-	bh=xnbflH3Wg1z5GvtBOo9DAO3UHstyphUXTt3DOwd9w58=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=ga6RQ8cNFDFq+7yR7zmw2wthREsvMJqzpr6gjIuF89FPKOhjFnFh7QcmoGqG3oOu
-	 DUgf5+V/BIppxa3tC82IY/bX4cOypmtzSuqlRFCI/T80NA2eQfzBgB+D04aqYOBnp
-	 WEsa1C02wS5Xk6I9YhxrP3euU2VJZriBlS0XktTuUMxl5T8gERXU0f4cSniVSFKmx
-	 sY5jFoCcC0FV0RoiLIR3ikXI/F7DQwG8HrvZzW/aeBQTo7hIW1st/HERWAtJbp7Gr
-	 czAfWj7K69QIKKCuMlx2rTONYLLZeJ7hwRfNakmeJEjwcKqkknXh6OXuIZqaoFmcI
-	 KKsxCUviv1cKxbocQQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MbTH3-1sr5AW1Zrl-00im4v; Fri, 07
- Jun 2024 14:23:13 +0200
-Message-ID: <5bd85dce-13a8-4558-a574-726626ecbc5c@web.de>
-Date: Fri, 7 Jun 2024 14:23:10 +0200
+	s=arc-20240116; t=1717765859; c=relaxed/simple;
+	bh=eAWSEXfpFedKdLSYjNdGwwpLGaF9xjNrz0UsBiHpu9A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RC1NsIJHsjZnkzysGy3tB0V0TPKVN7y9+iCOmTIH/NrxGpFynVyuDMMaZwOxh9PUUxRg15fbrDGbs9IvbfVmF1w9MOv3+6ZD7biLFizbxtkwbs4mb4AeX5u/4Ikx+P6G7fq8sRwA7SqAKlZ20tKfAEZswJZQFPkMsXVXrMtREXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmxXjMfc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAFE2C2BBFC;
+	Fri,  7 Jun 2024 13:10:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717765859;
+	bh=eAWSEXfpFedKdLSYjNdGwwpLGaF9xjNrz0UsBiHpu9A=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mmxXjMfcLZfBGffaen+tETp8eDcjNkhtdchr2LOkjlfBsPxNf7x0xQz4H1WId6EEi
+	 0DDSPNdfJX4rYqeZJOYIgZA9r9P40FxGnMky6O8uyIZVAK9lO3sZcxBuJw/E8W3NEk
+	 kppAq3qS4czGauhSBeQ/2TDG0o910ccNulHc8fa1zLXjjjUAHVsnQezITWgFzJGRIF
+	 qkpUu6POwOCrXKgIspE5aao8Mon3QlmAMb3APX3wAp8bR7y8fYtu1tXQk7ZaLtjAvn
+	 zy/3TSwC6pG3STyzEzD4bytdcse3kfaLaoOASjWHwodHrWPwlFjZwx0ihvxDXQePcP
+	 bXzDdOVMweWkA==
+From: cel@kernel.org
+To: <stable@vger.kernel.org>,
+	<linux-nfs@vger.kernel.org>
+Cc: NeilBrown <neilb@suse.de>,
+	Jon Hunter <jonathanh@nvidia.com>
+Subject: [PATCH 5.15] sunrpc: exclude from freezer when waiting for requests:
+Date: Fri,  7 Jun 2024 09:10:48 -0400
+Message-ID: <20240607131048.8795-1-cel@kernel.org>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] dmaengine: xilinx: xdma: Fix data synchronisation in
- xdma_channel_isr()
-To: Louis Chauvet <louis.chauvet@bootlin.com>, Lizhi Hou <lizhi.hou@amd.com>,
- Brian Xu <brian.xu@amd.com>, Raj Kumar Rampelli
- <raj.kumar.rampelli@amd.com>, Vinod Koul <vkoul@kernel.org>,
- Michal Simek <michal.simek@amd.com>, dmaengine@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240607-xdma-fixes-v2-1-0282319ce345@bootlin.com>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240607-xdma-fixes-v2-1-0282319ce345@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Rq71xYcv7AE6RT6snxQ/7L88lxsSpvjLIAAaV4rGhD5tibDU584
- 1LWrBOqL29y9nPpWAn/JgJSLhNtW4eDFr0O1eQj218dpPrjTDHu9zGDTR8fez75LcXyUq4S
- u6fajeEzdtMNsaylUW4Jya1qLHXgNLoPOJpLUShnTucCcukiU7UIlkBhE1E1mK6yr3o1oBW
- COJ5G9AUsu+8e2I5vVSjw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:2ZuDCsg8jSw=;FL/XvPK9CgStER9vsTkVwtyJ/nA
- sGzNB0h8wq0C3Z379vJ4IsFOQ6Z52BqnhKu/D8C4APJTwcW8jAIAr6DoCoBBu33yCDSm7jykm
- tqQsbfJTHBiO5vHUnIM56Kq2ZJfx4lx//v4autdr9SBK4pCmNTEi02bzcgGnC6epqLFvJIovZ
- rzx9k+PW1ZgMhpibsYmg7eU8j+QianriZu2Jcfz/T8TH+2VPQRCUnc5Uvv3LAB1H7j/27VGqM
- uar1o8rNEfDk338wpx1eO/0FfZfZWGADkALr+gl2FXePQw4rRkrsmtTVHnAXMoNLRhc845MMe
- maY9hLrkVUjsMfwU9ClsrSFjNo+ZV2703nyVp5tSWiqlmi0y34Bb1c/70D1oVm7W9JWWSCgD8
- IZuYg51yJjb5OS+KUrx8BoV7+eTwW2Vfm3d89w84CcNOMkEWBQkWXGuUNDmrrQ/j/pBpe5W2j
- zuTO3YL8T+LMV9TZwIFUve+TRcpgLIa4La+/jxYm0VgMBrKCuyOwuUU+gNwrW6/wt5N5W8TAH
- elCNMyDMXio49MDI3rooDULUgiwkWPHuYKpKwmXiMRUYZ1U3wRmby0xLfxMdsnH5oniAlZ33o
- HZuLxwh6jgNcjbuIiJRFvE1xO4SF0z1+3dvHquzwPt+sXpE5CSnOej3cIgZsOquNmxImYgFqT
- 1cl08dS3M8VOmYzdIk6Mjwn7JQtWapFOFSrHu8oO3Ykhnc/dEaCsO6vlMYZtOj/EPy5mr8PqV
- cX7FUCNBgVMpNzCHbFOiiR2mKpcSaFD+YqlB7OQEm+cb9B9X/NACa4mhIuqRFEPk81/1COZWg
- FLmOoSJ0QXNA/wl/oMtosV82mSus3qSny6vQhA2HJ5AUA=
+Content-Transfer-Encoding: 8bit
 
-=E2=80=A6
-> +++ b/drivers/dma/xilinx/xdma.c
-> @@ -885,11 +885,11 @@ static irqreturn_t xdma_channel_isr(int irq, void =
-*dev_id)
->  	u32 st;
->  	bool repeat_tx;
->
-> +	spin_lock(&xchan->vchan.lock);
-> +
->  	if (xchan->stop_requested)
->  		complete(&xchan->last_interrupt);
-=E2=80=A6
+From: NeilBrown <neilb@suse.de>
 
-Can any lock scope adjustments matter also for another variable definition=
-?
-https://elixir.bootlin.com/linux/v6.10-rc2/source/drivers/dma/xilinx/xdma.=
-c#L873
+Prior to v6.1, the freezer will only wake a kernel thread from an
+uninterruptible sleep.  Since we changed svc_get_next_xprt() to use and
+IDLE sleep the freezer cannot wake it.  We need to tell the freezer to
+ignore it instead.
 
-	struct xdma_device *xdev =3D xchan->xdev_hdl;
+To make this work with only upstream commits, 5.15.y would need
+commit f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
+which allows non-interruptible sleeps to be woken by the freezer.
 
+Fixes: 9b8a8e5e8129 ("nfsd: don't allow nfsd threads to be signalled.")
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: NeilBrown <neilb@suse.de>
+---
+ fs/nfs/callback.c     | 2 +-
+ fs/nfsd/nfs4proc.c    | 3 ++-
+ net/sunrpc/svc_xprt.c | 4 ++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-Regards,
-Markus
+diff --git a/fs/nfs/callback.c b/fs/nfs/callback.c
+index 46a0a2d6962e..8fe143cad4a2 100644
+--- a/fs/nfs/callback.c
++++ b/fs/nfs/callback.c
+@@ -124,7 +124,7 @@ nfs41_callback_svc(void *vrqstp)
+ 		} else {
+ 			spin_unlock_bh(&serv->sv_cb_lock);
+ 			if (!kthread_should_stop())
+-				schedule();
++				freezable_schedule();
+ 			finish_wait(&serv->sv_cb_waitq, &wq);
+ 		}
+ 	}
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 6779291efca9..e0ff2212866a 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -38,6 +38,7 @@
+ #include <linux/slab.h>
+ #include <linux/kthread.h>
+ #include <linux/namei.h>
++#include <linux/freezer.h>
+ 
+ #include <linux/sunrpc/addr.h>
+ #include <linux/nfs_ssc.h>
+@@ -1322,7 +1323,7 @@ static __be32 nfsd4_ssc_setup_dul(struct nfsd_net *nn, char *ipaddr,
+ 
+ 			/* allow 20secs for mount/unmount for now - revisit */
+ 			if (kthread_should_stop() ||
+-					(schedule_timeout(20*HZ) == 0)) {
++					(freezable_schedule_timeout(20*HZ) == 0)) {
+ 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
+ 				kfree(work);
+ 				return nfserr_eagain;
+diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+index b19592673eef..3cf53e3140a5 100644
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -705,7 +705,7 @@ static int svc_alloc_arg(struct svc_rqst *rqstp)
+ 			set_current_state(TASK_RUNNING);
+ 			return -EINTR;
+ 		}
+-		schedule_timeout(msecs_to_jiffies(500));
++		freezable_schedule_timeout(msecs_to_jiffies(500));
+ 	}
+ 	rqstp->rq_page_end = &rqstp->rq_pages[pages];
+ 	rqstp->rq_pages[pages] = NULL; /* this might be seen in nfsd_splice_actor() */
+@@ -765,7 +765,7 @@ static struct svc_xprt *svc_get_next_xprt(struct svc_rqst *rqstp, long timeout)
+ 	smp_mb__after_atomic();
+ 
+ 	if (likely(rqst_should_sleep(rqstp)))
+-		time_left = schedule_timeout(timeout);
++		time_left = freezable_schedule_timeout(timeout);
+ 	else
+ 		__set_current_state(TASK_RUNNING);
+ 
+-- 
+2.45.1
+
 
