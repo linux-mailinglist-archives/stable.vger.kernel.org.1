@@ -1,128 +1,174 @@
-Return-Path: <stable+bounces-49941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB7C8FF9E3
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 04:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89EC88FF9F7
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 04:34:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2782E286067
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 02:09:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBEB12866AC
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 02:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6EE211718;
-	Fri,  7 Jun 2024 02:08:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q38czejR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2A810799;
+	Fri,  7 Jun 2024 02:33:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SHSQR01.spreadtrum.com (mx1.unisoc.com [222.66.158.135])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8DAFC1D;
-	Fri,  7 Jun 2024 02:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E987411185
+	for <stable@vger.kernel.org>; Fri,  7 Jun 2024 02:33:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=222.66.158.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717726137; cv=none; b=ZaAk+V6kKIyoTHhuHqn7UbMdI3JAnziLx0EQ4IbXNRqy9cd8pkapJTONIN8IZUrrfX6YCPQpX2y+hewCwBeZdOI53Gm238EtXFZQ+NJA80SK3wNU7zJ3smHk0oDkb2H+O0CAAm+U1bDku2j+ugOn6so2KkocdgHzbVoK628SDAE=
+	t=1717727638; cv=none; b=qReTs3xnD6MQ1ySlO3f9Dt494nWoklRKfsaE+A2XW0OaH0DoPFn5h6wexV70QJji6QJtFz+b9gSazqtwqS/zWYUUwLcCxLweAIyJbUI2srkvFumiodXo3MoeS5cVHXXVw7HpUlf+YP4HP7XQDxWkU+QOqzKJul33Ewisj1tJv6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717726137; c=relaxed/simple;
-	bh=Zgs6EUaw+fgETHFqLyu+EyBx0t4ITnZTlUfvdp01WrQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LjLlUnq4cJn1Bnh0K4AvVM+8e6zNvRqRHAkM5IhnTh6Uqr2/JWLLOI/DWj2GM1DiMbAfbUP0ihm5PaGU6Xp8q9xIZlTyZEfY7BDurBg01BkwKSE/EbtDTwOOG08QkQcRJuBvWgGalZSRN7x9dLsXke3LFBzhI5ptSgp4HumNYos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q38czejR; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7024cd9dd3dso1324804b3a.3;
-        Thu, 06 Jun 2024 19:08:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717726136; x=1718330936; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2YbNkfBTg7QNL7W0fk9O5zt5ZxmyJT5/V6X8thSn3Xs=;
-        b=Q38czejR0p4uW0/oga7n1rL8vphLHa4xPOp70+uFl+VROqECzLTrMmtHtz2kwdZMDT
-         rc7nMSSx6VOeQLrFLN6TiO5pDOKGPar4QpshvpfsIBIxW9I3xITtaHN0mXqgTzIlUCSt
-         MucFMf4Jx9eOlE/PpC+eHqqRN+hV8v67S7AkMWVbA6vw3qCBP7hKd5K8NxtCa2ZhwiH6
-         ikbdVcVj9cNlzJxSP9mPBBHaQmFCk8Jdi17UISJCZAjFuvQPL4ECp/Es0vV473ju65bm
-         FPAVEitimy9yt39MlhLoWkhAUfoTpHFmw3xY2tDr1NpBiAcR16M18461P47OHSR0sJjo
-         wzXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717726136; x=1718330936;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2YbNkfBTg7QNL7W0fk9O5zt5ZxmyJT5/V6X8thSn3Xs=;
-        b=umLcQ26FBz/qUhGl/CkKH5BSnKLKP2Ly3CrgFjxjaDIRnrP2ECrDJ210dQx5AHUZqf
-         tpcXx/7KckGTYQH4baP9M5iLBYoAdn5BZbjKeZSoropScHsfWFO6zbsZ8L+21Sj05CGR
-         NUjWdtNQaS2aH6qLKY/a0adzAXKkPs7yjqfX5vkP6qHw5nLR0Ye9Ig/yHydbwFxWAFNk
-         HW8ZHhQ3EY0EQ7uhyaPAy6TwkNIphefa2+6TYau0v4Cj/O7mOJ7DjQE7ve8yIoXiXGBy
-         BTY1cUvUTukX4GEog3fqNmCi6YvG0SJZ5+YBhQf7mu8hPrJp+RqCkKuGnxJhlgvozPn0
-         YHnw==
-X-Forwarded-Encrypted: i=1; AJvYcCXDBgrfLoBt8xyl6ZdVKKVyVxQCfRswPBIsRibpivooPscIO+OOpkH5ES7jrz0PGu2dRkb2LgeGI58ZffKw+0SVNT1Cv7R2wGdJN2q+PU3rj+udB0+G8bBwPb98IOWn/KiCIIj7
-X-Gm-Message-State: AOJu0Yy7Hm/2sP37Tu2nbZic8Q+VUPd8dkCNHtUWKJHwVxEqMcKy6YtS
-	DClRjquNhzq7si25lBW1+M+w7kMNT5jRRk9aoAItQ2x5XlX3Jf6O
-X-Google-Smtp-Source: AGHT+IGMw2tKALOAt5+mXjWbsar+Mn1+2+TehGkELpiwdXYkZoU9WWSW+/rp2sKMuUd8tEkbZiJgug==
-X-Received: by 2002:a05:6a00:2387:b0:6ec:db05:36c3 with SMTP id d2e1a72fcca58-7040c615964mr1144379b3a.4.1717726135546;
-        Thu, 06 Jun 2024 19:08:55 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-703fd498a8fsm1687742b3a.109.2024.06.06.19.08.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jun 2024 19:08:54 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id F110618463038; Fri, 07 Jun 2024 09:08:51 +0700 (WIB)
-Date: Fri, 7 Jun 2024 09:08:51 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.9 000/374] 6.9.4-rc1 review
-Message-ID: <ZmJrs2ntqb77ebCn@archie.me>
-References: <20240606131651.683718371@linuxfoundation.org>
+	s=arc-20240116; t=1717727638; c=relaxed/simple;
+	bh=j7SmNnf2IJ7HtGtXQrqOdQgWBu66WrwLsS5J2Vr5gCE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TWN/wlT6PCiuj/AVszd1wq69zuDX7c4PmbfVjPCWbcwCnMToMLsE1oDU3aELTwnQVxydtkXurATm/GlVe+6ny7Q5fr0bubWPziTSH6qdkN+ikFwnVqVIAnKblj4uKwJni6ng3qx4bhR/QJH2l3Upb/57A5wihsdE/zhz8BTEV+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unisoc.com; spf=pass smtp.mailfrom=unisoc.com; arc=none smtp.client-ip=222.66.158.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unisoc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unisoc.com
+Received: from dlp.unisoc.com ([10.29.3.86])
+	by SHSQR01.spreadtrum.com with ESMTP id 4572VNQe079441;
+	Fri, 7 Jun 2024 10:31:23 +0800 (+08)
+	(envelope-from zhaoyang.huang@unisoc.com)
+Received: from SHDLP.spreadtrum.com (bjmbx01.spreadtrum.com [10.0.64.7])
+	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4VwQ870Jdyz2QNRs5;
+	Fri,  7 Jun 2024 10:27:19 +0800 (CST)
+Received: from bj03382pcu01.spreadtrum.com (10.0.73.40) by
+ BJMBX01.spreadtrum.com (10.0.64.7) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.23; Fri, 7 Jun 2024 10:31:20 +0800
+From: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+        Uladzislau Rezki
+	<urezki@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Lorenzo Stoakes
+	<lstoakes@gmail.com>, Baoquan He <bhe@redhat.com>,
+        Thomas Gleixner
+	<tglx@linutronix.de>,
+        hailong liu <hailong.liu@oppo.com>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+        Zhaoyang Huang <huangzhaoyang@gmail.com>, <steve.kang@unisoc.com>
+Subject: [Resend PATCHv4 1/1] mm: fix incorrect vbq reference in purge_fragmented_block
+Date: Fri, 7 Jun 2024 10:31:16 +0800
+Message-ID: <20240607023116.1720640-1-zhaoyang.huang@unisoc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3AxIghRg5g1ofXuB"
-Content-Disposition: inline
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SHCAS01.spreadtrum.com (10.0.1.201) To
+ BJMBX01.spreadtrum.com (10.0.64.7)
+X-MAIL:SHSQR01.spreadtrum.com 4572VNQe079441
 
+From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
---3AxIghRg5g1ofXuB
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+vmalloc area runs out in our ARM64 system during an erofs test as
+vm_map_ram failed[1]. By following the debug log, we find that
+vm_map_ram()->vb_alloc() will allocate new vb->va which corresponding
+to 4MB vmalloc area as list_for_each_entry_rcu returns immediately
+when vbq->free->next points to vbq->free. That is to say, 65536 times
+of page fault after the list's broken will run out of the whole
+vmalloc area. This should be introduced by one vbq->free->next point to
+vbq->free which makes list_for_each_entry_rcu can not iterate the list
+and find the BUG.
 
-On Thu, Jun 06, 2024 at 03:59:39PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.9.4 release.
-> There are 374 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+[1]
+PID: 1        TASK: ffffff80802b4e00  CPU: 6    COMMAND: "init"
+ #0 [ffffffc08006afe0] __switch_to at ffffffc08111d5cc
+ #1 [ffffffc08006b040] __schedule at ffffffc08111dde0
+ #2 [ffffffc08006b0a0] schedule at ffffffc08111e294
+ #3 [ffffffc08006b0d0] schedule_preempt_disabled at ffffffc08111e3f0
+ #4 [ffffffc08006b140] __mutex_lock at ffffffc08112068c
+ #5 [ffffffc08006b180] __mutex_lock_slowpath at ffffffc08111f8f8
+ #6 [ffffffc08006b1a0] mutex_lock at ffffffc08111f834
+ #7 [ffffffc08006b1d0] reclaim_and_purge_vmap_areas at ffffffc0803ebc3c
+ #8 [ffffffc08006b290] alloc_vmap_area at ffffffc0803e83fc
+ #9 [ffffffc08006b300] vm_map_ram at ffffffc0803e78c0
 
-Successfully compiled and installed the kernel on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+Fixes: fc1e0d980037 ("mm/vmalloc: prevent stale TLBs in fully utilized blocks")
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+For detailed reason of broken list, please refer to below URL
+https://lore.kernel.org/all/20240531024820.5507-1-hailong.liu@oppo.com/
 
---=20
-An old man doll... just what I always wanted! - Clara
+Suggested-by: Hailong.Liu <hailong.liu@oppo.com>
+Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+---
+v2: introduce cpu in vmap_block to record the right CPU number
+v3: use get_cpu/put_cpu to prevent schedule between core
+v4: replace get_cpu/put_cpu by another API to avoid disabling preemption
+---
+---
+ mm/vmalloc.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---3AxIghRg5g1ofXuB
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 22aa63f4ef63..89eb034f4ac6 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2458,6 +2458,7 @@ struct vmap_block {
+ 	struct list_head free_list;
+ 	struct rcu_head rcu_head;
+ 	struct list_head purge;
++	unsigned int cpu;
+ };
+ 
+ /* Queue of free and dirty vmap blocks, for allocation and flushing purposes */
+@@ -2585,8 +2586,15 @@ static void *new_vmap_block(unsigned int order, gfp_t gfp_mask)
+ 		free_vmap_area(va);
+ 		return ERR_PTR(err);
+ 	}
+-
+-	vbq = raw_cpu_ptr(&vmap_block_queue);
++	/*
++	 * list_add_tail_rcu could happened in another core
++	 * rather than vb->cpu due to task migration, which
++	 * is safe as list_add_tail_rcu will ensure the list's
++	 * integrity together with list_for_each_rcu from read
++	 * side.
++	 */
++	vb->cpu = raw_smp_processor_id();
++	vbq = per_cpu_ptr(&vmap_block_queue, vb->cpu);
+ 	spin_lock(&vbq->lock);
+ 	list_add_tail_rcu(&vb->free_list, &vbq->free);
+ 	spin_unlock(&vbq->lock);
+@@ -2614,9 +2622,10 @@ static void free_vmap_block(struct vmap_block *vb)
+ }
+ 
+ static bool purge_fragmented_block(struct vmap_block *vb,
+-		struct vmap_block_queue *vbq, struct list_head *purge_list,
+-		bool force_purge)
++		struct list_head *purge_list, bool force_purge)
+ {
++	struct vmap_block_queue *vbq = &per_cpu(vmap_block_queue, vb->cpu);
++
+ 	if (vb->free + vb->dirty != VMAP_BBMAP_BITS ||
+ 	    vb->dirty == VMAP_BBMAP_BITS)
+ 		return false;
+@@ -2664,7 +2673,7 @@ static void purge_fragmented_blocks(int cpu)
+ 			continue;
+ 
+ 		spin_lock(&vb->lock);
+-		purge_fragmented_block(vb, vbq, &purge, true);
++		purge_fragmented_block(vb, &purge, true);
+ 		spin_unlock(&vb->lock);
+ 	}
+ 	rcu_read_unlock();
+@@ -2801,7 +2810,7 @@ static void _vm_unmap_aliases(unsigned long start, unsigned long end, int flush)
+ 			 * not purgeable, check whether there is dirty
+ 			 * space to be flushed.
+ 			 */
+-			if (!purge_fragmented_block(vb, vbq, &purge_list, false) &&
++			if (!purge_fragmented_block(vb, &purge_list, false) &&
+ 			    vb->dirty_max && vb->dirty != VMAP_BBMAP_BITS) {
+ 				unsigned long va_start = vb->va->va_start;
+ 				unsigned long s, e;
+-- 
+2.25.1
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZmJrrgAKCRD2uYlJVVFO
-o00uAQCB/IULpEyo/wECqAHRYZiQNScetvGwBHIp1X3fIjCUrwEAwRAk2sft3lXh
-QNyLORJJ7s94M/OI8Gn+/TuL2Ahv1wQ=
-=POE3
------END PGP SIGNATURE-----
-
---3AxIghRg5g1ofXuB--
 
