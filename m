@@ -1,139 +1,125 @@
-Return-Path: <stable+bounces-49972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC976900456
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 15:11:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29181900571
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 15:48:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68D622852B4
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 13:11:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7B54283DF0
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 13:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E63F1940AD;
-	Fri,  7 Jun 2024 13:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A0C194ACF;
+	Fri,  7 Jun 2024 13:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmxXjMfc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jxUbegs5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE33C194093;
-	Fri,  7 Jun 2024 13:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5769194A5A;
+	Fri,  7 Jun 2024 13:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717765859; cv=none; b=X8c3OwEzvXRPnio1xcOAaup/BNMOVFwFE6Wg6fa3Q8qC4PEztl53r4bTM+rJ0ZSgtaq4P1VtU0FxujQ4g+TbnJH9wCsrVzwdQj0j4smlCq90srEg0QJsQOav1CHO8RouDYAC3Zd7TOMMWemKOzOeVAv16O3AgFejmUyvn+9lkxw=
+	t=1717768091; cv=none; b=aMFuUoOmxYOLj6RsjysHgiZnLR/tEFE9yK/K6LrHW3Zi1s+QkvFRaiQPLjke+IGzh6VwpGS0/piDChxLLYKKO8BPAIw/xMNdLxuJ92CitP8z3QmoO3ibF9x+rHspCXGPhiIkXUNM6D8buDaj00bhRQmdPA2f6ZotQ7foj+QWZcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717765859; c=relaxed/simple;
-	bh=eAWSEXfpFedKdLSYjNdGwwpLGaF9xjNrz0UsBiHpu9A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RC1NsIJHsjZnkzysGy3tB0V0TPKVN7y9+iCOmTIH/NrxGpFynVyuDMMaZwOxh9PUUxRg15fbrDGbs9IvbfVmF1w9MOv3+6ZD7biLFizbxtkwbs4mb4AeX5u/4Ikx+P6G7fq8sRwA7SqAKlZ20tKfAEZswJZQFPkMsXVXrMtREXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmxXjMfc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAFE2C2BBFC;
-	Fri,  7 Jun 2024 13:10:58 +0000 (UTC)
+	s=arc-20240116; t=1717768091; c=relaxed/simple;
+	bh=TQyKi7DdPGzpHrY7zAT+50KqIFo9l+0hqUZDJ1H9PuA=;
+	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=foHJAF+9cSyqCdYIWMMDs1mgapoLPjm4pC5AsBVAdpeKtbUsufr5umtvydIdkroJj39nVnnEmNtlc+dbrSu8G94bXLg9kyUwcYdLJtXX5DUIcC5tq5lK3oqoEkKXLjt6YcEjuP+3uFkUDMUfJTxBU59dZ2wuFTC4KlVmlBfgLYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jxUbegs5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B10C32782;
+	Fri,  7 Jun 2024 13:48:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717765859;
-	bh=eAWSEXfpFedKdLSYjNdGwwpLGaF9xjNrz0UsBiHpu9A=;
-	h=From:To:Cc:Subject:Date:From;
-	b=mmxXjMfcLZfBGffaen+tETp8eDcjNkhtdchr2LOkjlfBsPxNf7x0xQz4H1WId6EEi
-	 0DDSPNdfJX4rYqeZJOYIgZA9r9P40FxGnMky6O8uyIZVAK9lO3sZcxBuJw/E8W3NEk
-	 kppAq3qS4czGauhSBeQ/2TDG0o910ccNulHc8fa1zLXjjjUAHVsnQezITWgFzJGRIF
-	 qkpUu6POwOCrXKgIspE5aao8Mon3QlmAMb3APX3wAp8bR7y8fYtu1tXQk7ZaLtjAvn
-	 zy/3TSwC6pG3STyzEzD4bytdcse3kfaLaoOASjWHwodHrWPwlFjZwx0ihvxDXQePcP
-	 bXzDdOVMweWkA==
-From: cel@kernel.org
-To: <stable@vger.kernel.org>,
-	<linux-nfs@vger.kernel.org>
-Cc: NeilBrown <neilb@suse.de>,
-	Jon Hunter <jonathanh@nvidia.com>
-Subject: [PATCH 5.15] sunrpc: exclude from freezer when waiting for requests:
-Date: Fri,  7 Jun 2024 09:10:48 -0400
-Message-ID: <20240607131048.8795-1-cel@kernel.org>
-X-Mailer: git-send-email 2.45.1
+	s=k20201202; t=1717768091;
+	bh=TQyKi7DdPGzpHrY7zAT+50KqIFo9l+0hqUZDJ1H9PuA=;
+	h=Subject:From:To:Cc:Date:From;
+	b=jxUbegs50WXk2Yd4F4sXnmPaVFzxACNse6F2pABiZWF8OZDrk1Sx0xEbZR9w2VuWi
+	 bf/sJ8HBjGMEqnyj+7U4yHbljoQVJZGcfmBsnlvmiD7NxHCv9RrUiobIA5WsUec0Gg
+	 YQCY5UCpAwyo6gS5JXEr2QiIr8aDnst6qXkj7bNVP+HYWV2MVzNDJs2u8OXNCcwzXE
+	 kxC7eFcF3DR38BlqtcZS7hqsvP8MJnaurmOfg92rgO/UCG5yF9C9UjPh7BKXR6HAx0
+	 K3C5ISy9fHOpK1I7Rg2ueH5yACJ44rWz8RntfKEA9y8apUhZivpvsRNMOoSuOwXnk2
+	 KuxTGt73+csaQ==
+Subject: [PATCH 6.6.y] mm: ratelimit stat flush from workingset shrinker
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+To: stable@vger.kernel.org, yosryahmed@google.com, shakeel.butt@linux.dev
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>, tj@kernel.org,
+ hannes@cmpxchg.org, lizefan.x@bytedance.com, cgroups@vger.kernel.org,
+ longman@redhat.com, linux-mm@kvack.org, kernel-team@cloudflare.com
+Date: Fri, 07 Jun 2024 15:48:06 +0200
+Message-ID: <171776806121.384105.7980809581420394573.stgit@firesoul>
+User-Agent: StGit/1.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-From: NeilBrown <neilb@suse.de>
+From: Shakeel Butt <shakeelb@google.com>
 
-Prior to v6.1, the freezer will only wake a kernel thread from an
-uninterruptible sleep.  Since we changed svc_get_next_xprt() to use and
-IDLE sleep the freezer cannot wake it.  We need to tell the freezer to
-ignore it instead.
+commit d4a5b369ad6d8aae552752ff438dddde653a72ec upstream.
 
-To make this work with only upstream commits, 5.15.y would need
-commit f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
-which allows non-interruptible sleeps to be woken by the freezer.
+One of our workloads (Postgres 14 + sysbench OLTP) regressed on newer
+upstream kernel and on further investigation, it seems like the cause is
+the always synchronous rstat flush in the count_shadow_nodes() added by
+the commit f82e6bf9bb9b ("mm: memcg: use rstat for non-hierarchical
+stats").  On further inspection it seems like we don't really need
+accurate stats in this function as it was already approximating the amount
+of appropriate shadow entries to keep for maintaining the refault
+information.  Since there is already 2 sec periodic rstat flush, we don't
+need exact stats here.  Let's ratelimit the rstat flush in this code path.
 
-Fixes: 9b8a8e5e8129 ("nfsd: don't allow nfsd threads to be signalled.")
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: NeilBrown <neilb@suse.de>
+Link: https://lkml.kernel.org/r/20231228073055.4046430-1-shakeelb@google.com
+Fixes: f82e6bf9bb9b ("mm: memcg: use rstat for non-hierarchical stats")
+Signed-off-by: Shakeel Butt <shakeelb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+
 ---
- fs/nfs/callback.c     | 2 +-
- fs/nfsd/nfs4proc.c    | 3 ++-
- net/sunrpc/svc_xprt.c | 4 ++--
- 3 files changed, 5 insertions(+), 4 deletions(-)
+On production with kernel v6.6 we are observing issues with excessive
+cgroup rstat flushing due to the extra call to mem_cgroup_flush_stats()
+in count_shadow_nodes() introduced in commit f82e6bf9bb9b ("mm: memcg:
+use rstat for non-hierarchical stats") that commit is part of v6.6.
+We request backport of commit d4a5b369ad6d ("mm: ratelimit stat flush
+from workingset shrinker") as it have a fixes tag for this commit.
 
-diff --git a/fs/nfs/callback.c b/fs/nfs/callback.c
-index 46a0a2d6962e..8fe143cad4a2 100644
---- a/fs/nfs/callback.c
-+++ b/fs/nfs/callback.c
-@@ -124,7 +124,7 @@ nfs41_callback_svc(void *vrqstp)
- 		} else {
- 			spin_unlock_bh(&serv->sv_cb_lock);
- 			if (!kthread_should_stop())
--				schedule();
-+				freezable_schedule();
- 			finish_wait(&serv->sv_cb_waitq, &wq);
- 		}
- 	}
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 6779291efca9..e0ff2212866a 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -38,6 +38,7 @@
- #include <linux/slab.h>
- #include <linux/kthread.h>
- #include <linux/namei.h>
-+#include <linux/freezer.h>
+IMHO it is worth explaining call path that makes count_shadow_nodes()
+cause excessive cgroup rstat flushing calls. Function shrink_node()
+calls mem_cgroup_flush_stats() on its own first, and then invokes
+shrink_node_memcgs(). Function shrink_node_memcgs() iterates over
+cgroups via mem_cgroup_iter() for each calling shrink_slab(). The
+shrink_slab() calls do_shrink_slab() that via shrinker->count_objects()
+invoke count_shadow_nodes(), and count_shadow_nodes() does
+a mem_cgroup_flush_stats() call, that seems unnecessary.
+
+Backport differs slightly due to v6.6.32 doesn't contain commit
+7d7ef0a4686a ("mm: memcg: restore subtree stats flushing") from v6.8.
+---
+ mm/workingset.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/workingset.c b/mm/workingset.c
+index 2559a1f2fc1c..9110957bec5b 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -664,7 +664,7 @@ static unsigned long count_shadow_nodes(struct shrinker *shrinker,
+ 		struct lruvec *lruvec;
+ 		int i;
  
- #include <linux/sunrpc/addr.h>
- #include <linux/nfs_ssc.h>
-@@ -1322,7 +1323,7 @@ static __be32 nfsd4_ssc_setup_dul(struct nfsd_net *nn, char *ipaddr,
- 
- 			/* allow 20secs for mount/unmount for now - revisit */
- 			if (kthread_should_stop() ||
--					(schedule_timeout(20*HZ) == 0)) {
-+					(freezable_schedule_timeout(20*HZ) == 0)) {
- 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
- 				kfree(work);
- 				return nfserr_eagain;
-diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
-index b19592673eef..3cf53e3140a5 100644
---- a/net/sunrpc/svc_xprt.c
-+++ b/net/sunrpc/svc_xprt.c
-@@ -705,7 +705,7 @@ static int svc_alloc_arg(struct svc_rqst *rqstp)
- 			set_current_state(TASK_RUNNING);
- 			return -EINTR;
- 		}
--		schedule_timeout(msecs_to_jiffies(500));
-+		freezable_schedule_timeout(msecs_to_jiffies(500));
- 	}
- 	rqstp->rq_page_end = &rqstp->rq_pages[pages];
- 	rqstp->rq_pages[pages] = NULL; /* this might be seen in nfsd_splice_actor() */
-@@ -765,7 +765,7 @@ static struct svc_xprt *svc_get_next_xprt(struct svc_rqst *rqstp, long timeout)
- 	smp_mb__after_atomic();
- 
- 	if (likely(rqst_should_sleep(rqstp)))
--		time_left = schedule_timeout(timeout);
-+		time_left = freezable_schedule_timeout(timeout);
- 	else
- 		__set_current_state(TASK_RUNNING);
- 
--- 
-2.45.1
+-		mem_cgroup_flush_stats();
++		mem_cgroup_flush_stats_ratelimited();
+ 		lruvec = mem_cgroup_lruvec(sc->memcg, NODE_DATA(sc->nid));
+ 		for (pages = 0, i = 0; i < NR_LRU_LISTS; i++)
+ 			pages += lruvec_page_state_local(lruvec,
+
 
 
