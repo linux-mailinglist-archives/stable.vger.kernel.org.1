@@ -1,243 +1,145 @@
-Return-Path: <stable+bounces-49938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307FD8FF978
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 03:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C1CA8FF989
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 03:17:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 841851F23906
-	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 01:04:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92F761F23801
+	for <lists+stable@lfdr.de>; Fri,  7 Jun 2024 01:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40C4746E;
-	Fri,  7 Jun 2024 01:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABAA11CAB;
+	Fri,  7 Jun 2024 01:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="ouyXKClM"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="ltr4w4x4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37B2748D
-	for <stable@vger.kernel.org>; Fri,  7 Jun 2024 01:04:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F590FC02;
+	Fri,  7 Jun 2024 01:17:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717722286; cv=none; b=CIic9nRea761/qDad6QxoARTVbkKe+2qY1iHGjKsZUyWpyFrsON9vrnK3ucd1kW2SRjXvFCc2RvmcgA3RuC9MMmvYk5cKXGh1w69Honz7KynGfblKxk2wsvBH/lOmUCqZTImDXlL8qr7/GYjJnDTywRTpOcszPn5lE1qODG5TQw=
+	t=1717723052; cv=none; b=O3+5PmcsumLDC/bBvuB6xgTsP58bxUWa8b4odXesvErPuRtF3BJiFziBPh6bXf1peI2jSUVAMDoAhiP9RaToL3cqsZoTpADl4ptZAwE18KKlvOs8rOoIKFaDQxEHfuIFEEwv/Sdke7MU2JrEMNMAE+TRe7rMt1X2UGsg45P0jcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717722286; c=relaxed/simple;
-	bh=T9vY3K0R2B9Unns/VSBomR/uyY0tXDUhf+n/JqDa3DM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LBCQ1mLRnd3J0e/Vsaw80odoYkvJZzHt3fCbju0ZtXQlMAS2dgk6uuKThHmanVNkFShYX9qWwDxoBBecghAkSOjE/HHrmWtaQ52XGKKRNEcjcMbh6Hi8CU5SNh1loTP9az461Q6U/4+b30DzZ/b6PdCm+9GOGfZTY0teAxYwTjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=ouyXKClM; arc=none smtp.client-ip=185.125.188.121
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from [192.168.0.106] (unknown [123.112.65.116])
+	s=arc-20240116; t=1717723052; c=relaxed/simple;
+	bh=FYRngkhgGgfJjkyIA3QVacDQ9yUC5Q90KNhq+/oi63s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HCMRZuttn1WO7GMkfBwWImmlgX3rgsSkALrUXZf5Y9QsyFn6ogUasZtOis/D1oG8qHFthOQ6ZG8KDEhMbsr3SD2iYowW+nmLvMqESR3JGw+acCslxnM92dsoLiOLrWHZ0A2SR9FJ2Xv1rmRfzqhCxLMVSTSukRa/fILUhgCAhZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=ltr4w4x4; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4VwNbW657Qz6Cnk9Y;
+	Fri,  7 Jun 2024 01:17:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:from:from:received:received; s=mr01; t=
+	1717723044; x=1720315045; bh=VP/wPXWXbhw4UPJxDcMkq5aVkaQOj8VYrPN
+	d+MMaFQw=; b=ltr4w4x4hGMWO82k268JuOxZ/wJNk4s4xvr968KIaFU5Ehen/UZ
+	r+8VwIkKdrSHe/jTVcODTBVcwEMFk6aclgG0j7OffVynxvytPOJX3Mjb5gQnQdfc
+	lvPbGOALQ92wmVHiq/FEauCVxogHUn57s95wJWnK5V2QRG2il7wtXGQPHAOG66Zu
+	cuOx8t/xkYp+v4k28s8oj4IoIB6r2UaGYWnDHrC08kgS87dbEFbR9LLk5o8cdcqC
+	hCiG8G/lrBkig2UuUH/+9Rou70iYjADYNTkDEHD19Zt0kituFhrXqkKHDTkP/f8M
+	IXhGZSwIAEW/aB0GTbrg+q3QpaS5mr6EjeA==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id FBuDYg4T2Vur; Fri,  7 Jun 2024 01:17:24 +0000 (UTC)
+Received: from bvanassche.mtv.corp.google.com (unknown [104.132.0.90])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id B49AE3F756;
-	Fri,  7 Jun 2024 01:04:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1717722276;
-	bh=HGrLvbDkzrQv2MWxC/wYrnAWrcD9HMzV/8K0CiaPiWk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type;
-	b=ouyXKClMqGxkkb/DqsYoioaTYwkRb0V8fMpb17lzopDOm4h4r6AR5dBQ9nECyaJGt
-	 89Bj248fehcvMJl/UFY2UlfgGtm37178lNRaWMjl/gB4wHSwuUS4l5u5IAO4h9V18W
-	 Zqimt0Sv9/J4ClohvhECzmkwgdPBp2Bfp5H5XolyjTj48zSfSbyKljsNtvyW0DUsku
-	 uQLDqEqJMoOTy282eyR4ADhXrf3i+B7+Re1qjjlqejMblvfUw5dIGFCQFs7BuOlOY0
-	 vQ6yj3zJHkT3v03P+sE6TlBZ8X89bor8OJIhZ8MH/J7Khp1jGnzRIedQeNb3uq+Nhv
-	 kDZxZ39KalexQ==
-Message-ID: <60a65889-130f-479d-b7de-04236316adc3@canonical.com>
-Date: Fri, 7 Jun 2024 09:04:26 +0800
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4VwNbQ6BMcz6Cnk9W;
+	Fri,  7 Jun 2024 01:17:22 +0000 (UTC)
+From: Bart Van Assche <bvanassche@acm.org>
+To: "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org,
+	Bart Van Assche <bvanassche@acm.org>,
+	Joao Machado <jocrismachado@gmail.com>,
+	stable@vger.kernel.org,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Subject: [PATCH] scsi: core: Do not query the IO hints for a particular USB device
+Date: Thu,  6 Jun 2024 18:16:51 -0700
+Message-ID: <20240607011651.1618706-1-bvanassche@acm.org>
+X-Mailer: git-send-email 2.45.2.505.gda0bf45e8d-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 723/744] e1000e: move force SMBUS near the end of
- enable_ulp function
-To: "Zhang, Rui" <rui.zhang@intel.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Cc: "patches@lists.linux.dev" <patches@lists.linux.dev>,
- "pmenzel@molgen.mpg.de" <pmenzel@molgen.mpg.de>,
- "Brandt, Todd E" <todd.e.brandt@intel.com>,
- "Lifshits, Vitaly" <vitaly.lifshits@intel.com>,
- "Keller, Jacob E" <jacob.e.keller@intel.com>,
- "horms@kernel.org" <horms@kernel.org>,
- "naamax.meir@linux.intel.com" <naamax.meir@linux.intel.com>,
- "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
- "sashal@kernel.org" <sashal@kernel.org>, "kuba@kernel.org" <kuba@kernel.org>
-References: <20240606131732.440653204@linuxfoundation.org>
- <20240606131755.652268611@linuxfoundation.org>
- <3eb7ce5780ccbd08f1d1d50df333d6fc7364b2e9.camel@intel.com>
-Content-Language: en-US
-From: Hui Wang <hui.wang@canonical.com>
-In-Reply-To: <3eb7ce5780ccbd08f1d1d50df333d6fc7364b2e9.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-Hi Greg,
+Recently it was reported that Kingston DataTraveler G2 USB devices are
+unusable with 6.9.x kernels. Hence this patch that skips reading the IO
+hints VPD page for these USB devices.
 
-Please do not apply the commit to the stable kernels, there is a 
-regression report on this commit.
+Cc: Joao Machado <jocrismachado@gmail.com>
+Cc: stable@vger.kernel.org
+Fixes: 4f53138fffc2 ("scsi: sd: Translate data lifetime information")
+Reported-by: Joao Machado <jocrismachado@gmail.com>
+Closes: https://lore.kernel.org/linux-scsi/CACLx9VdpUanftfPo2jVAqXdcWe8Y4=
+3MsDeZmMPooTzVaVJAh2w@mail.gmail.com/
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+---
+ drivers/scsi/scsi_devinfo.c | 1 +
+ drivers/scsi/sd.c           | 4 ++++
+ include/scsi/scsi_devinfo.h | 4 +++-
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
-Thanks,
-
-Hui.
-
-On 6/7/24 08:32, Zhang, Rui wrote:
-> Add Todd.
->
-> Todd found a regression caused by this commit.
-> https://bugzilla.kernel.org/show_bug.cgi?id=218940
->
-> I think we should make that clear first.
->
-> thanks,
-> rui
->
-> On Thu, 2024-06-06 at 16:06 +0200, Greg Kroah-Hartman wrote:
->> 6.6-stable review patch.  If anyone has any objections, please let me
->> know.
->>
->> ------------------
->>
->> From: Hui Wang <hui.wang@canonical.com>
->>
->> [ Upstream commit bfd546a552e140b0a4c8a21527c39d6d21addb28 ]
->>
->> The commit 861e8086029e ("e1000e: move force SMBUS from enable ulp
->> function to avoid PHY loss issue") introduces a regression on
->> PCH_MTP_I219_LM18 (PCIID: 0x8086550A). Without the referred commit,
->> the
->> ethernet works well after suspend and resume, but after applying the
->> commit, the ethernet couldn't work anymore after the resume and the
->> dmesg shows that the NIC link changes to 10Mbps (1000Mbps
->> originally):
->>
->>      [   43.305084] e1000e 0000:00:1f.6 enp0s31f6: NIC Link is Up 10
->> Mbps Full Duplex, Flow Control: Rx/Tx
->>
->> Without the commit, the force SMBUS code will not be executed if
->> "return 0" or "goto out" is executed in the enable_ulp(), and in my
->> case, the "goto out" is executed since FWSM_FW_VALID is set. But
->> after
->> applying the commit, the force SMBUS code will be ran
->> unconditionally.
->>
->> Here move the force SMBUS code back to enable_ulp() and put it
->> immediately ahead of hw->phy.ops.release(hw), this could allow the
->> longest settling time as possible for interface in this function and
->> doesn't change the original code logic.
->>
->> The issue was found on a Lenovo laptop with the ethernet hw as below:
->> 00:1f.6 Ethernet controller [0200]: Intel Corporation Device
->> [8086:550a]
->> (rev 20).
->>
->> And this patch is verified (cable plug and unplug, system suspend
->> and resume) on Lenovo laptops with ethernet hw: [8086:550a],
->> [8086:550b], [8086:15bb], [8086:15be], [8086:1a1f], [8086:1a1c] and
->> [8086:0dc7].
->>
->> Fixes: 861e8086029e ("e1000e: move force SMBUS from enable ulp
->> function to avoid PHY loss issue")
->> Signed-off-by: Hui Wang <hui.wang@canonical.com>
->> Acked-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
->> Tested-by: Naama Meir <naamax.meir@linux.intel.com>
->> Reviewed-by: Simon Horman <horms@kernel.org>
->> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
->> Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
->> Tested-by: Zhang Rui <rui.zhang@intel.com>
->> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
->> Link:
->> https://lore.kernel.org/r/20240528-net-2024-05-28-intel-net-fixes-v1-1-dc8593d2bbc6@intel.com
->> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>   drivers/net/ethernet/intel/e1000e/ich8lan.c | 22
->> +++++++++++++++++++++
->>   drivers/net/ethernet/intel/e1000e/netdev.c  | 18 -----------------
->>   2 files changed, 22 insertions(+), 18 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c
->> b/drivers/net/ethernet/intel/e1000e/ich8lan.c
->> index 4d83c9a0c023a..d678ca0254651 100644
->> --- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
->> +++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
->> @@ -1225,6 +1225,28 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw
->> *hw, bool to_sx)
->>          }
->>   
->>   release:
->> +       /* Switching PHY interface always returns MDI error
->> +        * so disable retry mechanism to avoid wasting time
->> +        */
->> +       e1000e_disable_phy_retry(hw);
->> +
->> +       /* Force SMBus mode in PHY */
->> +       ret_val = e1000_read_phy_reg_hv_locked(hw, CV_SMB_CTRL,
->> &phy_reg);
->> +       if (ret_val) {
->> +               e1000e_enable_phy_retry(hw);
->> +               hw->phy.ops.release(hw);
->> +               goto out;
->> +       }
->> +       phy_reg |= CV_SMB_CTRL_FORCE_SMBUS;
->> +       e1000_write_phy_reg_hv_locked(hw, CV_SMB_CTRL, phy_reg);
->> +
->> +       e1000e_enable_phy_retry(hw);
->> +
->> +       /* Force SMBus mode in MAC */
->> +       mac_reg = er32(CTRL_EXT);
->> +       mac_reg |= E1000_CTRL_EXT_FORCE_SMBUS;
->> +       ew32(CTRL_EXT, mac_reg);
->> +
->>          hw->phy.ops.release(hw);
->>   out:
->>          if (ret_val)
->> diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c
->> b/drivers/net/ethernet/intel/e1000e/netdev.c
->> index 3692fce201959..cc8c531ec3dff 100644
->> --- a/drivers/net/ethernet/intel/e1000e/netdev.c
->> +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
->> @@ -6623,7 +6623,6 @@ static int __e1000_shutdown(struct pci_dev
->> *pdev, bool runtime)
->>          struct e1000_hw *hw = &adapter->hw;
->>          u32 ctrl, ctrl_ext, rctl, status, wufc;
->>          int retval = 0;
->> -       u16 smb_ctrl;
->>   
->>          /* Runtime suspend should only enable wakeup for link changes
->> */
->>          if (runtime)
->> @@ -6697,23 +6696,6 @@ static int __e1000_shutdown(struct pci_dev
->> *pdev, bool runtime)
->>                          if (retval)
->>                                  return retval;
->>                  }
->> -
->> -               /* Force SMBUS to allow WOL */
->> -               /* Switching PHY interface always returns MDI error
->> -                * so disable retry mechanism to avoid wasting time
->> -                */
->> -               e1000e_disable_phy_retry(hw);
->> -
->> -               e1e_rphy(hw, CV_SMB_CTRL, &smb_ctrl);
->> -               smb_ctrl |= CV_SMB_CTRL_FORCE_SMBUS;
->> -               e1e_wphy(hw, CV_SMB_CTRL, smb_ctrl);
->> -
->> -               e1000e_enable_phy_retry(hw);
->> -
->> -               /* Force SMBus mode in MAC */
->> -               ctrl_ext = er32(CTRL_EXT);
->> -               ctrl_ext |= E1000_CTRL_EXT_FORCE_SMBUS;
->> -               ew32(CTRL_EXT, ctrl_ext);
->>          }
->>   
->>          /* Ensure that the appropriate bits are set in LPI_CTRL
+diff --git a/drivers/scsi/scsi_devinfo.c b/drivers/scsi/scsi_devinfo.c
+index a7071e71389e..85111e14c53b 100644
+--- a/drivers/scsi/scsi_devinfo.c
++++ b/drivers/scsi/scsi_devinfo.c
+@@ -197,6 +197,7 @@ static struct {
+ 	{"INSITE", "I325VM", NULL, BLIST_KEY},
+ 	{"Intel", "Multi-Flex", NULL, BLIST_NO_RSOC},
+ 	{"iRiver", "iFP Mass Driver", NULL, BLIST_NOT_LOCKABLE | BLIST_INQUIRY_=
+36},
++	{"Kingston", "DataTraveler G2", NULL, BLIST_SKIP_IO_HINTS},
+ 	{"LASOUND", "CDX7405", "3.10", BLIST_MAX5LUN | BLIST_SINGLELUN},
+ 	{"Marvell", "Console", NULL, BLIST_SKIP_VPD_PAGES},
+ 	{"Marvell", "91xx Config", "1.01", BLIST_SKIP_VPD_PAGES},
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index 3a43e2209751..fcf3d7730466 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -63,6 +63,7 @@
+ #include <scsi/scsi_cmnd.h>
+ #include <scsi/scsi_dbg.h>
+ #include <scsi/scsi_device.h>
++#include <scsi/scsi_devinfo.h>
+ #include <scsi/scsi_driver.h>
+ #include <scsi/scsi_eh.h>
+ #include <scsi/scsi_host.h>
+@@ -3117,6 +3118,9 @@ static void sd_read_io_hints(struct scsi_disk *sdkp=
+, unsigned char *buffer)
+ 	struct scsi_mode_data data;
+ 	int res;
+=20
++	if (sdp->sdev_bflags & BLIST_SKIP_IO_HINTS)
++		return;
++
+ 	res =3D scsi_mode_sense(sdp, /*dbd=3D*/0x8, /*modepage=3D*/0x0a,
+ 			      /*subpage=3D*/0x05, buffer, SD_BUF_SIZE, SD_TIMEOUT,
+ 			      sdkp->max_retries, &data, &sshdr);
+diff --git a/include/scsi/scsi_devinfo.h b/include/scsi/scsi_devinfo.h
+index 6b548dc2c496..fa8721e49dec 100644
+--- a/include/scsi/scsi_devinfo.h
++++ b/include/scsi/scsi_devinfo.h
+@@ -69,8 +69,10 @@
+ #define BLIST_RETRY_ITF		((__force blist_flags_t)(1ULL << 32))
+ /* Always retry ABORTED_COMMAND with ASC 0xc1 */
+ #define BLIST_RETRY_ASC_C1	((__force blist_flags_t)(1ULL << 33))
++/* Do not read the I/O hints mode page */
++#define BLIST_SKIP_IO_HINTS	((__force blist_flags_t)(1ULL << 34))
+=20
+-#define __BLIST_LAST_USED BLIST_RETRY_ASC_C1
++#define __BLIST_LAST_USED BLIST_SKIP_IO_HINTS
+=20
+ #define __BLIST_HIGH_UNUSED (~(__BLIST_LAST_USED | \
+ 			       (__force blist_flags_t) \
 
