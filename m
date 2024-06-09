@@ -1,137 +1,126 @@
-Return-Path: <stable+bounces-50055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E54A9016FE
-	for <lists+stable@lfdr.de>; Sun,  9 Jun 2024 18:30:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7842F9017DD
+	for <lists+stable@lfdr.de>; Sun,  9 Jun 2024 20:31:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA555B20FD4
-	for <lists+stable@lfdr.de>; Sun,  9 Jun 2024 16:30:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F8B11C20B78
+	for <lists+stable@lfdr.de>; Sun,  9 Jun 2024 18:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C123847A60;
-	Sun,  9 Jun 2024 16:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1565A4DA09;
+	Sun,  9 Jun 2024 18:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WI3XBIbW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YU7S7I0N"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112342230F;
-	Sun,  9 Jun 2024 16:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B19C481B9;
+	Sun,  9 Jun 2024 18:30:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717950608; cv=none; b=FxobSX/nIcJlYNLE53d3KYyoZT8MIoRL4fZ8OPeUgTk16ptbGY7NQgJHkug5iCHdxFq2gs/XzhKG9wr6tsS1+9ogpItBxAm62iXEuVJCfODZHqQJvYEr9JYMas1U2B92lwZg5/+esF3etuf706vSKTqP44m7EsVeH7RPyB3TMpQ=
+	t=1717957853; cv=none; b=WW6/KkPilokffsDdb60NIy7oOd3+A5q4bMEBMHntT39/4qhqhL3CNcGKC6M0lYWk3iWvfPUdP9PcwWiGil6tcCCyICW1xiCzyEgSTb14Ewv6qPc1C6pOZ5TY3fDDfGNBBnmzjcIbXj3uUTsZE1re6So7ggSRNSPrx+QF1n0qkXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717950608; c=relaxed/simple;
-	bh=N66cO1s+WqUulUht0vyqX3t/6zdqQj9W39CF0jOCJkk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MtsAhcR8qAYqxmWyzeyWH3HvBiJaP1VOni5rFxVD0kjTXZo8lENM6Oo4UfNhNFEGstKqUmHV+nldhZay0t6nCeJ2Sk6440lFN5BABXSUzcpar+g6efo8UOm1R4ftHK2NHuCsRfTvcXj/Udl/nOvqL71iP2fP/XpyQMC5Nc0uG70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WI3XBIbW; arc=none smtp.client-ip=209.85.222.172
+	s=arc-20240116; t=1717957853; c=relaxed/simple;
+	bh=3UzT14NvWUR5CK3U1Fw6aNQWgadar+TXA8VhWP3bjJM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=PBWhI8ecNuEkexm+sW0e2WJOtdaE1FhMDe5xy9shSPEyFaqxCKA/BMkBgZU8Fy8SojjQAASVZbZH3iGZNF4dE6t5WNjqo8BU1egnWfY2i7qoX8eXvPEa4QnGkUkWVoQIaOKwu6WUCHDT1xKw43gYJDty21AT/QOCnswYy6xQ9iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YU7S7I0N; arc=none smtp.client-ip=209.85.161.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7955186e796so4560985a.3;
-        Sun, 09 Jun 2024 09:30:06 -0700 (PDT)
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5baf901ae65so234190eaf.3;
+        Sun, 09 Jun 2024 11:30:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717950606; x=1718555406; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TF7YavKalGLEiJlQ7xFhH0uBmMREnW8y1VUFULiv4I4=;
-        b=WI3XBIbWjCrt/32V+V3v8qUpntDJRT2J9jVmVuNiScLm9BWdcv83gVXLTlGcdjcwbp
-         jTEH7UNOdUw/JBdfmCvjelKrvfFuIIfn4OUeqbsWyZ9/B6xZ3lyNAUPAvZGxyh++nmEH
-         shyO8SXJWfOeu9NVLR49ba2lWcm5K4ttX98+IOfOmZDtMQyMFBgLvnWZu7IcrTuHzaI9
-         urVu/8q+47bVUBzuahCZ1LK69ogEvFE1HWwLXd40W1jzZLSkGqgO9Xz/innH4a9beMWr
-         VYc8mKfThyQBZX9Tg9WLYQrQJ0DKLLX5hoDySCYWPKY/7/SH0qOAcdwyG5yqrzptXY6A
-         mi5w==
+        d=gmail.com; s=20230601; t=1717957851; x=1718562651; darn=vger.kernel.org;
+        h=user-agent:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9zpbot7qHztX9ltp2BIpBIvx/SpoqMXIs8jofFmr9ho=;
+        b=YU7S7I0NaYTpnSFVA2NSi0qsRS3X72XrviDe5POTiJ8os412FOVOiJdqrUF7Jqe+Ps
+         L27KyWq7gnVqLX2DMWq3juyun3N9VDR8cLEKws8b1hBQSbBhSg4dNW6XmDOrqxwe9E+k
+         WjJw4ZgF/iB24GV9wMsSMsO4e1gJj9C7fmKtOCiNVbraXeFbDKvS/rxBukcc8VXulW2A
+         SIiem8Ozmqw3J2Zqw0JezqDgDAe4LMEB/y/2IZC7n7sNg9WIeHYN0V5MRnHBgBdT6A4m
+         l9ArxUbioEDqiWnvQAWbU9UIIH0tupqM0TzNE5CUhtq5PaAla412tBXa2Nnvp4/YSTBZ
+         /MYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717950606; x=1718555406;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1717957851; x=1718562651;
+        h=user-agent:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TF7YavKalGLEiJlQ7xFhH0uBmMREnW8y1VUFULiv4I4=;
-        b=QZ3ZYpRqD8PqJzTZhYIlj8XiSvvpQt0ytcGDc/m193MTjR/Kzor2Gf922hEFw1Q1PO
-         9XzD6xu+7ToHwcvnjQA00MujadNnEM89aGk18ow8UBRWt1Mq9enD2KaIiKIvA/a+7DHh
-         v/beeegIqxWhSytlHGMgo72q7nR++nFujsaBa4Z17m+wlUYGtybAwxFdS5a7UxlmQrzX
-         RMKDRAU3X+3bjmbH/pTnV/G9n7xQTbqAqlIk5vtYBvHtLWvqkUQARl+IBdL9xlCUBEh8
-         Eh18mBgYHagvG/PdOFLcsZdNC1W59/iS1ybvbu2pX/eaM12rMI0e6LzcGuJOCwb+b/A8
-         /S8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVv554tiTSndz2gQVZLtjVISuC5yIHx8D+wDPlexyLQpQIiOrGhtFVdbcHXhSjD/yuyf41xIVATrXsm7EA+hkK10gAK420T
-X-Gm-Message-State: AOJu0YxCdxb2MAI+PjrTeRtn6gGKHXPoGW4Df9mMziQ9Q8F/Kz1sYTh3
-	DxHCw9TCgHtV59JMXG6JOay3KKjJ/9sVr8tMA9c3PmUqVGDfJpUkzbyu7bYMVlC44jabKuQWGzA
-	fnwTu1BGm2u2meuDanVQdn1ButVo=
-X-Google-Smtp-Source: AGHT+IG6BkY7CqMlCxmzceKgSHInDK6S4FTmtCyPQmGZpUdtneJNd79jnGzDxCtGBlO4b+mR8u2gnc0L/XA3QT45UJk=
-X-Received: by 2002:a05:620a:2681:b0:793:325:d05d with SMTP id
- af79cd13be357-7953c182583mr810402785a.0.1717950605734; Sun, 09 Jun 2024
- 09:30:05 -0700 (PDT)
+        bh=9zpbot7qHztX9ltp2BIpBIvx/SpoqMXIs8jofFmr9ho=;
+        b=MEqRWh+RxRnziaWeRfIscp5+Kv0LobORDSlBne0B/BJ6FCnHJI0TjExN1yZEUWwfXM
+         pCp06cdIYTDYtfPEpC/jMUlXUS5ebL5Sw+/sk3oKZbOvErTU6kH4KLYCIM/2MAGEvN4O
+         ZbhwUBObDZ7E1lc2P/Y45ZO/lRiCs/tYtx1l5ZElpTnmP6ERwJrORJAb+arVRWUSN+pH
+         gnIhHtiDqLVX+eLBIh934hcKU66GXb/FIdMopNryNIY0kEjD0tDwQgLkxHrNCiZTi6b2
+         CUOI7bOdA4sbf/eNTgVPFb7vmDCbC1pS4lCsNZ5o1SmyaQwhqQpWiKysUKK39TrQ41D0
+         LBYg==
+X-Forwarded-Encrypted: i=1; AJvYcCWckN07kPieJXbq51gLc+Vt19oq33ggsMozMweaNIWrHtpmucb46gg3RhspFbVHMUfMixvo7A1r8T3S0Qle3rgITWVdnal6
+X-Gm-Message-State: AOJu0Yx6D7NWLRALwyXn/4w0VfqEhjdtvJYg/HJ/sowf6PaCoRT1Wle/
+	HR/GOekLpjFMT1JunMm85exnHQe8WCK8ZgYy+Ooqy58fHDwat4eC5QVE/g==
+X-Google-Smtp-Source: AGHT+IH6woehv0uiSbbq3kkFLtAZorWcW0AIJefHJXF8Cpc3HyUt+4ulg4ioylZZkoL0LoDx3daTOw==
+X-Received: by 2002:a05:6358:989d:b0:19f:4d5a:c674 with SMTP id e5c5f4694b2df-19f4d5aca34mr226428455d.16.1717957850554;
+        Sun, 09 Jun 2024 11:30:50 -0700 (PDT)
+Received: from iZj6chx1xj0e0buvshuecpZ ([47.75.1.235])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-6e76d693b19sm2248211a12.92.2024.06.09.11.30.48
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 09 Jun 2024 11:30:50 -0700 (PDT)
+Date: Mon, 10 Jun 2024 02:30:46 +0800
+From: Peng Liu <iwtbavbm@gmail.com>
+To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: tglx@linutronix.de, gregkh@linuxfoundation.org, maz@kernel.org,
+	vincent.whitchurch@axis.com, iwtbavbm@gmail.com, 158710936@qq.com
+Subject: [PATCH] genirq: Keep handle_nested_irq() from touching desc->threads_active
+Message-ID: <20240609183046.GA14050@iZj6chx1xj0e0buvshuecpZ>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAGew7BttU+g40uRnSCN5XmbXs1KX1ZBbz+xyXC_nw5p4dR2dGA@mail.gmail.com>
- <ad69720e0ba720209cb04240fbc3c5ff059accbc.1717945321.git.pav@iki.fi>
-In-Reply-To: <ad69720e0ba720209cb04240fbc3c5ff059accbc.1717945321.git.pav@iki.fi>
-From: =?UTF-8?Q?Timo_Schr=C3=B6der?= <der.timosch@gmail.com>
-Date: Sun, 9 Jun 2024 18:29:54 +0200
-Message-ID: <CAGew7BvnxmmeoZqzETgCrSsVKU96tV+pe1DKn5r+QEsXguc1kw@mail.gmail.com>
-Subject: Re: [PATCH v2] Bluetooth: fix connection setup in l2cap_connect
-To: Pauli Virtanen <pav@iki.fi>
-Cc: linux-bluetooth@vger.kernel.org, luiz.von.dentz@intel.com, 
-	regressions@leemhuis.info, stable@vger.kernel.org, 
-	regressions@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-Hi Pauli,
+handle_nested_irq() is supposed to be running inside the parent thread
+handler context. It per se has no dedicated kernel thread, thus shouldn't
+touch desc->threads_active. The parent kernel thread has already taken
+care of this.
 
-well done! This patch fixes the issue. Thank you.
+Fixes: e2c12739ccf7 ("genirq: Prevent nested thread vs synchronize_hardirq() deadlock")
+Cc: stable@vger.kernel.org
+Signed-off-by: Peng Liu <iwtbavbm@gmail.com>
+---
 
-Best regards,
-Timo
+Despite of its correctness, I'm afraid the testing on my only PC can't
+cover the affected code path. So the patch may be totally -UNTESTED-.
 
+ kernel/irq/chip.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Am So., 9. Juni 2024 um 17:06 Uhr schrieb Pauli Virtanen <pav@iki.fi>:
->
-> The amp_id argument of l2cap_connect() was removed in
-> commit 84a4bb6548a2 ("Bluetooth: HCI: Remove HCI_AMP support")
->
-> It was always called with amp_id == 0, i.e. AMP_ID_BREDR == 0x00 (ie.
-> non-AMP controller).  In the above commit, the code path for amp_id != 0
-> was preserved, although it should have used the amp_id == 0 one.
->
-> Restore the previous behavior of the non-AMP code path, to fix problems
-> with L2CAP connections.
->
-> Fixes: 84a4bb6548a2 ("Bluetooth: HCI: Remove HCI_AMP support")
-> Signed-off-by: Pauli Virtanen <pav@iki.fi>
-> ---
->
-> Notes:
->     v2: do the change in the actually right if branch
->
->     Tried proofreading the commit, and this part seemed suspicious.
->     Can you try if this fixes the problem?
->
->  net/bluetooth/l2cap_core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-> index c49e0d4b3c0d..aed025734d04 100644
-> --- a/net/bluetooth/l2cap_core.c
-> +++ b/net/bluetooth/l2cap_core.c
-> @@ -4011,8 +4011,8 @@ static void l2cap_connect(struct l2cap_conn *conn, struct l2cap_cmd_hdr *cmd,
->                                 status = L2CAP_CS_AUTHOR_PEND;
->                                 chan->ops->defer(chan);
->                         } else {
-> -                               l2cap_state_change(chan, BT_CONNECT2);
-> -                               result = L2CAP_CR_PEND;
-> +                               l2cap_state_change(chan, BT_CONFIG);
-> +                               result = L2CAP_CR_SUCCESS;
->                                 status = L2CAP_CS_NO_INFO;
->                         }
->                 } else {
-> --
-> 2.45.2
->
+diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
+index dc94e0bf2c94..85d4f29134e9 100644
+--- a/kernel/irq/chip.c
++++ b/kernel/irq/chip.c
+@@ -478,7 +478,6 @@ void handle_nested_irq(unsigned int irq)
+ 	}
+ 
+ 	kstat_incr_irqs_this_cpu(desc);
+-	atomic_inc(&desc->threads_active);
+ 	raw_spin_unlock_irq(&desc->lock);
+ 
+ 	action_ret = IRQ_NONE;
+@@ -487,8 +486,6 @@ void handle_nested_irq(unsigned int irq)
+ 
+ 	if (!irq_settings_no_debug(desc))
+ 		note_interrupt(desc, action_ret);
+-
+-	wake_threads_waitq(desc);
+ }
+ EXPORT_SYMBOL_GPL(handle_nested_irq);
+ 
+-- 
+2.39.2
+
 
