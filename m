@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-50057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9BE9017FB
-	for <lists+stable@lfdr.de>; Sun,  9 Jun 2024 21:34:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEBF901806
+	for <lists+stable@lfdr.de>; Sun,  9 Jun 2024 21:37:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEFBE1F2124A
-	for <lists+stable@lfdr.de>; Sun,  9 Jun 2024 19:34:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E199EB20C03
+	for <lists+stable@lfdr.de>; Sun,  9 Jun 2024 19:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C201DA4C;
-	Sun,  9 Jun 2024 19:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331371DA53;
+	Sun,  9 Jun 2024 19:37:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5169018B14;
-	Sun,  9 Jun 2024 19:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8FD18B1A;
+	Sun,  9 Jun 2024 19:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717961653; cv=none; b=JIRnNre0d+v7jbm8wdt4qVrfgOR33LXVMBS9bzqtZ5/P7OOjLJsOs7xdVIi3V1oYKz8os/9TF9i4G0TrUjMA0+oe7PHUAh2RmuPRaJxxkOeko+RrD3eOhJH62VRDynmxrQLCVzdUerliKVJn4ZWsKE5Dik9b9hRFh6df4vEdB1c=
+	t=1717961847; cv=none; b=WwYfw7nIDiU03vNl7aCkhDzzWWkqxqcVgHBcw2XCoXI4ZzFLyp+h5gpb0Um5vroKpzIc4l7gWx4voWSciBIbpwoadBLfItRlYIxYzwUuo/kWzghwgNrmAX1/8EKmA6outtRjdqBYyZZOd4ErXZ6Rn+kdOIFoTTCuE11Qux7lRQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717961653; c=relaxed/simple;
-	bh=xSi7azQa7o090Xk6FntbBTHKlE0uCQeUm2rNJVsEfFE=;
+	s=arc-20240116; t=1717961847; c=relaxed/simple;
+	bh=1AIckhDvZLb5jyJYq2SNkWavWw8DLi/8FE60TtLlIY8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nY0hiaYi/eKBwD75+NAAwFJMxMhdMAEPe8oJsQLbdjUplKd6qyO38avsl6Hhb0rpkD+a7IytqTaYRr3x9w0Lpi7vTURcVZ45w3Bc7c9u5yCBVFPr5BzHn8Vy+8+nA71gmYFcM/ubKyJr9YZy+iT/fZTm2z71X5ugJALYc1c2pAQ=
+	 Content-Type:Content-Disposition:In-Reply-To; b=AMxdR2iml8SbwKW1pvcsSCG2ZMhATz6LuSJsMxWb+lbkhkkiHElpo0A3qwHQ7a8YOO0bfZIdhshSMa6PmV2vTxSO+UeiSlyyn61xsh4o/H66UorwPpXx7z4vNPLhTWRvogB6hBXvA8Unxc3IqCtPsl5Yz95s6embomeOA0n+u6U=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id B3D2B1C0098; Sun,  9 Jun 2024 21:34:02 +0200 (CEST)
-Date: Sun, 9 Jun 2024 21:34:02 +0200
+	id 4B89A1C0098; Sun,  9 Jun 2024 21:37:23 +0200 (CEST)
+Date: Sun, 9 Jun 2024 21:37:22 +0200
 From: Pavel Machek <pavel@denx.de>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -41,9 +41,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
 	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.6 000/741] 6.6.33-rc2 review
-Message-ID: <ZmYDquU9rsJ2HG9g@duo.ucw.cz>
-References: <20240609113903.732882729@linuxfoundation.org>
+Subject: Re: [PATCH 6.1 000/470] 6.1.93-rc2 review
+Message-ID: <ZmYEcrV3+nS89qrL@duo.ucw.cz>
+References: <20240609113816.092461948@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,98 +51,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CCIc0KBtCtSMTYEU"
+	protocol="application/pgp-signature"; boundary="Ph2aN2YeD/bHqfqa"
 Content-Disposition: inline
-In-Reply-To: <20240609113903.732882729@linuxfoundation.org>
+In-Reply-To: <20240609113816.092461948@linuxfoundation.org>
 
 
---CCIc0KBtCtSMTYEU
+--Ph2aN2YeD/bHqfqa
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> This is the start of the stable review cycle for the 6.6.33 release.
-> There are 741 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.1.93 release.
+> There are 470 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
-6.6 seems to have build problem on risc-v:
+CIP testing did not find any problems here:
 
-  CC      kernel/locking/qrwlock.o
-690
-  CC      lib/bug.o
-691
-  CC      block/blk-rq-qos.o
-692
-arch/riscv/kernel/suspend.c: In function 'suspend_save_csrs':
-693
-arch/riscv/kernel/suspend.c:14:66: error: 'RISCV_ISA_EXT_XLINUXENVCFG' unde=
-clared (first use in this function); did you mean 'RISCV_ISA_EXT_ZIFENCEI'?
-694
-   14 |         if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RI=
-SCV_ISA_EXT_XLINUXENVCFG))
-695
-      |                                                                  ^~=
-~~~~~~~~~~~~~~~~~~~~~~~~
-696
-      |                                                                  RI=
-SCV_ISA_EXT_ZIFENCEI
-697
-arch/riscv/kernel/suspend.c:14:66: note: each undeclared identifier is repo=
-rted only once for each function it appears in
-698
-  CC      io_uring/io-wq.o
-699
-arch/riscv/kernel/suspend.c: In function 'suspend_restore_csrs':
-700
-arch/riscv/kernel/suspend.c:37:66: error: 'RISCV_ISA_EXT_XLINUXENVCFG' unde=
-clared (first use in this function); did you mean 'RISCV_ISA_EXT_ZIFENCEI'?
-701
-   37 |         if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RI=
-SCV_ISA_EXT_XLINUXENVCFG))
-702
-      |                                                                  ^~=
-~~~~~~~~~~~~~~~~~~~~~~~~
-703
-      |                                                                  RI=
-SCV_ISA_EXT_ZIFENCEI
-704
-make[4]: *** [scripts/Makefile.build:243: arch/riscv/kernel/suspend.o] Erro=
-r 1
-705
-make[3]: *** [scripts/Makefile.build:480: arch/riscv/kernel] Error 2
-706
-make[2]: *** [scripts/Makefile.build:480: arch/riscv] Error 2
-707
-make[2]: *** Waiting for unfinished jobs....
-708
-  CC      lib/buildid.o
-709
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.1.y
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/705322=
-2239
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1=
-324369118
-
-No problems detected on 6.8-stable and 6.1-stable.
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
 Best regards,
-								Pavel
+                                                                Pavel
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---CCIc0KBtCtSMTYEU
+--Ph2aN2YeD/bHqfqa
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZmYDqgAKCRAw5/Bqldv6
-8tHSAKCNgJ04hz+h5sBNTNuKdN7C2FZ/PgCePYUgJW9c6BdSP02m6rcgbf57x4I=
-=qIjz
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZmYEcgAKCRAw5/Bqldv6
+8qtRAJ0Y4lGYHFV2lnziR+OgV2q6a36a8gCfRejzhEwLwGKozEFY9sbWg9CrGDY=
+=NvmZ
 -----END PGP SIGNATURE-----
 
---CCIc0KBtCtSMTYEU--
+--Ph2aN2YeD/bHqfqa--
 
