@@ -1,203 +1,245 @@
-Return-Path: <stable+bounces-50086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DEED901F69
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 12:30:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6482C90228B
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 15:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 599901C20FA4
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 10:30:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E08B91F236D6
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 13:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E88C78C6B;
-	Mon, 10 Jun 2024 10:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0D28248B;
+	Mon, 10 Jun 2024 13:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0RG0fhY"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UlasUtKv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C2D2C190;
-	Mon, 10 Jun 2024 10:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA24B4501B;
+	Mon, 10 Jun 2024 13:18:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718015444; cv=none; b=ICSzjqyH66fS8SslaMJbd/grVFOFvIxPhbZT3YbNOCKiH7l9/1FGE3tvRhYU1xNj5n4gxZh6v9vOd47veFRXC+Rc68TT8SGvBvVfo9V8dh3zarPmkj8jaEQz0nQ3klcfA2/5pR2dHizKmb5m6bYKMZYtCdYM2dNN9F+ajrpsMxk=
+	t=1718025523; cv=none; b=JOiX0LKkNMpctjWLQNXs4MhKcYKoiw+DbOHyJd/1FJYfE6XleDn09xghHQ3BJ/obLtP4TBdnYpbCFKTJIRMsdb6Bl4OfJ6kbf2nlnL7nrRh7Fbw6EXsJznS8YY/IQOht3p8rvfogb2w25FlAwcJ8mFeQC3eeLQggK3tXRIa2ekE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718015444; c=relaxed/simple;
-	bh=zeW049fuoqE+ykETuiDe/btmCUo6QQMkrefjBUhjkIs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FcSSwgOsUfgOUUX1P5MdKfNaeoMBvFLRD+WpScbTxPd2MUEHCy+KXprqgURjb2mghTHDk4YydY5TnsXP/0ttbaLXq9RnKbUknjcqpheXL4fs79+983w9ahmsicw+kdLT+baKaOXRTvk4ZRaIuXNVGMXVYYvj2n5ta4S0yqClKhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0RG0fhY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE28C2BBFC;
-	Mon, 10 Jun 2024 10:30:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718015443;
-	bh=zeW049fuoqE+ykETuiDe/btmCUo6QQMkrefjBUhjkIs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t0RG0fhYn7XuwUJKw6O2I+oypzDIv/lEMGDWhP1ifnw/3XvjKrHGbluCLXtTSgXmn
-	 xst3b7UlJOnLN9ThSWF8o4n+HvAjBxw6LdodMyypKPUNCE93wV3dNpIdITBjRZOben
-	 KzrqxyLcG3WSqG80CW9i+Uj7fAFCWjWUW4OZfkA8=
-Date: Mon, 10 Jun 2024 12:30:40 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: vsntk18@gmail.com
-Cc: x86@kernel.org, Borislav.Petkov@amd.com, Dhaval.Giani@amd.com,
-	ashish.kalra@amd.com, cfir@google.com, dan.j.williams@intel.com,
-	dave.hansen@linux.intel.com, ebiederm@xmission.com,
-	erdemaktas@google.com, hpa@zytor.com, jgross@suse.com,
-	jroedel@suse.de, jslaby@suse.cz, keescook@chromium.org,
-	kexec@lists.infradead.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	luto@kernel.org, martin.b.radev@gmail.com, mhiramat@kernel.org,
-	michael.roth@amd.com, mstunes@vmware.com, nivedita@alum.mit.edu,
-	peterz@infradead.org, rientjes@google.com, seanjc@google.com,
-	stable@vger.kernel.org, thomas.lendacky@amd.com,
-	virtualization@lists.linux-foundation.org, vkarasulli@suse.de
-Subject: Re: [PATCH v6 00/10] x86/sev: KEXEC/KDUMP support for SEV-ES guests
-Message-ID: <2024061024-portside-richly-5be4@gregkh>
-References: <20240610102113.20969-1-vsntk18@gmail.com>
+	s=arc-20240116; t=1718025523; c=relaxed/simple;
+	bh=9jIKbtpuTldIb1KNuS2YUa/uTjVOcsW6Ey2tzNwRWYU=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=b4rLXJYm+/AoDQRpxLajZhOD3D5tlIqMPbeKr/pDL5DhypZjYSnLIVijtc2AIWciu4UWY3jW1QTjRKh/pnf+j/SHSwa1NUFLV4LIql8IsISNAI1ONxZifgVPiPUhwec079XFPvuxMPxnsEsida/R57sazmxGhbp/R0vY89aQPcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UlasUtKv; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=/xi9sq9viF3AhnFJOXABtAS7QK7RPNhmxpE7hgLtAOQ=;
+	b=UlasUtKvb3Ri0b7eR6EMN5LE7e/iJgQlkpTCCT88sFwK+xQ6OMSr25TJNS9wbz
+	PfJ7jdPZEW8su3rlrJYkFO66zh9rWWFgbAblGmf2eMNPTINirDkITsnRu+jrEQJD
+	XAeFit9BI9lY4jxnPsrJsCubMB+CtH/N0oRKu7kNJOuSE=
+Received: from [192.168.1.26] (unknown [183.195.6.47])
+	by gzga-smtp-mta-g3-4 (Coremail) with SMTP id _____wDn1xjW_GZmV+MMDQ--.32004S2;
+	Mon, 10 Jun 2024 21:17:11 +0800 (CST)
+Message-ID: <caa701f8-0d2d-4052-9e55-2b755b172c56@163.com>
+Date: Mon, 10 Jun 2024 21:17:10 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240610102113.20969-1-vsntk18@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] Bluetooth: qca: Fix BT enable failure again for
+ QCA6390 after warm reboot
+From: Lk Sii <lk_sii@163.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Zijun Hu <quic_zijuhu@quicinc.com>, luiz.dentz@gmail.com,
+ luiz.von.dentz@intel.com, marcel@holtmann.org
+Cc: linux-bluetooth@vger.kernel.org, wt@penguintechs.org,
+ regressions@lists.linux.dev, pmenzel@molgen.mpg.de, stable@vger.kernel.org
+References: <1715866294-1549-1-git-send-email-quic_zijuhu@quicinc.com>
+ <7927abbe-3395-4a53-9eed-7b4204d57df5@linaro.org>
+ <29333872-4ff2-4f4e-8166-4c847c7605c1@163.com>
+ <5df56d58-309a-4ff1-9a41-818a3f114bbb@linaro.org>
+ <0618805b-2f7a-473d-b9fb-aea39a1ef659@163.com>
+ <3d27add1-782c-4c19-9d84-d0074113c7a2@linaro.org>
+ <fc035bd7-c9e3-458f-b419-f4ac50322d02@163.com>
+Content-Language: en-US
+In-Reply-To: <fc035bd7-c9e3-458f-b419-f4ac50322d02@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wDn1xjW_GZmV+MMDQ--.32004S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Jw1rWr1UJw4DXrW5ZF4UXFb_yoW3JFWrpF
+	WUJF1Dtr4UJryFyr10yr1xKFyjywnrtr18Wrn8GrWUJa90vF1rJr4Iqr45uF98urWxWF1j
+	vw4DXasFvr1DAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U5nY7UUUUU=
+X-CM-SenderInfo: 5onb2xrl6rljoofrz/1tbishv5NWVODlqgtAAAsO
 
-On Mon, Jun 10, 2024 at 12:21:03PM +0200, vsntk18@gmail.com wrote:
-> From: Vasant Karasulli <vkarasulli@suse.de>
-> 
-> Hi,
-> 
-> here are changes to enable kexec/kdump in SEV-ES guests. The biggest
-> problem for supporting kexec/kdump under SEV-ES is to find a way to
-> hand the non-boot CPUs (APs) from one kernel to another.
-> 
-> Without SEV-ES the first kernel parks the CPUs in a HLT loop until
-> they get reset by the kexec'ed kernel via an INIT-SIPI-SIPI sequence.
-> For virtual machines the CPU reset is emulated by the hypervisor,
-> which sets the vCPU registers back to reset state.
-> 
-> This does not work under SEV-ES, because the hypervisor has no access
-> to the vCPU registers and can't make modifications to them. So an
-> SEV-ES guest needs to reset the vCPU itself and park it using the
-> AP-reset-hold protocol. Upon wakeup the guest needs to jump to
-> real-mode and to the reset-vector configured in the AP-Jump-Table.
-> 
-> The code to do this is the main part of this patch-set. It works by
-> placing code on the AP Jump-Table page itself to park the vCPU and for
-> jumping to the reset vector upon wakeup. The code on the AP Jump Table
-> runs in 16-bit protected mode with segment base set to the beginning
-> of the page. The AP Jump-Table is usually not within the first 1MB of
-> memory, so the code can't run in real-mode.
-> 
-> The AP Jump-Table is the best place to put the parking code, because
-> the memory is owned, but read-only by the firmware and writeable by
-> the OS. Only the first 4 bytes are used for the reset-vector, leaving
-> the rest of the page for code/data/stack to park a vCPU. The code
-> can't be in kernel memory because by the time the vCPU wakes up the
-> memory will be owned by the new kernel, which might have overwritten it
-> already.
-> 
-> The other patches add initial GHCB Version 2 protocol support, because
-> kexec/kdump need the MSR-based (without a GHCB) AP-reset-hold VMGEXIT,
-> which is a GHCB protocol version 2 feature.
-> 
-> The kexec'ed kernel is also entered via the decompressor and needs
-> MMIO support there, so this patch-set also adds MMIO #VC support to
-> the decompressor and support for handling CLFLUSH instructions.
-> 
-> Finally there is also code to disable kexec/kdump support at runtime
-> when the environment does not support it (e.g. no GHCB protocol
-> version 2 support or AP Jump Table over 4GB).
-> 
-> The diffstat looks big, but most of it is moving code for MMIO #VC
-> support around to make it available to the decompressor.
-> 
-> The previous version of this patch-set can be found here:
-> 
-> 	https://lore.kernel.org/kvm/20240408074049.7049-1-vsntk18@gmail.com/
-> 
-> Please review.
-> 
-> Thanks,
->    Vasant
-> 
-> Changes v5->v6:
->         - Rebased to v6.10-rc3 kernel
->    
-> Changes v4->v5:
->         - Rebased to v6.9-rc2 kernel
-> 	- Applied review comments by Tom Lendacky
-> 	  - Exclude the AP jump table related code for SEV-SNP guests
-> 
-> Changes v3->v4:
->         - Rebased to v6.8 kernel
-> 	- Applied review comments by Sean Christopherson
-> 	- Combined sev_es_setup_ap_jump_table() and sev_setup_ap_jump_table()
->           into a single function which makes caching jump table address
->           unnecessary
->         - annotated struct sev_ap_jump_table_header with __packed attribute
-> 	- added code to set up real mode data segment at boot time instead of
->           hardcoding the value.
-> 
-> Joerg Roedel (9):
->   x86/kexec/64: Disable kexec when SEV-ES is active
->   x86/sev: Save and print negotiated GHCB protocol version
->   x86/sev: Set GHCB data structure version
->   x86/sev: Setup code to park APs in the AP Jump Table
->   x86/sev: Park APs on AP Jump Table with GHCB protocol version 2
->   x86/sev: Use AP Jump Table blob to stop CPU
->   x86/sev: Add MMIO handling support to boot/compressed/ code
->   x86/sev: Handle CLFLUSH MMIO events
->   x86/kexec/64: Support kexec under SEV-ES with AP Jump Table Blob
-> 
-> Vasant Karasulli (1):
->   x86/sev: Exclude AP jump table related code for SEV-SNP guests
-> 
->  arch/x86/boot/compressed/sev.c          |  45 +-
->  arch/x86/include/asm/insn-eval.h        |   1 +
->  arch/x86/include/asm/realmode.h         |   5 +
->  arch/x86/include/asm/sev-ap-jumptable.h |  30 +
->  arch/x86/include/asm/sev.h              |   7 +
->  arch/x86/kernel/machine_kexec_64.c      |  12 +
->  arch/x86/kernel/process.c               |   8 +
->  arch/x86/kernel/sev-shared.c            | 234 +++++-
->  arch/x86/kernel/sev.c                   | 376 +++++-----
->  arch/x86/lib/insn-eval-shared.c         | 921 ++++++++++++++++++++++++
->  arch/x86/lib/insn-eval.c                | 911 +----------------------
->  arch/x86/realmode/Makefile              |   9 +-
->  arch/x86/realmode/init.c                |   5 +-
->  arch/x86/realmode/rm/Makefile           |  11 +-
->  arch/x86/realmode/rm/header.S           |   3 +
->  arch/x86/realmode/rm/sev.S              |  85 +++
->  arch/x86/realmode/rmpiggy.S             |   6 +
->  arch/x86/realmode/sev/Makefile          |  33 +
->  arch/x86/realmode/sev/ap_jump_table.S   | 131 ++++
->  arch/x86/realmode/sev/ap_jump_table.lds |  24 +
->  20 files changed, 1711 insertions(+), 1146 deletions(-)
->  create mode 100644 arch/x86/include/asm/sev-ap-jumptable.h
->  create mode 100644 arch/x86/lib/insn-eval-shared.c
->  create mode 100644 arch/x86/realmode/rm/sev.S
->  create mode 100644 arch/x86/realmode/sev/Makefile
->  create mode 100644 arch/x86/realmode/sev/ap_jump_table.S
->  create mode 100644 arch/x86/realmode/sev/ap_jump_table.lds
+
+
+On 2024/6/6 20:54, Lk Sii wrote:
 > 
 > 
-> base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
-> -- 
-> 2.34.1
+> On 2024/6/5 15:14, Krzysztof Kozlowski wrote:
+>> On 05/06/2024 03:49, Lk Sii wrote:
+>>>
+>>>
+>>> On 2024/6/4 23:18, Krzysztof Kozlowski wrote:
+>>>> On 04/06/2024 16:25, Lk Sii wrote:
+>>>>>
+>>>>>
+>>>>> On 2024/5/22 00:02, Krzysztof Kozlowski wrote:
+>>>>>> On 16/05/2024 15:31, Zijun Hu wrote:
+>>>>>>> Commit 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed
+>>>>>>> serdev") will cause below regression issue:
+>>>>>>>
+>>>>>>> BT can't be enabled after below steps:
+>>>>>>> cold boot -> enable BT -> disable BT -> warm reboot -> BT enable failure
+>>>>>>> if property enable-gpios is not configured within DT|ACPI for QCA6390.
+>>>>>>>
+>>>>>>> The commit is to fix a use-after-free issue within qca_serdev_shutdown()
+>>>>>>> by adding condition to avoid the serdev is flushed or wrote after closed
+>>>>>>> but also introduces this regression issue regarding above steps since the
+>>>>>>> VSC is not sent to reset controller during warm reboot.
+>>>>>>>
+>>>>>>> Fixed by sending the VSC to reset controller within qca_serdev_shutdown()
+>>>>>>> once BT was ever enabled, and the use-after-free issue is also fixed by
+>>>>>>> this change since the serdev is still opened before it is flushed or wrote.
+>>>>>>>
+>>>>>>> Verified by the reported machine Dell XPS 13 9310 laptop over below two
+>>>>>>> kernel commits:
+>>>>>>
+>>>>>> I don't understand how does it solve my question. I asked you: on which
+>>>>>> hardware did you, not the reporter, test?
+>>>>>> It seems Zijun did NOT perform any tests obviously.
+>>>>> All these tests were performed by reporter Wren with her machine
+>>>>> "Dell XPS 13 9310 laptop".
+>>>>
+>>>> Wren != Zijun.
+>>>>
+>>>>>
+>>>>> From previous discussion, it seems she have tested this change
+>>>>> several times with positive results over different trees with her
+>>>>> machine. i noticed she given you reply for your questions within
+>>>>> below v1 discussion link as following:
+>>>>>
+>>>>> Here are v1 discussion link.
+>>>>> https://lore.kernel.org/linux-bluetooth/d553edef-c1a4-4d52-a892-715549d31ebe@163.com/T/#m7371df555fd58ba215d0da63055134126a43c460
+>>>>>
+>>>>> Here are Krzysztof's questions.
+>>>>> "I asked already *two times*:
+>>>>> 1. On which kernel did you test it?
+>>>>> 2. On which hardware did you test it?"
+>>>>>
+>>>>> Here are Wren's reply for Krzysztof's questions
+>>>>> "I thought I had already chimed in with this information. I am using a
+>>>>> Dell XPS 13 9310. It's the only hardware I have access to. I can say
+>>>>> that the fix seems to work as advertised in that it fixes the warm boot
+>>>>> issue I have been experiencing."
+>>>>
+>>>> I asked Zijun, not Wren. I believe all this is tested or done by
+>>>> Qualcomm on some other kernel, so that's my question.
+>>>>
+>>> Zijun is the only guy from Qualcomm who ever joined our discussion,
+>>> he ever said he belongs to Bluetooth team, so let us suppose the term
+>>> "Qualcomm" you mentioned above is Zijun.
+>>>
+>>> from discussion history. in fact, ALL these tests were performed by
+>>> reporter Wren instead of Zijun, and there are also NOT Zijun's Tested-by
+>>> tag, so what you believe above is wrong in my opinion.
+>>
+>> Patch author is supposed to test the code. Are you implying that
+>> Qualcomm Bluetooth team cannot test the patch on any of Qualcomm
+>> Bluetooth devices?
+>>
+> i guess Zijun did not test the patch on himself based on below reasons:
+> 1) the patch has been tested by reporter with report's machine.
+> 2) perhaps, Zijun is confident about his patch based on his experience.
+> 3) perhaps, it is difficult for Zijun to find a suitable machine to
+> perform tests, and test machines must have QCA6390 *embedded* and use
+> Bluez solution.
 > 
+>>>
+>>> Only Zijun and reporter were involved during those early debugging days,
+>>> Zijun shared changes for reporter to verify with reporter's machine,
+>>> then Zijun posted his fixes after debugging and verification were done.
+>>>
+>>>> That's important because Wren did not test particular scenarios, like
+>>>> PREEMPT_RT or RB5 hardware, but Zijun is claiming problems are solved.
+>>>> Maybe indeed solved, but if takes one month and still not answer which
+>>>> kernel you are using, then I am sure: this was nowhere tested by Zijun
+>>>> on the hardware and on the kernel the Qualcomm wants it to be.
+>>>>
+>>>>>
+>>>>>>> commit e00fc2700a3f ("Bluetooth: btusb: Fix triggering coredump
+>>>>>>> implementation for QCA") of bluetooth-next tree.
+>>>>>>> commit b23d98d46d28 ("Bluetooth: btusb: Fix triggering coredump
+>>>>>>> implementation for QCA") of linus mainline tree.
+>>>>>>
+>>>>>> ? Same commit with different hashes? No, it looks like you are working
+>>>>>> on some downstream tree with cherry picks.
+>>>>>>
+>>>>> From Zijun's commit message, for the same commit, it seems
+>>>>> bluetooth-next tree has different hashes as linus tree.
+>>>>> not sure if this scenario is normal during some time window.
+>>>>>> No, test it on mainline and answer finally, after *five* tries, which
+>>>>>> kernel and which hardware did you use for testing this.
+>>>>>>
+>>>>>>
+>>>>> it seems there are two issues mentioned with Zijun's commit message.
+>>>>> regression issue A:  BT enable failure after warm reboot.
+>>>>> issue B:  use-after-free issue, namely, kernel crash.
+>>>>>
+>>>>> @Krzysztof
+>>>>> which issue to test based on your concerns with mainline tree?
+>>>>
+>>>> No one tested this on non-laptop platform. Wren did not, which is fine.
+>>>> Qualcomm should, but since they avoid any talks about it for so long
+>>>> (plus pushy comments during review, re-spinning v1 suggesting entire
+>>>> discussion is gone), I do not trust their statements at all.
+>>>>
+>>>
+>>> For issue A:
+>>> reporter's tests are enough in my opinion.
+>>> Zijun ever said that "he known the root cause and this fix logic was
+>>> introduced from the very beginning when he saw reporter's issue
+>>> description" by below link:
+>>> https://lore.kernel.org/lkml/1d0878e0-d138-4de2-86b8-326ab9ebde3f@quicinc.com/
+>>>
+>>>> So really, did anything test it on any Qualcomm embedded platform?
+>>>> Anyone tested the actual race visible with PREEMPT_RT?
+>>>> For issue B, it was originally fixed and verified by you,
+>>> it is obvious for the root cause and current fix solution after
+>>> our discussion.
+>>>
+>>> luzi also ever tried to ask you if you have a chance to verify issue B
+>>> with your machine for this change.
+>>
+>> I tried, but my setup is incomplete since ~half a year and will remain
+>> probably for another short time, depending on ongoing work on power
+>> sequencing. Therefore I cannot test whether anything improves or
+>> deteriorates regarding this patch.
+>>
+>>>
+>>>> Why Zijun cannot provide answer on which kernel was it tested? Why the
+>>>> hardware cannot be mentioned?
+>>>>
+>>> i believe zijun never perform any tests for these two issues as
+>>> explained above.
+>>
+>> yeah, and that was worrying me.
+>>
+> Only RB5 has QCA6390 *embedded* among DTS of mainline kernel, but we
+> can't have a RB5 to test.
+> 
+> Don't worry about due to below points:
+> 1) Reporter have tested it with her machine
+> 2) issue B and relevant fix is obvious after discussion.
+> 
+I believe we have had too much discussion for this simple change.
+@Krzysztof
+do you have any other concerns?
+thanks
+>> Best regards,
+>> Krzysztof
 > 
 
-<formletter>
-
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
-
-</formletter>
 
