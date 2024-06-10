@@ -1,98 +1,143 @@
-Return-Path: <stable+bounces-50071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B90B1901CDF
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 10:23:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA94901CA5
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 10:14:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AF8BB24575
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 08:23:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64A11B23FD2
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 08:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E8AC58210;
-	Mon, 10 Jun 2024 08:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F402A7E0EA;
+	Mon, 10 Jun 2024 08:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DG5jNo7q"
 X-Original-To: stable@vger.kernel.org
-Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783E56F2E0
-	for <stable@vger.kernel.org>; Mon, 10 Jun 2024 08:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3677CF18;
+	Mon, 10 Jun 2024 08:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718007799; cv=none; b=iH+05U3WmMECbdC6uoEa23W/3d5ze05gZXTkTfCw+VvC1ULSZmCCK8rZfE67rxb/3oHtdBKURyCmgYk96be0OS4Aou3TBW5ZMdSIcyJSkgOsH9jzUZ9o/rKyxLRwxJNB58NptbjRu3odYqS3rhGIWsqI/Yqr+mvcHSdsjayOKxk=
+	t=1718007050; cv=none; b=CVxpYyua5VDZnzCBQbH4oBIpaZfM6QSnZQIkSZU0Pcbk/j/SumtBAEHgTp5rakuwxDS6oyE2NOxfH7KtiFaOX+68S2Wvn+o+PzRJC6N6YqM5rVCaUNTymVs5sfAbJx9WLCc29oguJgjTPWlTYjryuD4SZ84MVNzT1/7nueLGprY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718007799; c=relaxed/simple;
-	bh=mjfcBUsHR0ot/pUSc8l/UI/WDg0murBb+WIqBHhFaT8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:To:Cc:Message-Id; b=RgxHuR/9lDTu8pTgd00QKayvDrym3HL9LT07AN8XR9GttSQQ8RLEDU4B89Eb30nzyvX0rpvZOCk4lrn8EDRiPlbg9NkDKU7MPqaO71Akwviquv50DL/cPvDnt5fr5WY3EEhVKoaakP0NqLCZSqDAvVgp1kvNWJZJr18et84zpKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
-Received: from hverkuil by linuxtv.org with local (Exim 4.96)
-	(envelope-from <hverkuil@linuxtv.org>)
-	id 1sGaJ8-0000nn-1Q;
-	Mon, 10 Jun 2024 08:23:14 +0000
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date: Mon, 27 May 2024 09:33:56 +0000
-Subject: [git:media_stage/master] media: mgb4: Fix double debugfs remove
+	s=arc-20240116; t=1718007050; c=relaxed/simple;
+	bh=FPYgt0uQnuu9rVeb6mqAkHHMzyf72rmBAdsSkxeGWyg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=npI1pxb99UkAzjJx3eyjXpb+bTSK3ihuzqrX2eH/0cUB1ZU2B4RTqVxW8l4R8fnHeoFzjPMQv98apj5i+h+YtxsCD0GtUaoF5dedsMe8bLkcpYqZkOUZb9M02DL4iJiSGsL9TuTn5hxzdZXf+xOjRcGkK8wFnb8h/OqGh5/OrKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DG5jNo7q; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42178999284so15499845e9.0;
+        Mon, 10 Jun 2024 01:10:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718007047; x=1718611847; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rQDBi3oYV+NYdF5KcjHpsbF8q4F5N4Z3vnTslnJR8BM=;
+        b=DG5jNo7qpsQZi2a9v2ErUkLuysKp+u0Do1u+DuhIN+DcKwEkIcshTJs5z2dPYphSQK
+         Ao6lTMvuVJEWZaxmFzLIOMMrmZGU2RrBYlAWbnH4541+A96nzfxH6SoXRoha0AF1itN6
+         5DlghpPti4Ewmn/WVXCRQQrnFmIbVhyXZnafoSHJrVimUSr7AXgWfarzjE0oBP7Y2PyB
+         a0uUguqW3Jqo7mKhMSWI0bW0vnFg5zX+cdAfVXeX+gxsu3EBkvhzbLEJuZYsIouRazS2
+         ZVJdVC6vMrxk/g+dvmyOvYCgu137ZO9H/i0k+sz3woUo4T22ZVDBu+cTBJbyYSCnw2Cu
+         MxPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718007047; x=1718611847;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rQDBi3oYV+NYdF5KcjHpsbF8q4F5N4Z3vnTslnJR8BM=;
+        b=NSILX5Or8Y5MeiwOnoWb4XKv8Dzim6iUAZ+sNPoxAS+E8pDGocwUsEwjEzuUqsw5oS
+         ZVCLNUOf3bdUyRyUuoadp+Ly+O5hRwjC69ZIkxOjuOcoEZ3LtuG5Vtbk9kSqcMhAE33K
+         cRbBvIWQddmECprFqW3U7mt3szTWAXVOFa4TMyuiXAc4qvFeTjHokycHriLOP2nfTX6P
+         any01acDiCH7XiJzZgjZd8mbtHQe/9qaHzSHv7lJZJTHNsB+NEBi2nwrtrOXnAgTybin
+         dC3Eh8LiL1oT6dBEzzRssf+VSYnlwBO4pKoXZAYg4ibRjl3rafYXQAol4I9YPibP5d94
+         dsfw==
+X-Forwarded-Encrypted: i=1; AJvYcCXXEoyZplb/ArjWwOKyTZJpsK7cSxw3yYW8ZHkTkFgK7HzQC7Tm/pWa5+ftP4ZVQHK1jm/xyLGpmwkOjpR3R0zPyP6z3RUdj5cHkJ63CqQbnPrNYIHpSsyOpzbXMbzGGdpSno7Qz2StxsTQP67YZMEaIC5E2g0uSvRAu72LtsSZLPk=
+X-Gm-Message-State: AOJu0YxpUePGxHEByRuANoX/D+0DU7GgrfjDLvNXq0TvcqAeGz6tSCo3
+	R90cK0bXn1ghundoPFzPjggtxM8T09zqqm2zTpnyXnziVO9sF6WDHut+FA==
+X-Google-Smtp-Source: AGHT+IGQI3Yy+38G5bokS7IeW8adF4Lqb0x/W1g6fUDN5Dr1XGIwhCaj6AP2pGGIw5rbe8aTXI8W9g==
+X-Received: by 2002:a05:600c:3d09:b0:41a:c86e:a4db with SMTP id 5b1f17b1804b1-421649fbd32mr69331535e9.9.1718007047580;
+        Mon, 10 Jun 2024 01:10:47 -0700 (PDT)
+Received: from tom-HP-ZBook-Fury-15-G7-Mobile-Workstation.station (net-188-217-58-5.cust.vodafonedsl.it. [188.217.58.5])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421e91c47b4sm18021315e9.35.2024.06.10.01.10.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jun 2024 01:10:47 -0700 (PDT)
+From: Tommaso Merciai <tomm.merciai@gmail.com>
+To: 
+Cc: linuxfancy@googlegroups.com,
+	sakari.ailus@linux.intel.com,
+	martin.hecht@avnet.eu,
+	tomm.merciai@gmail.com,
+	michael.roeder@avnet.eu,
+	stable@vger.kernel.org,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 5/5] media: i2c: alvium: Move V4L2_CID_GAIN to V4L2_CID_ANALOG_GAIN
+Date: Mon, 10 Jun 2024 10:10:34 +0200
+Message-Id: <20240610081034.1195523-6-tomm.merciai@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240610081034.1195523-1-tomm.merciai@gmail.com>
+References: <20240610081034.1195523-1-tomm.merciai@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-To: linuxtv-commits@linuxtv.org
-Cc: stable@vger.kernel.org, Martin Tůma <martin.tuma@digiteqautomotive.com>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1sGaJ8-0000nn-1Q@linuxtv.org>
 
-This is an automatic generated email to let you know that the following patch were queued:
+Into alvium cameras REG_BCRM_GAIN_RW control the analog gain.
+Let's use the right V4L2_CID_ANALOGUE_GAIN ctrl.
 
-Subject: media: mgb4: Fix double debugfs remove
-Author:  Martin Tůma <martin.tuma@digiteqautomotive.com>
-Date:    Tue May 21 18:22:54 2024 +0200
-
-Fixes an error where debugfs_remove_recursive() is called first on a parent
-directory and then again on a child which causes a kernel panic.
-
-Signed-off-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Fixes: 0ab13674a9bd ("media: pci: mgb4: Added Digiteq Automotive MGB4 driver")
-Cc: <stable@vger.kernel.org>
-[hverkuil: added Fixes/Cc tags]
-
- drivers/media/pci/mgb4/mgb4_core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
+Fixes: 0a7af872915e ("media: i2c: Add support for alvium camera")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tommaso Merciai <tomm.merciai@gmail.com>
 ---
+Changes since v1:
+ - Added Cc and Fixes tags as suggested by SAilus
 
-diff --git a/drivers/media/pci/mgb4/mgb4_core.c b/drivers/media/pci/mgb4/mgb4_core.c
-index 60498a5abebf..ab4f07e2e560 100644
---- a/drivers/media/pci/mgb4/mgb4_core.c
-+++ b/drivers/media/pci/mgb4/mgb4_core.c
-@@ -642,9 +642,6 @@ static void mgb4_remove(struct pci_dev *pdev)
- 	struct mgb4_dev *mgbdev = pci_get_drvdata(pdev);
- 	int i;
+ drivers/media/i2c/alvium-csi2.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/media/i2c/alvium-csi2.c b/drivers/media/i2c/alvium-csi2.c
+index c27c6fcaede4..5ddfd3dcb188 100644
+--- a/drivers/media/i2c/alvium-csi2.c
++++ b/drivers/media/i2c/alvium-csi2.c
+@@ -1998,7 +1998,7 @@ static int alvium_g_volatile_ctrl(struct v4l2_ctrl *ctrl)
+ 	int val;
  
--#ifdef CONFIG_DEBUG_FS
--	debugfs_remove_recursive(mgbdev->debugfs);
--#endif
- #if IS_REACHABLE(CONFIG_HWMON)
- 	hwmon_device_unregister(mgbdev->hwmon_dev);
- #endif
-@@ -659,6 +656,10 @@ static void mgb4_remove(struct pci_dev *pdev)
- 		if (mgbdev->vin[i])
- 			mgb4_vin_free(mgbdev->vin[i]);
+ 	switch (ctrl->id) {
+-	case V4L2_CID_GAIN:
++	case V4L2_CID_ANALOGUE_GAIN:
+ 		val = alvium_get_gain(alvium);
+ 		if (val < 0)
+ 			return val;
+@@ -2030,7 +2030,7 @@ static int alvium_s_ctrl(struct v4l2_ctrl *ctrl)
+ 		return 0;
  
-+#ifdef CONFIG_DEBUG_FS
-+	debugfs_remove_recursive(mgbdev->debugfs);
-+#endif
-+
- 	device_remove_groups(&mgbdev->pdev->dev, mgb4_pci_groups);
- 	free_spi(mgbdev);
- 	free_i2c(mgbdev);
+ 	switch (ctrl->id) {
+-	case V4L2_CID_GAIN:
++	case V4L2_CID_ANALOGUE_GAIN:
+ 		ret = alvium_set_ctrl_gain(alvium, ctrl->val);
+ 		break;
+ 	case V4L2_CID_AUTOGAIN:
+@@ -2159,7 +2159,7 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
+ 
+ 	if (alvium->avail_ft.gain) {
+ 		ctrls->gain = v4l2_ctrl_new_std(hdl, ops,
+-						V4L2_CID_GAIN,
++						V4L2_CID_ANALOGUE_GAIN,
+ 						alvium->min_gain,
+ 						alvium->max_gain,
+ 						alvium->inc_gain,
+-- 
+2.34.1
+
 
