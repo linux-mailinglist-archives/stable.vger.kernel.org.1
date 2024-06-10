@@ -1,128 +1,91 @@
-Return-Path: <stable+bounces-50062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B0690193C
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 03:28:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A449019B2
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 06:19:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A7E41F21A19
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 01:28:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A18CB1F219D8
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 04:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43801879;
-	Mon, 10 Jun 2024 01:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5B2A953;
+	Mon, 10 Jun 2024 04:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iinQ1gYP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1xt+kmy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750DA17C2;
-	Mon, 10 Jun 2024 01:28:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16432594;
+	Mon, 10 Jun 2024 04:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717982894; cv=none; b=jUEZUKdeYx4ADPlzdQ2pTDLz2Iq19Hx/ECJllcajN4IkxnEhuDUZpxLAde2QtjlnEz1aqble2Mm5icunLz5Ivi5Uy8oQV8vt09/gz1UH4PpFrXgT04W7RS228+/GBZseRCEhCbFbUlUN/xzMZbXjwKMXDu3oJDMia/IpQuGRwhQ=
+	t=1717993160; cv=none; b=W11T9meDLjmgccqwuWZyHkeOjDA1MmrccZxCxN0nqVmAai6Jv/G1TNuvVnZfkBjbnBJRhN7+eBHcGGQQaWLslvLNSJuxFetUFb0er48crkobv3Ujou2rqFWTLfzKaPCG0tx2NHks+VstfPLVuOjlK6jAAAjhsgvAPzb5dmkHzMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717982894; c=relaxed/simple;
-	bh=jDFwegCSWuUb75W10N3HVQWRCXQBrTGSItHT892scmw=;
+	s=arc-20240116; t=1717993160; c=relaxed/simple;
+	bh=WGkSbHeWqik7hDXkiD1w5blDcamK906LbfM03OIX790=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lgjnw3HNjO8hhNBJmxNF6b9MrypUC0DTjQQwM7E+PKx8n5lYU8Gmz0ZQpsAWVWQnvP02ZESt41h9n8ieFy76mhYz90eIb0jBY/wkjvlSMJyUSYqKL1KUs//i97sLq7YOkKxx+k6G+Y/FOOGttNpqL3+2h8s6JeJABimhM+CReG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iinQ1gYP; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-681bc7f50d0so3304512a12.0;
-        Sun, 09 Jun 2024 18:28:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717982893; x=1718587693; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ogGDeikgVtP2/JojZOHyH+g7X1ICvG0a8hd8lBtiypU=;
-        b=iinQ1gYPmF3544rayN9OYS3GTQj00kXqEW1/9YiVqLEvN5RpPTpnjel7+vslkxKDcK
-         t9mLTlGshv1DBpRpM1cBEAsFCzI9l7vSS2TP1fEeZ/auGV6koJ67qeuO/PZPcbOcUlGA
-         b44miov4071ocNIFYdnhL6/va2qSdndSBL/CzU4eWDWNbzYFqve6JHicRnF64aPpwonE
-         mWX3C4ijkL0QSuawaDGueW7IefiRXEjJvg2HQ1e013aSyJL2+6xkIA5qbg9854peEC9Q
-         N6i84/snam1E7zTpNS//eiB4Dv7Moo2hgjpjbhLfHDNz1QkHNSC/23BQCm9nZ0qDN6l4
-         wYag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717982893; x=1718587693;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ogGDeikgVtP2/JojZOHyH+g7X1ICvG0a8hd8lBtiypU=;
-        b=p3Hg09ep6WBRatQNyr/HCe9jTTIFInhvL5v6J1/Af+bJP0za5HhXysPVPOygdDhW7Y
-         pSf6vBOKg3a0CxduqHhXIKl/TLrgAiR0OZpYRggVngJxVBv5jyfa2WKTUfcc+T/AYGAv
-         mpGB2/4oJD0fcIyL8zhsXs/Vg0kuzMZmqs8zj1VyvnBGljWC9cj5Z5Fc8e9a+muiglks
-         l+kfNykhTeHxUWWuq51OQf9QRaJTgAk+7lc2d2lidFRr4Tpbt7IAXd1COBDpDuq0DnOL
-         RUrWq3cKTHdqu5Hz4YxMYSDpJLckQrRi7IfwH3ZLEfGUdfoi3bvj+afbOMsMCjs6VGGR
-         p1+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWvMiylTksWtGmn6PQaPtJvhxP8YH849erHCmI1og7Jn/ufd+CZpuT0d6h7V5c19d8Sj6c73zH5jijsmVvMkP8Jp+akHSml1gH+H0SPr0+hLMGN/HugYzOXAlObrTclP9p4kcHD
-X-Gm-Message-State: AOJu0YyBDswVLmyre3W2lvMPP7N/Clso+HpNye8NwiDijRyFdbFJUEpf
-	2C3VIADzbqfXbC0+/9c2FlAViEOIq9VUyYTPn6Vsv+zrnI6fmNgOhKg6Yg==
-X-Google-Smtp-Source: AGHT+IFJo7eHVjaNg2drL50B9+RvvT9/t/rU7YReGKAasPj++KS22No3SWU21pQ0mLV8XqqTCBaCqw==
-X-Received: by 2002:a17:902:ccc9:b0:1f4:8a31:5a4c with SMTP id d9443c01a7336-1f6d019ef8amr117255655ad.24.1717982892523;
-        Sun, 09 Jun 2024 18:28:12 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd81c9c2sm71291645ad.308.2024.06.09.18.28.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Jun 2024 18:28:11 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id 30EC41846908D; Mon, 10 Jun 2024 08:28:08 +0700 (WIB)
-Date: Mon, 10 Jun 2024 08:28:07 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.9 000/368] 6.9.4-rc2 review
-Message-ID: <ZmZWp2YnzYmjkAsi@archie.me>
-References: <20240609113803.338372290@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=FCNrZRJgw1M15HxATpGVNvhhDg+jcLbMl++g5MFE2w6lLkjQYDK7AjfDVY5LSyUuP/e/Yty4BbB7cxgi+lvCQkxrfMDJ8uUuj+hQfJI2e+Llw7vBEfdVpc3U/I6RALZ8m8runC41y4py9PMehidsZkReR2dhfz4qqB9QlShduUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1xt+kmy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9469C2BBFC;
+	Mon, 10 Jun 2024 04:19:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1717993159;
+	bh=WGkSbHeWqik7hDXkiD1w5blDcamK906LbfM03OIX790=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Y1xt+kmyE8PJwMd6gGp06XBnWeKSmcT+duD5U1K8O0VJipp/UoFemHRMTAnCWAMTM
+	 w/frblds9ST0xI5aPed1p+AtTyBjC8zVyLriEAoFZ0C7Oto8cC1MYuue/HIhVm9Ujd
+	 2BOS+frQ4jS/zdHgSe20y9dQRga09910987W7TEo=
+Date: Mon, 10 Jun 2024 06:19:15 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Dragan Simic <dsimic@manjaro.org>
+Cc: linux-kbuild@vger.kernel.org, masahiroy@kernel.org, nathan@kernel.org,
+	nicolas@fjasle.eu, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, didi.debian@cknow.org
+Subject: Re: [PATCH] kbuild: Install dtb files as 0644 in Makefile.dtbinst
+Message-ID: <2024061006-ladylike-paving-a36b@gregkh>
+References: <ae087ef1715142f606ba6477ace3e4111972cf8b.1717961381.git.dsimic@manjaro.org>
+ <10bef38ea944a42d591435e024f70326@manjaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="W41JxYyyql6NqAfX"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240609113803.338372290@linuxfoundation.org>
+In-Reply-To: <10bef38ea944a42d591435e024f70326@manjaro.org>
+
+On Mon, Jun 10, 2024 at 12:41:54AM +0200, Dragan Simic wrote:
+> +Cc: stable@vger.kernel.org
+> +Cc: didi.debian@cknow.org
+> 
+> On 2024-06-09 21:32, Dragan Simic wrote:
+> > The compiled dtb files aren't executable, so install them with 0644 as
+> > their
+> > permission mode, instead of defaulting to 0755 as the mode.
+> > 
+> > Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+> 
+> Actually, some Linux distributions, including Debian, [1][2] already include
+> fixes in their kernel package builds to change the file permissions to 0644.
+> Thus, let's have this fix propagated into the stable kernels, to allow such
+> distributions to remove their downstream fixes.
+> 
+> Fixes: aefd80307a05 ("kbuild: refactor Makefile.dtbinst more")
+> 
+> [1] https://salsa.debian.org/kernel-team/linux/-/merge_requests/642
+> [2] https://salsa.debian.org/kernel-team/linux/-/merge_requests/749
 
 
---W41JxYyyql6NqAfX
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+<formletter>
 
-On Sun, Jun 09, 2024 at 01:41:29PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.9.4 release.
-> There are 368 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-Successfully compiled and installed the kernel on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
-
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---W41JxYyyql6NqAfX
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZmZWowAKCRD2uYlJVVFO
-o2lGAP0dGu+7nBNV09SeIbB9xdX9a/utxgv5ORMtcJHB0JXHZQD+KI/VDJTKPMbg
-1slqhmM7JjCzxCKLUSgL/r7C3WSmNwk=
-=D0Gy
------END PGP SIGNATURE-----
-
---W41JxYyyql6NqAfX--
+</formletter>
 
