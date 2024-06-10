@@ -1,98 +1,129 @@
-Return-Path: <stable+bounces-50092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626FE9023ED
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 16:21:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78066902405
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 16:26:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49D0AB211A4
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 14:21:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 216F81F22482
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 14:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD61824BB;
-	Mon, 10 Jun 2024 14:20:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hASSoHHk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BE512F397;
+	Mon, 10 Jun 2024 14:26:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8078B81729;
-	Mon, 10 Jun 2024 14:20:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A86484E1F;
+	Mon, 10 Jun 2024 14:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718029255; cv=none; b=vDDXyH0z9X67oi4vAgODaaY4rZI99mDHZMmD694/dAxuP5XZ245+HKJYQOjvhXDF9/HafBs7BUPMJKJ7SXVFVh3cyQ0sV9MEYz4GgIZYmyqW24QsdJmMZu0znL8OewF6CXH3zSLFkRica5BgagmY+GizL7lIlw7+nAvzNFyqgpg=
+	t=1718029586; cv=none; b=qJpXmw9u981mEMr6L4XAMuFr+JiaYN8oX4D01+sYHzVHSW0QvXFqsDWqdnyELUwUvAQdpw9HkOzPFopC9JWhX27TJEI+UcrFbd/wOZRuRa7UTHhV4fWTyCN3VNuBKYKksVGW66AjDhLBwCeuD0RtHJbi6p9NWO+m1U1vfx0rTaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718029255; c=relaxed/simple;
-	bh=315qDCBMaMQn10AHNIuet+zY2ECWefh8cTY3/fuynrg=;
+	s=arc-20240116; t=1718029586; c=relaxed/simple;
+	bh=K8PVPwbdAax7eDEaEiYoUJQ+9eRdRMPvizcBIqVICXg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aWJ235s2AqLOUGXSBQNux6BL2KgZI8Lfq+RAR16z+6XAmGfy3FgyEqlgVpwPo48000G5x0RkdT6i/J/oDr80ryw0EnH6CD+qCq3MujrBrooMQUx9MVh6KCr7BhpQ+4zOl7GaqpNQx+xeptfnqLfBVZ7VCs8YhzalV7jWCWpAUrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hASSoHHk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CEE2C32786;
-	Mon, 10 Jun 2024 14:20:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718029255;
-	bh=315qDCBMaMQn10AHNIuet+zY2ECWefh8cTY3/fuynrg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hASSoHHk31FMyQuqMfxv1auhcYihr6srOL+ODauBRTcftnxE555mSQfk+fRyojcaC
-	 AoD0LKbMtqmjIH3VFYrdaaIPpC+bTBimLwo5aweitKRjsTN1ZDJCpYItZ5FGqhPe5b
-	 zsIc8WVL2PQtYgudwBmgzFZ4zwL2JHOoTH7b3Kz4tjoUDnGUvFRpjm+5k/toKfs8yP
-	 Sv/j084v/fwjK7FvIPwUkKI+g/PsbdS1qkPB/R9CWnRUS1L7PF5h976olXTeJywe/p
-	 4bm7V2FQfZjomDctBESxyxSSP42ykN1MRNVBB/b6lbpWNuksLw7c0S0YnaCl95CX/n
-	 DMmhM8thAIwUw==
-Date: Mon, 10 Jun 2024 15:20:24 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.6 000/741] 6.6.33-rc2 review
-Message-ID: <ZmcLqJV3A4BQhNf-@finisterre.sirena.org.uk>
-References: <20240609113903.732882729@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ByrFpownKVO4jyxisPRX4UIo8D3z/WD2wBIzpcBjisYSVruHM0tlCEarRCuR51w8mcQhioJLMd5w+q86x3aUu7mdlGCRbsaoXuaqiQKwqSbv3scLAEdKpHP02PWFLCDkqv69VSRCvC2z8LNaGmw5Ue79fw0dI2RfSWhq1S8qhRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id AF3A872C8F5;
+	Mon, 10 Jun 2024 17:20:44 +0300 (MSK)
+Received: from pony.office.basealt.ru (unknown [193.43.10.9])
+	by imap.altlinux.org (Postfix) with ESMTPSA id A88F436D0184;
+	Mon, 10 Jun 2024 17:20:44 +0300 (MSK)
+Received: by pony.office.basealt.ru (Postfix, from userid 500)
+	id 6F33D360B51C; Mon, 10 Jun 2024 17:20:44 +0300 (MSK)
+Date: Mon, 10 Jun 2024 17:20:44 +0300
+From: Vitaly Chikunov <vt@altlinux.org>
+To: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Dan Gora <dan.gora@gmail.com>, Marcel Holtmann <marcel@holtmann.org>, 
+	Johan Hedberg <johan.hedberg@gmail.com>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Leonid Krivoshein <klark.devel@gmail.com>
+Subject: Re: [PATCH v2 1/1] Bluetooth: btrtl: Add missing MODULE_FIRMWARE
+ declarations
+Message-ID: <lpcccmoa34ifxregretv3cim3cfajonkcwbm3d6j5d4ekyweya@k2cswpafqdw7>
+References: <20230504212843.18519-1-dan.gora@gmail.com>
+ <20230509195119.9655-1-dan.gora@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="9BIbkzX9JQzMk3wv"
-Content-Disposition: inline
-In-Reply-To: <20240609113903.732882729@linuxfoundation.org>
-X-Cookie: Your love life will be... interesting.
-
-
---9BIbkzX9JQzMk3wv
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20230509195119.9655-1-dan.gora@gmail.com>
 
-On Sun, Jun 09, 2024 at 01:41:16PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.33 release.
-> There are 741 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Greg, Sasha,
 
-Tested-by: Mark Brown <broonie@kernel.org>
+Please add this patch to 6.1.x branch. Mainline commit
+bb23f07cb63975968bbabe314486e2b087234fc5
 
---9BIbkzX9JQzMk3wv
-Content-Type: application/pgp-signature; name="signature.asc"
+This will fix Bluetooth support (visibility of devices) and manifested
+errors during boot:
 
------BEGIN PGP SIGNATURE-----
+  bluetooth hci0: Direct firmware load for rtl_bt/rtl8822cu_fw.bin failed with error -2
+  Bluetooth: hci0: RTL: firmware file rtl_bt/rtl8822cu_fw.bin not found
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZnC6UACgkQJNaLcl1U
-h9CESwf/Rlwwzj9B5hinYnNnOYXQKn9eac+Q9Xzq8k+6jBicZRXdNCZV7DkOg8b0
-EHUavMQfBLAlA81PX5VtKnaJ8EX9ToRrtfe1BrlxxV5FL1ro6z22fk1UB0ezVL3W
-9dnsuLqa1Ybhh8Ko6S5VHttuxumUyMk93ITVEQ5TorbYV6+eMCh3avPze+xb1COe
-DJjlbDplnSAbjeaj0vXnkIggR/X+7jbiEWGnIH/0U6cVoWrGvuQy9PxMOjbSVgC2
-SveoPDZ+PltystjPkFj2UsxDm7zYJPXjDJpTEET1rG2j/CqCKHZlU/zfrtT98ocX
-Qpf66rMxgvzPJzDk+ucVzfW5b4aYEw==
-=tnPB
------END PGP SIGNATURE-----
+Downstream bug report: https://bugzilla.altlinux.org/50471
 
---9BIbkzX9JQzMk3wv--
+Thanks,
+
+On Tue, May 09, 2023 at 12:51:19PM -0700, Dan Gora wrote:
+> Add missing MODULE_FIRMWARE declarations for firmware referenced in
+> btrtl.c.
+> 
+> Signed-off-by: Dan Gora <dan.gora@gmail.com>
+> ---
+>  drivers/bluetooth/btrtl.c | 18 ++++++++++++++++--
+>  1 file changed, 16 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
+> index 2915c82d719d..d978e7cea873 100644
+> --- a/drivers/bluetooth/btrtl.c
+> +++ b/drivers/bluetooth/btrtl.c
+> @@ -1367,14 +1367,30 @@ MODULE_FIRMWARE("rtl_bt/rtl8723cs_vf_fw.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8723cs_vf_config.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8723cs_xx_fw.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8723cs_xx_config.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8723d_fw.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8723d_config.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8723ds_fw.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8723ds_config.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8761a_fw.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8761a_config.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8761b_fw.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8761b_config.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8761bu_fw.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8761bu_config.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8821a_fw.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8821a_config.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8821c_fw.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8821c_config.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8821cs_fw.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8821cs_config.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8822b_fw.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8822b_config.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8822cs_fw.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8822cs_config.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8822cu_fw.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8822cu_config.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8851bu_fw.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8851bu_config.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8852au_fw.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8852au_config.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8852bs_fw.bin");
+> @@ -1383,5 +1399,3 @@ MODULE_FIRMWARE("rtl_bt/rtl8852bu_fw.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8852bu_config.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8852cu_config.bin");
+> -MODULE_FIRMWARE("rtl_bt/rtl8851bu_fw.bin");
+> -MODULE_FIRMWARE("rtl_bt/rtl8851bu_config.bin");
+> -- 
+> 2.35.1.102.g2b9c120970
+> 
 
