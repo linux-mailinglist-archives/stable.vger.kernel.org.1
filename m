@@ -1,150 +1,139 @@
-Return-Path: <stable+bounces-50067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B9E901B40
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 08:28:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1BC5901B52
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 08:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F03F11F2151D
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 06:28:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6892DB24B49
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 06:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CAF17BAA;
-	Mon, 10 Jun 2024 06:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130A73B29D;
+	Mon, 10 Jun 2024 06:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xR71rL5T"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JzxZZ57S"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5EBDDB8;
-	Mon, 10 Jun 2024 06:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FD1364A4;
+	Mon, 10 Jun 2024 06:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718000913; cv=none; b=RNzcAguw4TkEMJqUHVxDiGUUDF+9oeDnq5Y5+0F1WtXRO8JN1rYM96I8AeoLt219GhvcXotv+nTtHt3w959KtbcIZWLtEz2NHOc8F2uZM4JX/cgJ/Xgf190HRcQgIdR7KRxbpZQvZ/pXsQOkx+Qe7gYQqot7VFCu8JfrRvxj04s=
+	t=1718001204; cv=none; b=aSel6FWM09BqQYc0PF3u63TRFyUPwwPSTuziW9NMPPnSobwBkaTQ/TSaujqdcsy5s9n08BfWdiP8g9tjUBsbfKGF/mbyBsP9Ep6aTa8x23wEBDFo/Y94kNeb7HQgptgd17P1WzAluFfQkwgvPM3ZhlD64LEJZXkEPn1nPnx3iUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718000913; c=relaxed/simple;
-	bh=n+45C+dzb+IYsjD+JRFt0LVF45703pUQPGysWo6ZIKI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f/IbXXF7Ketd12YhGjpL+L7+pKD20BhYWL6KRcSLtyYU12T/QTMcefBkmjM1PDxyzAijNedQ5TKOEvC5vuDfH7JQok1wiRnO78ZIZPkyCRuh1X3T63k/v5jEySfDiOh3NIOQHQ1YRyvkySRmBDK8qgSmT23IYIfGAhipT/43Sj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xR71rL5T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5A4C2BBFC;
-	Mon, 10 Jun 2024 06:28:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718000912;
-	bh=n+45C+dzb+IYsjD+JRFt0LVF45703pUQPGysWo6ZIKI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=xR71rL5TAYFEOcCHdz2R5dRyRmyw9NteBPCGPgornxj0gRD68QN2W2Q06R/KalSJs
-	 vQt7j4Yo3yNzYmEseHZahlhp5elSsfmizivcWe/JF8VsfILJx1x30DERMHNX4x8el7
-	 vhAmSpkf+nOJPC/WudNmMtLDrlqthqzQKGeQUl0M=
-Date: Mon, 10 Jun 2024 08:28:29 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ron Economos <re@w6rz.net>
-Cc: Pavel Machek <pavel@denx.de>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.6 000/741] 6.6.33-rc2 review
-Message-ID: <2024061006-overdress-outburst-36ae@gregkh>
-References: <20240609113903.732882729@linuxfoundation.org>
- <ZmYDquU9rsJ2HG9g@duo.ucw.cz>
- <ad13afda-6d20-fa88-ae7f-c1a69b1f5a40@w6rz.net>
+	s=arc-20240116; t=1718001204; c=relaxed/simple;
+	bh=uLyGZd04XBxnLbXgp3VhdQscMg9GAlkmWTN8arnq1UA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s7UAg+Kc0zHpoxyo3yomVToSbIVAdgL1kUddTS2wihFlvT5AGuzZrPWICZtXJ0ZaIjjcMBbWsfcOZ+SpsMHguY4JGygFDfrnr35cCL4llaT5buCwbd70LUDG4HWJNXeCvwfaunQ9V7ICYZZPrAR5Zsu0ruUmu+6JhAHMFEiqD1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JzxZZ57S; arc=none smtp.client-ip=209.85.221.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-4eb1b9865e4so1334308e0c.1;
+        Sun, 09 Jun 2024 23:33:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718001202; x=1718606002; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WoxL7sxR5fVE2wpf25zkRX1keP/l47DLSwfYmo+1E88=;
+        b=JzxZZ57SZmLC50L63F2s4UPOj7xYTp8DSsg1mG2j/a3eUT8RT8Um1o9UIK965bI5Wu
+         HxY0bEP9f5HKv7oF0eg1qVU8gauAVGHooZGBSC7xUjjoyS7RC+o1Dw4jbHGovfaAlWYW
+         pg2FYrUTtfnMIkZwPYD0GDgXC3pNFUh3NonoigEQVyUX3bDz8Fpw3FujOqvEcwjEp580
+         tgIx0P6IJ5WWBO4FkrdcPia8pLYOxaVVrNA75dC5aGjS8xdqP0/PSRacV1A9MFumAWFN
+         qEV+mUnu0mmyEwV7xky83K8swBfoq+Jz/pHM04L/RG3cCr+V+8vXiXUUFxhX8sXEdLd5
+         yP/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718001202; x=1718606002;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WoxL7sxR5fVE2wpf25zkRX1keP/l47DLSwfYmo+1E88=;
+        b=Tvu4DyVBz8s6O4UB6/54MBPb+gfDIqi+sKZP81kdNLmaqNF8JUCrByFOd4s9Pi+Qm4
+         a+DVFTwuUlndEhOmrIVw217V1MgMhabNmNwKt+wq/uJQcVQWTkIn1BXLrYqClx+0YjkA
+         2OTQhokJ5NDhEo5L8jkMBAYCKrpHhltVfEVVWeWZeylIzlCw/ENU2fcr8VSITRsh387P
+         WN9ciIwsJ+NueY2wiTn1ViOMpEiDUawzAM0vgUs200A24y5k3HGbKuAoVGoU1k8QTzxs
+         UYBzZsuxY+KQAypj6A+UWyjcAATNDW+hdKwhSCH9nG/ZfSyuHjE3lD1pltJkQJULfFxR
+         48yQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW3WYYrnXH4CbApn9okcCPBEITa6SVO2/uADB8tlLiONyNW10NO1eHDyY80WgONQED6n/vrWrbjF1IQaIZ67gEsT+ulOwNW0NRZdvTm5Uy/TumjmKGRhizMhCx6PpoxJOQi5WvHDXNYmgA=
+X-Gm-Message-State: AOJu0YyBw6Le5RMMLX5SxfCMwvp1O3/BrWzSvn9si8qrlkaEXOgPjMDW
+	cxFwkkv671sBYw5XMmasgTROJ/71+JubLkyQhIHIz1vbUdb+dLAmt0TE+QtbcIPvmRD8k9Totwb
+	j3T1of7CPT/yrZe6Tz/3yT47xz6I=
+X-Google-Smtp-Source: AGHT+IE6WwuGJf/J6Plpzhz9jA+n7W7A3UHb9PzPwtd8XmJu4EiIUfbwUKnVPUxp+1oRqDCPDYvJIUTzr/73LsCncVM=
+X-Received: by 2002:a05:6122:c9:b0:4e4:ea87:ec72 with SMTP id
+ 71dfb90a1353d-4eb562bbb38mr6632138e0c.11.1718001202243; Sun, 09 Jun 2024
+ 23:33:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ad13afda-6d20-fa88-ae7f-c1a69b1f5a40@w6rz.net>
+References: <20240530100154.317683-1-jani.nikula@intel.com>
+In-Reply-To: <20240530100154.317683-1-jani.nikula@intel.com>
+From: Inki Dae <daeinki@gmail.com>
+Date: Mon, 10 Jun 2024 15:32:45 +0900
+Message-ID: <CAAQKjZPWT7=JircaiksP3Wg_1oKRr1xDkznQ1RSoe4jmn12fUw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] drm/exynos/vidi: fix memory leak in .get_modes()
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, sw0312.kim@samsung.com, 
+	kyungmin.park@samsung.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jun 09, 2024 at 11:21:55PM -0700, Ron Economos wrote:
-> On 6/9/24 12:34 PM, Pavel Machek wrote:
-> > Hi!
-> > 
-> > > This is the start of the stable review cycle for the 6.6.33 release.
-> > > There are 741 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > 6.6 seems to have build problem on risc-v:
-> > 
-> >    CC      kernel/locking/qrwlock.o
-> > 690
-> >    CC      lib/bug.o
-> > 691
-> >    CC      block/blk-rq-qos.o
-> > 692
-> > arch/riscv/kernel/suspend.c: In function 'suspend_save_csrs':
-> > 693
-> > arch/riscv/kernel/suspend.c:14:66: error: 'RISCV_ISA_EXT_XLINUXENVCFG' undeclared (first use in this function); did you mean 'RISCV_ISA_EXT_ZIFENCEI'?
-> > 694
-> >     14 |         if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_XLINUXENVCFG))
-> > 695
-> >        |                                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~
-> > 696
-> >        |                                                                  RISCV_ISA_EXT_ZIFENCEI
-> > 697
-> > arch/riscv/kernel/suspend.c:14:66: note: each undeclared identifier is reported only once for each function it appears in
-> > 698
-> >    CC      io_uring/io-wq.o
-> > 699
-> > arch/riscv/kernel/suspend.c: In function 'suspend_restore_csrs':
-> > 700
-> > arch/riscv/kernel/suspend.c:37:66: error: 'RISCV_ISA_EXT_XLINUXENVCFG' undeclared (first use in this function); did you mean 'RISCV_ISA_EXT_ZIFENCEI'?
-> > 701
-> >     37 |         if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_XLINUXENVCFG))
-> > 702
-> >        |                                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~
-> > 703
-> >        |                                                                  RISCV_ISA_EXT_ZIFENCEI
-> > 704
-> > make[4]: *** [scripts/Makefile.build:243: arch/riscv/kernel/suspend.o] Error 1
-> > 705
-> > make[3]: *** [scripts/Makefile.build:480: arch/riscv/kernel] Error 2
-> > 706
-> > make[2]: *** [scripts/Makefile.build:480: arch/riscv] Error 2
-> > 707
-> > make[2]: *** Waiting for unfinished jobs....
-> > 708
-> >    CC      lib/buildid.o
-> > 709
-> > 
-> > https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/7053222239
-> > https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1324369118
-> > 
-> > No problems detected on 6.8-stable and 6.1-stable.
-> > 
-> > Best regards,
-> > 								Pavel
-> 
-> I'm seeing the same thing here. Somehow some extra patches got slipped in
-> between rc1 and rc2. The new patches for RISC-V are:
-> 
-> Samuel Holland <samuel.holland@sifive.com>
->     riscv: Save/restore envcfg CSR during CPU suspend
-> 
-> commit 88b55a586b87994a33e0285c9e8881485e9b77ea
-> 
-> Samuel Holland <samuel.holland@sifive.com>
->     riscv: Fix enabling cbo.zero when running in M-mode
-> 
-> commit 8c6e096cf527d65e693bfbf00aa6791149c58552
-> 
-> The first patch "riscv: Save/restore envcfg CSR during CPU suspend" causes
-> the build failure.
-> 
-> 
+Hi Jani Nikula,
 
-Yes, these were added because they were marked as fixes for other
-commits in the series.  I'll unwind them all now as something is going
-wrong...
+The patch(1/4) has been applied to the -fixes branch, and the other
+three patches(2/4 ~ 4/4) have been applied to the -next branch.
 
-greg k-h
+Thanks,
+Inki Dae
+
+2024=EB=85=84 5=EC=9B=94 30=EC=9D=BC (=EB=AA=A9) =EC=98=A4=ED=9B=84 7:02, J=
+ani Nikula <jani.nikula@intel.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+>
+> The duplicated EDID is never freed. Fix it.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> ---
+>  drivers/gpu/drm/exynos/exynos_drm_vidi.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/e=
+xynos/exynos_drm_vidi.c
+> index fab135308b70..11a720fef32b 100644
+> --- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+> +++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+> @@ -309,6 +309,7 @@ static int vidi_get_modes(struct drm_connector *conne=
+ctor)
+>         struct vidi_context *ctx =3D ctx_from_connector(connector);
+>         struct edid *edid;
+>         int edid_len;
+> +       int count;
+>
+>         /*
+>          * the edid data comes from user side and it would be set
+> @@ -328,7 +329,11 @@ static int vidi_get_modes(struct drm_connector *conn=
+ector)
+>
+>         drm_connector_update_edid_property(connector, edid);
+>
+> -       return drm_add_edid_modes(connector, edid);
+> +       count =3D drm_add_edid_modes(connector, edid);
+> +
+> +       kfree(edid);
+> +
+> +       return count;
+>  }
+>
+>  static const struct drm_connector_helper_funcs vidi_connector_helper_fun=
+cs =3D {
+> --
+> 2.39.2
+>
+>
 
