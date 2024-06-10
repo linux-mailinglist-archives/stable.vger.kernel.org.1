@@ -1,143 +1,120 @@
-Return-Path: <stable+bounces-50070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBA94901CA5
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 10:14:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D17E901E86
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 11:44:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64A11B23FD2
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 08:14:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42C341F24CE1
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 09:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F402A7E0EA;
-	Mon, 10 Jun 2024 08:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65C175817;
+	Mon, 10 Jun 2024 09:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DG5jNo7q"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="M9eYEZah"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3677CF18;
-	Mon, 10 Jun 2024 08:10:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC2275811
+	for <stable@vger.kernel.org>; Mon, 10 Jun 2024 09:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718007050; cv=none; b=CVxpYyua5VDZnzCBQbH4oBIpaZfM6QSnZQIkSZU0Pcbk/j/SumtBAEHgTp5rakuwxDS6oyE2NOxfH7KtiFaOX+68S2Wvn+o+PzRJC6N6YqM5rVCaUNTymVs5sfAbJx9WLCc29oguJgjTPWlTYjryuD4SZ84MVNzT1/7nueLGprY=
+	t=1718012634; cv=none; b=ZPZnBPa+uAP0rk78lGLOORunrQhhrGg20IyRwlo/D8tP2p0dTpZgE1bU2uYMEskb2vTBu/ZZIRWUdTDft5PzhZe7M2c6F1YU2bsMvv4M2SsGPYlv6qOjJyy+Tb2VOcJdUSv11SdD79np/MlQRPLXTbBxGhbBJtAkHhsUrJOQwAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718007050; c=relaxed/simple;
-	bh=FPYgt0uQnuu9rVeb6mqAkHHMzyf72rmBAdsSkxeGWyg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=npI1pxb99UkAzjJx3eyjXpb+bTSK3ihuzqrX2eH/0cUB1ZU2B4RTqVxW8l4R8fnHeoFzjPMQv98apj5i+h+YtxsCD0GtUaoF5dedsMe8bLkcpYqZkOUZb9M02DL4iJiSGsL9TuTn5hxzdZXf+xOjRcGkK8wFnb8h/OqGh5/OrKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DG5jNo7q; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42178999284so15499845e9.0;
-        Mon, 10 Jun 2024 01:10:48 -0700 (PDT)
+	s=arc-20240116; t=1718012634; c=relaxed/simple;
+	bh=bS5RlvgxIgcjRqjmYWH6qB32WZu/LwYze/3RpeQ2ypM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L6kIGiD9T7hRlKKHbj2O5KUn6n24oQx3Bv4BK1wahsMz29w/Mtw4pvsKB5VJ7su3E//ZaTXjb34PVQ+TKY9So4KilHBlaBnITa7V+yXqR0ejrmUs7r/h8iUDHDHxkOX5gnD5daVUZXQM3uXOXngV+FTgKAzNRcCWyVEf8zE5i40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=M9eYEZah; arc=none smtp.client-ip=209.85.221.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4eb1233862dso1423814e0c.2
+        for <stable@vger.kernel.org>; Mon, 10 Jun 2024 02:43:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718007047; x=1718611847; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rQDBi3oYV+NYdF5KcjHpsbF8q4F5N4Z3vnTslnJR8BM=;
-        b=DG5jNo7qpsQZi2a9v2ErUkLuysKp+u0Do1u+DuhIN+DcKwEkIcshTJs5z2dPYphSQK
-         Ao6lTMvuVJEWZaxmFzLIOMMrmZGU2RrBYlAWbnH4541+A96nzfxH6SoXRoha0AF1itN6
-         5DlghpPti4Ewmn/WVXCRQQrnFmIbVhyXZnafoSHJrVimUSr7AXgWfarzjE0oBP7Y2PyB
-         a0uUguqW3Jqo7mKhMSWI0bW0vnFg5zX+cdAfVXeX+gxsu3EBkvhzbLEJuZYsIouRazS2
-         ZVJdVC6vMrxk/g+dvmyOvYCgu137ZO9H/i0k+sz3woUo4T22ZVDBu+cTBJbyYSCnw2Cu
-         MxPA==
+        d=linaro.org; s=google; t=1718012632; x=1718617432; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=xjhpNNupYWVZWKcUvHP1lyKNkdexlWuohzaYbXqZdQg=;
+        b=M9eYEZahAt9kIC38bmUjOYlZ/ICqNz40VuR2a0zqZ6UpaeAhxmnhPf7uYFqq3H937L
+         Aaq7NtwUzWext9/ZkqG/tVMeCA1mPejVScqMpzC7p8qDOn+QzlyrHc0MoI3eVX9OFQMD
+         7JNmySegS6Ujl+4rlGGdIwSQoQDpcNwdL2lBjVqZKzVsPlmHXhG2SwYIuPtq1yEMRcck
+         lxnLcKQCQoUxgDFNR6rB/AJT5hzNVzPrTlnpVQS1z7zPycNzmapUi11+ANZt4Z2TWZcX
+         agNQCBw+OZwWJ8CoJ6y9xReT645mM8HkGdmQC0DKtp5om/z9TzUkIjP8vF7+G7J+mPrr
+         I6Mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718007047; x=1718611847;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rQDBi3oYV+NYdF5KcjHpsbF8q4F5N4Z3vnTslnJR8BM=;
-        b=NSILX5Or8Y5MeiwOnoWb4XKv8Dzim6iUAZ+sNPoxAS+E8pDGocwUsEwjEzuUqsw5oS
-         ZVCLNUOf3bdUyRyUuoadp+Ly+O5hRwjC69ZIkxOjuOcoEZ3LtuG5Vtbk9kSqcMhAE33K
-         cRbBvIWQddmECprFqW3U7mt3szTWAXVOFa4TMyuiXAc4qvFeTjHokycHriLOP2nfTX6P
-         any01acDiCH7XiJzZgjZd8mbtHQe/9qaHzSHv7lJZJTHNsB+NEBi2nwrtrOXnAgTybin
-         dC3Eh8LiL1oT6dBEzzRssf+VSYnlwBO4pKoXZAYg4ibRjl3rafYXQAol4I9YPibP5d94
-         dsfw==
-X-Forwarded-Encrypted: i=1; AJvYcCXXEoyZplb/ArjWwOKyTZJpsK7cSxw3yYW8ZHkTkFgK7HzQC7Tm/pWa5+ftP4ZVQHK1jm/xyLGpmwkOjpR3R0zPyP6z3RUdj5cHkJ63CqQbnPrNYIHpSsyOpzbXMbzGGdpSno7Qz2StxsTQP67YZMEaIC5E2g0uSvRAu72LtsSZLPk=
-X-Gm-Message-State: AOJu0YxpUePGxHEByRuANoX/D+0DU7GgrfjDLvNXq0TvcqAeGz6tSCo3
-	R90cK0bXn1ghundoPFzPjggtxM8T09zqqm2zTpnyXnziVO9sF6WDHut+FA==
-X-Google-Smtp-Source: AGHT+IGQI3Yy+38G5bokS7IeW8adF4Lqb0x/W1g6fUDN5Dr1XGIwhCaj6AP2pGGIw5rbe8aTXI8W9g==
-X-Received: by 2002:a05:600c:3d09:b0:41a:c86e:a4db with SMTP id 5b1f17b1804b1-421649fbd32mr69331535e9.9.1718007047580;
-        Mon, 10 Jun 2024 01:10:47 -0700 (PDT)
-Received: from tom-HP-ZBook-Fury-15-G7-Mobile-Workstation.station (net-188-217-58-5.cust.vodafonedsl.it. [188.217.58.5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421e91c47b4sm18021315e9.35.2024.06.10.01.10.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Jun 2024 01:10:47 -0700 (PDT)
-From: Tommaso Merciai <tomm.merciai@gmail.com>
-To: 
-Cc: linuxfancy@googlegroups.com,
-	sakari.ailus@linux.intel.com,
-	martin.hecht@avnet.eu,
-	tomm.merciai@gmail.com,
-	michael.roeder@avnet.eu,
-	stable@vger.kernel.org,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 5/5] media: i2c: alvium: Move V4L2_CID_GAIN to V4L2_CID_ANALOG_GAIN
-Date: Mon, 10 Jun 2024 10:10:34 +0200
-Message-Id: <20240610081034.1195523-6-tomm.merciai@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240610081034.1195523-1-tomm.merciai@gmail.com>
-References: <20240610081034.1195523-1-tomm.merciai@gmail.com>
+        d=1e100.net; s=20230601; t=1718012632; x=1718617432;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xjhpNNupYWVZWKcUvHP1lyKNkdexlWuohzaYbXqZdQg=;
+        b=gHd5mhrKEvFxekaru/PyX2x2Q+27tHNwKj65GEYF7NTJc/y5JtqTyrUSv5EMsz9dR1
+         TYgmWAd46BM41SzqpV+ZV+GgpWNoICXcP685sPNDuHyiMWGR1j9cQij2niIR6i6lM2AT
+         OGpyW9qiLkrVyI0NPgPv/KWLlq5Cq2xewFCzdcIeN4UI9Iumnf+5hUI60kjWD5z/sBR6
+         Zto9DgdHTmttsBMLHyRBu8fqkRrjGkmjCoLGaqJunssQ0nCzrwmdv09Hy2Ojx7/KQItZ
+         EbpCbM5mg/NpwzzH2dxZBKQtzUHMbXESLbEBZPFATHA2i8pirucBquu6WLmCCKzzf8i8
+         6gtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWeI/9w/CCzFYT9Aqu2LnWuaeHwi3xDzE9DNtksjtGqz6+OoRJh3ivq+Xw7TrjCtdWI5VDXc4VUh2z1PJiICkbLV5n7wxvI
+X-Gm-Message-State: AOJu0YxPpBd9Zs1/1LJOrg6kY1J/J2HgNO3Am1wpBihR0rdSuGK6Eo/q
+	sS5/88xhu9OEx9uxllPBxOk8YtLxQlRet9kvsEZEZykDVQmVYaCU6hR/E0biR0fgbctrinLbXgE
+	AUI/Uo17WOMsff3E/P03ffiamlN71mBFachAZsg==
+X-Google-Smtp-Source: AGHT+IGsldTxg6rRfZyz1ipYFZ2s2KO6v7Z4ILO2JX+E0oYUdd+a45WFPOs1q7SluiHdxBw4X8zaRbxU1Xtk02Z0Mks=
+X-Received: by 2002:a05:6122:1799:b0:4eb:5fb9:1654 with SMTP id
+ 71dfb90a1353d-4eb5fb91857mr6829841e0c.8.1718012632207; Mon, 10 Jun 2024
+ 02:43:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240609113903.732882729@linuxfoundation.org> <ZmYDquU9rsJ2HG9g@duo.ucw.cz>
+In-Reply-To: <ZmYDquU9rsJ2HG9g@duo.ucw.cz>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 10 Jun 2024 15:13:40 +0530
+Message-ID: <CA+G9fYvW+FmBVJO+3928H8_tBKKLQMa9bBdEKnUMd56G0f_itA@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/741] 6.6.33-rc2 review
+To: Pavel Machek <pavel@denx.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Into alvium cameras REG_BCRM_GAIN_RW control the analog gain.
-Let's use the right V4L2_CID_ANALOGUE_GAIN ctrl.
+On Mon, 10 Jun 2024 at 01:04, Pavel Machek <pavel@denx.de> wrote:
+>
+> Hi!
+>
+> > This is the start of the stable review cycle for the 6.6.33 release.
+> > There are 741 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+>
+> 6.6 seems to have build problem on risc-v:
+>
+>   CC      kernel/locking/qrwlock.o
+> 690
+>   CC      lib/bug.o
+> 691
+>   CC      block/blk-rq-qos.o
+> 692
+> arch/riscv/kernel/suspend.c: In function 'suspend_save_csrs':
+> 693
+> arch/riscv/kernel/suspend.c:14:66: error: 'RISCV_ISA_EXT_XLINUXENVCFG' undeclared (first use in this function); did you mean 'RISCV_ISA_EXT_ZIFENCEI'?
+> 694
+>    14 |         if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_XLINUXENVCFG))
+> 695
+>       |                                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> 696
+>       |                                                                  RISCV_ISA_EXT_ZIFENCEI
+> 697
 
-Fixes: 0a7af872915e ("media: i2c: Add support for alvium camera")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tommaso Merciai <tomm.merciai@gmail.com>
----
-Changes since v1:
- - Added Cc and Fixes tags as suggested by SAilus
+Thanks for the report I do see these Riscv build failures.
 
- drivers/media/i2c/alvium-csi2.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/media/i2c/alvium-csi2.c b/drivers/media/i2c/alvium-csi2.c
-index c27c6fcaede4..5ddfd3dcb188 100644
---- a/drivers/media/i2c/alvium-csi2.c
-+++ b/drivers/media/i2c/alvium-csi2.c
-@@ -1998,7 +1998,7 @@ static int alvium_g_volatile_ctrl(struct v4l2_ctrl *ctrl)
- 	int val;
- 
- 	switch (ctrl->id) {
--	case V4L2_CID_GAIN:
-+	case V4L2_CID_ANALOGUE_GAIN:
- 		val = alvium_get_gain(alvium);
- 		if (val < 0)
- 			return val;
-@@ -2030,7 +2030,7 @@ static int alvium_s_ctrl(struct v4l2_ctrl *ctrl)
- 		return 0;
- 
- 	switch (ctrl->id) {
--	case V4L2_CID_GAIN:
-+	case V4L2_CID_ANALOGUE_GAIN:
- 		ret = alvium_set_ctrl_gain(alvium, ctrl->val);
- 		break;
- 	case V4L2_CID_AUTOGAIN:
-@@ -2159,7 +2159,7 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
- 
- 	if (alvium->avail_ft.gain) {
- 		ctrls->gain = v4l2_ctrl_new_std(hdl, ops,
--						V4L2_CID_GAIN,
-+						V4L2_CID_ANALOGUE_GAIN,
- 						alvium->min_gain,
- 						alvium->max_gain,
- 						alvium->inc_gain,
--- 
-2.34.1
-
+ - Naresh
 
