@@ -1,164 +1,155 @@
-Return-Path: <stable+bounces-50120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5335A902BB0
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 00:30:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F4C8902BD7
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 00:40:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABBE5B244ED
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 22:30:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EE60281EC8
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 22:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B77915098A;
-	Mon, 10 Jun 2024 22:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ECF71509A6;
+	Mon, 10 Jun 2024 22:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J9+cjZaw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GvmvFSCU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450DF7406E;
-	Mon, 10 Jun 2024 22:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A545466B;
+	Mon, 10 Jun 2024 22:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718058597; cv=none; b=mUI3q5hma0MBGgjBu4DJodafioiJFRPqf7xFGUEk74unYQC8CYEF6tDGtlvMZ4wPlxFagYxJt1NEStIpV05tcKNa6+7Rt91Quy/1Uzc2Yd3N0+Kd1yTDGjInuE7SFSoG+LFIgfUw2FdAoBIn6ZVIOEEygR3ApVN4sQvXIWuNVUE=
+	t=1718059233; cv=none; b=ix2ZnRgFEzb5Ku0/t+XRzzCl/I+jJaSjQuc24eqZzqEoBkQW3wBb0jWGMvFc9kKwzOc8jcJ+2buWTH5FjOWO3lQGW3roYLXZpl8rQ1BgG4p8Cj59w/J9VpbotePERJALkaq+LpwHQGfutNNjXavJW9Xy2lictv2GV+6Pbt5A/f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718058597; c=relaxed/simple;
-	bh=OfL4shvyjDxr6q00nXk31km0GYhu7LxXoyNSvufWfr4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EBEiueVZynjCqGnXjNBVYlHuscQm8R+PrhO89D1C0K1nUknB/1bz23LXE/1U0YodxYf3pU+8mCssl2HVDEmTAcCiHCX1dyF/9dcOYaaSkCe1wM5eCI4iqLvN/t614YdnUl8Kvt7HDxkkifgEo6W9dPtbp+XyGJPzfNByk/Q7b0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9+cjZaw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0AFC2BBFC;
-	Mon, 10 Jun 2024 22:29:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718058596;
-	bh=OfL4shvyjDxr6q00nXk31km0GYhu7LxXoyNSvufWfr4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=J9+cjZaw8MA4cplVt1xVpXDDtrT8R9L4mCKjqFPsFS6JiljGQv5uKiFdgJ1EVNSR3
-	 LuwMmpTDiIMYhHTG21IHqu/XGh8Ceglfvq5D7KjrLml10b/0GtN37ZGJErlQxw2FdH
-	 ZRJ5pWf4rrk/TkJ2MFt+NT95+pDNGfCw2HimHK6maNsCScN37mx5GwmsTKzzCJ6qYm
-	 cdMmKtUB5S71KkRyxD3bO7dPWrDILeF3UEzjoqSpdyaKqXUc3N8QK74xauXbRir1Nb
-	 Xj5OFnAok30DGYZWUdxqLpLWkyxZAcGB/ZYwO2JCKmFq3160lUKqIjHgFl4f01ILRI
-	 +2YGEKzbD+IeA==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52c84a21b8cso1670780e87.1;
-        Mon, 10 Jun 2024 15:29:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU5ZVD/GzelbTMjblEBpT4pmKbbqEXElDzCE4mJjOVvW8HeMn/+i2k0Gb1pcZpVtRG9Ej8wBDlOC/N6XghVOXVw3TANUaL5nt7rQGrhLzF3tO36EQ1lsRQ2rVGuqBkdPkAhidZx
-X-Gm-Message-State: AOJu0YzY0AK4LPrPNBG0s9rd7mHjP1EJAgKknnTKoi8tZM6dTlAKgMXh
-	PgBCxKeuI5lMs3YNe50LGIDaROohUpTYFx1tDuI5Md3qGL2e5a95REIrYpnzWIHnBj1Za41PODs
-	ZVhknc1okAWgRBelEzarjtLxfiTs=
-X-Google-Smtp-Source: AGHT+IFViXsyJYRJU3DKtPBHM2sk74ChkyNCxuCVGigEa/OFqqxA8lC0bm0DOMbIaWqVrK6bx+Ihw0o+Owy/2VLnBJc=
-X-Received: by 2002:a05:6512:3144:b0:52c:81ba:aeba with SMTP id
- 2adb3069b0e04-52c92248f73mr212413e87.14.1718058595589; Mon, 10 Jun 2024
- 15:29:55 -0700 (PDT)
+	s=arc-20240116; t=1718059233; c=relaxed/simple;
+	bh=g10dlOBGYYkPLn3+3Cuj4VRZAJwM6Vn3EQdE5kpHkMY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=DtLqYNqL+mt4rX8x4qkiArci6zjwmDOaauE7toHoFpGTRP6Gb/BSB4+EA7u3krKBl8OgAthxb35RBuUTWSuCx81UvFGlRFmzsILI8EvPKMdYVFq6Y6p4aFJotRDkXE5RrZ+RnHzgIlhKoWuYqoTUVUOoFjnmy51Bst7ERfGlm7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GvmvFSCU; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-35f0d6255bdso2755791f8f.1;
+        Mon, 10 Jun 2024 15:40:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718059229; x=1718664029; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gpPyXWTVTerEIWhQ6o8wHto+dQPxy/WMM7tzpvoV1CQ=;
+        b=GvmvFSCULRcafeNEh/wYJb3jCoXJ7i/o5lKlpfZ9QwxmpSRn3QyKoJnw+PuNmD9XTm
+         fF2v+Wg7qJakweGkXDvYTqJpeXPGgjhfFlscLSfZ/YN2Oq85UU1OFKgfMDgdZ04rd3+1
+         oqxpptgVDY1Kw5BqrQBkGqLAu7QlcLVyCurdzH7lff2ows3XQFlsUu13YihyeAfJ0AxH
+         nV++COgTNyXofDmwB133xxsH/fQa+V5iirG4lMikWv2G2gOiBS8gIjoYdAgGE+Gky+kV
+         bIYbr3dqLdK3lM46Gk0Ne8UBcWsDP2ymUUMyFjPWCkv4I691O/G47ViRSeS7gMinlIwV
+         HhpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718059229; x=1718664029;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gpPyXWTVTerEIWhQ6o8wHto+dQPxy/WMM7tzpvoV1CQ=;
+        b=J433hfblN4NlEzzQWdWwEGXkrys0fTLsCMul9F9K8cJE2k2z90hyt52Af0QXQNZ3k8
+         baEuAEczRvxnMNQNV8GJKGCAjlVoT3Qr8kufXDIsl+UfCBaENHaKitUXwChRUzFPrnlN
+         rgzjHg8lto+GgxvNDnOY8QR6o4pq8HvflH2kB3ij1e/OextdnRO8FbCk1MiCTuO/G4CI
+         oJaodf455KskuUwUyUmNRStc0WFnMItdyvu/vaZ1nEz5xShkUK1o/oD2YP2za8Gpe799
+         G24ZXwNeRV5aQ0pFZBprNXRYxU/2tZPJX+vVsMILm/ho9PyauvDcOM0dDLOOuwzEvwF0
+         g+lA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQB51HIS6TYO4jTbv9RU+rtPEhf8NqAcFyTaGin2U/dKjVW8aBu1FzaqIwjKGwt+0kjGR07K2ychXhv7YUm3GZ0/yMtGtDJ1ngqV89RX2+6vHZuDH+VULhSJz6NnooVYyRJ4Bq
+X-Gm-Message-State: AOJu0YwuL0PNv3BubVyQRBnAnQJKGXO5lfqECMA3XA6FWeGCjKmCq6hq
+	/lYL6r6OT/6V/ZBWuHP/2SejPbyWr+2wAmUNrcUT2c4u2kRaXJXK
+X-Google-Smtp-Source: AGHT+IH4nQiCT9WMClPt604ZYVbJsCXhC4V56JFsZoe2WZyh2Jw0qDjY9RyNp0aFPn3YwnD54yHR8Q==
+X-Received: by 2002:a5d:5f8f:0:b0:354:ddba:303a with SMTP id ffacd0b85a97d-35efedd7dbfmr8382883f8f.54.1718059229080;
+        Mon, 10 Jun 2024 15:40:29 -0700 (PDT)
+Received: from [127.0.1.1] (194-208-201-054.tele.net. [194.208.201.54])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35ef5d6990csm12131971f8f.58.2024.06.10.15.40.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jun 2024 15:40:28 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Date: Tue, 11 Jun 2024 00:40:26 +0200
+Subject: [PATCH] leds: mt6360: fix memory leak in
+ mt6360_init_isnk_properties()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <e1fd1b659711f59c61ec48dc43912dddccbb4d92.1717996742.git.dsimic@manjaro.org>
-In-Reply-To: <e1fd1b659711f59c61ec48dc43912dddccbb4d92.1717996742.git.dsimic@manjaro.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 11 Jun 2024 07:29:19 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQ7cKbuU9uv67DT4CQagvXdJCWXBP9LjkC_Hvd5QWnYRQ@mail.gmail.com>
-Message-ID: <CAK7LNAQ7cKbuU9uv67DT4CQagvXdJCWXBP9LjkC_Hvd5QWnYRQ@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: Install dtb files as 0644 in Makefile.dtbinst
-To: Dragan Simic <dsimic@manjaro.org>
-Cc: linux-kbuild@vger.kernel.org, nathan@kernel.org, nicolas@fjasle.eu, 
-	linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org, 
-	Diederik de Haas <didi.debian@cknow.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240611-leds-mt6360-memleak-v1-1-93642eb5011e@gmail.com>
+X-B4-Tracking: v=1; b=H4sIANmAZ2YC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDM0MD3ZzUlGLd3BIzYzMD3dzU3JzUxGxdc4u0xDTjVBNj0yQDJaDOgqL
+ UtMwKsKnRsbW1ACiVgOllAAAA
+To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ stable@vger.kernel.org, Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1718059227; l=1877;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=g10dlOBGYYkPLn3+3Cuj4VRZAJwM6Vn3EQdE5kpHkMY=;
+ b=cR0LfOzpw4hwGKrOjdhmiXFbXriHLO5gLjMX4rHeP62PmE4NBWzxHdshrumFnOnhMhbrKZA4G
+ Kka9SVk2V8DCemwIhzDYLmjD5RxVyuNqg306XZuey5g6snUaJ2g7f2B
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-On Mon, Jun 10, 2024 at 2:21=E2=80=AFPM Dragan Simic <dsimic@manjaro.org> w=
-rote:
->
-> The compiled dtb files aren't executable, so install them with 0644 as th=
-eir
-> permission mode, instead of defaulting to 0755 for the permission mode an=
-d
-> installing them with the executable bits set.
->
-> Some Linux distributions, including Debian, [1][2][3] already include fix=
-es
-> in their kernel package build recipes to change the dtb file permissions =
-to
-> 0644 in their kernel packages.  These changes, when additionally propagat=
-ed
-> into the long-term kernel versions, will allow such distributions to remo=
-ve
-> their downstream fixes.
->
-> [1] https://salsa.debian.org/kernel-team/linux/-/merge_requests/642
-> [2] https://salsa.debian.org/kernel-team/linux/-/merge_requests/749
-> [3] https://salsa.debian.org/kernel-team/linux/-/blob/master/debian/rules=
-.real?ref_type=3Dheads#L193
+The fwnode_for_each_child_node() loop requires manual intervention to
+decrement the child refcount in case of an early return.
 
+Add the missing calls to fwnode_handle_put(child) to avoid memory leaks
+in the error paths.
 
-The 'master' is a moving target.
+Cc: stable@vger.kernel.org
+Fixes: 679f8652064b ("leds: Add mt6360 driver")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+This bug was found while analyzing the code and I have no real hardware
+to validate the fix beyond compilation and static analysis. But given
+that the child node is only used to retrieve some properties within the
+fwnode_for_each_child_node(), and it is not used outside the loop, the
+fix is straightforward.
 
-The line 193 in the future may not point to the correct position
+Nevertheless, any tests to catch regressions with real hardware are
+always welcome.
 
+The bug has been around since the driver was added.
+---
+ drivers/leds/flash/leds-mt6360.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/leds/flash/leds-mt6360.c b/drivers/leds/flash/leds-mt6360.c
+index 1b75b4d36834..4c74f1cf01f0 100644
+--- a/drivers/leds/flash/leds-mt6360.c
++++ b/drivers/leds/flash/leds-mt6360.c
+@@ -643,14 +643,17 @@ static int mt6360_init_isnk_properties(struct mt6360_led *led,
+ 
+ 			ret = fwnode_property_read_u32(child, "reg", &reg);
+ 			if (ret || reg > MT6360_LED_ISNK3 ||
+-			    priv->leds_active & BIT(reg))
++			    priv->leds_active & BIT(reg)) {
++				fwnode_handle_put(child);
+ 				return -EINVAL;
++			}
+ 
+ 			ret = fwnode_property_read_u32(child, "color", &color);
+ 			if (ret) {
+ 				dev_err(priv->dev,
+ 					"led %d, no color specified\n",
+ 					led->led_no);
++				fwnode_handle_put(child);
+ 				return ret;
+ 			}
+ 
 
+---
+base-commit: d35b2284e966c0bef3e2182a5c5ea02177dd32e4
+change-id: 20240610-leds-mt6360-memleak-78faf3e435b0
 
-I changed it to this.
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[3] https://salsa.debian.org/kernel-team/linux/-/blob/debian/6.8.12-1/debia=
-n/rules.real#L193
-
-
-This references the line 193 from the 'debian/6.8.12-1' tag.
-
-
-
-
-Applied to linux-kbuild.
-Thanks!
-
-
-
-
-> Cc: Diederik de Haas <didi.debian@cknow.org>
-> Cc: stable@vger.kernel.org
-> Fixes: aefd80307a05 ("kbuild: refactor Makefile.dtbinst more")
-> Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-> ---
->
-> Notes:
->     Changes in v2:
->       - Improved the patch description, to include additional details and
->         to address the patch submission issues pointed out by Greg K-H [4=
-]
->       - No changes were made to the patch itself
->
->     Link to v1: https://lore.kernel.org/linux-kbuild/ae087ef1715142f606ba=
-6477ace3e4111972cf8b.1717961381.git.dsimic@manjaro.org/T/#u
->
->     [4] https://lore.kernel.org/linux-kbuild/2024061006-ladylike-paving-a=
-36b@gregkh/
->
->  scripts/Makefile.dtbinst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/scripts/Makefile.dtbinst b/scripts/Makefile.dtbinst
-> index 67956f6496a5..9d920419a62c 100644
-> --- a/scripts/Makefile.dtbinst
-> +++ b/scripts/Makefile.dtbinst
-> @@ -17,7 +17,7 @@ include $(srctree)/scripts/Kbuild.include
->  dst :=3D $(INSTALL_DTBS_PATH)
->
->  quiet_cmd_dtb_install =3D INSTALL $@
-> -      cmd_dtb_install =3D install -D $< $@
-> +      cmd_dtb_install =3D install -D -m 0644 $< $@
->
->  $(dst)/%: $(obj)/%
->         $(call cmd,dtb_install)
-
-
-
---=20
-Best Regards
-Masahiro Yamada
 
