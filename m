@@ -1,195 +1,236 @@
-Return-Path: <stable+bounces-50073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25260901EA8
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 11:57:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E6E901F29
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 12:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C09401F23FCC
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 09:57:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6113B2673A
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 10:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E1A757EF;
-	Mon, 10 Jun 2024 09:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DB37B3E5;
+	Mon, 10 Jun 2024 10:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VP6MXRfk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qye8Fdwq"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2044.outbound.protection.outlook.com [40.107.101.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B3E7440B;
-	Mon, 10 Jun 2024 09:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718013421; cv=fail; b=FpTxvXNUIssMgq4Ke5ZbZSeXsJQ70Vorab7S/Vw/5iQZtOplb/U8AeStZDc+TqOjIWvnmIPvXJ5QvMI5Qg/EeXAFIBMo7c1kF0RNFpvHWfQ00V7pJPsHA6vP1B0S+wxy/5zyxLo2etqCECpdhzO7IkwxCaJ81N5FiRzyJNodHHE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718013421; c=relaxed/simple;
-	bh=2+gM5B6OHxO88DWWN60o9FwTuKgwM8+lmwjCZUtM+4o=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=SpyzTs5qj2Mx6AqxjhMV0XEMwKWMuQtTXepH0wsBzgD7klnBxn7+PI4MckK0O9j75+Ccsxki9uvZc5evdFQATfODc74EyulXCFEvXg6jTHOyNYnJSA3pRl+aYpFCfOEzF0fXwUmRJzTAmQgpWt+6dO50m0AaUEeinUFYOhK0T9I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VP6MXRfk; arc=fail smtp.client-ip=40.107.101.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Rf6vm/n0DeqPk5c+nwgdr3JGpL0gltP8Nim0cD78+Vuk6SiX9bfN4AsthJAD1cef2W++dbJLjxoD0sFj7Nnt5blnzZXyQ0t9ddDACS+N/BuUdJ1UGxhm/Ssb3Pk1A7kC0JMLfO/R/YBEmj1/2AUPUU0QZDvXdrfm7JlcLsJY/cdRqHT5zd5ZJmqH57+jvcYaU1IBA9OYLwGSek02BJwolRfJgnSolQKyqqTMrzFC32BM8lrX1HMaraul8X6MyEmLRdN2u6+K5ScH6dgBHQrVUVV4IZNsEndruBD+v6qRcGhEV/DerkkjHQPnsqP6TvaoekVznjGBkYPWauF8e7GtnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Hw0YV3l9VvSx+5+SqyWCGxFN52y7oV0Xif5sLIFFWBI=;
- b=MHxGb7q3lxA73cREGHkoYiw9lIb38OsXKOCB6wDFLj5kmwluAAkzFfjsMLUlEfYPKH2epQ+dvlBUMBJMA4cJMvac2I4TNK+tp7VOfBk4gSDB9jNSRq9NKz0WkxlqSA4JfcCPAYUMeeFDTTfs3lxF85up5pk4sISeDdES6YkPBUgNG9DxeP27issp24rf2AIQq6auLwNptC2akoLVELQZn/2MsSyewOr6S3ufvqQYiu3dspLzWjKQ8XtOyyzzf0Vk2lMgQBd66QmxlKrBvasdxJxvxr8OFOSdzebnkKb2KnfHlhbcW7pK5yi34S8Ms4A1fgCrOrhkOoM+PpRUBCPDaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Hw0YV3l9VvSx+5+SqyWCGxFN52y7oV0Xif5sLIFFWBI=;
- b=VP6MXRfk3Avo3vGlJwTIStx1yrSoVGmtzMVAJu2nwTW2DeqFPyHX1fceG2nDIEM1e/rNLNO32VzgEYAJIJPBTk/jfBrjv9ih9RrcbZOdOukbAHD4RmhId30SikCjK+Lco9F/DA+toPIPoTxVubJWrQmCdJbBdQWmPr2w63yhLjhV8I+Svog6bjcyvxl1EGf9HX2NW7D7h2yfGD37jC4/QFl/iKvQm2k+FJLwwoBpu9TxeExERAyskJ64qus190D4/YdGglf9XEFPVIt0erbWlns7XJvKEFzfdI8X9y7kqCeW3ag4oLw4ClZP7jNcsRRZHC1Ss0WscupqS8+t+IsIDw==
-Received: from CH2PR05CA0021.namprd05.prod.outlook.com (2603:10b6:610::34) by
- SJ1PR12MB6196.namprd12.prod.outlook.com (2603:10b6:a03:456::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7633.36; Mon, 10 Jun 2024 09:56:56 +0000
-Received: from CH3PEPF0000000F.namprd04.prod.outlook.com (2603:10b6:610::4) by
- CH2PR05CA0021.outlook.office365.com (2603:10b6:610::34) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7677.17 via Frontend Transport; Mon, 10 Jun 2024 09:56:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- CH3PEPF0000000F.mail.protection.outlook.com (10.167.244.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7677.15 via Frontend Transport; Mon, 10 Jun 2024 09:56:56 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 10 Jun
- 2024 02:56:48 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Mon, 10 Jun 2024 02:56:48 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Mon, 10 Jun 2024 02:56:48 -0700
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
-	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.6 000/741] 6.6.33-rc2 review
-In-Reply-To: <20240609113903.732882729@linuxfoundation.org>
-References: <20240609113903.732882729@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB3C79DC7;
+	Mon, 10 Jun 2024 10:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718014887; cv=none; b=QrNR70LmNpu+H/K/woQ/+7e2pLatC7a6QXRSBPQbsBxvkKpNU9zUsvhucQwL7KyjiRzf8EqckInAiHnrJM1NSkXGXhJQKwB93cGaLQlqpEoGflnVslKyjryziALt4LrAyhcp3RnaL9QgUf6nhk9VUWl2BYwkIxPVGzv8yRcsC30=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718014887; c=relaxed/simple;
+	bh=y4nHq92fBK7Hncw18w6FXPEZgY5S+YepShIVlJ1gXTo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rpCXigv38qJWeLbCSnYHYgP358Rml1yilYiATnkIR5PJYJMI4TIwNuYGUffuiO5PcErE3rYv4JsWUN9CjTnv/PwR03bnzd0+5m4x8ScK7d4yTxQdL/KeqWPsPz/+MBnDFPGMFkAGRmr9zsMnOnU+fgfn7VsBzZ+8cBus6sXLsSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qye8Fdwq; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a6267778b3aso426123266b.3;
+        Mon, 10 Jun 2024 03:21:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718014883; x=1718619683; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LwHIHsN6FOqMaJ0QvL4YUcdXJqzusyELWmCpBOJ4s7U=;
+        b=Qye8Fdwqj0A0ZPLlNASvJhV5GBUKeZp2LCtE7XHE1D1h+WZQwhCo6EgS0A5lrj5QMD
+         4HfhVphzYKMD/Vhk3wBn8px+DyuCpJdDPpKLJHMhSsxgG5dcDwkPnnYpkJmIgCV7aE0V
+         ZhU6EkfeP6rdpqQjXT1hvWqaSTyWQECbO4qubrAstLzJX0TmoZJ8EHjHoNkQXk9JdjPp
+         qdiuSVQlk87O3tSjGa5NcEBrsRe2d3KiawG/xBisP10v2suG/iNE/eFTGr95EYCr8J0Y
+         AkZde9Cs7qFGEzmkJbWMCAo0w7XupTy1gaE44JpBVi20HeY+y/ijfZK/DrG4wgQgiojn
+         Sf/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718014884; x=1718619684;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LwHIHsN6FOqMaJ0QvL4YUcdXJqzusyELWmCpBOJ4s7U=;
+        b=JZ4zt0AeHCwGCc9fjt+OoV3qmzTmWBgZV+ngrPcJscwTiUQDRDMSjUXNjNU5qT2clb
+         XnMKgyrfxzcKqNfSoRtt7LYi80oadnaFHXlfAuZMk7OxpamZN/3GCQEulnx2u+RMeThu
+         oy0M2WpkEkgyOE6OgWULPmWyggBi7x4skR1vZhtIu7Owd+Hz2eaDA03N0C528kXMaaQm
+         UAXGFFnqGGVazLANuB+7dzBKrwPp1ea7mMRGPb3oiNBTbJGkbhaUlpX+pUpYRXtuGGHS
+         3g3fiVP+BWLsdpEAKzFWQ5/UfesTNigLPRfO59TmywkK0Cn9GgEtJeeFdeEN5Oy+YxkG
+         3CDA==
+X-Forwarded-Encrypted: i=1; AJvYcCUCp4K6qH0t7k0Bx83BQkgoyVF2KfzH/bSHuJfkAl11JmM5zIteEHW3Loyzq0zP2b2kpKHcUDHIhvYOnjCoEibAj+TrQzqSy/i0QLVgdF1ZgjgVexYFMVKQ+vS/Qgj2Rp1aBthPS9LfQqylhrqyKk0ZxnzpStTMXbq4
+X-Gm-Message-State: AOJu0YzuPzEkfBxi+OCkPSFHXkjdec9DOyLQpRVPVllJOtlid4JE1mA0
+	hfNtF7uAR7ipnWWRCUVB93BiFxIq38HBLWiXe/k8/c26UkTmQY5N
+X-Google-Smtp-Source: AGHT+IHYtZnMWrJ0IkdZ+MyDgpngsD09lt7KGhzA4zeGHE5BqNwD2tXuke8ut6t0IoCcbB5ZC+9Wmg==
+X-Received: by 2002:a17:906:f198:b0:a6f:e36:aba8 with SMTP id a640c23a62f3a-a6f0e36acd5mr316798066b.33.1718014883287;
+        Mon, 10 Jun 2024 03:21:23 -0700 (PDT)
+Received: from vasant-suse.fritz.box ([2001:9e8:ab68:af00:6f43:17ee:43bd:e0a9])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f0d7b35d5sm290887766b.192.2024.06.10.03.21.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jun 2024 03:21:22 -0700 (PDT)
+From: vsntk18@gmail.com
+To: vsntk18@gmail.com
+Cc: x86@kernel.org,
+	Borislav.Petkov@amd.com,
+	Dhaval.Giani@amd.com,
+	ashish.kalra@amd.com,
+	cfir@google.com,
+	dan.j.williams@intel.com,
+	dave.hansen@linux.intel.com,
+	ebiederm@xmission.com,
+	erdemaktas@google.com,
+	hpa@zytor.com,
+	jgross@suse.com,
+	jroedel@suse.de,
+	jslaby@suse.cz,
+	keescook@chromium.org,
+	kexec@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	luto@kernel.org,
+	martin.b.radev@gmail.com,
+	mhiramat@kernel.org,
+	michael.roth@amd.com,
+	mstunes@vmware.com,
+	nivedita@alum.mit.edu,
+	peterz@infradead.org,
+	rientjes@google.com,
+	seanjc@google.com,
+	stable@vger.kernel.org,
+	thomas.lendacky@amd.com,
+	virtualization@lists.linux-foundation.org,
+	vkarasulli@suse.de
+Subject: [PATCH v6 00/10] x86/sev: KEXEC/KDUMP support for SEV-ES guests
+Date: Mon, 10 Jun 2024 12:21:03 +0200
+Message-Id: <20240610102113.20969-1-vsntk18@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <116d80cb-7dce-41d6-b279-90201e253d7e@drhqmail201.nvidia.com>
-Date: Mon, 10 Jun 2024 02:56:48 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF0000000F:EE_|SJ1PR12MB6196:EE_
-X-MS-Office365-Filtering-Correlation-Id: 516b260e-407e-44e1-f09f-08dc8933a9c1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|7416005|376005|36860700004|1800799015|82310400017;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?a0xXUVdpbWdRelZMQVJzczFBZlE4WXlIYW96c3Yyd010SW05WWhaYytBb21j?=
- =?utf-8?B?UzljTlF6YkszSE9sMDcwbnNpRXEvSVpFMkVlVmxxdTNXa0FGUTh0Z09CZTQ1?=
- =?utf-8?B?VE9TbDNpc2srbDJ2YXVxNmRkRC9PU1A4ZmhmQ3d2Y2Q3MDdSVnNsT2dPNFVt?=
- =?utf-8?B?eVEwbndRZXIwdEMyMlhpWmNDSDRtelVRTE02UDhmOThRYjJ0amxyNUkzbHd0?=
- =?utf-8?B?aVlzOFNSanhISHBsRnhXY0FDVzI3VnNESit4RFYxL3l4U3JFOHVXU1prUHEx?=
- =?utf-8?B?UlFGQ2c4aFJYN1liTnFDZ20yUnowTFRzT2E0MlZ5TWpOU1FmbndOUXFGMjNm?=
- =?utf-8?B?UzB4UGFQZlhGWll0QzY2TjViYUs1WW1MMVhGV2V0cDFYenJUMEhkM2tPZ3ND?=
- =?utf-8?B?TTk0d2ZQc3kyWmJkNUFWZjE3OGFwZnQ2WXlOcVJ3T2JLUzdyVXhWMzkremhB?=
- =?utf-8?B?a3BYemxiMmE0eTUzV1kzck5VYUk5QlhiZGVwRkZnd2YrQTlIWVRnTEIzTWl1?=
- =?utf-8?B?dDdta3pZckM4ZUIyTDU1b3NjL1ZzZGNQVmc1MG5wcVdwbVFxSWRIMVhBK3BR?=
- =?utf-8?B?Qk5qUG1hQkRvcWUxVUxxOERmb1FNem1ZZTVZSlRoZUJHNGpjZGo4UnZDUVc1?=
- =?utf-8?B?RkM1T0pBZGxaMUhianc5MHZFS0IyL0dzNmtkRVJwd2RTcTlFZWFkUDJZMXJM?=
- =?utf-8?B?VWlTQTVQMDVjUE1XQi9zK3ZLSGRHQW51Q0F6dTNpUnRiYzg3d0EwcUN0Zitw?=
- =?utf-8?B?aGJqQmx1VUdDcFRkMklVakJ0dzAvd2JiMFFIaTc5QTAwbXpxeDE0MUFHU0hh?=
- =?utf-8?B?LzYzWWxQMkFzNXJ0OUtwejd0eVJWUFppY3Vkd3lPM3lhS0JBOE94QXVRak1y?=
- =?utf-8?B?bDIxMFFzc0p2MitySWJLYzJZM0tnZnJpdnhSNG9ud1ZwV3hDRWc5YWdBL0hu?=
- =?utf-8?B?QzlNSVJVeGJYVUdLcUFHOHpJZW9CekkxMHNsRkV5YXM3VmY2NXhCUFk5ek1l?=
- =?utf-8?B?djlkK0wxVG5YaWMzUFl6T1ZmSG1tTzBrVTBwejVPaVNEbUdQM0REa3pPMFVF?=
- =?utf-8?B?T2xNSmYwWWtaYnBoWGRhY3ZXaXc3QWRXZ1lrajQ5MDBjZ3gwVUpPOWJDcWdp?=
- =?utf-8?B?RmJudjl3bjh1Wk9xYWdOUDlRajcwdmJuTnZwR0JnNFU2WDNTdzRSUFNPV3Qw?=
- =?utf-8?B?N1JsQmNaMFRCUGxlZWFpaE9nbGtIejhCQ1pPV2c5RFUwK3dUZTFVQ2x4VDlN?=
- =?utf-8?B?QlBaa0tRU2FBWjhVMG4zaVQvelYxRndCRVVFelNpTDFJclV6anEra2RFSGFV?=
- =?utf-8?B?RGs0RENQelgrelpCT09WNFdUcEVCK0Q0UHNxdk0zRmM0ZmNNVXQ2a1h2cDZ2?=
- =?utf-8?B?dXlMdFdmQmtvK0dQejhsUVFkUEF3b1VFTU8yODQ1MTdxTXMvR2wwMUJublhX?=
- =?utf-8?B?Und0NTJJbENxckh1aHQrdUpPemg4VEk1aDFIcG1qTkRnb0VtWGRtZzM0ekw5?=
- =?utf-8?B?V0QxNjhiQWpVRVhSemVVRGwxUk5wRURhWXZqMldmMXlCRnNMeVRCWU9hNjJZ?=
- =?utf-8?B?Mkl5OEVBU0VRM3pUNEkvdVdEbkpTYy9LUGRGNFdnMUJWOWJ1WjB6WVcyY1JM?=
- =?utf-8?B?TmxSUVV2cGhyK2FrR2pyRHVXSXRBMHBkbHZ6Q2NWS2xSRUl0QlJKWGhDUUtK?=
- =?utf-8?B?Tzh3cGRYeGdVZmVBZFhzdForRStQVUVNL3U0VEJQK0YycUltb0owbmtNcTFF?=
- =?utf-8?B?clJmQUw0ckQ3QWVUbGc1TzdEbU5FSkZHbTBOVnJKemw1RmE4S1FNZE5ONkZm?=
- =?utf-8?B?S2dWYlczYk9wVUZaMVBRQ0Y4cDhpUWJENzhKSHJYMjlHamI5bTVoVm9mMHQr?=
- =?utf-8?B?c1NiY1FYVDBNVS9yWWllWURUcjJBQ3VkQWJXQXNrV2xFQlE9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230031)(7416005)(376005)(36860700004)(1800799015)(82310400017);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2024 09:56:56.2758
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 516b260e-407e-44e1-f09f-08dc8933a9c1
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH3PEPF0000000F.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6196
+Content-Transfer-Encoding: 8bit
 
-On Sun, 09 Jun 2024 13:41:16 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.33 release.
-> There are 741 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Tue, 11 Jun 2024 11:36:08 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.33-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+From: Vasant Karasulli <vkarasulli@suse.de>
 
-All tests passing for Tegra ...
+Hi,
 
-Test results for stable-v6.6:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    116 tests:	116 pass, 0 fail
+here are changes to enable kexec/kdump in SEV-ES guests. The biggest
+problem for supporting kexec/kdump under SEV-ES is to find a way to
+hand the non-boot CPUs (APs) from one kernel to another.
 
-Linux version:	6.6.33-rc2-g7fa271200aef
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
+Without SEV-ES the first kernel parks the CPUs in a HLT loop until
+they get reset by the kexec'ed kernel via an INIT-SIPI-SIPI sequence.
+For virtual machines the CPU reset is emulated by the hypervisor,
+which sets the vCPU registers back to reset state.
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
+This does not work under SEV-ES, because the hypervisor has no access
+to the vCPU registers and can't make modifications to them. So an
+SEV-ES guest needs to reset the vCPU itself and park it using the
+AP-reset-hold protocol. Upon wakeup the guest needs to jump to
+real-mode and to the reset-vector configured in the AP-Jump-Table.
 
-Jon
+The code to do this is the main part of this patch-set. It works by
+placing code on the AP Jump-Table page itself to park the vCPU and for
+jumping to the reset vector upon wakeup. The code on the AP Jump Table
+runs in 16-bit protected mode with segment base set to the beginning
+of the page. The AP Jump-Table is usually not within the first 1MB of
+memory, so the code can't run in real-mode.
+
+The AP Jump-Table is the best place to put the parking code, because
+the memory is owned, but read-only by the firmware and writeable by
+the OS. Only the first 4 bytes are used for the reset-vector, leaving
+the rest of the page for code/data/stack to park a vCPU. The code
+can't be in kernel memory because by the time the vCPU wakes up the
+memory will be owned by the new kernel, which might have overwritten it
+already.
+
+The other patches add initial GHCB Version 2 protocol support, because
+kexec/kdump need the MSR-based (without a GHCB) AP-reset-hold VMGEXIT,
+which is a GHCB protocol version 2 feature.
+
+The kexec'ed kernel is also entered via the decompressor and needs
+MMIO support there, so this patch-set also adds MMIO #VC support to
+the decompressor and support for handling CLFLUSH instructions.
+
+Finally there is also code to disable kexec/kdump support at runtime
+when the environment does not support it (e.g. no GHCB protocol
+version 2 support or AP Jump Table over 4GB).
+
+The diffstat looks big, but most of it is moving code for MMIO #VC
+support around to make it available to the decompressor.
+
+The previous version of this patch-set can be found here:
+
+	https://lore.kernel.org/kvm/20240408074049.7049-1-vsntk18@gmail.com/
+
+Please review.
+
+Thanks,
+   Vasant
+
+Changes v5->v6:
+        - Rebased to v6.10-rc3 kernel
+   
+Changes v4->v5:
+        - Rebased to v6.9-rc2 kernel
+	- Applied review comments by Tom Lendacky
+	  - Exclude the AP jump table related code for SEV-SNP guests
+
+Changes v3->v4:
+        - Rebased to v6.8 kernel
+	- Applied review comments by Sean Christopherson
+	- Combined sev_es_setup_ap_jump_table() and sev_setup_ap_jump_table()
+          into a single function which makes caching jump table address
+          unnecessary
+        - annotated struct sev_ap_jump_table_header with __packed attribute
+	- added code to set up real mode data segment at boot time instead of
+          hardcoding the value.
+
+Joerg Roedel (9):
+  x86/kexec/64: Disable kexec when SEV-ES is active
+  x86/sev: Save and print negotiated GHCB protocol version
+  x86/sev: Set GHCB data structure version
+  x86/sev: Setup code to park APs in the AP Jump Table
+  x86/sev: Park APs on AP Jump Table with GHCB protocol version 2
+  x86/sev: Use AP Jump Table blob to stop CPU
+  x86/sev: Add MMIO handling support to boot/compressed/ code
+  x86/sev: Handle CLFLUSH MMIO events
+  x86/kexec/64: Support kexec under SEV-ES with AP Jump Table Blob
+
+Vasant Karasulli (1):
+  x86/sev: Exclude AP jump table related code for SEV-SNP guests
+
+ arch/x86/boot/compressed/sev.c          |  45 +-
+ arch/x86/include/asm/insn-eval.h        |   1 +
+ arch/x86/include/asm/realmode.h         |   5 +
+ arch/x86/include/asm/sev-ap-jumptable.h |  30 +
+ arch/x86/include/asm/sev.h              |   7 +
+ arch/x86/kernel/machine_kexec_64.c      |  12 +
+ arch/x86/kernel/process.c               |   8 +
+ arch/x86/kernel/sev-shared.c            | 234 +++++-
+ arch/x86/kernel/sev.c                   | 376 +++++-----
+ arch/x86/lib/insn-eval-shared.c         | 921 ++++++++++++++++++++++++
+ arch/x86/lib/insn-eval.c                | 911 +----------------------
+ arch/x86/realmode/Makefile              |   9 +-
+ arch/x86/realmode/init.c                |   5 +-
+ arch/x86/realmode/rm/Makefile           |  11 +-
+ arch/x86/realmode/rm/header.S           |   3 +
+ arch/x86/realmode/rm/sev.S              |  85 +++
+ arch/x86/realmode/rmpiggy.S             |   6 +
+ arch/x86/realmode/sev/Makefile          |  33 +
+ arch/x86/realmode/sev/ap_jump_table.S   | 131 ++++
+ arch/x86/realmode/sev/ap_jump_table.lds |  24 +
+ 20 files changed, 1711 insertions(+), 1146 deletions(-)
+ create mode 100644 arch/x86/include/asm/sev-ap-jumptable.h
+ create mode 100644 arch/x86/lib/insn-eval-shared.c
+ create mode 100644 arch/x86/realmode/rm/sev.S
+ create mode 100644 arch/x86/realmode/sev/Makefile
+ create mode 100644 arch/x86/realmode/sev/ap_jump_table.S
+ create mode 100644 arch/x86/realmode/sev/ap_jump_table.lds
+
+
+base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
+-- 
+2.34.1
+
 
