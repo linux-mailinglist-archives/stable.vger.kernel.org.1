@@ -1,158 +1,114 @@
-Return-Path: <stable+bounces-50114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50424902932
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 21:22:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D1690290F
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 21:18:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68C301C21202
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 19:22:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12D241C2137D
+	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 19:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D48D14E2EA;
-	Mon, 10 Jun 2024 19:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2081147C6E;
+	Mon, 10 Jun 2024 19:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="fkCgvDyR"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="k7lecxZx"
 X-Original-To: stable@vger.kernel.org
-Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CCA14D2AB
-	for <stable@vger.kernel.org>; Mon, 10 Jun 2024 19:22:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254CE74404
+	for <stable@vger.kernel.org>; Mon, 10 Jun 2024 19:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718047352; cv=none; b=ucH/TeVar674Zbj5F0+o33duyc/cWrxmCYSwTdUTZGe90LFgxXtnc8SftGqeOXlAJN4EMP8ZB4O9QxmOe9+whS5kJeuzzCGOM9NunOnZC8WIVTitenwjpuPzg6EjrXzQQJcevhES7dkSBJ+2o/rbpSTOhV0zsjdcJFX5hQCgLt4=
+	t=1718047084; cv=none; b=TA7vtwGlKzKzh3yVMt9nLhs/ttnP3SfzW4QnCKrNcL1XRaYsuLUBObAFYDTUHXWdEFo/8wDtLFZQ7+NHlpMEgWQ3aQRhDkRFn3INb7iC2jPOEsik5796hmdUjtswEfmHEoRQxDKduTVynA4LU0IWWVHt1dUeZwbZoy0pJxmJkCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718047352; c=relaxed/simple;
-	bh=Iawzg28T3aFCFKqGptTGfReENBNWkMpmGd777B2b2hA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z3CGMibttmmuv5tzz5CnZ9aKXSb0qou01hiDqfGdqAsTf7skM9E7SxEq7hIeI1h7xUx8C58YDkvf2YyR5uX4+4TTp6qkbAg7K6FiVICuqZWTIxIEJCvg/SWs2Il8G/+JWd48zzx7KKPporpN+pYi+fgP0gaHnwNgGI1JaECTJd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=fkCgvDyR; arc=none smtp.client-ip=193.222.135.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
-Received: (wp-smtpd smtp.tlen.pl 8804 invoked from network); 10 Jun 2024 21:15:47 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
-          t=1718046947; bh=MeySumbwzlBo0kldPkNbI3BFVqV8D1zfPKw7TgMj87k=;
-          h=Subject:To:Cc:From;
-          b=fkCgvDyRKT6m1QfYwnbUKp2Lnb7Yy70nj/8tC3be6vBJNJ3+hWZHdJ+wz3Nv5DBov
-           ERgZvTzlg7ifkUsGdFbpPOwaIHkEOX6HPWLC783Hnf9ZaDd99Y7z2xCgJRLSIrr7PO
-           MSOXeJlI//si/3aCRi0S9e0glYkH5zLxI/y3wXBQ=
-Received: from aafb246.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.131.246])
-          (envelope-sender <mat.jonczyk@o2.pl>)
-          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <gregkh@linuxfoundation.org>; 10 Jun 2024 21:15:47 +0200
-Message-ID: <3e0b8e07-2481-4c79-9ba8-9c6165b456c1@o2.pl>
-Date: Mon, 10 Jun 2024 21:15:42 +0200
+	s=arc-20240116; t=1718047084; c=relaxed/simple;
+	bh=ZLDDNoFT0RjZQZE3Qbp0+gYlvPoMfNcLfWYnfekiwsQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qoSCddcV6SoQbfDtJIS/YnurHFfCjfQWZoYxpHGghu+PWu93eHzuDGnM9TUsr2ITv7qBbaTKTJZD8sPOcjJMmBGMnkeLX8UEYP+ggnAIg6t77QKhwg5wP6tpaIHXwSGDVmq46NxwTO9QqC1XozXfzx7hJwpH2O8ol+yzz/AEVNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=k7lecxZx; arc=none smtp.client-ip=209.85.219.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6b0645351ebso818456d6.2
+        for <stable@vger.kernel.org>; Mon, 10 Jun 2024 12:18:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1718047082; x=1718651882; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GKTxfDepAOASvtboGdygz0hOxMNQauCfOA/I6qs8Ids=;
+        b=k7lecxZx91arwFmCAdvH1NKX82YTeXHe1fVLkS2gUirODAciMumBLdMLjn2ljPfPTc
+         HoVXlN7HA+CNrb8KTEPfQdbog9YtfAJJuJshqB+EId4Nnm0oIQbbrD/oBOHL3bghYi1Y
+         FYiRiohW7FUjvZwXqlNSIO1VP5y2gPGGP1qk0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718047082; x=1718651882;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GKTxfDepAOASvtboGdygz0hOxMNQauCfOA/I6qs8Ids=;
+        b=wKmDPwh4txpDP6CFImcsNNOOADqbPLln2HnSdFouc+3AC81r8pX4mxEk+fV3FhyQ+X
+         WsvZl9cbmqTdOzyudHpS1BQYT+yhR3TFdWVFJwF64WxBw+WAEYww3GhsDW04g+wu+4t4
+         tF6DfNkq5ZyCLtwQr56wrcrrw6wIDDFnB+L2Dc0rM94e7KsAT9QpkHIZ44VBoZQouC/o
+         BjT9kGH9IzZodESluWrTTLajqfjhVi2zhc33KS5nsDNypDfUsmGQ313kV31R7eNs0Yc+
+         ls/59ekDRnGflJa+N0/zt1DLHYUmxK6GbjtBR7CIhZHVFWZnD4rA4P8wXIl5V/IM+zVi
+         9bAg==
+X-Forwarded-Encrypted: i=1; AJvYcCVZ5gko1kYUqYdGUpyVGwp5JvnhQdV5ZCcTvS4qFqX7VveeqmkKg9XcZtFBmnn9INz2nDguI8MImfv30lR/YjxKfVAio1lR
+X-Gm-Message-State: AOJu0Ywgg5hIEg39gEdCF02d27KYxxG/p0b51zSm0tusdYsM83o5HUiq
+	TKGhpVFTt5Y/ojY9MWzLbE1YKUJohdBZQPfc+c9HJA+j2sYg9Wv6fB+DnAV2EYoUroi0NpC+HiM
+	=
+X-Google-Smtp-Source: AGHT+IGTHC2QWXZRQO4gJ0793VX7ja5aesUujATsRoC5Hlxul/gYz9PU7GfQvoK3IF5jsveTUHrAtg==
+X-Received: by 2002:a05:6214:3282:b0:6b0:7c52:ae4e with SMTP id 6a1803df08f44-6b07c52afd1mr26693336d6.24.1718047081987;
+        Mon, 10 Jun 2024 12:18:01 -0700 (PDT)
+Received: from denia.c.googlers.com (123.178.145.34.bc.googleusercontent.com. [34.145.178.123])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b06e66ad80sm26224546d6.129.2024.06.10.12.18.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jun 2024 12:18:01 -0700 (PDT)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH 0/2] media: uvcvideo: Followup hwtimestamp patches
+Date: Mon, 10 Jun 2024 19:17:47 +0000
+Message-Id: <20240610-hwtimestamp-followup-v1-0-f9eaed7be7f0@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/470] 6.1.93-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240609113816.092461948@linuxfoundation.org>
-Content-Language: en-GB
-From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
-Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
- 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
- TANkZ3QqXNX2
-In-Reply-To: <20240609113816.092461948@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-WP-MailID: ac896e9918a2a86bcaaed34bb2b44892
-X-WP-AV: skaner antywirusowy Poczty o2
-X-WP-SPAM: NO 0000000 [gXM0]                               
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFtRZ2YC/x3MTQqAIBBA4avErBNUSqyrRIuyKQcqRfsD6e5Jy
+ 2/xXoKIgTBCWyQIeFEkt2eIsgBjh31BRlM2SC4rrgRn9j5ow3gMm2ezW1d3n57JSjemVkqPUkB
+ OfcCZnn/b9e/7AfnfBcNmAAAA
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Hans Verkuil <hverkuil-cisco@xs4all.nl>, linux-media@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Ricardo Ribalda <ribalda@chromium.org>, 
+ HungNien Chen <hn.chen@sunplusit.com>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Tomasz Figa <tfiga@chromium.org>, stable@vger.kernel.org
+X-Mailer: b4 0.12.4
 
-W dniu 9.06.2024 o 13:41, Greg Kroah-Hartman pisze:
-> This is the start of the stable review cycle for the 6.1.93 release.
-> There are 470 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Tue, 11 Jun 2024 11:36:08 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.93-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+The series 
+https://patchwork.linuxtv.org/project/linux-media/list/?series=12485
+was all merged but one patch that Laurent found a bug in the index used.
 
-Hello,
+When I tried the fixed patch I found an integer overflow in the
+timestamp calculations. This bug can be triggered with slow framerates.
 
-Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+---
+Ricardo Ribalda (2):
+      media: uvcvideo: Fix hw timestamp handling for slow FPS
+      media: uvcvideo: Fix integer overflow calculating timestamp
 
-Tested on a HP 17-by0001nw laptop with an Intel Kaby Lake CPU and Ubuntu 20.04.
+ drivers/media/usb/uvc/uvc_video.c | 33 ++++++++++++++++++++++++++++-----
+ drivers/media/usb/uvc/uvcvideo.h  |  1 +
+ 2 files changed, 29 insertions(+), 5 deletions(-)
+---
+base-commit: ef1e48f725d30cb18d3f2d40c48f50f483080cf7
+change-id: 20240610-hwtimestamp-followup-2489c5668b21
 
-Stack:
-- amd64,
-- ext4 on top of LVM on top of LUKS on top of mdraid on top of
-  NVMe and SATA drives (the SATA drive in a write-mostly mode).
-
-Tested (lightly):
-- suspend to RAM,
-- suspend to disk,
-- virtual machine in QEMU
-- WiFi (Realtek RTL8822BE),
-
-No dmesg regressions (on warning+ levels). I have previously tested 6.1.93-rc1
-more thoroughly.
-
-Greetings,
-
-Mateusz
+Best regards,
+-- 
+Ricardo Ribalda <ribalda@chromium.org>
 
 
