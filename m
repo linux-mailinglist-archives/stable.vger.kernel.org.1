@@ -1,89 +1,70 @@
-Return-Path: <stable+bounces-50164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F86903EA6
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 16:26:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F01903F02
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 16:42:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 730DE2822B8
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 14:26:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4F731C22705
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 14:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8AC17DE1E;
-	Tue, 11 Jun 2024 14:26:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Rmqmor8I"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0030817D8A4;
+	Tue, 11 Jun 2024 14:42:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659D117DE02
-	for <stable@vger.kernel.org>; Tue, 11 Jun 2024 14:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9B05336D;
+	Tue, 11 Jun 2024 14:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718115963; cv=none; b=GZ2W6ZKRO0tc5OvHwCcA4oFRh14UIUojeYJNF30vp00nnJ0fcECWtTAqlvPoUfQbssSX6MGLc0q+UPxkb4IrklXoReydOfNbGmTZ6JaCcblrh2KoxhmVH+rRlPy8q+8PvCffmD26RxCG4riSjy/MjsiIOVUqmxIxR9rkNPE7ZYM=
+	t=1718116951; cv=none; b=vESlw8VKDI2xpDqcbRjNecvsV/1Ei2wCJNN6koLHqFZqHhBSflr5p6DzfyhYiSuYSnjy2WYTAOOYNOdFZ4ocyrlqgs4CzYH0EKyKG+DoKoXCsWEexHsW7Tk85wifJ/crd8rptMMQhg2XLQ63iGNMP0/IDPlNWWcM+hvAy4p5Ghc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718115963; c=relaxed/simple;
-	bh=jTgcJ6I9f/rRMv8ZQvu6QHiOuSVE1U6c/CD+DvrI+aE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5Y1J/zsYkW0Ni2iRc9jKwt61ZsAmkAcWifkv2Nd7lhGSIbUbTcHy3F2Qe5VFdsNZHwHqCjBv1nbL+lqq4g6t0c29rq3sQUvZeGZH9sAOUi53IxE9Cw22peEZe50V6/HczJXivfllpJz+1NpNxDnosNH959gppV24qN3/N18Tjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Rmqmor8I; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a6266ffdba8so473087366b.1
-        for <stable@vger.kernel.org>; Tue, 11 Jun 2024 07:26:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718115960; x=1718720760; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fEIGYp+wGh2VjZ0I9sLID7yRBrttreOePBUNcFhAtA0=;
-        b=Rmqmor8I6jAEFEwF831mIAawoeA/3BBfBS16C2z0mD1y0GfHvnXkb4Uw0t4RQ5pqYg
-         LHrdBESI1u/818rvowDNiO5nQvoyrGiqOD0hS2ymM/J0D1hMfXV9XXhVLWdJ0nlUMviw
-         Z0H9BjWRK8Hfu8wwpD6wK9DYPrM46XXH91yChEC5Ocbl5enkeKRvW/4khvRbEyi2UH7d
-         Y4H9Ya6Ou0MhCxnmoKGewM5FdTXYaKOWQQ+oMyl37Sb22hzpswnLXv71gLvBX65wo7EI
-         N27jHiE7DgIGhHsRaFnDEX392AFrPJw7CoWVZtrlLW3sNGA7lGJmXqBQ419pxJYdbB7W
-         xa6g==
+	s=arc-20240116; t=1718116951; c=relaxed/simple;
+	bh=jboeQ8nuXofiKGnAVVqFgVrGBESzCeHoA1Ouj+vGIOs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XwSvD5Nb6ygoPXP0jMQ+kIjfUB2L9uwwKJeh4YePOkyYcoILp2ZTM9NcoaowwwHm9GuJXgTSiT35vCZgl4i+890yl6dICJQiENfBHhiLTG47DwfsEDYu/Bsq5yS2qSfi2LB+NCB1+GWBrYx1FwUI4PbsHP6t8F2P3Bs23NGd1YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-6c53a315c6eso4301057a12.3;
+        Tue, 11 Jun 2024 07:42:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718115960; x=1718720760;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fEIGYp+wGh2VjZ0I9sLID7yRBrttreOePBUNcFhAtA0=;
-        b=d0BSHsR1Nbx3jQf2zJEVHPE0i5vKazK9fJLGjbCxkmfCtWNIbEXmUPxymqKNG0HjiF
-         s3l9G8MNIxtly4mLH3r2MND41Vl/6egkOy/GAbt0O7/bEkXPFJY9IfRlRaAkPPdgMvEf
-         jv1Rd1U+7QwSH5DM/QgEdpMznXF0b26dejPsUKK0TkvG7a7FRSnDK0C1turxBRJDN6LH
-         fXE29podEAXPUZhJuU6ik8qSElN68N+6B/HRNJPcQAhK/xofd9S48e06Nqarq6+PY6of
-         aNkoW1bn+omcmwjKX6KIyyZqcWkz3fU5NuKYsDZkK3HatuRzoLidjMiLDf5ZBqbd5Bxu
-         HySQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVyAx69NFyuXrzEJuN8/3HCt937q2KIuef4YfdAC3qxGc5dSDyjXpihNd4nEHxA6hYlNGzM4tFIHkOejCrkGWT5W4aCJPmE
-X-Gm-Message-State: AOJu0YxZKxblX7x0gjy+l+WT2nk4/RxU58g4LHb0yrfW6mGLXrm7kD21
-	lOkB5fsIMhUD+3sBIiBK6SfnTRVnVgCUHCpL6K+Vu0O3/GbhwBpEtv6BZAG3GyY=
-X-Google-Smtp-Source: AGHT+IH+rsh5Ih113GwCiPSGW2KUD3lICD/Laz7ogIuvQXHqM5nyY5Tw1tvqnk/4FjQ38ojd000sDw==
-X-Received: by 2002:a17:906:68c5:b0:a6f:2d5c:5c8d with SMTP id a640c23a62f3a-a6f2d5c6342mr272886466b.30.1718115959823;
-        Tue, 11 Jun 2024 07:25:59 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.219.137])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6ef83ac0c4sm518070666b.74.2024.06.11.07.25.58
+        d=1e100.net; s=20230601; t=1718116949; x=1718721749;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9KDw44L8SS8YIgF73KlJ2tVSxG5HB3488LWyU9PuNc0=;
+        b=d2bW/Xaxw3H8/gIs+n5ONYYE81+z+/c0hi5bD1pz1K8HEvxZmJIFivVXPRVkpSqrU+
+         Kyvih+H43fd8vRjCc+e2lZr503GIrseCaDA+eLw0C7nvKYvLMEdpRoQk4hiTXRcjyQgo
+         rKqLNPxZpiOJwtnHurg7fJucRTMdngZr9xe/c5c7qh7kzeY+SNtKeNukiOqLEmcCrHWa
+         4wzMsRSkunooMyoo4JGkVzsfGYdUlTkEd6GqBxInr9YD/zxQvPXbQ0qKjIw0hwecIen2
+         7j5W291fkw1H55M8WKoOFNxAcN3fYygAUjayiIBc7/qqERtxWK1erBHkrnigrAE6umqO
+         nu8A==
+X-Forwarded-Encrypted: i=1; AJvYcCV2mKr/0/wIHJFEA8buU5LacdBYMsQwap4RCRbhJzjvZdvPR0R72Am1TUaqUvGQYa+Lm4cdXckTWqfOwHiKqx61586+aP/u
+X-Gm-Message-State: AOJu0Yx3GtHVwMMZT1wSRJmrVDOTXbamy2iu2fJKQb3U6coo0fmQEr8m
+	Y9TW+jh1Xbo2CZgRQXl7bu/wsIo3YdfJ/JOYLq8mKqE4ACjjMKohL73wZA==
+X-Google-Smtp-Source: AGHT+IHK7cBj6XJKH7EDR3Yu8OKQ6czBvrr+yRC2WQyOtdhqUWeL2K65L0YWR04/4toBOj0dXPHOmA==
+X-Received: by 2002:a05:6a21:1518:b0:1af:bd03:3222 with SMTP id adf61e73a8af0-1b2f9c89fd2mr14256522637.45.1718116949331;
+        Tue, 11 Jun 2024 07:42:29 -0700 (PDT)
+Received: from localhost.localdomain ([110.14.71.32])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70598c98443sm3424679b3a.180.2024.06.11.07.42.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jun 2024 07:25:59 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] arm64: dts: qcom: x1e80100-crd: fix DAI used for headset recording
-Date: Tue, 11 Jun 2024 16:25:55 +0200
-Message-ID: <20240611142555.994675-2-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240611142555.994675-1-krzysztof.kozlowski@linaro.org>
-References: <20240611142555.994675-1-krzysztof.kozlowski@linaro.org>
+        Tue, 11 Jun 2024 07:42:29 -0700 (PDT)
+From: Namjae Jeon <linkinjeon@kernel.org>
+To: linux-cifs@vger.kernel.org
+Cc: smfrench@gmail.com,
+	senozhatsky@chromium.org,
+	tom@talpey.com,
+	atteh.mailbox@gmail.com,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	stable@vger.kernel.org,
+	Wang Zhaolong <wangzhaolong1@huawei.com>
+Subject: [PATCH] ksmbd: fix missing use of get_write in in smb2_set_ea()
+Date: Tue, 11 Jun 2024 23:41:59 +0900
+Message-Id: <20240611144200.22118-1-linkinjeon@kernel.org>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,40 +73,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The SWR2 Soundwire instance has 1 output and 4 input ports, so for the
-headset recording (via the WCD9385 codec and the TX macro codec) we want
-to use the next DAI, not the first one (see qcom,dout-ports and
-qcom,din-ports for soundwire@6d30000 node).
+Fix an issue where get_write is not used in smb2_set_ea().
 
-Original code was copied from other devices like SM8450 and SM8550.  On
-the SM8450 this was a correct setting, however on the SM8550 this worked
-probably only by coincidence, because the DTS defined no output ports on
-SWR2 Soundwire.
-
-This is a necessary fix for proper audio recording via analogue
-microphones connected to WCD9385 codec (e.g. headset AMIC2).
-
-Fixes: 4442a67eedc1 ("arm64: dts: qcom: x1e80100-crd: add sound card")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 6fc0a265e1b9 ("ksmbd: fix potential circular locking issue in smb2_set_ea()")
+Cc: stable@vger.kernel.org
+Reported-by: Wang Zhaolong <wangzhaolong1@huawei.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-crd.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c   |  7 ++++---
+ fs/smb/server/vfs.c       | 17 +++++++++++------
+ fs/smb/server/vfs.h       |  3 ++-
+ fs/smb/server/vfs_cache.c |  3 ++-
+ 4 files changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-index 12a4c4637baf..05e62d9f1cbc 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-@@ -102,7 +102,7 @@ cpu {
- 			};
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 8bcede718c21..63a41193f6e6 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2367,7 +2367,8 @@ static int smb2_set_ea(struct smb2_ea_info *eabuf, unsigned int buf_len,
+ 			if (rc > 0) {
+ 				rc = ksmbd_vfs_remove_xattr(idmap,
+ 							    path,
+-							    attr_name);
++							    attr_name,
++							    get_write);
  
- 			codec {
--				sound-dai = <&wcd938x 1>, <&swr2 0>, <&lpass_txmacro 0>;
-+				sound-dai = <&wcd938x 1>, <&swr2 1>, <&lpass_txmacro 0>;
- 			};
+ 				if (rc < 0) {
+ 					ksmbd_debug(SMB,
+@@ -2382,7 +2383,7 @@ static int smb2_set_ea(struct smb2_ea_info *eabuf, unsigned int buf_len,
+ 		} else {
+ 			rc = ksmbd_vfs_setxattr(idmap, path, attr_name, value,
+ 						le16_to_cpu(eabuf->EaValueLength),
+-						0, true);
++						0, get_write);
+ 			if (rc < 0) {
+ 				ksmbd_debug(SMB,
+ 					    "ksmbd_vfs_setxattr is failed(%d)\n",
+@@ -2474,7 +2475,7 @@ static int smb2_remove_smb_xattrs(const struct path *path)
+ 		    !strncmp(&name[XATTR_USER_PREFIX_LEN], STREAM_PREFIX,
+ 			     STREAM_PREFIX_LEN)) {
+ 			err = ksmbd_vfs_remove_xattr(idmap, path,
+-						     name);
++						     name, true);
+ 			if (err)
+ 				ksmbd_debug(SMB, "remove xattr failed : %s\n",
+ 					    name);
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index 51b1b0bed616..9e859ba010cf 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -1058,16 +1058,21 @@ int ksmbd_vfs_fqar_lseek(struct ksmbd_file *fp, loff_t start, loff_t length,
+ }
  
- 			platform {
+ int ksmbd_vfs_remove_xattr(struct mnt_idmap *idmap,
+-			   const struct path *path, char *attr_name)
++			   const struct path *path, char *attr_name,
++			   bool get_write)
+ {
+ 	int err;
+ 
+-	err = mnt_want_write(path->mnt);
+-	if (err)
+-		return err;
++	if (get_write == true) {
++		err = mnt_want_write(path->mnt);
++		if (err)
++			return err;
++	}
+ 
+ 	err = vfs_removexattr(idmap, path->dentry, attr_name);
+-	mnt_drop_write(path->mnt);
++
++	if (get_write == true)
++		mnt_drop_write(path->mnt);
+ 
+ 	return err;
+ }
+@@ -1380,7 +1385,7 @@ int ksmbd_vfs_remove_sd_xattrs(struct mnt_idmap *idmap, const struct path *path)
+ 		ksmbd_debug(SMB, "%s, len %zd\n", name, strlen(name));
+ 
+ 		if (!strncmp(name, XATTR_NAME_SD, XATTR_NAME_SD_LEN)) {
+-			err = ksmbd_vfs_remove_xattr(idmap, path, name);
++			err = ksmbd_vfs_remove_xattr(idmap, path, name, true);
+ 			if (err)
+ 				ksmbd_debug(SMB, "remove xattr failed : %s\n", name);
+ 		}
+diff --git a/fs/smb/server/vfs.h b/fs/smb/server/vfs.h
+index cfe1c8092f23..cb76f4b5bafe 100644
+--- a/fs/smb/server/vfs.h
++++ b/fs/smb/server/vfs.h
+@@ -114,7 +114,8 @@ int ksmbd_vfs_setxattr(struct mnt_idmap *idmap,
+ int ksmbd_vfs_xattr_stream_name(char *stream_name, char **xattr_stream_name,
+ 				size_t *xattr_stream_name_size, int s_type);
+ int ksmbd_vfs_remove_xattr(struct mnt_idmap *idmap,
+-			   const struct path *path, char *attr_name);
++			   const struct path *path, char *attr_name,
++			   bool get_write);
+ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
+ 			       unsigned int flags, struct path *parent_path,
+ 			       struct path *path, bool caseless);
+diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
+index 882a87f9e3ab..3bf1b3fb6ec8 100644
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -262,7 +262,8 @@ static void __ksmbd_inode_close(struct ksmbd_file *fp)
+ 		ci->m_flags &= ~S_DEL_ON_CLS_STREAM;
+ 		err = ksmbd_vfs_remove_xattr(file_mnt_idmap(filp),
+ 					     &filp->f_path,
+-					     fp->stream.name);
++					     fp->stream.name,
++					     true);
+ 		if (err)
+ 			pr_err("remove xattr failed : %s\n",
+ 			       fp->stream.name);
 -- 
-2.43.0
+2.25.1
 
 
