@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-50135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A12F903178
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 07:45:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F76903190
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 07:51:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4379F1C21847
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 05:45:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA825B2972B
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 05:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B86F16F8F0;
-	Tue, 11 Jun 2024 05:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85184171063;
+	Tue, 11 Jun 2024 05:48:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B60B14D45A;
-	Tue, 11 Jun 2024 05:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B8E16F8F0;
+	Tue, 11 Jun 2024 05:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718084720; cv=none; b=gkxVkVGV06k1QhbdRdsIe5jpssIr4+EAcRjqoFKFlzWLRHUWSeeaa/Hcq11GdD5SArIgHo+Z5fhPSgzw4cPjMw227cyqa80QhYwyGjJkvv5zx5bBLb70Mf51ysrHzh6YaXRmwcnabk/6fIAhs5XOCWwRFySsL6k1ior3Djz54rk=
+	t=1718084925; cv=none; b=TRQ/QGz76By5S9mUCJ7hCx8TLqlyGnyYZ8Pk9IKqAzKNXFxT+GH9mhjlVsbVgc6aOqSbJ68w64zE8Et5qyYt3Zi3hkhXnOTkJgFJ6j2DPpuQVQZ1j0RGo2MbihhQuoDEmJBvMLuDuIZ46Zp2teHpu++YwzfZCYZDgSvyTQo3JH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718084720; c=relaxed/simple;
-	bh=akPNg+JADea4LZN1ckxyf3pURemGm4dEJQQO4tkmijs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H2VH8LKO5unOXmBCE4k65LmMRLnuwmZQ0/Sn6qXbnnetPnztNuHJ9uo+hnUIdlgAh5fVWipkMtxgr7oixjmRQ6h6acjZuBdfsGVwj7CeAz9pLLrVDZhB8zvtgfZYEIGMDTrU6XElr2tYpjn0QXvZ7LwtAoCBAjJ65gyCW4DHhx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.42
+	s=arc-20240116; t=1718084925; c=relaxed/simple;
+	bh=JpNubKBRF+DUftEW6yWro3X8H5Kg5BgGGhj0fDOwIrc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=TsRmlo2pnWCXQEzQKQJF8VgxoNvj1GMYcVlWTbYiZSRmqpIo6v4+mBsHrLcuH0dYkkZm1V3ZAf8t+3M6+v9hV/Ojp33uyW6ZmI81VYnyfzANe9ZoQyyJlNH26rFoBOGE38mQNNXxxVzJYucqvWdD0YmrekRh+be2Qc/hZuiSvho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a6f21ff4e6dso167847866b.3;
-        Mon, 10 Jun 2024 22:45:19 -0700 (PDT)
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-52bc1261f45so3759531e87.0;
+        Mon, 10 Jun 2024 22:48:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718084717; x=1718689517;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6VNGfeQaOvXCrNXuk+kpcYFZc/2T9K47bNz1FcqArY0=;
-        b=TMJjTYa1IY92HmVvJhgbsiWIEzSghFJ7/hHjv84OkB3/HmXx0WCH9B2CUrgpU9hHEM
-         /A1x4rEVehKH2f/44bmSRPUZ2eWX8k7GAx5cHadQ79rfa/Dia14+VWGyjUcUzdrDZWDp
-         oMl4bP72a5Tf0G1xHH8qlDnaOH6iRnD9ziXTy8YWwYWiVGPpB9mQAA+px8XImUURBCNl
-         ABfBh38S44jWjDNRCXVS4jhir/zChyrtWMvHxte3NmxOd76o4JjWufeU0DQ8RMjHkWjN
-         ylyFqcw2BAvL190cpJPWgSkSFL+dbw8T0QoJVcYok1syBUE7dncFZSzeff1zGbC+Vak+
-         CnCg==
-X-Forwarded-Encrypted: i=1; AJvYcCW+4F1u4teAvBynVgTwPOXnUXz+4ID9/mlAKF67O8tSkwaaXYuTWUvAPbIQzYUxPEmPYblEZO0YpcvxSVrtzFqxIztGqAa39AN+KYxNOqEtzyBhY70IgUkICQhgMZkOMq8jUE8+
-X-Gm-Message-State: AOJu0Yxs5EWtYo5wd2XkOux1fh3M8AtkxidDbr+TcaBVYHYJEofNPRzc
-	L8l1RwQ1V5rt3dzGzJUW3WiU8GJj0RxYC9EvrGwn9/qfzqc/+kubZekdFPdc
-X-Google-Smtp-Source: AGHT+IGmduyf0zC6RvofXFU+3y3vRjT760PlpKvSOEeK3ZxheDfIaRGLyN/uVV6+cH9gHx7ocd3J1g==
-X-Received: by 2002:a17:906:f896:b0:a6f:15a3:b085 with SMTP id a640c23a62f3a-a6f15a3b1d6mr329763766b.51.1718084717390;
-        Mon, 10 Jun 2024 22:45:17 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1718084922; x=1718689722;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eZ5YAhaVL8dy/5Tujffq8DsgCarQ5lnHgEqVrwEx2BE=;
+        b=iiZI+Ivf/CneDbgLmLf0uzgiR60Tq830129WJfihJkQlA4UTd07qdgmBYBQpkTRKzM
+         EFZ/DR+kp7q7F1lgjmyx8w0z2U9TmZ8MvQkr4LrBxd0pY4Zyafxu2QOXA4xnJ0npuR+l
+         E9K2NQ8RnVtAxWB62XiNqS6XECnmRc46qUi30I1oTwRMWHu6QhncyRFE7ggwbUiyDl+C
+         260bbdNIW0gWYcUDJSJIZtmt6zKeQdOvM+HgAfzK5PZ63M4vaJg84igisSue+NBBQVq5
+         T9L1cO2kRUx5BC3vtJAJT30SleQjg55ToC8KxuMrVCI4PfChPLjIilPWbxworWhO6+XH
+         Dhpg==
+X-Forwarded-Encrypted: i=1; AJvYcCWCHnQHeFk6IRrN+NVGPPTMITk0GsRc2XM8LsnpEgKxWrx2zR5Jk7FyM6euRR8W/WuPIdOR8IMoSRO3gyLCIAfrXSAT5Ru4w4CkqVApq4CLAgPuD/HpqTL//i9TQ/FN9bRLBt/Z
+X-Gm-Message-State: AOJu0Yy02hQ0apJSoMQVH4SadUSObgLQvngkyDS2qsvk3lnIMaE6o95w
+	W4dMbwCRP2YjDPKhkHIGRmx0bt0KXCNro/fYwwsQ79537tz2/2vB
+X-Google-Smtp-Source: AGHT+IGdF0zFoRq+k9X9lu61BlcUTiXBojtl84j+QV58nB+Vu7+7o8hy5mYpglcXvdb4GbPjCV95hQ==
+X-Received: by 2002:a05:6512:10cd:b0:52c:7f7f:dc1f with SMTP id 2adb3069b0e04-52c7f7fdd4bmr5566719e87.61.1718084921447;
+        Mon, 10 Jun 2024 22:48:41 -0700 (PDT)
 Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:69? ([2a0b:e7c0:0:107::aaaa:69])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57c8c60ce9bsm1887409a12.20.2024.06.10.22.45.15
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57c8e5a77d6sm1572106a12.0.2024.06.10.22.48.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jun 2024 22:45:16 -0700 (PDT)
-Message-ID: <95bb260e-bf31-46dc-b720-88ca6aa7e29c@kernel.org>
-Date: Tue, 11 Jun 2024 07:45:15 +0200
+        Mon, 10 Jun 2024 22:48:41 -0700 (PDT)
+Message-ID: <aee27b1f-5c8e-4060-a19e-42e198c1493f@kernel.org>
+Date: Tue, 11 Jun 2024 07:48:39 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,6 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 6.9 000/368] 6.9.4-rc2 review
+From: Jiri Slaby <jirislaby@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  torvalds@linux-foundation.org, akpm@linux-foundation.org,
@@ -74,8 +75,8 @@ Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
  kerneljasonxing@gmail.com
 References: <20240609113803.338372290@linuxfoundation.org>
+ <95bb260e-bf31-46dc-b720-88ca6aa7e29c@kernel.org>
 Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
  xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
  rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
@@ -118,39 +119,50 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20240609113803.338372290@linuxfoundation.org>
+In-Reply-To: <95bb260e-bf31-46dc-b720-88ca6aa7e29c@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 09. 06. 24, 13:41, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.9.4 release.
-> There are 368 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 11. 06. 24, 7:45, Jiri Slaby wrote:
+> On 09. 06. 24, 13:41, Greg Kroah-Hartman wrote:
+>> This is the start of the stable review cycle for the 6.9.4 release.
+>> There are 368 patches in this series, all will be posted as a response
+>> to this one.  If anyone has any issues with these being applied, please
+>> let me know.
+>>
+>> Responses should be made by Tue, 11 Jun 2024 11:36:08 +0000.
+>> Anything received after that time might be too late.
+>>
+>> The whole patch series can be found in one patch at:
+>>     https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.4-rc2.gz
+>> or in the git tree and branch at:
+>>     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
+>> and the diffstat can be found below.
 > 
-> Responses should be made by Tue, 11 Jun 2024 11:36:08 +0000.
-> Anything received after that time might be too late.
+> Maybe it was noted somewhere already, but I was forced by our machinery 
+> to include this too:
+> +Subject: tcp: reduce accepted window in NEW_SYN_RECV state
+> +Git-commit: f4dca95fc0f6350918f2e6727e35b41f7f86fcce
+> +Patch-mainline: 6.10-rc2
+> +
+> +Jason commit made checks against ACK sequence less strict
+> +and can be exploited by attackers to establish spoofed flows
+> +with less probes.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.4-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
-> and the diffstat can be found below.
+> which makes sense to me.
 
-Maybe it was noted somewhere already, but I was forced by our machinery 
-to include this too:
-+Subject: tcp: reduce accepted window in NEW_SYN_RECV state
-+Git-commit: f4dca95fc0f6350918f2e6727e35b41f7f86fcce
-+Patch-mainline: 6.10-rc2
-+
-+Jason commit made checks against ACK sequence less strict
-+and can be exploited by attackers to establish spoofed flows
-+with less probes.
+Forget about this, you dropped 378979e94e953c207 in -rc2 in:
+commit f11c1a69cc6b202f454d5e585b6917ce2873bcc9
+Author: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Date:   Sun Jun 9 13:26:26 2024 +0200
 
-which makes sense to me.
+     drop more patches
 
-thanks,
--- 
+
+
+All is good then.
+
+> thanks,-- 
 js
 suse labs
 
