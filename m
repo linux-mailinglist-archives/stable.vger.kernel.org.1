@@ -1,123 +1,120 @@
-Return-Path: <stable+bounces-50161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4B6903E74
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 16:12:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E748F903EA4
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 16:26:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D252D1F22736
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 14:12:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8339E1F235D7
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 14:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BB617D890;
-	Tue, 11 Jun 2024 14:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F37B17D8BE;
+	Tue, 11 Jun 2024 14:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="focMhIO2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I6MykOi4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F376517D88C;
-	Tue, 11 Jun 2024 14:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500BD17D896
+	for <stable@vger.kernel.org>; Tue, 11 Jun 2024 14:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718115168; cv=none; b=Mu811sgH5Y3bzmPtVWiVA4AmgFxOaZE8d/mamR4RH/eB0QxdNlOsk0X4saybmvvwKgBZO1rCSlyaGZgdSJcRh3Zo9JvqGvfg/7A9k0lwSSlb50KXV6dQBKAbJRTOwidOp8/Xqgt//HBcXbCBftdHgpAVvq0GVcPC37skEPluCc8=
+	t=1718115961; cv=none; b=Q6oz5YYNOO4pxhnzgTUFYBn9ta5fJcCb0S/HCenLOaREVdEKcL8EJP4Oed3Y7C/eBy0QufcEvjE9TWKoPpo00ujRXyvwpjaRaTu5LP77hzj03XJaS1KSR8tAXk62XyIEBAGI5XQDGbA6e69tehziyYfLLKWmgtK1Z5Xc4z5fBa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718115168; c=relaxed/simple;
-	bh=uwcdBzLuAxEDrNoXrhjSgpM2Fga3hryzixwO3pPxk/g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hL+9ei2/c+ju5pMt60e95cGCxpt5VEDEFhYpSL2aU57wfKnAjdXC9Sa8/DBGfRGSyaKT6SXycwWUrKRjgLsr5No0kwuuDYhIC1zFD0/hjVyveoDLgb9rD7b0rdALFnTJvYCpWsTiWSx6UaIYuPFYn0mWDQUzbkDGhPxVNzLRV+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=focMhIO2; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2eabd22d441so91054971fa.2;
-        Tue, 11 Jun 2024 07:12:46 -0700 (PDT)
+	s=arc-20240116; t=1718115961; c=relaxed/simple;
+	bh=d546c3opKrRNj71ZDNGKC8sFuxRUiIOvbLvsU0IMqgo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=okSQI4PwA6fBKOwA0yEN+w4QscUW4XGfgUQbkTHhb1CGDK3H0ca8XK54um0QDfXVf1rcjdvKN1mJY2wochljY4bzxDpZUkcjl4FwIdowEfmcvkcong4OsJdXEP1No1WIhs3WXnXtYIOrREHGLSKck3rZyunJkyEd0B1rPpLSx0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=I6MykOi4; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a6efae34c83so396246766b.0
+        for <stable@vger.kernel.org>; Tue, 11 Jun 2024 07:26:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718115165; x=1718719965; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RGZsWMQxIR/8a9H8paH0XFiZvIlanvQPzCmlVbwusdU=;
-        b=focMhIO23gjgssmwHEVF36RM3pNmCQ56oJkQPiezfRVIj22rUDggYATELGrvql/TO7
-         8QwVj9g63tULkNfT3WGsOZwmY5xpElCqinacNMNVVd8MY8T2THh7iWWhyY/8/aXfgBBu
-         f+D2x8IUMqgtTFjQDxchwccN/UI2M3SiMMCFiDV4SsjLIfuzuZXojtuSG2O97JGWfkWJ
-         xQOddafsWeNXypYEAej1xo5L3DZUMRoqjUin5nahe1MI2rV/JovdNCCRYqo2KRkPtlFi
-         WPuq3uXELcliLnkB5Bk3hEa0mkybgOTQz6ax55xjtbsyjHD2hvbrtk54hGlcTROV4ZQf
-         dxHA==
+        d=linaro.org; s=google; t=1718115959; x=1718720759; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lGYTsubStoiFq5pGx2o4ZQKhOTe8oq0dKZ0Pe/wUyLM=;
+        b=I6MykOi4k8CNTcRU4vEOo+FL1KSrCPYUFz4tamo2wvwtofeWpLIgEmiwLdd7BDr69T
+         uBugM5NWtXFbeJJ6azgtqNlEkVy1oAeIo1ueX/Ok0GCFsQUtB0XCaLIthceAVWxt4yw8
+         dMyXQ7lpCMw/e9YPoovi9Z6fN3lrtxhkHnrM0w2MaQDwd9elLhb8+kIj4D1oUvRWKbp7
+         B7qHMTCWzc0GDI1Gpht4ZxlCdDmdbaKQKrLukolmBymdpa7DkzzPWZDzZVphmm+low8I
+         sxA8gTMTe4QFR1YxxbMWFlXQNllhEAQm8FYzPCFMyfMatYNp89R80fd4QJmT6hHzzoJO
+         LJqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718115165; x=1718719965;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RGZsWMQxIR/8a9H8paH0XFiZvIlanvQPzCmlVbwusdU=;
-        b=R4G78RK+ZAuLyQMXThwcP6mBIFFC7reFlujkDTWfK0GYHkPt/5yOnE2mw/QHbda3Wx
-         x0c88rCvcWimbYeAQaeuYlomyhJT87Qbq/LarS7lYZG/bxxGhUyX1rNklXuHK8mHFjAy
-         toEkbtUn+2O5M/XGInTtbfC8MgyhMGE9hNq4VzR7CbsWmnYisF1LRSIc6kVNrxja1SLd
-         sej+eUNxTJ7sXcB/Gbm+R3UhSBLxaiubdqV/WGuwIzMhWpeqdtN2OUQFOKGrq2PhqYlW
-         WHxqV/xiU5qKnpdeD5/0S4uM/o2iCuCeAPHzFun5SezFIibd6ClF7+zHoYotzO2eXLu6
-         sJpA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZ7/6/lP+21zoLs4Fyin+KRNAV22X7a7pDOFcgXxz/jDfzVmcaV/P45h9HaUvJXRM8jwCVTZvhOQBhYUYE46aE6jAO0v+/GFzgAlGVvNdkgEeqoz9c97z20vFfo7OeLJyMqqarCQLP1A==
-X-Gm-Message-State: AOJu0YzvPFt0uRNOvHrC7km199wU6z8/bL1r+X/fwhgxFc8s3IX8Hfn8
-	bOl6jFUm4AZAIPz4QxXSJUPMMbdRRwWT5cWZ5TGSVz9ib+vX9TT0
-X-Google-Smtp-Source: AGHT+IGuq4XXKdcSy2MRECTQb8OvnrexiaWWjJespHlYnvTZ0wLoCtN53WXIbcE0kkCOgg4nKbvssA==
-X-Received: by 2002:a2e:3612:0:b0:2eb:17fe:a144 with SMTP id 38308e7fff4ca-2eb17fea1c5mr62244931fa.34.1718115164779;
-        Tue, 11 Jun 2024 07:12:44 -0700 (PDT)
-Received: from ?IPV6:2a02:8389:41cf:e200:89c3:827b:2198:62f2? (2a02-8389-41cf-e200-89c3-827b-2198-62f2.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:89c3:827b:2198:62f2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6effb9cd7asm457716466b.208.2024.06.11.07.12.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Jun 2024 07:12:44 -0700 (PDT)
-Message-ID: <233d56de-8d5d-4bad-a380-45321a2d86ac@gmail.com>
-Date: Tue, 11 Jun 2024 16:12:42 +0200
+        d=1e100.net; s=20230601; t=1718115959; x=1718720759;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lGYTsubStoiFq5pGx2o4ZQKhOTe8oq0dKZ0Pe/wUyLM=;
+        b=hKX+K2thuoIN27X697UNDFiKvmqkNOCXYjwdJbRSuC6ZyhtvnBfZKhNoKV2MlFMbmj
+         PHiFTYSW0r5LSTY7DxrtYiSByeWnu3V97AFoFDqxc5w67RBOGGer7gwQm3yS3B0jLhzY
+         C0us5+6GizRLUxcPq7+cL5pink3vZ3FRQI8Dwrxxav9UhgM8v9UwJjqwlXjDA3+2b8uu
+         oNMBtlbUszhQXt5ofuIKndpvxzQZynbwEn2w4FUIzvuor/vxkBNECsCqHWih0g5ag1To
+         QUdfOYvmssA7efNUMrsGXLKzyJE1i6BiYhd30vRHCLcnaA83MQ74J2CmA25YJtCbwcX2
+         TtSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX2Jmc9CNSfr8yC5AYGUz6GwnbXv1GDxWTr9HLXuqXUBEqOv8nDOohIVaUrhsxj8nTNAQXuikvPcIz3swAMs9w/2iOUpgDt
+X-Gm-Message-State: AOJu0YxXlFTmHfawfublyGBmbFSAdRp69k1cYfiQZUs9otTAV4U5EJs+
+	qKtJYYxRpDXRDOPVDUhVqfcnPuWwA5dRi5Y5QNeJQNHMhdynNIHHYBDECalYwtM=
+X-Google-Smtp-Source: AGHT+IFdCz+fE/0FZVc84bckExGWQ1DVAinZgGpdwgau42Oo14DKl74W1P1qxoZhEJUqZWHnDFPzKA==
+X-Received: by 2002:a17:906:e0cc:b0:a6f:1872:4e1f with SMTP id a640c23a62f3a-a6f18724f43mr346135966b.77.1718115958517;
+        Tue, 11 Jun 2024 07:25:58 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.219.137])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6ef83ac0c4sm518070666b.74.2024.06.11.07.25.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jun 2024 07:25:58 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] arm64: dts: qcom: x1e80100-crd: fix WCD audio codec TX port mapping
+Date: Tue, 11 Jun 2024 16:25:54 +0200
+Message-ID: <20240611142555.994675-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] leds: mt6360: fix memory leak in
- mt6360_init_isnk_properties()
-To: Markus Elfring <Markus.Elfring@web.de>, linux-leds@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Lee Jones <lee@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- Pavel Machek <pavel@ucw.cz>
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20240611-leds-mt6360-memleak-v1-1-93642eb5011e@gmail.com>
- <010b1c91-fbde-4b01-a92e-8c14751c7699@web.de>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <010b1c91-fbde-4b01-a92e-8c14751c7699@web.de>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 11/06/2024 16:01, Markus Elfring wrote:
-> …
->> Add the missing calls to fwnode_handle_put(child) to avoid memory leaks
->> in the error paths.
-> 
-> I suggest to apply a goto chain for a while.
-> https://wiki.sei.cmu.edu/confluence/display/c/MEM12-C.+Consider+using+a+goto+chain+when+leaving+a+function+on+error+when+using+and+releasing+resources
-> 
-> Will the application of scope-based resource management become feasible with another delay?
-> https://elixir.bootlin.com/linux/v6.10-rc3/source/include/linux/cleanup.h#L8
-> 
-> Regards,
-> Markus
+Starting with the LPASS v11 (SM8550 also X1E80100), there is an
+additional output port on SWR2 Soundwire instance, thus WCD9385 audio
+codec TX port mapping should be shifted by one.  This is a necessary fix
+for proper audio recording via analogue microphones connected to WCD9385
+codec (e.g. headset AMIC2).
 
-I considered that option too, but there is still no _scoped() variant of
-the loop. The scoped version of the _available_ variant is being
-discussed, though. Maybe that one could be used here if there is no need
-to iterate over unavailable nodes.
+Fixes: 229c9ce0fd11 ("arm64: dts: qcom: x1e80100-crd: add WCD9385 Audio Codec")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ arch/arm64/boot/dts/qcom/x1e80100-crd.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-We could not back port that solution anyway, so I would suggest this
-solution (or the one with a goto), and then a separate patch to used a
-scoped macro if preferred.
-
-Best regards,
-Javier Carrasco
-
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
+index f19d89d3d6e1..12a4c4637baf 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
+@@ -775,7 +775,7 @@ &swr2 {
+ 	wcd_tx: codec@0,3 {
+ 		compatible = "sdw20217010d00";
+ 		reg = <0 3>;
+-		qcom,tx-port-mapping = <1 1 2 3>;
++		qcom,tx-port-mapping = <2 2 3 4>;
+ 	};
+ };
+ 
+-- 
+2.43.0
 
 
