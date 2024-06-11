@@ -1,121 +1,127 @@
-Return-Path: <stable+bounces-50170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97959040DC
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 18:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F6390412F
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 18:25:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E4311F22609
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 16:07:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E63261F25926
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 16:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333852C694;
-	Tue, 11 Jun 2024 16:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CE17F7E3;
+	Tue, 11 Jun 2024 16:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F38nc1ew"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GAd5OW5H"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E767A94C
-	for <stable@vger.kernel.org>; Tue, 11 Jun 2024 16:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E89143AAE;
+	Tue, 11 Jun 2024 16:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718122040; cv=none; b=cotzVsShEqk6mMS4ZYK9+TLuX4qsVAybq8jQ4JqDsdf89yggDsK0aP8JkYtsGjgamsDXvBfoM+y/UhApfF3SzKuNuPyk6QfuplMtjK/dM3jay/c2gj4b+WxMXeAxN3VmSHvYM7LdjCoP7OV1/oFxFwWP2oAr5tr8IHlJkZekR9E=
+	t=1718122989; cv=none; b=PfPF3eQJrU5zmdVVdNXH7YkhkZbYYfjna8/bV+UATCCde/Iya4WgsDuxhmogFznh9raDPIsYFaDBikCjt6qRIgpLBur5z6q3mDhnslMS7nRT0qrEp4pXYMfRqW9W3LEVVgXZO4WVwNSlYhpWt8sNpVD5wLoXx4+lNlZAEi/SlR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718122040; c=relaxed/simple;
-	bh=w9TLbRGOTLDPs1VRYx423MA09ZxUMd83hTQNdTrenJ8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=C9AqvkfDofONrS2pSCD31Lmgaa5lcnaZPem8JtVq+jKXmlUSs2v+d9Qdb2PDcyJCQqxjEn6LfT1tECf/cQgC9O4EAQj6sCFU9VPkLpHhdz3KX5M3rQb0qE+OaF9hgimxieuA6cJgrxMQyhnrlTnH/ZNbMSAP0/yC5HRW+94tW7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F38nc1ew; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-57c5ec83886so14043a12.1
-        for <stable@vger.kernel.org>; Tue, 11 Jun 2024 09:07:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718122037; x=1718726837; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v0dGijFgD5mEIYGYCFChBjRGXYAEUX/53ap4AChkBkQ=;
-        b=F38nc1ew6/buPJ+wpCR/sZHJ2P7pDXfqDkZ6yGkKKSuk2FIQ03lTzFMmB/OGN4b482
-         G2mGpTpkiWja40S7wtSZrT1roMa12OXnwOYSeJBQZ++rQEaIND/tPh+YeOOpS1GsLQJT
-         NYSQz0CL5OTq1oBHW4Ywba6kTotEz4aT+6nU1RjVpbVV2J6AfpePkwwkKtDhCU1uockh
-         s0Up7RmwsEgB+Yt8o0pwzcwFoI7NYA4hIY1KZp2rse1IkSG5DkGwYVyZYQX3RtGXTiFI
-         +R/BsaklbsaUh+YaA5QEimySB4gurI+PoWQH8LTTwz+bgtGAn3x3zP4oc6gMvF+jmSAa
-         5vPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718122037; x=1718726837;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v0dGijFgD5mEIYGYCFChBjRGXYAEUX/53ap4AChkBkQ=;
-        b=bi4YDFjniACrrImVnbcm8Kvs+GLGFYNg0PWzXjL0mXEcoYXXSBEX/+jlv2bH21p4CF
-         odwWROxeNFoeUgGXN9J1O6kun53R5IRBP+yEnqhqEnc5OSCjXHjf4tsDI0yfctdu/lri
-         3DlSLIMJwrzB+QKBt2QOJb56r9bjrWFkMN40YCD/PZSliXKS8C50ekLwFR8eIMpDZCiq
-         NyjSeA6xBVWtV567IICFkrcDBEx4pFWqLAOuxVhEAm0hrCTCWtL3B7ad7DkaIXi7n0jL
-         /AN8XTmFF7nJuxX3fm7yN1kdDyJN2vDg1YTbw+kQib0PYQECifQY3mPeIniI+/TFxrm/
-         ihgg==
-X-Forwarded-Encrypted: i=1; AJvYcCUAX3KgixJQwg4f/PVPEBB6ZM69q5+YFRnDLq6zr4Wt++PCHmEGGvndrzquhKMWPJOWlzmwVLxIEJauc4FF0MTpi0znIVkI
-X-Gm-Message-State: AOJu0YywbCO9CLJky0GdZGJ1ckUlkF44Lh3NyoCv5QzFJG8r814kqMH8
-	GVl7s9LXnkuA0WrFvrF425iYIbRfLBaYfXLFNslopdNpo4M6qef4G/6tSNs0D2Wb7/kr2k6PJIr
-	HZ2EiDXyNTSOQi0Gf3m5ZMB6z7SmXvLNDQja5mf42INFaydd0v83c
-X-Google-Smtp-Source: AGHT+IG3MAiUUhBwVpcVc7zUt2PS8V5nnFBSHN4RuoJojBlKM8EOy+t6gmsIVZdy6htQa4T/BfefPolvHXhQVImxbIg=
-X-Received: by 2002:a05:6402:17d0:b0:57c:a4cb:1c5 with SMTP id
- 4fb4d7f45d1cf-57ca4cb02c5mr27614a12.7.1718122036516; Tue, 11 Jun 2024
- 09:07:16 -0700 (PDT)
+	s=arc-20240116; t=1718122989; c=relaxed/simple;
+	bh=yEpTP94eDr5A3s9VgS5dBduy8ufIp19ilct/d2eDhsU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LndVmy8s6edFa5v/xeZF67rjIJSZoqvGvqav4gBoX9mQ3XMOtTayQU9Ci9tsuZr+7Hj0RquNVdFGtvWiqQFCD86Bx7WV5hUWOo1nhuGSGFjUiM6l5CUmKQJ9+DHq0sEyf/k/oQpcF+ODi+voNeXzA5+OfVwt99GYunq35Zb8ZCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GAd5OW5H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55621C2BD10;
+	Tue, 11 Jun 2024 16:23:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718122988;
+	bh=yEpTP94eDr5A3s9VgS5dBduy8ufIp19ilct/d2eDhsU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GAd5OW5HPNWu95j/Nh5a6vrZrlRAA4jImqvTUch1p5+DD8kOrtJHaHonbYOXoyqJG
+	 uat5emaBVryTRAqWHV9CDqTjgodJqo/gD+PL0AkQxTj8W1w8ZJsw7lvmTyElXICI/3
+	 MUlGVHy4YbkxHsU3TGNmQIEoIJttsxnk+P11wRUnGfqGno0g/44uzWMKflQRXudg2q
+	 A3H5P/GJSbNd/Ufj6BMgB4PlunQXccK0tzOz0BHVg46KQJJUQc89AQZty/tDjE1M/s
+	 qaXfei4mU3+FCTZeLBhbCwDIHdNCrg9r3YomMosOoK7a38ogkOx8GFqLGabTy51w2z
+	 r/WyyfsOBBXwQ==
+Date: Tue, 11 Jun 2024 17:23:04 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Shengyu Qu <wiagn233@outlook.com>
+Cc: kernel@esmil.dk, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
+	aou@eecs.berkeley.edu, jszhang@kernel.org,
+	devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] riscv: dts: starfive: Set EMMC vqmmc maximum voltage to
+ 3.3V on JH7110 boards
+Message-ID: <20240611-entourage-churn-8b69966848fc@spud>
+References: <TY3P286MB2611936BD43C24D34B442E6D98C72@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240611113110.16955-1-tzungbi@kernel.org>
-In-Reply-To: <20240611113110.16955-1-tzungbi@kernel.org>
-From: Guenter Roeck <groeck@google.com>
-Date: Tue, 11 Jun 2024 09:07:02 -0700
-Message-ID: <CABXOdTdVh4eyEfq+5bfUs45_0Y=ZbVrrnw1i0pbcn2bJ0uazPw@mail.gmail.com>
-Subject: Re: [PATCH] platform/chrome: cros_ec_debugfs: fix wrong EC message version
-To: Tzung-Bi Shih <tzungbi@kernel.org>
-Cc: bleung@chromium.org, groeck@chromium.org, chrome-platform@lists.linux.dev, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="5qjNIfeTE8upxu8l"
+Content-Disposition: inline
+In-Reply-To: <TY3P286MB2611936BD43C24D34B442E6D98C72@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+
+
+--5qjNIfeTE8upxu8l
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 11, 2024 at 4:31=E2=80=AFAM Tzung-Bi Shih <tzungbi@kernel.org> =
-wrote:
->
-> ec_read_version_supported() uses ec_params_get_cmd_versions_v1 but it
-> wrongly uses message version 0.
->
-> Fix it.
->
+On Tue, Jun 11, 2024 at 10:56:41PM +0800, Shengyu Qu wrote:
+> Currently, for JH7110 boards with EMMC slot, vqmmc voltage for EMMC is
+> fixed to 1.8V, while the spec needs it to be 3.3V on low speed mode and
+> should support switching to 1.8V when using higher speed mode. Since
+> there are no other peripherals using the same voltage source of EMMC's
+> vqmmc(ALDO4) on every board currently supported by mainline kernel,
+> regulator-max-microvolt of ALDO4 should be set to 3.3V.
+>=20
 > Cc: stable@vger.kernel.org
-> Fixes: e86264595225 ("mfd: cros_ec: add debugfs, console log file")
-> Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+> Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
+> Fixes: ac9a37e2d6b6 ("riscv: dts: starfive: introduce a common board dtsi=
+ for jh7110 based boards")
 
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
+I don't think this fixes tag is correct, it just moved in that commit.
+It has been there since commit 7dafcfa79cc9 ("riscv: dts: starfive: enable
+DCDC1&ALDO4 node in axp15060").
+
+Thanks,
+Conor.
 
 > ---
->  drivers/platform/chrome/cros_ec_debugfs.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/platform/chrome/cros_ec_debugfs.c b/drivers/platform=
-/chrome/cros_ec_debugfs.c
-> index f0e9efb543df..4525ad1b59f4 100644
-> --- a/drivers/platform/chrome/cros_ec_debugfs.c
-> +++ b/drivers/platform/chrome/cros_ec_debugfs.c
-> @@ -334,6 +334,7 @@ static int ec_read_version_supported(struct cros_ec_d=
-ev *ec)
->         if (!msg)
->                 return 0;
->
-> +       msg->version =3D 1;
->         msg->command =3D EC_CMD_GET_CMD_VERSIONS + ec->cmd_offset;
->         msg->outsize =3D sizeof(*params);
->         msg->insize =3D sizeof(*response);
-> --
-> 2.45.2.505.gda0bf45e8d-goog
->
+>  arch/riscv/boot/dts/starfive/jh7110-common.dtsi | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/riscv/boot/dts/starfive/jh7110-common.dtsi b/arch/riscv=
+/boot/dts/starfive/jh7110-common.dtsi
+> index 37b4c294ffcc..c7a549ec7452 100644
+> --- a/arch/riscv/boot/dts/starfive/jh7110-common.dtsi
+> +++ b/arch/riscv/boot/dts/starfive/jh7110-common.dtsi
+> @@ -244,7 +244,7 @@ emmc_vdd: aldo4 {
+>  				regulator-boot-on;
+>  				regulator-always-on;
+>  				regulator-min-microvolt =3D <1800000>;
+> -				regulator-max-microvolt =3D <1800000>;
+> +				regulator-max-microvolt =3D <3300000>;
+>  				regulator-name =3D "emmc_vdd";
+>  			};
+>  		};
+> --=20
+> 2.34.1
+>=20
+
+--5qjNIfeTE8upxu8l
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZmh56AAKCRB4tDGHoIJi
+0r8qAP4x+AYwI1YvlFyfOl2OTqSjrgW71fGQWfNwAfKUONuP3gEAxPVa2gMI5JtD
+zE/H/i7djgXlxQmv+nrgtuqcARn3Cww=
+=mz3Z
+-----END PGP SIGNATURE-----
+
+--5qjNIfeTE8upxu8l--
 
