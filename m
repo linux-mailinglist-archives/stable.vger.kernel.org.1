@@ -1,81 +1,76 @@
-Return-Path: <stable+bounces-50156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C033903CFD
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 15:20:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C39C903DAF
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 15:40:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C86C81F23D3E
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 13:20:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 278B1288430
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 13:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D6217C7D7;
-	Tue, 11 Jun 2024 13:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C815717D881;
+	Tue, 11 Jun 2024 13:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SQesdpJe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dS3iKkAr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1B41E49E;
-	Tue, 11 Jun 2024 13:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19F017D355
+	for <stable@vger.kernel.org>; Tue, 11 Jun 2024 13:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718112003; cv=none; b=iRf/sPFH7NVaAJyHGKrExZuffYIjgeXHSl5MvrhIKdM6CXb2lnhfHuGIJ8ihBihqhxZngTLlBNBQbQoTrWq/nzrXnioqfzTSUPn6GckOVkEhWTherhX6a+DpRDL4CQWXsm9TjT4MY+R1o/SYgcqFT90od/OZWQ32gtbuc4Vv6pk=
+	t=1718113177; cv=none; b=ATlYFFGqxn2GRhDDmEdMW98jlqE2upo0UvBl71OTQKk6OgS1rT38WS+/znrsBelbrE6j0SgHrJhlsRgrAGuAbv8Apcp/BambROKn8RjzpqVJ2lC1qRswTZZME6Go9ety4S+RS3LxhgzRsQy/rv/LY8EmAdZrtL+15P/bmguUSLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718112003; c=relaxed/simple;
-	bh=sdPLfiowNbYg6TIhZYX/HLOnceUJA2pderFfCXtAaeM=;
+	s=arc-20240116; t=1718113177; c=relaxed/simple;
+	bh=SHwuFHzzuuY/Z4NVxhj+TjLfZsXMqwNT+yZ7Pw0xkQ4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u8VNcoHgE4qBAzxMY7V86Vtam6UhR/tO/iM3nota30C8v/pZDv2TqH9eMpg9VSNSJaCKQ376XWzBXxkQYsAJpDod2o98TbXAyVmjxKB+WxK6GIqYrke3+OR4J1d4xTwJI9YdA3FIEJnmBIWsllO4NeEwPoxlpZtU/bVLn15v9+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SQesdpJe; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2c327a0d4c9so880910a91.1;
-        Tue, 11 Jun 2024 06:20:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718112001; x=1718716801; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o0DqNIZ2fkLo6z8QESOonTasJoXWxjg6TNbDof5tmJA=;
-        b=SQesdpJe9KRKeRITSrcNLSevjGAlNZ8pV5KsdkmnMpUJj6DoBwGET78wQVyDSt+rTF
-         MwxAwG5z1io1U9GWq5ZPb83/Rmq4ZoYNlIAYWSKq7KsgBRvTbBf8gP6X+Nxyiqvwrtco
-         8f4yxi0zxxECVBU6YziSlsq3ikLX1faot8wnvyYvnDm2O68nU1vmkaKloT6dSaEok/X6
-         IedNnCB1vXlkv7XmZI0ZM7aPinT4gjxpjJeYheGG0RyoETfxJYalOoWdA0SHFn47CWu4
-         umqGvgqIKvtryl1/dEGTAmO/IfmLtxohVptQWnz3m//gU6GVTmF/SvsNL+d17XjsUBkq
-         iHmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718112001; x=1718716801;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o0DqNIZ2fkLo6z8QESOonTasJoXWxjg6TNbDof5tmJA=;
-        b=UWEDezV8VyEUgx2SaiNhEW2Y1um3EYQz3msIn9/gc3jSWfSFZv6kVisy2kNGllp6ee
-         ktVX5jInkjO6mnX0eYzcGK1Vp5wRNAhTZrU8zD2diOA4MVR1BnkaV0jF6bJhMb12zURI
-         3RBUmxmoGBZTkDUzFnU8ukR7ICgk4a0rO8l0yF0khWM7DjykepEpp9dKCHshWkVq1IgU
-         /T3b5LEsmsBCqOxM37I7BJMnXGzN7zWuNMW1d1/H0dDJAF55jpw52YrLpfZzY81McuTO
-         c7+YAD+TBrfTpxMHUwbKeU7ZllJ05JIupkrL/4cd4bz7y7lR0il6JgAY27il1vwtHXV6
-         ootw==
-X-Forwarded-Encrypted: i=1; AJvYcCWmp2gLJBbAiHWI6MQ3l7Ripx029pLXo3UCb/T76+NGYP7CiUKgGN3IBPDxNOjqO8hwA4vBgc0oqfliImrJ/9JbSGhJ8lrwnq2hIcoYPtjLpNxiA/jzFUasgyJ2jVWFddvLPofb
-X-Gm-Message-State: AOJu0Yy7FDils2HuYOwd9f4QW2lHwKppKTN7/eI5o9uDKgz0JXv3xnyH
-	/ovWmNmXll872exiRnNlMUVyam5APZddmgNZ7iZeoo24zo5QFw6X
-X-Google-Smtp-Source: AGHT+IGxAyGrqEkm1Bhw5VMCLG2lCoQAaYzBkoR1AFtPozvd93R9xhFHzL0rANhkNtT7vnbJfUSN0A==
-X-Received: by 2002:a17:90b:19d2:b0:2c3:2f5a:17d4 with SMTP id 98e67ed59e1d1-2c32f5a2ae7mr2962806a91.4.1718112001471;
-        Tue, 11 Jun 2024 06:20:01 -0700 (PDT)
-Received: from iZj6chx1xj0e0buvshuecpZ ([47.75.1.235])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c304fe9622sm4536521a91.18.2024.06.11.06.19.59
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 11 Jun 2024 06:20:00 -0700 (PDT)
-Date: Tue, 11 Jun 2024 21:19:57 +0800
-From: Peng Liu <iwtbavbm@gmail.com>
-To: Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, maz@kernel.org, iwtbavbm@gmail.com
-Subject: Re: [PATCH] genirq: Keep handle_nested_irq() from touching desc->threads_active
-Message-ID: <20240611131957.GA16967@iZj6chx1xj0e0buvshuecpZ>
-References: <20240609183046.GA14050@iZj6chx1xj0e0buvshuecpZ>
- <877cewwtbm.ffs@tglx>
+	 Content-Type:Content-Disposition:In-Reply-To; b=KsiAZ2Q6uHJ68J2qPkc5h+VfuesJH6pI9k3uJV/h+GtlBE5zteAt/eCUpOXOud3vxUWpM2fxq5UOGxGZijaJeqdrZW0oTDYrP3WJqrEjL3KzhrMv0QPjOShT0FxknMYfBcqJENC4CmCtVoscTR0N5F8DMEuxLGTZomjNhXAa53M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dS3iKkAr; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718113176; x=1749649176;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SHwuFHzzuuY/Z4NVxhj+TjLfZsXMqwNT+yZ7Pw0xkQ4=;
+  b=dS3iKkArERjk98GcFTQxs3dUaFRn4PKn1V4+tHWGvaPLYwey8LX+qPOb
+   uCS07efHKoaPmleh7DjpZocagnT8VRoZ2DWeE4kMtJlHDdsl8mUKDhVwY
+   42wB4EcG+LP0beCk/EGcLPsLeVSNEPOC7Bp1EUoPQgO0vvwnEeZ0jSdZc
+   /ONlMILk5cnkwR5MCMAWac+TJia97FMSNeMjTlnjZYwT6nGLrMwFvPGD/
+   OrrtkxM6bNvtceewwuGkUdF/wo3fSNy8rfvwEmYf/4f88kdMqX2y4V6Zx
+   4C4v4V25Y1qSS5Gt9P3JICc5dx9dggkDFwPfcrb5nPDxx9F4w2XOdArJE
+   Q==;
+X-CSE-ConnectionGUID: cf9LmkirQXO9pmnrreUE8Q==
+X-CSE-MsgGUID: 4qWVgz2lTAqTs5HBJ/nNvg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25495682"
+X-IronPort-AV: E=Sophos;i="6.08,230,1712646000"; 
+   d="scan'208";a="25495682"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2024 06:32:04 -0700
+X-CSE-ConnectionGUID: Lo+7YCVNTAWxXNdxeSRLVg==
+X-CSE-MsgGUID: +11mErGHS7aByOpCpVDqtQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,230,1712646000"; 
+   d="scan'208";a="76901248"
+Received: from cpetruta-mobl1.ger.corp.intel.com (HELO intel.com) ([10.245.246.250])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2024 06:32:01 -0700
+Date: Tue, 11 Jun 2024 15:31:57 +0200
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>,
+	intel-gfx <intel-gfx@lists.freedesktop.org>,
+	dri-devel <dri-devel@lists.freedesktop.org>,
+	John Harrison <John.C.Harrison@intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] drm/i915/gt/uc: Evaluate GuC priority within locks
+Message-ID: <ZmhRzRa9axjlaIl3@ashyti-mobl2.lan>
+References: <20240606001702.59005-1-andi.shyti@linux.intel.com>
+ <185a4d70-4f1b-4b95-acc2-d2e26cb0052b@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,57 +79,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <877cewwtbm.ffs@tglx>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <185a4d70-4f1b-4b95-acc2-d2e26cb0052b@intel.com>
 
-On Mon, Jun 10, 2024 at 08:23:09PM +0200, Thomas Gleixner wrote:
-> On Mon, Jun 10 2024 at 02:30, Peng Liu wrote:
-> > handle_nested_irq() is supposed to be running inside the parent thread
-> > handler context. It per se has no dedicated kernel thread, thus shouldn't
-> > touch desc->threads_active. The parent kernel thread has already taken
-> > care of this.
-> 
-> No it has not. The parent thread has marked itself in the parent threads
-> interrupt descriptor.
-> 
-> How does that help synchronizing the nested interrupt, which has a
-> separate interrupt descriptor?
+Hi Daniele,
 
-Right, I never thought there would be more than one interrupt
-descriptors involved which is quite common.
+thanks for checking this patch.
 
+> > diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+> > index 0eaa1064242c..1181043bc5e9 100644
+> > --- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+> > +++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+> > @@ -4267,13 +4267,18 @@ static void guc_bump_inflight_request_prio(struct i915_request *rq,
+> >   	u8 new_guc_prio = map_i915_prio_to_guc_prio(prio);
+> >   	/* Short circuit function */
+> > -	if (prio < I915_PRIORITY_NORMAL ||
+> > -	    rq->guc_prio == GUC_PRIO_FINI ||
+> > -	    (rq->guc_prio != GUC_PRIO_INIT &&
+> > -	     !new_guc_prio_higher(rq->guc_prio, new_guc_prio)))
+> > +	if (prio < I915_PRIORITY_NORMAL)
+> >   		return;
 > 
-> > Fixes: e2c12739ccf7 ("genirq: Prevent nested thread vs synchronize_hardirq() deadlock")
-> > Cc: stable@vger.kernel.org
+> My understanding was that those checks are purposely done outside of the
+> lock to avoid taking it when not needed and that the early exit is not racy.
+> In particular:
 > 
-> There is nothing to fix.
-> 
-> > Signed-off-by: Peng Liu <iwtbavbm@gmail.com>
-> > ---
-> >
-> > Despite of its correctness, I'm afraid the testing on my only PC can't
-> > cover the affected code path. So the patch may be totally -UNTESTED-.
-> 
-> Which correctness?
-> 
-> The change log of the commit you want to "fix" says:
-> 
->     Remove the incorrect usage in the nested threaded interrupt case and
->     instead re-use the threads_active / wait_for_threads mechanism to
->     wait for nested threaded interrupts to complete.
-> 
-> It's very clearly spelled out, no?
+> - GUC_PRIO_FINI is the end state for the priority, so if we're there that's
+> not changing anymore and therefore the lock is not required.
 
-Indeed, due to my ignorance, I never thought there might be more
-descriptors involved. Now think about it, I never really understood
-the meaning of the above change log.
+yeah... then I thought that the lock should either remove it
+completely or have everything inside the lock.
 
-Thanks for your time and concise explanation.
-
-Peng
-
->
-> Thanks,
+> - the priority only goes up with the bumping, so if new_guc_prio_higher() is
+> false that's not going to be changed by a different thread running at the
+> same time and increasing the priority even more.
 > 
->         tglx
+> I think there is still a possible race is if new_guc_prio_higher() is true
+> when we check it outside the lock but then changes before we execute the
+> protected chunk inside, so a fix would still be required for that.
+
+This is the reason why I made the patch :-)
+
+> All this said, I don't really have anything against moving the whole thing
+> inside the lock since this isn't on a critical path, just wanted to point
+> out that it's not all strictly required.
+> 
+> One nit on the code below.
+> 
+> >   	spin_lock(&ce->guc_state.lock);
+> > +
+> > +	if (rq->guc_prio == GUC_PRIO_FINI)
+> > +		goto exit;
+> > +
+> > +	if (rq->guc_prio != GUC_PRIO_INIT &&
+> > +	    !new_guc_prio_higher(rq->guc_prio, new_guc_prio))
+> > +		goto exit;
+> > +
+> >   	if (rq->guc_prio != GUC_PRIO_FINI) {
+> 
+> You're now checking for rq->guc_prio == GUC_PRIO_FINI inside the lock, so no
+> need to check it again here as it can't have changed.
+
+True, will resend.
+
+Thanks, Daniele!
+
+Andi
 
