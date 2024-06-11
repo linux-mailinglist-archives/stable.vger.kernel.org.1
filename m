@@ -1,185 +1,111 @@
-Return-Path: <stable+bounces-50173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 137529041D7
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 18:53:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D13790435E
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 20:17:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92B9B1F26205
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 16:53:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2FB32867BB
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 18:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FC45F870;
-	Tue, 11 Jun 2024 16:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEADB54720;
+	Tue, 11 Jun 2024 18:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rlPW94jf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MdRVe9iW"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2070.outbound.protection.outlook.com [40.107.102.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550096DD08
-	for <stable@vger.kernel.org>; Tue, 11 Jun 2024 16:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718124757; cv=fail; b=jBxEEenR+zMqJRGsurkhjtrs+8iCVN+9aWlJCWV2jbeq2dUOAoIA/cHfK+eLvYdnrg5UubzEX70mxedWRA506lyf6gCpyZ4xic3+s0VD8pL2GWdYyf7x5yK6n1cZr95KCVGXzJ2p4AbEantXGmp8WYyb+KFx6QW8lWhOMJGt6RM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718124757; c=relaxed/simple;
-	bh=nU50JliDgKXtc+29/TAWISQJD0xL0pfIzWjupLhbXTE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mAvDEcsuvuy1jIy7hcENGQWIyqdECVyoYzNrbxrb3xxM2fIg476RQ0rP36eUARfnUTdoCOhOVQWz32/bjIwPJ3RfMMx9IY6QtyL1uE3qvvRtO05RCHEcD6Zb4yieWK1EYBJ+QzoPUci7L7EJIEyFOWo8GaPAKx78XPsshmm2SAg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rlPW94jf; arc=fail smtp.client-ip=40.107.102.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QIqoFo4CiNrQxE5YZ0nyrVnKnfvFVEH4XHDHRHoRynMI78HjdvIt7pNKeY6U3pdYO4pPJIEmrHeHJ6kG4cmeEFJ5PJCYr1Gp56sdsOH03knqJhjsm0de1RO+mYVUM8Dr86Kx5UGktHqOWJ8DYe7CIf0gsv+zQ5CtjomFNfrKZZ1gP+35ImW5E8YNQeyrvHUJmTPnIUCUp3og1tg/hCTJyVTz2mSpHet3uJVFct4UL0IsoCM8wmODoqUAE/gqfPR1AHICxwNuRH7Dh41OnTVMAaSTHhfcK5mXwetDBGVcOkIbsKIx2M7+CRpiOhMyLS+h2P03oh7ZAl5sVClmiMQ+Gw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5vAiLKiQHeip6jOYVAskbX09vwcE/1lBM3PtnpUc4js=;
- b=ILROljuR96GLmZ5K/KxxEKaOrEOxVjvCWNEMu3C/YqwqYdQD7I+yJVJOFjuKLHHV5NdYsDpMPUhpC5XmBwy2vozaVGQq1zduIbrtSkgoygBMpNrN4857Eanfzi5v0LYQm986Wg8r6CEiXwbHsfMgRkAvBrgzkyBUclW6h51fZQ5wJNtCgbXdVto5vFfTQV2y0cdlVngIzMHTiEwEslcJfHgGTGvdODn6WvzFiTsDf6KI62edIG0c58RXRPHABwlS6PNdUr2Q3dTGnCFt0qwe43Zebc0y3oVhESzE/flXDQ3jWh/1FWpU/QXwYZZ1057eXS/wXJpiY6KaUtTfOJjrBg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5vAiLKiQHeip6jOYVAskbX09vwcE/1lBM3PtnpUc4js=;
- b=rlPW94jfq984/SZ9y+xEw6mcIUyvF1++h7z46/o4YjglZVuucdGYBRjHSbqFz+B1kuKdJ8m+6w974mOHJ2tniHEqLG+JPOuzzClBciL8BbwXp4iYFg3lVK7OSKIVH/oHQ5ZOqSka9W8o9FuZp7qxsQTc0S2hn1pb8oabfaCoPG4=
-Received: from BN8PR07CA0012.namprd07.prod.outlook.com (2603:10b6:408:ac::25)
- by DM6PR12MB4060.namprd12.prod.outlook.com (2603:10b6:5:216::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.36; Tue, 11 Jun
- 2024 16:52:32 +0000
-Received: from MN1PEPF0000ECD4.namprd02.prod.outlook.com
- (2603:10b6:408:ac:cafe::da) by BN8PR07CA0012.outlook.office365.com
- (2603:10b6:408:ac::25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7656.25 via Frontend
- Transport; Tue, 11 Jun 2024 16:52:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MN1PEPF0000ECD4.mail.protection.outlook.com (10.167.242.132) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7677.15 via Frontend Transport; Tue, 11 Jun 2024 16:52:32 +0000
-Received: from hamza-pc.localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 11 Jun
- 2024 11:52:27 -0500
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
-To: <amd-gfx@lists.freedesktop.org>
-CC: Daniel Wheeler <daniel.wheeler@amd.com>, <Harry.Wentland@amd.com>,
-	<Sunpeng.Li@amd.com>, <Bhawanpreet.Lakha@amd.com>,
-	<Rodrigo.Siqueira@amd.com>, <Aurabindo.Pillai@amd.com>,
-	<qingqing.zhuo@amd.com>, <roman.li@amd.com>, <wayne.lin@amd.com>,
-	<solomon.chiu@amd.com>, <agustin.gutierrez@amd.com>, <jerry.zuo@amd.com>,
-	<hamza.mahfooz@amd.com>, Dillon Varone <dillon.varone@amd.com>,
-	<stable@vger.kernel.org>, Alvin Lee <alvin.lee2@amd.com>
-Subject: [PATCH 11/36] drm/amd/display: Add null check to dml21_find_dc_pipes_for_plane
-Date: Tue, 11 Jun 2024 12:51:14 -0400
-Message-ID: <20240611165204.195093-12-hamza.mahfooz@amd.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240611165204.195093-1-hamza.mahfooz@amd.com>
-References: <20240611165204.195093-1-hamza.mahfooz@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9FC4F5F9;
+	Tue, 11 Jun 2024 18:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718129800; cv=none; b=n7j2Ve/WLwpMok+hXuNPcVuT1Qt82sbke38y21JM0KjgtIj3/WLl9LHbZ7MsalavyR8tZZPE7KxyqfCMwrn3gba9XL5WdJUqHEUTTg1kBDRq7EZ8qxMEdfDcHs8GZyWQvhdQG6gPCXkwHiTjjRMMOyO6vmorKE3Le7n1gFg2IhM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718129800; c=relaxed/simple;
+	bh=negaQ/p+8fqZUjRXlmaCtcM1w1qY4k12PHGOfjjOEjc=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cdEIYPPTst+o/o5SEJIhvCDzr5WS263tyNAzvtEBUoDv2qCOkQ/j8oLkt1ojiwVk0EhUq7dbn2uX/zS8BVEGWj87GHKQyuzz6H7oTyzRVmUDKN7j0Srgf9nVBYCqy0kd8Fbs1WD2XYr6pJGiWGxBUdeQginET51q34X5SP69FpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MdRVe9iW; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-52961b77655so6545155e87.2;
+        Tue, 11 Jun 2024 11:16:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718129797; x=1718734597; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZtI1lbTsgVOULKjRJR67YoxzveH1+C7OsnELRZ7Iie4=;
+        b=MdRVe9iWiOkNvpQBqi8YLVT4mdLf1GfGmck9JyfkNx/10CAv72sit3ro2efYnyMNZx
+         jTiN4mtD0Ez7PTkDSw9wTiCC+UwWMTV7IU3pAU9MxLbC+RJHMB+01CoG4jrhUO7fzN9G
+         qfHeEVbcRiD8r+ngaj97ynSaYRmb9ijedNJ7fB5slavvhtZ0MsjCIw6I8gX5gycvKZu9
+         eEwKqEiTV3VeX0fczfTExSRAL//gnKcTIcc5U2/8MdAY0nAUoKycsCRzvNa/qNx1MV5J
+         UfuYWuLiLAvbN5E5bA8t5N35I5SeeY2XHc8hqUhWRXfAhF+yUR/eBnQlr5eMOLc4JWol
+         kPYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718129797; x=1718734597;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZtI1lbTsgVOULKjRJR67YoxzveH1+C7OsnELRZ7Iie4=;
+        b=F3ErGad3FDZ9OrD1Yv5JpeBLTDqJyClLBd/pdUzeffpRW55iBwnb4aFarT4FAR0XaJ
+         wXFfminQXqxaen8VdlCmYAYRGLZBcXMpnL8mypbV4QxL9fJ8GnyJxUS9kia8aDT0OMR7
+         rFj8+b2R4vFHXkE5X3QtDtehyONd1rclb1eMDhw7ylklJgWmwfgEaHn/zhy+w6/dJdVM
+         a/R+fzdC1faFlmiGXzlZSEqndnkkdkfQjl93aUXkedk8nNZWlpk9e3kGojnWB1/NWE3j
+         p7OvA+U5OoqxYCh1HtaQcxHqtAPSzI8kRCganD5RFgIrUTQDRcJOccHF7TH8UL4vh1Dy
+         WU5w==
+X-Forwarded-Encrypted: i=1; AJvYcCUZ2bXruaEKy13g2YnnRAPb13p0z5i+kNtjF5IbU12Cy/2lQvFrikfZJtYm1NEaSVRYvYIaahwqMpTNqEbwnDnx2Gcy+7nquK0EnIVNlzLzaWnM7fwUmPaEWJWS+vsL7qqzjzAl
+X-Gm-Message-State: AOJu0YySOkcIsylbJ3bDyyquRIwFXYlComBaHtRimt16b88a7FR+xK+h
+	tN306IMiS+ZSzOWpiHg4gxb/FECtTfH5fODdc4G0stsLsFW6N+u+
+X-Google-Smtp-Source: AGHT+IE3kIR4oIWOtR2uu9NQ6KUNP1rrWOPn4O1UFuBvCoPt7OCj8NMv26WIc3U9S+N4+tQX7M05Zw==
+X-Received: by 2002:a19:2d19:0:b0:52c:8c5b:b7d8 with SMTP id 2adb3069b0e04-52c8c5bb9d5mr3324453e87.30.1718129795674;
+        Tue, 11 Jun 2024 11:16:35 -0700 (PDT)
+Received: from pc636 (host-90-233-193-23.mobileonline.telia.com. [90.233.193.23])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52c85accab0sm1334842e87.106.2024.06.11.11.16.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jun 2024 11:16:35 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Tue, 11 Jun 2024 20:16:32 +0200
+To: Zhaoyang Huang <huangzhaoyang@gmail.com>
+Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Lorenzo Stoakes <lstoakes@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	hailong liu <hailong.liu@oppo.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	steve.kang@unisoc.com
+Subject: Re: [Resend PATCHv4 1/1] mm: fix incorrect vbq reference in
+ purge_fragmented_block
+Message-ID: <ZmiUgPDjzI32Cqr9@pc636>
+References: <20240607023116.1720640-1-zhaoyang.huang@unisoc.com>
+ <CAGWkznEODMbDngM3toQFo-bgkezEpmXf_qE=SpuYcqsjEJk1DQ@mail.gmail.com>
+ <CAGWkznE-HcYBia2HDcHt6trM9oeJ2x6KdyFzR3Jd_-L5HyPxSA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD4:EE_|DM6PR12MB4060:EE_
-X-MS-Office365-Filtering-Correlation-Id: 63fe911e-1705-4979-d17a-08dc8a36e331
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230032|82310400018|36860700005|376006|1800799016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?CJy32k//bxt92z3EEpJ/eIJEmgIPwPDxkZ+Y1H/EJuPum6PapwikwQqQ0aC4?=
- =?us-ascii?Q?yv6TprlsO/cGIbkwXV+NeWYPh4vdpRxhu4rkJ4DcTWH1cvgYLOUL01R6Zbkf?=
- =?us-ascii?Q?jfzN2FeAWl8BIjiQLzDx3VcWVoXMp4qSReciwhs35/31HyQ6AG/BjiWNSIIb?=
- =?us-ascii?Q?Kt0RvV67LOV8YhfuS2aH9GZpmvBY6Z5XFy4O/LqnwSw19H+L/PpQY0myO/k5?=
- =?us-ascii?Q?5mSyblbwrUCobvLj+hYvrvqceLTIA+nXWXvgxUd84IvF48pO2FcCfZbALyYo?=
- =?us-ascii?Q?0TmZfIbuexYcdkMIU0gI8Lxz002hGTw/Oa/pLl716NtqyL2dwFdA45guf31M?=
- =?us-ascii?Q?foJZDth15iPvgBbfLzO19qtr7pA9byYOBXlZL/rCF3HEIjLfkb4OT+3o8n20?=
- =?us-ascii?Q?u0RNddUCu6D+mOny9CLFmfIkEMjYrj8KXwDADy/G0VWqb+1sQ8sFdwKlfu5T?=
- =?us-ascii?Q?nfEngEmTpEqTfwmnoq6uL8hoz+VSp4VHFueaVWbaFJwMSjHrLOMWUso1B4Yc?=
- =?us-ascii?Q?jStAHFglucabbIWBjLbmPPPwkL8ostMUR63OMGzSDQZLROWN6n8r+zUa6iR1?=
- =?us-ascii?Q?2j23mrCtD7CcLP6cw4+F6LnMSri4totQvG8VZ4mEPMu+bYPup8fIYpTCUJQC?=
- =?us-ascii?Q?IXPEwwslFAz178TvVsLOkB22QPH3lUdMaPGs57arW076z+v6+CWL8G9Zpsl+?=
- =?us-ascii?Q?BCTdmhwcyzdyfAw/TVnp5dqlgO0aaCdt9z0tXftSEwyENAzJBtCzPQJOgtrV?=
- =?us-ascii?Q?RlP86DNzG+ydP4Q8k2sxrts3QJAPMtOEKpEjZaHIcywg6SvjmkCxMABddeeo?=
- =?us-ascii?Q?in3VAYqaCGC/kvy6BtfiT7LQbZorZkWs/b/y1OYO1deMiwJ70/pS6XmWEuZH?=
- =?us-ascii?Q?ynaryHKNJ1wMGoPADmy2Xj1G5t7lGhf1sn5gKZ2OY3MKYG/QREJpcJpIOEr8?=
- =?us-ascii?Q?oX7gvl/xNjlVCJ/DNRoQPSsiuZVZRmA+P8q6eKP6VaNJhlQt9xRQE49rSvNO?=
- =?us-ascii?Q?v5YzxUs7AS35hSqQ7WD/e6euLqp+scSMA/HudhI4aXQ4kc3TUObaKpMJH09s?=
- =?us-ascii?Q?NG3qMLHC6shPb/uTYcwBLOPtjEFJgRnRK3iSXilyUloB90MfvQOBSJfqkMRJ?=
- =?us-ascii?Q?Q2/H0TtYyA01uhXipeK9FDlsmRDcigOUqt+ykHPHsGb6pzCsTDp8Acv7wboX?=
- =?us-ascii?Q?KfDKMDh3abPkTi8VfVgzJd5Wn90nHVywbljsOWsqwkLIe9jpHIjYcfeyTvYY?=
- =?us-ascii?Q?+xbb5BrPbJ8lATXO5tj5nhzPO6FSK/R8Kj/TZdSvak6ZgQLWo/MB4YJPlnTs?=
- =?us-ascii?Q?uNoyG9gpv9u81NsAwQUjwQG6fYvaKHoBIxwAtDX0UPyu5LIrP5fop33Ydy2N?=
- =?us-ascii?Q?Yni3kdJZqob/dJErV0bl6XPKZqnAtA3/U3RhvbBRgIpm16dypQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230032)(82310400018)(36860700005)(376006)(1800799016);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2024 16:52:32.3546
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63fe911e-1705-4979-d17a-08dc8a36e331
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000ECD4.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4060
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGWkznE-HcYBia2HDcHt6trM9oeJ2x6KdyFzR3Jd_-L5HyPxSA@mail.gmail.com>
 
-From: Dillon Varone <dillon.varone@amd.com>
+>
+> Sorry to bother you again. Are there any other comments or new patch
+> on this which block some test cases of ANDROID that only accept ACKed
+> one on its tree.
+> 
+I have just returned from vacation. Give me some time to review your
+patch. Meanwhile, do you have a reproducer? So i would like to see how
+i can trigger an issue that is in question.
 
-When a phantom stream is in the process of being deconstructed, there
-could be pipes with no associated planes.  In that case, ignore the
-phantom stream entirely when searching for associated pipes.
+Thanks!
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Dillon Varone <dillon.varone@amd.com>
----
- .../gpu/drm/amd/display/dc/dml2/dml21/dml21_utils.c   | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_utils.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_utils.c
-index 4e12810308a4..4166332b5b89 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_utils.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_utils.c
-@@ -126,10 +126,15 @@ int dml21_find_dc_pipes_for_plane(const struct dc *in_dc,
- 	if (dc_phantom_stream && num_pipes > 0) {
- 		dc_phantom_stream_status = dml_ctx->config.callbacks.get_stream_status(context, dc_phantom_stream);
- 
--		/* phantom plane will have same index as main */
--		dc_phantom_plane = dc_phantom_stream_status->plane_states[dc_plane_index];
-+		if (dc_phantom_stream_status) {
-+			/* phantom plane will have same index as main */
-+			dc_phantom_plane = dc_phantom_stream_status->plane_states[dc_plane_index];
- 
--		dml_ctx->config.callbacks.get_dpp_pipes_for_plane(dc_phantom_plane, &context->res_ctx, dc_phantom_pipes);
-+			if (dc_phantom_plane) {
-+				/* only care about phantom pipes if they contain the phantom plane */
-+				dml_ctx->config.callbacks.get_dpp_pipes_for_plane(dc_phantom_plane, &context->res_ctx, dc_phantom_pipes);
-+			}
-+		}
- 	}
- 
- 	return num_pipes;
--- 
-2.45.1
-
+--
+Uladzislau Rezki
 
