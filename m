@@ -1,94 +1,128 @@
-Return-Path: <stable+bounces-50144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C112903854
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 12:04:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB329038CB
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 12:25:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BDBC1F235B6
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 10:04:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E65028514E
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 10:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC48A176ADA;
-	Tue, 11 Jun 2024 10:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34CCF171060;
+	Tue, 11 Jun 2024 10:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="rXRkaTcZ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JNiOsjfI"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9574FE57E;
-	Tue, 11 Jun 2024 10:04:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0F854750
+	for <stable@vger.kernel.org>; Tue, 11 Jun 2024 10:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718100251; cv=none; b=uRlDoGu9NgotTPcOET9udlxOgsT0IFevl/p98MUhLmnzDbF5dQ8/NAGjJBJTC3fvdVVrCktw28vs9Qyc/1gfubaQKH49Qo3RrjpELyW9hKehtGy9xmWE4IrD/w7RfHBRhQvvrmV3mlcopnjSLggRDDp+Rb5Ox1vD8rzq43lh2tk=
+	t=1718101522; cv=none; b=C0WKD643gROfoMJW5zCbHA+nkyXGsw0quAVU5AsvDIPflPqAmvoM73/IjbB4FhL6joh9+GY+C3FtFFgukbexhhvxvEr/dWazQ61hE/gh24igYjrELB0dclAYHd+6E7dWaomL4k+Apr9e1Lmgtf5ZG+8vKb+410+WFS/UNRqXUXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718100251; c=relaxed/simple;
-	bh=JA7fXFhBWz5d5wW447BlTNhXkv4g8AwEj63/2sbOFMc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uCPRPXn4O+SNVSTT21p0QfkW9dq6+r/Dx7LP2Dds/Z1hB9MP/u0KrmkbFuVSjTwhCE36k7Sjp0uitEKiTSqo9oahg3OHdyi+SyQTUEZQJz8ul5FxNlpnsv4GZiRA7mn60abjy+50PY0RJGkyWgYTopxXBGLqEE4s/8wabiTXUUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=rXRkaTcZ; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=8F6YXkkTIEjh5AQeJ7ZK4LQi7I7Eu2h8Jzf6YsyQf/0=;
-	t=1718100249; x=1718532249; b=rXRkaTcZPOJUYzIJwxf9+VWg3iHcmHyuUn2Jx+zMo2jwwgX
-	DJ8jZibLZWQmsUquEgXP4/xGrSD3RhMgoBTXuCKRiE/2bylWs2CT3qzMxZwI4NJykKe/zyBRQ2gbQ
-	/iGtTqBm9mfpBUZSXcrT7T4ZgsejHIKRLWhA8cS44ZmJhB4u+O8+F9wf5kJxv5GhnzxItKcSXhpwy
-	2ec8xbGoeyTq3848kk86tYWozi4+wzS10SLGadAyJzVw6GN0n+aF1NcS4g9s9+BEL2J+djCY/EpXM
-	jbLvkel9JNmfTN/SmQjUr8vGuSxwRndh73mmI76fIKa+Mt4UYLYE/cmUcWufrlvQ==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sGyMJ-0003Iy-Cp; Tue, 11 Jun 2024 12:04:07 +0200
-Message-ID: <0936a091-7a3a-40d7-8b87-837aed43966b@leemhuis.info>
-Date: Tue, 11 Jun 2024 12:04:06 +0200
+	s=arc-20240116; t=1718101522; c=relaxed/simple;
+	bh=VkZixBc8xDXERbSTJ4ump7kOefASQgvfg8WxNzP/Q/Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PhgpmuSU64wzokqDLnAOD5+1UBkd3rg+9V9GFxLE1WqaahTparNpNIaw7yiLiGId3vyhkkFZ8nrjQxakzkLS+qoz9+mGakOeBQK3jbZbsNexPtZNY30UTOH8kaUHamRvdhi2MZKgL7HGpOBgzSudkOQXyX5cKJqZKDePOVO0/ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JNiOsjfI; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718101519;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4HuOD2re6A46u1UT855gJsftXL/2/HlhGFO/rN8lLuQ=;
+	b=JNiOsjfI1EPwjpcl+4sDh5MsJW1ZN3/XAIW49mi7ah/lhgrc3dphWLANkV25AUtoK1c4GG
+	y4gFGhk+/qVU4YtD/7lU2N0TwR5hxist9n+u4jO7ACYO22L1vAGfcGOfkcqGRRFkFKzsZx
+	flmwQ1IdzlCyqsd35lYAU73TVuRpkOE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-171-CBhQ58dsOGqRfmxJAC6ePg-1; Tue,
+ 11 Jun 2024 06:25:17 -0400
+X-MC-Unique: CBhQ58dsOGqRfmxJAC6ePg-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7B7A619560B6;
+	Tue, 11 Jun 2024 10:25:16 +0000 (UTC)
+Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CCBDB300021B;
+	Tue, 11 Jun 2024 10:25:15 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v2] virt: guest_memfd: fix reference leak on hwpoisoned page
+Date: Tue, 11 Jun 2024 06:25:15 -0400
+Message-ID: <20240611102515.48048-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Segfault running a binary in a compressed folder
-To: Giovanni Santini <giovannisantini93@yahoo.it>, stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, ntfs3@lists.linux.dev,
- almaz.alexandrovich@paragon-software.com, LKML <linux-kernel@vger.kernel.org>
-References: <08d7de3c-d695-4b0c-aa5d-5b5c355007f8.ref@yahoo.it>
- <08d7de3c-d695-4b0c-aa5d-5b5c355007f8@yahoo.it>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <08d7de3c-d695-4b0c-aa5d-5b5c355007f8@yahoo.it>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1718100249;5fbf9e90;
-X-HE-SMSGID: 1sGyMJ-0003Iy-Cp
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On 11.06.24 11:19, Giovanni Santini wrote:
-> 
-> I am writing to report the issue mentioned in the subject.
-> 
-> Essentially, when running an executable from a compressed folder in an
-> NTFS partition mounted via ntfs3 I get a segfault.
-> 
-> The error line I get in dmesg is:
-> 
-> ntfs3: nvme0n1p5: ino=c3754, "hello" mmap(write) compressed not supported
-> 
-> I've attached a terminal script where I show my source, Makefile and how
-> the error appears.
+If __kvm_gmem_get_pfn() detects an hwpoisoned page, it returns -EHWPOISON
+but it does not put back the reference that kvm_gmem_get_folio() had
+grabbed.  Add the forgotten folio_put().
 
-You CCed the regression and the stable list, but that looks odd, as you
-don't even mention which kernel version you used (or which worked).
-Could you clarify? And ideally state if mainline (e.g. 6.10-rc3) is
-affected as well, as the answer to the question "who is obliged to look
-into this" depends on it.
+Fixes: a7800aa80ea4 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+	Sent v1 from the wrong directory, sorry about that.
 
-Ciao, Thorsten
+ virt/kvm/guest_memfd.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
+
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 3bfe1824ec2d..19c220ec1efd 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -549,7 +549,6 @@ static int __kvm_gmem_get_pfn(struct file *file, struct kvm_memory_slot *slot,
+ 	struct kvm_gmem *gmem = file->private_data;
+ 	struct folio *folio;
+ 	struct page *page;
+-	int r;
+ 
+ 	if (file != slot->gmem.file) {
+ 		WARN_ON_ONCE(slot->gmem.file);
+@@ -567,8 +566,9 @@ static int __kvm_gmem_get_pfn(struct file *file, struct kvm_memory_slot *slot,
+ 		return PTR_ERR(folio);
+ 
+ 	if (folio_test_hwpoison(folio)) {
+-		r = -EHWPOISON;
+-		goto out_unlock;
++		folio_unlock(folio);
++		folio_put(folio);
++		return -EHWPOISON;
+ 	}
+ 
+ 	page = folio_file_page(folio, index);
+@@ -577,12 +577,8 @@ static int __kvm_gmem_get_pfn(struct file *file, struct kvm_memory_slot *slot,
+ 	if (max_order)
+ 		*max_order = 0;
+ 
+-	r = 0;
+-
+-out_unlock:
+ 	folio_unlock(folio);
+-
+-	return r;
++	return 0;
+ }
+ 
+ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+-- 
+2.43.0
+
 
