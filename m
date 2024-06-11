@@ -1,51 +1,57 @@
-Return-Path: <stable+bounces-50176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C962904395
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 20:30:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E009043AA
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 20:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 351861F24C49
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 18:30:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62BC51C240D7
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 18:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2F4153509;
-	Tue, 11 Jun 2024 18:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF021509A4;
+	Tue, 11 Jun 2024 18:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j75RZ/Hu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pwmc5/OJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7772D79B87;
-	Tue, 11 Jun 2024 18:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F3E156643;
+	Tue, 11 Jun 2024 18:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718130491; cv=none; b=s4WqPT2Oi2vtJrD/AbZ9IHCRzXm3ESChhEVdwrJyaons+M7QcFHu3rKziGdYHeIIWSe62iZXkJBn2auClqFsstPUrvWua0JG5V4tIm6i589rCOrdaWN/+Biinn5IiC0HQzhXpweAsiD3mYcfoQ/OztdofrJwTN6OUFXeI0oT8Sc=
+	t=1718130511; cv=none; b=EGMdv4Qrg4myIVMNGKVcvbuLPpk3xCpmiuznfc0HnqZpbdeTxH1TU79E/2bFFPzeT/m1eFiNLcfTvwm1UMYZd0Gil6GE3G32gRz0qjNhER7Ve1nOvGatTvViVl0l3nW0lQSzRM69Gh8B28XWcCswmR2TOwhR0lLVfaua/KIPENk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718130491; c=relaxed/simple;
-	bh=D4w4ZP0/GTz/VDJqKxnsTk8kK2jryDAs9mlzgL6FVB8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=kULXZjk9yudDnu6CQvrollgS5tENqB17jPWzQ5LC2X/Fk+K7NSfaeMBNelWhKrlVDRVGLumV7wOk9dI65WG3su3FTCO6HPhPQAnwpxjfHBYKt4E1+khY1NwCTY8KVgpBiIe2sNtbTf8ZksTwL2oMU+s5AieDLRAir5dWuzbGNig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j75RZ/Hu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 58D8EC32786;
-	Tue, 11 Jun 2024 18:28:11 +0000 (UTC)
+	s=arc-20240116; t=1718130511; c=relaxed/simple;
+	bh=0IpkudyHdYEF2XfuJ5ytUb4hg9SXIAZELPdA4I83a4M=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=eAiwRY3311HWZR0x0iImncT7Ho6Ht5Ds4Q/go3uYDHwz9/7FVFfWGyKz2t4gNmrxlY6oi7fvng2CegX2DRp1V4r5CbI8q6DJ+8wdnH69BZhtYzNNWFot+3NdXtQcQFFmTmmLVE96O+WKMpTajnsaPpwK9K/9hQhyyNeELE4jZc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pwmc5/OJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07107C2BD10;
+	Tue, 11 Jun 2024 18:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718130491;
-	bh=D4w4ZP0/GTz/VDJqKxnsTk8kK2jryDAs9mlzgL6FVB8=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=j75RZ/HurQ9P4AxJc8kkzURnXQeiw7Ezs+/eNeMy5NIaOPw3Q6QE4uhl4M0R5HQsC
-	 E2jajjUvqusRKcjHoCbimy6x5o3WOgPGW8VB11ATWTECqzvUct0JK0uzdnZczuGNXI
-	 wxg0HgfQOV9CPToJ3rcJ5barwfqE4e9S8ntod/1nkydOW91bLrwAArXFlw6WbYltby
-	 WdNe9rQSuW8rdR89Tc5SavfkUg9a7G2Hl/Xw7psKvs8tsoq4EIBvsfeaEJyBwSOLoh
-	 yLcUEODFkGar9lUWaR17FQfyRygSRtG5FZRQnI0q+R0pXDnHyhW7jmDhZebmxSPvC0
-	 yvq8H6tLHJeVw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B9A6C27C78;
-	Tue, 11 Jun 2024 18:28:11 +0000 (UTC)
-From: Unnathi Chalicheemala via B4 Relay <devnull+quic_uchalich.quicinc.com@kernel.org>
-Date: Tue, 11 Jun 2024 11:27:58 -0700
-Subject: [PATCH] firmware: qcom_scm: Mark get_wq_ctx() as atomic call
+	s=k20201202; t=1718130511;
+	bh=0IpkudyHdYEF2XfuJ5ytUb4hg9SXIAZELPdA4I83a4M=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Pwmc5/OJX8zMSSbaDlxc75aIvszsYj3yB2w9PlpEw3rhPcNgOBd8gucc+h3kvUwWh
+	 mJXWg8b+9Dp+3ku6Cq7gmi5ANLiqTwY09p/SNzuVqPSeqFASdY68jDUaMZcd4e4aIB
+	 6YAyRO9bpcp/XnG2BwGKkGfFLTkge5OxHAGMlDBaURz6MUiRWAtNYtYW5taZwM77+X
+	 6WoFSKHJhTYtihJWOh3S0N4RoYYivmvGKJ/VlhCxFB3EZv8lTkSIdioSekl/C7B5/b
+	 1NxPX/y3qodoUwRa/RWHgtZqNyJQyHB52Gpr63cQCsKHHfCwQCJSylLjo4ZzFyV8uT
+	 PWDcoA7y7MkyA==
+From: Vinod Koul <vkoul@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>, imx@lists.linux.dev, 
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Joy Zou <joy.zou@nxp.com>
+Cc: stable@vger.kernel.org
+In-Reply-To: <20240510030959.703663-1-joy.zou@nxp.com>
+References: <20240510030959.703663-1-joy.zou@nxp.com>
+Subject: Re: [PATCH] dmaengine: fsl-edma: change the memory access from
+ local into remote mode in i.MX 8QM
+Message-Id: <171813050965.475662.12830562542163135119.b4-ty@kernel.org>
+Date: Tue, 11 Jun 2024 23:58:29 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,66 +60,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240611-get_wq_ctx_atomic-v1-1-9189a0a7d1ba@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAC2XaGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDM0ND3fTUkvjywvjkkor4xJL83Mxk3TTTVMu0lOQkI4NkcyWgvoKi1LT
- MCrCZ0bG1tQDA9q9DYwAAAA==
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, 
- Sibi Sankar <quic_sibis@quicinc.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel@quicinc.com, Murali Nalajala <quic_mnalajal@quicinc.com>, 
- stable@vger.kernel.org, Unnathi Chalicheemala <quic_uchalich@quicinc.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1718130490; l=1410;
- i=quic_uchalich@quicinc.com; s=20240514; h=from:subject:message-id;
- bh=QPM5gffihWkOaIL9zSFsTYRKxIFHPtphhyZkYhX+Ffs=;
- b=9hQjvBsx/jp6tQrA7LLONkGrRz5JN4p4i4TRAzp626wY+PYtyQ1cy8k/VgK2zuXm+gooVO8X+
- 4hFy51H4Y/5AqzFlJ0xAJxBiDj6Q9FbpYxoBNjBKULN4RyFKTNSqWeF
-X-Developer-Key: i=quic_uchalich@quicinc.com; a=ed25519;
- pk=o+hVng49r5k2Gc/f9xiwzvR3y1q4kwLOASwo+cFowXI=
-X-Endpoint-Received: by B4 Relay for quic_uchalich@quicinc.com/20240514
- with auth_id=162
-X-Original-From: Unnathi Chalicheemala <quic_uchalich@quicinc.com>
-Reply-To: quic_uchalich@quicinc.com
 
-From: Murali Nalajala <quic_mnalajal@quicinc.com>
 
-Currently get_wq_ctx() is wrongly configured as a standard call.
-Here get_wq_ctx() must be an atomic call and can't be a standard
-SMC call because get_wq_ctx() should not sleep again. This
-situation lead to a deadlock. Hence mark get_wq_ctx() as
-atomic call.
+On Fri, 10 May 2024 11:09:34 +0800, Joy Zou wrote:
+> Fix the issue where MEM_TO_MEM fail on i.MX8QM due to the requirement
+> that both source and destination addresses need pass through the IOMMU.
+> Typically, peripheral FIFO addresses bypass the IOMMU, necessitating
+> only one of the source or destination to go through it.
+> 
+> Set "is_remote" to true to ensure both source and destination
+> addresses pass through the IOMMU.
+> 
+> [...]
 
-Fixes: 6bf325992236 ("firmware: qcom: scm: Add wait-queue handling logic")
-Cc: stable@vger.kernel.org
-Signed-off-by: Murali Nalajala <quic_mnalajal@quicinc.com>
-Signed-off-by: Unnathi Chalicheemala <quic_uchalich@quicinc.com>
----
- drivers/firmware/qcom/qcom_scm-smc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks!
 
-diff --git a/drivers/firmware/qcom/qcom_scm-smc.c b/drivers/firmware/qcom/qcom_scm-smc.c
-index 16cf88acfa8e..0a2a2c794d0e 100644
---- a/drivers/firmware/qcom/qcom_scm-smc.c
-+++ b/drivers/firmware/qcom/qcom_scm-smc.c
-@@ -71,7 +71,7 @@ int scm_get_wq_ctx(u32 *wq_ctx, u32 *flags, u32 *more_pending)
- 	struct arm_smccc_res get_wq_res;
- 	struct arm_smccc_args get_wq_ctx = {0};
- 
--	get_wq_ctx.args[0] = ARM_SMCCC_CALL_VAL(ARM_SMCCC_STD_CALL,
-+	get_wq_ctx.args[0] = ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,
- 				ARM_SMCCC_SMC_64, ARM_SMCCC_OWNER_SIP,
- 				SCM_SMC_FNID(QCOM_SCM_SVC_WAITQ, QCOM_SCM_WAITQ_GET_WQ_CTX));
- 
-
----
-base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
-change-id: 20240611-get_wq_ctx_atomic-f5e9fdcb20c7
+[1/1] dmaengine: fsl-edma: change the memory access from local into remote mode in i.MX 8QM
+      commit: 8ddad558997002ce67980e30c9e8dfaa696e163b
 
 Best regards,
 -- 
-Unnathi Chalicheemala <quic_uchalich@quicinc.com>
-
+Vinod Koul <vkoul@kernel.org>
 
 
