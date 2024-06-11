@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-50151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DFAE903B5A
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 14:04:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 898F0903B5E
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 14:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF411284325
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 12:04:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 329561F244CE
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 12:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2099517B511;
-	Tue, 11 Jun 2024 12:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A8D17BB1B;
+	Tue, 11 Jun 2024 12:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kL0ohCOJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RR92QDtL"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D40017B437;
-	Tue, 11 Jun 2024 12:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7597E17BB03;
+	Tue, 11 Jun 2024 12:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718107471; cv=none; b=A/K4OtJ0TSQ723j0OtkyEqWYvE+nmDUjriofXvM4S9wLjVJsZ8WVdZOV4Y9XFUcmz4AyBwI0o7Rpq1k1GQaMCmUc+5ilJ8XlkYHHZLJXOreJHRAs95No4XC/X9D4kqSnFlECyamL230xd6P5SRsUT2LG65A4tuoabMVHIrnizh4=
+	t=1718107473; cv=none; b=PlHDsqfhj2PAnqenpL6tcCGeb11DgF2mSQfC7/tGQ8Nt0q892BbCooiGaCfVooh+c9hmKB5QXuP2bz+rpIq1JTjGC4gmZkGKsEAC/aetLQZXfUIVr/1XUBqEkZNoezPEa2/kT0gXuYk03y/T1YKRkIEqSld0xoJAX0A4yaYfFeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718107471; c=relaxed/simple;
-	bh=FOaE2PstEhFjh4wEaU+eChjM+aBc8E33yTqCu+HkY/E=;
+	s=arc-20240116; t=1718107473; c=relaxed/simple;
+	bh=L/XqlaATQ5L2nB1nKSC4asLA3WxkfcILDCl56wqJrfk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ieLILeUIYJ4xKSchoZINznyzQ5fOKzAjXXexy/12IQwd/u4gPBkzhG9iZvaUgijsSNSHp3q0bi3qGnWvPg+Q2CVM03kURIg0xZXyQJoLkWsYcb9bUJ3oZYzE+ZY09fceEzoVBny/qaU6fgqeKqTJkQ/KqLFvlWe4TuXGUG/l9+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kL0ohCOJ; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=Tjq0FNvGsuw708oTI4ibx8WuL/4cRG6j+leycYEMWVqlVaeS5ZvxuFK8tbEyLe9wDZOOtpCjkUpjC/P51JUVoso/qfmBzdRg3XYh7JbJKMvSjTiWZM/KF5Ny5goRfR2zLGmC21KTwL2bmYvLKUr4o+r0lztssYHVIMBYbKO35OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RR92QDtL; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718107470; x=1749643470;
+  t=1718107472; x=1749643472;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=FOaE2PstEhFjh4wEaU+eChjM+aBc8E33yTqCu+HkY/E=;
-  b=kL0ohCOJpI3/Nkt4Iii98vupeQIXPrgKOM5D/66xZHqzo5tvBeTi1oGS
-   vixz+lOx0odHaFg2GcYcJTVfTh8WYVbmIc5rh2mRDiue1AKm97tgZKYI5
-   ilkEl5js5bF/lHOcK9qQ1RMiuyIJVyTQ7WN/um7MfZzqxPO/DSKlqdXuI
-   dR6hxZdGUnx0ohEd7X0PQOxuJHxIwwVIMR0b1AUEc6PV8ChMINwG2MUu/
-   10Yj8Tczuw2fpThKTeJnfDzk6MOyFgsvdXre/VdTbU3ywiWjXjA/s1t/H
-   2C/iAaO6l8EPFY75iIHqY/RN68gB4iZovLEyhopXlhiywtXdluStOBqri
+  bh=L/XqlaATQ5L2nB1nKSC4asLA3WxkfcILDCl56wqJrfk=;
+  b=RR92QDtLly7kGvJ4+spHvbr793sm78UhVGBTWVkSS9RpOVNY5QmnoIZL
+   DjoV3N9Zh9dHVW3JCCfERvWzFSjaUm65qBtMJCBRxFbm1khGz6GOPZ00p
+   92iIiZMwhBIpGSf68kx40j7x412OJa3I3FSxvmB7KhpAvUdaS2ATxKMXn
+   Bfv5nnJLuu6bSYvneIQSsafriSQTMqV/UDwOWDjpytGcbm9WHJYzdAhuV
+   VXdAjI52jyylnxzBMYb3p8UV8A2sNr/Qh/5DATRfYLNrWjyvqAYcr9B/y
+   R/2+CMO49pVFdB3UqaXa/jPtK6HyUSf3rsz0URkg0QBmmkY1qLi318bsV
    A==;
-X-CSE-ConnectionGUID: sIAHlajKT3CpGDa1bZCZEQ==
-X-CSE-MsgGUID: 0vCNxJ/cRpmz8Nj3E9gc5w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="18641751"
+X-CSE-ConnectionGUID: 3ap7P1lhSsq6IlbxEYXA9A==
+X-CSE-MsgGUID: AKQ4zeTkSE2abb6bhHkhAg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="18641756"
 X-IronPort-AV: E=Sophos;i="6.08,230,1712646000"; 
-   d="scan'208";a="18641751"
+   d="scan'208";a="18641756"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2024 05:04:30 -0700
-X-CSE-ConnectionGUID: rckRqGqcQtqQOJeKuH1Znw==
-X-CSE-MsgGUID: yDDokXqSRBiwWlH3asPzQQ==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2024 05:04:32 -0700
+X-CSE-ConnectionGUID: RfX+raOZR7qrS+zdkIUV1g==
+X-CSE-MsgGUID: 6K/UjChsS1u/RDQ76gQZ5w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,230,1712646000"; 
-   d="scan'208";a="76879639"
+   d="scan'208";a="76879657"
 Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
-  by orviesa001.jf.intel.com with ESMTP; 11 Jun 2024 05:04:29 -0700
+  by orviesa001.jf.intel.com with ESMTP; 11 Jun 2024 05:04:31 -0700
 From: Mathias Nyman <mathias.nyman@linux.intel.com>
 To: <gregkh@linuxfoundation.org>
 Cc: <linux-usb@vger.kernel.org>,
 	Kuangyi Chiang <ki.chiang65@gmail.com>,
 	stable@vger.kernel.org,
 	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 2/4] xhci: Apply reset resume quirk to Etron EJ188 xHCI host
-Date: Tue, 11 Jun 2024 15:06:08 +0300
-Message-Id: <20240611120610.3264502-3-mathias.nyman@linux.intel.com>
+Subject: [PATCH 3/4] xhci: Apply broken streams quirk to Etron EJ188 xHCI host
+Date: Tue, 11 Jun 2024 15:06:09 +0300
+Message-Id: <20240611120610.3264502-4-mathias.nyman@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240611120610.3264502-1-mathias.nyman@linux.intel.com>
 References: <20240611120610.3264502-1-mathias.nyman@linux.intel.com>
@@ -80,40 +80,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-As described in commit c877b3b2ad5c ("xhci: Add reset on resume quirk for
-asrock p67 host"), EJ188 have the same issue as EJ168, where completely
-dies on resume. So apply XHCI_RESET_ON_RESUME quirk to EJ188 as well.
+As described in commit 8f873c1ff4ca ("xhci: Blacklist using streams on the
+Etron EJ168 controller"), EJ188 have the same issue as EJ168, where Streams
+do not work reliable on EJ188. So apply XHCI_BROKEN_STREAMS quirk to EJ188
+as well.
 
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
 Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 ---
- drivers/usb/host/xhci-pci.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/host/xhci-pci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index c040d816e626..dd8256e4e02a 100644
+index dd8256e4e02a..05881153883e 100644
 --- a/drivers/usb/host/xhci-pci.c
 +++ b/drivers/usb/host/xhci-pci.c
-@@ -36,6 +36,7 @@
- 
- #define PCI_VENDOR_ID_ETRON		0x1b6f
- #define PCI_DEVICE_ID_EJ168		0x7023
-+#define PCI_DEVICE_ID_EJ188		0x7052
- 
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
-@@ -395,6 +396,10 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 		xhci->quirks |= XHCI_RESET_ON_RESUME;
+@@ -397,8 +397,10 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
  		xhci->quirks |= XHCI_BROKEN_STREAMS;
  	}
-+	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
-+			pdev->device == PCI_DEVICE_ID_EJ188)
-+		xhci->quirks |= XHCI_RESET_ON_RESUME;
-+
+ 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ188)
++			pdev->device == PCI_DEVICE_ID_EJ188) {
+ 		xhci->quirks |= XHCI_RESET_ON_RESUME;
++		xhci->quirks |= XHCI_BROKEN_STREAMS;
++	}
+ 
  	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
  	    pdev->device == 0x0014) {
- 		xhci->quirks |= XHCI_ZERO_64B_REGS;
 -- 
 2.25.1
 
