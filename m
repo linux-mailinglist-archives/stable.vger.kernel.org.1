@@ -1,86 +1,123 @@
-Return-Path: <stable+bounces-50162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB83B903E81
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 16:15:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4B6903E74
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 16:12:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5122C28AD48
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 14:15:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D252D1F22736
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 14:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763EF17DE39;
-	Tue, 11 Jun 2024 14:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BB617D890;
+	Tue, 11 Jun 2024 14:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="focMhIO2"
 X-Original-To: stable@vger.kernel.org
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3264C17D8A1;
-	Tue, 11 Jun 2024 14:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.175.24.41
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F376517D88C;
+	Tue, 11 Jun 2024 14:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718115303; cv=none; b=OEpz4o94Fr7GC7fCq0Gv4y0cYmkq8EpHddjTsr55wiUPFoedYWe01MCa8Q+SG149iYlIkvhK0avEzpJcjp1EQTO/bFmNn5onkKd1MWH5Jon0t5Q9lj9RuUbTjoNB/WFf6El0T1D18ttrew+mV0UkwMNobaSEc7JR3EFKw5KJjHM=
+	t=1718115168; cv=none; b=Mu811sgH5Y3bzmPtVWiVA4AmgFxOaZE8d/mamR4RH/eB0QxdNlOsk0X4saybmvvwKgBZO1rCSlyaGZgdSJcRh3Zo9JvqGvfg/7A9k0lwSSlb50KXV6dQBKAbJRTOwidOp8/Xqgt//HBcXbCBftdHgpAVvq0GVcPC37skEPluCc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718115303; c=relaxed/simple;
-	bh=S7HvbhMJrqKrjrCA9+q8Ja1NL2gugbk9fO8O7O/IQB4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LIBgf0RLeaG9KvVfeNTxX3WkwrssB64a+ElXDW/FmMwu13+Nm23NeP89FvhRupkuWf0pd3XXQCf9ohuVl3OdWpTlVCDWucLOlzSLCFa+PfMGjWJB3XP7DeiLG8s1ZmbRZJTJBjKfDdMa2Etw28TsYLtMTxGQqao/0oF+BvfVbO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de; spf=pass smtp.mailfrom=alpha.franken.de; arc=none smtp.client-ip=193.175.24.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpha.franken.de
-Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
-	id 1sH2Gu-00034G-00; Tue, 11 Jun 2024 16:14:48 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
-	id DBE9AC0120; Tue, 11 Jun 2024 16:12:18 +0200 (CEST)
-Date: Tue, 11 Jun 2024 16:12:18 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Martin Schiller <ms@dev.tdt.de>
-Cc: hauke@hauke-m.de, dmitry.torokhov@gmail.com, rdunlap@infradead.org,
-	robh@kernel.org, bhelgaas@google.com, linux-mips@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: pci: lantiq: restore reset gpio polarity
-Message-ID: <ZmhbQgXxyhZ7shBh@alpha.franken.de>
-References: <20240607090400.1816612-1-ms@dev.tdt.de>
+	s=arc-20240116; t=1718115168; c=relaxed/simple;
+	bh=uwcdBzLuAxEDrNoXrhjSgpM2Fga3hryzixwO3pPxk/g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hL+9ei2/c+ju5pMt60e95cGCxpt5VEDEFhYpSL2aU57wfKnAjdXC9Sa8/DBGfRGSyaKT6SXycwWUrKRjgLsr5No0kwuuDYhIC1zFD0/hjVyveoDLgb9rD7b0rdALFnTJvYCpWsTiWSx6UaIYuPFYn0mWDQUzbkDGhPxVNzLRV+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=focMhIO2; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2eabd22d441so91054971fa.2;
+        Tue, 11 Jun 2024 07:12:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718115165; x=1718719965; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RGZsWMQxIR/8a9H8paH0XFiZvIlanvQPzCmlVbwusdU=;
+        b=focMhIO23gjgssmwHEVF36RM3pNmCQ56oJkQPiezfRVIj22rUDggYATELGrvql/TO7
+         8QwVj9g63tULkNfT3WGsOZwmY5xpElCqinacNMNVVd8MY8T2THh7iWWhyY/8/aXfgBBu
+         f+D2x8IUMqgtTFjQDxchwccN/UI2M3SiMMCFiDV4SsjLIfuzuZXojtuSG2O97JGWfkWJ
+         xQOddafsWeNXypYEAej1xo5L3DZUMRoqjUin5nahe1MI2rV/JovdNCCRYqo2KRkPtlFi
+         WPuq3uXELcliLnkB5Bk3hEa0mkybgOTQz6ax55xjtbsyjHD2hvbrtk54hGlcTROV4ZQf
+         dxHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718115165; x=1718719965;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RGZsWMQxIR/8a9H8paH0XFiZvIlanvQPzCmlVbwusdU=;
+        b=R4G78RK+ZAuLyQMXThwcP6mBIFFC7reFlujkDTWfK0GYHkPt/5yOnE2mw/QHbda3Wx
+         x0c88rCvcWimbYeAQaeuYlomyhJT87Qbq/LarS7lYZG/bxxGhUyX1rNklXuHK8mHFjAy
+         toEkbtUn+2O5M/XGInTtbfC8MgyhMGE9hNq4VzR7CbsWmnYisF1LRSIc6kVNrxja1SLd
+         sej+eUNxTJ7sXcB/Gbm+R3UhSBLxaiubdqV/WGuwIzMhWpeqdtN2OUQFOKGrq2PhqYlW
+         WHxqV/xiU5qKnpdeD5/0S4uM/o2iCuCeAPHzFun5SezFIibd6ClF7+zHoYotzO2eXLu6
+         sJpA==
+X-Forwarded-Encrypted: i=1; AJvYcCWZ7/6/lP+21zoLs4Fyin+KRNAV22X7a7pDOFcgXxz/jDfzVmcaV/P45h9HaUvJXRM8jwCVTZvhOQBhYUYE46aE6jAO0v+/GFzgAlGVvNdkgEeqoz9c97z20vFfo7OeLJyMqqarCQLP1A==
+X-Gm-Message-State: AOJu0YzvPFt0uRNOvHrC7km199wU6z8/bL1r+X/fwhgxFc8s3IX8Hfn8
+	bOl6jFUm4AZAIPz4QxXSJUPMMbdRRwWT5cWZ5TGSVz9ib+vX9TT0
+X-Google-Smtp-Source: AGHT+IGuq4XXKdcSy2MRECTQb8OvnrexiaWWjJespHlYnvTZ0wLoCtN53WXIbcE0kkCOgg4nKbvssA==
+X-Received: by 2002:a2e:3612:0:b0:2eb:17fe:a144 with SMTP id 38308e7fff4ca-2eb17fea1c5mr62244931fa.34.1718115164779;
+        Tue, 11 Jun 2024 07:12:44 -0700 (PDT)
+Received: from ?IPV6:2a02:8389:41cf:e200:89c3:827b:2198:62f2? (2a02-8389-41cf-e200-89c3-827b-2198-62f2.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:89c3:827b:2198:62f2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6effb9cd7asm457716466b.208.2024.06.11.07.12.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Jun 2024 07:12:44 -0700 (PDT)
+Message-ID: <233d56de-8d5d-4bad-a380-45321a2d86ac@gmail.com>
+Date: Tue, 11 Jun 2024 16:12:42 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240607090400.1816612-1-ms@dev.tdt.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] leds: mt6360: fix memory leak in
+ mt6360_init_isnk_properties()
+To: Markus Elfring <Markus.Elfring@web.de>, linux-leds@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Lee Jones <lee@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+ Pavel Machek <pavel@ucw.cz>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20240611-leds-mt6360-memleak-v1-1-93642eb5011e@gmail.com>
+ <010b1c91-fbde-4b01-a92e-8c14751c7699@web.de>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <010b1c91-fbde-4b01-a92e-8c14751c7699@web.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 07, 2024 at 11:04:00AM +0200, Martin Schiller wrote:
-> Commit 90c2d2eb7ab5 ("MIPS: pci: lantiq: switch to using gpiod API") not
-> only switched to the gpiod API, but also inverted / changed the polarity
-> of the GPIO.
+On 11/06/2024 16:01, Markus Elfring wrote:
+> …
+>> Add the missing calls to fwnode_handle_put(child) to avoid memory leaks
+>> in the error paths.
 > 
-> According to the PCI specification, the RST# pin is an active-low
-> signal. However, most of the device trees that have been widely used for
-> a long time (mainly in the openWrt project) define this GPIO as
-> active-high and the old driver code inverted the signal internally.
+> I suggest to apply a goto chain for a while.
+> https://wiki.sei.cmu.edu/confluence/display/c/MEM12-C.+Consider+using+a+goto+chain+when+leaving+a+function+on+error+when+using+and+releasing+resources
 > 
-> Apparently there are actually boards where the reset gpio must be
-> operated inverted. For this reason, we cannot use the GPIOD_OUT_LOW/HIGH
-> flag for initialization. Instead, we must explicitly set the gpio to
-> value 1 in order to take into account any "GPIO_ACTIVE_LOW" flag that
-> may have been set.
+> Will the application of scope-based resource management become feasible with another delay?
+> https://elixir.bootlin.com/linux/v6.10-rc3/source/include/linux/cleanup.h#L8
 > 
-> In order to remain compatible with all these existing device trees, we
-> should therefore keep the logic as it was before the commit.
-> 
-> Fixes: 90c2d2eb7ab5 ("MIPS: pci: lantiq: switch to using gpiod API")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Martin Schiller <ms@dev.tdt.de>
-> ---
->  arch/mips/pci/pci-lantiq.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> Regards,
+> Markus
 
-applied to mips-fixes
+I considered that option too, but there is still no _scoped() variant of
+the loop. The scoped version of the _available_ variant is being
+discussed, though. Maybe that one could be used here if there is no need
+to iterate over unavailable nodes.
 
-Thomas.
+We could not back port that solution anyway, so I would suggest this
+solution (or the one with a goto), and then a separate patch to used a
+scoped macro if preferred.
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+Best regards,
+Javier Carrasco
+
+
 
