@@ -1,215 +1,153 @@
-Return-Path: <stable+bounces-50124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22982902C6B
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 01:24:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EBE9902DC4
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 02:51:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67AE8B21944
-	for <lists+stable@lfdr.de>; Mon, 10 Jun 2024 23:23:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFB72B20A1E
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 00:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E720152177;
-	Mon, 10 Jun 2024 23:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9FF6116;
+	Tue, 11 Jun 2024 00:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DVE73clS"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="A07ygQak"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4C618EAB;
-	Mon, 10 Jun 2024 23:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B8C53AC;
+	Tue, 11 Jun 2024 00:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718061831; cv=none; b=MERI2+IYhmfJeTy3n1E+SrokB69aidWarNK+3XLeeivtWLEhAKG2tURYOPP2xab9nJG+/vBdXk3gS5m9ixCroD+hmGTpKEwOXsZ2dCVYj49IKzduO53z1xRxoFymFyNOW0Bi/RDlrTSxe1wragIst38m6YIvPIkhTfQgTNNk88E=
+	t=1718067088; cv=none; b=uNeY+rT4WAN8ktdnH9fStMbrIaYi+bM3zgvvahmL0D5QmcetCc1gUd0GqI9wAs71sa9k+V1afMPkICOV2EVW35FTf4W93drLgvJ4qXnBB61B28DoTwz98VAKTeEF16zU9qokg/3YIZ/0Vfg2TrVSD7WfvyGyvmZ/gnrGGr5pSPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718061831; c=relaxed/simple;
-	bh=GL519/OeTsVEfPoHY170KKRiJkajWab9ytI9diRYgiw=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=g+i0Z9RtMiV+TosO/2sE5YfGk+80nCUGY2IAh8cl1pCTrZOi50dgI+pc4XFtSJ9s1KNh+gzaFlBr6ED518/ssNuwvj4jMrTo+Dss0gzHtCs0Mubcv6MuctLBp2aH1unsp5LCh3GqJmUUH/RxnvAJg01lB8q1TFUg8E1a/WNpFeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DVE73clS; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6ad8243dba8so25008716d6.3;
-        Mon, 10 Jun 2024 16:23:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718061829; x=1718666629; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lV5PVanzcpddAlRBQgJHZpxu5JR0+D1qul/h4jTI5Sk=;
-        b=DVE73clSn0EdMByKbACpqs3LDazYnQMAUnLcBfJhVEQwI1fIpo+YVgG4acEVf3V+WR
-         v6bE6T84hrs1AeQZDKvKk0t9FDKPSLQNWs+7tnHI0qoMTSQilgC+MK2Zpf+0xgvXzlQD
-         vwyyq3A3mwRFJ2jKfx00enP7Q6xmyv5HRynuIIzEPX342IRv3hP2P0Uz2AsQKGjZcure
-         1ySgwcScyA+2g8ZPK/8ej7Mp4xAqdzdojhM2A8jGJRvED5rIUGrTtwlI579/Wu+YStbj
-         sEdihMizg7XCNpuF3xRd4aXnijA2lQ7yfac+elaJfypLLecFOee5eaZhYMmxx8sugOKH
-         vlZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718061829; x=1718666629;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=lV5PVanzcpddAlRBQgJHZpxu5JR0+D1qul/h4jTI5Sk=;
-        b=wK/E15xhvS9B1cfg33z3MAFBStsK5gbf5GSOszoEsJczhBbvQRnpaoFgfe3tFQZjmM
-         h5MhRlPtiI7BCLCV5i4Z01JVMZkjfZAxHLdD7DQCUqdwbtgWOPCFDbAW1Xh63LWXRQuW
-         kndk7WD8EiFX9yh3XO6gSSlJddqABGtFujmeAe/N330GvTRGe/tXDBix+urG2OdySgDe
-         2bIlDF+0BoquiXjMGonFLx0ugCeS5WprP0IJJNfGVPdFv1YKurnHMFa/f22DbcJBOntE
-         Ro8BqJIOTnMAUFeKBwzOibVn/saUY7bXsBZvnEytjAwrJ3yW1NVdVUpykq6T+bHVswV1
-         r6iQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU2T5Pv0/kabh+vrapWYPUJb1ESg9Z+HapIW0EFEBrqtuOYfl6AFP1Wt5fSzp+APo2J8/2W3R53i9/PIMVFubevpEkgko9HBy+WQ5upePXwDy5ECulzxmBlMAbyGTsoN3ul3mA7qafReid9Oz6M8a1LpqSAnTOhGDculPsD
-X-Gm-Message-State: AOJu0YxxRnLa3x6Yr4iwPb3ktqDzDm9ooH+hKMYJeW3cXrCjuj3I9bhG
-	CmBeTiG0ERfNUbdRsuPR8dRWcT7fq4gY33ah++BApPn1Nznuogs9
-X-Google-Smtp-Source: AGHT+IGvkE0Hdy2WFEEHZ5FqvV9BKqDeyVqKkJko9HLGbHvkz4+NgzZnRHCDEmPWeQAdw+IWpCgV0A==
-X-Received: by 2002:a05:6214:524a:b0:6b0:6b57:4c57 with SMTP id 6a1803df08f44-6b06b574fbbmr88520586d6.1.1718061828744;
-        Mon, 10 Jun 2024 16:23:48 -0700 (PDT)
-Received: from localhost (56.148.86.34.bc.googleusercontent.com. [34.86.148.56])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b053b13054sm48731596d6.138.2024.06.10.16.23.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Jun 2024 16:23:48 -0700 (PDT)
-Date: Mon, 10 Jun 2024 19:23:48 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Chengen Du <chengen.du@canonical.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- kaber@trash.net, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-Message-ID: <66678b0413c20_bf52c2946d@willemb.c.googlers.com.notmuch>
-In-Reply-To: <CAPza5qfcXSQNxz2kNVWHqYBGgnFLDa-Ey5b9y5OenZndo2a0Og@mail.gmail.com>
-References: <20240608025347.90680-1-chengen.du@canonical.com>
- <CAPza5qfuNhDbhV9mau9RE=cNKMwGtJcx4pmjkoHNwpfysnw5yw@mail.gmail.com>
- <66660ec3f3e22_8dbbb294ed@willemb.c.googlers.com.notmuch>
- <CAPza5qfcXSQNxz2kNVWHqYBGgnFLDa-Ey5b9y5OenZndo2a0Og@mail.gmail.com>
-Subject: Re: [PATCH v6] af_packet: Handle outgoing VLAN packets without
- hardware offloading
+	s=arc-20240116; t=1718067088; c=relaxed/simple;
+	bh=QBr40AJn9fqI+J+dUuZ3gW46TDcBqgBa5qK2EmHEnKk=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=lICc0597Sw9TM6AgVaB/5iE9sM0H6F1N7WdtcIUTemCHyfQjaf2yBgSFfzc1atRdiuB1CmdHb5qi5T6kLjGRwfRYBWjhGxATWiFbE6KOb8FO1cv4NSgztWUGA8ODIV2XFII4Pv5yPs7wCOkmatrN0BoKoS0k+G6xG96gS9/mVU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=A07ygQak; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1718067083;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a1AZC16qrNPJTvhkSiuyh/dv6dGmmROqS2dAVeA9wL8=;
+	b=A07ygQakwoCeha1mYLy+OM+R+Ga0hgZ1or9zCZ164f5Dk2f8VMy1d7Y98CgN4vBM+/NKZ7
+	dVoAJorMBiShe1SXOs5gGkUaEUjGP4lwukIYPk7k+Vg7uIrlW+mHPbztuqFTvBtB5SYHe8
+	tBwJO7JFOO6/0uAcK609jTjMZuZ4VCRIjrk4TtDomgPtd9tMRC8MQsH4XdgRITJAEJ7DCj
+	d+Qh1PqOpSt8SRF1pzQ5hIv9B6Nx8sJncKPhl5UW2JF8XWPdIp2rZA889Qr21DU6b5IXuV
+	bIUFb3WaEdNcVrFy7aqObcEDV35UxxxYMThAbPeUom4H6Qqce2VUlVaHx93EGg==
+Date: Tue, 11 Jun 2024 02:51:18 +0200
+From: Dragan Simic <dsimic@manjaro.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, nathan@kernel.org, nicolas@fjasle.eu,
+ linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org, Diederik de Haas
+ <didi.debian@cknow.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] kbuild: Install dtb files as 0644 in Makefile.dtbinst
+In-Reply-To: <CAK7LNAQ7cKbuU9uv67DT4CQagvXdJCWXBP9LjkC_Hvd5QWnYRQ@mail.gmail.com>
+References: <e1fd1b659711f59c61ec48dc43912dddccbb4d92.1717996742.git.dsimic@manjaro.org>
+ <CAK7LNAQ7cKbuU9uv67DT4CQagvXdJCWXBP9LjkC_Hvd5QWnYRQ@mail.gmail.com>
+Message-ID: <15bcfb74bf2f7bc4a5bb481ed23bbf33@manjaro.org>
+X-Sender: dsimic@manjaro.org
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-Chengen Du wrote:
-> Hi Willem,
-> =
+Hello Masahiro,
 
-> On Mon, Jun 10, 2024 at 4:21=E2=80=AFAM Willem de Bruijn
-> <willemdebruijn.kernel@gmail.com> wrote:
-> >
-> > Chengen Du wrote:
-> > > Hi,
-> > >
-> > > I would like to provide some additional explanations about the patc=
-h.
-> > >
-> > >
-> > > On Sat, Jun 8, 2024 at 10:54=E2=80=AFAM Chengen Du <chengen.du@cano=
-nical.com> wrote:
-> > > >
-> > > > The issue initially stems from libpcap. The ethertype will be ove=
-rwritten
-> > > > as the VLAN TPID if the network interface lacks hardware VLAN off=
-loading.
-> > > > In the outbound packet path, if hardware VLAN offloading is unava=
-ilable,
-> > > > the VLAN tag is inserted into the payload but then cleared from t=
-he sk_buff
-> > > > struct. Consequently, this can lead to a false negative when chec=
-king for
-> > > > the presence of a VLAN tag, causing the packet sniffing outcome t=
-o lack
-> > > > VLAN tag information (i.e., TCI-TPID). As a result, the packet ca=
-pturing
-> > > > tool may be unable to parse packets as expected.
-> > > >
-> > > > The TCI-TPID is missing because the prb_fill_vlan_info() function=
- does not
-> > > > modify the tp_vlan_tci/tp_vlan_tpid values, as the information is=
- in the
-> > > > payload and not in the sk_buff struct. The skb_vlan_tag_present()=
- function
-> > > > only checks vlan_all in the sk_buff struct. In cooked mode, the L=
-2 header
-> > > > is stripped, preventing the packet capturing tool from determinin=
-g the
-> > > > correct TCI-TPID value. Additionally, the protocol in SLL is inco=
-rrect,
-> > > > which means the packet capturing tool cannot parse the L3 header =
-correctly.
-> > > >
-> > > > Link: https://github.com/the-tcpdump-group/libpcap/issues/1105
-> > > > Link: https://lore.kernel.org/netdev/20240520070348.26725-1-cheng=
-en.du@canonical.com/T/#u
-> > > > Fixes: 393e52e33c6c ("packet: deliver VLAN TCI to userspace")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Chengen Du <chengen.du@canonical.com>
-> > > > ---
-> > > >  net/packet/af_packet.c | 57 ++++++++++++++++++++++++++++++++++++=
-++++--
-> > > >  1 file changed, 55 insertions(+), 2 deletions(-)
-> > > >
-> > > > diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> > > > index ea3ebc160e25..8cffbe1f912d 100644
-> > > > --- a/net/packet/af_packet.c
-> > > > +++ b/net/packet/af_packet.c
-> > > > @@ -538,6 +538,43 @@ static void *packet_current_frame(struct pac=
-ket_sock *po,
-> > > >         return packet_lookup_frame(po, rb, rb->head, status);
-> > > >  }
-> > > >
-> > > > +static u16 vlan_get_tci(struct sk_buff *skb)
-> > > > +{
-> > > > +       struct vlan_hdr vhdr, *vh;
-> > > > +       u8 *skb_orig_data =3D skb->data;
-> > > > +       int skb_orig_len =3D skb->len;
-> > > > +
-> > > > +       skb_push(skb, skb->data - skb_mac_header(skb));
-> > > > +       vh =3D skb_header_pointer(skb, ETH_HLEN, sizeof(vhdr), &v=
-hdr);
-> > > > +       if (skb_orig_data !=3D skb->data) {
-> > > > +               skb->data =3D skb_orig_data;
-> > > > +               skb->len =3D skb_orig_len;
-> > > > +       }
-> > >
-> > >
-> > > The reason for not directly using skb_header_pointer(skb,
-> > > skb_mac_header(skb) + ETH_HLEN, ...) to get the VLAN header is due =
-to
-> > > the check logic in skb_header_pointer. In the SOCK_DGRAM and
-> > > PACKET_OUTGOING scenarios, the offset can be a negative number, whi=
-ch
-> > > causes the check logic (i.e., likely(hlen - offset >=3D len)) in
-> > > __skb_header_pointer() to not work as expected.
-> >
-> > The calculation is still correct?
-> >
-> > I think that this is not the first situation where negative offsets
-> > can be given to skb_header_pointer.
-> =
+On 2024-06-11 00:29, Masahiro Yamada wrote:
+> On Mon, Jun 10, 2024 at 2:21 PM Dragan Simic <dsimic@manjaro.org> 
+> wrote:
+>> 
+>> The compiled dtb files aren't executable, so install them with 0644 as 
+>> their
+>> permission mode, instead of defaulting to 0755 for the permission mode 
+>> and
+>> installing them with the executable bits set.
+>> 
+>> Some Linux distributions, including Debian, [1][2][3] already include 
+>> fixes
+>> in their kernel package build recipes to change the dtb file 
+>> permissions to
+>> 0644 in their kernel packages.  These changes, when additionally 
+>> propagated
+>> into the long-term kernel versions, will allow such distributions to 
+>> remove
+>> their downstream fixes.
+>> 
+>> [1] https://salsa.debian.org/kernel-team/linux/-/merge_requests/642
+>> [2] https://salsa.debian.org/kernel-team/linux/-/merge_requests/749
+>> [3] 
+>> https://salsa.debian.org/kernel-team/linux/-/blob/master/debian/rules.real?ref_type=heads#L193
+> 
+> The 'master' is a moving target.
+> 
+> The line 193 in the future may not point to the correct position
+> 
+> I changed it to this.
+> 
+> [3] 
+> https://salsa.debian.org/kernel-team/linux/-/blob/debian/6.8.12-1/debian/rules.real#L193
+> 
+> This references the line 193 from the 'debian/6.8.12-1' tag.
 
-> The check will pass even if the offset is negative, but I believe this
-> may not be the right approach. In my humble opinion, the expected
-> check should be similar to the skb_push check, which ensures that
-> after moving forward by the offset bytes, skb->data remains larger
-> than or equal to skb->head to avoid accessing out-of-bound data. It
-> might be worth considering adding a check in __skb_header_pointer to
-> handle negative offsets, as this seems logical. However, this change
-> could impact a wider range of code. Please correct me if I am
-> mistaken.
+Good point, it preserves this reference for the future.  The same
+thoughts crossed my mind after I sent the patch, but I didn't want
+to make noise about it.  Thanks for the fix.
 
-Your current approach is fine too.
+> Applied to linux-kbuild.
+> Thanks!
 
-A negative offset greater than skb_headroom would certainly be a
-problem. But in these cases where skb->mac_header is known to be
-correct, the offset skb_mac_offset() against skb->data must be
-within bounds, even if it may be negative.
+Great, thanks!
 
+>> Cc: Diederik de Haas <didi.debian@cknow.org>
+>> Cc: stable@vger.kernel.org
+>> Fixes: aefd80307a05 ("kbuild: refactor Makefile.dtbinst more")
+>> Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+>> ---
+>> 
+>> Notes:
+>>     Changes in v2:
+>>       - Improved the patch description, to include additional details 
+>> and
+>>         to address the patch submission issues pointed out by Greg K-H 
+>> [4]
+>>       - No changes were made to the patch itself
+>> 
+>>     Link to v1: 
+>> https://lore.kernel.org/linux-kbuild/ae087ef1715142f606ba6477ace3e4111972cf8b.1717961381.git.dsimic@manjaro.org/T/#u
+>> 
+>>     [4] 
+>> https://lore.kernel.org/linux-kbuild/2024061006-ladylike-paving-a36b@gregkh/
+>> 
+>>  scripts/Makefile.dtbinst | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>> 
+>> diff --git a/scripts/Makefile.dtbinst b/scripts/Makefile.dtbinst
+>> index 67956f6496a5..9d920419a62c 100644
+>> --- a/scripts/Makefile.dtbinst
+>> +++ b/scripts/Makefile.dtbinst
+>> @@ -17,7 +17,7 @@ include $(srctree)/scripts/Kbuild.include
+>>  dst := $(INSTALL_DTBS_PATH)
+>> 
+>>  quiet_cmd_dtb_install = INSTALL $@
+>> -      cmd_dtb_install = install -D $< $@
+>> +      cmd_dtb_install = install -D -m 0644 $< $@
+>> 
+>>  $(dst)/%: $(obj)/%
+>>         $(call cmd,dtb_install)
 
