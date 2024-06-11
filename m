@@ -1,192 +1,139 @@
-Return-Path: <stable+bounces-50165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F01903F02
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 16:42:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD61903F4C
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 16:55:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4F731C22705
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 14:42:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DF7DB23400
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 14:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0030817D8A4;
-	Tue, 11 Jun 2024 14:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933D911720;
+	Tue, 11 Jun 2024 14:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NmNFzDOF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9B05336D;
-	Tue, 11 Jun 2024 14:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72D11C6AE
+	for <stable@vger.kernel.org>; Tue, 11 Jun 2024 14:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718116951; cv=none; b=vESlw8VKDI2xpDqcbRjNecvsV/1Ei2wCJNN6koLHqFZqHhBSflr5p6DzfyhYiSuYSnjy2WYTAOOYNOdFZ4ocyrlqgs4CzYH0EKyKG+DoKoXCsWEexHsW7Tk85wifJ/crd8rptMMQhg2XLQ63iGNMP0/IDPlNWWcM+hvAy4p5Ghc=
+	t=1718117734; cv=none; b=WqxGDFVaOmsXTlYorWi8Wx1jlKox8DBoxe831Q1CyJ1QqyTYbQ9sVWiItsyHmpaM0auMJXqrNmnUOzk6HIsUOAZMd/7HqtQKIyRfLhBazGJZ7i/XP9KMmfXeK0CMersCnFh9HFgTKFjnpsyPhjPsGUhzOFh2xGOMSpmWddbRu6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718116951; c=relaxed/simple;
-	bh=jboeQ8nuXofiKGnAVVqFgVrGBESzCeHoA1Ouj+vGIOs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XwSvD5Nb6ygoPXP0jMQ+kIjfUB2L9uwwKJeh4YePOkyYcoILp2ZTM9NcoaowwwHm9GuJXgTSiT35vCZgl4i+890yl6dICJQiENfBHhiLTG47DwfsEDYu/Bsq5yS2qSfi2LB+NCB1+GWBrYx1FwUI4PbsHP6t8F2P3Bs23NGd1YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-6c53a315c6eso4301057a12.3;
-        Tue, 11 Jun 2024 07:42:30 -0700 (PDT)
+	s=arc-20240116; t=1718117734; c=relaxed/simple;
+	bh=f6Q3qEkJz+8prAqwo+YT+sHWBk2z/q9w7kLssxRRdqc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=k506vSU/V0UbkDC6Qh8m2+7wKplH0AW8RKCw4F5sc81uHF097LT2Xt47jQiWeBHo9pflAPBnPy2QGnneyMfuzQu0k5l5oj76rql9qv6QYfNJlSdQgFSzbECtinwtPOiUgU9Ol+U0RqLFsFRtIUHgNqGpb7oq7dGqui4oYMcs2/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joychakr.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NmNFzDOF; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joychakr.bounces.google.com
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-df78acd5bbbso10070374276.1
+        for <stable@vger.kernel.org>; Tue, 11 Jun 2024 07:55:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1718117732; x=1718722532; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MTug23NVW5smTBIbInLHVPug/iFJLDfAzzZ2mui8rNM=;
+        b=NmNFzDOF59Mxf/KxH596ng7n/MjhJGfVV+hsIOmeZ03noz459cOeS7uHb3FLiMY8a2
+         RGXkhxnoPns6K/cQ9W9rvjhQRcqrzxwvfhAUWDHLrADaVL+utcVCKCFQJfv5c0slTuX6
+         SooQtrwpEiwWx7pwHqtlHZtwUgEt9PviwLr/QRLRuiFv1y+VCgqF03lDjfhxMOW4wFN3
+         D02yuH1bGzXyL5w78zSTvs+D5MELpGAMqoQ8oJR7GWla0k7dl6TM6Qc49u8alQgWUD/I
+         l+CMjp5cinPwztoLFWFiR9zz9XHhn4hebhbX83IsyPPtRQhlEw+bJf0xjREbNeDrkvHr
+         cFlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718116949; x=1718721749;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9KDw44L8SS8YIgF73KlJ2tVSxG5HB3488LWyU9PuNc0=;
-        b=d2bW/Xaxw3H8/gIs+n5ONYYE81+z+/c0hi5bD1pz1K8HEvxZmJIFivVXPRVkpSqrU+
-         Kyvih+H43fd8vRjCc+e2lZr503GIrseCaDA+eLw0C7nvKYvLMEdpRoQk4hiTXRcjyQgo
-         rKqLNPxZpiOJwtnHurg7fJucRTMdngZr9xe/c5c7qh7kzeY+SNtKeNukiOqLEmcCrHWa
-         4wzMsRSkunooMyoo4JGkVzsfGYdUlTkEd6GqBxInr9YD/zxQvPXbQ0qKjIw0hwecIen2
-         7j5W291fkw1H55M8WKoOFNxAcN3fYygAUjayiIBc7/qqERtxWK1erBHkrnigrAE6umqO
-         nu8A==
-X-Forwarded-Encrypted: i=1; AJvYcCV2mKr/0/wIHJFEA8buU5LacdBYMsQwap4RCRbhJzjvZdvPR0R72Am1TUaqUvGQYa+Lm4cdXckTWqfOwHiKqx61586+aP/u
-X-Gm-Message-State: AOJu0Yx3GtHVwMMZT1wSRJmrVDOTXbamy2iu2fJKQb3U6coo0fmQEr8m
-	Y9TW+jh1Xbo2CZgRQXl7bu/wsIo3YdfJ/JOYLq8mKqE4ACjjMKohL73wZA==
-X-Google-Smtp-Source: AGHT+IHK7cBj6XJKH7EDR3Yu8OKQ6czBvrr+yRC2WQyOtdhqUWeL2K65L0YWR04/4toBOj0dXPHOmA==
-X-Received: by 2002:a05:6a21:1518:b0:1af:bd03:3222 with SMTP id adf61e73a8af0-1b2f9c89fd2mr14256522637.45.1718116949331;
-        Tue, 11 Jun 2024 07:42:29 -0700 (PDT)
-Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70598c98443sm3424679b3a.180.2024.06.11.07.42.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jun 2024 07:42:29 -0700 (PDT)
-From: Namjae Jeon <linkinjeon@kernel.org>
-To: linux-cifs@vger.kernel.org
-Cc: smfrench@gmail.com,
-	senozhatsky@chromium.org,
-	tom@talpey.com,
-	atteh.mailbox@gmail.com,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	stable@vger.kernel.org,
-	Wang Zhaolong <wangzhaolong1@huawei.com>
-Subject: [PATCH] ksmbd: fix missing use of get_write in in smb2_set_ea()
-Date: Tue, 11 Jun 2024 23:41:59 +0900
-Message-Id: <20240611144200.22118-1-linkinjeon@kernel.org>
-X-Mailer: git-send-email 2.25.1
+        d=1e100.net; s=20230601; t=1718117732; x=1718722532;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MTug23NVW5smTBIbInLHVPug/iFJLDfAzzZ2mui8rNM=;
+        b=nSXJ5daVySirK7zYHDl9CitqNSIiWGNJRdDvT61e6YHCZsf3WbTi2n7TYNTgOw8FaK
+         PFrAd7EKobhwRcMGm+7ccxUp6wcr/WTiKI8JrHBxeqcpwARwYSvF/haVOJQEWl7sNQmo
+         0a6qk65XHW+gCya8XZUagGvXQpy6i8WSnBsfYp8udDPy51Jz27t8ZsgFZDVQ5mp4lNvo
+         CQqk9Ycx/e4toYIGwaxPp5jplsLVv8DrkInX1nKzSHufG1mf+2bXMfW9KxT9i+ZbxLiB
+         vcYwMWCOF0j/rSYchT4OVEnzRw054e7GcZZhA4hvPr/+ZrCnSft37RTeGWLqqFGH8/xe
+         2gww==
+X-Forwarded-Encrypted: i=1; AJvYcCWcreoGu2rBuvbh2wSUZ9mhkmx6VBmGuOssyF+rVZLAC1toL/pBzKJgdn1rJjnXxd8Dyg0CNQSQaUqSntn9mmuZLxUa6YJR
+X-Gm-Message-State: AOJu0Yw0/sKGYlrXZKk5/N8krqOtKFH51xZuqVOwTYDLhpR1QWktKHEH
+	qUFEDfP5K5LOw9WVYDArdpwTuT4VqI6Z0iwjBz60oB6p1SV5oSFRiSpkFe8Xtwl+tzAAxWKyVXQ
+	IYKjeIY94uQ==
+X-Google-Smtp-Source: AGHT+IHiOkeOvIjfZ6wUrcER+iWZsILYAZCJ9J9uHIeGqPk6NP5zJj3D5rPgY6hwnMYRfIhfkqi1mMAvYXYIig==
+X-Received: from joychakr.c.googlers.com ([fda3:e722:ac3:cc00:4f:4b78:c0a8:6ea])
+ (user=joychakr job=sendgmr) by 2002:a05:6902:1207:b0:dfb:168d:c02e with SMTP
+ id 3f1490d57ef6-dfb168dc4e9mr780657276.3.1718117731956; Tue, 11 Jun 2024
+ 07:55:31 -0700 (PDT)
+Date: Tue, 11 Jun 2024 14:55:24 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.2.505.gda0bf45e8d-goog
+Message-ID: <20240611145524.1022656-1-joychakr@google.com>
+Subject: [PATCH] nvmem: meson-efuse: Fix return value of nvmem callbacks
+From: Joy Chakraborty <joychakr@google.com>
+To: Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dan Carpenter <dan.carpenter@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Joy Chakraborty <joychakr@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Fix an issue where get_write is not used in smb2_set_ea().
+Read/write callbacks registered with nvmem core expect 0 to be returned
+on success and a negative value to be returned on failure.
 
-Fixes: 6fc0a265e1b9 ("ksmbd: fix potential circular locking issue in smb2_set_ea()")
+meson_efuse_read() and meson_efuse_write() call into
+meson_sm_call_read() and meson_sm_call_write() respectively which return
+the number of bytes read or written on success as per their api
+description.
+
+Fix to return error if meson_sm_call_read()/meson_sm_call_write()
+returns an error else return 0.
+
+Fixes: a29a63bdaf6f ("nvmem: meson-efuse: simplify read callback")
 Cc: stable@vger.kernel.org
-Reported-by: Wang Zhaolong <wangzhaolong1@huawei.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Joy Chakraborty <joychakr@google.com>
 ---
- fs/smb/server/smb2pdu.c   |  7 ++++---
- fs/smb/server/vfs.c       | 17 +++++++++++------
- fs/smb/server/vfs.h       |  3 ++-
- fs/smb/server/vfs_cache.c |  3 ++-
- 4 files changed, 19 insertions(+), 11 deletions(-)
+ drivers/nvmem/meson-efuse.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 8bcede718c21..63a41193f6e6 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2367,7 +2367,8 @@ static int smb2_set_ea(struct smb2_ea_info *eabuf, unsigned int buf_len,
- 			if (rc > 0) {
- 				rc = ksmbd_vfs_remove_xattr(idmap,
- 							    path,
--							    attr_name);
-+							    attr_name,
-+							    get_write);
- 
- 				if (rc < 0) {
- 					ksmbd_debug(SMB,
-@@ -2382,7 +2383,7 @@ static int smb2_set_ea(struct smb2_ea_info *eabuf, unsigned int buf_len,
- 		} else {
- 			rc = ksmbd_vfs_setxattr(idmap, path, attr_name, value,
- 						le16_to_cpu(eabuf->EaValueLength),
--						0, true);
-+						0, get_write);
- 			if (rc < 0) {
- 				ksmbd_debug(SMB,
- 					    "ksmbd_vfs_setxattr is failed(%d)\n",
-@@ -2474,7 +2475,7 @@ static int smb2_remove_smb_xattrs(const struct path *path)
- 		    !strncmp(&name[XATTR_USER_PREFIX_LEN], STREAM_PREFIX,
- 			     STREAM_PREFIX_LEN)) {
- 			err = ksmbd_vfs_remove_xattr(idmap, path,
--						     name);
-+						     name, true);
- 			if (err)
- 				ksmbd_debug(SMB, "remove xattr failed : %s\n",
- 					    name);
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index 51b1b0bed616..9e859ba010cf 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -1058,16 +1058,21 @@ int ksmbd_vfs_fqar_lseek(struct ksmbd_file *fp, loff_t start, loff_t length,
- }
- 
- int ksmbd_vfs_remove_xattr(struct mnt_idmap *idmap,
--			   const struct path *path, char *attr_name)
-+			   const struct path *path, char *attr_name,
-+			   bool get_write)
+diff --git a/drivers/nvmem/meson-efuse.c b/drivers/nvmem/meson-efuse.c
+index 52ed9a62ca5b..d7f9ac99a212 100644
+--- a/drivers/nvmem/meson-efuse.c
++++ b/drivers/nvmem/meson-efuse.c
+@@ -18,18 +18,24 @@ static int meson_efuse_read(void *context, unsigned int offset,
+ 			    void *val, size_t bytes)
  {
- 	int err;
+ 	struct meson_sm_firmware *fw = context;
++	int ret;
  
--	err = mnt_want_write(path->mnt);
--	if (err)
--		return err;
-+	if (get_write == true) {
-+		err = mnt_want_write(path->mnt);
-+		if (err)
-+			return err;
-+	}
- 
- 	err = vfs_removexattr(idmap, path->dentry, attr_name);
--	mnt_drop_write(path->mnt);
+-	return meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
+-				  bytes, 0, 0, 0);
++	ret = meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
++				 bytes, 0, 0, 0);
 +
-+	if (get_write == true)
-+		mnt_drop_write(path->mnt);
- 
- 	return err;
++	return ret < 0 ? ret : 0;
  }
-@@ -1380,7 +1385,7 @@ int ksmbd_vfs_remove_sd_xattrs(struct mnt_idmap *idmap, const struct path *path)
- 		ksmbd_debug(SMB, "%s, len %zd\n", name, strlen(name));
  
- 		if (!strncmp(name, XATTR_NAME_SD, XATTR_NAME_SD_LEN)) {
--			err = ksmbd_vfs_remove_xattr(idmap, path, name);
-+			err = ksmbd_vfs_remove_xattr(idmap, path, name, true);
- 			if (err)
- 				ksmbd_debug(SMB, "remove xattr failed : %s\n", name);
- 		}
-diff --git a/fs/smb/server/vfs.h b/fs/smb/server/vfs.h
-index cfe1c8092f23..cb76f4b5bafe 100644
---- a/fs/smb/server/vfs.h
-+++ b/fs/smb/server/vfs.h
-@@ -114,7 +114,8 @@ int ksmbd_vfs_setxattr(struct mnt_idmap *idmap,
- int ksmbd_vfs_xattr_stream_name(char *stream_name, char **xattr_stream_name,
- 				size_t *xattr_stream_name_size, int s_type);
- int ksmbd_vfs_remove_xattr(struct mnt_idmap *idmap,
--			   const struct path *path, char *attr_name);
-+			   const struct path *path, char *attr_name,
-+			   bool get_write);
- int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
- 			       unsigned int flags, struct path *parent_path,
- 			       struct path *path, bool caseless);
-diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
-index 882a87f9e3ab..3bf1b3fb6ec8 100644
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -262,7 +262,8 @@ static void __ksmbd_inode_close(struct ksmbd_file *fp)
- 		ci->m_flags &= ~S_DEL_ON_CLS_STREAM;
- 		err = ksmbd_vfs_remove_xattr(file_mnt_idmap(filp),
- 					     &filp->f_path,
--					     fp->stream.name);
-+					     fp->stream.name,
-+					     true);
- 		if (err)
- 			pr_err("remove xattr failed : %s\n",
- 			       fp->stream.name);
+ static int meson_efuse_write(void *context, unsigned int offset,
+ 			     void *val, size_t bytes)
+ {
+ 	struct meson_sm_firmware *fw = context;
++	int ret;
++
++	ret = meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
++				  bytes, 0, 0, 0);
+ 
+-	return meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
+-				   bytes, 0, 0, 0);
++	return ret < 0 ? ret : 0;
+ }
+ 
+ static const struct of_device_id meson_efuse_match[] = {
 -- 
-2.25.1
+2.45.2.505.gda0bf45e8d-goog
 
 
