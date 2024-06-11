@@ -1,88 +1,97 @@
-Return-Path: <stable+bounces-50138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A43B903388
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 09:27:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1A59036D8
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 10:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49E4E1C2413C
-	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 07:27:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5BA628A6EB
+	for <lists+stable@lfdr.de>; Tue, 11 Jun 2024 08:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8228B15AAC6;
-	Tue, 11 Jun 2024 07:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA3917557C;
+	Tue, 11 Jun 2024 08:41:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from er-systems.de (er-systems.de [162.55.144.138])
+Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E051E52F
-	for <stable@vger.kernel.org>; Tue, 11 Jun 2024 07:27:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.55.144.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B156617556F;
+	Tue, 11 Jun 2024 08:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718090842; cv=none; b=QDpO9dInjzY1mbfrLmMpdpBrFDtGvrxlsbIhKdrnDwERT8NCSQZ/NBtKaDHTU/ajGBmtfhuuICMYzu833fNpV1EWL6gfPEIV0M3rsUF+6CYpBWRJoRVnVLAS/+kk04N0Xa17iViF3R/zw8EUTQ4M0bbKVPHhQm2q1WEWt2PpPiU=
+	t=1718095289; cv=none; b=mvnLt07Z/tErJ5WbK3DdZt0l7BV8ZSsPzHYuLYJ+OhJSKRLrWsMGMRPKcfcBpN6WBgzrrRtyTZg305NAW1rdAIJedGavxsoWvUYRKa5l32DUXC3TbrDIFxvr33idLiuL8DmpbbsQeuCA7NHFe7cWwXRmwEVNlS1NbXs000Y0TQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718090842; c=relaxed/simple;
-	bh=5bxCG3+gotls8eatZ7xZptSxfOj7FP4AQyfvwzRIafk=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=gVfTOLnOFkZFeqRBH/C7fngRx5wzqH/p4v7IhWsl02RDN7ldd+JMNdsKX/9Jnef9TWF9028WpcIHE34sXAaligtwGPjV4+hrWmZdt0ewqZhJ6+8JZmc29j8+QiPneVYsdaJ6K9+9YfgToD+HGrAvrn9RjHnINwebEPICefgiVr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lio96.de; spf=pass smtp.mailfrom=lio96.de; arc=none smtp.client-ip=162.55.144.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lio96.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lio96.de
-Received: from localhost.localdomain (localhost [127.0.0.1])
-	by er-systems.de (Postfix) with ESMTP id BB8E7ECDAE5;
-	Tue, 11 Jun 2024 09:20:35 +0200 (CEST)
-X-Spam-Level: 
-Received: from localhost (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by er-systems.de (Postfix) with ESMTPS id 976C0ECDAE2;
-	Tue, 11 Jun 2024 09:20:35 +0200 (CEST)
-Date: Tue, 11 Jun 2024 09:20:33 +0200 (CEST)
-From: Thomas Voegtle <tv@lio96.de>
-To: stable@vger.kernel.org, David Howells <dhowells@redhat.com>, 
-    Steve French <stfrench@microsoft.com>
-Subject: 6.6.y: cifs broken since 6.6.23 writing big files with vers=1.0 and
- 2.0
-Message-ID: <e519a2f6-eb49-e7e6-ab2e-beabc6cad090@lio96.de>
+	s=arc-20240116; t=1718095289; c=relaxed/simple;
+	bh=ocsjki62tMXIwEMfkAUu6z5CKETwhLUNFOD++UH5k8E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bO1kncCcy5LtjktMyK7pJI3CUB/m0sqFMBSH6A9MgOHFWQ8KQm8zk3doEaddlOLJjMWEcSIDralGL+IVnmzBr4aX7E+/onfjGWGdIlbVqaGNXtGrwJRAqVDW70EhzOR3DVIvb+9V7qaj6qqmVrtlsyE85KjZWSdJwr7V0MD/Og8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
+Received: from [78.30.37.63] (port=40150 helo=gnumonks.org)
+	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <pablo@gnumonks.org>)
+	id 1sGx4B-001zqS-U7; Tue, 11 Jun 2024 10:41:22 +0200
+Date: Tue, 11 Jun 2024 10:41:19 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: netfilter-devel@vger.kernel.org,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Vegard Nossum <vegard.nossum@oracle.com>
+Subject: Re: Testing stable backports for netfilter
+Message-ID: <ZmgNr0y2gCR4YW_K@calendula>
+References: <652cad2e-2857-4374-a597-a3337f9330f0@oracle.com>
+ <Zmd3XaiC_GiCakyf@calendula>
+ <c3789a4c-f262-444b-8234-8431cded548b@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset=US-ASCII
-X-Virus-Status: No
-X-Virus-Checker-Version: clamassassin 1.2.4 with clamdscan / ClamAV 0.103.11/27302/Mon Jun 10 10:25:43 2024
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <c3789a4c-f262-444b-8234-8431cded548b@oracle.com>
+X-Spam-Score: -1.8 (-)
 
+On Tue, Jun 11, 2024 at 11:28:29AM +0530, Harshit Mogalapalli wrote:
+> On 11/06/24 03:29, Pablo Neira Ayuso wrote:
+> > On Mon, Jun 10, 2024 at 11:51:53PM +0530, Harshit Mogalapalli wrote:
+> > > Hello netfilter developers,
+> > > 
+> > > Do we have any tests that we could run before sending a stable backport in
+> > > netfilter/ subsystem to stable@vger ?
+> > > 
+> > > Let us say we have a CVE fix which is only backported till 5.10.y but it is
+> > > needed is 5.4.y and 4.19.y, the backport might need to easy to make, just
+> > > fixing some conflicts due to contextual changes or missing commits.
+> > 
+> > Which one in particular is missing?
+> 
+> I was planning to backport the fix for CVE-2023-52628 onto 5.4.y and 4.19.y
+> trees.
+> 
+> lts-5.10       : v5.10.198             - a7d86a77c33b netfilter: nftables:
+> exthdr: fix 4-byte stack OOB write
+>   lts-5.15       : v5.15.132             - 1ad7b189cc14 netfilter: nftables:
+> exthdr: fix 4-byte stack OOB write
+>   lts-6.1        : v6.1.54               - d9ebfc0f2137 netfilter: nftables:
+>
+> exthdr: fix 4-byte stack OOB write
+>   mainline       : v6.6-rc1              - fd94d9dadee5 netfilter: nftables:
+> exthdr: fix 4-byte stack OOB write
 
-Hello,
+This is information is incorrect.
 
-a machine booted with Linux 6.6.23 up to 6.6.32:
+This fix is already in 6.1 -stable.
 
-writing /dev/zero with dd on a mounted cifs share with vers=1.0 or
-vers=2.0 slows down drastically in my setup after writing approx. 46GB of
-data.
+commit d9ebfc0f21377690837ebbd119e679243e0099cc
+Author: Florian Westphal <fw@strlen.de>
+Date:   Tue Sep 5 23:13:56 2023 +0200
 
-The whole machine gets unresponsive as it was under very high IO load. It 
-pings but opening a new ssh session needs too much time. I can stop the dd 
-(ctrl-c) and after a few minutes the machine is fine again.
+    netfilter: nftables: exthdr: fix 4-byte stack OOB write
 
-cifs with vers=3.1.1 seems to be fine with 6.6.32.
-Linux 6.10-rc3 is fine with vers=1.0 and vers=2.0.
-
-Bisected down to:
-
-cifs-fix-writeback-data-corruption.patch
-which is:
-Upstream commit f3dc1bdb6b0b0693562c7c54a6c28bafa608ba3c
-and
-linux-stable commit e45deec35bf7f1f4f992a707b2d04a8c162f2240
-
-Reverting this patch on 6.6.32 fixes the problem for me.
-
-
-       Thomas
-
-
+    [ Upstream commit fd94d9dadee58e09b49075240fe83423eb1dcd36 ]
 
