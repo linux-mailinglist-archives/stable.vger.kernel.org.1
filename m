@@ -1,115 +1,99 @@
-Return-Path: <stable+bounces-50312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC39C905A5B
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 20:08:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99908905A5F
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 20:09:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46DF5B20F05
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 18:08:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22602B20DEB
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 18:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836681822FE;
-	Wed, 12 Jun 2024 18:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="vGmSgnE7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8051822F3;
+	Wed, 12 Jun 2024 18:09:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [217.72.192.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B620117DE0F;
-	Wed, 12 Jun 2024 18:08:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 326A717DE0F
+	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 18:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.131.102.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718215704; cv=none; b=EIGQe55hQ2VDLlwGWX2lMhVWAwZuOANmnUGbCxix7GsnupQcfdubKV6RUEkBWJ+NgPCOcw0ib2yKRC2YPh7WSVbJHfNtMSB+Q34msyoUa1U/6Ykdx1oHJCWEJpxTHDwbQH+kR1s5fIv2cz7rp25cA1An2tvTjJ6p9MlF9C5htOk=
+	t=1718215740; cv=none; b=V9p8Rbgv+vbYhFFRWt9DJDBTuBtTvdwJD+ykA5Wz6jUCEq6Xkt7HsuwbHxXoxKxbvYGFOPnHPlZmmZNvFC4S0hSzkiU/YdiOLmVyzex8Kopp690c8/z2BRKn6QEi0XuBQJ8g7tk8EddMmPnoWCnzeJf1WgfQp9nsbqW91Ih6zMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718215704; c=relaxed/simple;
-	bh=+upB2qwjfiYh/h4iqILkWX9TtN2BUxazXbJYqgaJFwU=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=rXF33auCbRBG0flsVP3tw/lw3F8BoimfYIgvw4MwBUZje95S6wSVrvIEYx6I1HjhRu57V+uYh6tD5ZbXUeT5ooVg8r+BpcUJSpgthev/XucBxgcGIrnWWoRUZZ80+RLZX0ruynSI6lEjB8IXvcivp5rMFVKhkjIhv7xJUu9Mk40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=vGmSgnE7; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1718215688; x=1718820488; i=markus.elfring@web.de;
-	bh=vR1DLMpeZId+aNSKRhK1IPZHvpJqGmjpsDvOr4TyoSw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=vGmSgnE7KNFaaX50dHu4QgjuTFa1UNZKTJ73DLJVwXQqNTBvKW3QWPrkrehohXaw
-	 qSWCOXbzw0BKaoC3MGuH8hUZ0UJmIDxHoEpaB6zrfHemuARQDJpq2zsbZsNQxW89z
-	 MH8vV+QuM/N/xjn8JvJ33g9FkryJr5SF1Xk9zwVWw0YMKEkXARHxVqmILoPoOMMxM
-	 8qREhN6s/WfN35OLt6wts5zXzufGvDycT6gTCNW7xMy2PqQXg8dWKH77SDOvoARc0
-	 gfWGNegVeYSHLPZuJ6aPmcEALmom/Ua8ApffhaO18xfhsazbPXIihDWwRgrIhGP+n
-	 bo11IHtBlwqeBSa/6w==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1N0Zo6-1seMZA0zSO-012ymy; Wed, 12
- Jun 2024 20:08:08 +0200
-Message-ID: <9bf241c5-68af-4471-a159-1c673243d80d@web.de>
-Date: Wed, 12 Jun 2024 20:08:04 +0200
+	s=arc-20240116; t=1718215740; c=relaxed/simple;
+	bh=kJwyERfwNOZD+GZqO0LbVnEX+kZVoxa44FxB3xy8SFY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RVj99nZIe9CUZnDwegrtQaA/RInJrgAvCkKHGLtYi63H6emjiIVC1qvpcGA5eaij4+Y5Y9EYCF3H94U7hFkrH4H/V6vwQWAX9t11qeoZPLuewVmo7QuJh35mtpa3XGD7JiTqQCJVGHj+JjQneYDHBjqLod06rcaf+6z8P3nvE8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=netrider.rowland.org; arc=none smtp.client-ip=192.131.102.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
+Received: (qmail 232593 invoked by uid 1000); 12 Jun 2024 14:08:50 -0400
+Date: Wed, 12 Jun 2024 14:08:50 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+  linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
+  Joao Machado <jocrismachado@gmail.com>,
+  Andy Shevchenko <andy.shevchenko@gmail.com>,
+  Christian Heusel <christian@heusel.eu>, stable@vger.kernel.org,
+  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 2/2] scsi: core: Do not query IO hints for USB devices
+Message-ID: <de4492b5-a681-42bf-99d7-e9ba30dabeb2@rowland.harvard.edu>
+References: <20240612165249.2671204-1-bvanassche@acm.org>
+ <20240612165249.2671204-3-bvanassche@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Hongchen Zhang <zhanghongchen@loongson.cn>,
- Huacai Chen <chenhuacai@loongson.cn>, linux-pci@vger.kernel.org,
- loongarch@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-References: <20240605075419.3973256-1-zhanghongchen@loongson.cn>
-Subject: Re: [PATCH v2] PCI: use local_pci_probe when best selected cpu is
- offline
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240605075419.3973256-1-zhanghongchen@loongson.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:k9f//JL/SkQ4XCesVEpYNO1oXTOIW7yIhuBMzW/ZwJiC5PbBIHZ
- jGaK1lryYCkyWlbYdR/H9NQiYKJ0rWYdQS2r7F2pdSxJluAmVmfg5+CwljOecKDXyHG3ZD/
- rwLRIDRJd7iTv2CMk9rrdX/r+yzM34yWTSZezzo2tnubf/rk5F+CTfkF/lShTX0TetNFuTs
- nWULOH+YX1KshtFg1X0rA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:VzkNTr5/WFk=;Neu03KRfGdmlYDdTwUZUknHgAxm
- yBHsmeapQ9/PZx9CLdBka0+SdAFM3QBDDn64NJ29blxmy/Sb+I5qHlQpMb7c5xehkKup0VzDF
- AseCGQVa1YHeK11Dgj2pJ9kZof4AH9WBtDMNLZBMA057yGO8Z5bBdh+H9ME7qXmbs0h+iCnS6
- LzO4BhFbF6ftjidhy1YXVsfOf5cx+eb4XJcpjt+aJ0r2TX29l2msAovwIfIBspdgfwUrM4f97
- 82+scXnURXjVm8aPWJgINS5w+oe7EFCIXFTbe1qULVodV/rDIjs+ZSpR5AeVLjizS0BJrQXV0
- 9AUefSfvLXXWJiLguZgBS7K4jCP7d5HFx0NZzd9zTCUKpwPvx6zWZZp7rXHddMzH+h530XPTV
- R8V3ltV3baiGqdRc32WMqC5hh3adcwMwCKZ9h+TVoBeU9sfGLyqgRC04fyciNGtEMbMWfwlyh
- tyJ2DzmV6/+Ggxnd9mbefGPgw+38DW2NV/zywTlEZEB4xM4EXM2WQgnINHcVS7YuoflTq2JwX
- sqaDzwVGJvY5kSSrwCWf/BThhEjXooKwDUzsCgZ2/QGKOvZifudPUGx6TJYElfN3HkuXYBcFe
- /mvseqKvUguVJjBf8qKcHGxVi0UI6oeP406ntbwwtJyZlOp6SMzIqqzFL31vaDuHt059MS7OB
- r7e+beZEzJLoHqYMjO5D/H7PRSqur4kKO2oVWl2wsiImZaCklHMOBvY+xnsRExjgWsalxNB6v
- JMQLX6Pr6bDLU9xDE6NfpnED33IG0T6LuCf6jeVhP1pZIH23mvb3ZTb56QcDBu5m+hvm6TzV+
- i9Q1jDT1EOqPxm+xE2e63u1J4hnliR45Fy7CZSz8yH99s=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240612165249.2671204-3-bvanassche@acm.org>
 
-=E2=80=A6
-> This can be happen if a node is online while all its CPUs are offline
-> (we can use "maxcpus=3D1" without "nr_cpus=3D1" to reproduce it), Theref=
-ore,
-> in this case, we should call local_pci_probe() instead of work_on_cpu().
+On Wed, Jun 12, 2024 at 09:52:49AM -0700, Bart Van Assche wrote:
+> Recently it was reported that the following USB storage devices are unusable
+> with Linux kernel 6.9:
+> * Kingston DataTraveler G2
+> * Garmin FR35
+> 
+> This is because attempting to read the IO hint VPD page causes these devices
+> to reset. Hence do not read the IO hint VPD page from USB storage devices.
+> 
+> Cc: Alan Stern <stern@rowland.harvard.edu>
+> Cc: linux-usb@vger.kernel.org
+> Cc: Joao Machado <jocrismachado@gmail.com>
+> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Cc: Christian Heusel <christian@heusel.eu>
+> Cc: stable@vger.kernel.org
+> Fixes: 4f53138fffc2 ("scsi: sd: Translate data lifetime information")
+> Reported-by: Joao Machado <jocrismachado@gmail.com>
+> Closes: https://lore.kernel.org/linux-scsi/20240130214911.1863909-1-bvanassche@acm.org/T/#mf4e3410d8f210454d7e4c3d1fb5c0f41e651b85f
+> Tested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Bisected-by: Christian Heusel <christian@heusel.eu>
+> Reported-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Closes: https://lore.kernel.org/linux-scsi/CACLx9VdpUanftfPo2jVAqXdcWe8Y43MsDeZmMPooTzVaVJAh2w@mail.gmail.com/
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> ---
+>  drivers/usb/storage/scsiglue.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/usb/storage/scsiglue.c b/drivers/usb/storage/scsiglue.c
+> index b31464740f6c..9a7185c68872 100644
+> --- a/drivers/usb/storage/scsiglue.c
+> +++ b/drivers/usb/storage/scsiglue.c
+> @@ -79,6 +79,8 @@ static int slave_alloc (struct scsi_device *sdev)
+>  	if (us->protocol == USB_PR_BULK && us->max_lun > 0)
+>  		sdev->sdev_bflags |= BLIST_FORCELUN;
+>  
+> +	sdev->sdev_bflags |= BLIST_SKIP_IO_HINTS;
+> +
+>  	return 0;
+>  }
 
-* Please take text layout concerns a bit better into account also accordin=
-g to
-  the usage of paragraphs.
-  https://elixir.bootlin.com/linux/v6.10-rc3/source/Documentation/process/=
-maintainer-tip.rst#L128
+You might want to do the same thing in uas.c.  I don't know if UAS 
+devices suffer from the same problem, but it wouldn't be surprising if 
+they do.
 
-* Please improve the change description with an imperative wording.
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/submitting-patches.rst?h=3Dv6.10-rc3#n94
-
-* Would you like to add the tag =E2=80=9CFixes=E2=80=9D accordingly?
-
-* How do you think about to specify the name of the affected function
-  in the summary phrase?
-
-
-Regards,
-Markus
+Alan Stern
 
