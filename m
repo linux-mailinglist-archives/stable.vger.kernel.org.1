@@ -1,127 +1,115 @@
-Return-Path: <stable+bounces-50311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33458905A55
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 20:06:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC39C905A5B
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 20:08:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A7851C21488
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 18:06:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46DF5B20F05
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 18:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F851822E8;
-	Wed, 12 Jun 2024 18:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836681822FE;
+	Wed, 12 Jun 2024 18:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2jJIbQOd"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="vGmSgnE7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [217.72.192.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988C21822D5
-	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 18:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B620117DE0F;
+	Wed, 12 Jun 2024 18:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718215563; cv=none; b=TETndGb1jn4rH60Yrn8TV4t7mg+T1PMk3Sd6vEjLoQBDXGn9+LRGS08hhuqYKKveWITiep4K02Ciq9XukRq1aptUbIylu78KJETo8fMSdMPc6YgExZlbY9ezVs77LPAscPiUJlC43cNE9Tix/p10r5MUNxAXxg8kOFA0fZjrz6E=
+	t=1718215704; cv=none; b=EIGQe55hQ2VDLlwGWX2lMhVWAwZuOANmnUGbCxix7GsnupQcfdubKV6RUEkBWJ+NgPCOcw0ib2yKRC2YPh7WSVbJHfNtMSB+Q34msyoUa1U/6Ykdx1oHJCWEJpxTHDwbQH+kR1s5fIv2cz7rp25cA1An2tvTjJ6p9MlF9C5htOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718215563; c=relaxed/simple;
-	bh=Gd82Zk9HO0FaelXqjYb+95hIZHZ1fOFMGTGfcVbJ/Uo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OpNyN20KUkdIrvASUqNyxxMImKUhp0qJMCENIWl9aGH6+QXVKcoALLqLwcwNNi5l7ksT8QXIWYxdJjSy2zPydyEt9Q4adxGCvaQRzlYZKt7Vn+SENy1PvzkQ3+b0l8uM4QaE+1HdWY3TnG4WOE4Lb611u540DpxLZBMlvzhO53I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joychakr.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2jJIbQOd; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joychakr.bounces.google.com
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dfa79b84623so216032276.2
-        for <stable@vger.kernel.org>; Wed, 12 Jun 2024 11:06:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718215560; x=1718820360; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=DK2lnuC9xeLQB13VAfnEGsxTqF4Q5It1ZYUuF9NnW6w=;
-        b=2jJIbQOdVZu4gvWzSQG/Ui3G5YTzOi2GgXJXSTArpPXgoKTcQGl0RXex7RxR5lBZJY
-         qu7IOlPunyFEpKiwHF2XKT88qZQg/z7TW7ABb9t8T/wGvAdGtXHdu4/HcRTAQ9bfWxDl
-         pJdNNrVNdN4AZ6ndwkt5iI298qNkZWWLq3O5ji4dmcwqexwSnjw9N/xl2C167R2Ywp9+
-         n9VAG3BjosAJ1ZyyqYhWBfTIn90Babl6szqTLOzG7M0VPggE6z0LjZqqXlTqXHgblXJ1
-         5kEMUopDx2b0cScKcKIO3pRWl9VZV67Lcw4tPVP/Em8zYpXqbD9YLosVLptOjKWU2lVS
-         I6LQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718215560; x=1718820360;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DK2lnuC9xeLQB13VAfnEGsxTqF4Q5It1ZYUuF9NnW6w=;
-        b=RKi+YSQTrKXVB7b+BS1oQ5tBLPvcrsrmivfi7zh44Q4Gq78kkeCkhzJbxaasQW6Odf
-         XCfkXWwjZvS0W11YrXq8wniT+tebYljX3cXKTeKn6Dxd99S8LfKnpVUqC3oGnb1lxiJK
-         LgKFMGhMfqOzgyWW03NoYxf1bhyhWDHdlbjhGoXO2kEBql1cpjWZjy9HN69/oVsdC1Vi
-         XihaVnvlowPVcrivqJBvDsfVAIiP4fmcNYsFztPdENN48OSrIWMMjk1eYuHgecKByHLY
-         n3RpjSzHL0RU9ij/Qf08R9WjD2kuieEXvbW/xsdst3jfSZFe9LwWpIBKmeYsviRt59+Q
-         gE1A==
-X-Forwarded-Encrypted: i=1; AJvYcCXlFWdS0G+DnDwVncIoNf4mzGOCu3NPqoQPO7CuA6YuG7fBTaAv6OF57op0TPVuCk6DiH1/dF/BiZW4n8J4MKWZKPpwDXFT
-X-Gm-Message-State: AOJu0Yynrxqaw0sI4ae8GbxJRSMKqXLla0Z015EN1mtw6HeTFQXvG8Tm
-	Z2EgskDjL9vIdl3XEej+jdpKz9bIbADsFqoxDtxn440QSyn4/Z8U7gSW/QVA0BqItB2pd255Q1o
-	VViwDQ0kMew==
-X-Google-Smtp-Source: AGHT+IHf2XeMCGmx6fbqkkJUp1H+CkPxzQ7NkEfYAzK80CjQTOiAo90nx+YcVMfx8SJXrPOo4VzjcIJUz4RbCA==
-X-Received: from joychakr.c.googlers.com ([fda3:e722:ac3:cc00:4f:4b78:c0a8:6ea])
- (user=joychakr job=sendgmr) by 2002:a25:aba8:0:b0:de6:bf2:b026 with SMTP id
- 3f1490d57ef6-dfe690fbcbfmr93737276.13.1718215560613; Wed, 12 Jun 2024
- 11:06:00 -0700 (PDT)
-Date: Wed, 12 Jun 2024 18:05:54 +0000
+	s=arc-20240116; t=1718215704; c=relaxed/simple;
+	bh=+upB2qwjfiYh/h4iqILkWX9TtN2BUxazXbJYqgaJFwU=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=rXF33auCbRBG0flsVP3tw/lw3F8BoimfYIgvw4MwBUZje95S6wSVrvIEYx6I1HjhRu57V+uYh6tD5ZbXUeT5ooVg8r+BpcUJSpgthev/XucBxgcGIrnWWoRUZZ80+RLZX0ruynSI6lEjB8IXvcivp5rMFVKhkjIhv7xJUu9Mk40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=vGmSgnE7; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1718215688; x=1718820488; i=markus.elfring@web.de;
+	bh=vR1DLMpeZId+aNSKRhK1IPZHvpJqGmjpsDvOr4TyoSw=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=vGmSgnE7KNFaaX50dHu4QgjuTFa1UNZKTJ73DLJVwXQqNTBvKW3QWPrkrehohXaw
+	 qSWCOXbzw0BKaoC3MGuH8hUZ0UJmIDxHoEpaB6zrfHemuARQDJpq2zsbZsNQxW89z
+	 MH8vV+QuM/N/xjn8JvJ33g9FkryJr5SF1Xk9zwVWw0YMKEkXARHxVqmILoPoOMMxM
+	 8qREhN6s/WfN35OLt6wts5zXzufGvDycT6gTCNW7xMy2PqQXg8dWKH77SDOvoARc0
+	 gfWGNegVeYSHLPZuJ6aPmcEALmom/Ua8ApffhaO18xfhsazbPXIihDWwRgrIhGP+n
+	 bo11IHtBlwqeBSa/6w==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N0Zo6-1seMZA0zSO-012ymy; Wed, 12
+ Jun 2024 20:08:08 +0200
+Message-ID: <9bf241c5-68af-4471-a159-1c673243d80d@web.de>
+Date: Wed, 12 Jun 2024 20:08:04 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.45.2.505.gda0bf45e8d-goog
-Message-ID: <20240612180554.1328409-1-joychakr@google.com>
-Subject: [PATCH] rtc: abx80x: Fix return value of nvmem callback on read
-From: Joy Chakraborty <joychakr@google.com>
-To: Sean Anderson <sean.anderson@seco.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Dan Carpenter <dan.carpenter@linaro.org>
-Cc: linux-rtc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Joy Chakraborty <joychakr@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Hongchen Zhang <zhanghongchen@loongson.cn>,
+ Huacai Chen <chenhuacai@loongson.cn>, linux-pci@vger.kernel.org,
+ loongarch@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+References: <20240605075419.3973256-1-zhanghongchen@loongson.cn>
+Subject: Re: [PATCH v2] PCI: use local_pci_probe when best selected cpu is
+ offline
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240605075419.3973256-1-zhanghongchen@loongson.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:k9f//JL/SkQ4XCesVEpYNO1oXTOIW7yIhuBMzW/ZwJiC5PbBIHZ
+ jGaK1lryYCkyWlbYdR/H9NQiYKJ0rWYdQS2r7F2pdSxJluAmVmfg5+CwljOecKDXyHG3ZD/
+ rwLRIDRJd7iTv2CMk9rrdX/r+yzM34yWTSZezzo2tnubf/rk5F+CTfkF/lShTX0TetNFuTs
+ nWULOH+YX1KshtFg1X0rA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:VzkNTr5/WFk=;Neu03KRfGdmlYDdTwUZUknHgAxm
+ yBHsmeapQ9/PZx9CLdBka0+SdAFM3QBDDn64NJ29blxmy/Sb+I5qHlQpMb7c5xehkKup0VzDF
+ AseCGQVa1YHeK11Dgj2pJ9kZof4AH9WBtDMNLZBMA057yGO8Z5bBdh+H9ME7qXmbs0h+iCnS6
+ LzO4BhFbF6ftjidhy1YXVsfOf5cx+eb4XJcpjt+aJ0r2TX29l2msAovwIfIBspdgfwUrM4f97
+ 82+scXnURXjVm8aPWJgINS5w+oe7EFCIXFTbe1qULVodV/rDIjs+ZSpR5AeVLjizS0BJrQXV0
+ 9AUefSfvLXXWJiLguZgBS7K4jCP7d5HFx0NZzd9zTCUKpwPvx6zWZZp7rXHddMzH+h530XPTV
+ R8V3ltV3baiGqdRc32WMqC5hh3adcwMwCKZ9h+TVoBeU9sfGLyqgRC04fyciNGtEMbMWfwlyh
+ tyJ2DzmV6/+Ggxnd9mbefGPgw+38DW2NV/zywTlEZEB4xM4EXM2WQgnINHcVS7YuoflTq2JwX
+ sqaDzwVGJvY5kSSrwCWf/BThhEjXooKwDUzsCgZ2/QGKOvZifudPUGx6TJYElfN3HkuXYBcFe
+ /mvseqKvUguVJjBf8qKcHGxVi0UI6oeP406ntbwwtJyZlOp6SMzIqqzFL31vaDuHt059MS7OB
+ r7e+beZEzJLoHqYMjO5D/H7PRSqur4kKO2oVWl2wsiImZaCklHMOBvY+xnsRExjgWsalxNB6v
+ JMQLX6Pr6bDLU9xDE6NfpnED33IG0T6LuCf6jeVhP1pZIH23mvb3ZTb56QcDBu5m+hvm6TzV+
+ i9Q1jDT1EOqPxm+xE2e63u1J4hnliR45Fy7CZSz8yH99s=
 
-Read callbacks registered with nvmem core expect 0 to be returned on
-success and a negative value to be returned on failure.
+=E2=80=A6
+> This can be happen if a node is online while all its CPUs are offline
+> (we can use "maxcpus=3D1" without "nr_cpus=3D1" to reproduce it), Theref=
+ore,
+> in this case, we should call local_pci_probe() instead of work_on_cpu().
 
-abx80x_nvmem_xfer() on read calls i2c_smbus_read_i2c_block_data() which
-returns the number of bytes read on success as per its api description,
-this return value is handled as an error and returned to nvmem even on
-success.
+* Please take text layout concerns a bit better into account also accordin=
+g to
+  the usage of paragraphs.
+  https://elixir.bootlin.com/linux/v6.10-rc3/source/Documentation/process/=
+maintainer-tip.rst#L128
 
-Fix to handle all possible values that would be returned by
-i2c_smbus_read_i2c_block_data().
+* Please improve the change description with an imperative wording.
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/process/submitting-patches.rst?h=3Dv6.10-rc3#n94
 
-Fixes: e90ff8ede777 ("rtc: abx80x: Add nvmem support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joy Chakraborty <joychakr@google.com>
----
- drivers/rtc/rtc-abx80x.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+* Would you like to add the tag =E2=80=9CFixes=E2=80=9D accordingly?
 
-diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
-index fde2b8054c2e..0f5847d1ca2a 100644
---- a/drivers/rtc/rtc-abx80x.c
-+++ b/drivers/rtc/rtc-abx80x.c
-@@ -711,9 +711,16 @@ static int abx80x_nvmem_xfer(struct abx80x_priv *priv, unsigned int offset,
- 		else
- 			ret = i2c_smbus_read_i2c_block_data(priv->client, reg,
- 							    len, val);
--		if (ret)
-+		if (ret < 0)
- 			return ret;
- 
-+		if (!write) {
-+			if (ret)
-+				len = ret;
-+			else
-+				return -EIO;
-+		}
-+
- 		offset += len;
- 		val += len;
- 		bytes -= len;
--- 
-2.45.2.505.gda0bf45e8d-goog
+* How do you think about to specify the name of the affected function
+  in the summary phrase?
 
+
+Regards,
+Markus
 
