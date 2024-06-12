@@ -1,90 +1,112 @@
-Return-Path: <stable+bounces-50201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEEF4904C3D
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 09:01:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B342904C48
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 09:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6581D1F2305B
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 07:01:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DECFC1F22BED
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 07:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB771649BE;
-	Wed, 12 Jun 2024 07:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C12216B72E;
+	Wed, 12 Jun 2024 07:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBFRSogy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD181369BF;
-	Wed, 12 Jun 2024 07:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C6812D1FE;
+	Wed, 12 Jun 2024 07:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718175683; cv=none; b=M//QqlU3NvU4RnS7gZiVYrPIhdAjjNVUYj38dTyfS6uXi+ImIahzdhP6JbO2rWv/PS1zy3fXTG0FpwlA9ELY7p2JgLLLePv1DSdhLfyQEtx95rag+HJyxrec5UX6aPR4malz8J90YAEGpHpyBjwbV/oqXx/tEBcrwSaxika/YFU=
+	t=1718175857; cv=none; b=bQZP/yVlJp8ULaXOz4LhxmDaeB7r0rxqrsoN5uhiWHDrO/Z+qClLCdrHapR6Fett6nMFmoSX+pzW+aQRZnQ6+b2fXeBDKTP1d+ANdr9MvqbiI0VuTAlbdNHtRauo6bandkTsA6ciER9sB4hqzKPeFZOXodZSQM5nqWs44KSnewU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718175683; c=relaxed/simple;
-	bh=byg081w8LScES6hyDS+Ae58c0/R6FGaUJ4LIR59/D+U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dxgDeNHi9JKztiGi43I9xX8IxWlT0z/QFYpn0UqJTKgvZ+t7t7FHkHSLTYUrKEZGofmT+c2x1K5jtBm2lnOXCJlBH6D5awGlINLhHcMDI+6vcgcKZnOtCma0BgCQWh3sqdYBLUnSfrvfuvqExgTHvDnYFwPJgOUIZwDnZct3m5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5E1C3277B;
-	Wed, 12 Jun 2024 07:01:21 +0000 (UTC)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Xuefeng Li <lixuefeng@loongson.cn>,
-	Huacai Chen <chenhuacai@gmail.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	stable@vger.kernel.org,
-	Tianli Xiong <xiongtianli@loongson.cn>
-Subject: [PATCH] irqchip/loongson-liointc: Set different ISRs for different cores
-Date: Wed, 12 Jun 2024 15:01:06 +0800
-Message-ID: <20240612070106.2060334-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1718175857; c=relaxed/simple;
+	bh=xLZJ6yE0Pk1gBmwG99sse973y+wIq4AWyepsiAVNbpU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kUwKL/bLJwklbMHHuN6sTXCkri6YDCnF1E6RVInhdchup95kLmnjc4hufX2WxelU573IaZT5w4qmgV7HEs0dyrdcxPGxfqB1yVSzxlJXhKvIlBP2oBEtRZMZoodBr/wtFC72BD+xE9dpKV5st7vZuCUf1ePEfUA3eX/ghhhhqnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBFRSogy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73AEBC3277B;
+	Wed, 12 Jun 2024 07:04:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718175856;
+	bh=xLZJ6yE0Pk1gBmwG99sse973y+wIq4AWyepsiAVNbpU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HBFRSogy9S64VkYnT3a6jjLvLbDwEg7hWZ2/ZOfcPJbtSwA32P9mZrBmNeeYsh1no
+	 47QDbtBachJfcGtsRPzr0sg7F3l5fgkFL+sQDRBtqbZI95sr3efAoTkr/CGTY9ho4Z
+	 JNWAI9TdUVJeMQco0L6/TtgzTMDykDiXiavLonoM=
+Date: Wed, 12 Jun 2024 09:04:14 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Kuangyi Chiang <ki.chiang65@gmail.com>
+Cc: mathias.nyman@intel.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] xhci: Don't issue Reset Device command to Etron xHCI host
+Message-ID: <2024061257-audacious-usage-67e3@gregkh>
+References: <20240612022256.7365-1-ki.chiang65@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240612022256.7365-1-ki.chiang65@gmail.com>
 
-In the liointc hardware, there are different ISRs for different cores.
-We always use core#0's ISR before but has no problem, it is because the
-interrupts are routed to core#0 by default. If we change the routing,
-we should set correct ISRs for different cores.
+On Wed, Jun 12, 2024 at 10:22:56AM +0800, Kuangyi Chiang wrote:
+> Sometimes hub driver does not recognize USB device that is connected
+> to external USB2.0 Hub when system resumes from S4.
+> 
+> This happens when xHCI driver issue Reset Device command to inform
+> Etron xHCI host that USB device has been reset.
+> 
+> Seems that Etron xHCI host can not perform this command correctly,
+> affecting that USB device.
+> 
+> Instead, to aviod this, xHCI driver should reassign device slot ID
+> by calling xhci_free_dev() and then xhci_alloc_dev(), the effect is
+> the same.
+> 
+> Add XHCI_ETRON_HOST quirk flag to invoke workaround in
+> xhci_discover_or_reset_device().
+> 
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+> ---
+>  drivers/usb/host/xhci-pci.c |  2 ++
+>  drivers/usb/host/xhci.c     | 11 ++++++++++-
+>  drivers/usb/host/xhci.h     |  2 ++
+>  3 files changed, 14 insertions(+), 1 deletion(-)
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Tianli Xiong <xiongtianli@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- drivers/irqchip/irq-loongson-liointc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-loongson-liointc.c b/drivers/irqchip/irq-loongson-liointc.c
-index e4b33aed1c97..7c4fe7ab4b83 100644
---- a/drivers/irqchip/irq-loongson-liointc.c
-+++ b/drivers/irqchip/irq-loongson-liointc.c
-@@ -28,7 +28,7 @@
- 
- #define LIOINTC_INTC_CHIP_START	0x20
- 
--#define LIOINTC_REG_INTC_STATUS	(LIOINTC_INTC_CHIP_START + 0x20)
-+#define LIOINTC_REG_INTC_STATUS(core)	(LIOINTC_INTC_CHIP_START + 0x20 + (core) * 8)
- #define LIOINTC_REG_INTC_EN_STATUS	(LIOINTC_INTC_CHIP_START + 0x04)
- #define LIOINTC_REG_INTC_ENABLE	(LIOINTC_INTC_CHIP_START + 0x08)
- #define LIOINTC_REG_INTC_DISABLE	(LIOINTC_INTC_CHIP_START + 0x0c)
-@@ -217,7 +217,7 @@ static int liointc_init(phys_addr_t addr, unsigned long size, int revision,
- 		goto out_free_priv;
- 
- 	for (i = 0; i < LIOINTC_NUM_CORES; i++)
--		priv->core_isr[i] = base + LIOINTC_REG_INTC_STATUS;
-+		priv->core_isr[i] = base + LIOINTC_REG_INTC_STATUS(i);
- 
- 	for (i = 0; i < LIOINTC_NUM_PARENT; i++)
- 		priv->handler[i].parent_int_map = parent_int_map[i];
--- 
-2.43.0
+Hi,
 
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
+
+You are receiving this message because of the following common error(s)
+as indicated below:
+
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
 
