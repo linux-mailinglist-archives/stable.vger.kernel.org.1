@@ -1,160 +1,222 @@
-Return-Path: <stable+bounces-50292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1405F905727
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 17:39:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C386905746
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 17:47:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A09F5282F2E
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 15:39:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53C04B21499
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 15:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA55180A6A;
-	Wed, 12 Jun 2024 15:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A05180A9B;
+	Wed, 12 Jun 2024 15:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TomE6Pe4"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="Hw1CexEz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9AB17B437;
-	Wed, 12 Jun 2024 15:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81841802AA
+	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 15:46:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718206770; cv=none; b=C20MzzUoGVGJSpZFs6XoayGX6Y2t/m1vh25XJVy6zByK1f+O8wAnsssB2P505I2WJRObNZQsCuG2dj1JFCxCK0j/Sq0HlncTcrFudb/ZtTULM0lCdf30MiFSZia1i1kpTHOBb7UcCLYVNY+6R0wnNo8tDWn0cywVZsqAGiIekIU=
+	t=1718207205; cv=none; b=CXr+P03Ektth1qjQnwXAZHzX4ce5pw5Ih7pZ8mYJK4S3b0sSmyyOHYm0EShq5FAie1D/td5zYBqSa7fn+8YQXZgXWpvZlbeaSgWkdt3T9RJoRG38eAU6wtYgBOldPLpsOeAI6t3YCjqwPB56yMtisjIah6y/Zhbdthpkw68tJoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718206770; c=relaxed/simple;
-	bh=dkjw2ohFiXCup80T4CFjYApo4cuECd+cmHE4G40BA1A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=K7exRDGEzVIXqHmZROBiIY/rygz3gAMKvhAXYvw8VZ4BfBs5j9oOCYgNdDWwMpVYIw9R9Icl4DnLlcpJel4AsM5APLCWfWB5I5QvDspf4N4NJjSBeQF0Y+PQrVqTp3vtThO1XVfOQ0wFW7tGIfKNo6ZXvntSlE85IWP5+Zt0gAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TomE6Pe4; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-704090c11easo5540996b3a.2;
-        Wed, 12 Jun 2024 08:39:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718206768; x=1718811568; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=a5i7zUeG4PPBp0qWV+Ep+ZL6qU5kaVlXsxN+qELW5E4=;
-        b=TomE6Pe4Eb0OP0TCEHy53eMPTCH1L08wHp3/UlO90b8AGmJAqU7p253l9Sts/FZkpG
-         V6+erUIL6QgekCKp3j6LIk6xwmKN8kppQVGZuH/kyzyyQD89KgraRv5YG5ptioyTmt5B
-         Qy+dQwbCY0V96KCoeqPCZ/ctrflUc334+AUc8LIKR3BP1p4m4vYPEblsc9ayRE7Lsiij
-         ZsBZL6md6IL1fRDhPpu03T9INGMpaHIzwKZcAJhhX+vPx7FOaJmq40Vy04QAHVnKl0hM
-         oh43Nwk5sKjDh79y8kKhA96ybdMsLYYMBoxKJaz2rsEQEEsnDigWZA4DyDX3grXlKwSC
-         0i7g==
+	s=arc-20240116; t=1718207205; c=relaxed/simple;
+	bh=kP8B1EtDEHRLPl6cQ3qo9H978F1NbZQTNK607akF0LY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pEDHLTcXnpFxoZudFHd2Bby+/CZ4EpXoMKb5aKWXuuWun7buig3GGI8gbUAvv3d/Y3fL7szHdQ3aVk9ObmHNHOfdhRv6YJN6EAfWdIudnObwOBUhh+IEzJSwIMrHwru3YjILd75XS+JFRPAN+FakBTDh6jJAslIAoiKvo/cGqSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=Hw1CexEz; arc=none smtp.client-ip=185.125.188.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id D20E53F2A1
+	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 15:46:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1718207200;
+	bh=8SWJ+twjICu3VPSrAXlWQPBg+OAHJguvfQRajwDcVbU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=Hw1CexEz5ilO2Ce3EvcO0Com1xXZpFmZYpbO0HHVDpJZENr1Y+xx1KWztWneb89hx
+	 UelE+y8XrdLCU/SxWbakO+jW2OUsAl6/tjPX90lhBli21HNd4M/34Q6y/GNI+xDwP+
+	 5qZd5mPNZSDGA9TXmRGzrhN2o+7HSkL5fOFZkC6PAOJRvOK1wsZdu/Bi37ApeZl+5K
+	 PVMQ8XInrM6ou9GYaGNGp9yUUnGqPjSV8u0PYSuKynloM4eSjRqqUgcnIWMVy0HbmC
+	 v5pCh6S+foFEv5o8nEjICD+btO/Yr0yp7/NI6NggE/vkrwEJdxJEYPSJODdQHBbdvM
+	 ylmbl9bQ/2ztw==
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-421eed70e30so177525e9.1
+        for <stable@vger.kernel.org>; Wed, 12 Jun 2024 08:46:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718206768; x=1718811568;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a5i7zUeG4PPBp0qWV+Ep+ZL6qU5kaVlXsxN+qELW5E4=;
-        b=MJx9z/mjxltAgnvqsysBmliA8u7UeuZlXqOqQM3MJ5Jpv/bzIpp1SQgV8TGV5+VYzF
-         TcxWSGv1iTKzuaXKuxtv6S2nn/HmdPcXHw5cvR/WmA4NHr9HL0uyKFjmtVZtb3xlBYKz
-         c38d2B2Jf9dhaJGJrrOVtJjj/OmA3oZF4SdE8o9Xyk+3wZEEb2dq946Wi7QI+XWf5d2h
-         G164U9aQ/QFvE5vcWVYHeIL3bxr892ER9sbJ0mn6ZQWLguzdoRl4H9BSOTaFgSdPyxhm
-         YLNrRKpKxJ0YyVsweq8m4VI19TGD9KHFmujhscCKWo8in6rLWpCXbPn5EurWHZW6P3uC
-         R1Jw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNjFtkR0uQIdFkJsJNeDVMh+5IM8f02gR7bSdEPgTfVPBVHy3khebx7LK94qVG91VVBSo/gGN0aWxOyNJSYm69PeaQdXSYFzsZ/5A7IqrFgNgKgv+cmAvClXsxpPaM9/XPC5MmrIUfcLVU5DUx83WgEQcz5p3PPB3EuCaVU0Kn
-X-Gm-Message-State: AOJu0YwmDmpuoj6KAtHZ2Wz7Y8pRzE3osTZ33daqelcViJyizQy8HVFF
-	vmK/vbIdk0bvlNiuovDHD7lL0JCPvAS+2hUkHNqBVERDAHygb8Y3EZ3kmztqN4WHHw==
-X-Google-Smtp-Source: AGHT+IG5lHab+fHfgF23kgv84wra3o3xRcQiRCRLO0Hjiemm/oKJqu5T5xBuAbkAPUeZHsR2REDBzg==
-X-Received: by 2002:a05:6a20:2584:b0:1b4:e956:ae64 with SMTP id adf61e73a8af0-1b8a9c87755mr2628969637.54.1718206768211;
-        Wed, 12 Jun 2024 08:39:28 -0700 (PDT)
-Received: from localhost ([113.143.197.225])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6ee3f30e7sm89342385ad.173.2024.06.12.08.39.26
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 12 Jun 2024 08:39:27 -0700 (PDT)
-From: joswang <joswang1221@gmail.com>
-To: Thinh.Nguyen@synopsys.com
-Cc: gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Jos Wang <joswang@lenovo.com>
-Subject: [PATCH v4, 3/3] usb: dwc3: core: Workaround for CSR read timeout
-Date: Wed, 12 Jun 2024 23:39:22 +0800
-Message-Id: <20240612153922.2531-1-joswang1221@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20240601092646.52139-1-joswang1221@gmail.com>
-References: <20240601092646.52139-1-joswang1221@gmail.com>
+        d=1e100.net; s=20230601; t=1718207200; x=1718812000;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8SWJ+twjICu3VPSrAXlWQPBg+OAHJguvfQRajwDcVbU=;
+        b=ZDxjdZ5lxMQGF734Vn/giUVsnTrCOVM5Z5inJ1PDa6+d/cG2V5mwvI+GsZwR3nwDxc
+         dfvQ/zsLVZSn4kPijEqEi+gAjTCrhUN6wtJzm6lLYiSq5Jc/REizxyJ/rlg665QkNN8Y
+         YWErkcKixTxIysqhK+Oju+UTwPbEpDcqmyEdv4510+S7lw0VHvT+AkLstN7sO0ZykF8A
+         rKoh/MT0R5bl0HzUjdztjSBw6gFN8Ij22NAVQ+rjZg5YJaUipOM4Ju8kXPbuQMZe4er9
+         9a8Jg6P3/Pinc3EOI0YumMRuxqGTuzdkHGX0YPJ1iTIP/BFQrG5a09+/ZGL+ugR/yZdV
+         WG+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWBhsTDgiLxVwBcDkkINkgp+8HA/d+sBPSODHWvmppt2VzKdqR5urUL6Hqv1ZiNqPLRUBJrbeZl1ycQXo+vIn0L/AIEw2bi
+X-Gm-Message-State: AOJu0YzBmetC4o0zTJf2bO9OrWPR0BuY3jjyr6Sx4b6ROXAqRWk3xIBU
+	ZY5l9rwqB23qVksseY+9VlQJ2hNT8RdnUFr9Cq11BRTs/y1cRAOhyCU5e8GCvCFHkhIxuy1u7PS
+	bD0tMPNA3Dwkzi4OeJeGQEIsCsceFx17KhgK2WLQN5B2mBvJeo/QdIIhmuCq+J/iBYxnhAg==
+X-Received: by 2002:a05:600c:4587:b0:421:7f30:7ce3 with SMTP id 5b1f17b1804b1-422861af749mr18623055e9.1.1718207200424;
+        Wed, 12 Jun 2024 08:46:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHMSr9qdTcl5dEaxWrAt60xHJmkO5bs77bb1FUYZdUALYP8B5Pk8RKNk+PJyoKc+Ej3ou5rFA==
+X-Received: by 2002:a05:600c:4587:b0:421:7f30:7ce3 with SMTP id 5b1f17b1804b1-422861af749mr18622925e9.1.1718207200014;
+        Wed, 12 Jun 2024 08:46:40 -0700 (PDT)
+Received: from XPS-17-9720.han-hoki.ts.net ([213.204.117.183])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422870f75f9sm30782245e9.34.2024.06.12.08.46.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Jun 2024 08:46:39 -0700 (PDT)
+From: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
+To: netdev@vger.kernel.org
+Cc: Ghadi Elie Rahme <ghadi.rahme@canonical.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 net] bnx2x: Fix multiple UBSAN array-index-out-of-bounds
+Date: Wed, 12 Jun 2024 18:44:49 +0300
+Message-ID: <20240612154449.173663-1-ghadi.rahme@canonical.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: Jos Wang <joswang@lenovo.com>
+Fix UBSAN warnings that occur when using a system with 32 physical
+cpu cores or more, or when the user defines a number of Ethernet
+queues greater than or equal to FP_SB_MAX_E1x using the num_queues
+module parameter.
 
-This is a workaround for STAR 4846132, which only affects
-DWC_usb31 version2.00a operating in host mode.
+The value of the maximum number of Ethernet queues should be limited
+to FP_SB_MAX_E1x in case FCOE is disabled or to [FP_SB_MAX_E1x-1] if
+enabled to avoid out of bounds reads and writes.
 
-There is a problem in DWC_usb31 version 2.00a operating
-in host mode that would cause a CSR read timeout When CSR
-read coincides with RAM Clock Gating Entry. By disable
-Clock Gating, sacrificing power consumption for normal
-operation.
+Stack traces:
 
+UBSAN: array-index-out-of-bounds in
+       drivers/net/ethernet/broadcom/bnx2x/bnx2x_stats.c:1529:11
+index 20 is out of range for type 'stats_query_entry [19]'
+CPU: 12 PID: 858 Comm: systemd-network Not tainted 6.9.0-060900rc7-generic
+	     #202405052133
+Hardware name: HP ProLiant DL360 Gen9/ProLiant DL360 Gen9,
+	       BIOS P89 10/21/2019
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x76/0xa0
+ dump_stack+0x10/0x20
+ __ubsan_handle_out_of_bounds+0xcb/0x110
+ bnx2x_prep_fw_stats_req+0x2e1/0x310 [bnx2x]
+ bnx2x_stats_init+0x156/0x320 [bnx2x]
+ bnx2x_post_irq_nic_init+0x81/0x1a0 [bnx2x]
+ bnx2x_nic_load+0x8e8/0x19e0 [bnx2x]
+ bnx2x_open+0x16b/0x290 [bnx2x]
+ __dev_open+0x10e/0x1d0
+RIP: 0033:0x736223927a0a
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca
+      64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00
+      f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
+RSP: 002b:00007ffc0bb2ada8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000583df50f9c78 RCX: 0000736223927a0a
+RDX: 0000000000000020 RSI: 0000583df50ee510 RDI: 0000000000000003
+RBP: 0000583df50d4940 R08: 00007ffc0bb2adb0 R09: 0000000000000080
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000583df5103ae0
+R13: 000000000000035a R14: 0000583df50f9c30 R15: 0000583ddddddf00
+</TASK>
+---[ end trace ]---
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in
+       drivers/net/ethernet/broadcom/bnx2x/bnx2x_stats.c:1546:11
+index 28 is out of range for type 'stats_query_entry [19]'
+CPU: 12 PID: 858 Comm: systemd-network Not tainted 6.9.0-060900rc7-generic
+	     #202405052133
+Hardware name: HP ProLiant DL360 Gen9/ProLiant DL360 Gen9,
+	       BIOS P89 10/21/2019
+Call Trace:
+<TASK>
+dump_stack_lvl+0x76/0xa0
+dump_stack+0x10/0x20
+__ubsan_handle_out_of_bounds+0xcb/0x110
+bnx2x_prep_fw_stats_req+0x2fd/0x310 [bnx2x]
+bnx2x_stats_init+0x156/0x320 [bnx2x]
+bnx2x_post_irq_nic_init+0x81/0x1a0 [bnx2x]
+bnx2x_nic_load+0x8e8/0x19e0 [bnx2x]
+bnx2x_open+0x16b/0x290 [bnx2x]
+__dev_open+0x10e/0x1d0
+RIP: 0033:0x736223927a0a
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca
+      64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00
+      f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
+RSP: 002b:00007ffc0bb2ada8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000583df50f9c78 RCX: 0000736223927a0a
+RDX: 0000000000000020 RSI: 0000583df50ee510 RDI: 0000000000000003
+RBP: 0000583df50d4940 R08: 00007ffc0bb2adb0 R09: 0000000000000080
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000583df5103ae0
+R13: 000000000000035a R14: 0000583df50f9c30 R15: 0000583ddddddf00
+ </TASK>
+---[ end trace ]---
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in
+       drivers/net/ethernet/broadcom/bnx2x/bnx2x_sriov.c:1895:8
+index 29 is out of range for type 'stats_query_entry [19]'
+CPU: 13 PID: 163 Comm: kworker/u96:1 Not tainted 6.9.0-060900rc7-generic
+	     #202405052133
+Hardware name: HP ProLiant DL360 Gen9/ProLiant DL360 Gen9,
+	       BIOS P89 10/21/2019
+Workqueue: bnx2x bnx2x_sp_task [bnx2x]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x76/0xa0
+ dump_stack+0x10/0x20
+ __ubsan_handle_out_of_bounds+0xcb/0x110
+ bnx2x_iov_adjust_stats_req+0x3c4/0x3d0 [bnx2x]
+ bnx2x_storm_stats_post.part.0+0x4a/0x330 [bnx2x]
+ ? bnx2x_hw_stats_post+0x231/0x250 [bnx2x]
+ bnx2x_stats_start+0x44/0x70 [bnx2x]
+ bnx2x_stats_handle+0x149/0x350 [bnx2x]
+ bnx2x_attn_int_asserted+0x998/0x9b0 [bnx2x]
+ bnx2x_sp_task+0x491/0x5c0 [bnx2x]
+ process_one_work+0x18d/0x3f0
+ </TASK>
+---[ end trace ]---
+
+Fixes: 7d0445d66a76 ("bnx2x: clamp num_queues to prevent passing a negative value")
+Signed-off-by: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jos Wang <joswang@lenovo.com>
 ---
-v1 -> v2:
-- add "dt-bindings: usb: dwc3: Add snps,p2p3tranok quirk" patch,
-  this patch does not make any changes
-v2 -> v3:
-- code refactor
-- modify comment, add STAR number, workaround applied in host mode
-- modify commit message, add STAR number, workaround applied in host mode
-- modify Author Jos Wang
-v3 -> v4:
-- modify commit message, add Cc: stable@vger.kernel.org
----
- drivers/usb/dwc3/core.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+Changes since v1:
+ * Fix checkpatch complaints:
+   - Wrapped commit message to comply with 75 character limit
+   - Added space before ( in if condition
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 3a8fbc2d6b99..61f858f64e5a 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -960,12 +960,16 @@ static bool dwc3_core_is_valid(struct dwc3 *dwc)
+ drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
+index a8e07e51418f..c895dd680cf8 100644
+--- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
++++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
+@@ -66,7 +66,12 @@ static int bnx2x_calc_num_queues(struct bnx2x *bp)
+ 	if (is_kdump_kernel())
+ 		nq = 1;
  
- static void dwc3_core_setup_global_control(struct dwc3 *dwc)
- {
-+	unsigned int power_opt;
-+	unsigned int hw_mode;
- 	u32 reg;
- 
- 	reg = dwc3_readl(dwc->regs, DWC3_GCTL);
- 	reg &= ~DWC3_GCTL_SCALEDOWN_MASK;
-+	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
-+	power_opt = DWC3_GHWPARAMS1_EN_PWROPT(dwc->hwparams.hwparams1);
- 
--	switch (DWC3_GHWPARAMS1_EN_PWROPT(dwc->hwparams.hwparams1)) {
-+	switch (power_opt) {
- 	case DWC3_GHWPARAMS1_EN_PWROPT_CLK:
- 		/**
- 		 * WORKAROUND: DWC3 revisions between 2.10a and 2.50a have an
-@@ -998,6 +1002,20 @@ static void dwc3_core_setup_global_control(struct dwc3 *dwc)
- 		break;
- 	}
- 
-+	/*
-+	 * This is a workaround for STAR#4846132, which only affects
-+	 * DWC_usb31 version2.00a operating in host mode.
-+	 *
-+	 * There is a problem in DWC_usb31 version 2.00a operating
-+	 * in host mode that would cause a CSR read timeout When CSR
-+	 * read coincides with RAM Clock Gating Entry. By disable
-+	 * Clock Gating, sacrificing power consumption for normal
-+	 * operation.
-+	 */
-+	if (power_opt != DWC3_GHWPARAMS1_EN_PWROPT_NO &&
-+	    hw_mode != DWC3_GHWPARAMS0_MODE_GADGET && DWC3_VER_IS(DWC31, 200A))
-+		reg |= DWC3_GCTL_DSBLCLKGTNG;
+-	nq = clamp(nq, 1, BNX2X_MAX_QUEUES(bp));
++	int max_nq = FP_SB_MAX_E1x - 1;
 +
- 	/* check if current dwc3 is on simulation board */
- 	if (dwc->hwparams.hwparams6 & DWC3_GHWPARAMS6_EN_FPGA) {
- 		dev_info(dwc->dev, "Running with FPGA optimizations\n");
++	if (NO_FCOE(bp))
++		max_nq = FP_SB_MAX_E1x;
++
++	nq = clamp(nq, 1, max_nq);
+ 	return nq;
+ }
+ 
 -- 
-2.17.1
+2.43.0
 
 
