@@ -1,100 +1,120 @@
-Return-Path: <stable+bounces-50193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAEEB904922
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 04:40:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B530B904A4A
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 06:52:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47221285FA4
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 02:40:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D923A1C20DAB
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 04:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A61DB663;
-	Wed, 12 Jun 2024 02:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E3023769;
+	Wed, 12 Jun 2024 04:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KPJ3XEt0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V7IRrFqw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE5917BA1
-	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 02:40:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B61225605;
+	Wed, 12 Jun 2024 04:52:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718160036; cv=none; b=iNCKZWpeqhiWQdSCiOr3eDWQZegC5VG5PKtOBnPQh9X7LAqJTmyw6QfI/4DDmSSjpeEtV7uR9VrhrXMbQXphiE6ZinR+qRaVwLt9pm3rBMEWBxG8S544DneB9XCc8mBCyibUrBT7zwDM3f7ZXj8qCXu4ybK6dfhDuBXJ9co88fA=
+	t=1718167929; cv=none; b=BpQ3eU1ukxvK/D46qOGkVLfjKFpMIQYtqHk8Qa7hA/f6XnUK4HlhZMsEftFB5D5D2l5poIZRQX+Pgp+tvOOp0pY9NOL4n65eFzBsEbHumfRzJsZCRjZNGysphVwaElNKgHxjGetmsoYGS8V1tAHKoixLY1OuNMO0Mqigv4Ymjas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718160036; c=relaxed/simple;
-	bh=fbhT88WsvUNVbkWpLd+3WV1L5d6ahoTn2hYZBoffvrs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=pVy4SrJKCZUIu+fDF2AXJL2kXZalxRZ4OIqVIWnDjTzRg6W7QddrVEmuJRyatlQ922jp9kmfsjuvbZkGsxDQnh1qiIfVTuVDU9zRG4SfM3sWBv+wJ44f+LlKhBixUhy0BpzoHikH8zWK8a5mj/YnoOXeqBDIwAvGRWx6NYw50Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KPJ3XEt0; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718160034; x=1749696034;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=fbhT88WsvUNVbkWpLd+3WV1L5d6ahoTn2hYZBoffvrs=;
-  b=KPJ3XEt0RRsFHxdV5jFsKdMUheOAYP9KrFWRU85Qc/KqEe0pBeWyhPsh
-   cN3wMoEVywljyHq+UZgHM0EAJRGa37RpDZMf6WAmET3UPf3nO6gVVM8LE
-   /Oi7asl9SimNYRq3NAM+Knd6ek7CBDBWNc9MbXi3m9psLGpFjpsP+jxDD
-   xMtcvnZiG01naGLIXZQYePzgWiVYBKpHvvBw6X7SqjniMTpLWcWS50rN6
-   1LiyQVHSMhcu9cr/nQ0tzNQF1cPYRtqfReU1UigJkwh5if99u+2k12jln
-   0whmJJlvivz/CbpVSsvL0kJyXLUEtk2HnzQHaC+Aq5QgFkhH6n2UpZo2b
-   Q==;
-X-CSE-ConnectionGUID: +vBi90ewTxeGegx1qTTYmQ==
-X-CSE-MsgGUID: yLp7Eox1QeeQS7rxltT0BQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="12031820"
-X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; 
-   d="scan'208";a="12031820"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2024 19:40:24 -0700
-X-CSE-ConnectionGUID: 9ogOP8iQReeIWXLqUArEPA==
-X-CSE-MsgGUID: 36D9pNkGSQGNKxnQ98j6aA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; 
-   d="scan'208";a="39497388"
-Received: from lkp-server01.sh.intel.com (HELO 628d7d8b9fc6) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 11 Jun 2024 19:40:23 -0700
-Received: from kbuild by 628d7d8b9fc6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sHDuP-00018n-15;
-	Wed, 12 Jun 2024 02:40:21 +0000
-Date: Wed, 12 Jun 2024 10:39:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: "zhai.he" <zhai.he@nxp.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] Supports to use the default CMA when the
- device-specified CMA memory is not enough.
-Message-ID: <ZmkKYJuK8Ofb99Rl@242c30a86391>
+	s=arc-20240116; t=1718167929; c=relaxed/simple;
+	bh=nruark1B8eb2OhgQvZff82JhFN78K2Md0UA5EQhbk50=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bjBoLY0NUyfMrDVKwX7c2DXtw14htIl6vVw/2ob0/RhFfgS9S/zfWxcJgmoJnJtNKAZQpaM+nY/vzJ4kBpvHfSPHZnS+2+uoqxnLh9Dbxum6nDzyv/Ik6X0wtSEv8XpoCYrKqH0AgQkqHukJCmAxdCz9bYoRXizKnKl0mrX8sfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V7IRrFqw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE53C4AF49;
+	Wed, 12 Jun 2024 04:52:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718167929;
+	bh=nruark1B8eb2OhgQvZff82JhFN78K2Md0UA5EQhbk50=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=V7IRrFqw0vhujpKJDtVvKy/JReetTM2vUKY8lFwSBdLERP26LrljRT7sIUxnryLMS
+	 PtF5NJONsUCKOD1fAsIa07+ST83Cw1LR99MSbvtuFbPK4lBbG3JY4YqfUXxfX98CON
+	 imTXIpJEjCIu8HJXvIk7XWPm7J3oM3t9UA4aGwk132kot/ZP9XqCjmnK1nfWO7UTAI
+	 zBMozZl8qxcKbh6Sa118tdpYL4owEzcMy0wHunJIlycHt4It1q7l7VuGBSOgaNfjTa
+	 Q3jDUa4tAwbTZMI1R0cmwU0lLBqotdjxi+J8j+Qf2baFEJvhnNQi5gpLvgZhRD6Zsa
+	 2fJj7kXXsTfbQ==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a68b41ef3f6so722332666b.1;
+        Tue, 11 Jun 2024 21:52:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXaziy4HKAD78jNBt5FPSj8E2U9WYmY/PhupRdInU1r3Yno38JAR5m4R1uJUkQEbB24LZEnNvdNEcuLkmM/hXy51WIcIHyeNueJwhHym7FAMgwdMvqyG4AwQGYEZ4P2AWxMD50E9tzPnyE2/oH0fVgtj1QgsX6OyP+SA2DQUjQF
+X-Gm-Message-State: AOJu0YyxBV1Jl0QJHUBbnIr0hcknfzJmApkMp/E1AeAS1QkxBqstdIpR
+	l6i+8dsnbljTdUrzBcERTUvCLX73nhjHQNMDNwNdeQVVXyDBZYbNPz5iACcPdVB7rrvZ5X+OXDo
+	FREg3bvuGnFHgbdg33mDVXvMgCFw=
+X-Google-Smtp-Source: AGHT+IHFivSjvIbnYSVPMTEzbltjhXBgE/Sw7akDiWaje007gDxL4ef1RyuKjpql8Ck29Kk5g0Vq1mt95AktB7YQxqw=
+X-Received: by 2002:a17:906:489:b0:a6e:7e1f:2eae with SMTP id
+ a640c23a62f3a-a6f4800b167mr32026166b.74.1718167927547; Tue, 11 Jun 2024
+ 21:52:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240612023831.810332-1-zhai.he@nxp.com>
+References: <20240605075419.3973256-1-zhanghongchen@loongson.cn>
+In-Reply-To: <20240605075419.3973256-1-zhanghongchen@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 12 Jun 2024 12:51:56 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5+47ZMFQGiirSxgF9NoJjng4dL2huPXdiw1ydbbAk0ug@mail.gmail.com>
+Message-ID: <CAAhV-H5+47ZMFQGiirSxgF9NoJjng4dL2huPXdiw1ydbbAk0ug@mail.gmail.com>
+Subject: Re: [PATCH v2] PCI: use local_pci_probe when best selected cpu is offline
+To: Hongchen Zhang <zhanghongchen@loongson.cn>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	stable@vger.kernel.org, Huacai Chen <chenhuacai@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hi, Hongchen,
 
-Thanks for your patch.
+It seems you forgot to update the title which I have pointed out. :)
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+And Bjorn,
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Could you please take some time to review this patch? Thank you.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] Supports to use the default CMA when the device-specified CMA memory is not enough.
-Link: https://lore.kernel.org/stable/20240612023831.810332-1-zhai.he%40nxp.com
+Huacai
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+On Wed, Jun 5, 2024 at 3:54=E2=80=AFPM Hongchen Zhang <zhanghongchen@loongs=
+on.cn> wrote:
+>
+> When the best selected CPU is offline, work_on_cpu() will stuck forever.
+> This can be happen if a node is online while all its CPUs are offline
+> (we can use "maxcpus=3D1" without "nr_cpus=3D1" to reproduce it), Therefo=
+re,
+> in this case, we should call local_pci_probe() instead of work_on_cpu().
+>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+> ---
+> v1 -> v2 Added the method to reproduce this issue
+> ---
+>  drivers/pci/pci-driver.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+> index af2996d0d17f..32a99828e6a3 100644
+> --- a/drivers/pci/pci-driver.c
+> +++ b/drivers/pci/pci-driver.c
+> @@ -386,7 +386,7 @@ static int pci_call_probe(struct pci_driver *drv, str=
+uct pci_dev *dev,
+>                 free_cpumask_var(wq_domain_mask);
+>         }
+>
+> -       if (cpu < nr_cpu_ids)
+> +       if ((cpu < nr_cpu_ids) && cpu_online(cpu))
+>                 error =3D work_on_cpu(cpu, local_pci_probe, &ddi);
+>         else
+>                 error =3D local_pci_probe(&ddi);
+> --
+> 2.33.0
+>
+>
 
