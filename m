@@ -1,124 +1,118 @@
-Return-Path: <stable+bounces-50278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637A29055A2
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 16:48:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7B19055A3
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 16:48:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1721C1F20ED2
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:48:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F4041F2189F
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F0417F37A;
-	Wed, 12 Jun 2024 14:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32BC16F0DC;
+	Wed, 12 Jun 2024 14:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="vlgLCFKJ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HdgP3Wnb"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kJ0BDfUa"
 X-Original-To: stable@vger.kernel.org
-Received: from wfhigh7-smtp.messagingengine.com (wfhigh7-smtp.messagingengine.com [64.147.123.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBCA17E8F6;
-	Wed, 12 Jun 2024 14:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C392B17E8F6
+	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 14:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718203620; cv=none; b=hDHOGDUIkwralhqyV7J9xNQbLXCHJg2sWUJyL3DAwLQ8kc1+O7SCKO2Est5/Gkr7PlSVOpaiTl7PIriAIegTPpVE6TrDFnqK/jhzC/v9TcdHRkBZiIYkCogMUleHXOjC7aNjPOWjWXmX2GpLpjpTZrA0PoDnXsQOYJWRGLeJGsk=
+	t=1718203630; cv=none; b=qzxXmINejjRAOc8+bxPjJS5R6wl7S80IgjsSzt0IiWT3653b010SHj6IFSGrBaUjzVKBylBwt5ZiVaFbb9bF2lf9mEQuGvqIuyQOgj0cAv3C1oZIR4L/nojkII+EEvnfGykI+zLEBJm5cFx3ctldgk02r/J4tArW3UIoVVrpNCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718203620; c=relaxed/simple;
-	bh=nArazFaFR21wY+KcYy+uuQII0TM/lXIvkAhW/C65GCU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t3anUUs8+FX4HcxxdPNlR7CCh8x3H63sGlRRxL2FQOWjWGx/T5AXqGuqg9cK0ks+k1PAbAbkgW0xe1U/ci4U1EMp+Gr7/VF1jT9T0jzxlbv7r+8MqwCrBXosI3m34qII0iCyign11UFS2Qv2xOWLWLEQatsKHIG4kmi8dwUxxy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=vlgLCFKJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HdgP3Wnb; arc=none smtp.client-ip=64.147.123.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailfhigh.west.internal (Postfix) with ESMTP id 2837E18000C6;
-	Wed, 12 Jun 2024 10:46:57 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Wed, 12 Jun 2024 10:46:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1718203616; x=1718290016; bh=EiGiFI0OeI
-	fncTCYtyNqrwlgguq4p7gDXwhBcuV+SEo=; b=vlgLCFKJ0ZKlctGOrQPy6AuOvO
-	Cj4IrlqA/Dad/a3mGrPidHWhAbVfqDr55fWfFW1inBA8BcvYaAQ56ydmprsie4wL
-	TXEkIcxDrg8pxUBuaXgy15Ra7p7uCSwQilRqN7+QXc18v5fFzNtvUaD3e4Utfkfz
-	acCQnvkKkRzfmxdgoHvUTctvFJhCsfw2PIzGnJrj22co4K0syHvqFbO6C1Ao6dIl
-	YUCfL3ngrV7Y4LbLgL8v1Affgei34fkQszE8ymQrJEKhJOq3X1f0GyGmF/3TRNv7
-	nDHiu2umSikMGYJ3sS0wx3PllClTFzQS1DDwhzPqZiZu2gnAmP3t0atBYkIg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1718203616; x=1718290016; bh=EiGiFI0OeIfncTCYtyNqrwlgguq4
-	p7gDXwhBcuV+SEo=; b=HdgP3WnbEpfxfq5LS44lYSNF7+rjvUCS8FFn0F5HSCLx
-	eQQga0apeNmUWUoReeSk/6IW1+yQTjFOsW28GENKRZCiun0lmWps5IVbzkG+VR6C
-	RHT1fbrOlszSg4cR49C75jWAequL8btpC3vX4lm4nThcxZ7wk62Wcy19QA/fAJbU
-	4h3BKOoMySO3R454GNpHJ44N4I1BWTIZHao/C+/Ds32zYP5Zlma6kUz4lm5Lsq11
-	f9mcaZckadqIoiK6FMtTKykBFDa+FdZDf96sCeY9+ojQPU8CHwJVFN9kIii4NyJR
-	AFl3QFxAyNd4eJvwZd4vckI45Okfjc23Gbf7lA+GLw==
-X-ME-Sender: <xms:4LRpZoz8IBtBXvauwjZuk_pj8Te1Og1yaN6GBEpJ-eJxtAAL3uKT9Q>
-    <xme:4LRpZsRr97ANUF_jzgtpQqqTqLINfm3NXKYKCLQftcF2VsuTw0sIOdvUP119MAbO7
-    Bgwc0GTeSG6FQ>
-X-ME-Received: <xmr:4LRpZqVSO-zqmZJhotTZ829zNrnOhqO9f-PycYeVZ5antObNssBLxIpK3TThX5WdjqR5SeuaW1eK2IBc3xnHBslobx3-B5wFtBkO3w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedugedgjeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttd
-    ertddttddvnecuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhm
-    qeenucggtffrrghtthgvrhhnpeehgedvvedvleejuefgtdduudfhkeeltdeihfevjeekje
-    euhfdtueefhffgheekteenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
-    ihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:4LRpZmjagWyifeMHhYGzcW11Z389O0bs5MFbCLBwmsVsW--Q_un5Nw>
-    <xmx:4LRpZqAyp6H2fNTx1CDssOB4UmL7uxxSBaiIHbvTgmYqLyW3z0FE8Q>
-    <xmx:4LRpZnLqEvjRbbxmajKV2gqbMyw8Z9j1APHJBD2rsZSagO7LWq2wRw>
-    <xmx:4LRpZhDQZQ648UBuQOCJiDXi9YwPqDa6RVKugBOhpVx-41doTszQRw>
-    <xmx:4LRpZu6sv9pjO53e7RBege7Zwuz2MJkDyTaesZWg8_ijSLypknxlZooF>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 12 Jun 2024 10:46:56 -0400 (EDT)
-Date: Wed, 12 Jun 2024 16:46:54 +0200
-From: Greg KH <greg@kroah.com>
-To: cel@kernel.org
-Cc: stable@vger.kernel.org, linux-nfs@vger.kernel.org,
-	NeilBrown <neilb@suse.de>, Jon Hunter <jonathanh@nvidia.com>
-Subject: Re: [PATCH 5.15] sunrpc: exclude from freezer when waiting for
- requests:
-Message-ID: <2024061245-climate-sedation-d03f@gregkh>
-References: <20240607131048.8795-1-cel@kernel.org>
+	s=arc-20240116; t=1718203630; c=relaxed/simple;
+	bh=hZKRqwSK4ScR5k4QtzwlO9xq6X2JOi2CqiRtVa8dMpQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=gmhxtUcLXzfByvy3e+AaeaJlIrma71ghxszx7TmS2BnfRbE38kO+WwiAMFRZl0ljgQxRFA+LpC60x4uEUt4Sahztm80mT2iF08aFLvLQH8VGYcHvc7oHFfQIRS7od/6FS4ehdTJxxnSVdv3uphGMBLFLefbIR8WjsGR97ccMlTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kJ0BDfUa; arc=none smtp.client-ip=209.85.221.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-4eb24694941so1856168e0c.0
+        for <stable@vger.kernel.org>; Wed, 12 Jun 2024 07:47:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718203627; x=1718808427; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=++Zx8ONfAby/2OtMVElgCEc8JDEMc6Y8wL+JtS/yQjQ=;
+        b=kJ0BDfUasOKSLFopZTDEoSRTr4JnuJfP2sycoRZEP66Qba6vT5j+bXWlwXtfh6Bywk
+         L0sdHIS4FdEEc8ogwFMJn4baeJtQMVXZZTorAS960wQQPVqV5zGR09w08eSyIUnDVIqt
+         DoU3gdl5TuQrU5g2jK9deIaEbhWot3TigivgXnREZTUGGzxhJp8cBInksI5CoOmw1QFX
+         f0AfFyn00YZ7zbSCUac5agjLxB9FH9i/VyBSxr0b7wbaj9YsbP/lp+GXn6noQLBcWsfw
+         eEzlzpnhnqiEy1eQY+CB4eIZq7Y9weVIV5Rrle9FK5gsxBHjpwVPN3NL7sJnHVuOBqai
+         O/pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718203627; x=1718808427;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=++Zx8ONfAby/2OtMVElgCEc8JDEMc6Y8wL+JtS/yQjQ=;
+        b=qTiaFhrrPrhyBEy2932ypW7aBmXmWPWTyNwAAPsZy0MVra/sfM0uO1BWEb+Bj35ipI
+         55pKouXf5f/b4Yb0jiQeirsYQF5ShxrDNhXRMWpLAn1NqlG160rEmR5b9aRPgBp2tbBz
+         cGzDUa/HJaBeIHCvzST9LqjU0xVrM7ULhtsI0MY+NJBrnyP5iA0YHRoLKDs9xFSOVcJn
+         tzQR80l6m1VEhX6rWzZ8nXDQqtDEPDZE9TdMg6hBAit8aJm1QAe8qRU1zgEyaltXuGtG
+         K46/59BXDZsL4sugF/qAdw2XcLZYb5jgHrQ2aBlsEEhZfpXT5cU2pX3jW5Do0jk+fcsv
+         UpDg==
+X-Gm-Message-State: AOJu0YxAHnADzHRYlNRQAkOh+9Bvx5kOF3wj9bl19Q8t8erIjcdvEOKR
+	5GmRLcoUQHL0CZARXcHbU6AJCQTtJAmT1m4N4xaWrBnbnEUGtKXxUwrs5UQVXUq7bUSlRQBMjmx
+	rOLZ8tfRQiACuQyzyayiM9urqy2l2nTYKBJvcbqd1r/UZBPQgpmY=
+X-Google-Smtp-Source: AGHT+IE5P3IQInC9wWtv70wSp8po3FWb69qqf+bxQ75emaTzlLqrY0LRHyhuBJIuANHnPI7mv7v1ThkTM9vYm3WEo4w=
+X-Received: by 2002:a05:6122:2310:b0:4df:261c:fc0c with SMTP id
+ 71dfb90a1353d-4ed07c12bbcmr1905731e0c.13.1718203627121; Wed, 12 Jun 2024
+ 07:47:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240607131048.8795-1-cel@kernel.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 12 Jun 2024 20:16:55 +0530
+Message-ID: <CA+G9fYs7qh=9h5X1hp=7v3zcW9DovJ726x0Bf=8K4_QAOk=2EQ@mail.gmail.com>
+Subject: stable-rc: queue_5.10: arch/powerpc/include/asm/uaccess.h:472:4:
+ error: implicit declaration of function '__get_user_size' [-Werror,-Wimplicit-function-declaration]
+To: linux-stable <stable@vger.kernel.org>, lkft-triage@lists.linaro.org, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Jun 07, 2024 at 09:10:48AM -0400, cel@kernel.org wrote:
-> From: NeilBrown <neilb@suse.de>
-> 
-> Prior to v6.1, the freezer will only wake a kernel thread from an
-> uninterruptible sleep.  Since we changed svc_get_next_xprt() to use and
-> IDLE sleep the freezer cannot wake it.  We need to tell the freezer to
-> ignore it instead.
-> 
-> To make this work with only upstream commits, 5.15.y would need
-> commit f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
-> which allows non-interruptible sleeps to be woken by the freezer.
-> 
-> Fixes: 9b8a8e5e8129 ("nfsd: don't allow nfsd threads to be signalled.")
-> Tested-by: Jon Hunter <jonathanh@nvidia.com>
-> Signed-off-by: NeilBrown <neilb@suse.de>
-> ---
->  fs/nfs/callback.c     | 2 +-
->  fs/nfsd/nfs4proc.c    | 3 ++-
->  net/sunrpc/svc_xprt.c | 4 ++--
->  3 files changed, 5 insertions(+), 4 deletions(-)
+The Powerpc tinyconfig builds started failing on stable-rc queues for
+queue_5.10 branch from June 5, 2024.
 
-Sorry for the delay, now queued up.
+Please find the build log and related links below.
 
-greg k-h
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+powerpc:
+
+  * build/clang-18-tinyconfig
+  * build/clang-nightly-tinyconfig
+  * build/gcc-12-tinyconfig
+
+
+Build error:
+--------
+arch/powerpc/include/asm/uaccess.h:472:4: error: implicit declaration
+of function '__get_user_size'
+[-Werror,-Wimplicit-function-declaration]
+  472 |                         __get_user_size(*(u8 *)to, from, 1, ret);
+      |
+
+metadata:
+--------
+  git_describe: v5.10.218-265-g807add29e709
+  git_repo: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc-queues
+  git_short_log: 807add29e709 ("SUNRPC: Fix loop termination condition
+in gss_free_in_token_pages()")
+
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_5.10/build/v5.10.218-265-g807add29e709/testrun/24294414/suite/build/test/clang-18-tinyconfig/history/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_5.10/build/v5.10.218-265-g807add29e709/testrun/24294414/suite/build/test/clang-18-tinyconfig/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_5.10/build/v5.10.218-265-g807add29e709/testrun/24294414/suite/build/test/gcc-12-tinyconfig/details/
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
