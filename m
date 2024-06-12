@@ -1,220 +1,227 @@
-Return-Path: <stable+bounces-50289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D28F59056D4
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 17:26:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 339F5905709
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 17:36:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD4911C21C1D
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 15:26:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A79D31F27C98
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 15:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271EA17F4E9;
-	Wed, 12 Jun 2024 15:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7016918622;
+	Wed, 12 Jun 2024 15:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GqZGZx/b"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="ghtsqZA0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2F017F392
-	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 15:26:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664541802CC
+	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 15:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718206015; cv=none; b=NrU2vnF6DD8UMs2k8Z20LfkBMuxpD3+hvkzGxs6Q1l9UezBP1LtPiChvO8uGq9kO5O+xTyqbsDpzpA+7gzWHDyTtsX9r/HuP3jzwBfleYhOminqPJ7VXVJ/CXo6uKbq2cq25Y8OQfyWPC9DRUoT8Nc4myx4mwowGHzFERiX7XCs=
+	t=1718206553; cv=none; b=RODUScxZ6ujz6de+zNCxabu+IT90jDYGoL7356tqYyBnLvrkpsqLTHTdRJJxMErhXxSdjR89AASy2D6PWH754RwvPltlSBGfZQ74sY34hGh6WHCmpzTCgpM5aiv/WfGaSUz5r9vXsJQV438EnTihZKR2QfaK1eSsA7G/5Nj7SCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718206015; c=relaxed/simple;
-	bh=lLQ3IuggM1WGGUcrZn0MWB68N813e+sdEbhf3Z+p938=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a+B8KAlWzwlLH1tIIs2ie/52cHVXmQ3FeIQE63YSSqPXxUPBFyi6e8/AU1nWu451nlDTdpabasaOt1Aw+wnOTeHRQDmTmzEAfSLbB2x47Gfi0yrX+rwlitQ3vFqcYTrUIbOiQhAQOa7d4WKKQ1mfn/auSTEpYD01RW6wrOkXP7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GqZGZx/b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B91C116B1;
-	Wed, 12 Jun 2024 15:26:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718206015;
-	bh=lLQ3IuggM1WGGUcrZn0MWB68N813e+sdEbhf3Z+p938=;
-	h=Subject:To:Cc:From:Date:From;
-	b=GqZGZx/bGz604hoXhra6RaiT1alECLxezOfc4SDzPXC5ZmKhx6yjMMGhAgqt2Phfv
-	 QkFC/9Ddw2SNo0HWtocdQkH9aI3xwH+QyaVbh75UIt0ninN3LPCpbLiXsz8G4m0sAB
-	 UF9Lc6orz5rnZtKpn7c07NS1sbGBHxLOpapp8BqE=
-Subject: FAILED: patch "[PATCH] soc: qcom: rpmh-rsc: Enhance check for VRM in-flight request" failed to apply to 4.19-stable tree
-To: quic_mkshah@quicinc.com,andersson@kernel.org,konrad.dybcio@linaro.org,quic_eberman@quicinc.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 12 Jun 2024 17:26:42 +0200
-Message-ID: <2024061242-cosmetics-bronco-9d06@gregkh>
+	s=arc-20240116; t=1718206553; c=relaxed/simple;
+	bh=kP8B1EtDEHRLPl6cQ3qo9H978F1NbZQTNK607akF0LY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aVbpOykbYbxpI7PpsNazupBYMhTKW6V1JTUdwXpxR3KKtkSB/hTeary2p1sgb8vHf5n0iVemMn+E7nGAXR3R0EzaW5D5+E/1qa2I6bCz25U3mBvbeZUy1Qz4Wc/xfKqAhu/p2xScObgBESmc+Z/PgmyYStBoqorSIAPhjjSbcq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=ghtsqZA0; arc=none smtp.client-ip=185.125.188.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 3A9AD3F699
+	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 15:35:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1718206548;
+	bh=8SWJ+twjICu3VPSrAXlWQPBg+OAHJguvfQRajwDcVbU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version;
+	b=ghtsqZA0IqdwtRhawVVhF885KJGiNnODCHBbCGbsovZ5phYy8B3wxMHsBwIeKHdZQ
+	 EIXjCKT8mGQY25E3o2uZ701okDtIudE2YteNKvMs3K1dX3YPjKFyEHdt4BBIK5VgP1
+	 rGw/gRBl1S+l+VqGO2RXHBsGF82m+GnSxse07u48+gyUX0y+uTqSGCcqNSD7Rw1cuz
+	 GSBN2l709umySvNyxcSuIGwOr+6gm+RVJrdREMNrsnKTBmgEduM3o+/CQeyOxfU2wE
+	 tKunaZsATnddD9D4qn8DWTt4DQnPZJaWY3OwjqUz422cdO0bOaoTSIJJLw/RS4W40e
+	 adP/DmaosPs+g==
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4217a6a00d8so186085e9.0
+        for <stable@vger.kernel.org>; Wed, 12 Jun 2024 08:35:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718206547; x=1718811347;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8SWJ+twjICu3VPSrAXlWQPBg+OAHJguvfQRajwDcVbU=;
+        b=e8rhhClx5vMePYyYmsXWJE4vz4eejAzMLOghLKVaG0mHSD2LBK1WXGddfAtzN4J+7q
+         ljHTIfrTQ+g1ufFXwzzJb/21a4Mkp3O4a3jjTswP6ADoHgSzPZL0cU/mt4qWbBGM2dkG
+         OvDhXeZauW6xp9Uq7S3eD0/x7MwTrxlwG19qwGBZn3vEazvjW34JXS9LxdA9KsfPopS5
+         luyPNHfZJL1KHFPewwLGCo+8kBDVi1i51U7e3kgvLaAE6c29FoimzF/EXcN5czPQumQ5
+         xOQxrpKVbPez1JvBVXj4n4eZSEgc0htjB1PNoi7O2DJBXAbN+SNdrRw1FMec/2pxcaES
+         vBQg==
+X-Forwarded-Encrypted: i=1; AJvYcCUCFmP9SEoX9aOJJq7WP+Dh4+PrlvvGt7GwPluRprUYd/w71fhv0trSaHEU8sckmd6KUxPjOKLmKl+w+gLEbEgo47QcRjf7
+X-Gm-Message-State: AOJu0Yxvpome4488ZOYrWVUoSkvXE4C7kbDLwl+tUuK9ebhztLJwuvc3
+	KXhy7NScx0g+QsqZELfHW9nNdErsPCWLPyaqai/5rR0vwb/LSjLQZ2t7/G8E+E4wDNakZrfEWy2
+	Rbva+2/nqju12BoSNQNQuj0LjA3xsOCUnv4hwsJLMxFId7eksbwN1VT1+mcseuoHmOZL3LF4nci
+	FyI6lf
+X-Received: by 2002:a05:600c:4907:b0:422:62db:5a09 with SMTP id 5b1f17b1804b1-422863b4b85mr16487855e9.12.1718206547346;
+        Wed, 12 Jun 2024 08:35:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEdrzx6EO9z1mA4TbJTIFjSgvBB/a3S09FubalFRZ6se5jfdOcxg2QrK+/4HmntKKV8d8sGjg==
+X-Received: by 2002:a05:600c:4907:b0:422:62db:5a09 with SMTP id 5b1f17b1804b1-422863b4b85mr16487685e9.12.1718206546973;
+        Wed, 12 Jun 2024 08:35:46 -0700 (PDT)
+Received: from XPS-17-9720.han-hoki.ts.net ([213.204.117.183])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35f23fe7a64sm8661759f8f.89.2024.06.12.08.35.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Jun 2024 08:35:46 -0700 (PDT)
+From: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
+To: ghadi.rahme@hotmail.com
+Cc: Ghadi Elie Rahme <ghadi.rahme@canonical.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 net] bnx2x: Fix multiple UBSAN array-index-out-of-bounds
+Date: Wed, 12 Jun 2024 18:35:04 +0300
+Message-ID: <20240612153504.170241-1-ghadi.rahme@canonical.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240612132451.148350-1-ghadi.rahme@canonical.com>
+References: <20240612132451.148350-1-ghadi.rahme@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+Fix UBSAN warnings that occur when using a system with 32 physical
+cpu cores or more, or when the user defines a number of Ethernet
+queues greater than or equal to FP_SB_MAX_E1x using the num_queues
+module parameter.
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+The value of the maximum number of Ethernet queues should be limited
+to FP_SB_MAX_E1x in case FCOE is disabled or to [FP_SB_MAX_E1x-1] if
+enabled to avoid out of bounds reads and writes.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Stack traces:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x f592cc5794747b81e53b53dd6e80219ee25f0611
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061242-cosmetics-bronco-9d06@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+UBSAN: array-index-out-of-bounds in
+       drivers/net/ethernet/broadcom/bnx2x/bnx2x_stats.c:1529:11
+index 20 is out of range for type 'stats_query_entry [19]'
+CPU: 12 PID: 858 Comm: systemd-network Not tainted 6.9.0-060900rc7-generic
+	     #202405052133
+Hardware name: HP ProLiant DL360 Gen9/ProLiant DL360 Gen9,
+	       BIOS P89 10/21/2019
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x76/0xa0
+ dump_stack+0x10/0x20
+ __ubsan_handle_out_of_bounds+0xcb/0x110
+ bnx2x_prep_fw_stats_req+0x2e1/0x310 [bnx2x]
+ bnx2x_stats_init+0x156/0x320 [bnx2x]
+ bnx2x_post_irq_nic_init+0x81/0x1a0 [bnx2x]
+ bnx2x_nic_load+0x8e8/0x19e0 [bnx2x]
+ bnx2x_open+0x16b/0x290 [bnx2x]
+ __dev_open+0x10e/0x1d0
+RIP: 0033:0x736223927a0a
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca
+      64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00
+      f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
+RSP: 002b:00007ffc0bb2ada8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000583df50f9c78 RCX: 0000736223927a0a
+RDX: 0000000000000020 RSI: 0000583df50ee510 RDI: 0000000000000003
+RBP: 0000583df50d4940 R08: 00007ffc0bb2adb0 R09: 0000000000000080
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000583df5103ae0
+R13: 000000000000035a R14: 0000583df50f9c30 R15: 0000583ddddddf00
+</TASK>
+---[ end trace ]---
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in
+       drivers/net/ethernet/broadcom/bnx2x/bnx2x_stats.c:1546:11
+index 28 is out of range for type 'stats_query_entry [19]'
+CPU: 12 PID: 858 Comm: systemd-network Not tainted 6.9.0-060900rc7-generic
+	     #202405052133
+Hardware name: HP ProLiant DL360 Gen9/ProLiant DL360 Gen9,
+	       BIOS P89 10/21/2019
+Call Trace:
+<TASK>
+dump_stack_lvl+0x76/0xa0
+dump_stack+0x10/0x20
+__ubsan_handle_out_of_bounds+0xcb/0x110
+bnx2x_prep_fw_stats_req+0x2fd/0x310 [bnx2x]
+bnx2x_stats_init+0x156/0x320 [bnx2x]
+bnx2x_post_irq_nic_init+0x81/0x1a0 [bnx2x]
+bnx2x_nic_load+0x8e8/0x19e0 [bnx2x]
+bnx2x_open+0x16b/0x290 [bnx2x]
+__dev_open+0x10e/0x1d0
+RIP: 0033:0x736223927a0a
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca
+      64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00
+      f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
+RSP: 002b:00007ffc0bb2ada8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000583df50f9c78 RCX: 0000736223927a0a
+RDX: 0000000000000020 RSI: 0000583df50ee510 RDI: 0000000000000003
+RBP: 0000583df50d4940 R08: 00007ffc0bb2adb0 R09: 0000000000000080
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000583df5103ae0
+R13: 000000000000035a R14: 0000583df50f9c30 R15: 0000583ddddddf00
+ </TASK>
+---[ end trace ]---
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in
+       drivers/net/ethernet/broadcom/bnx2x/bnx2x_sriov.c:1895:8
+index 29 is out of range for type 'stats_query_entry [19]'
+CPU: 13 PID: 163 Comm: kworker/u96:1 Not tainted 6.9.0-060900rc7-generic
+	     #202405052133
+Hardware name: HP ProLiant DL360 Gen9/ProLiant DL360 Gen9,
+	       BIOS P89 10/21/2019
+Workqueue: bnx2x bnx2x_sp_task [bnx2x]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x76/0xa0
+ dump_stack+0x10/0x20
+ __ubsan_handle_out_of_bounds+0xcb/0x110
+ bnx2x_iov_adjust_stats_req+0x3c4/0x3d0 [bnx2x]
+ bnx2x_storm_stats_post.part.0+0x4a/0x330 [bnx2x]
+ ? bnx2x_hw_stats_post+0x231/0x250 [bnx2x]
+ bnx2x_stats_start+0x44/0x70 [bnx2x]
+ bnx2x_stats_handle+0x149/0x350 [bnx2x]
+ bnx2x_attn_int_asserted+0x998/0x9b0 [bnx2x]
+ bnx2x_sp_task+0x491/0x5c0 [bnx2x]
+ process_one_work+0x18d/0x3f0
+ </TASK>
+---[ end trace ]---
 
-Possible dependencies:
-
-f592cc579474 ("soc: qcom: rpmh-rsc: Enhance check for VRM in-flight request")
-778279f4f5e4 ("soc: qcom: cmd-db: allow loading as a module")
-d6815c5c43d4 ("soc: qcom: cmd-db: Add debugfs dumping file")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From f592cc5794747b81e53b53dd6e80219ee25f0611 Mon Sep 17 00:00:00 2001
-From: Maulik Shah <quic_mkshah@quicinc.com>
-Date: Thu, 15 Feb 2024 10:55:44 +0530
-Subject: [PATCH] soc: qcom: rpmh-rsc: Enhance check for VRM in-flight request
-
-Each RPMh VRM accelerator resource has 3 or 4 contiguous 4-byte aligned
-addresses associated with it. These control voltage, enable state, mode,
-and in legacy targets, voltage headroom. The current in-flight request
-checking logic looks for exact address matches. Requests for different
-addresses of the same RPMh resource as thus not detected as in-flight.
-
-Add new cmd-db API cmd_db_match_resource_addr() to enhance the in-flight
-request check for VRM requests by ignoring the address offset.
-
-This ensures that only one request is allowed to be in-flight for a given
-VRM resource. This is needed to avoid scenarios where request commands are
-carried out by RPMh hardware out-of-order leading to LDO regulator
-over-current protection triggering.
-
-Fixes: 658628e7ef78 ("drivers: qcom: rpmh-rsc: add RPMH controller for QCOM SoCs")
+Fixes: 7d0445d66a76 ("bnx2x: clamp num_queues to prevent passing a negative value")
+Signed-off-by: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Tested-by: Elliot Berman <quic_eberman@quicinc.com> # sm8650-qrd
-Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
-Link: https://lore.kernel.org/r/20240215-rpmh-rsc-fixes-v4-1-9cbddfcba05b@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+---
+Changes since v1:
+ * Fix checkpatch complaints:
+   - Wrapped commit message to comply with 75 character limit
+   - Added space before ( in if condition
 
-diff --git a/drivers/soc/qcom/cmd-db.c b/drivers/soc/qcom/cmd-db.c
-index c344107bc36c..b4e613c34a5c 100644
---- a/drivers/soc/qcom/cmd-db.c
-+++ b/drivers/soc/qcom/cmd-db.c
-@@ -1,6 +1,10 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright (c) 2016-2018, 2020, The Linux Foundation. All rights reserved. */
-+/*
-+ * Copyright (c) 2016-2018, 2020, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
-+ */
+ drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
+index a8e07e51418f..c895dd680cf8 100644
+--- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
++++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
+@@ -66,7 +66,12 @@ static int bnx2x_calc_num_queues(struct bnx2x *bp)
+ 	if (is_kdump_kernel())
+ 		nq = 1;
  
-+#include <linux/bitfield.h>
- #include <linux/debugfs.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -17,6 +21,8 @@
- #define MAX_SLV_ID		8
- #define SLAVE_ID_MASK		0x7
- #define SLAVE_ID_SHIFT		16
-+#define SLAVE_ID(addr)		FIELD_GET(GENMASK(19, 16), addr)
-+#define VRM_ADDR(addr)		FIELD_GET(GENMASK(19, 4), addr)
- 
- /**
-  * struct entry_header: header for each entry in cmddb
-@@ -220,6 +226,30 @@ const void *cmd_db_read_aux_data(const char *id, size_t *len)
+-	nq = clamp(nq, 1, BNX2X_MAX_QUEUES(bp));
++	int max_nq = FP_SB_MAX_E1x - 1;
++
++	if (NO_FCOE(bp))
++		max_nq = FP_SB_MAX_E1x;
++
++	nq = clamp(nq, 1, max_nq);
+ 	return nq;
  }
- EXPORT_SYMBOL_GPL(cmd_db_read_aux_data);
  
-+/**
-+ * cmd_db_match_resource_addr() - Compare if both Resource addresses are same
-+ *
-+ * @addr1: Resource address to compare
-+ * @addr2: Resource address to compare
-+ *
-+ * Return: true if two addresses refer to the same resource, false otherwise
-+ */
-+bool cmd_db_match_resource_addr(u32 addr1, u32 addr2)
-+{
-+	/*
-+	 * Each RPMh VRM accelerator resource has 3 or 4 contiguous 4-byte
-+	 * aligned addresses associated with it. Ignore the offset to check
-+	 * for VRM requests.
-+	 */
-+	if (addr1 == addr2)
-+		return true;
-+	else if (SLAVE_ID(addr1) == CMD_DB_HW_VRM && VRM_ADDR(addr1) == VRM_ADDR(addr2))
-+		return true;
-+
-+	return false;
-+}
-+EXPORT_SYMBOL_GPL(cmd_db_match_resource_addr);
-+
- /**
-  * cmd_db_read_slave_id - Get the slave ID for a given resource address
-  *
-diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
-index c4c7aad957e6..561d8037b50a 100644
---- a/drivers/soc/qcom/rpmh-rsc.c
-+++ b/drivers/soc/qcom/rpmh-rsc.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-  * Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2023-2024, Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #define pr_fmt(fmt) "%s " fmt, KBUILD_MODNAME
-@@ -557,7 +558,7 @@ static int check_for_req_inflight(struct rsc_drv *drv, struct tcs_group *tcs,
- 		for_each_set_bit(j, &curr_enabled, MAX_CMDS_PER_TCS) {
- 			addr = read_tcs_cmd(drv, drv->regs[RSC_DRV_CMD_ADDR], i, j);
- 			for (k = 0; k < msg->num_cmds; k++) {
--				if (addr == msg->cmds[k].addr)
-+				if (cmd_db_match_resource_addr(msg->cmds[k].addr, addr))
- 					return -EBUSY;
- 			}
- 		}
-diff --git a/include/soc/qcom/cmd-db.h b/include/soc/qcom/cmd-db.h
-index c8bb56e6852a..47a6cab75e63 100644
---- a/include/soc/qcom/cmd-db.h
-+++ b/include/soc/qcom/cmd-db.h
-@@ -1,5 +1,8 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright (c) 2016-2018, The Linux Foundation. All rights reserved. */
-+/*
-+ * Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
-+ */
- 
- #ifndef __QCOM_COMMAND_DB_H__
- #define __QCOM_COMMAND_DB_H__
-@@ -21,6 +24,8 @@ u32 cmd_db_read_addr(const char *resource_id);
- 
- const void *cmd_db_read_aux_data(const char *resource_id, size_t *len);
- 
-+bool cmd_db_match_resource_addr(u32 addr1, u32 addr2);
-+
- enum cmd_db_hw_type cmd_db_read_slave_id(const char *resource_id);
- 
- int cmd_db_ready(void);
-@@ -31,6 +36,9 @@ static inline u32 cmd_db_read_addr(const char *resource_id)
- static inline const void *cmd_db_read_aux_data(const char *resource_id, size_t *len)
- { return ERR_PTR(-ENODEV); }
- 
-+static inline bool cmd_db_match_resource_addr(u32 addr1, u32 addr2)
-+{ return false; }
-+
- static inline enum cmd_db_hw_type cmd_db_read_slave_id(const char *resource_id)
- { return -ENODEV; }
- 
+-- 
+2.43.0
 
 
