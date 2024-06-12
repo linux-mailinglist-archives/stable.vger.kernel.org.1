@@ -1,224 +1,134 @@
-Return-Path: <stable+bounces-50325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48656905B37
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 20:40:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF70D905B6E
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 20:47:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB93228B2F9
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 18:40:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 711A1B21B3B
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 18:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE964AEF2;
-	Wed, 12 Jun 2024 18:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154DB3BBEC;
+	Wed, 12 Jun 2024 18:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Sm1lqskG"
 X-Original-To: stable@vger.kernel.org
-Received: from mxout70.expurgate.net (mxout70.expurgate.net [194.37.255.70])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B796447F4B;
-	Wed, 12 Jun 2024 18:40:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.37.255.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15282F3B;
+	Wed, 12 Jun 2024 18:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718217620; cv=none; b=PDq2HYKtRorLKwdRDKcQhWcvalsPbxG3YmxmDr+/03mCFERZZmtgCxmjUcKRenjVJcen14f9jDkmMP4mwtJlbcGtzNzfKXjXD5nAAeh/ZDaCFmF2aaXM0EJwPeBx97nqS6ZXsYk5a0vFgd7WPKKBbofZovREuBhghxiWSXdGq/0=
+	t=1718218069; cv=none; b=kkKU8ySej+TCKgbKh7KawwyAQYrJuIEBCNXu52Rqkk93M9m/GCcHe2AV8FoKoZDIk2LvoSGvdJu56Les5cokXXTZrKZWwsv7AW3SoiD29JTfxvNNPqMRTCNaWUgYVRZHfDHwZuKpDEGNEsPWcBS1njIlBL2rSJftdDtsWz5TST4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718217620; c=relaxed/simple;
-	bh=KuaLG9bzDcur9dwVKKPiSS8EqUoqRjZ3JTJzUwbnx/s=;
-	h=MIME-Version:Content-Type:Date:From:To:Cc:Subject:In-Reply-To:
-	 References:Message-ID; b=Zdkx7JDOx8PtDg/8Bzn3FhWBIF0lC+25S5QXxaik4UlGRu8rkvfMkeIsu6hsbgwx0/0rL1bcGxX/9KQiVCQXGjAI1zZbN3A1gB3ugJ/kpbrMjgq3zSLtc8yyNlR61n+F785Tmmv0ESLGnJBi4xiNOz6oupQEeB4k9PKFg6y4SM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dev.tdt.de; spf=pass smtp.mailfrom=dev.tdt.de; arc=none smtp.client-ip=194.37.255.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dev.tdt.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dev.tdt.de
-Received: from [127.0.0.1] (helo=localhost)
-	by relay.expurgate.net with smtp (Exim 4.92)
-	(envelope-from <prvs=9907278693=ms@dev.tdt.de>)
-	id 1sHSt8-003PMm-DD; Wed, 12 Jun 2024 20:40:02 +0200
-Received: from [195.243.126.94] (helo=securemail.tdt.de)
-	by relay.expurgate.net with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ms@dev.tdt.de>)
-	id 1sHSt7-002UFN-H0; Wed, 12 Jun 2024 20:40:01 +0200
-Received: from securemail.tdt.de (localhost [127.0.0.1])
-	by securemail.tdt.de (Postfix) with ESMTP id 2386F240053;
-	Wed, 12 Jun 2024 20:40:01 +0200 (CEST)
-Received: from mail.dev.tdt.de (unknown [10.2.4.42])
-	by securemail.tdt.de (Postfix) with ESMTP id 7CC15240050;
-	Wed, 12 Jun 2024 20:40:00 +0200 (CEST)
-Received: from mail.dev.tdt.de (localhost [IPv6:::1])
-	by mail.dev.tdt.de (Postfix) with ESMTP id E1FB53773C;
-	Wed, 12 Jun 2024 20:39:59 +0200 (CEST)
+	s=arc-20240116; t=1718218069; c=relaxed/simple;
+	bh=WAdPbpV16su/L/nLL1I9OCKFq9jqJsizJUL/5Q609jU=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=q7wWlFgdLy4kCyITZpTTLKZerisVYkixfTV/IesSB/GSebK7/Gkqj4zvIn2AJ3vBbbeu6HSc8VJ5VXTCenAqkFLAf2CMif1uuGDBjWNQbjmaxztLLZ8iB9tE31gHAO/Vauz/ewRQbrzPjbt0w3e+X1IhgmK4o1x6OY5lt1NLY+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Sm1lqskG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53EDC116B1;
+	Wed, 12 Jun 2024 18:47:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1718218069;
+	bh=WAdPbpV16su/L/nLL1I9OCKFq9jqJsizJUL/5Q609jU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Sm1lqskGRET2keI9nUnBWAo9NHejyLojU8nIbdRINQDTbTFnHquXRBI3amEYYfRqf
+	 MHr0NVCg3m01gJr8LppX/w5oXog83ISpT/eeV4yrRIZimnxBuRdW1qLNYfTy7IEt4I
+	 JHmCDvtnsf7cXRN+5v4SiohSXp6hI5njlG4cKRtI=
+Date: Wed, 12 Jun 2024 11:47:48 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "zhai.he" <zhai.he@nxp.com>
+Cc: sboyd@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, zhipeng.wang_1@nxp.com, jindong.yue@nxp.com, Barry
+ Song <baohua@kernel.org>, Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v2] Supports to use the default CMA when the
+ device-specified CMA memory is not enough.
+Message-Id: <20240612114748.bf5983b50634f23d674bc749@linux-foundation.org>
+In-Reply-To: <20240612081216.1319089-1-zhai.he@nxp.com>
+References: <20240612081216.1319089-1-zhai.he@nxp.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Date: Wed, 12 Jun 2024 20:39:59 +0200
-From: Martin Schiller <ms@dev.tdt.de>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: hauke@hauke-m.de, tsbogend@alpha.franken.de, rdunlap@infradead.org,
- robh@kernel.org, bhelgaas@google.com, linux-mips@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: pci: lantiq: restore reset gpio polarity
-Organization: TDT AG
-In-Reply-To: <ZmnfQWFoIw5UCV-k@google.com>
-References: <20240607090400.1816612-1-ms@dev.tdt.de>
- <ZmnfQWFoIw5UCV-k@google.com>
-Message-ID: <7d34eb4017e809245daa342e3ccddf4f@dev.tdt.de>
-X-Sender: ms@dev.tdt.de
-User-Agent: Roundcube Webmail/1.3.17
-X-purgate-type: clean
-X-purgate: clean
-X-purgate-ID: 151534::1718217602-83CB5642-2266EBAB/0/0
 
-On 2024-06-12 19:47, Dmitry Torokhov wrote:
-> Hi Marton,
+On Wed, 12 Jun 2024 16:12:16 +0800 "zhai.he" <zhai.he@nxp.com> wrote:
 
-Hi Dmitry,
+> From: He Zhai <zhai.he@nxp.com>
 
+(cc Barry & Christoph)
+
+What was your reason for adding cc:stable to the email headers?  Does
+this address some serious problem?  If so, please fully describe that
+problem.
+
+> In the current code logic, if the device-specified CMA memory
+> allocation fails, memory will not be allocated from the default CMA area.
+> This patch will use the default cma region when the device's
+> specified CMA is not enough.
 > 
-> On Fri, Jun 07, 2024 at 11:04:00AM +0200, Martin Schiller wrote:
->> Commit 90c2d2eb7ab5 ("MIPS: pci: lantiq: switch to using gpiod API") 
->> not
->> only switched to the gpiod API, but also inverted / changed the 
->> polarity
->> of the GPIO.
->> 
->> According to the PCI specification, the RST# pin is an active-low
->> signal. However, most of the device trees that have been widely used 
->> for
->> a long time (mainly in the openWrt project) define this GPIO as
->> active-high and the old driver code inverted the signal internally.
->> 
->> Apparently there are actually boards where the reset gpio must be
->> operated inverted. For this reason, we cannot use the 
->> GPIOD_OUT_LOW/HIGH
->> flag for initialization. Instead, we must explicitly set the gpio to
->> value 1 in order to take into account any "GPIO_ACTIVE_LOW" flag that
->> may have been set.
-> 
-> Do you have example of such boards? They could not have worked before
-> 90c2d2eb7ab5 because it was actively setting the reset line to physical
-> high, which should leave the device in reset state if there is an
-> inverter between the AP and the device.
+> In addition, the log level of allocation failure is changed to debug.
+> Because these logs will be printed when memory allocation from the
+> device specified CMA fails, but if the allocation fails, it will be
+> allocated from the default cma area. It can easily mislead developers'
+> judgment.
+>
+> ...
+>
+> --- a/kernel/dma/contiguous.c
+> +++ b/kernel/dma/contiguous.c
+> @@ -357,8 +357,13 @@ struct page *dma_alloc_contiguous(struct device *dev, size_t size, gfp_t gfp)
+>  	/* CMA can be used only in the context which permits sleeping */
+>  	if (!gfpflags_allow_blocking(gfp))
+>  		return NULL;
+> -	if (dev->cma_area)
+> -		return cma_alloc_aligned(dev->cma_area, size, gfp);
+> +	if (dev->cma_area) {
+> +		struct page *page = NULL;
+> +
+> +		page = cma_alloc_aligned(dev->cma_area, size, gfp);
+> +		if (page)
+> +			return page;
+> +	}
+>  	if (size <= PAGE_SIZE)
+>  		return NULL;
 
-Oh, you're right. I totally missed that '__gpio_set_value' was used in
-the original code and that raw accesses took place without paying
-attention to the GPIO_ACTIVE_* flags.
+The dma_alloc_contiguous() kerneldoc should be updated for this.
 
-You can find the device trees I am talking about in [1].
+The patch prompts the question "why does the device-specified CMA area
+exist?".  Why not always allocate from the global pool?  If the
+device-specified area exists to prevent one device from going crazy and
+consuming too much contiguous memory, this patch violates that intent?
 
-@Thomas Bogendoerfer:
-Would it be possible to stop the merging of this patch?
-I think We have to do do some further/other changes.
-
-> 
->> 
->> In order to remain compatible with all these existing device trees, we
->> should therefore keep the logic as it was before the commit.
-> 
-> With gpiod API operating with logical states there's still difference 
-> in
-> logic:
-> 
-> 	gpiod_set_value_cansleep(reset_gpio, 1);
-> 
-> will leave GPIO at 1 if it is described as GPIO_ACTIVE_HIGH (which is
-> apparently what you want for boards with broken DTS) but for boards
-> that accurately describe GPIO as GPIO_ACTIVE_LOW it well drive GPIO to
-> 0, leaving the card in reset state.
-> 
-> You should either use gpiod_set_raw_value_calsleep() or we can try and
-> quirk it in gpiolib (like we do for many other cases of incorrect GPIO
-> polarity descriptions and which is my preference).
-> 
-> This still leaves the question about boards that require inversion. Are
-> you saying that they have real signal inverter on the line or that 
-> their
-> device trees correctly describe the signal as GPIO_ACTIVE_LOW?
-> 
-> BTW, please consider getting DTS trees for your devices into mainline.
-> Why do you keep them separate?
-
-Unfortunately, these are not "my" devices and I can't even test them.
-I've got feedback from some users when I updated the lantiq target to
-linux 6.1 in openwrt.
-
-
-Let's assume that all boards physically expect an active-low signal.
-
-If the GPIO_ACTIVE_LOW flag were now set in the device tree, the
-original (old) driver would have an incorrect initial level (LOW instead
-of HIGH) due to the
-
-	gpio_direction_output(reset_gpio, 1);
-
-This is probably the reason why the flag GPIO_ACTIVE_HIGH is set in
-almost all dts files in openwrt.
-
-But with commit 90c2d2eb7ab5 the initial level (LOW) is guaranteed to be
-wrong because of the "GPIOD_OUT_LOW" and cannot be changed by "wrong"
-device tree settings.
-
-The signal curve is LOW -> LOW -> HIGH instead of HIGH -> LOW -> HIGH.
-
-> 
->> 
->> Fixes: 90c2d2eb7ab5 ("MIPS: pci: lantiq: switch to using gpiod API")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Martin Schiller <ms@dev.tdt.de>
->> ---
->>  arch/mips/pci/pci-lantiq.c | 8 ++++----
->>  1 file changed, 4 insertions(+), 4 deletions(-)
->> 
->> diff --git a/arch/mips/pci/pci-lantiq.c b/arch/mips/pci/pci-lantiq.c
->> index 68a8cefed420..0844db34022e 100644
->> --- a/arch/mips/pci/pci-lantiq.c
->> +++ b/arch/mips/pci/pci-lantiq.c
->> @@ -124,14 +124,14 @@ static int ltq_pci_startup(struct 
->> platform_device *pdev)
->>  		clk_disable(clk_external);
->> 
->>  	/* setup reset gpio used by pci */
->> -	reset_gpio = devm_gpiod_get_optional(&pdev->dev, "reset",
->> -					     GPIOD_OUT_LOW);
->> +	reset_gpio = devm_gpiod_get_optional(&pdev->dev, "reset", 
->> GPIOD_ASIS);
->>  	error = PTR_ERR_OR_ZERO(reset_gpio);
->>  	if (error) {
->>  		dev_err(&pdev->dev, "failed to request gpio: %d\n", error);
->>  		return error;
->>  	}
->>  	gpiod_set_consumer_name(reset_gpio, "pci_reset");
->> +	gpiod_direction_output(reset_gpio, 1);
->> 
->>  	/* enable auto-switching between PCI and EBU */
->>  	ltq_pci_w32(0xa, PCI_CR_CLK_CTRL);
->> @@ -194,10 +194,10 @@ static int ltq_pci_startup(struct 
->> platform_device *pdev)
->> 
->>  	/* toggle reset pin */
->>  	if (reset_gpio) {
->> -		gpiod_set_value_cansleep(reset_gpio, 1);
->> +		gpiod_set_value_cansleep(reset_gpio, 0);
->>  		wmb();
->>  		mdelay(1);
->> -		gpiod_set_value_cansleep(reset_gpio, 0);
->> +		gpiod_set_value_cansleep(reset_gpio, 1);
->>  	}
->>  	return 0;
->>  }
->> --
->> 2.39.2
->> 
-> 
-> Thanks.
-
-[1] 
-https://git.openwrt.org/?p=openwrt/openwrt.git;a=tree;f=target/linux/lantiq/files/arch/mips/boot/dts/lantiq
-
+> @@ -406,6 +411,8 @@ void dma_free_contiguous(struct device *dev, struct page *page, size_t size)
+>  	if (dev->cma_area) {
+>  		if (cma_release(dev->cma_area, page, count))
+>  			return;
+> +		if (cma_release(dma_contiguous_default_area, page, count))
+> +			return;
+>  	} else {
+>  		/*
+>  		 * otherwise, page is from either per-numa cma or default cma
+> diff --git a/mm/cma.c b/mm/cma.c
+> index 3e9724716bad..6e12faf1bea7 100644
+> --- a/mm/cma.c
+> +++ b/mm/cma.c
+> @@ -495,8 +495,8 @@ struct page *cma_alloc(struct cma *cma, unsigned long count,
+>  	}
+>  
+>  	if (ret && !no_warn) {
+> -		pr_err_ratelimited("%s: %s: alloc failed, req-size: %lu pages, ret: %d\n",
+> -				   __func__, cma->name, count, ret);
+> +		pr_debug("%s: alloc failed, req-size: %lu pages, ret: %d, try to use default cma\n",
+> +			    cma->name, count, ret);
+>  		cma_debug_show_areas(cma);
+>  	}
 
 
