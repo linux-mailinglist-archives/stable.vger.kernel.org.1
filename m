@@ -1,56 +1,50 @@
-Return-Path: <stable+bounces-50280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F97F9055AC
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 16:48:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 366689055BC
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 16:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BFAB1F23D6D
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:48:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDA5128B47B
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5EC17F373;
-	Wed, 12 Jun 2024 14:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBF217F36D;
+	Wed, 12 Jun 2024 14:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUhSppyo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdO1TG77"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793101E504;
-	Wed, 12 Jun 2024 14:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EABB17F363
+	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 14:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718203687; cv=none; b=bN1HT8lVYZKdr/WqQqB1+JLy/g19kASDxmEcCoJubDHA7V+APbVB96xWFDBQjzRoGxmbpWfMxvfn6mPWi+dZMD6LWVUsaw/5JN+Rl7xl2iqq5iFwETM5JhKXzl32qy0GMYdxYoemio/Xpxo9FSWFa8RWzLcM+6P70oDyDiJeM28=
+	t=1718203823; cv=none; b=r99qFEmIuQjkTEk2RQXbqqHKGIEQgumLDQxc42L1aUZGlosJX/B22TBbixx2Hn7bHK6ILUTEfXlekvAnrPT4Me00YS3aYl3RGl8JW66XnHTCH0xIq3RqLjeAEuhLH54IhSu9SjsruMPp6P37chR0PGg3smYy2nw+YJnA5yOhcVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718203687; c=relaxed/simple;
-	bh=gIuOYfz93n8dSbxaF6xUILMdMtwvKuPRkUX+zeecAKU=;
+	s=arc-20240116; t=1718203823; c=relaxed/simple;
+	bh=LlFXj3XHYq3xIqZ13vx4Ibe66yVgx4m4n5Udvq0JgAM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l1LFb52wmKrMpqKM2PGaBWUkp/mnk2UOCOmadpbw+YG0eRvxkioetw0d19ZSSK3oIgBLGFW1loNnAu3WM0XHV1ZMXmm1KaAgQVoi9QYbxT/SpHInRJQHqYfenJZlGjUHB981uahcu8E8gQdZBOZSD3dK+4JqACiSSa6/w5WOHnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUhSppyo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695EEC116B1;
-	Wed, 12 Jun 2024 14:48:06 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=cQ7dR0AUwyYfVuIzvG4fOXSyEaKZfmuh0MP8l8XAv0KmuZ/4zFusjdkiEJ9Ah7ZzaPTDq4YXFadzdr37vmaBzxQrRGJMM/U5jH1ytaiTxwZ4wVP6M2oO4MlulH+6pvkNW4gDijBypPFnZ7adOsUjsZPJ1UrIyn9EdkP2nHZC9SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdO1TG77; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60A6C116B1;
+	Wed, 12 Jun 2024 14:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718203687;
-	bh=gIuOYfz93n8dSbxaF6xUILMdMtwvKuPRkUX+zeecAKU=;
+	s=korg; t=1718203823;
+	bh=LlFXj3XHYq3xIqZ13vx4Ibe66yVgx4m4n5Udvq0JgAM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AUhSppyowsRAhKMbeg3vEuP/5Y45fwXYI0mxxW89h4nOx5NS7rF4pWv/SYGu/CW21
-	 AC7eO/BbZKnj+y2vlp7UDvV+yOKgzjVqTWHQYnpKnpCgP+cDbS7KEFG8p1Dmw9DcAV
-	 /U9rCCoifJGVK1kWKk24zcNge8Hqn/D3TIZO32uo=
-Date: Wed, 12 Jun 2024 16:48:04 +0200
+	b=zdO1TG77sgRo6HxKXGKW3NY9tGYTZ3n7z+99hGwg2USqmEWYF2RvicMMP2Vp5XAIp
+	 WSFFkFkPA5aZxnqmBamBiX1QjuChSIjaoCgbFapjAwSP0GXwkEhhpr8+71vOTO31Et
+	 rfk7k/rcReZp1DylSuIOajd+oL6ZYMuwcLh2zrhU=
+Date: Wed, 12 Jun 2024 16:50:12 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Kuntal Nayak <kuntal.nayak@broadcom.com>
-Cc: stable@vger.kernel.org, pablo@netfilter.org, kadlec@netfilter.org,
-	fw@strlen.de, davem@davemloft.net, kuba@kernel.org,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com,
-	vasavi.sirnapalli@broadcom.com
-Subject: Re: [PATCH 1/2 v5.10] netfilter: nf_tables: restrict tunnel object
- to NFPROTO_NETDEV
-Message-ID: <2024061254-crayfish-gory-e4b8@gregkh>
-References: <20240607213735.46127-1-kuntal.nayak@broadcom.com>
+To: Ronnie Sahlberg <rsahlberg@ciq.com>
+Cc: stable@vger.kernel.org
+Subject: Re: Candidates for stable v6.9..v6.10-rc1 KASAN
+Message-ID: <2024061247-jasmine-uptake-0ccc@gregkh>
+References: <CAK4epfyYE=4PubEzyZw-LoSU6kuD3UCpHOWH8cWjw2pHxj19Bw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,27 +53,30 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240607213735.46127-1-kuntal.nayak@broadcom.com>
+In-Reply-To: <CAK4epfyYE=4PubEzyZw-LoSU6kuD3UCpHOWH8cWjw2pHxj19Bw@mail.gmail.com>
 
-On Fri, Jun 07, 2024 at 02:37:34PM -0700, Kuntal Nayak wrote:
-> From: Pablo Neira Ayuso <pablo@netfilter.org>
+On Thu, May 30, 2024 at 09:14:04PM -0400, Ronnie Sahlberg wrote:
+> These commits reference KASAN between v6.9 and v6.10-rc1
 > 
-> [ upstream commit 776d451648443f9884be4a1b4e38e8faf1c621f9 ]
-> 
-> Bail out on using the tunnel dst template from other than netdev family.
-> Add the infrastructure to check for the family in objects.
-> 
-> Fixes: af308b94a2a4 ("netfilter: nf_tables: add tunnel support")
-> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-> [KN: Backport patch according to v5.10.x source]
-> Signed-off-by: Kuntal Nayak <kuntal.nayak@broadcom.com>
-> ---
->  include/net/netfilter/nf_tables.h |  2 ++
->  net/netfilter/nf_tables_api.c     | 14 +++++++++-----
->  net/netfilter/nft_tunnel.c        |  1 +
->  3 files changed, 12 insertions(+), 5 deletions(-)
+> These commits are not, yet, in stable/linux-rolling-stable.
+> Let me know if you would rather me compare to a different repo/branch.
 
-Both now queued up, thanks.
+Nope, this works!
+
+> 
+> The list has been manually pruned to only contain commits that look like
+> actual issues.
+> If they contain a Fixes line it has been verified that at least one of the
+> commits that the Fixes tag(s) reference is in stable/linux-rolling-stable
+> 
+> 195aba96b854dd664768 KASAN, Out of bounds
+> 2e577732e8d28b9183df Kernel panic, KASAN
+> 20faaf30e55522bba2b5 KASAN, Syz Fuzzers, Out of bounds
+> c1115ddbda9c930fba0f KASAN, NULL pointer
+
+I've queued up the ones that were not already in releases.
+
+thanks!
 
 greg k-h
 
