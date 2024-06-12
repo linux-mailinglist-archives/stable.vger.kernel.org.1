@@ -1,187 +1,133 @@
-Return-Path: <stable+bounces-50328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A96C9905BD9
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 21:21:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 445FC905BFC
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 21:30:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 551DB1F24AF8
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 19:21:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2761289D80
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 19:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD67982C7E;
-	Wed, 12 Jun 2024 19:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D41582D89;
+	Wed, 12 Jun 2024 19:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="h4loWMPj"
 X-Original-To: stable@vger.kernel.org
-Received: from er-systems.de (er-systems.de [162.55.144.138])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E77A824A4
-	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 19:21:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.55.144.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34774EB5E;
+	Wed, 12 Jun 2024 19:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718220079; cv=none; b=H9V+zYzlA+yS6CG6XqksH3YvmBkeSQS41N45n/mT0TtZOTVv04ke+WSVmjLm74+5i1T683rP/rpiTJXcJ7rlnC/Fz9z1wmLu0ZStbzSQrIbGY2QGKFuH8k2D2DJUUhQBe7CuOPC7dL5B7/TpG2OhrDVzkahUajpzzxfLTvtQokY=
+	t=1718220643; cv=none; b=VF1kV3FXXVeSeK9yzmU19582l+acNrb8d/5alo3EOnkjLmd0Rq0G/aMuLrDMXHHcZW+PYhFfV3j5ecPmxLulr946aEVtRY27RtH8p+iibkSj00Aefh4jfJH+EmUL6TZt3Ik+YlRcxS3CPy5olgoTpNXBLqQ1pu+ZqZst40hxrW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718220079; c=relaxed/simple;
-	bh=bwO95nwm3irQTKcFjg3Vs5cDiKz6vsEQnsQSCgGK78Y=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=eSOHTRaG/GdYkIQVsdTkyVi7nSzZsdYj3ZXdGNVH8ZCxPlkcJXHkK7irRUHea43xf5CZBrUlqkJzdFLKJEwW0yX6E6KNZeZbJ6JbDOVap9mvHXlfnUA64tKdJvg2Ktt+5nfODEca6pNFoxlVB3taeFd0U9M70OoNiKgtlflbZ3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lio96.de; spf=pass smtp.mailfrom=lio96.de; arc=none smtp.client-ip=162.55.144.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lio96.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lio96.de
-Received: from localhost.localdomain (localhost [127.0.0.1])
-	by er-systems.de (Postfix) with ESMTP id 07561ECDAE5;
-	Wed, 12 Jun 2024 21:21:12 +0200 (CEST)
-X-Spam-Level: 
+	s=arc-20240116; t=1718220643; c=relaxed/simple;
+	bh=pOKcclZG5WBcGPNDhmkX9t0VWMOahQad1f72xT6Z7lo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oNyfNHd9mS4PP4+LwhsHS8kgGT2hYVN7vtEXE4ofh+Npk0OjxYFpk0ik4y1eTNaV6TMNuzjPkYrgNzBAjLu16w0sg9tYXunBpWN/B7HmVkpjrA+B6hAVSyAErMnbZm9IQ4+1dgglfkyxG8cSRiLxatEPWd5/3wVNcSUyBT8gzJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=h4loWMPj; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
 Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4Vzwcc6lztz6Cnv3g;
+	Wed, 12 Jun 2024 19:30:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1718220637; x=1720812638; bh=xwgGaJ+ldD3QPjS7YWXLQ8Z9
+	xFMNRb/6AI+EbIL/3VY=; b=h4loWMPj6eaentZVGsSvsu/zFAp5e0VJCSj9sYod
+	GZ0uZm4LJNiJ+jvdFRHtGHbvvfRrsN/7lbsMuVse4lHECFkZ9NZ2GA4DnnmMg2NK
+	bUbtl8rb43s26/w2rqBZAXTFEtnalfLbqhB9i3BL0kRasiV1EHgauLtygDS4tHy6
+	5ee1YmTMqHR67LIqII5yAqqduoXcq4wTyx56RVPJGq3rMOShN4Mlip6Z2f+Vdn7I
+	WmEYo7LWV+AUX03+D3/gLosMfyUf0tQ7ShU7Dgdn4eCXuYbeyXQATXxmPfaoxIbw
+	AbHmTQcX4SigSHaQVyffvIQgbko7u6XJcEWxAQkOFeU9/g==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id t-qeBMebE9_D; Wed, 12 Jun 2024 19:30:37 +0000 (UTC)
+Received: from [100.96.154.26] (unknown [104.132.0.90])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by er-systems.de (Postfix) with ESMTPS id DAEA6ECDAE2;
-	Wed, 12 Jun 2024 21:21:11 +0200 (CEST)
-Date: Wed, 12 Jun 2024 21:21:11 +0200 (CEST)
-From: Thomas Voegtle <tv@lio96.de>
-To: Steven French <Steven.French@microsoft.com>
-cc: Greg KH <gregkh@linuxfoundation.org>, 
-    "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-    David Howells <dhowells@redhat.com>, 
-    "smfrench@gmail.com" <smfrench@gmail.com>
-Subject: RE: [EXTERNAL] Re: 6.6.y: cifs broken since 6.6.23 writing big files
- with vers=1.0 and 2.0
-In-Reply-To:  <MN0PR21MB36071826A93A81733964CCB0E4C02@MN0PR21MB3607.namprd21.prod.outlook.com>
-Message-ID: <07f55e43-3bab-33fd-fffb-2b6a39681863@lio96.de>
-References: <e519a2f6-eb49-e7e6-ab2e-beabc6cad090@lio96.de> <2024061242-supervise-uncaring-b8ed@gregkh> <52814687-9c71-a6fb-3099-13ed634af592@lio96.de> <2024061215-swiftly-circus-f110@gregkh> 
- <MN0PR21MB36071826A93A81733964CCB0E4C02@MN0PR21MB3607.namprd21.prod.outlook.com>
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4VzwcX24GZz6Cnk9Y;
+	Wed, 12 Jun 2024 19:30:35 +0000 (UTC)
+Message-ID: <a7ac0431-2b30-43bf-bb90-1476e33aa6cd@acm.org>
+Date: Wed, 12 Jun 2024 12:30:34 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Virus-Status: No
-X-Virus-Checker-Version: clamassassin 1.2.4 with clamdscan / ClamAV 0.103.11/27304/Wed Jun 12 10:27:29 2024
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] scsi: core: Do not query IO hints for USB devices
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+ linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
+ Joao Machado <jocrismachado@gmail.com>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Christian Heusel <christian@heusel.eu>, stable@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20240612165249.2671204-1-bvanassche@acm.org>
+ <20240612165249.2671204-3-bvanassche@acm.org>
+ <de4492b5-a681-42bf-99d7-e9ba30dabeb2@rowland.harvard.edu>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <de4492b5-a681-42bf-99d7-e9ba30dabeb2@rowland.harvard.edu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 12 Jun 2024, Steven French wrote:
+On 6/12/24 11:08 AM, Alan Stern wrote:
+> You might want to do the same thing in uas.c.  I don't know if UAS
+> devices suffer from the same problem, but it wouldn't be surprising if
+> they do.
 
-> Thanks for catching this - I found at least one case (even if we don't 
-> want to ever encourage anyone to mount with these old dialects) where I 
-> was able to repro a dd hang.
->
-> I tried some experiments with both 6.10-rc2 and with 6.8 and don't see a 
-> performance degradation with this, but there are some cases with SMB1 
-> where performance hit might be expected (if rsize or wsize is negotiated 
-> to very small size, modern dialects support larger default wsize and 
-> rsize).  I just did try an experiment with vers=1.0 and 6.6.33 and did 
-> reproduce a problem though so am looking into that now (I see session 
-> disconnected part way through the copy in /proc/fs/cifs/DebugData - do 
-> you see the same thing).  I am not seeing an issue with normal modern
+Hi Alan,
 
-You mean this stuff:
-         MIDs:
-         Server ConnectionId: 0x6
-                 State: 2 com: 9 pid: 10 cbdata: 00000000c583976f mid 
-309943
-                 State: 2 com: 9 pid: 10 cbdata: 0000000085b5bf16 mid 
-309944
-                 State: 2 com: 9 pid: 10 cbdata: 000000008b353163 mid 
-309945
-                 State: 2 com: 9 pid: 10 cbdata: 00000000898b6503 mid 
-309946
-...
+How about replacing patch 2/2 from this series with the patch below?
 
-Yes, can see that.
+Thanks,
 
+Bart.
 
-> dialects though but I will take a look and see if we can narrow down 
-> what is happening in this old smb1 path.
->
-> Can you check two things:
-> 1) what is the wsize and rsize that was negotiation ("mount | grep cifs") will show this?
+diff --git a/drivers/usb/storage/scsiglue.c b/drivers/usb/storage/scsiglue.c
+index b31464740f6c..b4cf0349fd0d 100644
+--- a/drivers/usb/storage/scsiglue.c
++++ b/drivers/usb/storage/scsiglue.c
+@@ -79,6 +79,12 @@ static int slave_alloc (struct scsi_device *sdev)
+  	if (us->protocol == USB_PR_BULK && us->max_lun > 0)
+  		sdev->sdev_bflags |= BLIST_FORCELUN;
 
-rsize=65536,wsize=65536 with vers=2.0
++	/*
++	 * Some USB storage devices reset if the IO hints VPD page is queried.
++	 * Hence skip that VPD page.
++	 */
++	sdev->sdev_bflags |= BLIST_SKIP_IO_HINTS;
++
+  	return 0;
+  }
 
-rsize=1048576,wsize=65536 with vers=1.0
+diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
+index a48870a87a29..bb75901b53e3 100644
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -820,6 +820,12 @@ static int uas_slave_alloc(struct scsi_device *sdev)
+  	struct uas_dev_info *devinfo =
+  		(struct uas_dev_info *)sdev->host->hostdata;
 
-> 2) what is the server type?
-
-That is an older Samba Server 4.9.18 with a bunch of patches (Debian?).
-I can test with several Windows Server versions if you like.
-
-
->
-> The repro I tried was "dd if=/dev/zero of=/mnt1/48GB bs=4MB count=12000" 
-> and so far vers=1.0 to 6.6.33 to Samba (ksmbd does not support the older 
-> less secure dialects) was the only repro
-
-For vers=2.0 it needs a few GB more to hit the problem. In my setup 
-it is 58GB with Linux 6.9.0. I know. It's weird.
-
-
-              Thomas
-
-
-
->
-> -----Original Message-----
-> From: Greg KH <gregkh@linuxfoundation.org>
-> Sent: Wednesday, June 12, 2024 9:53 AM
-> To: Thomas Voegtle <tv@lio96.de>
-> Cc: stable@vger.kernel.org; David Howells <dhowells@redhat.com>; Steven French <Steven.French@microsoft.com>
-> Subject: [EXTERNAL] Re: 6.6.y: cifs broken since 6.6.23 writing big files with vers=1.0 and 2.0
->
-> On Wed, Jun 12, 2024 at 04:44:27PM +0200, Thomas Voegtle wrote:
->> On Wed, 12 Jun 2024, Greg KH wrote:
->>
->>> On Tue, Jun 11, 2024 at 09:20:33AM +0200, Thomas Voegtle wrote:
->>>>
->>>> Hello,
->>>>
->>>> a machine booted with Linux 6.6.23 up to 6.6.32:
->>>>
->>>> writing /dev/zero with dd on a mounted cifs share with vers=1.0 or
->>>> vers=2.0 slows down drastically in my setup after writing approx.
->>>> 46GB of data.
->>>>
->>>> The whole machine gets unresponsive as it was under very high IO
->>>> load. It pings but opening a new ssh session needs too much time.
->>>> I can stop the dd
->>>> (ctrl-c) and after a few minutes the machine is fine again.
->>>>
->>>> cifs with vers=3.1.1 seems to be fine with 6.6.32.
->>>> Linux 6.10-rc3 is fine with vers=1.0 and vers=2.0.
->>>>
->>>> Bisected down to:
->>>>
->>>> cifs-fix-writeback-data-corruption.patch
->>>> which is:
->>>> Upstream commit f3dc1bdb6b0b0693562c7c54a6c28bafa608ba3c
->>>> and
->>>> linux-stable commit e45deec35bf7f1f4f992a707b2d04a8c162f2240
->>>>
->>>> Reverting this patch on 6.6.32 fixes the problem for me.
->>>
->>> Odd, that commit is kind of needed :(
->>>
->>> Is there some later commit that resolves the issue here that we
->>> should pick up for the stable trees?
->>>
->>
->> Hope this helps:
->>
->> Linux 6.9.4 is broken in the same way and so is 6.9.0.
->
-> How about Linus's tree?
->
-> thnanks,
->
-> greg k-h
->
->
-
-       Thomas
-
--- 
-  Thomas V
++	/*
++	 * Some USB storage devices reset if the IO hints VPD page is queried.
++	 * Hence skip that VPD page.
++	 */
++	sdev->sdev_bflags |= BLIST_SKIP_IO_HINTS;
++
+  	sdev->hostdata = devinfo;
+  	return 0;
+  }
 
 
