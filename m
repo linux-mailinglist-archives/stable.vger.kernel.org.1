@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-50320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE270905ABA
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 20:22:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9350E905ABB
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 20:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02ED71C21221
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 18:22:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09BA31F23697
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 18:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D89391;
-	Wed, 12 Jun 2024 18:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89EC38DF2;
+	Wed, 12 Jun 2024 18:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ux/9HkPW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7heRgT/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403BD2868D
-	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 18:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E5839FCF
+	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 18:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718216562; cv=none; b=nx00/TVDWJflS5+jkmoGXM9w5WE2bvngYIneymXdHRzEYQ4QIqf77JJjU6zSMZfXbaHhs3WmO6UAfPAnuw35hFDPdTQdOo0djuZbTBD6gb3HaC6u5Ye6lA1elbqtnbNB+mCrnL2+kKOtT3VTiotMxlRSWf4VL/LpFvnK1ns2Jds=
+	t=1718216564; cv=none; b=PR7HypqD6Fd5q/H+9Ej/QUkv+sK7KrlZXyIsd4FzE2DbLT5+7CkZLhz2usumIuxSZRBoEzoYLsfCbhI1jfBc70Q9rk9qU1eftHRwnoXlrotdED3Jay82roaio3sgR2lqZVNJAEeGCuhzoEre5Cc6Gn72Ix1OWCAxLYylJcLhKl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718216562; c=relaxed/simple;
-	bh=HR6TgSYGzfUPDivsIoMhBV65yQG104RibQ5X5fAe9Zw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=N+TmYAVgVe8VuoCSFJfUm1ZB0vywHR01kMnVLlx2MdVN0Eu14U3Lp0U+NBCH2LiViKeBp9D6f2rNClQPrtNJsC+wWpzgUm3h3eD833oEwj3Hdqjr2ryP35WUsumPceYKaO+QnQCO+rhuWH+IvwH/Xd+AKdbKkcN1AfuAaRGju2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ux/9HkPW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C4A5C116B1;
-	Wed, 12 Jun 2024 18:22:40 +0000 (UTC)
+	s=arc-20240116; t=1718216564; c=relaxed/simple;
+	bh=kqd8+eyS4LJXF1lRCOBBmpvbFyXgVHU5NuCf2ZGl5wg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QkuiczVjivNHhJSvZc+N0B/gxfjlm5DLnuJkIHac6Mm+3yx3E87fzVz3vL5EJVhWmMrZeK3oEqWeJdmRPYWCtpnG8LBjBBxt9MVGLUsMBUOlcNQH4B3iR9bxLez74NNI/bJDwVSqj7e+mxx+HNhHRMKUEClyU4dMf4AciLkSvXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7heRgT/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2D6C32786;
+	Wed, 12 Jun 2024 18:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718216560;
-	bh=HR6TgSYGzfUPDivsIoMhBV65yQG104RibQ5X5fAe9Zw=;
+	s=korg; t=1718216563;
+	bh=kqd8+eyS4LJXF1lRCOBBmpvbFyXgVHU5NuCf2ZGl5wg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ux/9HkPW4q1T+VMQ8aBUB4SK+khZrzuevVQL+rIvn29U3fuhsAESDdSqFzbuhTZ0W
-	 GNVW5Egx1cHBEGD3ohERPwR9QW/O2Z7B4x7c0Wu+yZ8+P/tA0wedcaV+FYLffF35LY
-	 CyR5rdY66BMo7ufP4hpCjyxlXaD4gZCE8QVD3akQ=
-Subject: FAILED: patch "[PATCH] mmc: davinci: Don't strip remove function when driver is" failed to apply to 5.4-stable tree
+	b=q7heRgT/n5ps5S2X1v7gfUbAf3Qb/hCJrFqRcqhGIRL5AyM2PI5Edr74g4UA6cnwT
+	 pHbY+rG3OSdy6iAOiw4N43a2f+BiUHomLdYZR6A0PZN5foekGdd53yjFrj6pi1OG7A
+	 4rt71ZyHXcvME/TreTeJHq/7OdDAJqx1pGh2W1mc=
+Subject: FAILED: patch "[PATCH] mmc: davinci: Don't strip remove function when driver is" failed to apply to 4.19-stable tree
 To: u.kleine-koenig@pengutronix.de,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 12 Jun 2024 20:22:30 +0200
-Message-ID: <2024061230-triangle-crepe-3f0f@gregkh>
+Date: Wed, 12 Jun 2024 20:22:31 +0200
+Message-ID: <2024061231-player-lumpish-af5c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,42 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 55c421b364482b61c4c45313a535e61ed5ae4ea3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061230-triangle-crepe-3f0f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061231-player-lumpish-af5c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 55c421b36448 ("mmc: davinci: Don't strip remove function when driver is builtin")
 bc1711e8332d ("mmc: davinci_mmc: Convert to platform remove callback returning void")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
+fa6c12e036c9 ("drm/xe/guc: Add Relay Communication ABI definitions")
 
 thanks,
 
