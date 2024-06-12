@@ -1,125 +1,186 @@
-Return-Path: <stable+bounces-50228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB1B90520D
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:06:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4680D905216
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:07:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0CADB20AFC
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 12:06:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5B4D283954
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 12:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5282E16F0E1;
-	Wed, 12 Jun 2024 12:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1D316F287;
+	Wed, 12 Jun 2024 12:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BiL/t4iI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cZFt9XpP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122EC374D3
-	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 12:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6410152DF1;
+	Wed, 12 Jun 2024 12:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718194001; cv=none; b=hiDsrWMQPdTQ8h7LNHgCUNx9xaShCsQJW1VUKSNedJZVpKTQTlaQZQu9nzF/13qNMnruGzX7grfPSt/v0golzA9ZWq5qBVu8xkVvl9tV9Hs0zb4LCvJFaFNU093dRP36IOcKHQLXXvpsYdboMl691c75HH/nGM7e/gHaHLNvK2A=
+	t=1718194068; cv=none; b=ocvORP4ZxueUu0In5LBSCopbMayzOzLf4bumgC4a63ccEmyHJBZb/KcTTNSausrxoFs9u1LjUDzx/ShePRCR6yaQapCOxfoiODWVYbaeizOC8AmEZvE1NYLg/ZMNSKX7+L6iYstKBgJsmlK8MBjZgsyy30978q+YpOrAP1y0sXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718194001; c=relaxed/simple;
-	bh=gM3mVIInr6GFNijc4mkuocWjRWnTu2i0B/utID4O0Ww=;
+	s=arc-20240116; t=1718194068; c=relaxed/simple;
+	bh=0pa55INIotkhQ7WBXfCLov8s4bc0ru2M2EqMpB+0ass=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=au/Gf9bx0HrTMKRgTSU0hYM86bv8+MC6lhTdPyZL0BwSw3sqTkJL8qAO7cDxH0YNTUDu+Tw8HwPHRav9OligS3X7zo5pR3mIWy10YjnZcVgDbxZyBZGPdrLd1dpVVvfgW9TAYQSrJliZzm9EYcd+LPiyFCJiKi75aHudNSZYCcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BiL/t4iI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127E7C32789;
-	Wed, 12 Jun 2024 12:06:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718194000;
-	bh=gM3mVIInr6GFNijc4mkuocWjRWnTu2i0B/utID4O0Ww=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BiL/t4iIdQgUAjWQGw0fdmlT1ig7BZj7YE2GOjk2JQHl+4fAM594xDl2zS4HEUQGd
-	 cSDX+IhPQpSE8qPfZAnZNeirT+CvL3U4xlCZNVKbvs6D4Mbn+CO8IRlvgw5Mweepr8
-	 cLFqxFBM2hOokMt23RqlUxlhjMGPzLClo3mjPmMI=
-Date: Wed, 12 Jun 2024 14:06:37 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Deucher, Alexander" <Alexander.Deucher@amd.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"sashal@kernel.org" <sashal@kernel.org>,
-	"Yu, Lang" <Lang.Yu@amd.com>,
-	=?utf-8?B?VG9tw6HFoQ==?= Trnka <trnka@scm.com>,
-	"Kuehling, Felix" <Felix.Kuehling@amd.com>
-Subject: Re: [PATCH] drm/amdkfd: handle duplicate BOs in
- reserve_bo_and_cond_vms
-Message-ID: <2024061217-prodigal-navigate-557c@gregkh>
-References: <20240531141807.3501061-1-alexander.deucher@amd.com>
- <2024060148-monopoly-broiler-1e11@gregkh>
- <BL1PR12MB5144EA4E60894AEDF352D61FF7FF2@BL1PR12MB5144.namprd12.prod.outlook.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=M2BV8ZmiHwktmJCf6pDlbhNGA0UJskf+bID6wp0FzsjZy/OYCb5dhaUIh5aGBFnnW0TM/onetZngaveByeAVAFXMmqLtYsThzstyrhN+2IHIIA66ACwUXqfa0JWwdQ801EF5LkyVi4/xunY2DnXmpTIu94c81DvZiqb7QzZCA4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cZFt9XpP; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718194067; x=1749730067;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0pa55INIotkhQ7WBXfCLov8s4bc0ru2M2EqMpB+0ass=;
+  b=cZFt9XpPmjwTtWUeKCgHCj+XDQpGHOXzmSGMZbedg4QFtKhUmU5mulyH
+   fUX9XrS/B8n0bA+4CPWNeJmmL/zSNNFwMNFDHFUSNxjO2QXBogBnFNAzT
+   ttgokYr6/U2KfGDvKeI1PyjzYdya9M5FByNA7Xilsr5rBR81Q4CaKdgZB
+   wfJC732v4O7b3BJgO/GwE/all5VxEZ65N7GTK7im48Efnx2eGnHVhPN+I
+   bzVRls2gB8y5wGyxA5jPOjzBby4anOFFr4TR/M86ZZ/M4dP+zGKGJ+V5U
+   TixGhSyzN0j9jU+ya+ieNxaLuZsfBzhWGSG097l+VSGLJSH9GQjX+QVkE
+   A==;
+X-CSE-ConnectionGUID: U6JaQCjBQZ+X2FJUghmbTA==
+X-CSE-MsgGUID: 8iYd19HmTv2T/cMt8IkGsA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11100"; a="40359854"
+X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; 
+   d="scan'208";a="40359854"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2024 05:07:46 -0700
+X-CSE-ConnectionGUID: f8JrlDn3Sc+nofqt1CEfog==
+X-CSE-MsgGUID: jWCaZ3lITzK1t6Wa88hptw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; 
+   d="scan'208";a="44335857"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2024 05:07:45 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id A5AC811FA94;
+	Wed, 12 Jun 2024 15:07:42 +0300 (EEST)
+Date: Wed, 12 Jun 2024 12:07:42 +0000
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] ACPI: scan: Ignore camera graph port nodes on all
+ Dell Tiger, Alder and Raptor Lake models
+Message-ID: <ZmmPjt2cCz-z7B1q@kekkonen.localdomain>
+References: <20240612104220.22219-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <BL1PR12MB5144EA4E60894AEDF352D61FF7FF2@BL1PR12MB5144.namprd12.prod.outlook.com>
+In-Reply-To: <20240612104220.22219-1-hdegoede@redhat.com>
 
-On Mon, Jun 03, 2024 at 02:31:27PM +0000, Deucher, Alexander wrote:
-> [Public]
+Hi Hans,
+
+Thanks for the set.
+
+On Wed, Jun 12, 2024 at 12:42:20PM +0200, Hans de Goede wrote:
+> It seems that all Dell laptops with IPU6 camera or the Tiger Lake,
+
+"Seems that"? I don't argue against though as I have little information on
+this, in fact only two systems.
+
+> Alder Lake and Raptor Lake generations have broken ACPI MIPI DISCO
+> information.
 > 
-> > -----Original Message-----
-> > From: Greg KH <gregkh@linuxfoundation.org>
-> > Sent: Saturday, June 1, 2024 1:24 AM
-> > To: Deucher, Alexander <Alexander.Deucher@amd.com>
-> > Cc: stable@vger.kernel.org; sashal@kernel.org; Yu, Lang <Lang.Yu@amd.com>;
-> > Tomáš Trnka <trnka@scm.com>; Kuehling, Felix <Felix.Kuehling@amd.com>
-> > Subject: Re: [PATCH] drm/amdkfd: handle duplicate BOs in
-> > reserve_bo_and_cond_vms
-> >
-> > On Fri, May 31, 2024 at 10:18:07AM -0400, Alex Deucher wrote:
-> > > From: Lang Yu <Lang.Yu@amd.com>
-> > >
-> > > Observed on gfx8 ASIC where
-> > KFD_IOC_ALLOC_MEM_FLAGS_AQL_QUEUE_MEM is used.
-> > > Two attachments use the same VM, root PD would be locked twice.
-> > >
-> > > [   57.910418] Call Trace:
-> > > [   57.793726]  ? reserve_bo_and_cond_vms+0x111/0x1c0 [amdgpu]
-> > > [   57.793820]
-> > amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu+0x6c/0x1c0 [amdgpu]
-> > > [   57.793923]  ? idr_get_next_ul+0xbe/0x100
-> > > [   57.793933]  kfd_process_device_free_bos+0x7e/0xf0 [amdgpu]
-> > > [   57.794041]  kfd_process_wq_release+0x2ae/0x3c0 [amdgpu]
-> > > [   57.794141]  ? process_scheduled_works+0x29c/0x580
-> > > [   57.794147]  process_scheduled_works+0x303/0x580
-> > > [   57.794157]  ? __pfx_worker_thread+0x10/0x10
-> > > [   57.794160]  worker_thread+0x1a2/0x370
-> > > [   57.794165]  ? __pfx_worker_thread+0x10/0x10
-> > > [   57.794167]  kthread+0x11b/0x150
-> > > [   57.794172]  ? __pfx_kthread+0x10/0x10
-> > > [   57.794177]  ret_from_fork+0x3d/0x60
-> > > [   57.794181]  ? __pfx_kthread+0x10/0x10
-> > > [   57.794184]  ret_from_fork_asm+0x1b/0x30
-> > >
-> > > Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3007
-> > > Tested-by: Tomáš Trnka <trnka@scm.com>
-> > > Signed-off-by: Lang Yu <Lang.Yu@amd.com>
-> > > Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-> > > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> > > Cc: stable@vger.kernel.org
-> > > (cherry picked from commit
-> > 2a705f3e49d20b59cd9e5cc3061b2d92ebe1e5f0)
-> > > ---
-> > >  drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 3 ++-
-> > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > What kernel release(s) is this backport for?
+> Instead of adding a lot of DMI quirks for this, check for these CPU
+> generations and disable ACPI MIPI DISCO support on all Dell laptops
+> with these CPU generations.
+
+Is there still a need to include linux/dmi.h?
+
 > 
-> 6.6.x and newer.
+> Fixes: bd721b934323 ("ACPI: scan: Extract CSI-2 connection graph from _CRS")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/acpi/internal.h       |  4 ++++
+>  drivers/acpi/mipi-disco-img.c | 28 +++++++++++++++++++---------
+>  2 files changed, 23 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+> index 2a0e9fc7b74c..601b670356e5 100644
+> --- a/drivers/acpi/internal.h
+> +++ b/drivers/acpi/internal.h
+> @@ -302,6 +302,10 @@ void acpi_mipi_check_crs_csi2(acpi_handle handle);
+>  void acpi_mipi_scan_crs_csi2(void);
+>  void acpi_mipi_init_crs_csi2_swnodes(void);
+>  void acpi_mipi_crs_csi2_cleanup(void);
+> +#ifdef CONFIG_X86
+>  bool acpi_graph_ignore_port(acpi_handle handle);
+> +#else
+> +static inline bool acpi_graph_ignore_port(acpi_handle handle) { return false; }
+> +#endif
+>  
+>  #endif /* _ACPI_INTERNAL_H_ */
+> diff --git a/drivers/acpi/mipi-disco-img.c b/drivers/acpi/mipi-disco-img.c
+> index d05413a0672a..0ab13751f0db 100644
+> --- a/drivers/acpi/mipi-disco-img.c
+> +++ b/drivers/acpi/mipi-disco-img.c
+> @@ -725,14 +725,20 @@ void acpi_mipi_crs_csi2_cleanup(void)
+>  		acpi_mipi_del_crs_csi2(csi2);
+>  }
+>  
+> -static const struct dmi_system_id dmi_ignore_port_nodes[] = {
+> -	{
+> -		.matches = {
+> -			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> -			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 9315"),
 
-Does not apply to 6.6.y, sorry, how was this tested?  Can you submit a
-patch that does work?
+I believe the patch adding XPS 9320 has been merged so reverting that first
+might help backporting. Or maybe it's only in Rafael's testing/for-next
+branches and so can be dropped easily?
 
-thanks,
+> -		},
+> -	},
+> -	{ }
+> +#ifdef CONFIG_X86
+> +#include <asm/cpu_device_id.h>
+> +#include <asm/intel-family.h>
+> +
+> +/* CPU matches for Dell generations with broken ACPI MIPI DISCO info */
+> +static const struct x86_cpu_id dell_broken_mipi_disco_cpu_gens[] = {
+> +	X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE, NULL),
+> +	X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE_L, NULL),
+> +	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE, NULL),
+> +	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L, NULL),
+> +	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE, NULL),
+> +	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P, NULL),
+> +	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S, NULL),
+> +	{}
+>  };
+>  
+>  static const char *strnext(const char *s1, const char *s2)
+> @@ -761,7 +767,10 @@ bool acpi_graph_ignore_port(acpi_handle handle)
+>  	static bool dmi_tested, ignore_port;
+>  
+>  	if (!dmi_tested) {
+> -		ignore_port = dmi_first_match(dmi_ignore_port_nodes);
+> +		if (dmi_name_in_vendors("Dell Inc.") &&
+> +		    x86_match_cpu(dell_broken_mipi_disco_cpu_gens))
+> +			ignore_port = true;
+> +
+>  		dmi_tested = true;
+>  	}
+>  
+> @@ -794,3 +803,4 @@ bool acpi_graph_ignore_port(acpi_handle handle)
+>  	kfree(orig_path);
+>  	return false;
+>  }
+> +#endif
 
-greg k-h
+-- 
+Kind regards,
+
+Sakari Ailus
 
