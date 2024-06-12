@@ -1,98 +1,73 @@
-Return-Path: <stable+bounces-50267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746699054A6
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 16:02:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A57D19054B3
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 16:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48E441C20DB4
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:02:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF3221C2494B
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319A117F4E5;
-	Wed, 12 Jun 2024 13:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451C016FF27;
+	Wed, 12 Jun 2024 14:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="YyRLDP4Z";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="N75oX6X0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PimumZGJ"
 X-Original-To: stable@vger.kernel.org
-Received: from wflow8-smtp.messagingengine.com (wflow8-smtp.messagingengine.com [64.147.123.143])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0039917DE0D;
-	Wed, 12 Jun 2024 13:59:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.143
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71625171E70
+	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 14:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718200790; cv=none; b=Ntuawv7n2jM9qcxlf8XMEb/VYRA7D2PMGoDfdNqFSV8WSjBl2IlqNts39DJ3Nlbmal7UgqWdJXTzTTVjyJj+LdTYPXd+QvJAT2ptD1zEzbFndkmP90ixId7oqCcSLNn68VSPwaeU+wCRJ9A1E/Klrv33eqHscUMuP1/kIa0rdb4=
+	t=1718201037; cv=none; b=b29GRfTzypB31k94dxCuhRKQFIDJeMZPMnt2xUP2aY3p7z1whlNirxUPyoc9OxMmmaLKSihG3W5zbDVzynfsCnXVTKUylhtROAJrBhQm3d2uL3UabnbN1WeysVqUNOXa6J7IK0Jdsyhrw0FapnOarZ0WNP8tikMroMDVrmT5BdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718200790; c=relaxed/simple;
-	bh=dPBzzsXjrO07QLwWs5XXY+MPcbxXVdmIKtOrOPdSILM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zi+ZmyQP6Ze9JosravXUekaxPODTqbSiGh8V4WHRZCU6iBUTCkh4+vciGtLf20VphpFLGqu3LV5U8ZqIbc3gkkyWXJAGeWfjUPVmCWPsbKGBfcBoGuuJZVXL3cInZQWeza9rh0z7kNgAYJmiXG60ibBB2ROlv2jUK/BTbroxkz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=YyRLDP4Z; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=N75oX6X0; arc=none smtp.client-ip=64.147.123.143
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailflow.west.internal (Postfix) with ESMTP id 65EB42CC0161;
-	Wed, 12 Jun 2024 09:59:46 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Wed, 12 Jun 2024 09:59:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1718200786; x=1718207986; bh=9BYgF/XNuP
-	9G9oOmTJrbZ0MguyXPGFcxh3vdPRUSBng=; b=YyRLDP4Z8IMawrXZi9v/Z4g2oM
-	JQq49DEpHwIKKZuijQmjARFa9ponNcGGVYx/XwE9R3Ru/NQSNVMMXQvoiVeIMfrj
-	C89mQD/kkI7kFFS7xbtXGLB07bqa0mvWB0WJG0hdHFpI+4FIMPolOYf1r5xc4PyE
-	2//sic61E3RdPp6HSsPmELRIjBkWxmrhGzPgvcZ696k6nVGOVzgf6LwPD7zo1Xyg
-	eVWohb1YL0TuC/DOSqEo8rFokvZ+tBxt+fLL9VImoGUENIzSNrtYlcdIxEILrV4G
-	eNkBHalkEQzezXpFyGpJnXMcOJIMyS1Yn/cYZbSakdtg7MWdKkyApfMg2ZRQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1718200786; x=1718207986; bh=9BYgF/XNuP9G9oOmTJrbZ0MguyXP
-	GFcxh3vdPRUSBng=; b=N75oX6X0ryMgblfvcQNh0AfCxUi3vAuBzzT8n8UMwz+y
-	1Xn+iXseReaRHPYGkbEybtNiGj8kz12UPU/xziQfRBmNvbCFkY4TCE3Bs17tAojm
-	pBnA3mc2TymAk3S86cJWi+fYthwSNQOFMGCVpbv5Gx7S+hxuTMYlbRPlLu1cVdMM
-	iORglcC/PPR3KJ07aWe2Gtm/wCv3w0tgo7ZP/cjWj4ptaXsNslGaYvTYnYuxUePC
-	2GYeW3stuCfXAYRGGA0B/maY+H86c0k/p+Y+itW5Ov1NUAEDEiwkmRBEOP7Xqgst
-	UadVjHSGOUv6Lhxv8xY+CpXBo9L1l7mXasZBHjm37w==
-X-ME-Sender: <xms:0KlpZnjmhcwnGjAyQmxDLtuNMbUboFFNCIrVFwSplYKkFpVzHtXUWQ>
-    <xme:0KlpZkANqTBtA65SY6FfIj-JF6SIXOrKrUSpFRA19t7VmfI1_CSURgJDOlSCG3rdU
-    zFLmswajPStNA>
-X-ME-Received: <xmr:0KlpZnF8Qkjjb1BLXmeoLJxNz3-nAFa_Uma7XyB-UTbPaRB6Tv6wEiBiRxMGImOz01Luna_-WtQdmDopNT_YMs9efAWFk_1iWP4-Rw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedugedgjedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
-    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
-    hhrdgtohhm
-X-ME-Proxy: <xmx:0KlpZkTuK3thDp6RJfCh6ITbYMFxSHLwV8MG8Avfg2cfXAsRo2Cn4Q>
-    <xmx:0KlpZkxPucRuADSfXq-uv5Pgqu3nuAgpIaLN4EZHoU_fHLjTBBTihQ>
-    <xmx:0KlpZq6nG8NjPQayvjigz6Z5K2ArZY-tkhwxHCaIsUhNzS1W5aJsLA>
-    <xmx:0KlpZpxKctY5bW3nmcjCvQhle7ifdCvDlmqAJLuLlZDaVCsNc0Jkug>
-    <xmx:0qlpZmphRJFzcu7Mwmd2gXniyuRTuThiN_dT_yiwjt1WsMHNT9BWUZu7>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 12 Jun 2024 09:59:43 -0400 (EDT)
-Date: Wed, 12 Jun 2024 15:59:39 +0200
-From: Greg KH <greg@kroah.com>
-To: Qingfang Deng <dqfext@gmail.com>
-Cc: stable@vger.kernel.org, Qingfang Deng <qingfang.deng@siflower.com.cn>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Masahide NAKAMURA <nakam@linux-ipv6.org>,
-	YOSHIFUJI Hideaki <yoshfuji@linux-ipv6.org>,
-	Ville Nuorvala <vnuorval@tcs.hut.fi>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4.19.y] neighbour: fix unaligned access to pneigh_entry
-Message-ID: <2024061231-most-blinker-c31c@gregkh>
-References: <20240605022916.247882-1-dqfext@gmail.com>
+	s=arc-20240116; t=1718201037; c=relaxed/simple;
+	bh=XeshH9UOWLenz4SCxbqnkwpYESnskdl4pnVQrrzmD1w=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=kHEcfwyjemHPavLSHNyVMi5Fz/zMdYrXfppsr9RR0DWeIZD8G0VrOwhk/1OJEi/Qq+CvS/O35afQvQ7CDvLYxEAcawBZp0MVyAxijdQnv5T6ItOVTZGZQUReNJDI8Fl5rbYSRlx7xfINGrdC7/fVXT2qmIzIT5bEHzslXkV9JAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PimumZGJ; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718201035; x=1749737035;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=XeshH9UOWLenz4SCxbqnkwpYESnskdl4pnVQrrzmD1w=;
+  b=PimumZGJZ/sFmeYv+MYOvXgP3umY6N/6QN/d0hHPQhSR0lOw3DFKdp6Q
+   shIS13gzWuCMbuPZ/TULo6jdPSeXXWBQvkiseUiTrYRyRcbJy5+jr5skJ
+   vxlmtqCNGDt57uOgbNORF0S0IXZznuh/alaHf8pzpLlDcM1uAmgKa94h3
+   Aafnoda069HX73bEnWAYRra8b1qfchvIOvah1W265F2gIe32D/5+4FTw2
+   I2zsOW9J4Bx5RP2NuOZ/hMF0M5raUSbrz0A+6OBi414gk7oKpCYEBHqsf
+   j4YswCBHL6xiGrdmkUPQm2rd59t8TsEUF5ncnaNiufIaNEZjeSO2J565X
+   g==;
+X-CSE-ConnectionGUID: 6klQcSGVTm+XQVoH0ej5kw==
+X-CSE-MsgGUID: Pu8avJaTRqO0iLe9+N8JVQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11101"; a="14801134"
+X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; 
+   d="scan'208";a="14801134"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2024 07:03:54 -0700
+X-CSE-ConnectionGUID: eGrN/aGCTJCNOeLVMrYeBA==
+X-CSE-MsgGUID: eHrJELQ4TYuWQVwydL+AnA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; 
+   d="scan'208";a="40275832"
+Received: from lkp-server01.sh.intel.com (HELO 628d7d8b9fc6) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 12 Jun 2024 07:03:52 -0700
+Received: from kbuild by 628d7d8b9fc6 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sHOZq-0001aw-0z;
+	Wed, 12 Jun 2024 14:03:50 +0000
+Date: Wed, 12 Jun 2024 22:03:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH net] bnx2x: Fix multiple UBSAN array-index-out-of-bounds
+Message-ID: <ZmmqpT8x_uW61S4D@67627e7c46f4>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,45 +76,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240605022916.247882-1-dqfext@gmail.com>
+In-Reply-To: <20240612135657.153658-1-ghadi.rahme@canonical.com>
 
-On Wed, Jun 05, 2024 at 10:29:16AM +0800, Qingfang Deng wrote:
-> From: Qingfang Deng <qingfang.deng@siflower.com.cn>
-> 
-> [ Upstream commit ed779fe4c9b5a20b4ab4fd6f3e19807445bb78c7 ]
-> 
-> After the blamed commit, the member key is longer 4-byte aligned. On
-> platforms that do not support unaligned access, e.g., MIPS32R2 with
-> unaligned_action set to 1, this will trigger a crash when accessing
-> an IPv6 pneigh_entry, as the key is cast to an in6_addr pointer.
-> 
-> Change the type of the key to u32 to make it aligned.
-> 
-> Fixes: 62dd93181aaa ("[IPV6] NDISC: Set per-entry is_router flag in Proxy NA.")
-> Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
-> ---
->  include/net/neighbour.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/net/neighbour.h b/include/net/neighbour.h
-> index e58ef9e338de..4c53e51f0799 100644
-> --- a/include/net/neighbour.h
-> +++ b/include/net/neighbour.h
-> @@ -172,7 +172,7 @@ struct pneigh_entry {
->  	possible_net_t		net;
->  	struct net_device	*dev;
->  	u8			flags;
-> -	u8			key[0];
-> +	u32			key[0];
->  };
->  
->  /*
-> -- 
-> 2.34.1
-> 
-> 
+Hi,
 
-Now queued up, thanks.
+Thanks for your patch.
 
-greg k-h
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH net] bnx2x: Fix multiple UBSAN array-index-out-of-bounds
+Link: https://lore.kernel.org/stable/20240612135657.153658-1-ghadi.rahme%40canonical.com
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
 
