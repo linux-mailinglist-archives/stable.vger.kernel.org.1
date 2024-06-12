@@ -1,143 +1,148 @@
-Return-Path: <stable+bounces-50257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18DF905385
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 15:19:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8799053CD
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 15:28:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6C821C21E45
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 13:19:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85C6F1F23040
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 13:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8C817994D;
-	Wed, 12 Jun 2024 13:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FC617B511;
+	Wed, 12 Jun 2024 13:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b="c2txolqs"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="YYyHDS22"
 X-Original-To: stable@vger.kernel.org
-Received: from mx1.t-argos.ru (mx1.t-argos.ru [109.73.34.58])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FCD16EC12;
-	Wed, 12 Jun 2024 13:19:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.73.34.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F06F176ACD;
+	Wed, 12 Jun 2024 13:28:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718198388; cv=none; b=ufHFBheOdsS95ImPLkg2r0lScAPNs4OShhhsQQ+TwFzROOu4Z4JK3iD/rJ/zZiwbtxBk7QY2YRRetGIRc8ndwZAOkVYGgkycWVVuiED0WiUvxohkuaAS4u49xzMdo941P82v3tK32T+1pxNE0/Q0EkvpVUqCYQxL4m1R3s39zYU=
+	t=1718198891; cv=none; b=G24kteH+x8PDpV25AgyPW6k7cISilaLiIZZKPJ4Pq6YVxTiSyQrYEDfD2HSdlKRM7wqgzF5eXxTsz70NNcnZArB+E70EG34sEb++As4NgzvwVMmYo1NmD4py/KbYFbrJW6Pn/bKnhgt1fT4l3HL0dFO+AEB3SVafVitnWzmgER8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718198388; c=relaxed/simple;
-	bh=xiTnCZU5KEL0H35TJi4MPR25pya4ueT1IUyePxAA0AA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AjZt4UTwMQJeyYcVPZUD6QYMeIv7W8FUs92TNdnE6cWsUpYt8eAYO2a3sRcXYZG/XnMGm0ARzhGwS76J0HlrXRiWCyM44tkXA7FzGkMolqzPzMCYpP57icoHV+/fKacRjbt0PL9t1mD6xMDxbmYaGmJI3V2/4O+UiN2BlQzedeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru; spf=pass smtp.mailfrom=t-argos.ru; dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b=c2txolqs; arc=none smtp.client-ip=109.73.34.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-argos.ru
-Received: from mx1.t-argos.ru (localhost [127.0.0.1])
-	by mx1.t-argos.ru (Postfix) with ESMTP id D11DE100002;
-	Wed, 12 Jun 2024 16:19:18 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=t-argos.ru; s=mail;
-	t=1718198358; bh=sHLWV/zF6E7dCy7EgzBUyyoPsCq43FjnuXPUVgA9yfY=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=c2txolqsqoc2RJ1zZ1hGiqbBqVvmuQl2GRECTtj8+ESOY8GGm0VdUBLRsJ1c0/rQD
-	 WxF1vcolTZgpFd/0XbIb6pmCDy+ihHLY8z4gHilSTmmOa8AnGPqiHwdNBVE1q9kU+v
-	 iVEtxQ+cxQ7YN2mEsfR9kVJDUkckb9cZB/C8DNCNOrYaMvzwtwa6IWbwTvNaUtdBxq
-	 Zdax1O9KNL8T8McFPCd5+/Xks9fO2t8rHYjqMAnAy/e1t8YcugNqU6IRsXzFdn5bTQ
-	 lS6YysTZjXSsegwpLNwoyN9TprdsV0lR5Ps1uS8OlqdrSW1edJCyDrN3JpAmla44yV
-	 2kg/hV8VT7g+Q==
-Received: from mx1.t-argos.ru.ru (ta-mail-02.ta.t-argos.ru [172.17.13.212])
-	by mx1.t-argos.ru (Postfix) with ESMTP;
-	Wed, 12 Jun 2024 16:17:51 +0300 (MSK)
-Received: from localhost.localdomain (172.17.215.5) by ta-mail-02
- (172.17.13.212) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 12 Jun
- 2024 16:17:31 +0300
-From: Aleksandr Mishin <amishin@t-argos.ru>
-To: Peng Fan <peng.fan@nxp.com>
-CC: Aleksandr Mishin <amishin@t-argos.ru>, Bjorn Andersson
-	<andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, Shawn
- Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	<linux-remoteproc@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, <stable@vger.kernel.org>
-Subject: [PATCH] remoteproc: imx_rproc: Fix refcount mistake in imx_rproc_addr_init
-Date: Wed, 12 Jun 2024 16:17:14 +0300
-Message-ID: <20240612131714.12907-1-amishin@t-argos.ru>
-X-Mailer: git-send-email 2.30.2
+	s=arc-20240116; t=1718198891; c=relaxed/simple;
+	bh=gB2qcYBlp6AUro7UgWKhRGLkwMDMrcuWA2Fwl19jD0g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=foD9B34QctGK4HKP09URoEkVKYLlLosG6eNoThMxH2dFRZNasHG85V90oV6xJ+NyzaS4aeDyv95dDvh66PZym462hL8Eq1Mqzd2X6DcYMr3Lfjy+CnP5XhJ4oNnbDwatWuzfN/+GcFv0R+7uq2XmX3v6WUUPVTcNYKF7+z8Hwhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=YYyHDS22; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:Reply-To:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=mLhQQIGQlskOYaBcJkFs0QBTdU7FLcK/wqX92dmx0i0=;
+	t=1718198889; x=1718630889; b=YYyHDS22kNlzhzFoeSSrFmLqpiE95Hxy+6P95jU51fj5/5s
+	JUy3JAy04H54tQZc/WMQ69VkZS3dVFQRaL/pSMlInnZ1axPSX59ROFB9jNsmCYWp7D6JJffyMCjyD
+	hVoX4v6My++nMziS/VwpFFY0RVJ9t2+5wUsFnBaKxc2X7RsP8owhzSt/32XdNe3DGqrxgGj33LpHO
+	SsAmysDR1SxmMvw8Eps1zrK85FVeTysjsIQLuKhlcUTNmv42hn9D82vtLtxUxhIurDweEPVP2mZ9h
+	BmHBjuiW7muq3SWlKisx5nJkFSYuN6XxqEskuEhXRk61NISl/PI4WRxx/+MKQUKQ==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sHO1C-0007Ep-V0; Wed, 12 Jun 2024 15:28:03 +0200
+Message-ID: <8be80682-067a-4685-9830-cfed0287e617@leemhuis.info>
+Date: Wed, 12 Jun 2024 15:28:01 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: Re: [PATCH v4 1/5] clk: sunxi-ng: common: Support minimum and maximum
+ rate
+To: =?UTF-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans@mansr.com>,
+ Frank Oltmanns <frank@oltmanns.dev>, stable@vger.kernel.org
+Cc: Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, =?UTF-8?Q?Guido_G=C3=BCnther?=
+ <agx@sigxcpu.org>, Purism Kernel Team <kernel@puri.sm>,
+ Ondrej Jirman <megi@xff.cz>, Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <20240310-pinephone-pll-fixes-v4-0-46fc80c83637@oltmanns.dev>
+ <20240310-pinephone-pll-fixes-v4-1-46fc80c83637@oltmanns.dev>
+ <yw1xo78z8ez0.fsf@mansr.com>
+ <c4c1229c-1ed3-4b6e-a53a-e1ace2502ded@oltmanns.dev>
+ <yw1x4jap90va.fsf@mansr.com> <yw1xo78w73uv.fsf@mansr.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+In-Reply-To: <yw1xo78w73uv.fsf@mansr.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ta-mail-02.ta.t-argos.ru (172.17.13.212) To ta-mail-02
- (172.17.13.212)
-X-KSMG-Rule-ID: 1
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 185880 [Jun 12 2024]
-X-KSMG-AntiSpam-Version: 6.1.0.4
-X-KSMG-AntiSpam-Envelope-From: amishin@t-argos.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 20 0.3.20 743589a8af6ec90b529f2124c2bbfc3ce1d2f20f, {Tracking_from_domain_doesnt_match_to}, t-argos.ru:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;mx1.t-argos.ru.ru:7.1.1, FromAlignment: s
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean, bases: 2024/06/12 12:51:00
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2024/06/12 04:43:00 #25560246
-X-KSMG-AntiVirus-Status: Clean, skipped
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1718198889;f7fcbcb9;
+X-HE-SMSGID: 1sHO1C-0007Ep-V0
 
-In imx_rproc_addr_init() strcmp() is performed over the node after the
-of_node_put() is performed over it.
-Fix this error by moving of_node_put() calls.
+On 23.05.24 20:58, Måns Rullgård wrote:
+> Måns Rullgård <mans@mansr.com> writes:
+>> Frank Oltmanns <frank@oltmanns.dev> writes:
+>>> 21.05.2024 15:43:10 Måns Rullgård <mans@mansr.com>:
+>>>> Frank Oltmanns <frank@oltmanns.dev> writes:
+>>>>
+>>>>> The Allwinner SoC's typically have an upper and lower limit for their
+>>>>> clocks' rates. Up until now, support for that has been implemented
+>>>>> separately for each clock type.
+>>>>>
+>>>>> Implement that functionality in the sunxi-ng's common part making use of
+>>>>> the CCF rate liming capabilities, so that it is available for all clock
+>>>>> types.
+>>>>>
+>>>>> Suggested-by: Maxime Ripard <mripard@kernel.org>
+>>>>> Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+>>>>> Cc: stable@vger.kernel.org
+>>>>> ---
+>>>>> drivers/clk/sunxi-ng/ccu_common.c | 19 +++++++++++++++++++
+>>>>> drivers/clk/sunxi-ng/ccu_common.h |  3 +++
+>>>>> 2 files changed, 22 insertions(+)
+>>>>
+>>>> This just landed in 6.6 stable, and it broke HDMI output on an A20 based
+>>>> device, the clocks ending up all wrong as seen in this diff of
+>>>> /sys/kernel/debug/clk/clk_summary:
+> [...]
+> 
+>>>> Reverting this commit makes it work again.
+>>> Thank you for your detailed report!
+> [...]
+> It turns out HDMI output is broken in v6.9 for a different reason.
+> However, this commit (b914ec33b391 clk: sunxi-ng: common: Support
+> minimum and maximum rate) requires two others as well in order not
+> to break things on the A20:
+> 
+> cedb7dd193f6 drm/sun4i: hdmi: Convert encoder to atomic
+> 9ca6bc246035 drm/sun4i: hdmi: Move mode_set into enable
+> 
+> With those two (the second depends on the first) cherry-picked on top of
+> v6.6.31, the HDMI output is working again.  Likewise on v6.8.10.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+They from what I can see are not yet in 6.6.y or on their way there (6.8
+is EOL now). Did anyone ask Greg to pick this up? If not: Månsm could
+you maybe do that? CCing him on a reply and asking is likely enough if
+both changes apply cleanly.
 
-Fixes: 5e4c1243071d ("remoteproc: imx_rproc: support remote cores booted before Linux Kernel")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
----
- drivers/remoteproc/imx_rproc.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 39eacd90af14..144c8e9a642e 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -734,25 +734,29 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
- 			continue;
- 		}
- 		err = of_address_to_resource(node, 0, &res);
--		of_node_put(node);
- 		if (err) {
- 			dev_err(dev, "unable to resolve memory region\n");
-+			of_node_put(node);
- 			return err;
- 		}
- 
--		if (b >= IMX_RPROC_MEM_MAX)
-+		if (b >= IMX_RPROC_MEM_MAX) {
-+			of_node_put(node);
- 			break;
-+		}
- 
- 		/* Not use resource version, because we might share region */
- 		priv->mem[b].cpu_addr = devm_ioremap_wc(&pdev->dev, res.start, resource_size(&res));
- 		if (!priv->mem[b].cpu_addr) {
- 			dev_err(dev, "failed to remap %pr\n", &res);
-+			of_node_put(node);
- 			return -ENOMEM;
- 		}
- 		priv->mem[b].sys_addr = res.start;
- 		priv->mem[b].size = resource_size(&res);
- 		if (!strcmp(node->name, "rsc-table"))
- 			priv->rsc_table = priv->mem[b].cpu_addr;
-+		of_node_put(node);
- 		b++;
- 	}
- 
--- 
-2.30.2
-
+#regzbot introduced: 547263745e15a0
+#regzbot fix: drm/sun4i: hdmi: Move mode_set into enable
+#regzbot poke
 
