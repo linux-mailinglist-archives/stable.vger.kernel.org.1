@@ -1,72 +1,110 @@
-Return-Path: <stable+bounces-50254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA81905305
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:54:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D220490536D
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 15:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 879611F21C87
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 12:54:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6400F286C1C
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 13:16:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A5D172BD7;
-	Wed, 12 Jun 2024 12:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ld/2jsHm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A26916EC12;
+	Wed, 12 Jun 2024 13:15:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2720316C85B;
-	Wed, 12 Jun 2024 12:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEDD1DFE3;
+	Wed, 12 Jun 2024 13:15:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718196893; cv=none; b=mj5jy3iIOYl1ldWncLu1cHK5hR8JqTc/T4XxXzivxTS1iXyrRCS+TrM0u+VUUgvCFgLtQtv5p9+L7IqADDBDuc2szmI9Ghh9lBuQl9073b88G2CmWHy5OgLHuwm4MUuYEaPq1Voc4f0IOTZB+X3ElXruiiF1k6caGGRJLXiPC7E=
+	t=1718198154; cv=none; b=SX/57ZGwiT6PZqcusOMB2WA7/z3FWanKON5AGnTkeP3ZTe19EuVDP4x97q3Z2BG9nQjt1blXwHgxA2hrspLh99kCkeN+8Od3bk+GWFh+ZcQhXFn3q4GfPJjT5FD81PGGhqeVogAVDNKobH+xfb6T8HTAxNd1rAGa12o+tIcvA3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718196893; c=relaxed/simple;
-	bh=xJNU5fx+9pxV+SbMQ5zrmGP8hyVDg+xCEMQZCe52KKM=;
+	s=arc-20240116; t=1718198154; c=relaxed/simple;
+	bh=W4ACezUPO47ukssjODA/ZzcWfulgmEYa/NAuOUhOOXo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kcMNmfo6YdHB/d0/HJC8NAPrcL3ygo174oZh4BB5EDPO1rjWKCw2AvltkjE8R3moPqlFVILmkog/wPM0QpkJ65tTFtbpis+8+RqSY8C6eoYmKuOPaWRZoasSB3aq40jj6wvyz3tQgBvKC0bG3EgbXQ1wgV22cffZvi40GWR13W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ld/2jsHm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D37C3277B;
-	Wed, 12 Jun 2024 12:54:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718196892;
-	bh=xJNU5fx+9pxV+SbMQ5zrmGP8hyVDg+xCEMQZCe52KKM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ld/2jsHmMLudLjUH7Vjn3LMdB4xWhDGcPzXg3IN3GfnX/M9D/NeC5Sa0KRkxtwFIw
-	 VhqkK3Bhert4Jj3EVL2bAlhDIONjjwKXHkdIm9x5SZaE7Du28jgfUhVa/4aXL68hqJ
-	 IaxJHBHKb/DdNALdo/FzbxQdcXcqblztpxop8pMg=
-Date: Wed, 12 Jun 2024 14:54:49 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Gao Xiang <hsiangkao@linux.alibaba.com>
-Cc: linux-erofs@lists.ozlabs.org, Baokun Li <libaokun1@huawei.com>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Sandeep Dhavale <dhavale@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 6.9.y] erofs: avoid allocating DEFLATE streams before
- mounting
-Message-ID: <2024061231-nuclear-almighty-1a81@gregkh>
-References: <20240530092201.16873-1-hsiangkao@linux.alibaba.com>
- <2911d7ae-1724-49e1-9ac3-3cc0801fdbcb@linux.alibaba.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=pdiFp9QidBiYy4KhJpgNpuzBrfEdZw6U6oqUxBKrWhVMhdkReLrZzSOZq1CgRiIOBgTHn2GN3kR88ybOxqLnbziV+c/R8fjhSuHCbHJhdnLk88dv5LHpfk7OaxuVnJ7NEWOmaZgOFsMKrpwKnQ8vkMmdFndcOA/ER2euKyBWd/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
+Received: from [78.30.37.63] (port=43820 helo=gnumonks.org)
+	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <pablo@gnumonks.org>)
+	id 1sHNpH-003v6v-6y; Wed, 12 Jun 2024 15:15:45 +0200
+Date: Wed, 12 Jun 2024 15:15:42 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Kuntal Nayak <kuntal.nayak@broadcom.com>
+Cc: stable@vger.kernel.org, gregkh@linuxfoundation.org,
+	ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com, kadlec@netfilter.org, fw@strlen.de,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6.1] netfilter: nf_tables: use timestamp to check for
+ set element timeout
+Message-ID: <ZmmffoZAlP2wRQJL@calendula>
+References: <20240607230146.47222-1-kuntal.nayak@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2911d7ae-1724-49e1-9ac3-3cc0801fdbcb@linux.alibaba.com>
+In-Reply-To: <20240607230146.47222-1-kuntal.nayak@broadcom.com>
+X-Spam-Score: -1.9 (-)
 
-On Tue, Jun 04, 2024 at 08:33:05PM +0800, Gao Xiang wrote:
-> Hi Greg,
+Hi,
+
+Thanks for your patch.
+
+rbtree GC chunk is not correct though. In 6.1, GC runs via workqueue,
+so the cached timestamp cannot be used in such case.
+
+Another possibility is to pull in the patch dependency to run GC
+synchronously.
+
+I am preparing a batch of updates for -stable, let me pick up on your
+patch.
+
+Thanks.
+
+On Fri, Jun 07, 2024 at 04:01:46PM -0700, Kuntal Nayak wrote:
+> diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+> index 5bf5572e9..c4c92192c 100644
+> --- a/net/netfilter/nft_set_rbtree.c
+> +++ b/net/netfilter/nft_set_rbtree.c
+[...]
+> @@ -622,12 +624,14 @@ static void nft_rbtree_gc(struct work_struct *work)
+>  	struct nft_set *set;
+>  	unsigned int gc_seq;
+>  	struct net *net;
+> +	u64 tstamp;
+>  
+>  	priv = container_of(work, struct nft_rbtree, gc_work.work);
+>  	set  = nft_set_container_of(priv);
+>  	net  = read_pnet(&set->net);
+>  	nft_net = nft_pernet(net);
+>  	gc_seq  = READ_ONCE(nft_net->gc_seq);
+> +	tstamp = nft_net_tstamp(net);
+>  
+>  	if (nft_set_gc_is_pending(set))
+>  		goto done;
+> @@ -659,7 +663,7 @@ static void nft_rbtree_gc(struct work_struct *work)
+>  			rbe_end = rbe;
+>  			continue;
+>  		}
+> -		if (!nft_set_elem_expired(&rbe->ext))
+> +		if (!__nft_set_elem_expired(&rbe->ext, tstamp))
+>  			continue;
+>  
+>  		nft_set_elem_dead(&rbe->ext);
+> -- 
+> 2.39.3
 > 
-> ping? Do these backport fixes miss the 6.6, 6.8, 6.9 queues..
-
-Sorry for the delay, all now queued up.
-
-well, except for 6.8.y, that branch is now end-of-life, sorry.
-
-greg k-h
 
