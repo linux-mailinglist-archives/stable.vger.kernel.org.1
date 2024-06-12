@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-50190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A3D904906
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 04:30:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED94904905
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 04:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E39AB210AC
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 02:30:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90E841C215BF
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 02:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5FC1CD38;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40E820332;
 	Wed, 12 Jun 2024 02:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="If4E4wqj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6Rqak24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678251804A;
-	Wed, 12 Jun 2024 02:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943DB1C6BD;
+	Wed, 12 Jun 2024 02:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718159432; cv=none; b=fZ1XHB+3mJySkTV90JduInJx5JoWeEGznFy0nnQzAqTwbpXPMVn1Esf3TNQL2jcqIhyFNDJww8WqBRfyE5Hn7b9GicWJ6HSJL1bN/75MiC20T+8QgiBQk9Jkk2Z9QbnAmtdQDEsAd4+ruviAd+Jd46ox7FNZh+J3A2oNwLerRD4=
+	t=1718159432; cv=none; b=Jt1xSf75YoOddf/rnGAON+dNZF3fUmmkExVNBxkU1c+spw7T7ayR5AdSP4wHoLOYFlXm2c2yzlPlDaVxh+iLRs3ZY+rf0sJIXO9srtv2yv3dRmFp1iVu2eDlZWz+t+iYK2gO4iiEw+35toYGyurQrOW+xvRgFYzL5DoAbZSbOGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1718159432; c=relaxed/simple;
-	bh=oe/vlcdGQmfyE/zG7tYganammuOgKBrVXvsFAB0U1KQ=;
+	bh=sL68/p5fx9N4glXxswRuEb+CPuAV/pOcY27ovpcXSh4=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=DqcwPjoBMpHoeUrzoTGu8yWZVDjOL8qHFLZpeuTmw0dBQzcS4YCTIuM71numhUFVAS8Sto5/Cr48VXRVB9b0dtB1diUVwzmvTQxUt4DDOYYlgX3y4vq39YkmxKTffxTX3QxnDst+S2k4tSgu2RrDIDPXKo1vDpymN1RzlhQ/aLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=If4E4wqj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C1BC8C4AF4D;
-	Wed, 12 Jun 2024 02:30:30 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=LqeYx2LY7bIljh68FI9W9kcEnDwkCnZqqqyEv3UFuPmngMiYXeL0GSLxN05cWLzJBE05KNKPCz5IxHf6p8EOtWe+y25z5c/8vCDaIlmu6/yQihBFZpYb6l7wfz6hNZhqilhoYgVosS1P/Q+7yuE7vFx3dVyk4zznV8V9uaBQvyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6Rqak24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 38CF4C4AF60;
+	Wed, 12 Jun 2024 02:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718159430;
-	bh=oe/vlcdGQmfyE/zG7tYganammuOgKBrVXvsFAB0U1KQ=;
+	s=k20201202; t=1718159431;
+	bh=sL68/p5fx9N4glXxswRuEb+CPuAV/pOcY27ovpcXSh4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=If4E4wqjZyKsWbSH/azlZCvaWevC1caUsPPICvqobeB8+HJNiow+WGDjfnaC5uuGr
-	 kwenHlhLx3XOOb18O0ElYp9I8HsPZY3B0X1A6zAimYrw4129bbYAwVGHsQq0u2vrKS
-	 l6Bpxjo8fIdrghDGLpX4Qu6cfIIlXfZ7Ihg6fz4788hpKacKB3cXQIQ/e9JtpDwi2m
-	 JXdS+UX58m8yE7KeM/K7CjNo0LAeGGEY1T2O7NbgN82tJxrtJ5DjNGX3nzdI7ApGH6
-	 VRjADUNGJEaHB0zfrRJ4gErqvWXDE7n/MH4eHDoIXC6/97pB9xBuHbPja7UIAtSQwK
-	 zH5mLvo4kQrNw==
+	b=S6Rqak24B6bsjkx/oJYfiBROfmJGPzlJL+WFlfYs3wg2gej+zK5iaYYA76uPCl+Ip
+	 TYx5RYC7hyNdByXgGK6CrlNb978QEwdvtUyRY4fBF9zNAJzjpfSykdyTNav+xtl7EF
+	 GeofartLDAJicbmiVVRPcpEQZZhDBHw0aS69H9mjxrFGdaTGpcFyVHOcNn35f+wc4s
+	 BcqCVzzbn0HeUsVuRelbXO591P/72k1qrnZXH9MRpPFZ3SV2Tr1lusUINlAkvUQKrU
+	 ycq784u39E39IAIKG1p1ntC57D75d6pxXlb6YLrYBC4Xq5ACWui4UTbdZA1keQylWL
+	 /HkBdHSpEi5yg==
 Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id B7A31CF21FA;
-	Wed, 12 Jun 2024 02:30:30 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 2CCC2CF21FA;
+	Wed, 12 Jun 2024 02:30:31 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -56,8 +56,8 @@ Subject: Re: [PATCH] platform/chrome: cros_ec_debugfs: fix wrong EC message
  version
 From: patchwork-bot+chrome-platform@kernel.org
 Message-Id: 
- <171815943074.29023.6658122810617260075.git-patchwork-notify@kernel.org>
-Date: Wed, 12 Jun 2024 02:30:30 +0000
+ <171815943118.29023.8712192231610331664.git-patchwork-notify@kernel.org>
+Date: Wed, 12 Jun 2024 02:30:31 +0000
 References: <20240611113110.16955-1-tzungbi@kernel.org>
 In-Reply-To: <20240611113110.16955-1-tzungbi@kernel.org>
 To: Tzung-Bi Shih <tzungbi@kernel.org>
@@ -66,7 +66,7 @@ Cc: bleung@chromium.org, groeck@chromium.org, chrome-platform@lists.linux.dev,
 
 Hello:
 
-This patch was applied to chrome-platform/linux.git (for-kernelci)
+This patch was applied to chrome-platform/linux.git (for-next)
 by Tzung-Bi Shih <tzungbi@kernel.org>:
 
 On Tue, 11 Jun 2024 11:31:10 +0000 you wrote:
