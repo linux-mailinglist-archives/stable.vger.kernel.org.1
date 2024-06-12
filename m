@@ -1,136 +1,108 @@
-Return-Path: <stable+bounces-50275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D8A905573
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 16:42:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C58905580
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 16:44:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 027662833BE
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:42:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDD1C1F223C2
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C138B17E908;
-	Wed, 12 Jun 2024 14:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2r7wGhyb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EDC17E8EB;
+	Wed, 12 Jun 2024 14:44:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from er-systems.de (er-systems.de [162.55.144.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8F517DE39;
-	Wed, 12 Jun 2024 14:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBA417E44B
+	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 14:44:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.55.144.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718203343; cv=none; b=h9VO6yE/+1WBxxt93qyqrxivW4PWsSMhs4UuvTz9NO+Gj8tF96x6R0hJ5vpVQBRHmdC1E/XUv7FIbWnba1DCrBoqNgRymxlQ4jmC7+UQYOejMlTwp844AaIKLPS+vwf3MgkbuVmsVGGs7LhxcxpceiJWc6NyL9nBCsx6BKGOmzw=
+	t=1718203481; cv=none; b=nuV6iXR9obile2UEYaZauqiBLZeuTR6Jfk5kW1VWuDPHr2ZWKWvn/jzGl6qroclUTYG4OLSlBwku93u1Fk9VqKmxmuVfB3TmVk4ZXMlS33ojnMkn5M140Jp9raHzNyzXXsrfRvuv66O/PAeQYHvdVIei7Gdrb2LUe9bBuX4ASJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718203343; c=relaxed/simple;
-	bh=fIyHMCmdFag/kreazotdgSfqaaLxX6azOoYs64Naiq8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MOCClNEcMmdRt/QfDpMLRzu9xCiEhXxdZL2OM4eeWxTH5/5Ua9zZY+EuStHr9RSq/mdRSf6y0R1PYx7Bq5wCBJRD67itJEwR23NCGluA+LLAPL9Sbm2gDhoqx4p/8vZZuG58A6vR1YuoxwXFaGbINMbOKYDfcs+Oiwnts/aL+uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2r7wGhyb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C34FC116B1;
-	Wed, 12 Jun 2024 14:42:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718203342;
-	bh=fIyHMCmdFag/kreazotdgSfqaaLxX6azOoYs64Naiq8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=2r7wGhybYveJ0OLks02tsdo8uWtqpEFFUrtDCrsXCKYC1H7xvfiNjkI9VxsQ345hk
-	 TJKFXsJYUE9xA7aEoZdI9C2Va7O2R3Yd0hrKq8OC0ZkL3c5HWp82SMRze2saG2/DHQ
-	 icYL9JmNEzpNy+dkQ2CDZOVDP7TwVbPDBXqoCCAs=
-Date: Wed, 12 Jun 2024 16:42:20 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>,
-	Frank Oltmanns <frank@oltmanns.dev>, stable@vger.kernel.org,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>,
-	Purism Kernel Team <kernel@puri.sm>, Ondrej Jirman <megi@xff.cz>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 1/5] clk: sunxi-ng: common: Support minimum and
- maximum rate
-Message-ID: <2024061208-trapping-diminish-fda6@gregkh>
-References: <20240310-pinephone-pll-fixes-v4-0-46fc80c83637@oltmanns.dev>
- <20240310-pinephone-pll-fixes-v4-1-46fc80c83637@oltmanns.dev>
- <yw1xo78z8ez0.fsf@mansr.com>
- <c4c1229c-1ed3-4b6e-a53a-e1ace2502ded@oltmanns.dev>
- <yw1x4jap90va.fsf@mansr.com>
- <yw1xo78w73uv.fsf@mansr.com>
- <8be80682-067a-4685-9830-cfed0287e617@leemhuis.info>
+	s=arc-20240116; t=1718203481; c=relaxed/simple;
+	bh=pDBTfVnO+hcJSgx9Jyc5sm2fUakNavPc7rmdrC4k8pE=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ntajPWin33K/xuuKABZ7D5SA+Az1am9239v2D1M+SPbj1EHPh+zCuCZ1kcVO92S5M+rIW+OPu29Bov0jDN1c04x65NtAx1hhdxfV188TCNVEgmkyA+oZKS3qTr9K3vzY0kQPOlMJCYTjPr9pbhycv9Fh4Gh/paMTh63W6Cqhy/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lio96.de; spf=pass smtp.mailfrom=lio96.de; arc=none smtp.client-ip=162.55.144.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lio96.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lio96.de
+Received: from localhost.localdomain (localhost [127.0.0.1])
+	by er-systems.de (Postfix) with ESMTP id AAA0CECDAE5;
+	Wed, 12 Jun 2024 16:44:28 +0200 (CEST)
+X-Spam-Level: 
+Received: from localhost (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by er-systems.de (Postfix) with ESMTPS id 91061ECDAE2;
+	Wed, 12 Jun 2024 16:44:28 +0200 (CEST)
+Date: Wed, 12 Jun 2024 16:44:27 +0200 (CEST)
+From: Thomas Voegtle <tv@lio96.de>
+To: Greg KH <gregkh@linuxfoundation.org>
+cc: Thomas Voegtle <tv@lio96.de>, stable@vger.kernel.org, 
+    David Howells <dhowells@redhat.com>, Steve French <stfrench@microsoft.com>
+Subject: Re: 6.6.y: cifs broken since 6.6.23 writing big files with vers=1.0
+ and 2.0
+In-Reply-To: <2024061242-supervise-uncaring-b8ed@gregkh>
+Message-ID: <52814687-9c71-a6fb-3099-13ed634af592@lio96.de>
+References: <e519a2f6-eb49-e7e6-ab2e-beabc6cad090@lio96.de> <2024061242-supervise-uncaring-b8ed@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8be80682-067a-4685-9830-cfed0287e617@leemhuis.info>
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Virus-Status: No
+X-Virus-Checker-Version: clamassassin 1.2.4 with clamdscan / ClamAV 0.103.11/27304/Wed Jun 12 10:27:29 2024
 
-On Wed, Jun 12, 2024 at 03:28:01PM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 23.05.24 20:58, Måns Rullgård wrote:
-> > Måns Rullgård <mans@mansr.com> writes:
-> >> Frank Oltmanns <frank@oltmanns.dev> writes:
-> >>> 21.05.2024 15:43:10 Måns Rullgård <mans@mansr.com>:
-> >>>> Frank Oltmanns <frank@oltmanns.dev> writes:
-> >>>>
-> >>>>> The Allwinner SoC's typically have an upper and lower limit for their
-> >>>>> clocks' rates. Up until now, support for that has been implemented
-> >>>>> separately for each clock type.
-> >>>>>
-> >>>>> Implement that functionality in the sunxi-ng's common part making use of
-> >>>>> the CCF rate liming capabilities, so that it is available for all clock
-> >>>>> types.
-> >>>>>
-> >>>>> Suggested-by: Maxime Ripard <mripard@kernel.org>
-> >>>>> Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
-> >>>>> Cc: stable@vger.kernel.org
-> >>>>> ---
-> >>>>> drivers/clk/sunxi-ng/ccu_common.c | 19 +++++++++++++++++++
-> >>>>> drivers/clk/sunxi-ng/ccu_common.h |  3 +++
-> >>>>> 2 files changed, 22 insertions(+)
-> >>>>
-> >>>> This just landed in 6.6 stable, and it broke HDMI output on an A20 based
-> >>>> device, the clocks ending up all wrong as seen in this diff of
-> >>>> /sys/kernel/debug/clk/clk_summary:
-> > [...]
-> > 
-> >>>> Reverting this commit makes it work again.
-> >>> Thank you for your detailed report!
-> > [...]
-> > It turns out HDMI output is broken in v6.9 for a different reason.
-> > However, this commit (b914ec33b391 clk: sunxi-ng: common: Support
-> > minimum and maximum rate) requires two others as well in order not
-> > to break things on the A20:
-> > 
-> > cedb7dd193f6 drm/sun4i: hdmi: Convert encoder to atomic
-> > 9ca6bc246035 drm/sun4i: hdmi: Move mode_set into enable
-> > 
-> > With those two (the second depends on the first) cherry-picked on top of
-> > v6.6.31, the HDMI output is working again.  Likewise on v6.8.10.
-> 
-> They from what I can see are not yet in 6.6.y or on their way there (6.8
-> is EOL now). Did anyone ask Greg to pick this up? If not: Månsm could
-> you maybe do that? CCing him on a reply and asking is likely enough if
-> both changes apply cleanly.
+On Wed, 12 Jun 2024, Greg KH wrote:
 
-Both now queued up, thanks.
+> On Tue, Jun 11, 2024 at 09:20:33AM +0200, Thomas Voegtle wrote:
+>>
+>> Hello,
+>>
+>> a machine booted with Linux 6.6.23 up to 6.6.32:
+>>
+>> writing /dev/zero with dd on a mounted cifs share with vers=1.0 or
+>> vers=2.0 slows down drastically in my setup after writing approx. 46GB of
+>> data.
+>>
+>> The whole machine gets unresponsive as it was under very high IO load. It
+>> pings but opening a new ssh session needs too much time. I can stop the dd
+>> (ctrl-c) and after a few minutes the machine is fine again.
+>>
+>> cifs with vers=3.1.1 seems to be fine with 6.6.32.
+>> Linux 6.10-rc3 is fine with vers=1.0 and vers=2.0.
+>>
+>> Bisected down to:
+>>
+>> cifs-fix-writeback-data-corruption.patch
+>> which is:
+>> Upstream commit f3dc1bdb6b0b0693562c7c54a6c28bafa608ba3c
+>> and
+>> linux-stable commit e45deec35bf7f1f4f992a707b2d04a8c162f2240
+>>
+>> Reverting this patch on 6.6.32 fixes the problem for me.
+>
+> Odd, that commit is kind of needed :(
+>
+> Is there some later commit that resolves the issue here that we should
+> pick up for the stable trees?
+>
 
-greg k-h
+Hope this helps:
+
+Linux 6.9.4 is broken in the same way and so is 6.9.0.
+
+
+
+        Thomas
+
+
+
+
 
