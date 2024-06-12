@@ -1,117 +1,143 @@
-Return-Path: <stable+bounces-50184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0C8E9047EE
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 02:11:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF7C9047F7
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 02:17:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E340B238BB
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 00:11:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D06371C221F1
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 00:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF38382;
-	Wed, 12 Jun 2024 00:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D96F137E;
+	Wed, 12 Jun 2024 00:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="jv00Z7rX"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JaFQLcvU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3AC197
-	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 00:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B932391
+	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 00:17:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718151060; cv=none; b=rEJuwHz1CjG7R3hKjC8HPKDTYOAR1CBoTsgWJvNm6IH9tELq9yVvbwTi+OdV6oR+f/ycRpa95kO/X+K0tKp2I7YSCTwEImh9psgpZZ+4uDvNWYOecTfQ1NCBJ4avG8kyHVaz9HxMU9vmujdB893tLCb8s9QpJsphHruDrcPYq2w=
+	t=1718151431; cv=none; b=Jl2SjhN4k4ZvorqT+57Od4EnQi8n3gAdtqkX97xgKt/TSQGKAQksYyRmkcfTtPENZUkSg0R0cE3esFlWmQwOaPbbZai1KADCRqcTTN0zqvpTI5ybHuWX7QWYNsf+iN6FU0xKK+Etdyi3IPESJfhHxXCRQw7oxRxV8ND7G8O2Az0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718151060; c=relaxed/simple;
-	bh=yA3GemOLta7ptddMW/7rnk7IdpnukaO6SkrLIQz3nbM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cqAx3iPnrT8rrQdc+Jm4MR5C9O41kTMpzqlKQtGjk3GzlMXSVp9aLDnK2arADcMl1jPDLTIM0ZsE7u2DvSFHn2wnFHFMC8f834ocDlGuzIHGFAxNeewJ2XOnH3h2Gcf+tFEu7Ek44bMwokQ2qoIvPhjPAT8THWKn67zH1/lXVtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=jv00Z7rX; arc=none smtp.client-ip=185.125.188.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 912843F2A1
-	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 00:10:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1718151050;
-	bh=yA3GemOLta7ptddMW/7rnk7IdpnukaO6SkrLIQz3nbM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version;
-	b=jv00Z7rXmMaB0IN49bfULAKzmdiXfaoKIcZwFbY2xWZDGy7PEaunOsHeXr4ZsNb9F
-	 uHBHXbvYAuBLvuNbVPIgoTqpNNjDbI0VRS1YF86XHyCr5xaQoF1/kw64tfXDmZrW+J
-	 Sf0x54oQb/hdKoGyHc98GAQgPWaFDgaF7Qy3Mdjv62+9Z2GHeAfInS+mCWqzKbpJoz
-	 lPGgqFajaggWlmFQcBy//hpuPdWs94iTTES7nIQ6WoQC/PfTKhzSeutxqemj8smgag
-	 HK37T1j3i+RdIskEwy5tMMaAAqu+uHRF0i8Cx76v0kG4RPzWzBajxKx0a7U6l3D9+1
-	 wliTdKOFN1nRA==
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-2c2def267dcso3536659a91.1
-        for <stable@vger.kernel.org>; Tue, 11 Jun 2024 17:10:50 -0700 (PDT)
+	s=arc-20240116; t=1718151431; c=relaxed/simple;
+	bh=/5CStUD3+h5vLHrk8rbpKIF6eAbRF4CgImyTE/vqojM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Bj7sHWg5h5A6J0JIKaJWZHQu0SYollexBs5Ic5bKDEkgF+JepYW+Mg/1TIGw+i8fn3DhbBCOMDJjKNvqXzweHVRiZ9SiCef7IZ/DJES+EgI7APOXNu6aicssbH14g5JmEutXCe3wEtvDCO5FHPABLf8naxhROQpiasR9WbwMcWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ziweixiao.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JaFQLcvU; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ziweixiao.bounces.google.com
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dfa7a8147c3so10431714276.3
+        for <stable@vger.kernel.org>; Tue, 11 Jun 2024 17:17:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1718151429; x=1718756229; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NOJsof7BEpZN8Hpp/vHtOuty3r3bM9rd+pyvN7nHOJo=;
+        b=JaFQLcvUIcMZ0z3XkemQNaWk4yyBXW9wNM//vgLx9gjtquHce4tNbpkQlown24GPrh
+         jzPndxXLTpOSugpLwcwR3P3TFwqoCmwdfDHxQTIY3Uo0IrL3b0mOiOohWCxP6mTggkFk
+         dcOm6MTCsPo/jzYMA7ycR/9wtWVaCRe83+TWzOxlRdBOz6YVx0sK3O/QH5bY/xYKGTDa
+         Lux6gxmA1wu2xGzZQK97O+5MD1I7izEtCR6893Uu/MTqApmKYqTZwjdgwthtBRAa3M5k
+         FMPdHqIopXmvHWkyJHDZJYa3fvgN1u6tVqFKFipWaTh1eh3vIQDy67LZwmIwkq1o20ol
+         myqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718151049; x=1718755849;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yA3GemOLta7ptddMW/7rnk7IdpnukaO6SkrLIQz3nbM=;
-        b=ODo0tbV4E8gOAZzSNjYLpdf3U3M7mtuuFsRooc3AAE3SVrOD8/5JNGrJ1C+MdxOLTZ
-         lZePQfNcl3i6JA19A6Lf0INtRTCMwwqPHof72U3XRyG2/BJGCrtY/kpIR0CqFwSwKTUT
-         4qUROj3MQblx/IGDr3YekaIDu7/PV2j9z/KpKZl/7rPjOolc4LJT3072TMiRoPISpCRq
-         IExd37REqZMMhWkGwUy7zYib5hIDMsVUlGsRpgY5pBlv/MVbn8fh39xHUu7e90TGqhPA
-         7qeKQZ4nGnZk8yBO9lJ5trDDbBYBdZBqNofQLOEuwPMov61r095YMaehbiJ2n+EQLLl3
-         SsRw==
-X-Forwarded-Encrypted: i=1; AJvYcCXiZJHrfV4WlTu/TRlZ2L3t6tpQ//tNaZKWjFMRoMOveFjuO63DkbcRl/UyzgRKQfFn8fn7v2WjZ3IL2YJrba0wiGbQODCL
-X-Gm-Message-State: AOJu0Yw8PRLTNmZhuRRdK01/eEJQT0Kvsqdmr3mbi8IJgoOUaqalAEMU
-	Jn7iL4TVL2panxNYf6OMpqJ/4ESarnv85m9dIHbXEobi5POi7Uoz5BTbZpeSNHLlYjaiMMNpTnl
-	FXT7gW/SXqZe7wjaTznwVTGnFo+MC34K2BANhqK8DwiniYSnSRZi67cNs8Ln1ogOufZwKdF/1ib
-	FHBMFj
-X-Received: by 2002:a17:902:db11:b0:1f7:e32f:f067 with SMTP id d9443c01a7336-1f83b6eacfemr5651165ad.50.1718151049187;
-        Tue, 11 Jun 2024 17:10:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEtrQz+Z+est4OL6JMDV7Qe9u9duB8be/MwTdrnQYsCLYsrV7LoeCf5ZBBuNVwo06AB7Snq9g==
-X-Received: by 2002:a17:902:db11:b0:1f7:e32f:f067 with SMTP id d9443c01a7336-1f83b6eacfemr5650975ad.50.1718151048830;
-        Tue, 11 Jun 2024 17:10:48 -0700 (PDT)
-Received: from ThinkPad-X1.. (222-154-76-179-fibre.sparkbb.co.nz. [222.154.76.179])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f71ad56202sm38921265ad.276.2024.06.11.17.10.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jun 2024 17:10:48 -0700 (PDT)
-From: Matthew Ruffell <matthew.ruffell@canonical.com>
-To: w_armin@gmx.de
-Cc: Alexander.Deucher@amd.com,
-	Christian.Koenig@amd.com,
-	Felix.Kuehling@amd.com,
-	Prike.Liang@amd.com,
-	Xinhui.Pan@amd.com,
-	Yifan1.Zhang@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	bkauler@gmail.com,
-	dri-devel@lists.freedesktop.org,
-	gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] Revert "drm/amdgpu: init iommu after amdkfd device init"
-Date: Wed, 12 Jun 2024 12:10:37 +1200
-Message-Id: <20240612001037.10409-1-matthew.ruffell@canonical.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <fe03d95a-a8dd-4f4c-8588-02a544e638e7@gmx.de>
-References: <fe03d95a-a8dd-4f4c-8588-02a544e638e7@gmx.de>
+        d=1e100.net; s=20230601; t=1718151429; x=1718756229;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NOJsof7BEpZN8Hpp/vHtOuty3r3bM9rd+pyvN7nHOJo=;
+        b=vWo+A7FL2jeMm2wayjhNoEaUNor5m6AI3qAQ+1z/SUO3+ErPWm19BFm9ACQ7KoEe9l
+         jt5YpuUCmd3Jpm9fKBN7E3rcKrHi8MF6DuKp632wFmJbFbkuiE0pb3Jsk/QajLNdjB0/
+         MYhBDW9Gd15Cu6jwk9d476j3AhgyF6jRvGGSaXmC7q3YFF7NGljdkE7OeOI8+9GSS5NB
+         cTwiH9a7VTOb8D41qkM4xFoasIN4sZaEvFOc3mWs1DVvPuzGJm87KvqWOz90cLqdjsea
+         KOGcyE01xfI37cnsEqzVi/zdu43ltN2SRQNGT27w6vT6pT1Ttykx7l1U98Dx4z5xTDt2
+         Y8Tw==
+X-Forwarded-Encrypted: i=1; AJvYcCX3TImJ63Kf00g4SxCY+XwOcQ1jolTMJ1GpvDUYkNF9l6zHWgWxRU1cbljtqfGNpSQmauj9j4haLYPJD1iszUt6QS08RSXL
+X-Gm-Message-State: AOJu0Yx1BkjgGS6bD3jzWl1/1vGp/0rXIVR9FBJUHwyyMiWGsZat/8OO
+	j6OlVct1F8pxvAPH/DgGgo1UnE16B12pbxVMhngEBvUpXgR+WFWAweFZkXx0ykTVcUu6IXOdRIP
+	R4xEG6QkxRUUsCg==
+X-Google-Smtp-Source: AGHT+IFj5q7Yo4YsIJsQrLQYOROHj6YJ7et7llRDI8ZMXDiH4h4WLHCf4vHI/re4F+qzmcJAh1iw3DYuY1CbWUQ=
+X-Received: from ziwei-gti.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:9b0])
+ (user=ziweixiao job=sendgmr) by 2002:a25:8702:0:b0:dfa:b352:824c with SMTP id
+ 3f1490d57ef6-dfe66b65314mr59562276.7.1718151428817; Tue, 11 Jun 2024 17:17:08
+ -0700 (PDT)
+Date: Wed, 12 Jun 2024 00:16:54 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.2.627.g7a2c4fd464-goog
+Message-ID: <20240612001654.923887-1-ziweixiao@google.com>
+Subject: [PATCH net] gve: Clear napi->skb before dev_kfree_skb_any()
+From: Ziwei Xiao <ziweixiao@google.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, jeroendb@google.com, pkaligineedi@google.com, 
+	shailend@google.com, hramamurthy@google.com, willemb@google.com, 
+	rushilg@google.com, bcf@google.com, csully@google.com, 
+	linux-kernel@vger.kernel.org, stable@kernel.org, 
+	Ziwei Xiao <ziweixiao@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Greg KH, Sasha,
+gve_rx_free_skb incorrectly leaves napi->skb referencing an skb after it
+is freed with dev_kfree_skb_any(). This can result in a subsequent call
+to napi_get_frags returning a dangling pointer.
 
-Please pick up this patch for 5.15 stable tree. I have built a test kernel and
-can confirm that it fixes affected users.
+Fix this by clearing napi->skb before the skb is freed.
 
-Downstream bug:
-https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2068738
+Fixes: 9b8dd5e5ea48 ("gve: DQO: Add RX path")
+Cc: stable@vger.kernel.org
+Reported-by: Shailend Chand <shailend@google.com>
+Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Reviewed-by: Shailend Chand <shailend@google.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+---
+ drivers/net/ethernet/google/gve/gve_rx_dqo.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-Thanks,
-Matthew
+diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+index c1c912de59c7..1154c1d8f66f 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+@@ -647,11 +647,13 @@ static void gve_rx_skb_hash(struct sk_buff *skb,
+ 	skb_set_hash(skb, le32_to_cpu(compl_desc->hash), hash_type);
+ }
+ 
+-static void gve_rx_free_skb(struct gve_rx_ring *rx)
++static void gve_rx_free_skb(struct napi_struct *napi, struct gve_rx_ring *rx)
+ {
+ 	if (!rx->ctx.skb_head)
+ 		return;
+ 
++	if (rx->ctx.skb_head == napi->skb)
++		napi->skb = NULL;
+ 	dev_kfree_skb_any(rx->ctx.skb_head);
+ 	rx->ctx.skb_head = NULL;
+ 	rx->ctx.skb_tail = NULL;
+@@ -950,7 +952,7 @@ int gve_rx_poll_dqo(struct gve_notify_block *block, int budget)
+ 
+ 		err = gve_rx_dqo(napi, rx, compl_desc, complq->head, rx->q_num);
+ 		if (err < 0) {
+-			gve_rx_free_skb(rx);
++			gve_rx_free_skb(napi, rx);
+ 			u64_stats_update_begin(&rx->statss);
+ 			if (err == -ENOMEM)
+ 				rx->rx_skb_alloc_fail++;
+@@ -993,7 +995,7 @@ int gve_rx_poll_dqo(struct gve_notify_block *block, int budget)
+ 
+ 		/* gve_rx_complete_skb() will consume skb if successful */
+ 		if (gve_rx_complete_skb(rx, napi, compl_desc, feat) != 0) {
+-			gve_rx_free_skb(rx);
++			gve_rx_free_skb(napi, rx);
+ 			u64_stats_update_begin(&rx->statss);
+ 			rx->rx_desc_err_dropped_pkt++;
+ 			u64_stats_update_end(&rx->statss);
+-- 
+2.45.2.505.gda0bf45e8d-goog
+
 
