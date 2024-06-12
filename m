@@ -1,134 +1,89 @@
-Return-Path: <stable+bounces-50326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF70D905B6E
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 20:47:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69750905B73
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 20:50:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 711A1B21B3B
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 18:47:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50FF21C2289F
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 18:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154DB3BBEC;
-	Wed, 12 Jun 2024 18:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4C53F9D9;
+	Wed, 12 Jun 2024 18:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Sm1lqskG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBtY5t+L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15282F3B;
-	Wed, 12 Jun 2024 18:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE202F3B
+	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 18:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718218069; cv=none; b=kkKU8ySej+TCKgbKh7KawwyAQYrJuIEBCNXu52Rqkk93M9m/GCcHe2AV8FoKoZDIk2LvoSGvdJu56Les5cokXXTZrKZWwsv7AW3SoiD29JTfxvNNPqMRTCNaWUgYVRZHfDHwZuKpDEGNEsPWcBS1njIlBL2rSJftdDtsWz5TST4=
+	t=1718218198; cv=none; b=NWMxl5yFvf5m45fZZhJIliyCk3SRU25JG/3V79VBggfBp5w66nC1invtxvU4/U5R4J1IM7ow0BOvdMu2gsN8H7CZo9DNhC0tBYM9P2Uinhpq9cF0R+Xd0MHRabfXWdiumuleg4li9lYF2t8OxsLaAhR+FxILtnkf8tv9/G8mjr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718218069; c=relaxed/simple;
-	bh=WAdPbpV16su/L/nLL1I9OCKFq9jqJsizJUL/5Q609jU=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=q7wWlFgdLy4kCyITZpTTLKZerisVYkixfTV/IesSB/GSebK7/Gkqj4zvIn2AJ3vBbbeu6HSc8VJ5VXTCenAqkFLAf2CMif1uuGDBjWNQbjmaxztLLZ8iB9tE31gHAO/Vauz/ewRQbrzPjbt0w3e+X1IhgmK4o1x6OY5lt1NLY+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Sm1lqskG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53EDC116B1;
-	Wed, 12 Jun 2024 18:47:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1718218069;
-	bh=WAdPbpV16su/L/nLL1I9OCKFq9jqJsizJUL/5Q609jU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Sm1lqskGRET2keI9nUnBWAo9NHejyLojU8nIbdRINQDTbTFnHquXRBI3amEYYfRqf
-	 MHr0NVCg3m01gJr8LppX/w5oXog83ISpT/eeV4yrRIZimnxBuRdW1qLNYfTy7IEt4I
-	 JHmCDvtnsf7cXRN+5v4SiohSXp6hI5njlG4cKRtI=
-Date: Wed, 12 Jun 2024 11:47:48 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "zhai.he" <zhai.he@nxp.com>
-Cc: sboyd@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, zhipeng.wang_1@nxp.com, jindong.yue@nxp.com, Barry
- Song <baohua@kernel.org>, Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v2] Supports to use the default CMA when the
- device-specified CMA memory is not enough.
-Message-Id: <20240612114748.bf5983b50634f23d674bc749@linux-foundation.org>
-In-Reply-To: <20240612081216.1319089-1-zhai.he@nxp.com>
-References: <20240612081216.1319089-1-zhai.he@nxp.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1718218198; c=relaxed/simple;
+	bh=5cqqrEtUCEY0Yc5ek54KC7e09wajHxelaNfwhyWhtM0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f+Tq0Q5iflmC3ffQa5jkxz83tW+EUJ2h1yNiqIeGfUR2kdBYS05sPuK6iPJzeEN6fR9i6/h6pvYmwSNYecXqqlmOEryko63Lb/1iY3S94LdnhJv6+InW5ut/9QRc4e7uqo0dLXS0OagBjcrCCRe9K7cV/hwsJfD/CgU4bUxV1v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBtY5t+L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6546BC116B1;
+	Wed, 12 Jun 2024 18:49:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718218195;
+	bh=5cqqrEtUCEY0Yc5ek54KC7e09wajHxelaNfwhyWhtM0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vBtY5t+L/gOK+HRJWRGeCZ7YnK5/sulKCUlzdXbL0ye2bPVcsSiasvDn++GqBbxKp
+	 r71eb1QqtZgjIt5aXFlsoeyk5lrOrsegYFC2d5OF8jmWPNz0W6vp4dHXQOv2ipVj+U
+	 VUZCaPEui4LAGTexBz5WGz+HNpRk0E8Rb0sCdfoU=
+Date: Wed, 12 Jun 2024 20:49:52 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Allen Pais <apais@linux.microsoft.com>
+Cc: stable@vger.kernel.org
+Subject: Re: Regression Impact from Commit dceb683ab87c on Kubernetes Hairpin
+ Tests
+Message-ID: <2024061212-reliance-cycling-66e4@gregkh>
+References: <AD9EB3AD-7A36-4E54-9BEC-02584A4DF11E@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AD9EB3AD-7A36-4E54-9BEC-02584A4DF11E@linux.microsoft.com>
 
-On Wed, 12 Jun 2024 16:12:16 +0800 "zhai.he" <zhai.he@nxp.com> wrote:
-
-> From: He Zhai <zhai.he@nxp.com>
-
-(cc Barry & Christoph)
-
-What was your reason for adding cc:stable to the email headers?  Does
-this address some serious problem?  If so, please fully describe that
-problem.
-
-> In the current code logic, if the device-specified CMA memory
-> allocation fails, memory will not be allocated from the default CMA area.
-> This patch will use the default cma region when the device's
-> specified CMA is not enough.
+On Wed, Jun 12, 2024 at 10:57:03AM -0700, Allen Pais wrote:
+> Hi Greg,
 > 
-> In addition, the log level of allocation failure is changed to debug.
-> Because these logs will be printed when memory allocation from the
-> device specified CMA fails, but if the allocation fails, it will be
-> allocated from the default cma area. It can easily mislead developers'
-> judgment.
->
-> ...
->
-> --- a/kernel/dma/contiguous.c
-> +++ b/kernel/dma/contiguous.c
-> @@ -357,8 +357,13 @@ struct page *dma_alloc_contiguous(struct device *dev, size_t size, gfp_t gfp)
->  	/* CMA can be used only in the context which permits sleeping */
->  	if (!gfpflags_allow_blocking(gfp))
->  		return NULL;
-> -	if (dev->cma_area)
-> -		return cma_alloc_aligned(dev->cma_area, size, gfp);
-> +	if (dev->cma_area) {
-> +		struct page *page = NULL;
-> +
-> +		page = cma_alloc_aligned(dev->cma_area, size, gfp);
-> +		if (page)
-> +			return page;
-> +	}
->  	if (size <= PAGE_SIZE)
->  		return NULL;
+> I hope this message finds you well. I'm reaching out to report a regression issue linked
+> to the commit dceb683ab87c(v5.15.158), which addresses the netfilter subsystem by skipping
+> the conntrack input hook for promiscuous packets. 
+> 
+> [dceb683ab87c 2024-04-09 netfilter: br_netfilter: skip conntrack input hook for promiscuous packets.]
+> 
+> Unfortunately, this update appears to be breaking Kubernetes hairpin tests, impacting the normal
+> functionality expected in Kubernetes environments.
+> 
+> Additionally, it's worth noting that this specific commit is associated with a security vulnerability,
+> as detailed in the NVD: CVE-2024-27018. 
+> 
+> We have bisected the issue to the specific commit dceb683ab87c. By reverting this commit,
+> we confirmed that the Kubernetes hairpin test issues are resolved. However, given that this commit 
+> addresses the security vulnerability CVE-2024-27018, directly reverting it is not a viable option. We’re 
+> in a tricky position and would greatly appreciate your advice on how we might approach this problem.
+> 
+> Thank you for your attention to this matter. I look forward to your guidance on how we might proceed.
 
-The dma_alloc_contiguous() kerneldoc should be updated for this.
+Is this issue also in newer kernel versions (like 6.1.y, 6.6.y, and
+Linus's tree)?  If not, then we might have missed something.  If so,
+then please work with the netfilter developers to work this out.
 
-The patch prompts the question "why does the device-specified CMA area
-exist?".  Why not always allocate from the global pool?  If the
-device-specified area exists to prevent one device from going crazy and
-consuming too much contiguous memory, this patch violates that intent?
+thanks,
 
-> @@ -406,6 +411,8 @@ void dma_free_contiguous(struct device *dev, struct page *page, size_t size)
->  	if (dev->cma_area) {
->  		if (cma_release(dev->cma_area, page, count))
->  			return;
-> +		if (cma_release(dma_contiguous_default_area, page, count))
-> +			return;
->  	} else {
->  		/*
->  		 * otherwise, page is from either per-numa cma or default cma
-> diff --git a/mm/cma.c b/mm/cma.c
-> index 3e9724716bad..6e12faf1bea7 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
-> @@ -495,8 +495,8 @@ struct page *cma_alloc(struct cma *cma, unsigned long count,
->  	}
->  
->  	if (ret && !no_warn) {
-> -		pr_err_ratelimited("%s: %s: alloc failed, req-size: %lu pages, ret: %d\n",
-> -				   __func__, cma->name, count, ret);
-> +		pr_debug("%s: alloc failed, req-size: %lu pages, ret: %d, try to use default cma\n",
-> +			    cma->name, count, ret);
->  		cma_debug_show_areas(cma);
->  	}
-
+greg k-h
 
