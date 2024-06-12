@@ -1,107 +1,150 @@
-Return-Path: <stable+bounces-50283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344CE9055CD
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 16:53:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F66905602
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 16:59:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE13C285927
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:53:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819AA1C22D06
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F88A17F374;
-	Wed, 12 Jun 2024 14:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9629617FADC;
+	Wed, 12 Jun 2024 14:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lz4Qg7Tu"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="x2cidWkf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7F517F371
-	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 14:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03FA417B417;
+	Wed, 12 Jun 2024 14:58:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718204016; cv=none; b=h2zIH34pOPm3E091tyrmLWc9r8TwG0TfnPwSZFLyjrhEINtS4ZnRVgGwMSYL/LBn40iFatI4tToT2syV4jqLkIAy/svWQUZS9BeWkiL5EEPymFYPyAzIiNDVW0Kqew3Hmqw0vG5VbKdKC3dSyMJYCOWc5defI1pDWMLYNb0v748=
+	t=1718204321; cv=none; b=Rp5aIbBZeVMIYmH4o78iLkImDUaMD16jp+zopWfhgwpazfu8Z4mgAomDK7E2qe4j6yD6/KyhiT4rEGqD6Eg02CtyuNyJkOLpuE1M2KmKNIJLBLoKTZ47XbOrrwovmPcRw6QRBnkto3zp0nKgx6onMYqhmkl2NTx77HGViQUAtus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718204016; c=relaxed/simple;
-	bh=5VJUNgWbOSQsaCaxyJqTuzpwHkcz8iaXCzUuTSrJcu0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fUKqaW+J33FzbdjMxKs2kXFk0qYqt08lLdZC1zNZs5aY/gQ+DKPZcI9Fg3KIZ5H3X+IRalX9JLdfgF7rpkYgMQIXG/SoaaaCuT3fKa6bjq404GLqtwiO4JXVxtNXBNsIE+CzP/b8kgMiwIVWDeibTDgiFjVgnBj+X6FubGB8zic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lz4Qg7Tu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F5BC116B1;
-	Wed, 12 Jun 2024 14:53:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718204016;
-	bh=5VJUNgWbOSQsaCaxyJqTuzpwHkcz8iaXCzUuTSrJcu0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lz4Qg7TuaDN0AZ5bQ/i4FLLyPhY+z298k7dC5EbtgjZlxAJo+mdTnTaogd7GWQwcb
-	 dC391JoYpiYHQua87w8AvmN6JEeeyVql67zZnLTs0sQyHgKh1b+YKFXlK/0ZUAWPWn
-	 VQBMPSAUw8/Wb5yECysB9pTkhRwjc2oSL4z+Jxb8=
-Date: Wed, 12 Jun 2024 16:53:25 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Thomas Voegtle <tv@lio96.de>
-Cc: stable@vger.kernel.org, David Howells <dhowells@redhat.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: Re: 6.6.y: cifs broken since 6.6.23 writing big files with vers=1.0
- and 2.0
-Message-ID: <2024061215-swiftly-circus-f110@gregkh>
-References: <e519a2f6-eb49-e7e6-ab2e-beabc6cad090@lio96.de>
- <2024061242-supervise-uncaring-b8ed@gregkh>
- <52814687-9c71-a6fb-3099-13ed634af592@lio96.de>
+	s=arc-20240116; t=1718204321; c=relaxed/simple;
+	bh=P3lAQ3kIRQkCOj7DRfGLWPOBbZm345wjFECYZkfk6+s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YhW0Y4qJnv5WyiQg8A8Fwyx3bZ7sY12DJRyGEWrIk5Y3AL3DD5s9QJakcHLKGIlKJaZxjkQihmQv3zWMcn7saEp9rQf66WLuE9LPolvnhDjRKgzR2YDje1Rqy9rtCv8hASHilcPGRnd/JCvNt41f65LBCRchwIt3cV4HvpoF8Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=x2cidWkf; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=sRUfZnuqjz5+rgiu6KxuI/qjUJuItzxhDVkejZZpkpA=;
+	t=1718204319; x=1718636319; b=x2cidWkf2wdbc1nq2LbSXZ/XRHkgxTaO80YjF6C7nFo3Ot7
+	AzU4lk9oIT7Ev1ka3ntWEU70T057XDHO6/XAVojfEnR+onlIgCJTV5VrGcExvig29fDoLEUOJQ8c6
+	33AP8Ehy5r9m5QBO0nAS2s2zJIogtIl4us05EbbhUJbMZWwr03J+03lBzTs5yTMbsDQgw2pHsy++L
+	kdqrD/c2MAQ8CgWROLiDzTmnLFgxyT+8ncIAbkqswDvntQxMRO9nMIVPJiVP3Sa3Cwg5FSD7HZ/xx
+	0RkgNaACe8ZxEzeVYtwzaVTIYGtiFUN98iW+kDFJQ8M4cJCExMM5K11xP5K79WbA==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sHPQp-0008GV-Gk; Wed, 12 Jun 2024 16:58:35 +0200
+Message-ID: <5e93d4ea-0247-4803-9c0e-215d009fb9d3@leemhuis.info>
+Date: Wed, 12 Jun 2024 16:58:32 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <52814687-9c71-a6fb-3099-13ed634af592@lio96.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] leds: class: Revert: "If no default trigger is given,
+ make hw_control trigger the default trigger"
+To: Hans de Goede <hdegoede@redhat.com>, Pavel Machek <pavel@ucw.cz>,
+ Lee Jones <lee@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
+ regressions@lists.linux.dev, linux-leds@vger.kernel.org,
+ Genes Lists <lists@sapience.com>, =?UTF-8?Q?Johannes_W=C3=BCller?=
+ <johanneswueller@gmail.com>, stable@vger.kernel.org,
+ Andrew Lunn <andrew@lunn.ch>
+References: <20240607101847.23037-1-hdegoede@redhat.com>
+ <6ebdcaca-c95a-48bc-b1ca-51cc1d7a86a5@lunn.ch>
+ <7a73693e-87b4-4161-a058-4e36f50e1376@redhat.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <7a73693e-87b4-4161-a058-4e36f50e1376@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1718204319;76933d68;
+X-HE-SMSGID: 1sHPQp-0008GV-Gk
 
-On Wed, Jun 12, 2024 at 04:44:27PM +0200, Thomas Voegtle wrote:
-> On Wed, 12 Jun 2024, Greg KH wrote:
+Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
+for once, to make this easily accessible to everyone.
+
+Hans, from your point of view, how fast should we try to mainline this
+revert? I got the impression that you want it merged there rather sooner
+than later -- and that sounds appropriate to me. So should we maybe ask
+Linus on Friday to pick this up from here? Ideally of course with an ACK
+from Pavel or Lee.
+
+Ciao, Thorsten
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
+
+#regzbot poke
+
+On 07.06.24 17:26, Hans de Goede wrote:
+> On 6/7/24 2:03 PM, Andrew Lunn wrote:
+>> On Fri, Jun 07, 2024 at 12:18:47PM +0200, Hans de Goede wrote:
+>>> Commit 66601a29bb23 ("leds: class: If no default trigger is given, make
+>>> hw_control trigger the default trigger") causes ledtrig-netdev to get
+>>> set as default trigger on various network LEDs.
+>>>
+>>> This causes users to hit a pre-existing AB-BA deadlock issue in
+>>> ledtrig-netdev between the LED-trigger locks and the rtnl mutex,
+>>> resulting in hung tasks in kernels >= 6.9.
+>>>
+>>> Solving the deadlock is non trivial, so for now revert the change to
+>>> set the hw_control trigger as default trigger, so that ledtrig-netdev
+>>> no longer gets activated automatically for various network LEDs.
+>>>
+>>> The netdev trigger is not needed because the network LEDs are usually under
+>>> hw-control and the netdev trigger tries to leave things that way so setting
+>>> it as the active trigger for the LED class device is a no-op.
+>>>
+>>> Fixes: 66601a29bb23 ("leds: class: If no default trigger is given, make hw_control trigger the default trigger")
+>>> Reported-by: Genes Lists <lists@sapience.com>
+>>> Closes: https://lore.kernel.org/all/9d189ec329cfe68ed68699f314e191a10d4b5eda.camel@sapience.com/
+>>> Reported-by: "Johannes Wüller" <johanneswueller@gmail.com>
+>>> Closes: https://lore.kernel.org/lkml/e441605c-eaf2-4c2d-872b-d8e541f4cf60@gmail.com/
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>>
+>> I'm not sure i agree with the Closes: All this does is make it less
+>> likely to deadlock. The deadlock is still there.
 > 
-> > On Tue, Jun 11, 2024 at 09:20:33AM +0200, Thomas Voegtle wrote:
-> > > 
-> > > Hello,
-> > > 
-> > > a machine booted with Linux 6.6.23 up to 6.6.32:
-> > > 
-> > > writing /dev/zero with dd on a mounted cifs share with vers=1.0 or
-> > > vers=2.0 slows down drastically in my setup after writing approx. 46GB of
-> > > data.
-> > > 
-> > > The whole machine gets unresponsive as it was under very high IO load. It
-> > > pings but opening a new ssh session needs too much time. I can stop the dd
-> > > (ctrl-c) and after a few minutes the machine is fine again.
-> > > 
-> > > cifs with vers=3.1.1 seems to be fine with 6.6.32.
-> > > Linux 6.10-rc3 is fine with vers=1.0 and vers=2.0.
-> > > 
-> > > Bisected down to:
-> > > 
-> > > cifs-fix-writeback-data-corruption.patch
-> > > which is:
-> > > Upstream commit f3dc1bdb6b0b0693562c7c54a6c28bafa608ba3c
-> > > and
-> > > linux-stable commit e45deec35bf7f1f4f992a707b2d04a8c162f2240
-> > > 
-> > > Reverting this patch on 6.6.32 fixes the problem for me.
-> > 
-> > Odd, that commit is kind of needed :(
-> > 
-> > Is there some later commit that resolves the issue here that we should
-> > pick up for the stable trees?
-> > 
+> I agree that the deadlock which is the root-cause is still there. But
+> with this revert ledtrig-netdev will no longer get activated by default.
 > 
-> Hope this helps:
+> So now the only way to actually get the code-paths which may deadlock
+> to run is by the user or some script explicitly activating the netdev
+> trigger by writing "netdev" to the trigger sysfs file for a LED classdev.
+> So most users will now no longer hit this, including the reporters of
+> these bugs.
 > 
-> Linux 6.9.4 is broken in the same way and so is 6.9.0.
+> The auto-activating of the netdev trigger is what is causing these
+> reports when users are running kernels >= 6.9 . 
+> So now the only way to actually get the code-paths which may deadlock
+> to run is by the user or some script explicitly activating the netdev
+> trigger by writing "netdev" to the trigger sysfs file for a LED classdev.
+> So most users will now no longer hit this, including the reporters of
+> these bugs.
+> 
+> The auto-activating of the netdev trigger is what is causing these
+> reports when users are running kernels >= 6.9 .
+> 
+>> But:
+>>
+>> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-How about Linus's tree?
-
-thnanks,
-
-greg k-h
 
