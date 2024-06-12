@@ -1,52 +1,73 @@
-Return-Path: <stable+bounces-50251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A2B9052EE
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:50:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E77A9052F7
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 14:51:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 445E01F218FA
-	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 12:50:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 902B71C2157E
+	for <lists+stable@lfdr.de>; Wed, 12 Jun 2024 12:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E86176256;
-	Wed, 12 Jun 2024 12:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66D4173331;
+	Wed, 12 Jun 2024 12:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fF7h67g8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T4piLhcC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8B416FF58
-	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 12:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBD0153509
+	for <stable@vger.kernel.org>; Wed, 12 Jun 2024 12:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718196610; cv=none; b=CZWvn8lKxzN1zQjA6y2aoTWLTXXqcMlv7e9ENnm3XtnzVvLuCqYAStyFf5hfa2TsDFsefo2ThBcFytKbvqh1WT2P+x2IM6EziNfm7M7d7sfIdFh6Sx8Gf9qjEgX4Wu7huwKd/1XUdgaznhvigHi0ajy3QuZDV22vVNeQawCYJCk=
+	t=1718196712; cv=none; b=AWK0DUIlJjm1f6tWlSLow31cw8MR5fAc10bGWyY3Ia7oedxDhdNkYudsZ8kCYX7WmzBrc4oAAnq/eArLkuut9dJwVcAyoSGwd69x6IdhJukUsi92lTQ3UZcq0lmknU1UxdPlpGgFKCjFHaSHWbC6ptp2kAMvhayLao2uhc95Lxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718196610; c=relaxed/simple;
-	bh=Zq8vvWMH3tcOh/BTIzyhAiLUPRxLhMxSTP7U2fso7JU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RGdyy80dllBRB4Acgzdo3emMHtmnAZybAQ3HzvJbgRh/OUGeUYmXy+hNNWfAKraundAl2K2IiRD2W61ZXircJQjD+a8G8Iyz65Woi5OwRFlmkHUl2E2KVJmoS063kLVRF8ErUPElePGXOjxBQV2DOA9pnrCuNGneTTcIQk1ACJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fF7h67g8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD1E2C4AF1C;
-	Wed, 12 Jun 2024 12:50:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718196610;
-	bh=Zq8vvWMH3tcOh/BTIzyhAiLUPRxLhMxSTP7U2fso7JU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fF7h67g8dnFKGPN92JQLszeUJuKcy4/6mpVNDgXtDNrpo+xmWkMpVlTYzP+LzpSmj
-	 IVZjen/P0zVMKSTxn5AlA9gGd4NlFTGNRfps8s99uJaeJ9owR7pfERCw8zcBz8c8YW
-	 lOHiKG3yF7jZQ70EvkeC+vgcfmKUDtu25FNTawhY=
-Date: Wed, 12 Jun 2024 14:50:07 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Thomas Voegtle <tv@lio96.de>
-Cc: stable@vger.kernel.org, David Howells <dhowells@redhat.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: Re: 6.6.y: cifs broken since 6.6.23 writing big files with vers=1.0
- and 2.0
-Message-ID: <2024061242-supervise-uncaring-b8ed@gregkh>
-References: <e519a2f6-eb49-e7e6-ab2e-beabc6cad090@lio96.de>
+	s=arc-20240116; t=1718196712; c=relaxed/simple;
+	bh=96AqxT/QkGQVZmvKVT8l9e/Ic/Ha4DrHgKCuQXbQrGQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=oZXLXkcsMItesml+kEAXjwZO2r3q3OQ9z7UVDeYq4NRwDfFVmLzcIUvcYjRVcZKaHRjjiQKQEc8a3y8EC+Tad/nlLMk7St5QRm3AxvWjki+Bya8KokLLvCjmlqexJNo0Yz7XADbByavRD8SUlb6No6ppODPH8G4Ucr20zSNSJWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T4piLhcC; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718196711; x=1749732711;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=96AqxT/QkGQVZmvKVT8l9e/Ic/Ha4DrHgKCuQXbQrGQ=;
+  b=T4piLhcCccvZaISbY3FojWllr98KK4JLg0+exflXtlp7ZFXWp2M2TiGW
+   U7TaqR/NSh9ag+B8WR3fP469KIRONYB+ZKGmR/2Y49l0Xcsy3c/bZx/Vi
+   WPTU+/XJmXndGPMKCXaZdnoaHKl6zWzXNAb6rui/UDd6r7fzZn5kuUUbk
+   htqGNmAw3LYlhRcj/W6dKnDxb6b2Sc7pNZ4/6qFuTiB4adZla4GOkSvap
+   uFjOTT9M4iLuHQkmYJMI90GttiPWDGuF8WxVqQ9x2TQSCyN89hTMiE+vm
+   ZNzm7I7+sbqCD2nBVvHTqPyY3x2kGZi5zDya/+JCAhJ5mUiHjRNeB7A5F
+   w==;
+X-CSE-ConnectionGUID: cw0ogEILToCEx8Ramboduw==
+X-CSE-MsgGUID: GtJa7k0iSe688uujUHDbwA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11101"; a="25584360"
+X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; 
+   d="scan'208";a="25584360"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2024 05:51:50 -0700
+X-CSE-ConnectionGUID: m+Oa4GXFTNm3jFE218HjSw==
+X-CSE-MsgGUID: glBrvhc/R0eNQJcykyk3fw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; 
+   d="scan'208";a="40249253"
+Received: from lkp-server01.sh.intel.com (HELO 628d7d8b9fc6) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 12 Jun 2024 05:51:50 -0700
+Received: from kbuild by 628d7d8b9fc6 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sHNS7-0001XO-0c;
+	Wed, 12 Jun 2024 12:51:47 +0000
+Date: Wed, 12 Jun 2024 20:51:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2] usb: ucsi: stm32: fix command completion handling
+Message-ID: <ZmmZ3Qbr3GdZNnFw@67627e7c46f4>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,41 +76,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e519a2f6-eb49-e7e6-ab2e-beabc6cad090@lio96.de>
+In-Reply-To: <20240612124656.2305603-1-fabrice.gasnier@foss.st.com>
 
-On Tue, Jun 11, 2024 at 09:20:33AM +0200, Thomas Voegtle wrote:
-> 
-> Hello,
-> 
-> a machine booted with Linux 6.6.23 up to 6.6.32:
-> 
-> writing /dev/zero with dd on a mounted cifs share with vers=1.0 or
-> vers=2.0 slows down drastically in my setup after writing approx. 46GB of
-> data.
-> 
-> The whole machine gets unresponsive as it was under very high IO load. It
-> pings but opening a new ssh session needs too much time. I can stop the dd
-> (ctrl-c) and after a few minutes the machine is fine again.
-> 
-> cifs with vers=3.1.1 seems to be fine with 6.6.32.
-> Linux 6.10-rc3 is fine with vers=1.0 and vers=2.0.
-> 
-> Bisected down to:
-> 
-> cifs-fix-writeback-data-corruption.patch
-> which is:
-> Upstream commit f3dc1bdb6b0b0693562c7c54a6c28bafa608ba3c
-> and
-> linux-stable commit e45deec35bf7f1f4f992a707b2d04a8c162f2240
-> 
-> Reverting this patch on 6.6.32 fixes the problem for me.
+Hi,
 
-Odd, that commit is kind of needed :(
+Thanks for your patch.
 
-Is there some later commit that resolves the issue here that we should
-pick up for the stable trees?
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-thanks,
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-greg k-h
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v2] usb: ucsi: stm32: fix command completion handling
+Link: https://lore.kernel.org/stable/20240612124656.2305603-1-fabrice.gasnier%40foss.st.com
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
 
