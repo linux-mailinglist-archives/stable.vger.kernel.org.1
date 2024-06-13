@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-50671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10567906BCF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE370906CD8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:54:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF8CD1F210CE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 559931F2579F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:54:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60819143884;
-	Thu, 13 Jun 2024 11:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0194C148304;
+	Thu, 13 Jun 2024 11:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QlxOOL6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkG+vRN1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA8114265E;
-	Thu, 13 Jun 2024 11:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B013C1482F1;
+	Thu, 13 Jun 2024 11:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279047; cv=none; b=T94bN522d2kN8fRBLOXvblbWWCKPfvWwGa6xN8JXQF20jnA7C9UFaiZ6OlewS7PUEpOI+J+SQyGYvFLFp7hZUxOfdgW2jIdbQyQ84+E2rgxs8IXLjJIFKXYxxgrbons8m776m5acsrkP1OYcEIs5C8vX0JXGntqyoc+wIsXCOpc=
+	t=1718279454; cv=none; b=ecXDYcujkfN9segrT14A4eX+p+QbJbVYqcCx2xHTAk7p7iXgsMLb4kqIAjnh7rtTLrEs9LasDsbomdJJU3k1JVwGHjVBGS23YE7TPyFKkZRfobS1sgCt4LjTj9IfddfScad1YZO+JLJOftlSTU9jUS+Uwqj5/s53r+lVvMDgIhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279047; c=relaxed/simple;
-	bh=4KbujfCK88SXRjcRqEGfORatlwtHKiAokLLC+IBeUo4=;
+	s=arc-20240116; t=1718279454; c=relaxed/simple;
+	bh=3bUm49nbfAYMaI40hY2k4iBl+2HAwWNuJnkIHp8R9sA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TzlrcmMAXj6g2Gd1tCGLnc2Fl+iyQpbc84lroPfb28GDmuBbEIRQ+JkUly4GPBWyl52x4jD2jW1ooXPvWaxGqyV7K3mQTirIk1oHco2+TsCJbNJSIAWCEzzYd/98jD5sxJUoreQp61O/iuS/0LNm5WWyjLZAjSNetoJurn3yoas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QlxOOL6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B052C2BBFC;
-	Thu, 13 Jun 2024 11:44:06 +0000 (UTC)
+	 MIME-Version; b=d5eggWKwABPLDzSo3Z5Yxg5JgTX3lZRwkqLfjPnSXuM2Sgi4SuCoIa2o1CCJ/y2CVMqjyJ7021YI0K6Vhbj7yEoHJc3lL/KjzWIEEvB3RG2zYSSbx/qDUaDykgwYGnQPMOzCLaOS484aWPG+gdax/aQtxI4gdA6LkRJEfjR5V6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkG+vRN1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35020C4AF1A;
+	Thu, 13 Jun 2024 11:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279047;
-	bh=4KbujfCK88SXRjcRqEGfORatlwtHKiAokLLC+IBeUo4=;
+	s=korg; t=1718279454;
+	bh=3bUm49nbfAYMaI40hY2k4iBl+2HAwWNuJnkIHp8R9sA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2QlxOOL6gapUBlNENw+aQmBQZqnYh/zO3U8Yh9Y0QPHr+S4Yt9NpwHYG9HADWlxtB
-	 D21FEOXcGkLfDqJ8lqO0p4PE9oOAwYtmx/PpmS4dfYhHrpuLPcoetUL1w6KN5EVI3R
-	 Ff1kwWWEy2xYIZBMXbkm2UimYBikJbsbtq5+GABI=
+	b=SkG+vRN1ZOXgvGx94mx53PwWR+UZvGrxcybngS8le/UfbwQX6KyiWvYvz+DVkd5Vy
+	 9oCjC0b+CKoX0gwHn1P/wz0ZwBFQPmZfoFdTURtlnoKi8i36s6TtyKSDS2Hg7qp5Ra
+	 rmzCrvSIh31+zYHFmqPADhRNla14mPMsYCYv23wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cai Xinchen <caixinchen1@huawei.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 4.19 158/213] fbdev: savage: Handle err return when savagefb_check_var failed
+	Peter Schneider <pschneider1968@googlemail.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.9 081/157] scsi: core: Handle devices which return an unusually large VPD page count
 Date: Thu, 13 Jun 2024 13:33:26 +0200
-Message-ID: <20240613113234.082117412@linuxfoundation.org>
+Message-ID: <20240613113230.558219998@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cai Xinchen <caixinchen1@huawei.com>
+From: Martin K. Petersen <martin.petersen@oracle.com>
 
-commit 6ad959b6703e2c4c5d7af03b4cfd5ff608036339 upstream.
+commit d09c05aa35909adb7d29f92f0cd79fdcd1338ef0 upstream.
 
-The commit 04e5eac8f3ab("fbdev: savage: Error out if pixclock equals zero")
-checks the value of pixclock to avoid divide-by-zero error. However
-the function savagefb_probe doesn't handle the error return of
-savagefb_check_var. When pixclock is 0, it will cause divide-by-zero error.
+Peter Schneider reported that a system would no longer boot after
+updating to 6.8.4.  Peter bisected the issue and identified commit
+b5fc07a5fb56 ("scsi: core: Consult supported VPD page list prior to
+fetching page") as being the culprit.
 
-Fixes: 04e5eac8f3ab ("fbdev: savage: Error out if pixclock equals zero")
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
+Turns out the enclosure device in Peter's system reports a byteswapped
+page length for VPD page 0. It reports "02 00" as page length instead
+of "00 02". This causes us to attempt to access 516 bytes (page length
++ header) of information despite only 2 pages being present.
+
+Limit the page search scope to the size of our VPD buffer to guard
+against devices returning a larger page count than requested.
+
+Link: https://lore.kernel.org/r/20240521023040.2703884-1-martin.petersen@oracle.com
+Fixes: b5fc07a5fb56 ("scsi: core: Consult supported VPD page list prior to fetching page")
 Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: Peter Schneider <pschneider1968@googlemail.com>
+Closes: https://lore.kernel.org/all/eec6ebbf-061b-4a7b-96dc-ea748aa4d035@googlemail.com/
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/savage/savagefb_driver.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/scsi.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/video/fbdev/savage/savagefb_driver.c
-+++ b/drivers/video/fbdev/savage/savagefb_driver.c
-@@ -2271,7 +2271,10 @@ static int savagefb_probe(struct pci_dev
- 	if (info->var.xres_virtual > 0x1000)
- 		info->var.xres_virtual = 0x1000;
- #endif
--	savagefb_check_var(&info->var, info);
-+	err = savagefb_check_var(&info->var, info);
-+	if (err)
-+		goto failed;
-+
- 	savagefb_set_fix(info);
+--- a/drivers/scsi/scsi.c
++++ b/drivers/scsi/scsi.c
+@@ -350,6 +350,13 @@ static int scsi_get_vpd_size(struct scsi
+ 		if (result < SCSI_VPD_HEADER_SIZE)
+ 			return 0;
  
- 	/*
++		if (result > sizeof(vpd)) {
++			dev_warn_once(&sdev->sdev_gendev,
++				      "%s: long VPD page 0 length: %d bytes\n",
++				      __func__, result);
++			result = sizeof(vpd);
++		}
++
+ 		result -= SCSI_VPD_HEADER_SIZE;
+ 		if (!memchr(&vpd[SCSI_VPD_HEADER_SIZE], page, result))
+ 			return 0;
 
 
 
