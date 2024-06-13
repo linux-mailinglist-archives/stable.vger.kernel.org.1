@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-51362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C22906F95
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E15907141
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:35:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F846289208
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1F81281C0D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7506556458;
-	Thu, 13 Jun 2024 12:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FE61E519;
+	Thu, 13 Jun 2024 12:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYYahBn6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mE9hZs8l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEA513D512;
-	Thu, 13 Jun 2024 12:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCC8384;
+	Thu, 13 Jun 2024 12:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281075; cv=none; b=YgZnWTpGcyqLToC7l2fJJE7zV/m5i01wn0buduQWCuKMqSLHT4CzqCpMyCXbNtdGiA6Uc6pMvJGRoPxTS4HJ147DZA37IuW483EZr39rMM4bAUQzk7pNauf12csiHwsXL3C9RIgoopsMJYuvmQRx71DNpdkmkQAmmMGooP1Pb9c=
+	t=1718282103; cv=none; b=qvjKnkZovrd3o1bG8EnWHWDOH2iu4dfPRwyp3GzxxB+SMCiw/alDfPnqTU4OXuio4SjZcH45k7VDOk7zr46IPfV//Rg7TyF0nQyWDYDE3ZCR/rP06SAo82PatbitKR4v46qkIU+1+WwksbpvsE4257OXe2cCUJpAwRYrAEwtvtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281075; c=relaxed/simple;
-	bh=j6C9JnbLPgI5LE/EGdGC6XwNXZ/60R3WyPPH7+0SCs0=;
+	s=arc-20240116; t=1718282103; c=relaxed/simple;
+	bh=JIJ3euAQG7hFdGLreKh2Ye3RtvZ3k3RvQUZSCsMHYco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ci694SJpgobiXURm3FJbf87aTrhJ4lUKQa5fKQmP49oxYnKSMog4sfY7iAHoUuLv/NrR5TQzSSuU6JS9qf5oK2iL24Wf3Wt6CoQFm/CMzEI6C1Ildx18iSBoVj6YPuTfpkrebt3JmhwZuZf0SspDrTFZKwkjTv+kqRc66q5evvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYYahBn6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4780FC2BBFC;
-	Thu, 13 Jun 2024 12:17:54 +0000 (UTC)
+	 MIME-Version; b=tw+1iAqzMBHwwLtKZc3QnybKEV2RREZ1svJ9FTS4gCgHUJAy0e10QvOAaA4GRgD+GCr2M83X923VO4/mLvJWA/Z6U69aX2Ii/yy0x5XTSnBWliEzyN4zgwNXtdAF4FbQOHi3T2hdVKIBGhRqTHcfqbApw4ci5i+RcswcGKKK1Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mE9hZs8l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB927C2BBFC;
+	Thu, 13 Jun 2024 12:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281074;
-	bh=j6C9JnbLPgI5LE/EGdGC6XwNXZ/60R3WyPPH7+0SCs0=;
+	s=korg; t=1718282103;
+	bh=JIJ3euAQG7hFdGLreKh2Ye3RtvZ3k3RvQUZSCsMHYco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XYYahBn6nKF2I2+tHugaRXrvysY3gzSWDJgqz/VgGUlYSPEwXC++7raIy+zKFZR4k
-	 8VVmmZQnSE7J/SqAUHAYIsTHvw5EvAzwkN2pbUZtYHZb+GbRF7RMbqLhRSqI4L/mLu
-	 Y61vcJSfXfPgjsc43+0u8HUQrkW51UJV8GaxQUwk=
+	b=mE9hZs8l+6Kz2wpuEomdkN+yqdJ9CAKXRm3GfG2PIgWNrgzAK3eQY8MFROfr8TfpI
+	 oCq919U8o0xpL8A5uB88jo7N2XUrMQ9Laf5Crb7DYQ/vGqCYH9jT0acYIFFGwhasU0
+	 9//O1XWbD7gT4qfTtB8eQs2BY0Gj/wF417e5fSu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 102/317] fbdev: sh7760fb: allow modular build
-Date: Thu, 13 Jun 2024 13:32:00 +0200
-Message-ID: <20240613113251.495573736@linuxfoundation.org>
+Subject: [PATCH 5.15 164/402] ext4: try all groups in ext4_mb_new_blocks_simple
+Date: Thu, 13 Jun 2024 13:32:01 +0200
+Message-ID: <20240613113308.532857775@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,52 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit 51084f89d687e14d96278241e5200cde4b0985c7 ]
+[ Upstream commit 19a043bb1fd1b5cb2652ca33536c55e6c0a70df0 ]
 
-There is no reason to prohibit sh7760fb from being built as a
-loadable module as suggested by Geert, so change the config symbol
-from bool to tristate to allow that and change the FB dependency as
-needed.
+ext4_mb_new_blocks_simple ignores the group before goal, so it will fail
+if free blocks reside in group before goal. Try all groups to avoid
+unexpected failure.
+Search finishes either if any free block is found or if no available
+blocks are found. Simpliy check "i >= max" to distinguish the above
+cases.
 
-Fixes: f75f71b2c418 ("fbdev/sh7760fb: Depend on FB=y")
-Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Suggested-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230603150327.3596033-8-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 3f4830abd236 ("ext4: fix potential unnitialized variable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/mballoc.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index dd59584630979..9ad3e51578691 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -2013,8 +2013,8 @@ config FB_COBALT
- 	depends on FB && MIPS_COBALT
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 383703e20ea36..a346ab8f3e5f4 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -5887,7 +5887,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+ 	struct buffer_head *bitmap_bh;
+ 	struct super_block *sb = ar->inode->i_sb;
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	ext4_group_t group;
++	ext4_group_t group, nr;
+ 	ext4_grpblk_t blkoff;
+ 	ext4_grpblk_t max = EXT4_CLUSTERS_PER_GROUP(sb);
+ 	ext4_grpblk_t i = 0;
+@@ -5901,7 +5901,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
  
- config FB_SH7760
--	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
--	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
-+	tristate "SH7760/SH7763/SH7720/SH7721 LCDC support"
-+	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
- 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
+ 	ar->len = 0;
+ 	ext4_get_group_no_and_offset(sb, goal, &group, &blkoff);
+-	for (; group < ext4_get_groups_count(sb); group++) {
++	for (nr = ext4_get_groups_count(sb); nr > 0; nr--) {
+ 		bitmap_bh = ext4_read_block_bitmap(sb, group);
+ 		if (IS_ERR(bitmap_bh)) {
+ 			*errp = PTR_ERR(bitmap_bh);
+@@ -5925,10 +5925,13 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+ 		if (i < max)
+ 			break;
+ 
++		if (++group >= ext4_get_groups_count(sb))
++			group = 0;
++
+ 		blkoff = 0;
+ 	}
+ 
+-	if (group >= ext4_get_groups_count(sb) || i >= max) {
++	if (i >= max) {
+ 		*errp = -ENOSPC;
+ 		return 0;
+ 	}
 -- 
 2.43.0
 
