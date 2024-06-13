@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-52046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76FF09072D0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:51:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA23907260
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E5E01F213CE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:51:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D79A71F21B06
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF662CA6;
-	Thu, 13 Jun 2024 12:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B4E1428EF;
+	Thu, 13 Jun 2024 12:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmaXF7vO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCs9oPLe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A93817FD;
-	Thu, 13 Jun 2024 12:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0516F1DDDB;
+	Thu, 13 Jun 2024 12:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718283075; cv=none; b=G5/UBKBXmJnzujlO411Q+8FI95CX49gehgXRYZ8J2OiqLKrPEZ7gu/0kYp9SoFCckEk+fV1vxN3RxvvFtPmGPF5S8luJ+dcJ+IRnhML5lUypF1cpvLnhUJz5vpK/eodTpU6F8ls2/mKNqheg+wv2cCzxz6MNMtC1505VERgXIj0=
+	t=1718282802; cv=none; b=V2GWWOCNk+XXd4l3WQnj8B74ONh1RhTl6Nb8yUrZpn5RR7GCg6+vAhhiOXewuVq1zRqhhffiEJy0pJit0JZvEDgTzUMFJ2AZfwJVJ/KnS8GaTnwSjTqjJlWqnp9vEW4iMaqdAZNRk1NVlQkn6g4f7w3Odt5tV97AzeYZSQ3pnDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718283075; c=relaxed/simple;
-	bh=onSOy6EXbA4I0vnm2n6GVT4C9UTg5MFYwz5CgvX/Sxg=;
+	s=arc-20240116; t=1718282802; c=relaxed/simple;
+	bh=lwtZa4lPWtdIGFaeHpZoSxp4A4VJgE8H66wkSI3MHj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cPRSSm80+hC9YFJiB+HwzFqpXI5/Gc2GbiGSr0XA0N6CBOqBa81pmpF1Mm+30cVwl0kmlnf+dwmrivoL7kjfPHvAaYzxrQSSUJVHp2quP0bZzJcxnYL609h8uD3AOW4yVSwsmv3Zpg37IMsY0gseVi5TUhejk2YwbR7s95dIMJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmaXF7vO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7248C2BBFC;
-	Thu, 13 Jun 2024 12:51:14 +0000 (UTC)
+	 MIME-Version; b=L9HxAlLeldxQfRDvUFOK1ds+IGfCEY6xKKkFrTZA0UMXJ2vtZJCoT09gEDa95KQtUzKZ7xDXC15QiS/Go0KGn9pPPwyE3Y3oHGrhTQdn9bk8HPV1hdtfLHHx7vabLdKWXINBcSxiap75+sFZmGW3ObV6Rl1dk8x87sVrxavzRos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCs9oPLe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F28FC2BBFC;
+	Thu, 13 Jun 2024 12:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718283075;
-	bh=onSOy6EXbA4I0vnm2n6GVT4C9UTg5MFYwz5CgvX/Sxg=;
+	s=korg; t=1718282801;
+	bh=lwtZa4lPWtdIGFaeHpZoSxp4A4VJgE8H66wkSI3MHj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FmaXF7vOcnZpRMimlND7lHadFxStsA98k0S5FEJPdVbTnHwNe/ZNNTgMC26YnZI7q
-	 Bzm4nnQmYD2Ak9PJrfjzAPINT6uEF/zz5ClfIuuryCKxSVeD5a6p3CEstxa2JOKDYp
-	 bJT3hkxAvmTpZFiEWjHDxghWFk8BB6YPkDNWpwyY=
+	b=YCs9oPLe5YCaEZ0kqsfytituHnPWFp0vkkyDSaFf0jhfZaU/da6Zb7LMwToZFfWJI
+	 cV0VlHp0eZP5y1F99m9grCxBoG6CNRfT4XjTr8YWxi+d/GrXQBn4LPvazazMHd1ieC
+	 8xYwYoBGEuIrji+US75rgVgfzdyICZa1biSNduhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.1 60/85] intel_th: pci: Add Meteor Lake-S CPU support
+	Olga Kornievskaia <kolga@netapp.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: [PATCH 5.15 401/402] NFS: Fix READ_PLUS when server doesnt support OP_READ_PLUS
 Date: Thu, 13 Jun 2024 13:35:58 +0200
-Message-ID: <20240613113216.454210107@linuxfoundation.org>
+Message-ID: <20240613113317.792897912@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-commit a4f813c3ec9d1c32bc402becd1f011b3904dd699 upstream.
+commit f06d1b10cb016d5aaecdb1804fefca025387bd10 upstream.
 
-Add support for the Trace Hub in Meteor Lake-S CPU.
+Olga showed me a case where the client was sending multiple READ_PLUS
+calls to the server in parallel, and the server replied
+NFS4ERR_OPNOTSUPP to each. The client would fall back to READ for the
+first reply, but fail to retry the other calls.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20240429130119.1518073-15-alexander.shishkin@linux.intel.com
+I fix this by removing the test for NFS_CAP_READ_PLUS in
+nfs4_read_plus_not_supported(). This allows us to reschedule any
+READ_PLUS call that has a NFS4ERR_OPNOTSUPP return value, even after the
+capability has been cleared.
+
+Reported-by: Olga Kornievskaia <kolga@netapp.com>
+Fixes: c567552612ec ("NFS: Add READ_PLUS data segment support")
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/nfs/nfs4proc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -290,6 +290,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Meteor Lake-S CPU */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xae24),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Raptor Lake-S */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x7a26),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -5421,7 +5421,7 @@ static bool nfs4_read_plus_not_supported
+ 	struct rpc_message *msg = &task->tk_msg;
+ 
+ 	if (msg->rpc_proc == &nfs4_procedures[NFSPROC4_CLNT_READ_PLUS] &&
+-	    server->caps & NFS_CAP_READ_PLUS && task->tk_status == -ENOTSUPP) {
++	    task->tk_status == -ENOTSUPP) {
+ 		server->caps &= ~NFS_CAP_READ_PLUS;
+ 		msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_READ];
+ 		rpc_restart_call_prepare(task);
 
 
 
