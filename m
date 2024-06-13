@@ -1,139 +1,111 @@
-Return-Path: <stable+bounces-52077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28749078F6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 18:58:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E5D907970
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 19:09:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9AE21C21910
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 16:58:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8334C1F23AAE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 17:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5403C149E17;
-	Thu, 13 Jun 2024 16:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698A4149C5A;
+	Thu, 13 Jun 2024 17:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OBmPKlo2"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Jgf3hbn/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82716149E09
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 16:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47382149C54
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 17:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718297920; cv=none; b=WAEWCQYAapsktUlIwMPHfG0DPUyV3H1q9sDllrwIeyXF9NVeprSGMbiMQdVI5pg2oluYa/apnk5mwBGdpDeJj1sKyInUPvz6aTM4Tous/pqgiZzP433eZSpoKmOA3YkvbDnZ8PpYJ3LsZXn/whE+j1JtwqJEcratBOL5l3/jUxI=
+	t=1718298574; cv=none; b=DGDGH4T8DkOitfgHmsSV2Ldf8AuHRpEjuW39Cblfzkuvb040xRtGWFkrfraucwaSTyj+II8GWJaBjwmTPeVHZ5WqRi177RxM9qOVjYQNUJX0KeWBRS38rCCZlhdvVw4xq03cCOjJT5/mYUktpLihA+sRrF3LUWv673KyBHleqr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718297920; c=relaxed/simple;
-	bh=Ko2U0XciqYiZd+52ExiI+tllpyZWj8YuZw6B1gktbbo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qlHiPgTWMwErOE9k7MDi0s3DlRrkz9MHm1HQJLv1EfTMwaDzfYtFtkmH+1AZpZiz2J+Ym3LdqfQUQuDOALsGRZnWw+I/IllG2/HtI0YZcvw31jR2b1YTiRdCgvKGOuMZk1bmx8gLx1nkIOiZf8b5jxu5hXSm7uJXoqgy7owuKYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OBmPKlo2; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-52bbdc237f0so1578352e87.0
-        for <stable@vger.kernel.org>; Thu, 13 Jun 2024 09:58:38 -0700 (PDT)
+	s=arc-20240116; t=1718298574; c=relaxed/simple;
+	bh=dro3L3OTKiADisnYmjVTVIsNtkmJ0Vg0GlldwOjDGkY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=O5IAowQPu0OdjoaMo/m37LVfWZmFlWRmppJbpUgsLvV9qTmu8/ZnbRGtKD23RtIxIABTMZtz3hhysFXlb4fRYD9yBWxZ2dO5DRdVe3G3vy6H6Cf1GrJsX0U0mXnsBxr3KKmds+G2eCnYKCp1dqM7gI09WXtcCe5p6uVJfCwRECU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Jgf3hbn/; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a6f0e153eddso180907666b.0
+        for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:09:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718297917; x=1718902717; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=94cRgmNIJScPtZdK94CW4LdsaQMvPLRaBspPuDEVpOs=;
-        b=OBmPKlo29u+ky8APFdx9lrkw5zGFLOCnSEHWcoyLHBQX4iZ5RfnYXsM6jPjN8ZS5IL
-         mYUY5y6TPYU3fmW0ph3Xxi9dUZ6NiHeyGH0wCqkv4l/FWGeeZjm40wI5AJ34SawJBby5
-         d8xWyiRqDHS9xjOxL2k6QQiYgNBWn+vKRGJ8DdWVMBgv6B8hrvhayqIKuFidSOwM/hv+
-         kHBDuDPbDzsF3mmJs4Ih2hdAT3YqWb98Y5YSpMcllJ8itvO0cx6IG/mUgOTVd5cTb8jH
-         Wh0XDjjKkU5HPvt6ntMe5On5Qe8jncwdbRNibPLTVAJ952fJTGrTNVRcBbOrH2PdUDqS
-         1gNA==
+        d=linux-foundation.org; s=google; t=1718298570; x=1718903370; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=yUKnSByiq7IJzswYOJlBbKH9FX6XnqL9Au/j9R0AESA=;
+        b=Jgf3hbn/RMiqDr5/467CKsfroUPCQ9VbBnJv3EDMHUroRU6+YhgO8TbFZ2xJqeR29k
+         sjbcRFsZzeje5dLJwBPwCEI2sW3RKik4NCTvUhDflynU9pxi+KEteK1Fkw1BHMJ+Ozmy
+         yDs8DPrn2iMA6xrzj9zClNpRP25dFmOctbu7s=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718297917; x=1718902717;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=94cRgmNIJScPtZdK94CW4LdsaQMvPLRaBspPuDEVpOs=;
-        b=kRQLaFmcRIGujnNrMVZQNdx/7Fg+6fBJe5WdBskcnW8mWDzqO4cXa+KGvRvGsaVb9Q
-         zKiX/8nvnicRVpWacdrIcY1nALLQ1tWimHuQYBcd69pANGhTYSOkuDTO+Pcc+RtUJYcy
-         XJ8IRh5JslFncgToJWCCwPKkUOQBsTkLNQKCJj1CerNmNpJ2AXWZeUjB5pjK+Q/Ezi3I
-         U2LcaFYDvypeiroLYvSOIa/dxcen4a6JIHsVkWw+5T26RsCWKJTa+wsxsk0azHAAXsTz
-         Ezkdzx07i768oBual6WUJGlLiJbuwCtF/Gj7ddzQiQRSBx1ld9dF7AkNRcI2gOW4Bf0V
-         wKcw==
-X-Forwarded-Encrypted: i=1; AJvYcCUarb2chptUJU9K9aMS58Bw1we1sFWFF0ZeYeYAB4JirGaqYCAAlKSfqrldE665S2mi9cOwuiscnebGvYJDw48BpLWAk/aD
-X-Gm-Message-State: AOJu0Yy/Pfzf/n68pdGmC4KrLJ+qR2UZWQYSybxEEUwjVIzkaIdC9vBh
-	IJv2QWPXI3qTCb0Y/HwvneYHGyUAcbk7Dwgb229GeXbnfZ2rA9UYGXMOT++3nH0=
-X-Google-Smtp-Source: AGHT+IEyF4qoR9IYhKLhBMALpMTojh7HHUHgZZVfxWEoUECZp0xgvGWJZgNHhC77wpiXn4vOxAsA1Q==
-X-Received: by 2002:a05:6512:44c:b0:51a:f689:b4df with SMTP id 2adb3069b0e04-52ca6e91b34mr221587e87.44.1718297916719;
-        Thu, 13 Jun 2024 09:58:36 -0700 (PDT)
-Received: from ?IPV6:2a00:f41:900a:a4b1:9ab2:4d92:821a:bb76? ([2a00:f41:900a:a4b1:9ab2:4d92:821a:bb76])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca2872466sm284108e87.143.2024.06.13.09.58.34
+        d=1e100.net; s=20230601; t=1718298570; x=1718903370;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yUKnSByiq7IJzswYOJlBbKH9FX6XnqL9Au/j9R0AESA=;
+        b=hwumpL+xfQhOoxAtT3PpnKonl4Y7vELGVm/5RJYV07SmszQDWnw4M6pdKpXVkk0a5A
+         KLOevD0n7ebKtnq3pety3tMInTavYmahOwj6tOrcHvfRtUoGXPDX2+zaRNlE5WIsewgm
+         /2vG/vaveSEFizgfQvbfk86iycFNB8q9SjbOOSkqb5ZEKpyB4/s3hKXr9d3LujsNfXHT
+         WsNjeghpu8iTaxBPTR5/yyEbrFoi0pGL7VyFatHzrT6/zqUhC5NWOFAMo5GodfEOZDx8
+         lNIKdMRlCeu5DpI20i1rfbaUd5GcRwcAsEzO8i0NljoN5GkORcvPqTxJH29wZARFfBnr
+         ArXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV5xtB642bG21V1crRVc12j+ecAR0JnmFe1kn6S07I59uhkNNpk/FqdMZgs66C2FLjAmZ0ctlX0dmsDYTiIUdXu9z+jYLuo
+X-Gm-Message-State: AOJu0Ywz/1Gfh2FPsklqrzHMC3FVgbxzbg0vnzwIHDh5OIAchp3AFmFK
+	yN5r9iFK3ak9vG0QxpSSLXx71cw6Kgx0VapRaOPKNf2/TA2WA+nJi+lS4vvLgz7jtfS/iGlrGHf
+	eQoM8PA==
+X-Google-Smtp-Source: AGHT+IE82x+hQn8YCybAHG7aNJoP6yG96+WOiwV4mi5gPDlfYUBTLzQkCDdFFBqu/kvG7K4SrRkTbA==
+X-Received: by 2002:a17:906:174e:b0:a6f:55e8:b357 with SMTP id a640c23a62f3a-a6f60cef35emr29203766b.10.1718298570494;
+        Thu, 13 Jun 2024 10:09:30 -0700 (PDT)
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com. [209.85.218.45])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56da4087sm91891166b.2.2024.06.13.10.09.29
+        for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Jun 2024 09:58:36 -0700 (PDT)
-Message-ID: <d1062fb2-860a-41fe-887f-14977181f5f3@linaro.org>
-Date: Thu, 13 Jun 2024 18:58:33 +0200
+        Thu, 13 Jun 2024 10:09:30 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a6e349c0f2bso186735166b.2
+        for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:09:29 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX1OBVeW25mA4ar1hO18bDDvKGOr5Uvt9B9f5LQ2SlrNGMv9684xvwAbxjOlf7d/K+JYcCRRKxsstlCZyZNEaINH20bIbQQ
+X-Received: by 2002:a17:906:c7c5:b0:a6e:f645:f595 with SMTP id
+ a640c23a62f3a-a6f60d2bcedmr25144366b.32.1718298568691; Thu, 13 Jun 2024
+ 10:09:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 1/8] clk: qcom: clk-alpha-pll: Fix CAL_L_VAL override
- for LUCID EVO PLL
-To: Ajit Pandey <quic_ajipan@quicinc.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Vinod Koul <vkoul@kernel.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Taniya Das <quic_tdas@quicinc.com>, Jagadeesh Kona <quic_jkona@quicinc.com>,
- Imran Shaik <quic_imrashai@quicinc.com>,
- Satya Priya Kakitapalli <quic_skakitap@quicinc.com>, stable@vger.kernel.org,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-References: <20240611133752.2192401-1-quic_ajipan@quicinc.com>
- <20240611133752.2192401-2-quic_ajipan@quicinc.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20240611133752.2192401-2-quic_ajipan@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <Zmr9oBecxdufMTeP@kernel.org>
+In-Reply-To: <Zmr9oBecxdufMTeP@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 13 Jun 2024 10:09:11 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wickw1bAqWiMASA2zRiEA_nC3etrndnUqn_6C1tbUjAcQ@mail.gmail.com>
+Message-ID: <CAHk-=wickw1bAqWiMASA2zRiEA_nC3etrndnUqn_6C1tbUjAcQ@mail.gmail.com>
+Subject: Re: [GIT PULL] memblock:fix validation of NUMA coverage
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>, Jan Beulich <jbeulich@suse.com>, Narasimhan V <Narasimhan.V@amd.com>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, stable@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+On Thu, 13 Jun 2024 at 07:11, Mike Rapoport <rppt@kernel.org> wrote:
+>
+>   https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock
 
+What's going on? This is the second pull request recently that doesn't
+actually mention where to pull from.
 
-On 6/11/24 15:37, Ajit Pandey wrote:
-> In LUCID EVO PLL CAL_L_VAL and L_VAL bitfields are part of single
-> PLL_L_VAL register. Update for L_VAL bitfield values in PLL_L_VAL
-> register using regmap_write() API in __alpha_pll_trion_set_rate
-> callback will override LUCID EVO PLL initial configuration related
-> to PLL_CAL_L_VAL bit fields in PLL_L_VAL register.
-> 
-> Observed random PLL lock failures during PLL enable due to such
-> override in PLL calibration value. Use regmap_update_bits() with
-> L_VAL bitfield mask instead of regmap_write() API to update only
-> PLL_L_VAL bitfields in __alpha_pll_trion_set_rate callback.
-> 
-> Fixes: 260e36606a03 ("clk: qcom: clk-alpha-pll: add Lucid EVO PLL configuration interfaces")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ajit Pandey <quic_ajipan@quicinc.com>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> ---
->   drivers/clk/qcom/clk-alpha-pll.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
-> index c51647e37df8..a538559caaa0 100644
-> --- a/drivers/clk/qcom/clk-alpha-pll.c
-> +++ b/drivers/clk/qcom/clk-alpha-pll.c
-> @@ -1665,7 +1665,7 @@ static int __alpha_pll_trion_set_rate(struct clk_hw *hw, unsigned long rate,
->   	if (ret < 0)
->   		return ret;
->   
-> -	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
-> +	regmap_update_bits(pll->clkr.regmap, PLL_L_VAL(pll), LUCID_EVO_PLL_L_VAL_MASK,  l);
+I can do a "git ls-remote", and I see that you have a tag called
+"fixes-2024-06-13" that then points to the commit you mention:
 
-Since you're altering a function used by LUCID and TRION PLLs.. how will
-that affect non-LUCID_EVO/OLE ones?
+> for you to fetch changes up to 3ac36aa7307363b7247ccb6f6a804e11496b2b36:
 
-Konrad
+but that tag name isn't actually in the pull request.
+
+Is there some broken scripting that people have started using (or have
+been using for a while and was recently broken)?
+
+                          Linus
 
