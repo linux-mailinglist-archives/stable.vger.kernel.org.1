@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-51146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19BF6906E87
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B7A906DFD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4B09281611
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3743E1C217A0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A309144D10;
-	Thu, 13 Jun 2024 12:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B546914830E;
+	Thu, 13 Jun 2024 12:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="il+XOSG2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rY7ADKqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2B61448DA;
-	Thu, 13 Jun 2024 12:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732791474BF;
+	Thu, 13 Jun 2024 12:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280444; cv=none; b=Wq/RutvCkMYWf5Aw7glWQstufjhMLCs7d8MCsg8yuQUJ1MEsl0ZK9WHx8zOV8OGIPPOtHRC4VbO30LZJURSZW03Nj8MTVvoZpOouHn0RiMkyiKvzK4lZydhd7YJpn3XdskFP+rg4YwydbtIOZDuT1uOlnmXFLA/S7WHY1p/FEN8=
+	t=1718280089; cv=none; b=LuDKDfjVs0FOgSGtv+bzhnU/OpsaUr7WdQ6/3UUjZ9qevCUzova/iJEI71vKQcL9ag3eL2RuO5c6e1iyNzB44001xtO7GzJN+6L85McbrTecV0s2Lf00Fp/WDLY1bfIERDEbvWAjMMnLnpMHx2b8W3bQK7uHTvAMEs2AYiIAYiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280444; c=relaxed/simple;
-	bh=2wByjS3pgTQcAU0K5Vt4HYIgfjASGJYMUFYyIedQ2KU=;
+	s=arc-20240116; t=1718280089; c=relaxed/simple;
+	bh=rhEHQGYV1JqRvTKRgRcjzCIEG4HoUxQRfzbgXL4oAGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BmxfHFkdMaX56REfZFVQVkh84Wu7dum80GzhDU/PnSViJMc2tbc3SgyZ+nBQctXC7ed4sqix4VCG4+06edXp4QDEpiWKKolr1CHgTyGnMdfepYdMZGgaEn930yYeAAjBTDtAvWH7KozPTsUyXI2EEmTF5d0hvb/IVR1a6DuazBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=il+XOSG2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF456C2BBFC;
-	Thu, 13 Jun 2024 12:07:23 +0000 (UTC)
+	 MIME-Version; b=hzuGt6DdEPryVU8oFqfh/IMVjAU1aZ5fM00c9XxUdtp2SYkcuVa1heehtojKj5A9xDuuw1UydN92NmmfGIwFXcQYoacavEEb7RcSn9VpbfH9FiBencJe1gnJRE8SyFGPLBXalQrWYQo2y1KZI5PR+wihbZ/dncqMU8kAK3mZjZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rY7ADKqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D816C2BBFC;
+	Thu, 13 Jun 2024 12:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280444;
-	bh=2wByjS3pgTQcAU0K5Vt4HYIgfjASGJYMUFYyIedQ2KU=;
+	s=korg; t=1718280088;
+	bh=rhEHQGYV1JqRvTKRgRcjzCIEG4HoUxQRfzbgXL4oAGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=il+XOSG2zTAkB9ILdVLjroGRskSv1daIymn4fdpTX87f2mW5VG87dt9VlUusD2NU7
-	 mu9uKDVuc7MAX9CPjfL0S79IjcCOY9fdvhnMnhTMiJxIT4UtJYTWaFx6sHq5okuvu3
-	 QDtfxF/IHsbz3URDUFwzG+D0EieedCnTagQ2tVZw=
+	b=rY7ADKqIuB84EeZ/p9NTsL4iUxr52BG0q37knQiZO/8ViGxx4FIPdNDOVZXgdsf9P
+	 PjDHQeikkonwKdkhmLCQuyzel6lRYvUL6IF3TYfm/U7GbAk3CsOHmdvQf99TP6RgdF
+	 Eu3Wl0Yn7P1NOdUz73PdcsafuIPZ4uMIDsmP/4HQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Ma <li.ma@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 056/137] drm/amdgpu/atomfirmware: add intergrated info v2.3 table
+	Chuck Lever <chuck.lever@oracle.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Dan Aloni <dan.aloni@vastdata.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 138/202] sunrpc: fix NFSACL RPC retry on soft mount
 Date: Thu, 13 Jun 2024 13:33:56 +0200
-Message-ID: <20240613113225.465800108@linuxfoundation.org>
+Message-ID: <20240613113233.086842677@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Ma <li.ma@amd.com>
+From: Dan Aloni <dan.aloni@vastdata.com>
 
-commit e64e8f7c178e5228e0b2dbb504b9dc75953a319f upstream.
+[ Upstream commit 0dc9f430027b8bd9073fdafdfcdeb1a073ab5594 ]
 
-[Why]
-The vram width value is 0.
-Because the integratedsysteminfo table in VBIOS has updated to 2.3.
+It used to be quite awhile ago since 1b63a75180c6 ('SUNRPC: Refactor
+rpc_clone_client()'), in 2012, that `cl_timeout` was copied in so that
+all mount parameters propagate to NFSACL clients. However since that
+change, if mount options as follows are given:
 
-[How]
-Driver needs a new intergrated info v2.3 table too.
-Then the vram width value will be correct.
+    soft,timeo=50,retrans=16,vers=3
 
-Signed-off-by: Li Ma <li.ma@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The resultant NFSACL client receives:
+
+    cl_softrtry: 1
+    cl_timeout: to_initval=60000, to_maxval=60000, to_increment=0, to_retries=2, to_exponential=0
+
+These values lead to NFSACL operations not being retried under the
+condition of transient network outages with soft mount. Instead, getacl
+call fails after 60 seconds with EIO.
+
+The simple fix is to pass the existing client's `cl_timeout` as the new
+client timeout.
+
+Cc: Chuck Lever <chuck.lever@oracle.com>
+Cc: Benjamin Coddington <bcodding@redhat.com>
+Link: https://lore.kernel.org/all/20231105154857.ryakhmgaptq3hb6b@gmail.com/T/
+Fixes: 1b63a75180c6 ('SUNRPC: Refactor rpc_clone_client()')
+Signed-off-by: Dan Aloni <dan.aloni@vastdata.com>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c |   15 ++++++++
- drivers/gpu/drm/amd/include/atomfirmware.h       |   43 +++++++++++++++++++++++
- 2 files changed, 58 insertions(+)
+ net/sunrpc/clnt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c
-@@ -211,6 +211,7 @@ union igp_info {
- 	struct atom_integrated_system_info_v1_11 v11;
- 	struct atom_integrated_system_info_v1_12 v12;
- 	struct atom_integrated_system_info_v2_1 v21;
-+	struct atom_integrated_system_info_v2_3 v23;
- };
- 
- union umc_info {
-@@ -353,6 +354,20 @@ amdgpu_atomfirmware_get_vram_info(struct
- 					if (mem_type == LpDdr5MemType)
- 						mem_channel_width = 32;
- 					else
-+						mem_channel_width = 64;
-+					if (vram_width)
-+						*vram_width = mem_channel_number * mem_channel_width;
-+					if (vram_type)
-+						*vram_type = convert_atom_mem_type_to_vram_type(adev, mem_type);
-+					break;
-+				case 3:
-+					mem_channel_number = igp_info->v23.umachannelnumber;
-+					if (!mem_channel_number)
-+						mem_channel_number = 1;
-+					mem_type = igp_info->v23.memorytype;
-+					if (mem_type == LpDdr5MemType)
-+						mem_channel_width = 32;
-+					else
- 						mem_channel_width = 64;
- 					if (vram_width)
- 						*vram_width = mem_channel_number * mem_channel_width;
---- a/drivers/gpu/drm/amd/include/atomfirmware.h
-+++ b/drivers/gpu/drm/amd/include/atomfirmware.h
-@@ -1625,6 +1625,49 @@ struct atom_integrated_system_info_v2_2
- 	uint32_t  reserved4[189];
- };
- 
-+struct uma_carveout_option {
-+  char       optionName[29];        //max length of string is 28chars + '\0'. Current design is for "minimum", "Medium", "High". This makes entire struct size 64bits
-+  uint8_t    memoryCarvedGb;        //memory carved out with setting
-+  uint8_t    memoryRemainingGb;     //memory remaining on system
-+  union {
-+    struct _flags {
-+      uint8_t Auto     : 1;
-+      uint8_t Custom   : 1;
-+      uint8_t Reserved : 6;
-+    } flags;
-+    uint8_t all8;
-+  } uma_carveout_option_flags;
-+};
-+
-+struct atom_integrated_system_info_v2_3 {
-+  struct  atom_common_table_header table_header;
-+  uint32_t  vbios_misc; // enum of atom_system_vbiosmisc_def
-+  uint32_t  gpucapinfo; // enum of atom_system_gpucapinf_def
-+  uint32_t  system_config;
-+  uint32_t  cpucapinfo;
-+  uint16_t  gpuclk_ss_percentage; // unit of 0.001%,   1000 mean 1%
-+  uint16_t  gpuclk_ss_type;
-+  uint16_t  dpphy_override;  // bit vector, enum of atom_sysinfo_dpphy_override_def
-+  uint8_t memorytype;       // enum of atom_dmi_t17_mem_type_def, APU memory type indication.
-+  uint8_t umachannelnumber; // number of memory channels
-+  uint8_t htc_hyst_limit;
-+  uint8_t htc_tmp_limit;
-+  uint8_t reserved1; // dp_ss_control
-+  uint8_t gpu_package_id;
-+  struct  edp_info_table  edp1_info;
-+  struct  edp_info_table  edp2_info;
-+  uint32_t  reserved2[8];
-+  struct  atom_external_display_connection_info extdispconninfo;
-+  uint8_t UMACarveoutVersion;
-+  uint8_t UMACarveoutIndexMax;
-+  uint8_t UMACarveoutTypeDefault;
-+  uint8_t UMACarveoutIndexDefault;
-+  uint8_t UMACarveoutType;           //Auto or Custom
-+  uint8_t UMACarveoutIndex;
-+  struct  uma_carveout_option UMASizeControlOption[20];
-+  uint8_t reserved3[110];
-+};
-+
- // system_config
- enum atom_system_vbiosmisc_def{
-   INTEGRATED_SYSTEM_INFO__GET_EDID_CALLBACK_FUNC_SUPPORT = 0x01,
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index c6fe108845e8b..dc3226edf22fb 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -964,6 +964,7 @@ struct rpc_clnt *rpc_bind_new_program(struct rpc_clnt *old,
+ 		.authflavor	= old->cl_auth->au_flavor,
+ 		.cred		= old->cl_cred,
+ 		.stats		= old->cl_stats,
++		.timeout	= old->cl_timeout,
+ 	};
+ 	struct rpc_clnt *clnt;
+ 	int err;
+-- 
+2.43.0
+
 
 
 
