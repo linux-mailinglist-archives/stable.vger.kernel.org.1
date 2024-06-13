@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-50666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1AC8906BCA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75995906D8E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90DD2283204
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 043A42815CC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B262142E99;
-	Thu, 13 Jun 2024 11:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5631448EE;
+	Thu, 13 Jun 2024 11:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaUkxEp8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3fwsdsx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE10514265E;
-	Thu, 13 Jun 2024 11:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A15913A406;
+	Thu, 13 Jun 2024 11:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279032; cv=none; b=WxSuCMTqUAVTwKZ2wBzZnH6LAYIItYjTAfepoRcQmb5RvmNf6jVqnsv28752O9QaKgE7G+f9K/zb1CPcYxjncLhNhRN8AovD6CkaKvOFXUyrxriiiXKNE6AUQZsDlo3FHX+0faTxala+eDXvjibfl8WZmzyD3cPnSs+4JUdDQm8=
+	t=1718279862; cv=none; b=Mj+wzqhEOuMFF74lXXVjAqw8Oz9tp3vj8edCUvmE0YOao5pFMJ+DrsoCLNqdKT+5SaUqpifo6uVrXxcghSp4fnbwnWGeEWawhJBLVwEIRe9txBsPZwq7G2n/IEhfPQathVqOqUnWhcozX5QCjVZWb0x8KfiDg/jCSymeLFmPKos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279032; c=relaxed/simple;
-	bh=xeI3+tO3EB962pE5dCyam8CFvsoMGwhoITWAtWsp26c=;
+	s=arc-20240116; t=1718279862; c=relaxed/simple;
+	bh=gni2h85gFcSa79NVU42EfdwL5arNJHBhOO50JbfDnd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tgf+Hl5/XMGBYhwM6N8KAumB0h1J60RLuKtFX+2arJ5wmKUzeUgPOBsCRzSIKQF1XVbkn7Odvxynsicf7f2XLYXutUz1g2ttHCEcCj+wAdK2FRYFVp328yW2ZgHCz2D5V/Yk6bTmioibk/1nvdNH5dPmwufKWxC+mQXBkRzHCPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaUkxEp8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9B9C2BBFC;
-	Thu, 13 Jun 2024 11:43:51 +0000 (UTC)
+	 MIME-Version; b=VqpAKJdXrQAAMBpiCAloLiFrK+o7P4rFe4Hoege6WNuKv6RtvVAKJqHYasmw+86H4bBKhGS9hf+YZ/rHNKzA/lPFvPwEVJWJa0Lwdc3h+2QOHWbaMLDig+yiNhIRA4+uTYAv/4VVzgfmOSWwUEbUW0ZXTVrArfnHpof6/1kD4Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3fwsdsx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87294C32786;
+	Thu, 13 Jun 2024 11:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279032;
-	bh=xeI3+tO3EB962pE5dCyam8CFvsoMGwhoITWAtWsp26c=;
+	s=korg; t=1718279861;
+	bh=gni2h85gFcSa79NVU42EfdwL5arNJHBhOO50JbfDnd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TaUkxEp8sf14pYdJRlm18IuzYHInIH8mEQeMedbRY0zulcPLwJXxHyX29U0M2vsq6
-	 qeFHEl+738JvpOwunGxYwg7HeUnJ83v3a+tRu3DQsYj72oYFCDI4bDz8meaOT6vRn6
-	 mwRF0mpV712F1//SIpINe+ELE2th090zzSrC5RQk=
+	b=U3fwsdsxDR7vS4huVFHGKkmiZRzEVH9N56KbQu0LhuWhE1dD+OUCEfLc7FapYG7wN
+	 Xm32awdMHF8DbplEVLJBEjP1ajZNjC1C/Hs9SekPox/F4aY9THop5rwJ7iRbW/lalS
+	 oqDOptzimpLi6e1jqL2mkvOS8OX4dYmts4Vl3ag4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Richard Weinberger <richard@nod.at>,
+	Breno Leitao <leitao@debian.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 112/213] um: Fix return value in ubd_init()
+Subject: [PATCH 5.4 062/202] af_unix: Fix data races in unix_release_sock/unix_stream_sendmsg
 Date: Thu, 13 Jun 2024 13:32:40 +0200
-Message-ID: <20240613113232.322091116@linuxfoundation.org>
+Message-ID: <20240613113230.170117906@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 31a5990ed253a66712d7ddc29c92d297a991fdf2 ]
+[ Upstream commit 540bf24fba16b88c1b3b9353927204b4f1074e25 ]
 
-When kmalloc_array() fails to allocate memory, the ubd_init()
-should return -ENOMEM instead of -1. So, fix it.
+A data-race condition has been identified in af_unix. In one data path,
+the write function unix_release_sock() atomically writes to
+sk->sk_shutdown using WRITE_ONCE. However, on the reader side,
+unix_stream_sendmsg() does not read it atomically. Consequently, this
+issue is causing the following KCSAN splat to occur:
 
-Fixes: f88f0bdfc32f ("um: UBD Improvements")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+	BUG: KCSAN: data-race in unix_release_sock / unix_stream_sendmsg
+
+	write (marked) to 0xffff88867256ddbb of 1 bytes by task 7270 on cpu 28:
+	unix_release_sock (net/unix/af_unix.c:640)
+	unix_release (net/unix/af_unix.c:1050)
+	sock_close (net/socket.c:659 net/socket.c:1421)
+	__fput (fs/file_table.c:422)
+	__fput_sync (fs/file_table.c:508)
+	__se_sys_close (fs/open.c:1559 fs/open.c:1541)
+	__x64_sys_close (fs/open.c:1541)
+	x64_sys_call (arch/x86/entry/syscall_64.c:33)
+	do_syscall_64 (arch/x86/entry/common.c:?)
+	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+	read to 0xffff88867256ddbb of 1 bytes by task 989 on cpu 14:
+	unix_stream_sendmsg (net/unix/af_unix.c:2273)
+	__sock_sendmsg (net/socket.c:730 net/socket.c:745)
+	____sys_sendmsg (net/socket.c:2584)
+	__sys_sendmmsg (net/socket.c:2638 net/socket.c:2724)
+	__x64_sys_sendmmsg (net/socket.c:2753 net/socket.c:2750 net/socket.c:2750)
+	x64_sys_call (arch/x86/entry/syscall_64.c:33)
+	do_syscall_64 (arch/x86/entry/common.c:?)
+	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+	value changed: 0x01 -> 0x03
+
+The line numbers are related to commit dd5a440a31fa ("Linux 6.9-rc7").
+
+Commit e1d09c2c2f57 ("af_unix: Fix data races around sk->sk_shutdown.")
+addressed a comparable issue in the past regarding sk->sk_shutdown.
+However, it overlooked resolving this particular data path.
+This patch only offending unix_stream_sendmsg() function, since the
+other reads seem to be protected by unix_state_lock() as discussed in
+Link: https://lore.kernel.org/all/20240508173324.53565-1-kuniyu@amazon.com/
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240509081459.2807828-1-leitao@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/ubd_kern.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/um/drivers/ubd_kern.c b/arch/um/drivers/ubd_kern.c
-index 788c80abff5d3..4a32df89a491e 100644
---- a/arch/um/drivers/ubd_kern.c
-+++ b/arch/um/drivers/ubd_kern.c
-@@ -1135,7 +1135,7 @@ static int __init ubd_init(void)
- 
- 	if (irq_req_buffer == NULL) {
- 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
--		return -1;
-+		return -ENOMEM;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 53335989a6f0c..e8bad973285e4 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1890,7 +1890,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 			goto out_err;
  	}
- 	io_req_buffer = kmalloc_array(UBD_REQ_BUFFER_SIZE,
- 				      sizeof(struct io_thread_req *),
-@@ -1146,7 +1146,7 @@ static int __init ubd_init(void)
  
- 	if (io_req_buffer == NULL) {
- 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
--		return -1;
-+		return -ENOMEM;
- 	}
- 	platform_driver_register(&ubd_driver);
- 	mutex_lock(&ubd_lock);
+-	if (sk->sk_shutdown & SEND_SHUTDOWN)
++	if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+ 		goto pipe_err;
+ 
+ 	while (sent < len) {
 -- 
 2.43.0
 
