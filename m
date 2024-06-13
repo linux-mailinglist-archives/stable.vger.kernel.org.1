@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-50934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E657906D7E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88304906C65
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23D921C2300C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38F8028136F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2475E14884E;
-	Thu, 13 Jun 2024 11:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E7F1448C4;
+	Thu, 13 Jun 2024 11:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GISTYUFZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKkLjlyl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFB4143C55;
-	Thu, 13 Jun 2024 11:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE0F143899;
+	Thu, 13 Jun 2024 11:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279817; cv=none; b=Tqjgeg2ZWkf50hz2XwFEy6DnnC7lLidqwWxZMCFXthVOINV7JGYiA1HrqeYCMUIpZBPd8Pg89v81oEoxfm7/WfbMuKDJbq3dNbQTrGCQXqI0eBR2tso25mNpcZS5vSoX50Ljhi2mV9wUaHV9i/V8J4AQNWTm0IEstQCIgDHM7Is=
+	t=1718279269; cv=none; b=KPDdogDBKeyLvQ8QkuZ73201u1ZTyjFzniJCtHnCbFPqASTj/uaJ/ivjsFVZI6Qk5Z1/eNnwrFyjvTkRvCVdhXTCrrTPaI+5YD3PNq+ycVbLibM7JqQvqA9f9SLdvHtHe8uSUlBasloK4IPK2lQTWM9tXUA8eCRnMvIpTbN+gQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279817; c=relaxed/simple;
-	bh=1SJR4crF0L5xjC3dyr/6/nXFRSugH/kCkVexHIMoD1M=;
+	s=arc-20240116; t=1718279269; c=relaxed/simple;
+	bh=xUFNT0HHfTvGPsmkp9t4yKHQEnnyj/3hvqM+SgooA44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPTS4raT/Z4v00jbD1P0xw7QgDWEYTO9ENRAL3o2fuNRUHQtCmKD/0kxyGw+SsFe+4PuUkL99BV+ftffbe2lilHfiv4byVCcC2/mjoJdzZ73uJnTOaAPSZdurQa588kb94/fw6tfQ2P0smY4/tnAgmISD8aIwrSQtRxzkWkaETw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GISTYUFZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7FEC2BBFC;
-	Thu, 13 Jun 2024 11:56:57 +0000 (UTC)
+	 MIME-Version; b=bkqcHBQH6IJY5kqilQZI9HAvqUXrTEQVAvT+aQ/6iOv3kcN5xu8f9h/pojuVpZyNi5GOcwIKdxLWt09Ib6BXyqQsLYp+bRU3fOIGU5fe3vmzWOGGtIQOWxSBh/Ok0ZJzcMfXBx8K64/QJv1F1l/OhPVSGvY83rEEqgiLpIlVrK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKkLjlyl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D744DC2BBFC;
+	Thu, 13 Jun 2024 11:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279817;
-	bh=1SJR4crF0L5xjC3dyr/6/nXFRSugH/kCkVexHIMoD1M=;
+	s=korg; t=1718279269;
+	bh=xUFNT0HHfTvGPsmkp9t4yKHQEnnyj/3hvqM+SgooA44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GISTYUFZFBZ3hhjtXCYgU27DsOGc1KNst4iKjw5v8pWxjl/3RMERbB+/RutV5oJ/c
-	 rIvFqTQP9BOFPrs+7Sy/mAt+hEUzwj+c+3AoST0bfTi1cppX9x/WX6duAO1qb0nNlZ
-	 5Z65g0wiKsKwoRneaCHf/QRSAimGw+opS35NgSuI=
+	b=IKkLjlylhaKKFsDHH23wgI7mqAGOB1cNcvhx8OAnbug6UNES8BwZ7ilS8sP/EBBXz
+	 v+St5iSir4vS7wbTNdtSSC148pSkAOeGzsw0Ek8+ahObQGtEYK3Ij2L0jyhnNlDv/G
+	 8pbdh6j8NOeBv1QyGEOA48orVO2s8fN4qzh1TOnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Wei <luwei32@huawei.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 046/202] tcp: fix a signed-integer-overflow bug in tcp_add_backlog()
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.9 019/157] thermal/drivers/qcom/lmh: Check for SCM availability at probe
 Date: Thu, 13 Jun 2024 13:32:24 +0200
-Message-ID: <20240613113229.549428726@linuxfoundation.org>
+Message-ID: <20240613113228.150118490@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Wei <luwei32@huawei.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit ec791d8149ff60c40ad2074af3b92a39c916a03f ]
+commit d9d3490c48df572edefc0b64655259eefdcbb9be upstream.
 
-The type of sk_rcvbuf and sk_sndbuf in struct sock is int, and
-in tcp_add_backlog(), the variable limit is caculated by adding
-sk_rcvbuf, sk_sndbuf and 64 * 1024, it may exceed the max value
-of int and overflow. This patch reduces the limit budget by
-halving the sndbuf to solve this issue since ACK packets are much
-smaller than the payload.
+Up until now, the necessary scm availability check has not been
+performed, leading to possible null pointer dereferences (which did
+happen for me on RB1).
 
-Fixes: c9c3321257e1 ("tcp: add tcp_add_backlog()")
-Signed-off-by: Lu Wei <luwei32@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: ec00ed472bdb ("tcp: avoid premature drops in tcp_add_backlog()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix that.
+
+Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20240308-topic-rb1_lmh-v2-2-bac3914b0fe3@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_ipv4.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/thermal/qcom/lmh.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 1567072071633..d29d4b8192643 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -1781,11 +1781,13 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
- 	__skb_push(skb, hdrlen);
+--- a/drivers/thermal/qcom/lmh.c
++++ b/drivers/thermal/qcom/lmh.c
+@@ -95,6 +95,9 @@ static int lmh_probe(struct platform_dev
+ 	unsigned int enable_alg;
+ 	u32 node_id;
  
- no_coalesce:
-+	limit = (u32)READ_ONCE(sk->sk_rcvbuf) + (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
++	if (!qcom_scm_is_available())
++		return -EPROBE_DEFER;
 +
- 	/* Only socket owner can try to collapse/prune rx queues
- 	 * to reduce memory overhead, so add a little headroom here.
- 	 * Few sockets backlog are possibly concurrently non empty.
- 	 */
--	limit = READ_ONCE(sk->sk_rcvbuf) + READ_ONCE(sk->sk_sndbuf) + 64*1024;
-+	limit += 64 * 1024;
- 
- 	if (unlikely(sk_add_backlog(sk, skb, limit))) {
- 		bh_unlock_sock(sk);
--- 
-2.43.0
-
+ 	lmh_data = devm_kzalloc(dev, sizeof(*lmh_data), GFP_KERNEL);
+ 	if (!lmh_data)
+ 		return -ENOMEM;
 
 
 
