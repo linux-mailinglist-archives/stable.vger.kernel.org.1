@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-50637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0858906BA6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE56906D9C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89F6B1F21145
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 439881C23449
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587F4143C40;
-	Thu, 13 Jun 2024 11:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6AC14533A;
+	Thu, 13 Jun 2024 11:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxxWZVQl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NVuu6RU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F9E143890;
-	Thu, 13 Jun 2024 11:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8AB1448E5;
+	Thu, 13 Jun 2024 11:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278950; cv=none; b=hPQrKkrV4CIU5tEY3oF3hz2knuSxbJqUIUWIOMfKl9XjOnWakSsdwmYpMJtzS05jSYsI29Yx6F5DODXrioseCGPQ2AWNbrqspZFL+8KOXVItioW7HlxN64pq137moO3eAe4oSANclP06PBPedW4i/vFKIgPqtFulNu24dvReE/Q=
+	t=1718279903; cv=none; b=Gzc220rjyeOgGzfpXz2bsbnGYPdiKzR1uy4quiL3KT0YuG+9z004tylOG5ky37BQA9ItqPNSCBlTgasRiDpnvJ+WYIkgeQLmykIVl4cmpubr0KvsAdld4vYDu/lqHpZP0vBbICmeHqHPx1TfpdWwksLgXxkN49PIH2VsziWiDUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278950; c=relaxed/simple;
-	bh=NWYHypt6Mf3eB/OglGlN7bMj2UnFoentLCTmVVSSXaU=;
+	s=arc-20240116; t=1718279903; c=relaxed/simple;
+	bh=0PrcuI2PMneRp/DMECtt3oWDNk+NvKFuL08AcyLVtHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dl1xRT/MS0vg9IV0xIRJX4i8y8WGsitXPB5WXSMSXNiuRruB0l1GCgQiTnr/uhyWfJSiQ3Any8Z/CjcLi53Ah+jp9XTa6DvzkEGn8oQuP+y4DnPWIaHnTyHFen6r2Z0TTxQfnTiCLSn5VLk5T1k6uoRqiDYL9kuYSjiH7kF/3Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxxWZVQl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484ABC32786;
-	Thu, 13 Jun 2024 11:42:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OCewKQWXI1MUlAdHRmGLesmKfWTm0dEO/cFWCtQyJQ6/nwL3W6Uj/hqe1KPDsqIx6/PNOQpeeqizLkocTdZ4s637d1eE80Wc4BpQRLLxxnySxUHLabpaS6ScDlcjbmJFVPvCceLqfUQQwkKJa10T4Tu9aeCDOgB/AGNRI7ohqF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NVuu6RU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93F9C32786;
+	Thu, 13 Jun 2024 11:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278949;
-	bh=NWYHypt6Mf3eB/OglGlN7bMj2UnFoentLCTmVVSSXaU=;
+	s=korg; t=1718279903;
+	bh=0PrcuI2PMneRp/DMECtt3oWDNk+NvKFuL08AcyLVtHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vxxWZVQlfRSPA0IE+Zyw6/fYPO/Ln4OKfEWZj1j7UtRkETL+91TLnS5UHNgrYBrXm
-	 SZOpShM7s1voLyRj791btagrV1T+sId4VmPw91q/7qdqIoIi+TJ8cuKm980hRBUg0z
-	 ewl7ZkUphgwjAB3e2rtlJ5w4hYbHl4hECsgPhKLU=
+	b=2NVuu6RUTstSF8LCu5rgJDOFuPIJnrctLl/KvlCTjE8t9NkLNUwBaMLPH+lJD0Nn+
+	 ePLxZZmS79Qv5BDZH3pvrhm4rCS8gjuIi/RM4E7C1Pi9f31zLpv4BMT7R1BEOsqP77
+	 AOK4+jr+Is5RbWCaVQmqeMqz3lZeOXeQ+k5j/g6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaime Caamano <jcaamano@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 125/213] openvswitch: Set the skbuff pkt_type for proper pmtud support.
+Subject: [PATCH 5.4 075/202] media: radio-shark2: Avoid led_names truncations
 Date: Thu, 13 Jun 2024 13:32:53 +0200
-Message-ID: <20240613113232.820372159@linuxfoundation.org>
+Message-ID: <20240613113230.669368622@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Conole <aconole@redhat.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 30a92c9e3d6b073932762bef2ac66f4ee784c657 ]
+[ Upstream commit 1820e16a3019b6258e6009d34432946a6ddd0a90 ]
 
-Open vSwitch is originally intended to switch at layer 2, only dealing with
-Ethernet frames.  With the introduction of l3 tunnels support, it crossed
-into the realm of needing to care a bit about some routing details when
-making forwarding decisions.  If an oversized packet would need to be
-fragmented during this forwarding decision, there is a chance for pmtu
-to get involved and generate a routing exception.  This is gated by the
-skbuff->pkt_type field.
+Increase the size of led_names so it can fit any valid v4l2 device name.
 
-When a flow is already loaded into the openvswitch module this field is
-set up and transitioned properly as a packet moves from one port to
-another.  In the case that a packet execute is invoked after a flow is
-newly installed this field is not properly initialized.  This causes the
-pmtud mechanism to omit sending the required exception messages across
-the tunnel boundary and a second attempt needs to be made to make sure
-that the routing exception is properly setup.  To fix this, we set the
-outgoing packet's pkt_type to PACKET_OUTGOING, since it can only get
-to the openvswitch module via a port device or packet command.
+Fixes:
+drivers/media/radio/radio-shark2.c:197:17: warning: ‘%s’ directive output may be truncated writing up to 35 bytes into a region of size 32 [-Wformat-truncation=]
 
-Even for bridge ports as users, the pkt_type needs to be reset when
-doing the transmit as the packet is truly outgoing and routing needs
-to get involved post packet transformations, in the case of
-VXLAN/GENEVE/udp-tunnel packets.  In general, the pkt_type on output
-gets ignored, since we go straight to the driver, but in the case of
-tunnel ports they go through IP routing layer.
-
-This issue is periodically encountered in complex setups, such as large
-openshift deployments, where multiple sets of tunnel traversal occurs.
-A way to recreate this is with the ovn-heater project that can setup
-a networking environment which mimics such large deployments.  We need
-larger environments for this because we need to ensure that flow
-misses occur.  In these environment, without this patch, we can see:
-
-  ./ovn_cluster.sh start
-  podman exec ovn-chassis-1 ip r a 170.168.0.5/32 dev eth1 mtu 1200
-  podman exec ovn-chassis-1 ip netns exec sw01p1 ip r flush cache
-  podman exec ovn-chassis-1 ip netns exec sw01p1 \
-         ping 21.0.0.3 -M do -s 1300 -c2
-  PING 21.0.0.3 (21.0.0.3) 1300(1328) bytes of data.
-  From 21.0.0.3 icmp_seq=2 Frag needed and DF set (mtu = 1142)
-
-  --- 21.0.0.3 ping statistics ---
-  ...
-
-Using tcpdump, we can also see the expected ICMP FRAG_NEEDED message is not
-sent into the server.
-
-With this patch, setting the pkt_type, we see the following:
-
-  podman exec ovn-chassis-1 ip netns exec sw01p1 \
-         ping 21.0.0.3 -M do -s 1300 -c2
-  PING 21.0.0.3 (21.0.0.3) 1300(1328) bytes of data.
-  From 21.0.0.3 icmp_seq=1 Frag needed and DF set (mtu = 1222)
-  ping: local error: message too long, mtu=1222
-
-  --- 21.0.0.3 ping statistics ---
-  ...
-
-In this case, the first ping request receives the FRAG_NEEDED message and
-a local routing exception is created.
-
-Tested-by: Jaime Caamano <jcaamano@redhat.com>
-Reported-at: https://issues.redhat.com/browse/FDP-164
-Fixes: 58264848a5a7 ("openvswitch: Add vxlan tunneling support.")
-Signed-off-by: Aaron Conole <aconole@redhat.com>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Link: https://lore.kernel.org/r/20240516200941.16152-1-aconole@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/actions.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/radio/radio-shark2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index 091202b84b6e6..63b7586c31a2c 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -992,6 +992,12 @@ static void do_output(struct datapath *dp, struct sk_buff *skb, int out_port,
- 				pskb_trim(skb, ovs_mac_header_len(key));
- 		}
- 
-+		/* Need to set the pkt_type to involve the routing layer.  The
-+		 * packet movement through the OVS datapath doesn't generally
-+		 * use routing, but this is needed for tunnel cases.
-+		 */
-+		skb->pkt_type = PACKET_OUTGOING;
-+
- 		if (likely(!mru ||
- 		           (skb->len <= mru + vport->dev->hard_header_len))) {
- 			ovs_vport_send(vport, skb, ovs_key_mac_proto(key));
+diff --git a/drivers/media/radio/radio-shark2.c b/drivers/media/radio/radio-shark2.c
+index f1c5c0a6a335c..e3e6aa87fe081 100644
+--- a/drivers/media/radio/radio-shark2.c
++++ b/drivers/media/radio/radio-shark2.c
+@@ -62,7 +62,7 @@ struct shark_device {
+ #ifdef SHARK_USE_LEDS
+ 	struct work_struct led_work;
+ 	struct led_classdev leds[NO_LEDS];
+-	char led_names[NO_LEDS][32];
++	char led_names[NO_LEDS][64];
+ 	atomic_t brightness[NO_LEDS];
+ 	unsigned long brightness_new;
+ #endif
 -- 
 2.43.0
 
