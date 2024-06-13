@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-51708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 927C7907136
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB5E906F4C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18AD7283E62
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0B311C240C3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8A61E49B;
-	Thu, 13 Jun 2024 12:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0C0145332;
+	Thu, 13 Jun 2024 12:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJffbDj4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWiM3E3Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC721DFD8;
-	Thu, 13 Jun 2024 12:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFE81448DA;
+	Thu, 13 Jun 2024 12:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282082; cv=none; b=nuvfo98M5kYIOVAGCLq5JrDerBsIACQ+EU5SXHSud4BxfgC4BHCruFDTCm+tAko3Kl2yH8usePMez2tXZ03rBQ06Jo7Vh7Yr/rMvF4c1a6oAbLpPsOpzjmZKDKXbueUsvaCPs8tYusdpT5HKg7WIYNMKgjwV9HgvbUOGGjbEiGY=
+	t=1718280948; cv=none; b=K/LSk7KpifRQYUayr81+2DSprGiBedM//RLFAjoeiI4bVYZEedqb12WNuweMVM2B80C/lOk2LOeX5BqKRvY+i1jWbYshTj2hesAyFUIz0srtAYP4PzGr4jayv99mgqr8SE2s0FwcHyBBn9Q+NAXM7+99tRUb0Esd8OV+pKlMwmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282082; c=relaxed/simple;
-	bh=sKUAzMYn0vSOL/uwxcRHPfjCUF+zGHL8zrk0eezIf6o=;
+	s=arc-20240116; t=1718280948; c=relaxed/simple;
+	bh=viBtBybZDv7RhztIVqcHzRQ/vCXeW+AYDdqMXxCjAqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lVHC5LNS79szocpQXthN9tqhDRzAjhkpXdCDjArvGEJdBrF03Y1LDb45EdJPO3VMdT3iWbj7lbKEyJEUngwn+pU9Ed5XgtilDMxD4/GJ/+24ZATkm5kBJBWSvlpo6liCCHXhOcyoqimo2s5K0e7vjJK65aPINLfNegtPUBliiqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJffbDj4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E78C2BBFC;
-	Thu, 13 Jun 2024 12:34:42 +0000 (UTC)
+	 MIME-Version; b=O4k4UzFQ/iQDgTT3ILXSmfdPHf70cyA0cFivBZVkvkYVBD8K60VtPsSw0j+v1PBEwlLWJrUN+TnCLPausnPUdnPlocUciloTemZOzO9EethmxYmuRuHXoovQID3OK5m2vxLvGXXr/XUKDv1ABiuUUBSwmWeM+xbAzMOvH3qh5M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWiM3E3Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 687C7C2BBFC;
+	Thu, 13 Jun 2024 12:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282082;
-	bh=sKUAzMYn0vSOL/uwxcRHPfjCUF+zGHL8zrk0eezIf6o=;
+	s=korg; t=1718280947;
+	bh=viBtBybZDv7RhztIVqcHzRQ/vCXeW+AYDdqMXxCjAqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TJffbDj4iriSRsFMXt6Dz6LCd8lpQ7pfUx4r3Qdq6jqi7WIjwhtN8MhyLDuauqlLn
-	 I3Nq9yQKs6meNSHIEfmmHuWsekLFcIFGdAm1u9QXI5M4pm6RGBN/ZFxfbKdYzeLy4N
-	 OSk8+eqaYes5w2UoZTvWDBXusRzNAEPI02kZSEeU=
+	b=UWiM3E3ZuUrY+7iv7gtFfKQnd2F7SlZtVrTCsql2klOObWFzWD/Z9b8oDzjzPV4Z2
+	 6Ruv5j3erYUlknmDlRxCdm0bjEXQjT8cF9AVMy7Wpg8lhbdpHoY/YTu+4idPYwTLKY
+	 pf/AAUVDqti5toU42isNb++gaDMTYAKjeCuaYmBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Or Har-Toov <ohartoov@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Guillaume Nault <gnault@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 149/402] RDMA/mlx5: Adding remote atomic access flag to updatable flags
+Subject: [PATCH 5.10 088/317] ipv6: sr: fix invalid unregister error path
 Date: Thu, 13 Jun 2024 13:31:46 +0200
-Message-ID: <20240613113307.948090790@linuxfoundation.org>
+Message-ID: <20240613113250.955282860@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Or Har-Toov <ohartoov@nvidia.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 2ca7e93bc963d9ec2f5c24d117176851454967af ]
+[ Upstream commit 160e9d2752181fcf18c662e74022d77d3164cd45 ]
 
-Currently IB_ACCESS_REMOTE_ATOMIC is blocked from being updated via UMR
-although in some cases it should be possible. These cases are checked in
-mlx5r_umr_can_reconfig function.
+The error path of seg6_init() is wrong in case CONFIG_IPV6_SEG6_LWTUNNEL
+is not defined. In that case if seg6_hmac_init() fails, the
+genl_unregister_family() isn't called.
 
-Fixes: ef3642c4f54d ("RDMA/mlx5: Fix error unwinds for rereg_mr")
-Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
-Link: https://lore.kernel.org/r/24dac73e2fa48cb806f33a932d97f3e402a5ea2c.1712140377.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+This issue exist since commit 46738b1317e1 ("ipv6: sr: add option to control
+lwtunnel support"), and commit 5559cea2d5aa ("ipv6: sr: fix possible
+use-after-free and null-ptr-deref") replaced unregister_pernet_subsys()
+with genl_unregister_family() in this error path.
+
+Fixes: 46738b1317e1 ("ipv6: sr: add option to control lwtunnel support")
+Reported-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240509131812.1662197-4-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/mr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv6/seg6.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
-index cf203f879d340..191078b6e9129 100644
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -1687,7 +1687,8 @@ static bool can_use_umr_rereg_access(struct mlx5_ib_dev *dev,
- 	unsigned int diffs = current_access_flags ^ target_access_flags;
- 
- 	if (diffs & ~(IB_ACCESS_LOCAL_WRITE | IB_ACCESS_REMOTE_WRITE |
--		      IB_ACCESS_REMOTE_READ | IB_ACCESS_RELAXED_ORDERING))
-+		      IB_ACCESS_REMOTE_READ | IB_ACCESS_RELAXED_ORDERING |
-+		      IB_ACCESS_REMOTE_ATOMIC))
- 		return false;
- 	return mlx5_ib_can_reconfig_with_umr(dev, current_access_flags,
- 					     target_access_flags);
+diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+index 722bbf4055b02..77221f27262aa 100644
+--- a/net/ipv6/seg6.c
++++ b/net/ipv6/seg6.c
+@@ -490,6 +490,8 @@ int __init seg6_init(void)
+ #endif
+ #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
+ out_unregister_genl:
++#endif
++#if IS_ENABLED(CONFIG_IPV6_SEG6_LWTUNNEL) || IS_ENABLED(CONFIG_IPV6_SEG6_HMAC)
+ 	genl_unregister_family(&seg6_genl_family);
+ #endif
+ out_unregister_pernet:
 -- 
 2.43.0
 
