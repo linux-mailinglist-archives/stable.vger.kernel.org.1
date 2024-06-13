@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-51350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8EC906FC4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75753907157
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B378CB26A7E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:21:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1285CB2138B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A768113CFA4;
-	Thu, 13 Jun 2024 12:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4826F20ED;
+	Thu, 13 Jun 2024 12:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Owy4V4OF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkPQjZzr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6586181AA7;
-	Thu, 13 Jun 2024 12:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E59384;
+	Thu, 13 Jun 2024 12:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281039; cv=none; b=FioewSz/hKW3kLZzJ7SRIrSRWtr2bk+gS8m0LM4XbA/muLA8dJRfYyuZQLiqa7r6TSjUN7zewgYJmj59bWihz1cGSuJErWX6WAC9GhdXz7JIASRjRHlsp+axIYOJDbeIahfRrv3uAkyM9gbM4rfHjcCUGeQEeC14KHbdWY+6TKo=
+	t=1718282156; cv=none; b=o/3vObBRk0nwAMe29SDxiHHPN4e8pwb5n8DglxZP5okBaJOT29F2Gy3TnA0ffHeuWxg0pxffloincZKeJtH6A1IMbZDuhNdeE2+4vJOyFuOA0GhbXZXuXhPZJYEiiH6mWXHX6oaIEmiYRrSL3Nfep1SAe/6fcj5dGUpGix+mLMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281039; c=relaxed/simple;
-	bh=xXX1MiCB+PkcLKA9qkFfkQHggZQj+EkpRgbxe7fbpKo=;
+	s=arc-20240116; t=1718282156; c=relaxed/simple;
+	bh=ww3494NSEG6WFhyzu9M13IzAqWqfdYenT/spkTf/7Lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fq4+CuEnxbPq/WDM3XFVS+UNgUyCcGW+qwbin2xWAAHBAdslGiNmtIDv0t48zCrJQTMRTfGIQrFt+5Kv2rYhhHYytTZ7wTXTo7PtkINUaEUiKaaSSnKDew8oE9hAQ4V3JXrPFZLZSMpkF5WmojVv+aq8VEyXjmtVqlRKe0x6RkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Owy4V4OF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B86C32786;
-	Thu, 13 Jun 2024 12:17:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MyCNdbYirhoA44dYPDtzT/XyJ05cyC5QRxp91soG4wMJoP6p/RjhEPKgRJ+f6/kuycClxTaBQNFbqc+PmdtUm05f8c1B0I4Xa4gjbriDdkWUqGdw3aocxk5LP75pr6ChCIQjQNf9bHdjaHFdWP8+v55tPj5YUu1iMe+1xKrT6u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkPQjZzr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CEF3C2BBFC;
+	Thu, 13 Jun 2024 12:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281039;
-	bh=xXX1MiCB+PkcLKA9qkFfkQHggZQj+EkpRgbxe7fbpKo=;
+	s=korg; t=1718282155;
+	bh=ww3494NSEG6WFhyzu9M13IzAqWqfdYenT/spkTf/7Lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Owy4V4OFtM47qXAE5x2XvO2dwXqgq1hY8vLuGpsStTAsugSqMFquhGrAoUgzfohf3
-	 FbbL0H5iG8dMEGSORMmmOwcF47lzcgBGY7lVcUsXDhAEF1oTvzEwJHLTI494svQXnh
-	 qJGX2CHDyoietS7W2g6mE43tWb5Dr1km0TUUpd2A=
+	b=mkPQjZzrwBfMqaJQAR2wqnMiCu545NVYrMfwXjYbfQDgrUiIJGzonnpdegjVQESwf
+	 Uj1Ny2jRiv6bKo2RiKT4M9adTsBpCT0WZ0Db55L1iQttB9Ll/sn+eYudqSECmAPmQ0
+	 fN3mUmp/TSQb/4EqmwbBtjLLbSC32vEzb7zQXfCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Luis Henriques <lhenriques@suse.de>,
-	Disha Goel <disgoel@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Christoph Hellwig <hch@infradead.org>,
+	Ira Weiny <ira.weiny@intel.com>,
+	"Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/317] ext4: avoid excessive credit estimate in ext4_tmpfile()
+Subject: [PATCH 5.15 180/402] f2fs: Delete f2fs_copy_page() and replace with memcpy_page()
 Date: Thu, 13 Jun 2024 13:32:17 +0200
-Message-ID: <20240613113252.155486259@linuxfoundation.org>
+Message-ID: <20240613113309.172096477@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Fabio M. De Francesco <fmdefrancesco@gmail.com>
 
-[ Upstream commit 35a1f12f0ca857fee1d7a04ef52cbd5f1f84de13 ]
+[ Upstream commit 1dd55358efc4f74e49fa9e1e97a03804852a4c20 ]
 
-A user with minimum journal size (1024 blocks these days) complained
-about the following error triggered by generic/697 test in
-ext4_tmpfile():
+f2fs_copy_page() is a wrapper around two kmap() + one memcpy() from/to
+the mapped pages. It unnecessarily duplicates a kernel API and it makes
+use of kmap(), which is being deprecated in favor of kmap_local_page().
 
-run fstests generic/697 at 2024-02-28 05:34:46
-JBD2: vfstest wants too many credits credits:260 rsv_credits:0 max:256
-EXT4-fs error (device loop0) in __ext4_new_inode:1083: error 28
+Two main problems with kmap(): (1) It comes with an overhead as mapping
+space is restricted and protected by a global lock for synchronization and
+(2) it also requires global TLB invalidation when the kmap’s pool wraps
+and it might block when the mapping space is fully utilized until a slot
+becomes available.
 
-Indeed the credit estimate in ext4_tmpfile() is huge.
-EXT4_MAXQUOTAS_INIT_BLOCKS() is 219, then 10 credits from ext4_tmpfile()
-itself and then ext4_xattr_credits_for_new_inode() adds more credits
-needed for security attributes and ACLs. Now the
-EXT4_MAXQUOTAS_INIT_BLOCKS() is in fact unnecessary because we've
-already initialized quotas with dquot_init() shortly before and so
-EXT4_MAXQUOTAS_TRANS_BLOCKS() is enough (which boils down to 3 credits).
+With kmap_local_page() the mappings are per thread, CPU local, can take
+page faults, and can be called from any context (including interrupts).
+It is faster than kmap() in kernels with HIGHMEM enabled. Therefore, its
+use in __clone_blkaddrs() is safe and should be preferred.
 
-Fixes: af51a2ac36d1 ("ext4: ->tmpfile() support")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Tested-by: Luis Henriques <lhenriques@suse.de>
-Tested-by: Disha Goel <disgoel@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240307115320.28949-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Delete f2fs_copy_page() and use a plain memcpy_page() in the only one
+site calling the removed function. memcpy_page() avoids open coding two
+kmap_local_page() + one memcpy() between the two kernel virtual addresses.
+
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Suggested-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Fabio M. De Francesco <fmdefrancesco@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: d3876e34e7e7 ("f2fs: fix to wait on page writeback in __clone_blkaddrs()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/namei.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/f2fs.h | 10 ----------
+ fs/f2fs/file.c |  2 +-
+ 2 files changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
-index a50eb4c61ecc6..af0801593abb8 100644
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -2748,7 +2748,7 @@ static int ext4_tmpfile(struct inode *dir, struct dentry *dentry, umode_t mode)
- 	inode = ext4_new_inode_start_handle(dir, mode,
- 					    NULL, 0, NULL,
- 					    EXT4_HT_DIR,
--			EXT4_MAXQUOTAS_INIT_BLOCKS(dir->i_sb) +
-+			EXT4_MAXQUOTAS_TRANS_BLOCKS(dir->i_sb) +
- 			  4 + EXT4_XATTR_TRANS_BLOCKS);
- 	handle = ext4_journal_current_handle();
- 	err = PTR_ERR(inode);
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 647d53df6a3de..e49fca9daf2d3 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -2587,16 +2587,6 @@ static inline struct page *f2fs_pagecache_get_page(
+ 	return pagecache_get_page(mapping, index, fgp_flags, gfp_mask);
+ }
+ 
+-static inline void f2fs_copy_page(struct page *src, struct page *dst)
+-{
+-	char *src_kaddr = kmap(src);
+-	char *dst_kaddr = kmap(dst);
+-
+-	memcpy(dst_kaddr, src_kaddr, PAGE_SIZE);
+-	kunmap(dst);
+-	kunmap(src);
+-}
+-
+ static inline void f2fs_put_page(struct page *page, int unlock)
+ {
+ 	if (!page)
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 378ab6bd1b8d8..9b7ecbb974258 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1276,7 +1276,7 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
+ 				f2fs_put_page(psrc, 1);
+ 				return PTR_ERR(pdst);
+ 			}
+-			f2fs_copy_page(psrc, pdst);
++			memcpy_page(pdst, 0, psrc, 0, PAGE_SIZE);
+ 			set_page_dirty(pdst);
+ 			set_page_private_gcing(pdst);
+ 			f2fs_put_page(pdst, 1);
 -- 
 2.43.0
 
