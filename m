@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6249A906F43
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D1C907125
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7641D1C20CAC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71C3E1F21F14
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C0A1420C6;
-	Thu, 13 Jun 2024 12:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FCB1DFD9;
+	Thu, 13 Jun 2024 12:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PELDsOFQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXp/eNJt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D1B81ABF;
-	Thu, 13 Jun 2024 12:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EA4384;
+	Thu, 13 Jun 2024 12:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280918; cv=none; b=e9neE3IwvKBrOOSBd0A5ePTc+DvfO4JVj0usAluFptMKWjJD3ciT6dR1HvwOrTOh4E1wkWHdYSbX/lbKvh99hzVqGVGs04qdhOOtFbaQ2wX6WETI7eil+Wza1ZjDYhXHUIXmUpYF2+eOoUUZlBCL1Lf9j6xr4ztLKBS2YMpvNgs=
+	t=1718282035; cv=none; b=fba269qOooJsSTwQKHnB4vgdjdkT39JYYBu+WTM5gx3/uSnz6DDQWN9gnne7ezMsUn1mxCPbIZzpYgLAfZbxCowVSyd+l9n+5Qbk/wWiZ1DGb9Za8Y5R0V6tyoh1L1Ii1RPXZp/KpjxNVKtXsy2j4AhD/sfj5Cw+NwcEM5k531Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280918; c=relaxed/simple;
-	bh=Fj4P1S1wZdfkLIyV4I2yatuuis/B5mUjoDCpR1g5v4k=;
+	s=arc-20240116; t=1718282035; c=relaxed/simple;
+	bh=5HNA+wufl/VXthcEeMOHzVRdwtI7yJSSzGAbfO0jJ4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YPNoMPzjSIc+QNnjG4xQoo+t56P1yi+Z2NAnc/ltvRBHYThmxEomJPIHFnnTGnoLwpI9BdnttMN723ZgodLpvxKrBU/+uvQ5xwWilZI+pyTmHm//Zd092rHHAyWuNF6FWU1Pd+DnwGZy0YPuU37odu8dnOIK85eIV+M5hyM1YSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PELDsOFQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09930C2BBFC;
-	Thu, 13 Jun 2024 12:15:17 +0000 (UTC)
+	 MIME-Version; b=CPvaXLgD8AC6PsobPWZiu5fIt4UtSB0Nk9enqRe6wju8fDJOELbLfL9POUEu0DVxrgxJFmm0JnMlghE0/GzFq2vraJBSVXDNmrLz499shyD8CyAEWr3wWNJOrLrbCXrzLczonCOvyg8dxM/vSbC23f+pMYGE6P+X8vJudGgynT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXp/eNJt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62688C2BBFC;
+	Thu, 13 Jun 2024 12:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280918;
-	bh=Fj4P1S1wZdfkLIyV4I2yatuuis/B5mUjoDCpR1g5v4k=;
+	s=korg; t=1718282035;
+	bh=5HNA+wufl/VXthcEeMOHzVRdwtI7yJSSzGAbfO0jJ4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PELDsOFQzsR+oZXZ+Nd38Umo6P0SC/ig0uk8+UWQOQwItiHArB7mJUkUdANs11r1V
-	 WclCpimA5Ie7+BnmKzFMuudguL0mTlJer5LqNr0eeImrp/QMsJGn8KWkCib4NnWbZk
-	 8HFgOK03oQBfdwRmVQcMV+9r1VJvIsqlHiLVWF68=
+	b=RXp/eNJtUE5cvjEw9xKbHptTAdd6W1gruehq6oXl2JTXB1c2lI7sLb2BAwyg4nBAx
+	 IzOMnxyFl8b6Uo/sO+SzuxLpGist9CBPDFvhPwNdsh/SSCj9jrGkBad7yelENnaorB
+	 563X59TTSjHZgTMdgWD54xqJQhHZtcBSaaMHd3CU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Stan Johnson <userm57@yahoo.com>
-Subject: [PATCH 5.10 079/317] m68k: mac: Fix reboot hang on Mac IIci
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 140/402] media: atomisp: ssh_css: Fix a null-pointer dereference in load_video_binaries
 Date: Thu, 13 Jun 2024 13:31:37 +0200
-Message-ID: <20240613113250.605500008@linuxfoundation.org>
+Message-ID: <20240613113307.597410955@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 265a3b322df9a973ff1fc63da70af456ab6ae1d6 ]
+[ Upstream commit 3b621e9e9e148c0928ab109ac3d4b81487469acb ]
 
-Calling mac_reset() on a Mac IIci does reset the system, but what
-follows is a POST failure that requires a manual reset to resolve.
-Avoid that by using the 68030 asm implementation instead of the C
-implementation.
+The allocation failure of mycs->yuv_scaler_binary in load_video_binaries()
+is followed with a dereference of mycs->yuv_scaler_binary after the
+following call chain:
 
-Apparently the SE/30 has a similar problem as it has used the asm
-implementation since before git. This patch extends that solution to
-other systems with a similar ROM.
+sh_css_pipe_load_binaries()
+  |-> load_video_binaries(mycs->yuv_scaler_binary == NULL)
+  |
+  |-> sh_css_pipe_unload_binaries()
+        |-> unload_video_binaries()
 
-After this patch, the only systems still using the C implementation are
-68040 systems where adb_type is either MAC_ADB_IOP or MAC_ADB_II. This
-implies a 1 MiB Quadra ROM.
+In unload_video_binaries(), it calls to ia_css_binary_unload with argument
+&pipe->pipe_settings.video.yuv_scaler_binary[i], which refers to the
+same memory slot as mycs->yuv_scaler_binary. Thus, a null-pointer
+dereference is triggered.
 
-This now includes the Quadra 900/950, which previously fell through to
-the "should never get here" catch-all.
+Link: https://lore.kernel.org/r/20240118151303.3828292-1-alexious@zju.edu.cn
 
-Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/480ebd1249d229c6dc1f3f1c6d599b8505483fd8.1714797072.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: a49d25364dfb ("staging/atomisp: Add support for the Intel IPU v2")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/mac/misc.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/staging/media/atomisp/pci/sh_css.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/m68k/mac/misc.c b/arch/m68k/mac/misc.c
-index 90f4e9ca1276b..d3b34dd7590de 100644
---- a/arch/m68k/mac/misc.c
-+++ b/arch/m68k/mac/misc.c
-@@ -452,30 +452,18 @@ void mac_poweroff(void)
- 
- void mac_reset(void)
- {
--	if (macintosh_config->adb_type == MAC_ADB_II &&
--	    macintosh_config->ident != MAC_MODEL_SE30) {
--		/* need ROMBASE in booter */
--		/* indeed, plus need to MAP THE ROM !! */
--
--		if (mac_bi_data.rombase == 0)
--			mac_bi_data.rombase = 0x40800000;
--
--		/* works on some */
--		rom_reset = (void *) (mac_bi_data.rombase + 0xa);
--
--		local_irq_disable();
--		rom_reset();
- #ifdef CONFIG_ADB_CUDA
--	} else if (macintosh_config->adb_type == MAC_ADB_EGRET ||
--	           macintosh_config->adb_type == MAC_ADB_CUDA) {
-+	if (macintosh_config->adb_type == MAC_ADB_EGRET ||
-+	    macintosh_config->adb_type == MAC_ADB_CUDA) {
- 		cuda_restart();
-+	} else
- #endif
- #ifdef CONFIG_ADB_PMU
--	} else if (macintosh_config->adb_type == MAC_ADB_PB2) {
-+	if (macintosh_config->adb_type == MAC_ADB_PB2) {
- 		pmu_restart();
-+	} else
- #endif
--	} else if (CPU_IS_030) {
--
-+	if (CPU_IS_030) {
- 		/* 030-specific reset routine.  The idea is general, but the
- 		 * specific registers to reset are '030-specific.  Until I
- 		 * have a non-030 machine, I can't test anything else.
-@@ -523,6 +511,18 @@ void mac_reset(void)
- 		    "jmp %/a0@\n\t" /* jump to the reset vector */
- 		    ".chip 68k"
- 		    : : "r" (offset), "a" (rombase) : "a0");
-+	} else {
-+		/* need ROMBASE in booter */
-+		/* indeed, plus need to MAP THE ROM !! */
-+
-+		if (mac_bi_data.rombase == 0)
-+			mac_bi_data.rombase = 0x40800000;
-+
-+		/* works on some */
-+		rom_reset = (void *)(mac_bi_data.rombase + 0xa);
-+
-+		local_irq_disable();
-+		rom_reset();
- 	}
- 
- 	/* should never get here */
+diff --git a/drivers/staging/media/atomisp/pci/sh_css.c b/drivers/staging/media/atomisp/pci/sh_css.c
+index ba25d0da8b811..feaec4cd96361 100644
+--- a/drivers/staging/media/atomisp/pci/sh_css.c
++++ b/drivers/staging/media/atomisp/pci/sh_css.c
+@@ -5322,6 +5322,7 @@ static int load_video_binaries(struct ia_css_pipe *pipe)
+ 						  sizeof(struct ia_css_binary),
+ 						  GFP_KERNEL);
+ 		if (!mycs->yuv_scaler_binary) {
++			mycs->num_yuv_scaler = 0;
+ 			err = -ENOMEM;
+ 			return err;
+ 		}
 -- 
 2.43.0
 
