@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E09A9070FE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD02C906F27
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56AE51F2341D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:33:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CE57283609
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D355C2F5A;
-	Thu, 13 Jun 2024 12:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC3113D601;
+	Thu, 13 Jun 2024 12:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNy27121"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4Sil+uG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917B1161;
-	Thu, 13 Jun 2024 12:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21C756458;
+	Thu, 13 Jun 2024 12:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281956; cv=none; b=Bz/yWZI0OfInmayq6i764N6v0DNqTElffqDVpL3kNJGZ+GrOtsQW1vr+XVYgzp1IdcUXYkmNUDJ5TKO++pokfbqJb4CxW76qVMaMmsTAQz/VKy/gttFskYiS2itgs/1ipkR/HdAIPNWmD3bp6t+EChvPLRkkqQwt4EiDw37ucsE=
+	t=1718280842; cv=none; b=T7yldVDhv3ymLBiH4L3QJxDPNHZYQsnTxCdnmzkgzhccDu98ZG82zS5zEWDGLPwpfQhNGzR36c2mBmHSCN+2xFkZCnZaUTaqqF1xcq2vTvIE9K1m1st54GzzTxWkSImKXrmBNIHkU4KhwLw/UQheY17EtZTkmMNWSGQ3k6xzFrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281956; c=relaxed/simple;
-	bh=CpEvGxy9PzxSNm+6EX0gl9tiTPuKJxotpgVEyDAHo0w=;
+	s=arc-20240116; t=1718280842; c=relaxed/simple;
+	bh=ex+gi2fw8sH/lAY07yVysmWgxWvdd2+vDZisjujB45s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cY3TckDI0t2KmI5nTq0A38ufxCeydgl7tnG8u8/n39a9+Y3uIAHnof3OgEJ37T9YrGpl+orbvAERmmkh3V8g0VLk079PGFUfpBook2P8wHaYNG+oknKWV7pJa3dg/376z94GBD/qT4W7el+ejADJE/QuDz+VpNGJLYIGQxtFj/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNy27121; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18177C2BBFC;
-	Thu, 13 Jun 2024 12:32:35 +0000 (UTC)
+	 MIME-Version; b=CkWrX/5pjxIzz1yOw0NevyURZ+aWy4ZQFJufiZgOIvyQFDEq/i5NybaGy2/hdlGlAtLFzdByn0+W1DVmDdDF2jMm5xMRQrDujYsXKl554L4g5HMt0XCHoKSjfKGVeubt6ju/QO5jlz6Vzs10Daim+iQmJusnHWyII6YEQO1YqTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4Sil+uG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78713C2BBFC;
+	Thu, 13 Jun 2024 12:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281956;
-	bh=CpEvGxy9PzxSNm+6EX0gl9tiTPuKJxotpgVEyDAHo0w=;
+	s=korg; t=1718280841;
+	bh=ex+gi2fw8sH/lAY07yVysmWgxWvdd2+vDZisjujB45s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mNy27121o0rrF4rbVqsTNXJL8S/Ye4DjS780oRK8ZA2Oq1ZQADEF8rmiqF7xjd/zO
-	 FmD9V4uL33GVSozdHi6DyvQa0r5WTf71Az18XDlXf27KG1gaNtZpA/ClkTOBhlOLb2
-	 6A6Mce+okL69tjM4HfXq0TuVTYUfaPXmaEuKBeZQ=
+	b=y4Sil+uGCJ7Ic/JpBzQKLtvP4cB0G3j5sdw9TvdBw6B61UgvAeTXVofPD4GQM54lt
+	 SlT3MaBZ+2iE6lCd0eyACp6jgBpgqtmg6H5QQ3+aQBugHgeLy1JC/35cYACyLc7rhV
+	 A/P7dZiv2+9yuoqw6rsFnthw8eWFunK+qoeT9wKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 112/402] af_unix: Fix data races in unix_release_sock/unix_stream_sendmsg
-Date: Thu, 13 Jun 2024 13:31:09 +0200
-Message-ID: <20240613113306.499059935@linuxfoundation.org>
+Subject: [PATCH 5.10 052/317] cpufreq: Reorganize checks in cpufreq_offline()
+Date: Thu, 13 Jun 2024 13:31:10 +0200
+Message-ID: <20240613113249.560972740@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 540bf24fba16b88c1b3b9353927204b4f1074e25 ]
+[ Upstream commit e1e962c5b9edbc628a335bcdbd010331a12d3e5b ]
 
-A data-race condition has been identified in af_unix. In one data path,
-the write function unix_release_sock() atomically writes to
-sk->sk_shutdown using WRITE_ONCE. However, on the reader side,
-unix_stream_sendmsg() does not read it atomically. Consequently, this
-issue is causing the following KCSAN splat to occur:
+Notice that cpufreq_offline() only needs to check policy_is_inactive()
+once and rearrange the code in there to make that happen.
 
-	BUG: KCSAN: data-race in unix_release_sock / unix_stream_sendmsg
+No expected functional impact.
 
-	write (marked) to 0xffff88867256ddbb of 1 bytes by task 7270 on cpu 28:
-	unix_release_sock (net/unix/af_unix.c:640)
-	unix_release (net/unix/af_unix.c:1050)
-	sock_close (net/socket.c:659 net/socket.c:1421)
-	__fput (fs/file_table.c:422)
-	__fput_sync (fs/file_table.c:508)
-	__se_sys_close (fs/open.c:1559 fs/open.c:1541)
-	__x64_sys_close (fs/open.c:1541)
-	x64_sys_call (arch/x86/entry/syscall_64.c:33)
-	do_syscall_64 (arch/x86/entry/common.c:?)
-	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-	read to 0xffff88867256ddbb of 1 bytes by task 989 on cpu 14:
-	unix_stream_sendmsg (net/unix/af_unix.c:2273)
-	__sock_sendmsg (net/socket.c:730 net/socket.c:745)
-	____sys_sendmsg (net/socket.c:2584)
-	__sys_sendmmsg (net/socket.c:2638 net/socket.c:2724)
-	__x64_sys_sendmmsg (net/socket.c:2753 net/socket.c:2750 net/socket.c:2750)
-	x64_sys_call (arch/x86/entry/syscall_64.c:33)
-	do_syscall_64 (arch/x86/entry/common.c:?)
-	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-	value changed: 0x01 -> 0x03
-
-The line numbers are related to commit dd5a440a31fa ("Linux 6.9-rc7").
-
-Commit e1d09c2c2f57 ("af_unix: Fix data races around sk->sk_shutdown.")
-addressed a comparable issue in the past regarding sk->sk_shutdown.
-However, it overlooked resolving this particular data path.
-This patch only offending unix_stream_sendmsg() function, since the
-other reads seem to be protected by unix_state_lock() as discussed in
-Link: https://lore.kernel.org/all/20240508173324.53565-1-kuniyu@amazon.com/
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240509081459.2807828-1-leitao@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Stable-dep-of: b8f85833c057 ("cpufreq: exit() callback is optional")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index f66f867049015..995a2a0b208a1 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2057,7 +2057,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
- 			goto out_err;
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 5b4bca71f201d..97999bda188dd 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -1573,24 +1573,18 @@ static int cpufreq_offline(unsigned int cpu)
  	}
  
--	if (sk->sk_shutdown & SEND_SHUTDOWN)
-+	if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
- 		goto pipe_err;
+ 	down_write(&policy->rwsem);
++
+ 	if (has_target())
+ 		cpufreq_stop_governor(policy);
  
- 	while (sent < len) {
+ 	cpumask_clear_cpu(cpu, policy->cpus);
+ 
+-	if (policy_is_inactive(policy)) {
+-		if (has_target())
+-			strncpy(policy->last_governor, policy->governor->name,
+-				CPUFREQ_NAME_LEN);
+-		else
+-			policy->last_policy = policy->policy;
+-	} else if (cpu == policy->cpu) {
+-		/* Nominate new CPU */
+-		policy->cpu = cpumask_any(policy->cpus);
+-	}
+-
+-	/* Start governor again for active policy */
+ 	if (!policy_is_inactive(policy)) {
++		/* Nominate a new CPU if necessary. */
++		if (cpu == policy->cpu)
++			policy->cpu = cpumask_any(policy->cpus);
++
++		/* Start the governor again for the active policy. */
+ 		if (has_target()) {
+ 			ret = cpufreq_start_governor(policy);
+ 			if (ret)
+@@ -1600,6 +1594,12 @@ static int cpufreq_offline(unsigned int cpu)
+ 		goto unlock;
+ 	}
+ 
++	if (has_target())
++		strncpy(policy->last_governor, policy->governor->name,
++			CPUFREQ_NAME_LEN);
++	else
++		policy->last_policy = policy->policy;
++
+ 	if (cpufreq_thermal_control_enabled(cpufreq_driver)) {
+ 		cpufreq_cooling_unregister(policy->cdev);
+ 		policy->cdev = NULL;
 -- 
 2.43.0
 
