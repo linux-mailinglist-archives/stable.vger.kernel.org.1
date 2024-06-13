@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-51245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA94906EF9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 196AB9070D0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B7471C2306C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 617BFB21EE6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE90144D28;
-	Thu, 13 Jun 2024 12:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E0B1DFE1;
+	Thu, 13 Jun 2024 12:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lhf5TQsw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/cSJ8UQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE6344C6F;
-	Thu, 13 Jun 2024 12:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8D41DFD9;
+	Thu, 13 Jun 2024 12:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280732; cv=none; b=N6UKEQN3laN63sftM8INh/FlJqrESYeMhrnZJYo5T2Apzsa2bJVCji5oFbxG5NSDjoQqg8mu089y+kjSssU97T+5ZrKTjUIYrPmeGkY83NIaH4eO0lr5sj3eTrOfAy0aveRCiOZUFGgK6r62+QceAKxB5X3a0Q3iuKN16c2ccZc=
+	t=1718281857; cv=none; b=nM9xL8XajdPdYxDw1Y6/GjpilqpJtIgZmk+RvSt1ViLuC6sHWB1HxhWkY0K8ajVHMxwbdKrjXIgH2sKaMe1pvYjqAEnpGxfAshejLkLIFq/b7Odl+ChGghQfjCa3C5i33UgcoT+Ins/YUwVMCHfDh6Ch4GGRr/e6N5gNW/oOU68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280732; c=relaxed/simple;
-	bh=0hu71nydnPmo7kAfNSlF+/v6CN7UKQ+ljKQl6Bi1lFI=;
+	s=arc-20240116; t=1718281857; c=relaxed/simple;
+	bh=bu2j/LDRQzmbthFMRRRPYPLSaz2dsxT4+TRPgrDeDLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PToPRilZrmGXxP6SgaqJ7ny/ovzThy8ztOnuj7pKlZwpZqG3ISIyaRbUkgmuZ+s0C3J6vToEnnfqv3Gssk2mXcO7F1AjjhByQL5YbdEkfGCk3XIkyrJMZPl+XvVIa9S4n65+hDfzlMng8J/Iw1sYPPDMEt/5ecwrO3OJlw4NalY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lhf5TQsw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23474C2BBFC;
-	Thu, 13 Jun 2024 12:12:11 +0000 (UTC)
+	 MIME-Version; b=Sa7gidAWth35UZ8+NTRHiKcSWTj6Q7oDX6JNzuPGp2NquBj2RPH/n6g3urlahijDwsrBaNJ1w0yKInYNXERLnIWTVr9RXKNHAcq2WaE5Dp9ZqfT4YRyEhhekbMA+ox/+zG6MGu8X8oy+KP8DPpZbWhJU4rjYmmAkSf4+/JJitAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/cSJ8UQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A531DC2BBFC;
+	Thu, 13 Jun 2024 12:30:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280732;
-	bh=0hu71nydnPmo7kAfNSlF+/v6CN7UKQ+ljKQl6Bi1lFI=;
+	s=korg; t=1718281857;
+	bh=bu2j/LDRQzmbthFMRRRPYPLSaz2dsxT4+TRPgrDeDLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lhf5TQswgS/WzqMEje+yxEBKLvtlmgNL+dg4NTI0qwDbcSytuJnbnZaeuWQBN3SNS
-	 y/KWvg3WuUQT25k4VoHyvO3sEdScAaHONQxde6WjubxS+Az6Nmg1Op5t5brD5ujY1s
-	 snUC7iJ8WBzrVXG5FOi8EsZgvI+oWRVrIzfRqOjQ=
+	b=V/cSJ8UQnW75bnkunGc57+Hqx+KSMHjk3QnMO5MttmNVfpn0t1Xehf8k4uulpA/Lf
+	 /B0xcp6ElXvhkRx5NoztL4k+T4jbR95Nm4xxEceHj6UMEYIJjAhphoCt8PNV+MLAJ8
+	 3AO8mOhWESGXne/iO6sKgS7835s3BvP3nFtQP7F0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Yu <jack.yu@realtek.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Lorenz Bauer <lmb@isovalent.com>,
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 016/317] ASoC: rt715: add vendor clear control register
-Date: Thu, 13 Jun 2024 13:30:34 +0200
-Message-ID: <20240613113248.169562091@linuxfoundation.org>
+Subject: [PATCH 5.15 078/402] udp: Avoid call to compute_score on multiple sites
+Date: Thu, 13 Jun 2024 13:30:35 +0200
+Message-ID: <20240613113305.178481855@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +65,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Yu <jack.yu@realtek.com>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-[ Upstream commit cebfbc89ae2552dbb58cd9b8206a5c8e0e6301e9 ]
+[ Upstream commit 50aee97d15113b95a68848db1f0cb2a6c09f753a ]
 
-Add vendor clear control register in readable register's
-callback function. This prevents an access failure reported
-in Intel CI tests.
+We've observed a 7-12% performance regression in iperf3 UDP ipv4 and
+ipv6 tests with multiple sockets on Zen3 cpus, which we traced back to
+commit f0ea27e7bfe1 ("udp: re-score reuseport groups when connected
+sockets are present").  The failing tests were those that would spawn
+UDP sockets per-cpu on systems that have a high number of cpus.
 
-Signed-off-by: Jack Yu <jack.yu@realtek.com>
-Closes: https://github.com/thesofproject/linux/issues/4860
-Tested-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/6a103ce9134d49d8b3941172c87a7bd4@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Unsurprisingly, it is not caused by the extra re-scoring of the reused
+socket, but due to the compiler no longer inlining compute_score, once
+it has the extra call site in udp4_lib_lookup2.  This is augmented by
+the "Safe RET" mitigation for SRSO, needed in our Zen3 cpus.
+
+We could just explicitly inline it, but compute_score() is quite a large
+function, around 300b.  Inlining in two sites would almost double
+udp4_lib_lookup2, which is a silly thing to do just to workaround a
+mitigation.  Instead, this patch shuffles the code a bit to avoid the
+multiple calls to compute_score.  Since it is a static function used in
+one spot, the compiler can safely fold it in, as it did before, without
+increasing the text size.
+
+With this patch applied I ran my original iperf3 testcases.  The failing
+cases all looked like this (ipv4):
+	iperf3 -c 127.0.0.1 --udp -4 -f K -b $R -l 8920 -t 30 -i 5 -P 64 -O 2
+
+where $R is either 1G/10G/0 (max, unlimited).  I ran 3 times each.
+baseline is v6.9-rc3. harmean == harmonic mean; CV == coefficient of
+variation.
+
+ipv4:
+                 1G                10G                  MAX
+	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
+baseline 1743852.66(0.0208) 1725933.02(0.0167) 1705203.78(0.0386)
+patched  1968727.61(0.0035) 1962283.22(0.0195) 1923853.50(0.0256)
+
+ipv6:
+                 1G                10G                  MAX
+	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
+baseline 1729020.03(0.0028) 1691704.49(0.0243) 1692251.34(0.0083)
+patched  1900422.19(0.0067) 1900968.01(0.0067) 1568532.72(0.1519)
+
+This restores the performance we had before the change above with this
+benchmark.  We obviously don't expect any real impact when mitigations
+are disabled, but just to be sure it also doesn't regresses:
+
+mitigations=off ipv4:
+                 1G                10G                  MAX
+	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
+baseline 3230279.97(0.0066) 3229320.91(0.0060) 2605693.19(0.0697)
+patched  3242802.36(0.0073) 3239310.71(0.0035) 2502427.19(0.0882)
+
+Cc: Lorenz Bauer <lmb@isovalent.com>
+Fixes: f0ea27e7bfe1 ("udp: re-score reuseport groups when connected sockets are present")
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt715-sdw.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/udp.c | 21 ++++++++++++++++-----
+ net/ipv6/udp.c | 20 ++++++++++++++++----
+ 2 files changed, 32 insertions(+), 9 deletions(-)
 
-diff --git a/sound/soc/codecs/rt715-sdw.c b/sound/soc/codecs/rt715-sdw.c
-index 361a90ae594cd..c0f09c3bcb6e3 100644
---- a/sound/soc/codecs/rt715-sdw.c
-+++ b/sound/soc/codecs/rt715-sdw.c
-@@ -110,6 +110,7 @@ static bool rt715_readable_register(struct device *dev, unsigned int reg)
- 	case 0x839d:
- 	case 0x83a7:
- 	case 0x83a9:
-+	case 0x752001:
- 	case 0x752039:
- 		return true;
- 	default:
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index a2e5c6776966e..53d7a81d62584 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -420,15 +420,21 @@ static struct sock *udp4_lib_lookup2(struct net *net,
+ {
+ 	struct sock *sk, *result;
+ 	int score, badness;
++	bool need_rescore;
+ 
+ 	result = NULL;
+ 	badness = 0;
+ 	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
+-		score = compute_score(sk, net, saddr, sport,
+-				      daddr, hnum, dif, sdif);
++		need_rescore = false;
++rescore:
++		score = compute_score(need_rescore ? result : sk, net, saddr,
++				      sport, daddr, hnum, dif, sdif);
+ 		if (score > badness) {
+ 			badness = score;
+ 
++			if (need_rescore)
++				continue;
++
+ 			if (sk->sk_state == TCP_ESTABLISHED) {
+ 				result = sk;
+ 				continue;
+@@ -449,9 +455,14 @@ static struct sock *udp4_lib_lookup2(struct net *net,
+ 			if (IS_ERR(result))
+ 				continue;
+ 
+-			badness = compute_score(result, net, saddr, sport,
+-						daddr, hnum, dif, sdif);
+-
++			/* compute_score is too long of a function to be
++			 * inlined, and calling it again here yields
++			 * measureable overhead for some
++			 * workloads. Work around it by jumping
++			 * backwards to rescore 'result'.
++			 */
++			need_rescore = true;
++			goto rescore;
+ 		}
+ 	}
+ 	return result;
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 0a7f716a0aea3..c60162ea0aa8a 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -166,15 +166,21 @@ static struct sock *udp6_lib_lookup2(struct net *net,
+ {
+ 	struct sock *sk, *result;
+ 	int score, badness;
++	bool need_rescore;
+ 
+ 	result = NULL;
+ 	badness = -1;
+ 	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
+-		score = compute_score(sk, net, saddr, sport,
+-				      daddr, hnum, dif, sdif);
++		need_rescore = false;
++rescore:
++		score = compute_score(need_rescore ? result : sk, net, saddr,
++				      sport, daddr, hnum, dif, sdif);
+ 		if (score > badness) {
+ 			badness = score;
+ 
++			if (need_rescore)
++				continue;
++
+ 			if (sk->sk_state == TCP_ESTABLISHED) {
+ 				result = sk;
+ 				continue;
+@@ -195,8 +201,14 @@ static struct sock *udp6_lib_lookup2(struct net *net,
+ 			if (IS_ERR(result))
+ 				continue;
+ 
+-			badness = compute_score(sk, net, saddr, sport,
+-						daddr, hnum, dif, sdif);
++			/* compute_score is too long of a function to be
++			 * inlined, and calling it again here yields
++			 * measureable overhead for some
++			 * workloads. Work around it by jumping
++			 * backwards to rescore 'result'.
++			 */
++			need_rescore = true;
++			goto rescore;
+ 		}
+ 	}
+ 	return result;
 -- 
 2.43.0
 
