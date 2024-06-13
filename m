@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ECFA907059
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4613A907234
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24AC11F22E0E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 446AC1C21F12
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328C2145336;
-	Thu, 13 Jun 2024 12:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4B02CA6;
+	Thu, 13 Jun 2024 12:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0QogH8My"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UolMSp2G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47781448C3;
-	Thu, 13 Jun 2024 12:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347ED17FD;
+	Thu, 13 Jun 2024 12:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281581; cv=none; b=Wkm+iSJx8KgJEua3/O4Gpu8E9KcjflICC9dP9hsU7pOqL+2UUwKqTCjnGahpdksJ2maMatV8dUn2z37C/c+lxr8nZp0WwXSMG4shSs7V0NGF70pBfgufBsb7jmH0lAgTurjlfBLWr8vXChWFfgxNC3j0qv4GIwceX0s8Vop2tJU=
+	t=1718282696; cv=none; b=Y5AaDbI5TT+i7Y0+8guO4aO9/GEYVWkQMUB2P0Iz1ts3egClGboJjo7mMitUB37VUnXois2IpochKPabsqN58y87KmgERWDOK5twHo3M5YqIr+s6+tQxO+xJEg/9opTzDjx45ztktW9s3vO3qeL5vd5LXOAq2nqKAf+Ft/7uSqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281581; c=relaxed/simple;
-	bh=TSbV6LF19n3nQupjV6yzvx8o1v45v6PMhJQMDUzgAb4=;
+	s=arc-20240116; t=1718282696; c=relaxed/simple;
+	bh=x7YxvAUp95jLLhMJSUqOr3Of1eKAO+RRHyG7IJZzveY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okHqReJxdz8sYEuiHHYBysUcnbysAxKD1HN4dOEPyjKgqRnfSOynRP0JPM0kCRcoiR9/Fj9UKSmhskcGzf1oj85C7oMDIh4cbMnBXVMCCcc3E6SGpEuZfawlSDkS29tintF9DX2URsQJKj8Yyd3u6QeIHjPZVeuIK4agRvBZsfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0QogH8My; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE92C2BBFC;
-	Thu, 13 Jun 2024 12:26:19 +0000 (UTC)
+	 MIME-Version; b=bV4W2fuoaeSwbCdb4432GtthfavpNfm9qNoIE6iBil+ddqYEOxJGOkyKb8EP14XjmVwrMjq+bNdTmAc8q2SvPNAASbupyA2LMYmMVteqMEQ9YrYPr45jVLvsuf7KDG1HHZmBKDPSs4v+u3JL3hCqUwrA1V+XiEzKjMYnlxCOdV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UolMSp2G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4D8C2BBFC;
+	Thu, 13 Jun 2024 12:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281580;
-	bh=TSbV6LF19n3nQupjV6yzvx8o1v45v6PMhJQMDUzgAb4=;
+	s=korg; t=1718282696;
+	bh=x7YxvAUp95jLLhMJSUqOr3Of1eKAO+RRHyG7IJZzveY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0QogH8MyIXmwVhPasQ5SZJxmiw/RU9I2n1F5k+aHAAzLFypcqbrGo3O/v4Lm29g/R
-	 +4LEgsk0VPkG0zaUvS5VZ0olboY+Re8MSAQYhHjwfatA9ZuNJZE6jwDh4Yae1ED+mG
-	 8ZdXnF7Zy5yn9GOYFjUUL6+4bHjld0eRHtVFujvE=
+	b=UolMSp2GsaUrd/vKf20GTSt4PDp1eGRLcmqgdW2G6YBQrQT61cXX5Q8fbwitHBy4H
+	 omN3tWUdKQVLoamTO4RQuvgV4CFH1VZ4MULl7/N9DpcYDobKVpqu0EfXd4I08RPgHu
+	 k7JG5bQUJyQeR6aTzrgmDwWbMEHs1tFD0YGU1AHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 5.10 304/317] kdb: Use format-strings rather than \0 injection in kdb_read()
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 5.15 365/402] wifi: rtlwifi: rtl8192de: Fix endianness issue in RX path
 Date: Thu, 13 Jun 2024 13:35:22 +0200
-Message-ID: <20240613113259.310610866@linuxfoundation.org>
+Message-ID: <20240613113316.374565047@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +61,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit 09b35989421dfd5573f0b4683c7700a7483c71f9 upstream.
+commit 2f228d364da95ab58f63a3fedc00d5b2b7db16ab upstream.
 
-Currently when kdb_read() needs to reposition the cursor it uses copy and
-paste code that works by injecting an '\0' at the cursor position before
-delivering a carriage-return and reprinting the line (which stops at the
-'\0').
+Structs rx_desc_92d and rx_fwinfo_92d will not work for big endian
+systems.
 
-Tidy up the code by hoisting the copy and paste code into an appropriately
-named function. Additionally let's replace the '\0' injection with a
-proper field width parameter so that the string will be abridged during
-formatting instead.
+Delete rx_desc_92d because it's big and barely used, and instead use
+the get_rx_desc_rxmcs and get_rx_desc_rxht functions, which work on big
+endian systems too.
 
-Cc: stable@vger.kernel.org # Not a bug fix but it is needed for later bug fixes
-Tested-by: Justin Stitt <justinstitt@google.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-2-f236dbe9828d@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Fix rx_fwinfo_92d by duplicating four of its members in the correct
+order.
+
+Tested only with RTL8192DU, which will use the same code.
+Tested only on a little endian system.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://msgid.link/698463da-5ef1-40c7-b744-fa51ad847caf@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c |   55 ++++++++++++++++++++++++++++------------------
- 1 file changed, 34 insertions(+), 21 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c |   16 ++--
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h |   65 ++-----------------
+ 2 files changed, 15 insertions(+), 66 deletions(-)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -172,6 +172,33 @@ char kdb_getchar(void)
- 	unreachable();
- }
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
+@@ -35,7 +35,7 @@ static long _rtl92de_translate_todbm(str
  
-+/**
-+ * kdb_position_cursor() - Place cursor in the correct horizontal position
-+ * @prompt: Nil-terminated string containing the prompt string
-+ * @buffer: Nil-terminated string containing the entire command line
-+ * @cp: Cursor position, pointer the character in buffer where the cursor
-+ *      should be positioned.
-+ *
-+ * The cursor is positioned by sending a carriage-return and then printing
-+ * the content of the line until we reach the correct cursor position.
-+ *
-+ * There is some additional fine detail here.
-+ *
-+ * Firstly, even though kdb_printf() will correctly format zero-width fields
-+ * we want the second call to kdb_printf() to be conditional. That keeps things
-+ * a little cleaner when LOGGING=1.
-+ *
-+ * Secondly, we can't combine everything into one call to kdb_printf() since
-+ * that renders into a fixed length buffer and the combined print could result
-+ * in unwanted truncation.
-+ */
-+static void kdb_position_cursor(char *prompt, char *buffer, char *cp)
-+{
-+	kdb_printf("\r%s", kdb_prompt_str);
-+	if (cp > buffer)
-+		kdb_printf("%.*s", (int)(cp - buffer), buffer);
-+}
-+
- /*
-  * kdb_read
-  *
-@@ -200,7 +227,6 @@ static char *kdb_read(char *buffer, size
- 						 * and null byte */
- 	char *lastchar;
- 	char *p_tmp;
--	char tmp;
- 	static char tmpbuffer[CMD_BUFLEN];
- 	int len = strlen(buffer);
- 	int len_tmp;
-@@ -237,12 +263,8 @@ poll_again:
- 			}
- 			*(--lastchar) = '\0';
- 			--cp;
--			kdb_printf("\b%s \r", cp);
--			tmp = *cp;
--			*cp = '\0';
--			kdb_printf(kdb_prompt_str);
--			kdb_printf("%s", buffer);
--			*cp = tmp;
-+			kdb_printf("\b%s ", cp);
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 13: /* enter */
-@@ -259,19 +281,14 @@ poll_again:
- 			memcpy(tmpbuffer, cp+1, lastchar - cp - 1);
- 			memcpy(cp, tmpbuffer, lastchar - cp - 1);
- 			*(--lastchar) = '\0';
--			kdb_printf("%s \r", cp);
--			tmp = *cp;
--			*cp = '\0';
--			kdb_printf(kdb_prompt_str);
--			kdb_printf("%s", buffer);
--			*cp = tmp;
-+			kdb_printf("%s ", cp);
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 1: /* Home */
- 		if (cp > buffer) {
--			kdb_printf("\r");
--			kdb_printf(kdb_prompt_str);
- 			cp = buffer;
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 5: /* End */
-@@ -377,13 +394,9 @@ poll_again:
- 				memcpy(cp+1, tmpbuffer, lastchar - cp);
- 				*++lastchar = '\0';
- 				*cp = key;
--				kdb_printf("%s\r", cp);
-+				kdb_printf("%s", cp);
- 				++cp;
--				tmp = *cp;
--				*cp = '\0';
--				kdb_printf(kdb_prompt_str);
--				kdb_printf("%s", buffer);
--				*cp = tmp;
-+				kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 			} else {
- 				*++lastchar = '\0';
- 				*cp++ = key;
+ static void _rtl92de_query_rxphystatus(struct ieee80211_hw *hw,
+ 				       struct rtl_stats *pstats,
+-				       struct rx_desc_92d *pdesc,
++				       __le32 *pdesc,
+ 				       struct rx_fwinfo_92d *p_drvinfo,
+ 				       bool packet_match_bssid,
+ 				       bool packet_toself,
+@@ -49,8 +49,10 @@ static void _rtl92de_query_rxphystatus(s
+ 	u8 i, max_spatial_stream;
+ 	u32 rssi, total_rssi = 0;
+ 	bool is_cck_rate;
++	u8 rxmcs;
+ 
+-	is_cck_rate = RX_HAL_IS_CCK_RATE(pdesc->rxmcs);
++	rxmcs = get_rx_desc_rxmcs(pdesc);
++	is_cck_rate = rxmcs <= DESC_RATE11M;
+ 	pstats->packet_matchbssid = packet_match_bssid;
+ 	pstats->packet_toself = packet_toself;
+ 	pstats->packet_beacon = packet_beacon;
+@@ -158,8 +160,8 @@ static void _rtl92de_query_rxphystatus(s
+ 		pstats->rx_pwdb_all = pwdb_all;
+ 		pstats->rxpower = rx_pwr_all;
+ 		pstats->recvsignalpower = rx_pwr_all;
+-		if (pdesc->rxht && pdesc->rxmcs >= DESC_RATEMCS8 &&
+-		    pdesc->rxmcs <= DESC_RATEMCS15)
++		if (get_rx_desc_rxht(pdesc) && rxmcs >= DESC_RATEMCS8 &&
++		    rxmcs <= DESC_RATEMCS15)
+ 			max_spatial_stream = 2;
+ 		else
+ 			max_spatial_stream = 1;
+@@ -365,7 +367,7 @@ static void _rtl92de_process_phyinfo(str
+ static void _rtl92de_translate_rx_signal_stuff(struct ieee80211_hw *hw,
+ 					       struct sk_buff *skb,
+ 					       struct rtl_stats *pstats,
+-					       struct rx_desc_92d *pdesc,
++					       __le32 *pdesc,
+ 					       struct rx_fwinfo_92d *p_drvinfo)
+ {
+ 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+@@ -441,9 +443,7 @@ bool rtl92de_rx_query_desc(struct ieee80
+ 	if (phystatus) {
+ 		p_drvinfo = (struct rx_fwinfo_92d *)(skb->data +
+ 						     stats->rx_bufshift);
+-		_rtl92de_translate_rx_signal_stuff(hw,
+-						   skb, stats,
+-						   (struct rx_desc_92d *)pdesc,
++		_rtl92de_translate_rx_signal_stuff(hw, skb, stats, pdesc,
+ 						   p_drvinfo);
+ 	}
+ 	/*rx_status->qual = stats->signal; */
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
+@@ -394,10 +394,17 @@ struct rx_fwinfo_92d {
+ 	u8 csi_target[2];
+ 	u8 sigevm;
+ 	u8 max_ex_pwr;
++#ifdef __LITTLE_ENDIAN
+ 	u8 ex_intf_flag:1;
+ 	u8 sgi_en:1;
+ 	u8 rxsc:2;
+ 	u8 reserve:4;
++#else
++	u8 reserve:4;
++	u8 rxsc:2;
++	u8 sgi_en:1;
++	u8 ex_intf_flag:1;
++#endif
+ } __packed;
+ 
+ struct tx_desc_92d {
+@@ -502,64 +509,6 @@ struct tx_desc_92d {
+ 	u32 reserve_pass_pcie_mm_limit[4];
+ } __packed;
+ 
+-struct rx_desc_92d {
+-	u32 length:14;
+-	u32 crc32:1;
+-	u32 icverror:1;
+-	u32 drv_infosize:4;
+-	u32 security:3;
+-	u32 qos:1;
+-	u32 shift:2;
+-	u32 phystatus:1;
+-	u32 swdec:1;
+-	u32 lastseg:1;
+-	u32 firstseg:1;
+-	u32 eor:1;
+-	u32 own:1;
+-
+-	u32 macid:5;
+-	u32 tid:4;
+-	u32 hwrsvd:5;
+-	u32 paggr:1;
+-	u32 faggr:1;
+-	u32 a1_fit:4;
+-	u32 a2_fit:4;
+-	u32 pam:1;
+-	u32 pwr:1;
+-	u32 moredata:1;
+-	u32 morefrag:1;
+-	u32 type:2;
+-	u32 mc:1;
+-	u32 bc:1;
+-
+-	u32 seq:12;
+-	u32 frag:4;
+-	u32 nextpktlen:14;
+-	u32 nextind:1;
+-	u32 rsvd:1;
+-
+-	u32 rxmcs:6;
+-	u32 rxht:1;
+-	u32 amsdu:1;
+-	u32 splcp:1;
+-	u32 bandwidth:1;
+-	u32 htc:1;
+-	u32 tcpchk_rpt:1;
+-	u32 ipcchk_rpt:1;
+-	u32 tcpchk_valid:1;
+-	u32 hwpcerr:1;
+-	u32 hwpcind:1;
+-	u32 iv0:16;
+-
+-	u32 iv1;
+-
+-	u32 tsfl;
+-
+-	u32 bufferaddress;
+-	u32 bufferaddress64;
+-
+-} __packed;
+-
+ void rtl92de_tx_fill_desc(struct ieee80211_hw *hw,
+ 			  struct ieee80211_hdr *hdr, u8 *pdesc,
+ 			  u8 *pbd_desc_tx, struct ieee80211_tx_info *info,
 
 
 
