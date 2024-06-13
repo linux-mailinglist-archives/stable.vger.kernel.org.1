@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-50982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8AC906DC6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:04:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6EA0906C03
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:46:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C6921C23AC1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:04:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FB9D1F20F97
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678981465B0;
-	Thu, 13 Jun 2024 11:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AE8143C77;
+	Thu, 13 Jun 2024 11:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNUJHYiM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRQinrdc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267C6143C4B;
-	Thu, 13 Jun 2024 11:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7243143C6B;
+	Thu, 13 Jun 2024 11:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279959; cv=none; b=uts63up9dMhUE8OsdMVOWuoLsAafZSrFjtuwuTJymYzXwPFGvHsM7nvEgcXOjnYscvu6Pj6Rj0eZzVGGdXRETB1Ad3SaIgqR+3Kyqm26AK70C23rL9pmGEmW3Bs9UUSjqgcCGi6V34EiFTmxMq+nGTiEs2rtmRV2ovJ0a/54F48=
+	t=1718279133; cv=none; b=pImznk4CeRk/X6vc2rslCfbnEHedbEERutsWdMJ6b0JbR2GbDDLdG2SadBv9xZ+ttav+aXO8oodwM07CNABocBFsZEH33V/RTfp6JknMB45j2qdQaNL2rq/S0ckp0n6aCLZSqYYsdM8kukjFnwYDQrp8E9+KsgnBNcwziOpr2uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279959; c=relaxed/simple;
-	bh=+iNlXbuUQkKYjFZTaSHSnRsyje+flLizJfOLtxToIe8=;
+	s=arc-20240116; t=1718279133; c=relaxed/simple;
+	bh=2oNmCH+mJ19B0NmuPoDqj0TPtbjyFK0Gc9+UWPWFXb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GpS+Hhc12cQoul0g0KBwf0Q4S78WWWpAb3zZV1xYWBREzPtYrNmdaFjBHeMctj+aoF7DZvxz1ZpQLXld+bci0T/bCFZx2fPFQTG304Ic9YSTxNczWbjnlgQ/wEwJa51B/n/bQ28YjW/xihNILwG5JyHQ0LLvCKY4n33JU9+4DY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNUJHYiM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FAD7C2BBFC;
-	Thu, 13 Jun 2024 11:59:18 +0000 (UTC)
+	 MIME-Version; b=MYKpCiRXt+L1eT66nsJ3cD+cKjyBtgyv8P9eSoQipRE8HhzpuAHCNchqgQnxzczBe6m5OJb1NNpfo14uf2JDRdBxmP/CtgXGKaa7TzWxKao9MTkBx8CtM3q+yMyrpMDMmDJ0PIvlaf8O3OyZUrpye3b6axoljBEJClP2Az4Tr0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WRQinrdc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 508ACC2BBFC;
+	Thu, 13 Jun 2024 11:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279959;
-	bh=+iNlXbuUQkKYjFZTaSHSnRsyje+flLizJfOLtxToIe8=;
+	s=korg; t=1718279133;
+	bh=2oNmCH+mJ19B0NmuPoDqj0TPtbjyFK0Gc9+UWPWFXb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GNUJHYiMKQZWPVmb9Z6/CZEsmYt2HjRvUDqb0Ew1fdxRST92qFaqHs5R2U14mqALU
-	 Sofd2IJ0J86d57V61ZmCNXz7u6vRBPfmdKCEQtrQaILJd++0vLOkOgO1NVceBVjVzJ
-	 1ykZq1R5l/lh8Q7go4fDaVJ3a6bMZY2+LQBLDW88=
+	b=WRQinrdc2tMpSiDs6L8O8ZLDlFX07bb4O6ZJcZuiMuhUzC1QWYswY/zXlBgu30XOk
+	 2l1afzloBFb5ERsvE47GIzsd2VL/UL2mg7VcRoQ0gu3wMJmJm8uiwegGnC5B29I3x8
+	 0pJiMBRkr8q41Z1gifatr7sNYoP181QbeqaglqDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20Li=C5=A1ka?= <mliska@suse.cz>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 095/202] perf annotate: Add --demangle and --demangle-kernel
+	Benjamin Coddington <bcodding@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 4.19 145/213] SUNRPC: Fix loop termination condition in gss_free_in_token_pages()
 Date: Thu, 13 Jun 2024 13:33:13 +0200
-Message-ID: <20240613113231.436489657@linuxfoundation.org>
+Message-ID: <20240613113233.583360252@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Liška <mliska@suse.cz>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 3406ac5347dbf64ab9f7b137ed25a18493f5ea2d ]
+commit 4a77c3dead97339478c7422eb07bf4bf63577008 upstream.
 
-'perf annotate' supports --symbol but it's impossible to filter a C++
-symbol. With --no-demangle one can filter easily by mangled function
-name.
+The in_token->pages[] array is not NULL terminated. This results in
+the following KASAN splat:
 
-Signed-off-by: Martin Liška <mliska@suse.cz>
-Link: http://lore.kernel.org/lkml/c3c7e959-9f7f-18e2-e795-f604275cbac3@suse.cz
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 374af9f1f06b ("perf annotate: Get rid of duplicate --group option item")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  KASAN: maybe wild-memory-access in range [0x04a2013400000008-0x04a201340000000f]
+
+Fixes: bafa6b4d95d9 ("SUNRPC: Fix gss_free_in_token_pages()")
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/Documentation/perf-annotate.txt | 7 +++++++
- tools/perf/builtin-annotate.c              | 4 ++++
- 2 files changed, 11 insertions(+)
+ net/sunrpc/auth_gss/svcauth_gss.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/Documentation/perf-annotate.txt b/tools/perf/Documentation/perf-annotate.txt
-index e8c972f89357d..066ecfffbf4ed 100644
---- a/tools/perf/Documentation/perf-annotate.txt
-+++ b/tools/perf/Documentation/perf-annotate.txt
-@@ -118,6 +118,13 @@ OPTIONS
- --group::
- 	Show event group information together
+--- a/net/sunrpc/auth_gss/svcauth_gss.c
++++ b/net/sunrpc/auth_gss/svcauth_gss.c
+@@ -1088,7 +1088,7 @@ static int gss_read_proxy_verf(struct sv
+ 	}
  
-+--demangle::
-+	Demangle symbol names to human readable form. It's enabled by default,
-+	disable with --no-demangle.
-+
-+--demangle-kernel::
-+	Demangle kernel symbol names to human readable form (for C++ kernels).
-+
- --percent-type::
- 	Set annotation percent type from following choices:
- 	  global-period, local-period, global-hits, local-hits
-diff --git a/tools/perf/builtin-annotate.c b/tools/perf/builtin-annotate.c
-index 8db8fc9bddef3..a6fea0be3a5d6 100644
---- a/tools/perf/builtin-annotate.c
-+++ b/tools/perf/builtin-annotate.c
-@@ -537,6 +537,10 @@ int cmd_annotate(int argc, const char **argv)
- 		   "Specify disassembler style (e.g. -M intel for intel syntax)"),
- 	OPT_STRING(0, "objdump", &annotate.opts.objdump_path, "path",
- 		   "objdump binary to use for disassembly and annotations"),
-+	OPT_BOOLEAN(0, "demangle", &symbol_conf.demangle,
-+		    "Enable symbol demangling"),
-+	OPT_BOOLEAN(0, "demangle-kernel", &symbol_conf.demangle_kernel,
-+		    "Enable kernel symbol demangling"),
- 	OPT_BOOLEAN(0, "group", &symbol_conf.event_group,
- 		    "Show event group information together"),
- 	OPT_BOOLEAN(0, "show-total-period", &symbol_conf.show_total_period,
--- 
-2.43.0
-
+ 	pages = DIV_ROUND_UP(inlen, PAGE_SIZE);
+-	in_token->pages = kcalloc(pages, sizeof(struct page *), GFP_KERNEL);
++	in_token->pages = kcalloc(pages + 1, sizeof(struct page *), GFP_KERNEL);
+ 	if (!in_token->pages) {
+ 		kfree(in_handle->data);
+ 		return SVC_DENIED;
 
 
 
