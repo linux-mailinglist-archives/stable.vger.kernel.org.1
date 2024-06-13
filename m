@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43C0B907144
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:35:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D662B906F98
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8107280E71
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:35:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73AAA289331
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F9013C805;
-	Thu, 13 Jun 2024 12:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312081448DF;
+	Thu, 13 Jun 2024 12:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nz5/7QTu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tcQUmssk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D37E13DDB5;
-	Thu, 13 Jun 2024 12:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1255143892;
+	Thu, 13 Jun 2024 12:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282112; cv=none; b=vC3iSypsL9023xhMml0Mm0TLclB2GFjOOW7Qh1dftMD+1Mopq6S85+FAvWA2ZDfhrRnqy8aUadVAj4jMKnTfmaK56+2HVkHSFd4/MQOf+ya4dgisfvursqRd0bfvAGms18cnuOXBwAoI9LZ26rGUKTjwIzeCyEweuPlcv2Ug4+s=
+	t=1718281087; cv=none; b=Q0QQqdr1S8sdsKgaZc1pRqfgaF7d1GABnmFr/ZpZMQWBxZDpbH0f/hZwBSkaoVgwaLzo7qUrY7szsANk0J7bOqvZQOQiLtPl4dFfBTNjv9b5rPlPHdvnesCWQij/xdJEdJ51UewWJjZ0gYfVjY9oZJn4gyuBjFBe8fw+CNpEikQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282112; c=relaxed/simple;
-	bh=jXQf566/3Z89zLHWM/1JHccMRh41XKpKQdUnBvUlLwI=;
+	s=arc-20240116; t=1718281087; c=relaxed/simple;
+	bh=GsNLnoOa+OkZmrFCj9/Feh/VfZP/ie8lmroC9kmIg3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WUt/FsfoK7lyC4HVPVhoYXiBscirmp+exjTzEO1Jeu27rvScfwyUQM5D712uFpoopf3Wwro2l44Jb0YNaZuOzEwtmfsdb7K5CxduGD/BzbK8GwWhv1UfH88seX3hUCQklsKiegZShT4aEd4LHJHV98aCIvmuP9fFiy4NrKjJabE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nz5/7QTu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8EAC4AF1A;
-	Thu, 13 Jun 2024 12:35:11 +0000 (UTC)
+	 MIME-Version; b=lzx39nK1wPT2wMURrho8TSyyPtoiOKrEsmvc9sQgnOnzT7qnMVCCgD+F088vyj05UwFHgk6FVFs5k7KFz6ap0d2pZEfRZdGFwrV4rgNtKy/JxpbEKxnOA0C2zSi0QdpSMkbOId7Pl6TUlZgOa3b8uiiM9HpYYsdzPTFSePNGwVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tcQUmssk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6482AC2BBFC;
+	Thu, 13 Jun 2024 12:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282112;
-	bh=jXQf566/3Z89zLHWM/1JHccMRh41XKpKQdUnBvUlLwI=;
+	s=korg; t=1718281086;
+	bh=GsNLnoOa+OkZmrFCj9/Feh/VfZP/ie8lmroC9kmIg3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nz5/7QTuO/eBCGJdp9gRqt66g2F9ZBKRMXkbk88KyVsdwrGs0fH5L2KHiTs3uLKLM
-	 pgMTxZncAU2yd+QSL741PNqp29azL5ugq4kOv9mBknAWEjXKSO3FbSEuwPNWwFgrMi
-	 RjKRQg0Bm+7iA8SQsyLgaR+bYDNx9KlmrHHeVQCI=
+	b=tcQUmsskFjIHR9bKOXYJ8nBEZd8z8qiCQO2H9USM80/AkSb9gQUJT1RpKGTtEuhaA
+	 rxo8y4hQREt3KHg5ih7dqmnb88ud3poI3u+qxm5KhCWVjyXvhO+gRYBkICxnMMNG/M
+	 a2ScG9cAN6PwtQWMqSMTvAkedcGmXgId7W0CGTs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Trond Myklebust <trondmy@hammerspace.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 167/402] SUNRPC: Fix gss_free_in_token_pages()
+Subject: [PATCH 5.10 106/317] ASoC: tracing: Export SND_SOC_DAPM_DIR_OUT to its value
 Date: Thu, 13 Jun 2024 13:32:04 +0200
-Message-ID: <20240613113308.651626196@linuxfoundation.org>
+Message-ID: <20240613113251.651292697@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit bafa6b4d95d97877baa61883ff90f7e374427fae ]
+[ Upstream commit 58300f8d6a48e58d1843199be743f819e2791ea3 ]
 
-Dan Carpenter says:
-> Commit 5866efa8cbfb ("SUNRPC: Fix svcauth_gss_proxy_init()") from Oct
-> 24, 2019 (linux-next), leads to the following Smatch static checker
-> warning:
->
-> 	net/sunrpc/auth_gss/svcauth_gss.c:1039 gss_free_in_token_pages()
-> 	warn: iterator 'i' not incremented
->
-> net/sunrpc/auth_gss/svcauth_gss.c
->     1034 static void gss_free_in_token_pages(struct gssp_in_token *in_token)
->     1035 {
->     1036         u32 inlen;
->     1037         int i;
->     1038
-> --> 1039         i = 0;
->     1040         inlen = in_token->page_len;
->     1041         while (inlen) {
->     1042                 if (in_token->pages[i])
->     1043                         put_page(in_token->pages[i]);
->                                                          ^
-> This puts page zero over and over.
->
->     1044                 inlen -= inlen > PAGE_SIZE ? PAGE_SIZE : inlen;
->     1045         }
->     1046
->     1047         kfree(in_token->pages);
->     1048         in_token->pages = NULL;
->     1049 }
+The string SND_SOC_DAPM_DIR_OUT is printed in the snd_soc_dapm_path trace
+event instead of its value:
 
-Based on the way that the ->pages[] array is constructed in
-gss_read_proxy_verf(), we know that once the loop encounters a NULL
-page pointer, the remaining array elements must also be NULL.
+   (((REC->path_dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Suggested-by: Trond Myklebust <trondmy@hammerspace.com>
-Fixes: 5866efa8cbfb ("SUNRPC: Fix svcauth_gss_proxy_init()")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+User space cannot parse this, as it has no idea what SND_SOC_DAPM_DIR_OUT
+is. Use TRACE_DEFINE_ENUM() to convert it to its value:
+
+   (((REC->path_dir) == 1) ? "->" : "<-")
+
+So that user space tools, such as perf and trace-cmd, can parse it
+correctly.
+
+Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Fixes: 6e588a0d839b5 ("ASoC: dapm: Consolidate path trace events")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/r/20240416000303.04670cdf@rorschach.local.home
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/auth_gss/svcauth_gss.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ include/trace/events/asoc.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sunrpc/auth_gss/svcauth_gss.c b/net/sunrpc/auth_gss/svcauth_gss.c
-index 48b608cb5f5ec..6ad1757718505 100644
---- a/net/sunrpc/auth_gss/svcauth_gss.c
-+++ b/net/sunrpc/auth_gss/svcauth_gss.c
-@@ -1132,17 +1132,11 @@ gss_read_verf(struct rpc_gss_wire_cred *gc,
+diff --git a/include/trace/events/asoc.h b/include/trace/events/asoc.h
+index 40c300fe704da..f62d5b7024261 100644
+--- a/include/trace/events/asoc.h
++++ b/include/trace/events/asoc.h
+@@ -11,6 +11,8 @@
+ #define DAPM_DIRECT "(direct)"
+ #define DAPM_ARROW(dir) (((dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
  
- static void gss_free_in_token_pages(struct gssp_in_token *in_token)
- {
--	u32 inlen;
- 	int i;
- 
- 	i = 0;
--	inlen = in_token->page_len;
--	while (inlen) {
--		if (in_token->pages[i])
--			put_page(in_token->pages[i]);
--		inlen -= inlen > PAGE_SIZE ? PAGE_SIZE : inlen;
--	}
--
-+	while (in_token->pages[i])
-+		put_page(in_token->pages[i++]);
- 	kfree(in_token->pages);
- 	in_token->pages = NULL;
- }
++TRACE_DEFINE_ENUM(SND_SOC_DAPM_DIR_OUT);
++
+ struct snd_soc_jack;
+ struct snd_soc_card;
+ struct snd_soc_dapm_widget;
 -- 
 2.43.0
 
