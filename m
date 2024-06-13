@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-50912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C342906D66
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC3D0906B4C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:39:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2E28286553
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC80C1C227EB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC767147C76;
-	Thu, 13 Jun 2024 11:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1888A142E8E;
+	Thu, 13 Jun 2024 11:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tt2s1TCS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVCAgSm7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A988B145A05;
-	Thu, 13 Jun 2024 11:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91C3DDB1;
+	Thu, 13 Jun 2024 11:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279752; cv=none; b=fMLKQ3QYrz2LYGrZNMjLr5hzgq5M1WBLjyDAjPNw+GlZkjIXUWiEhD/xbDdJHhaLk4IGAIrIXt0QS4Y8PwWgX0kOGac78OrZs69N5wsxF7lyEg57TL9Yn5+x+zpyL2hU7enq67qGTvNwgJbTjDCf8KlEufExJtZS+FewcKIQgNA=
+	t=1718278754; cv=none; b=KPejTr5FoeZT+2mTVhnNFI7Y3viASPScdcVOGSIcdBDx38uW2Kss2ZXY0XxZAvN6kVcOfTeAatXXEdZ8SMK8Sg0kC2KYqOlpeKu+IVUq/yX4qJvdvEJu/ExjhXSSVA6L0QecBQinqsP7NdGQVU5uVY9/ySAHvlH6lUqjXpS05qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279752; c=relaxed/simple;
-	bh=uajnZBNh1U+7lYDsshFAXOWHvk3Ec+kYTm//AqoBVUw=;
+	s=arc-20240116; t=1718278754; c=relaxed/simple;
+	bh=QZuNevFHgnhRW6AXzte+rS8vpAnzBYvK4iib0MfwzTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s++fnHtLqXprdzKGHOnUluK42elFRUAg1TOQU94cViZTTGVPCL4EMpaQ/7IxkcXqoeWhB0sl/nJk4373c1IrgbjpyaI3jJEWVx7MP6cWKiLJGB9RuQwJSOPBuHRKH7E3XxfeFFRuVoA84UkJMZXCBGTuskZqeTIkiRxiF75BzZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tt2s1TCS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC59C4AF1A;
-	Thu, 13 Jun 2024 11:55:52 +0000 (UTC)
+	 MIME-Version; b=AgXWwTghBjxqrwZJjfFYv4kHzWkDkvOi9Z8Ayz50dh6SdmuUEvV31vVlwe2CAHc4NUxwsMqpYeLiG9DBqF8uNbRCrIGvVNPIXGMT7AiZb3VgXp3A9HWgtp2xD7EcWSG7tajzvNrZbiKchCNJ0E0suaf7AZWPgeR1Kdi3sJwjCBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVCAgSm7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC06C2BBFC;
+	Thu, 13 Jun 2024 11:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279752;
-	bh=uajnZBNh1U+7lYDsshFAXOWHvk3Ec+kYTm//AqoBVUw=;
+	s=korg; t=1718278754;
+	bh=QZuNevFHgnhRW6AXzte+rS8vpAnzBYvK4iib0MfwzTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tt2s1TCSazFmzBg6V0rwIznucSw2lEtt2MZBhBY/3m7yAr2WYGUKAKrvjQ77p4hea
-	 qrBisLsgXo1Fk3NU35nYUA/rTgKXGyb5WZmmG3P2Gufp9JfGWXwiWNTTneXwQs+ade
-	 x7rJFwj+qs4RUqfaJV3P9RUO3Qx1JPNdyIiON9XY=
+	b=MVCAgSm7u9G2jYx8k0RVNNEDetfeJM9Xkw7Ib8iUI6bxH68+PLzFok5pggltVwbFr
+	 4uS/Gsl+oCTg3lWqn83EaCFkAqPUREgGkgUsLLhP/QqRiWKO1EqEkUjCDlAlpk7NYc
+	 S/xMQ5fRQJ821YwCdPH789hf1/cIoyBPUk6LuqGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Breno Leitao <leitao@debian.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 009/202] net: usb: qmi_wwan: add Telit FN920C04 compositions
+Subject: [PATCH 4.19 059/213] af_unix: Fix data races in unix_release_sock/unix_stream_sendmsg
 Date: Thu, 13 Jun 2024 13:31:47 +0200
-Message-ID: <20240613113228.123443900@linuxfoundation.org>
+Message-ID: <20240613113230.285969159@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 0b8fe5bd73249dc20be2e88a12041f8920797b59 ]
+[ Upstream commit 540bf24fba16b88c1b3b9353927204b4f1074e25 ]
 
-Add the following Telit FN920C04 compositions:
+A data-race condition has been identified in af_unix. In one data path,
+the write function unix_release_sock() atomically writes to
+sk->sk_shutdown using WRITE_ONCE. However, on the reader side,
+unix_stream_sendmsg() does not read it atomically. Consequently, this
+issue is causing the following KCSAN splat to occur:
 
-0x10a0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  5 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a0 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+	BUG: KCSAN: data-race in unix_release_sock / unix_stream_sendmsg
 
-0x10a4: rmnet + tty (AT) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a4 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+	write (marked) to 0xffff88867256ddbb of 1 bytes by task 7270 on cpu 28:
+	unix_release_sock (net/unix/af_unix.c:640)
+	unix_release (net/unix/af_unix.c:1050)
+	sock_close (net/socket.c:659 net/socket.c:1421)
+	__fput (fs/file_table.c:422)
+	__fput_sync (fs/file_table.c:508)
+	__se_sys_close (fs/open.c:1559 fs/open.c:1541)
+	__x64_sys_close (fs/open.c:1541)
+	x64_sys_call (arch/x86/entry/syscall_64.c:33)
+	do_syscall_64 (arch/x86/entry/common.c:?)
+	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
 
-0x10a9: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  9 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a9 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+	read to 0xffff88867256ddbb of 1 bytes by task 989 on cpu 14:
+	unix_stream_sendmsg (net/unix/af_unix.c:2273)
+	__sock_sendmsg (net/socket.c:730 net/socket.c:745)
+	____sys_sendmsg (net/socket.c:2584)
+	__sys_sendmmsg (net/socket.c:2638 net/socket.c:2724)
+	__x64_sys_sendmmsg (net/socket.c:2753 net/socket.c:2750 net/socket.c:2750)
+	x64_sys_call (arch/x86/entry/syscall_64.c:33)
+	do_syscall_64 (arch/x86/entry/common.c:?)
+	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
 
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+	value changed: 0x01 -> 0x03
+
+The line numbers are related to commit dd5a440a31fa ("Linux 6.9-rc7").
+
+Commit e1d09c2c2f57 ("af_unix: Fix data races around sk->sk_shutdown.")
+addressed a comparable issue in the past regarding sk->sk_shutdown.
+However, it overlooked resolving this particular data path.
+This patch only offending unix_stream_sendmsg() function, since the
+other reads seem to be protected by unix_state_lock() as discussed in
+Link: https://lore.kernel.org/all/20240508173324.53565-1-kuniyu@amazon.com/
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240509081459.2807828-1-leitao@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 1c48d3d9522ba..7cad9850e6f15 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1323,6 +1323,9 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1060, 2)},	/* Telit LN920 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1070, 2)},	/* Telit FN990 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1080, 2)}, /* Telit FE990 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a9, 0)}, /* Telit FN920C04 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 921b7e355b9b9..02100e62bf608 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1895,7 +1895,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 			goto out_err;
+ 	}
+ 
+-	if (sk->sk_shutdown & SEND_SHUTDOWN)
++	if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+ 		goto pipe_err;
+ 
+ 	while (sent < len) {
 -- 
 2.43.0
 
