@@ -1,142 +1,194 @@
-Return-Path: <stable+bounces-50719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4ED6906C27
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:47:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A92906C44
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 598721F21A73
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:47:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFD44281216
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD7213C805;
-	Thu, 13 Jun 2024 11:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5291F145B0B;
+	Thu, 13 Jun 2024 11:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k2r2oqPX"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hjeVHFqO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D12613D624;
-	Thu, 13 Jun 2024 11:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD8714386B
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 11:47:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279189; cv=none; b=MgQEHSCh4zf4kGILU4EisJGaOfDEFLaOfJq2r0OLessAfV7xFMFFePHfjKt8s5Y8vjNQonw5Lcz3fM9NeoHob4UJKlo440qZuAT0BQF9XiEUlQ6vu2jvucVDGeWEp/30JEoq2fQ0O2ZHqqRHpAdNQHL8fLXCSjIOgx2Atu5HPLk=
+	t=1718279232; cv=none; b=QCGuCaqs1YWFfeCduD6kvzTHcrv+kLrILwuw8CsQgV7+F9AlIEnD48YXB7/lVZVbQ8HzBpqiiuorFAHb+UkbpNw2aZ9P1w5ortrP2raU41QF9BwSFxoeYypXxv3LpJJnqiy4VHcZ3ghW2By6luJSn50LxwUeBMl6xkGikQbTT9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279189; c=relaxed/simple;
-	bh=XL5bLefMESkGprNixyB/mXYAJulY/6UDjT3qRR8obhU=;
+	s=arc-20240116; t=1718279232; c=relaxed/simple;
+	bh=u8uqNXfneUxeojJqX6uW43gawvkWd/SVV0l8sqbDYiQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a+e1DKL1GmxZ0TfVyD8lWuMTJxDY2ccmvobTcrWxqX9cFVdpm4c2GNbKrZSlci2o8AjzQtyBlzoWoRzmqyaKnDGLrOCdXYTVwaLQYXuXwKeWCr1pc1nW3q2AlHX/4fKPXV++Bz05kIzXkRTEeeNv84aL9np3XODru5eIDXI3Bf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k2r2oqPX; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a6ef8bf500dso106517466b.0;
-        Thu, 13 Jun 2024 04:46:27 -0700 (PDT)
+	 To:Cc:Content-Type; b=tVRA332SkSf7yxypItFrUJDeTl9ay5UQNx7cDtiaQSVNLxLNJGANxy3rMoYnrWnMP0XobMYnuKt1D2fl6Y0jiVdRoFoL6DUSJvRSnn6i8z3zmQ5rn6BTbEUXE7CGm4CRjN0yjV4zTdKpo9lacRNz2PnV6NKsAtV8DQ6B9MOx4+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hjeVHFqO; arc=none smtp.client-ip=209.85.219.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-df4d5d0b8d0so980599276.2
+        for <stable@vger.kernel.org>; Thu, 13 Jun 2024 04:47:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718279186; x=1718883986; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1718279229; x=1718884029; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4vYosH7aQ7gj462DMyx1t1RhUFmgYdVe9MWybhGXFWA=;
-        b=k2r2oqPXRaxpqdkdedphQPkGZXZvuHHdjMDPggVH+ls3Yu64gByKM4D1ZjFJb/PUwr
-         silYrWaORbDQjEg3Nc0YOqbyDZGzV2KYFBtHfQJgr94vgLg+gwZKxCeE6Ce12d3PPbEz
-         yEZ2Ryg0Zf4WSzzN812prE+fUrxlEnQSB/tRrwDf1mFCz/Kx+Zxy+xYx+Ffgib9xunGC
-         nIg5piD1R23GQUN4mz9OCRAEboqKCWa33gn0vmoQgyRj85aLBMEbTySUHJ3PvGdqEdJu
-         R+FMXVuq0BkTiWxVdGtKGMuzlWX7w4qCsyqQrLrEQeX9BHyuxncPiYplFX4XVNyTJ5si
-         FfqA==
+        bh=+LOKAxIeKteFuhp7/Gqn9TPI7GSn3AjIAgrQwVRNEFU=;
+        b=hjeVHFqOks17mJr5ZOK3MfW+jrYXcZYEDqkvr5Cp+D6iEZmVOwIjLMVwcCJhE434Im
+         myUPaK2lB7bPK14p+MVgCMvoZMQEpJ+aRuO3SNDE729WXwxjQ/jk33RPjeuS8k8jcZq2
+         xufjyQeOl/dTSN5mjnJJoyo9cjJHu06XHIDJ0lYtOx9584059S1sYeDvV1F5m90PcZnW
+         9oQNfwtYojMh2ubIVFrehDoErOZlXKoHG6CsNKmsL7a7iRDcGFJjnR3OGnhor5BqV3Ab
+         c/mwm7AKeDXITNkjX8cjSV8p3H2MctJZSyapjdXWxxLI+sdOwzFJbrKmluJpjJlmb1+A
+         sJpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718279186; x=1718883986;
+        d=1e100.net; s=20230601; t=1718279229; x=1718884029;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4vYosH7aQ7gj462DMyx1t1RhUFmgYdVe9MWybhGXFWA=;
-        b=Urigf9EU0pE9WkJyimR+PnZtiMxBfyId7IXn4OmhEiMV8U5DNlwcK/FPkPWeAc/2s8
-         uAa/ILgCMBoGP3b7RR7mxQ+kNAa5wMqsYyI3fZv3t3zkNRFlAMAoEz9B2jXJ6Ix7+X88
-         WCIw8tQ9dqQzOBFS861pIKcDx53j17O6WyduLU8uk98gH1MxKLBH/GOXcqBsUAbBEBiS
-         tz0WLLsX6Oyd/9HRUWJ1VPNR9YyCGl6+qSPRWe4MEFGyqUW6Ysb+BJy/YTvl4TDT35wv
-         w2c6octZvQyoWPPEoE/FBDMC58yVUeWaM6iQE2MlLrfAlLCp9FI3B/F3RxF9hks6WDcm
-         vp9w==
-X-Forwarded-Encrypted: i=1; AJvYcCWXOR4xGKx9Jg07N707aTdMlV/s6aUw7VOJ174vQPmZyw79eZSgTCf/35o5M8GOf2ckVmcynoUlhxW7Ihj/gqnvpBoper6vPkTi3GUa+nvmYSxRV9jgfygeIWuJajXCZAStgWwV3/j+Id8YUAH6f5ilY+OCvcrbzAL81sKSvlpx
-X-Gm-Message-State: AOJu0YyEhrft+uNnhcjs3AaW1q0W6H9s4WBjOty1nQXPInJEMWBgGheA
-	LwLBuflVVws2ubGfJmo52NVXtoGzrWbQ8t1UN2EdtrIIWMnVsWf7UYtnIitbQfCakz82Au41e7c
-	MmcDk2BmK8Pw75ZNbQIicYD4uk10=
-X-Google-Smtp-Source: AGHT+IF5r80EbGny6WBJIFoR4Q7nNI93cgnqLPNyWt21N0qDvZSFHgQwtrvWP/eyDmYl+2kXuJgiGRi4UlT5k9PxIUI=
-X-Received: by 2002:a17:906:d8ae:b0:a6f:4be5:a65a with SMTP id
- a640c23a62f3a-a6f4be5a7b6mr279101366b.45.1718279185681; Thu, 13 Jun 2024
- 04:46:25 -0700 (PDT)
+        bh=+LOKAxIeKteFuhp7/Gqn9TPI7GSn3AjIAgrQwVRNEFU=;
+        b=uFwg9WtM+NspoWJ8nzlN9GNfMfmaMdZoLZnLFWJrE8VAgTOyioIuy3kIB7axIfH5N2
+         eskZdYEg463itFzeLPCX1Wn8PBWAOItBU26xNBYTaR+6F1AGz4R3knQck0UZlvC9ygba
+         wHFxxHyqX1QmbK5yxwYSOISmle2S//Hm3GU88nmqbFAtbuCloMTYzzT+N7hjMKsZ3lED
+         LtHI+IblWkSBMvCfn1yf+NhNRhgyrMKZX3KT3G4Zpqev/ly5ZuRAHi+n2u0ie7Lt4LLm
+         EDuFelcCk6foyyQJa8XVyGT3rHYIGTTS5Wvv6nhttOihY/JcauL3zaS13RoREDhN5ocb
+         7IsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVqzF/iMvdNEiHEhIKDlvKW50hkSP/1RCDiK9/gVwLugHn9wjB2287E+L2+ikNTXRs+HLilcbVS+P07d/fEkNakyvXyc+ha
+X-Gm-Message-State: AOJu0YyNF/Fsb9MOHw6aIwSN5Jjz13pSGrRUuZ1dhcn42Oz5nNy3dE+e
+	HrlPfAXZ6FWRXusc2D9PElMtwSFMQAdpSPlq/w5B72p5gD0alryuoTmyNM3sD3iy7gUflGjHgQ7
+	p5wwdpr0wKoAzq2vHIk7wr+k0quw1bcOLPRzbvA==
+X-Google-Smtp-Source: AGHT+IHFpink+Q293EhYr5U3tq2VDPbFBHBjghBbhVxgaG4IqWejDV0X1BOwqLDyC7goxOFASWf1sJs6gdyGUmv2tSI=
+X-Received: by 2002:a25:aca8:0:b0:dfb:25ba:4390 with SMTP id
+ 3f1490d57ef6-dfe66d5a5e0mr4339265276.36.1718279229482; Thu, 13 Jun 2024
+ 04:47:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240601092646.52139-1-joswang1221@gmail.com> <20240612153922.2531-1-joswang1221@gmail.com>
- <2024061203-good-sneeze-f118@gregkh>
-In-Reply-To: <2024061203-good-sneeze-f118@gregkh>
-From: joswang <joswang1221@gmail.com>
-Date: Thu, 13 Jun 2024 19:46:14 +0800
-Message-ID: <CAMtoTm0NWV_1sGNzpULAEH6qAzQgKT_xWz7oPaLrKeu49r2RzA@mail.gmail.com>
-Subject: Re: [PATCH v4, 3/3] usb: dwc3: core: Workaround for CSR read timeout
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Thinh.Nguyen@synopsys.com, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Jos Wang <joswang@lenovo.com>
+References: <CAMSo37U3Pree8XbHNBOzNXhFAiPss+8FQms1bLy06xeMeWfTcg@mail.gmail.com>
+ <20240613095901.508753-1-jtornosm@redhat.com>
+In-Reply-To: <20240613095901.508753-1-jtornosm@redhat.com>
+From: Yongqin Liu <yongqin.liu@linaro.org>
+Date: Thu, 13 Jun 2024 19:46:57 +0800
+Message-ID: <CAMSo37UzU9WrQOQVo=Bb-LfOwS=GJrsSLMgGAwLY7JoGQ9ap7g@mail.gmail.com>
+Subject: Re: [PATCH] net: usb: ax88179_178a: fix link status when link is set
+ to down/up
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: amit.pundir@linaro.org, davem@davemloft.net, edumazet@google.com, 
+	inventor500@vivaldi.net, jstultz@google.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org, 
+	sumit.semwal@linaro.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 13, 2024 at 1:04=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Wed, Jun 12, 2024 at 11:39:22PM +0800, joswang wrote:
-> > From: Jos Wang <joswang@lenovo.com>
-> >
-> > This is a workaround for STAR 4846132, which only affects
-> > DWC_usb31 version2.00a operating in host mode.
-> >
-> > There is a problem in DWC_usb31 version 2.00a operating
-> > in host mode that would cause a CSR read timeout When CSR
-> > read coincides with RAM Clock Gating Entry. By disable
-> > Clock Gating, sacrificing power consumption for normal
-> > operation.
-> >
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Jos Wang <joswang@lenovo.com>
-> > ---
-> > v1 -> v2:
-> > - add "dt-bindings: usb: dwc3: Add snps,p2p3tranok quirk" patch,
-> >   this patch does not make any changes
-> > v2 -> v3:
-> > - code refactor
-> > - modify comment, add STAR number, workaround applied in host mode
-> > - modify commit message, add STAR number, workaround applied in host mo=
-de
-> > - modify Author Jos Wang
-> > v3 -> v4:
-> > - modify commit message, add Cc: stable@vger.kernel.org
->
-> This thread is crazy, look at:
->         https://lore.kernel.org/all/20240612153922.2531-1-joswang1221@gma=
-il.com/
-> for how it looks.  How do I pick out the proper patches to review/apply
-> there at all?  What would you do if you were in my position except just
-> delete the whole thing?
->
-> Just properly submit new versions of patches (hint, without the ','), as
-> the documentation file says to, as new threads each time, with all
-> commits, and all should be fine.
->
-> We even have tools that can do this for you semi-automatically, why not
-> use them?
->
-> thanks,
->
-> greg k-h
+Hi, Jose
 
-We apologize for any inconvenience this may cause.
-The following incorrect operation caused the problem you mentioned:
-git send-email --in-reply-to command sends the new version patch
-git format-patch --subject-prefix=3D'PATCH v3
+On Thu, 13 Jun 2024 at 17:59, Jose Ignacio Tornos Martinez
+<jtornosm@redhat.com> wrote:
+>
+> Hello again,
+>
+> There was a problem copying the patch, sorry, here the good one:
 
-Should I resend the v5 patch now?
+Thanks very much for the work!
+
+I will test it tomorrow, and let you know the result then.
+
+Best regards,
+Yongqin Liu
+>
+> $ git diff drivers/net/usb/ax88179_178a.c
+> diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178=
+a.c
+> index 51c295e1e823..60357796be99 100644
+> --- a/drivers/net/usb/ax88179_178a.c
+> +++ b/drivers/net/usb/ax88179_178a.c
+> @@ -174,7 +174,6 @@ struct ax88179_data {
+>         u32 wol_supported;
+>         u32 wolopts;
+>         u8 disconnecting;
+> -       u8 initialized;
+>  };
+>
+>  struct ax88179_int_data {
+> @@ -327,7 +326,8 @@ static void ax88179_status(struct usbnet *dev, struct=
+ urb *urb)
+>
+>         if (netif_carrier_ok(dev->net) !=3D link) {
+>                 usbnet_link_change(dev, link, 1);
+> -               netdev_info(dev->net, "ax88179 - Link status is: %d\n", l=
+ink);
+> +               if (!link)
+> +                       netdev_info(dev->net, "ax88179 - Link status is: =
+%d\n", link);
+>         }
+>  }
+>
+> @@ -1543,6 +1543,7 @@ static int ax88179_link_reset(struct usbnet *dev)
+>                          GMII_PHY_PHYSR, 2, &tmp16);
+>
+>         if (!(tmp16 & GMII_PHY_PHYSR_LINK)) {
+> +               netdev_info(dev->net, "ax88179 - Link status is: 0\n");
+>                 return 0;
+>         } else if (GMII_PHY_PHYSR_GIGA =3D=3D (tmp16 & GMII_PHY_PHYSR_SMA=
+SK)) {
+>                 mode |=3D AX_MEDIUM_GIGAMODE | AX_MEDIUM_EN_125MHZ;
+> @@ -1580,6 +1581,8 @@ static int ax88179_link_reset(struct usbnet *dev)
+>
+>         netif_carrier_on(dev->net);
+>
+> +       netdev_info(dev->net, "ax88179 - Link status is: 1\n");
+> +
+>         return 0;
+>  }
+>
+> @@ -1678,12 +1681,21 @@ static int ax88179_reset(struct usbnet *dev)
+>
+>  static int ax88179_net_reset(struct usbnet *dev)
+>  {
+> -       struct ax88179_data *ax179_data =3D dev->driver_priv;
+> +       u16 tmp16;
+>
+> -       if (ax179_data->initialized)
+> +       ax88179_read_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID, GMII_PHY_PHY=
+SR,
+> +                        2, &tmp16);
+> +       if (tmp16) {
+> +               ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MOD=
+E,
+> +                                2, 2, &tmp16);
+> +               if (!(tmp16 & AX_MEDIUM_RECEIVE_EN)) {
+> +                       tmp16 |=3D AX_MEDIUM_RECEIVE_EN;
+> +                       ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_S=
+TATUS_MODE,
+> +                                         2, 2, &tmp16);
+> +               }
+> +       } else {
+>                 ax88179_reset(dev);
+> -       else
+> -               ax179_data->initialized =3D 1;
+> +       }
+>
+>         return 0;
+>  }
+>
+> Best regards
+> Jos=C3=A9 Ignacio
+>
+
+
+--=20
+Best Regards,
+Yongqin Liu
+---------------------------------------------------------------
+#mailing list
+linaro-android@lists.linaro.org
+http://lists.linaro.org/mailman/listinfo/linaro-android
 
