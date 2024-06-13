@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-51497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FF490702F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 633B0906E38
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1997E1C22FEF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4401D1C20DFA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2127013A406;
-	Thu, 13 Jun 2024 12:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC9F148FF2;
+	Thu, 13 Jun 2024 12:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDRkQWWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tF61csxx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CEB56458;
-	Thu, 13 Jun 2024 12:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E3A148855;
+	Thu, 13 Jun 2024 12:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281471; cv=none; b=MrElf8eAoh+QeRuPLYfL5U+N4M0McTT3/xchyFdmeimEB9TXgUkpevvki+tUEKsCqcb1SeQGrbgI1MRd4rO8Rw+76ySfCecc7WBg5lKYgb8AlyIHVGWM674KVmX4mcVJJyCBsm+I9nuumHgN9eEZGpW03MKe4Z1wywpUHcdlhqQ=
+	t=1718280234; cv=none; b=m1L/aJxx/A5gmKJTHRz6wd/RcotEDmq3Ku8zTCfmGt3t1IZrxJjW1Q86WfbMuY6CLzSIj775Qn2mRuhMTt+8PHPqC0CZgDbFhYrz4tTpxE2XqaILUP7QzgWUQjMGIx8kOa7DV1JAONBzrwO8r2gS0yrw0Kse+1Ccwr1f2QnkJKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281471; c=relaxed/simple;
-	bh=KvK8GrrDAcYnXosg7n+O23xzZTre1nVmuY8UITX+pgg=;
+	s=arc-20240116; t=1718280234; c=relaxed/simple;
+	bh=uDxAlWZFgAxCuuiarw2+pYhxwBtZ0Fp5+LeDJoDK+cI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E4ia8M5rDfGeIcbFlTAeMDA4bjd96GWlHa0pDf8YWN4Fz0WpzOzSrBD36Q7eFei3X+SfUbA/xeuZ9LNONWsp4MyEpJEmW/PLpkJ7lUGs7gGQFI0Fl5YwPA2tLdzGG7/9YWUrpOlCsx60OR/shyRwOeLZFo4vpVnFxRz0X3TQGtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDRkQWWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB93C2BBFC;
-	Thu, 13 Jun 2024 12:24:31 +0000 (UTC)
+	 MIME-Version; b=Q7P3V4nRfD4TpzzLrLvuhdYVUi6fWO9nNaszI+atq2+D1tnn6+0VpRkYSeSBvxC47UHwLkwLSGDhD4ib+AmuMNTFOS8crMWr5Crojid3JODeC9XuSxVC4FoX0Rticq9iL+6xi+mtq8Gs3fMG53XfZeeynOZ0sSIrpkKYGeHLJq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tF61csxx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70636C2BBFC;
+	Thu, 13 Jun 2024 12:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281471;
-	bh=KvK8GrrDAcYnXosg7n+O23xzZTre1nVmuY8UITX+pgg=;
+	s=korg; t=1718280233;
+	bh=uDxAlWZFgAxCuuiarw2+pYhxwBtZ0Fp5+LeDJoDK+cI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IDRkQWWfRZtiJl80vRVC9ZqW6EKvvk6rVvV5vJUxwXqUrJwbNdBF2AI6UlnKsGzY4
-	 xRH2oOxmYANTPleQ6MGHr6U//BUaIbo/pQXN+KZzYKSGuXtdyRf+b1RXOOO/5dK37d
-	 +DeZOMUYoL5SS3I1iYhaXNqz1VmzCAY8ymTwJ/z4=
+	b=tF61csxx/UnN1hU4xWSKcj+GHl2Gm3EYFrTXH4ioEsoeYr2FMKY2nQx7MMMDEtBEb
+	 SgOztJU5l8jzdKK2AjXa7YFBSr7zReWD+YMB93tsKQS0Kaz0OMAc9ZDJtgpfJKTipp
+	 uXu0ttjDFRwvuVI4cXgFf3BAyBV8Xqb1Hk5qL/Ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaime Caamano <jcaamano@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
+	Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
+	Simon Horman <horms@kernel.org>,
+	Woojung Huh <woojung.huh@microchip.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 235/317] openvswitch: Set the skbuff pkt_type for proper pmtud support.
-Date: Thu, 13 Jun 2024 13:34:13 +0200
-Message-ID: <20240613113256.640956969@linuxfoundation.org>
+Subject: [PATCH 5.4 156/202] net: usb: smsc95xx: fix changing LED_SEL bit value updated from EEPROM
+Date: Thu, 13 Jun 2024 13:34:14 +0200
+Message-ID: <20240613113233.770783517@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Conole <aconole@redhat.com>
+From: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
 
-[ Upstream commit 30a92c9e3d6b073932762bef2ac66f4ee784c657 ]
+[ Upstream commit 52a2f0608366a629d43dacd3191039c95fef74ba ]
 
-Open vSwitch is originally intended to switch at layer 2, only dealing with
-Ethernet frames.  With the introduction of l3 tunnels support, it crossed
-into the realm of needing to care a bit about some routing details when
-making forwarding decisions.  If an oversized packet would need to be
-fragmented during this forwarding decision, there is a chance for pmtu
-to get involved and generate a routing exception.  This is gated by the
-skbuff->pkt_type field.
+LED Select (LED_SEL) bit in the LED General Purpose IO Configuration
+register is used to determine the functionality of external LED pins
+(Speed Indicator, Link and Activity Indicator, Full Duplex Link
+Indicator). The default value for this bit is 0 when no EEPROM is
+present. If a EEPROM is present, the default value is the value of the
+LED Select bit in the Configuration Flags of the EEPROM. A USB Reset or
+Lite Reset (LRST) will cause this bit to be restored to the image value
+last loaded from EEPROM, or to be set to 0 if no EEPROM is present.
 
-When a flow is already loaded into the openvswitch module this field is
-set up and transitioned properly as a packet moves from one port to
-another.  In the case that a packet execute is invoked after a flow is
-newly installed this field is not properly initialized.  This causes the
-pmtud mechanism to omit sending the required exception messages across
-the tunnel boundary and a second attempt needs to be made to make sure
-that the routing exception is properly setup.  To fix this, we set the
-outgoing packet's pkt_type to PACKET_OUTGOING, since it can only get
-to the openvswitch module via a port device or packet command.
+While configuring the dual purpose GPIO/LED pins to LED outputs in the
+LED General Purpose IO Configuration register, the LED_SEL bit is changed
+as 0 and resulting the configured value from the EEPROM is cleared. The
+issue is fixed by using read-modify-write approach.
 
-Even for bridge ports as users, the pkt_type needs to be reset when
-doing the transmit as the packet is truly outgoing and routing needs
-to get involved post packet transformations, in the case of
-VXLAN/GENEVE/udp-tunnel packets.  In general, the pkt_type on output
-gets ignored, since we go straight to the driver, but in the case of
-tunnel ports they go through IP routing layer.
-
-This issue is periodically encountered in complex setups, such as large
-openshift deployments, where multiple sets of tunnel traversal occurs.
-A way to recreate this is with the ovn-heater project that can setup
-a networking environment which mimics such large deployments.  We need
-larger environments for this because we need to ensure that flow
-misses occur.  In these environment, without this patch, we can see:
-
-  ./ovn_cluster.sh start
-  podman exec ovn-chassis-1 ip r a 170.168.0.5/32 dev eth1 mtu 1200
-  podman exec ovn-chassis-1 ip netns exec sw01p1 ip r flush cache
-  podman exec ovn-chassis-1 ip netns exec sw01p1 \
-         ping 21.0.0.3 -M do -s 1300 -c2
-  PING 21.0.0.3 (21.0.0.3) 1300(1328) bytes of data.
-  From 21.0.0.3 icmp_seq=2 Frag needed and DF set (mtu = 1142)
-
-  --- 21.0.0.3 ping statistics ---
-  ...
-
-Using tcpdump, we can also see the expected ICMP FRAG_NEEDED message is not
-sent into the server.
-
-With this patch, setting the pkt_type, we see the following:
-
-  podman exec ovn-chassis-1 ip netns exec sw01p1 \
-         ping 21.0.0.3 -M do -s 1300 -c2
-  PING 21.0.0.3 (21.0.0.3) 1300(1328) bytes of data.
-  From 21.0.0.3 icmp_seq=1 Frag needed and DF set (mtu = 1222)
-  ping: local error: message too long, mtu=1222
-
-  --- 21.0.0.3 ping statistics ---
-  ...
-
-In this case, the first ping request receives the FRAG_NEEDED message and
-a local routing exception is created.
-
-Tested-by: Jaime Caamano <jcaamano@redhat.com>
-Reported-at: https://issues.redhat.com/browse/FDP-164
-Fixes: 58264848a5a7 ("openvswitch: Add vxlan tunneling support.")
-Signed-off-by: Aaron Conole <aconole@redhat.com>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Link: https://lore.kernel.org/r/20240516200941.16152-1-aconole@redhat.com
+Fixes: f293501c61c5 ("smsc95xx: configure LED outputs")
+Signed-off-by: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Woojung Huh <woojung.huh@microchip.com>
+Link: https://lore.kernel.org/r/20240523085314.167650-1-Parthiban.Veerasooran@microchip.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/actions.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/usb/smsc95xx.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index 80fee9d118eec..4095456f413df 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -923,6 +923,12 @@ static void do_output(struct datapath *dp, struct sk_buff *skb, int out_port,
- 				pskb_trim(skb, ovs_mac_header_len(key));
- 		}
+diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
+index 7fe5673e256e6..2dd4c78f5465b 100644
+--- a/drivers/net/usb/smsc95xx.c
++++ b/drivers/net/usb/smsc95xx.c
+@@ -1022,7 +1022,7 @@ static int smsc95xx_phy_initialize(struct usbnet *dev)
+ static int smsc95xx_reset(struct usbnet *dev)
+ {
+ 	struct smsc95xx_priv *pdata = dev->driver_priv;
+-	u32 read_buf, write_buf, burst_cap;
++	u32 read_buf, burst_cap;
+ 	int ret = 0, timeout;
  
-+		/* Need to set the pkt_type to involve the routing layer.  The
-+		 * packet movement through the OVS datapath doesn't generally
-+		 * use routing, but this is needed for tunnel cases.
-+		 */
-+		skb->pkt_type = PACKET_OUTGOING;
-+
- 		if (likely(!mru ||
- 		           (skb->len <= mru + vport->dev->hard_header_len))) {
- 			ovs_vport_send(vport, skb, ovs_key_mac_proto(key));
+ 	netif_dbg(dev, ifup, dev->net, "entering smsc95xx_reset\n");
+@@ -1164,10 +1164,13 @@ static int smsc95xx_reset(struct usbnet *dev)
+ 		return ret;
+ 	netif_dbg(dev, ifup, dev->net, "ID_REV = 0x%08x\n", read_buf);
+ 
++	ret = smsc95xx_read_reg(dev, LED_GPIO_CFG, &read_buf);
++	if (ret < 0)
++		return ret;
+ 	/* Configure GPIO pins as LED outputs */
+-	write_buf = LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
+-		LED_GPIO_CFG_FDX_LED;
+-	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, write_buf);
++	read_buf |= LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
++		    LED_GPIO_CFG_FDX_LED;
++	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, read_buf);
+ 	if (ret < 0)
+ 		return ret;
+ 
 -- 
 2.43.0
 
