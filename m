@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-50892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2366E906D4F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F6D906D2C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB849285295
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50C26B26117
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F31A146D59;
-	Thu, 13 Jun 2024 11:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62AA1465B3;
+	Thu, 13 Jun 2024 11:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5OOaPTC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrZgNgTh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BFB146D5A;
-	Thu, 13 Jun 2024 11:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6472D1465A8;
+	Thu, 13 Jun 2024 11:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279694; cv=none; b=dRIIjcUh893pz2PKh+WNflW0571v49rVPHl6shQB3RArhvrXOEDKqhXA2JC1hbegfcBl4Q7WWHuMK4kKIKp6UyHhaFm+WUFrHTBw9yqyItnNYkfLlWChXOYjb+z4uA9OaQrkhv50caCOfpELH+7F6hECcyfasrQDWRtNGQ4ykyY=
+	t=1718279602; cv=none; b=ECEAp05RVx+yVTYtsyLGOZp3VTtXg3CJ8p6n0yxsnho1CRwSMWo8l35SjNjoCDslpvN/BjkGOk/Mse7gVFxM4yazGyR9ppWjpxWxoz+1qN2GkwIZK1czLuBd7KvRnA058/tln+wCDCBDIqoZlpiWBidUokURS+iQXCPcTqaNyA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279694; c=relaxed/simple;
-	bh=0BukphA5o61Mmu72XXaVi8qPhAqgrSJklIjFIuAapVA=;
+	s=arc-20240116; t=1718279602; c=relaxed/simple;
+	bh=UE0mpphYQUSMKvPSCxBFat4CJLTM8HjtGKdP6u4oymc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iwhvCB4ZebdDDtedWXHw5xVa9GZoX6Z49NAXuEzxODPRbnpqqesUR+gxlKxGQZN5pL376d+tZGZPjI7X/t7rHiPPberkiIgq0cc6w9O92vNfkH2fcGS1lzg/NqEUjtriU+Q1LLQGXkTEmZrqgrlrtB7slIp3p6BBsqxt3qeJMgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5OOaPTC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824DFC2BBFC;
-	Thu, 13 Jun 2024 11:54:53 +0000 (UTC)
+	 MIME-Version; b=h34IWLGIT3116sHuztElUafYa4PsBggWrpdU8mgMBPiVQZnV+rI0cSU935Qcz6PZGIaF511bNwlI/WCpIN+1eDVIdjh4o5nI0+riQuZTAIoolZfdgW16DBwWS14LMnm+dCjHXNBHcsUD5UZ3rAMmKh/b0FbpvMKoFfMJ33zsGHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrZgNgTh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84790C2BBFC;
+	Thu, 13 Jun 2024 11:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279693;
-	bh=0BukphA5o61Mmu72XXaVi8qPhAqgrSJklIjFIuAapVA=;
+	s=korg; t=1718279601;
+	bh=UE0mpphYQUSMKvPSCxBFat4CJLTM8HjtGKdP6u4oymc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5OOaPTCwjm9dV4ujWiVMR+FnC1jOFuWxI19j41x0gPU6DVzteH3pkMMRYyUS+E67
-	 xHcao0d8Dh2CtwDL9PfKmJLGJbs+5tiI7UOe1tw7EbwxUi77DGL7Th329AiIlqM2C3
-	 A9VClyq8Wuc69IJEvdJS9KIdtz2mE85V9G649tQQ=
+	b=BrZgNgTh5uSITt5FxfPvc3uyXI/7bI5paeBz1EEV1fKyE56DEBhQx4ao46TZ4tbCc
+	 xkDLElEFgg8p49VZhmHhZ9XEum94oBeni1ElOlArnDiGEifUdFY6WPMeoEb2TAPz0A
+	 k6By+XXtEja2g8JLLaDLQDC5vJ1+DOCqctXEC7WU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"dicken.ding" <dicken.ding@mediatek.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.9 131/157] genirq/irqdesc: Prevent use-after-free in irq_find_at_or_after()
-Date: Thu, 13 Jun 2024 13:34:16 +0200
-Message-ID: <20240613113232.476598856@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.9 132/157] hwmon: (ltc2992) Fix memory leak in ltc2992_parse_dt()
+Date: Thu, 13 Jun 2024 13:34:17 +0200
+Message-ID: <20240613113232.513377766@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
 References: <20240613113227.389465891@linuxfoundation.org>
@@ -65,64 +65,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: dicken.ding <dicken.ding@mediatek.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit b84a8aba806261d2f759ccedf4a2a6a80a5e55ba upstream.
+commit a94ff8e50c20bde6d50864849a98b106e45d30c6 upstream.
 
-irq_find_at_or_after() dereferences the interrupt descriptor which is
-returned by mt_find() while neither holding sparse_irq_lock nor RCU read
-lock, which means the descriptor can be freed between mt_find() and the
-dereference:
+A new error path was added to the fwnode_for_each_available_node() loop
+in ltc2992_parse_dt(), which leads to an early return that requires a
+call to fwnode_handle_put() to avoid a memory leak in that case.
 
-    CPU0                            CPU1
-    desc = mt_find()
-                                    delayed_free_desc(desc)
-    irq_desc_get_irq(desc)
+Add the missing fwnode_handle_put() in the error path from a zero value
+shunt resistor.
 
-The use-after-free is reported by KASAN:
-
-    Call trace:
-     irq_get_next_irq+0x58/0x84
-     show_stat+0x638/0x824
-     seq_read_iter+0x158/0x4ec
-     proc_reg_read_iter+0x94/0x12c
-     vfs_read+0x1e0/0x2c8
-
-    Freed by task 4471:
-     slab_free_freelist_hook+0x174/0x1e0
-     __kmem_cache_free+0xa4/0x1dc
-     kfree+0x64/0x128
-     irq_kobj_release+0x28/0x3c
-     kobject_put+0xcc/0x1e0
-     delayed_free_desc+0x14/0x2c
-     rcu_do_batch+0x214/0x720
-
-Guard the access with a RCU read lock section.
-
-Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor management")
-Signed-off-by: dicken.ding <dicken.ding@mediatek.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240524091739.31611-1-dicken.ding@mediatek.com
+Fixes: 10b029020487 ("hwmon: (ltc2992) Avoid division by zero")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20240523-fwnode_for_each_available_child_node_scoped-v2-1-701f3a03f2fb@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/irq/irqdesc.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/hwmon/ltc2992.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -160,7 +160,10 @@ static int irq_find_free_area(unsigned i
- static unsigned int irq_find_at_or_after(unsigned int offset)
- {
- 	unsigned long index = offset;
--	struct irq_desc *desc = mt_find(&sparse_irqs, &index, nr_irqs);
-+	struct irq_desc *desc;
-+
-+	guard(rcu)();
-+	desc = mt_find(&sparse_irqs, &index, nr_irqs);
+--- a/drivers/hwmon/ltc2992.c
++++ b/drivers/hwmon/ltc2992.c
+@@ -876,9 +876,11 @@ static int ltc2992_parse_dt(struct ltc29
  
- 	return desc ? irq_desc_get_irq(desc) : nr_irqs;
- }
+ 		ret = fwnode_property_read_u32(child, "shunt-resistor-micro-ohms", &val);
+ 		if (!ret) {
+-			if (!val)
++			if (!val) {
++				fwnode_handle_put(child);
+ 				return dev_err_probe(&st->client->dev, -EINVAL,
+ 						     "shunt resistor value cannot be zero\n");
++			}
+ 			st->r_sense_uohm[addr] = val;
+ 		}
+ 	}
 
 
 
