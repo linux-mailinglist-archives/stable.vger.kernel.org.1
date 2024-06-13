@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-50944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3D8906D88
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B89906B61
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A21DE1F27D5C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86C861C2193A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35D781ABF;
-	Thu, 13 Jun 2024 11:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8E81428FC;
+	Thu, 13 Jun 2024 11:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="se7m4tgk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQVubxyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6074C143C6B;
-	Thu, 13 Jun 2024 11:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC286DDB1;
+	Thu, 13 Jun 2024 11:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279847; cv=none; b=KavdE6L/L5lePgPzTSur9W0/jaZDkhIX7H/c306jl3oNiM+QkXE+9HBKBciTgcDPPLGbUfz2o841d0nKPvSsN5I+nQH/uZGS1JUA+nefMZ/wkIGcF/Xnlp8V+7Vz5feD+RmWE5YFn1l4BeT8R8uizbkr+DBnqA1E842be0PjHxc=
+	t=1718278813; cv=none; b=tCIO7MyHlnyCJ70hrG6fqSCtphS64Yu+/9wkrYmJLuQ3rqFyGb4lUzkUwKpaP/8wMkAFFkQi3VTKFy8CQNUMJF72J22JCpWYPTNO7risWo0PsZLROvD+gxHiccs3kaxC7TdS4B5JrNxWstGdtwEbFHWniXRFhdmMLne1SGi1kYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279847; c=relaxed/simple;
-	bh=+ZZfsWOX3mllky9NKYxoeqGtoEHhkwa5PILl+rMe1M8=;
+	s=arc-20240116; t=1718278813; c=relaxed/simple;
+	bh=vjwMRWR7goDS3XupLlVAWOFfg0hgycQcCCTxriIvcMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jF/zY5vrx+eZWla7lf1xxDgMaZtR245IJQVpUdceExoJP+/yII9MSI5nuazyHD7W6Hq7wjKQdBcG4I+UESTSzz3zAPBhVVTKmsSmf0jihmeLyQKKDjEUYSR8HZhVEltQxRGmU10qVrx+oJrQGfFPnnCeBZQmjQPE8KHvCFrYRYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=se7m4tgk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8D2C32786;
-	Thu, 13 Jun 2024 11:57:26 +0000 (UTC)
+	 MIME-Version; b=I61cwI8PCjtISxP9c/OFnGiHJmGcfnwTvhtdJfek1jGKL76nbecC4qq8EKXTS/8oyLugTEuv2FTf8F5xbhqmhl4XGMtoiEKtrFy27GFcPWxIVN1PfMnPzBIyJIcj34ksGWYnHABMYxBGKmVBss7JbhBOOXz+hzMQa5+JSGlpDZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQVubxyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3151EC2BBFC;
+	Thu, 13 Jun 2024 11:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279847;
-	bh=+ZZfsWOX3mllky9NKYxoeqGtoEHhkwa5PILl+rMe1M8=;
+	s=korg; t=1718278813;
+	bh=vjwMRWR7goDS3XupLlVAWOFfg0hgycQcCCTxriIvcMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=se7m4tgkL16CZ/cmdKUG4FIzjlrpcbrBsJL+w9HqqJ/Czi1yGZvzeINkTdx5478ej
-	 aVPHqLHXNQBULKv8dQ4YM3C435DLsdPWHY9v2BYA3br8GlSHkh8w+c1SVkyjuTnt0z
-	 KJIXXX8SBZY7Q6ctEF5fQKAQCkgeS+vExtKnbspg=
+	b=zQVubxyYSgRPUuYNxk5nLxePULg7D8DYNr/8/cT3sN+0ow/OTkyTreUTY0wl2hiNs
+	 IB9NnlrSfpwCaFVbftOCf2Fq/J1oLVG+WFRFHXiWVN9nD4+B0em7v20tYzTDrKVLbV
+	 +u66wTfzw6MN1DKIxDV9vDnla7hihMwD7655ovmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Nigel Croxon <ncroxon@redhat.com>
-Subject: [PATCH 5.4 026/202] md: fix resync softlockup when bitmap size is less than array size
-Date: Thu, 13 Jun 2024 13:32:04 +0200
-Message-ID: <20240613113228.779597670@linuxfoundation.org>
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 077/213] x86/insn: Fix PUSH instruction in x86 instruction decoder opcode map
+Date: Thu, 13 Jun 2024 13:32:05 +0200
+Message-ID: <20240613113230.980266868@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit f0e729af2eb6bee9eb58c4df1087f14ebaefe26b ]
+[ Upstream commit 59162e0c11d7257cde15f907d19fefe26da66692 ]
 
-Is is reported that for dm-raid10, lvextend + lvchange --syncaction will
-trigger following softlockup:
+The x86 instruction decoder is used not only for decoding kernel
+instructions. It is also used by perf uprobes (user space probes) and by
+perf tools Intel Processor Trace decoding. Consequently, it needs to
+support instructions executed by user space also.
 
-kernel:watchdog: BUG: soft lockup - CPU#3 stuck for 26s! [mdX_resync:6976]
-CPU: 7 PID: 3588 Comm: mdX_resync Kdump: loaded Not tainted 6.9.0-rc4-next-20240419 #1
-RIP: 0010:_raw_spin_unlock_irq+0x13/0x30
-Call Trace:
- <TASK>
- md_bitmap_start_sync+0x6b/0xf0
- raid10_sync_request+0x25c/0x1b40 [raid10]
- md_do_sync+0x64b/0x1020
- md_thread+0xa7/0x170
- kthread+0xcf/0x100
- ret_from_fork+0x30/0x50
- ret_from_fork_asm+0x1a/0x30
+Opcode 0x68 PUSH instruction is currently defined as 64-bit operand size
+only i.e. (d64). That was based on Intel SDM Opcode Map. However that is
+contradicted by the Instruction Set Reference section for PUSH in the
+same manual.
 
-And the detailed process is as follows:
+Remove 64-bit operand size only annotation from opcode 0x68 PUSH
+instruction.
 
-md_do_sync
- j = mddev->resync_min
- while (j < max_sectors)
-  sectors = raid10_sync_request(mddev, j, &skipped)
-   if (!md_bitmap_start_sync(..., &sync_blocks))
-    // md_bitmap_start_sync set sync_blocks to 0
-    return sync_blocks + sectors_skippe;
-  // sectors = 0;
-  j += sectors;
-  // j never change
+Example:
 
-Root cause is that commit 301867b1c168 ("md/raid10: check
-slab-out-of-bounds in md_bitmap_get_counter") return early from
-md_bitmap_get_counter(), without setting returned blocks.
+  $ cat pushw.s
+  .global  _start
+  .text
+  _start:
+          pushw   $0x1234
+          mov     $0x1,%eax   # system call number (sys_exit)
+          int     $0x80
+  $ as -o pushw.o pushw.s
+  $ ld -s -o pushw pushw.o
+  $ objdump -d pushw | tail -4
+  0000000000401000 <.text>:
+    401000:       66 68 34 12             pushw  $0x1234
+    401004:       b8 01 00 00 00          mov    $0x1,%eax
+    401009:       cd 80                   int    $0x80
+  $ perf record -e intel_pt//u ./pushw
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.014 MB perf.data ]
 
-Fix this problem by always set returned blocks from
-md_bitmap_get_counter"(), as it used to be.
+ Before:
 
-Noted that this patch just fix the softlockup problem in kernel, the
-case that bitmap size doesn't match array size still need to be fixed.
+  $ perf script --insn-trace=disasm
+  Warning:
+  1 instruction trace errors
+           pushw   10349 [000] 10586.869237014:            401000 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           pushw $0x1234
+           pushw   10349 [000] 10586.869237014:            401006 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb %al, (%rax)
+           pushw   10349 [000] 10586.869237014:            401008 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb %cl, %ch
+           pushw   10349 [000] 10586.869237014:            40100a [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb $0x2e, (%rax)
+   instruction trace error type 1 time 10586.869237224 cpu 0 pid 10349 tid 10349 ip 0x40100d code 6: Trace doesn't match instruction
 
-Fixes: 301867b1c168 ("md/raid10: check slab-out-of-bounds in md_bitmap_get_counter")
-Reported-and-tested-by: Nigel Croxon <ncroxon@redhat.com>
-Closes: https://lore.kernel.org/all/71ba5272-ab07-43ba-8232-d2da642acb4e@redhat.com/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240422065824.2516-1-yukuai1@huaweicloud.com
-Signed-off-by: Song Liu <song@kernel.org>
+ After:
+
+  $ perf script --insn-trace=disasm
+             pushw   10349 [000] 10586.869237014:            401000 [unknown] (./pushw)           pushw $0x1234
+             pushw   10349 [000] 10586.869237014:            401004 [unknown] (./pushw)           movl $1, %eax
+
+Fixes: eb13296cfaf6 ("x86: Instruction decoder API")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20240502105853.5338-3-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/lib/x86-opcode-map.txt               | 2 +-
+ tools/objtool/arch/x86/lib/x86-opcode-map.txt | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index 843139447a964..8fc85b6251e48 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -1359,7 +1359,7 @@ __acquires(bitmap->lock)
- 	sector_t chunk = offset >> bitmap->chunkshift;
- 	unsigned long page = chunk >> PAGE_COUNTER_SHIFT;
- 	unsigned long pageoff = (chunk & PAGE_COUNTER_MASK) << COUNTER_BYTE_SHIFT;
--	sector_t csize;
-+	sector_t csize = ((sector_t)1) << bitmap->chunkshift;
- 	int err;
- 
- 	if (page >= bitmap->pages) {
-@@ -1368,6 +1368,7 @@ __acquires(bitmap->lock)
- 		 * End-of-device while looking for a whole page or
- 		 * user set a huge number to sysfs bitmap_set_bits.
- 		 */
-+		*blocks = csize - (offset & (csize - 1));
- 		return NULL;
- 	}
- 	err = md_bitmap_checkpage(bitmap, page, create, 0);
-@@ -1376,8 +1377,7 @@ __acquires(bitmap->lock)
- 	    bitmap->bp[page].map == NULL)
- 		csize = ((sector_t)1) << (bitmap->chunkshift +
- 					  PAGE_COUNTER_SHIFT);
--	else
--		csize = ((sector_t)1) << bitmap->chunkshift;
-+
- 	*blocks = csize - (offset & (csize - 1));
- 
- 	if (err < 0)
+diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
+index 5cb9f009f2be3..996a3a250026b 100644
+--- a/arch/x86/lib/x86-opcode-map.txt
++++ b/arch/x86/lib/x86-opcode-map.txt
+@@ -148,7 +148,7 @@ AVXcode:
+ 65: SEG=GS (Prefix)
+ 66: Operand-Size (Prefix)
+ 67: Address-Size (Prefix)
+-68: PUSH Iz (d64)
++68: PUSH Iz
+ 69: IMUL Gv,Ev,Iz
+ 6a: PUSH Ib (d64)
+ 6b: IMUL Gv,Ev,Ib
+diff --git a/tools/objtool/arch/x86/lib/x86-opcode-map.txt b/tools/objtool/arch/x86/lib/x86-opcode-map.txt
+index 5cb9f009f2be3..996a3a250026b 100644
+--- a/tools/objtool/arch/x86/lib/x86-opcode-map.txt
++++ b/tools/objtool/arch/x86/lib/x86-opcode-map.txt
+@@ -148,7 +148,7 @@ AVXcode:
+ 65: SEG=GS (Prefix)
+ 66: Operand-Size (Prefix)
+ 67: Address-Size (Prefix)
+-68: PUSH Iz (d64)
++68: PUSH Iz
+ 69: IMUL Gv,Ev,Iz
+ 6a: PUSH Ib (d64)
+ 6b: IMUL Gv,Ev,Ib
 -- 
 2.43.0
 
