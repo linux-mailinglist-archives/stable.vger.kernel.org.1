@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-50784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DBFE906C9F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A322E906DA4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BECD281D26
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41E332857F1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB027145B18;
-	Thu, 13 Jun 2024 11:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBDF145B08;
+	Thu, 13 Jun 2024 11:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCrrytPB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufaYkMto"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CCA6AFAE;
-	Thu, 13 Jun 2024 11:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C761145B1F;
+	Thu, 13 Jun 2024 11:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279375; cv=none; b=afrx7XFjmVlozPrZa+/94qIyZ4FHomH+C+LxaIO6Eiqml3gmOI+24HyI3pkHPbfkbasEAlv247N2aXOvxP4zco2yNvt+uR68BQ9/Fcc1lIxV7ZwTiU/SzipeSvtWqW3xOHYM+6ltO5Ag8O+dFpK9TozGU38xEuGuO+X8zkNKU6Q=
+	t=1718279918; cv=none; b=t+tb2fAx1HkfSQtoHygBhQFQRwUKKH+CFIyatf7Ik9usxqfkJrNHCFAJ5Zt1T6BvHzCQGQe0G7gLawgbdzT+c7EBFya6/fUbnVFR8UGB5LBVfJqVUCo7yKC47A/loPyLHccLW6USW9SjJCuVtuCmD4UHgVYA1/PVO/M6sZZ/Pco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279375; c=relaxed/simple;
-	bh=8E36OA5W2L0gVpTcXvDE0BXkzXa+DGPSJRu1xBOy0IA=;
+	s=arc-20240116; t=1718279918; c=relaxed/simple;
+	bh=8P4zCihjU9WRCA3RtPOkl8T4jayZF9+WHwZGpq9RhDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqZWR0NwEYTug/eGLEftYTGVsRCAw8smH6nRGRyEX4/kT4HEwmiFkPWGos+e5dP74k/5XTmR1bvmrw3jDywFTg5gH27RGnd2yp3WetPaR50O8+F+hnClBWztB1L1xeXiZxSEVprudEkl1zx6E8fu1jL07/wxxOTM3lMUjKIy4CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCrrytPB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E3BC2BBFC;
-	Thu, 13 Jun 2024 11:49:34 +0000 (UTC)
+	 MIME-Version; b=nOy1+zUKtDQ6YYvc2BSdkh6adRmotGFo4rAdngTeYI331K8r7xdcpQVU5cYEFZilmveBsWzB+xI9sKUiZLisSIY0e+xtMhXMM/C3TVYfEDkPzrL8RwG9213p++ZClRNiAESrrt00RQg4mDn/fqvMM/oKI1Vop73IPgkYNa1dHM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufaYkMto; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9687AC2BBFC;
+	Thu, 13 Jun 2024 11:58:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279375;
-	bh=8E36OA5W2L0gVpTcXvDE0BXkzXa+DGPSJRu1xBOy0IA=;
+	s=korg; t=1718279918;
+	bh=8P4zCihjU9WRCA3RtPOkl8T4jayZF9+WHwZGpq9RhDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rCrrytPBeNuqxDHVOnZsxPMyGXfGOyLYzMMKq/mq3H5tZJ8ATwiX8W8PkjldrN5Th
-	 Ia1m3kIg6EKO1EQ0MR5zFzC+UPuW+tfg1jYWQjVWTzBIFIx+YMNnboiko7pP0eUJeH
-	 STCi6TfBi9r12QJifIG2+PqH8l+bJ+qsBr3251yw=
+	b=ufaYkMto4FvwDnP3KHanHJpUVtlHtFD+PcCctLgzpq+kMDVEcfLczkc35Y1kkopWL
+	 kKvQXdhOwCoPs9Uxdq1bMoPN+yTAb5LiV0IAQeUhBAE4A9JTmiuESboIFO2uMERX8L
+	 3k1uc0RFVPk9bQzblqQSHV4V3bMltfpatkoJLyg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Ma <li.ma@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.9 053/157] drm/amdgpu/atomfirmware: add intergrated info v2.3 table
+	Marek Vasut <marex@denx.de>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 080/202] drm/panel: simple: Add missing Innolux G121X1-L03 format, flags, connector
 Date: Thu, 13 Jun 2024 13:32:58 +0200
-Message-ID: <20240613113229.477368926@linuxfoundation.org>
+Message-ID: <20240613113230.862680278@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Ma <li.ma@amd.com>
+From: Marek Vasut <marex@denx.de>
 
-commit e64e8f7c178e5228e0b2dbb504b9dc75953a319f upstream.
+[ Upstream commit 11ac72d033b9f577e8ba0c7a41d1c312bb232593 ]
 
-[Why]
-The vram width value is 0.
-Because the integratedsysteminfo table in VBIOS has updated to 2.3.
+The .bpc = 6 implies .bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG ,
+add the missing bus_format. Add missing connector type and bus_flags
+as well.
 
-[How]
-Driver needs a new intergrated info v2.3 table too.
-Then the vram width value will be correct.
+Documentation [1] 1.4 GENERAL SPECIFICATI0NS indicates this panel is
+capable of both RGB 18bit/24bit panel, the current configuration uses
+18bit mode, .bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG , .bpc = 6.
 
-Signed-off-by: Li Ma <li.ma@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Support for the 24bit mode would require another entry in panel-simple
+with .bus_format = MEDIA_BUS_FMT_RGB666_1X7X4_SPWG and .bpc = 8, which
+is out of scope of this fix.
+
+[1] https://www.distec.de/fileadmin/pdf/produkte/TFT-Displays/Innolux/G121X1-L03_Datasheet.pdf
+
+Fixes: f8fa17ba812b ("drm/panel: simple: Add support for Innolux G121X1-L03")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240328102746.17868-2-marex@denx.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c |   15 ++++++++
- drivers/gpu/drm/amd/include/atomfirmware.h       |   43 +++++++++++++++++++++++
- 2 files changed, 58 insertions(+)
+ drivers/gpu/drm/panel/panel-simple.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c
-@@ -211,6 +211,7 @@ union igp_info {
- 	struct atom_integrated_system_info_v1_11 v11;
- 	struct atom_integrated_system_info_v1_12 v12;
- 	struct atom_integrated_system_info_v2_1 v21;
-+	struct atom_integrated_system_info_v2_3 v23;
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index fd8b16dcf13e7..83cba00f854d6 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1729,6 +1729,9 @@ static const struct panel_desc innolux_g121x1_l03 = {
+ 		.unprepare = 200,
+ 		.disable = 400,
+ 	},
++	.bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
++	.connector_type = DRM_MODE_CONNECTOR_LVDS,
  };
  
- union umc_info {
-@@ -353,6 +354,20 @@ amdgpu_atomfirmware_get_vram_info(struct
- 					if (mem_type == LpDdr5MemType)
- 						mem_channel_width = 32;
- 					else
-+						mem_channel_width = 64;
-+					if (vram_width)
-+						*vram_width = mem_channel_number * mem_channel_width;
-+					if (vram_type)
-+						*vram_type = convert_atom_mem_type_to_vram_type(adev, mem_type);
-+					break;
-+				case 3:
-+					mem_channel_number = igp_info->v23.umachannelnumber;
-+					if (!mem_channel_number)
-+						mem_channel_number = 1;
-+					mem_type = igp_info->v23.memorytype;
-+					if (mem_type == LpDdr5MemType)
-+						mem_channel_width = 32;
-+					else
- 						mem_channel_width = 64;
- 					if (vram_width)
- 						*vram_width = mem_channel_number * mem_channel_width;
---- a/drivers/gpu/drm/amd/include/atomfirmware.h
-+++ b/drivers/gpu/drm/amd/include/atomfirmware.h
-@@ -1657,6 +1657,49 @@ struct atom_integrated_system_info_v2_2
- 	uint32_t  reserved4[189];
- };
- 
-+struct uma_carveout_option {
-+  char       optionName[29];        //max length of string is 28chars + '\0'. Current design is for "minimum", "Medium", "High". This makes entire struct size 64bits
-+  uint8_t    memoryCarvedGb;        //memory carved out with setting
-+  uint8_t    memoryRemainingGb;     //memory remaining on system
-+  union {
-+    struct _flags {
-+      uint8_t Auto     : 1;
-+      uint8_t Custom   : 1;
-+      uint8_t Reserved : 6;
-+    } flags;
-+    uint8_t all8;
-+  } uma_carveout_option_flags;
-+};
-+
-+struct atom_integrated_system_info_v2_3 {
-+  struct  atom_common_table_header table_header;
-+  uint32_t  vbios_misc; // enum of atom_system_vbiosmisc_def
-+  uint32_t  gpucapinfo; // enum of atom_system_gpucapinf_def
-+  uint32_t  system_config;
-+  uint32_t  cpucapinfo;
-+  uint16_t  gpuclk_ss_percentage; // unit of 0.001%,   1000 mean 1%
-+  uint16_t  gpuclk_ss_type;
-+  uint16_t  dpphy_override;  // bit vector, enum of atom_sysinfo_dpphy_override_def
-+  uint8_t memorytype;       // enum of atom_dmi_t17_mem_type_def, APU memory type indication.
-+  uint8_t umachannelnumber; // number of memory channels
-+  uint8_t htc_hyst_limit;
-+  uint8_t htc_tmp_limit;
-+  uint8_t reserved1; // dp_ss_control
-+  uint8_t gpu_package_id;
-+  struct  edp_info_table  edp1_info;
-+  struct  edp_info_table  edp2_info;
-+  uint32_t  reserved2[8];
-+  struct  atom_external_display_connection_info extdispconninfo;
-+  uint8_t UMACarveoutVersion;
-+  uint8_t UMACarveoutIndexMax;
-+  uint8_t UMACarveoutTypeDefault;
-+  uint8_t UMACarveoutIndexDefault;
-+  uint8_t UMACarveoutType;           //Auto or Custom
-+  uint8_t UMACarveoutIndex;
-+  struct  uma_carveout_option UMASizeControlOption[20];
-+  uint8_t reserved3[110];
-+};
-+
- // system_config
- enum atom_system_vbiosmisc_def{
-   INTEGRATED_SYSTEM_INFO__GET_EDID_CALLBACK_FUNC_SUPPORT = 0x01,
+ /*
+-- 
+2.43.0
+
 
 
 
