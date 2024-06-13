@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-50723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86400906C30
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:48:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2366E906D4F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04A50281F3F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:48:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB849285295
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BC71442ED;
-	Thu, 13 Jun 2024 11:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F31A146D59;
+	Thu, 13 Jun 2024 11:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WvC3RnyO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5OOaPTC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD8813A406;
-	Thu, 13 Jun 2024 11:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BFB146D5A;
+	Thu, 13 Jun 2024 11:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279198; cv=none; b=rb8o0a4aFjQTbXEoJW4oIwl9s0NvteUC+sfxw5nlq2fSA/vmahsKyAYRGJ4oIG2kwdiZuAX/qXp6UqFS63Lr5k+V3JecPGSl5elQqvVilrOdH2vK+puwebAV5Usz9fIwo9LPuy+0Ti6e+fAElOed+2w4eBBm1PJWVuksTxdp+kU=
+	t=1718279694; cv=none; b=dRIIjcUh893pz2PKh+WNflW0571v49rVPHl6shQB3RArhvrXOEDKqhXA2JC1hbegfcBl4Q7WWHuMK4kKIKp6UyHhaFm+WUFrHTBw9yqyItnNYkfLlWChXOYjb+z4uA9OaQrkhv50caCOfpELH+7F6hECcyfasrQDWRtNGQ4ykyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279198; c=relaxed/simple;
-	bh=H2NSRgvz/W59A/qpPvCvX+q6+iTaTn+Vr4pMx/KOSUk=;
+	s=arc-20240116; t=1718279694; c=relaxed/simple;
+	bh=0BukphA5o61Mmu72XXaVi8qPhAqgrSJklIjFIuAapVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NtO9jDQ1lQbK87Nmt13BXBjESavwhSTH/Aj1J9n29mN+2gnBCScRXoWyg7BQxZKAsmXwxGmddWvtaf7d3eH+JxhoCPaDFLj9qSAhYDkmyy87rM+jmzhe7yDbstdI4FUcdRVjjGh9Q1nQaRyaVeASO8An3W1VlRCWAD4e76Os/QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WvC3RnyO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04409C2BBFC;
-	Thu, 13 Jun 2024 11:46:37 +0000 (UTC)
+	 MIME-Version; b=iwhvCB4ZebdDDtedWXHw5xVa9GZoX6Z49NAXuEzxODPRbnpqqesUR+gxlKxGQZN5pL376d+tZGZPjI7X/t7rHiPPberkiIgq0cc6w9O92vNfkH2fcGS1lzg/NqEUjtriU+Q1LLQGXkTEmZrqgrlrtB7slIp3p6BBsqxt3qeJMgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5OOaPTC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824DFC2BBFC;
+	Thu, 13 Jun 2024 11:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279198;
-	bh=H2NSRgvz/W59A/qpPvCvX+q6+iTaTn+Vr4pMx/KOSUk=;
+	s=korg; t=1718279693;
+	bh=0BukphA5o61Mmu72XXaVi8qPhAqgrSJklIjFIuAapVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WvC3RnyOaG3u3PwAwPwURSM4uw+K/MKB9YlCSlPruoPKuKycxyCqz3StC7lCX7cE3
-	 E1JqRrzA0df2J9SNJ0C9ScVo1Zb6v9fKvJdsAnwbuPMEaQF5f+0f2yCfPfBkMpHEpk
-	 I7qvhkCzRQGEDNRVnvgBvjt7cq9zq6fJSzTsjHmU=
+	b=R5OOaPTCwjm9dV4ujWiVMR+FnC1jOFuWxI19j41x0gPU6DVzteH3pkMMRYyUS+E67
+	 xHcao0d8Dh2CtwDL9PfKmJLGJbs+5tiI7UOe1tw7EbwxUi77DGL7Th329AiIlqM2C3
+	 A9VClyq8Wuc69IJEvdJS9KIdtz2mE85V9G649tQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Justin Stitt <justinstitt@google.com>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 4.19 208/213] kdb: Use format-specifiers rather than memset() for padding in kdb_read()
+	"dicken.ding" <dicken.ding@mediatek.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.9 131/157] genirq/irqdesc: Prevent use-after-free in irq_find_at_or_after()
 Date: Thu, 13 Jun 2024 13:34:16 +0200
-Message-ID: <20240613113236.007142684@linuxfoundation.org>
+Message-ID: <20240613113232.476598856@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: dicken.ding <dicken.ding@mediatek.com>
 
-commit c9b51ddb66b1d96e4d364c088da0f1dfb004c574 upstream.
+commit b84a8aba806261d2f759ccedf4a2a6a80a5e55ba upstream.
 
-Currently when the current line should be removed from the display
-kdb_read() uses memset() to fill a temporary buffer with spaces.
-The problem is not that this could be trivially implemented using a
-format string rather than open coding it. The real problem is that
-it is possible, on systems with a long kdb_prompt_str, to write past
-the end of the tmpbuffer.
+irq_find_at_or_after() dereferences the interrupt descriptor which is
+returned by mt_find() while neither holding sparse_irq_lock nor RCU read
+lock, which means the descriptor can be freed between mt_find() and the
+dereference:
 
-Happily, as mentioned above, this can be trivially implemented using a
-format string. Make it so!
+    CPU0                            CPU1
+    desc = mt_find()
+                                    delayed_free_desc(desc)
+    irq_desc_get_irq(desc)
 
+The use-after-free is reported by KASAN:
+
+    Call trace:
+     irq_get_next_irq+0x58/0x84
+     show_stat+0x638/0x824
+     seq_read_iter+0x158/0x4ec
+     proc_reg_read_iter+0x94/0x12c
+     vfs_read+0x1e0/0x2c8
+
+    Freed by task 4471:
+     slab_free_freelist_hook+0x174/0x1e0
+     __kmem_cache_free+0xa4/0x1dc
+     kfree+0x64/0x128
+     irq_kobj_release+0x28/0x3c
+     kobject_put+0xcc/0x1e0
+     delayed_free_desc+0x14/0x2c
+     rcu_do_batch+0x214/0x720
+
+Guard the access with a RCU read lock section.
+
+Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor management")
+Signed-off-by: dicken.ding <dicken.ding@mediatek.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Justin Stitt <justinstitt@google.com>
-Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-5-f236dbe9828d@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Link: https://lore.kernel.org/r/20240524091739.31611-1-dicken.ding@mediatek.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ kernel/irq/irqdesc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -315,11 +315,9 @@ poll_again:
- 		break;
- 	case 14: /* Down */
- 	case 16: /* Up */
--		memset(tmpbuffer, ' ',
--		       strlen(kdb_prompt_str) + (lastchar-buffer));
--		*(tmpbuffer+strlen(kdb_prompt_str) +
--		  (lastchar-buffer)) = '\0';
--		kdb_printf("\r%s\r", tmpbuffer);
-+		kdb_printf("\r%*c\r",
-+			   (int)(strlen(kdb_prompt_str) + (lastchar - buffer)),
-+			   ' ');
- 		*lastchar = (char)key;
- 		*(lastchar+1) = '\0';
- 		return lastchar;
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -160,7 +160,10 @@ static int irq_find_free_area(unsigned i
+ static unsigned int irq_find_at_or_after(unsigned int offset)
+ {
+ 	unsigned long index = offset;
+-	struct irq_desc *desc = mt_find(&sparse_irqs, &index, nr_irqs);
++	struct irq_desc *desc;
++
++	guard(rcu)();
++	desc = mt_find(&sparse_irqs, &index, nr_irqs);
+ 
+ 	return desc ? irq_desc_get_irq(desc) : nr_irqs;
+ }
 
 
 
