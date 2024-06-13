@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-50889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA448906D4E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D5AD906C2C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:48:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD7C91C22605
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD7141F21377
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C22146D48;
-	Thu, 13 Jun 2024 11:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1BB145A03;
+	Thu, 13 Jun 2024 11:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zH7faIRS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3Y2L83D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB33145A02;
-	Thu, 13 Jun 2024 11:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB051459F1;
+	Thu, 13 Jun 2024 11:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279684; cv=none; b=OkOIYkGzZx55+ned+58RFcH+5MFv7AYO4f1gbkWxuAwy6JxCeI1ldkN9NiyzNB6W81I/dj7FWY41iyGH78RhZHYRi7HLNl8/6nVAM4tD5BgVfrtnsMfdAXgPPCrudJcCIjJQSgezhg/M+vzFD/ptrgMIzQPKOvU16JoUH1h3Hos=
+	t=1718279190; cv=none; b=ZPWQZWcnzsxWXOXH0ddv7UkRZmb8+pW0o1OKj1IqIP2iuSoW1NjQfzm2MQ1MIuSFzOLPRV97W1wNGT658KSw3UiNPwH0YZF+L0m5wIX2rD8UcAamd5vkZCdOljc7+y5211URloQ+KVlVPKy75y2OWnlqmGkwuki5UznAEY0rTjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279684; c=relaxed/simple;
-	bh=aHlP18xVNvlj4PSx7Ed1MTF/LxI9LruRrjQ/QvybDcs=;
+	s=arc-20240116; t=1718279190; c=relaxed/simple;
+	bh=eg4Ju8Gg7wJ1JeidNfPyx/8dZ2VZi4BCA2Nh7Yln35c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nlC5FeXY92mSrFS4PqbHV5Om5mVBxWqYR4jD6M5nX/Cs0AgfhZZ2pug+hXkEGiuvX3zbW7t/KftzMg5Ou5USI7s63bbfuNQJE2O7PzSk+3KcO83lRIQrkAZMT5vDC5bSBQydltH4fTPGmHlQfPcHc6w7DqS0b1s/5szu6ofqVOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zH7faIRS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36169C2BBFC;
-	Thu, 13 Jun 2024 11:54:44 +0000 (UTC)
+	 MIME-Version; b=n9qq6A70B0Eiotlg6s9dcQeHAq2eUhBk5eeE4kFb0YfXeY5do3616glG4pjJUmL+93m7WEYBRjY5xaGOTjEbxyppROvz3pDaBXP9MxojgTFA+s2QLUnUI/HWzCPZzgHdM4wRUik2UisnUrRxAZVmOUQkhmB1FDzh2AXiJND/7Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3Y2L83D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C40C4AF1C;
+	Thu, 13 Jun 2024 11:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279684;
-	bh=aHlP18xVNvlj4PSx7Ed1MTF/LxI9LruRrjQ/QvybDcs=;
+	s=korg; t=1718279189;
+	bh=eg4Ju8Gg7wJ1JeidNfPyx/8dZ2VZi4BCA2Nh7Yln35c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zH7faIRSW9w52LYOvJBuYsMoQDa4xOtF40ziY6b16FWRjI6UZgCFo5p6aLB/rjxlD
-	 iSCnOdi7KzILW1J40CVAr5tLoNB1q1ub28qZvcO0LDqTUJPgCQDak3M6Rqcxjmr+qG
-	 pzKczhUHC0BJs8s4Qp5SC+d8HmHHCi3dI/4uCyLU=
+	b=T3Y2L83Db9MzJ5YO+6OrLn5vzVD/kibl0ojyASp+6UBfwrJWbnSTDJ6EqiD/G0iQv
+	 5f9+hGWU7C6liDON7338gUpl8vTFvURCFhYZRciT7ifbXOEwgs/xAk3jGqHr8YpOBv
+	 Bzp7zL2pv7QalV5Ozd1EtM0Dh8bRanDUPnk4z4c8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Juergen Christ <jchrist@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>
-Subject: [PATCH 6.9 128/157] s390/cpacf: Split and rework cpacf query functions
+	Justin Stitt <justinstitt@google.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>
+Subject: [PATCH 4.19 205/213] kdb: Use format-strings rather than \0 injection in kdb_read()
 Date: Thu, 13 Jun 2024 13:34:13 +0200
-Message-ID: <20240613113232.362184114@linuxfoundation.org>
+Message-ID: <20240613113235.889254175@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,152 +62,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Daniel Thompson <daniel.thompson@linaro.org>
 
-commit 830999bd7e72f4128b9dfa37090d9fa8120ce323 upstream.
+commit 09b35989421dfd5573f0b4683c7700a7483c71f9 upstream.
 
-Rework the cpacf query functions to use the correct RRE
-or RRF instruction formats and set register fields within
-instructions correctly.
+Currently when kdb_read() needs to reposition the cursor it uses copy and
+paste code that works by injecting an '\0' at the cursor position before
+delivering a carriage-return and reprinting the line (which stops at the
+'\0').
 
-Fixes: 1afd43e0fbba ("s390/crypto: allow to query all known cpacf functions")
-Reported-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Suggested-by: Heiko Carstens <hca@linux.ibm.com>
-Suggested-by: Juergen Christ <jchrist@linux.ibm.com>
-Suggested-by: Holger Dengler <dengler@linux.ibm.com>
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-Reviewed-by: Juergen Christ <jchrist@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Tidy up the code by hoisting the copy and paste code into an appropriately
+named function. Additionally let's replace the '\0' injection with a
+proper field width parameter so that the string will be abridged during
+formatting instead.
+
+Cc: stable@vger.kernel.org # Not a bug fix but it is needed for later bug fixes
+Tested-by: Justin Stitt <justinstitt@google.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-2-f236dbe9828d@linaro.org
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/include/asm/cpacf.h |  101 +++++++++++++++++++++++++++++++++---------
- 1 file changed, 81 insertions(+), 20 deletions(-)
+ kernel/debug/kdb/kdb_io.c |   55 ++++++++++++++++++++++++++++------------------
+ 1 file changed, 34 insertions(+), 21 deletions(-)
 
---- a/arch/s390/include/asm/cpacf.h
-+++ b/arch/s390/include/asm/cpacf.h
-@@ -166,28 +166,79 @@
- 
- typedef struct { unsigned char bytes[16]; } cpacf_mask_t;
- 
--/**
-- * cpacf_query() - check if a specific CPACF function is available
-- * @opcode: the opcode of the crypto instruction
-- * @func: the function code to test for
-- *
-- * Executes the query function for the given crypto instruction @opcode
-- * and checks if @func is available
-- *
-- * Returns 1 if @func is available for @opcode, 0 otherwise
-- */
--static __always_inline void __cpacf_query(unsigned int opcode, cpacf_mask_t *mask)
-+static __always_inline void __cpacf_query_rre(u32 opc, u8 r1, u8 r2,
-+					      cpacf_mask_t *mask)
-+{
-+	asm volatile(
-+		"	la	%%r1,%[mask]\n"
-+		"	xgr	%%r0,%%r0\n"
-+		"	.insn	rre,%[opc] << 16,%[r1],%[r2]\n"
-+		: [mask] "=R" (*mask)
-+		: [opc] "i" (opc),
-+		  [r1] "i" (r1), [r2] "i" (r2)
-+		: "cc", "r0", "r1");
-+}
-+
-+static __always_inline void __cpacf_query_rrf(u32 opc,
-+					      u8 r1, u8 r2, u8 r3, u8 m4,
-+					      cpacf_mask_t *mask)
- {
- 	asm volatile(
--		"	lghi	0,0\n" /* query function */
--		"	lgr	1,%[mask]\n"
--		"	spm	0\n" /* pckmo doesn't change the cc */
--		/* Parameter regs are ignored, but must be nonzero and unique */
--		"0:	.insn	rrf,%[opc] << 16,2,4,6,0\n"
--		"	brc	1,0b\n"	/* handle partial completion */
--		: "=m" (*mask)
--		: [mask] "d" ((unsigned long)mask), [opc] "i" (opcode)
--		: "cc", "0", "1");
-+		"	la	%%r1,%[mask]\n"
-+		"	xgr	%%r0,%%r0\n"
-+		"	.insn	rrf,%[opc] << 16,%[r1],%[r2],%[r3],%[m4]\n"
-+		: [mask] "=R" (*mask)
-+		: [opc] "i" (opc), [r1] "i" (r1), [r2] "i" (r2),
-+		  [r3] "i" (r3), [m4] "i" (m4)
-+		: "cc", "r0", "r1");
-+}
-+
-+static __always_inline void __cpacf_query(unsigned int opcode,
-+					  cpacf_mask_t *mask)
-+{
-+	switch (opcode) {
-+	case CPACF_KDSA:
-+		__cpacf_query_rre(CPACF_KDSA, 0, 2, mask);
-+		break;
-+	case CPACF_KIMD:
-+		__cpacf_query_rre(CPACF_KIMD, 0, 2, mask);
-+		break;
-+	case CPACF_KLMD:
-+		__cpacf_query_rre(CPACF_KLMD, 0, 2, mask);
-+		break;
-+	case CPACF_KM:
-+		__cpacf_query_rre(CPACF_KM, 2, 4, mask);
-+		break;
-+	case CPACF_KMA:
-+		__cpacf_query_rrf(CPACF_KMA, 2, 4, 6, 0, mask);
-+		break;
-+	case CPACF_KMAC:
-+		__cpacf_query_rre(CPACF_KMAC, 0, 2, mask);
-+		break;
-+	case CPACF_KMC:
-+		__cpacf_query_rre(CPACF_KMC, 2, 4, mask);
-+		break;
-+	case CPACF_KMCTR:
-+		__cpacf_query_rrf(CPACF_KMCTR, 2, 4, 6, 0, mask);
-+		break;
-+	case CPACF_KMF:
-+		__cpacf_query_rre(CPACF_KMF, 2, 4, mask);
-+		break;
-+	case CPACF_KMO:
-+		__cpacf_query_rre(CPACF_KMO, 2, 4, mask);
-+		break;
-+	case CPACF_PCC:
-+		__cpacf_query_rre(CPACF_PCC, 0, 0, mask);
-+		break;
-+	case CPACF_PCKMO:
-+		__cpacf_query_rre(CPACF_PCKMO, 0, 0, mask);
-+		break;
-+	case CPACF_PRNO:
-+		__cpacf_query_rre(CPACF_PRNO, 2, 4, mask);
-+		break;
-+	default:
-+		BUG();
-+	}
- }
- 
- static __always_inline int __cpacf_check_opcode(unsigned int opcode)
-@@ -215,6 +266,16 @@ static __always_inline int __cpacf_check
- 	}
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -170,6 +170,33 @@ static int kdb_read_get_key(char *buffer
+ 	return key;
  }
  
 +/**
-+ * cpacf_query() - check if a specific CPACF function is available
-+ * @opcode: the opcode of the crypto instruction
-+ * @func: the function code to test for
++ * kdb_position_cursor() - Place cursor in the correct horizontal position
++ * @prompt: Nil-terminated string containing the prompt string
++ * @buffer: Nil-terminated string containing the entire command line
++ * @cp: Cursor position, pointer the character in buffer where the cursor
++ *      should be positioned.
 + *
-+ * Executes the query function for the given crypto instruction @opcode
-+ * and checks if @func is available
++ * The cursor is positioned by sending a carriage-return and then printing
++ * the content of the line until we reach the correct cursor position.
 + *
-+ * Returns 1 if @func is available for @opcode, 0 otherwise
++ * There is some additional fine detail here.
++ *
++ * Firstly, even though kdb_printf() will correctly format zero-width fields
++ * we want the second call to kdb_printf() to be conditional. That keeps things
++ * a little cleaner when LOGGING=1.
++ *
++ * Secondly, we can't combine everything into one call to kdb_printf() since
++ * that renders into a fixed length buffer and the combined print could result
++ * in unwanted truncation.
 + */
- static __always_inline int cpacf_query(unsigned int opcode, cpacf_mask_t *mask)
- {
- 	if (__cpacf_check_opcode(opcode)) {
++static void kdb_position_cursor(char *prompt, char *buffer, char *cp)
++{
++	kdb_printf("\r%s", kdb_prompt_str);
++	if (cp > buffer)
++		kdb_printf("%.*s", (int)(cp - buffer), buffer);
++}
++
+ /*
+  * kdb_read
+  *
+@@ -208,7 +235,6 @@ static char *kdb_read(char *buffer, size
+ 						 * and null byte */
+ 	char *lastchar;
+ 	char *p_tmp;
+-	char tmp;
+ 	static char tmpbuffer[CMD_BUFLEN];
+ 	int len = strlen(buffer);
+ 	int len_tmp;
+@@ -247,12 +273,8 @@ poll_again:
+ 			}
+ 			*(--lastchar) = '\0';
+ 			--cp;
+-			kdb_printf("\b%s \r", cp);
+-			tmp = *cp;
+-			*cp = '\0';
+-			kdb_printf(kdb_prompt_str);
+-			kdb_printf("%s", buffer);
+-			*cp = tmp;
++			kdb_printf("\b%s ", cp);
++			kdb_position_cursor(kdb_prompt_str, buffer, cp);
+ 		}
+ 		break;
+ 	case 13: /* enter */
+@@ -269,19 +291,14 @@ poll_again:
+ 			memcpy(tmpbuffer, cp+1, lastchar - cp - 1);
+ 			memcpy(cp, tmpbuffer, lastchar - cp - 1);
+ 			*(--lastchar) = '\0';
+-			kdb_printf("%s \r", cp);
+-			tmp = *cp;
+-			*cp = '\0';
+-			kdb_printf(kdb_prompt_str);
+-			kdb_printf("%s", buffer);
+-			*cp = tmp;
++			kdb_printf("%s ", cp);
++			kdb_position_cursor(kdb_prompt_str, buffer, cp);
+ 		}
+ 		break;
+ 	case 1: /* Home */
+ 		if (cp > buffer) {
+-			kdb_printf("\r");
+-			kdb_printf(kdb_prompt_str);
+ 			cp = buffer;
++			kdb_position_cursor(kdb_prompt_str, buffer, cp);
+ 		}
+ 		break;
+ 	case 5: /* End */
+@@ -387,13 +404,9 @@ poll_again:
+ 				memcpy(cp+1, tmpbuffer, lastchar - cp);
+ 				*++lastchar = '\0';
+ 				*cp = key;
+-				kdb_printf("%s\r", cp);
++				kdb_printf("%s", cp);
+ 				++cp;
+-				tmp = *cp;
+-				*cp = '\0';
+-				kdb_printf(kdb_prompt_str);
+-				kdb_printf("%s", buffer);
+-				*cp = tmp;
++				kdb_position_cursor(kdb_prompt_str, buffer, cp);
+ 			} else {
+ 				*++lastchar = '\0';
+ 				*cp++ = key;
 
 
 
