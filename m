@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-50968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A322E906DA4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19259906BAB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41E332857F1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B74A21F212E5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBDF145B08;
-	Thu, 13 Jun 2024 11:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE923143C5A;
+	Thu, 13 Jun 2024 11:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufaYkMto"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfhVQ7by"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C761145B1F;
-	Thu, 13 Jun 2024 11:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3936AFAE;
+	Thu, 13 Jun 2024 11:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279918; cv=none; b=t+tb2fAx1HkfSQtoHygBhQFQRwUKKH+CFIyatf7Ik9usxqfkJrNHCFAJ5Zt1T6BvHzCQGQe0G7gLawgbdzT+c7EBFya6/fUbnVFR8UGB5LBVfJqVUCo7yKC47A/loPyLHccLW6USW9SjJCuVtuCmD4UHgVYA1/PVO/M6sZZ/Pco=
+	t=1718278964; cv=none; b=QSRTmGYCRYy6Zz4cr80gRvxaan3Orrqj1z65PYeGNUQVwE79ARg7Na4Oh0c3gSsZpTD2jzDo316fKI9ZhK7Hh47IXhMwvC0C8ASr6aPTmKtcnfdpge42cVyK3YGbg9tXYoHT39M5+i82gf1amKXlcb7WlMftbMsKpMiTB+Pavao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279918; c=relaxed/simple;
-	bh=8P4zCihjU9WRCA3RtPOkl8T4jayZF9+WHwZGpq9RhDk=;
+	s=arc-20240116; t=1718278964; c=relaxed/simple;
+	bh=CNFlmrTwjE3XR/92VwgbxDZ29OPs6eo/K1cv2S639CU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nOy1+zUKtDQ6YYvc2BSdkh6adRmotGFo4rAdngTeYI331K8r7xdcpQVU5cYEFZilmveBsWzB+xI9sKUiZLisSIY0e+xtMhXMM/C3TVYfEDkPzrL8RwG9213p++ZClRNiAESrrt00RQg4mDn/fqvMM/oKI1Vop73IPgkYNa1dHM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufaYkMto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9687AC2BBFC;
-	Thu, 13 Jun 2024 11:58:37 +0000 (UTC)
+	 MIME-Version; b=aD9kNc1X63dyp0LOlvPydN1iUzVZy0tykN1gp8xvZ9YqrsiK/fOIIpxTpLXSWFsEMGkyT6I8RESJeNPa+WfnIQkV7YLTsjxMnXD2b23N5im9DCcc00k1QIA3noitwW2IRgrPFggt3r+AnMC5YpPp5oEOvSLzIslpHpHM4RTCuuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfhVQ7by; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B084C2BBFC;
+	Thu, 13 Jun 2024 11:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279918;
-	bh=8P4zCihjU9WRCA3RtPOkl8T4jayZF9+WHwZGpq9RhDk=;
+	s=korg; t=1718278964;
+	bh=CNFlmrTwjE3XR/92VwgbxDZ29OPs6eo/K1cv2S639CU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ufaYkMto4FvwDnP3KHanHJpUVtlHtFD+PcCctLgzpq+kMDVEcfLczkc35Y1kkopWL
-	 kKvQXdhOwCoPs9Uxdq1bMoPN+yTAb5LiV0IAQeUhBAE4A9JTmiuESboIFO2uMERX8L
-	 3k1uc0RFVPk9bQzblqQSHV4V3bMltfpatkoJLyg0=
+	b=XfhVQ7byZjnitmQkSOaekzzB1PIAU6Me1oq0XxR4XJHiDcqIMrsGApq5p8qsQLQs2
+	 qvbztjFInL7EdhCP2SploITnZPUtcNsckfLdSVIdbtexGXjg+kBuDctbOhW2xZXihJ
+	 LOVe4RPWGzNRdfaZhhQsBJdHsGUzTElnrapvfEXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Ryosuke Yasuoka <ryasuoka@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 080/202] drm/panel: simple: Add missing Innolux G121X1-L03 format, flags, connector
+Subject: [PATCH 4.19 130/213] nfc: nci: Fix handling of zero-length payload packets in nci_rx_work()
 Date: Thu, 13 Jun 2024 13:32:58 +0200
-Message-ID: <20240613113230.862680278@linuxfoundation.org>
+Message-ID: <20240613113233.012665381@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Ryosuke Yasuoka <ryasuoka@redhat.com>
 
-[ Upstream commit 11ac72d033b9f577e8ba0c7a41d1c312bb232593 ]
+[ Upstream commit 6671e352497ca4bb07a96c48e03907065ff77d8a ]
 
-The .bpc = 6 implies .bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG ,
-add the missing bus_format. Add missing connector type and bus_flags
-as well.
+When nci_rx_work() receives a zero-length payload packet, it should not
+discard the packet and exit the loop. Instead, it should continue
+processing subsequent packets.
 
-Documentation [1] 1.4 GENERAL SPECIFICATI0NS indicates this panel is
-capable of both RGB 18bit/24bit panel, the current configuration uses
-18bit mode, .bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG , .bpc = 6.
-
-Support for the 24bit mode would require another entry in panel-simple
-with .bus_format = MEDIA_BUS_FMT_RGB666_1X7X4_SPWG and .bpc = 8, which
-is out of scope of this fix.
-
-[1] https://www.distec.de/fileadmin/pdf/produkte/TFT-Displays/Innolux/G121X1-L03_Datasheet.pdf
-
-Fixes: f8fa17ba812b ("drm/panel: simple: Add support for Innolux G121X1-L03")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240328102746.17868-2-marex@denx.de
+Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
+Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240521153444.535399-1-ryasuoka@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/nfc/nci/core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index fd8b16dcf13e7..83cba00f854d6 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -1729,6 +1729,9 @@ static const struct panel_desc innolux_g121x1_l03 = {
- 		.unprepare = 200,
- 		.disable = 400,
- 	},
-+	.bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
-+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
- };
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 0e6bca80265ae..c29d7aee63bd5 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1526,8 +1526,7 @@ static void nci_rx_work(struct work_struct *work)
  
- /*
+ 		if (!nci_valid_size(skb)) {
+ 			kfree_skb(skb);
+-			kcov_remote_stop();
+-			break;
++			continue;
+ 		}
+ 
+ 		/* Process frame */
 -- 
 2.43.0
 
