@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-50948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07CB0906D8D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F201B906B9A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0DB428134A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 887E42813B2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A4A1448E7;
-	Thu, 13 Jun 2024 11:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7731448DC;
+	Thu, 13 Jun 2024 11:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a15KLvdt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxwXGcS/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A53513D881;
-	Thu, 13 Jun 2024 11:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5FF1442EF;
+	Thu, 13 Jun 2024 11:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279859; cv=none; b=EHSqb2cH0R8v9XKnXHJH2rLEsHi1vOj90bBn5x98VTuxLe0vjiK3OAf70sUaERlwz3k6xMjQbQNcOXZzxrILwIDJbotRorzY4RvAGuneodQ94hbiOv++LKX65rG43xQ1L8Tpl5cGFA+TRXpe2jN8aiPHTTqvhmclnBXou0268C0=
+	t=1718278914; cv=none; b=R94t25N1klAL5PcHtRiDPEP08xe7CV60MvCs72/DDaledWeoIMTAax7tKoXQPQTuWbE8WSVp9K64VL3QSVZvsP6ecVb3Ltwdn+DFwlWxVGGxVBlXMQoj6YjH7zjpRkqLrXPF6lKa7WqbicOWwwlsvh0Uj/BME1NY1TDsCmWMENM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279859; c=relaxed/simple;
-	bh=pixOWTxxtln3ZtDrtCN4Ay8n/VFc0wEP8nf1Cfxix1g=;
+	s=arc-20240116; t=1718278914; c=relaxed/simple;
+	bh=0r/Y8W5KnwzYiRUvOig0KbNClpB+4fu32hbDlorqWxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EMglT0YfZdTJmBT3ZbaBjyfSQHpptckclpoykaduOJTlvdoU0GktnuBRyPUCvAj4wvSOAOxAIqiBYCulCZypiZDOhJ7YbndotgUNwWiRq1Fj9u8U2deYaA42v5SBTnzeY83LzSf8suv0HwmTywRvxcJOMoeQOwWU5d3LImpHB0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a15KLvdt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A6EC2BBFC;
-	Thu, 13 Jun 2024 11:57:38 +0000 (UTC)
+	 MIME-Version; b=rNJNxCAHXW0HsxW5Q+M3aO7aMf9+ciqYAvArNJizoQNKaD83WskACcE8kN9NH3bRIm3nIXEa4Mo+9QJyTOBy+VSPdXpcYhm4MQkAaVLxsdpVK6l4erRtPoc+Qoi5e8hHv/alojKpQm2m0qbdtn2ptAUNjDSvGilc1wsccPialRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxwXGcS/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DEBFC2BBFC;
+	Thu, 13 Jun 2024 11:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279859;
-	bh=pixOWTxxtln3ZtDrtCN4Ay8n/VFc0wEP8nf1Cfxix1g=;
+	s=korg; t=1718278914;
+	bh=0r/Y8W5KnwzYiRUvOig0KbNClpB+4fu32hbDlorqWxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a15KLvdtDkoCQjJxDFCGAMcfM73VX84Uvss84hJv6bBkDXJAhXX3bcQtv7Dz10SOd
-	 4+baY0f+aNxd55eU8ego331Aqv/fEi0eQjDHRaOMC/pLVOY8OJiuzyVwV8VnHaDMN/
-	 KKPgax/j26BBAB7y8Q2+EU5QfcofahzZIV+pI6U0=
+	b=MxwXGcS/mb5IlDR3tcu7tfn464L5Gn3IKHIV5QHB1Bx8CF8hrxdmmHY/Yz1/jmC+p
+	 axSFSdz6NsWkWGY2pkf0VkM2UplYvr2a/a7fC+rVG4iBVyZnDsFqiUh/plFeGX4arW
+	 b3imrwsYBuYmcmHOod7Cf/3FLrRxIlWXtxV1P4UI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jeykumar Sankaran <jsanka@codeaurora.org>,
+	Sean Paul <seanpaul@chromium.org>,
+	Rob Clark <robdclark@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 061/202] net: ethernet: cortina: Locking fixes
+Subject: [PATCH 4.19 111/213] drm/msm/dpu: use kms stored hw mdp block
 Date: Thu, 13 Jun 2024 13:32:39 +0200
-Message-ID: <20240613113230.131876446@linuxfoundation.org>
+Message-ID: <20240613113232.283674658@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Jeykumar Sankaran <jsanka@codeaurora.org>
 
-[ Upstream commit 812552808f7ff71133fc59768cdc253c5b8ca1bf ]
+[ Upstream commit 57250ca5433306774e7f83b11503609ed1bf28cf ]
 
-This fixes a probably long standing problem in the Cortina
-Gemini ethernet driver: there are some paths in the code
-where the IRQ registers are written without taking the proper
-locks.
+Avoid querying RM for hw mdp block. Use the one
+stored in KMS during initialization.
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240509-gemini-ethernet-locking-v1-1-afd00a528b95@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+changes in v4:
+	- none
+changes in v5:
+	- none
+
+Signed-off-by: Jeykumar Sankaran <jsanka@codeaurora.org>
+Reviewed-by: Sean Paul <seanpaul@chromium.org>
+Signed-off-by: Sean Paul <seanpaul@chromium.org>
+Signed-off-by: Rob Clark <robdclark@gmail.com>
+Stable-dep-of: 2b938c3ab0a6 ("drm/msm/dpu: Always flush the slave INTF on the CTL")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 12 +-----------
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c |  9 +--------
+ 2 files changed, 2 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 4bcdb48b0e9cc..91952d086f226 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1115,10 +1115,13 @@ static void gmac_tx_irq_enable(struct net_device *netdev,
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+index 3084675ed4257..c8c4612dc34dd 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+@@ -823,7 +823,6 @@ struct dpu_encoder_phys *dpu_encoder_phys_cmd_init(
  {
- 	struct gemini_ethernet_port *port = netdev_priv(netdev);
- 	struct gemini_ethernet *geth = port->geth;
-+	unsigned long flags;
- 	u32 val, mask;
+ 	struct dpu_encoder_phys *phys_enc = NULL;
+ 	struct dpu_encoder_phys_cmd *cmd_enc = NULL;
+-	struct dpu_hw_mdp *hw_mdp;
+ 	struct dpu_encoder_irq *irq;
+ 	int i, ret = 0;
  
- 	netdev_dbg(netdev, "%s device %d\n", __func__, netdev->dev_id);
- 
-+	spin_lock_irqsave(&geth->irq_lock, flags);
-+
- 	mask = GMAC0_IRQ0_TXQ0_INTS << (6 * netdev->dev_id + txq);
- 
- 	if (en)
-@@ -1127,6 +1130,8 @@ static void gmac_tx_irq_enable(struct net_device *netdev,
- 	val = readl(geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
- 	val = en ? val | mask : val & ~mask;
- 	writel(val, geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
-+
-+	spin_unlock_irqrestore(&geth->irq_lock, flags);
- }
- 
- static void gmac_tx_irq(struct net_device *netdev, unsigned int txq_num)
-@@ -1432,15 +1437,19 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	union gmac_rxdesc_3 word3;
- 	struct page *page = NULL;
- 	unsigned int page_offs;
-+	unsigned long flags;
- 	unsigned short r, w;
- 	union dma_rwptr rw;
- 	dma_addr_t mapping;
- 	int frag_nr = 0;
- 
-+	spin_lock_irqsave(&geth->irq_lock, flags);
- 	rw.bits32 = readl(ptr_reg);
- 	/* Reset interrupt as all packages until here are taken into account */
- 	writel(DEFAULT_Q0_INT_BIT << netdev->dev_id,
- 	       geth->base + GLOBAL_INTERRUPT_STATUS_1_REG);
-+	spin_unlock_irqrestore(&geth->irq_lock, flags);
-+
- 	r = rw.bits.rptr;
- 	w = rw.bits.wptr;
- 
-@@ -1743,10 +1752,9 @@ static irqreturn_t gmac_irq(int irq, void *data)
- 		gmac_update_hw_stats(netdev);
- 
- 	if (val & (GMAC0_RX_OVERRUN_INT_BIT << (netdev->dev_id * 8))) {
-+		spin_lock(&geth->irq_lock);
- 		writel(GMAC0_RXDERR_INT_BIT << (netdev->dev_id * 8),
- 		       geth->base + GLOBAL_INTERRUPT_STATUS_4_REG);
+@@ -836,14 +835,7 @@ struct dpu_encoder_phys *dpu_encoder_phys_cmd_init(
+ 		goto fail;
+ 	}
+ 	phys_enc = &cmd_enc->base;
 -
--		spin_lock(&geth->irq_lock);
- 		u64_stats_update_begin(&port->ir_stats_syncp);
- 		++port->stats.rx_fifo_errors;
- 		u64_stats_update_end(&port->ir_stats_syncp);
+-	hw_mdp = dpu_rm_get_mdp(&p->dpu_kms->rm);
+-	if (IS_ERR_OR_NULL(hw_mdp)) {
+-		ret = PTR_ERR(hw_mdp);
+-		DPU_ERROR("failed to get mdptop\n");
+-		goto fail_mdp_init;
+-	}
+-	phys_enc->hw_mdptop = hw_mdp;
++	phys_enc->hw_mdptop = p->dpu_kms->hw_mdp;
+ 	phys_enc->intf_idx = p->intf_idx;
+ 
+ 	dpu_encoder_phys_cmd_init_ops(&phys_enc->ops);
+@@ -898,8 +890,6 @@ struct dpu_encoder_phys *dpu_encoder_phys_cmd_init(
+ 
+ 	return phys_enc;
+ 
+-fail_mdp_init:
+-	kfree(cmd_enc);
+ fail:
+ 	return ERR_PTR(ret);
+ }
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
+index c9962a36b86b8..15a1277fe3540 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
+@@ -829,7 +829,6 @@ struct dpu_encoder_phys *dpu_encoder_phys_vid_init(
+ 	struct dpu_encoder_phys *phys_enc = NULL;
+ 	struct dpu_encoder_phys_vid *vid_enc = NULL;
+ 	struct dpu_rm_hw_iter iter;
+-	struct dpu_hw_mdp *hw_mdp;
+ 	struct dpu_encoder_irq *irq;
+ 	int i, ret = 0;
+ 
+@@ -846,13 +845,7 @@ struct dpu_encoder_phys *dpu_encoder_phys_vid_init(
+ 
+ 	phys_enc = &vid_enc->base;
+ 
+-	hw_mdp = dpu_rm_get_mdp(&p->dpu_kms->rm);
+-	if (IS_ERR_OR_NULL(hw_mdp)) {
+-		ret = PTR_ERR(hw_mdp);
+-		DPU_ERROR("failed to get mdptop\n");
+-		goto fail;
+-	}
+-	phys_enc->hw_mdptop = hw_mdp;
++	phys_enc->hw_mdptop = p->dpu_kms->hw_mdp;
+ 	phys_enc->intf_idx = p->intf_idx;
+ 
+ 	/**
 -- 
 2.43.0
 
