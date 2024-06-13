@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-51206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E56FA906EC8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02CA6907219
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E47611C2433B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F263F1C20A0B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2279E14431C;
-	Thu, 13 Jun 2024 12:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B4E143C48;
+	Thu, 13 Jun 2024 12:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siDCwNvH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9X9fML4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45D56EB56;
-	Thu, 13 Jun 2024 12:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79A11E519;
+	Thu, 13 Jun 2024 12:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280617; cv=none; b=HXb7Dvm19hcrauATOuZr/ufJV9mVL2QC3O+DixEuAPxjd/VbpLODgaPotiJfnrT2OAvWQr3Lm3JAB88oQeUUqpXfZTaZFS9+Gk+ahOVi1A0jA2K6lcoQG9V3V1P70gtn+OMXEI72kSB7AUstixb8EkXN0Tj819svQch1BntGd40=
+	t=1718282619; cv=none; b=XfLnTvYYgt5lSbcXGTRERRvug9wUAPMZ38x0u/EaW3l3r9JHn3BcUd/4yrWTCzfh2ml+ZDqkMl4NtBVqxDtsZJI0Rk8D5E6A//oSiuu36+8PeeQ2n2eEieqDd6m5SoE4EU5BFMWnIUBFG0sx1K+MstqmLRJD2FFflssT553OOZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280617; c=relaxed/simple;
-	bh=FxCElrmZoq3RCxY86ps4Hu5mpbNn20q/SF9Gz1RCzsI=;
+	s=arc-20240116; t=1718282619; c=relaxed/simple;
+	bh=PsBkftIDlrafqwXO2Y77Vty3QHyeaEzFWZMByzimzNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GCAGExEbgQS/EifECDMC1wlmL3emxpTAXzIe08HUxW9l8wX3O08AblpJBiUrr6TIZzP9I9OaGTCmTY4PWBmPXvnggB+xgAqutMs5hG66TgSnKROMRjmlzoxVc5+oGQhQuQw8aG5VgJYJhJPKKcxT80cmNSkXnxiRxEkyDhHwWx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siDCwNvH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA2AC2BBFC;
-	Thu, 13 Jun 2024 12:10:17 +0000 (UTC)
+	 MIME-Version; b=eN3qPQA6d+iHHGCrRpIudj6+WniTnrrmY/yAP9h1QOdF9nk5jpiswaklvKvncdAk8KaQcwwigA/o/g6EyEzWHCCB/9koF1ps3njaEWCwxBeLvdZTxur3AlsEmtkGmNvXpiL/85tW63y1QA0Nzx4FCv6ZQdxxS34K2u6p7b758+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9X9fML4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21600C2BBFC;
+	Thu, 13 Jun 2024 12:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280617;
-	bh=FxCElrmZoq3RCxY86ps4Hu5mpbNn20q/SF9Gz1RCzsI=;
+	s=korg; t=1718282619;
+	bh=PsBkftIDlrafqwXO2Y77Vty3QHyeaEzFWZMByzimzNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=siDCwNvHpcdBEY/bjYtm/vdK2MlKyxbzVZrsW09dPTlK3RESSmuFDW8rtRfndmopX
-	 7XsYSLOlivp2q9tJsqhooVep+0dudef00hy8uZMB6p6/iJVf+Ut8/Ryq3XAkW2waLc
-	 AGgr5BjhYi0q2kR4lA50ngr0TU2Gq5agVICujQNY=
+	b=F9X9fML4mPRLtyz/m7oQ358+VrromqK82DxzAKRRi8qv6PD2iipWalwCEehEBmD+9
+	 F8EqPzE5JL1koCUBfZacoRccQ3ESzjPLzoIUTio6N4tM8xczW7iiHH2TzWVFitpBBG
+	 nH/pEIpxmIkOjeaNE9T+fW9vvL4ZRJKtjZTWK61w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 115/137] parisc: Define sigset_t in parisc uapi header
+	Zheng Zhang <zheng.zhang@email.ucr.edu>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 5.15 338/402] media: cec: core: add adap_nb_transmit_canceled() callback
 Date: Thu, 13 Jun 2024 13:34:55 +0200
-Message-ID: <20240613113227.759892242@linuxfoundation.org>
+Message-ID: <20240613113315.319425052@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit 487fa28fa8b60417642ac58e8beda6e2509d18f9 upstream.
+commit da53c36ddd3f118a525a04faa8c47ca471e6c467 upstream.
 
-The util-linux debian package fails to build on parisc, because
-sigset_t isn't defined in asm/signal.h when included from userspace.
-Move the sigset_t type from internal header to the uapi header to fix the
-build.
+A potential deadlock was found by Zheng Zhang with a local syzkaller
+instance.
 
-Link: https://buildd.debian.org/status/fetch.php?pkg=util-linux&arch=hppa&ver=2.40-7&stamp=1714163443&raw=0
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v6.0+
+The problem is that when a non-blocking CEC transmit is canceled by calling
+cec_data_cancel, that in turn can call the high-level received() driver
+callback, which can call cec_transmit_msg() to transmit a new message.
+
+The cec_data_cancel() function is called with the adap->lock mutex held,
+and cec_transmit_msg() tries to take that same lock.
+
+The root cause is that the received() callback can either be used to pass
+on a received message (and then adap->lock is not held), or to report a
+canceled transmit (and then adap->lock is held).
+
+This is confusing, so create a new low-level adap_nb_transmit_canceled
+callback that reports back that a non-blocking transmit was canceled.
+
+And the received() callback is only called when a message is received,
+as was the case before commit f9d0ecbf56f4 ("media: cec: correctly pass
+on reply results") complicated matters.
+
+Reported-by: Zheng Zhang <zheng.zhang@email.ucr.edu>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: f9d0ecbf56f4 ("media: cec: correctly pass on reply results")
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/include/asm/signal.h      |   12 ------------
- arch/parisc/include/uapi/asm/signal.h |   10 ++++++++++
- 2 files changed, 10 insertions(+), 12 deletions(-)
+ drivers/media/cec/core/cec-adap.c |    4 ++--
+ include/media/cec.h               |    6 ++++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/arch/parisc/include/asm/signal.h
-+++ b/arch/parisc/include/asm/signal.h
-@@ -4,23 +4,11 @@
+--- a/drivers/media/cec/core/cec-adap.c
++++ b/drivers/media/cec/core/cec-adap.c
+@@ -397,8 +397,8 @@ static void cec_data_cancel(struct cec_d
+ 	cec_queue_msg_monitor(adap, &data->msg, 1);
  
- #include <uapi/asm/signal.h>
+ 	if (!data->blocking && data->msg.sequence)
+-		/* Allow drivers to process the message first */
+-		call_op(adap, received, &data->msg);
++		/* Allow drivers to react to a canceled transmit */
++		call_void_op(adap, adap_nb_transmit_canceled, &data->msg);
  
--#define _NSIG		64
--/* bits-per-word, where word apparently means 'long' not 'int' */
--#define _NSIG_BPW	BITS_PER_LONG
--#define _NSIG_WORDS	(_NSIG / _NSIG_BPW)
--
- # ifndef __ASSEMBLY__
+ 	cec_data_completed(data);
+ }
+--- a/include/media/cec.h
++++ b/include/media/cec.h
+@@ -120,14 +120,16 @@ struct cec_adap_ops {
+ 	int (*adap_log_addr)(struct cec_adapter *adap, u8 logical_addr);
+ 	int (*adap_transmit)(struct cec_adapter *adap, u8 attempts,
+ 			     u32 signal_free_time, struct cec_msg *msg);
++	void (*adap_nb_transmit_canceled)(struct cec_adapter *adap,
++					  const struct cec_msg *msg);
+ 	void (*adap_status)(struct cec_adapter *adap, struct seq_file *file);
+ 	void (*adap_free)(struct cec_adapter *adap);
  
- /* Most things should be clean enough to redefine this at will, if care
-    is taken to make libc match.  */
+-	/* Error injection callbacks */
++	/* Error injection callbacks, called without adap->lock held */
+ 	int (*error_inj_show)(struct cec_adapter *adap, struct seq_file *sf);
+ 	bool (*error_inj_parse_line)(struct cec_adapter *adap, char *line);
  
--typedef unsigned long old_sigset_t;		/* at least 32 bits */
--
--typedef struct {
--	/* next_signal() assumes this is a long - no choice */
--	unsigned long sig[_NSIG_WORDS];
--} sigset_t;
--
- #include <asm/sigcontext.h>
- 
- #endif /* !__ASSEMBLY */
---- a/arch/parisc/include/uapi/asm/signal.h
-+++ b/arch/parisc/include/uapi/asm/signal.h
-@@ -57,10 +57,20 @@
- 
- #include <asm-generic/signal-defs.h>
- 
-+#define _NSIG		64
-+#define _NSIG_BPW	(sizeof(unsigned long) * 8)
-+#define _NSIG_WORDS	(_NSIG / _NSIG_BPW)
-+
- # ifndef __ASSEMBLY__
- 
- #  include <linux/types.h>
- 
-+typedef unsigned long old_sigset_t;	/* at least 32 bits */
-+
-+typedef struct {
-+	unsigned long sig[_NSIG_WORDS];
-+} sigset_t;
-+
- /* Avoid too many header ordering problems.  */
- struct siginfo;
+-	/* High-level CEC message callback */
++	/* High-level CEC message callback, called without adap->lock held */
+ 	int (*received)(struct cec_adapter *adap, struct cec_msg *msg);
+ };
  
 
 
