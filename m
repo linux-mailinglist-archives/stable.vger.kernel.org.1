@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-51179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A13C906EAC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E77AB90701E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00E0B1F219D3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 923EC1F20B67
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE033147C9A;
-	Thu, 13 Jun 2024 12:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4535A145B2C;
+	Thu, 13 Jun 2024 12:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKF6L6JW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZKnpljf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F93143C52;
-	Thu, 13 Jun 2024 12:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026EE1459FA;
+	Thu, 13 Jun 2024 12:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280538; cv=none; b=ENWR+obteW0LabOgeOUKMNaF4E9ohr/yakKEPeQ6OyvTCKR/kYZ9XGX+wCuGBIt3dX83QU+nHZbQkubznPtUqLEtj95wZqXNbr2Ssh0K7VGmWVQOUjSK/0c9P2sCi6zFL25Dy95EkGwKmbWNahdWQqfTDGuGbnDnTTGaLsw32qg=
+	t=1718281425; cv=none; b=oHTiOLDkNxr9/EK81GrWBDRnweOTGjYce6vwDJ+XVMUWzEJXb4C6IpDOl0OKOUzpKoRQiXman+EXukW6pYz7MFAePd3VmDQY8Fk3S5pcBnxtTIEuJASs54i+CH0BQgnI+AS1dTZ2/YLw053z8lksiKK1Hs/86oCg5eSR00GV1Uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280538; c=relaxed/simple;
-	bh=Ru204zuSrx3yr+kIvmQdQToMvNf/eHW8wzelmTK6PwU=;
+	s=arc-20240116; t=1718281425; c=relaxed/simple;
+	bh=FpVwy4ghgGWEBaxFmbF8Q4XwGMJ3Ka4g+StwI71WuMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUrwL6frJi54AoD6eZGXloSZ88rGft57Qai/0/zuDfRgvrNA5Z88si+i8NSIaLTZu8/co2yKmF8jrITTheVVSsCEWsXHQxXiU9zUrYCl/zguh/3nujuO6zGZFj2YQQywihZC8rSDCmzAnL9ij/pBVS62kAT8MTBQMyvcfXbZLxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKF6L6JW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24254C2BBFC;
-	Thu, 13 Jun 2024 12:08:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D8BIowCddOWw3PddteB0fLBQ61HtLHA6oQyfeHl9qkZYoqRRi3U3UVEvA9RF2uMIS7il7lrxGJPQ4xs6b+Re6g61QO2JoEmIQvUEbbqP2l52GB4/VVQr5EEHQ3pTkFSVt6gxUNMjqRZ6mOuqOPL28O/V7fLGjz8HFCDLrDWonXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZKnpljf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E713C2BBFC;
+	Thu, 13 Jun 2024 12:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280538;
-	bh=Ru204zuSrx3yr+kIvmQdQToMvNf/eHW8wzelmTK6PwU=;
+	s=korg; t=1718281424;
+	bh=FpVwy4ghgGWEBaxFmbF8Q4XwGMJ3Ka4g+StwI71WuMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKF6L6JWhHOE3LwYE55OckfsGu11Z02JzC0TQWgpm4IsSWNCCnNW9RukwNBbjW0gC
-	 t581v/RXECvOWWz9mdLu3p7iGZSrDmYAK1FM8BpwnEU5tiF1mYcIcdDTUA+L7qeG/Q
-	 9jwtXGC9O8fpqc8QwOYsKEarvB5sKU99jk/oUcTA=
+	b=NZKnpljf2Whu/CwzJdjpvWHeUIHUadwLaQeMXPmE/hqAXjmJE49yz9jmwlBVBk25r
+	 X1q3iW+Mw/4F7dkzNwXW1W8ORm78buBryVznEPlfZbsZVFIvpDLTn1J2a2mmmZPXXu
+	 H8LF+wYR/Y/Ktfsgga4MSDmp5OIwbn8Ejpw3upKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Nick Bowler <nbowler@draconx.ca>,
-	Andreas Larsson <andreas@gaisler.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Atish Patra <atish.patra@oracle.com>,
-	Bob Picco <bob.picco@oracle.com>,
-	Vijay Kumar <vijay.ac.kumar@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.6 088/137] sparc64: Fix number of online CPUs
+	syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 250/317] dma-buf/sw-sync: dont enable IRQ from sync_print_obj()
 Date: Thu, 13 Jun 2024 13:34:28 +0200
-Message-ID: <20240613113226.712936529@linuxfoundation.org>
+Message-ID: <20240613113257.221395293@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,130 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Ravnborg <sam@ravnborg.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 98937707fea8375e8acea0aaa0b68a956dd52719 upstream.
+[ Upstream commit b794918961516f667b0c745aebdfebbb8a98df39 ]
 
-Nick Bowler reported:
-    When using newer kernels on my Ultra 60 with dual 450MHz UltraSPARC-II
-    CPUs, I noticed that only CPU 0 comes up, while older kernels (including
-    4.7) are working fine with both CPUs.
+Since commit a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from
+known context") by error replaced spin_unlock_irqrestore() with
+spin_unlock_irq() for both sync_debugfs_show() and sync_print_obj() despite
+sync_print_obj() is called from sync_debugfs_show(), lockdep complains
+inconsistent lock state warning.
 
-      I bisected the failure to this commit:
+Use plain spin_{lock,unlock}() for sync_print_obj(), for
+sync_debugfs_show() is already using spin_{lock,unlock}_irq().
 
-      9b2f753ec23710aa32c0d837d2499db92fe9115b is the first bad commit
-      commit 9b2f753ec23710aa32c0d837d2499db92fe9115b
-      Author: Atish Patra <atish.patra@oracle.com>
-      Date:   Thu Sep 15 14:54:40 2016 -0600
-
-      sparc64: Fix cpu_possible_mask if nr_cpus is set
-
-    This is a small change that reverts very easily on top of 5.18: there is
-    just one trivial conflict.  Once reverted, both CPUs work again.
-
-    Maybe this is related to the fact that the CPUs on this system are
-    numbered CPU0 and CPU2 (there is no CPU1)?
-
-The current code that adjust cpu_possible based on nr_cpu_ids do not
-take into account that CPU's may not come one after each other.
-Move the chech to the function that setup the cpu_possible mask
-so there is no need to adjust it later.
-
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Fixes: 9b2f753ec237 ("sparc64: Fix cpu_possible_mask if nr_cpus is set")
-Reported-by: Nick Bowler <nbowler@draconx.ca>
-Tested-by: Nick Bowler <nbowler@draconx.ca>
-Link: https://lore.kernel.org/sparclinux/20201009161924.c8f031c079dd852941307870@gmx.de/
-Link: https://lore.kernel.org/all/CADyTPEwt=ZNams+1bpMB1F9w_vUdPsGCt92DBQxxq_VtaLoTdw@mail.gmail.com/
-Cc: stable@vger.kernel.org # v4.8+
-Cc: Andreas Larsson <andreas@gaisler.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Atish Patra <atish.patra@oracle.com>
-Cc: Bob Picco <bob.picco@oracle.com>
-Cc: Vijay Kumar <vijay.ac.kumar@oracle.com>
-Cc: David S. Miller <davem@davemloft.net>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240330-sparc64-warnings-v1-9-37201023ee2f@ravnborg.org
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=a225ee3df7e7f9372dbe
+Fixes: a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from known context")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/c2e46020-aaa6-4e06-bf73-f05823f913f0@I-love.SAKURA.ne.jp
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/include/asm/smp_64.h |    2 --
- arch/sparc/kernel/prom_64.c     |    4 +++-
- arch/sparc/kernel/setup_64.c    |    1 -
- arch/sparc/kernel/smp_64.c      |   14 --------------
- 4 files changed, 3 insertions(+), 18 deletions(-)
+ drivers/dma-buf/sync_debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/sparc/include/asm/smp_64.h
-+++ b/arch/sparc/include/asm/smp_64.h
-@@ -47,7 +47,6 @@ void arch_send_call_function_ipi_mask(co
- int hard_smp_processor_id(void);
- #define raw_smp_processor_id() (current_thread_info()->cpu)
+diff --git a/drivers/dma-buf/sync_debug.c b/drivers/dma-buf/sync_debug.c
+index 101394f16930f..237bce21d1e72 100644
+--- a/drivers/dma-buf/sync_debug.c
++++ b/drivers/dma-buf/sync_debug.c
+@@ -110,12 +110,12 @@ static void sync_print_obj(struct seq_file *s, struct sync_timeline *obj)
  
--void smp_fill_in_cpu_possible_map(void);
- void smp_fill_in_sib_core_maps(void);
- void __noreturn cpu_play_dead(void);
+ 	seq_printf(s, "%s: %d\n", obj->name, obj->value);
  
-@@ -77,7 +76,6 @@ void __cpu_die(unsigned int cpu);
- #define smp_fill_in_sib_core_maps() do { } while (0)
- #define smp_fetch_global_regs() do { } while (0)
- #define smp_fetch_global_pmu() do { } while (0)
--#define smp_fill_in_cpu_possible_map() do { } while (0)
- #define smp_init_cpu_poke() do { } while (0)
- #define scheduler_poke() do { } while (0)
- 
---- a/arch/sparc/kernel/prom_64.c
-+++ b/arch/sparc/kernel/prom_64.c
-@@ -483,7 +483,9 @@ static void *record_one_cpu(struct devic
- 	ncpus_probed++;
- #ifdef CONFIG_SMP
- 	set_cpu_present(cpuid, true);
--	set_cpu_possible(cpuid, true);
-+
-+	if (num_possible_cpus() < nr_cpu_ids)
-+		set_cpu_possible(cpuid, true);
- #endif
- 	return NULL;
- }
---- a/arch/sparc/kernel/setup_64.c
-+++ b/arch/sparc/kernel/setup_64.c
-@@ -684,7 +684,6 @@ void __init setup_arch(char **cmdline_p)
- 
- 	paging_init();
- 	init_sparc64_elf_hwcap();
--	smp_fill_in_cpu_possible_map();
- 	/*
- 	 * Once the OF device tree and MDESC have been setup and nr_cpus has
- 	 * been parsed, we know the list of possible cpus.  Therefore we can
---- a/arch/sparc/kernel/smp_64.c
-+++ b/arch/sparc/kernel/smp_64.c
-@@ -1220,20 +1220,6 @@ void __init smp_setup_processor_id(void)
- 		xcall_deliver_impl = hypervisor_xcall_deliver;
+-	spin_lock_irq(&obj->lock);
++	spin_lock(&obj->lock); /* Caller already disabled IRQ. */
+ 	list_for_each(pos, &obj->pt_list) {
+ 		struct sync_pt *pt = container_of(pos, struct sync_pt, link);
+ 		sync_print_fence(s, &pt->base, false);
+ 	}
+-	spin_unlock_irq(&obj->lock);
++	spin_unlock(&obj->lock);
  }
  
--void __init smp_fill_in_cpu_possible_map(void)
--{
--	int possible_cpus = num_possible_cpus();
--	int i;
--
--	if (possible_cpus > nr_cpu_ids)
--		possible_cpus = nr_cpu_ids;
--
--	for (i = 0; i < possible_cpus; i++)
--		set_cpu_possible(i, true);
--	for (; i < NR_CPUS; i++)
--		set_cpu_possible(i, false);
--}
--
- void smp_fill_in_sib_core_maps(void)
- {
- 	unsigned int i;
+ static void sync_print_sync_file(struct seq_file *s,
+-- 
+2.43.0
+
 
 
 
