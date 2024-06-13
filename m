@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-51521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08D9490704A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26E56907247
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B50C1C23B7A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D11F91F217D5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE17A144D20;
-	Thu, 13 Jun 2024 12:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D248F2AF19;
+	Thu, 13 Jun 2024 12:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYtIl0qL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wr3u5Ips"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE80143747;
-	Thu, 13 Jun 2024 12:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9040B1DDDB;
+	Thu, 13 Jun 2024 12:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281539; cv=none; b=aX/8ADV4j8MV8Jlox3eEpewl30OuP/TPg6Nkn5M5B4HMmC95shuGUoRIUxDkf2hXQY4d90q2U2mevqxWIZcn7rgZan15ij6/5AZ2SrJWPxHgbLFAduNqU4QsRLbKnFF8ZrI3m5gKaqlkPlt3x7dMs2IA3asq+3gkGI3rdd993Z0=
+	t=1718282737; cv=none; b=oOprLC2qhL3GntLZHes0vH+AYrzM6JGTqtrksnpXmgI0XWQNQvn4bsSJrmPmKdWYThkkKjAJFwhuD874ct5grgHHmSyuwefbbic9l3lNTDmtFqBxWYrsASTP/nbYCmXp4gT64NSlT3Spy/CtZF3OKid305QzfJPWgdA9iUZ08Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281539; c=relaxed/simple;
-	bh=LYz3j0DmuSNqL+Tdz++MDyGo3ajZnd77zkOpnRyYYvg=;
+	s=arc-20240116; t=1718282737; c=relaxed/simple;
+	bh=iTDIb1eJlfYJDKlk890dWtVfM+07ugmxKpEuMhy/xaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a8uwQ1DuI7JE6w4Wfi9ANGi+CWOhTHKbq48EuEZ28oxhJA3WbFp3FUxJAHuivj8lDFKMGKgkPrGook3XJLwy5vo+UcQREtqxOi7PKEi8TkeSkXVgDkfdnWFPhra9Vey0id15umghyIM9JdAg8JEuDMNbH2LBAkV+HAgFePo932w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYtIl0qL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06288C2BBFC;
-	Thu, 13 Jun 2024 12:25:38 +0000 (UTC)
+	 MIME-Version; b=lVdig8ecFvQGh6rP0jAac6ceRUb5fVGRrN3/K4vAo0ZCCoUFN4HZ/PXpykdjubQ40C0jotJRp8kyMLwvjqJolQUWdGNAmoq/vDVkmRV1kXxHvS38A+EhtXXs8Vd2Kz+4kTfpfmGU86sdPeV/yYc6il30JFvInsThu9ruSkrsCnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wr3u5Ips; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16EC8C2BBFC;
+	Thu, 13 Jun 2024 12:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281539;
-	bh=LYz3j0DmuSNqL+Tdz++MDyGo3ajZnd77zkOpnRyYYvg=;
+	s=korg; t=1718282737;
+	bh=iTDIb1eJlfYJDKlk890dWtVfM+07ugmxKpEuMhy/xaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LYtIl0qLIiO+P/KSLwRkwGVpiiq/o+GGKCrtajNJdAoaeL+4pJtXT19fNCO4aSy6o
-	 gG3VzKZWTJRTWltaOQ4VPh08NuNa/LwwvFRH766Q0GMYhtXinQgPcX30Zjt0JXWO7t
-	 t1ZXUUJTJRPZGSJuK2uleeTNy56kDbOb29wB4M8s=
+	b=Wr3u5IpsnHpWMPcheyQ7Jx16Y5NQeNw97g7XVjPhwp77gpyqXUZYmIP1rSdfJmJxZ
+	 8y50skwKFxLzSrKErsdW6I93byFUriUkkeka7sSw9zGlAmKZW4rnNp055FLpIIeEbD
+	 GcNII6UrxRynhZIXV2npzHAY6/YxPAxScU0yqeVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH 5.10 289/317] media: v4l2-core: hold videodev_lock until dev reg, finishes
-Date: Thu, 13 Jun 2024 13:35:07 +0200
-Message-ID: <20240613113258.731879582@linuxfoundation.org>
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Hao Ge <gehao@kylinos.cn>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 351/402] scripts/gdb: fix SB_* constants parsing
+Date: Thu, 13 Jun 2024 13:35:08 +0200
+Message-ID: <20240613113315.827782825@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +67,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-commit 1ed4477f2ea4743e7c5e1f9f3722152d14e6eeb1 upstream.
+commit 6a59cb5158bff13b80f116305155fbe4967a5010 upstream.
 
-After the new V4L2 device node was registered, some additional
-initialization was done before the device node was marked as
-'registered'. During the time between creating the device node
-and marking it as 'registered' it was possible to open the
-device node, which would return -ENODEV since the 'registered'
-flag was not yet set.
+--0000000000009a0c9905fd9173ad
+Content-Transfer-Encoding: 8bit
 
-Hold the videodev_lock mutex from just before the device node
-is registered until the 'registered' flag is set. Since v4l2_open
-will take the same lock, it will wait until this registration
-process is finished. This resolves this race condition.
+After f15afbd34d8f ("fs: fix undefined behavior in bit shift for
+SB_NOUSER") the constants were changed from plain integers which
+LX_VALUE() can parse to constants using the BIT() macro which causes the
+following:
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: <stable@vger.kernel.org>      # for vi4.18 and up
+Reading symbols from build/linux-custom/vmlinux...done.
+Traceback (most recent call last):
+  File "/home/fainelli/work/buildroot/output/arm64/build/linux-custom/vmlinux-gdb.py", line 25, in <module>
+    import linux.constants
+  File "/home/fainelli/work/buildroot/output/arm64/build/linux-custom/scripts/gdb/linux/constants.py", line 5
+    LX_SB_RDONLY = ((((1UL))) << (0))
+
+Use LX_GDBPARSED() which does not suffer from that issue.
+
+f15afbd34d8f ("fs: fix undefined behavior in bit shift for SB_NOUSER")
+Link: https://lkml.kernel.org/r/20230607221337.2781730-1-florian.fainelli@broadcom.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Acked-by: Christian Brauner <brauner@kernel.org>
+Cc: Hao Ge <gehao@kylinos.cn>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Pankaj Raghav <p.raghav@samsung.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-dev.c |    3 +++
- 1 file changed, 3 insertions(+)
+ scripts/gdb/linux/constants.py.in |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-dev.c
-+++ b/drivers/media/v4l2-core/v4l2-dev.c
-@@ -1030,8 +1030,10 @@ int __video_register_device(struct video
- 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
- 	vdev->dev.parent = vdev->dev_parent;
- 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
-+	mutex_lock(&videodev_lock);
- 	ret = device_register(&vdev->dev);
- 	if (ret < 0) {
-+		mutex_unlock(&videodev_lock);
- 		pr_err("%s: device_register failed\n", __func__);
- 		goto cleanup;
- 	}
-@@ -1051,6 +1053,7 @@ int __video_register_device(struct video
+--- a/scripts/gdb/linux/constants.py.in
++++ b/scripts/gdb/linux/constants.py.in
+@@ -46,12 +46,12 @@ if IS_BUILTIN(CONFIG_COMMON_CLK):
+     LX_GDBPARSED(CLK_GET_RATE_NOCACHE)
  
- 	/* Part 6: Activate this minor. The char device can now be used. */
- 	set_bit(V4L2_FL_REGISTERED, &vdev->flags);
-+	mutex_unlock(&videodev_lock);
+ /* linux/fs.h */
+-LX_VALUE(SB_RDONLY)
+-LX_VALUE(SB_SYNCHRONOUS)
+-LX_VALUE(SB_MANDLOCK)
+-LX_VALUE(SB_DIRSYNC)
+-LX_VALUE(SB_NOATIME)
+-LX_VALUE(SB_NODIRATIME)
++LX_GDBPARSED(SB_RDONLY)
++LX_GDBPARSED(SB_SYNCHRONOUS)
++LX_GDBPARSED(SB_MANDLOCK)
++LX_GDBPARSED(SB_DIRSYNC)
++LX_GDBPARSED(SB_NOATIME)
++LX_GDBPARSED(SB_NODIRATIME)
  
- 	return 0;
- 
+ /* linux/htimer.h */
+ LX_GDBPARSED(hrtimer_resolution)
 
 
 
