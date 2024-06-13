@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-51886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DB5907212
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D5D907214
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3102028248C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A5DB1F244EE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D7081AA7;
-	Thu, 13 Jun 2024 12:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17042142E86;
+	Thu, 13 Jun 2024 12:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXin0gFH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgAaimYE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D674023A0;
-	Thu, 13 Jun 2024 12:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F1D1420C6;
+	Thu, 13 Jun 2024 12:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282604; cv=none; b=YDN6aP/KQqt/ay6luTTN6g3bD1eElW2YE70BTXusNcZMJDpzh/y42HIglZnki4L1fUgJ88a/pAOJXDvtl4Cyxx49WUmwVEiqyjFBje8TcsQzDVteZcng4l1ppdwsKS3G6vjvPwwVEw60xGFfj595M6u5qMvWticLXjIhyciZ3EA=
+	t=1718282610; cv=none; b=GHzMNnHOCxhB4IMPxAF33CAjV7Nrjfj7O4Lg9xtdpZk1a9bvGBMtDU0B41hlsa1CdVsahbw19nXYTobOxdl5U/42u112Ybf3eB5dLEv14/Feaw9ZXjLm3TVBXtsdWMytOAfgPUbQ3djgd4hIG3VpwNb3rlOM4O4NOXmJoS/wcAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282604; c=relaxed/simple;
-	bh=kVSqC49f0UVNALcQxZnoxcFgNDl3noUriRgJ8EUIH4M=;
+	s=arc-20240116; t=1718282610; c=relaxed/simple;
+	bh=Xw7h0z+Qr7j60+U0uTJ7XkKm8wmrOExylemwVW8yV3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZDZZb7gBMEPQc+v7XH69/ITDSdjQjKJsCZE60XImMFLCT9rPWI03jHTbAKQRlNaZKR/f6CaFjzd0ST4Bo1cbmftan+c/Ll52hDdejGcM1Vph4z2x7Zfmg4F44k51eJmrQxiOlv3Oj7Svv3bWU4YCf9a/IuDejGg+SbspFjZLnPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXin0gFH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D893C2BBFC;
-	Thu, 13 Jun 2024 12:43:24 +0000 (UTC)
+	 MIME-Version; b=cPJ2xZhDyYxnG45ZbFGmV1ZWHan12xyk3vn+DVLrSJR70zJaRhQzpe1qaBDY7PvIuoKNN4aojWLfpKHTqJOIuO7mqjuy7InFTcfeefWhB2CSzLQByvLhNPaihNVwi8QTzXIr1+7W5mdSmvZiIRLaAPT09Rnd8z3iBRVxDVilb5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgAaimYE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5048DC2BBFC;
+	Thu, 13 Jun 2024 12:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282604;
-	bh=kVSqC49f0UVNALcQxZnoxcFgNDl3noUriRgJ8EUIH4M=;
+	s=korg; t=1718282610;
+	bh=Xw7h0z+Qr7j60+U0uTJ7XkKm8wmrOExylemwVW8yV3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lXin0gFHNnZ/8j/jk7ZBphxIKJgZh9aqn2dCKqnRzkEC2DkerCE4A36Kfv6HCuhpO
-	 gEe2slMOlo1mP/N8zflHlvKk5B7QIrbQNDlv3v5FIo+TimJ1ECG2eSQzBdh+ED4CCG
-	 uTymcOUYqeHjGHHgc/bT+CXf0T3tkKbBZ9977SXo=
+	b=vgAaimYEnpSd4RZJEK4xZAu3KjBx4EUS4yodmqTJMi9d9H4LD+0VmKOMouedjIvHq
+	 yz18Or2B0xEWGLH1OEPQdnpVmXX5Kfgw4e2PS08IkucVg0q16vrBK8F6vCOKtheeVU
+	 mHLDpaPo0v9Cvt9BP8+U6Ro09qVhzmw0olFoZ30E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+43120c2af6ca2938cc38@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 334/402] ALSA: timer: Set lower bound of start tick time
-Date: Thu, 13 Jun 2024 13:34:51 +0200
-Message-ID: <20240613113315.165696147@linuxfoundation.org>
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.15 335/402] KVM: x86: Dont advertise guest.MAXPHYADDR as host.MAXPHYADDR in CPUID
+Date: Thu, 13 Jun 2024 13:34:52 +0200
+Message-ID: <20240613113315.203564801@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
 References: <20240613113302.116811394@linuxfoundation.org>
@@ -65,54 +66,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Gerd Hoffmann <kraxel@redhat.com>
 
-commit 4a63bd179fa8d3fcc44a0d9d71d941ddd62f0c4e upstream.
+commit 6f5c9600621b4efb5c61b482d767432eb1ad3a9c upstream.
 
-Currently ALSA timer doesn't have the lower limit of the start tick
-time, and it allows a very small size, e.g. 1 tick with 1ns resolution
-for hrtimer.  Such a situation may lead to an unexpected RCU stall,
-where  the callback repeatedly queuing the expire update, as reported
-by fuzzer.
+Drop KVM's propagation of GuestPhysBits (CPUID leaf 80000008, EAX[23:16])
+to HostPhysBits (same leaf, EAX[7:0]) when advertising the address widths
+to userspace via KVM_GET_SUPPORTED_CPUID.
 
-This patch introduces a sanity check of the timer start tick time, so
-that the system returns an error when a too small start size is set.
-As of this patch, the lower limit is hard-coded to 100us, which is
-small enough but can still work somehow.
+Per AMD, GuestPhysBits is intended for software use, and physical CPUs do
+not set that field.  I.e. GuestPhysBits will be non-zero if and only if
+KVM is running as a nested hypervisor, and in that case, GuestPhysBits is
+NOT guaranteed to capture the CPU's effective MAXPHYADDR when running with
+TDP enabled.
 
-Reported-by: syzbot+43120c2af6ca2938cc38@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/000000000000fa00a1061740ab6d@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240514182745.4015-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ backport note: the error handling is changed, as the original commit
-  is based on the recent cleanup with guard() in commit beb45974dd49
-  -- tiwai ]
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+E.g. KVM will soon use GuestPhysBits to communicate the CPU's maximum
+*addressable* guest physical address, which would result in KVM under-
+reporting PhysBits when running as an L1 on a CPU with MAXPHYADDR=52,
+but without 5-level paging.
+
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Link: https://lore.kernel.org/r/20240313125844.912415-2-kraxel@redhat.com
+[sean: rewrite changelog with --verbose, Cc stable@]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/timer.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/x86/kvm/cpuid.c |   21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
---- a/sound/core/timer.c
-+++ b/sound/core/timer.c
-@@ -553,6 +553,16 @@ static int snd_timer_start1(struct snd_t
- 		goto unlock;
- 	}
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -934,9 +934,8 @@ static inline int __do_cpuid_func(struct
+ 		entry->eax = entry->ebx = entry->ecx = 0;
+ 		break;
+ 	case 0x80000008: {
+-		unsigned g_phys_as = (entry->eax >> 16) & 0xff;
+-		unsigned virt_as = max((entry->eax >> 8) & 0xff, 48U);
+-		unsigned phys_as = entry->eax & 0xff;
++		unsigned int virt_as = max((entry->eax >> 8) & 0xff, 48U);
++		unsigned int phys_as;
  
-+	/* check the actual time for the start tick;
-+	 * bail out as error if it's way too low (< 100us)
-+	 */
-+	if (start) {
-+		if ((u64)snd_timer_hw_resolution(timer) * ticks < 100000) {
-+			result = -EINVAL;
-+			goto unlock;
+ 		/*
+ 		 * If TDP (NPT) is disabled use the adjusted host MAXPHYADDR as
+@@ -944,16 +943,16 @@ static inline int __do_cpuid_func(struct
+ 		 * reductions in MAXPHYADDR for memory encryption affect shadow
+ 		 * paging, too.
+ 		 *
+-		 * If TDP is enabled but an explicit guest MAXPHYADDR is not
+-		 * provided, use the raw bare metal MAXPHYADDR as reductions to
+-		 * the HPAs do not affect GPAs.
++		 * If TDP is enabled, use the raw bare metal MAXPHYADDR as
++		 * reductions to the HPAs do not affect GPAs.
+ 		 */
+-		if (!tdp_enabled)
+-			g_phys_as = boot_cpu_data.x86_phys_bits;
+-		else if (!g_phys_as)
+-			g_phys_as = phys_as;
++		if (!tdp_enabled) {
++			phys_as = boot_cpu_data.x86_phys_bits;
++		} else {
++			phys_as = entry->eax & 0xff;
 +		}
-+	}
-+
- 	if (start)
- 		timeri->ticks = timeri->cticks = ticks;
- 	else if (!timeri->cticks)
+ 
+-		entry->eax = g_phys_as | (virt_as << 8);
++		entry->eax = phys_as | (virt_as << 8);
+ 		entry->ecx &= ~(GENMASK(31, 16) | GENMASK(11, 8));
+ 		entry->edx = 0;
+ 		cpuid_entry_override(entry, CPUID_8000_0008_EBX);
 
 
 
