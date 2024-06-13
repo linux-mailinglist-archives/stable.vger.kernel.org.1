@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-50946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8D70906D8A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81476906B56
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:39:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9B681C238F3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 315F4285036
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756D514388E;
-	Thu, 13 Jun 2024 11:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D56914265E;
+	Thu, 13 Jun 2024 11:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHmIfbvE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKAP3bru"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FF613C69C;
-	Thu, 13 Jun 2024 11:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A71DDDB1;
+	Thu, 13 Jun 2024 11:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279853; cv=none; b=o7UJNmPitDcwztclfoDFFNy9C6xlWOMCtoL5B/SxlLvSeHo7/GQTItosQU5BG+U5kAOjfMxrc3EW5eBw+4qqu/juJrDWnEzR2WVDdPtEWG7SSYq3Pn3HDUmOGTIcb+Ufdl5zhRMHJY5pi1x+lD79Tbf7U9FwjeSfrs3ceGyuT90=
+	t=1718278784; cv=none; b=cgTOPHs5HHbTVYfhu9SfY6ceVyNsaa/rml+rvvhjkD/lr1fHtHQ4PBsk/27dMPnWaOw6yVyAhTN79CSjp2zcHPDxp904nAfNCBVyD1FPlCFv0uJsk0Ah/BhT6QHRkM/7kisEqMN0G/nMXH343ltm2Ql+VkvptZfNWB3odpkS6hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279853; c=relaxed/simple;
-	bh=bOtt8yJY3gkVUVZUfdkeNvZUpqjTlAnVO2BZhYtnt7I=;
+	s=arc-20240116; t=1718278784; c=relaxed/simple;
+	bh=G4SS4Oga/bJUe6cYpG/YodASrvXM2dqk00TJs3/hmEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aV18h+KZdBdlkRngu//vhmsxrNzGAEIxlZGankQgBLVfSoYqm3hNnmxQvlJnGkqdDGmowrnfW5mrgNkGKIwpAqj/oeZzBrOTa5fD032e45zunQECKEygKW5mme13v8hPll/pRbtzR1kqVFKQdFTSKYsLahktk9vgHfYAj/P18ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHmIfbvE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EA3C2BBFC;
-	Thu, 13 Jun 2024 11:57:32 +0000 (UTC)
+	 MIME-Version; b=NT6rKqrNguWfi/qNnYTbyGua511XvxP8iBD/iqGj5Liny38aFtcjFhN/c2xIuc1vhQrCJEi2BdgLySDtV6JyeLlC449Ae4goOMsKiyMt0Rpm7ZisDl706wKE+Z+BMPhpd9hNKoeY4Xs3hwxMy6a8zil7eGX41Yk7HjiUZWTGhYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKAP3bru; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8486C2BBFC;
+	Thu, 13 Jun 2024 11:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279853;
-	bh=bOtt8yJY3gkVUVZUfdkeNvZUpqjTlAnVO2BZhYtnt7I=;
+	s=korg; t=1718278784;
+	bh=G4SS4Oga/bJUe6cYpG/YodASrvXM2dqk00TJs3/hmEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SHmIfbvENtqVs+kY/aUohsj7e0Mh/J4Qg2KoZ+5VOPBJk0ImtnzFYSYvuBw3IHxlE
-	 Qm8cel4Lxxf2XiilDmq/FYEQaeV0wc7QBFmqExDEfAk2366LJLfHBVNIhpepJJ5sV3
-	 7UVjta0Mh4DWkjDaIKXTc53ESMIBqyNe6C9kgi3s=
+	b=oKAP3bruP/GENW0kkIbbZv6nS2F5GM3ZLW2tb+YmNaLOfgFexat0y3girO3edjBOi
+	 bsloxQca/OOKzqtFYKSGs4qMnEHVgcGBn9PoMY4S90DRVLphQgBIECYTvBQkACI4ha
+	 xJRvHDn+ot45Fs/mOOEykUvn6vyTVw8TWVLGhPsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	"Ivan T. Ivanov" <iivanov@suse.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Justin Green <greenjustin@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 018/202] firmware: raspberrypi: Use correct device for DMA mappings
+Subject: [PATCH 4.19 068/213] drm/mediatek: Add 0 size check to mtk_drm_gem_obj
 Date: Thu, 13 Jun 2024 13:31:56 +0200
-Message-ID: <20240613113228.468969262@linuxfoundation.org>
+Message-ID: <20240613113230.630996204@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Justin Green <greenjustin@chromium.org>
 
-[ Upstream commit df518a0ae1b982a4dcf2235464016c0c4576a34d ]
+[ Upstream commit 1e4350095e8ab2577ee05f8c3b044e661b5af9a0 ]
 
-The buffer used to transfer data over the mailbox interface is mapped
-using the client's device. This is incorrect, as the device performing
-the DMA transfer is the mailbox itself. Fix it by using the mailbox
-controller device instead.
+Add a check to mtk_drm_gem_init if we attempt to allocate a GEM object
+of 0 bytes. Currently, no such check exists and the kernel will panic if
+a userspace application attempts to allocate a 0x0 GBM buffer.
 
-This requires including the mailbox_controller.h header to dereference
-the mbox_chan and mbox_controller structures. The header is not meant to
-be included by clients. This could be fixed by extending the client API
-with a function to access the controller's device.
+Tested by attempting to allocate a 0x0 GBM buffer on an MT8188 and
+verifying that we now return EINVAL.
 
-Fixes: 4e3d60656a72 ("ARM: bcm2835: Add the Raspberry Pi firmware driver")
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Tested-by: Ivan T. Ivanov <iivanov@suse.de>
-Link: https://lore.kernel.org/r/20240326195807.15163-3-laurent.pinchart@ideasonboard.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Signed-off-by: Justin Green <greenjustin@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240307180051.4104425-1-greenjustin@chromium.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/raspberrypi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_gem.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/firmware/raspberrypi.c b/drivers/firmware/raspberrypi.c
-index 1a690b2c1e2ff..9fdebb1171e55 100644
---- a/drivers/firmware/raspberrypi.c
-+++ b/drivers/firmware/raspberrypi.c
-@@ -9,6 +9,7 @@
- #include <linux/dma-mapping.h>
- #include <linux/kref.h>
- #include <linux/mailbox_client.h>
-+#include <linux/mailbox_controller.h>
- #include <linux/module.h>
- #include <linux/of_platform.h>
- #include <linux/platform_device.h>
-@@ -96,8 +97,8 @@ int rpi_firmware_property_list(struct rpi_firmware *fw,
- 	if (size & 3)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+index b09a37a38e0ae..079df67892df5 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+@@ -26,6 +26,9 @@ static struct mtk_drm_gem_obj *mtk_drm_gem_init(struct drm_device *dev,
  
--	buf = dma_alloc_coherent(fw->cl.dev, PAGE_ALIGN(size), &bus_addr,
--				 GFP_ATOMIC);
-+	buf = dma_alloc_coherent(fw->chan->mbox->dev, PAGE_ALIGN(size),
-+				 &bus_addr, GFP_ATOMIC);
- 	if (!buf)
- 		return -ENOMEM;
+ 	size = round_up(size, PAGE_SIZE);
  
-@@ -125,7 +126,7 @@ int rpi_firmware_property_list(struct rpi_firmware *fw,
- 		ret = -EINVAL;
- 	}
- 
--	dma_free_coherent(fw->cl.dev, PAGE_ALIGN(size), buf, bus_addr);
-+	dma_free_coherent(fw->chan->mbox->dev, PAGE_ALIGN(size), buf, bus_addr);
- 
- 	return ret;
- }
++	if (size == 0)
++		return ERR_PTR(-EINVAL);
++
+ 	mtk_gem_obj = kzalloc(sizeof(*mtk_gem_obj), GFP_KERNEL);
+ 	if (!mtk_gem_obj)
+ 		return ERR_PTR(-ENOMEM);
 -- 
 2.43.0
 
