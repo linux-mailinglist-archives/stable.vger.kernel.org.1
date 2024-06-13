@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-51845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F18B9071EF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF070906E9B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4D09B26EFE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 025451C22C42
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5921448D4;
-	Thu, 13 Jun 2024 12:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1699145A1B;
+	Thu, 13 Jun 2024 12:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDh4ksi1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClY7t7hb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C9E142E86;
-	Thu, 13 Jun 2024 12:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA471448F2;
+	Thu, 13 Jun 2024 12:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282483; cv=none; b=KVhXjG4HZuak+spnlhSqhf0ot+9MD/qigdaz13kCGPB3jDTq3uc4W9L8lH3kYcgJbc0ZvyYeYjgzwkyehmGSf/C83Mn3xam+xtN9bTpVMlBw7DJeyJruq+wzfOwFnqVFXikP+srsUTPIc5jdIOKlVNHRvj0PKkohHx2g3CqxNfI=
+	t=1718280491; cv=none; b=Bi4D0p+l+eczAqy099wzVEHc6QVY6/fbniefaehUxsXIptP8zjNUxKTre6FXXX0nlwkb5HAhZ+2/DzenFl5PhpIYIc2f5vizyZ8+qooWxBMIW2IhCUBUv95ZyNfjcoxgpYheULFmMrldckQZGawEgbLreVkjcqJBHAGS3FGXGh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282483; c=relaxed/simple;
-	bh=gKGMvI7k1NUqpApD8VkfjmjrXaHqAib+aR9zwQ+WM94=;
+	s=arc-20240116; t=1718280491; c=relaxed/simple;
+	bh=+R9QajS5uRLJjJwLNqm1Uo7zW/iVbByEN7lXPNrBHBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIZOkEQ8utiCaJ4dqcIXfJAUcXqFgd8KjBAYnB1THs5Js/0lg39pxe5Qus0QoxcH7g1dyMSb+pfikp7g36vLaj28rFvkRfMUH4xmRelEszyWwilCZdpDFnrh59pbjzVY/rSAyT2GvOOVX2LCZBUA+dZ+RQVF7Uda5Hcv1thaX5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDh4ksi1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D98FC2BBFC;
-	Thu, 13 Jun 2024 12:41:23 +0000 (UTC)
+	 MIME-Version; b=cnh5UFgY094ML98/deC33Vq8e9QtudHV1yiyvqNU25w8mQICjNbmhT926gu+oTLUSnoMNeM7pYeR7InUh1mUSlLz26cnZMLZ1y8t4wC8q7BYjhMrC5agh67KD0Y/mP6Qz3hjEf6UH3HTmJHKRaGiF3l27N2HVQHkltPuIbxKMvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClY7t7hb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27746C2BBFC;
+	Thu, 13 Jun 2024 12:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282483;
-	bh=gKGMvI7k1NUqpApD8VkfjmjrXaHqAib+aR9zwQ+WM94=;
+	s=korg; t=1718280491;
+	bh=+R9QajS5uRLJjJwLNqm1Uo7zW/iVbByEN7lXPNrBHBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bDh4ksi1vX67pEcG3yVXaLH8MJ7rzNGI+pAfEYy4okMThaSHXjX8AzUJxQwz+FcJm
-	 LF5xEqKJU+R46MboGb8V04oxD8WtwmEXw7p4ZWVmymxeAm/pkMOwcgcT+8ecawzkqr
-	 8nuAYz+pOwHc6jtefaQInA/RTJqs0d+xkBni2k2U=
+	b=ClY7t7hbn1ECNGRABALxMcurUBcXj6Nhwj7HmA7rOoJzr1oL2enxPiEl5nmvZELuG
+	 OoeWLZ7+4deBgdfBwFHkZqJjjovFI7N7cb0H+FqERu3lvjYoDimj0TdKd1hEWXSUYS
+	 Cepgbc45CzEg/8paHkjFZPZgPyFPXuxtrBnvj2X8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Yue Sun <samsun1006219@gmail.com>,
-	xingwei lee <xrivendell7@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 293/402] tcp: Fix shift-out-of-bounds in dctcp_update_alpha().
+	Vitaly Chikunov <vt@altlinux.org>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Paul Wolneykien <manowar@altlinux.org>
+Subject: [PATCH 6.6 070/137] crypto: ecrdsa - Fix module auto-load on add_key
 Date: Thu, 13 Jun 2024 13:34:10 +0200
-Message-ID: <20240613113313.579094677@linuxfoundation.org>
+Message-ID: <20240613113226.013043297@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,130 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Vitaly Chikunov <vt@altlinux.org>
 
-[ Upstream commit 3ebc46ca8675de6378e3f8f40768e180bb8afa66 ]
+commit eb5739a1efbc9ff216271aeea0ebe1c92e5383e5 upstream.
 
-In dctcp_update_alpha(), we use a module parameter dctcp_shift_g
-as follows:
+Add module alias with the algorithm cra_name similar to what we have for
+RSA-related and other algorithms.
 
-  alpha -= min_not_zero(alpha, alpha >> dctcp_shift_g);
-  ...
-  delivered_ce <<= (10 - dctcp_shift_g);
+The kernel attempts to modprobe asymmetric algorithms using the names
+"crypto-$cra_name" and "crypto-$cra_name-all." However, since these
+aliases are currently missing, the modules are not loaded. For instance,
+when using the `add_key` function, the hash algorithm is typically
+loaded automatically, but the asymmetric algorithm is not.
 
-It seems syzkaller started fuzzing module parameters and triggered
-shift-out-of-bounds [0] by setting 100 to dctcp_shift_g:
+Steps to test:
 
-  memcpy((void*)0x20000080,
-         "/sys/module/tcp_dctcp/parameters/dctcp_shift_g\000", 47);
-  res = syscall(__NR_openat, /*fd=*/0xffffffffffffff9cul, /*file=*/0x20000080ul,
-                /*flags=*/2ul, /*mode=*/0ul);
-  memcpy((void*)0x20000000, "100\000", 4);
-  syscall(__NR_write, /*fd=*/r[0], /*val=*/0x20000000ul, /*len=*/4ul);
+1. Cert is generated usings ima-evm-utils test suite with
+   `gen-keys.sh`, example cert is provided below:
 
-Let's limit the max value of dctcp_shift_g by param_set_uint_minmax().
+  $ base64 -d >test-gost2012_512-A.cer <<EOF
+  MIIB/DCCAWagAwIBAgIUK8+whWevr3FFkSdU9GLDAM7ure8wDAYIKoUDBwEBAwMFADARMQ8wDQYD
+  VQQDDAZDQSBLZXkwIBcNMjIwMjAxMjIwOTQxWhgPMjA4MjEyMDUyMjA5NDFaMBExDzANBgNVBAMM
+  BkNBIEtleTCBoDAXBggqhQMHAQEBAjALBgkqhQMHAQIBAgEDgYQABIGALXNrTJGgeErBUOov3Cfo
+  IrHF9fcj8UjzwGeKCkbCcINzVUbdPmCopeJRHDJEvQBX1CQUPtlwDv6ANjTTRoq5nCk9L5PPFP1H
+  z73JIXHT0eRBDVoWy0cWDRz1mmQlCnN2HThMtEloaQI81nTlKZOcEYDtDpi5WODmjEeRNQJMdqCj
+  UDBOMAwGA1UdEwQFMAMBAf8wHQYDVR0OBBYEFCwfOITMbE9VisW1i2TYeu1tAo5QMB8GA1UdIwQY
+  MBaAFCwfOITMbE9VisW1i2TYeu1tAo5QMAwGCCqFAwcBAQMDBQADgYEAmBfJCMTdC0/NSjz4BBiQ
+  qDIEjomO7FEHYlkX5NGulcF8FaJW2jeyyXXtbpnub1IQ8af1KFIpwoS2e93LaaofxpWlpQLlju6m
+  KYLOcO4xK3Whwa2hBAz9YbpUSFjvxnkS2/jpH2MsOSXuUEeCruG/RkHHB3ACef9umG6HCNQuAPY=
+  EOF
 
-With this patch:
+2. Optionally, trace module requests with: trace-cmd stream -e module &
 
-  # echo 10 > /sys/module/tcp_dctcp/parameters/dctcp_shift_g
-  # cat /sys/module/tcp_dctcp/parameters/dctcp_shift_g
-  10
-  # echo 11 > /sys/module/tcp_dctcp/parameters/dctcp_shift_g
-  -bash: echo: write error: Invalid argument
+3. Trigger add_key call for the cert:
 
-[0]:
-UBSAN: shift-out-of-bounds in net/ipv4/tcp_dctcp.c:143:12
-shift exponent 100 is too large for 32-bit type 'u32' (aka 'unsigned int')
-CPU: 0 PID: 8083 Comm: syz-executor345 Not tainted 6.9.0-05151-g1b294a1f3561 #2
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-1.13.0-1ubuntu1.1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x201/0x300 lib/dump_stack.c:114
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_shift_out_of_bounds+0x346/0x3a0 lib/ubsan.c:468
- dctcp_update_alpha+0x540/0x570 net/ipv4/tcp_dctcp.c:143
- tcp_in_ack_event net/ipv4/tcp_input.c:3802 [inline]
- tcp_ack+0x17b1/0x3bc0 net/ipv4/tcp_input.c:3948
- tcp_rcv_state_process+0x57a/0x2290 net/ipv4/tcp_input.c:6711
- tcp_v4_do_rcv+0x764/0xc40 net/ipv4/tcp_ipv4.c:1937
- sk_backlog_rcv include/net/sock.h:1106 [inline]
- __release_sock+0x20f/0x350 net/core/sock.c:2983
- release_sock+0x61/0x1f0 net/core/sock.c:3549
- mptcp_subflow_shutdown+0x3d0/0x620 net/mptcp/protocol.c:2907
- mptcp_check_send_data_fin+0x225/0x410 net/mptcp/protocol.c:2976
- __mptcp_close+0x238/0xad0 net/mptcp/protocol.c:3072
- mptcp_close+0x2a/0x1a0 net/mptcp/protocol.c:3127
- inet_release+0x190/0x1f0 net/ipv4/af_inet.c:437
- __sock_release net/socket.c:659 [inline]
- sock_close+0xc0/0x240 net/socket.c:1421
- __fput+0x41b/0x890 fs/file_table.c:422
- task_work_run+0x23b/0x300 kernel/task_work.c:180
- exit_task_work include/linux/task_work.h:38 [inline]
- do_exit+0x9c8/0x2540 kernel/exit.c:878
- do_group_exit+0x201/0x2b0 kernel/exit.c:1027
- __do_sys_exit_group kernel/exit.c:1038 [inline]
- __se_sys_exit_group kernel/exit.c:1036 [inline]
- __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1036
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xe4/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x67/0x6f
-RIP: 0033:0x7f6c2b5005b6
-Code: Unable to access opcode bytes at 0x7f6c2b50058c.
-RSP: 002b:00007ffe883eb948 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-RAX: ffffffffffffffda RBX: 00007f6c2b5862f0 RCX: 00007f6c2b5005b6
-RDX: 0000000000000001 RSI: 000000000000003c RDI: 0000000000000001
-RBP: 0000000000000001 R08: 00000000000000e7 R09: ffffffffffffffc0
-R10: 0000000000000006 R11: 0000000000000246 R12: 00007f6c2b5862f0
-R13: 0000000000000001 R14: 0000000000000000 R15: 0000000000000001
- </TASK>
+  # keyctl padd asymmetric "" @u <test-gost2012_512-A.cer
+  939910969
+  # lsmod | head -3
+  Module                  Size  Used by
+  ecrdsa_generic         16384  0
+  streebog_generic       28672  0
 
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Reported-by: Yue Sun <samsun1006219@gmail.com>
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAEkJfYNJM=cw-8x7_Vmj1J6uYVCWMbbvD=EFmDPVBGpTsqOxEA@mail.gmail.com/
-Fixes: e3118e8359bb ("net: tcp: add DCTCP congestion control algorithm")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240517091626.32772-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Repored-by: Paul Wolneykien <manowar@altlinux.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Vitaly Chikunov <vt@altlinux.org>
+Tested-by: Stefan Berger <stefanb@linux.ibm.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_dctcp.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ crypto/ecrdsa.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/tcp_dctcp.c b/net/ipv4/tcp_dctcp.c
-index 43bcefbaefbb1..d6db7c25649f9 100644
---- a/net/ipv4/tcp_dctcp.c
-+++ b/net/ipv4/tcp_dctcp.c
-@@ -55,7 +55,18 @@ struct dctcp {
- };
- 
- static unsigned int dctcp_shift_g __read_mostly = 4; /* g = 1/2^4 */
--module_param(dctcp_shift_g, uint, 0644);
-+
-+static int dctcp_shift_g_set(const char *val, const struct kernel_param *kp)
-+{
-+	return param_set_uint_minmax(val, kp, 0, 10);
-+}
-+
-+static const struct kernel_param_ops dctcp_shift_g_ops = {
-+	.set = dctcp_shift_g_set,
-+	.get = param_get_uint,
-+};
-+
-+module_param_cb(dctcp_shift_g, &dctcp_shift_g_ops, &dctcp_shift_g, 0644);
- MODULE_PARM_DESC(dctcp_shift_g, "parameter g for updating dctcp_alpha");
- 
- static unsigned int dctcp_alpha_on_init __read_mostly = DCTCP_MAX_ALPHA;
--- 
-2.43.0
-
+--- a/crypto/ecrdsa.c
++++ b/crypto/ecrdsa.c
+@@ -294,4 +294,5 @@ module_exit(ecrdsa_mod_fini);
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Vitaly Chikunov <vt@altlinux.org>");
+ MODULE_DESCRIPTION("EC-RDSA generic algorithm");
++MODULE_ALIAS_CRYPTO("ecrdsa");
+ MODULE_ALIAS_CRYPTO("ecrdsa-generic");
 
 
 
