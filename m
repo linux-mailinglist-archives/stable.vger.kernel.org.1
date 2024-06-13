@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-51266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F360906F35
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3BB59070BF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:30:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E89DDB28AD8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:16:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 623131F21A3B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB714143C52;
-	Thu, 13 Jun 2024 12:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89DF389;
+	Thu, 13 Jun 2024 12:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kg3LrsFd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0R701yLb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF49143878;
-	Thu, 13 Jun 2024 12:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55361849;
+	Thu, 13 Jun 2024 12:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280794; cv=none; b=jdMaDwmWC2z4xgEnFJyo9hrdz2eYYsocBMuR+TzPRa09VupXO8zkwKZS/KVUJhMIr3pEcgFjEdajgJXrbGW4VGOEiUzffPkORjeI0G0o3lVPg5gE3aDmbSpAYGYplX3rwBCW8ecWBgqM1W3TG3tVU3Drm8YQDjJ5cyGQ1Jc8gkg=
+	t=1718281830; cv=none; b=tsVOVB7ueTr2tiEHEuEhKpYj/qzZc5itPPacB1TXNBISGrzeszKNXGh9fa5teFmNYONZa6gXyuRFlbfCP8+DWrg9+fqQmgVHcxygHGjfTJikSt2PAwXrHNRYf5jeni86L5xyl71TRr44T7ML/61awFgmbBuMRybTOr/kh6hgwvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280794; c=relaxed/simple;
-	bh=rHdX88HN+kRB+mrcBKzFiWtY3i+zZqPwX/z5ULoXofc=;
+	s=arc-20240116; t=1718281830; c=relaxed/simple;
+	bh=3khPvwX6WhdTgTdmtMjzV6mzS2yvGDhn9qve3qL/ARo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ml48ofG1EsgTHT8fG258CPxGHUzbawEPzadDNdw45kX3pWjABdv6WR1Iir68meeLK4+Wps9B7FSX4dOwTUWpza7GCyMUOsHoexjmbSa0LmJ75vHOPHO5GP8Zv+GhiKcZY2Vjl5bR9WsIR3hO1rqcogWZCLVsSODwPSpzv8YL8pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kg3LrsFd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F85AC2BBFC;
-	Thu, 13 Jun 2024 12:13:13 +0000 (UTC)
+	 MIME-Version; b=mnwPxVNnTRo50i05/wqHuaEzkdb4Qw5WYREZs1h/b1qyO7LPGfj8ieH4YjWxlYWQT4VM5NuCEfpNvEFd2ED4rQKpYBZNfCWJHHC46i2qc8MamXkKkcqnKTZfrrKSesI9fx5IXzdAy5O+1Ni3u1JQQi5eJI9l006PixiaScSxkX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0R701yLb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2C7C2BBFC;
+	Thu, 13 Jun 2024 12:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280794;
-	bh=rHdX88HN+kRB+mrcBKzFiWtY3i+zZqPwX/z5ULoXofc=;
+	s=korg; t=1718281830;
+	bh=3khPvwX6WhdTgTdmtMjzV6mzS2yvGDhn9qve3qL/ARo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kg3LrsFdQedJRcXksv/hbKSa5tVKij6mdWkA+AFGw8RoADcXJy3genPblgOP9LscR
-	 dTU50KMmCaZ+Zkh0LVqSxQ0OEoStDn2gybspwclUsPwk8KOWp5dwUTlGB4IpXvZN+X
-	 9aKJtxcAOTh3EhITGuswYWJKZadoC33gi4r1uRN8=
+	b=0R701yLbirlFsxKTTJXnikB0OQPtkDSVQH/dN81qVeLr3c3p0OdUwGzkTGrixoAjo
+	 L8kqoTY/skLCOGHI59z2HYa3Cp44FaQxKOhyjc6vAh8ZZbLbgmz5Qcw+qVZaoxnMbr
+	 MZ30SBYYp2XSBQ0sLCpmBx+6m5cxnw2DcPnisxQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 009/317] ALSA: core: Fix NULL module pointer assignment at card init
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 070/402] gfs2: Fix "ignore unlock failures after withdraw"
 Date: Thu, 13 Jun 2024 13:30:27 +0200
-Message-ID: <20240613113247.898100696@linuxfoundation.org>
+Message-ID: <20240613113304.868894560@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit 39381fe7394e5eafac76e7e9367e7351138a29c1 upstream.
+[ Upstream commit 5d9231111966b6c5a65016d58dcbeab91055bc91 ]
 
-The commit 81033c6b584b ("ALSA: core: Warn on empty module")
-introduced a WARN_ON() for a NULL module pointer passed at snd_card
-object creation, and it also wraps the code around it with '#ifdef
-MODULE'.  This works in most cases, but the devils are always in
-details.  "MODULE" is defined when the target code (i.e. the sound
-core) is built as a module; but this doesn't mean that the caller is
-also built-in or not.  Namely, when only the sound core is built-in
-(CONFIG_SND=y) while the driver is a module (CONFIG_SND_USB_AUDIO=m),
-the passed module pointer is ignored even if it's non-NULL, and
-card->module remains as NULL.  This would result in the missing module
-reference up/down at the device open/close, leading to a race with the
-code execution after the module removal.
+Commit 3e11e53041502 tries to suppress dlm_lock() lock conversion errors
+that occur when the lockspace has already been released.
 
-For addressing the bug, move the assignment of card->module again out
-of ifdef.  The WARN_ON() is still wrapped with ifdef because the
-module can be really NULL when all sound drivers are built-in.
+It does that by setting and checking the SDF_SKIP_DLM_UNLOCK flag.  This
+conflicts with the intended meaning of the SDF_SKIP_DLM_UNLOCK flag, so
+check whether the lockspace is still allocated instead.
 
-Note that we keep 'ifdef MODULE' for WARN_ON(), otherwise it would
-lead to a false-positive NULL module check.  Admittedly it won't catch
-perfectly, i.e. no check is performed when CONFIG_SND=y.  But, it's no
-real problem as it's only for debugging, and the condition is pretty
-rare.
+(Given the current DLM API, checking for this kind of error after the
+fact seems easier that than to make sure that the lockspace is still
+allocated before calling dlm_lock().  Changing the DLM API so that users
+maintain the lockspace references themselves would be an option.)
 
-Fixes: 81033c6b584b ("ALSA: core: Warn on empty module")
-Reported-by: Xu Yang <xu.yang_2@nxp.com>
-Closes: https://lore.kernel.org/r/20240520170349.2417900-1-xu.yang_2@nxp.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Tested-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20240522070442.17786-1-tiwai@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3e11e53041502 ("GFS2: ignore unlock failures after withdraw")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/glock.c | 4 +++-
+ fs/gfs2/util.c  | 1 -
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/sound/core/init.c
-+++ b/sound/core/init.c
-@@ -206,8 +206,8 @@ int snd_card_new(struct device *parent,
- 	card->number = idx;
- #ifdef MODULE
- 	WARN_ON(!module);
--	card->module = module;
- #endif
-+	card->module = module;
- 	INIT_LIST_HEAD(&card->devices);
- 	init_rwsem(&card->controls_rwsem);
- 	rwlock_init(&card->ctl_files_rwlock);
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index e85ef6b14777d..7fed3beb5e80c 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -807,11 +807,13 @@ __acquires(&gl->gl_lockref.lock)
+ 	}
+ 
+ 	if (sdp->sd_lockstruct.ls_ops->lm_lock)	{
++		struct lm_lockstruct *ls = &sdp->sd_lockstruct;
++
+ 		/* lock_dlm */
+ 		ret = sdp->sd_lockstruct.ls_ops->lm_lock(gl, target, lck_flags);
+ 		if (ret == -EINVAL && gl->gl_target == LM_ST_UNLOCKED &&
+ 		    target == LM_ST_UNLOCKED &&
+-		    test_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags)) {
++		    test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
+ 			finish_xmote(gl, target);
+ 			gfs2_glock_queue_work(gl, 0);
+ 		} else if (ret) {
+diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
+index cf345a86ef67b..9cdece4928454 100644
+--- a/fs/gfs2/util.c
++++ b/fs/gfs2/util.c
+@@ -351,7 +351,6 @@ int gfs2_withdraw(struct gfs2_sbd *sdp)
+ 			fs_err(sdp, "telling LM to unmount\n");
+ 			lm->lm_unmount(sdp);
+ 		}
+-		set_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags);
+ 		fs_err(sdp, "File system withdrawn\n");
+ 		dump_stack();
+ 		clear_bit(SDF_WITHDRAW_IN_PROG, &sdp->sd_flags);
+-- 
+2.43.0
+
 
 
 
