@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-50862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B37A6906D2B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98444906C37
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:48:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DE7C1F24D3F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AB03B2394C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7F4146A89;
-	Thu, 13 Jun 2024 11:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926C5143735;
+	Thu, 13 Jun 2024 11:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDOpzVv0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFwwi0UC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024141465B7;
-	Thu, 13 Jun 2024 11:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E9B143872;
+	Thu, 13 Jun 2024 11:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279605; cv=none; b=jKqECB2BErNiPS+XQ3PWeGMXHI3B5o6SCLFOyJlHYFcs5p4yjkYqqel+nNmGX3Fa25rVp+Q6BCs7dU9P5D5JyjOpe/v4tmO/wlIBY1lanaVGqD7f37Anftc+O+cq+gwZ00otiBodXujOFhsX6RfqF5Bp/3ro5gUok4l+SaqVC20=
+	t=1718279207; cv=none; b=Gv2gumJzb2BfNCJhqXhauGuQXPTMX/Jf21m7o/3LxzCWV5eggMlutbfNf9MW8TPyd8q2SuyFleb7SUJv3gPiu4yiP69hZlr4RvvK9s+QyPN41eBvuKIeeArW44x0O/6BUcK0pF9GHe2O7bQAd9Z3FCwxikEXvKl2Gdmx/G3pwPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279605; c=relaxed/simple;
-	bh=wC6j2IdFveD85/Eieq1FfG7BIVCUIGe8knlGkSkEu9E=;
+	s=arc-20240116; t=1718279207; c=relaxed/simple;
+	bh=Suxgchf+Pwdqfm/O/3H/lgyrF3fuMuXDmiMB1b6QXTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cNLgIbIOoVXJ5jxd/tj24aKCSP1hqO5XX4Pw2MR8nlSx39sMUzi7rMq25EOVgb0cVx6pKzEmpMoNWHy1nb1mUMQwjmuD6/aP/UFCn8rHhct0p+9A4oF6mttLPOdkXKgrxS98XqUQ5egNCfDXFgYtoGalU0ibsp1gjeTv9/3M+oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDOpzVv0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A768C2BBFC;
-	Thu, 13 Jun 2024 11:53:24 +0000 (UTC)
+	 MIME-Version; b=a5XNUMQHbsPND56j1uFyW/9d7sM0pQeaf70Yvyclnz96sMqDPFU24v1k8McPqW75Pe+ZcWubyC96/OS9m8xtYoTF0TX43mMiUYrObUNQpPHQ40GNEk/va4WckgxWOslnSqaHbatN0F0lpsrzV3ppkj+X18PFIAv2OMyVzEkfFrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFwwi0UC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF23CC2BBFC;
+	Thu, 13 Jun 2024 11:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279604;
-	bh=wC6j2IdFveD85/Eieq1FfG7BIVCUIGe8knlGkSkEu9E=;
+	s=korg; t=1718279207;
+	bh=Suxgchf+Pwdqfm/O/3H/lgyrF3fuMuXDmiMB1b6QXTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hDOpzVv0CGZd7BJBD2DBO/P8JXJXjVQ1Q06+u6kkyNShx76SKhlKjMxqv3qlgAYf0
-	 SNi6KPNIUbWwAWMdgmHWFFkBokGE7SEzzjsdJJy2POs4+pUPhspwuhddz4ANPL9XKK
-	 HjzsmJb6RsbqT09i2vqxspnD149CAMQLS3RtjEqo=
+	b=jFwwi0UCbXGXMJiw0i5Cv7OMysL+L2JdEUH5pkor622l4drxmhWlG4UGfuX9/Rs28
+	 rGC9ZKCBbcyupopWh87t4Erhwod8hWN4xJDCtvdurXdOJZkmepU9ymjkUq8CWuFAkO
+	 lVfDJXmM7D6/prPh8RwpvmfzD4OcYCFO0jLrdKig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.9 133/157] riscv: enable HAVE_ARCH_HUGE_VMAP for XIP kernel
+	Mike Gilbert <floppym@gentoo.org>,
+	Andreas Larsson <andreas@gaisler.com>
+Subject: [PATCH 4.19 210/213] sparc: move struct termio to asm/termios.h
 Date: Thu, 13 Jun 2024 13:34:18 +0200
-Message-ID: <20240613113232.551221329@linuxfoundation.org>
+Message-ID: <20240613113236.084371828@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Mike Gilbert <floppym@gentoo.org>
 
-commit 7bed51617401dab2be930b13ed5aacf581f7c8ef upstream.
+commit c32d18e7942d7589b62e301eb426b32623366565 upstream.
 
-HAVE_ARCH_HUGE_VMAP also works on XIP kernel, so remove its dependency on
-!XIP_KERNEL.
+Every other arch declares struct termio in asm/termios.h, so make sparc
+match them.
 
-This also fixes a boot problem for XIP kernel introduced by the commit in
-"Fixes:". This commit used huge page mapping for vmemmap, but huge page
-vmap was not enabled for XIP kernel.
+Resolves a build failure in the PPP software package, which includes
+both bits/ioctl-types.h via sys/ioctl.h (glibc) and asm/termbits.h.
 
-Fixes: ff172d4818ad ("riscv: Use hugepage mappings for vmemmap")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240526110104.470429-1-namcao@linutronix.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Closes: https://bugs.gentoo.org/918992
+Signed-off-by: Mike Gilbert <floppym@gentoo.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Tested-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20240306171149.3843481-1-floppym@gentoo.org
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/sparc/include/uapi/asm/termbits.h |   10 ----------
+ arch/sparc/include/uapi/asm/termios.h  |    9 +++++++++
+ 2 files changed, 9 insertions(+), 10 deletions(-)
 
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -103,7 +103,7 @@ config RISCV
- 	select HAS_IOPORT if MMU
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_HUGE_VMALLOC if HAVE_ARCH_HUGE_VMAP
--	select HAVE_ARCH_HUGE_VMAP if MMU && 64BIT && !XIP_KERNEL
-+	select HAVE_ARCH_HUGE_VMAP if MMU && 64BIT
- 	select HAVE_ARCH_JUMP_LABEL if !XIP_KERNEL
- 	select HAVE_ARCH_JUMP_LABEL_RELATIVE if !XIP_KERNEL
- 	select HAVE_ARCH_KASAN if MMU && 64BIT
+--- a/arch/sparc/include/uapi/asm/termbits.h
++++ b/arch/sparc/include/uapi/asm/termbits.h
+@@ -13,16 +13,6 @@ typedef unsigned int    tcflag_t;
+ typedef unsigned long   tcflag_t;
+ #endif
+ 
+-#define NCC 8
+-struct termio {
+-	unsigned short c_iflag;		/* input mode flags */
+-	unsigned short c_oflag;		/* output mode flags */
+-	unsigned short c_cflag;		/* control mode flags */
+-	unsigned short c_lflag;		/* local mode flags */
+-	unsigned char c_line;		/* line discipline */
+-	unsigned char c_cc[NCC];	/* control characters */
+-};
+-
+ #define NCCS 17
+ struct termios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+--- a/arch/sparc/include/uapi/asm/termios.h
++++ b/arch/sparc/include/uapi/asm/termios.h
+@@ -40,5 +40,14 @@ struct winsize {
+ 	unsigned short ws_ypixel;
+ };
+ 
++#define NCC 8
++struct termio {
++	unsigned short c_iflag;		/* input mode flags */
++	unsigned short c_oflag;		/* output mode flags */
++	unsigned short c_cflag;		/* control mode flags */
++	unsigned short c_lflag;		/* local mode flags */
++	unsigned char c_line;		/* line discipline */
++	unsigned char c_cc[NCC];	/* control characters */
++};
+ 
+ #endif /* _UAPI_SPARC_TERMIOS_H */
 
 
 
