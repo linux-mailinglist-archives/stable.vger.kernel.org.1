@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-51238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828F8906EF3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC599070B6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:30:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FD4F1F2262E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 606B81F2146D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42927144D07;
-	Thu, 13 Jun 2024 12:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC7C14265E;
+	Thu, 13 Jun 2024 12:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+EOI/aH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S713vpwa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0137044C6F;
-	Thu, 13 Jun 2024 12:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4AE13D630;
+	Thu, 13 Jun 2024 12:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280712; cv=none; b=FwlsAu8bEtVESnPd5dnfSD++lgBQCTBJTgN6lKB8L3PC0+xzQjqRgmgrQtlr/wWiajIfZjouqAu5z8AWWV6Oi5HFIs4EEzL7Rm5RWX6871FgxPxCRMU9Xw4LyywmM3d6a5S5dvOaXvmr1tzQ6aLHRYRlxP1BaUehgAY3HuE/67k=
+	t=1718281804; cv=none; b=IKIdz4QuzMbwTMYsTu2tXXDSHrNvUYfGljh1baqDKx/6Rir4Z4gnvqoLZgzTgSdbmwFy5ybEwUAYqwclfH9pRI3p/zNlxwWBPA5pFO/LgoqclFch2OJsXfZcO0hm/v6nGBNK8xhUDdN3KwD95YcDvBfRxQ3+6AmLlqEeq7MMI6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280712; c=relaxed/simple;
-	bh=WReyy7orPnfwrO7O9IxN9kv7Sx7va62EiKjENdcI3+8=;
+	s=arc-20240116; t=1718281804; c=relaxed/simple;
+	bh=JkVMpduFssHxq8WP0yNFOraYvwGpVJZyKDuwOOgkGA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twMn8Js8HdzitHzL7J3ommAA89AKyApIoyjMdERvij+OqwHDJk1hlquFfqghnB+mh/H2xia2E+TqvpMxm8lS0axd8B5e8GRpUya0Rl7zgewE7cslMww7dAar4GKhnODJnu7RCcCsYFcDtboWcavSyXBqN961QbR9sQxUXij5wow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+EOI/aH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF71C2BBFC;
-	Thu, 13 Jun 2024 12:11:51 +0000 (UTC)
+	 MIME-Version; b=E1S5zq7a26YLOAPql3vkilIUmn3Yt3bVznZ7kZJ/mDtWEjU5cJ+Ks9qIXxbD52Ztferp+r6W8UQvLVV3fEp2/eW2ZtQ35PqDUYmoXyiNV7A+YfpTnlsi1SLLLPVXhOpUy44vm8B3EC1WrTpUv0kXuQeJvf6TmBaj5U0IyuYFutU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S713vpwa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6936C2BBFC;
+	Thu, 13 Jun 2024 12:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280711;
-	bh=WReyy7orPnfwrO7O9IxN9kv7Sx7va62EiKjENdcI3+8=;
+	s=korg; t=1718281804;
+	bh=JkVMpduFssHxq8WP0yNFOraYvwGpVJZyKDuwOOgkGA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d+EOI/aHlm5be+i5TrgPZiVb/GsDmeuGcpJsPQG03sGT2cwXLimk7RO436/wtIeF7
-	 EZRCzrf+M7Ax1pfT40CuIoqk05LOu7bcC7AcX1qc7ggUacDtpYe60oygAIIpj9eZim
-	 C5ruhR6o5OPrPChkPfgAP1nQwYfWzNWub0f346jE=
+	b=S713vpwaLHAk7uG/gJI2aXExKBKt2fkAY7X93NBm2h6kTgUJb3PL8Kz+XC6Tr++Pd
+	 6mjP8KhwZZCc/CMUhyXgJCCAr6kh+SZSmF8iZTWSSRgHmfsD9rRkkJMIRbD3rAJQXq
+	 PYCyn4J8vHlMwWKtIqMD1O9xdK4plXGIRdB9LRXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel J Blueman <daniel@quora.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Steffen Persvold <sp@numascale.com>,
-	James Cleverdon <james.cleverdon.external@eviden.com>,
-	Dimitri Sivanich <sivanich@hpe.com>,
-	Prarit Bhargava <prarit@redhat.com>
-Subject: [PATCH 5.10 001/317] x86/tsc: Trust initial offset in architectural TSC-adjust MSRs
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 062/402] scsi: ufs: qcom: Perform read back after writing CGC enable
 Date: Thu, 13 Jun 2024 13:30:19 +0200
-Message-ID: <20240613113247.586560175@linuxfoundation.org>
+Message-ID: <20240613113304.554807495@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel J Blueman <daniel@quora.org>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-commit 455f9075f14484f358b3c1d6845b4a438de198a7 upstream.
+[ Upstream commit d9488511b3ac7eb48a91bc5eded7027525525e03 ]
 
-When the BIOS configures the architectural TSC-adjust MSRs on secondary
-sockets to correct a constant inter-chassis offset, after Linux brings the
-cores online, the TSC sync check later resets the core-local MSR to 0,
-triggering HPET fallback and leading to performance loss.
+Currently, the CGC enable bit is written and then an mb() is used to ensure
+that completes before continuing.
 
-Fix this by unconditionally using the initial adjust values read from the
-MSRs. Trusting the initial offsets in this architectural mechanism is a
-better approach than special-casing workarounds for specific platforms.
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring this
+bit has taken effect on the device is to perform a read back to force it to
+make it all the way to the device. This is documented in device-io.rst and
+a talk by Will Deacon on this can be seen over here:
 
-Signed-off-by: Daniel J Blueman <daniel@quora.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Steffen Persvold <sp@numascale.com>
-Reviewed-by: James Cleverdon <james.cleverdon.external@eviden.com>
-Reviewed-by: Dimitri Sivanich <sivanich@hpe.com>
-Reviewed-by: Prarit Bhargava <prarit@redhat.com>
-Link: https://lore.kernel.org/r/20240419085146.175665-1-daniel@quora.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
+
+Let's do that to ensure the bit hits the device. Because the mb()'s purpose
+wasn't to add extra ordering (on top of the ordering guaranteed by
+writel()/readl()), it can safely be removed.
+
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Fixes: 81c0fc51b7a7 ("ufs-qcom: add support for Qualcomm Technologies Inc platforms")
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-5-181252004586@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/tsc_sync.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/scsi/ufs/ufs-qcom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/tsc_sync.c
-+++ b/arch/x86/kernel/tsc_sync.c
-@@ -192,11 +192,9 @@ bool tsc_store_and_check_tsc_adjust(bool
- 	cur->warned = false;
+diff --git a/drivers/scsi/ufs/ufs-qcom.c b/drivers/scsi/ufs/ufs-qcom.c
+index ce45f3e8a35c3..361df2a2db5bf 100644
+--- a/drivers/scsi/ufs/ufs-qcom.c
++++ b/drivers/scsi/ufs/ufs-qcom.c
+@@ -353,7 +353,7 @@ static void ufs_qcom_enable_hw_clk_gating(struct ufs_hba *hba)
+ 		REG_UFS_CFG2);
  
- 	/*
--	 * If a non-zero TSC value for socket 0 may be valid then the default
--	 * adjusted value cannot assumed to be zero either.
-+	 * The default adjust value cannot be assumed to be zero on any socket.
- 	 */
--	if (tsc_async_resets)
--		cur->adjusted = bootval;
-+	cur->adjusted = bootval;
+ 	/* Ensure that HW clock gating is enabled before next operations */
+-	mb();
++	ufshcd_readl(hba, REG_UFS_CFG2);
+ }
  
- 	/*
- 	 * Check whether this CPU is the first in a package to come up. In
+ static int ufs_qcom_hce_enable_notify(struct ufs_hba *hba,
+-- 
+2.43.0
+
 
 
 
