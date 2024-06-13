@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-52037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E6579072C7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:50:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A1599072C8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55B4B1C21F38
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 014C51F217C0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571C02F55;
-	Thu, 13 Jun 2024 12:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297B24A0F;
+	Thu, 13 Jun 2024 12:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfDBlQjK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfCmQxxy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A0B17FD;
-	Thu, 13 Jun 2024 12:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD98A59;
+	Thu, 13 Jun 2024 12:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718283049; cv=none; b=MJNRimqfc1QCS9gvTUigBuZm7eLJKz52qeuvftOiRVvJrzhkDi+wKgOpU+dNnK0kJFaz1UIhaPzKyjtc+mMQeGccz8J+MYWCHt4A+hkhM1UeGQtpHLL6Pn1oMbMW2QXA2THoxMI9jmZV5dE4UpDac/dYVKJBxZ0fyKU8VsWAT68=
+	t=1718283055; cv=none; b=g3MBgVvAGgWKVu4UGNPu5w5BfqIAbWhufMj3KIRF77e3Pv0YD89sA/w7LIafJXHGpTMkiJl94MEYXI01GJP7QlsIJqYF0FhlzZqbbubRpXEyMYb1n44IitvJl/RZqcwT9Bg9fYWwAJ6ypTz3YEN2kNky/nBAfBNz4kTCarF5yRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718283049; c=relaxed/simple;
-	bh=UQiLNQUYeS2ITX7dpPqlC8Er1w90p5E4qgEPBBPsr90=;
+	s=arc-20240116; t=1718283055; c=relaxed/simple;
+	bh=jVGn9Gq3yeZBFnu4a0xxXtpf+veArzdzo5unu9otXUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mwal/u90joJqNrUUYV2YhKupc+B1DQdajdTm3F3rhykmclOzeR1neGS9Y6glzumIxiFqtN4BIRTc5FG8Vhu/gh8qwX1qvXiaepg+9IYtMERZ2/Vn6ago2oKlygRr9f++hk3sl4bk3VpTMXaVBiz6JMgWEyo/c0Bn5lCkvAOanq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfDBlQjK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85716C2BBFC;
-	Thu, 13 Jun 2024 12:50:48 +0000 (UTC)
+	 MIME-Version; b=Eb1gptrN2wz24lB+40CBp9EAeL3FIiJmJof9NlmXeBXqM3/KO/QJjPG3XQfS62A16M0ty9TaDr/Ih8UfLPnNNYy1NfWNngJyIY1CZtKSlyMI2gkc0D11jrvvMvaEa1yXUsshZhNx1tMgSR56HnZnMzIvPQWyHPBJc/53G1gohgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfCmQxxy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6461EC2BBFC;
+	Thu, 13 Jun 2024 12:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718283048;
-	bh=UQiLNQUYeS2ITX7dpPqlC8Er1w90p5E4qgEPBBPsr90=;
+	s=korg; t=1718283054;
+	bh=jVGn9Gq3yeZBFnu4a0xxXtpf+veArzdzo5unu9otXUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfDBlQjKxNRgq0g4n7Y/wOb7le+IKrLjZbMgenC0g1GaIZOvDaFqMmFgyNMJlVkv2
-	 KHpmDAP1SAte36HvDtcqpHuM0SaQ6xLDqLbdgVFycSVqqGgZTanILWrO1zrVABpY5J
-	 OqVt9C0ojTM0aQ4hdYt5IFj4clI/0A8V9x6f97ss=
+	b=rfCmQxxy5i0wzP4lH8GP4fUMWZts4tR0eLB++kPNlMHpBsOA2sKZaF5nIWKbgA6ri
+	 QRUh+GTWBZKSQdflU+930gFKEV4aIIT+5BT+n0Y/45Sj+hpFNXOJFHDyhxGFuPmvmM
+	 Z220V3pT/st6qX4rBOFeY2kNw0nc5uFtGfV3lIKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Olga Kornievskaia <kolga@netapp.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Benjamin Coddington <bcodding@redhat.com>,
 	Trond Myklebust <trond.myklebust@hammerspace.com>
-Subject: [PATCH 6.1 81/85] nfs: fix undefined behavior in nfs_block_bits()
-Date: Thu, 13 Jun 2024 13:36:19 +0200
-Message-ID: <20240613113217.261320722@linuxfoundation.org>
+Subject: [PATCH 6.1 82/85] NFS: Fix READ_PLUS when server doesnt support OP_READ_PLUS
+Date: Thu, 13 Jun 2024 13:36:20 +0200
+Message-ID: <20240613113217.298290240@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
 References: <20240613113214.134806994@linuxfoundation.org>
@@ -66,39 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-commit 3c0a2e0b0ae661457c8505fecc7be5501aa7a715 upstream.
+commit f06d1b10cb016d5aaecdb1804fefca025387bd10 upstream.
 
-Shifting *signed int* typed constant 1 left by 31 bits causes undefined
-behavior. Specify the correct *unsigned long* type by using 1UL instead.
+Olga showed me a case where the client was sending multiple READ_PLUS
+calls to the server in parallel, and the server replied
+NFS4ERR_OPNOTSUPP to each. The client would fall back to READ for the
+first reply, but fail to retry the other calls.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
+I fix this by removing the test for NFS_CAP_READ_PLUS in
+nfs4_read_plus_not_supported(). This allows us to reschedule any
+READ_PLUS call that has a NFS4ERR_OPNOTSUPP return value, even after the
+capability has been cleared.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reported-by: Olga Kornievskaia <kolga@netapp.com>
+Fixes: c567552612ec ("NFS: Add READ_PLUS data segment support")
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/internal.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/nfs4proc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -695,9 +695,9 @@ unsigned long nfs_block_bits(unsigned lo
- 	if ((bsize & (bsize - 1)) || nrbitsp) {
- 		unsigned char	nrbits;
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -5441,7 +5441,7 @@ static bool nfs4_read_plus_not_supported
+ 	struct rpc_message *msg = &task->tk_msg;
  
--		for (nrbits = 31; nrbits && !(bsize & (1 << nrbits)); nrbits--)
-+		for (nrbits = 31; nrbits && !(bsize & (1UL << nrbits)); nrbits--)
- 			;
--		bsize = 1 << nrbits;
-+		bsize = 1UL << nrbits;
- 		if (nrbitsp)
- 			*nrbitsp = nrbits;
- 	}
+ 	if (msg->rpc_proc == &nfs4_procedures[NFSPROC4_CLNT_READ_PLUS] &&
+-	    server->caps & NFS_CAP_READ_PLUS && task->tk_status == -ENOTSUPP) {
++	    task->tk_status == -ENOTSUPP) {
+ 		server->caps &= ~NFS_CAP_READ_PLUS;
+ 		msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_READ];
+ 		rpc_restart_call_prepare(task);
 
 
 
