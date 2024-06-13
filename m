@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-51321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A37E906F4E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 223F1907153
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1448E1F21D60
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B57B1C243F3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EB41459FA;
-	Thu, 13 Jun 2024 12:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797261428EC;
+	Thu, 13 Jun 2024 12:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaL9p4vy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlEqE4uL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5ADF144D11;
-	Thu, 13 Jun 2024 12:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3568981AA7;
+	Thu, 13 Jun 2024 12:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280953; cv=none; b=BNEkQ7Cib/uzCfH2bZBV6ToQm2NY++WYaVOF8zKGCD1jxsCjysE3aWfG8M2lXb39DxT+mDtcuCL+g6COFJ9R4kHmkHQvbwCDf5vGJNugH2PEY1bIVCl409NN3wShL3TFW7Rpdp8x7NqB0OP9n/RNDcB33YV7aS9BUi8Ya5/EjZw=
+	t=1718282147; cv=none; b=SC421dcNJQ5iSx3m0X/kS/dOAFnsm+d2m6PpCcwswEdGbCREgAEJ65NlQ7JfBMAEov9YE+cO7hrDdIkP6Xyr6d3R4m5Gpb9kK/eG/C9YUUe1dH1sLKJZRJO8FgZmO0cV5BeQJendguU1SvJlkNrQ4UBwNIRvLGUVaPYQz58OBBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280953; c=relaxed/simple;
-	bh=iiIWUC0vmuCKiF3PWLCMUsyhb9agqwGh4CKlzEypQyM=;
+	s=arc-20240116; t=1718282147; c=relaxed/simple;
+	bh=CmuhLatDumZWdadFC27igZ9Nli0A6V7+t3PX214UgW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZX6XKv1kG+6j3ojce21ex0oI5g/vkIVQfaEyiCK7dtnFEGsdWvJ72f7sCMF+MPmPsT9SozayKPP0n0kt+WEgHNl5R7RWoCzRAjktbXg3rqWMzE9Ibd0VK4O8w6F5WTHsfCziUMSb88RfmEryTSnzZr3W6g/wYY3ZmXPlrBBVIwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZaL9p4vy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F559C2BBFC;
-	Thu, 13 Jun 2024 12:15:53 +0000 (UTC)
+	 MIME-Version; b=tb7ThZ5qRgdo92xNDIK3NkDpVTIzawhDvBRnbJrauKOD+OQ1a8/1s93Z66SsPN434B28mhkjNz3yR5aqdR1K2myHme55G+6Tg/OC841BA1HV2mnFWMdVkSIyudPLsEK4TwPILe6nZzcCXrxqpzYZEXo39mJGZuJiNfJFZm8Hv0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlEqE4uL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1ECC2BBFC;
+	Thu, 13 Jun 2024 12:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280953;
-	bh=iiIWUC0vmuCKiF3PWLCMUsyhb9agqwGh4CKlzEypQyM=;
+	s=korg; t=1718282147;
+	bh=CmuhLatDumZWdadFC27igZ9Nli0A6V7+t3PX214UgW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZaL9p4vy6PLng4iv6uV/e3JBtdGavrHQPHluumWEDSJRGIzWW9fZ41WD96swhbma+
-	 JoEXbvFe36gRyNfuU80dszfoBpU81K62EUmtaiZNxadbZDo98CvWI4/bqF0D4kj+UW
-	 rLkGoVRxpMld2x8txPDabEN/92cXQDAuNMmgLtsI=
+	b=XlEqE4uLXGq+KESkBi4sAiXsylir3JufhTNxQ1Z8Y1L3YK1vogCblYalJoyn6C6z2
+	 J33EatWsszo5pIS9+tBL1xJg7Cnzci1oh1eX+Gtz3GZFpdHkXzftY/itlGCXdo2oJb
+	 eIwe5ui8brBqtYJ+G4xNxNszMnJWN3kiOM8FdL1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
-	Charlene Liu <Charlene.Liu@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 090/317] drm/amd/display: Fix potential index out of bounds in color transformation function
+Subject: [PATCH 5.15 151/402] RDMA/hns: Fix deadlock on SRQ async events.
 Date: Thu, 13 Jun 2024 13:31:48 +0200
-Message-ID: <20240613113251.033647477@linuxfoundation.org>
+Message-ID: <20240613113308.026316709@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,59 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 63ae548f1054a0b71678d0349c7dc9628ddd42ca ]
+[ Upstream commit b46494b6f9c19f141114a57729e198698f40af37 ]
 
-Fixes index out of bounds issue in the color transformation function.
-The issue could occur when the index 'i' exceeds the number of transfer
-function points (TRANSFER_FUNC_POINTS).
+xa_lock for SRQ table may be required in AEQ. Use xa_store_irq()/
+xa_erase_irq() to avoid deadlock.
 
-The fix adds a check to ensure 'i' is within bounds before accessing the
-transfer function points. If 'i' is out of bounds, an error message is
-logged and the function returns false to indicate an error.
-
-Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:405 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:406 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:407 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
-
-Fixes: b629596072e5 ("drm/amd/display: Build unity lut for shaper")
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Charlene Liu <Charlene.Liu@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 81fce6291d99 ("RDMA/hns: Add SRQ asynchronous event support")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240412091616.370789-5-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_main.c | 1 +
+ drivers/infiniband/hw/hns/hns_roce_srq.c  | 6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
-index 7a00fe525dfba..bd9bc51983fec 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
-@@ -379,6 +379,11 @@ bool cm_helper_translate_curve_to_hw_format(
- 				i += increment) {
- 			if (j == hw_points - 1)
- 				break;
-+			if (i >= TRANSFER_FUNC_POINTS) {
-+				DC_LOG_ERROR("Index out of bounds: i=%d, TRANSFER_FUNC_POINTS=%d\n",
-+					     i, TRANSFER_FUNC_POINTS);
-+				return false;
-+			}
- 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
- 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
- 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index 80b9a9a45c68e..e2d2f8f2bdbcf 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -38,6 +38,7 @@
+ #include <rdma/ib_smi.h>
+ #include <rdma/ib_user_verbs.h>
+ #include <rdma/ib_cache.h>
++#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_hem.h"
+diff --git a/drivers/infiniband/hw/hns/hns_roce_srq.c b/drivers/infiniband/hw/hns/hns_roce_srq.c
+index e64ef6903fb4f..35001fb99b944 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_srq.c
++++ b/drivers/infiniband/hw/hns/hns_roce_srq.c
+@@ -100,7 +100,7 @@ static int alloc_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq)
+ 		goto err_out;
+ 	}
+ 
+-	ret = xa_err(xa_store(&srq_table->xa, srq->srqn, srq, GFP_KERNEL));
++	ret = xa_err(xa_store_irq(&srq_table->xa, srq->srqn, srq, GFP_KERNEL));
+ 	if (ret) {
+ 		ibdev_err(ibdev, "failed to store SRQC, ret = %d.\n", ret);
+ 		goto err_put;
+@@ -132,7 +132,7 @@ static int alloc_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq)
+ err_mbox:
+ 	hns_roce_free_cmd_mailbox(hr_dev, mailbox);
+ err_xa:
+-	xa_erase(&srq_table->xa, srq->srqn);
++	xa_erase_irq(&srq_table->xa, srq->srqn);
+ err_put:
+ 	hns_roce_table_put(hr_dev, &srq_table->table, srq->srqn);
+ err_out:
+@@ -151,7 +151,7 @@ static void free_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq)
+ 		dev_err(hr_dev->dev, "DESTROY_SRQ failed (%d) for SRQN %06lx\n",
+ 			ret, srq->srqn);
+ 
+-	xa_erase(&srq_table->xa, srq->srqn);
++	xa_erase_irq(&srq_table->xa, srq->srqn);
+ 
+ 	if (refcount_dec_and_test(&srq->refcount))
+ 		complete(&srq->free);
 -- 
 2.43.0
 
