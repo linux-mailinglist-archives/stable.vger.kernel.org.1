@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-51401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903C8906FB5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EBB6906E55
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48E8B289427
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA69A28148C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE741459F5;
-	Thu, 13 Jun 2024 12:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BD61448C8;
+	Thu, 13 Jun 2024 12:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDFC3NZb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbWUweln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8B81459FA;
-	Thu, 13 Jun 2024 12:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAADE144312;
+	Thu, 13 Jun 2024 12:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281189; cv=none; b=N+dSqzocwRQxX+1YQ6MSDbxbr088RCwnksHwLnUZeRVp+pwqJP8YoHynnV+iJCoxQXAWj9sJxNADdFxG+EWionUqLA9cU1IUE0Ms1n+7Vw8i6ClR8NDNseAQvxYWekYTxEctgPspwsbYiXFxrNXlFnSYQ+V9li2ryE0j96plxoc=
+	t=1718280305; cv=none; b=Q2slAa6dBkdSu+1zPoB69WrUypovEldabkOXt+CzvwwwMHpX01II0LTv67AkwbAPFCGvH+P3ANPqS2/bcDGsmtDFaEr4IbxHUf45GK9t8CvCLun6R6pRliqkYZmj/AuSNkto18BEzBaTRu2fhE/dctlk6sAQ1V9QiOcQxOmy1F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281189; c=relaxed/simple;
-	bh=97xPibskSST2folviux5kU2G1wRp7sV8PIRAYe0dve8=;
+	s=arc-20240116; t=1718280305; c=relaxed/simple;
+	bh=39Ua1y/Ket/7QjlJD27FzBtV7zQCealDoXkfHoTjw+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KS16dpXKIVWl1a+vsMXjz6cDYs1KVZwEXD5qzyRK9knZ0e1pcgeqJwi/5L3HKvvPEscQbqoQfLvR/A9uiy8tqtUvLvwbCje8YdnvdgX5VLYHlNa37Kjv2SvxgbMmOdkDKtn98K07q+afJ4Mqi0zS+81M12VxlYPCzunQ875SC2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDFC3NZb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D1DC2BBFC;
-	Thu, 13 Jun 2024 12:19:48 +0000 (UTC)
+	 MIME-Version; b=WjK2oCaxXn1qPXDY6lBZyNodTD7lUYOzB3vJo51VMasn9VI8stABcHVklf1UBk/NCR+eyuQpiejn6h3hT5gEfPJGgYOQPJK7PLvUge/4aXplNUbyodtg8paBcyNcYmqez+taD7w9GuCIB+reC0WStdFU31bLnkGIK9fa4fKpduM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbWUweln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42027C2BBFC;
+	Thu, 13 Jun 2024 12:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281189;
-	bh=97xPibskSST2folviux5kU2G1wRp7sV8PIRAYe0dve8=;
+	s=korg; t=1718280305;
+	bh=39Ua1y/Ket/7QjlJD27FzBtV7zQCealDoXkfHoTjw+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDFC3NZb8gG/OIcVb0j4FM5/RNtlEBgwgrQblqD+lxZJWlTBA28h4OCIUSHYBGizi
-	 8mmZLZC2bgYwg3y4N3TEOwU/G/qnqky+m+uyXVP2Z0lHI9O1jkObPZ7E7uWVgubA5q
-	 5M+oKNzC1Y2uXVLuFULp9AVS7fdypI+zeT2HAD1M=
+	b=pbWUweln6NCYeDJj6FO8fBOoevPNKiMs2hB5aB/Dy4+itoefyKCCztwSBh2j7Sj5u
+	 +dvJMM0Qx14j13s4jQZ3lmpP490/1nLe2thtyC4CnL+lkC0Z0+qA6BvX8VbLzVPEHr
+	 TepsIhs2Z1PTEWal3exy+7k3TvgqjFhJ+mMnyyjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Rix <trix@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 163/317] fpga: region: change FPGA indirect article to an
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>
+Subject: [PATCH 6.6 001/137] drm/i915/hwmon: Get rid of devm
 Date: Thu, 13 Jun 2024 13:33:01 +0200
-Message-ID: <20240613113253.870220789@linuxfoundation.org>
+Message-ID: <20240613113223.340841303@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +62,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Rix <trix@redhat.com>
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-[ Upstream commit 011c49e3703854e52c0fb88f22cf38aca1d4d514 ]
+commit 5bc9de065b8bb9b8dd8799ecb4592d0403b54281 upstream.
 
-Change use of 'a fpga' to 'an fpga'
+When both hwmon and hwmon drvdata (on which hwmon depends) are device
+managed resources, the expectation, on device unbind, is that hwmon will be
+released before drvdata. However, in i915 there are two separate code
+paths, which both release either drvdata or hwmon and either can be
+released before the other. These code paths (for device unbind) are as
+follows (see also the bug referenced below):
 
-Signed-off-by: Tom Rix <trix@redhat.com>
-Link: https://lore.kernel.org/r/20210608212350.3029742-10-trix@redhat.com
+Call Trace:
+release_nodes+0x11/0x70
+devres_release_group+0xb2/0x110
+component_unbind_all+0x8d/0xa0
+component_del+0xa5/0x140
+intel_pxp_tee_component_fini+0x29/0x40 [i915]
+intel_pxp_fini+0x33/0x80 [i915]
+i915_driver_remove+0x4c/0x120 [i915]
+i915_pci_remove+0x19/0x30 [i915]
+pci_device_remove+0x32/0xa0
+device_release_driver_internal+0x19c/0x200
+unbind_store+0x9c/0xb0
+
+and
+
+Call Trace:
+release_nodes+0x11/0x70
+devres_release_all+0x8a/0xc0
+device_unbind_cleanup+0x9/0x70
+device_release_driver_internal+0x1c1/0x200
+unbind_store+0x9c/0xb0
+
+This means that in i915, if use devm, we cannot gurantee that hwmon will
+always be released before drvdata. Which means that we have a uaf if hwmon
+sysfs is accessed when drvdata has been released but hwmon hasn't.
+
+The only way out of this seems to be do get rid of devm_ and release/free
+everything explicitly during device unbind.
+
+v2: Change commit message and other minor code changes
+v3: Cleanup from i915_hwmon_register on error (Armin Wolf)
+v4: Eliminate potential static analyzer warning (Rodrigo)
+    Eliminate fetch_and_zero (Jani)
+v5: Restore previous logic for ddat_gt->hwmon_dev error return (Andi)
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10366
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240417145646.793223-1-ashutosh.dixit@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: b7c0e1ecee40 ("fpga: region: add owner module and take its refcount")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fpga/fpga-region.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/i915/i915_hwmon.c |   46 ++++++++++++++++++++++++++------------
+ 1 file changed, 32 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/fpga/fpga-region.c b/drivers/fpga/fpga-region.c
-index c3134b89c3fe5..c5c55d2f20b92 100644
---- a/drivers/fpga/fpga-region.c
-+++ b/drivers/fpga/fpga-region.c
-@@ -33,14 +33,14 @@ struct fpga_region *fpga_region_class_find(
- EXPORT_SYMBOL_GPL(fpga_region_class_find);
+--- a/drivers/gpu/drm/i915/i915_hwmon.c
++++ b/drivers/gpu/drm/i915/i915_hwmon.c
+@@ -793,7 +793,7 @@ void i915_hwmon_register(struct drm_i915
+ 	if (!IS_DGFX(i915))
+ 		return;
  
- /**
-- * fpga_region_get - get an exclusive reference to a fpga region
-+ * fpga_region_get - get an exclusive reference to an fpga region
-  * @region: FPGA Region struct
-  *
-  * Caller should call fpga_region_put() when done with region.
-  *
-  * Return fpga_region struct if successful.
-  * Return -EBUSY if someone already has a reference to the region.
-- * Return -ENODEV if @np is not a FPGA Region.
-+ * Return -ENODEV if @np is not an FPGA Region.
-  */
- static struct fpga_region *fpga_region_get(struct fpga_region *region)
+-	hwmon = devm_kzalloc(dev, sizeof(*hwmon), GFP_KERNEL);
++	hwmon = kzalloc(sizeof(*hwmon), GFP_KERNEL);
+ 	if (!hwmon)
+ 		return;
+ 
+@@ -819,14 +819,12 @@ void i915_hwmon_register(struct drm_i915
+ 	hwm_get_preregistration_info(i915);
+ 
+ 	/*  hwmon_dev points to device hwmon<i> */
+-	hwmon_dev = devm_hwmon_device_register_with_info(dev, ddat->name,
+-							 ddat,
+-							 &hwm_chip_info,
+-							 hwm_groups);
+-	if (IS_ERR(hwmon_dev)) {
+-		i915->hwmon = NULL;
+-		return;
+-	}
++	hwmon_dev = hwmon_device_register_with_info(dev, ddat->name,
++						    ddat,
++						    &hwm_chip_info,
++						    hwm_groups);
++	if (IS_ERR(hwmon_dev))
++		goto err;
+ 
+ 	ddat->hwmon_dev = hwmon_dev;
+ 
+@@ -839,16 +837,36 @@ void i915_hwmon_register(struct drm_i915
+ 		if (!hwm_gt_is_visible(ddat_gt, hwmon_energy, hwmon_energy_input, 0))
+ 			continue;
+ 
+-		hwmon_dev = devm_hwmon_device_register_with_info(dev, ddat_gt->name,
+-								 ddat_gt,
+-								 &hwm_gt_chip_info,
+-								 NULL);
++		hwmon_dev = hwmon_device_register_with_info(dev, ddat_gt->name,
++							    ddat_gt,
++							    &hwm_gt_chip_info,
++							    NULL);
+ 		if (!IS_ERR(hwmon_dev))
+ 			ddat_gt->hwmon_dev = hwmon_dev;
+ 	}
++	return;
++err:
++	i915_hwmon_unregister(i915);
+ }
+ 
+ void i915_hwmon_unregister(struct drm_i915_private *i915)
  {
-@@ -234,7 +234,7 @@ struct fpga_region
- EXPORT_SYMBOL_GPL(fpga_region_create);
- 
- /**
-- * fpga_region_free - free a FPGA region created by fpga_region_create()
-+ * fpga_region_free - free an FPGA region created by fpga_region_create()
-  * @region: FPGA region
-  */
- void fpga_region_free(struct fpga_region *region)
-@@ -257,7 +257,7 @@ static void devm_fpga_region_release(struct device *dev, void *res)
-  * @mgr: manager that programs this region
-  * @get_bridges: optional function to get bridges to a list
-  *
-- * This function is intended for use in a FPGA region driver's probe function.
-+ * This function is intended for use in an FPGA region driver's probe function.
-  * After the region driver creates the region struct with
-  * devm_fpga_region_create(), it should register it with fpga_region_register().
-  * The region driver's remove function should call fpga_region_unregister().
-@@ -291,7 +291,7 @@ struct fpga_region
- EXPORT_SYMBOL_GPL(devm_fpga_region_create);
- 
- /**
-- * fpga_region_register - register a FPGA region
-+ * fpga_region_register - register an FPGA region
-  * @region: FPGA region
-  *
-  * Return: 0 or -errno
-@@ -303,10 +303,10 @@ int fpga_region_register(struct fpga_region *region)
- EXPORT_SYMBOL_GPL(fpga_region_register);
- 
- /**
-- * fpga_region_unregister - unregister a FPGA region
-+ * fpga_region_unregister - unregister an FPGA region
-  * @region: FPGA region
-  *
-- * This function is intended for use in a FPGA region driver's remove function.
-+ * This function is intended for use in an FPGA region driver's remove function.
-  */
- void fpga_region_unregister(struct fpga_region *region)
- {
--- 
-2.43.0
-
+-	fetch_and_zero(&i915->hwmon);
++	struct i915_hwmon *hwmon = i915->hwmon;
++	struct intel_gt *gt;
++	int i;
++
++	if (!hwmon)
++		return;
++
++	for_each_gt(gt, i915, i)
++		if (hwmon->ddat_gt[i].hwmon_dev)
++			hwmon_device_unregister(hwmon->ddat_gt[i].hwmon_dev);
++
++	if (hwmon->ddat.hwmon_dev)
++		hwmon_device_unregister(hwmon->ddat.hwmon_dev);
++
++	mutex_destroy(&hwmon->hwmon_lock);
++
++	kfree(i915->hwmon);
++	i915->hwmon = NULL;
+ }
 
 
 
