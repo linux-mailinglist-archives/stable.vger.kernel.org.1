@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12649070E3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79156906F31
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DAA31F217B1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F7AE1F23644
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459B81849;
-	Thu, 13 Jun 2024 12:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E61F14535D;
+	Thu, 13 Jun 2024 12:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZXq5iei"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isJXDRbG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029CF17FD;
-	Thu, 13 Jun 2024 12:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C35B143C55;
+	Thu, 13 Jun 2024 12:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281910; cv=none; b=HiXl0wBPxv7E71goCbJa/yYXAw/CV6l7//Zi9Lhhtf6sa6qNOP3oEpHWzCkkAHl8brOK7pTctBNf3OHnPjh8ARGk8GOoB3oFxj+RqD+bNHe9eWstAfp/1wDmoemk1LrQGHZw2bXPiQ4GeDJFyFXeBg5WmUpK26oBTc0pm//FpNc=
+	t=1718280886; cv=none; b=TIVkcQ+0SV6aKOa7ma1Ggc4bdWn1M+8CQ39aM6x06JB1auunmtkAGZ7IH6GVpJ1oAGCDoT35c6loGOZmJvXRGwKEu6vVMmlhTTBN2Qn/Ue6cSC/m6nsU/gZdOFTTZbpIGfJDW0c3tftM4ysist5XJuTBx6VNlZldDsmIvcq4NRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281910; c=relaxed/simple;
-	bh=EVpGUnnyTgQb0u5y/vw4uKXG88dxr7EcqVOG5iI6klY=;
+	s=arc-20240116; t=1718280886; c=relaxed/simple;
+	bh=YtthFFUEC3Jnc1stQIa9KddT0M3usTnNEtZsVFXhWLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hfsv+0MZ8xdy2a9J+9Uk9nejS/ZNSZvTPePZqIWkug0DdAoIZkNzOmn3Hka9nHwSVA5u/QRTUUaff35NJ3GfaVbx7cXWyHvzt+vCX5vIAgI8UOV4zSyE65yKM/exgSy/qcO9GTBAjTu3nl7JBaMx+vA1i8+3a3419jLd2+W+FNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZXq5iei; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C07EC2BBFC;
-	Thu, 13 Jun 2024 12:31:49 +0000 (UTC)
+	 MIME-Version; b=ZK1QHgEto13d5EWJPQHT0YV84PEa52pS+gAmOaX7CG/8RC3T+qXvimM/HtF1oJCcrHygJzE0GIVOZO46CYjPnGFd9DzqC622T3jvQxL6H31KRMMbCBFKJYgiX0e5YqP9kwi/G1x8jRox25uhWH55AQIfIkAObjaZzUVOfy37Uig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isJXDRbG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41CDC2BBFC;
+	Thu, 13 Jun 2024 12:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281909;
-	bh=EVpGUnnyTgQb0u5y/vw4uKXG88dxr7EcqVOG5iI6klY=;
+	s=korg; t=1718280886;
+	bh=YtthFFUEC3Jnc1stQIa9KddT0M3usTnNEtZsVFXhWLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZXq5iein7usbdxiWmbxpyzttLGXhvRI3XBXfhUaDCxhf1o+fZRv4psVQUPEuLOaM
-	 jlu/ZX0XTOGmZumPJsowcL9+1lKHFEkZR70fKsWJvoYPCOzLgOdP/z+/riZ86l2I6h
-	 uHQgKMSiVMumtqoFBTmvA4vV5ojtP85CB3WciXFo=
+	b=isJXDRbGEn7RnFTdbv0vrsWKCE4jWeU8jEvZKdDQmO1iMYYKb/fhXxS2cdjjaoXLd
+	 0AoLbWjJvx/Q9CkX9ttpH6yu4AZJl6P3bTMbs4KTvnz0urddf22kxb5RE61bBGKg1M
+	 Tioh9pSzjBX+W/uz5MCzDDXcSQPlj12/0+uzfcHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 098/402] selftests/binderfs: use the Makefiles rules, not Makes implicit rules
+Subject: [PATCH 5.10 037/317] scsi: ufs: qcom: Perform read back after writing reset bit
 Date: Thu, 13 Jun 2024 13:30:55 +0200
-Message-ID: <20240613113305.960949124@linuxfoundation.org>
+Message-ID: <20240613113248.981085723@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Hubbard <jhubbard@nvidia.com>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit 019baf635eb6ffe8d6c1343f81788f02a7e0ed98 ]
+[ Upstream commit c4d28e06b0c94636f6e35d003fa9ebac0a94e1ae ]
 
-First of all, in order to build with clang at all, one must first apply
-Valentin Obst's build fix for LLVM [1]. Once that is done, then when
-building with clang, via:
+Currently, the reset bit for the UFS provided reset controller (used by its
+phy) is written to, and then a mb() happens to try and ensure that hit the
+device. Immediately afterwards a usleep_range() occurs.
 
-    make LLVM=1 -C tools/testing/selftests
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring this
+bit has taken effect on the device is to perform a read back to force it to
+make it all the way to the device. This is documented in device-io.rst and
+a talk by Will Deacon on this can be seen over here:
 
-...the following error occurs:
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
 
-   clang: error: cannot specify -o when generating multiple output files
+Let's do that to ensure the bit hits the device. By doing so and
+guaranteeing the ordering against the immediately following usleep_range(),
+the mb() can safely be removed.
 
-This is because clang, unlike gcc, won't accept invocations of this
-form:
-
-    clang file1.c header2.h
-
-While trying to fix this, I noticed that:
-
-a) selftests/lib.mk already avoids the problem, and
-
-b) The binderfs Makefile indavertently bypasses the selftests/lib.mk
-build system, and quitely uses Make's implicit build rules for .c files
-instead.
-
-The Makefile attempts to set up both a dependency and a source file,
-neither of which was needed, because lib.mk is able to automatically
-handle both. This line:
-
-    binderfs_test: binderfs_test.c
-
-...causes Make's implicit rules to run, which builds binderfs_test
-without ever looking at lib.mk.
-
-Fix this by simply deleting the "binderfs_test:" Makefile target and
-letting lib.mk handle it instead.
-
-[1] https://lore.kernel.org/all/20240329-selftests-libmk-llvm-rfc-v1-1-2f9ed7d1c49f@valentinobst.de/
-
-Fixes: 6e29225af902 ("binderfs: port tests to test harness infrastructure")
-Cc: Christian Brauner <brauner@kernel.org>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 81c0fc51b7a7 ("ufs-qcom: add support for Qualcomm Technologies Inc platforms")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-1-181252004586@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/filesystems/binderfs/Makefile | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/scsi/ufs/ufs-qcom.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/filesystems/binderfs/Makefile b/tools/testing/selftests/filesystems/binderfs/Makefile
-index 8af25ae960498..24d8910c7ab58 100644
---- a/tools/testing/selftests/filesystems/binderfs/Makefile
-+++ b/tools/testing/selftests/filesystems/binderfs/Makefile
-@@ -3,6 +3,4 @@
- CFLAGS += -I../../../../../usr/include/ -pthread
- TEST_GEN_PROGS := binderfs_test
+diff --git a/drivers/scsi/ufs/ufs-qcom.h b/drivers/scsi/ufs/ufs-qcom.h
+index 3f4922743b3e3..478134ba80864 100644
+--- a/drivers/scsi/ufs/ufs-qcom.h
++++ b/drivers/scsi/ufs/ufs-qcom.h
+@@ -156,10 +156,10 @@ static inline void ufs_qcom_assert_reset(struct ufs_hba *hba)
+ 			1 << OFFSET_UFS_PHY_SOFT_RESET, REG_UFS_CFG1);
  
--binderfs_test: binderfs_test.c ../../kselftest.h ../../kselftest_harness.h
--
- include ../../lib.mk
+ 	/*
+-	 * Make sure assertion of ufs phy reset is written to
+-	 * register before returning
++	 * Dummy read to ensure the write takes effect before doing any sort
++	 * of delay
+ 	 */
+-	mb();
++	ufshcd_readl(hba, REG_UFS_CFG1);
+ }
+ 
+ static inline void ufs_qcom_deassert_reset(struct ufs_hba *hba)
+@@ -168,10 +168,10 @@ static inline void ufs_qcom_deassert_reset(struct ufs_hba *hba)
+ 			0 << OFFSET_UFS_PHY_SOFT_RESET, REG_UFS_CFG1);
+ 
+ 	/*
+-	 * Make sure de-assertion of ufs phy reset is written to
+-	 * register before returning
++	 * Dummy read to ensure the write takes effect before doing any sort
++	 * of delay
+ 	 */
+-	mb();
++	ufshcd_readl(hba, REG_UFS_CFG1);
+ }
+ 
+ /* Host controller hardware version: major.minor.step */
 -- 
 2.43.0
 
