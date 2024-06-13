@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADD1907200
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C339907031
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C4F0280D83
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 071752895F3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79AB74A07;
-	Thu, 13 Jun 2024 12:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0137813CA9A;
+	Thu, 13 Jun 2024 12:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnYG8eeh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m75wbf4Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A001849;
-	Thu, 13 Jun 2024 12:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45BC56458;
+	Thu, 13 Jun 2024 12:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282560; cv=none; b=RA97x4GTBv+TzH6HwqIjNjoyISZjhywFxL7BGgBmXWEYq3kIv7sa+/eo2LcT2Z/ICXP+3HD3pjkvrJtIMNGz/1Zvqc01S89FydVyI4RIBmD4vWhrWGYat/rxkrOaI7kCYCVE6jyI2Bns7PQL/tMzwxkD2NH6HyADElDJlwRVFrM=
+	t=1718281477; cv=none; b=GcTE1dCxbCfs36aFINBYnQSpMFu8jzh1qy9hEnxvcXgzKsuBrdBTWZrUFzSx7fW6PbLEkequBVV3VWd+/8ZnviMDV+URO/f4Mm33H07LcsmTiAQQYw9hYfMoJYoBvJgrZCXhbjsFyrtjXFaSwF6VZwnn0xZNPzMp8/U+Dnnf0ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282560; c=relaxed/simple;
-	bh=QDP0Au1+pYHbGwWaOAc+k2y8rLJmf6E6uBwevhfTYGo=;
+	s=arc-20240116; t=1718281477; c=relaxed/simple;
+	bh=UxekyblV+rITJuc/EivK4/HjeU+PV8Zs7OHMQuVfvws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BZNOzmhQ0FSCRWytjxrKwzre6j/SJo11vAcEuu7lj4NvRovf4w5nOKvw+J60lxv0UgecMwXUPEQqB8p7gK24YfoxFkR850S4TujsPOIJXTde8/1Y7luc+qbXs2rXHGdvDoswH5ydR6qiNVEJY61mrGiHhtQaPYpuk5CeZATnelY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnYG8eeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20E2C2BBFC;
-	Thu, 13 Jun 2024 12:42:39 +0000 (UTC)
+	 MIME-Version; b=ncfeAIkpKlYNgMv1xKxWVWHrxhyi8SwCWKTxqHaHtDBvrnyhmVI/t3SjjvLATCHpJFzD77s+XR4p3qzrvxtxVmfiNiaFefW8Hlo8RLQvjTAgMbnx3/3KBaVnl/EjY5ORLv3V+uwfujM2ifezplRfLorax/PrELKoyUH6JG+QamA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m75wbf4Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C0EC2BBFC;
+	Thu, 13 Jun 2024 12:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282560;
-	bh=QDP0Au1+pYHbGwWaOAc+k2y8rLJmf6E6uBwevhfTYGo=;
+	s=korg; t=1718281477;
+	bh=UxekyblV+rITJuc/EivK4/HjeU+PV8Zs7OHMQuVfvws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xnYG8eehQfW8JUX1SaCwA/deTzKuggydvpzhFyllc26/UKxCSsNpHoCL5Cq0t3LVn
-	 ajxqZOxcGxXqR0PK/9CNP7m8PVWuPTz1Mbg549uvSMA94nFuX+/6XVyIfah6lI8qS6
-	 qlngaVG5NhiSdYzd6E+c/KqOfIoqrUERzj8ZXWjQ=
+	b=m75wbf4ZF26vWpISk3LfgnHK5IEJgu/MsuIXxIz7Ly1ZFzhvvqm0sr59CTNA7DgPH
+	 FKMI0nacVA9yz02J2e134SQTuUCM5KptYlN+WSDUjopXDKUkSwtdSLpyFMPC1sg0gX
+	 UNyR/msr0Vkbsg24RGid4Y4sGnkcf7n17EcTLVHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 287/402] ASoC: tas2552: Add TX path for capturing AUDIO-OUT data
-Date: Thu, 13 Jun 2024 13:34:04 +0200
-Message-ID: <20240613113313.347836171@linuxfoundation.org>
+Subject: [PATCH 5.10 227/317] x86/kconfig: Select ARCH_WANT_FRAME_POINTERS again when UNWINDER_FRAME_POINTER=y
+Date: Thu, 13 Jun 2024 13:34:05 +0200
+Message-ID: <20240613113256.333336031@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 7078ac4fd179a68d0bab448004fcd357e7a45f8d ]
+[ Upstream commit 66ee3636eddcc82ab82b539d08b85fb5ac1dff9b ]
 
-TAS2552 is a Smartamp with I/V sense data, add TX path
-to support capturing I/V data.
+It took me some time to understand the purpose of the tricky code at
+the end of arch/x86/Kconfig.debug.
 
-Fixes: 38803ce7b53b ("ASoC: codecs: tas*: merge .digital_mute() into .mute_stream()")
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Link: https://msgid.link/r/20240518033515.866-1-shenghao-ding@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Without it, the following would be shown:
+
+  WARNING: unmet direct dependencies detected for FRAME_POINTER
+
+because
+
+  81d387190039 ("x86/kconfig: Consolidate unwinders into multiple choice selection")
+
+removed 'select ARCH_WANT_FRAME_POINTERS'.
+
+The correct and more straightforward approach should have been to move
+it where 'select FRAME_POINTER' is located.
+
+Several architectures properly handle the conditional selection of
+ARCH_WANT_FRAME_POINTERS. For example, 'config UNWINDER_FRAME_POINTER'
+in arch/arm/Kconfig.debug.
+
+Fixes: 81d387190039 ("x86/kconfig: Consolidate unwinders into multiple choice selection")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20240204122003.53795-1-masahiroy@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2552.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ arch/x86/Kconfig.debug | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2552.c b/sound/soc/codecs/tas2552.c
-index 700baa6314aa8..ba36525a57898 100644
---- a/sound/soc/codecs/tas2552.c
-+++ b/sound/soc/codecs/tas2552.c
-@@ -2,7 +2,8 @@
- /*
-  * tas2552.c - ALSA SoC Texas Instruments TAS2552 Mono Audio Amplifier
-  *
-- * Copyright (C) 2014 Texas Instruments Incorporated -  https://www.ti.com
-+ * Copyright (C) 2014 - 2024 Texas Instruments Incorporated -
-+ *	https://www.ti.com
-  *
-  * Author: Dan Murphy <dmurphy@ti.com>
-  */
-@@ -119,12 +120,14 @@ static const struct snd_soc_dapm_widget tas2552_dapm_widgets[] =
- 			 &tas2552_input_mux_control),
+diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
+index 27b5e2bc6a016..e6546aa448de1 100644
+--- a/arch/x86/Kconfig.debug
++++ b/arch/x86/Kconfig.debug
+@@ -258,6 +258,7 @@ config UNWINDER_ORC
  
- 	SND_SOC_DAPM_AIF_IN("DAC IN", "DAC Playback", 0, SND_SOC_NOPM, 0, 0),
-+	SND_SOC_DAPM_AIF_OUT("ASI OUT", "DAC Capture", 0, SND_SOC_NOPM, 0, 0),
- 	SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
- 	SND_SOC_DAPM_OUT_DRV("ClassD", TAS2552_CFG_2, 7, 0, NULL, 0),
- 	SND_SOC_DAPM_SUPPLY("PLL", TAS2552_CFG_2, 3, 0, NULL, 0),
- 	SND_SOC_DAPM_POST("Post Event", tas2552_post_event),
+ config UNWINDER_FRAME_POINTER
+ 	bool "Frame pointer unwinder"
++	select ARCH_WANT_FRAME_POINTERS
+ 	select FRAME_POINTER
+ 	help
+ 	  This option enables the frame pointer unwinder for unwinding kernel
+@@ -281,7 +282,3 @@ config UNWINDER_GUESS
+ 	  overhead.
  
--	SND_SOC_DAPM_OUTPUT("OUT")
-+	SND_SOC_DAPM_OUTPUT("OUT"),
-+	SND_SOC_DAPM_INPUT("DMIC")
- };
- 
- static const struct snd_soc_dapm_route tas2552_audio_map[] = {
-@@ -134,6 +137,7 @@ static const struct snd_soc_dapm_route tas2552_audio_map[] = {
- 	{"ClassD", NULL, "Input selection"},
- 	{"OUT", NULL, "ClassD"},
- 	{"ClassD", NULL, "PLL"},
-+	{"ASI OUT", NULL, "DMIC"}
- };
- 
- #ifdef CONFIG_PM
-@@ -538,6 +542,13 @@ static struct snd_soc_dai_driver tas2552_dai[] = {
- 			.rates = SNDRV_PCM_RATE_8000_192000,
- 			.formats = TAS2552_FORMATS,
- 		},
-+		.capture = {
-+			.stream_name = "Capture",
-+			.channels_min = 2,
-+			.channels_max = 2,
-+			.rates = SNDRV_PCM_RATE_8000_192000,
-+			.formats = TAS2552_FORMATS,
-+		},
- 		.ops = &tas2552_speaker_dai_ops,
- 	},
- };
+ endchoice
+-
+-config FRAME_POINTER
+-	depends on !UNWINDER_ORC && !UNWINDER_GUESS
+-	bool
 -- 
 2.43.0
 
