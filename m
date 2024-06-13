@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-51130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DCB6906E76
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9728F90719E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:39:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D80BC1F21944
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98B951C238B2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D20A146583;
-	Thu, 13 Jun 2024 12:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4561143C75;
+	Thu, 13 Jun 2024 12:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/q2ZxLC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzcXLyJc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A50B145B15;
-	Thu, 13 Jun 2024 12:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C2C14198E;
+	Thu, 13 Jun 2024 12:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280397; cv=none; b=daEexPUcaNtH1v6C+qnCKdYjbW6bBJoVled79gDegS/xAD/C+8yxUS1kjBM8HOTHnpzsdHqtXPjKWnZyq6uvzn1LwTK3XO6ETb1G7shFpvORW+9CX7WurPEEa5ttLC8tcE5EiPCWvzwltXhDuy9fcH1GjYuTYzjIVqf/oOnnfw8=
+	t=1718282304; cv=none; b=bhP36qpX2lzbTs50MlimKp6PHmop74+zLPr/P/d22CC+UbUv7okjDWrnMLmWi5rqwo/cM5AZhZT4KroNv15F9k52PMyTFLc5MN4st0IIGLUPTx7PHJaTJBIO3ht6H0stfNCZHZ5S98gKrJuoxCR4eS39jfuHo0uJbnRuAFG338s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280397; c=relaxed/simple;
-	bh=t69aR8N8Zispxe0JuaHFMNB2rAABqZC2GbKttFzdJH8=;
+	s=arc-20240116; t=1718282304; c=relaxed/simple;
+	bh=ZQVXsEOXsfHdwCvMmsO8gqDEEbHBRUjCFCg6uTYNo+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c8GjblRKnIXVX6MuqovpQUauQFeOzpKS0Rxfr/Dx27SNcTlu1NTIVM3ayNCdJf0lck+Gjeu5H7cf063i4b0JOaXBsSLpLd+oBuQ07TQt5NwaR7M8P5bzaaJpgHPCttBM/z5Mu8ZAMOZg4dvrT8mgsL0iLo2X43jZ7Yeh4ZnmSzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/q2ZxLC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4926C2BBFC;
-	Thu, 13 Jun 2024 12:06:36 +0000 (UTC)
+	 MIME-Version; b=HgLyMhxcqOIn75uq6QTAS7K6M0v7CpT4tLx7co8elaTlA6AuYtJR4l+x4DKFSk31oLe5Dshf7CTD3syqEV8TLBYhtuYggAU9PnwI1KBGIJ+khbVQZ2DlE91RQ20Zz23SqBg/jNqJkDlt36aDejfKNyvut84cyNP2DbIotXIJS5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzcXLyJc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F4DC2BBFC;
+	Thu, 13 Jun 2024 12:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280397;
-	bh=t69aR8N8Zispxe0JuaHFMNB2rAABqZC2GbKttFzdJH8=;
+	s=korg; t=1718282304;
+	bh=ZQVXsEOXsfHdwCvMmsO8gqDEEbHBRUjCFCg6uTYNo+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/q2ZxLC5q4+hrKi2iyrm6RMiduhlWw0iVzP7hlKwcHg5li2cymmSNw9KY4/4lsu6
-	 ap1tqE3V43dyF8X7lJzE+/ItAYQNfBu6SUMsTitJ4aITCwL8inWh7qPmDBUlZoR8mN
-	 YkYGZylmu96eXGDd5dPSeAzRcykhw0agpN1k6H3Q=
+	b=NzcXLyJcSRcJFaeIo8Ez0PAosftvdikAbryqpn7s8Yjz8/WRlh7dmtHOcpuyh4JcZ
+	 gFh3EnKl+93hulZBJuXPrb5XS82IAlEqmSofxnEpKJ/bHPvaGHyH5ZmnpYWZ1Kq3VN
+	 nCShPqeLcnbIfM+YUWOp+wpW4xJzgPWQTCqeItx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandeep Dhavale <dhavale@google.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.6 009/137] erofs: avoid allocating DEFLATE streams before mounting
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 232/402] f2fs: compress: fix to cover {reserve,release}_compress_blocks() w/ cp_rwsem lock
 Date: Thu, 13 Jun 2024 13:33:09 +0200
-Message-ID: <20240613113223.649602154@linuxfoundation.org>
+Message-ID: <20240613113311.195042951@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,115 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 80eb4f62056d6ae709bdd0636ab96ce660f494b2 upstream.
+[ Upstream commit 0a4ed2d97cb6d044196cc3e726b6699222b41019 ]
 
-Currently, each DEFLATE stream takes one 32 KiB permanent internal
-window buffer even if there is no running instance which uses DEFLATE
-algorithm.
+It needs to cover {reserve,release}_compress_blocks() w/ cp_rwsem lock
+to avoid racing with checkpoint, otherwise, filesystem metadata including
+blkaddr in dnode, inode fields and .total_valid_block_count may be
+corrupted after SPO case.
 
-It's unexpected and wasteful on embedded devices with limited resources
-and servers with hundreds of CPU cores if DEFLATE is enabled but unused.
-
-Fixes: ffa09b3bd024 ("erofs: DEFLATE compression support")
-Cc: <stable@vger.kernel.org> # 6.6+
-Reviewed-by: Sandeep Dhavale <dhavale@google.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20240520090106.2898681-1-hsiangkao@linux.alibaba.com
-[ Gao Xiang: resolve trivial conflicts. ]
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ef8d563f184e ("f2fs: introduce F2FS_IOC_RELEASE_COMPRESS_BLOCKS")
+Fixes: c75488fb4d82 ("f2fs: introduce F2FS_IOC_RESERVE_COMPRESS_BLOCKS")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/decompressor_deflate.c |   57 +++++++++++++++++++++-------------------
- 1 file changed, 30 insertions(+), 27 deletions(-)
+ fs/f2fs/file.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/fs/erofs/decompressor_deflate.c
-+++ b/fs/erofs/decompressor_deflate.c
-@@ -47,39 +47,15 @@ int __init z_erofs_deflate_init(void)
- 	/* by default, use # of possible CPUs instead */
- 	if (!z_erofs_deflate_nstrms)
- 		z_erofs_deflate_nstrms = num_possible_cpus();
--
--	for (; z_erofs_deflate_avail_strms < z_erofs_deflate_nstrms;
--	     ++z_erofs_deflate_avail_strms) {
--		struct z_erofs_deflate *strm;
--
--		strm = kzalloc(sizeof(*strm), GFP_KERNEL);
--		if (!strm)
--			goto out_failed;
--
--		/* XXX: in-kernel zlib cannot shrink windowbits currently */
--		strm->z.workspace = vmalloc(zlib_inflate_workspacesize());
--		if (!strm->z.workspace) {
--			kfree(strm);
--			goto out_failed;
--		}
--
--		spin_lock(&z_erofs_deflate_lock);
--		strm->next = z_erofs_deflate_head;
--		z_erofs_deflate_head = strm;
--		spin_unlock(&z_erofs_deflate_lock);
--	}
- 	return 0;
--
--out_failed:
--	pr_err("failed to allocate zlib workspace\n");
--	z_erofs_deflate_exit();
--	return -ENOMEM;
- }
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index f10156aecf425..30b015fbec6a5 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -3490,9 +3490,12 @@ static int f2fs_release_compress_blocks(struct file *filp, unsigned long arg)
+ 		struct dnode_of_data dn;
+ 		pgoff_t end_offset, count;
  
- int z_erofs_load_deflate_config(struct super_block *sb,
- 			struct erofs_super_block *dsb, void *data, int size)
- {
- 	struct z_erofs_deflate_cfgs *dfl = data;
-+	static DEFINE_MUTEX(deflate_resize_mutex);
-+	static bool inited;
- 
- 	if (!dfl || size < sizeof(struct z_erofs_deflate_cfgs)) {
- 		erofs_err(sb, "invalid deflate cfgs, size=%u", size);
-@@ -90,9 +66,36 @@ int z_erofs_load_deflate_config(struct s
- 		erofs_err(sb, "unsupported windowbits %u", dfl->windowbits);
- 		return -EOPNOTSUPP;
- 	}
--
-+	mutex_lock(&deflate_resize_mutex);
-+	if (!inited) {
-+		for (; z_erofs_deflate_avail_strms < z_erofs_deflate_nstrms;
-+		     ++z_erofs_deflate_avail_strms) {
-+			struct z_erofs_deflate *strm;
++		f2fs_lock_op(sbi);
 +
-+			strm = kzalloc(sizeof(*strm), GFP_KERNEL);
-+			if (!strm)
-+				goto failed;
-+			/* XXX: in-kernel zlib cannot customize windowbits */
-+			strm->z.workspace = vmalloc(zlib_inflate_workspacesize());
-+			if (!strm->z.workspace) {
-+				kfree(strm);
-+				goto failed;
-+			}
-+
-+			spin_lock(&z_erofs_deflate_lock);
-+			strm->next = z_erofs_deflate_head;
-+			z_erofs_deflate_head = strm;
-+			spin_unlock(&z_erofs_deflate_lock);
-+		}
-+		inited = true;
-+	}
-+	mutex_unlock(&deflate_resize_mutex);
- 	erofs_info(sb, "EXPERIMENTAL DEFLATE feature in use. Use at your own risk!");
- 	return 0;
-+failed:
-+	mutex_unlock(&deflate_resize_mutex);
-+	z_erofs_deflate_exit();
-+	return -ENOMEM;
- }
+ 		set_new_dnode(&dn, inode, NULL, NULL, 0);
+ 		ret = f2fs_get_dnode_of_data(&dn, page_idx, LOOKUP_NODE);
+ 		if (ret) {
++			f2fs_unlock_op(sbi);
+ 			if (ret == -ENOENT) {
+ 				page_idx = f2fs_get_next_page_offset(&dn,
+ 								page_idx);
+@@ -3510,6 +3513,8 @@ static int f2fs_release_compress_blocks(struct file *filp, unsigned long arg)
  
- int z_erofs_deflate_decompress(struct z_erofs_decompress_req *rq,
+ 		f2fs_put_dnode(&dn);
+ 
++		f2fs_unlock_op(sbi);
++
+ 		if (ret < 0)
+ 			break;
+ 
+@@ -3652,9 +3657,12 @@ static int f2fs_reserve_compress_blocks(struct file *filp, unsigned long arg)
+ 		struct dnode_of_data dn;
+ 		pgoff_t end_offset, count;
+ 
++		f2fs_lock_op(sbi);
++
+ 		set_new_dnode(&dn, inode, NULL, NULL, 0);
+ 		ret = f2fs_get_dnode_of_data(&dn, page_idx, LOOKUP_NODE);
+ 		if (ret) {
++			f2fs_unlock_op(sbi);
+ 			if (ret == -ENOENT) {
+ 				page_idx = f2fs_get_next_page_offset(&dn,
+ 								page_idx);
+@@ -3672,6 +3680,8 @@ static int f2fs_reserve_compress_blocks(struct file *filp, unsigned long arg)
+ 
+ 		f2fs_put_dnode(&dn);
+ 
++		f2fs_unlock_op(sbi);
++
+ 		if (ret < 0)
+ 			break;
+ 
+-- 
+2.43.0
+
 
 
 
