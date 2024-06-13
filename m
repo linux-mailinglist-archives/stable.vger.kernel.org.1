@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-51533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F61E907056
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6105E907032
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE54A284719
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D85928962F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C2214535B;
-	Thu, 13 Jun 2024 12:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C6214265A;
+	Thu, 13 Jun 2024 12:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSqe35HR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nP0uX805"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF8F1411CD;
-	Thu, 13 Jun 2024 12:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C191422AB;
+	Thu, 13 Jun 2024 12:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281574; cv=none; b=DgoYdEmBkLlxZ8sbYi7F/Qn+6aVW4IfPyKVX1ckpkJ8FrVAGhiOeA8c/zWuKZlFfwWjho8g4Vne4oe1zVlpCgm1fjGC+QgLCbuRfSoNGIZQqyT16BsSjawT4nahvb53IjUbNMI2fKeiK2Jc8WlXFnfB616cKnFFhuM2KE8QrRNs=
+	t=1718281480; cv=none; b=cPDy0oXUKX27nrFO0LwW0mdveE4HRu9YL7T5s4XAsgwEfdUBQluQKCoAtLZVVui6/rztoRFT5B3r9d5mO11vWYSB4Al27+RXJhJ+J4jqP5k7aur6WrHl3cgkBDSzEKXcFPVuT9RSklvLcHXHzEBnIDUgm+b/Y6L4AA5QThnMDGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281574; c=relaxed/simple;
-	bh=YNDSvfOpe97n+xYoLvIasRIiwrgWnJvGqXQFHK8pIMI=;
+	s=arc-20240116; t=1718281480; c=relaxed/simple;
+	bh=gl7KiVdXz9ZtFIHpHJvOZhp3P42RALb7+5t/hUK2/04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eEP3IsgxBfV3jH9uAjkgt2v31DYYUMcACZx3psbn/oMusnWiAjkBDQsn+m5+Z0GKukA6LXdP+1AvWwmugfhaAmcPrQeBwZLxSk+MVUPY5I8j/FHllRhPGNZY0tFGCVYm3619CjyPs8Wb0CK9amIIGd9CYh9+2e3fPiJIvyp8uDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSqe35HR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD93C2BBFC;
-	Thu, 13 Jun 2024 12:26:14 +0000 (UTC)
+	 MIME-Version; b=pDkh+KWL+y7XWsi8mzN2Xc+sOlP01oLQIUccSB/Bm3zaKSAhsHpHHUh0ckkrYGs8CaKYUbwe0evVCiomFvp6s0C+7DlGc6oppROUDDFOOI9xUEN2MoRQzWEXbnfX4/uPiZf9ml5sZsJ8RDbuov71kf88ys4YqTB2XLO8QinHQuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nP0uX805; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28041C4AF1A;
+	Thu, 13 Jun 2024 12:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281574;
-	bh=YNDSvfOpe97n+xYoLvIasRIiwrgWnJvGqXQFHK8pIMI=;
+	s=korg; t=1718281480;
+	bh=gl7KiVdXz9ZtFIHpHJvOZhp3P42RALb7+5t/hUK2/04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xSqe35HRHliNp7LiXFSBODSxqJrwb+5q7gEa7/wWg3fqxrwELbNZqKv1YFFcH+3Ph
-	 qXEtAoISNGMkbhvjfHK8litikt4vfajEraQ709GhOv/XcTvGBnq5g9EaJHcmHZjv84
-	 wFrspVoTFSQKHzKcG3s8ZQpyCoTha4M1Pj4INaJk=
+	b=nP0uX805cY+JbPk0xBpOqYO47euaEU70iQfRx1aprzBeKdiP0Qk71X6tsYWOzvPfT
+	 thPjFuBLPEmVEYzUVYuI9X3D6vy2euxW5oR0T/tcY6OrGRxebVjo0Y+7M6LUkPvGUT
+	 1NLmzLHE/QMAa4StnigzQeNBJZJ3ej+54xv+IXJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Ruehl <chris.ruehl@gtsys.com.hk>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 261/317] hwmon: (shtc1) Fix property misspelling
-Date: Thu, 13 Jun 2024 13:34:39 +0200
-Message-ID: <20240613113257.643722701@linuxfoundation.org>
+	syzbot+43120c2af6ca2938cc38@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 262/317] ALSA: timer: Set lower bound of start tick time
+Date: Thu, 13 Jun 2024 13:34:40 +0200
+Message-ID: <20240613113257.682209419@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
 References: <20240613113247.525431100@linuxfoundation.org>
@@ -66,37 +65,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 52a2c70c3ec555e670a34dd1ab958986451d2dd2 ]
+commit 4a63bd179fa8d3fcc44a0d9d71d941ddd62f0c4e upstream.
 
-The property name is "sensirion,low-precision", not
-"sensicon,low-precision".
+Currently ALSA timer doesn't have the lower limit of the start tick
+time, and it allows a very small size, e.g. 1 tick with 1ns resolution
+for hrtimer.  Such a situation may lead to an unexpected RCU stall,
+where  the callback repeatedly queuing the expire update, as reported
+by fuzzer.
 
-Cc: Chris Ruehl <chris.ruehl@gtsys.com.hk>
-Fixes: be7373b60df5 ("hwmon: shtc1: add support for device tree bindings")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch introduces a sanity check of the timer start tick time, so
+that the system returns an error when a too small start size is set.
+As of this patch, the lower limit is hard-coded to 100us, which is
+small enough but can still work somehow.
+
+Reported-by: syzbot+43120c2af6ca2938cc38@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/000000000000fa00a1061740ab6d@google.com
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240514182745.4015-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ backport note: the error handling is changed, as the original commit
+  is based on the recent cleanup with guard() in commit beb45974dd49
+  -- tiwai ]
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/shtc1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/timer.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/hwmon/shtc1.c b/drivers/hwmon/shtc1.c
-index 18546ebc8e9f7..0365643029aee 100644
---- a/drivers/hwmon/shtc1.c
-+++ b/drivers/hwmon/shtc1.c
-@@ -238,7 +238,7 @@ static int shtc1_probe(struct i2c_client *client)
+--- a/sound/core/timer.c
++++ b/sound/core/timer.c
+@@ -553,6 +553,16 @@ static int snd_timer_start1(struct snd_t
+ 		goto unlock;
+ 	}
  
- 	if (np) {
- 		data->setup.blocking_io = of_property_read_bool(np, "sensirion,blocking-io");
--		data->setup.high_precision = !of_property_read_bool(np, "sensicon,low-precision");
-+		data->setup.high_precision = !of_property_read_bool(np, "sensirion,low-precision");
- 	} else {
- 		if (client->dev.platform_data)
- 			data->setup = *(struct shtc1_platform_data *)dev->platform_data;
--- 
-2.43.0
-
++	/* check the actual time for the start tick;
++	 * bail out as error if it's way too low (< 100us)
++	 */
++	if (start) {
++		if ((u64)snd_timer_hw_resolution(timer) * ticks < 100000) {
++			result = -EINVAL;
++			goto unlock;
++		}
++	}
++
+ 	if (start)
+ 		timeri->ticks = timeri->cticks = ticks;
+ 	else if (!timeri->cticks)
 
 
 
