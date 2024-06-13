@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-51503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56B5907036
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E30906EEE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5810D289619
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 083371F2325E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7CE14374B;
-	Thu, 13 Jun 2024 12:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68571448E6;
+	Thu, 13 Jun 2024 12:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbMVrvF7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tU5g3PAK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3F2142903;
-	Thu, 13 Jun 2024 12:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F6844C6F;
+	Thu, 13 Jun 2024 12:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281486; cv=none; b=kk8Afjs0AyblJ8ZgxDj0jIRIppXqBZA4rOHHcUQaHQH0XA4E6l5/fQuBnI6Ben763ZNC551dNeOi8N17M0FYS6ipBujxwjOfvp4OjM60+oTzDlig23vxFCY+irbk+BrVlfwICoWc/y8ndfqxmFvhYWzxJVLB9pm0Dyrpny7I+/0=
+	t=1718280694; cv=none; b=mZsPTIhee9H0T5e+5K9xxOvHFRkA6FO7vtGrqvktqmWBoLfQufUh58rU3R0FOycplQA583Itp2FzEMCRlcZUWM336V7kHdIl0WXxNTRGPJ+DJX74BpEaAF8FhdyN25tBzvq7ClmFPTyNAuqxdGOohqwD6+Tgr0ZdFbDWsYy7K8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281486; c=relaxed/simple;
-	bh=QsOWPoFs8N695zx7qZ2nXFdM2sdlFRw6UxinaI8DovI=;
+	s=arc-20240116; t=1718280694; c=relaxed/simple;
+	bh=zPyGEDxv42pQFAoY2PE1ysCAyRLE6+O9qg0airHqWI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H2IWc0AuRtbRGAEoPl3N6omHY9eOBLLxzP/KkRzlnJMAhwK9eN9YBSQR4Hx5jLmWbWcyktdo9EozMtkNbwH9pMznKB0U49V+1A3wzA/mHboxR1mlYiHot55Orxa9M1OSOXUtzf1kr9r0G1fGxBqo7hle/TJw7+RHT+AjhnegEpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbMVrvF7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15196C2BBFC;
-	Thu, 13 Jun 2024 12:24:45 +0000 (UTC)
+	 MIME-Version; b=VXxCS41nP0VsuGSL7LnQtRLEwrZkXZeMNvw9SaAndiKgsCKkVNP+sEETBjGMqsbhq4PfG67RSSjwPANy0lBtrfGuUJArqtK1KktRI5iWUFRbKa9RXLNJyAXlST7jz1fi6msDDe3KKGxQd9M/iXBkRCiFxLauGddB3G3PaRndMog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tU5g3PAK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F33C4AF1C;
+	Thu, 13 Jun 2024 12:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281486;
-	bh=QsOWPoFs8N695zx7qZ2nXFdM2sdlFRw6UxinaI8DovI=;
+	s=korg; t=1718280694;
+	bh=zPyGEDxv42pQFAoY2PE1ysCAyRLE6+O9qg0airHqWI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HbMVrvF7vMOJBhjKhF3Fre1/ZpTYhC0GZl9kN2q/GO7dnRhm0f8LTiJ+9yvkE2KPM
-	 bd2a1wRIwLzQoKAasGxBiQQ5SM9TafByUJDHBL7LRF3lUjiamZBy6raC/aTM4ym13L
-	 NMMkIPbH1BrkfJEq2KJfS4z/zmpcsDa5h7Cj4sio=
+	b=tU5g3PAKkgkcDrds0s6/7NdksHg76/WBUOOapX4lrOacXW05FPPnhO/6JWxM6gv2h
+	 LM7A2A3dbxRtiJG3ES/MOBV6sqA25ji+Ovqzv+F2LALTrgy8PERk2pko3/tUDn+goj
+	 Uogq99fiwHdzdThbx8GNZpxLVKtFvyIjPTSK6K/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	syzbot+83e7f982ca045ab4405c@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 272/317] x86/mm: Remove broken vsyscall emulation code from the page fault code
+	Bo Gan <ganboing@gmail.com>,
+	Shengyu Qu <wiagn233@outlook.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH 6.6 110/137] riscv: dts: starfive: Remove PMIC interrupt info for Visionfive 2 board
 Date: Thu, 13 Jun 2024 13:34:50 +0200
-Message-ID: <20240613113258.075011239@linuxfoundation.org>
+Message-ID: <20240613113227.565110486@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,230 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Shengyu Qu <wiagn233@outlook.com>
 
-commit 02b670c1f88e78f42a6c5aee155c7b26960ca054 upstream.
+commit 0f74c64f0a9f6e1e7cf17bea3d4350fa6581e0d7 upstream.
 
-The syzbot-reported stack trace from hell in this discussion thread
-actually has three nested page faults:
+Interrupt line number of the AXP15060 PMIC is not a necessary part of
+its device tree. Originally the binding required one, so the dts patch
+added an invalid interrupt that the driver ignored (0) as the interrupt
+line of the PMIC is not actually connected on this platform. This went
+unnoticed during review as it would have been a valid interrupt for a
+GPIO controller, but it is not for the PLIC. The PLIC, on this platform
+at least, silently ignores the enablement of interrupt 0. Bo Gan is
+running a modified version of OpenSBI that faults if writes are done to
+reserved fields, so their kernel runs into problems.
 
-  https://lore.kernel.org/r/000000000000d5f4fc0616e816d4@google.com
+Delete the invalid interrupt from the device tree.
 
-... and I think that's actually the important thing here:
-
- - the first page fault is from user space, and triggers the vsyscall
-   emulation.
-
- - the second page fault is from __do_sys_gettimeofday(), and that should
-   just have caused the exception that then sets the return value to
-   -EFAULT
-
- - the third nested page fault is due to _raw_spin_unlock_irqrestore() ->
-   preempt_schedule() -> trace_sched_switch(), which then causes a BPF
-   trace program to run, which does that bpf_probe_read_compat(), which
-   causes that page fault under pagefault_disable().
-
-It's quite the nasty backtrace, and there's a lot going on.
-
-The problem is literally the vsyscall emulation, which sets
-
-        current->thread.sig_on_uaccess_err = 1;
-
-and that causes the fixup_exception() code to send the signal *despite* the
-exception being caught.
-
-And I think that is in fact completely bogus.  It's completely bogus
-exactly because it sends that signal even when it *shouldn't* be sent -
-like for the BPF user mode trace gathering.
-
-In other words, I think the whole "sig_on_uaccess_err" thing is entirely
-broken, because it makes any nested page-faults do all the wrong things.
-
-Now, arguably, I don't think anybody should enable vsyscall emulation any
-more, but this test case clearly does.
-
-I think we should just make the "send SIGSEGV" be something that the
-vsyscall emulation does on its own, not this broken per-thread state for
-something that isn't actually per thread.
-
-The x86 page fault code actually tried to deal with the "incorrect nesting"
-by having that:
-
-                if (in_interrupt())
-                        return;
-
-which ignores the sig_on_uaccess_err case when it happens in interrupts,
-but as shown by this example, these nested page faults do not need to be
-about interrupts at all.
-
-IOW, I think the only right thing is to remove that horrendously broken
-code.
-
-The attached patch looks like the ObviouslyCorrect(tm) thing to do.
-
-NOTE! This broken code goes back to this commit in 2011:
-
-  4fc3490114bb ("x86-64: Set siginfo and context on vsyscall emulation faults")
-
-... and back then the reason was to get all the siginfo details right.
-Honestly, I do not for a moment believe that it's worth getting the siginfo
-details right here, but part of the commit says:
-
-    This fixes issues with UML when vsyscall=emulate.
-
-... and so my patch to remove this garbage will probably break UML in this
-situation.
-
-I do not believe that anybody should be running with vsyscall=emulate in
-2024 in the first place, much less if you are doing things like UML. But
-let's see if somebody screams.
-
-Reported-and-tested-by: syzbot+83e7f982ca045ab4405c@syzkaller.appspotmail.com
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/r/CAHk-=wh9D6f7HUkDgZHKmDCHUQmp+Co89GP+b8+z+G56BKeyNg@mail.gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[gpiccoli: Backport the patch due to differences in the trees. The main change
- between 5.10.y and 5.15.y is due to renaming the fixup function, by
- commit 6456a2a69ee1 ("x86/fault: Rename no_context() to kernelmode_fixup_or_oops()").
- Following 2 commits cause divergence in the diffs too (in the removed lines):
- cd072dab453a ("x86/fault: Add a helper function to sanitize error code")
- d4ffd5df9d18 ("x86/fault: Fix wrong signal when vsyscall fails with pkey")
- Finally, there is context adjustment in the processor.h file.]
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Cc: stable@vger.kernel.org
+Reported-by: Bo Gan <ganboing@gmail.com>
+Link: https://lore.kernel.org/all/c8b6e960-2459-130f-e4e4-7c9c2ebaa6d3@gmail.com/
+Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
+Fixes: 2378341504de ("riscv: dts: starfive: Enable axp15060 pmic for cpufreq")
+[conor: rewrite the commit message to add more detail]
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/entry/vsyscall/vsyscall_64.c |   28 ++--------------------------
- arch/x86/include/asm/processor.h      |    1 -
- arch/x86/mm/fault.c                   |   27 +--------------------------
- 3 files changed, 3 insertions(+), 53 deletions(-)
+ arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/x86/entry/vsyscall/vsyscall_64.c
-+++ b/arch/x86/entry/vsyscall/vsyscall_64.c
-@@ -98,11 +98,6 @@ static int addr_to_vsyscall_nr(unsigned
+--- a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
++++ b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
+@@ -162,7 +162,6 @@
+ 	axp15060: pmic@36 {
+ 		compatible = "x-powers,axp15060";
+ 		reg = <0x36>;
+-		interrupts = <0>;
+ 		interrupt-controller;
+ 		#interrupt-cells = <1>;
  
- static bool write_ok_or_segv(unsigned long ptr, size_t size)
- {
--	/*
--	 * XXX: if access_ok, get_user, and put_user handled
--	 * sig_on_uaccess_err, this could go away.
--	 */
--
- 	if (!access_ok((void __user *)ptr, size)) {
- 		struct thread_struct *thread = &current->thread;
- 
-@@ -120,10 +115,8 @@ static bool write_ok_or_segv(unsigned lo
- bool emulate_vsyscall(unsigned long error_code,
- 		      struct pt_regs *regs, unsigned long address)
- {
--	struct task_struct *tsk;
- 	unsigned long caller;
- 	int vsyscall_nr, syscall_nr, tmp;
--	int prev_sig_on_uaccess_err;
- 	long ret;
- 	unsigned long orig_dx;
- 
-@@ -172,8 +165,6 @@ bool emulate_vsyscall(unsigned long erro
- 		goto sigsegv;
- 	}
- 
--	tsk = current;
--
- 	/*
- 	 * Check for access_ok violations and find the syscall nr.
- 	 *
-@@ -233,12 +224,8 @@ bool emulate_vsyscall(unsigned long erro
- 		goto do_ret;  /* skip requested */
- 
- 	/*
--	 * With a real vsyscall, page faults cause SIGSEGV.  We want to
--	 * preserve that behavior to make writing exploits harder.
-+	 * With a real vsyscall, page faults cause SIGSEGV.
- 	 */
--	prev_sig_on_uaccess_err = current->thread.sig_on_uaccess_err;
--	current->thread.sig_on_uaccess_err = 1;
--
- 	ret = -EFAULT;
- 	switch (vsyscall_nr) {
- 	case 0:
-@@ -261,23 +248,12 @@ bool emulate_vsyscall(unsigned long erro
- 		break;
- 	}
- 
--	current->thread.sig_on_uaccess_err = prev_sig_on_uaccess_err;
--
- check_fault:
- 	if (ret == -EFAULT) {
- 		/* Bad news -- userspace fed a bad pointer to a vsyscall. */
- 		warn_bad_vsyscall(KERN_INFO, regs,
- 				  "vsyscall fault (exploit attempt?)");
--
--		/*
--		 * If we failed to generate a signal for any reason,
--		 * generate one here.  (This should be impossible.)
--		 */
--		if (WARN_ON_ONCE(!sigismember(&tsk->pending.signal, SIGBUS) &&
--				 !sigismember(&tsk->pending.signal, SIGSEGV)))
--			goto sigsegv;
--
--		return true;  /* Don't emulate the ret. */
-+		goto sigsegv;
- 	}
- 
- 	regs->ax = ret;
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -528,7 +528,6 @@ struct thread_struct {
- 	unsigned long		iopl_emul;
- 
- 	unsigned int		iopl_warn:1;
--	unsigned int		sig_on_uaccess_err:1;
- 
- 	/* Floating point and extended processor state */
- 	struct fpu		fpu;
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -649,33 +649,8 @@ no_context(struct pt_regs *regs, unsigne
- 	}
- 
- 	/* Are we prepared to handle this kernel fault? */
--	if (fixup_exception(regs, X86_TRAP_PF, error_code, address)) {
--		/*
--		 * Any interrupt that takes a fault gets the fixup. This makes
--		 * the below recursive fault logic only apply to a faults from
--		 * task context.
--		 */
--		if (in_interrupt())
--			return;
--
--		/*
--		 * Per the above we're !in_interrupt(), aka. task context.
--		 *
--		 * In this case we need to make sure we're not recursively
--		 * faulting through the emulate_vsyscall() logic.
--		 */
--		if (current->thread.sig_on_uaccess_err && signal) {
--			set_signal_archinfo(address, error_code);
--
--			/* XXX: hwpoison faults will set the wrong code. */
--			force_sig_fault(signal, si_code, (void __user *)address);
--		}
--
--		/*
--		 * Barring that, we can do the fixup and be happy.
--		 */
-+	if (fixup_exception(regs, X86_TRAP_PF, error_code, address))
- 		return;
--	}
- 
- #ifdef CONFIG_VMAP_STACK
- 	/*
 
 
 
