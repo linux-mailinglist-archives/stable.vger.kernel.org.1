@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-50770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A59B906C92
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E35906BC6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FCAE1C21C0E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF1631F21FC8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE0C144D1E;
-	Thu, 13 Jun 2024 11:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A3A1442E3;
+	Thu, 13 Jun 2024 11:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+L3jGn2"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+ZluFKN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE9D143861;
-	Thu, 13 Jun 2024 11:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823A2143C6F;
+	Thu, 13 Jun 2024 11:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279334; cv=none; b=hnRq+HX60s/8eD01RQozp3XtDtZx8lCRJbcTYLM3MQcXrEEBlddZylGmfoLI6l+Qskuc75BzB0wkj+maCSXD96umRZ57H+JIPG78HSvsv0ypnF7HVwYtjHmnMm4FL/8x3mrQ43Yxuy8LFIN/I4+zDB4qRnwrGVNEH6/Om64uA84=
+	t=1718279020; cv=none; b=N7ruC0+NpoGVHly85t+qaoV5KMx4s8o5hJ3i5n0V7VQ+h4dLfn0ba/Mf4POhBK/HI3z6GSGCCPeMrZhT4ZUT/zQoeNF4OFw1ySmNZMGSrKqcsulzLotQrgYYC9ut2pejnBeWWxyd/wQBaXbl2MjYSRub45o7qp1yGkBHR6ufaTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279334; c=relaxed/simple;
-	bh=Lq6sCIz2tLATC3JBE1MO5RrSiR14I+yGWYc+j0x/OpU=;
+	s=arc-20240116; t=1718279020; c=relaxed/simple;
+	bh=jhsfw6jl8E7JL8Kr/e0H/qqU9LDE6M9DnQ/Z/AoNdYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fbjxG1bxgNDO21bxcw0kfGyIhZ2UI7wJkUNRhH7xZJdBvENJCY3jUTMVO041cQFt694+uocjutqg1GNKUCDYUgDDOcLT/pH4KzljdHpG3Ltiet85hL1htKpAo5YG7cFKR0oCYUJRDcgnC2SbjGqtDNFeUBOBqcxzTJLFDI192YQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+L3jGn2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70BFC2BBFC;
-	Thu, 13 Jun 2024 11:48:53 +0000 (UTC)
+	 MIME-Version; b=rcGQIQGlfwqnjV9zctJ2onFB/ErrWI/1MrSnQqgF+4k9cKIFXE7huFFwzY0JQr2ZcXUc3E6xmSzbQv2HBLtWjJwk93PHRktrr++w84kGxe9++Hdk5lMJb85uB3blpf0liPxyLeUY9xYbtHfMQYlIqLB2QvQLK5MHEbYUieBhTkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+ZluFKN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098D1C2BBFC;
+	Thu, 13 Jun 2024 11:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279334;
-	bh=Lq6sCIz2tLATC3JBE1MO5RrSiR14I+yGWYc+j0x/OpU=;
+	s=korg; t=1718279020;
+	bh=jhsfw6jl8E7JL8Kr/e0H/qqU9LDE6M9DnQ/Z/AoNdYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l+L3jGn2QtE+AUPBtu6bR2SqRpZdGIW9Sk1GZ/K0LTDv+AWuuFf3P0Pe2WZRVD89J
-	 XAnRBZTZU6cFs7lGspAUSSuD1GqpAMyfutSRhUsPdWOj96u3Hr2dvA+EJGR9q+1xP1
-	 o6ZtyWrgfjqa3myOneWiUkZ0yddKKRwSDN/kMDOA=
+	b=J+ZluFKNjeQIGdk72kvw7a/7oIaykNT39ol1p/BBPPPPeavcoFqd/Vjq+k/DDJlC/
+	 76E735jpXUIqqoZA1Ektj9WXdRI1AdWbQloZB9DHzlp2KW2eUhW355Omu2ZXTHOLwt
+	 uV0ikftU9u/5URe6APW2nq1q+6nuh6Y9IUX/Si/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.9 041/157] media: v4l: async: Dont set notifiers V4L2 device if registering fails
+	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	"Yang, Chenyuan" <cy54@illinois.edu>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
+Subject: [PATCH 4.19 118/213] media: cec: cec-api: add locking in cec_release()
 Date: Thu, 13 Jun 2024 13:32:46 +0200
-Message-ID: <20240613113229.012671656@linuxfoundation.org>
+Message-ID: <20240613113232.551537106@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit 46bc0234ad38063ce550ecf135c1a52458f0a804 upstream.
+[ Upstream commit 42bcaacae924bf18ae387c3f78c202df0b739292 ]
 
-The V4L2 device used to be set when the notifier was registered but this
-has been moved to the notifier initialisation. Don't touch the V4L2 device
-if registration fails.
+When cec_release() uses fh->msgs it has to take fh->lock,
+otherwise the list can get corrupted.
 
-Fixes: b8ec754ae4c5 ("media: v4l: async: Set v4l2_device and subdev in async notifier init")
-Cc: <stable@vger.kernel.org> # for 6.6 and later
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Yang, Chenyuan <cy54@illinois.edu>
+Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
+Fixes: ca684386e6e2 ("[media] cec: add HDMI CEC framework (api)")
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-async.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/media/cec/cec-api.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/media/v4l2-core/v4l2-async.c
-+++ b/drivers/media/v4l2-core/v4l2-async.c
-@@ -618,16 +618,10 @@ err_unlock:
+diff --git a/drivers/media/cec/cec-api.c b/drivers/media/cec/cec-api.c
+index b2b3f779592fd..d4c848c2f3764 100644
+--- a/drivers/media/cec/cec-api.c
++++ b/drivers/media/cec/cec-api.c
+@@ -660,6 +660,8 @@ static int cec_release(struct inode *inode, struct file *filp)
+ 		list_del(&data->xfer_list);
+ 	}
+ 	mutex_unlock(&adap->lock);
++
++	mutex_lock(&fh->lock);
+ 	while (!list_empty(&fh->msgs)) {
+ 		struct cec_msg_entry *entry =
+ 			list_first_entry(&fh->msgs, struct cec_msg_entry, list);
+@@ -677,6 +679,7 @@ static int cec_release(struct inode *inode, struct file *filp)
+ 			kfree(entry);
+ 		}
+ 	}
++	mutex_unlock(&fh->lock);
+ 	kfree(fh);
  
- int v4l2_async_nf_register(struct v4l2_async_notifier *notifier)
- {
--	int ret;
--
- 	if (WARN_ON(!notifier->v4l2_dev == !notifier->sd))
- 		return -EINVAL;
- 
--	ret = __v4l2_async_nf_register(notifier);
--	if (ret)
--		notifier->v4l2_dev = NULL;
--
--	return ret;
-+	return __v4l2_async_nf_register(notifier);
- }
- EXPORT_SYMBOL(v4l2_async_nf_register);
- 
+ 	cec_put_device(devnode);
+-- 
+2.43.0
+
 
 
 
