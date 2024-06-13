@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC0A90704E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A07A6907277
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:48:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6DE51C2375F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C1E1B27E73
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB947144D3C;
-	Thu, 13 Jun 2024 12:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED9E4A0F;
+	Thu, 13 Jun 2024 12:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWwq47AU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHLS7nQK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AFB144D34;
-	Thu, 13 Jun 2024 12:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BCD320ED;
+	Thu, 13 Jun 2024 12:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281551; cv=none; b=O7UBIvddBAQW36R9S28iNQGwsK7UFw3jFLe2v7LAv8uKVf+Q/agOeOXNGmFj7RAoQosKBqTYmZU3VVzSJORiTeXad2/izkrxAUhVjvyapYPLVuijnjpER7OUC2EKom1jJh9pmtPTdf3tI5pacxgfx9WIV5i4H5q5WV0ZYZ1hF7A=
+	t=1718282755; cv=none; b=L3lP3JTSYYaOqoSKoDaIiHzDtWlnMIiN+y3koSVO7Wvt5Tbhd5QqkWSuMmf4Aegeko6BOm3evZ3xhzB329T5SOlhvdESrihYnq2ohWePI8ZtjO12kV9vVCZ4qNrJvrGZZMAZUQUgyHadReuc4Se81lh004jcZDpEtjwocVuB2ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281551; c=relaxed/simple;
-	bh=zwiTOn2G+bM12lpKnP+68m6+CrgjnyJGGv7YUUu2tuE=;
+	s=arc-20240116; t=1718282755; c=relaxed/simple;
+	bh=egnkYetbQ+fT3hOEzG8MZTASPbzL9WAPDbYBxh95MFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HbZ9QqgR4HxP01CqCtbTUexhbQmtyy6sewlMosrPXGULSgnWI9BajP6zbeApn7bIu2p/iO4DKyAz6hcPfLKsDIjrlkiPfmFip8pGz/MlRryBl3mG7NXjM82Tqw9MoPNNDl4CpHldfq41xrYqN7s5OzWfUNFKMelSqAE/OgKHMCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWwq47AU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D885BC2BBFC;
-	Thu, 13 Jun 2024 12:25:50 +0000 (UTC)
+	 MIME-Version; b=g37UBK6H9TSziuL20tsKCEDVeY/qGdtMOdyTrePwdNRA2H8ska/mI9OnXKqFjyl2LamGlYV1Zco7lNePDHr1ElIEczovELPAmRl3mvW6qwxvzxHYOOTC/sZzpas3LuCxdYy0A4R1yGwgt3r9FCCt9vds9NPyGzVtdm9Ua3vz34A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHLS7nQK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6700C2BBFC;
+	Thu, 13 Jun 2024 12:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281551;
-	bh=zwiTOn2G+bM12lpKnP+68m6+CrgjnyJGGv7YUUu2tuE=;
+	s=korg; t=1718282755;
+	bh=egnkYetbQ+fT3hOEzG8MZTASPbzL9WAPDbYBxh95MFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DWwq47AU0atDI5ozE7Ggxx96SW+v4kcLK4wRf3ZZQC2S9bn2ca1Ny94QgpbZlPnXH
-	 cqtZS81bkXXpOMeKF8rDHsgbTdzV8hOVltxTfN4WzG+8C6m2jzOCz3pt+p5xfofM5Z
-	 sxiDCRVmaxLkCKrYI77IXBPb7SyYzkixiNWj/uqA=
+	b=DHLS7nQKZaYj5Zcmz1I0wmTfCZ6MXhYPs19OD6D3Gi51kuJzZmuaiaHgBPMqAr6XD
+	 oCgUVU6JS4KdkUFa6AQ1FPNFk7P/37yYHsvmz69ebok7/bwRHWzle7eiK4aW+3v+Zc
+	 pbAuFstRbwCo0v07uK9QzX7Xu8YNDjEoyHt3T9E0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 292/317] mmc: sdhci-acpi: Fix Lenovo Yoga Tablet 2 Pro 1380 sdcard slot not working
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	syzbot+3694e283cf5c40df6d14@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 353/402] f2fs: fix to do sanity check on i_xattr_nid in sanity_check_inode()
 Date: Thu, 13 Jun 2024 13:35:10 +0200
-Message-ID: <20240613113258.847497025@linuxfoundation.org>
+Message-ID: <20240613113315.905774515@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Chao Yu <chao@kernel.org>
 
-commit f3521d7cbaefff19cc656325787ed797e5f6a955 upstream.
+commit 20faaf30e55522bba2b56d9c46689233205d7717 upstream.
 
-The Lenovo Yoga Tablet 2 Pro 1380 sdcard slot has an active high cd pin
-and a broken wp pin which always reports the card being write-protected.
+syzbot reports a kernel bug as below:
 
-Add a DMI quirk to address both issues.
+F2FS-fs (loop0): Mounted with checkpoint version = 48b305e4
+==================================================================
+BUG: KASAN: slab-out-of-bounds in f2fs_test_bit fs/f2fs/f2fs.h:2933 [inline]
+BUG: KASAN: slab-out-of-bounds in current_nat_addr fs/f2fs/node.h:213 [inline]
+BUG: KASAN: slab-out-of-bounds in f2fs_get_node_info+0xece/0x1200 fs/f2fs/node.c:600
+Read of size 1 at addr ffff88807a58c76c by task syz-executor280/5076
 
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240410191639.526324-5-hdegoede@redhat.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+CPU: 1 PID: 5076 Comm: syz-executor280 Not tainted 6.9.0-rc5-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ f2fs_test_bit fs/f2fs/f2fs.h:2933 [inline]
+ current_nat_addr fs/f2fs/node.h:213 [inline]
+ f2fs_get_node_info+0xece/0x1200 fs/f2fs/node.c:600
+ f2fs_xattr_fiemap fs/f2fs/data.c:1848 [inline]
+ f2fs_fiemap+0x55d/0x1ee0 fs/f2fs/data.c:1925
+ ioctl_fiemap fs/ioctl.c:220 [inline]
+ do_vfs_ioctl+0x1c07/0x2e50 fs/ioctl.c:838
+ __do_sys_ioctl fs/ioctl.c:902 [inline]
+ __se_sys_ioctl+0x81/0x170 fs/ioctl.c:890
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The root cause is we missed to do sanity check on i_xattr_nid during
+f2fs_iget(), so that in fiemap() path, current_nat_addr() will access
+nat_bitmap w/ offset from invalid i_xattr_nid, result in triggering
+kasan bug report, fix it.
+
+Reported-and-tested-by: syzbot+3694e283cf5c40df6d14@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/00000000000094036c0616e72a1d@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-acpi.c |   24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ fs/f2fs/inode.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -81,6 +81,7 @@ struct sdhci_acpi_host {
- enum {
- 	DMI_QUIRK_RESET_SD_SIGNAL_VOLT_ON_SUSP			= BIT(0),
- 	DMI_QUIRK_SD_NO_WRITE_PROTECT				= BIT(1),
-+	DMI_QUIRK_SD_CD_ACTIVE_HIGH				= BIT(2),
- };
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -330,6 +330,12 @@ static bool sanity_check_inode(struct in
+ 		}
+ 	}
  
- static inline void *sdhci_acpi_priv(struct sdhci_acpi_host *c)
-@@ -791,6 +792,26 @@ static const struct dmi_system_id sdhci_
- 	},
- 	{
- 		/*
-+		 * Lenovo Yoga Tablet 2 Pro 1380F/L (13" Android version) this
-+		 * has broken WP reporting and an inverted CD signal.
-+		 * Note this has more or less the same BIOS as the Lenovo Yoga
-+		 * Tablet 2 830F/L or 1050F/L (8" and 10" Android), but unlike
-+		 * the 830 / 1050 models which share the same mainboard this
-+		 * model has a different mainboard and the inverted CD and
-+		 * broken WP are unique to this board.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corp."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "VALLEYVIEW C0 PLATFORM"),
-+			DMI_MATCH(DMI_BOARD_NAME, "BYT-T FFD8"),
-+			/* Full match so as to NOT match the 830/1050 BIOS */
-+			DMI_MATCH(DMI_BIOS_VERSION, "BLADE_21.X64.0005.R00.1504101516"),
-+		},
-+		.driver_data = (void *)(DMI_QUIRK_SD_NO_WRITE_PROTECT |
-+					DMI_QUIRK_SD_CD_ACTIVE_HIGH),
-+	},
-+	{
-+		/*
- 		 * The Toshiba WT8-B's microSD slot always reports the card being
- 		 * write-protected.
- 		 */
-@@ -914,6 +935,9 @@ static int sdhci_acpi_probe(struct platf
- 	if (sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD)) {
- 		bool v = sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD_OVERRIDE_LEVEL);
- 
-+		if (quirks & DMI_QUIRK_SD_CD_ACTIVE_HIGH)
-+			host->mmc->caps2 |= MMC_CAP2_CD_ACTIVE_HIGH;
++	if (fi->i_xattr_nid && f2fs_check_nid_range(sbi, fi->i_xattr_nid)) {
++		f2fs_warn(sbi, "%s: inode (ino=%lx) has corrupted i_xattr_nid: %u, run fsck to fix.",
++			  __func__, inode->i_ino, fi->i_xattr_nid);
++		return false;
++	}
 +
- 		err = mmc_gpiod_request_cd(host->mmc, NULL, 0, v, 0);
- 		if (err) {
- 			if (err == -EPROBE_DEFER)
+ 	return true;
+ }
+ 
 
 
 
