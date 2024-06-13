@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880109071EE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A809906E8E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD8821C23950
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3430D2817F2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B34F23A0;
-	Thu, 13 Jun 2024 12:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A48145335;
+	Thu, 13 Jun 2024 12:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFjRhhJ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7ATSxYP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CC91E49B;
-	Thu, 13 Jun 2024 12:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00598144D21;
+	Thu, 13 Jun 2024 12:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282507; cv=none; b=hp5TvPDeC9PL18jW8MYGK8yH0Fyk0k5ptwKb/iyueUrJ2/v1jDFSC2kzY94U84f2A+go5gXMpfp1qDZYkI4K9O7aRDW35s1JLAf88P+LEJcUdT+toaBLsVhuT7LFtYGsy0jw+R8te0PMa7FH4c5sA5b6QwxF2EYD82S6ytxm/LA=
+	t=1718280462; cv=none; b=U5suZj8yssuoQG1kjZyljn2nVweXF5IU9MgrFA1jkFsWxKP9Cmp9PfdLw2uhmspRYEo7kn5TUf7BjzTEURAGoFf1KoJ5R7jYYn1dN/L2s1EXgP0DzcfAtb7h0vDFGIgRmRHEVNSAGatpJPA+G5eupUrmUkXGlbr6WqpxLyw0wHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282507; c=relaxed/simple;
-	bh=2KsMrk4UF91rsJ1ZTzHyjHUkk1ESTlRv3ARHIf0VO9k=;
+	s=arc-20240116; t=1718280462; c=relaxed/simple;
+	bh=sH0/jnnTXKMR58clrCqMbubBr2tB2CPAFlbmBBp8QBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JqIue8CbN68RNjNAFCYeBpj91pTAN9y6sCVsq66QKtFjZcf/DMU0aUkN2gN3uRIeXT8jRFpHSnh89RJ7YUIhSRM00KDTn7OKenf3GmjXsp+Pgl0nrNlcZs5+HpZn4w/B2aY3Y+RHmPBhJw2+V3yKLqHJmyVMPI1xHU1ytcQN02k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFjRhhJ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D9FC2BBFC;
-	Thu, 13 Jun 2024 12:41:46 +0000 (UTC)
+	 MIME-Version; b=HpxLdUNl58Ye11Xti76ppMHGbpMQe+Z8xWafX1WddzrlNChYLJ8q5nPNrj2q/P7o4u2+/7hjrTj+BUuZiejUWVwDhB+Z1WM2+3UvnEf0o5+ktpQ9vORgEAxhmTWTNw1p6ANR9A/dMq1RHgtszBVF6bCdLt+3ebyISdYjQitet0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7ATSxYP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736FBC2BBFC;
+	Thu, 13 Jun 2024 12:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282507;
-	bh=2KsMrk4UF91rsJ1ZTzHyjHUkk1ESTlRv3ARHIf0VO9k=;
+	s=korg; t=1718280461;
+	bh=sH0/jnnTXKMR58clrCqMbubBr2tB2CPAFlbmBBp8QBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sFjRhhJ3i+uz0qtZEVRk5lzwePDV/XrasL7zzbj0PwhmGBVMowPrVSzQb15jzpthW
-	 D7oX4VYVH/YY4K3Wqv1eNZxWkk0pIOnb2MKK4rFP5ZwYuYftHAw/E6GAIhUQMtf0k4
-	 ZRAQNUfoWfXKY9wj3wE66Q9ISm8YH+vg+DIxsrpw=
+	b=p7ATSxYPKIa5zihPpGmNgbEgfkNII5LZ/+6KK+IEyPPUONNlLiqhtR54H2edVv5TR
+	 U5B8zFkSbqKgqYt6ZiFz6nSvbV2nTPGa5wyCRRd9UA5qo5iBru9++C1RMm8RpgKS3g
+	 YDXQQg3a7TIJjZqtmqUj7zlvcHQ8tKZgF0tggDVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 283/402] x86/kconfig: Select ARCH_WANT_FRAME_POINTERS again when UNWINDER_FRAME_POINTER=y
-Date: Thu, 13 Jun 2024 13:34:00 +0200
-Message-ID: <20240613113313.191455804@linuxfoundation.org>
+	Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.6 061/137] KVM: arm64: Fix AArch32 register narrowing on userspace write
+Date: Thu, 13 Jun 2024 13:34:01 +0200
+Message-ID: <20240613113225.669379953@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 66ee3636eddcc82ab82b539d08b85fb5ac1dff9b ]
+commit 947051e361d551e0590777080ffc4926190f62f2 upstream.
 
-It took me some time to understand the purpose of the tricky code at
-the end of arch/x86/Kconfig.debug.
+When userspace writes to one of the core registers, we make
+sure to narrow the corresponding GPRs if PSTATE indicates
+an AArch32 context.
 
-Without it, the following would be shown:
+The code tries to check whether the context is EL0 or EL1 so
+that it narrows the correct registers. But it does so by checking
+the full PSTATE instead of PSTATE.M.
 
-  WARNING: unmet direct dependencies detected for FRAME_POINTER
+As a consequence, and if we are restoring an AArch32 EL0 context
+in a 64bit guest, and that PSTATE has *any* bit set outside of
+PSTATE.M, we narrow *all* registers instead of only the first 15,
+destroying the 64bit state.
 
-because
+Obviously, this is not something the guest is likely to enjoy.
 
-  81d387190039 ("x86/kconfig: Consolidate unwinders into multiple choice selection")
+Correctly masking PSTATE to only evaluate PSTATE.M fixes it.
 
-removed 'select ARCH_WANT_FRAME_POINTERS'.
-
-The correct and more straightforward approach should have been to move
-it where 'select FRAME_POINTER' is located.
-
-Several architectures properly handle the conditional selection of
-ARCH_WANT_FRAME_POINTERS. For example, 'config UNWINDER_FRAME_POINTER'
-in arch/arm/Kconfig.debug.
-
-Fixes: 81d387190039 ("x86/kconfig: Consolidate unwinders into multiple choice selection")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20240204122003.53795-1-masahiroy@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 90c1f934ed71 ("KVM: arm64: Get rid of the AArch32 register mapping code")
+Reported-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240524141956.1450304-2-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/Kconfig.debug | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/arm64/kvm/guest.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
-index d4d6db4dde220..5d72d52fbc1b1 100644
---- a/arch/x86/Kconfig.debug
-+++ b/arch/x86/Kconfig.debug
-@@ -249,6 +249,7 @@ config UNWINDER_ORC
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -276,7 +276,7 @@ static int set_core_reg(struct kvm_vcpu
+ 	if (*vcpu_cpsr(vcpu) & PSR_MODE32_BIT) {
+ 		int i, nr_reg;
  
- config UNWINDER_FRAME_POINTER
- 	bool "Frame pointer unwinder"
-+	select ARCH_WANT_FRAME_POINTERS
- 	select FRAME_POINTER
- 	help
- 	  This option enables the frame pointer unwinder for unwinding kernel
-@@ -272,7 +273,3 @@ config UNWINDER_GUESS
- 	  overhead.
- 
- endchoice
--
--config FRAME_POINTER
--	depends on !UNWINDER_ORC && !UNWINDER_GUESS
--	bool
--- 
-2.43.0
-
+-		switch (*vcpu_cpsr(vcpu)) {
++		switch (*vcpu_cpsr(vcpu) & PSR_AA32_MODE_MASK) {
+ 		/*
+ 		 * Either we are dealing with user mode, and only the
+ 		 * first 15 registers (+ PC) must be narrowed to 32bit.
 
 
 
