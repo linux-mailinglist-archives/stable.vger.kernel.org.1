@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-51466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1455B90700A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:25:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1213A906E94
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B20921F23002
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:25:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91E3FB20A38
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A47F146D43;
-	Thu, 13 Jun 2024 12:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32730143C67;
+	Thu, 13 Jun 2024 12:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxK7MLvU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5U2w0cI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1D61459EC;
-	Thu, 13 Jun 2024 12:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E387813D635;
+	Thu, 13 Jun 2024 12:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281381; cv=none; b=ZC2bsY6nJPbsxGln/FXwl6HZtmIAEFsr3FRJ1jfnHMw6HVh1GoeqfRG/PubPrF4VG4wCT8Lh+sOy+oyDj3ztu4TTrdtvpoXVKGJN8JcO3ryix4vRyFdBdlyqZJt58qznnGVU2m3E9d7WsgWe9CCLHLKI0/xGSvs/svrPTEbWzF8=
+	t=1718280477; cv=none; b=EAQqkMr0P+fJQAPrE0gDTa0vqnsFuh2hYNZ/04s5xmH1uN/hlkJo6088MNzIMQlp3oA+jTqG7KB7Whe0Xqdh4wp0S+d/56CJvBrbxgwxGf3UsJhwv2Pojn2LslWDaTHKH2dHDBc3WsNjhA98DRXbOFX88Uav4VBSDr9ovGWm0i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281381; c=relaxed/simple;
-	bh=wt+/bdMRJybTvPfQdzntDt2VcaVs+6KTsVrBm+ocSdk=;
+	s=arc-20240116; t=1718280477; c=relaxed/simple;
+	bh=TJHzAPgqcrGNGwhw+Vj055e/amSrvMA28H4qOmvWMp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pHuRjhS2BdAcBmEQL55L/oeBFUlpg2zWzpIgIwbatFK4sQULofCYlMbdKYREUcmv7IvBUdIdeC0TY3XSgC1Lbb8sHW6sHloDPOIK6/TzpEpP/BKCWXKFN0mDhjkwyL+/8t9J9lgVNn5sNmEVc928kOIu+7rjP9YohWqJEGs7y+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxK7MLvU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83FC0C2BBFC;
-	Thu, 13 Jun 2024 12:23:00 +0000 (UTC)
+	 MIME-Version; b=PuOg3AvkyAxeSHI47/NpPP5SK3xIe+R54y7pOZNMnTe63EcGWiVkggT87Yq57jDc4Jr8CntY16yObc8D7H3LMaYk3ymYvr9iYRqo8iSuflBSOrhs25YzpBVG4cnYekBWLqlbmduvrykTBs4LTrxVsd7ECaORW+BRCu8ny/Tlf5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5U2w0cI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A23EC32786;
+	Thu, 13 Jun 2024 12:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281380;
-	bh=wt+/bdMRJybTvPfQdzntDt2VcaVs+6KTsVrBm+ocSdk=;
+	s=korg; t=1718280476;
+	bh=TJHzAPgqcrGNGwhw+Vj055e/amSrvMA28H4qOmvWMp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TxK7MLvUYK+Gd2Tptov5AoC22vb+1fD4z0OJkyXQcqBMQPOBusHmitYGB3HDDQymo
-	 KOHu5u0QSNIdf74EzD6c2d8FpmHowSSjGUnaJ2BYVjPULle+KXpaUPau3/TAT6imWH
-	 6EUSFWihU7Mu40h8Tjnn6aCKKloppjy95RgKox+g=
+	b=Y5U2w0cIG956OSiD7Z+8hxhD47TYnWzsfpq96yvMNZUGMxXOGapUGUHDUwXEXMWaj
+	 AATwM9Ojk8sIfl9rycDgz/6hesKiktpvG6EjW1CackE2XXCOTxoIqu6vTyMMzdPUA9
+	 rZ1ZoHSRFNB4AiktVMmDseoApiR5r+cZjGCuOmMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryosuke Yasuoka <ryasuoka@redhat.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+d7b4dc6cd50410152534@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 228/317] nfc: nci: Fix uninit-value in nci_rx_work
+	Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.6 066/137] clk: bcm: dvp: Assign ->num before accessing ->hws
 Date: Thu, 13 Jun 2024 13:34:06 +0200
-Message-ID: <20240613113256.371860220@linuxfoundation.org>
+Message-ID: <20240613113225.860589554@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryosuke Yasuoka <ryasuoka@redhat.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit e4a87abf588536d1cdfb128595e6e680af5cf3ed ]
+commit 9368cdf90f52a68120d039887ccff74ff33b4444 upstream.
 
-syzbot reported the following uninit-value access issue [1]
+Commit f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with
+__counted_by") annotated the hws member of 'struct clk_hw_onecell_data'
+with __counted_by, which informs the bounds sanitizer about the number
+of elements in hws, so that it can warn when hws is accessed out of
+bounds. As noted in that change, the __counted_by member must be
+initialized with the number of elements before the first array access
+happens, otherwise there will be a warning from each access prior to the
+initialization because the number of elements is zero. This occurs in
+clk_dvp_probe() due to ->num being assigned after ->hws has been
+accessed:
 
-nci_rx_work() parses received packet from ndev->rx_q. It should be
-validated header size, payload size and total packet size before
-processing the packet. If an invalid packet is detected, it should be
-silently discarded.
+  UBSAN: array-index-out-of-bounds in drivers/clk/bcm/clk-bcm2711-dvp.c:59:2
+  index 0 is out of range for type 'struct clk_hw *[] __counted_by(num)' (aka 'struct clk_hw *[]')
 
-Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
-Reported-and-tested-by: syzbot+d7b4dc6cd50410152534@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d7b4dc6cd50410152534 [1]
-Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Move the ->num initialization to before the first access of ->hws, which
+clears up the warning.
+
+Cc: stable@vger.kernel.org
+Fixes: f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with __counted_by")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20240425-cbl-bcm-assign-counted-by-val-before-access-v1-1-e2db3b82d5ef@kernel.org
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/core.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/clk/bcm/clk-bcm2711-dvp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index d8002065baaef..7b3f3d6285004 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1452,6 +1452,19 @@ int nci_core_ntf_packet(struct nci_dev *ndev, __u16 opcode,
- 				 ndev->ops->n_core_ops);
- }
+diff --git a/drivers/clk/bcm/clk-bcm2711-dvp.c b/drivers/clk/bcm/clk-bcm2711-dvp.c
+index e4fbbf3c40fe..3cb235df9d37 100644
+--- a/drivers/clk/bcm/clk-bcm2711-dvp.c
++++ b/drivers/clk/bcm/clk-bcm2711-dvp.c
+@@ -56,6 +56,8 @@ static int clk_dvp_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
  
-+static bool nci_valid_size(struct sk_buff *skb)
-+{
-+	BUILD_BUG_ON(NCI_CTRL_HDR_SIZE != NCI_DATA_HDR_SIZE);
-+	unsigned int hdr_size = NCI_CTRL_HDR_SIZE;
++	data->num = NR_CLOCKS;
 +
-+	if (skb->len < hdr_size ||
-+	    !nci_plen(skb->data) ||
-+	    skb->len < hdr_size + nci_plen(skb->data)) {
-+		return false;
-+	}
-+	return true;
-+}
-+
- /* ---- NCI TX Data worker thread ---- */
+ 	data->hws[0] = clk_hw_register_gate_parent_data(&pdev->dev,
+ 							"hdmi0-108MHz",
+ 							&clk_dvp_parent, 0,
+@@ -76,7 +78,6 @@ static int clk_dvp_probe(struct platform_device *pdev)
+ 		goto unregister_clk0;
+ 	}
  
- static void nci_tx_work(struct work_struct *work)
-@@ -1502,7 +1515,7 @@ static void nci_rx_work(struct work_struct *work)
- 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
- 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
- 
--		if (!nci_plen(skb->data)) {
-+		if (!nci_valid_size(skb)) {
- 			kfree_skb(skb);
- 			break;
- 		}
+-	data->num = NR_CLOCKS;
+ 	ret = of_clk_add_hw_provider(pdev->dev.of_node, of_clk_hw_onecell_get,
+ 				     data);
+ 	if (ret)
 -- 
-2.43.0
+2.45.2
 
 
 
