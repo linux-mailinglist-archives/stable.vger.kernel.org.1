@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-50737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E0A906C5A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED266906D32
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B0F91C20FD3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9381E28656C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC80145B27;
-	Thu, 13 Jun 2024 11:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5F8143878;
+	Thu, 13 Jun 2024 11:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOFs8sFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjjMJQWb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E00A1465AE;
-	Thu, 13 Jun 2024 11:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D42912C81F;
+	Thu, 13 Jun 2024 11:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279237; cv=none; b=aD/diyeyvbPhmOsE+J6Jehsr4i9qmLIdiw23FA0v/HBmvOyYSQr8B4QXflucZRVEiTi3GNb4hg8bgTOC3Fg/gdsypM7XQ5qFzDkBLmewgurGm+q9+bjvX9hvDeOuJEpQrTEqmCzVg7jOW4HtxnLH5D1fHCsERBZdhTxjYFG3uew=
+	t=1718279617; cv=none; b=gF75HdqZb7ojo9TBlCvhRWvy8zSO8N7zGH5xezmCHUlSbKRH/PPjgCCNLo15C8K3exbq7EWjUkMPl2Wf3zQPVwgomotGFPiOkPTOQnW0RlYDoeVyYUEZ7P8JU/OHZqGny3hcZRFr+UCP3zjB5OTFRU2Pf8KSxG7DdjwYhh0DbgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279237; c=relaxed/simple;
-	bh=LtQdrsVPDF/L5PvAx8iNMAbrCxf9qDkr8Y2ndfR2JtU=;
+	s=arc-20240116; t=1718279617; c=relaxed/simple;
+	bh=8E2DFJVw6tn3NHfLTB2HogC1xyA2k4YXZ4Z453/RtVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmX9tuB3W2vexdsS44GB94RIyh2oGMvA0CT+qzwSIJEIAsd0SDLctdufCsOnZwJQ6wLzX/7WnkBvVnOFEtevAzzwPwnGivNHLskgVgAIIV41CvgvX/oN0TTfXCssGzxolmgF52mwf5nqK2TO306U/mJcMMzAaTw4EbjVl8CL/As=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOFs8sFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465E9C4AF1A;
-	Thu, 13 Jun 2024 11:47:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WJXOEUugqtb6guvam7KTCfdAdrndGLChHZdbO1OFFvRpv8wNSzKJaRApOwxbyjywdVsYIon0lJscfmqyI5Rn+bLiW32BDj5QC7EPw7R5+ltGTJi9wSQ8hgTWYS5CutmxCAwl436x+AWuODh77jxxwgJRI5M6jDV0DCuudAfPR6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjjMJQWb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E743C2BBFC;
+	Thu, 13 Jun 2024 11:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279236;
-	bh=LtQdrsVPDF/L5PvAx8iNMAbrCxf9qDkr8Y2ndfR2JtU=;
+	s=korg; t=1718279616;
+	bh=8E2DFJVw6tn3NHfLTB2HogC1xyA2k4YXZ4Z453/RtVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOFs8sFPFJypiSN0gHwI1B+qiaS4cQmtEK/DXmCbVZTNPvkUDZYA/tsObrNdMeTwc
-	 f3sYnkSKTrK5McekgBuSFcxH9tV3Ry6iJ8+PCPDeVkPfgqFQXUsOhlRTBNPiouEryl
-	 Ngj7g9cpO/HnKebe1qWeNNO2FmQ7vRCCo48tZQRo=
+	b=GjjMJQWbYqfbY65Vv9uYJDn3kXjtsNMRAKeIW4goOHHRDh4YTvVFfVgNB6GSGxD0L
+	 JvUFmZThPWfgdVxJpSyl4y+ZK8T494AW1xQHmGKizS2kJOtgTvihwJQz21oylou1/E
+	 dyyFpk66Yw/C/i3DWpNiG0AeXiVwDD3SxFx+VMK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>
-Subject: [PATCH 4.19 213/213] nfs: fix undefined behavior in nfs_block_bits()
-Date: Thu, 13 Jun 2024 13:34:21 +0200
-Message-ID: <20240613113236.200198511@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.9 137/157] EDAC/amd64: Convert PCIBIOS_* return codes to errnos
+Date: Thu, 13 Jun 2024 13:34:22 +0200
+Message-ID: <20240613113232.703896010@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +59,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 3c0a2e0b0ae661457c8505fecc7be5501aa7a715 upstream.
+commit 3ec8ebd8a5b782d56347ae884de880af26f93996 upstream.
 
-Shifting *signed int* typed constant 1 left by 31 bits causes undefined
-behavior. Specify the correct *unsigned long* type by using 1UL instead.
+gpu_get_node_map() uses pci_read_config_dword() that returns PCIBIOS_*
+codes. The return code is then returned all the way into the module
+init function amd64_edac_init() that returns it as is. The module init
+functions, however, should return normal errnos.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
+Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
+errno before returning it from gpu_get_node_map().
 
+For consistency, convert also the other similar cases which return
+PCIBIOS_* codes even if they do not have any bugs at the moment.
+
+Fixes: 4251566ebc1c ("EDAC/amd64: Cache and use GPU node map")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Link: https://lore.kernel.org/r/20240527132236.13875-1-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/internal.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/edac/amd64_edac.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -615,9 +615,9 @@ unsigned long nfs_block_bits(unsigned lo
- 	if ((bsize & (bsize - 1)) || nrbitsp) {
- 		unsigned char	nrbits;
+--- a/drivers/edac/amd64_edac.c
++++ b/drivers/edac/amd64_edac.c
+@@ -81,7 +81,7 @@ int __amd64_read_pci_cfg_dword(struct pc
+ 		amd64_warn("%s: error reading F%dx%03x.\n",
+ 			   func, PCI_FUNC(pdev->devfn), offset);
  
--		for (nrbits = 31; nrbits && !(bsize & (1 << nrbits)); nrbits--)
-+		for (nrbits = 31; nrbits && !(bsize & (1UL << nrbits)); nrbits--)
- 			;
--		bsize = 1 << nrbits;
-+		bsize = 1UL << nrbits;
- 		if (nrbitsp)
- 			*nrbitsp = nrbits;
+-	return err;
++	return pcibios_err_to_errno(err);
+ }
+ 
+ int __amd64_write_pci_cfg_dword(struct pci_dev *pdev, int offset,
+@@ -94,7 +94,7 @@ int __amd64_write_pci_cfg_dword(struct p
+ 		amd64_warn("%s: error writing to F%dx%03x.\n",
+ 			   func, PCI_FUNC(pdev->devfn), offset);
+ 
+-	return err;
++	return pcibios_err_to_errno(err);
+ }
+ 
+ /*
+@@ -1025,8 +1025,10 @@ static int gpu_get_node_map(struct amd64
  	}
+ 
+ 	ret = pci_read_config_dword(pdev, REG_LOCAL_NODE_TYPE_MAP, &tmp);
+-	if (ret)
++	if (ret) {
++		ret = pcibios_err_to_errno(ret);
+ 		goto out;
++	}
+ 
+ 	gpu_node_map.node_count = FIELD_GET(LNTM_NODE_COUNT, tmp);
+ 	gpu_node_map.base_node_id = FIELD_GET(LNTM_BASE_NODE_ID, tmp);
 
 
 
