@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C92B3906F47
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 150CC90710F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9AC31C23C7A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B97B8282CC3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C36E130A47;
-	Thu, 13 Jun 2024 12:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D88B1EEE4;
+	Thu, 13 Jun 2024 12:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwGtmzUt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0oQ4RDV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8193209;
-	Thu, 13 Jun 2024 12:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B991E519;
+	Thu, 13 Jun 2024 12:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280930; cv=none; b=LH+OFETt1CwAD1LNrH3TN/n7gALOc0cXKG8k92qrsoSxxWYoMjZFzTCZESR1ccDZANeLnbC/2g6XiKH8u9jsKTJ9maBrIQHU4i7mqMVu04puJzfhZNoP7NZbonC/kKOmpjMBgRpcOK99MznfZX3FDZoc4IbnxM7n9R3M3IaswhI=
+	t=1718281991; cv=none; b=Nz+VWMPzf4b6ufDtnx1WyIK+2v2o6cDbjUW9wiWtrBCSnB9vwworjGlKjVZ/J8WKmFOCndDw2uzgm3Gd2JPxpUrMizcVS3p1jEOJpnzXKbqJmO10rnXW/+cJlFl1Pket8DujkVkFPzqHMfDm6OPcv8Lv0aVUGX5xk5EofGnTVf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280930; c=relaxed/simple;
-	bh=fseM3rD6KBk1ijmsQiJdmCRYYibPZKGyMK/6QYPcjy4=;
+	s=arc-20240116; t=1718281991; c=relaxed/simple;
+	bh=79gZopW1ni9K7S4bQm/KwYq47rE6mqF/qQYCXOWpYv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FpBceaaRSK5ir24j7CHcQgE8XnFtGvSn3C71V780jJwJ+q7+MLF14MWUT1yJ0X39rd8jn3kkBBBnLNfycZ8dPtBGwdJ/85tePdUgmwbHqcThvodFc4tasaO97BBn4+JZlr2EzjTzoTpgV6INmFTWV8djAuuqzyi8CNGuuXpo8Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwGtmzUt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CD3C2BBFC;
-	Thu, 13 Jun 2024 12:15:29 +0000 (UTC)
+	 MIME-Version; b=tG8ga+JQJRCJCptjg9sPJPSQkAVyYKAhwwbwLojkCj0vGT+41L9s7V+RanCFQAQmWTwrKT0ewtrLBDQ2N65g5litq6GTPH4OZ+vOiehTw5pBznE7+Ng7f+OT5/w8/2hphxXCJEC1NUax4KHk+LXaqkPNRpaRfjV7OmeeeaePYjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0oQ4RDV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548C1C2BBFC;
+	Thu, 13 Jun 2024 12:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280930;
-	bh=fseM3rD6KBk1ijmsQiJdmCRYYibPZKGyMK/6QYPcjy4=;
+	s=korg; t=1718281991;
+	bh=79gZopW1ni9K7S4bQm/KwYq47rE6mqF/qQYCXOWpYv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KwGtmzUtpXPVdl3ZfBaTy+R17Zb4ecJ8X2GJAy8eBwEaY6vMNvB1CpQ8a2n8wzR0e
-	 sSr0arnO6Y8T2KrpulcrVxbTIPBDpnqJoKgtnsrmsJ7KsUwCtCnJxmPnE+FJhQnGcK
-	 zro2JnBqDK0+cC7BQ8Vmv1AIBuBRyO//NiAV9sEI=
+	b=o0oQ4RDVcvirP525iYHLLUPHYI2HiOI/mbse5Ylou3kY/m4j6/TmGVsy0GDqQopiy
+	 a/cL2efTKAAZSIFoN83xXJ8yWXrQCqjiNK5XWNxaG4iCSOivfFn6kaOGQxRFdbi8tO
+	 LNf68E9l561pG2CX3L48BPD44srZtt3HEjpXe/0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Maxim Korotkov <korotkov.maxim.s@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 065/317] net: give more chances to rcu in netdev_wait_allrefs_any()
+Subject: [PATCH 5.15 126/402] mtd: rawnand: hynix: fixed typo
 Date: Thu, 13 Jun 2024 13:31:23 +0200
-Message-ID: <20240613113250.064618196@linuxfoundation.org>
+Message-ID: <20240613113307.055984427@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Maxim Korotkov <korotkov.maxim.s@gmail.com>
 
-[ Upstream commit cd42ba1c8ac9deb9032add6adf491110e7442040 ]
+[ Upstream commit 6819db94e1cd3ce24a432f3616cd563ed0c4eaba ]
 
-This came while reviewing commit c4e86b4363ac ("net: add two more
-call_rcu_hurry()").
+The function hynix_nand_rr_init() should probably return an error code.
+Judging by the usage, it seems that the return code is passed up
+the call stack.
+Right now, it always returns 0 and the function hynix_nand_cleanup()
+in hynix_nand_init() has never been called.
 
-Paolo asked if adding one synchronize_rcu() would help.
+Found by RASU JSC and Linux Verification Center (linuxtesting.org)
 
-While synchronize_rcu() does not help, making sure to call
-rcu_barrier() before msleep(wait) is definitely helping
-to make sure lazy call_rcu() are completed.
+Fixes: 626994e07480 ("mtd: nand: hynix: Add read-retry support for 1x nm MLC NANDs")
 
-Instead of waiting ~100 seconds in my tests, the ref_tracker
-splats occurs one time only, and netdev_wait_allrefs_any()
-latency is reduced to the strict minimum.
-
-Ideally we should audit our call_rcu() users to make sure
-no refcount (or cascading call_rcu()) is held too long,
-because rcu_barrier() is quite expensive.
-
-Fixes: 0e4be9e57e8c ("net: use exponential backoff in netdev_wait_allrefs")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/all/28bbf698-befb-42f6-b561-851c67f464aa@kernel.org/T/#m76d73ed6b03cd930778ac4d20a777f22a08d6824
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Maxim Korotkov <korotkov.maxim.s@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240313102721.1991299-1-korotkov.maxim.s@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/nand_hynix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 0e2c433bebcd4..5e91496fd3a36 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -10217,8 +10217,9 @@ static void netdev_wait_allrefs(struct net_device *dev)
- 			rebroadcast_time = jiffies;
- 		}
+diff --git a/drivers/mtd/nand/raw/nand_hynix.c b/drivers/mtd/nand/raw/nand_hynix.c
+index a9f50c9af1097..856b3d6eceb73 100644
+--- a/drivers/mtd/nand/raw/nand_hynix.c
++++ b/drivers/mtd/nand/raw/nand_hynix.c
+@@ -402,7 +402,7 @@ static int hynix_nand_rr_init(struct nand_chip *chip)
+ 	if (ret)
+ 		pr_warn("failed to initialize read-retry infrastructure");
  
-+		rcu_barrier();
-+
- 		if (!wait) {
--			rcu_barrier();
- 			wait = WAIT_REFS_MIN_MSECS;
- 		} else {
- 			msleep(wait);
+-	return 0;
++	return ret;
+ }
+ 
+ static void hynix_nand_extract_oobsize(struct nand_chip *chip,
 -- 
 2.43.0
 
