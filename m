@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-51797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9DB9071AE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD779071B0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC3411C243EE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08A3F1F27AE7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3151EEF8;
-	Thu, 13 Jun 2024 12:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D763781AA7;
+	Thu, 13 Jun 2024 12:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bo+9aY1j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4SVuTdV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7823B17FD;
-	Thu, 13 Jun 2024 12:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9551717FD;
+	Thu, 13 Jun 2024 12:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282342; cv=none; b=Hmocr5Hl/dQPh6MTgM4vO+OnqaMLYU6DQO97ocgtyo9sHQA1X5Ld+dZH2HMbsOJFr09q65O+g8neEroYZocTpuP+iUh94NVQ7fqRJkMaYQ0oEdXOVUfGbd/xiUqXBkalXCtC8lOK/CG1dQJYbpeaUcYl1yrP8VO1xCuQVRnQREc=
+	t=1718282348; cv=none; b=JHwkQE/0yIyHoJF+NRKn6x32txJDIDBsvJlj4zILNWCdcuipiV84SUy36pGNXcWozi3kBhq0PM7OiKVJZy+to7/9moWTgGrYVtzG0mPm/VQNWAUhpyD8k34Taf1apXwCvmHhXSXGbqNlc+RAYZ2VW8fkIF6UI3WWXY1DOWFFExU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282342; c=relaxed/simple;
-	bh=V8F6w5ieYb8xNtve80HL6ZKWiSn+lglT8r6eNcxmuT0=;
+	s=arc-20240116; t=1718282348; c=relaxed/simple;
+	bh=9hkmk500X620F1tZ+svAxHvDLFzPsHXB9hKNebVvoOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lJAKvP+DSaHJKXWVWHwYvNwGe6byN3N7H8qBj/clfIhETU9qmfmWnWI6KpgWUuvJnWf9ss7A5ZHNS/t9SUuuu/31YY/5KJyLccCeEk7+PxAKZd0knlBcni+dtUzZ1WGp25fhBjnasiZQkC/S4iojhkX72ItB/r714NWRpqVSW0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bo+9aY1j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B21C2BBFC;
-	Thu, 13 Jun 2024 12:39:01 +0000 (UTC)
+	 MIME-Version; b=l92Cw9XXvNwqrlfB6E8DHjRNGP2RKK5GEKFsFN0IkbWWHcZxeew4PmX1PfaB8O20xTeB/nDS5QIO/HTN/lgVfiQJQVPC12Prvf7QY9sy2lUApuqZcUu+7Rx3Je/imgrfvRfTU3YuPX1lDQVwO58uXHMxpndpyrVM7BWSyu44Gn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4SVuTdV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF788C2BBFC;
+	Thu, 13 Jun 2024 12:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282342;
-	bh=V8F6w5ieYb8xNtve80HL6ZKWiSn+lglT8r6eNcxmuT0=;
+	s=korg; t=1718282348;
+	bh=9hkmk500X620F1tZ+svAxHvDLFzPsHXB9hKNebVvoOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bo+9aY1jEbf4hz9yZSpFf6+NRkYD7MSopcs6jFwxzk7eLv1vZCVGJ2ZVs4lMMnIif
-	 3av5T7KA7wtSJmISph1ryP1qmk6tPTovOg3uT98UVMd0YWsrSRHssk1ZPmlzvu83+Y
-	 a4Nqfm7NCeUy1cezdsskaw0SbCvSXBICaxCHeoSU=
+	b=r4SVuTdVVQNGdE2JkUZpWk1t1VbfJBkyaC+ir3vPpNFSNKkSpnkDgxmsCr0B9ZFdr
+	 J4hMpw8uZoReY0qts2ggRHhDFBoTHDOBCJPm0xp0QHuQ2A2hMUWHjvwhVBqLgCo9KW
+	 5Qdyn+ZO/sBeOJeEZvUIcg4m0UnyFkEIrvZaiLiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Egorenkov <egorenar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 244/402] s390/ipl: Fix incorrect initialization of nvme dump block
-Date: Thu, 13 Jun 2024 13:33:21 +0200
-Message-ID: <20240613113311.667485977@linuxfoundation.org>
+Subject: [PATCH 5.15 245/402] s390/boot: Remove alt_stfle_fac_list from decompressor
+Date: Thu, 13 Jun 2024 13:33:22 +0200
+Message-ID: <20240613113311.706132375@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
 References: <20240613113302.116811394@linuxfoundation.org>
@@ -67,41 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Egorenkov <egorenar@linux.ibm.com>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-[ Upstream commit 7faacaeaf6ce12fae78751de5ad869d8f1e1cd7a ]
+[ Upstream commit e7dec0b7926f3cd493c697c4c389df77e8e8a34c ]
 
-Initialize the correct fields of the nvme dump block.
-This bug had not been detected before because first, the fcp and nvme fields
-of struct ipl_parameter_block are part of the same union and, therefore,
-overlap in memory and second, they are identical in structure and size.
+It is nowhere used in the decompressor, therefore remove it.
 
-Fixes: d70e38cb1dee ("s390: nvme dump support")
+Fixes: 17e89e1340a3 ("s390/facilities: move stfl information from lowcore to global data")
 Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Egorenkov <egorenar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/ipl.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/s390/boot/startup.c | 1 -
+ arch/s390/kernel/setup.c | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/ipl.c b/arch/s390/kernel/ipl.c
-index 77246ff5b0141..d2ba82873abfd 100644
---- a/arch/s390/kernel/ipl.c
-+++ b/arch/s390/kernel/ipl.c
-@@ -1603,9 +1603,9 @@ static int __init dump_nvme_init(void)
- 	}
- 	dump_block_nvme->hdr.len = IPL_BP_NVME_LEN;
- 	dump_block_nvme->hdr.version = IPL_PARM_BLOCK_VERSION;
--	dump_block_nvme->fcp.len = IPL_BP0_NVME_LEN;
--	dump_block_nvme->fcp.pbt = IPL_PBT_NVME;
--	dump_block_nvme->fcp.opt = IPL_PB0_NVME_OPT_DUMP;
-+	dump_block_nvme->nvme.len = IPL_BP0_NVME_LEN;
-+	dump_block_nvme->nvme.pbt = IPL_PBT_NVME;
-+	dump_block_nvme->nvme.opt = IPL_PB0_NVME_OPT_DUMP;
- 	dump_capabilities |= DUMP_TYPE_NVME;
- 	return 0;
- }
+diff --git a/arch/s390/boot/startup.c b/arch/s390/boot/startup.c
+index 1aa11a8f57dd8..05fed61c5e3b7 100644
+--- a/arch/s390/boot/startup.c
++++ b/arch/s390/boot/startup.c
+@@ -27,7 +27,6 @@ int __bootdata(is_full_image) = 1;
+ struct initrd_data __bootdata(initrd_data);
+ 
+ u64 __bootdata_preserved(stfle_fac_list[16]);
+-u64 __bootdata_preserved(alt_stfle_fac_list[16]);
+ struct oldmem_data __bootdata_preserved(oldmem_data);
+ 
+ void error(char *x)
+diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
+index b7ce6c7c84c6f..50cb4c3d3682a 100644
+--- a/arch/s390/kernel/setup.c
++++ b/arch/s390/kernel/setup.c
+@@ -154,7 +154,7 @@ unsigned int __bootdata_preserved(zlib_dfltcc_support);
+ EXPORT_SYMBOL(zlib_dfltcc_support);
+ u64 __bootdata_preserved(stfle_fac_list[16]);
+ EXPORT_SYMBOL(stfle_fac_list);
+-u64 __bootdata_preserved(alt_stfle_fac_list[16]);
++u64 alt_stfle_fac_list[16];
+ struct oldmem_data __bootdata_preserved(oldmem_data);
+ 
+ unsigned long VMALLOC_START;
 -- 
 2.43.0
 
