@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-51985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1260D907298
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B390907241
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3D2A28242B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 839BD1C209F8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8E2144D21;
-	Thu, 13 Jun 2024 12:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FD881AA7;
+	Thu, 13 Jun 2024 12:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oult8meV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYl9srQf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6B71411C5;
-	Thu, 13 Jun 2024 12:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6D817FD;
+	Thu, 13 Jun 2024 12:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282896; cv=none; b=BMtah7qDXwDWdF8Uf9zaAtp74MSuMW71fx00X9s3Gpdb/RkexFaii221pCdxbz+iPzwMfqO33tXJkHwH5E585xZBOVBXM2SaU1vft4MI/yQdC+kKWbygnWYrEX9/19Z0UG3fxlg3f+qa654Lbg8IluejtjeCS+7HqIjFZ3PYI/E=
+	t=1718282720; cv=none; b=giwbugehYojaPwnWZgInZOoiAwC9EArjigTFDIC8GEO5aXdoqmk5nhPZqMxw+1eibvoR7nyL3M6Xe3JxV7OhlHhgEPuX+HslBsEmbQLaM4QDt8RDl1/omuvMRP/x+lAEt/CYnz6srPrboOY0lp3aYmPrEbgEV0y6nCJVlaC5tVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282896; c=relaxed/simple;
-	bh=nMCXXIKkC04B/y/Kwu/sVXv5ohKROlp7C8VJjx7hn4o=;
+	s=arc-20240116; t=1718282720; c=relaxed/simple;
+	bh=UHUwgjpT5ffeSkUNAsxIAtk/BX8JEo1HaZV6b/GRgh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OYHevfN2NdlCKmoVrBJu3nOByars8uWYpOQ76eC0B8W+gkh10k2zR+6C27zWBs4RQMlAkTuZbMQbr3AjS9vd7TKy09PzmoqkLQD/atiPYvOGI/5KoUTDfSFCO0haO+reXcTJG9xoJrrhyRAKxOB3N6dfcadIUCIpW0olOBERFT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oult8meV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA80DC2BBFC;
-	Thu, 13 Jun 2024 12:48:15 +0000 (UTC)
+	 MIME-Version; b=l6WJPh/pCWx/hX0UdVV7El+7Xn6lfKuucPiTh4WrUqdXfxh5b25tImhZyP7wS5udfO2S0DqQSoogPVx6kdNVuXW2Px55+upxI+mGFKk4aA3HgkovZUM2W/PYyg1rjXngIhFv6NiNm9N2qjwX8DY6NaliPWKMt2HIuNWWdMeMxrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYl9srQf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A9BC2BBFC;
+	Thu, 13 Jun 2024 12:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282896;
-	bh=nMCXXIKkC04B/y/Kwu/sVXv5ohKROlp7C8VJjx7hn4o=;
+	s=korg; t=1718282719;
+	bh=UHUwgjpT5ffeSkUNAsxIAtk/BX8JEo1HaZV6b/GRgh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oult8meV4LybAY2iLzueDM8klSLLaaH7GNMrO8SZMJRa6IuLorFUeJTkatuxEDmER
-	 nlj7O9RiiHFOFB2hTcLPjp9lHmmYHPj3MVRpjpGlYX6kjpO6k3qTjJWkgwAWF3tdtl
-	 Px1Wk/DSghE5s7c7RRgCx1bON7gCl1G++LhrxGdQ=
+	b=cYl9srQfIC8L25FkSiyyOCmoAjpCP6NJFZ1SzIIHZN0lBHGUx8jdDIaqzKgTnPIUr
+	 hdYNCm5Z1r59Z70kXqZop/MOr9NDTTUTN9LSueIxsogOfngJpNT23tzl4RcJjVa41k
+	 4Hq/dIfrB/vzA8bqTUtHhuk8CJahjUqkllrXoo48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.1 30/85] wifi: rtlwifi: rtl8192de: Fix 5 GHz TX power
-Date: Thu, 13 Jun 2024 13:35:28 +0200
-Message-ID: <20240613113215.309449920@linuxfoundation.org>
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 372/402] mmc: sdhci-acpi: Fix Lenovo Yoga Tablet 2 Pro 1380 sdcard slot not working
+Date: Thu, 13 Jun 2024 13:35:29 +0200
+Message-ID: <20240613113316.647951088@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit de4d4be4fa64ed7b4aa1c613061015bd8fa98b24 upstream.
+commit f3521d7cbaefff19cc656325787ed797e5f6a955 upstream.
 
-Different channels have different TX power settings. rtl8192de is using
-the TX power setting from the wrong channel in the 5 GHz band because
-_rtl92c_phy_get_rightchnlplace expects an array which includes all the
-channel numbers, but it's using an array which includes only the 5 GHz
-channel numbers.
+The Lenovo Yoga Tablet 2 Pro 1380 sdcard slot has an active high cd pin
+and a broken wp pin which always reports the card being write-protected.
 
-Use the array channel_all (defined in rtl8192de/phy.c) instead of
-the incorrect channel5g (defined in core.c).
+Add a DMI quirk to address both issues.
 
-Tested only with rtl8192du, which will use the same TX power code.
-
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/c7653517-cf88-4f57-b79a-8edb0a8b32f0@gmail.com
+Link: https://lore.kernel.org/r/20240410191639.526324-5-hdegoede@redhat.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-acpi.c |   24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -892,8 +892,8 @@ static u8 _rtl92c_phy_get_rightchnlplace
- 	u8 place = chnl;
+--- a/drivers/mmc/host/sdhci-acpi.c
++++ b/drivers/mmc/host/sdhci-acpi.c
+@@ -82,6 +82,7 @@ struct sdhci_acpi_host {
+ enum {
+ 	DMI_QUIRK_RESET_SD_SIGNAL_VOLT_ON_SUSP			= BIT(0),
+ 	DMI_QUIRK_SD_NO_WRITE_PROTECT				= BIT(1),
++	DMI_QUIRK_SD_CD_ACTIVE_HIGH				= BIT(2),
+ };
  
- 	if (chnl > 14) {
--		for (place = 14; place < ARRAY_SIZE(channel5g); place++) {
--			if (channel5g[place] == chnl) {
-+		for (place = 14; place < ARRAY_SIZE(channel_all); place++) {
-+			if (channel_all[place] == chnl) {
- 				place++;
- 				break;
- 			}
+ static inline void *sdhci_acpi_priv(struct sdhci_acpi_host *c)
+@@ -825,6 +826,26 @@ static const struct dmi_system_id sdhci_
+ 	},
+ 	{
+ 		/*
++		 * Lenovo Yoga Tablet 2 Pro 1380F/L (13" Android version) this
++		 * has broken WP reporting and an inverted CD signal.
++		 * Note this has more or less the same BIOS as the Lenovo Yoga
++		 * Tablet 2 830F/L or 1050F/L (8" and 10" Android), but unlike
++		 * the 830 / 1050 models which share the same mainboard this
++		 * model has a different mainboard and the inverted CD and
++		 * broken WP are unique to this board.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corp."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "VALLEYVIEW C0 PLATFORM"),
++			DMI_MATCH(DMI_BOARD_NAME, "BYT-T FFD8"),
++			/* Full match so as to NOT match the 830/1050 BIOS */
++			DMI_MATCH(DMI_BIOS_VERSION, "BLADE_21.X64.0005.R00.1504101516"),
++		},
++		.driver_data = (void *)(DMI_QUIRK_SD_NO_WRITE_PROTECT |
++					DMI_QUIRK_SD_CD_ACTIVE_HIGH),
++	},
++	{
++		/*
+ 		 * The Toshiba WT8-B's microSD slot always reports the card being
+ 		 * write-protected.
+ 		 */
+@@ -948,6 +969,9 @@ static int sdhci_acpi_probe(struct platf
+ 	if (sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD)) {
+ 		bool v = sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD_OVERRIDE_LEVEL);
+ 
++		if (quirks & DMI_QUIRK_SD_CD_ACTIVE_HIGH)
++			host->mmc->caps2 |= MMC_CAP2_CD_ACTIVE_HIGH;
++
+ 		err = mmc_gpiod_request_cd(host->mmc, NULL, 0, v, 0);
+ 		if (err) {
+ 			if (err == -EPROBE_DEFER)
 
 
 
