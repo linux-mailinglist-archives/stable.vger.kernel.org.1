@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-50791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2BAD906CAD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:52:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D1F906B98
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45E18B2498A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:52:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DBDF1F22C03
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B145314659B;
-	Thu, 13 Jun 2024 11:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6AC1448F3;
+	Thu, 13 Jun 2024 11:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vutj71pr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Azb8wPp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8E9146592;
-	Thu, 13 Jun 2024 11:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD2B1442EF;
+	Thu, 13 Jun 2024 11:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279396; cv=none; b=j97kaNEsnEtihy3AqHhCUsq/T9o2Zx7hH7k7MEcq8bCFtxHKIVpuq2AYc/5/4xGNfJe8fRcDCgCURZcM6UNx/+ev8gOzAA94DRwi/SeYOG2Rd12c+NCvqrw2cTpg0FBg4RH3jsxRV8jRV+xNAPdvoDDPh+xvGLcamKHpCNcQ0zM=
+	t=1718278909; cv=none; b=V9EdkyzMmB14C5bsRnlow39kSZX5bYqOa458uybFAHXzJ9L836kQenhP2bV7nyrIypml5iXHS8xYV1phqQJqoIcMP0IGf2yF8H15Ug1chFi4EL89yl197GIUHfdOZbET+Yb16PV2JOGlNq7XacG4ARtjthrNxTrJK+M7RrUXpwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279396; c=relaxed/simple;
-	bh=GBBjBpMWgI5FJg5/eP56rPrHrjCOxFISW+bcMzZyWFY=;
+	s=arc-20240116; t=1718278909; c=relaxed/simple;
+	bh=4zXlfaeweO5lB/FILbhLNYyPV/fOodGgcEY7SS3eQd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=byp7QdDmWtf/O7jEP/RB8tzZtynRgJu88V2kE5TeClL3GCBFjdS61xHUwFgxExjP3LVoEdHKxm6Bkn3DH1kHJspnVp5rCMCXfPHKEIY++Vz+h1qWGvnwzx3lfMUMxABIzO2xf+AvbNvGq3oqDnXJGoCz10y7egi2DWSiIRkh9ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vutj71pr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4226C32786;
-	Thu, 13 Jun 2024 11:49:55 +0000 (UTC)
+	 MIME-Version; b=VPq4touRVTIjnzw0ukuly/YSGD8MxW10sLmdIr0hXXqTRhmwU9EfixU7yYoLNbkZj50GCCKgEpSHlKz0ON+UBH3I9QwxqRBHGiFA7GUq6HMez3CBO1zRq4vWDo3SopemZPpAeUm8EyCwyvadR9rKy8HcIWcAaSrSvbgl5sWA5ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Azb8wPp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CB3C2BBFC;
+	Thu, 13 Jun 2024 11:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279396;
-	bh=GBBjBpMWgI5FJg5/eP56rPrHrjCOxFISW+bcMzZyWFY=;
+	s=korg; t=1718278908;
+	bh=4zXlfaeweO5lB/FILbhLNYyPV/fOodGgcEY7SS3eQd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vutj71prfuJMGbh7y0Fhw0uQTi0fpgoM6SiP/9E+l7tRPpwk1TgqRFbNbJGuK2ZIs
-	 r2fZahiUz7hjwmnUF+vyC53PoAU/Qmpc9eC1AL+17nMUbfDZNAB5frTX1ftBdyWVPO
-	 IzHLqo2VagHYtWvmiiuCleM5LgAB0LmMaEEe8uJ8=
+	b=0Azb8wPpRorurFODqDk8hKc1qe0RaY7fa/tmown5RySdA3p1vMafeEb1jVXw78n6Z
+	 xVpDQHZmmnr0Nd7iVBCY9aDBF7Yv/w5v7QTXIOsnlc5j7CKj0YKST/5ENMhS6ISKAH
+	 hWFvY3AgK9RhY3wqTGoRoKEMjo1SmL+CDGzrYNQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.9 031/157] arm64: dts: qcom: sc8280xp: add missing PCIe minimum OPP
-Date: Thu, 13 Jun 2024 13:32:36 +0200
-Message-ID: <20240613113228.621392035@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 109/213] Input: ims-pcu - fix printf string overflow
+Date: Thu, 13 Jun 2024 13:32:37 +0200
+Message-ID: <20240613113232.205832648@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 2b621971554a94094cf489314dc1c2b65401965c upstream.
+[ Upstream commit bf32bceedd0453c70d9d022e2e29f98e446d7161 ]
 
-Add the missing PCIe CX performance level votes to avoid relying on
-other drivers (e.g. USB or UFS) to maintain the nominal performance
-level required for Gen3 speeds.
+clang warns about a string overflow in this driver
 
-Fixes: 813e83157001 ("arm64: dts: qcom: sc8280xp/sa8540p: add PCIe2-4 nodes")
-Cc: stable@vger.kernel.org      # 6.2
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240306095651.4551-5-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/input/misc/ims-pcu.c:1802:2: error: 'snprintf' will always be truncated; specified size is 10, but format string expands to at least 12 [-Werror,-Wformat-truncation]
+drivers/input/misc/ims-pcu.c:1814:2: error: 'snprintf' will always be truncated; specified size is 10, but format string expands to at least 12 [-Werror,-Wformat-truncation]
+
+Make the buffer a little longer to ensure it always fits.
+
+Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240326223825.4084412-7-arnd@kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp.dtsi |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/input/misc/ims-pcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-@@ -1799,6 +1799,7 @@
- 			assigned-clock-rates = <100000000>;
+diff --git a/drivers/input/misc/ims-pcu.c b/drivers/input/misc/ims-pcu.c
+index 3d51175c4d720..ceb42b17bb948 100644
+--- a/drivers/input/misc/ims-pcu.c
++++ b/drivers/input/misc/ims-pcu.c
+@@ -47,8 +47,8 @@ struct ims_pcu_backlight {
+ #define IMS_PCU_PART_NUMBER_LEN		15
+ #define IMS_PCU_SERIAL_NUMBER_LEN	8
+ #define IMS_PCU_DOM_LEN			8
+-#define IMS_PCU_FW_VERSION_LEN		(9 + 1)
+-#define IMS_PCU_BL_VERSION_LEN		(9 + 1)
++#define IMS_PCU_FW_VERSION_LEN		16
++#define IMS_PCU_BL_VERSION_LEN		16
+ #define IMS_PCU_BL_RESET_REASON_LEN	(2 + 1)
  
- 			power-domains = <&gcc PCIE_4_GDSC>;
-+			required-opps = <&rpmhpd_opp_nom>;
- 
- 			resets = <&gcc GCC_PCIE_4_PHY_BCR>;
- 			reset-names = "phy";
-@@ -1898,6 +1899,7 @@
- 			assigned-clock-rates = <100000000>;
- 
- 			power-domains = <&gcc PCIE_3B_GDSC>;
-+			required-opps = <&rpmhpd_opp_nom>;
- 
- 			resets = <&gcc GCC_PCIE_3B_PHY_BCR>;
- 			reset-names = "phy";
-@@ -1998,6 +2000,7 @@
- 			assigned-clock-rates = <100000000>;
- 
- 			power-domains = <&gcc PCIE_3A_GDSC>;
-+			required-opps = <&rpmhpd_opp_nom>;
- 
- 			resets = <&gcc GCC_PCIE_3A_PHY_BCR>;
- 			reset-names = "phy";
-@@ -2099,6 +2102,7 @@
- 			assigned-clock-rates = <100000000>;
- 
- 			power-domains = <&gcc PCIE_2B_GDSC>;
-+			required-opps = <&rpmhpd_opp_nom>;
- 
- 			resets = <&gcc GCC_PCIE_2B_PHY_BCR>;
- 			reset-names = "phy";
-@@ -2199,6 +2203,7 @@
- 			assigned-clock-rates = <100000000>;
- 
- 			power-domains = <&gcc PCIE_2A_GDSC>;
-+			required-opps = <&rpmhpd_opp_nom>;
- 
- 			resets = <&gcc GCC_PCIE_2A_PHY_BCR>;
- 			reset-names = "phy";
+ #define IMS_PCU_PCU_B_DEVICE_ID		5
+-- 
+2.43.0
+
 
 
 
