@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-51493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E865090702B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B2D906E40
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84A1E1F23217
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0959DB27896
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5935C13CF85;
-	Thu, 13 Jun 2024 12:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F02A1494AF;
+	Thu, 13 Jun 2024 12:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+OF5IHW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7DmEAg9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D1B81AA7;
-	Thu, 13 Jun 2024 12:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAB21494A8;
+	Thu, 13 Jun 2024 12:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281460; cv=none; b=DVpDSQ7l4GyJW4DX2uFfUZVuQldHB6cQjYySqDmt9IHxnsUidgmeNWOjiZCYDVY0H6KmSCgaq/+SH+LAMSLMQVLa0iDbAuT0fB1SFp7FIfvatkCf6GZ1eHXEjvlczlzAXQmqhCwzGa+adxU+w5TqhCQr7RWXXrofi9lIy23oI0o=
+	t=1718280248; cv=none; b=bjCTu3YDVNKOTKtK4qaZ6CDEG8F9xggO09QryHDHnl65SM7JtIPfReN6xL8oCOJlWf5Ekx/5BOHOd5k3ZYaEfnP63ZeR/RZIBYYsqE0xlID+/xFikurMqLQ26/hgkS2ftAJrVey6j7hPckKi9cuF3/xVlNSaeAUgwXay0wH7q6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281460; c=relaxed/simple;
-	bh=HWUaNmE1L3yrqAKgUVfAIhBRSme8W6TBUuU8QfcjqW0=;
+	s=arc-20240116; t=1718280248; c=relaxed/simple;
+	bh=6INgmWuf5sHLM7F9p2bBxRlxcYN2JRP+r5r+w5pRn6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lZzNEC1nVWUlyjm4RCWzqup94rCRhoPDoHmj+xIzHPeJp27zkuORPTXo9dfurj7rVfRlU+B8mlNfPHmWJ6HSlNvYV0UiMEDnTtqRT7GE0mRltggq83rb3Kz6yr6vbVvN9s0D/qINoOfs8CflxXDqylYxYzrkIcbSx7v+0Cod1Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+OF5IHW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C2CC2BBFC;
-	Thu, 13 Jun 2024 12:24:19 +0000 (UTC)
+	 MIME-Version; b=qsCN6boEyAhCPFiNFKx+3tYEJ6LwMV02IpGKs7ImzUWYcyDy6WPP58i6ip01zkULwauDB3xH2e84oO5Th7RR5vv3i1s//y9/jd/PMaJ75fcRMwXvjZFIUae2Ot4BLpoIAJddTpvLTqZ2JdLWDljNCXkvhkCGavxjVGLbYmOs24o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7DmEAg9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46AC8C2BBFC;
+	Thu, 13 Jun 2024 12:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281460;
-	bh=HWUaNmE1L3yrqAKgUVfAIhBRSme8W6TBUuU8QfcjqW0=;
+	s=korg; t=1718280248;
+	bh=6INgmWuf5sHLM7F9p2bBxRlxcYN2JRP+r5r+w5pRn6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1+OF5IHWFjBFYe1TaOMnSJF7+0UtaY9WTVIJCGlZN3ygt+LrZlIDxLkPybuPJi03X
-	 WOQvb9QqiwB/6qmEiblX2+Ni/tTaIxKUlXm3BennUn1wpf9x5ak5aA8EJ6Np/+0W1q
-	 ygGe3k0sISstYHib8/IZPXHRB/XsIwgyb9et8HuA=
+	b=s7DmEAg9s+AD7/YT1+7KJMiJpkp9zSe5dLojHhuoL/vPljz1KCRHWexldR0srYbsj
+	 eiPgBOYh/TZKxTHS1z88htJUZrdCpPWfmf7kLw1VQV7S2dJy+gvDtFmrLLdBr7rE7/
+	 JWNWUWaZVywBhP6TfU+v6CBZ3Vjhh0v3R532YONM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi.grimberg@vastdata.com>,
-	Dan Aloni <dan.aloni@vastdata.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 231/317] rpcrdma: fix handling for RDMA_CM_EVENT_DEVICE_REMOVAL
+Subject: [PATCH 5.4 151/202] net/mlx5e: Use rx_missed_errors instead of rx_dropped for reporting buffer exhaustion
 Date: Thu, 13 Jun 2024 13:34:09 +0200
-Message-ID: <20240613113256.486300871@linuxfoundation.org>
+Message-ID: <20240613113233.581089007@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Aloni <dan.aloni@vastdata.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit 4836da219781ec510c4c0303df901aa643507a7a ]
+[ Upstream commit 5c74195d5dd977e97556e6fa76909b831c241230 ]
 
-Under the scenario of IB device bonding, when bringing down one of the
-ports, or all ports, we saw xprtrdma entering a non-recoverable state
-where it is not even possible to complete the disconnect and shut it
-down the mount, requiring a reboot. Following debug, we saw that
-transport connect never ended after receiving the
-RDMA_CM_EVENT_DEVICE_REMOVAL callback.
+Previously, the driver incorrectly used rx_dropped to report device
+buffer exhaustion.
 
-The DEVICE_REMOVAL callback is irrespective of whether the CM_ID is
-connected, and ESTABLISHED may not have happened. So need to work with
-each of these states accordingly.
+According to the documentation, rx_dropped should not be used to count
+packets dropped due to buffer exhaustion, which is the purpose of
+rx_missed_errors.
 
-Fixes: 2acc5cae2923 ('xprtrdma: Prevent dereferencing r_xprt->rx_ep after it is freed')
-Cc: Sagi Grimberg <sagi.grimberg@vastdata.com>
-Signed-off-by: Dan Aloni <dan.aloni@vastdata.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Use rx_missed_errors as intended for counting packets dropped due to
+buffer exhaustion.
+
+Fixes: 269e6b3af3bf ("net/mlx5e: Report additional error statistics in get stats ndo")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/verbs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
-index d015576f3081a..9e9df38b29f74 100644
---- a/net/sunrpc/xprtrdma/verbs.c
-+++ b/net/sunrpc/xprtrdma/verbs.c
-@@ -268,7 +268,11 @@ rpcrdma_cm_event_handler(struct rdma_cm_id *id, struct rdma_cm_event *event)
- 	case RDMA_CM_EVENT_DEVICE_REMOVAL:
- 		pr_info("rpcrdma: removing device %s for %pISpc\n",
- 			ep->re_id->device->name, sap);
--		fallthrough;
-+		switch (xchg(&ep->re_connect_status, -ENODEV)) {
-+		case 0: goto wake_connect_worker;
-+		case 1: goto disconnected;
-+		}
-+		return 0;
- 	case RDMA_CM_EVENT_ADDR_CHANGE:
- 		ep->re_connect_status = -ENODEV;
- 		goto disconnected;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 35630b538c826..facbbd3fac66a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -3667,7 +3667,7 @@ mlx5e_get_stats(struct net_device *dev, struct rtnl_link_stats64 *stats)
+ 		mlx5e_fold_sw_stats64(priv, stats);
+ 	}
+ 
+-	stats->rx_dropped = priv->stats.qcnt.rx_out_of_buffer;
++	stats->rx_missed_errors = priv->stats.qcnt.rx_out_of_buffer;
+ 
+ 	stats->rx_length_errors =
+ 		PPORT_802_3_GET(pstats, a_in_range_length_errors) +
 -- 
 2.43.0
 
