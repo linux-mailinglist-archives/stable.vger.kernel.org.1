@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-51054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31D37906E21
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CCF7906EAA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A88F1B25540
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28E75B27F4B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6420145FEE;
-	Thu, 13 Jun 2024 12:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343291465BA;
+	Thu, 13 Jun 2024 12:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="askQuq0T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDUzQK71"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FEC1448F2;
-	Thu, 13 Jun 2024 12:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E753E1448DD;
+	Thu, 13 Jun 2024 12:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280171; cv=none; b=DkVLuJ+/+7lOpO1icpHk7zQ2xPKIAa9B2tJ3sYz+WE38THM+MnkCMlPPMv2k4Etaev8tQtdQZhQQTl7puZ4L1U66pduK5dajPw9EpJr8WGNU/u4KRUwWZ6nPJWT5a4FaxI/2HnHy3cq+PaaBm6kZhOESE6UeWAQsuINYAfvIn7Y=
+	t=1718280530; cv=none; b=Ek8ajzsgZcWjv9N4IJo4xWazCvBvIZhGU8Xwo0J2YYzy69ixt552EJbPkbzMKHiuyXg9K7nvmRukJHfj+vd0NtvPnRX6B+QYX2WBUhBdbbXeCce1E4AXk5wTJnAsyRhPncOZYOpoprAgwIYeX8ZOEFokLFONcFi75o8iKHsSwh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280171; c=relaxed/simple;
-	bh=wHUcXKw3kUPuWRYCS9w9HlVE6ZGDyQoV2AbtkxZK49Q=;
+	s=arc-20240116; t=1718280530; c=relaxed/simple;
+	bh=oXNaYm+rgi4z5oqDIHWVxdx5sKD9fQ+n+lKyouJJudc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hh+McvG45zvcKUDL7ZJ9ofNBXdFioVUzfBqwgZXzgWNxMYaeCEg2x5mP+6BNnwtiMQEkjjlYS5sdC84OBprRO7waLdsBw4KdiSjlba2Pai990DMXsSGoH0xoz4t3NJmVaqpmW85MHj5kZQYCBbY6SuaRUx58Fn4750C3H+VBXdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=askQuq0T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A162C2BBFC;
-	Thu, 13 Jun 2024 12:02:50 +0000 (UTC)
+	 MIME-Version; b=FKPSrdaPoRJP2T+QGr1kits1til30a05c21yIxYA86wpTt4eXsXe9wRo+1j2p32WKlG1LGn0YmlRvtVcAMfvrYCMOoQQmDcsU3AsQ79DNN8rcABjXpL+DcXtJ5YYD9HJ5KCEZtno8KXffQCSIFSZn4ojqaU4lmoF/oxv+JgoYH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDUzQK71; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB0AC2BBFC;
+	Thu, 13 Jun 2024 12:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280171;
-	bh=wHUcXKw3kUPuWRYCS9w9HlVE6ZGDyQoV2AbtkxZK49Q=;
+	s=korg; t=1718280529;
+	bh=oXNaYm+rgi4z5oqDIHWVxdx5sKD9fQ+n+lKyouJJudc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=askQuq0TWoKABnGBy3YAPvOvmeKSy4sBqEp4l5JbouY2BYwQSb+G3uGyDG8BdBeiT
-	 9HGPwa4x1iw+e4VHbLctOxDymf8CV3G7W3+EAyHja5tPhxNDNGZyG1xZ9kN5GjnJRp
-	 VFug0Y+t40TWFAHLDRq43QfOW4VwzACFraqlsXGI=
+	b=xDUzQK71Yc8R/78vhAiVmhKh4Fce+rstxp/LjCe3DOlMmc8qtXTNZCOZBWDOY6UsR
+	 uvtfNNEozIGGDRrSh8L5VkmvXP+MzpY+c39EdvF/WS81wUvmQUbIKsWS4Yrt1uC/bj
+	 +ALfSsiAypEPQYkDVLo5OwPihmC/bX5BxZpRhhaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Ming Lei <ming.lei@redhat.com>
-Subject: [PATCH 5.4 167/202] io_uring: fail NOP if non-zero op flags is passed in
+	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Peter Jung <ptr1337@cachyos.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 085/137] cpufreq: amd-pstate: Fix the inconsistency in max frequency units
 Date: Thu, 13 Jun 2024 13:34:25 +0200
-Message-ID: <20240613113234.190482535@linuxfoundation.org>
+Message-ID: <20240613113226.594434195@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
 
-commit 3d8f874bd620ce03f75a5512847586828ab86544 upstream.
+commit e4731baaf29438508197d3a8a6d4f5a8c51663f8 upstream.
 
-The NOP op flags should have been checked from beginning like any other
-opcode, otherwise NOP may not be extended with the op flags.
+The nominal frequency in cpudata is maintained in MHz whereas all other
+frequencies are in KHz. This means we have to convert nominal frequency
+value to KHz before we do any interaction with other frequency values.
 
-Given both liburing and Rust io-uring crate always zeros SQE op flags, just
-ignore users which play raw NOP uring interface without zeroing SQE, because
-NOP is just for test purpose. Then we can save one NOP2 opcode.
+In amd_pstate_set_boost(), this conversion from MHz to KHz is missed,
+fix that.
 
-Suggested-by: Jens Axboe <axboe@kernel.dk>
-Fixes: 2b188cc1bb85 ("Add io_uring IO interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240510035031.78874-2-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Tested on a AMD Zen4 EPYC server
+
+Before:
+$ cat /sys/devices/system/cpu/cpufreq/policy*/scaling_max_freq | uniq
+2151
+$ cat /sys/devices/system/cpu/cpufreq/policy*/cpuinfo_min_freq | uniq
+400000
+$ cat /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq | uniq
+2151
+409422
+
+After:
+$ cat /sys/devices/system/cpu/cpufreq/policy*/scaling_max_freq | uniq
+2151000
+$ cat /sys/devices/system/cpu/cpufreq/policy*/cpuinfo_min_freq | uniq
+400000
+$ cat /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq | uniq
+2151000
+1799527
+
+Fixes: ec437d71db77 ("cpufreq: amd-pstate: Introduce a new AMD P-State driver to support future processors")
+Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+Acked-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Tested-by: Peter Jung <ptr1337@cachyos.org>
+Cc: 5.17+ <stable@vger.kernel.org> # 5.17+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/io_uring.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/cpufreq/amd-pstate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/io_uring.c
-+++ b/fs/io_uring.c
-@@ -2112,6 +2112,8 @@ static int __io_submit_sqe(struct io_rin
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -675,7 +675,7 @@ static int amd_pstate_set_boost(struct c
+ 	if (state)
+ 		policy->cpuinfo.max_freq = cpudata->max_freq;
+ 	else
+-		policy->cpuinfo.max_freq = cpudata->nominal_freq;
++		policy->cpuinfo.max_freq = cpudata->nominal_freq * 1000;
  
- 	switch (req->submit.opcode) {
- 	case IORING_OP_NOP:
-+		if (READ_ONCE(s->sqe->rw_flags))
-+			return -EINVAL;
- 		ret = io_nop(req, req->user_data);
- 		break;
- 	case IORING_OP_READV:
+ 	policy->max = policy->cpuinfo.max_freq;
+ 
 
 
 
