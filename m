@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-50685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EBA9906BEE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:46:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101E1906D24
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9731FB2500C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:45:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A38BE285F83
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD4414388E;
-	Thu, 13 Jun 2024 11:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A951465AC;
+	Thu, 13 Jun 2024 11:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uA3hZgD0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRFJk31a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CCA142911;
-	Thu, 13 Jun 2024 11:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AC7143C4B;
+	Thu, 13 Jun 2024 11:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279089; cv=none; b=GF06uYniTUhGoZGKYnH93wk6tv2xwwrQNCUNJMJAerHGRsCWSjME1CXUbgsa7ASpw70ma4JBaEQv86BqPNrgTy1Br6bKlWsyDvy8m8zA/CfflX8Hvsn2f5/ELPOP1PlWp6LoXoebphUmNc95fdXHGNPXraYxRFrVLYT1SiH7p9c=
+	t=1718279581; cv=none; b=GxczSBWoGRzFIxhGo6OmP1GRkgAjJe0HRpy9qaXIB3to14BennSFCa6QCYd6qmp7Np33V40Z4fZfY3Za+6SYCBdHvO1wGXB6yY/eSd0vIjHjEpmuAc03pPInu4MOL/TK+S6N18uZrZdkeb1kzSfnI2mtlb2YpQjHrYGpPBZUeYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279089; c=relaxed/simple;
-	bh=FQS4ZOJlri7LL5Cp8F2gswHEfFtfb//Q4CJBEdGXUdM=;
+	s=arc-20240116; t=1718279581; c=relaxed/simple;
+	bh=1MWd1q82h+L8v0AWfufiJ7/ejwbUbIxy5/gomfhvgYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Emzveys0PPhXsyQjbEi/02JuzXhlIZP2vSrbqvlOxmaV1MKQo7qZhcmUnJ6xlJRVTZOCrXrY161+ll+ez+5ew0T4FKDkaQUcMktFle6b8DLXSHToMGZNjgNKOtvHpUYQ44ZtDTnd7ZDibfe/nhXKudeP+tQ2omwrt9yuBIa3A9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uA3hZgD0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFB4C2BBFC;
-	Thu, 13 Jun 2024 11:44:48 +0000 (UTC)
+	 MIME-Version; b=Dq0D0SxH6yzKKGiur/5/cdcYPuSg8FRNcKLzOZyjFTo04eAtpcH96nGYG76/7wMpKBagEHi/XhsvpYDfPiZCz8oeTjRI5b/v1yYJgY5diy2jm4/Q8z2wq5BeX7G+ktmAhcUOENO2wI9TA5WD/7KBT3I47LDMikRM8l+eOnGUjzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRFJk31a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD7B8C2BBFC;
+	Thu, 13 Jun 2024 11:53:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279089;
-	bh=FQS4ZOJlri7LL5Cp8F2gswHEfFtfb//Q4CJBEdGXUdM=;
+	s=korg; t=1718279581;
+	bh=1MWd1q82h+L8v0AWfufiJ7/ejwbUbIxy5/gomfhvgYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uA3hZgD0RBTFBd+KtamxkKlFGibqtKcyy1rBtROUM0205t+USD8WrTq/2RrqzYVIV
-	 QLqEitAl1Scbo7bYXVLZuQksAbjq+S66nvAu7flGNDKUt6+MIJ03e/RXw+wDACFL+C
-	 Ii55jajm4e8iRdND6T7FxBGM3cGDnBKbBzRF9e84=
+	b=vRFJk31ad6BdUl04vUGdG7PkW9TX8p353XHn9MF/3C203ysfiR3xuvSzQfrEC59RN
+	 92q+pHnCcLzl3zTsfiOg5iOhylGvcv18hzJsXf3FbN50VKXKYkZ5QRh9g0JDhC0vm2
+	 o6T1P9RaGwqMpeF0XFo1D9blwRF5kRx4SoMuR21w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>
-Subject: [PATCH 4.19 171/213] netfilter: nf_tables: fix GC transaction races with netns and netlink event exit path
+	Sam Ravnborg <sam@ravnborg.org>,
+	Nick Bowler <nbowler@draconx.ca>,
+	Andreas Larsson <andreas@gaisler.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Atish Patra <atish.patra@oracle.com>,
+	Bob Picco <bob.picco@oracle.com>,
+	Vijay Kumar <vijay.ac.kumar@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.9 094/157] sparc64: Fix number of online CPUs
 Date: Thu, 13 Jun 2024 13:33:39 +0200
-Message-ID: <20240613113234.580337363@linuxfoundation.org>
+Message-ID: <20240613113231.060804072@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +67,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Sam Ravnborg <sam@ravnborg.org>
 
-commit 6a33d8b73dfac0a41f3877894b38082bd0c9a5bc upstream.
+commit 98937707fea8375e8acea0aaa0b68a956dd52719 upstream.
 
-Netlink event path is missing a synchronization point with GC
-transactions. Add GC sequence number update to netns release path and
-netlink event path, any GC transaction losing race will be discarded.
+Nick Bowler reported:
+    When using newer kernels on my Ultra 60 with dual 450MHz UltraSPARC-II
+    CPUs, I noticed that only CPU 0 comes up, while older kernels (including
+    4.7) are working fine with both CPUs.
 
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+      I bisected the failure to this commit:
+
+      9b2f753ec23710aa32c0d837d2499db92fe9115b is the first bad commit
+      commit 9b2f753ec23710aa32c0d837d2499db92fe9115b
+      Author: Atish Patra <atish.patra@oracle.com>
+      Date:   Thu Sep 15 14:54:40 2016 -0600
+
+      sparc64: Fix cpu_possible_mask if nr_cpus is set
+
+    This is a small change that reverts very easily on top of 5.18: there is
+    just one trivial conflict.  Once reverted, both CPUs work again.
+
+    Maybe this is related to the fact that the CPUs on this system are
+    numbered CPU0 and CPU2 (there is no CPU1)?
+
+The current code that adjust cpu_possible based on nr_cpu_ids do not
+take into account that CPU's may not come one after each other.
+Move the chech to the function that setup the cpu_possible mask
+so there is no need to adjust it later.
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Fixes: 9b2f753ec237 ("sparc64: Fix cpu_possible_mask if nr_cpus is set")
+Reported-by: Nick Bowler <nbowler@draconx.ca>
+Tested-by: Nick Bowler <nbowler@draconx.ca>
+Link: https://lore.kernel.org/sparclinux/20201009161924.c8f031c079dd852941307870@gmx.de/
+Link: https://lore.kernel.org/all/CADyTPEwt=ZNams+1bpMB1F9w_vUdPsGCt92DBQxxq_VtaLoTdw@mail.gmail.com/
+Cc: stable@vger.kernel.org # v4.8+
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Atish Patra <atish.patra@oracle.com>
+Cc: Bob Picco <bob.picco@oracle.com>
+Cc: Vijay Kumar <vijay.ac.kumar@oracle.com>
+Cc: David S. Miller <davem@davemloft.net>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240330-sparc64-warnings-v1-9-37201023ee2f@ravnborg.org
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |   30 ++++++++++++++++++++++++++----
- 1 file changed, 26 insertions(+), 4 deletions(-)
+ arch/sparc/include/asm/smp_64.h |    2 --
+ arch/sparc/kernel/prom_64.c     |    4 +++-
+ arch/sparc/kernel/setup_64.c    |    1 -
+ arch/sparc/kernel/smp_64.c      |   14 --------------
+ 4 files changed, 3 insertions(+), 18 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6899,6 +6899,22 @@ void nft_trans_gc_queue_sync_done(struct
+--- a/arch/sparc/include/asm/smp_64.h
++++ b/arch/sparc/include/asm/smp_64.h
+@@ -47,7 +47,6 @@ void arch_send_call_function_ipi_mask(co
+ int hard_smp_processor_id(void);
+ #define raw_smp_processor_id() (current_thread_info()->cpu)
+ 
+-void smp_fill_in_cpu_possible_map(void);
+ void smp_fill_in_sib_core_maps(void);
+ void __noreturn cpu_play_dead(void);
+ 
+@@ -77,7 +76,6 @@ void __cpu_die(unsigned int cpu);
+ #define smp_fill_in_sib_core_maps() do { } while (0)
+ #define smp_fetch_global_regs() do { } while (0)
+ #define smp_fetch_global_pmu() do { } while (0)
+-#define smp_fill_in_cpu_possible_map() do { } while (0)
+ #define smp_init_cpu_poke() do { } while (0)
+ #define scheduler_poke() do { } while (0)
+ 
+--- a/arch/sparc/kernel/prom_64.c
++++ b/arch/sparc/kernel/prom_64.c
+@@ -483,7 +483,9 @@ static void *record_one_cpu(struct devic
+ 	ncpus_probed++;
+ #ifdef CONFIG_SMP
+ 	set_cpu_present(cpuid, true);
+-	set_cpu_possible(cpuid, true);
++
++	if (num_possible_cpus() < nr_cpu_ids)
++		set_cpu_possible(cpuid, true);
+ #endif
+ 	return NULL;
  }
- EXPORT_SYMBOL_GPL(nft_trans_gc_queue_sync_done);
+--- a/arch/sparc/kernel/setup_64.c
++++ b/arch/sparc/kernel/setup_64.c
+@@ -671,7 +671,6 @@ void __init setup_arch(char **cmdline_p)
  
-+static unsigned int nft_gc_seq_begin(struct nftables_pernet *nft_net)
-+{
-+	unsigned int gc_seq;
-+
-+	/* Bump gc counter, it becomes odd, this is the busy mark. */
-+	gc_seq = READ_ONCE(nft_net->gc_seq);
-+	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
-+
-+	return gc_seq;
-+}
-+
-+static void nft_gc_seq_end(struct nftables_pernet *nft_net, unsigned int gc_seq)
-+{
-+	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
-+}
-+
- static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- {
- 	struct nftables_pernet *nft_net = net_generic(net, nf_tables_net_id);
-@@ -6953,9 +6969,7 @@ static int nf_tables_commit(struct net *
- 	while (++nft_net->base_seq == 0)
- 		;
- 
--	/* Bump gc counter, it becomes odd, this is the busy mark. */
--	gc_seq = READ_ONCE(nft_net->gc_seq);
--	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
-+	gc_seq = nft_gc_seq_begin(nft_net);
- 
- 	/* step 3. Start new generation, rules_gen_X now in use. */
- 	net->nft.gencursor = nft_gencursor_next(net);
-@@ -7083,7 +7097,7 @@ static int nf_tables_commit(struct net *
- 	nf_tables_commit_release(net);
- 	nf_tables_gen_notify(net, skb, NFT_MSG_NEWGEN);
- 
--	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
-+	nft_gc_seq_end(nft_net, gc_seq);
- 	mutex_unlock(&nft_net->commit_mutex);
- 
- 	return 0;
-@@ -7898,11 +7912,19 @@ static int __net_init nf_tables_init_net
- static void __net_exit nf_tables_exit_net(struct net *net)
- {
- 	struct nftables_pernet *nft_net = net_generic(net, nf_tables_net_id);
-+	unsigned int gc_seq;
- 
- 	mutex_lock(&nft_net->commit_mutex);
-+
-+	gc_seq = nft_gc_seq_begin(nft_net);
-+
- 	if (!list_empty(&nft_net->commit_list))
- 		__nf_tables_abort(net);
-+
- 	__nft_release_tables(net);
-+
-+	nft_gc_seq_end(nft_net, gc_seq);
-+
- 	mutex_unlock(&nft_net->commit_mutex);
- 	WARN_ON_ONCE(!list_empty(&nft_net->tables));
+ 	paging_init();
+ 	init_sparc64_elf_hwcap();
+-	smp_fill_in_cpu_possible_map();
+ 	/*
+ 	 * Once the OF device tree and MDESC have been setup and nr_cpus has
+ 	 * been parsed, we know the list of possible cpus.  Therefore we can
+--- a/arch/sparc/kernel/smp_64.c
++++ b/arch/sparc/kernel/smp_64.c
+@@ -1216,20 +1216,6 @@ void __init smp_setup_processor_id(void)
+ 		xcall_deliver_impl = hypervisor_xcall_deliver;
  }
+ 
+-void __init smp_fill_in_cpu_possible_map(void)
+-{
+-	int possible_cpus = num_possible_cpus();
+-	int i;
+-
+-	if (possible_cpus > nr_cpu_ids)
+-		possible_cpus = nr_cpu_ids;
+-
+-	for (i = 0; i < possible_cpus; i++)
+-		set_cpu_possible(i, true);
+-	for (; i < NR_CPUS; i++)
+-		set_cpu_possible(i, false);
+-}
+-
+ void smp_fill_in_sib_core_maps(void)
+ {
+ 	unsigned int i;
 
 
 
