@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBA13906E18
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E563906FF6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 919F51F21D8E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 060B7289546
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309F714882A;
-	Thu, 13 Jun 2024 12:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835721448C5;
+	Thu, 13 Jun 2024 12:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaRvboW5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tAgFA0wD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23EC145B32;
-	Thu, 13 Jun 2024 12:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4082B14431C;
+	Thu, 13 Jun 2024 12:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280148; cv=none; b=VOqplTyFEkhoLuZiUh0kHa2Uh7CLvRSKC2f+YpXV/t1viu/BrWdxHkKojBfB+RS5QSaBLA9uAExCT7FbJ9UW4FM8AVX6Ie0GZ/JX8tvfFxFxuT+Wr2+Ys2iJbDH7N2b7h/6/SJ6ievvof/gA2V4vuVsidTZ9ANPkYTciEXtPPj8=
+	t=1718281360; cv=none; b=aQKx9YtQWkAgkKxPByWk78IHBX+DPnjmex0EUrslmv1cjyjHSx4FmcgQAzMkoVOuSWNc0KF40AeL5wryXi82ydagPo1voJjJgLtbQrEpKYnP3+MCBBx0VYWkeU6ltW7QwegCJbxCReBFGYoDwuhDYZJywmQaqeHne2Fc3S5u5Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280148; c=relaxed/simple;
-	bh=1A9lW8hynRipUfSA1ltRo6AS5y6Rpt0D5bwoJP7Zh8I=;
+	s=arc-20240116; t=1718281360; c=relaxed/simple;
+	bh=xCPYrHCOGfRvq73CmHKB7K2xQuWizQRovdtDnrAvdWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V0oGVWIFpgVyC4wx4Z26a3Ql4lswBjzkHvsx3Y8i32h3o68lOHt7eFIQqUIwEphWTGqr0f3aEI6UwZe9XUSeTYOwJkduRNWilVhWLYhwjmPh2zgLFbyY/wP9dFSWHMrzCRTxSY/0rXcNs/SrKSr6XqBUX23de6UJrJ1Xls3XGkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaRvboW5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CDDC2BBFC;
-	Thu, 13 Jun 2024 12:02:27 +0000 (UTC)
+	 MIME-Version; b=New+zL8EOO3j1ADwpbbNTerMMhZGNySReIMKDIEH/oLMDwrp9QT9W/Gf4WPF0R/U9KVZuRvhBSnJmcRZo/xwVttCic2IyT6UC5VbmoLfb0KDvo/FnhSXTjWFYw5Lry8I2+Jx/lJlAhczAPVf7X+BXDnqh110gXT07sxvzdHE4ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tAgFA0wD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4E9C2BBFC;
+	Thu, 13 Jun 2024 12:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280147;
-	bh=1A9lW8hynRipUfSA1ltRo6AS5y6Rpt0D5bwoJP7Zh8I=;
+	s=korg; t=1718281360;
+	bh=xCPYrHCOGfRvq73CmHKB7K2xQuWizQRovdtDnrAvdWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PaRvboW55ULMUsG4KTCLXMlMLaTWX/DRmwsdV29x7Iv0SkfyJ0LOfsCXbSWASleu+
-	 TPjiQ463Mctuwapuju5KKkZORk4Z5VBoAwlJ85HDj4POUh6j5H3AGgasZjHIHvyVgE
-	 fU0hCyml/nz8WcOJFyeJnh+Am8D7IsQ911tKFKKg=
+	b=tAgFA0wDHxiyLvJqvq7mQI/4EltrmC5jIEg8PJZslIleuuyzpFhja7fiVayjJqU9Y
+	 M2c7HjNkskAmDkGW19CqONPFLw+mD2hhIkUt5t6O+mhigEQaxGbaKsFBElaa4PMsvr
+	 1FzWttds16pHtD0+5ko1OqY7eU1maZGQLml86Zk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 118/202] extcon: max8997: select IRQ_DOMAIN instead of depending on it
+Subject: [PATCH 5.10 198/317] mmc: sdhci_am654: Drop lookup for deprecated ti,otap-del-sel
 Date: Thu, 13 Jun 2024 13:33:36 +0200
-Message-ID: <20240613113232.316477394@linuxfoundation.org>
+Message-ID: <20240613113255.216993562@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Vignesh Raghavendra <vigneshr@ti.com>
 
-[ Upstream commit b1781d0a1458070d40134e4f3412ec9d70099bec ]
+[ Upstream commit 5cb2f9286a31f33dc732c57540838ad9339393ab ]
 
-IRQ_DOMAIN is a hidden (not user visible) symbol. Users cannot set
-it directly thru "make *config", so drivers should select it instead
-of depending on it if they need it.
-Relying on it being set for a dependency is risky.
+ti,otap-del-sel has been deprecated since v5.7 and there are no users of
+this property and no documentation in the DT bindings either.
+Drop the fallback code looking for this property, this makes
+sdhci_am654_get_otap_delay() much easier to read as all the TAP values
+can be handled via a single iterator loop.
 
-Consistently using "select" or "depends on" can also help reduce
-Kconfig circular dependency issues.
-
-Therefore, change EXTCON_MAX8997's use of "depends on" for
-IRQ_DOMAIN to "select".
-
-Link: https://lore.kernel.org/lkml/20240213060028.9744-1-rdunlap@infradead.org/
-Fixes: dca1a71e4108 ("extcon: Add support irq domain for MAX8997 muic")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20231122060215.2074799-1-vigneshr@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 387c1bf7dce0 ("mmc: sdhci_am654: Add OTAP/ITAP delay enable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/extcon/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci_am654.c | 37 ++++++----------------------------
+ 1 file changed, 6 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
-index aac507bff135c..09485803280ef 100644
---- a/drivers/extcon/Kconfig
-+++ b/drivers/extcon/Kconfig
-@@ -121,7 +121,8 @@ config EXTCON_MAX77843
+diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+index 13bff543f7c06..847cd4e434721 100644
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -140,7 +140,6 @@ static const struct timing_data td[] = {
  
- config EXTCON_MAX8997
- 	tristate "Maxim MAX8997 EXTCON Support"
--	depends on MFD_MAX8997 && IRQ_DOMAIN
-+	depends on MFD_MAX8997
-+	select IRQ_DOMAIN
- 	help
- 	  If you say yes here you get support for the MUIC device of
- 	  Maxim MAX8997 PMIC. The MAX8997 MUIC is a USB port accessory
+ struct sdhci_am654_data {
+ 	struct regmap *base;
+-	bool legacy_otapdly;
+ 	int otap_del_sel[ARRAY_SIZE(td)];
+ 	int itap_del_sel[ARRAY_SIZE(td)];
+ 	int clkbuf_sel;
+@@ -278,11 +277,7 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
+ 	sdhci_set_clock(host, clock);
+ 
+ 	/* Setup DLL Output TAP delay */
+-	if (sdhci_am654->legacy_otapdly)
+-		otap_del_sel = sdhci_am654->otap_del_sel[0];
+-	else
+-		otap_del_sel = sdhci_am654->otap_del_sel[timing];
+-
++	otap_del_sel = sdhci_am654->otap_del_sel[timing];
+ 	otap_del_ena = (timing > MMC_TIMING_UHS_SDR25) ? 1 : 0;
+ 
+ 	mask = OTAPDLYENA_MASK | OTAPDLYSEL_MASK;
+@@ -324,10 +319,7 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
+ 	u32 mask, val;
+ 
+ 	/* Setup DLL Output TAP delay */
+-	if (sdhci_am654->legacy_otapdly)
+-		otap_del_sel = sdhci_am654->otap_del_sel[0];
+-	else
+-		otap_del_sel = sdhci_am654->otap_del_sel[timing];
++	otap_del_sel = sdhci_am654->otap_del_sel[timing];
+ 
+ 	mask = OTAPDLYENA_MASK | OTAPDLYSEL_MASK;
+ 	val = (0x1 << OTAPDLYENA_SHIFT) |
+@@ -652,32 +644,15 @@ static int sdhci_am654_get_otap_delay(struct sdhci_host *host,
+ 	int i;
+ 	int ret;
+ 
+-	ret = device_property_read_u32(dev, td[MMC_TIMING_LEGACY].otap_binding,
+-				 &sdhci_am654->otap_del_sel[MMC_TIMING_LEGACY]);
+-	if (ret) {
+-		/*
+-		 * ti,otap-del-sel-legacy is mandatory, look for old binding
+-		 * if not found.
+-		 */
+-		ret = device_property_read_u32(dev, "ti,otap-del-sel",
+-					       &sdhci_am654->otap_del_sel[0]);
+-		if (ret) {
+-			dev_err(dev, "Couldn't find otap-del-sel\n");
+-
+-			return ret;
+-		}
+-
+-		dev_info(dev, "Using legacy binding ti,otap-del-sel\n");
+-		sdhci_am654->legacy_otapdly = true;
+-
+-		return 0;
+-	}
+-
+ 	for (i = MMC_TIMING_LEGACY; i <= MMC_TIMING_MMC_HS400; i++) {
+ 
+ 		ret = device_property_read_u32(dev, td[i].otap_binding,
+ 					       &sdhci_am654->otap_del_sel[i]);
+ 		if (ret) {
++			if (i == MMC_TIMING_LEGACY) {
++				dev_err(dev, "Couldn't find mandatory ti,otap-del-sel-legacy\n");
++				return ret;
++			}
+ 			dev_dbg(dev, "Couldn't find %s\n",
+ 				td[i].otap_binding);
+ 			/*
 -- 
 2.43.0
 
