@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-50959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E7C9906D99
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB47B906BC8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2450B1C22B57
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50F17281E5C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B75145338;
-	Thu, 13 Jun 2024 11:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74B614386B;
+	Thu, 13 Jun 2024 11:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3ilpfOG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RsGORmcs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993391448DA;
-	Thu, 13 Jun 2024 11:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65756142E99;
+	Thu, 13 Jun 2024 11:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279891; cv=none; b=s6sZkLCKIojNpIYq14Ir3rG1hoVdC1nc8yx/Ev9dGtQp4M73ThdhgkkvntfjxFpYYKs3qMXHDnDluS5qv5/Jtz3ecQMT2vmOVZhh/ByFUwsSSP7uwVguH7UXojDpkE/LKOaAzMqANdcrd+Zt4nDc9oO1JZ80tnLccL+JqTmu1LY=
+	t=1718279029; cv=none; b=Aur4VEUbt6Ljxi4KeiQTJOyupoZ9KJpTlGLrJHCt3u2XX7DInCFBVnR600XAu2nWD7WT2dVFP6LjHHS3rj1KVHMB9Tr8+8l4mgofmjoH3ylYIL37c+FoLqp/sy9wSjjLOLS7RnYIRFOuXbyzzsGJvGw8a3mhR1soh++ot/xkoBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279891; c=relaxed/simple;
-	bh=M8fweLmCN3II2gSCTmsERsE1gP+Zl2vxypiCe1OgEyE=;
+	s=arc-20240116; t=1718279029; c=relaxed/simple;
+	bh=iAXwICK9iD1QrbP3DBPpdYC5CI+wdih9d1nam0sw5kI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=La+nlq1aW8t1pfhDsEe2Tc5sDUAP2LUmWU2XwQq2VHWtVkjSi5hbbqoPkqe+HE2jbrZ2YYpuP4AES8CUFlbXHjnB/P+UFtrJuOTOKSUBLI/ipcoKSWjwAjDPD2qIa8i57uulAm0rTweT1yxGHD+hGzeXkiSF7uRZy5iGORwbIhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3ilpfOG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1902CC2BBFC;
-	Thu, 13 Jun 2024 11:58:10 +0000 (UTC)
+	 MIME-Version; b=fTMQYV4lO5SqHhaxkrZTKxrs0cypmy+ifFbE+UC4oXT2BNNoIys52GBuhYviCzSsaQiYNJZoGmevwNCABeBrjrVb5y7ftzM7ag9GyA6S2vwEEYG5ouoMZYCYbJhV5v0jUCdGuFs4k3R7JMTgtKnhivhZHGhjr3hnbjBWkPjevgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RsGORmcs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE735C2BBFC;
+	Thu, 13 Jun 2024 11:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279891;
-	bh=M8fweLmCN3II2gSCTmsERsE1gP+Zl2vxypiCe1OgEyE=;
+	s=korg; t=1718279029;
+	bh=iAXwICK9iD1QrbP3DBPpdYC5CI+wdih9d1nam0sw5kI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3ilpfOG2jH0fMw49Ugpky1G44j9jBPkVRTdfyixvfaekff0NyE91V1r/8JP+K0yH
-	 Bw6X2UBZGu+CVZRRev9GoqmaU7bbvunuXoZdW9C+/2IfGg6N/bLF1dUqVvJ2V3/ILy
-	 M42Q4kbhYzyqGDMp/BgV4kp82yhrIcUiCAjW9VNs=
+	b=RsGORmcs5LSc005MJEtWbG0Ij4AkvQPrksZJNYeznqxgiFzvnejlFOcf1ZpaplKh8
+	 i66P5D49CvfuK89mhL5C4Vn3DX6a+ak6flxJZvPA7jl/+dWlMcYWG31Oj96RMAdCmU
+	 b0LfqpUdjAt4rGaKmtAdVWeCa2/5MU/dsL2hzacg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Green <greenjustin@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 071/202] drm/mediatek: Add 0 size check to mtk_drm_gem_obj
+	Ryosuke Yasuoka <ryasuoka@redhat.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+d7b4dc6cd50410152534@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 121/213] nfc: nci: Fix uninit-value in nci_rx_work
 Date: Thu, 13 Jun 2024 13:32:49 +0200
-Message-ID: <20240613113230.517582945@linuxfoundation.org>
+Message-ID: <20240613113232.665172084@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Green <greenjustin@chromium.org>
+From: Ryosuke Yasuoka <ryasuoka@redhat.com>
 
-[ Upstream commit 1e4350095e8ab2577ee05f8c3b044e661b5af9a0 ]
+[ Upstream commit e4a87abf588536d1cdfb128595e6e680af5cf3ed ]
 
-Add a check to mtk_drm_gem_init if we attempt to allocate a GEM object
-of 0 bytes. Currently, no such check exists and the kernel will panic if
-a userspace application attempts to allocate a 0x0 GBM buffer.
+syzbot reported the following uninit-value access issue [1]
 
-Tested by attempting to allocate a 0x0 GBM buffer on an MT8188 and
-verifying that we now return EINVAL.
+nci_rx_work() parses received packet from ndev->rx_q. It should be
+validated header size, payload size and total packet size before
+processing the packet. If an invalid packet is detected, it should be
+silently discarded.
 
-Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
-Signed-off-by: Justin Green <greenjustin@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240307180051.4104425-1-greenjustin@chromium.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
+Reported-and-tested-by: syzbot+d7b4dc6cd50410152534@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d7b4dc6cd50410152534 [1]
+Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_gem.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/nfc/nci/core.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-index 5f87d56d2d1d8..de15cf6105d97 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-@@ -21,6 +21,9 @@ static struct mtk_drm_gem_obj *mtk_drm_gem_init(struct drm_device *dev,
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 1f863ccf21211..6e83159b7b436 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1461,6 +1461,19 @@ int nci_core_ntf_packet(struct nci_dev *ndev, __u16 opcode,
+ 				 ndev->ops->n_core_ops);
+ }
  
- 	size = round_up(size, PAGE_SIZE);
- 
-+	if (size == 0)
-+		return ERR_PTR(-EINVAL);
++static bool nci_valid_size(struct sk_buff *skb)
++{
++	BUILD_BUG_ON(NCI_CTRL_HDR_SIZE != NCI_DATA_HDR_SIZE);
++	unsigned int hdr_size = NCI_CTRL_HDR_SIZE;
 +
- 	mtk_gem_obj = kzalloc(sizeof(*mtk_gem_obj), GFP_KERNEL);
- 	if (!mtk_gem_obj)
- 		return ERR_PTR(-ENOMEM);
++	if (skb->len < hdr_size ||
++	    !nci_plen(skb->data) ||
++	    skb->len < hdr_size + nci_plen(skb->data)) {
++		return false;
++	}
++	return true;
++}
++
+ /* ---- NCI TX Data worker thread ---- */
+ 
+ static void nci_tx_work(struct work_struct *work)
+@@ -1511,7 +1524,7 @@ static void nci_rx_work(struct work_struct *work)
+ 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
+ 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
+ 
+-		if (!nci_plen(skb->data)) {
++		if (!nci_valid_size(skb)) {
+ 			kfree_skb(skb);
+ 			break;
+ 		}
 -- 
 2.43.0
 
