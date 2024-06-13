@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9751090711C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE3DE906F5B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:19:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51212284AE3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7486D1F21BAA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6736143C59;
-	Thu, 13 Jun 2024 12:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC96143C46;
+	Thu, 13 Jun 2024 12:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQwg7Xi2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iikK6vE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7146014374F;
-	Thu, 13 Jun 2024 12:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EF81411C5;
+	Thu, 13 Jun 2024 12:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282009; cv=none; b=uD4vG1XB4k2A5KHhyQ7eVH/WxTtFvuqRvAfK1n+iCac7CkkufNAszQ+Gu9XZgy3T9VNB1Cwjv1Njq66CsLiTw3GP+ywPspHZYv9XXOkIjaDnhJ6XU5HA51fzM6k+nDg1rvKN0T7BIa6oeKakB0nweCloJVP6RW2Gdp1T11P/tMg=
+	t=1718280989; cv=none; b=POGQ5662Tob2v74cPjKT2K72PZjvXgFt9h/Zg0sXWdDUkn39jxj0WY/zFBvxZjJGchHxOtK1kkgOhzXesrHSDhgnnDWfLFUPj17fZdBwHnoxUpcyN8p97luuux6jtx6fpwMjAgRomwS0Ryu42NCgBnyQbG0iJL8dSC9PNB83UGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282009; c=relaxed/simple;
-	bh=XY3IdzXSMAgjBUKNgF/C/dBhnVajQv0mFZBIDwsfHtM=;
+	s=arc-20240116; t=1718280989; c=relaxed/simple;
+	bh=cLHAOIpc1lPPQL324j/QceZ32RuPslCENC7bMRtOBRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FcIY+uOx2qk3IxLgjzkYeevqHv0Zlc5pWPK8kX4PQ1Z6+xc/s0jscrea8rlKY9D+JU86KAtId7i/RzH9mAR6FVAXsRu2i059rm3EVaffSrKMTo9xQqt8WDzlKA58ENMLf70bPE+/gDlOwaHwHlGJZqGhuDu9u/TIdMqA2iEaZbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQwg7Xi2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E294DC2BBFC;
-	Thu, 13 Jun 2024 12:33:28 +0000 (UTC)
+	 MIME-Version; b=GSpZ2LamZqHG6mrGSufWNGISs83ddRGKqSfiA05MNaF9ggkxeDHDvkNekcdEY3pQ5XRCTquBbWWkZnWX4K9MLWkcVsDvZBvyQBM+Kr+cBJB+lCK4TfbNh07C4m1Gue+UJgZzUxmDjJV0Vv9owqTGIGduOHEXqANDkvznRzjvkhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iikK6vE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83198C2BBFC;
+	Thu, 13 Jun 2024 12:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282009;
-	bh=XY3IdzXSMAgjBUKNgF/C/dBhnVajQv0mFZBIDwsfHtM=;
+	s=korg; t=1718280988;
+	bh=cLHAOIpc1lPPQL324j/QceZ32RuPslCENC7bMRtOBRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CQwg7Xi29ot2jEIaZxEsAOaNyq8G5x6lCQbqmgtK9DQS/vKACKhzDuVqsoZzKweWk
-	 98CK42ko284Noz5ZrP7m9lkZU/FxF/gPrQNeMQ+0nQYJrnIemvdvXkUGyVaeMOgkPB
-	 7HNJRRpKEN8LKzMJ1c4Kkp+YANXlexX3uNy5gEQU=
+	b=1iikK6vEDwlUH0C/gUOLCaS2heT8YndWiDggFdLINnJ8mo9GrYipi6NzXmHgITV2e
+	 7lEYKZ1siF7j9X7VR/jwRkqSt2y9ZXISAr3D3uhrKWevrBY0b6hUsS5lNe0ZEpPVqC
+	 w2KPizPlLCBUaRQ3FE3JBX/wWo09hAf2Diiqwkrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Helge Deller <deller@gmx.de>,
+	Christian Brauner <brauner@kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 132/402] fbdev: sisfb: hide unused variables
+Subject: [PATCH 5.10 071/317] selftests/binderfs: use the Makefiles rules, not Makes implicit rules
 Date: Thu, 13 Jun 2024 13:31:29 +0200
-Message-ID: <20240613113307.287087895@linuxfoundation.org>
+Message-ID: <20240613113250.295552755@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit 688cf598665851b9e8cb5083ff1d208ce43d10ff ]
+[ Upstream commit 019baf635eb6ffe8d6c1343f81788f02a7e0ed98 ]
 
-Building with W=1 shows that a couple of variables in this driver are only
-used in certain configurations:
+First of all, in order to build with clang at all, one must first apply
+Valentin Obst's build fix for LLVM [1]. Once that is done, then when
+building with clang, via:
 
-drivers/video/fbdev/sis/init301.c:239:28: error: 'SiS_Part2CLVX_6' defined but not used [-Werror=unused-const-variable=]
-  239 | static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:230:28: error: 'SiS_Part2CLVX_5' defined but not used [-Werror=unused-const-variable=]
-  230 | static const unsigned char SiS_Part2CLVX_5[] = {   /* 750p */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:211:28: error: 'SiS_Part2CLVX_4' defined but not used [-Werror=unused-const-variable=]
-  211 | static const unsigned char SiS_Part2CLVX_4[] = {   /* PAL */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:192:28: error: 'SiS_Part2CLVX_3' defined but not used [-Werror=unused-const-variable=]
-  192 | static const unsigned char SiS_Part2CLVX_3[] = {  /* NTSC, 525i, 525p */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:184:28: error: 'SiS_Part2CLVX_2' defined but not used [-Werror=unused-const-variable=]
-  184 | static const unsigned char SiS_Part2CLVX_2[] = {
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:176:28: error: 'SiS_Part2CLVX_1' defined but not used [-Werror=unused-const-variable=]
-  176 | static const unsigned char SiS_Part2CLVX_1[] = {
-      |                            ^~~~~~~~~~~~~~~
+    make LLVM=1 -C tools/testing/selftests
 
-This started showing up after the definitions were moved into the
-source file from the header, which was not flagged by the compiler.
-Move the definition into the appropriate #ifdef block that already
-exists next to them.
+...the following error occurs:
 
-Fixes: 5908986ef348 ("video: fbdev: sis: avoid mismatched prototypes")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+   clang: error: cannot specify -o when generating multiple output files
+
+This is because clang, unlike gcc, won't accept invocations of this
+form:
+
+    clang file1.c header2.h
+
+While trying to fix this, I noticed that:
+
+a) selftests/lib.mk already avoids the problem, and
+
+b) The binderfs Makefile indavertently bypasses the selftests/lib.mk
+build system, and quitely uses Make's implicit build rules for .c files
+instead.
+
+The Makefile attempts to set up both a dependency and a source file,
+neither of which was needed, because lib.mk is able to automatically
+handle both. This line:
+
+    binderfs_test: binderfs_test.c
+
+...causes Make's implicit rules to run, which builds binderfs_test
+without ever looking at lib.mk.
+
+Fix this by simply deleting the "binderfs_test:" Makefile target and
+letting lib.mk handle it instead.
+
+[1] https://lore.kernel.org/all/20240329-selftests-libmk-llvm-rfc-v1-1-2f9ed7d1c49f@valentinobst.de/
+
+Fixes: 6e29225af902 ("binderfs: port tests to test harness infrastructure")
+Cc: Christian Brauner <brauner@kernel.org>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sis/init301.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/testing/selftests/filesystems/binderfs/Makefile | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/sis/init301.c b/drivers/video/fbdev/sis/init301.c
-index a8fb41f1a2580..09329072004f4 100644
---- a/drivers/video/fbdev/sis/init301.c
-+++ b/drivers/video/fbdev/sis/init301.c
-@@ -172,7 +172,7 @@ static const unsigned char SiS_HiTVGroup3_2[] = {
- };
+diff --git a/tools/testing/selftests/filesystems/binderfs/Makefile b/tools/testing/selftests/filesystems/binderfs/Makefile
+index 8af25ae960498..24d8910c7ab58 100644
+--- a/tools/testing/selftests/filesystems/binderfs/Makefile
++++ b/tools/testing/selftests/filesystems/binderfs/Makefile
+@@ -3,6 +3,4 @@
+ CFLAGS += -I../../../../../usr/include/ -pthread
+ TEST_GEN_PROGS := binderfs_test
  
- /* 301C / 302ELV extended Part2 TV registers (4 tap scaler) */
+-binderfs_test: binderfs_test.c ../../kselftest.h ../../kselftest_harness.h
 -
-+#ifdef CONFIG_FB_SIS_315
- static const unsigned char SiS_Part2CLVX_1[] = {
-     0x00,0x00,
-     0x00,0x20,0x00,0x00,0x7F,0x20,0x02,0x7F,0x7D,0x20,0x04,0x7F,0x7D,0x1F,0x06,0x7E,
-@@ -245,7 +245,6 @@ static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
-     0xFF,0xFF,
- };
- 
--#ifdef CONFIG_FB_SIS_315
- /* 661 et al LCD data structure (2.03.00) */
- static const unsigned char SiS_LCDStruct661[] = {
-     /* 1024x768 */
+ include ../../lib.mk
 -- 
 2.43.0
 
