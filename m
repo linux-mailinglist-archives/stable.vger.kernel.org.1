@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-51534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3852B907057
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF22906EE3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EED51C23E5A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50C691C21855
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3F914535E;
-	Thu, 13 Jun 2024 12:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A643146583;
+	Thu, 13 Jun 2024 12:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yo6n7tye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSudPLhj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BB5144D36;
-	Thu, 13 Jun 2024 12:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA4F13D881;
+	Thu, 13 Jun 2024 12:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281577; cv=none; b=jQMKkDKOLO972ZgQbCRF/SawUyI/YbN6e0zAFaae5eakYYSVWxmu9Ra2xa9PbtKalzcvNuEy+iUvoltVb8yYKHnZlSsHiZhqOUJcu+oVIYB3wsATl8yJq4Ng6M9exWnsFO+Fit41rsrDheYJEU2+MdKr20JzFtKyMBWf53zQMxQ=
+	t=1718280673; cv=none; b=u7MuXQSBN9129zA75KKPb6BrZ7Tf9YpoBqrbC/z+TWzgcFBX0qnN1Cd7LluzS/yVch/QguwLXH6UZpkTOMkAO1LqJXEaUbKL2RIDQTpWkkOeTNs631F5DjnBoVoOg9zLpqSyaaLiorgY6EFEzTnFdgXdGxbIcgIlcitvXXdrN84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281577; c=relaxed/simple;
-	bh=WRXFY1uJaC7bN5jNUfx/X7ubUJVEg9/tKWXw3DISmBQ=;
+	s=arc-20240116; t=1718280673; c=relaxed/simple;
+	bh=io9KLWkJs92ZQL04O7fu1KgxnpppGGb1TiUyohlCh3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ee2Fvzo1i2TpMgzrus/36XyQal3e6f+xj2EKd8RjRLT59ZyiepsvFynH7c85WQTntgS5IuQHpx8/YUKK9TPtxIoST5hoXUC4xCr0PwSA8PpIOxGsTtfSKDrmo6NdPQKhOn7QooRBt3QG6nDdkklNeNO6Xqcp46mUPwuUW7XFBik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yo6n7tye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF88C2BBFC;
-	Thu, 13 Jun 2024 12:26:17 +0000 (UTC)
+	 MIME-Version; b=RNsHuol95syLonwTynpXB8Mu3IF4vudyqixiae1R84wXQ/31K9WLTv8e2ZRi87RP97UP7kHhoVb1hjl5PKDrXN4MWZyxEWdUEqqyaI1Jj26tWVFjeOHmhpuJS3NmWUtSQiQCROdYGrPTVcLfMg82ftGUNw9utbLoz0gyybnnLbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSudPLhj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51DABC2BBFC;
+	Thu, 13 Jun 2024 12:11:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281577;
-	bh=WRXFY1uJaC7bN5jNUfx/X7ubUJVEg9/tKWXw3DISmBQ=;
+	s=korg; t=1718280673;
+	bh=io9KLWkJs92ZQL04O7fu1KgxnpppGGb1TiUyohlCh3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yo6n7tyeTI9pOlR8mDSSHV48GLKjaRzDJ94MjxRUzQ0N9dlB6tHZaLY06wJi8vpFP
-	 fvZORg8K1lSTd90aIjP9NatMBJJYoZ9D1ZsXvGYvFvLY+rEO16BzuvICmoefN/OOEr
-	 7NoS76lLKukfoIBnk9ajN/Nn+VskjtkhblXF1JDo=
+	b=SSudPLhjKSdKey9Ca1hFeOkAUHEdwJMyodR/5XjdsYyc/04DIcJiqNTvRX4oOJ2B0
+	 yolAg16rdU1EyKeYLZ8bUql3Ku5tXQ43NsqY7vXwxBw1mbuEC9CACWJA3t11yCjxGm
+	 U33PIOEuaxKIs3x7Lf4GKHdue8lBfeUu42pEeor4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 5.10 295/317] KVM: arm64: Allow AArch32 PSTATE.M to be restored as System mode
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 133/137] ALSA: seq: Fix incorrect UMP type for system messages
 Date: Thu, 13 Jun 2024 13:35:13 +0200
-Message-ID: <20240613113258.961981837@linuxfoundation.org>
+Message-ID: <20240613113228.461510302@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit dfe6d190f38fc5df5ff2614b463a5195a399c885 upstream.
+commit edb32776196afa393c074d6a2733e3a69e66b299 upstream.
 
-It appears that we don't allow a vcpu to be restored in AArch32
-System mode, as we *never* included it in the list of valid modes.
+When converting a legacy system message to a UMP packet, it forgot to
+modify the UMP type field but keeping the default type (either type 2
+or 4).  Correct to the right type for system messages.
 
-Just add it to the list of allowed modes.
-
-Fixes: 0d854a60b1d7 ("arm64: KVM: enable initialization of a 32bit vcpu")
-Cc: stable@vger.kernel.org
-Acked-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240524141956.1450304-3-maz@kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Fixes: e9e02819a98a ("ALSA: seq: Automatic conversion of UMP events")
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240529083800.5742-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/guest.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/core/seq/seq_ump_convert.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/kvm/guest.c
-+++ b/arch/arm64/kvm/guest.c
-@@ -234,6 +234,7 @@ static int set_core_reg(struct kvm_vcpu
- 		case PSR_AA32_MODE_SVC:
- 		case PSR_AA32_MODE_ABT:
- 		case PSR_AA32_MODE_UND:
-+		case PSR_AA32_MODE_SYS:
- 			if (!vcpu_el1_is_32bit(vcpu))
- 				return -EINVAL;
- 			break;
+--- a/sound/core/seq/seq_ump_convert.c
++++ b/sound/core/seq/seq_ump_convert.c
+@@ -740,6 +740,7 @@ static int system_1p_ev_to_ump_midi1(con
+ 				     union snd_ump_midi1_msg *data,
+ 				     unsigned char status)
+ {
++	data->system.type = UMP_MSG_TYPE_SYSTEM; // override
+ 	data->system.status = status;
+ 	data->system.parm1 = event->data.control.value & 0x7f;
+ 	return 1;
+@@ -751,6 +752,7 @@ static int system_2p_ev_to_ump_midi1(con
+ 				     union snd_ump_midi1_msg *data,
+ 				     unsigned char status)
+ {
++	data->system.type = UMP_MSG_TYPE_SYSTEM; // override
+ 	data->system.status = status;
+ 	data->system.parm1 = event->data.control.value & 0x7f;
+ 	data->system.parm2 = (event->data.control.value >> 7) & 0x7f;
 
 
 
