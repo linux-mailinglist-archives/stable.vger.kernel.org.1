@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-51040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51DC7906E0F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB636906E8A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 073E81F2143C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 665BB1F216D9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9002B144D3C;
-	Thu, 13 Jun 2024 12:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F2D144D1A;
+	Thu, 13 Jun 2024 12:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIAwT4m0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnQI+rlh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474B344C6F;
-	Thu, 13 Jun 2024 12:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3004A143C7B;
+	Thu, 13 Jun 2024 12:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280130; cv=none; b=Rxg12v9lmbv4idAaflVe3kHSSxXdBxBhThxVKNrcRlD7KcrOQFYytcTJMhrfw0/Cakoq6Ms2uHNJyYWPmRKJHFx9SvjsryEkYLpGGYPkOfMlOrz+wBwjDO8MFpMk3dTAcIWyot6azYzf0uX8dXLboNcA6v8uX319775lI/ckcqY=
+	t=1718280450; cv=none; b=lAGoN5TlGQcgBx4pqyBHpTx3W2UhdPEq1JKpJv01M7cpFAe61CJHL8WMwRtxFlypJNtIrNeTc/h+VUp0MvK+/jCdltaZ1y5/yWlWh6jni6sjycX09j+7xJ5VTMpAjCOQvrskny2M1zW9TvNLoVmA+jWtfkvcGaZ3o8CtxSgYIuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280130; c=relaxed/simple;
-	bh=CLv8THNZZ6/nE0ibzqLJFtFMX0eLMROrIH4KY8fLIZ4=;
+	s=arc-20240116; t=1718280450; c=relaxed/simple;
+	bh=16RQvKe0T4Tn5NYOsEpKvxp3azjf6QQnhmjnnpDREME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LT8DE6Vhct6v1elDAmLhQKSe1kz2itGVA1fVau6JksTzUFb1rsaP++nJuHTOXNu9CEPrd4QBOwXnooMTk937H87pD9S7SySqQOVB58FF8bjZA8u+B70gztpZplchaoNCwRDpsmOdFYEV+d8puj/ETnnEq1EsVn8zDTIC3ckQpQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIAwT4m0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F396C2BBFC;
-	Thu, 13 Jun 2024 12:02:09 +0000 (UTC)
+	 MIME-Version; b=AiDGpMngTyqCiwmXP4AHLT4XGiPmaFLZ6S34iySgh7MsCmNk/1LqlRguKeQe2bd5Osv3LOhyNzhmq7+EKYruY+r1Au+3cOR7GZ8zhPaOyL6lfXBAYnP3PAmXJtfOjwuzgUU/bqMVLRzqen44ZOXlRpeePIF4ruNbD21Yn2EXI20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnQI+rlh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BA4C2BBFC;
+	Thu, 13 Jun 2024 12:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280130;
-	bh=CLv8THNZZ6/nE0ibzqLJFtFMX0eLMROrIH4KY8fLIZ4=;
+	s=korg; t=1718280450;
+	bh=16RQvKe0T4Tn5NYOsEpKvxp3azjf6QQnhmjnnpDREME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sIAwT4m0AyTAaw5VAV95Mkl4CsdcSuK88ReG0RwI3gdbA9Z4wzh766nymD6FqKlK1
-	 sSibPeFNQwLNzskL+0ZJ4mizvqqeyg6wmESFebqxNPOjZOnhmu1gs4LI5JX/5HWmhM
-	 d7FXye3DYn80FNy8GTQHTFgbkPfOLM5QjQzM0Fqs=
+	b=fnQI+rlh1uTNV+JKdtYY3gJqwHgO3ULEOEL9ybPekazXsS+TSh6hf3qOzpNW3PskI
+	 shoJ9OHLI30XyrpFBAgda4KV9rtOoEjZB6A+Wq5E/mG+A9zZ2IOe47eX16G3qwMLZ+
+	 PbwnTxDkufARyHVyTKYwhvN1CdQCzGc9MQ5OA/iA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 122/202] libsubcmd: Fix parse-options memory leak
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 040/137] media: mc: Fix graph walk in media_pipeline_start
 Date: Thu, 13 Jun 2024 13:33:40 +0200
-Message-ID: <20240613113232.470266460@linuxfoundation.org>
+Message-ID: <20240613113224.845457245@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,66 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 230a7a71f92212e723fa435d4ca5922de33ec88a ]
+commit 8a9d420149c477e7c97fbd6453704e4612bdd3fa upstream.
 
-If a usage string is built in parse_options_subcommand, also free it.
+The graph walk tries to follow all links, even if they are not between
+pads. This causes a crash with, e.g. a MEDIA_LNK_FL_ANCILLARY_LINK link.
 
-Fixes: 901421a5bdf605d2 ("perf tools: Remove subcmd dependencies on strbuf")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240509052015.1914670-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by allowing the walk to proceed only for MEDIA_LNK_FL_DATA_LINK
+links.
+
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc: stable@vger.kernel.org # for 6.1 and later
+Fixes: ae219872834a ("media: mc: entity: Rewrite media_pipeline_start()")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/subcmd/parse-options.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/media/mc/mc-entity.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/lib/subcmd/parse-options.c b/tools/lib/subcmd/parse-options.c
-index dbb9efbf718a0..af440c1e80282 100644
---- a/tools/lib/subcmd/parse-options.c
-+++ b/tools/lib/subcmd/parse-options.c
-@@ -630,11 +630,10 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
- 			const char *const subcommands[], const char *usagestr[], int flags)
- {
- 	struct parse_opt_ctx_t ctx;
-+	char *buf = NULL;
+--- a/drivers/media/mc/mc-entity.c
++++ b/drivers/media/mc/mc-entity.c
+@@ -606,6 +606,12 @@ static int media_pipeline_explore_next_l
+ 	link = list_entry(entry->links, typeof(*link), list);
+ 	last_link = media_pipeline_walk_pop(walk);
  
- 	/* build usage string if it's not provided */
- 	if (subcommands && !usagestr[0]) {
--		char *buf = NULL;
--
- 		astrcatf(&buf, "%s %s [<options>] {", subcmd_config.exec_name, argv[0]);
- 
- 		for (int i = 0; subcommands[i]; i++) {
-@@ -676,7 +675,10 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
- 			astrcatf(&error_buf, "unknown switch `%c'", *ctx.opt);
- 		usage_with_options(usagestr, options);
- 	}
--
-+	if (buf) {
-+		usagestr[0] = NULL;
-+		free(buf);
++	if ((link->flags & MEDIA_LNK_FL_LINK_TYPE) != MEDIA_LNK_FL_DATA_LINK) {
++		dev_dbg(walk->mdev->dev,
++			"media pipeline: skipping link (not data-link)\n");
++		return 0;
 +	}
- 	return parse_options_end(&ctx);
- }
- 
--- 
-2.43.0
-
++
+ 	dev_dbg(walk->mdev->dev,
+ 		"media pipeline: exploring link '%s':%u -> '%s':%u\n",
+ 		link->source->entity->name, link->source->index,
 
 
 
