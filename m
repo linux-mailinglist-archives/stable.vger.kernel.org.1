@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-50941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 052D7906D87
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 992C2906B5C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:40:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96C2AB20A72
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 433011F2110D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193AD1448DE;
-	Thu, 13 Jun 2024 11:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5B8143866;
+	Thu, 13 Jun 2024 11:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgN+k1Pg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWZtVPh+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE0C1459E9;
-	Thu, 13 Jun 2024 11:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAAD13DDD8;
+	Thu, 13 Jun 2024 11:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279838; cv=none; b=m3gEBtNA4pS2Y5G5BzodMh7T+B+IaHMEfl1ptVxyMev8PsknCSZJDTUbSuUkVjAMvkH5XBJ+0Rt5NQT3bsUcC/5NPetsG1EkHBxJxDQRn0VHinuFpLzx2UlqXN8NA4kIq33VaIhAxOaYYQ4/ewlAeqVAqr6LEllltlzkdQGP2So=
+	t=1718278799; cv=none; b=P/goXVyIFsmUEYIZ3aj1AOozJcn5a/Isr9x3E6OmBrNxxgjU42lChEJ0eS+5D6zlJNIrFlKMFv/HPpFU2cgZpRT9qdLEzVuuzLh1ixUrTJb8fHhjN+Kd6Ry4WlXjfyjY/IKn81MrlK63Vf8kdzoB2jX5TdFbK24WhmcEBAUBbuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279838; c=relaxed/simple;
-	bh=6TH9b4tt0al9GybfE2imBC4vscmQ1Ogci8lxUtKxaY8=;
+	s=arc-20240116; t=1718278799; c=relaxed/simple;
+	bh=yBhofhADsMvnMWPHz8AjOvmPTGaBt+PagTG+hbEV/NE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E0ykiYejWQa8hKICYLn4QzYiJd+vjTQu1IRY/m27J8g1QSSseoRuqEWQOUTUcLP5hlSCoqW4ioVR7jlcp7KO7vRV71uawat7+r77l60zLxzeIqtwBEgxtyJ9IswqCx2VwsqyZsWGzyYa9r+k49RgG3jp3ChovuQVDopOb1AvA3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgN+k1Pg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CB3C4AF1A;
-	Thu, 13 Jun 2024 11:57:17 +0000 (UTC)
+	 MIME-Version; b=esN7xgZ+RIxcFyThGKvwjfcaQ1K87DETIcRim0eMu4euTY1z2rnSXi911rFw0UFyoON/3XfmJyQDxbtFsWBklUpRWC7tIiuTnlAFLChHmm+9ZIsatKB8DAGqkkAPZaQRjPvhkz8hkxoT5QDOmxl36neOXzBvm1OjMqt+7jrftuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWZtVPh+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B43C2BBFC;
+	Thu, 13 Jun 2024 11:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279838;
-	bh=6TH9b4tt0al9GybfE2imBC4vscmQ1Ogci8lxUtKxaY8=;
+	s=korg; t=1718278798;
+	bh=yBhofhADsMvnMWPHz8AjOvmPTGaBt+PagTG+hbEV/NE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZgN+k1PgBnJlZeIaL0UNGIYBuPSA0g5gSt0r1SIGW6+sN0uv/RKl+q4wN+Mw+UOUj
-	 j7gCF620typ/zsud8IGFp618BfSHphlBuKER7h2wVW8po/8JoyT6a0FMMHyU+KVUQ3
-	 vVWg1S42eO7pjNcRtM6tDYG5koP54uTHThLPM3ZI=
+	b=RWZtVPh+4zwnVj7C5co6QVCTAqhD/lDg1UuxtowEb8m1K3UxoHpSlaTD5Zh6k+AE7
+	 3lGY4CnsjPoXiRA4zlSbiL3nNRQ/ZK6/9X28AeLAzKRQVjc+O2cvLEl1Hg4J3MbiFC
+	 +tf3QLCb9ku8YHSMIxY3f9UcjPf8HKU50un0i4CI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 023/202] s390/cio: fix tracepoint subchannel type field
+Subject: [PATCH 4.19 073/213] fbdev: sh7760fb: allow modular build
 Date: Thu, 13 Jun 2024 13:32:01 +0200
-Message-ID: <20240613113228.663570068@linuxfoundation.org>
+Message-ID: <20240613113230.824017541@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +69,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 8692a24d0fae19f674d51726d179ad04ba95d958 ]
+[ Upstream commit 51084f89d687e14d96278241e5200cde4b0985c7 ]
 
-The subchannel-type field "st" of s390_cio_stsch and s390_cio_msch
-tracepoints is incorrectly filled with the subchannel-enabled SCHIB
-value "ena". Fix this by assigning the correct value.
+There is no reason to prohibit sh7760fb from being built as a
+loadable module as suggested by Geert, so change the config symbol
+from bool to tristate to allow that and change the FB dependency as
+needed.
 
-Fixes: d1de8633d96a ("s390 cio: Rewrite trace point class s390_class_schib")
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: f75f71b2c418 ("fbdev/sh7760fb: Depend on FB=y")
+Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/cio/trace.h b/drivers/s390/cio/trace.h
-index 4803139bce149..4716798b1368a 100644
---- a/drivers/s390/cio/trace.h
-+++ b/drivers/s390/cio/trace.h
-@@ -50,7 +50,7 @@ DECLARE_EVENT_CLASS(s390_class_schib,
- 		__entry->devno = schib->pmcw.dev;
- 		__entry->schib = *schib;
- 		__entry->pmcw_ena = schib->pmcw.ena;
--		__entry->pmcw_st = schib->pmcw.ena;
-+		__entry->pmcw_st = schib->pmcw.st;
- 		__entry->pmcw_dnv = schib->pmcw.dnv;
- 		__entry->pmcw_dev = schib->pmcw.dev;
- 		__entry->pmcw_lpm = schib->pmcw.lpm;
+diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+index 8e224ee27ade9..12846837f5de0 100644
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -2084,8 +2084,8 @@ config FB_COBALT
+ 	depends on FB && MIPS_COBALT
+ 
+ config FB_SH7760
+-	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
+-	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
++	tristate "SH7760/SH7763/SH7720/SH7721 LCDC support"
++	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
+ 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
 -- 
 2.43.0
 
