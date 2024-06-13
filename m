@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-51120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB14E906E6C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8A1906DDC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86A48B247A8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C07E6283F68
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF03146D55;
-	Thu, 13 Jun 2024 12:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 158831459F8;
+	Thu, 13 Jun 2024 12:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3pwQc74"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urnhMY6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58641145A05;
-	Thu, 13 Jun 2024 12:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07C114535E;
+	Thu, 13 Jun 2024 12:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280368; cv=none; b=YN6xAkpj6sA+5bLiyNfjJvprwVpXJd4dT89Bk1YxNiTe1fRu2GKgLCh/txTI7P6/rM3qcBI9SXJbSZKDzXDVvA7dyNxP0uAHH93ULZT9opasvpRnCRCTClHZXL/s74v2k4cy967iWXXBI34bGyw/sCDA7VCVFLySRmsSqRtYiFE=
+	t=1718280011; cv=none; b=bker7zavoZ3BuxXUq3naKNBXy8GqWZwwud1LzF79zyZy7ruIcUxNQZ8/RQRD6M0//MpaIKvvN5VfZwqjMSxYvum/IGhU4/HROIfgrgF/MiJf7JbrMjM0xpWoalxn8q/ByuqrRQOFLVUz4VLYlm1AmWuou2SUrsr9/hrh9BTZk2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280368; c=relaxed/simple;
-	bh=3qu+soo85wZrOrMMHq0vzaBAe89xTCKEZniegFdnHBE=;
+	s=arc-20240116; t=1718280011; c=relaxed/simple;
+	bh=4T36Y1RBxruxdyh+mg6c/FRqaCWbQsmEnq3qcoeFqfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L3CO6sIB8s9ACrXbtJjAp9DrxWA4wzznEDEUDgk1Z6R0JSXwYTPurPwiSUY9mKOkI7R2mLZ+YA8wtLbzuc+WAThUACaNtoAUwawssv4RuD1DIqWRiO9WzxwFAgx4FuFVWdBiMeBDk4OG8kdDMgiQfac6qjSflCeCI35WZKoL8n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3pwQc74; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F123C2BBFC;
-	Thu, 13 Jun 2024 12:06:07 +0000 (UTC)
+	 MIME-Version; b=UAOm/vMd4oUeQa3w9JN5jS9s//3Fk45gu7rKEiL5fraCSzwfEIk2jrBQZnfe+oVoK6QGXFJ7AWUL5/K/+lxlDZgdvUNs3GhDEdOHO+DG8aJtzV8nSAi9YT8gt0xPajMaI0A3PVYZWFW5/BtxcJfH654PH7IZ46IS1nxD67WgDEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urnhMY6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47163C2BBFC;
+	Thu, 13 Jun 2024 12:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280367;
-	bh=3qu+soo85wZrOrMMHq0vzaBAe89xTCKEZniegFdnHBE=;
+	s=korg; t=1718280011;
+	bh=4T36Y1RBxruxdyh+mg6c/FRqaCWbQsmEnq3qcoeFqfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3pwQc74L3v1vhtEADakKMUMWz082o+mQoLQc0s5y4OphebpLEFXI6L6bXP6PaXTD
-	 6StEQ4DVZyGj8mJfUPr+xvGypL17GYZRaLW5GB4Y8pPj3Fjttv+V3WhtW9JiYq4Trm
-	 qRe/5EEOfXnY4BYMKjLhxW5I/MKr4YLLfxBSa+Dk=
+	b=urnhMY6szCtKsgA2+D4u3AXogClpDu5V4nyPmWxy0vIvrm5UoLuLORQ+MhRSAC0pB
+	 Bu5OPNbM7lSZARMyYfZFG6vlNUpnzwtPg7RhawAuxnM8Br3Jg8T0VxFgrtA7f5/RGl
+	 zsy0zeRlRRN6AHbuASYVA8AkRJLqiLtbnbnsQZv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.6 029/137] arm64: tegra: Correct Tegra132 I2C alias
-Date: Thu, 13 Jun 2024 13:33:29 +0200
-Message-ID: <20240613113224.418905264@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 112/202] stm class: Fix a double free in stm_register_device()
+Date: Thu, 13 Jun 2024 13:33:30 +0200
+Message-ID: <20240613113232.083886226@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 2633c58e1354d7de2c8e7be8bdb6f68a0a01bad7 upstream.
+[ Upstream commit 3df463865ba42b8f88a590326f4c9ea17a1ce459 ]
 
-There is no such device as "as3722@40", because its name is "pmic".  Use
-phandles for aliases to fix relying on full node path.  This corrects
-aliases for RTC devices and also fixes dtc W=1 warning:
+The put_device(&stm->dev) call will trigger stm_device_release() which
+frees "stm" so the vfree(stm) on the next line is a double free.
 
-  tegra132-norrin.dts:12.3-36: Warning (alias_paths): /aliases:rtc0: aliases property is not a valid node (/i2c@7000d000/as3722@40)
-
-Fixes: 0f279ebdf3ce ("arm64: tegra: Add NVIDIA Tegra132 Norrin support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Fixes: 389b6699a2aa ("stm class: Fix stm device initialization order")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Link: https://lore.kernel.org/r/20240429130119.1518073-2-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra132-norrin.dts |    4 ++--
- arch/arm64/boot/dts/nvidia/tegra132.dtsi       |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/hwtracing/stm/core.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-+++ b/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-@@ -9,8 +9,8 @@
- 	compatible = "nvidia,norrin", "nvidia,tegra132", "nvidia,tegra124";
+diff --git a/drivers/hwtracing/stm/core.c b/drivers/hwtracing/stm/core.c
+index 603b83ac50852..1cfae56c4fdbd 100644
+--- a/drivers/hwtracing/stm/core.c
++++ b/drivers/hwtracing/stm/core.c
+@@ -878,8 +878,11 @@ int stm_register_device(struct device *parent, struct stm_data *stm_data,
+ 		return -ENOMEM;
  
- 	aliases {
--		rtc0 = "/i2c@7000d000/as3722@40";
--		rtc1 = "/rtc@7000e000";
-+		rtc0 = &as3722;
-+		rtc1 = &tegra_rtc;
- 		serial0 = &uarta;
- 	};
+ 	stm->major = register_chrdev(0, stm_data->name, &stm_fops);
+-	if (stm->major < 0)
+-		goto err_free;
++	if (stm->major < 0) {
++		err = stm->major;
++		vfree(stm);
++		return err;
++	}
  
---- a/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-@@ -570,7 +570,7 @@
- 		status = "disabled";
- 	};
+ 	device_initialize(&stm->dev);
+ 	stm->dev.devt = MKDEV(stm->major, 0);
+@@ -923,10 +926,8 @@ int stm_register_device(struct device *parent, struct stm_data *stm_data,
+ err_device:
+ 	unregister_chrdev(stm->major, stm_data->name);
  
--	rtc@7000e000 {
-+	tegra_rtc: rtc@7000e000 {
- 		compatible = "nvidia,tegra124-rtc", "nvidia,tegra20-rtc";
- 		reg = <0x0 0x7000e000 0x0 0x100>;
- 		interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
+-	/* matches device_initialize() above */
++	/* calls stm_device_release() */
+ 	put_device(&stm->dev);
+-err_free:
+-	vfree(stm);
+ 
+ 	return err;
+ }
+-- 
+2.43.0
+
 
 
 
