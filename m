@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86053906FF2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA322906E06
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86A6D1C23138
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA9621C20C19
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190A213C8E1;
-	Thu, 13 Jun 2024 12:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E171B1442EF;
+	Thu, 13 Jun 2024 12:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gP6SrWL+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEw58z7e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA28644C6F;
-	Thu, 13 Jun 2024 12:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE6B44C6F;
+	Thu, 13 Jun 2024 12:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281351; cv=none; b=lFemuaLdQWlzwpBelZt212/SUDeJ84SqdV0ByHcZmlVGWBjRb0E9rqTEoTo79usZ+AJkx5bhuAVivIJ1PaPf8tAI9CbNSePldHFTX5/P/o/KNROWg6RH6Vd3+xR4DoBs8cYHPVc2zaODm7fyJRYICrTTQZhVBk/pNVkU0J3JSXE=
+	t=1718280106; cv=none; b=sBxotDRC/BZny9aPpfOg/iEGa2MQFmGftBPMr/PkPZ7+MX7p4CvhA0/x8wz3p4yrpBgIu3+K4EhUplDFX5PsIjNEjJNPCI4XzhtX0wWBrvYeWIa6R5tXd7Sh+eTW3QNRViAht16bNCgbHnsuC6biZ8yunTbRg6C28C/MXsoMCaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281351; c=relaxed/simple;
-	bh=+UmXFiV1R3xc6vk3kchBXwvgJu2H1TjocmYUrVQIMjg=;
+	s=arc-20240116; t=1718280106; c=relaxed/simple;
+	bh=vS6w9pRLi+bwbH4k8Uo5M+gZQdT7NstxZdOzCDUEPrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJXfA52n/3aBXDgmTVtutjDQ9kXLuAC78u7PmTUEnVZkb4oo0Bg+SF/YqR/AjUAPvXtzEqR9PJlx8g/ijkaZZfGMm5KPH4GiTYBMPTtHlrFCo7YIE89eb27Q8Bd/xTImyWfOroOwKyXCzBo3Kcla+EduAVXBUvFZEMrMwiShwnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gP6SrWL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB7AFC2BBFC;
-	Thu, 13 Jun 2024 12:22:30 +0000 (UTC)
+	 MIME-Version; b=XvZyJYND+aSKK+qLMzTEnFELg1Fpg10IMjdnC3X7xLmGi2ER4qy1ErZRJ6pK9kp3Jiut5Rr59buwFyLzhSgyNo92RWxVOGEJnKD4QmBhv++en7YWcIJLtrYlbJH7dFhT0JThi8EYZWD8F+AupP25sEhtCOqEQ6mrQH8s4YKCkqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEw58z7e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264BFC2BBFC;
+	Thu, 13 Jun 2024 12:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281351;
-	bh=+UmXFiV1R3xc6vk3kchBXwvgJu2H1TjocmYUrVQIMjg=;
+	s=korg; t=1718280106;
+	bh=vS6w9pRLi+bwbH4k8Uo5M+gZQdT7NstxZdOzCDUEPrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gP6SrWL+X0AMNZrU0Z0czasGtbY3jHfsiGMx7AHHwydsloKfDkdZ4+3aqcdF9cHpH
-	 qz2qumWZi5ECgQlCEvGRtnz/flD7GJ1936UXX4f2flYIMPkA0My92NU9QZcUfkmGr9
-	 c/R/yr/Zqyuq2m5qJN6qOQLpCx0SCp/uxW9f6H2U=
+	b=DEw58z7ekiuobC26nZT5DGybSAwYijwjVvhL92iv25WYWpQnxGurx+2mJM0/edxEw
+	 GHFFAm9eQq+ufRUxkQApMz44W/Ra6v8EvNVo1tL3dFovOD2MdXOPsg7g3aagectu2m
+	 1YBHolUg7N1+Ksmxi/9Bn34yXqonsPcq1qoZpCCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	"Yang, Chenyuan" <cy54@illinois.edu>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
-Subject: [PATCH 5.10 224/317] media: cec: core: avoid confusing "transmit timed out" message
+	patches@lists.linux.dev,
+	Jiri Pirko <jiri@nvidia.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 144/202] virtio: delete vq in vp_find_vqs_msix() when request_irq() fails
 Date: Thu, 13 Jun 2024 13:34:02 +0200
-Message-ID: <20240613113256.218335644@linuxfoundation.org>
+Message-ID: <20240613113233.316456817@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Jiri Pirko <jiri@nvidia.com>
 
-[ Upstream commit cbe499977bc36fedae89f0a0d7deb4ccde9798fe ]
+[ Upstream commit 89875151fccdd024d571aa884ea97a0128b968b6 ]
 
-If, when waiting for a transmit to finish, the wait is interrupted,
-then you might get a "transmit timed out" message, even though the
-transmit was interrupted and did not actually time out.
+When request_irq() fails, error path calls vp_del_vqs(). There, as vq is
+present in the list, free_irq() is called for the same vector. That
+causes following splat:
 
-Set transmit_in_progress_aborted to true if the
-wait_for_completion_killable() call was interrupted and ensure
-that the transmit is properly marked as ABORTED.
+[    0.414355] Trying to free already-free IRQ 27
+[    0.414403] WARNING: CPU: 1 PID: 1 at kernel/irq/manage.c:1899 free_irq+0x1a1/0x2d0
+[    0.414510] Modules linked in:
+[    0.414540] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.9.0-rc4+ #27
+[    0.414540] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-1.fc39 04/01/2014
+[    0.414540] RIP: 0010:free_irq+0x1a1/0x2d0
+[    0.414540] Code: 1e 00 48 83 c4 08 48 89 e8 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc 90 8b 74 24 04 48 c7 c7 98 80 6c b1 e8 00 c9 f7 ff 90 <0f> 0b 90 90 48 89 ee 4c 89 ef e8 e0 20 b8 00 49 8b 47 40 48 8b 40
+[    0.414540] RSP: 0000:ffffb71480013ae0 EFLAGS: 00010086
+[    0.414540] RAX: 0000000000000000 RBX: ffffa099c2722000 RCX: 0000000000000000
+[    0.414540] RDX: 0000000000000000 RSI: ffffb71480013998 RDI: 0000000000000001
+[    0.414540] RBP: 0000000000000246 R08: 00000000ffffdfff R09: 0000000000000001
+[    0.414540] R10: 00000000ffffdfff R11: ffffffffb18729c0 R12: ffffa099c1c91760
+[    0.414540] R13: ffffa099c1c916a4 R14: ffffa099c1d2f200 R15: ffffa099c1c91600
+[    0.414540] FS:  0000000000000000(0000) GS:ffffa099fec40000(0000) knlGS:0000000000000000
+[    0.414540] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.414540] CR2: 0000000000000000 CR3: 0000000008e3e001 CR4: 0000000000370ef0
+[    0.414540] Call Trace:
+[    0.414540]  <TASK>
+[    0.414540]  ? __warn+0x80/0x120
+[    0.414540]  ? free_irq+0x1a1/0x2d0
+[    0.414540]  ? report_bug+0x164/0x190
+[    0.414540]  ? handle_bug+0x3b/0x70
+[    0.414540]  ? exc_invalid_op+0x17/0x70
+[    0.414540]  ? asm_exc_invalid_op+0x1a/0x20
+[    0.414540]  ? free_irq+0x1a1/0x2d0
+[    0.414540]  vp_del_vqs+0xc1/0x220
+[    0.414540]  vp_find_vqs_msix+0x305/0x470
+[    0.414540]  vp_find_vqs+0x3e/0x1a0
+[    0.414540]  vp_modern_find_vqs+0x1b/0x70
+[    0.414540]  init_vqs+0x387/0x600
+[    0.414540]  virtnet_probe+0x50a/0xc80
+[    0.414540]  virtio_dev_probe+0x1e0/0x2b0
+[    0.414540]  really_probe+0xc0/0x2c0
+[    0.414540]  ? __pfx___driver_attach+0x10/0x10
+[    0.414540]  __driver_probe_device+0x73/0x120
+[    0.414540]  driver_probe_device+0x1f/0xe0
+[    0.414540]  __driver_attach+0x88/0x180
+[    0.414540]  bus_for_each_dev+0x85/0xd0
+[    0.414540]  bus_add_driver+0xec/0x1f0
+[    0.414540]  driver_register+0x59/0x100
+[    0.414540]  ? __pfx_virtio_net_driver_init+0x10/0x10
+[    0.414540]  virtio_net_driver_init+0x90/0xb0
+[    0.414540]  do_one_initcall+0x58/0x230
+[    0.414540]  kernel_init_freeable+0x1a3/0x2d0
+[    0.414540]  ? __pfx_kernel_init+0x10/0x10
+[    0.414540]  kernel_init+0x1a/0x1c0
+[    0.414540]  ret_from_fork+0x31/0x50
+[    0.414540]  ? __pfx_kernel_init+0x10/0x10
+[    0.414540]  ret_from_fork_asm+0x1a/0x30
+[    0.414540]  </TASK>
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Yang, Chenyuan <cy54@illinois.edu>
-Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
-Fixes: 590a8e564c6e ("media: cec: abort if the current transmit was canceled")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fix this by calling deleting the current vq when request_irq() fails.
+
+Fixes: 0b0f9dc52ed0 ("Revert "virtio_pci: use shared interrupts for virtqueues"")
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Message-Id: <20240426150845.3999481-1-jiri@resnulli.us>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/core/cec-adap.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/virtio/virtio_pci_common.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
-index 42d66ae27b19f..a5853c82d5e4f 100644
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -502,6 +502,15 @@ int cec_thread_func(void *_adap)
- 			goto unlock;
- 		}
- 
-+		if (adap->transmit_in_progress &&
-+		    adap->transmit_in_progress_aborted) {
-+			if (adap->transmitting)
-+				cec_data_cancel(adap->transmitting,
-+						CEC_TX_STATUS_ABORTED, 0);
-+			adap->transmit_in_progress = false;
-+			adap->transmit_in_progress_aborted = false;
-+			goto unlock;
+diff --git a/drivers/virtio/virtio_pci_common.c b/drivers/virtio/virtio_pci_common.c
+index 1e890ef176873..a6f375417fd54 100644
+--- a/drivers/virtio/virtio_pci_common.c
++++ b/drivers/virtio/virtio_pci_common.c
+@@ -339,8 +339,10 @@ static int vp_find_vqs_msix(struct virtio_device *vdev, unsigned nvqs,
+ 				  vring_interrupt, 0,
+ 				  vp_dev->msix_names[msix_vec],
+ 				  vqs[i]);
+-		if (err)
++		if (err) {
++			vp_del_vq(vqs[i]);
+ 			goto error_find;
 +		}
- 		if (adap->transmit_in_progress && timeout) {
- 			/*
- 			 * If we timeout, then log that. Normally this does
-@@ -755,6 +764,7 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
- {
- 	struct cec_data *data;
- 	bool is_raw = msg_is_raw(msg);
-+	int err;
+ 	}
+ 	return 0;
  
- 	if (adap->devnode.unregistered)
- 		return -ENODEV;
-@@ -917,10 +927,13 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
- 	 * Release the lock and wait, retake the lock afterwards.
- 	 */
- 	mutex_unlock(&adap->lock);
--	wait_for_completion_killable(&data->c);
-+	err = wait_for_completion_killable(&data->c);
- 	cancel_delayed_work_sync(&data->work);
- 	mutex_lock(&adap->lock);
- 
-+	if (err)
-+		adap->transmit_in_progress_aborted = true;
-+
- 	/* Cancel the transmit if it was interrupted */
- 	if (!data->completed) {
- 		if (data->msg.tx_status & CEC_TX_STATUS_OK)
 -- 
 2.43.0
 
