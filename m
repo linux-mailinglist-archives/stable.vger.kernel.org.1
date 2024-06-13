@@ -1,215 +1,150 @@
-Return-Path: <stable+bounces-52082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5859079EE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 19:33:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB5E907A05
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 19:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E48E282B0B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 17:33:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E18CCB24431
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 17:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1487D149C5B;
-	Thu, 13 Jun 2024 17:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0F114A0A8;
+	Thu, 13 Jun 2024 17:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ExoxHtN2"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Vz/mvTf+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086911304BF;
-	Thu, 13 Jun 2024 17:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8A214A096
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 17:38:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718300003; cv=none; b=SliDk9MVs0nA4WJ9IRIV5j0YxmC+hwu1Js+i2OH4VIufbCrDWMJ+Cqpv55U/nu8H7HeM1XJefdxS0urF6H659H92Mt//UZtA3TeCQggfLAtM/RfYy0WLBNfCInWsqyGWDT5bU4YuG8fPX5pyPF63Kx1G8efIP7aY0yg6NHf/wkw=
+	t=1718300330; cv=none; b=avRyAKFDQTUzY8GOTI8ZqIaZqt0fChqzWdaWOuwEyRJJAywUhf/0oz798d8rqZoOfWd4Bk1ViWIdpP1/0eqgN6z5YXOB7znHWVahxDYhjP4bnBTp+5hBVF22+z/dcEXEOOVW1XmnSzFzFTAjPyOF7eLCfKkyVhaUgIFGcDnVRYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718300003; c=relaxed/simple;
-	bh=BziG7gMJekaLwRZVsyqiqvarqPrzKqRYoZRH1Y+5/GA=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GPslDxK5HM6AzeKO/a21l9CCOxGvdENgDQtnnYhVYUcL5c2wwWB9ZbhvpiJkCz7kt9YQ8ZMeId9cCJ72wMUTeRJ4dV532xXa6lFQCktUXqB9gwN7NZUU1JnPCe93+CCDqfoNO79CoZuhUgm3twaWBjSJr5bwYRW3PN9AhiNwsR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ExoxHtN2; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5295eb47b48so1645630e87.1;
-        Thu, 13 Jun 2024 10:33:21 -0700 (PDT)
+	s=arc-20240116; t=1718300330; c=relaxed/simple;
+	bh=xS//hxlHlulQtpNFdFV93N5i3djVdh0tUjRe9XeoGIg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kqPuUunY7JV1PgMlPT3a3LZp1SSgC7f9G4r9qwz+BJ0icTQZEE8+20qYnaG9r/XCtXcdF6rhAEgnizdEyRf0WW7w6gPSyVeJV6/6IeAbDfSjsWGYDOwsfs2bU+n7rOcKYN7ZwNhdBGhKJWawWTr/BNs8DzJSXeblojtTmwvnf9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Vz/mvTf+; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2ebdfe26217so11785831fa.2
+        for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:38:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718300000; x=1718904800; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4ii4ZY+8PBn+yY1/1MCO+EH7pdZ1b188VW9sApqkczU=;
-        b=ExoxHtN2Obb5yKlf+Kfp4ahQl7Neql2+l9R5RpIokZ+6lGa3K+lhqMpNPyrA/6I1ex
-         Xi/lSDZ+LPZCZqkVT9XMKEVDPVVX3mCJyXkrfiUsVT/JndxkCP6AVKfD2J+Hyx668CPA
-         jlQ+8xLTXd6/5b1K7Pskg80CM6FRJ/i440uReoGPf8mTtXZTOoGZkY6qKBgdO7z2DwFJ
-         NKu1aSxKiP0O+m6ey0ap6U3Yc2z5fLdZ9UWwvrsaITsstmth4UsfXQ1+shIbbS4xkZ61
-         +QVnB2my65EkYYU5Vj29JfB++OdbsC8xynXLlMJkJXsuXLTM1qcznScPza9N9+360Npn
-         T+6Q==
+        d=linux-foundation.org; s=google; t=1718300327; x=1718905127; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=duvBWZAfOAJXQBLKoqD/ee3JGbLIv42ynDQwfWnNWn8=;
+        b=Vz/mvTf+hln5CDD6zgSmqfprN4l4PscvPCZKedoBw6fv5PUwbq1VxV0aK623UmWJ+j
+         3iVI8dvh3b0vHlq5+W3FWMDI4RriDQC8yLMkSg059CPu6fgh1h6X89sMh06DeuGeY7ak
+         taRnUxc0ZE5jgVb0t4elju8AwJtXAEP2Bd7Gw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718300000; x=1718904800;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4ii4ZY+8PBn+yY1/1MCO+EH7pdZ1b188VW9sApqkczU=;
-        b=TNCNYm6qL69CE3HXeJ171dTkVoMkoVep/Yz9endiI5xbEo3JsDZwV+r/OlbH8hnkPT
-         cN+L5YJFlAIx7ZgJzz+SlxJkdDcdXQA7GgQ0Lu5qxh25VR0EyWM1ZLfhoT6PdrNRQwQX
-         dSfLsV3rq9wrDMWInBUd5sPlH8Jhaayo7Vh2DVjM2G4gTdy1yo4LDT5kOxGuaUzgA10m
-         hn2kxGULXjRDtCGhddv1H45b1wWahnnwbmK8duYoGf0LL1Ih3bCRrj1Iv41dwwP69xt5
-         Bf78MSwK27kUyUtBVdADzti9YfmiUg7pvtgT/nr8Tn5AZf9+JVvhtYS6yeujrq1iC5a5
-         J42A==
-X-Forwarded-Encrypted: i=1; AJvYcCWFxjWvB/szeWC2zHDv/9G+86yNcALbyvGjtZgAMG02BhAhkhz0kzFgb3oFaxhJVj39KGKRTckc/5MlDALnMmop0epSAMQzIiNqAY1y+iKe62BF6F8igzLSwmtBKh9q//TKuDT9
-X-Gm-Message-State: AOJu0YzXI6131QB1Xebw7bTu6QtfyoBGKrVXhG4lCqdAn4aVRqyyoyT7
-	rnaxCsBjTtkjqfp/oW9mDYw7ix/TA077lTFsL4+9y/uYZAzdah1k
-X-Google-Smtp-Source: AGHT+IG98HI4qEE4jMbTN26+L2Wk9PobS+fctcwhqnSg84S8A8OKwKrR6phVc+FCr6Vkbe1dO/5Oyg==
-X-Received: by 2002:a05:6512:208d:b0:52b:c296:902a with SMTP id 2adb3069b0e04-52ca6e56364mr265661e87.5.1718299999626;
-        Thu, 13 Jun 2024 10:33:19 -0700 (PDT)
-Received: from pc636 (host-90-233-218-141.mobileonline.telia.com. [90.233.218.141])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca287231csm298652e87.162.2024.06.13.10.33.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jun 2024 10:33:19 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Thu, 13 Jun 2024 19:33:16 +0200
-To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Lorenzo Stoakes <lstoakes@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	hailong liu <hailong.liu@oppo.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Zhaoyang Huang <huangzhaoyang@gmail.com>, steve.kang@unisoc.com
-Subject: Re: [Resend PATCHv4 1/1] mm: fix incorrect vbq reference in
- purge_fragmented_block
-Message-ID: <ZmstXFYq6iSHYdtR@pc636>
-References: <20240607023116.1720640-1-zhaoyang.huang@unisoc.com>
+        d=1e100.net; s=20230601; t=1718300327; x=1718905127;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=duvBWZAfOAJXQBLKoqD/ee3JGbLIv42ynDQwfWnNWn8=;
+        b=D2WyZ1n8LeIo+e7/c3oktfzhZx5cpp0gAh7IV6zn+7yljARmW9gFueCYlgcOnBJ/l/
+         7d41LOXhFl9czzjeokqX8PSyYz7bKPe9tYAznUeh3/V82mKMxtxRmCSWqH6NYBjTZHSq
+         7SAqaEP0Zko8HGKZlYbuihfIffxc2xODJydFtRyw6nIUl6UupTYb9c8WqBhgkRBZajdC
+         q7VgzbmDVuMa+lmrU+k6B/P099avgC+w4JyPFJx56VxtNC7WM8ScoMo1dE00Y2i/SoOh
+         rwLS0fxSRlKMcYVjvxyFzMVI88vYrnLCv3LCMG0/ZYkyqocF7OjOmO/2E3r+tVqgoCJ6
+         28hA==
+X-Forwarded-Encrypted: i=1; AJvYcCU6U9fFj9H6I2YsyHYK5cXbca+j1xoFzHHaB7yST17a0h2AL+BOEmtocBzqYfQaufJ/Aq2egJyQqtXZRgqpjKRCA9olGf8d
+X-Gm-Message-State: AOJu0YxuQU6JtvdQkEf6Xh81CESt9EV7AUCEKmNp4iywHN5ODwT/rcQq
+	sJO31DFbWkdbIAKQnET0Mrz52JhqGvAFBb8tmKdyW1oaohEGE1J4h29ovmWbLL0fUYmNdfbdPDN
+	67x2bdw==
+X-Google-Smtp-Source: AGHT+IGX65sasKAgPqpqFiGxeSbDB8UI+Obb1mhx56RmwbPymQ+sLLtitk0oAzhtL0FjhJ1kSSx9Lw==
+X-Received: by 2002:a2e:8886:0:b0:2ec:492:3fee with SMTP id 38308e7fff4ca-2ec0e47c209mr3558331fa.30.1718300326726;
+        Thu, 13 Jun 2024 10:38:46 -0700 (PDT)
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com. [209.85.208.169])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ec05c16c91sm3252691fa.63.2024.06.13.10.38.45
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Jun 2024 10:38:45 -0700 (PDT)
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2eaafda3b5cso15183801fa.3
+        for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:38:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVWbUwWk4Y5mpdAy5koZY3i6aMB6bkCkb35uDsUJBXsL/b041n/5c57hN6KFVa1blqm2fC6G+lG1pefP2iY8g5ox2Y40Tlz
+X-Received: by 2002:a2e:9658:0:b0:2eb:68d0:88be with SMTP id
+ 38308e7fff4ca-2ec0e46df16mr3471851fa.12.1718300325016; Thu, 13 Jun 2024
+ 10:38:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240607023116.1720640-1-zhaoyang.huang@unisoc.com>
+References: <Zmr9oBecxdufMTeP@kernel.org> <CAHk-=wickw1bAqWiMASA2zRiEA_nC3etrndnUqn_6C1tbUjAcQ@mail.gmail.com>
+In-Reply-To: <CAHk-=wickw1bAqWiMASA2zRiEA_nC3etrndnUqn_6C1tbUjAcQ@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 13 Jun 2024 10:38:28 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgOMcScTviziAbL9Z2RDduaEFdZbHsESxqUS2eFfUmUVg@mail.gmail.com>
+Message-ID: <CAHk-=wgOMcScTviziAbL9Z2RDduaEFdZbHsESxqUS2eFfUmUVg@mail.gmail.com>
+Subject: Re: [GIT PULL] memblock:fix validation of NUMA coverage
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>, Jan Beulich <jbeulich@suse.com>, Narasimhan V <Narasimhan.V@amd.com>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, stable@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Jun 07, 2024 at 10:31:16AM +0800, zhaoyang.huang wrote:
-> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> 
-> vmalloc area runs out in our ARM64 system during an erofs test as
-> vm_map_ram failed[1]. By following the debug log, we find that
-> vm_map_ram()->vb_alloc() will allocate new vb->va which corresponding
-> to 4MB vmalloc area as list_for_each_entry_rcu returns immediately
-> when vbq->free->next points to vbq->free. That is to say, 65536 times
-> of page fault after the list's broken will run out of the whole
-> vmalloc area. This should be introduced by one vbq->free->next point to
-> vbq->free which makes list_for_each_entry_rcu can not iterate the list
-> and find the BUG.
-> 
-> [1]
-> PID: 1        TASK: ffffff80802b4e00  CPU: 6    COMMAND: "init"
->  #0 [ffffffc08006afe0] __switch_to at ffffffc08111d5cc
->  #1 [ffffffc08006b040] __schedule at ffffffc08111dde0
->  #2 [ffffffc08006b0a0] schedule at ffffffc08111e294
->  #3 [ffffffc08006b0d0] schedule_preempt_disabled at ffffffc08111e3f0
->  #4 [ffffffc08006b140] __mutex_lock at ffffffc08112068c
->  #5 [ffffffc08006b180] __mutex_lock_slowpath at ffffffc08111f8f8
->  #6 [ffffffc08006b1a0] mutex_lock at ffffffc08111f834
->  #7 [ffffffc08006b1d0] reclaim_and_purge_vmap_areas at ffffffc0803ebc3c
->  #8 [ffffffc08006b290] alloc_vmap_area at ffffffc0803e83fc
->  #9 [ffffffc08006b300] vm_map_ram at ffffffc0803e78c0
-> 
-> Fixes: fc1e0d980037 ("mm/vmalloc: prevent stale TLBs in fully utilized blocks")
-> 
-> For detailed reason of broken list, please refer to below URL
-> https://lore.kernel.org/all/20240531024820.5507-1-hailong.liu@oppo.com/
-> 
-> Suggested-by: Hailong.Liu <hailong.liu@oppo.com>
-> Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> ---
-> v2: introduce cpu in vmap_block to record the right CPU number
-> v3: use get_cpu/put_cpu to prevent schedule between core
-> v4: replace get_cpu/put_cpu by another API to avoid disabling preemption
-> ---
-> ---
->  mm/vmalloc.c | 21 +++++++++++++++------
->  1 file changed, 15 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 22aa63f4ef63..89eb034f4ac6 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -2458,6 +2458,7 @@ struct vmap_block {
->  	struct list_head free_list;
->  	struct rcu_head rcu_head;
->  	struct list_head purge;
-> +	unsigned int cpu;
->  };
->  
->  /* Queue of free and dirty vmap blocks, for allocation and flushing purposes */
-> @@ -2585,8 +2586,15 @@ static void *new_vmap_block(unsigned int order, gfp_t gfp_mask)
->  		free_vmap_area(va);
->  		return ERR_PTR(err);
->  	}
-> -
-> -	vbq = raw_cpu_ptr(&vmap_block_queue);
-> +	/*
-> +	 * list_add_tail_rcu could happened in another core
-> +	 * rather than vb->cpu due to task migration, which
-> +	 * is safe as list_add_tail_rcu will ensure the list's
-> +	 * integrity together with list_for_each_rcu from read
-> +	 * side.
-> +	 */
-> +	vb->cpu = raw_smp_processor_id();
-> +	vbq = per_cpu_ptr(&vmap_block_queue, vb->cpu);
->  	spin_lock(&vbq->lock);
->  	list_add_tail_rcu(&vb->free_list, &vbq->free);
->  	spin_unlock(&vbq->lock);
-> @@ -2614,9 +2622,10 @@ static void free_vmap_block(struct vmap_block *vb)
->  }
->  
->  static bool purge_fragmented_block(struct vmap_block *vb,
-> -		struct vmap_block_queue *vbq, struct list_head *purge_list,
-> -		bool force_purge)
-> +		struct list_head *purge_list, bool force_purge)
->  {
-> +	struct vmap_block_queue *vbq = &per_cpu(vmap_block_queue, vb->cpu);
-> +
->  	if (vb->free + vb->dirty != VMAP_BBMAP_BITS ||
->  	    vb->dirty == VMAP_BBMAP_BITS)
->  		return false;
-> @@ -2664,7 +2673,7 @@ static void purge_fragmented_blocks(int cpu)
->  			continue;
->  
->  		spin_lock(&vb->lock);
-> -		purge_fragmented_block(vb, vbq, &purge, true);
-> +		purge_fragmented_block(vb, &purge, true);
->  		spin_unlock(&vb->lock);
->  	}
->  	rcu_read_unlock();
-> @@ -2801,7 +2810,7 @@ static void _vm_unmap_aliases(unsigned long start, unsigned long end, int flush)
->  			 * not purgeable, check whether there is dirty
->  			 * space to be flushed.
->  			 */
-> -			if (!purge_fragmented_block(vb, vbq, &purge_list, false) &&
-> +			if (!purge_fragmented_block(vb, &purge_list, false) &&
->  			    vb->dirty_max && vb->dirty != VMAP_BBMAP_BITS) {
->  				unsigned long va_start = vb->va->va_start;
->  				unsigned long s, e;
-> -- 
-> 2.25.1
-> 
-Yes there is a mess with holding wrong vbq->lock and vmap_blocks xarray.
+On Thu, 13 Jun 2024 at 10:09, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> Is there some broken scripting that people have started using (or have
+> been using for a while and was recently broken)?
 
-The patch looks good to me. One small nit from my side is a commit
-message. To me it is vague and it should be improved.
+... and then when I actually pull the code, I note that the problem
+where it checked _one_ bogus value has just been replaced with
+checking _another_ bogus value.
 
-Could you please use Hailong.Liu <hailong.liu@oppo.com> explanation
-of the issue and resend the patch?
+Christ.
 
-See it here: https://lkml.org/lkml/2024/6/2/2
+What if people use a node ID that is simply outside the range
+entirely, instead of one of those special node IDs?
 
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+And now for memblock_set_node() you should apparently use NUMA_NO_NODE
+to not get a warning, but for memblock_set_region_node() apparently
+the right random constant to use is MAX_NUMNODES.
 
---
-Uladzislau Rezki
+Does *any* of this make sense? No.
+
+How about instead of having two random constants - and not having any
+range checking that I see - just have *one* random constant for "I
+have no range", call that NUMA_NO_NODE, and then have a simple helper
+for "do I have a valid range", and make that be
+
+   static inline bool numa_valid_node(int nid)
+   { return (unsigned int)nid < MAX_NUMNODES; }
+
+or something like that? Notice that now *all* of
+
+ - NUMA_NO_NODE (explicitly no node)
+
+ - MAX_NUMNODES (randomly used no node)
+
+ - out of range node (who knows wth firmware tables do?)
+
+will get the same result from that "numa_valid_node()" function.
+
+And at that point you don't need to care, you don't need to warn, and
+you don't need to have these insane rules where "sometimes you *HAVE*
+to use NUMA_NO_NODE, or we warn, in other cases MAX_NUMNODES is the
+thing".
+
+Please? IOW, instead of adding a warning for fragile code, then change
+some caller to follow the new rules, JUST FIX THE STUPID FRAGILITY!
+
+Or hey, just do
+
+    #define NUMA_NO_NODE MAX_NUMNODES
+
+and have two names for the *same* constant, instead fo having two
+different constants with strange semantic differences that seem to
+make no sense and where the memblock code itself seems to go
+back-and-forth on it in different contexts.
+
+              Linus
 
