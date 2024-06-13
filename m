@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779A5907065
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2192907266
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:47:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 750E61C23DDC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81AADB28547
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53952142649;
-	Thu, 13 Jun 2024 12:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73F61EB5E;
+	Thu, 13 Jun 2024 12:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYOglz6Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BeKOUHYS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CB61422B4;
-	Thu, 13 Jun 2024 12:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D5320ED;
+	Thu, 13 Jun 2024 12:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281619; cv=none; b=bDT6M7gBOVLQwHQ/O51P6Go4SjDxK+kWMW1wky4D6pHmzxuV4/9Db0A6+TW4V8gZ8ZVInE1lSHJuaorVYC00uhlMI8hU/TneYbmLZCbWNhHmwmf3lTuz1vuXeC6G8qEjWbkIU3gPbVJBjwGhMuf3bJ/mV0Kb5AcKE7XPh4t3r70=
+	t=1718282734; cv=none; b=XyzcMj+aCU8Bt1T0q74jn7Cj56fuLwTcy4An/uqUWW+wUq7sw8hu667LWnKQl5lVuS4HzoCTLRMKn11qPdF+0iHHDxb5Gln14fTLLQz5BSFcomiGtlcfapKoueEuOegGNJy8f3Vv81kTqPk34YDSSR1ZCOidY2oL5C9IotYWjyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281619; c=relaxed/simple;
-	bh=f00dbt03Hp7s6VQYfZVxjHfTvH1puHAIt5Qj0fAlzcc=;
+	s=arc-20240116; t=1718282734; c=relaxed/simple;
+	bh=VORSan15wy2jj3jvFw3hs5685dtaO1bvD1SAIazcAdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gDG7BpJQuwjEEXF2trSXN8nprzFvnY1K3K7GO1mAtVH8mKd6RQyR6nlLqATBQCXY9YM4zO6+Ab/MYWmqD36eR+Um2GTr8OpJ0cPegqgfE5d2cxVG9w+GXGlUJXPREeRbegFAnoaOkzjFNyZ7TNoe5loWXURvobx4ixe8dqOTp1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYOglz6Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321FDC2BBFC;
-	Thu, 13 Jun 2024 12:26:58 +0000 (UTC)
+	 MIME-Version; b=BYw/MUiCHYMGIpC1YHsrjJ7mEFRPZihyNaafUaq+sMsp2+DnlEzMGEkEZOkxdpC+/nX4qGJOVTPOAOOtHQDUn/fE/V95u/R5d7iyVljBua5rhy3wIaFPbMHk4i5CtcYe1axI+fhgEcET5/6Mxlbqi08RLl8liTyonh7SazTdPrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeKOUHYS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309C7C4AF1A;
+	Thu, 13 Jun 2024 12:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281618;
-	bh=f00dbt03Hp7s6VQYfZVxjHfTvH1puHAIt5Qj0fAlzcc=;
+	s=korg; t=1718282734;
+	bh=VORSan15wy2jj3jvFw3hs5685dtaO1bvD1SAIazcAdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KYOglz6Zp5v2a0OlY5VVQQep/k+F6NMc4sgnOlcctO4X5Y2a2Mnma83u9cObTTzpm
-	 bEUnJCqLkgFkXrKwg6+3nXY0S1bvQNSawYIScCMA6RGy15pUW8Qhc1wuHgbrgDFrFA
-	 yTHqIeSSGq4pPVABHsMKlzO1LvvV3+RwmzJAYwJI=
+	b=BeKOUHYSgT2XO0bBfWq9puULTf1Q9EM+pYFh0Yy5M0rgeRzjHduiZlCtBzPuMGp3r
+	 B3b9iebljpvX5tpc3mNFdHWH/qC/FHxnkhVyEjs/4pxdwpHTjHWtBp6WEi1p8edsSz
+	 r8UIVNBC4zOwL/DHR88Yfh79U7GNjHvS4Vm0/8yM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yangyang Li <liyangyang20@huawei.com>,
-	Weihang Li <liweihang@huawei.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 5.10 316/317] RDMA/hns: Use mutex instead of spinlock for ida allocation
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 5.15 377/402] KVM: arm64: Allow AArch32 PSTATE.M to be restored as System mode
 Date: Thu, 13 Jun 2024 13:35:34 +0200
-Message-ID: <20240613113259.777391482@linuxfoundation.org>
+Message-ID: <20240613113316.850404241@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yangyang Li <liyangyang20@huawei.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 9293d3fcb70583f2c786f04ca788af026b7c4c5c upstream.
+commit dfe6d190f38fc5df5ff2614b463a5195a399c885 upstream.
 
-GFP_KERNEL may cause ida_alloc_range() to sleep, but the spinlock covering
-this function is not allowed to sleep, so the spinlock needs to be changed
-to mutex.
+It appears that we don't allow a vcpu to be restored in AArch32
+System mode, as we *never* included it in the list of valid modes.
 
-As there is a certain chance of memory allocation failure, GFP_ATOMIC is
-not suitable for QP allocation scenarios.
+Just add it to the list of allowed modes.
 
-Fixes: 71586dd20010 ("RDMA/hns: Create QP with selected QPN for bank load balance")
-Link: https://lore.kernel.org/r/1611048513-28663-1-git-send-email-liweihang@huawei.com
-Signed-off-by: Yangyang Li <liyangyang20@huawei.com>
-Signed-off-by: Weihang Li <liweihang@huawei.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 0d854a60b1d7 ("arm64: KVM: enable initialization of a 32bit vcpu")
+Cc: stable@vger.kernel.org
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240524141956.1450304-3-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_device.h |    2 +-
- drivers/infiniband/hw/hns/hns_roce_qp.c     |   11 ++++++-----
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ arch/arm64/kvm/guest.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/infiniband/hw/hns/hns_roce_device.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_device.h
-@@ -537,7 +537,7 @@ struct hns_roce_qp_table {
- 	struct hns_roce_hem_table	sccc_table;
- 	struct mutex			scc_mutex;
- 	struct hns_roce_bank bank[HNS_ROCE_QP_BANK_NUM];
--	spinlock_t bank_lock;
-+	struct mutex bank_mutex;
- };
- 
- struct hns_roce_cq_table {
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -210,7 +210,7 @@ static int alloc_qpn(struct hns_roce_dev
- 
- 		hr_qp->doorbell_qpn = 1;
- 	} else {
--		spin_lock(&qp_table->bank_lock);
-+		mutex_lock(&qp_table->bank_mutex);
- 		bankid = get_least_load_bankid_for_qp(qp_table->bank);
- 
- 		ret = alloc_qpn_with_bankid(&qp_table->bank[bankid], bankid,
-@@ -218,12 +218,12 @@ static int alloc_qpn(struct hns_roce_dev
- 		if (ret) {
- 			ibdev_err(&hr_dev->ib_dev,
- 				  "failed to alloc QPN, ret = %d\n", ret);
--			spin_unlock(&qp_table->bank_lock);
-+			mutex_unlock(&qp_table->bank_mutex);
- 			return ret;
- 		}
- 
- 		qp_table->bank[bankid].inuse++;
--		spin_unlock(&qp_table->bank_lock);
-+		mutex_unlock(&qp_table->bank_mutex);
- 
- 		hr_qp->doorbell_qpn = (u32)num;
- 	}
-@@ -409,9 +409,9 @@ static void free_qpn(struct hns_roce_dev
- 
- 	ida_free(&hr_dev->qp_table.bank[bankid].ida, hr_qp->qpn >> 3);
- 
--	spin_lock(&hr_dev->qp_table.bank_lock);
-+	mutex_lock(&hr_dev->qp_table.bank_mutex);
- 	hr_dev->qp_table.bank[bankid].inuse--;
--	spin_unlock(&hr_dev->qp_table.bank_lock);
-+	mutex_unlock(&hr_dev->qp_table.bank_mutex);
- }
- 
- static int set_rq_size(struct hns_roce_dev *hr_dev, struct ib_qp_cap *cap,
-@@ -1358,6 +1358,7 @@ int hns_roce_init_qp_table(struct hns_ro
- 	unsigned int i;
- 
- 	mutex_init(&qp_table->scc_mutex);
-+	mutex_init(&qp_table->bank_mutex);
- 	xa_init(&hr_dev->qp_table_xa);
- 
- 	reserved_from_bot = hr_dev->caps.reserved_qps;
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -250,6 +250,7 @@ static int set_core_reg(struct kvm_vcpu
+ 		case PSR_AA32_MODE_SVC:
+ 		case PSR_AA32_MODE_ABT:
+ 		case PSR_AA32_MODE_UND:
++		case PSR_AA32_MODE_SYS:
+ 			if (!vcpu_el1_is_32bit(vcpu))
+ 				return -EINVAL;
+ 			break;
 
 
 
