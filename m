@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-50916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 071E6906D6B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E198F906C69
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82FE4B26E4B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C210B25B42
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7AA148311;
-	Thu, 13 Jun 2024 11:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1D9143899;
+	Thu, 13 Jun 2024 11:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQ+8OQJr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjsfD6kW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1A014830B;
-	Thu, 13 Jun 2024 11:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E03E14265A;
+	Thu, 13 Jun 2024 11:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279764; cv=none; b=pynungVermJauJ+Wyy2ICfuNPUiX5eLVMFYJR4XqfEIoDJEQ8CxESoDoq7RowDqGGb3Df0J/8pfxw7QK2w70D4fC5Uble5RImzyia+gnhivdRYfg9Vgf9kSzpLmgwzD7g7OIFaWrGr1u9b+bboxBagFCimkQLqptJbEjrqg1i/I=
+	t=1718279281; cv=none; b=iGH4a/mcnlSAz/VUBNNFLgnCw/fKrcUwI/PXPd0nwV9gpJIb0uk7BrWItFbZ/m3TiNasqeKeeiF0p6hCPc+KXbQRhQRbFQ7BH1Pe7MB96MpK5778aQxewZpQ5cSirMgvXHa5S3fzbC6EQNhyagRC0+2mKjvLRxQsr18vLDHA/aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279764; c=relaxed/simple;
-	bh=HtGEjCbjCnJOqQE9xhWuG1lNSaxRbq3SBuFfA4w7wKM=;
+	s=arc-20240116; t=1718279281; c=relaxed/simple;
+	bh=XwTQpwIoJjs+VzvUKZXkINsfmL4hRTbZbdgc++NxqDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FAPUpxB2QIid7oCgVirJqYi2TqXVJpA2PeZg/X3N/jpthKOWSqN+wgAPtZyjR/KzKvmzv+DMm++TgrTpa2NW9MliEei3a+ZHqFvaF42NRsC7TddLGNMmnOmyBw7HdAZ1MA6NE9eSiHFG2VYpNHTDM3fmVrxqIm+nOc4qi8xuWh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQ+8OQJr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31421C2BBFC;
-	Thu, 13 Jun 2024 11:56:04 +0000 (UTC)
+	 MIME-Version; b=Bf6dmO3yvo3mmtPhXk7TlxO2TSBtyVn6cnf6H2392xvxYesFTEvzItREemp8B3odiVMwt+saBSvpZxb6WdnxHr0h7YpQ8thKnIuC0z9QI6qoeJx/23YiGo9JBijeWe6zzCQt15kCQKHun7HWjt+AgmsxHocs6PUJYamhsu2LgLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjsfD6kW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9949CC2BBFC;
+	Thu, 13 Jun 2024 11:48:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279764;
-	bh=HtGEjCbjCnJOqQE9xhWuG1lNSaxRbq3SBuFfA4w7wKM=;
+	s=korg; t=1718279281;
+	bh=XwTQpwIoJjs+VzvUKZXkINsfmL4hRTbZbdgc++NxqDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQ+8OQJrfApmez2OtnWvmZmbwDNvA/YgwiMbQzYO+AWdpvLba3/5bFYeivp6EQvRE
-	 Gtmjqg9Qf7uqT5cEv0WYIyYlxOp0z32K5n5WWp1vYEkwFxC7WCmdJvpXUmD3EpAWCm
-	 E7YI9g072NF0zHwSCm3esA7ywtSqKmi6hXIdE5Bg=
+	b=KjsfD6kWAf/h6ZlVy9x97lpdCwwlTgi7bwhbuvY3aA6VyOx1FPQJ7St1J9TpX2PXl
+	 N6px46ejGSZDSVWR+MZZjV+SZOQt0dAj+5vLkOeekL+KUL3FIx+qFvF0Lb8HNRBvmB
+	 G14uFqX0yI0jNLWNwumFrFpBf7+cKQnJkSNUE1rc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 029/202] qed: avoid truncating work queue length
-Date: Thu, 13 Jun 2024 13:32:07 +0200
-Message-ID: <20240613113228.896594845@linuxfoundation.org>
+	Jan Henrik Sylvester <jan.henrik.sylvester@uni-hamburg.de>,
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.9 003/157] afs: Dont cross .backup mountpoint from backup volume
+Date: Thu, 13 Jun 2024 13:32:08 +0200
+Message-ID: <20240613113227.530125914@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Marc Dionne <marc.dionne@auristor.com>
 
-[ Upstream commit 954fd908f177604d4cce77e2a88cc50b29bad5ff ]
+commit 29be9100aca2915fab54b5693309bc42956542e5 upstream.
 
-clang complains that the temporary string for the name passed into
-alloc_workqueue() is too short for its contents:
+Don't cross a mountpoint that explicitly specifies a backup volume
+(target is <vol>.backup) when starting from a backup volume.
 
-drivers/net/ethernet/qlogic/qed/qed_main.c:1218:3: error: 'snprintf' will always be truncated; specified size is 16, but format string expands to at least 18 [-Werror,-Wformat-truncation]
+It it not uncommon to mount a volume's backup directly in the volume
+itself.  This can cause tools that are not paying attention to get
+into a loop mounting the volume onto itself as they attempt to
+traverse the tree, leading to a variety of problems.
 
-There is no need for a temporary buffer, and the actual name of a workqueue
-is 32 bytes (WQ_NAME_LEN), so just use the interface as intended to avoid
-the truncation.
+This doesn't prevent the general case of loops in a sequence of
+mountpoints, but addresses a common special case in the same way
+as other afs clients.
 
-Fixes: 59ccf86fe69a ("qed: Add driver infrastucture for handling mfw requests.")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240326223825.4084412-4-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Jan Henrik Sylvester <jan.henrik.sylvester@uni-hamburg.de>
+Link: http://lists.infradead.org/pipermail/linux-afs/2024-May/008454.html
+Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
+Link: http://lists.infradead.org/pipermail/linux-afs/2024-February/008074.html
+Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/768760.1716567475@warthog.procyon.org.uk
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_main.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ fs/afs/mntpt.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_main.c b/drivers/net/ethernet/qlogic/qed/qed_main.c
-index 1cbcc27602780..91ca2b706938f 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_main.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_main.c
-@@ -1177,7 +1177,6 @@ static void qed_slowpath_task(struct work_struct *work)
- static int qed_slowpath_wq_start(struct qed_dev *cdev)
- {
- 	struct qed_hwfn *hwfn;
--	char name[NAME_SIZE];
- 	int i;
+--- a/fs/afs/mntpt.c
++++ b/fs/afs/mntpt.c
+@@ -140,6 +140,11 @@ static int afs_mntpt_set_params(struct f
+ 		put_page(page);
+ 		if (ret < 0)
+ 			return ret;
++
++		/* Don't cross a backup volume mountpoint from a backup volume */
++		if (src_as->volume && src_as->volume->type == AFSVL_BACKVOL &&
++		    ctx->type == AFSVL_BACKVOL)
++			return -ENODEV;
+ 	}
  
- 	if (IS_VF(cdev))
-@@ -1186,11 +1185,11 @@ static int qed_slowpath_wq_start(struct qed_dev *cdev)
- 	for_each_hwfn(cdev, i) {
- 		hwfn = &cdev->hwfns[i];
- 
--		snprintf(name, NAME_SIZE, "slowpath-%02x:%02x.%02x",
--			 cdev->pdev->bus->number,
--			 PCI_SLOT(cdev->pdev->devfn), hwfn->abs_pf_id);
-+		hwfn->slowpath_wq = alloc_workqueue("slowpath-%02x:%02x.%02x",
-+					 0, 0, cdev->pdev->bus->number,
-+					 PCI_SLOT(cdev->pdev->devfn),
-+					 hwfn->abs_pf_id);
- 
--		hwfn->slowpath_wq = alloc_workqueue(name, 0, 0);
- 		if (!hwfn->slowpath_wq) {
- 			DP_NOTICE(hwfn, "Cannot create slowpath workqueue\n");
- 			return -ENOMEM;
--- 
-2.43.0
-
+ 	return 0;
 
 
 
