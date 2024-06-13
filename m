@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B614906F91
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C60C90718D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:38:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F5C61C21F86
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 189261F26E85
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D074143C62;
-	Thu, 13 Jun 2024 12:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC3F142E86;
+	Thu, 13 Jun 2024 12:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fI17gYe6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bSbEh1b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE8D56458;
-	Thu, 13 Jun 2024 12:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BD11E519;
+	Thu, 13 Jun 2024 12:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281065; cv=none; b=oE+vajumYHJO0ni+0HdzgggAAPPdl3RxWaUS9g94FC0FZvPrYl/BRP0oq/HBFYr1cqrhGz563ACZZNZDcOglgKN6PTPMniMadU4lOjGEQ2IyNZ2DkNag19Mc/JgkqghWemQ3KDIcsSe9mjReGM85IyCdvza1msbJ/xNt0DGVZqs=
+	t=1718282267; cv=none; b=Zt1Dil3Csq2bR3EePsmZZJz1WgKGjfxBXTARlVK4hShuAPgCprYQV582NNVevQ5xstCapPvlW9WdUGdCRnljjO51ZFAEWCNDDTJqSNCUnbWqw/RA00iXsUhL3+zDQdZqceVlomf+XnRVccoNxqJDfT80lW4typQM6WvhQKtnJHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281065; c=relaxed/simple;
-	bh=MoLY7G7oqh9K1AIasR/+0ZPETZXq9fQ602TrSTziiJg=;
+	s=arc-20240116; t=1718282267; c=relaxed/simple;
+	bh=mNWtGGwbSMTdDmJgKR/JRSv80uqyW6mRXDRTbGpVBqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=feDRFm650mBB0yShZOWb7dEDxYeD0O/79QWBKuLVDV9cXZ2R6+DdA6us72QfNdbehy0BovGKdasmkO/MWTPr5MlASw9i+9FuqPBwGk6WdqOSqyiJp5f0uUlRQfaLMrukrOghTSAG9Rw/7yahYKc7T5/PjZr8s15iymqT0xRpqlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fI17gYe6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C28C4AF1C;
-	Thu, 13 Jun 2024 12:17:45 +0000 (UTC)
+	 MIME-Version; b=j/WbBUJ7ikT4Xfws748xD0UJgQ+/WrazohRwwB18guOGo7v/DHJJUc2flZwRFR3pjaTpnrL+UZS0Us2nBRcvNGcvDAnWhv3UF/GwbXkyuTpBHiDISlaANJ1Z7enrMxO4CzCnV0REaF6/4vmZyMfU+2LFEVI4j62oO2VPvPVFiPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bSbEh1b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EF3C2BBFC;
+	Thu, 13 Jun 2024 12:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281065;
-	bh=MoLY7G7oqh9K1AIasR/+0ZPETZXq9fQ602TrSTziiJg=;
+	s=korg; t=1718282267;
+	bh=mNWtGGwbSMTdDmJgKR/JRSv80uqyW6mRXDRTbGpVBqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fI17gYe6pvj2WgTN0XNwzRGSQOwHrJIFTIjUF6AFkoOZ97kuJAj8RHENfO41Ase0+
-	 LxtQW63OK3gm+1NvdQs+LIYRQgyDqIeHEg7llhQULGW/UCkUybXdfWJ3LUREofYP2f
-	 hHkEZ9a6XoR8Iw6epSB2nw/iPZX/3KvkDVLzsRbk=
+	b=1bSbEh1b3KgX57b5/6Ht+ZP1BfiYUhm+HtUKdVT6V/lhUv8JiFsAq2nS9aQGX5AjL
+	 xaEMaVVtH2X7aaeg26Z4rrDPS/eh8kM1b1GrkLIQlamDUSfg05Oe+J87mSkhqPxO7i
+	 DDec1o/1EMyCAYygh80r0HLkIEo52eUb5oG/R9xY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautammenghani201@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 127/317] selftests/kcmp: Make the test output consistent and clear
+Subject: [PATCH 5.15 188/402] serial: max3100: Fix bitwise types
 Date: Thu, 13 Jun 2024 13:32:25 +0200
-Message-ID: <20240613113252.472616932@linuxfoundation.org>
+Message-ID: <20240613113309.479455667@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam Menghani <gautammenghani201@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit ff682226a353d88ffa5db9c2a9b945066776311e ]
+[ Upstream commit e60955dbecb97f080848a57524827e2db29c70fd ]
 
-Make the output format of this test consistent. Currently the output is
-as follows:
+Sparse is not happy about misuse of bitwise types:
 
-+TAP version 13
-+1..1
-+# selftests: kcmp: kcmp_test
-+# pid1:  45814 pid2:  45815 FD:  1 FILES:  1 VM:  2 FS:  1 SIGHAND:  2
-+  IO:  0 SYSVSEM:  0 INV: -1
-+# PASS: 0 returned as expected
-+# PASS: 0 returned as expected
-+# PASS: 0 returned as expected
-+# # Planned tests != run tests (0 != 3)
-+# # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
-+# # Planned tests != run tests (0 != 3)
-+# # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
-+# # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-+ok 1 selftests: kcmp: kcmp_test
+  .../max3100.c:194:13: warning: incorrect type in assignment (different base types)
+  .../max3100.c:194:13:    expected unsigned short [addressable] [usertype] etx
+  .../max3100.c:194:13:    got restricted __be16 [usertype]
+  .../max3100.c:202:15: warning: cast to restricted __be16
 
-With this patch applied the output is as follows:
+Fix this by choosing proper types for the respective variables.
 
-+TAP version 13
-+1..1
-+# selftests: kcmp: kcmp_test
-+# TAP version 13
-+# 1..3
-+# pid1:  46330 pid2:  46331 FD:  1 FILES:  2 VM:  2 FS:  2 SIGHAND:  1
-+  IO:  0 SYSVSEM:  0 INV: -1
-+# PASS: 0 returned as expected
-+# PASS: 0 returned as expected
-+# PASS: 0 returned as expected
-+# # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
-+ok 1 selftests: kcmp: kcmp_test
-
-Signed-off-by: Gautam Menghani <gautammenghani201@gmail.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Stable-dep-of: eb59a5811371 ("selftests/kcmp: remove unused open mode")
+Fixes: 7831d56b0a35 ("tty: MAX3100")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240402195306.269276-4-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kcmp/kcmp_test.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/tty/serial/max3100.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/kcmp/kcmp_test.c b/tools/testing/selftests/kcmp/kcmp_test.c
-index 6ea7b9f37a411..25110c7c0b3ed 100644
---- a/tools/testing/selftests/kcmp/kcmp_test.c
-+++ b/tools/testing/selftests/kcmp/kcmp_test.c
-@@ -88,6 +88,9 @@ int main(int argc, char **argv)
- 		int pid2 = getpid();
- 		int ret;
- 
-+		ksft_print_header();
-+		ksft_set_plan(3);
+diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
+index 24cd345ea6e3d..8290ab72c05a3 100644
+--- a/drivers/tty/serial/max3100.c
++++ b/drivers/tty/serial/max3100.c
+@@ -45,6 +45,9 @@
+ #include <linux/freezer.h>
+ #include <linux/tty.h>
+ #include <linux/tty_flip.h>
++#include <linux/types.h>
 +
- 		fd2 = open(kpath, O_RDWR, 0644);
- 		if (fd2 < 0) {
- 			perror("Can't open file");
-@@ -152,7 +155,6 @@ int main(int argc, char **argv)
- 			ksft_inc_pass_cnt();
- 		}
++#include <asm/unaligned.h>
  
--		ksft_print_cnts();
+ #include <linux/serial_max3100.h>
  
- 		if (ret)
- 			ksft_exit_fail();
-@@ -162,5 +164,5 @@ int main(int argc, char **argv)
- 
- 	waitpid(pid2, &status, P_ALL);
- 
--	return ksft_exit_pass();
-+	return 0;
- }
+@@ -191,7 +194,7 @@ static void max3100_timeout(struct timer_list *t)
+ static int max3100_sr(struct max3100_port *s, u16 tx, u16 *rx)
+ {
+ 	struct spi_message message;
+-	u16 etx, erx;
++	__be16 etx, erx;
+ 	int status;
+ 	struct spi_transfer tran = {
+ 		.tx_buf = &etx,
 -- 
 2.43.0
 
