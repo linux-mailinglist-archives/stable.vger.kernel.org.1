@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-51085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D72906E44
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2259D907221
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF1801C20B7D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBF6BB27A3E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1AE143C46;
-	Thu, 13 Jun 2024 12:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF6A1EB5E;
+	Thu, 13 Jun 2024 12:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFadOOWQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/t+WeR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAD8137914;
-	Thu, 13 Jun 2024 12:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98721E519;
+	Thu, 13 Jun 2024 12:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280264; cv=none; b=bMT9MfzPFy6JjceOlZpFklRGXsbdXKhvAXsOz0/Uz6NDJMyajuC1h2KjsDHSc3G2HkrpTRp06SPYOZ1cd6pvdUp1AXHLFX2UZrrJMhuOmJqt7HN7j3cJaYVtJdp7qhN92ZraxIVa3ovHvnAxrt8FQ1Okz2J6gDZhrpEqlurYrJE=
+	t=1718282625; cv=none; b=vCHC+4T64YYMRyADM93HjTnRDLWLyjNirHN52GJKqqSZuGbQsdh/mU2szZFl8SHWhwhvat1Ab2oir93J07g6646lTCHaKN/P9XZeKwPuY/hPxe3YpGidGxY3sbB+85Ql+nRQ7YjJwKNCw8qjPOyl42/4z2NXDUzFDTRuOzlh4FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280264; c=relaxed/simple;
-	bh=WfEbRsTvIbWKY98zYDOtZU+CIYhlmq4RCpC/lAawOWM=;
+	s=arc-20240116; t=1718282625; c=relaxed/simple;
+	bh=nLMbJwFIJOGRaGCnryRfTViVLhdUixVGxX2cGGfuaO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O6jBrjk006hDA9SxA1aL3xqMYTGaWzy1kRatv9FFCAJpDbUMqE9GBfkKsMIJATSus+pNjvqEGODn87c837m3dTxRN3JiXKTB6CaBiQkRmiel0xMni0qPaEQpFkZOKQ1oe4kN/aFYQ0eex2mwU+RfeOfkoAO8xaBBlLs93jawunE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFadOOWQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9699CC2BBFC;
-	Thu, 13 Jun 2024 12:04:23 +0000 (UTC)
+	 MIME-Version; b=RhU1bWLBf16DTpIrlImyGq9uFCempCWdZBfv1yiEjBVJyjSf1oUxRNtWz7vS9s+/6UtYUhvzq/1Iec+jdjYRWeNkUihH8NEoP6cokDVnmZYspqr1D4svmJ9gi1o4ZQG6DR60YB6Pcd1hz+X5StNQoKVeZFBTRtYgoPomwoIXEr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/t+WeR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317A5C2BBFC;
+	Thu, 13 Jun 2024 12:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280264;
-	bh=WfEbRsTvIbWKY98zYDOtZU+CIYhlmq4RCpC/lAawOWM=;
+	s=korg; t=1718282625;
+	bh=nLMbJwFIJOGRaGCnryRfTViVLhdUixVGxX2cGGfuaO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EFadOOWQJIku5hsjZMeUbyjpMDhoeNY7+A2L1p6Na9bA6zUExFQaDB88LGgaAvLjT
-	 GZ49lxSy/UYWd4a9xCsEiAodL8mssXDT+AQAdWfvb/l+8Sl8efcS+x5Zio9WApCvNZ
-	 Vpm28kOyZeZIASbg9huXQBzvJlDt6jxNtDEH7KoA=
+	b=a/t+WeR9jFSg/OeNqAQ5NIUGiWMswT8G5vZ72+6CX+yjfimY/DnA7DLV58q1UktjV
+	 Nso7PAV/p21bkOAOnTbA8PWcZSaeYoYaYQyKFIjup8+crWGgsbUmXPhBBUTr8X5vcw
+	 /x8B3A1nvXSPv/H8QmcJ9tjJu3LK3vho3cCuy9vQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Jonathan Lemon <jonathan.lemon@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 5.4 198/202] xsk: validate user input for XDP_{UMEM|COMPLETION}_FILL_RING
-Date: Thu, 13 Jun 2024 13:34:56 +0200
-Message-ID: <20240613113235.379219562@linuxfoundation.org>
+	Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>
+Subject: [PATCH 5.15 340/402] drm: Check output polling initialized before disabling
+Date: Thu, 13 Jun 2024 13:34:57 +0200
+Message-ID: <20240613113315.395996612@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,180 +59,187 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
 
-commit 237f3cf13b20db183d3706d997eedc3c49eacd44 upstream.
+commit 5abffb66d12bcac84bf7b66389c571b8bb6e82bd upstream.
 
-syzbot reported an illegal copy in xsk_setsockopt() [1]
+In drm_kms_helper_poll_disable() check if output polling
+support is initialized before disabling polling. If not flag
+this as a warning.
+Additionally in drm_mode_config_helper_suspend() and
+drm_mode_config_helper_resume() calls, that re the callers of these
+functions, avoid invoking them if polling is not initialized.
+For drivers like hyperv-drm, that do not initialize connector
+polling, if suspend is called without this check, it leads to
+suspend failure with following stack
+[  770.719392] Freezing remaining freezable tasks ... (elapsed 0.001 seconds) done.
+[  770.720592] printk: Suspending console(s) (use no_console_suspend to debug)
+[  770.948823] ------------[ cut here ]------------
+[  770.948824] WARNING: CPU: 1 PID: 17197 at kernel/workqueue.c:3162 __flush_work.isra.0+0x212/0x230
+[  770.948831] Modules linked in: rfkill nft_counter xt_conntrack xt_owner udf nft_compat crc_itu_t nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables nfnetlink vfat fat mlx5_ib ib_uverbs ib_core mlx5_core intel_rapl_msr intel_rapl_common kvm_amd ccp mlxfw kvm psample hyperv_drm tls drm_shmem_helper drm_kms_helper irqbypass pcspkr syscopyarea sysfillrect sysimgblt hv_balloon hv_utils joydev drm fuse xfs libcrc32c pci_hyperv pci_hyperv_intf sr_mod sd_mod cdrom t10_pi sg hv_storvsc scsi_transport_fc hv_netvsc serio_raw hyperv_keyboard hid_hyperv crct10dif_pclmul crc32_pclmul crc32c_intel hv_vmbus ghash_clmulni_intel dm_mirror dm_region_hash dm_log dm_mod
+[  770.948863] CPU: 1 PID: 17197 Comm: systemd-sleep Not tainted 5.14.0-362.2.1.el9_3.x86_64 #1
+[  770.948865] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 05/09/2022
+[  770.948866] RIP: 0010:__flush_work.isra.0+0x212/0x230
+[  770.948869] Code: 8b 4d 00 4c 8b 45 08 89 ca 48 c1 e9 04 83 e2 08 83 e1 0f 83 ca 02 89 c8 48 0f ba 6d 00 03 e9 25 ff ff ff 0f 0b e9 4e ff ff ff <0f> 0b 45 31 ed e9 44 ff ff ff e8 8f 89 b2 00 66 66 2e 0f 1f 84 00
+[  770.948870] RSP: 0018:ffffaf4ac213fb10 EFLAGS: 00010246
+[  770.948871] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff8c992857
+[  770.948872] RDX: 0000000000000001 RSI: 0000000000000001 RDI: ffff9aad82b00330
+[  770.948873] RBP: ffff9aad82b00330 R08: 0000000000000000 R09: ffff9aad87ee3d10
+[  770.948874] R10: 0000000000000200 R11: 0000000000000000 R12: ffff9aad82b00330
+[  770.948874] R13: 0000000000000001 R14: 0000000000000000 R15: 0000000000000001
+[  770.948875] FS:  00007ff1b2f6bb40(0000) GS:ffff9aaf37d00000(0000) knlGS:0000000000000000
+[  770.948878] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  770.948878] CR2: 0000555f345cb666 CR3: 00000001462dc005 CR4: 0000000000370ee0
+[  770.948879] Call Trace:
+[  770.948880]  <TASK>
+[  770.948881]  ? show_trace_log_lvl+0x1c4/0x2df
+[  770.948884]  ? show_trace_log_lvl+0x1c4/0x2df
+[  770.948886]  ? __cancel_work_timer+0x103/0x190
+[  770.948887]  ? __flush_work.isra.0+0x212/0x230
+[  770.948889]  ? __warn+0x81/0x110
+[  770.948891]  ? __flush_work.isra.0+0x212/0x230
+[  770.948892]  ? report_bug+0x10a/0x140
+[  770.948895]  ? handle_bug+0x3c/0x70
+[  770.948898]  ? exc_invalid_op+0x14/0x70
+[  770.948899]  ? asm_exc_invalid_op+0x16/0x20
+[  770.948903]  ? __flush_work.isra.0+0x212/0x230
+[  770.948905]  __cancel_work_timer+0x103/0x190
+[  770.948907]  ? _raw_spin_unlock_irqrestore+0xa/0x30
+[  770.948910]  drm_kms_helper_poll_disable+0x1e/0x40 [drm_kms_helper]
+[  770.948923]  drm_mode_config_helper_suspend+0x1c/0x80 [drm_kms_helper]
+[  770.948933]  ? __pfx_vmbus_suspend+0x10/0x10 [hv_vmbus]
+[  770.948942]  hyperv_vmbus_suspend+0x17/0x40 [hyperv_drm]
+[  770.948944]  ? __pfx_vmbus_suspend+0x10/0x10 [hv_vmbus]
+[  770.948951]  dpm_run_callback+0x4c/0x140
+[  770.948954]  __device_suspend_noirq+0x74/0x220
+[  770.948956]  dpm_noirq_suspend_devices+0x148/0x2a0
+[  770.948958]  dpm_suspend_end+0x54/0xe0
+[  770.948960]  create_image+0x14/0x290
+[  770.948963]  hibernation_snapshot+0xd6/0x200
+[  770.948964]  hibernate.cold+0x8b/0x1fb
+[  770.948967]  state_store+0xcd/0xd0
+[  770.948969]  kernfs_fop_write_iter+0x124/0x1b0
+[  770.948973]  new_sync_write+0xff/0x190
+[  770.948976]  vfs_write+0x1ef/0x280
+[  770.948978]  ksys_write+0x5f/0xe0
+[  770.948979]  do_syscall_64+0x5c/0x90
+[  770.948981]  ? syscall_exit_work+0x103/0x130
+[  770.948983]  ? syscall_exit_to_user_mode+0x12/0x30
+[  770.948985]  ? do_syscall_64+0x69/0x90
+[  770.948986]  ? do_syscall_64+0x69/0x90
+[  770.948987]  ? do_user_addr_fault+0x1d6/0x6a0
+[  770.948989]  ? do_syscall_64+0x69/0x90
+[  770.948990]  ? exc_page_fault+0x62/0x150
+[  770.948992]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+[  770.948995] RIP: 0033:0x7ff1b293eba7
+[  770.949010] Code: 0b 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
+[  770.949011] RSP: 002b:00007ffde3912128 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+[  770.949012] RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007ff1b293eba7
+[  770.949013] RDX: 0000000000000005 RSI: 00007ffde3912210 RDI: 0000000000000004
+[  770.949014] RBP: 00007ffde3912210 R08: 000055d7dd4c9510 R09: 00007ff1b29b14e0
+[  770.949014] R10: 00007ff1b29b13e0 R11: 0000000000000246 R12: 0000000000000005
+[  770.949015] R13: 000055d7dd4c53e0 R14: 0000000000000005 R15: 00007ff1b29f69e0
+[  770.949016]  </TASK>
+[  770.949017] ---[ end trace e6fa0618bfa2f31d ]---
 
-Make sure to validate setsockopt() @optlen parameter.
-
-[1]
-
- BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset include/linux/sockptr.h:49 [inline]
- BUG: KASAN: slab-out-of-bounds in copy_from_sockptr include/linux/sockptr.h:55 [inline]
- BUG: KASAN: slab-out-of-bounds in xsk_setsockopt+0x909/0xa40 net/xdp/xsk.c:1420
-Read of size 4 at addr ffff888028c6cde3 by task syz-executor.0/7549
-
-CPU: 0 PID: 7549 Comm: syz-executor.0 Not tainted 6.8.0-syzkaller-08951-gfe46a7dd189e #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-Call Trace:
- <TASK>
-  __dump_stack lib/dump_stack.c:88 [inline]
-  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
-  print_address_description mm/kasan/report.c:377 [inline]
-  print_report+0x169/0x550 mm/kasan/report.c:488
-  kasan_report+0x143/0x180 mm/kasan/report.c:601
-  copy_from_sockptr_offset include/linux/sockptr.h:49 [inline]
-  copy_from_sockptr include/linux/sockptr.h:55 [inline]
-  xsk_setsockopt+0x909/0xa40 net/xdp/xsk.c:1420
-  do_sock_setsockopt+0x3af/0x720 net/socket.c:2311
-  __sys_setsockopt+0x1ae/0x250 net/socket.c:2334
-  __do_sys_setsockopt net/socket.c:2343 [inline]
-  __se_sys_setsockopt net/socket.c:2340 [inline]
-  __x64_sys_setsockopt+0xb5/0xd0 net/socket.c:2340
- do_syscall_64+0xfb/0x240
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-RIP: 0033:0x7fb40587de69
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fb40665a0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000036
-RAX: ffffffffffffffda RBX: 00007fb4059abf80 RCX: 00007fb40587de69
-RDX: 0000000000000005 RSI: 000000000000011b RDI: 0000000000000006
-RBP: 00007fb4058ca47a R08: 0000000000000002 R09: 0000000000000000
-R10: 0000000020001980 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000000000b R14: 00007fb4059abf80 R15: 00007fff57ee4d08
- </TASK>
-
-Allocated by task 7549:
-  kasan_save_stack mm/kasan/common.c:47 [inline]
-  kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
-  poison_kmalloc_redzone mm/kasan/common.c:370 [inline]
-  __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:387
-  kasan_kmalloc include/linux/kasan.h:211 [inline]
-  __do_kmalloc_node mm/slub.c:3966 [inline]
-  __kmalloc+0x233/0x4a0 mm/slub.c:3979
-  kmalloc include/linux/slab.h:632 [inline]
-  __cgroup_bpf_run_filter_setsockopt+0xd2f/0x1040 kernel/bpf/cgroup.c:1869
-  do_sock_setsockopt+0x6b4/0x720 net/socket.c:2293
-  __sys_setsockopt+0x1ae/0x250 net/socket.c:2334
-  __do_sys_setsockopt net/socket.c:2343 [inline]
-  __se_sys_setsockopt net/socket.c:2340 [inline]
-  __x64_sys_setsockopt+0xb5/0xd0 net/socket.c:2340
- do_syscall_64+0xfb/0x240
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-The buggy address belongs to the object at ffff888028c6cde0
- which belongs to the cache kmalloc-8 of size 8
-The buggy address is located 1 bytes to the right of
- allocated 2-byte region [ffff888028c6cde0, ffff888028c6cde2)
-
-The buggy address belongs to the physical page:
-page:ffffea0000a31b00 refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff888028c6c9c0 pfn:0x28c6c
-anon flags: 0xfff00000000800(slab|node=0|zone=1|lastcpupid=0x7ff)
-page_type: 0xffffffff()
-raw: 00fff00000000800 ffff888014c41280 0000000000000000 dead000000000001
-raw: ffff888028c6c9c0 0000000080800057 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 0, migratetype Unmovable, gfp_mask 0x112cc0(GFP_USER|__GFP_NOWARN|__GFP_NORETRY), pid 6648, tgid 6644 (syz-executor.0), ts 133906047828, free_ts 133859922223
-  set_page_owner include/linux/page_owner.h:31 [inline]
-  post_alloc_hook+0x1ea/0x210 mm/page_alloc.c:1533
-  prep_new_page mm/page_alloc.c:1540 [inline]
-  get_page_from_freelist+0x33ea/0x3580 mm/page_alloc.c:3311
-  __alloc_pages+0x256/0x680 mm/page_alloc.c:4569
-  __alloc_pages_node include/linux/gfp.h:238 [inline]
-  alloc_pages_node include/linux/gfp.h:261 [inline]
-  alloc_slab_page+0x5f/0x160 mm/slub.c:2175
-  allocate_slab mm/slub.c:2338 [inline]
-  new_slab+0x84/0x2f0 mm/slub.c:2391
-  ___slab_alloc+0xc73/0x1260 mm/slub.c:3525
-  __slab_alloc mm/slub.c:3610 [inline]
-  __slab_alloc_node mm/slub.c:3663 [inline]
-  slab_alloc_node mm/slub.c:3835 [inline]
-  __do_kmalloc_node mm/slub.c:3965 [inline]
-  __kmalloc_node+0x2db/0x4e0 mm/slub.c:3973
-  kmalloc_node include/linux/slab.h:648 [inline]
-  __vmalloc_area_node mm/vmalloc.c:3197 [inline]
-  __vmalloc_node_range+0x5f9/0x14a0 mm/vmalloc.c:3392
-  __vmalloc_node mm/vmalloc.c:3457 [inline]
-  vzalloc+0x79/0x90 mm/vmalloc.c:3530
-  bpf_check+0x260/0x19010 kernel/bpf/verifier.c:21162
-  bpf_prog_load+0x1667/0x20f0 kernel/bpf/syscall.c:2895
-  __sys_bpf+0x4ee/0x810 kernel/bpf/syscall.c:5631
-  __do_sys_bpf kernel/bpf/syscall.c:5738 [inline]
-  __se_sys_bpf kernel/bpf/syscall.c:5736 [inline]
-  __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:5736
- do_syscall_64+0xfb/0x240
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-page last free pid 6650 tgid 6647 stack trace:
-  reset_page_owner include/linux/page_owner.h:24 [inline]
-  free_pages_prepare mm/page_alloc.c:1140 [inline]
-  free_unref_page_prepare+0x95d/0xa80 mm/page_alloc.c:2346
-  free_unref_page_list+0x5a3/0x850 mm/page_alloc.c:2532
-  release_pages+0x2117/0x2400 mm/swap.c:1042
-  tlb_batch_pages_flush mm/mmu_gather.c:98 [inline]
-  tlb_flush_mmu_free mm/mmu_gather.c:293 [inline]
-  tlb_flush_mmu+0x34d/0x4e0 mm/mmu_gather.c:300
-  tlb_finish_mmu+0xd4/0x200 mm/mmu_gather.c:392
-  exit_mmap+0x4b6/0xd40 mm/mmap.c:3300
-  __mmput+0x115/0x3c0 kernel/fork.c:1345
-  exit_mm+0x220/0x310 kernel/exit.c:569
-  do_exit+0x99e/0x27e0 kernel/exit.c:865
-  do_group_exit+0x207/0x2c0 kernel/exit.c:1027
-  get_signal+0x176e/0x1850 kernel/signal.c:2907
-  arch_do_signal_or_restart+0x96/0x860 arch/x86/kernel/signal.c:310
-  exit_to_user_mode_loop kernel/entry/common.c:105 [inline]
-  exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
-  __syscall_exit_to_user_mode_work kernel/entry/common.c:201 [inline]
-  syscall_exit_to_user_mode+0xc9/0x360 kernel/entry/common.c:212
-  do_syscall_64+0x10a/0x240 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-Memory state around the buggy address:
- ffff888028c6cc80: fa fc fc fc fa fc fc fc fa fc fc fc fa fc fc fc
- ffff888028c6cd00: fa fc fc fc fa fc fc fc 00 fc fc fc 06 fc fc fc
->ffff888028c6cd80: fa fc fc fc fa fc fc fc fa fc fc fc 02 fc fc fc
-                                                       ^
- ffff888028c6ce00: fa fc fc fc fa fc fc fc fa fc fc fc fa fc fc fc
- ffff888028c6ce80: fa fc fc fc fa fc fc fc fa fc fc fc fa fc fc fc
-
-Fixes: 423f38329d26 ("xsk: add umem fill queue support and mmap")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: "Björn Töpel" <bjorn@kernel.org>
-Cc: Magnus Karlsson <magnus.karlsson@intel.com>
-Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: Jonathan Lemon <jonathan.lemon@gmail.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20240404202738.3634547-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[shung-hsi.yu:  copy_from_sockptr() in the context was replaced with
-copy_from_usr() because commit a7b75c5a8c414
-("net: pass a sockptr_t into ->setsockopt") was not present]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Built-on: Rhel9, Ubuntu22
+Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/1706856208-9617-1-git-send-email-shradhagupta@linux.microsoft.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xdp/xsk.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/drm_modeset_helper.c |   19 ++++++++++++++++---
+ drivers/gpu/drm/drm_probe_helper.c   |   12 ++++++++++--
+ 2 files changed, 26 insertions(+), 5 deletions(-)
 
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -809,6 +809,8 @@ static int xsk_setsockopt(struct socket
- 		struct xsk_queue **q;
- 		int entries;
+--- a/drivers/gpu/drm/drm_modeset_helper.c
++++ b/drivers/gpu/drm/drm_modeset_helper.c
+@@ -198,13 +198,22 @@ int drm_mode_config_helper_suspend(struc
  
-+		if (optlen < sizeof(entries))
-+			return -EINVAL;
- 		if (copy_from_user(&entries, optval, sizeof(entries)))
- 			return -EFAULT;
+ 	if (!dev)
+ 		return 0;
++	/*
++	 * Don't disable polling if it was never initialized
++	 */
++	if (dev->mode_config.poll_enabled)
++		drm_kms_helper_poll_disable(dev);
  
+-	drm_kms_helper_poll_disable(dev);
+ 	drm_fb_helper_set_suspend_unlocked(dev->fb_helper, 1);
+ 	state = drm_atomic_helper_suspend(dev);
+ 	if (IS_ERR(state)) {
+ 		drm_fb_helper_set_suspend_unlocked(dev->fb_helper, 0);
+-		drm_kms_helper_poll_enable(dev);
++		/*
++		 * Don't enable polling if it was never initialized
++		 */
++		if (dev->mode_config.poll_enabled)
++			drm_kms_helper_poll_enable(dev);
++
+ 		return PTR_ERR(state);
+ 	}
+ 
+@@ -244,7 +253,11 @@ int drm_mode_config_helper_resume(struct
+ 	dev->mode_config.suspend_state = NULL;
+ 
+ 	drm_fb_helper_set_suspend_unlocked(dev->fb_helper, 0);
+-	drm_kms_helper_poll_enable(dev);
++	/*
++	 * Don't enable polling if it is not initialized
++	 */
++	if (dev->mode_config.poll_enabled)
++		drm_kms_helper_poll_enable(dev);
+ 
+ 	return ret;
+ }
+--- a/drivers/gpu/drm/drm_probe_helper.c
++++ b/drivers/gpu/drm/drm_probe_helper.c
+@@ -235,6 +235,9 @@ drm_connector_mode_valid(struct drm_conn
+  * Drivers can call this helper from their device resume implementation. It is
+  * not an error to call this even when output polling isn't enabled.
+  *
++ * If device polling was never initialized before, this call will trigger a
++ * warning and return.
++ *
+  * Note that calls to enable and disable polling must be strictly ordered, which
+  * is automatically the case when they're only call from suspend/resume
+  * callbacks.
+@@ -246,7 +249,8 @@ void drm_kms_helper_poll_enable(struct d
+ 	struct drm_connector_list_iter conn_iter;
+ 	unsigned long delay = DRM_OUTPUT_POLL_PERIOD;
+ 
+-	if (!dev->mode_config.poll_enabled || !drm_kms_helper_poll)
++	if (drm_WARN_ON_ONCE(dev, !dev->mode_config.poll_enabled) ||
++	    !drm_kms_helper_poll || dev->mode_config.poll_running)
+ 		return;
+ 
+ 	drm_connector_list_iter_begin(dev, &conn_iter);
+@@ -742,14 +746,18 @@ EXPORT_SYMBOL(drm_kms_helper_is_poll_wor
+  * not an error to call this even when output polling isn't enabled or already
+  * disabled. Polling is re-enabled by calling drm_kms_helper_poll_enable().
+  *
++ * If however, the polling was never initialized, this call will trigger a
++ * warning and return
++ *
+  * Note that calls to enable and disable polling must be strictly ordered, which
+  * is automatically the case when they're only call from suspend/resume
+  * callbacks.
+  */
+ void drm_kms_helper_poll_disable(struct drm_device *dev)
+ {
+-	if (!dev->mode_config.poll_enabled)
++	if (drm_WARN_ON(dev, !dev->mode_config.poll_enabled))
+ 		return;
++
+ 	cancel_delayed_work_sync(&dev->mode_config.output_poll_work);
+ }
+ EXPORT_SYMBOL(drm_kms_helper_poll_disable);
 
 
 
