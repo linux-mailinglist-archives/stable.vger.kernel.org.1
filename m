@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973DF906DF1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAEB9906EA3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 358AAB24C9C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2C0F1C22C44
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E91145A0B;
-	Thu, 13 Jun 2024 12:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7656E146581;
+	Thu, 13 Jun 2024 12:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zH+y0b7q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTnvEsTV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3D11474C6;
-	Thu, 13 Jun 2024 12:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E8514600D;
+	Thu, 13 Jun 2024 12:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280059; cv=none; b=cSAQU/gZS4EEYLLEA/Milv1YJRGxawAYWuR0xBSki55/VJucxL13I62Ik6rDLu+HJQSkSpUltBcDQ6ImylPR+RFUEyP9TBiQ2MdpW+NeZ42gX30IzCE492uonMLeA5RYKnp5/mc/PemOqR6s7StyD9Xo1T6/OLF4fuLKgQTb0W8=
+	t=1718280512; cv=none; b=h5Guk2ZmbFyVfCdtm/CQ74KcDY6lANuKHL0yAaMQkwNM0JHAIbXr09xmg8Ctp7Kj+AAB//oifs/jL8y0goRtde3PNJahCwM9L252Oae7BqzyYHo8jdebPTqxkRRz2CncqtLC2g3Vqrr0m28mhK7VL3h3xcZoj1ZjyzSM5g5v6qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280059; c=relaxed/simple;
-	bh=YKBDbKJcJf2x6anUcQOguvGNsO9FMfspih+IOAkILOs=;
+	s=arc-20240116; t=1718280512; c=relaxed/simple;
+	bh=z54+IXJd2D7Q5EgB9hmlEweBGB3omQmg2+7PXSVCo0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r5QWsWNxukhFXHFfJCIu0yE/sIB3ZSCr1X4CQymj19q39swecSsw/RifB9SJRvRc6SwnxKIDw7W/Mn2l5TWAgd39nrmM7m2CRDl7lTdhJkRlFvK35NBd1BGQDSNk4RkxUitpDsseKUbrnZZ9mhofM66CUqyaStnleotFidXqWmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zH+y0b7q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A1BC32786;
-	Thu, 13 Jun 2024 12:00:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UG1FJhm7u5FDV+nvTa3Dsg00WQK0e88hH6jzOQYVJ3unjNO92uFnNVMd7EeZoVaorR1gX6dQ1EikniuyVzMQMeNO3bMrG+0RJuj79/gy4hMakPMbLx4HLtOUTiRVVarQw6Fmg9ctaWZX2v+OWy/Mnb3vPHF/BbLjdlEr6tMERbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTnvEsTV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C14C32786;
+	Thu, 13 Jun 2024 12:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280059;
-	bh=YKBDbKJcJf2x6anUcQOguvGNsO9FMfspih+IOAkILOs=;
+	s=korg; t=1718280512;
+	bh=z54+IXJd2D7Q5EgB9hmlEweBGB3omQmg2+7PXSVCo0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zH+y0b7qn6jqSQWhaIMzzmdDeZJdn68ErCb2RYNf++hJJpEy9LrZUUdvpClcqZrKn
-	 0a8T0f+yjnuYo/ejLxY6UxgW/Fkan0YJqdEwlZAXo4RU4F86MMtLChB/Eh77TbUAZi
-	 Y7udNlcdDtnQ3bEsV+thGenLVnvhAkishT+2QQMc=
+	b=cTnvEsTVAggwWqhoXNlbIT+iNxd0DN+P2Lg5R19HvwtTxp/rDwTPUjl+2q7PKK5N1
+	 DREwOJT+3mtdbAgCv5Rlro6NdO4LD1vgBn1gvRgv5Dc54+2tQNnQkvYXhFKfmzRW2Q
+	 S8plxoj5Bafpts6A4c29sZjCx3JuVB107Zb5QCnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 129/202] media: stk1160: fix bounds checking in stk1160_copy_video()
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 047/137] mmc: davinci: Dont strip remove function when driver is builtin
 Date: Thu, 13 Jun 2024 13:33:47 +0200
-Message-ID: <20240613113232.741546905@linuxfoundation.org>
+Message-ID: <20240613113225.120222516@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +59,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit faa4364bef2ec0060de381ff028d1d836600a381 ]
+commit 55c421b364482b61c4c45313a535e61ed5ae4ea3 upstream.
 
-The subtract in this condition is reversed.  The ->length is the length
-of the buffer.  The ->bytesused is how many bytes we have copied thus
-far.  When the condition is reversed that means the result of the
-subtraction is always negative but since it's unsigned then the result
-is a very high positive value.  That means the overflow check is never
-true.
+Using __exit for the remove function results in the remove callback being
+discarded with CONFIG_MMC_DAVINCI=y. When such a device gets unbound (e.g.
+using sysfs or hotplug), the driver is just removed without the cleanup
+being performed. This results in resource leaks. Fix it by compiling in the
+remove callback unconditionally.
 
-Additionally, the ->bytesused doesn't actually work for this purpose
-because we're not writing to "buf->mem + buf->bytesused".  Instead, the
-math to calculate the destination where we are writing is a bit
-involved.  You calculate the number of full lines already written,
-multiply by two, skip a line if necessary so that we start on an odd
-numbered line, and add the offset into the line.
+This also fixes a W=1 modpost warning:
 
-To fix this buffer overflow, just take the actual destination where we
-are writing, if the offset is already out of bounds print an error and
-return.  Otherwise, write up to buf->length bytes.
+WARNING: modpost: drivers/mmc/host/davinci_mmc: section mismatch in
+reference: davinci_mmcsd_driver+0x10 (section: .data) ->
+davinci_mmcsd_remove (section: .exit.text)
 
-Fixes: 9cb2173e6ea8 ("[media] media: Add stk1160 new driver (easycap replacement)")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b4cff4549b7a ("DaVinci: MMC: MMC/SD controller driver for DaVinci family")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240324114017.231936-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/stk1160/stk1160-video.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/mmc/host/davinci_mmc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/stk1160/stk1160-video.c b/drivers/media/usb/stk1160/stk1160-video.c
-index 4cf540d1b2501..2a5a90311e0cc 100644
---- a/drivers/media/usb/stk1160/stk1160-video.c
-+++ b/drivers/media/usb/stk1160/stk1160-video.c
-@@ -99,7 +99,7 @@ void stk1160_buffer_done(struct stk1160 *dev)
- static inline
- void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+--- a/drivers/mmc/host/davinci_mmc.c
++++ b/drivers/mmc/host/davinci_mmc.c
+@@ -1344,7 +1344,7 @@ ioremap_fail:
+ 	return ret;
+ }
+ 
+-static void __exit davinci_mmcsd_remove(struct platform_device *pdev)
++static void davinci_mmcsd_remove(struct platform_device *pdev)
  {
--	int linesdone, lineoff, lencopy;
-+	int linesdone, lineoff, lencopy, offset;
- 	int bytesperline = dev->width * 2;
- 	struct stk1160_buffer *buf = dev->isoc_ctl.buf;
- 	u8 *dst = buf->mem;
-@@ -139,8 +139,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
- 	 * Check if we have enough space left in the buffer.
- 	 * In that case, we force loop exit after copy.
- 	 */
--	if (lencopy > buf->bytesused - buf->length) {
--		lencopy = buf->bytesused - buf->length;
-+	offset = dst - (u8 *)buf->mem;
-+	if (offset > buf->length) {
-+		dev_warn_ratelimited(dev->dev, "out of bounds offset\n");
-+		return;
-+	}
-+	if (lencopy > buf->length - offset) {
-+		lencopy = buf->length - offset;
- 		remain = lencopy;
- 	}
+ 	struct mmc_davinci_host *host = platform_get_drvdata(pdev);
  
-@@ -182,8 +187,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
- 		 * Check if we have enough space left in the buffer.
- 		 * In that case, we force loop exit after copy.
- 		 */
--		if (lencopy > buf->bytesused - buf->length) {
--			lencopy = buf->bytesused - buf->length;
-+		offset = dst - (u8 *)buf->mem;
-+		if (offset > buf->length) {
-+			dev_warn_ratelimited(dev->dev, "offset out of bounds\n");
-+			return;
-+		}
-+		if (lencopy > buf->length - offset) {
-+			lencopy = buf->length - offset;
- 			remain = lencopy;
- 		}
+@@ -1399,7 +1399,7 @@ static struct platform_driver davinci_mm
+ 		.of_match_table = davinci_mmc_dt_ids,
+ 	},
+ 	.probe		= davinci_mmcsd_probe,
+-	.remove_new	= __exit_p(davinci_mmcsd_remove),
++	.remove_new	= davinci_mmcsd_remove,
+ 	.id_table	= davinci_mmc_devtype,
+ };
  
--- 
-2.43.0
-
 
 
 
