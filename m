@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 819C1906F87
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:21:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CAE90713E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA2D328692C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:21:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AEF51C23A83
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C412C148836;
-	Thu, 13 Jun 2024 12:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90A0A59;
+	Thu, 13 Jun 2024 12:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHeK/2fl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOEVNUY8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819A413A411;
-	Thu, 13 Jun 2024 12:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6971B28FF;
+	Thu, 13 Jun 2024 12:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281030; cv=none; b=ps4ctP0hk8uBSi6P8R/eYSoFs0asyBrJ+kWZy0Oy6z0/aT7kNruehIoh3K/k+nPKVa+oHNc1UTVBUjP05v0nAnIPxHoWBqtlwdy479wt7gGx4rfCMUGCJtntukKx7kuUgZ6Zb90ZVrJgnAb8ijQU8yfFjsSl5uxUj+UqU9R9Vgs=
+	t=1718282094; cv=none; b=NMMYGddmXzNj/Kd2r4Gr+jiDLFW5o/vyyYWDV/+5Lzym6iOYQI7rO1U7Yj7nUFAq5tE8E9qtlwP1pdcJTJGD5/Lv7vae3bImPiLpOtBpfH4Nw7PH6L9ikX4v3bxNLw1Nk/QameRXRW2A26yqvB4NDbPFwQLTMnvyEwSTkXKx9Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281030; c=relaxed/simple;
-	bh=RCviqpWGABC95qMDrncK7JFywwzymjdJu3zNZopbxow=;
+	s=arc-20240116; t=1718282094; c=relaxed/simple;
+	bh=j0ncoBzso884t9Cp+ixDbatGC/uqkYXqAcYQu6Dmejk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGGwY60+yNQKn77drkOfLjHNn2XiKXzajenX/wI8UGTcskZLlsvfZpT85vYGD58Kd3eJ0N6g0DUUsibcUZjpqXVl76eDahVyPUynMJknZD3MnXW726yvvmrTxek2W22rrcdMgDJogTjVFRJP9P8v7ZYRYS/RrZsHmtBuk5k/7M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHeK/2fl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E822EC32786;
-	Thu, 13 Jun 2024 12:17:09 +0000 (UTC)
+	 MIME-Version; b=azqd17rvS4ksoRVLFuWjy7ncM7qsDylWUi+LaV7apocqxnky6Utl/nJ0T/PNmNR6uTsTr0WEhYxrgD6CrBJteu/Tm4CYI+NBrON7RJU1giuzRuxHUjb6lJLqbtvNKhFvD3itbq1hfuk6orukHVDqsdKnY5FmT8i2HNtC3dxIldc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOEVNUY8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60F2C2BBFC;
+	Thu, 13 Jun 2024 12:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281030;
-	bh=RCviqpWGABC95qMDrncK7JFywwzymjdJu3zNZopbxow=;
+	s=korg; t=1718282094;
+	bh=j0ncoBzso884t9Cp+ixDbatGC/uqkYXqAcYQu6Dmejk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vHeK/2flXCglI72hGMUL+7zjOy00BgyeVv+R/pUmT3+4tpzvwgatG+x+QuJsKwKce
-	 JpkV6pjvcZmu9n7EKx0VPHCJwDS6BQdn0ZAjO/3V3tUWgpvOnYWqi0OqIDZoEvTqVU
-	 fZZbMTARbW8PU2Z4RVCe57AqFVJKBcjUZc6irIfQ=
+	b=yOEVNUY8x/OnM0AXvNOrRYrAvh5W756PQI0nXKPGGLwUSrNbt16royGVazbq5ABhf
+	 yNGjmc6sI/nCEOsHwc+7UUwFez8HaI+/gthSNBrkCX7cyKeqk8oVrl680IRXwnZ+GI
+	 9q+ZcrvUBR86OpwUbebNku1nz3U3HvLmvBbkIbG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Burakov <a.burakov@rosalinux.ru>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Aleksandr Aprelkov <aaprelkov@usergate.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 099/317] media: ngene: Add dvb_ca_en50221_init return value check
-Date: Thu, 13 Jun 2024 13:31:57 +0200
-Message-ID: <20240613113251.380732997@linuxfoundation.org>
+Subject: [PATCH 5.15 161/402] sunrpc: removed redundant procp check
+Date: Thu, 13 Jun 2024 13:31:58 +0200
+Message-ID: <20240613113308.414355750@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Burakov <a.burakov@rosalinux.ru>
+From: Aleksandr Aprelkov <aaprelkov@usergate.com>
 
-[ Upstream commit 9bb1fd7eddcab2d28cfc11eb20f1029154dac718 ]
+[ Upstream commit a576f36971ab4097b6aa76433532aa1fb5ee2d3b ]
 
-The return value of dvb_ca_en50221_init() is not checked here that may
-cause undefined behavior in case of nonzero value return.
+since vs_proc pointer is dereferenced before getting it's address there's
+no need to check for NULL.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 25aee3debe04 ("[media] Rename media/dvb as media/pci")
-Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 8e5b67731d08 ("SUNRPC: Add a callback to initialise server requests")
+Signed-off-by: Aleksandr Aprelkov <aaprelkov@usergate.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/ngene/ngene-core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/sunrpc/svc.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/media/pci/ngene/ngene-core.c b/drivers/media/pci/ngene/ngene-core.c
-index e1a8c611d01b4..97cac9770802b 100644
---- a/drivers/media/pci/ngene/ngene-core.c
-+++ b/drivers/media/pci/ngene/ngene-core.c
-@@ -1488,7 +1488,9 @@ static int init_channel(struct ngene_channel *chan)
- 	}
+diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+index 9177b243a949d..8d5897ed2816f 100644
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -1238,8 +1238,6 @@ svc_generic_init_request(struct svc_rqst *rqstp,
+ 	if (rqstp->rq_proc >= versp->vs_nproc)
+ 		goto err_bad_proc;
+ 	rqstp->rq_procinfo = procp = &versp->vs_proc[rqstp->rq_proc];
+-	if (!procp)
+-		goto err_bad_proc;
  
- 	if (dev->ci.en && (io & NGENE_IO_TSOUT)) {
--		dvb_ca_en50221_init(adapter, dev->ci.en, 0, 1);
-+		ret = dvb_ca_en50221_init(adapter, dev->ci.en, 0, 1);
-+		if (ret != 0)
-+			goto err;
- 		set_transfer(chan, 1);
- 		chan->dev->channel[2].DataFormatFlags = DF_SWAP32;
- 		set_transfer(&chan->dev->channel[2], 1);
+ 	/* Initialize storage for argp and resp */
+ 	memset(rqstp->rq_argp, 0, procp->pc_argzero);
 -- 
 2.43.0
 
