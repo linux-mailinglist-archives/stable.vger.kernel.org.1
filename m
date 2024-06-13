@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F97906F8A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:21:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1566A907190
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:38:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB0891C2257D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:21:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B22B1C2425B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A778B142E9D;
-	Thu, 13 Jun 2024 12:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29B681ABE;
+	Thu, 13 Jun 2024 12:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oh23qeGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQQWyWEp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6567881AA7;
-	Thu, 13 Jun 2024 12:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B611DDDB;
+	Thu, 13 Jun 2024 12:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281042; cv=none; b=eJnH4iIPiTc4uQDEvIKRfsCRiIp+ZyVG85+bdWo4XYDaqteTc08ecKToLtvoabn2NtEHuNmXuw+YmKQliIrxVagWE2Rh4A8zBg/baUBtAExuPlSxIfuV5tPF8I2n/DwSoElAbkm4wReFYPOllUOOS5gPVHDluM2tN1cK3PbSwVU=
+	t=1718282276; cv=none; b=DgrP8hcopOx2SI1cLdrHPVMSF7CudV0tY9YKjL3pF5tPAVhSf3Sagqxb9Orbx6bDS2pgh62w751i5tfI2/Vb85SPui2Cy5lXP/w8MBqZrxz2I9AaHeiM/bgt78Uv2AT9ytELuMS6ceBF5eh5xkE4tydaclfA6f2V9o+V0u4bs3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281042; c=relaxed/simple;
-	bh=mE5Vnw7Or0uU6cn+eT6l9tdeDXoFiW2+tEFeJr8uDWQ=;
+	s=arc-20240116; t=1718282276; c=relaxed/simple;
+	bh=7DHCxhGErL14IxVwsSFkwrtFaoAICwW5hCazLEJT61U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hQKRD4RHKef5e7HGV7vmoJztoiBiPYlt+8znxVGyVvYyKe28iJk3/VWxfJPTeth3kZw5s8+0eHmaYepSEjljnrMi6pw+D8HTmigwB86OROH0Wq+7f57dfMH8201zPp0wsCCKdifZcD0fmH6PPmaDEYCVdy/eiZDuzsPSgg/9SH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oh23qeGx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F6BC32786;
-	Thu, 13 Jun 2024 12:17:21 +0000 (UTC)
+	 MIME-Version; b=GV1cuRXmQB1yPZZdd68ZvS/www2CB2GQRQS4MhEoJpgoQlakriRhzbgluO+/ox9eZfSBVnhPqMJJnUzGDiQ1t3qwAHk1tsJWVrfR8Ip2k21x0tXYea0acGCAeKcSVsz55oAGzQERGcYqu7EW2tbbs16B+/jz4AuiwDRKQm86+NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQQWyWEp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E16C2BBFC;
+	Thu, 13 Jun 2024 12:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281042;
-	bh=mE5Vnw7Or0uU6cn+eT6l9tdeDXoFiW2+tEFeJr8uDWQ=;
+	s=korg; t=1718282276;
+	bh=7DHCxhGErL14IxVwsSFkwrtFaoAICwW5hCazLEJT61U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oh23qeGxfaTlwneKvLCj5oHIECDfgq5I1DT3S0FbLEMX7vMAadVNJx7JWOe2nF4/r
-	 6T6qNpv29hwncVPJa+OFg/kKBQf7n5qFd3LS3v8O/af9oILaq+b0vjfIgwEbzXjSNR
-	 aGog89VN9TbmazYAeG5wqV4MYucXeOZYBC/17WT0=
+	b=fQQWyWEpUbM9XCKVED8bAhHfYxplNL6XPpWF5ijLUpuM6O8UURN1IQ3Lm4CUad7Ss
+	 4Dxmr+Pm1X7ZvOlURtdIsCPUIvZmeULVe6F5PngHfSVyibDBH/iYdQ8o6/rH1s4Lzp
+	 pJ6z/qsK1cRetQcUUN0hCNCOexYXlMEq0lo4xzio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Aprelkov <aaprelkov@usergate.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/317] sunrpc: removed redundant procp check
+Subject: [PATCH 5.15 181/402] f2fs: fix to wait on page writeback in __clone_blkaddrs()
 Date: Thu, 13 Jun 2024 13:32:18 +0200
-Message-ID: <20240613113252.193390352@linuxfoundation.org>
+Message-ID: <20240613113309.210435896@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Aprelkov <aaprelkov@usergate.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit a576f36971ab4097b6aa76433532aa1fb5ee2d3b ]
+[ Upstream commit d3876e34e7e789e2cbdd782360fef2a777391082 ]
 
-since vs_proc pointer is dereferenced before getting it's address there's
-no need to check for NULL.
+In below race condition, dst page may become writeback status
+in __clone_blkaddrs(), it needs to wait writeback before update,
+fix it.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Thread A				GC Thread
+- f2fs_move_file_range
+  - filemap_write_and_wait_range(dst)
+					- gc_data_segment
+					 - f2fs_down_write(dst)
+					 - move_data_page
+					  - set_page_writeback(dst_page)
+					  - f2fs_submit_page_write
+					 - f2fs_up_write(dst)
+  - f2fs_down_write(dst)
+  - __exchange_data_block
+   - __clone_blkaddrs
+    - f2fs_get_new_data_page
+    - memcpy_page
 
-Fixes: 8e5b67731d08 ("SUNRPC: Add a callback to initialise server requests")
-Signed-off-by: Aleksandr Aprelkov <aaprelkov@usergate.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 0a2aa8fbb969 ("f2fs: refactor __exchange_data_block for speed up")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/svc.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/f2fs/file.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index 495ebe7fad6dd..cfe8b911ca013 100644
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -1248,8 +1248,6 @@ svc_generic_init_request(struct svc_rqst *rqstp,
- 	if (rqstp->rq_proc >= versp->vs_nproc)
- 		goto err_bad_proc;
- 	rqstp->rq_procinfo = procp = &versp->vs_proc[rqstp->rq_proc];
--	if (!procp)
--		goto err_bad_proc;
- 
- 	/* Initialize storage for argp and resp */
- 	memset(rqstp->rq_argp, 0, procp->pc_argsize);
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 9b7ecbb974258..3d811594d0d5c 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1276,6 +1276,9 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
+ 				f2fs_put_page(psrc, 1);
+ 				return PTR_ERR(pdst);
+ 			}
++
++			f2fs_wait_on_page_writeback(pdst, DATA, true, true);
++
+ 			memcpy_page(pdst, 0, psrc, 0, PAGE_SIZE);
+ 			set_page_dirty(pdst);
+ 			set_page_private_gcing(pdst);
 -- 
 2.43.0
 
