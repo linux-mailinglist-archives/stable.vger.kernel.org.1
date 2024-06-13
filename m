@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73D0906FFF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09AD9906E84
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03D5AB21BD6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88C9BB20F87
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7785914198E;
-	Thu, 13 Jun 2024 12:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C8B1448EB;
+	Thu, 13 Jun 2024 12:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxeW52wK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3wzpntb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3662181AA7;
-	Thu, 13 Jun 2024 12:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943751448FD;
+	Thu, 13 Jun 2024 12:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281319; cv=none; b=okIsW56pX6PWq1kf9dxjoLqKWHHW8jZC1tng4gEU8MFHaXFkQwqfmfwb37tyyq3q5m575YRHMI4AQyV3ExEFKkzZpz9lYwPu3kN3xrUxW3CsNzW2RmrBdkkB6b363mGZrx9tj2RdHkpSTNotyNLXdnV9ASDCzFlObWZc8gaHLdg=
+	t=1718280432; cv=none; b=ecXOiQg+TapLC8BTKLjJZSB34dypw88FfyQxyOsff6l08gAYBCeOnLRAuyBJZiHwcX0i5mJJK761qWzo4BkteCwFvcCDDTF7rYnLH6BM0BDLVSjqf9od8kXpn9g7x+x/e+5RDGhrgPiRaHP6/TdDbDOipw6XdY4Tf1bS8pAbpj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281319; c=relaxed/simple;
-	bh=Xh98LQWtnmuGQf5l10OhpWs4PFbB2lWNxx0Hal2RAyA=;
+	s=arc-20240116; t=1718280432; c=relaxed/simple;
+	bh=kZSrTHFwIqdXnrap1SOs2Ov6ywi5av3fi1NwXvfbkK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GVdqlkV9v3a8rwIsfwno6zrxwZ8FL52JDdc0G93zw3uKvZ191zxP4La4asi6mH6ldx4abgaKzaZEJ8vJ3Tq9y8aR5rv1OwO3SSeCNJXMXtv8ekShJGweJd1YApNWSX5/aD1ocRTwakYXYRYl+vRBFvYb7j+ivzEVaK53X/FARAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxeW52wK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16C2C2BBFC;
-	Thu, 13 Jun 2024 12:21:58 +0000 (UTC)
+	 MIME-Version; b=DZuBze6mem1Xf97fiAGN7s5dnFaoyOW0Lph4zM1vLHwzW6BiCQO2A7VCkgNU4lZN+b1hK/SThTP+Ros/d+dc2MY55KZPnl1+NtYErVsu+LUaG4EbirytNDWR+Vnowgn4PG0/ZJPyrreJd9ej8eQoiObonU2EV1/7/k1X/3Yq/sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3wzpntb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A0AC2BBFC;
+	Thu, 13 Jun 2024 12:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281319;
-	bh=Xh98LQWtnmuGQf5l10OhpWs4PFbB2lWNxx0Hal2RAyA=;
+	s=korg; t=1718280432;
+	bh=kZSrTHFwIqdXnrap1SOs2Ov6ywi5av3fi1NwXvfbkK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rxeW52wKNw/IvkEFHcshYWyDqbP0c6KBqX/4vU3N/LKBzPx93ubllzCbm2Y98Wz7C
-	 ioQ/wxm1zae9jTCrybkKKAKZvUP4k35UChuVLhwCgg+GuxJ0rBQ759FUKY/Kbb9Qrm
-	 dFtF31xcxS987Igm/n6GePAdX0EgIYTAoGYHM564=
+	b=b3wzpntbtCcnflUUZAmasZhnSRQLB7lbhC22jyUDr93iCqaG5RnKqsY1pbwUeGmKG
+	 2HXUzllXMuSUT0yQ2m4amZnea1buGpfLX2YKpZdwrAdTPT41+H864vBpPywIOr7684
+	 gfmfN5UT2hn1f5SWHH80wfwy7JIy2qyEJJXgu7EI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	"Yang, Chenyuan" <cy54@illinois.edu>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
-Subject: [PATCH 5.10 214/317] media: cec: cec-adap: always cancel work in cec_transmit_msg_fh
+	patches@lists.linux.dev,
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 052/137] mmc: sdhci-acpi: Disable write protect detection on Toshiba WT10-A
 Date: Thu, 13 Jun 2024 13:33:52 +0200
-Message-ID: <20240613113255.832979433@linuxfoundation.org>
+Message-ID: <20240613113225.312035523@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 9fe2816816a3c765dff3b88af5b5c3d9bbb911ce ]
+commit ef3eab75e17191e5665f52e64e85bc29d5705a7b upstream.
 
-Do not check for !data->completed, just always call
-cancel_delayed_work_sync(). This fixes a small race condition.
+On the Toshiba WT10-A the microSD slot always reports the card being
+write-protected, just like on the Toshiba WT8-B.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Yang, Chenyuan <cy54@illinois.edu>
-Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
-Fixes: 490d84f6d73c ("media: cec: forgot to cancel delayed work")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add a DMI quirk to work around this.
+
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240410191639.526324-6-hdegoede@redhat.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/cec/core/cec-adap.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-acpi.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
-index 2f7ab5df1c584..78027f0310acd 100644
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -913,8 +913,7 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
- 	 */
- 	mutex_unlock(&adap->lock);
- 	wait_for_completion_killable(&data->c);
--	if (!data->completed)
--		cancel_delayed_work_sync(&data->work);
-+	cancel_delayed_work_sync(&data->work);
- 	mutex_lock(&adap->lock);
+--- a/drivers/mmc/host/sdhci-acpi.c
++++ b/drivers/mmc/host/sdhci-acpi.c
+@@ -779,6 +779,17 @@ static const struct dmi_system_id sdhci_
+ 		},
+ 		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
+ 	},
++	{
++		/*
++		 * The Toshiba WT10-A's microSD slot always reports the card being
++		 * write-protected.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "TOSHIBA WT10-A"),
++		},
++		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
++	},
+ 	{} /* Terminating entry */
+ };
  
- 	/* Cancel the transmit if it was interrupted */
--- 
-2.43.0
-
 
 
 
