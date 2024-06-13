@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-51986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9469A90729A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1303907243
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 473021F253A3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91EB7281EFC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CDE144D2B;
-	Thu, 13 Jun 2024 12:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC9D13A406;
+	Thu, 13 Jun 2024 12:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzPsEq9s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvQVdr+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A55144D20;
-	Thu, 13 Jun 2024 12:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5A317FD;
+	Thu, 13 Jun 2024 12:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282899; cv=none; b=cp1ZsZKQ2DDpq9vMmNn0V8qoNEnTkp/UYfDVYui/4NsIRoIpF1CHax4D+M2HGqW5kaafQHHx9s5EikZoi1iWu2mg2BJXnJK51gEPsYUhDh/W1+V8Q/ckYscNM6FiHb51tF7bLi2UX2li9S3C2dxApK9EskM0MOjjUa8wCGCIKO4=
+	t=1718282723; cv=none; b=PkcoiHoPtTuu11vJHGoPMCjPnOZxIjsboVA8pG+0FRe2x4hPCEHUZCUMFZwos5bQMkoHGcrvpzNCQaZSx6KEgfUUv/7igXVvMPCafZYnG6B1BGowsi1AMDljy4A+2/KB8wjmzYPTtKuIG0wJbCmxjMMuElbTlxvB8YTOuZ7f23k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282899; c=relaxed/simple;
-	bh=nDyPw/T24F59/ld1DsKUNyx0ViqYxwneGVt4pTQvDb0=;
+	s=arc-20240116; t=1718282723; c=relaxed/simple;
+	bh=0IGOi/jqgsD99IAaitNM95LJIh+yw1RVSTFHgzLwom0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpFBuYPtwRKsypUa56/8Tgdycb8AGx1sgKIqVA8bTgmMy4ouJJ/CcsqBTzOZyWeoY/4W4u+E7ONhGIWzweDJKi/y/egcB8RCo5R7gFZAzF3y+xUl+2mMrvetqrqCO7TIs7j7cKCwqbYoBOtuIZkQn3JTYn7uVj+KYuAcssF0A5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzPsEq9s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F6BC2BBFC;
-	Thu, 13 Jun 2024 12:48:18 +0000 (UTC)
+	 MIME-Version; b=t7JCneFGD9UXILQ6WYZoKE8COUTyXqSo9QCqGqWndEjxjkn/m8jqzCiaJLUXE5liUgrkXo1l2hQ1IgIM8ogWMdcl/sRwaqVGm37FpT0NUD5Mwu9lKqu9A2IPrvjTI7TV4qE529JoQeibW33KzFUwishyVM4d6ym3h4Ehqnubfkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvQVdr+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1BFC32786;
+	Thu, 13 Jun 2024 12:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282899;
-	bh=nDyPw/T24F59/ld1DsKUNyx0ViqYxwneGVt4pTQvDb0=;
+	s=korg; t=1718282722;
+	bh=0IGOi/jqgsD99IAaitNM95LJIh+yw1RVSTFHgzLwom0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzPsEq9s6uIrsj2DJ2HJLbyQE42unVSHj6Wyk6gi5uPVn3QorIJl3BzNFlToJPaIZ
-	 xB+nO688U5HPTbFN95wXr7IVPa0aMEdcY6kGKc7Ykzq9jUTM4sLkKfLOUygKK57ft5
-	 NXf9sl7DQZ9MakV28eOkRe1vBgMuVA8gxH2AHh/E=
+	b=fvQVdr+Jrp7JZCr3UjxJWCc+g5G3p1Cc1388bH4TIeg7QPbxyQBtfwpPzNEbkz73e
+	 yRSD1h8FnQXu2i1RSwRPhk9ayo76/WehTKUWd1Q2sX3zU9TMPKSg/maenJyLd/hvPa
+	 RwWoEMsUnZRCdZg7eD7ufgKKxuM3QgmvPxU5Lc08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.1 31/85] wifi: rtlwifi: rtl8192de: Fix low speed with WPA3-SAE
-Date: Thu, 13 Jun 2024 13:35:29 +0200
-Message-ID: <20240613113215.348369435@linuxfoundation.org>
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 373/402] mmc: sdhci-acpi: Disable write protect detection on Toshiba WT10-A
+Date: Thu, 13 Jun 2024 13:35:30 +0200
+Message-ID: <20240613113316.687008722@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit a7c0f48410f546772ac94a0f7b7291a15c4fc173 upstream.
+commit ef3eab75e17191e5665f52e64e85bc29d5705a7b upstream.
 
-Some (all?) management frames are incorrectly reported to mac80211 as
-decrypted when actually the hardware did not decrypt them. This results
-in speeds 3-5 times lower than expected, 20-30 Mbps instead of 100
-Mbps.
+On the Toshiba WT10-A the microSD slot always reports the card being
+write-protected, just like on the Toshiba WT8-B.
 
-Fix this by checking the encryption type field of the RX descriptor.
-rtw88 does the same thing.
+Add a DMI quirk to work around this.
 
-This fix was tested only with rtl8192du, which will use the same code.
-
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/4d600435-f0ea-46b0-bdb4-e60f173da8dd@gmail.com
+Link: https://lore.kernel.org/r/20240410191639.526324-6-hdegoede@redhat.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c |    5 ++---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h |   14 ++++++++++++++
- 2 files changed, 16 insertions(+), 3 deletions(-)
+ drivers/mmc/host/sdhci-acpi.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-@@ -414,7 +414,8 @@ bool rtl92de_rx_query_desc(struct ieee80
- 	stats->icv = (u16)get_rx_desc_icv(pdesc);
- 	stats->crc = (u16)get_rx_desc_crc32(pdesc);
- 	stats->hwerror = (stats->crc | stats->icv);
--	stats->decrypted = !get_rx_desc_swdec(pdesc);
-+	stats->decrypted = !get_rx_desc_swdec(pdesc) &&
-+			   get_rx_desc_enc_type(pdesc) != RX_DESC_ENC_NONE;
- 	stats->rate = (u8)get_rx_desc_rxmcs(pdesc);
- 	stats->shortpreamble = (u16)get_rx_desc_splcp(pdesc);
- 	stats->isampdu = (bool)(get_rx_desc_paggr(pdesc) == 1);
-@@ -427,8 +428,6 @@ bool rtl92de_rx_query_desc(struct ieee80
- 	rx_status->band = hw->conf.chandef.chan->band;
- 	if (get_rx_desc_crc32(pdesc))
- 		rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
--	if (!get_rx_desc_swdec(pdesc))
--		rx_status->flag |= RX_FLAG_DECRYPTED;
- 	if (get_rx_desc_bw(pdesc))
- 		rx_status->bw = RATE_INFO_BW_40;
- 	if (get_rx_desc_rxht(pdesc))
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-@@ -14,6 +14,15 @@
- #define USB_HWDESC_HEADER_LEN			32
- #define CRCLENGTH				4
+--- a/drivers/mmc/host/sdhci-acpi.c
++++ b/drivers/mmc/host/sdhci-acpi.c
+@@ -855,6 +855,17 @@ static const struct dmi_system_id sdhci_
+ 		},
+ 		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
+ 	},
++	{
++		/*
++		 * The Toshiba WT10-A's microSD slot always reports the card being
++		 * write-protected.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "TOSHIBA WT10-A"),
++		},
++		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
++	},
+ 	{} /* Terminating entry */
+ };
  
-+enum rtl92d_rx_desc_enc {
-+	RX_DESC_ENC_NONE	= 0,
-+	RX_DESC_ENC_WEP40	= 1,
-+	RX_DESC_ENC_TKIP_WO_MIC	= 2,
-+	RX_DESC_ENC_TKIP_MIC	= 3,
-+	RX_DESC_ENC_AES		= 4,
-+	RX_DESC_ENC_WEP104	= 5,
-+};
-+
- /* macros to read/write various fields in RX or TX descriptors */
- 
- static inline void set_tx_desc_pkt_size(__le32 *__pdesc, u32 __val)
-@@ -246,6 +255,11 @@ static inline u32 get_rx_desc_drv_info_s
- 	return le32_get_bits(*__pdesc, GENMASK(19, 16));
- }
- 
-+static inline u32 get_rx_desc_enc_type(__le32 *__pdesc)
-+{
-+	return le32_get_bits(*__pdesc, GENMASK(22, 20));
-+}
-+
- static inline u32 get_rx_desc_shift(__le32 *__pdesc)
- {
- 	return le32_get_bits(*__pdesc, GENMASK(25, 24));
 
 
 
