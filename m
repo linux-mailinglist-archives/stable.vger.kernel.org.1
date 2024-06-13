@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-51108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEACC906E60
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3203D9071AC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 697B0B27CEA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3F2BB26292
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2BC145A00;
-	Thu, 13 Jun 2024 12:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E626F1428EC;
+	Thu, 13 Jun 2024 12:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6MraaKi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtSuIzfO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEA4145359;
-	Thu, 13 Jun 2024 12:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33C21F937;
+	Thu, 13 Jun 2024 12:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280333; cv=none; b=gqlO8+Q3uPZngXWb9ObuBPk8M7OcXowBy/VtgKzq83dQK5IowqZan1PxNbA8uY5oB4c8cl5Hc97f1RMMX8co3kbcwKTUnKw/+51GrISSoTmhoE00lysUFu6Zy6IbQufXbF91WGZV5z+K2FMUxr3DlsaxzS7g7ohhL80SLd7c6Qs=
+	t=1718282333; cv=none; b=imLFAOZNTsmGPocrQlJaGpXrbk3YOh7Sh7y+thBsugyvawdOmHOsIZo7KOVshpboPqaVO7WCSNRd6byLDI3vFzOyquQ1jT3XTsRf6YBuIWPKdU67FTVJshM5IGJ9MJk6m+q9Q1DcMyL+O/qDgx1sjawSq6PlA6XygC/pCMKQ31Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280333; c=relaxed/simple;
-	bh=5NFFBSQNtCzslocE2/8CsAt30RQRYshd+1uFV9Z7Eyc=;
+	s=arc-20240116; t=1718282333; c=relaxed/simple;
+	bh=nv/3M6LjsHNltjV/Xa7mc7eKcYMWIv7RJFj8hWE4xAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TbYSCk26TQwn/plF7u6JL38SLS6tNDPSbYFf8ZLYRdmNjGF5+f50msdKr18r6hSku1+PqX8xn0Vo3VNAsMzx4Y8XYAr6psghf0k8NWN8ZeYDROWCCwiH2SgVX8JqrIuyst7o3xLs7Wti1x4oyDAbHkrh+8ynlB6vTFgwgBfb85g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6MraaKi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A3BC2BBFC;
-	Thu, 13 Jun 2024 12:05:31 +0000 (UTC)
+	 MIME-Version; b=ari1BaP6pZCyKL5H2OrjvM7XYXt6/m2kCJPFTf52juTxvLTaVfXse0KbxjZWJiOYb7/S9NSmr0mQHFfubmsIASHvR9fxzXQgn31SQFFKXleGKE1u828Wir40FQUouj+qQqsOUU7Ugsp/3aM41/ruCrbsNu0lE+RwdBpeeR4UOp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtSuIzfO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26807C32786;
+	Thu, 13 Jun 2024 12:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280332;
-	bh=5NFFBSQNtCzslocE2/8CsAt30RQRYshd+1uFV9Z7Eyc=;
+	s=korg; t=1718282333;
+	bh=nv/3M6LjsHNltjV/Xa7mc7eKcYMWIv7RJFj8hWE4xAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6MraaKia3Yd9bJd/zKl3OAAlc2SrdQZ//N8v6hSLTLAG31UjVhRzDodl+73a0aQ8
-	 3dlph2kE4HisTbstbZ1tZkA3rvzolVdtWjB/wunGOw+Iob43i11gwTEjNuBiIoD3Vt
-	 YM1PC7zcRq9nl9T9+VXGsnkzNLZaoNNTzNRq1vYA=
+	b=qtSuIzfOnc6vrInq+28efZFKkZygIHjZBDsnEHruej6DxBjREIPdp/pgQIZRgQ6BM
+	 HVgx7C5HqmZQNMBwHWkwr9cvVYrEIPyWsQMrsY92mYZGlKWeOa/WT59uG+TO1iutVK
+	 AyiT6iBcyRugy8HRX4zOZYI4r+4ens0NBngCU+8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheyu Ma <zheyuma97@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 6.6 018/137] media: lgdt3306a: Add a check against null-pointer-def
+	Jens Remus <jremus@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 241/402] s390/vdso: Generate unwind information for C modules
 Date: Thu, 13 Jun 2024 13:33:18 +0200
-Message-ID: <20240613113223.997615869@linuxfoundation.org>
+Message-ID: <20240613113311.547466994@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheyu Ma <zheyuma97@gmail.com>
+From: Jens Remus <jremus@linux.ibm.com>
 
-commit c1115ddbda9c930fba0fdd062e7a8873ebaf898d upstream.
+[ Upstream commit 10f70525365146046dddcc3d36bfaea2aee0376a ]
 
-The driver should check whether the client provides the platform_data.
+GDB fails to unwind vDSO functions with error message "PC not saved",
+for instance when stepping through gettimeofday().
 
-The following log reveals it:
+Add -fasynchronous-unwind-tables to CFLAGS to generate .eh_frame
+DWARF unwind information for the vDSO C modules.
 
-[   29.610324] BUG: KASAN: null-ptr-deref in kmemdup+0x30/0x40
-[   29.610730] Read of size 40 at addr 0000000000000000 by task bash/414
-[   29.612820] Call Trace:
-[   29.613030]  <TASK>
-[   29.613201]  dump_stack_lvl+0x56/0x6f
-[   29.613496]  ? kmemdup+0x30/0x40
-[   29.613754]  print_report.cold+0x494/0x6b7
-[   29.614082]  ? kmemdup+0x30/0x40
-[   29.614340]  kasan_report+0x8a/0x190
-[   29.614628]  ? kmemdup+0x30/0x40
-[   29.614888]  kasan_check_range+0x14d/0x1d0
-[   29.615213]  memcpy+0x20/0x60
-[   29.615454]  kmemdup+0x30/0x40
-[   29.615700]  lgdt3306a_probe+0x52/0x310
-[   29.616339]  i2c_device_probe+0x951/0xa90
-
-Link: https://lore.kernel.org/linux-media/20220405095018.3993578-1-zheyuma97@gmail.com
-Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/lgdt3306a.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/s390/kernel/vdso32/Makefile | 3 ++-
+ arch/s390/kernel/vdso64/Makefile | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/media/dvb-frontends/lgdt3306a.c
-+++ b/drivers/media/dvb-frontends/lgdt3306a.c
-@@ -2176,6 +2176,11 @@ static int lgdt3306a_probe(struct i2c_cl
- 	struct dvb_frontend *fe;
- 	int ret;
+diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
+index 1783e4d335136..66f7b0c8e6117 100644
+--- a/arch/s390/kernel/vdso32/Makefile
++++ b/arch/s390/kernel/vdso32/Makefile
+@@ -21,7 +21,8 @@ KBUILD_AFLAGS_32 += -m31 -s
  
-+	if (!client->dev.platform_data) {
-+		dev_err(&client->dev, "platform data is mandatory\n");
-+		return -EINVAL;
-+	}
-+
- 	config = kmemdup(client->dev.platform_data,
- 			 sizeof(struct lgdt3306a_config), GFP_KERNEL);
- 	if (config == NULL) {
+ KBUILD_CFLAGS_32 := $(filter-out -m64,$(KBUILD_CFLAGS))
+ KBUILD_CFLAGS_32 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_32))
+-KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin
++KBUILD_CFLAGS_32 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_32))
++KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin -fasynchronous-unwind-tables
+ 
+ LDFLAGS_vdso32.so.dbg += -shared -soname=linux-vdso32.so.1 \
+ 	--hash-style=both --build-id=sha1 -melf_s390 -T
+diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
+index e2e031e4d9243..e520c548d303e 100644
+--- a/arch/s390/kernel/vdso64/Makefile
++++ b/arch/s390/kernel/vdso64/Makefile
+@@ -27,7 +27,8 @@ KBUILD_AFLAGS_64 += -m64 -s
+ KBUILD_CFLAGS_64 := $(filter-out -m64,$(KBUILD_CFLAGS))
+ KBUILD_CFLAGS_64 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_64))
+ KBUILD_CFLAGS_64 := $(filter-out -munaligned-symbols,$(KBUILD_CFLAGS_64))
+-KBUILD_CFLAGS_64 += -m64 -fPIC -fno-common -fno-builtin
++KBUILD_CFLAGS_64 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_64))
++KBUILD_CFLAGS_64 += -m64 -fPIC -fno-common -fno-builtin -fasynchronous-unwind-tables
+ ldflags-y := -shared -soname=linux-vdso64.so.1 \
+ 	     --hash-style=both --build-id=sha1 -T
+ 
+-- 
+2.43.0
+
 
 
 
