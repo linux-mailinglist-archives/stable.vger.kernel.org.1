@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-51915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64CDB907231
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14232907071
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF3732812AF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B92D1C2383B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C0B1849;
-	Thu, 13 Jun 2024 12:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75184144306;
+	Thu, 13 Jun 2024 12:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0tCjVuo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ha6yUeZW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572E6384;
-	Thu, 13 Jun 2024 12:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333153209;
+	Thu, 13 Jun 2024 12:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282690; cv=none; b=IlBpWHjgH/+QbEBwccf77zdWJ7E15KafcrQIgsQeXJbLLfcWKE1Ap8UGH7Z4TrAnWrEBYS1dFU/sOxDqC0NAeWvkktEEi6IE16VUM4oRuLSH1LNtgniQmGol7cNhQpdo0ZzV+9NiL3DsYJz6wNwun+TeqjqPqowV1CC+neyQToU=
+	t=1718281639; cv=none; b=Dt8Hg2IqjFUnK0lY2yuY/iz/HzMXs8QBMGoi9YyE51v3MAdKXawYYhTqdg46yCyI8lMh5cYn125J/PSr1tSD0t8V71rLds/ehk1XGBUsE7cK8R+ZELX2SKT+yXjjfyVkHNUyj2jaqQmY4aARdWVbcojNTOBSJ/bO48cAtf6X+60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282690; c=relaxed/simple;
-	bh=Z9W6UCNJpEyuuN23MPrE5ykWXM8hy2WfYIiLqNE/2GM=;
+	s=arc-20240116; t=1718281639; c=relaxed/simple;
+	bh=e9QzWVF5CEBugPqPFD408ZIZr61lgu7LhBz+B7wEJek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m4Stz+/bvS45L058P5qpXY63bReAZrgUcI/wzYpeVAPOy0OM+GS5wyV6eG8IDTVQ81o09U0SfztaiKjhjUXxxkJ/CXXklQCjtVPaE5oqKQGXxbNPr1n1yq3wX0RMZnxHx2vUz21JkNBCcZSecGzzbymYgbPmsfPMT2+TX5fSlcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0tCjVuo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D155CC2BBFC;
-	Thu, 13 Jun 2024 12:44:49 +0000 (UTC)
+	 MIME-Version; b=cNK0AYPyQ5TW7pLDwv6JYcSJ8oB796Xh17XFp730vterjkx4oTd5nQII5opARcldlntCuxl/IDhFoCIp05XNh6SWRpN3OzGgYREfKc8PWvyNKvMxntEU0lTzEWGC3UeuN6dvpdNGpebL5thnXaTuWwtQF0a1LCpq7cP7UJAt/eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ha6yUeZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA18C2BBFC;
+	Thu, 13 Jun 2024 12:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282690;
-	bh=Z9W6UCNJpEyuuN23MPrE5ykWXM8hy2WfYIiLqNE/2GM=;
+	s=korg; t=1718281639;
+	bh=e9QzWVF5CEBugPqPFD408ZIZr61lgu7LhBz+B7wEJek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t0tCjVuonFnyq4Z/Y6sG7k9PPuqxACDDwlrVAmOM+JygNYzXTLv9m8fsI2QuGhZwe
-	 R9kJS9PzuzIa++pNdWnft/80KawZRAMKI8vHFrnIgLyooyArWzFrE+sBTn0391NG9D
-	 USuhsetYrbfcqK7o0jAqpUlzMvgEKfSYAZHSvW/4=
+	b=Ha6yUeZWXDYbzpmI0ie31Gw2vgStr4zU8/IQ/VDjdL92t55iuoRS4yzF/VsVREMjD
+	 OqX+HwZLO5Re1TotGV8jEJ+ELxwJ/Ga/k1r+VJ4/lNHdbxN3qb2Npqi+zfDZ6cwOUg
+	 /SOaJxzTAZqkW3xw53TOV3fxAJ0tVTGiQt8HqnCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 5.15 363/402] wifi: rtl8xxxu: Fix the TX power of RTL8192CU, RTL8723AU
+	Judith Mendez <jm@ti.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>
+Subject: [PATCH 5.10 302/317] watchdog: rti_wdt: Set min_hw_heartbeat_ms to accommodate a safety margin
 Date: Thu, 13 Jun 2024 13:35:20 +0200
-Message-ID: <20240613113316.298377675@linuxfoundation.org>
+Message-ID: <20240613113259.234554634@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Judith Mendez <jm@ti.com>
 
-commit 08b5d052d17a89bb8706b2888277d0b682dc1610 upstream.
+commit cae58516534e110f4a8558d48aa4435e15519121 upstream.
 
-Don't subtract 1 from the power index. This was added in commit
-2fc0b8e5a17d ("rtl8xxxu: Add TX power base values for gen1 parts")
-for unknown reasons. The vendor drivers don't do this.
+On AM62x, the watchdog is pet before the valid window is open. Fix
+min_hw_heartbeat and accommodate a 2% + static offset safety margin.
+The static offset accounts for max hardware error.
 
-Also correct the calculations of values written to
-REG_OFDM0_X{C,D}_TX_IQ_IMBALANCE. According to the vendor driver,
-these are used for TX power training.
+Remove the hack in the driver which shifts the open window boundary,
+since it is no longer necessary due to the fix mentioned above.
 
-With these changes rtl8xxxu sets the TX power of RTL8192CU the same
-as the vendor driver.
-
-None of this appears to have any effect on my RTL8192CU device.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/6ae5945b-644e-45e4-a78f-4c7d9c987910@gmail.com
+cc: stable@vger.kernel.org
+Fixes: 5527483f8f7c ("watchdog: rti-wdt: attach to running watchdog during probe")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240417205700.3947408-1-jm@ti.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c |   26 +++++++-----------
- 1 file changed, 11 insertions(+), 15 deletions(-)
+ drivers/watchdog/rti_wdt.c |   34 +++++++++++++++-------------------
+ 1 file changed, 15 insertions(+), 19 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -28,6 +28,7 @@
- #include <linux/wireless.h>
- #include <linux/firmware.h>
- #include <linux/moduleparam.h>
-+#include <linux/bitfield.h>
- #include <net/mac80211.h>
- #include "rtl8xxxu.h"
- #include "rtl8xxxu_regs.h"
-@@ -1389,13 +1390,13 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xx
- 	u8 cck[RTL8723A_MAX_RF_PATHS], ofdm[RTL8723A_MAX_RF_PATHS];
- 	u8 ofdmbase[RTL8723A_MAX_RF_PATHS], mcsbase[RTL8723A_MAX_RF_PATHS];
- 	u32 val32, ofdm_a, ofdm_b, mcs_a, mcs_b;
--	u8 val8;
-+	u8 val8, base;
- 	int group, i;
+--- a/drivers/watchdog/rti_wdt.c
++++ b/drivers/watchdog/rti_wdt.c
+@@ -52,6 +52,8 @@
  
- 	group = rtl8xxxu_gen1_channel_to_group(channel);
+ #define DWDST			BIT(1)
  
--	cck[0] = priv->cck_tx_power_index_A[group] - 1;
--	cck[1] = priv->cck_tx_power_index_B[group] - 1;
-+	cck[0] = priv->cck_tx_power_index_A[group];
-+	cck[1] = priv->cck_tx_power_index_B[group];
- 
- 	if (priv->hi_pa) {
- 		if (cck[0] > 0x20)
-@@ -1406,10 +1407,6 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xx
- 
- 	ofdm[0] = priv->ht40_1s_tx_power_index_A[group];
- 	ofdm[1] = priv->ht40_1s_tx_power_index_B[group];
--	if (ofdm[0])
--		ofdm[0] -= 1;
--	if (ofdm[1])
--		ofdm[1] -= 1;
- 
- 	ofdmbase[0] = ofdm[0] +	priv->ofdm_tx_power_index_diff[group].a;
- 	ofdmbase[1] = ofdm[1] +	priv->ofdm_tx_power_index_diff[group].b;
-@@ -1498,20 +1495,19 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xx
- 
- 	rtl8xxxu_write32(priv, REG_TX_AGC_A_MCS15_MCS12,
- 			 mcs_a + power_base->reg_0e1c);
-+	val8 = u32_get_bits(mcs_a + power_base->reg_0e1c, 0xff000000);
- 	for (i = 0; i < 3; i++) {
--		if (i != 2)
--			val8 = (mcsbase[0] > 8) ? (mcsbase[0] - 8) : 0;
--		else
--			val8 = (mcsbase[0] > 6) ? (mcsbase[0] - 6) : 0;
-+		base = i != 2 ? 8 : 6;
-+		val8 = max_t(int, val8 - base, 0);
- 		rtl8xxxu_write8(priv, REG_OFDM0_XC_TX_IQ_IMBALANCE + i, val8);
- 	}
++#define MAX_HW_ERROR		250
 +
- 	rtl8xxxu_write32(priv, REG_TX_AGC_B_MCS15_MCS12,
- 			 mcs_b + power_base->reg_0868);
-+	val8 = u32_get_bits(mcs_b + power_base->reg_0868, 0xff000000);
- 	for (i = 0; i < 3; i++) {
--		if (i != 2)
--			val8 = (mcsbase[1] > 8) ? (mcsbase[1] - 8) : 0;
--		else
--			val8 = (mcsbase[1] > 6) ? (mcsbase[1] - 6) : 0;
-+		base = i != 2 ? 8 : 6;
-+		val8 = max_t(int, val8 - base, 0);
- 		rtl8xxxu_write8(priv, REG_OFDM0_XD_TX_IQ_IMBALANCE + i, val8);
+ static int heartbeat = DEFAULT_HEARTBEAT;
+ 
+ /*
+@@ -90,7 +92,7 @@ static int rti_wdt_start(struct watchdog
+ 	 * to be 50% or less than that; we obviouly want to configure the open
+ 	 * window as large as possible so we select the 50% option.
+ 	 */
+-	wdd->min_hw_heartbeat_ms = 500 * wdd->timeout;
++	wdd->min_hw_heartbeat_ms = 520 * wdd->timeout + MAX_HW_ERROR;
+ 
+ 	/* Generate NMI when wdt expires */
+ 	writel_relaxed(RTIWWDRX_NMI, wdt->base + RTIWWDRXCTRL);
+@@ -124,31 +126,33 @@ static int rti_wdt_setup_hw_hb(struct wa
+ 	 * be petted during the open window; not too early or not too late.
+ 	 * The HW configuration options only allow for the open window size
+ 	 * to be 50% or less than that.
++	 * To avoid any glitches, we accommodate 2% + max hardware error
++	 * safety margin.
+ 	 */
+ 	switch (wsize) {
+ 	case RTIWWDSIZE_50P:
+-		/* 50% open window => 50% min heartbeat */
+-		wdd->min_hw_heartbeat_ms = 500 * heartbeat;
++		/* 50% open window => 52% min heartbeat */
++		wdd->min_hw_heartbeat_ms = 520 * heartbeat + MAX_HW_ERROR;
+ 		break;
+ 
+ 	case RTIWWDSIZE_25P:
+-		/* 25% open window => 75% min heartbeat */
+-		wdd->min_hw_heartbeat_ms = 750 * heartbeat;
++		/* 25% open window => 77% min heartbeat */
++		wdd->min_hw_heartbeat_ms = 770 * heartbeat + MAX_HW_ERROR;
+ 		break;
+ 
+ 	case RTIWWDSIZE_12P5:
+-		/* 12.5% open window => 87.5% min heartbeat */
+-		wdd->min_hw_heartbeat_ms = 875 * heartbeat;
++		/* 12.5% open window => 89.5% min heartbeat */
++		wdd->min_hw_heartbeat_ms = 895 * heartbeat + MAX_HW_ERROR;
+ 		break;
+ 
+ 	case RTIWWDSIZE_6P25:
+-		/* 6.5% open window => 93.5% min heartbeat */
+-		wdd->min_hw_heartbeat_ms = 935 * heartbeat;
++		/* 6.5% open window => 95.5% min heartbeat */
++		wdd->min_hw_heartbeat_ms = 955 * heartbeat + MAX_HW_ERROR;
+ 		break;
+ 
+ 	case RTIWWDSIZE_3P125:
+-		/* 3.125% open window => 96.9% min heartbeat */
+-		wdd->min_hw_heartbeat_ms = 969 * heartbeat;
++		/* 3.125% open window => 98.9% min heartbeat */
++		wdd->min_hw_heartbeat_ms = 989 * heartbeat + MAX_HW_ERROR;
+ 		break;
+ 
+ 	default:
+@@ -222,14 +226,6 @@ static int rti_wdt_probe(struct platform
+ 		return -EINVAL;
  	}
- }
+ 
+-	/*
+-	 * If watchdog is running at 32k clock, it is not accurate.
+-	 * Adjust frequency down in this case so that we don't pet
+-	 * the watchdog too often.
+-	 */
+-	if (wdt->freq < 32768)
+-		wdt->freq = wdt->freq * 9 / 10;
+-
+ 	pm_runtime_enable(dev);
+ 	ret = pm_runtime_get_sync(dev);
+ 	if (ret < 0) {
 
 
 
