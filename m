@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-50673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91A8906BD4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBD8906CE5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:55:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07F121C21604
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E899B24FDD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55173143C56;
-	Thu, 13 Jun 2024 11:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6AD0149016;
+	Thu, 13 Jun 2024 11:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLgNnY5W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcpmii9X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDF96AFAE;
-	Thu, 13 Jun 2024 11:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4D5149006;
+	Thu, 13 Jun 2024 11:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279053; cv=none; b=Rdsu5eGhi0mfSPjZehbK+JpBn7C/QqSVFa609DBkdyLCUTmeU2/uUUpWqx9Wj4mXdJvTJyW5aSEQ04v4AK1bkt6dOJ9kOTUsKcgvhHiov2HoqPpMTpWvDn9TGqe/YK5bztvSME2V1eLmtw+fvIzyonqZto3M5OOclOz/wQdokeI=
+	t=1718279460; cv=none; b=G/SS2QQS/t9C8i/ZuLGxYz8f8f5UFTN8iGumvauR4w02wySkE27tXu8hncF1CtTlf1N/A49c+Eb+6kSYVs7lxugYVO/cWG3Ys+DbFKVtiXVKxAUb8hD803My7M5xqP9D6GOcWgW9CiFEXu7EFcQZrKv/jfD78jXE0PgYyGzilOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279053; c=relaxed/simple;
-	bh=aeHYQVNUMxr6Lh5cv6hUrFIMgv2nBF5Zm/HpyNTmiXk=;
+	s=arc-20240116; t=1718279460; c=relaxed/simple;
+	bh=6ZmXHqjAragdgYxy11F2WZ1Zf5djUWVWCcIJEK9RdGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gh5koGaMbH9M2BvBoWKQODBr43YNif5G4U17NTahGqHCDCyxbbqk3UxaEQFw5XloVcFenmFxFb/9ZCsGxqzzdjtxn/2qrvafJw20y+Xf9vn35vWJaQ4/jnRoQZL+meo5nTVpfoYIun5BLkvnMhLDi6LBdBoTeLfd9LSTgjUimdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLgNnY5W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B45FC2BBFC;
-	Thu, 13 Jun 2024 11:44:12 +0000 (UTC)
+	 MIME-Version; b=M6jil7cWpM2w4kDXKfjTfchbtYGnyqkbuGXYfrjZi9stVz/BUrnjjbL1b2scjLflyAtkkmA+5BB6Bo8E8l1YCMAUcErDEZ25Ag6o4nUdWWE4HLANFfERGxZ1GNnzI5he3Kb3XUotgDTKyM5MKe8A8Ve0m407ZOiivINoPulcv1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcpmii9X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179ACC32786;
+	Thu, 13 Jun 2024 11:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279052;
-	bh=aeHYQVNUMxr6Lh5cv6hUrFIMgv2nBF5Zm/HpyNTmiXk=;
+	s=korg; t=1718279460;
+	bh=6ZmXHqjAragdgYxy11F2WZ1Zf5djUWVWCcIJEK9RdGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLgNnY5WOogV02j5U+zmFkqNb5cR/nhhhVLkO/71iovlZZhsMu1Qj+XjviHIwST4o
-	 6HPs9iz9suhEcgEWnwUw92erQMqs0hva//fRH31G+VA3uDqrVKrQThIHtWgMSpcqsc
-	 ELd/eoLBCzTi1KBiHLmjv2P5Wcwzwu1pAkv4iYRE=
+	b=dcpmii9XBXCpFw8SML79ZbVWkDQft7bPPYHWUh/c8/gL2mPfDULESTZJ07kkpOVth
+	 gp5XmUhcvn4lEfN3hWleZruKql0i3eaVOrMl2oVmZWAKzRDRx1MI6IDtbgch1H0qm3
+	 kRGm/fD6FgWYRgxEN2B6V3+u56aCPPe3V8r16GqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 160/213] netfilter: nftables: rename set element data activation/deactivation functions
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
+Subject: [PATCH 6.9 083/157] net/9p: fix uninit-value in p9_client_rpc()
 Date: Thu, 13 Jun 2024 13:33:28 +0200
-Message-ID: <20240613113234.159451615@linuxfoundation.org>
+Message-ID: <20240613113230.636015710@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit f8bb7889af58d8e74d2d61c76b1418230f1610fa upstream.
+commit 25460d6f39024cc3b8241b14c7ccf0d6f11a736a upstream.
 
-Rename:
+Syzbot with the help of KMSAN reported the following error:
 
-- nft_set_elem_activate() to nft_set_elem_data_activate().
-- nft_set_elem_deactivate() to nft_set_elem_data_deactivate().
+BUG: KMSAN: uninit-value in trace_9p_client_res include/trace/events/9p.h:146 [inline]
+BUG: KMSAN: uninit-value in p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
+ trace_9p_client_res include/trace/events/9p.h:146 [inline]
+ p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
+ p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
+ v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
+ v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
+ legacy_get_tree+0x114/0x290 fs/fs_context.c:662
+ vfs_get_tree+0xa7/0x570 fs/super.c:1797
+ do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
+ path_mount+0x742/0x1f20 fs/namespace.c:3679
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x725/0x810 fs/namespace.c:3875
+ __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
 
-To prepare for updates in the set element infrastructure to add support
-for the special catch-all element.
+Uninit was created at:
+ __alloc_pages+0x9d6/0xe70 mm/page_alloc.c:4598
+ __alloc_pages_node include/linux/gfp.h:238 [inline]
+ alloc_pages_node include/linux/gfp.h:261 [inline]
+ alloc_slab_page mm/slub.c:2175 [inline]
+ allocate_slab mm/slub.c:2338 [inline]
+ new_slab+0x2de/0x1400 mm/slub.c:2391
+ ___slab_alloc+0x1184/0x33d0 mm/slub.c:3525
+ __slab_alloc mm/slub.c:3610 [inline]
+ __slab_alloc_node mm/slub.c:3663 [inline]
+ slab_alloc_node mm/slub.c:3835 [inline]
+ kmem_cache_alloc+0x6d3/0xbe0 mm/slub.c:3852
+ p9_tag_alloc net/9p/client.c:278 [inline]
+ p9_client_prepare_req+0x20a/0x1770 net/9p/client.c:641
+ p9_client_rpc+0x27e/0x1340 net/9p/client.c:688
+ p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
+ v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
+ v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
+ legacy_get_tree+0x114/0x290 fs/fs_context.c:662
+ vfs_get_tree+0xa7/0x570 fs/super.c:1797
+ do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
+ path_mount+0x742/0x1f20 fs/namespace.c:3679
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x725/0x810 fs/namespace.c:3875
+ __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+If p9_check_errors() fails early in p9_client_rpc(), req->rc.tag
+will not be properly initialized. However, trace_9p_client_res()
+ends up trying to print it out anyway before p9_client_rpc()
+finishes.
+
+Fix this issue by assigning default values to p9_fcall fields
+such as 'tag' and (just in case KMSAN unearths something new) 'id'
+during the tag allocation stage.
+
+Reported-and-tested-by: syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
+Fixes: 348b59012e5c ("net/9p: Convert net/9p protocol dumps to tracepoints")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: stable@vger.kernel.org
+Message-ID: <20240408141039.30428-1-n.zhandarovich@fintech.ru>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ net/9p/client.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4501,8 +4501,8 @@ void nft_set_elem_destroy(const struct n
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -235,6 +235,8 @@ static int p9_fcall_init(struct p9_clien
+ 	if (!fc->sdata)
+ 		return -ENOMEM;
+ 	fc->capacity = alloc_msize;
++	fc->id = 0;
++	fc->tag = P9_NOTAG;
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(nft_set_elem_destroy);
- 
--/* Only called from commit path, nft_set_elem_deactivate() already deals with
-- * the refcounting from the preparation phase.
-+/* Only called from commit path, nft_setelem_data_deactivate() already deals
-+ * with the refcounting from the preparation phase.
-  */
- static void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
- 				       const struct nft_set *set, void *elem)
-@@ -4806,9 +4806,9 @@ void nft_data_hold(const struct nft_data
- 	}
- }
- 
--static void nft_set_elem_activate(const struct net *net,
--				  const struct nft_set *set,
--				  struct nft_set_elem *elem)
-+static void nft_setelem_data_activate(const struct net *net,
-+				      const struct nft_set *set,
-+				      struct nft_set_elem *elem)
- {
- 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
- 
-@@ -4818,9 +4818,9 @@ static void nft_set_elem_activate(const
- 		nft_use_inc_restore(&(*nft_set_ext_obj(ext))->use);
- }
- 
--static void nft_set_elem_deactivate(const struct net *net,
--				    const struct nft_set *set,
--				    struct nft_set_elem *elem)
-+static void nft_setelem_data_deactivate(const struct net *net,
-+					const struct nft_set *set,
-+					struct nft_set_elem *elem)
- {
- 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
- 
-@@ -4887,7 +4887,7 @@ static int nft_del_setelem(struct nft_ct
- 	kfree(elem.priv);
- 	elem.priv = priv;
- 
--	nft_set_elem_deactivate(ctx->net, set, &elem);
-+	nft_setelem_data_deactivate(ctx->net, set, &elem);
- 
- 	nft_trans_elem(trans) = elem;
- 	nft_trans_commit_list_add_tail(ctx->net, trans);
-@@ -4921,7 +4921,7 @@ static int nft_flush_set(const struct nf
- 	}
- 	set->ndeact++;
- 
--	nft_set_elem_deactivate(ctx->net, set, elem);
-+	nft_setelem_data_deactivate(ctx->net, set, elem);
- 	nft_trans_elem_set(trans) = set;
- 	nft_trans_elem(trans) = *elem;
- 	nft_trans_commit_list_add_tail(ctx->net, trans);
-@@ -6954,7 +6954,7 @@ static int __nf_tables_abort(struct net
- 		case NFT_MSG_DELSETELEM:
- 			te = (struct nft_trans_elem *)trans->data;
- 
--			nft_set_elem_activate(net, te->set, &te->elem);
-+			nft_setelem_data_activate(net, te->set, &te->elem);
- 			te->set->ops->activate(net, te->set, &te->elem);
- 			te->set->ndeact--;
  
 
 
