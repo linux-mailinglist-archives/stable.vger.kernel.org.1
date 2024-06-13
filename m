@@ -1,78 +1,57 @@
-Return-Path: <stable+bounces-51006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9DEB906DE2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE149071BD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F38981C2188D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD8F5B26744
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B6B145B29;
-	Thu, 13 Jun 2024 12:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB2B1428EF;
+	Thu, 13 Jun 2024 12:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeiLlEFC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNxcS9tG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158C512C530;
-	Thu, 13 Jun 2024 12:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBCD13E3F9;
+	Thu, 13 Jun 2024 12:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280030; cv=none; b=i0iQZgU5OPXNnezq9kWvXA2T21CdeoOuZj5QZfdi/zkbBg9Ka/r+oV+Uief9CYZuZoMwAP5/Vgmqdpu9QvmZgA5va6wtTvpmZEeOeExHmzFBF5fwgs3d/JGjFpkWYsvw9SWBMceuTkCNmG5kDmIj2G6HUniGSzUkbZLdeGjhkAo=
+	t=1718282380; cv=none; b=qYPShL7uhTUT5p0Q5Fkmzi4g9QqfzDt6V4PWWISzGtmNP5AykfhzsLMp1SubN6Q+eQD3FZiKKZLFwuLXtDbLRp6sZwzIqPeNqiFKsfTuIFNb2enNTg5x61qxGK5L+bN01myiaFSOFbavPIWlcIWtalvMlsbLxqpZM96a7WRqHsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280030; c=relaxed/simple;
-	bh=Q7eSktE/oQ40riiMDJ4hqsTYaOoRHaA73dZz+yP1iBQ=;
+	s=arc-20240116; t=1718282380; c=relaxed/simple;
+	bh=dHhyJWSlMYpv/Rj3mLB65nyV6l2BwnFN0ZFItneX6NE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=onS9zU4VWrZn6DLdxkCngmlU299O/YajhOTJgiIeQDP0yOOz7UPoYgps+iborxHA5HmaZ3LG8ugRtq1srBqU4kL1QT77LOosBsliFfVFnlPn9ta26LSpx4a1tscoW7GDRcH9MjkT5v+4aIr3OS7OQRtez9A+QYA1YcXLpb9NkN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeiLlEFC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6477EC32786;
-	Thu, 13 Jun 2024 12:00:29 +0000 (UTC)
+	 MIME-Version; b=lEy9tmkioMCHCFiOSJElYWepmHnxE/1Msp05LmD/5qLvxvWEb/SP8e/1/jgHztRUgh1kapwOqO/LH1s3UrWqP5Mg+KN/qtBIkpupi1xn5l+iZwADdpDm5yjFm+AM2cV3ihWSsjaS50/nvceAIisPyp43nWc33crcfwCv/COtlg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNxcS9tG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5484BC2BBFC;
+	Thu, 13 Jun 2024 12:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280030;
-	bh=Q7eSktE/oQ40riiMDJ4hqsTYaOoRHaA73dZz+yP1iBQ=;
+	s=korg; t=1718282380;
+	bh=dHhyJWSlMYpv/Rj3mLB65nyV6l2BwnFN0ZFItneX6NE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DeiLlEFCXy1TqxIqYHXC9O49QwIwkyCBWLDYmbyQWhX87aoGb44zYSClaKkaAg/SJ
-	 MNiVzdnLzGjr4KWLvn/BEg4B3+k7cJsbfLYL45KnhksOfEXqlqMiHDuQNlDM/9RSMq
-	 Ua1Qjedg15ubmFzzNb2yUCfO538rL1sybeIV/kAg=
+	b=JNxcS9tGPhaa/h5PRLxLidbW58vYLexVHdpk1wt29Y3tUUwtRbN7D3Us3QptXa/7j
+	 v6tCWhWUHu56nyW1nsv91ypDC3EKfwT/60xuyK15qOm/4DPxJntFYLqY+D/g0LUmEN
+	 ya4L/4qBWWfGGCTmxWImt4IO/xW/uDCGiOyEwfQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Ben Gainey <ben.gainey@arm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Li Dong <lidong@vivo.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Paran Lee <p4ranlee@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Sun Haiyong <sunhaiyong@loongson.cn>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Yanteng Si <siyanteng@loongson.cn>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 117/202] perf ui browser: Dont save pointer to stack memory
+Subject: [PATCH 5.15 258/402] um: Fix return value in ubd_init()
 Date: Thu, 13 Jun 2024 13:33:35 +0200
-Message-ID: <20240613113232.276801054@linuxfoundation.org>
+Message-ID: <20240613113312.210622655@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -84,145 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 769e6a1e15bdbbaf2b0d2f37c24f2c53268bd21f ]
+[ Upstream commit 31a5990ed253a66712d7ddc29c92d297a991fdf2 ]
 
-ui_browser__show() is capturing the input title that is stack allocated
-memory in hist_browser__run().
+When kmalloc_array() fails to allocate memory, the ubd_init()
+should return -ENOMEM instead of -1. So, fix it.
 
-Avoid a use after return by strdup-ing the string.
-
-Committer notes:
-
-Further explanation from Ian Rogers:
-
-My command line using tui is:
-$ sudo bash -c 'rm /tmp/asan.log*; export
-ASAN_OPTIONS="log_path=/tmp/asan.log"; /tmp/perf/perf mem record -a
-sleep 1; /tmp/perf/perf mem report'
-I then go to the perf annotate view and quit. This triggers the asan
-error (from the log file):
-```
-==1254591==ERROR: AddressSanitizer: stack-use-after-return on address
-0x7f2813331920 at pc 0x7f28180
-65991 bp 0x7fff0a21c750 sp 0x7fff0a21bf10
-READ of size 80 at 0x7f2813331920 thread T0
-    #0 0x7f2818065990 in __interceptor_strlen
-../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:461
-    #1 0x7f2817698251 in SLsmg_write_wrapped_string
-(/lib/x86_64-linux-gnu/libslang.so.2+0x98251)
-    #2 0x7f28176984b9 in SLsmg_write_nstring
-(/lib/x86_64-linux-gnu/libslang.so.2+0x984b9)
-    #3 0x55c94045b365 in ui_browser__write_nstring ui/browser.c:60
-    #4 0x55c94045c558 in __ui_browser__show_title ui/browser.c:266
-    #5 0x55c94045c776 in ui_browser__show ui/browser.c:288
-    #6 0x55c94045c06d in ui_browser__handle_resize ui/browser.c:206
-    #7 0x55c94047979b in do_annotate ui/browsers/hists.c:2458
-    #8 0x55c94047fb17 in evsel__hists_browse ui/browsers/hists.c:3412
-    #9 0x55c940480a0c in perf_evsel_menu__run ui/browsers/hists.c:3527
-    #10 0x55c940481108 in __evlist__tui_browse_hists ui/browsers/hists.c:3613
-    #11 0x55c9404813f7 in evlist__tui_browse_hists ui/browsers/hists.c:3661
-    #12 0x55c93ffa253f in report__browse_hists tools/perf/builtin-report.c:671
-    #13 0x55c93ffa58ca in __cmd_report tools/perf/builtin-report.c:1141
-    #14 0x55c93ffaf159 in cmd_report tools/perf/builtin-report.c:1805
-    #15 0x55c94000c05c in report_events tools/perf/builtin-mem.c:374
-    #16 0x55c94000d96d in cmd_mem tools/perf/builtin-mem.c:516
-    #17 0x55c9400e44ee in run_builtin tools/perf/perf.c:350
-    #18 0x55c9400e4a5a in handle_internal_command tools/perf/perf.c:403
-    #19 0x55c9400e4e22 in run_argv tools/perf/perf.c:447
-    #20 0x55c9400e53ad in main tools/perf/perf.c:561
-    #21 0x7f28170456c9 in __libc_start_call_main
-../sysdeps/nptl/libc_start_call_main.h:58
-    #22 0x7f2817045784 in __libc_start_main_impl ../csu/libc-start.c:360
-    #23 0x55c93ff544c0 in _start (/tmp/perf/perf+0x19a4c0) (BuildId:
-84899b0e8c7d3a3eaa67b2eb35e3d8b2f8cd4c93)
-
-Address 0x7f2813331920 is located in stack of thread T0 at offset 32 in frame
-    #0 0x55c94046e85e in hist_browser__run ui/browsers/hists.c:746
-
-  This frame has 1 object(s):
-    [32, 192) 'title' (line 747) <== Memory access at offset 32 is
-inside this variable
-HINT: this may be a false positive if your program uses some custom
-stack unwind mechanism, swapcontext or vfork
-```
-hist_browser__run isn't on the stack so the asan error looks legit.
-There's no clean init/exit on struct ui_browser so I may be trading a
-use-after-return for a memory leak, but that seems look a good trade
-anyway.
-
-Fixes: 05e8b0804ec4 ("perf ui browser: Stop using 'self'")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ben Gainey <ben.gainey@arm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Li Dong <lidong@vivo.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Cc: Paran Lee <p4ranlee@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Sun Haiyong <sunhaiyong@loongson.cn>
-Cc: Tim Chen <tim.c.chen@linux.intel.com>
-Cc: Yanteng Si <siyanteng@loongson.cn>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20240507183545.1236093-2-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: f88f0bdfc32f ("um: UBD Improvements")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/ui/browser.c | 4 +++-
- tools/perf/ui/browser.h | 2 +-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/um/drivers/ubd_kern.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/ui/browser.c b/tools/perf/ui/browser.c
-index 9dc808020e824..6fa4f123d5ff7 100644
---- a/tools/perf/ui/browser.c
-+++ b/tools/perf/ui/browser.c
-@@ -287,7 +287,8 @@ int ui_browser__show(struct ui_browser *browser, const char *title,
- 	mutex_lock(&ui__lock);
- 	__ui_browser__show_title(browser, title);
+diff --git a/arch/um/drivers/ubd_kern.c b/arch/um/drivers/ubd_kern.c
+index fefd343412c79..b3a4cc5a2091f 100644
+--- a/arch/um/drivers/ubd_kern.c
++++ b/arch/um/drivers/ubd_kern.c
+@@ -1097,7 +1097,7 @@ static int __init ubd_init(void)
  
--	browser->title = title;
-+	free(browser->title);
-+	browser->title = strdup(title);
- 	zfree(&browser->helpline);
+ 	if (irq_req_buffer == NULL) {
+ 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
+-		return -1;
++		return -ENOMEM;
+ 	}
+ 	io_req_buffer = kmalloc_array(UBD_REQ_BUFFER_SIZE,
+ 				      sizeof(struct io_thread_req *),
+@@ -1108,7 +1108,7 @@ static int __init ubd_init(void)
  
- 	va_start(ap, helpline);
-@@ -304,6 +305,7 @@ void ui_browser__hide(struct ui_browser *browser)
- 	mutex_lock(&ui__lock);
- 	ui_helpline__pop();
- 	zfree(&browser->helpline);
-+	zfree(&browser->title);
- 	mutex_unlock(&ui__lock);
- }
- 
-diff --git a/tools/perf/ui/browser.h b/tools/perf/ui/browser.h
-index 3678eb88f119c..815e6bf7ee531 100644
---- a/tools/perf/ui/browser.h
-+++ b/tools/perf/ui/browser.h
-@@ -21,7 +21,7 @@ struct ui_browser {
- 	u8	      extra_title_lines;
- 	int	      current_color;
- 	void	      *priv;
--	const char    *title;
-+	char	      *title;
- 	char	      *helpline;
- 	const char    *no_samples_msg;
- 	void 	      (*refresh_dimensions)(struct ui_browser *browser);
+ 	if (io_req_buffer == NULL) {
+ 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
+-		return -1;
++		return -ENOMEM;
+ 	}
+ 	platform_driver_register(&ubd_driver);
+ 	mutex_lock(&ubd_lock);
 -- 
 2.43.0
 
