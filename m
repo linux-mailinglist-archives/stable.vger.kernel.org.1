@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D88979070EF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:32:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF8F906F17
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:16:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EEF41F23448
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:32:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A9B9282DC0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBE32F5A;
-	Thu, 13 Jun 2024 12:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1363F1474C4;
+	Thu, 13 Jun 2024 12:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hy/HTUO6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEJGnozn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE2C384;
-	Thu, 13 Jun 2024 12:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33491474C5;
+	Thu, 13 Jun 2024 12:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281927; cv=none; b=MeAqVoeXWSCCBLLXkyKCqU0I+J5dDF7mbLo+Nfrx446NPDE76QlsFj28ohcQ6uDDSeLmvEAWmSZVMrl89cHLRm0S1rjfckcaFUkVy7Sf1wAyjG4eepYsJ9H7iUhbTrposEjpCZPEdZFuYzNDeVSRKChvOy/iI9ae6AMclk3IlNI=
+	t=1718280809; cv=none; b=JRarFastJmSPm7iKw6yZ1MjwxFeA5nj98c3TpJ5sA6k+amgGzYq48QS3TkbMyhPVzrjAK3FZ+2KIiZT00oa9DPqAv9aU26PTqFyF4e9xY0lco/reobe7gLUZJ619qvKdEiYJSbkht9yPJmVaG8dl0RVH4rwPmieWDvht26iRQDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281927; c=relaxed/simple;
-	bh=oetRoir7vROli0krerKOTWglKPsWWVNU+vkvlAVWZyY=;
+	s=arc-20240116; t=1718280809; c=relaxed/simple;
+	bh=lqu/KcqQyglRpyLkofABUYY4KBloH3EeObWgK50LMkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V9mKp1ly2vfumZJL2xKBP+EkvSNUkAOMuPCLWKH/xxbMVSFAuv7JzKoZTkzK+/FS7teI8N2H5pd/d35rCgsC2k+JNdwCxEpMctaeRsiGjZCAiFqLVE5GGHixqP6n2Eu06pAUP0Q6zfpg3idaKxV97uGuXcHlkcFnYwYea+zbV8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hy/HTUO6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E009FC2BBFC;
-	Thu, 13 Jun 2024 12:32:06 +0000 (UTC)
+	 MIME-Version; b=ujYyUqy57/TemOFhZUdruZAuqOn1ay3nzo4VsO491njNR+bcZphsycirwXXIjzAIJzqFOLw3FqP9JUY9dRjauyLHoMyI53AJpWkcEmmN1x6NoBEC8D5LbmevU0CSboDT4qQkfcgtjtoBUKZhTffMCXZdJ564U/E+TB11h2a4QT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEJGnozn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00FB3C2BBFC;
+	Thu, 13 Jun 2024 12:13:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281927;
-	bh=oetRoir7vROli0krerKOTWglKPsWWVNU+vkvlAVWZyY=;
+	s=korg; t=1718280809;
+	bh=lqu/KcqQyglRpyLkofABUYY4KBloH3EeObWgK50LMkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hy/HTUO67mauMhnHRaTX3ov+TurlZSYZz/Zh7y2sFpUh5ElQlQhE/3cIRY/v8UEVS
-	 OvtK05XbfyxuJYNZmyXLQm7bCT+WJ+kZS9jIsntPXybBD51VM0u7Didzt+zwAGj9Em
-	 1e7/Nwo1lC+DQ+k4UUKzI93KqHZfzF8GOiqJfz+E=
+	b=OEJGnoznJqFwhFhmSWWmbEfzhRTVr1XdxM2gr1bYElqS72gbKUsLMOqdyccOM/Np2
+	 Y5wCvYEXinrCUDeyNCtj4adaHnasp5BXV7Ij9mmggwzvfuY3I16aSm7c5xadTAx8J1
+	 xr/cm5BON+xSHxvinOhqz40zP11ODCrH7+h6dVqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 103/402] scsi: qla2xxx: Fix debugfs output for fw_resource_count
+Subject: [PATCH 5.10 042/317] scsi: ufs: qcom: Perform read back after writing unipro mode
 Date: Thu, 13 Jun 2024 13:31:00 +0200
-Message-ID: <20240613113306.151080081@linuxfoundation.org>
+Message-ID: <20240613113249.176892862@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Himanshu Madhani <himanshu.madhani@oracle.com>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit 998d09c5ef6183bd8137d1a892ba255b15978bb4 ]
+[ Upstream commit 823150ecf04f958213cf3bf162187cd1a91c885c ]
 
-DebugFS output for fw_resource_count shows:
+Currently, the QUNIPRO_SEL bit is written to and then an mb() is used to
+ensure that completes before continuing.
 
-estimate exchange used[0] high water limit [1945] n        estimate iocb2 used [0] high water limit [5141]
-        estimate exchange2 used[0] high water limit [1945]
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring this
+bit has taken effect on the device is to perform a read back to force it to
+make it all the way to the device. This is documented in device-io.rst and
+a talk by Will Deacon on this can be seen over here:
 
-Which shows incorrect display due to missing newline in seq_print().
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
 
-[mkp: fix checkpatch warning about space before newline]
+But, there's really no reason to even ensure completion before
+continuing. The only requirement here is that this write is ordered to this
+endpoint (which readl()/writel() guarantees already). For that reason the
+mb() can be dropped altogether without anything forcing completion.
 
-Fixes: 5f63a163ed2f ("scsi: qla2xxx: Fix exchange oversubscription for management commands")
-Signed-off-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Link: https://lore.kernel.org/r/20240426020056.3639406-1-himanshu.madhani@oracle.com
+Fixes: f06fcc7155dc ("scsi: ufs-qcom: add QUniPro hardware support and power optimizations")
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-4-181252004586@redhat.com
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_dfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/ufs/ufs-qcom.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_dfs.c b/drivers/scsi/qla2xxx/qla_dfs.c
-index af921fd150d1e..73695c6815fac 100644
---- a/drivers/scsi/qla2xxx/qla_dfs.c
-+++ b/drivers/scsi/qla2xxx/qla_dfs.c
-@@ -274,7 +274,7 @@ qla_dfs_fw_resource_cnt_show(struct seq_file *s, void *unused)
- 		seq_printf(s, "Driver: estimate iocb used [%d] high water limit [%d]\n",
- 			   iocbs_used, ha->base_qpair->fwres.iocbs_limit);
+diff --git a/drivers/scsi/ufs/ufs-qcom.c b/drivers/scsi/ufs/ufs-qcom.c
+index ef8d721022da5..7b8e591265671 100644
+--- a/drivers/scsi/ufs/ufs-qcom.c
++++ b/drivers/scsi/ufs/ufs-qcom.c
+@@ -245,9 +245,6 @@ static void ufs_qcom_select_unipro_mode(struct ufs_qcom_host *host)
  
--		seq_printf(s, "estimate exchange used[%d] high water limit [%d] n",
-+		seq_printf(s, "estimate exchange used[%d] high water limit [%d]\n",
- 			   exch_used, ha->base_qpair->fwres.exch_limit);
+ 	if (host->hw_ver.major == 0x05)
+ 		ufshcd_rmwl(host->hba, QUNIPRO_G4_SEL, 0, REG_UFS_CFG0);
+-
+-	/* make sure above configuration is applied before we return */
+-	mb();
+ }
  
- 		if (ql2xenforce_iocb_limit == 2) {
+ /*
 -- 
 2.43.0
 
