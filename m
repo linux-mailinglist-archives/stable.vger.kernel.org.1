@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-51021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78AEA906DF6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D73D0906FFF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E9B71C21975
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03D5AB21BD6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD334147C8B;
-	Thu, 13 Jun 2024 12:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7785914198E;
+	Thu, 13 Jun 2024 12:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/pwilTb"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxeW52wK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A61214535F;
-	Thu, 13 Jun 2024 12:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3662181AA7;
+	Thu, 13 Jun 2024 12:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280074; cv=none; b=BVMIBQ3zoVrIxYf7/Ye1EtIg1WvBnL5QNmWq619DPNgKClYIqJ3jbh9YoPsDwlgmrwGTsNlJcboxuRKlg29gvP11uyPnoKtnpGbdC22FDYRXNXHKXmPMGDFKTS5m91cZk5vJ/LrD4Mq6Jx/6xEESrJkNzraVV2vSVErHEaHLeZ4=
+	t=1718281319; cv=none; b=okIsW56pX6PWq1kf9dxjoLqKWHHW8jZC1tng4gEU8MFHaXFkQwqfmfwb37tyyq3q5m575YRHMI4AQyV3ExEFKkzZpz9lYwPu3kN3xrUxW3CsNzW2RmrBdkkB6b363mGZrx9tj2RdHkpSTNotyNLXdnV9ASDCzFlObWZc8gaHLdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280074; c=relaxed/simple;
-	bh=kwRO0IxtUvrncdKET2YciifBWel07thNq8dROQtoaos=;
+	s=arc-20240116; t=1718281319; c=relaxed/simple;
+	bh=Xh98LQWtnmuGQf5l10OhpWs4PFbB2lWNxx0Hal2RAyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ov8acMlHlTD5xD7b6WFYIRaqjC2RWXhPlGrznhDnMqnbb31NNexESvk3dFPjGO8iq3DAa7E8NBvbPQXD0H3+awRVy9lnD79/+bnI5Vmm57/pQQUMn0rtzXmmK7QqmKD0NTmdFpbp9FrWiSAnrmosngPKpX3Yv6oeKvnaDLVm+t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/pwilTb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5685C4AF1A;
-	Thu, 13 Jun 2024 12:01:13 +0000 (UTC)
+	 MIME-Version; b=GVdqlkV9v3a8rwIsfwno6zrxwZ8FL52JDdc0G93zw3uKvZ191zxP4La4asi6mH6ldx4abgaKzaZEJ8vJ3Tq9y8aR5rv1OwO3SSeCNJXMXtv8ekShJGweJd1YApNWSX5/aD1ocRTwakYXYRYl+vRBFvYb7j+ivzEVaK53X/FARAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxeW52wK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16C2C2BBFC;
+	Thu, 13 Jun 2024 12:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280074;
-	bh=kwRO0IxtUvrncdKET2YciifBWel07thNq8dROQtoaos=;
+	s=korg; t=1718281319;
+	bh=Xh98LQWtnmuGQf5l10OhpWs4PFbB2lWNxx0Hal2RAyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/pwilTbzlU9ZPTtcBpODsGywAyT5YqAz+C9B+jYGJSY/7ESDuWLX9vAGaS423YeM
-	 sBrD7lrVM33k9i+v1hwR73+cpAe3JtQuhe+O5Iody9hKDd0ZhTO7TLH0a4tLMmpB7H
-	 Qtbm86SuwkoAaSGp0PLY/JPderv03Qjx5Vs8ik58=
+	b=rxeW52wKNw/IvkEFHcshYWyDqbP0c6KBqX/4vU3N/LKBzPx93ubllzCbm2Y98Wz7C
+	 ioQ/wxm1zae9jTCrybkKKAKZvUP4k35UChuVLhwCgg+GuxJ0rBQ759FUKY/Kbb9Qrm
+	 dFtF31xcxS987Igm/n6GePAdX0EgIYTAoGYHM564=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Yang, Chenyuan" <cy54@illinois.edu>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
-Subject: [PATCH 5.4 134/202] media: cec: cec-api: add locking in cec_release()
+Subject: [PATCH 5.10 214/317] media: cec: cec-adap: always cancel work in cec_transmit_msg_fh
 Date: Thu, 13 Jun 2024 13:33:52 +0200
-Message-ID: <20240613113232.933259601@linuxfoundation.org>
+Message-ID: <20240613113255.832979433@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 42bcaacae924bf18ae387c3f78c202df0b739292 ]
+[ Upstream commit 9fe2816816a3c765dff3b88af5b5c3d9bbb911ce ]
 
-When cec_release() uses fh->msgs it has to take fh->lock,
-otherwise the list can get corrupted.
+Do not check for !data->completed, just always call
+cancel_delayed_work_sync(). This fixes a small race condition.
 
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Reported-by: Yang, Chenyuan <cy54@illinois.edu>
 Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
-Fixes: ca684386e6e2 ("[media] cec: add HDMI CEC framework (api)")
+Fixes: 490d84f6d73c ("media: cec: forgot to cancel delayed work")
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/cec-api.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/cec/core/cec-adap.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/media/cec/cec-api.c b/drivers/media/cec/cec-api.c
-index ed75636a6fb34..90e90234f5bd8 100644
---- a/drivers/media/cec/cec-api.c
-+++ b/drivers/media/cec/cec-api.c
-@@ -652,6 +652,8 @@ static int cec_release(struct inode *inode, struct file *filp)
- 		list_del(&data->xfer_list);
- 	}
+diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
+index 2f7ab5df1c584..78027f0310acd 100644
+--- a/drivers/media/cec/core/cec-adap.c
++++ b/drivers/media/cec/core/cec-adap.c
+@@ -913,8 +913,7 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
+ 	 */
  	mutex_unlock(&adap->lock);
-+
-+	mutex_lock(&fh->lock);
- 	while (!list_empty(&fh->msgs)) {
- 		struct cec_msg_entry *entry =
- 			list_first_entry(&fh->msgs, struct cec_msg_entry, list);
-@@ -669,6 +671,7 @@ static int cec_release(struct inode *inode, struct file *filp)
- 			kfree(entry);
- 		}
- 	}
-+	mutex_unlock(&fh->lock);
- 	kfree(fh);
+ 	wait_for_completion_killable(&data->c);
+-	if (!data->completed)
+-		cancel_delayed_work_sync(&data->work);
++	cancel_delayed_work_sync(&data->work);
+ 	mutex_lock(&adap->lock);
  
- 	cec_put_device(devnode);
+ 	/* Cancel the transmit if it was interrupted */
 -- 
 2.43.0
 
