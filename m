@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B755C907041
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CD990729C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B0181F21809
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0DE1B23AA1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D981448E6;
-	Thu, 13 Jun 2024 12:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E320143C40;
+	Thu, 13 Jun 2024 12:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Io3Vhg6M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzkV/gJd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19B4139CFE;
-	Thu, 13 Jun 2024 12:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE0A1E49B;
+	Thu, 13 Jun 2024 12:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281516; cv=none; b=Q3KDVSncRZJ2HETCE76i9vXnqac1Xv5oDRaVFk57Mui+rmEXpOBp29hgG6JtLWIn78Gh0PKlmqPvKaNpd9YW1Uu136uns53VWiuM8G7IGf4tHzkVEGqeJ/81NQxnH6wjQQp0k1aFn/1EM2GVhS/cN1NRxSd7JDblnIaINnLsPAY=
+	t=1718282862; cv=none; b=mCPtlesnJdxBXWiu6a4bWVcwRSVbLWdhDcBnNsXILXIGi8c+vnRvooM6/oL2fMfX1pRzfnwHSsxlG8ghgxAobjeVS6zhkWQMi+ofiEeSPBk2yR3YpMIjsOZUzn4yzZ3AT1cSfKo1g6MtWaCOGM7v3V8IGhQq+nwRiSMvMVhgQzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281516; c=relaxed/simple;
-	bh=YsRARTuJp2L3HsIRDtSazNOrK0BTMt1KMVLsB5WKPp0=;
+	s=arc-20240116; t=1718282862; c=relaxed/simple;
+	bh=9uLpRcn94snOYOzVqGdbk8lGft9ucpdtRjFVHYC0vss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lWNF/vlhbEtwAa/4HcZREnSBy/z6xd371lRnM8NO5q9gcGp4eG7dbdNxNHAlpR/D5c/bkQcrIVHE5RVtHPkkXCxEYkTNJ8Crn/EFwyd5yfD7/VRtiGcjtsoFM17nJqfu2Glrcv4eBVKbIKlm9dcVgle3LPCw2rGyXvXzc0H/C2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Io3Vhg6M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFBCC2BBFC;
-	Thu, 13 Jun 2024 12:25:15 +0000 (UTC)
+	 MIME-Version; b=C+Df9nRty/Z0M6MO3g4/X2bUMfgQiueREDInxGtMTu2vIaqfaJLTHgwQdsJ8NZC7F7dLg+YdGDoWS8PbVXAXWM6aeeDFOHB+gWtnaV1pcpJ103mOijMtpI0mfgC4+gxBFVQbwDYHuBPrtX1G0dMpeubylMBeiQ2SNoBxs49nwWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzkV/gJd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8DDC32786;
+	Thu, 13 Jun 2024 12:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281515;
-	bh=YsRARTuJp2L3HsIRDtSazNOrK0BTMt1KMVLsB5WKPp0=;
+	s=korg; t=1718282860;
+	bh=9uLpRcn94snOYOzVqGdbk8lGft9ucpdtRjFVHYC0vss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Io3Vhg6MlK9cHUZNYAnW6z4yIZo+O62NgNVLILXKFqThyoenwU/2m03a1K6iVXSys
-	 oFe5zRvfSr1I/vbtwb/6DG1jamhXYtGQ0v5GAaSirenxaXafVrNDBeLZkLVROpxnNi
-	 QUD3vGk+pZhzzRcinseiIEt4lKoZ2R4Ne+Htz37E=
+	b=qzkV/gJdoeQTzOAlq1vOI8wbp4RxmNkxRNyLkzkhFIcNi4HpzCmWC+qUAjeJisJWy
+	 A2bB5atotVpRbL7/YO4Y8D4yxiRX5UpBpPi5yjqZecLuDPW+ubxb/v7bc33vIN5Pj7
+	 n0e7QEPutCrTUEZj6CbYm0Rvrx1W1F8JHKN//0Y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.10 281/317] arm64: dts: qcom: qcs404: fix bluetooth device address
-Date: Thu, 13 Jun 2024 13:34:59 +0200
-Message-ID: <20240613113258.422768974@linuxfoundation.org>
+	kernel test robot <oliver.sang@intel.com>,
+	Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>
+Subject: [PATCH 6.1 02/85] drm: Check polling initialized before enabling in drm_helper_probe_single_connector_modes
+Date: Thu, 13 Jun 2024 13:35:00 +0200
+Message-ID: <20240613113214.232579459@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
 
-commit f5f390a77f18eaeb2c93211a1b7c5e66b5acd423 upstream.
+commit 048a36d8a6085bbd8ab9e5794b713b92ac986450 upstream.
 
-The 'local-bd-address' property is used to pass a unique Bluetooth
-device address from the boot firmware to the kernel and should otherwise
-be left unset so that the OS can prevent the controller from being used
-until a valid address has been provided through some other means (e.g.
-using btmgmt).
+In function drm_helper_probe_single_connector_modes() when we enable
+polling again, if it is already uninitialized, a warning is reported.
+This patch fixes the warning message by checking if poll is initialized
+before enabling it.
 
-Fixes: 60f77ae7d1c1 ("arm64: dts: qcom: qcs404-evb: Enable uart3 and add Bluetooth")
-Cc: stable@vger.kernel.org	# 5.10
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://lore.kernel.org/r/20240501075201.4732-1-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202401191128.db8423f1-oliver.sang@intel.com
+Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/1706856224-9725-1-git-send-email-shradhagupta@linux.microsoft.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/qcs404-evb.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_probe_helper.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi
-@@ -60,7 +60,7 @@
- 		vddrf-supply = <&vreg_l1_1p3>;
- 		vddch0-supply = <&vdd_ch0_3p3>;
+--- a/drivers/gpu/drm/drm_probe_helper.c
++++ b/drivers/gpu/drm/drm_probe_helper.c
+@@ -574,7 +574,8 @@ retry:
+ 	}
  
--		local-bd-address = [ 02 00 00 00 5a ad ];
-+		local-bd-address = [ 00 00 00 00 00 00 ];
+ 	/* Re-enable polling in case the global poll config changed. */
+-	if (drm_kms_helper_poll != dev->mode_config.poll_running)
++	if (dev->mode_config.poll_enabled &&
++	    (drm_kms_helper_poll != dev->mode_config.poll_running))
+ 		drm_kms_helper_poll_enable(dev);
  
- 		max-speed = <3200000>;
- 	};
+ 	dev->mode_config.poll_running = drm_kms_helper_poll;
 
 
 
