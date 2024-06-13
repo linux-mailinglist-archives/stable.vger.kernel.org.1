@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5552906F14
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:16:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D5949070DE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAC6D1C23161
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:16:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8CE11F22DF9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC16146A60;
-	Thu, 13 Jun 2024 12:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688901E4A2;
+	Thu, 13 Jun 2024 12:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDtKLlb0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlvy0cV3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99761465B3;
-	Thu, 13 Jun 2024 12:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E371DDD6;
+	Thu, 13 Jun 2024 12:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280800; cv=none; b=GBe7EKTWMsRuj8vOlhiokQ2s3HVvai4V8Tnw7m6WXxkkBzm5+b+9uIXV4YHSR8LuaFc3yVztywbblfLHiL9uZs7DYOdxDtmHPx+IXMmIOy9HI+oINrSgUu2hs/Q7RfdoRRJCwoA08x4IWHCDuXuiRkijx+v48UmWNCwSupgHyGI=
+	t=1718281895; cv=none; b=s3VQ7pPzdFDK/zr4Uqdf1CKw79YsngwwFZzourStkQD5Hauk+jGq2h/AEC+GqioER8qeI8gn1NjUkPThoGJSZmdp7kvkuyM0qpHGGoOfIyk3MiSILn8KXL/SYybtmYAlbNNUlgxs9tUSbDadVZcUDhCEFlcPmlo9KNharQYf6cM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280800; c=relaxed/simple;
-	bh=4DT4Qd0iFsnJbaU0vm+rMzaD2O/tufW5UvtLMo6jS2U=;
+	s=arc-20240116; t=1718281895; c=relaxed/simple;
+	bh=JOIN1DZIuv7LI4dewb3gcmb2vo1VxM3T5gB+1Lb5Uxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Np3tm0wWHFJlA+ZDETM6e9o6v+auUq4LvZOW/fvGKYoP2cjpYGkeieT7j9FhSG5K6eZTC4fusjqihBTQxmmV3jm3HhcrjMh7SL3gySKZMeIBfq7a7gko0YGsSg1kGk7Rv+kxpnisu8IjdRvfH/BMg2Dv/DtjLAIhwwN+2FyAa2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDtKLlb0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E33C2BBFC;
-	Thu, 13 Jun 2024 12:13:20 +0000 (UTC)
+	 MIME-Version; b=dMLYfuDm/3m9RLcLYzmxUYLpU9RN8K/OwnNGNx1QLkS2FSfJo+wkURW+5MAcF+XZ0r7weHXYW0pZnKgzH4f8zg9CYBdOPAU2egzhAVr/If80oQwbS41NiycI4drO1RNKMPSan9zhR5SS0mNUwHAZDztvvgsvFzq2UzPaJnY9Jko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlvy0cV3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25CDC2BBFC;
+	Thu, 13 Jun 2024 12:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280800;
-	bh=4DT4Qd0iFsnJbaU0vm+rMzaD2O/tufW5UvtLMo6jS2U=;
+	s=korg; t=1718281895;
+	bh=JOIN1DZIuv7LI4dewb3gcmb2vo1VxM3T5gB+1Lb5Uxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDtKLlb03axa/pnV2OctdmVQlXM79V7PttYPIQSnvb0TPS/Xf6PSbvVH8uA5qkGa3
-	 n7UNrv+DWweorEE5fJSyQyvFTAkpn9qL6LcGMnqHZjyLcZW1SrNk3VkYcjHAtXEHj8
-	 kxfuEVXDARCVAsFsvJVQSvyzpknNy9t10nbB94/k=
+	b=xlvy0cV3Y8ztUcjk8NIuSyqwJRBhNaJfCc2+dn0Zz8op5uyyV77YIyngiNGSvt/8H
+	 n6iJqaA/5Se71YnkogOtk+qrxjiKaI3jMUXaQmELpBikYpa4mah0vPUr5KBzX4TNxO
+	 RYP6Wapp2uxpHAKex93NsBSf35xe7YrKAk9h2TIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/317] soc: mediatek: cmdq: Fix typo of CMDQ_JUMP_RELATIVE
-Date: Thu, 13 Jun 2024 13:30:49 +0200
-Message-ID: <20240613113248.746327989@linuxfoundation.org>
+Subject: [PATCH 5.15 093/402] macintosh/via-macii: Fix "BUG: sleeping function called from invalid context"
+Date: Thu, 13 Jun 2024 13:30:50 +0200
+Message-ID: <20240613113305.767426361@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit ed4d5ab179b9f0a60da87c650a31f1816db9b4b4 ]
+[ Upstream commit d301a71c76ee4c384b4e03cdc320a55f5cf1df05 ]
 
-For cmdq jump command, offset 0 means relative jump and offset 1
-means absolute jump. cmdq_pkt_jump() is absolute jump, so fix the
-typo of CMDQ_JUMP_RELATIVE in cmdq_pkt_jump().
+The via-macii ADB driver calls request_irq() after disabling hard
+interrupts. But disabling interrupts isn't necessary here because the
+VIA shift register interrupt was masked during VIA1 initialization.
 
-Fixes: 946f1792d3d7 ("soc: mediatek: cmdq: add jump function")
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240222154120.16959-2-chunkuang.hu@kernel.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/419fcc09d0e563b425c419053d02236b044d86b0.1710298421.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-cmdq-helper.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/macintosh/via-macii.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/soc/mediatek/mtk-cmdq-helper.c b/drivers/soc/mediatek/mtk-cmdq-helper.c
-index 505651b0d715f..c0b2f9397ea8a 100644
---- a/drivers/soc/mediatek/mtk-cmdq-helper.c
-+++ b/drivers/soc/mediatek/mtk-cmdq-helper.c
-@@ -13,7 +13,8 @@
- #define CMDQ_POLL_ENABLE_MASK	BIT(0)
- #define CMDQ_EOC_IRQ_EN		BIT(0)
- #define CMDQ_REG_TYPE		1
--#define CMDQ_JUMP_RELATIVE	1
-+#define CMDQ_JUMP_RELATIVE	0
-+#define CMDQ_JUMP_ABSOLUTE	1
+diff --git a/drivers/macintosh/via-macii.c b/drivers/macintosh/via-macii.c
+index db9270da5b8e9..b6ddf1d47cb4e 100644
+--- a/drivers/macintosh/via-macii.c
++++ b/drivers/macintosh/via-macii.c
+@@ -140,24 +140,19 @@ static int macii_probe(void)
+ /* Initialize the driver */
+ static int macii_init(void)
+ {
+-	unsigned long flags;
+ 	int err;
  
- struct cmdq_instruction {
- 	union {
-@@ -414,7 +415,7 @@ int cmdq_pkt_jump(struct cmdq_pkt *pkt, dma_addr_t addr)
- 	struct cmdq_instruction inst = {};
+-	local_irq_save(flags);
+-
+ 	err = macii_init_via();
+ 	if (err)
+-		goto out;
++		return err;
  
- 	inst.op = CMDQ_CODE_JUMP;
--	inst.offset = CMDQ_JUMP_RELATIVE;
-+	inst.offset = CMDQ_JUMP_ABSOLUTE;
- 	inst.value = addr >>
- 		cmdq_get_shift_pa(((struct cmdq_client *)pkt->cl)->chan);
- 	return cmdq_pkt_append_command(pkt, inst);
+ 	err = request_irq(IRQ_MAC_ADB, macii_interrupt, 0, "ADB",
+ 			  macii_interrupt);
+ 	if (err)
+-		goto out;
++		return err;
+ 
+ 	macii_state = idle;
+-out:
+-	local_irq_restore(flags);
+-	return err;
++	return 0;
+ }
+ 
+ /* initialize the hardware */
 -- 
 2.43.0
 
