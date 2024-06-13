@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36858906FC5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF48E906E64
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E235B1F211AC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 697D61F20FCE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648C1145B24;
-	Thu, 13 Jun 2024 12:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B80146D6C;
+	Thu, 13 Jun 2024 12:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIukhjI9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMBZVcME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EA71411CD;
-	Thu, 13 Jun 2024 12:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175C5146D68;
+	Thu, 13 Jun 2024 12:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281234; cv=none; b=bhsmX9jQ0ya6EQiyYR455wS4rIdvSXqENaCFekVeNLnjuBWTvq+i6p8pU/7V/twxzz6XDuYhYd4ZkUCixV9rUNB44aGmJwLvZJLfQrqeSw9ZODN+BPUDJNYco5Gw2RB75IVSTfGtD1OhZ71EyB+F8zfKEiJh5d5AZ/ceWjNAaVE=
+	t=1718280347; cv=none; b=BEfzFFqU3YIs4sdjs9OYIDpXiwYjgelRa5eTbjk5Ka9aZwYdOOpIeIR9oDH9TU/wrho/StsriWNz6DkGd4cI2kKkPPAlO3s4hmxDLGtHrrOYa34kAOK8L6fTiPSfHXAU1tlvDPfD1xXBb2ZKHy+0ePYVp03HK3qcTYw3NWJmCw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281234; c=relaxed/simple;
-	bh=CpLexJQZT5YoYdcmMzaB0rRsezE9zHe8dX0PtS7hheQ=;
+	s=arc-20240116; t=1718280347; c=relaxed/simple;
+	bh=rL7ZoQKSaJyvtQF6WTJQmZg3F9J3/5PQuISYk4cMTOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bt8jciahTSJFaJ4Kd3AHmKHfKEqOTQcZmoiPsoab87HL21OEdxN0g0hbNUUn9awSQ0m6CmR1R8bLpeSqUhmfY+1hIMlbcNjdtNtCULSBMOAy7piZe+qQBvnjJrSciq9j/AD3v+M48tKYwBigoUs9xMYUF+4slh1I80nrs/fRMNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIukhjI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E2BC2BBFC;
-	Thu, 13 Jun 2024 12:20:33 +0000 (UTC)
+	 MIME-Version; b=WMhezt41Equ/T1jY6nZtQPBYADiQBseT3Akw4DWOo732PSBRYEsdg+UPwNYg6U8gwQ/HjCRgLKc1CNme342yK6a/Fcn5cUtmEOaqJkLEl6ESu1odCzX8IgNx9x1Q9WCo3C5gTzgO8ClEIMn1zegUjwLt3UlQqiCLPFeXiyZW3/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMBZVcME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95481C2BBFC;
+	Thu, 13 Jun 2024 12:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281234;
-	bh=CpLexJQZT5YoYdcmMzaB0rRsezE9zHe8dX0PtS7hheQ=;
+	s=korg; t=1718280347;
+	bh=rL7ZoQKSaJyvtQF6WTJQmZg3F9J3/5PQuISYk4cMTOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tIukhjI9I/6it+sLkgGd14j/1cCzBXFBTJ1dAJF7SOAj246DcvybfCXzwQN5wqFm8
-	 70L6vUeFiLiG18/pXd0ukPMmVbQ+918Kao0qpUcq8QbY03+PCP1cyZGtgrbzasEf7c
-	 6PHplNGW5d2vP1ftCz0lq43UbOgmDmPSn9AGn/zA=
+	b=UMBZVcME1aVmWQi1J/NJriLBl6bh6UJD489eHEU6EusQyV5LYPQSEkSgsYSz+T+ga
+	 hiuJeN4crSnqWiYLE7iR3zdyqquPQj1PgToyC/4eMGE3d6RTJU8NEYXGnAofGWLjC5
+	 VsXmCw52c8aDMIKLnzQ2ekPhBDVanlE149gylYRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 185/317] f2fs: compress: fix to cover {reserve,release}_compress_blocks() w/ cp_rwsem lock
+	Yi Zhang <yi.zhang@redhat.com>,
+	Joel Granados <j.granados@samsung.com>,
+	Eric Biggers <ebiggers@google.com>
+Subject: [PATCH 6.6 023/137] fsverity: use register_sysctl_init() to avoid kmemleak warning
 Date: Thu, 13 Jun 2024 13:33:23 +0200
-Message-ID: <20240613113254.716339417@linuxfoundation.org>
+Message-ID: <20240613113224.187156461@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 0a4ed2d97cb6d044196cc3e726b6699222b41019 ]
+commit ee5814dddefbaa181cb247a75676dd5103775db1 upstream.
 
-It needs to cover {reserve,release}_compress_blocks() w/ cp_rwsem lock
-to avoid racing with checkpoint, otherwise, filesystem metadata including
-blkaddr in dnode, inode fields and .total_valid_block_count may be
-corrupted after SPO case.
+Since the fsverity sysctl registration runs as a builtin initcall, there
+is no corresponding sysctl deregistration and the resulting struct
+ctl_table_header is not used.  This can cause a kmemleak warning just
+after the system boots up.  (A pointer to the ctl_table_header is stored
+in the fsverity_sysctl_header static variable, which kmemleak should
+detect; however, the compiler can optimize out that variable.)  Avoid
+the kmemleak warning by using register_sysctl_init() which is intended
+for use by builtin initcalls and uses kmemleak_not_leak().
 
-Fixes: ef8d563f184e ("f2fs: introduce F2FS_IOC_RELEASE_COMPRESS_BLOCKS")
-Fixes: c75488fb4d82 ("f2fs: introduce F2FS_IOC_RESERVE_COMPRESS_BLOCKS")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Closes: https://lore.kernel.org/r/CAHj4cs8DTSvR698UE040rs_pX1k-WVe7aR6N2OoXXuhXJPDC-w@mail.gmail.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Joel Granados <j.granados@samsung.com>
+Link: https://lore.kernel.org/r/20240501025331.594183-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/verity/init.c |    7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index f66959ae01636..c858118a3927e 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -3596,9 +3596,12 @@ static int f2fs_release_compress_blocks(struct file *filp, unsigned long arg)
- 		struct dnode_of_data dn;
- 		pgoff_t end_offset, count;
+--- a/fs/verity/init.c
++++ b/fs/verity/init.c
+@@ -10,8 +10,6 @@
+ #include <linux/ratelimit.h>
  
-+		f2fs_lock_op(sbi);
-+
- 		set_new_dnode(&dn, inode, NULL, NULL, 0);
- 		ret = f2fs_get_dnode_of_data(&dn, page_idx, LOOKUP_NODE);
- 		if (ret) {
-+			f2fs_unlock_op(sbi);
- 			if (ret == -ENOENT) {
- 				page_idx = f2fs_get_next_page_offset(&dn,
- 								page_idx);
-@@ -3616,6 +3619,8 @@ static int f2fs_release_compress_blocks(struct file *filp, unsigned long arg)
+ #ifdef CONFIG_SYSCTL
+-static struct ctl_table_header *fsverity_sysctl_header;
+-
+ static struct ctl_table fsverity_sysctl_table[] = {
+ #ifdef CONFIG_FS_VERITY_BUILTIN_SIGNATURES
+ 	{
+@@ -29,10 +27,7 @@ static struct ctl_table fsverity_sysctl_
  
- 		f2fs_put_dnode(&dn);
- 
-+		f2fs_unlock_op(sbi);
-+
- 		if (ret < 0)
- 			break;
- 
-@@ -3758,9 +3763,12 @@ static int f2fs_reserve_compress_blocks(struct file *filp, unsigned long arg)
- 		struct dnode_of_data dn;
- 		pgoff_t end_offset, count;
- 
-+		f2fs_lock_op(sbi);
-+
- 		set_new_dnode(&dn, inode, NULL, NULL, 0);
- 		ret = f2fs_get_dnode_of_data(&dn, page_idx, LOOKUP_NODE);
- 		if (ret) {
-+			f2fs_unlock_op(sbi);
- 			if (ret == -ENOENT) {
- 				page_idx = f2fs_get_next_page_offset(&dn,
- 								page_idx);
-@@ -3778,6 +3786,8 @@ static int f2fs_reserve_compress_blocks(struct file *filp, unsigned long arg)
- 
- 		f2fs_put_dnode(&dn);
- 
-+		f2fs_unlock_op(sbi);
-+
- 		if (ret < 0)
- 			break;
- 
--- 
-2.43.0
-
+ static void __init fsverity_init_sysctl(void)
+ {
+-	fsverity_sysctl_header = register_sysctl("fs/verity",
+-						 fsverity_sysctl_table);
+-	if (!fsverity_sysctl_header)
+-		panic("fsverity sysctl registration failed");
++	register_sysctl_init("fs/verity", fsverity_sysctl_table);
+ }
+ #else /* CONFIG_SYSCTL */
+ static inline void fsverity_init_sysctl(void)
 
 
 
