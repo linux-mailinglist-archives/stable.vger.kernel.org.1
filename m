@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0C39071FB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCED5907021
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB9111C24529
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4B2B1C20DFA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D481143868;
-	Thu, 13 Jun 2024 12:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8BC145B33;
+	Thu, 13 Jun 2024 12:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOI35RTd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c18Vyrxa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC60384;
-	Thu, 13 Jun 2024 12:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB44713D607;
+	Thu, 13 Jun 2024 12:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282548; cv=none; b=aiBTXCDQYmuQTEOLS+YNboHuoIkpfS658wmvxhALLbMCMdJihj+T+bclM/gtNMbMbDj+RSVvfEKJavcaNLL7Hzq/RpnPQEqrasmHbh7LxTpu72d/jcK7EKyH/iKDO9bfeRPJ8Gub2brFNM7KjjflHTePUsHeBpnTEyObfW/nLrA=
+	t=1718281431; cv=none; b=aKWiXrb95L7WagRHgOinm/U2vXd6/7I5frKdJBlv5Z2aT4UQpVXM87/p+rMWY/LlCwUzs85dXINovI6KX0tUXvN2t4i4jDq8zYheXKnLzu2MMiYgDYn/Fcqt1my1JOLx4X2yrcpbYPaOoK0ToMtjCn8xJlTSh2zH7Oyk9pJaUR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282548; c=relaxed/simple;
-	bh=BoqyVun0o6Z06ylw6GWFWEh8pnVGXRswUT9ONoVzb2c=;
+	s=arc-20240116; t=1718281431; c=relaxed/simple;
+	bh=YWrxBMrUmjS54niEPzawAXDVsYz7YUbZhkwcoexfnGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z8j0Cx5paT5+AxsF08xQImcQS3MNpCU6xPmjZ2LZspeow5KblhASNU4i4iXH4n8lKYaJ5t70lAp7ejez5y9L9Huxp43vhrASVR366RSahOTr8lk2PBVXeRdt9E+g76k5Dq2IpM61xI3AO9TgDT5YJvJmVgRuHFacxh4a6oOcK+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOI35RTd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CBFC2BBFC;
-	Thu, 13 Jun 2024 12:42:27 +0000 (UTC)
+	 MIME-Version; b=g7RuRJX5y0GbBbRcgd5g9X5M4UeLp74nvtlQuWgLlIxo4sOxNQV3iw7RbwV/DhRKvS7uyZKPEOoKIXfyWpXT7z8nm+d2aBNCSQsmNXLHdba3mCxUPjdhIDYLKOJCdP1zq/tMTrXtaoQDsi4M+eIaZcAL+m49c9OL1VVh3P3aQlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c18Vyrxa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFDAC32786;
+	Thu, 13 Jun 2024 12:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282548;
-	bh=BoqyVun0o6Z06ylw6GWFWEh8pnVGXRswUT9ONoVzb2c=;
+	s=korg; t=1718281430;
+	bh=YWrxBMrUmjS54niEPzawAXDVsYz7YUbZhkwcoexfnGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jOI35RTdIzeFIH8cACVPxnvrzytoQBgGsjzYC8Yh2cPw+dyXdk8oT5KwqS2Kk57o9
-	 Vxowpa3vFBaBYCx3Y6wEvOv1TxGgQChF7UmnaYsEUYOn6Sz6nK8HBh69qqOXrtp2KQ
-	 Qn6Hu15Yk3TM8IGOrNIJy+E16MKMOB6hE/SOzcK4=
+	b=c18VyrxaM5XoybqwMJPW6LQazQ1lM0or1pA7f0/YFhVYoF8LgOlbF8Y+cnQWXff0V
+	 3kGV9R25wJRDlGb1Q8iJxcoslVCHVWxl1aVHoMxAfP/QPAQrajf/cE1CLqcfVPefE2
+	 d9Q7kxH2zU6KeafjM/27D7ni7Ir4c0Hsm7W9DmqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Roded Zats <rzats@paloaltonetworks.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 313/402] dma-buf/sw-sync: dont enable IRQ from sync_print_obj()
+Subject: [PATCH 5.10 252/317] enic: Validate length of nl attributes in enic_set_vf_port
 Date: Thu, 13 Jun 2024 13:34:30 +0200
-Message-ID: <20240613113314.350980309@linuxfoundation.org>
+Message-ID: <20240613113257.298252841@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Roded Zats <rzats@paloaltonetworks.com>
 
-[ Upstream commit b794918961516f667b0c745aebdfebbb8a98df39 ]
+[ Upstream commit e8021b94b0412c37bcc79027c2e382086b6ce449 ]
 
-Since commit a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from
-known context") by error replaced spin_unlock_irqrestore() with
-spin_unlock_irq() for both sync_debugfs_show() and sync_print_obj() despite
-sync_print_obj() is called from sync_debugfs_show(), lockdep complains
-inconsistent lock state warning.
+enic_set_vf_port assumes that the nl attribute IFLA_PORT_PROFILE
+is of length PORT_PROFILE_MAX and that the nl attributes
+IFLA_PORT_INSTANCE_UUID, IFLA_PORT_HOST_UUID are of length PORT_UUID_MAX.
+These attributes are validated (in the function do_setlink in rtnetlink.c)
+using the nla_policy ifla_port_policy. The policy defines IFLA_PORT_PROFILE
+as NLA_STRING, IFLA_PORT_INSTANCE_UUID as NLA_BINARY and
+IFLA_PORT_HOST_UUID as NLA_STRING. That means that the length validation
+using the policy is for the max size of the attributes and not on exact
+size so the length of these attributes might be less than the sizes that
+enic_set_vf_port expects. This might cause an out of bands
+read access in the memcpys of the data of these
+attributes in enic_set_vf_port.
 
-Use plain spin_{lock,unlock}() for sync_print_obj(), for
-sync_debugfs_show() is already using spin_{lock,unlock}_irq().
-
-Reported-by: syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=a225ee3df7e7f9372dbe
-Fixes: a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from known context")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/c2e46020-aaa6-4e06-bf73-f05823f913f0@I-love.SAKURA.ne.jp
-Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: f8bd909183ac ("net: Add ndo_{set|get}_vf_port support for enic dynamic vnics")
+Signed-off-by: Roded Zats <rzats@paloaltonetworks.com>
+Link: https://lore.kernel.org/r/20240522073044.33519-1-rzats@paloaltonetworks.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/sync_debug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cisco/enic/enic_main.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/dma-buf/sync_debug.c b/drivers/dma-buf/sync_debug.c
-index 101394f16930f..237bce21d1e72 100644
---- a/drivers/dma-buf/sync_debug.c
-+++ b/drivers/dma-buf/sync_debug.c
-@@ -110,12 +110,12 @@ static void sync_print_obj(struct seq_file *s, struct sync_timeline *obj)
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index 548d8095c0a79..b695f3f233286 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -1117,18 +1117,30 @@ static int enic_set_vf_port(struct net_device *netdev, int vf,
+ 	pp->request = nla_get_u8(port[IFLA_PORT_REQUEST]);
  
- 	seq_printf(s, "%s: %d\n", obj->name, obj->value);
- 
--	spin_lock_irq(&obj->lock);
-+	spin_lock(&obj->lock); /* Caller already disabled IRQ. */
- 	list_for_each(pos, &obj->pt_list) {
- 		struct sync_pt *pt = container_of(pos, struct sync_pt, link);
- 		sync_print_fence(s, &pt->base, false);
+ 	if (port[IFLA_PORT_PROFILE]) {
++		if (nla_len(port[IFLA_PORT_PROFILE]) != PORT_PROFILE_MAX) {
++			memcpy(pp, &prev_pp, sizeof(*pp));
++			return -EINVAL;
++		}
+ 		pp->set |= ENIC_SET_NAME;
+ 		memcpy(pp->name, nla_data(port[IFLA_PORT_PROFILE]),
+ 			PORT_PROFILE_MAX);
  	}
--	spin_unlock_irq(&obj->lock);
-+	spin_unlock(&obj->lock);
- }
  
- static void sync_print_sync_file(struct seq_file *s,
+ 	if (port[IFLA_PORT_INSTANCE_UUID]) {
++		if (nla_len(port[IFLA_PORT_INSTANCE_UUID]) != PORT_UUID_MAX) {
++			memcpy(pp, &prev_pp, sizeof(*pp));
++			return -EINVAL;
++		}
+ 		pp->set |= ENIC_SET_INSTANCE;
+ 		memcpy(pp->instance_uuid,
+ 			nla_data(port[IFLA_PORT_INSTANCE_UUID]), PORT_UUID_MAX);
+ 	}
+ 
+ 	if (port[IFLA_PORT_HOST_UUID]) {
++		if (nla_len(port[IFLA_PORT_HOST_UUID]) != PORT_UUID_MAX) {
++			memcpy(pp, &prev_pp, sizeof(*pp));
++			return -EINVAL;
++		}
+ 		pp->set |= ENIC_SET_HOST;
+ 		memcpy(pp->host_uuid,
+ 			nla_data(port[IFLA_PORT_HOST_UUID]), PORT_UUID_MAX);
 -- 
 2.43.0
 
