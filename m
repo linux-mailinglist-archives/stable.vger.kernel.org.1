@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5AD906F8C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:21:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2014890716D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 486841C20E33
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:21:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCE571F2589A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6344143867;
-	Thu, 13 Jun 2024 12:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EE14A07;
+	Thu, 13 Jun 2024 12:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwn/r4Eb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1l/Ip2GY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38336EB56;
-	Thu, 13 Jun 2024 12:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F6F384;
+	Thu, 13 Jun 2024 12:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281048; cv=none; b=h0ZwOhtMEtszdg7NcoGgdVp2gglIWA7+pVWiGa2DazzZ1mPqfGLTsfOQ32eExRG+lNRH2IvZa0qBilk+fFjbnNtly+9BVkwgBCjSju2OFUqmi12L41si4UyVlPG0cVrNPsdY8T16UAnRRD39vIaV/WtYQwMrM4tYF872kJvZDuA=
+	t=1718282212; cv=none; b=nXcFznMAIH3OXCnh573y0TyhCQyf/7cdSbkdO0sEUAyqE3NHqB+advoR8hklqyAlbYbhKyxQSrrSC1fk7UyATt1Tb9RnFwc32psR/Z1agKO/TgzGwihZ/tSLEGSFW4CKLVqtKq1NMqAS0Jx7LQEdVovvOLrUF2ZVhMV/6ebCeYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281048; c=relaxed/simple;
-	bh=ruNlz1xeffd650k1Mjmo6e+ncthhtaoIGkov5pFLThA=;
+	s=arc-20240116; t=1718282212; c=relaxed/simple;
+	bh=ceth468h9KrvRoWwJIW5xSohwTMZWCFYT5siTArLpXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KNL6tm0VT6UdEl8nQFYI0kdc1eUfordzB0wgVFvD5IzzwiCnrwll74WIhyNV0HFdfKVHWDnnpKbyykIGTeLSsW2x/R7PgcYJeYbTDAT1LswOMKxDBbwIrsBrc9f62qJ39YC6gnJVAymL8ZpT/c5Akr/llMQl88zfwyW8PNdi9Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jwn/r4Eb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF4AFC4AF1A;
-	Thu, 13 Jun 2024 12:17:27 +0000 (UTC)
+	 MIME-Version; b=uNSdehadkdD3f23yZ2mYeULlCwaouSzcO/wysS2QBWW1TXUM8J1cqcjcuCYkurl4HXwH7gZSEXb6gZF+lsCzeQY+Qg/qa7bTH7ArGGtz7Ay0hsuNWkDN0UE8EwmwtRUPF30xmyOFIMJzSLkJe7iNqUDjuM3ybl7Rn/v4i5pChmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1l/Ip2GY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E3DC2BBFC;
+	Thu, 13 Jun 2024 12:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281048;
-	bh=ruNlz1xeffd650k1Mjmo6e+ncthhtaoIGkov5pFLThA=;
+	s=korg; t=1718282211;
+	bh=ceth468h9KrvRoWwJIW5xSohwTMZWCFYT5siTArLpXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jwn/r4EbRPrmznwZ9K8XMWLvE5OR02EXJsyXwE0eak4MvKBRed9JIhho1flRYzCD8
-	 o20RmTresavizgfVA7Hgjae5jsWgl0C3w5pDxxfNStvYlhSJawizy9TUn6aO3M9dS4
-	 hcXXuUW6vBcjQD+jbp9nntIySVmrGn/s4kSr6k3E=
+	b=1l/Ip2GYQsqzpdt2wHw4JNDxCv1qtupdTv/B36EYkG8S8zJNzXB69Z00fEtQcS5s0
+	 GGQvuNnvWs8zhdtKuxjM/MllUOjmcSkHQ3SSwzF5qgRjykSIMlkr3+1IfmuNuWqpp0
+	 nCjgu8BuIVfuGjrCc0bg+GS5ewgeQf5uUjJkV2ho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Rander Wang <rander.wang@intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 122/317] ext4: fix unit mismatch in ext4_mb_new_blocks_simple
+Subject: [PATCH 5.15 183/402] soundwire: cadence: fix invalid PDI offset
 Date: Thu, 13 Jun 2024 13:32:20 +0200
-Message-ID: <20240613113252.270057140@linuxfoundation.org>
+Message-ID: <20240613113309.287990350@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 497885f72d930305d8e61b6b616b22b4da1adf90 ]
+[ Upstream commit 8ee1b439b1540ae543149b15a2a61b9dff937d91 ]
 
-The "i" returned from mb_find_next_zero_bit is in cluster unit and we
-need offset "block" corresponding to "i" in block unit. Convert "i" to
-block unit to fix the unit mismatch.
+For some reason, we add an offset to the PDI, presumably to skip the
+PDI0 and PDI1 which are reserved for BPT.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230603150327.3596033-3-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 3f4830abd236 ("ext4: fix potential unnitialized variable")
+This code is however completely wrong and leads to an out-of-bounds
+access. We were just lucky so far since we used only a couple of PDIs
+and remained within the PDI array bounds.
+
+A Fixes: tag is not provided since there are no known platforms where
+the out-of-bounds would be accessed, and the initial code had problems
+as well.
+
+A follow-up patch completely removes this useless offset.
+
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Rander Wang <rander.wang@intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://lore.kernel.org/r/20240326090122.1051806-2-yung-chuan.liao@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/soundwire/cadence_master.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 26beaf102ce36..f54f23afd93d2 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5349,6 +5349,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
- {
- 	struct buffer_head *bitmap_bh;
- 	struct super_block *sb = ar->inode->i_sb;
-+	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	ext4_group_t group;
- 	ext4_grpblk_t blkoff;
- 	ext4_grpblk_t max = EXT4_CLUSTERS_PER_GROUP(sb);
-@@ -5377,7 +5378,8 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
- 			if (i >= max)
- 				break;
- 			if (ext4_fc_replay_check_excluded(sb,
--				ext4_group_first_block_no(sb, group) + i)) {
-+				ext4_group_first_block_no(sb, group) +
-+				EXT4_C2B(sbi, i))) {
- 				blkoff = i + 1;
- 			} else
- 				break;
-@@ -5394,7 +5396,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
- 		return 0;
- 	}
+diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
+index 7b340f3832133..fb37e14404ec8 100644
+--- a/drivers/soundwire/cadence_master.c
++++ b/drivers/soundwire/cadence_master.c
+@@ -1830,7 +1830,7 @@ struct sdw_cdns_pdi *sdw_cdns_alloc_pdi(struct sdw_cdns *cdns,
  
--	block = ext4_group_first_block_no(sb, group) + i;
-+	block = ext4_group_first_block_no(sb, group) + EXT4_C2B(sbi, i);
- 	ext4_mb_mark_bb(sb, block, 1, 1);
- 	ar->len = 1;
+ 	/* check if we found a PDI, else find in bi-directional */
+ 	if (!pdi)
+-		pdi = cdns_find_pdi(cdns, 2, stream->num_bd, stream->bd,
++		pdi = cdns_find_pdi(cdns, 0, stream->num_bd, stream->bd,
+ 				    dai_id);
  
+ 	if (pdi) {
 -- 
 2.43.0
 
