@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-51875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8997A907206
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F94A906E02
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 356911F23FE8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 626E41C21855
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E882143C5D;
-	Thu, 13 Jun 2024 12:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C2E1487D5;
+	Thu, 13 Jun 2024 12:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OT/AnfV1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9lRXo/6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7A91E519;
-	Thu, 13 Jun 2024 12:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E349D1487CB;
+	Thu, 13 Jun 2024 12:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282572; cv=none; b=BfHop7+QM8zEJ08fsGtd6a7yOa3o8td4qAMBAnoZds1zIifT8WDRNxM492Ehc+FnR0Te4+oMBMy+N8nannIUpnZR2pIOGMJZGYXaGJVWcVaA6XnaNVDUcdMfqodIXcFrUAOlIcMUtYTSfQ1/ocAXEMWHyCKcIEnAwO2+lJO4A34=
+	t=1718280095; cv=none; b=bfDDC0T7XlwvFIBS+pH9azXB6u574bWRTDMYYL3Oam31clN9eOJIbWzUvk6W0C6SwLlemGd/VPD8DsgShirBVx8cZcSLoziQ8oR9teLsl12WpsVRHEmkg6U8PwOqHCa4QrpW8wDVIEIlh/RQPOqCO1UXsspodXZnyFLhlH9wGCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282572; c=relaxed/simple;
-	bh=W5ecsnAzMvWt3Bb2+F+C0g2A/WVlf2lLPWDSEGlYeJE=;
+	s=arc-20240116; t=1718280095; c=relaxed/simple;
+	bh=KufkW4Yzw6XG5neDPkFgQmMXvQyH/Ia/sd+jY0Gv1qU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/BYTKGM5IQmht7a3G34DUvAWCbcX37Y0RABV6blcDw1SBYYJvcDgMGKIPloghu6+IPcvtVzrbBin74DVCkaBnV53SSpXMWMkL20v/PvplssA4UlZuosBUNu88VyELEABaLD67Fm4NYiUP2r49meqDO2vuSCj2o0KqUffkoa2hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OT/AnfV1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772B6C2BBFC;
-	Thu, 13 Jun 2024 12:42:51 +0000 (UTC)
+	 MIME-Version; b=pvZMjLhM0gu1GIjS1u4CEj+sMj2+3B1CMmTquYCT7f+Nyhya08drdulBxLkOC/QeXNGCo0mtgqbk+/8oFtaD3cRBicUUpfVnJkuqKzk4ZU8mVW1cuYszzQqGEsw7xuveLKq8Gd1oxD0304yHyfUqmpEdHY61N5ppNTUdiw6PTEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9lRXo/6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA80C4AF1A;
+	Thu, 13 Jun 2024 12:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282571;
-	bh=W5ecsnAzMvWt3Bb2+F+C0g2A/WVlf2lLPWDSEGlYeJE=;
+	s=korg; t=1718280094;
+	bh=KufkW4Yzw6XG5neDPkFgQmMXvQyH/Ia/sd+jY0Gv1qU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OT/AnfV1/T0/U0gblGtoLKBQKZyvs62JP8kfQbg4gVeQc7lTurxPSXlThssIlZlAE
-	 c7jiA1uatW63PvRDMGehbXNR9ZA6EniEBKptG1TYwnXrLAfuiSQOSvZNTXsyCf7PSu
-	 4ZmR8E2Fg/o/ZrMOQp3ZVeIKMpCgQODSU/ouyHuo=
+	b=l9lRXo/6JV5rMl06gnsEZXVRANtYPs45BtPhaFEGuWu67ME3isJ/340CVlvPvoOMM
+	 5sGSJ/fY6IGxgAJVivaiZ5iOnlzYqLAy0JZXSyzTDpqD5YNp4lGIi3Umid9Oh2g5Al
+	 Yl9LVmY7eluCYZerxtTWPtrLZE8WYln25KELiBfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Mark Brown <broonie@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>,
+	Hannes Reinecke <hare@suse.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 281/402] ASoC: mediatek: mt8192: fix register configuration for tdm
+Subject: [PATCH 5.4 140/202] params: lift param_set_uint_minmax to common code
 Date: Thu, 13 Jun 2024 13:33:58 +0200
-Message-ID: <20240613113313.109102965@linuxfoundation.org>
+Message-ID: <20240613113233.162973640@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit a85ed162f0efcfdd664954414a05d1d560cc95dc ]
+[ Upstream commit 2a14c9ae15a38148484a128b84bff7e9ffd90d68 ]
 
-For DSP_A, data is a BCK cycle behind LRCK trigger edge. For DSP_B, this
-delay doesn't exist. Fix the delay configuration to match the standard.
+It is a useful helper hence move it to common code so others can enjoy
+it.
 
-Fixes: 52fcd65414abfc ("ASoC: mediatek: mt8192: support tdm in platform driver")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20240509-8192-tdm-v1-1-530b54645763@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.com>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Stable-dep-of: 3ebc46ca8675 ("tcp: Fix shift-out-of-bounds in dctcp_update_alpha().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8192/mt8192-dai-tdm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/moduleparam.h |  2 ++
+ kernel/params.c             | 18 ++++++++++++++++++
+ net/sunrpc/xprtsock.c       | 18 ------------------
+ 3 files changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c b/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
-index f3bebed2428a7..360259e60de84 100644
---- a/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
-+++ b/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
-@@ -566,10 +566,10 @@ static int mtk_dai_tdm_hw_params(struct snd_pcm_substream *substream,
- 		tdm_con |= 1 << DELAY_DATA_SFT;
- 		tdm_con |= get_tdm_lrck_width(format) << LRCK_TDM_WIDTH_SFT;
- 	} else if (tdm_priv->tdm_out_mode == TDM_OUT_DSP_A) {
--		tdm_con |= 0 << DELAY_DATA_SFT;
-+		tdm_con |= 1 << DELAY_DATA_SFT;
- 		tdm_con |= 0 << LRCK_TDM_WIDTH_SFT;
- 	} else if (tdm_priv->tdm_out_mode == TDM_OUT_DSP_B) {
--		tdm_con |= 1 << DELAY_DATA_SFT;
-+		tdm_con |= 0 << DELAY_DATA_SFT;
- 		tdm_con |= 0 << LRCK_TDM_WIDTH_SFT;
- 	}
+diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
+index 5ba250d9172ac..4d5a851cafe8b 100644
+--- a/include/linux/moduleparam.h
++++ b/include/linux/moduleparam.h
+@@ -359,6 +359,8 @@ extern int param_get_int(char *buffer, const struct kernel_param *kp);
+ extern const struct kernel_param_ops param_ops_uint;
+ extern int param_set_uint(const char *val, const struct kernel_param *kp);
+ extern int param_get_uint(char *buffer, const struct kernel_param *kp);
++int param_set_uint_minmax(const char *val, const struct kernel_param *kp,
++		unsigned int min, unsigned int max);
+ #define param_check_uint(name, p) __param_check(name, p, unsigned int)
  
+ extern const struct kernel_param_ops param_ops_long;
+diff --git a/kernel/params.c b/kernel/params.c
+index 8e56f8b12d8f7..b638476d12de1 100644
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -242,6 +242,24 @@ STANDARD_PARAM_DEF(long,	long,			"%li",  kstrtol);
+ STANDARD_PARAM_DEF(ulong,	unsigned long,		"%lu",  kstrtoul);
+ STANDARD_PARAM_DEF(ullong,	unsigned long long,	"%llu", kstrtoull);
+ 
++int param_set_uint_minmax(const char *val, const struct kernel_param *kp,
++		unsigned int min, unsigned int max)
++{
++	unsigned int num;
++	int ret;
++
++	if (!val)
++		return -EINVAL;
++	ret = kstrtouint(val, 0, &num);
++	if (ret)
++		return ret;
++	if (num < min || num > max)
++		return -EINVAL;
++	*((unsigned int *)kp->arg) = num;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(param_set_uint_minmax);
++
+ int param_set_charp(const char *val, const struct kernel_param *kp)
+ {
+ 	if (strlen(val) > 1024) {
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index 3095442b03822..39d0a3c434829 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -3302,24 +3302,6 @@ void cleanup_socket_xprt(void)
+ 	xprt_unregister_transport(&xs_bc_tcp_transport);
+ }
+ 
+-static int param_set_uint_minmax(const char *val,
+-		const struct kernel_param *kp,
+-		unsigned int min, unsigned int max)
+-{
+-	unsigned int num;
+-	int ret;
+-
+-	if (!val)
+-		return -EINVAL;
+-	ret = kstrtouint(val, 0, &num);
+-	if (ret)
+-		return ret;
+-	if (num < min || num > max)
+-		return -EINVAL;
+-	*((unsigned int *)kp->arg) = num;
+-	return 0;
+-}
+-
+ static int param_set_portnr(const char *val, const struct kernel_param *kp)
+ {
+ 	return param_set_uint_minmax(val, kp,
 -- 
 2.43.0
 
