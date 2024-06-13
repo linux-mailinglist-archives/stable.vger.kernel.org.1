@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-50730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD931906C3B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:48:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D9E906D0F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:58:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93E2D281F3F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:48:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F04AC1F27A45
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E941448FD;
-	Thu, 13 Jun 2024 11:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00BA145B3F;
+	Thu, 13 Jun 2024 11:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnRqfaoe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCHqcT27"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB17143861;
-	Thu, 13 Jun 2024 11:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9604B1411CD;
+	Thu, 13 Jun 2024 11:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279219; cv=none; b=NGuHb9Cldhe+XxlHHC7/xYUa1ADp8tdtH82cZM+K9hZmSegFJu6TrcOsYz3r2XfjE/nZhdIUaJCqx27c4YptyAyvQphqtTdVR2yp8BiBeuG+VlNht52YgSZ6XORhYGt0IOgngdhDrEdW2br3nnu6ZtmkW8aZ3yP+YkNMVf0Hmd0=
+	t=1718279528; cv=none; b=W6dNjv9dveHyWWRAe1OoVpaR7w54siNLbR9UTJmwgF/RF3Ea4GUrgXIxLRVhelbDheJHG7f4K7vBtJXhSb4UvKxczBgzYx5Z0IzefcKVbAMxJQHcdgZsS67tuAruVTcPorNeqzVdNd5OVwcRLR+KXUpRT9IkDE4Osc1TPeets+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279219; c=relaxed/simple;
-	bh=qedXbED6mauAF6Y6Nxfq7W9uAC4doo/GyJAsfdFyTPY=;
+	s=arc-20240116; t=1718279528; c=relaxed/simple;
+	bh=LiZgHOPKozFcwCn1orjTTmx+E+2Xr/TQq8f5p1V7vG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uuvo0y5DL4+3X4Df+KSCy77rz/OYm6Qbw1MopKdRbPiTBZVMGbfkA1SBWqHQnmkgX7DwLlXm5KGlYwon5PFCSW6iwIf8c8x0qNYAUjbmbwuBjiwMe+bzhrrUoZB6Xw84fbkBHuS2MzTECIXw0bb86YdddtDCpkqFMKQrxtzQB0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnRqfaoe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9EFAC2BBFC;
-	Thu, 13 Jun 2024 11:46:58 +0000 (UTC)
+	 MIME-Version; b=bL3wN+diSYn38QU/SYAXfu5VjD0bkLUddxE0WL01AkhzbrwBx2VptlGfiJwDwQpJ/ugZyforqXmE1S6o3+3QhxHXD3BuqVmJ9ODXBvYZClC1ws3zpENTMduvoG9s+Z6TfKYBpliGQY1+hxI15UW3+KieldoXJbdaw+SEgPm2rlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCHqcT27; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184ABC2BBFC;
+	Thu, 13 Jun 2024 11:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279219;
-	bh=qedXbED6mauAF6Y6Nxfq7W9uAC4doo/GyJAsfdFyTPY=;
+	s=korg; t=1718279528;
+	bh=LiZgHOPKozFcwCn1orjTTmx+E+2Xr/TQq8f5p1V7vG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RnRqfaoeRFfrg3ZKxlZBpjH9VEezxhwHEIwnvCkNYVjFoOZ38i6Xq10PP7vr77RNJ
-	 6R06FWMU477BozVraoG7k7fSvdR2r9pSG8np0O1wbYPAZHSag4MqrNAknPimX1SewA
-	 ji+HID57swqM0g297Txrm1STDS3TShBu1NNaccxs=
+	b=lCHqcT27qTRz3cOGMFrpQGGpyNuiJ6+i8JLygHGVlnG8t+4viIVruGkNObUwFXcwu
+	 omp4PIudRjD6ibbnF9r2mRBJMNJjvrwHCJ2ngPUdZyGQHT4L5QWBV6VRIizN5cBTVa
+	 X+Qbplu97aje6iprA80Cf1bVGLxSt5d0Kc0KcoVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 184/213] netfilter: nf_tables: bogus EBUSY when deleting flowtable after flush (for 4.19)
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 6.9 107/157] wifi: ath10k: fix QCOM_RPROC_COMMON dependency
 Date: Thu, 13 Jun 2024 13:33:52 +0200
-Message-ID: <20240613113235.080337055@linuxfoundation.org>
+Message-ID: <20240613113231.559120584@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-3f0465a9ef02 ("netfilter: nf_tables: dynamically allocate hooks per
-net_device in flowtables") reworks flowtable support to allow for
-dynamic allocation of hooks, which implicitly fixes the following
-bogus EBUSY in transaction:
+commit 21ae74e1bf18331ae5e279bd96304b3630828009 upstream.
 
-  delete flowtable
-  add flowtable # same flowtable with same devices, it hits EBUSY
+If ath10k_snoc is built-in, while Qualcomm remoteprocs are built as
+modules, compilation fails with:
 
-This patch does not exist in any tree, but it fixes this issue for
--stable Linux kernel 4.19
+/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_init':
+drivers/net/wireless/ath/ath10k/snoc.c:1534: undefined reference to `qcom_register_ssr_notifier'
+/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_deinit':
+drivers/net/wireless/ath/ath10k/snoc.c:1551: undefined reference to `qcom_unregister_ssr_notifier'
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Add corresponding dependency to ATH10K_SNOC Kconfig entry so that it's
+built as module if QCOM_RPROC_COMMON is built as module too.
+
+Fixes: 747ff7d3d742 ("ath10k: Don't always treat modem stop events as crashes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath10k/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5956,6 +5956,9 @@ static int nf_tables_newflowtable(struct
- 			continue;
- 
- 		list_for_each_entry(ft, &table->flowtables, list) {
-+			if (!nft_is_active_next(net, ft))
-+				continue;
-+
- 			for (k = 0; k < ft->ops_len; k++) {
- 				if (!ft->ops[k].dev)
- 					continue;
+--- a/drivers/net/wireless/ath/ath10k/Kconfig
++++ b/drivers/net/wireless/ath/ath10k/Kconfig
+@@ -45,6 +45,7 @@ config ATH10K_SNOC
+ 	depends on ATH10K
+ 	depends on ARCH_QCOM || COMPILE_TEST
+ 	depends on QCOM_SMEM
++	depends on QCOM_RPROC_COMMON || QCOM_RPROC_COMMON=n
+ 	select QCOM_SCM
+ 	select QCOM_QMI_HELPERS
+ 	help
 
 
 
