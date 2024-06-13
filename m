@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-51290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03330906F77
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:20:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05424906F2F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FA8FB293A2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D6BF1C23169
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB3F144D36;
-	Thu, 13 Jun 2024 12:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9FD145331;
+	Thu, 13 Jun 2024 12:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddWhUrJr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jz/2zoCO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898CF1448C9;
-	Thu, 13 Jun 2024 12:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B17144D2F;
+	Thu, 13 Jun 2024 12:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280865; cv=none; b=Q3E23uCnxfG+oYdHmgbzAzpnb9nywO3AN57uqt90Qiinj/v0GRM8IpBpLNWzseq926nOjw8QdrKZ6kWEPdW7CO4WMkI9DsGV+fh0+MxQR7I1ubffXfp3SVsgiYpd46dh04HJmXt19yBwyyklTpT9KD7lxKnlB6s2f7+4Cq5qOSA=
+	t=1718280877; cv=none; b=hJqnAtkq0KBSi0lUwqs8AmiWh2euS12yofrLS0fjjWk1dAbKcfpmWOds0BL7fke5Bs2QzNB51XbIjWMGazVKyL3ZmlucUAK3Q7A1xKmZ6vUvyW2tlU8s2qL5uFdrVGZaIXNRrkFN2crL8m1omaRVTt8DkdSPnXScimHPoBv7gCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280865; c=relaxed/simple;
-	bh=kmFtlFkOy+HIp89Z1rLtUu4Yhoj9LRepE6yAIwmImaI=;
+	s=arc-20240116; t=1718280877; c=relaxed/simple;
+	bh=Ri7QjFJezTLwpdxVUnuNUY+x7YSdChaNizjoIqnBTMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nKtpfGcynv08HQHa1G6lDyAh6XbkvbmAD6r8DhbHqRvKapMC/aJ+HBb5oTZMPReRk/DNfJxvWiG6RRbtTSbRv1jUy493XIoNaKX+9OoDWHmMlpVJ+Hl/Ig1xMtfuyKnZMM149EgTR61pROTnNjodRZ0beKTZeQkkkegbh4aHqWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddWhUrJr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C6CC2BBFC;
-	Thu, 13 Jun 2024 12:14:24 +0000 (UTC)
+	 MIME-Version; b=CbA2ZpK1SlyFtEQkEHSMIl+65XYkJh2zSsETyh0VYABssWl8S3IzNA59c4GN8SUHMsud3k5b3hDUDNuVzyx6v/Hsc5KvWXahYgoZwowdEaWeRw13HkTKcvHs/Z/VNj3qKO2k6DFMe++Xz8FIdLw7FBH9GxFTi5M97mU/vL7LbU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jz/2zoCO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47EFC2BBFC;
+	Thu, 13 Jun 2024 12:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280865;
-	bh=kmFtlFkOy+HIp89Z1rLtUu4Yhoj9LRepE6yAIwmImaI=;
+	s=korg; t=1718280877;
+	bh=Ri7QjFJezTLwpdxVUnuNUY+x7YSdChaNizjoIqnBTMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ddWhUrJrCIGXod/ujAGvVQI59ZTVmvCxnbre/bBsBiMtXgbcwXSCBVRh0mQxeWhq5
-	 rxa8Fxw/aEBW8FgKCn0+gEDe9ueI4c1fnkPHmvz+qCPAX0MOAnBvjppw33SecDdsuE
-	 FrIN0ax2YbIBtkjbDF9k9olZSnN4kK1yNUaKgCQ4=
+	b=Jz/2zoCOLbd+MnNX+TnaQ16Zx6ZOJWr2mqSkS3ZbNey0k45na0pRBl+TFNPK8T5bw
+	 RZzVgoc7SJwM3RZFh8Od8zPRdHul9R5T5zqVNcbYpnjWQfuBIpxEVmXjkSeXr0Vbqo
+	 MwQruKeWFbjBXiedeZvWETz7/yxZ7YDCccDw9W+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Nigel Croxon <ncroxon@redhat.com>
-Subject: [PATCH 5.10 033/317] md: fix resync softlockup when bitmap size is less than array size
-Date: Thu, 13 Jun 2024 13:30:51 +0200
-Message-ID: <20240613113248.823521324@linuxfoundation.org>
+	James Prestwood <prestwoj@gmail.com>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 034/317] wifi: ath10k: poll service ready message before failing
+Date: Thu, 13 Jun 2024 13:30:52 +0200
+Message-ID: <20240613113248.861393707@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
 References: <20240613113247.525431100@linuxfoundation.org>
@@ -67,91 +68,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit f0e729af2eb6bee9eb58c4df1087f14ebaefe26b ]
+[ Upstream commit e57b7d62a1b2f496caf0beba81cec3c90fad80d5 ]
 
-Is is reported that for dm-raid10, lvextend + lvchange --syncaction will
-trigger following softlockup:
+Currently host relies on CE interrupts to get notified that
+the service ready message is ready. This results in timeout
+issue if the interrupt is not fired, due to some unknown
+reasons. See below logs:
 
-kernel:watchdog: BUG: soft lockup - CPU#3 stuck for 26s! [mdX_resync:6976]
-CPU: 7 PID: 3588 Comm: mdX_resync Kdump: loaded Not tainted 6.9.0-rc4-next-20240419 #1
-RIP: 0010:_raw_spin_unlock_irq+0x13/0x30
-Call Trace:
- <TASK>
- md_bitmap_start_sync+0x6b/0xf0
- raid10_sync_request+0x25c/0x1b40 [raid10]
- md_do_sync+0x64b/0x1020
- md_thread+0xa7/0x170
- kthread+0xcf/0x100
- ret_from_fork+0x30/0x50
- ret_from_fork_asm+0x1a/0x30
+[76321.937866] ath10k_pci 0000:02:00.0: wmi service ready event not received
+...
+[76322.016738] ath10k_pci 0000:02:00.0: Could not init core: -110
 
-And the detailed process is as follows:
+And finally it causes WLAN interface bring up failure.
 
-md_do_sync
- j = mddev->resync_min
- while (j < max_sectors)
-  sectors = raid10_sync_request(mddev, j, &skipped)
-   if (!md_bitmap_start_sync(..., &sync_blocks))
-    // md_bitmap_start_sync set sync_blocks to 0
-    return sync_blocks + sectors_skippe;
-  // sectors = 0;
-  j += sectors;
-  // j never change
+Change to give it one more chance here by polling CE rings,
+before failing directly.
 
-Root cause is that commit 301867b1c168 ("md/raid10: check
-slab-out-of-bounds in md_bitmap_get_counter") return early from
-md_bitmap_get_counter(), without setting returned blocks.
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
 
-Fix this problem by always set returned blocks from
-md_bitmap_get_counter"(), as it used to be.
-
-Noted that this patch just fix the softlockup problem in kernel, the
-case that bitmap size doesn't match array size still need to be fixed.
-
-Fixes: 301867b1c168 ("md/raid10: check slab-out-of-bounds in md_bitmap_get_counter")
-Reported-and-tested-by: Nigel Croxon <ncroxon@redhat.com>
-Closes: https://lore.kernel.org/all/71ba5272-ab07-43ba-8232-d2da642acb4e@redhat.com/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240422065824.2516-1-yukuai1@huaweicloud.com
-Signed-off-by: Song Liu <song@kernel.org>
+Fixes: 5e3dd157d7e7 ("ath10k: mac80211 driver for Qualcomm Atheros 802.11ac CQA98xx devices")
+Reported-by: James Prestwood <prestwoj@gmail.com>
+Tested-By: James Prestwood <prestwoj@gmail.com> # on QCA6174 hw3.2
+Link: https://lore.kernel.org/linux-wireless/304ce305-fbe6-420e-ac2a-d61ae5e6ca1a@gmail.com/
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240227030409.89702-1-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath10k/wmi.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index b28302836b2e9..91bc764a854c6 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -1355,7 +1355,7 @@ __acquires(bitmap->lock)
- 	sector_t chunk = offset >> bitmap->chunkshift;
- 	unsigned long page = chunk >> PAGE_COUNTER_SHIFT;
- 	unsigned long pageoff = (chunk & PAGE_COUNTER_MASK) << COUNTER_BYTE_SHIFT;
--	sector_t csize;
-+	sector_t csize = ((sector_t)1) << bitmap->chunkshift;
- 	int err;
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index 85fe855ece097..9cfd35dc87ba3 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -1762,12 +1762,32 @@ void ath10k_wmi_put_wmi_channel(struct ath10k *ar, struct wmi_channel *ch,
  
- 	if (page >= bitmap->pages) {
-@@ -1364,6 +1364,7 @@ __acquires(bitmap->lock)
- 		 * End-of-device while looking for a whole page or
- 		 * user set a huge number to sysfs bitmap_set_bits.
- 		 */
-+		*blocks = csize - (offset & (csize - 1));
- 		return NULL;
- 	}
- 	err = md_bitmap_checkpage(bitmap, page, create, 0);
-@@ -1372,8 +1373,7 @@ __acquires(bitmap->lock)
- 	    bitmap->bp[page].map == NULL)
- 		csize = ((sector_t)1) << (bitmap->chunkshift +
- 					  PAGE_COUNTER_SHIFT);
--	else
--		csize = ((sector_t)1) << bitmap->chunkshift;
+ int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
+ {
+-	unsigned long time_left;
++	unsigned long time_left, i;
+ 
+ 	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+ 						WMI_SERVICE_READY_TIMEOUT_HZ);
+-	if (!time_left)
+-		return -ETIMEDOUT;
++	if (!time_left) {
++		/* Sometimes the PCI HIF doesn't receive interrupt
++		 * for the service ready message even if the buffer
++		 * was completed. PCIe sniffer shows that it's
++		 * because the corresponding CE ring doesn't fires
++		 * it. Workaround here by polling CE rings once.
++		 */
++		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
 +
- 	*blocks = csize - (offset & (csize - 1));
++		for (i = 0; i < CE_COUNT; i++)
++			ath10k_hif_send_complete_check(ar, i, 1);
++
++		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
++							WMI_SERVICE_READY_TIMEOUT_HZ);
++		if (!time_left) {
++			ath10k_warn(ar, "polling timed out\n");
++			return -ETIMEDOUT;
++		}
++
++		ath10k_warn(ar, "service ready completion received, continuing normally\n");
++	}
++
+ 	return 0;
+ }
  
- 	if (err < 0)
 -- 
 2.43.0
 
