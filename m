@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A42907228
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61795906EBF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 217A5281B76
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33268B280ED
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8934A0F;
-	Thu, 13 Jun 2024 12:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F168E146A79;
+	Thu, 13 Jun 2024 12:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FaEiUmhg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRdQ8Kzx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2BF17FD;
-	Thu, 13 Jun 2024 12:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF83B13A411;
+	Thu, 13 Jun 2024 12:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282664; cv=none; b=l4k9JNrjSUxwcZYG7gF8/zadEe8mds9rOTDXm68xHfL3PAtnBJXjgCoYF0YU8oHxhyP4UGUVSiNIFVziPRDZe6rSQCGrCI9xfJc6c6ki0r3rv/EelR9ei3LrXsAsAyxWJvwFJcqhA3ZefOZautmeyjsBCV3mHu+t7nkWzsP5y78=
+	t=1718280579; cv=none; b=u5wo8cIN0UCk1ZW04GNFS7gp8Ycp96g4ggZt4oOUvFvrowbRhNXNVU9zi5TYzGKQac0YORotzzPxyOwb7HCeaMy2f0nM/OkELcWzO833HOEc8npZTdbslFlKkb7ce2wOdVx0/8BO4mohQpEyiQbAx0JfF05Hg39vSirUo1gyD7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282664; c=relaxed/simple;
-	bh=9LukZfHQNCzwY/KuXgaTfKVnE65hL6vKhg3+q23HgVU=;
+	s=arc-20240116; t=1718280579; c=relaxed/simple;
+	bh=AajLS8WzWO8AxOpOJ4nsRqdPkQFiYkUbzbtR+HMAtWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSb6z1CloqOHeBehUDnQuUeKwTk7j4J6SkNYCw94g8I37LIx+vL8LILEshfMstcQiOwGnRzFml+CjWFQHgPrYZ/D+MESbrNXz7CBJ8WNEjxth2ZX/0LUTAlaKnCuvFzbWl4/fgLur3ZdeuGZsSP2E/EB7WK3l0DMmrpcRFf9/bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FaEiUmhg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F6CC2BBFC;
-	Thu, 13 Jun 2024 12:44:23 +0000 (UTC)
+	 MIME-Version; b=X0fxsyMb2P8TgfI/a+SfYadNv3mYELxl42Ta/2djRSJ5LjhSYbUbVCXc5n9vXWWxFnafinkD8Oja2lvlLNiqYL+OrPGy4Ab2fKqzO30YTgQcxgiZ6F/cTEHV8/h6MV6GKHqyZqPPQNPGv4KfZqM3AZx3w/bCPTnwXVNJRerxPO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRdQ8Kzx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36219C4AF1A;
+	Thu, 13 Jun 2024 12:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282663;
-	bh=9LukZfHQNCzwY/KuXgaTfKVnE65hL6vKhg3+q23HgVU=;
+	s=korg; t=1718280579;
+	bh=AajLS8WzWO8AxOpOJ4nsRqdPkQFiYkUbzbtR+HMAtWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FaEiUmhgvVRl8Fhi1XwLCO35kOlmrI4ezWkNlOBxQ8u0Knpla1rDp07ON2QsGD1lW
-	 RM35yHS55ugYwdhpTSzQhCc4Pv7eAv50oEFPcJPtxBFsuyRtbTifHkfCqUogECmg2h
-	 ilyU4xRHPXbpRiH65elRxdOcetub7MSebU8MTTIc=
+	b=eRdQ8KzxSRK4AQ9eaHOixN+Fg1FMWQV7ymzgE/JNMHfAcAOcT7Y2OBJ4uyNzj9ZGd
+	 6cmKe/EiM0ihffSOrmziVs3sfnohMooMeR+quqvi0jfmd9IwX5RoKkPdAVdykszZhw
+	 GWFm+PRIbQlLqzmfw1N5QukQTtci0+SRLAJW6W9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+b94a6818504ea90d7661@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 323/402] netfilter: tproxy: bail out if IP has been disabled on the device
-Date: Thu, 13 Jun 2024 13:34:40 +0200
-Message-ID: <20240613113314.736853084@linuxfoundation.org>
+	Douglas Anderson <dianders@chromium.org>,
+	Justin Stitt <justinstitt@google.com>,
+	Daniel Thompson <daniel.thompson@linaro.org>
+Subject: [PATCH 6.6 101/137] kdb: Merge identical case statements in kdb_read()
+Date: Thu, 13 Jun 2024 13:34:41 +0200
+Message-ID: <20240613113227.215328144@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Daniel Thompson <daniel.thompson@linaro.org>
 
-[ Upstream commit 21a673bddc8fd4873c370caf9ae70ffc6d47e8d3 ]
+commit 6244917f377bf64719551b58592a02a0336a7439 upstream.
 
-syzbot reports:
-general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
-[..]
-RIP: 0010:nf_tproxy_laddr4+0xb7/0x340 net/ipv4/netfilter/nf_tproxy_ipv4.c:62
-Call Trace:
- nft_tproxy_eval_v4 net/netfilter/nft_tproxy.c:56 [inline]
- nft_tproxy_eval+0xa9a/0x1a00 net/netfilter/nft_tproxy.c:168
+The code that handles case 14 (down) and case 16 (up) has been copy and
+pasted despite being byte-for-byte identical. Combine them.
 
-__in_dev_get_rcu() can return NULL, so check for this.
-
-Reported-and-tested-by: syzbot+b94a6818504ea90d7661@syzkaller.appspotmail.com
-Fixes: cc6eb4338569 ("tproxy: use the interface primary IP address as a default value for --on-ip")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # Not a bug fix but it is needed for later bug fixes
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-4-f236dbe9828d@linaro.org
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/netfilter/nf_tproxy_ipv4.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/debug/kdb/kdb_io.c |   10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/net/ipv4/netfilter/nf_tproxy_ipv4.c b/net/ipv4/netfilter/nf_tproxy_ipv4.c
-index 61cb2341f50fe..7c1a0cd9f4359 100644
---- a/net/ipv4/netfilter/nf_tproxy_ipv4.c
-+++ b/net/ipv4/netfilter/nf_tproxy_ipv4.c
-@@ -58,6 +58,8 @@ __be32 nf_tproxy_laddr4(struct sk_buff *skb, __be32 user_laddr, __be32 daddr)
- 
- 	laddr = 0;
- 	indev = __in_dev_get_rcu(skb->dev);
-+	if (!indev)
-+		return daddr;
- 
- 	in_dev_for_each_ifa_rcu(ifa, indev) {
- 		if (ifa->ifa_flags & IFA_F_SECONDARY)
--- 
-2.43.0
-
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -317,6 +317,7 @@ poll_again:
+ 		}
+ 		break;
+ 	case 14: /* Down */
++	case 16: /* Up */
+ 		memset(tmpbuffer, ' ',
+ 		       strlen(kdb_prompt_str) + (lastchar-buffer));
+ 		*(tmpbuffer+strlen(kdb_prompt_str) +
+@@ -331,15 +332,6 @@ poll_again:
+ 			++cp;
+ 		}
+ 		break;
+-	case 16: /* Up */
+-		memset(tmpbuffer, ' ',
+-		       strlen(kdb_prompt_str) + (lastchar-buffer));
+-		*(tmpbuffer+strlen(kdb_prompt_str) +
+-		  (lastchar-buffer)) = '\0';
+-		kdb_printf("\r%s\r", tmpbuffer);
+-		*lastchar = (char)key;
+-		*(lastchar+1) = '\0';
+-		return lastchar;
+ 	case 9: /* Tab */
+ 		if (tab < 2)
+ 			++tab;
 
 
 
