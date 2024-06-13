@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-50967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D21906DA2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3EC7906BAA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88A341C21FF7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E4411F210D4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738AB145B14;
-	Thu, 13 Jun 2024 11:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05153143C53;
+	Thu, 13 Jun 2024 11:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3Tcvfq0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgoZukD3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1AE145B07;
-	Thu, 13 Jun 2024 11:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E57143C51;
+	Thu, 13 Jun 2024 11:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279915; cv=none; b=BnscvDECIr7TZKGUJZxFhbU8+BelQa8MAJk5q1/A3VvqIE7UrMKOHGP79Ox1YSpwpGHftXe+MXAdLQDeE2baiBLtgp10UD3jWkwrWhZnJgfnTb6+PBHz75U1yzU2pb35yXATjfPrnuED+IT1KIGNmHwfVqI2CTgxkJeEwAlOFjM=
+	t=1718278961; cv=none; b=B0007SGIHxlCTF38te83KNUw9cXgmF30eYyYepv3Z65z3XmCKkFJZcVk+CYCGmpe+79nsRUr/VB/3BOaRD8GGCfaQqp9JQMvzgGBJ96kTMOAaDZvrIgMhUPj3HwjiKwiRcZ0OgojoSFMRFoltbR/Hvg4KbLMajDE7yUixo91AK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279915; c=relaxed/simple;
-	bh=mZ8cWQuQ2SDlTnegmB5phbcFeVgIUzEBxmi8Xs06TEU=;
+	s=arc-20240116; t=1718278961; c=relaxed/simple;
+	bh=jTmo/txdprUxW+iwFDMeneCc98xNsgyRwUzOqC5yTb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XspGWFAPzPtW7NIemyfDij+7gjzReVQzMuopevOPdf3A1H5ffzP3JClIeI4M3RBv3iafo8ziNvI1EpIyk3ctdZGj2vLmf/4a8i4gfCWLFyAmpW0UBr9RQPE+bR21dNJ+mGB3AcDOxaajOyCiJL09keq9m/B/JUZsNEkm3dvoOwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3Tcvfq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50B0C2BBFC;
-	Thu, 13 Jun 2024 11:58:34 +0000 (UTC)
+	 MIME-Version; b=eHNLvByebCiDoZq15M90YQC57a0/9ZwF+dQJc9yxK1MUZKvB/V5heHBzTH1WrMLkCBWTkZ9I8vtEAxYMFKQ9siMAn53N8qWWHtWKRY9HhOCwS9ErbnOfb82EK9i0mR1fRTIApijr83Ad8n+UdB21vyCOICC3GQbrxFtGHpcuUBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgoZukD3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDEDC2BBFC;
+	Thu, 13 Jun 2024 11:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279915;
-	bh=mZ8cWQuQ2SDlTnegmB5phbcFeVgIUzEBxmi8Xs06TEU=;
+	s=korg; t=1718278961;
+	bh=jTmo/txdprUxW+iwFDMeneCc98xNsgyRwUzOqC5yTb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3Tcvfq0OtOdZFPJZ1S5cnclEyOKp3xuBnRtXepsTzhvqRCGmhgkXUpCNmqQBZpj6
-	 s6wwloyalvlUSVNX1iv9Vlv1EcdWG5PCoMKkH7ytWD3M+C5jDDA40y60f4rMZLFkfX
-	 yCAFSyC4GMp3D6ApqKQmSoeL3NNbpUBkS9qt1nlM=
+	b=VgoZukD3FI+z127WXsskCcbjTbljditvppVfhkDbzNPc2Wpjy5H5+8OvenJYgzt3c
+	 I+LCrWsD4NQZKu9pc14jQnyBoEbO+XOEgoBM19s3PRjVnfe4tgDNyZB1hjNYvL5erV
+	 9M0KK+jvNmvViKwsBiCX/3bjvUKyZCgjQwR6cUGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot <syzbot+0438378d6f157baae1a2@syzkaller.appspotmail.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 079/202] ASoC: tracing: Export SND_SOC_DAPM_DIR_OUT to its value
+Subject: [PATCH 4.19 129/213] nfc: nci: Fix kcov check in nci_rx_work()
 Date: Thu, 13 Jun 2024 13:32:57 +0200
-Message-ID: <20240613113230.823661363@linuxfoundation.org>
+Message-ID: <20240613113232.974181563@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 58300f8d6a48e58d1843199be743f819e2791ea3 ]
+[ Upstream commit 19e35f24750ddf860c51e51c68cf07ea181b4881 ]
 
-The string SND_SOC_DAPM_DIR_OUT is printed in the snd_soc_dapm_path trace
-event instead of its value:
+Commit 7e8cdc97148c ("nfc: Add KCOV annotations") added
+kcov_remote_start_common()/kcov_remote_stop() pair into nci_rx_work(),
+with an assumption that kcov_remote_stop() is called upon continue of
+the for loop. But commit d24b03535e5e ("nfc: nci: Fix uninit-value in
+nci_dev_up and nci_ntf_packet") forgot to call kcov_remote_stop() before
+break of the for loop.
 
-   (((REC->path_dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
-
-User space cannot parse this, as it has no idea what SND_SOC_DAPM_DIR_OUT
-is. Use TRACE_DEFINE_ENUM() to convert it to its value:
-
-   (((REC->path_dir) == 1) ? "->" : "<-")
-
-So that user space tools, such as perf and trace-cmd, can parse it
-correctly.
-
-Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Fixes: 6e588a0d839b5 ("ASoC: dapm: Consolidate path trace events")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://lore.kernel.org/r/20240416000303.04670cdf@rorschach.local.home
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: syzbot <syzbot+0438378d6f157baae1a2@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=0438378d6f157baae1a2
+Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
+Suggested-by: Andrey Konovalov <andreyknvl@gmail.com>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/6d10f829-5a0c-405a-b39a-d7266f3a1a0b@I-love.SAKURA.ne.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 6671e352497c ("nfc: nci: Fix handling of zero-length payload packets in nci_rx_work()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/asoc.h | 2 ++
- 1 file changed, 2 insertions(+)
+ net/nfc/nci/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/trace/events/asoc.h b/include/trace/events/asoc.h
-index 40c300fe704da..f62d5b7024261 100644
---- a/include/trace/events/asoc.h
-+++ b/include/trace/events/asoc.h
-@@ -11,6 +11,8 @@
- #define DAPM_DIRECT "(direct)"
- #define DAPM_ARROW(dir) (((dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 6e83159b7b436..0e6bca80265ae 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1526,6 +1526,7 @@ static void nci_rx_work(struct work_struct *work)
  
-+TRACE_DEFINE_ENUM(SND_SOC_DAPM_DIR_OUT);
-+
- struct snd_soc_jack;
- struct snd_soc_card;
- struct snd_soc_dapm_widget;
+ 		if (!nci_valid_size(skb)) {
+ 			kfree_skb(skb);
++			kcov_remote_stop();
+ 			break;
+ 		}
+ 
 -- 
 2.43.0
 
