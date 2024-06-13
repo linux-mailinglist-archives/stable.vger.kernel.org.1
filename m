@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-50647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA336906BB1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E000906CAE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:52:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEF091C2240B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 095231C2151F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22308144315;
-	Thu, 13 Jun 2024 11:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55514145FFD;
+	Thu, 13 Jun 2024 11:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6oAraBX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjBrqIJp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C3C144304;
-	Thu, 13 Jun 2024 11:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FA314601B;
+	Thu, 13 Jun 2024 11:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278976; cv=none; b=LXovumkuVwL/cSUBHrZCLsl4EwtgshaWEtQu/WlQc13xLkcad66pSdeL+/L7FpzLIXKwJq7FjbRVqHHEgVfshOXDPbtos9WG/EcAXQDC9OIqAFybUy9VZ1hh5XXVPn79e1pQ+QwR0zqa2GsReqDZepGiMG3OcvdHaq/sC5py85s=
+	t=1718279402; cv=none; b=Um5BfK+oljgOkqeRmFHJO8hKCfvRaYM4yAGfCKD4WpEVkUYjii05kuUIRNckMmhIpdXK+C0kCdihCPnEHkh1rdnP8gx35kYyw9MNzD5YjFko9LeomcMhfPqJB8eDRC3l+78ARjC+RY2Gpqb8+al+C3fpLP7lhDomNo9AP8b99BU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278976; c=relaxed/simple;
-	bh=lSJOZl1nEIyYjtJJsDEzdWPjNTC8cg3C0E36R1XF4Oc=;
+	s=arc-20240116; t=1718279402; c=relaxed/simple;
+	bh=cK7W3bqE35uJxojP5Rb62D+YzmcBqbf81DSkB9QPccU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXq8O4VOBoegqy+Aci+d4uWJ0YJu4eNRHaCLPhdDKDejOdMXzRx0sdl0ZHMUwVF4rPeh/Mv4eih9Uud25s9F4eD6BzRD6lMwxIjK7v3SYDGFF09UyM+1ybWAE0PQFlfuLBQfY7dfe5G151FqS0CQ0eivJK3+I/GfKuorAg5vksA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6oAraBX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C87C2BBFC;
-	Thu, 13 Jun 2024 11:42:55 +0000 (UTC)
+	 MIME-Version; b=USjOtsOIUNj9ugLihhu4ZYn0KXUNYNOIk8429mYNothzxWimnlxhx7LYDQQjTmF5DzLdvRVDBDBnxsic35CJZNJu5C56R0AKDgbA3nf6uEBI2qJsQ+GrvLKvcc9RD2oNF7VkKpIP0Th/hcBHU92wcRmD1xyEmsLJnXlYUYFyV68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjBrqIJp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6E1C2BBFC;
+	Thu, 13 Jun 2024 11:50:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278976;
-	bh=lSJOZl1nEIyYjtJJsDEzdWPjNTC8cg3C0E36R1XF4Oc=;
+	s=korg; t=1718279401;
+	bh=cK7W3bqE35uJxojP5Rb62D+YzmcBqbf81DSkB9QPccU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i6oAraBX+qYYgr1NnC9kP+8VIN2CikeBLord4uCgNZMJd1s/mX54AspKhE6bEGxfQ
-	 6ZyWbExcsJOVJnH/z7bSKjWwIBbLrEDS+l/qM6uRwzSRWymULxMClznsF8uy1+Y8dA
-	 WKSf058k70A8hT0GkVReSm8tfncnyyGmknuWqv0k=
+	b=DjBrqIJp9RLWkIDEpLyQOz8ZDk0rOqij4sLYzaNlzxiFW8GkAVM9cnHmqx6FsOEhY
+	 +An23ZcjFJRQousbjPTRtD6VU52z0GPR9/zaRCXGhgesEzHxt7CfJgmyfFWAEBkQ/B
+	 1kLhlilGFom6dgWHxh3kafNnk9JsezC8cJ/2wtvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 133/213] nvmet: fix ns enable/disable possible hang
+	Feifei Xu <Feifei.Xu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Feifei Xu <feifei.xu@amd.com>
+Subject: [PATCH 6.9 056/157] Revert "drm/amdkfd: fix gfx_target_version for certain 11.0.3 devices"
 Date: Thu, 13 Jun 2024 13:33:01 +0200
-Message-ID: <20240613113233.127815638@linuxfoundation.org>
+Message-ID: <20240613113229.594157372@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit f97914e35fd98b2b18fb8a092e0a0799f73afdfe ]
+commit dd2b75fd9a79bf418e088656822af06fc253dbe3 upstream.
 
-When disabling an nvmet namespace, there is a period where the
-subsys->lock is released, as the ns disable waits for backend IO to
-complete, and the ns percpu ref to be properly killed. The original
-intent was to avoid taking the subsystem lock for a prolong period as
-other processes may need to acquire it (for example new incoming
-connections).
+This reverts commit 28ebbb4981cb1fad12e0b1227dbecc88810b1ee8.
 
-However, it opens up a window where another process may come in and
-enable the ns, (re)intiailizing the ns percpu_ref, causing the disable
-sequence to hang.
+Revert this commit as apparently the LLVM code to take advantage of
+this never landed.
 
-Solve this by taking the global nvmet_config_sem over the entire configfs
-enable/disable sequence.
-
-Fixes: a07b4970f464 ("nvmet: add a generic NVMe target")
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Feifei Xu <feifei.xu@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/configfs.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_device.c |   11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
-index b37a8e3e3f800..921efb20f6d7b 100644
---- a/drivers/nvme/target/configfs.c
-+++ b/drivers/nvme/target/configfs.c
-@@ -464,10 +464,18 @@ static ssize_t nvmet_ns_enable_store(struct config_item *item,
- 	if (strtobool(page, &enable))
- 		return -EINVAL;
- 
-+	/*
-+	 * take a global nvmet_config_sem because the disable routine has a
-+	 * window where it releases the subsys-lock, giving a chance to
-+	 * a parallel enable to concurrently execute causing the disable to
-+	 * have a misaccounting of the ns percpu_ref.
-+	 */
-+	down_write(&nvmet_config_sem);
- 	if (enable)
- 		ret = nvmet_ns_enable(ns);
- 	else
- 		nvmet_ns_disable(ns);
-+	up_write(&nvmet_config_sem);
- 
- 	return ret ? ret : count;
- }
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+@@ -408,15 +408,8 @@ struct kfd_dev *kgd2kfd_probe(struct amd
+ 			f2g = &gfx_v11_kfd2kgd;
+ 			break;
+ 		case IP_VERSION(11, 0, 3):
+-			if ((adev->pdev->device == 0x7460 &&
+-			     adev->pdev->revision == 0x00) ||
+-			    (adev->pdev->device == 0x7461 &&
+-			     adev->pdev->revision == 0x00))
+-				/* Note: Compiler version is 11.0.5 while HW version is 11.0.3 */
+-				gfx_target_version = 110005;
+-			else
+-				/* Note: Compiler version is 11.0.1 while HW version is 11.0.3 */
+-				gfx_target_version = 110001;
++			/* Note: Compiler version is 11.0.1 while HW version is 11.0.3 */
++			gfx_target_version = 110001;
+ 			f2g = &gfx_v11_kfd2kgd;
+ 			break;
+ 		case IP_VERSION(11, 5, 0):
 
 
 
