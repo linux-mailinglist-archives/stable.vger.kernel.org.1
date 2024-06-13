@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-51252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0DA5906EFE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15889070FC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:32:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E6191C229A4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D700284E77
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83E1145A12;
-	Thu, 13 Jun 2024 12:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3290384;
+	Thu, 13 Jun 2024 12:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYqUc1mc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NH+9ktFO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87ACC44C6F;
-	Thu, 13 Jun 2024 12:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF962161;
+	Thu, 13 Jun 2024 12:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280753; cv=none; b=owpjhxhLa468Cidz/WH42uI3RjUYiby8yw7g0ssNu3LXzWA/iO406yYj+ifpLAteBRG7W5m3MBnCCUtd9vgquVaB2+CDYfN9snYYMx39LuXC80xWdbUZ3z0ANbkTwfy1t+Rt0fIVn3eUkDqte+9Bta4StgXDR+QQkpPzEykMRNU=
+	t=1718281950; cv=none; b=jAnSSEFVB+4C78QHcJi751bDPvtRRNupk1EYN+JBAthNwDBgnaPFqMJ3mOpnYc5oh5dTQvWXYjRkN4VogSmhY0ropVBfLoK3oERlTs+F5EfIILeIYdxypho4hFxArgotEhwusqsTCv2j3muVxdMd8D5dyJFqgnlH+Qh6GmqDlyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280753; c=relaxed/simple;
-	bh=KHX6I/TlGbqVZjxJRet493P+UqawNo5mFAEvJdsCzi4=;
+	s=arc-20240116; t=1718281950; c=relaxed/simple;
+	bh=h1Jy4myOTfm7Ry86Ustq9fth3e1GzJ1U/g+FD7oY0QM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ndu6S/uJfLhAq1BZcqZRw5CLZq7k+SBr0UzCETKJIHHeT72RQKX/+68dUu7OGktZ/kYRYyfL0OLddisVLe0iqIxgi/rhijL072uJGPB0uLowTKu7toi6ihfdr5qIw7mL2YG8fmV5g55p8C1cZueGr2AFGerLiGxCk6gkHF5ggHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYqUc1mc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B263EC4AF1C;
-	Thu, 13 Jun 2024 12:12:32 +0000 (UTC)
+	 MIME-Version; b=V2NeJGzqgMw7aGLGmYplD7pZE4uJ8A1Z1J7diGOGqgGfJDFoFCW4u3BxcYpWrvsAzjmasb780zFajq+UEYGW0MlnpFJnAOoC/XJb/3treyunsUIgkErFtg8/ppYD5y3bYn5iBGhiaymK6i05+8ZXrhDK5gNOZOFOex96kMXuWPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NH+9ktFO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D47C2BBFC;
+	Thu, 13 Jun 2024 12:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280753;
-	bh=KHX6I/TlGbqVZjxJRet493P+UqawNo5mFAEvJdsCzi4=;
+	s=korg; t=1718281950;
+	bh=h1Jy4myOTfm7Ry86Ustq9fth3e1GzJ1U/g+FD7oY0QM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dYqUc1mc3C+KDVp4VbLG9tOId1pj8eySWOkRjqXRmE/1q4+crC2mSLfiqaqYDyeNB
-	 CXpypG7YdZ1pjoNoPh5IhjQxDRAPLuIEHGoPWtpcj/uVAMxxeKdJ+8X5NTMfJdMoal
-	 TahZVqqRkys1xDbC6TTkGcbAcGfkyay5iAV01DqY=
+	b=NH+9ktFOycsZRWmbbIUyJCOJtWgA7OkeVqA1G6qRqkMM8OFcRJVnGICwZNPpeiFXs
+	 3xOtZ4b63ra11JimHJy+PkWM+Wt27PsjfMlfHOrQu0K+ThgNTXkXkAK09WiOcdIAWv
+	 9PQmOZVJ2mZT74SXaIp2I1e15w8UTk+ZcisEy/Yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	"Ivan T. Ivanov" <iivanov@suse.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Su Hui <suhui@nfschina.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 022/317] firmware: raspberrypi: Use correct device for DMA mappings
-Date: Thu, 13 Jun 2024 13:30:40 +0200
-Message-ID: <20240613113248.400015825@linuxfoundation.org>
+Subject: [PATCH 5.15 084/402] wifi: ath10k: Fix an error code problem in ath10k_dbg_sta_write_peer_debug_trigger()
+Date: Thu, 13 Jun 2024 13:30:41 +0200
+Message-ID: <20240613113305.412593003@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit df518a0ae1b982a4dcf2235464016c0c4576a34d ]
+[ Upstream commit c511a9c12674d246916bb16c479d496b76983193 ]
 
-The buffer used to transfer data over the mailbox interface is mapped
-using the client's device. This is incorrect, as the device performing
-the DMA transfer is the mailbox itself. Fix it by using the mailbox
-controller device instead.
+Clang Static Checker (scan-build) warns:
 
-This requires including the mailbox_controller.h header to dereference
-the mbox_chan and mbox_controller structures. The header is not meant to
-be included by clients. This could be fixed by extending the client API
-with a function to access the controller's device.
+drivers/net/wireless/ath/ath10k/debugfs_sta.c:line 429, column 3
+Value stored to 'ret' is never read.
 
-Fixes: 4e3d60656a72 ("ARM: bcm2835: Add the Raspberry Pi firmware driver")
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Tested-by: Ivan T. Ivanov <iivanov@suse.de>
-Link: https://lore.kernel.org/r/20240326195807.15163-3-laurent.pinchart@ideasonboard.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Return 'ret' rather than 'count' when 'ret' stores an error code.
+
+Fixes: ee8b08a1be82 ("ath10k: add debugfs support to get per peer tids log via tracing")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240422034243.938962-1-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/raspberrypi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath10k/debugfs_sta.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/raspberrypi.c b/drivers/firmware/raspberrypi.c
-index 45ff03da234a6..c8a292df6fea5 100644
---- a/drivers/firmware/raspberrypi.c
-+++ b/drivers/firmware/raspberrypi.c
-@@ -9,6 +9,7 @@
- #include <linux/dma-mapping.h>
- #include <linux/kref.h>
- #include <linux/mailbox_client.h>
-+#include <linux/mailbox_controller.h>
- #include <linux/module.h>
- #include <linux/of_platform.h>
- #include <linux/platform_device.h>
-@@ -96,8 +97,8 @@ int rpi_firmware_property_list(struct rpi_firmware *fw,
- 	if (size & 3)
- 		return -EINVAL;
- 
--	buf = dma_alloc_coherent(fw->cl.dev, PAGE_ALIGN(size), &bus_addr,
--				 GFP_ATOMIC);
-+	buf = dma_alloc_coherent(fw->chan->mbox->dev, PAGE_ALIGN(size),
-+				 &bus_addr, GFP_ATOMIC);
- 	if (!buf)
- 		return -ENOMEM;
- 
-@@ -125,7 +126,7 @@ int rpi_firmware_property_list(struct rpi_firmware *fw,
- 		ret = -EINVAL;
+diff --git a/drivers/net/wireless/ath/ath10k/debugfs_sta.c b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
+index 367539f2c3700..f7912c72cba34 100644
+--- a/drivers/net/wireless/ath/ath10k/debugfs_sta.c
++++ b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
+@@ -438,7 +438,7 @@ ath10k_dbg_sta_write_peer_debug_trigger(struct file *file,
  	}
- 
--	dma_free_coherent(fw->cl.dev, PAGE_ALIGN(size), buf, bus_addr);
-+	dma_free_coherent(fw->chan->mbox->dev, PAGE_ALIGN(size), buf, bus_addr);
- 
- 	return ret;
+ out:
+ 	mutex_unlock(&ar->conf_mutex);
+-	return count;
++	return ret ?: count;
  }
+ 
+ static const struct file_operations fops_peer_debug_trigger = {
 -- 
 2.43.0
 
