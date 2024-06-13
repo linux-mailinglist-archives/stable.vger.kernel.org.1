@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-51527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3367907050
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C102A906E54
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAA891F21A73
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D45101C21903
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC571448F1;
-	Thu, 13 Jun 2024 12:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3C013D605;
+	Thu, 13 Jun 2024 12:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIctlhnV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncwYHP2w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4883A144D36;
-	Thu, 13 Jun 2024 12:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0FC13CFA4;
+	Thu, 13 Jun 2024 12:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281557; cv=none; b=E+09DN6AjymGB9dESUAl9UxFNbXVTa1oHyfuO7SWIZP1X+Se5Mo8Bv4D09yu1WEhyE7zo48talTkRarWa8inA7sFf0RLwz1//qr0496jZJdXWJ1JydroMY51nATjGMGq/1DYipd6C5kBnMZ1pjfYGd+RdEMMyUailOhhs//jOHQ=
+	t=1718280303; cv=none; b=XL0pQJ4otj0ZVDu7z1VhChDHdfnOEa8JZr+Wn6mUF2EM8MM0gdOXW6L8ltWWCfs3x9WPT2/9q2S8uHzi2c53St0JCu/sb82caFMdG6gBOWhr82EVEJoGkElsquuV/I8ZP+AvaGDYeSM3Dee0zRaQrbNSIf5gGyC56rHzhy5CkHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281557; c=relaxed/simple;
-	bh=EmiQLzKVasI57P+d4cKW6HPM5hnMWGjq7SmLFmztrXM=;
+	s=arc-20240116; t=1718280303; c=relaxed/simple;
+	bh=LixZY1+V9UWxCPP6141/97Qh5XCM2PF0C8tcYu44i7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eFkPf0epL4P3x93U3CvJhRpLFFsrmFLoEfElerMS2CCU1ES8mS4pCu8k8NttxYRXkwOZvONM8pWO6ZHyZT6+R1M5I67P9RBZALKFC5MfEvEfO1KIg5vY8LdargP7MpTlYGaCFwKJv+XuZFziEuC/72IBAll3ejR/LpRp07psJZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIctlhnV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B811BC2BBFC;
-	Thu, 13 Jun 2024 12:25:56 +0000 (UTC)
+	 MIME-Version; b=LtPZs+h67sdVjJID4hn0bSViPeS/Nv7dOLWIF4JyR5cTTcbctd0GPyftEsyJ1JYnJR5jRJicB1db9hMrqtAZhncZOjt8UBflkp/f2c/Av3BafhImS1XGGq1GUJXn/iclxVmt0/FHowJLnZRi6Xq0yZaUvhpgNt1sU12wYJuX9HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncwYHP2w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514A5C2BBFC;
+	Thu, 13 Jun 2024 12:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281557;
-	bh=EmiQLzKVasI57P+d4cKW6HPM5hnMWGjq7SmLFmztrXM=;
+	s=korg; t=1718280302;
+	bh=LixZY1+V9UWxCPP6141/97Qh5XCM2PF0C8tcYu44i7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RIctlhnVAmrZeGbc6gq1FZyZMfvEuf86tiQC/komvA8vW+ysUP4cfiNvw2s8VKuPo
-	 twkbMOa5C0Jlz//JMIaGxi1yEVd3hvse7tvvtz5SNLoFF15x+qMM6HRACtoY9uVmYq
-	 tOKvX5ms3ty5Dqhrhw5hzSbAGsqtI2rMdmr+8BwU=
+	b=ncwYHP2wWKW6E5BBfhEIyM+aIwubpMoAPSQg6pXhk/VcDYqtaRid1b+bV3J33Kyp8
+	 TuDsad5nAe7CQ828MM0065VFUTf+CMFRb+cSxXKKXzc3NyFC68DUQwRKWwYJcIFhOL
+	 2qPWB1H6ktnOVylS/w9kHMNtFiibbRpsUHLHLwu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 265/317] SUNRPC: Fix loop termination condition in gss_free_in_token_pages()
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 5.4 185/202] KVM: arm64: Allow AArch32 PSTATE.M to be restored as System mode
 Date: Thu, 13 Jun 2024 13:34:43 +0200
-Message-ID: <20240613113257.797368956@linuxfoundation.org>
+Message-ID: <20240613113234.877417084@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 4a77c3dead97339478c7422eb07bf4bf63577008 upstream.
+commit dfe6d190f38fc5df5ff2614b463a5195a399c885 upstream.
 
-The in_token->pages[] array is not NULL terminated. This results in
-the following KASAN splat:
+It appears that we don't allow a vcpu to be restored in AArch32
+System mode, as we *never* included it in the list of valid modes.
 
-  KASAN: maybe wild-memory-access in range [0x04a2013400000008-0x04a201340000000f]
+Just add it to the list of allowed modes.
 
-Fixes: bafa6b4d95d9 ("SUNRPC: Fix gss_free_in_token_pages()")
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 0d854a60b1d7 ("arm64: KVM: enable initialization of a 32bit vcpu")
+Cc: stable@vger.kernel.org
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240524141956.1450304-3-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/auth_gss/svcauth_gss.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kvm/guest.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/sunrpc/auth_gss/svcauth_gss.c
-+++ b/net/sunrpc/auth_gss/svcauth_gss.c
-@@ -1156,7 +1156,7 @@ static int gss_read_proxy_verf(struct sv
- 	}
- 
- 	pages = DIV_ROUND_UP(inlen, PAGE_SIZE);
--	in_token->pages = kcalloc(pages, sizeof(struct page *), GFP_KERNEL);
-+	in_token->pages = kcalloc(pages + 1, sizeof(struct page *), GFP_KERNEL);
- 	if (!in_token->pages) {
- 		kfree(in_handle->data);
- 		return SVC_DENIED;
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -186,6 +186,7 @@ static int set_core_reg(struct kvm_vcpu
+ 		case PSR_AA32_MODE_SVC:
+ 		case PSR_AA32_MODE_ABT:
+ 		case PSR_AA32_MODE_UND:
++		case PSR_AA32_MODE_SYS:
+ 			if (!vcpu_el1_is_32bit(vcpu))
+ 				return -EINVAL;
+ 			break;
 
 
 
