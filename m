@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-51697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C5990712B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C15F4906F83
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:21:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D24FD283982
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FEE5B28D70
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DFF14265E;
-	Thu, 13 Jun 2024 12:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF85144D0C;
+	Thu, 13 Jun 2024 12:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iH/Skk4t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yW2FB2Fp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D420213D244;
-	Thu, 13 Jun 2024 12:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9013209;
+	Thu, 13 Jun 2024 12:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282050; cv=none; b=aR32TKNsXAFZOaXWpVQYAet3Faf7HGwdhyiLv8ZbFnuYgGiiNQnYUNvv+YstQcA4QthP5JyVI9krmzYSzB8aRPxGWQ9y/UMeeNGfG54P84BMZDQe46qgTy3ohU+lItUFQ2QouupTHgdNIlfyhaq4e1bUDPIXq4PrxXwqtd7PPpk=
+	t=1718280933; cv=none; b=UDeZ6dcvDmZlO9kGfEX+KKQlBiqHpf3Tg0facfVxPkcfrjfPp9Vzy6D3HQMOQyoWFp6SNSBXeQZ0rXoIP5v2qRxtXT0gsJHDd5saI9LBdXL1kO9hXNlqXVWNrV4zwBGTvPEP9xLsQPGE2UR11WJOHdnKc66qkKwmlpNfZJhbmt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282050; c=relaxed/simple;
-	bh=areXCXlRWenAHaLn0eMjHqZD7S0nI/hhvIcrLFOmnME=;
+	s=arc-20240116; t=1718280933; c=relaxed/simple;
+	bh=QTMe/+S+GxC++sfhSxLBOVfAtyxYqJb9MU1WLY89xeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FGfy49xHxzAXxiGCoCjg2sWaBoy/39uI3+jZGQrdpvGqXygnPRtI7nFZjdRFnhW1xURc75PwJzggXLqDvLQWctvf5AGfiV3MbcHaK0bzEa7nQfSuhdz5gtmZgcM/p0UEf1AAuqP4cO/2B9wW1sHEm6lBuNai5k/AE/Fr8EAqZYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iH/Skk4t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129A7C2BBFC;
-	Thu, 13 Jun 2024 12:34:09 +0000 (UTC)
+	 MIME-Version; b=jSsV5mUWjQTVnWDpO0v1qsBFPuetTn96tXZza1wyOTshgEo7I1MqvOnuhGwlIas77i49q8P1UebPfBuwjo6KxQUkBOQ0a+ZqJg7W0iHe0pXMC1dOQJuFmW/rgjRv7kGzeI7/AWQmbQRo0zRogoAuAxQsuhdu9hM1xiWZSs8jGuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yW2FB2Fp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43C6C2BBFC;
+	Thu, 13 Jun 2024 12:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282050;
-	bh=areXCXlRWenAHaLn0eMjHqZD7S0nI/hhvIcrLFOmnME=;
+	s=korg; t=1718280933;
+	bh=QTMe/+S+GxC++sfhSxLBOVfAtyxYqJb9MU1WLY89xeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iH/Skk4tzTv6uTrt2rTWoUC1GYH8EpuPkVMv/nZBtg9pNB22OpdcieAVz/psrluNc
-	 JkbWED/TUvo1N4wp2ln5vJzhYtyuwmGzAD7mY7t4zVeKXFcW8AoKIw3rQiUWNvppqr
-	 ZHu0TBOswe+KhS4VKYKMXmTZwpvjZ8SungtV6uKQ=
+	b=yW2FB2FpWWjy5odsmvwrkp4jLoYtcqWCWbUoYCTnfAa4l5DHS40U136q646Kp8u8P
+	 9fBKm33lV43PtBzslcsnowzS50U72B/GzX46U52UrGAt281UGNy3O3CT2fa9Xw5WCR
+	 TKYIS9P/OgvFXKOJkAmalXVusANzbafHNLdWUVpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 144/402] drm/bridge: lt8912b: Dont log an error when DSI host cant be found
+Subject: [PATCH 5.10 083/317] af_unix: Fix data races in unix_release_sock/unix_stream_sendmsg
 Date: Thu, 13 Jun 2024 13:31:41 +0200
-Message-ID: <20240613113307.752459481@linuxfoundation.org>
+Message-ID: <20240613113250.760077907@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit b3b4695ff47c4964d4ccb930890c9ffd8e455e20 ]
+[ Upstream commit 540bf24fba16b88c1b3b9353927204b4f1074e25 ]
 
-Given that failing to find a DSI host causes the driver to defer probe,
-make use of dev_err_probe() to log the reason. This makes the defer
-probe reason available and avoids alerting userspace about something
-that is not necessarily an error.
+A data-race condition has been identified in af_unix. In one data path,
+the write function unix_release_sock() atomically writes to
+sk->sk_shutdown using WRITE_ONCE. However, on the reader side,
+unix_stream_sendmsg() does not read it atomically. Consequently, this
+issue is causing the following KCSAN splat to occur:
 
-Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-3-619a28148e5c@collabora.com
+	BUG: KCSAN: data-race in unix_release_sock / unix_stream_sendmsg
+
+	write (marked) to 0xffff88867256ddbb of 1 bytes by task 7270 on cpu 28:
+	unix_release_sock (net/unix/af_unix.c:640)
+	unix_release (net/unix/af_unix.c:1050)
+	sock_close (net/socket.c:659 net/socket.c:1421)
+	__fput (fs/file_table.c:422)
+	__fput_sync (fs/file_table.c:508)
+	__se_sys_close (fs/open.c:1559 fs/open.c:1541)
+	__x64_sys_close (fs/open.c:1541)
+	x64_sys_call (arch/x86/entry/syscall_64.c:33)
+	do_syscall_64 (arch/x86/entry/common.c:?)
+	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+	read to 0xffff88867256ddbb of 1 bytes by task 989 on cpu 14:
+	unix_stream_sendmsg (net/unix/af_unix.c:2273)
+	__sock_sendmsg (net/socket.c:730 net/socket.c:745)
+	____sys_sendmsg (net/socket.c:2584)
+	__sys_sendmmsg (net/socket.c:2638 net/socket.c:2724)
+	__x64_sys_sendmmsg (net/socket.c:2753 net/socket.c:2750 net/socket.c:2750)
+	x64_sys_call (arch/x86/entry/syscall_64.c:33)
+	do_syscall_64 (arch/x86/entry/common.c:?)
+	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+	value changed: 0x01 -> 0x03
+
+The line numbers are related to commit dd5a440a31fa ("Linux 6.9-rc7").
+
+Commit e1d09c2c2f57 ("af_unix: Fix data races around sk->sk_shutdown.")
+addressed a comparable issue in the past regarding sk->sk_shutdown.
+However, it overlooked resolving this particular data path.
+This patch only offending unix_stream_sendmsg() function, since the
+other reads seem to be protected by unix_state_lock() as discussed in
+Link: https://lore.kernel.org/all/20240508173324.53565-1-kuniyu@amazon.com/
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240509081459.2807828-1-leitao@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/lontium-lt8912b.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-index e16b0fc0cda0f..6379d5c8edff1 100644
---- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
-+++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-@@ -475,10 +475,8 @@ static int lt8912_attach_dsi(struct lt8912 *lt)
- 						 };
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 224b1fdc82279..3ab726a668e8a 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1918,7 +1918,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 			goto out_err;
+ 	}
  
- 	host = of_find_mipi_dsi_host_by_node(lt->host_node);
--	if (!host) {
--		dev_err(dev, "failed to find dsi host\n");
--		return -EPROBE_DEFER;
--	}
-+	if (!host)
-+		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
+-	if (sk->sk_shutdown & SEND_SHUTDOWN)
++	if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+ 		goto pipe_err;
  
- 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
- 	if (IS_ERR(dsi)) {
+ 	while (sent < len) {
 -- 
 2.43.0
 
