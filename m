@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-51969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A5F907283
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:48:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3852B907057
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35F381F24318
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:48:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EED51C23E5A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5A8142E81;
-	Thu, 13 Jun 2024 12:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3F914535E;
+	Thu, 13 Jun 2024 12:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZjp4poG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yo6n7tye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B1C384;
-	Thu, 13 Jun 2024 12:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BB5144D36;
+	Thu, 13 Jun 2024 12:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282849; cv=none; b=a2YvUo5e+BKPT24ELJclPjbOr1iDj8mPQ295wDfnuHO8EmUlXYq6f0H297281jWpecmHVkCnaniUT77hcRAB1rfJ5t39tfKP6gXoyWcAvAAuqePgPOBWaeiqGFk/1hkXA8gjS2HjVRQtUGjy1zdtkeLQvQcJLQkJbiGZM7ESsAQ=
+	t=1718281577; cv=none; b=jQMKkDKOLO972ZgQbCRF/SawUyI/YbN6e0zAFaae5eakYYSVWxmu9Ra2xa9PbtKalzcvNuEy+iUvoltVb8yYKHnZlSsHiZhqOUJcu+oVIYB3wsATl8yJq4Ng6M9exWnsFO+Fit41rsrDheYJEU2+MdKr20JzFtKyMBWf53zQMxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282849; c=relaxed/simple;
-	bh=i8+OKxgzSor74MFINiJQFDHRfmDhBI3RQP1TwXOAiFE=;
+	s=arc-20240116; t=1718281577; c=relaxed/simple;
+	bh=WRXFY1uJaC7bN5jNUfx/X7ubUJVEg9/tKWXw3DISmBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UWhAoIJslkzfiaC8t0QNe9kwaLSS0UuPjgjv2wKG4gNeXxkaSiPlTu2V2cJQ+moOq53F1fKc0vgIOvzFufozkX+zL7+fncke0Pwzo+7ixDHxIvRR9O0LDBlmYzks+Ez5CyyrcmHuSSwQ13Y3iVub9qVy55AnTBEld3YglINtkz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZjp4poG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95362C2BBFC;
-	Thu, 13 Jun 2024 12:47:28 +0000 (UTC)
+	 MIME-Version; b=ee2Fvzo1i2TpMgzrus/36XyQal3e6f+xj2EKd8RjRLT59ZyiepsvFynH7c85WQTntgS5IuQHpx8/YUKK9TPtxIoST5hoXUC4xCr0PwSA8PpIOxGsTtfSKDrmo6NdPQKhOn7QooRBt3QG6nDdkklNeNO6Xqcp46mUPwuUW7XFBik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yo6n7tye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF88C2BBFC;
+	Thu, 13 Jun 2024 12:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282849;
-	bh=i8+OKxgzSor74MFINiJQFDHRfmDhBI3RQP1TwXOAiFE=;
+	s=korg; t=1718281577;
+	bh=WRXFY1uJaC7bN5jNUfx/X7ubUJVEg9/tKWXw3DISmBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KZjp4poGpbI54D9b5nMVD+I5GlV6xjlxpH0AG3PLLPOBRvXG2TDBKLcXi5iYNC7oA
-	 USWzW6xcjly7RZlkVDXq2KXK7ULO6gHvZ5uUPgMh8wSLhJoPXPIejY2BnB4wNsYijP
-	 Lo4l8BRYftLOXtVKF6RtqcTYSnw4jHhtGU85dn0c=
+	b=Yo6n7tyeTI9pOlR8mDSSHV48GLKjaRzDJ94MjxRUzQ0N9dlB6tHZaLY06wJi8vpFP
+	 fvZORg8K1lSTd90aIjP9NatMBJJYoZ9D1ZsXvGYvFvLY+rEO16BzuvICmoefN/OOEr
+	 7NoS76lLKukfoIBnk9ajN/Nn+VskjtkhblXF1JDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	David Bauer <mail@david-bauer.net>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 14/85] vxlan: Fix regression when dropping packets due to invalid src addresses
-Date: Thu, 13 Jun 2024 13:35:12 +0200
-Message-ID: <20240613113214.694732528@linuxfoundation.org>
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 5.10 295/317] KVM: arm64: Allow AArch32 PSTATE.M to be restored as System mode
+Date: Thu, 13 Jun 2024 13:35:13 +0200
+Message-ID: <20240613113258.961981837@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 1cd4bc987abb2823836cbb8f887026011ccddc8a upstream.
+commit dfe6d190f38fc5df5ff2614b463a5195a399c885 upstream.
 
-Commit f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
-has recently been added to vxlan mainly in the context of source
-address snooping/learning so that when it is enabled, an entry in the
-FDB is not being created for an invalid address for the corresponding
-tunnel endpoint.
+It appears that we don't allow a vcpu to be restored in AArch32
+System mode, as we *never* included it in the list of valid modes.
 
-Before commit f58f45c1e5b9 vxlan was similarly behaving as geneve in
-that it passed through whichever macs were set in the L2 header. It
-turns out that this change in behavior breaks setups, for example,
-Cilium with netkit in L3 mode for Pods as well as tunnel mode has been
-passing before the change in f58f45c1e5b9 for both vxlan and geneve.
-After mentioned change it is only passing for geneve as in case of
-vxlan packets are dropped due to vxlan_set_mac() returning false as
-source and destination macs are zero which for E/W traffic via tunnel
-is totally fine.
+Just add it to the list of allowed modes.
 
-Fix it by only opting into the is_valid_ether_addr() check in
-vxlan_set_mac() when in fact source address snooping/learning is
-actually enabled in vxlan. This is done by moving the check into
-vxlan_snoop(). With this change, the Cilium connectivity test suite
-passes again for both tunnel flavors.
-
-Fixes: f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: David Bauer <mail@david-bauer.net>
-Cc: Ido Schimmel <idosch@nvidia.com>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: David Bauer <mail@david-bauer.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[ Backport note: vxlan snooping/learning not supported in 6.8 or older,
-  so commit is simply a revert. ]
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Fixes: 0d854a60b1d7 ("arm64: KVM: enable initialization of a 32bit vcpu")
+Cc: stable@vger.kernel.org
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240524141956.1450304-3-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_core.c |    4 ----
- 1 file changed, 4 deletions(-)
+ arch/arm64/kvm/guest.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1662,10 +1662,6 @@ static bool vxlan_set_mac(struct vxlan_d
- 	if (ether_addr_equal(eth_hdr(skb)->h_source, vxlan->dev->dev_addr))
- 		return false;
- 
--	/* Ignore packets from invalid src-address */
--	if (!is_valid_ether_addr(eth_hdr(skb)->h_source))
--		return false;
--
- 	/* Get address from the outer IP header */
- 	if (vxlan_get_sk_family(vs) == AF_INET) {
- 		saddr.sin.sin_addr.s_addr = ip_hdr(skb)->saddr;
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -234,6 +234,7 @@ static int set_core_reg(struct kvm_vcpu
+ 		case PSR_AA32_MODE_SVC:
+ 		case PSR_AA32_MODE_ABT:
+ 		case PSR_AA32_MODE_UND:
++		case PSR_AA32_MODE_SYS:
+ 			if (!vcpu_el1_is_32bit(vcpu))
+ 				return -EINVAL;
+ 			break;
 
 
 
