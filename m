@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09FEE906E12
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B88906FD6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E50E1C222A6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB5BE1C21DB0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69911145333;
-	Thu, 13 Jun 2024 12:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1519014658F;
+	Thu, 13 Jun 2024 12:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GuTaQhE1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9mli5VH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2748E82C76;
-	Thu, 13 Jun 2024 12:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C736A145FEE;
+	Thu, 13 Jun 2024 12:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280139; cv=none; b=KjSwUkeO2Kdn/eXcnXfMZmFMiKXHnpzJ9ASREGjS9/HtkdzYb81HJlpfQwJWJ12q7sn3ZbclJ+ZrjL4VkCQBnUKwrmLvws2bL8SH0PpT5Y5balunNVwD8s99Zxoy4QZMj4d96Zh+g9ptC5ssgY2raW+uBcNfrrNorTwKoLApPGg=
+	t=1718281289; cv=none; b=P72t/gldbaDuHtdFw2Gx1NdnEzxtmNu7DPvp5LD5a4Kdb3sIE6aj4trm4opmsQiWpm2S0mUyj1YNQnjFTdRHITVe6xxV4CXd1MDgrb6OdUV1bwHA40QM7ycIV98MnHPDqQzVf9jVGr/UekeK50w9ehj4Cnisli5vxBP1qahzjOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280139; c=relaxed/simple;
-	bh=NkQ19nYYLrOjmysEePtp7y4cRo3KmbmYd/Yf3Z5YNbY=;
+	s=arc-20240116; t=1718281289; c=relaxed/simple;
+	bh=hid7PkOsxemXRjRs15ifH97B86hGp7rxuKdJNh9uzGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lEHHJx0xFbDNpmgHB102Chr/7LMoY9PIf1iwBfqHBruYp2+Hq7q+WMQ+nNLx+LslsiTTQ6r4sNKEvpwk57Cr+0Z6DTH0zLF9XLOBKEvzbmJsHZLq7weUMVz4toXzeB7gBK1DMjnGdIo649eTVszZtqcWTSUCVaW5IZuNNBOk1l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GuTaQhE1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7C3C2BBFC;
-	Thu, 13 Jun 2024 12:02:18 +0000 (UTC)
+	 MIME-Version; b=TWaTfN4GHq4f5fTm46kJMUSP5eXTzzDS1qupHMNPBWPUuFqBMcZ5u6Fv4T7Dgd0ucROLv/NdwCBzF3zHBW6Eon84v0GvW5Fd1pEKCMqB8FhOZKHdcYt/Fm+snUYD9duKuYnZq5jsz2v8bpaFRgNZkOrvjv0MmNcuUaVa1zSQrs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9mli5VH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2BBC32786;
+	Thu, 13 Jun 2024 12:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280139;
-	bh=NkQ19nYYLrOjmysEePtp7y4cRo3KmbmYd/Yf3Z5YNbY=;
+	s=korg; t=1718281289;
+	bh=hid7PkOsxemXRjRs15ifH97B86hGp7rxuKdJNh9uzGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GuTaQhE1rPJ8O6AHq40By0lUBZD6JVD1+Uw1SM8qkOhAd8hvwHq5xpnwaUQ+jGe17
-	 uoWW3AukmrH+KuY0XMXAUQoEH76qL3bH2fi6FRYzggM4H+sU/cvtaFXI81gio+7fkf
-	 3zEzBQxTfhbFvoRt19t/Uj8MaVVySggo0NgR0ZII=
+	b=t9mli5VHXyewOgPEWwgoLpq35vhguG8cgevZFb7dEihF9z4gNj3Nkh30YVJUmOy3Z
+	 YL//Qi0zEDBZLbRNat9xcCHELj98NmfyW5342a+4IZi5gpToQYiIqSQZM0G1FYYsAM
+	 P/VmsAXJtnF35oz+HxpQNBs5Yt51Koa50Qob9SvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fenglin Wu <quic_fenglinw@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 125/202] Input: pm8xxx-vibrator - correct VIB_MAX_LEVELS calculation
+Subject: [PATCH 5.10 205/317] um: Add winch to winch_handlers before registering winch IRQ
 Date: Thu, 13 Jun 2024 13:33:43 +0200
-Message-ID: <20240613113232.586917365@linuxfoundation.org>
+Message-ID: <20240613113255.485125849@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fenglin Wu <quic_fenglinw@quicinc.com>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit 48c0687a322d54ac7e7a685c0b6db78d78f593af ]
+[ Upstream commit a0fbbd36c156b9f7b2276871d499c9943dfe5101 ]
 
-The output voltage is inclusive hence the max level calculation is
-off-by-one-step. Correct it.
+Registering a winch IRQ is racy, an interrupt may occur before the winch is
+added to the winch_handlers list.
 
-iWhile we are at it also add a define for the step size instead of
-using the magic value.
+If that happens, register_winch_irq() adds to that list a winch that is
+scheduled to be (or has already been) freed, causing a panic later in
+winch_cleanup().
 
-Fixes: 11205bb63e5c ("Input: add support for pm8xxx based vibrator driver")
-Signed-off-by: Fenglin Wu <quic_fenglinw@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240412-pm8xxx-vibrator-new-design-v10-1-0ec0ad133866@quicinc.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Avoid the race by adding the winch to the winch_handlers list before
+registering the IRQ, and rolling back if um_request_irq() fails.
+
+Fixes: 42a359e31a0e ("uml: SIGIO support cleanup")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/pm8xxx-vibrator.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/um/drivers/line.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/input/misc/pm8xxx-vibrator.c b/drivers/input/misc/pm8xxx-vibrator.c
-index 53ad25eaf1a28..8bfe5c7b1244c 100644
---- a/drivers/input/misc/pm8xxx-vibrator.c
-+++ b/drivers/input/misc/pm8xxx-vibrator.c
-@@ -14,7 +14,8 @@
- 
- #define VIB_MAX_LEVEL_mV	(3100)
- #define VIB_MIN_LEVEL_mV	(1200)
--#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV)
-+#define VIB_PER_STEP_mV		(100)
-+#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV + VIB_PER_STEP_mV)
- 
- #define MAX_FF_SPEED		0xff
- 
-@@ -118,10 +119,10 @@ static void pm8xxx_work_handler(struct work_struct *work)
- 		vib->active = true;
- 		vib->level = ((VIB_MAX_LEVELS * vib->speed) / MAX_FF_SPEED) +
- 						VIB_MIN_LEVEL_mV;
--		vib->level /= 100;
-+		vib->level /= VIB_PER_STEP_mV;
- 	} else {
- 		vib->active = false;
--		vib->level = VIB_MIN_LEVEL_mV / 100;
-+		vib->level = VIB_MIN_LEVEL_mV / VIB_PER_STEP_mV;
+diff --git a/arch/um/drivers/line.c b/arch/um/drivers/line.c
+index 14ad9f495fe69..37e96ba0f5fb1 100644
+--- a/arch/um/drivers/line.c
++++ b/arch/um/drivers/line.c
+@@ -668,24 +668,26 @@ void register_winch_irq(int fd, int tty_fd, int pid, struct tty_port *port,
+ 		goto cleanup;
  	}
  
- 	pm8xxx_vib_set(vib, vib->active);
+-	*winch = ((struct winch) { .list  	= LIST_HEAD_INIT(winch->list),
+-				   .fd  	= fd,
++	*winch = ((struct winch) { .fd  	= fd,
+ 				   .tty_fd 	= tty_fd,
+ 				   .pid  	= pid,
+ 				   .port 	= port,
+ 				   .stack	= stack });
+ 
++	spin_lock(&winch_handler_lock);
++	list_add(&winch->list, &winch_handlers);
++	spin_unlock(&winch_handler_lock);
++
+ 	if (um_request_irq(WINCH_IRQ, fd, IRQ_READ, winch_interrupt,
+ 			   IRQF_SHARED, "winch", winch) < 0) {
+ 		printk(KERN_ERR "register_winch_irq - failed to register "
+ 		       "IRQ\n");
++		spin_lock(&winch_handler_lock);
++		list_del(&winch->list);
++		spin_unlock(&winch_handler_lock);
+ 		goto out_free;
+ 	}
+ 
+-	spin_lock(&winch_handler_lock);
+-	list_add(&winch->list, &winch_handlers);
+-	spin_unlock(&winch_handler_lock);
+-
+ 	return;
+ 
+  out_free:
 -- 
 2.43.0
 
