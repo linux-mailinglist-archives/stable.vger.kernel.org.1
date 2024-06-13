@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-50659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C02906BC3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E85EA906CBD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:53:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F04D92830B1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A30E1F2143B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0360B143C6A;
-	Thu, 13 Jun 2024 11:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14FA81465BC;
+	Thu, 13 Jun 2024 11:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBVSu8Kx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwezIXx1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50C914265E;
-	Thu, 13 Jun 2024 11:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70A814659D;
+	Thu, 13 Jun 2024 11:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279011; cv=none; b=exznm8Pk1AEeXNrGuGARsuzN/qbDh8ABrAL9TGgLl9M13QJOvqpqUThTmdEx+PSSUq/Kmm427/qntMY3mngQhp2bqf9py7OD6TOmMAh+K/eD7uvyUcyNywD+R0j9mFu4++EHaaXZlpY+cNowFWHga+ZFh62SNfByzkRqzVyv9F0=
+	t=1718279410; cv=none; b=kUN+7JzuS/cer3/591Usmj/GZYD19iwq4y2C7MR7Hyl7kZhZhbdQBtU39aW1Y5tRCzZ4tJWhAOU61Tq4l9RuyM1hJrmtLz5xu+PA+kOSsUR34JZkj7lJeLLJFVsQu+aPIkKVQBMpl0w6uK8l9bIg17/g+ThzeJ/D4XmNnDSoJNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279011; c=relaxed/simple;
-	bh=PMwTFROE1WxzVoJuOge3i0jbkw3TRNkg5lwd18mke1o=;
+	s=arc-20240116; t=1718279410; c=relaxed/simple;
+	bh=pMMXgV0SK9taN60iUoF0ltkYaCL1yCcevDK2fa5vBG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TnFBUkTHTU4h7vNBGVcWoo53Qlz6SyA7xtz8ErZO+IhVloaauFQAuHjLtkMYFStENrG+G83x8yEKM7R3JnBUUedz9XUuUTZomzLaGu2TM3aEyACDWznatk+ch2TkbJzbj8nF/o/10iOuuuiLifmExu8QZuaOCQR+UkTbxNGZRfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBVSu8Kx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD2EC2BBFC;
-	Thu, 13 Jun 2024 11:43:31 +0000 (UTC)
+	 MIME-Version; b=F7B97MdGhALk84ylj1GAHm076pXvCg0J1jr+8x8JS5HX9++lcM4cJPEC3pmm0QebVLG6q31DE8yV4eTYKHMXb5aPQtf3ayS/DVsWmK+rAuYUFxEla3fYHxdgLvWyNigi9w/c4JvV5vzqSiNcNB5mpSnI6qFiWIRXtusk8gL6JF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwezIXx1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F082C2BBFC;
+	Thu, 13 Jun 2024 11:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279011;
-	bh=PMwTFROE1WxzVoJuOge3i0jbkw3TRNkg5lwd18mke1o=;
+	s=korg; t=1718279410;
+	bh=pMMXgV0SK9taN60iUoF0ltkYaCL1yCcevDK2fa5vBG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iBVSu8KxnC2uRdiiR9VZWJ1LC/T9kWCoEfVqkZzWjOHIThCHmMRaBeb75jrzkkutZ
-	 StZpkD4MV6/iw+QSfEBUu4Ftvs4ok9Ail1QPjIjxWJgkp8O+15N6JzCuAAlLoEZJqu
-	 VPG88JMU3YpHYmLb6aCnaXYhZWW8sM6Z0joI8zAU=
+	b=FwezIXx1u9jsLEXODrvJhqxiAKXaudmkndcclgxNLbOqf0qertsmP3B27kOIYuufU
+	 qCF7rvTa6VgtkjD0iX3nCgmmtpTQxXodEdu4i9fXpocb77OCYJmlNvjtbMfDCgotzy
+	 WGgYpTwOTpFDm+Bk0H7rvQaoy5N4JX7ifrM5irGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 4.19 144/213] genirq/cpuhotplug, x86/vector: Prevent vector leak during CPU offline
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.9 067/157] clk: qcom: clk-alpha-pll: fix rate setting for Stromer PLLs
 Date: Thu, 13 Jun 2024 13:33:12 +0200
-Message-ID: <20240613113233.545929027@linuxfoundation.org>
+Message-ID: <20240613113230.014995971@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit a6c11c0a5235fb144a65e0cb2ffd360ddc1f6c32 upstream.
+commit 3c5b3e17b8fd1f1add5a9477306c355fab126977 upstream.
 
-The absence of IRQD_MOVE_PCNTXT prevents immediate effectiveness of
-interrupt affinity reconfiguration via procfs. Instead, the change is
-deferred until the next instance of the interrupt being triggered on the
-original CPU.
+The clk_alpha_pll_stromer_set_rate() function writes inproper
+values into the ALPHA_VAL{,_U} registers which results in wrong
+clock rates when the alpha value is used.
 
-When the interrupt next triggers on the original CPU, the new affinity is
-enforced within __irq_move_irq(). A vector is allocated from the new CPU,
-but the old vector on the original CPU remains and is not immediately
-reclaimed. Instead, apicd->move_in_progress is flagged, and the reclaiming
-process is delayed until the next trigger of the interrupt on the new CPU.
+The broken behaviour can be seen on IPQ5018 for example, when
+dynamic scaling sets the CPU frequency to 800000 KHz. In this
+case the CPU cores are running only at 792031 KHz:
 
-Upon the subsequent triggering of the interrupt on the new CPU,
-irq_complete_move() adds a task to the old CPU's vector_cleanup list if it
-remains online. Subsequently, the timer on the old CPU iterates over its
-vector_cleanup list, reclaiming old vectors.
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
+  800000
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
+  792031
 
-However, a rare scenario arises if the old CPU is outgoing before the
-interrupt triggers again on the new CPU.
+This happens because the function ignores the fact that the alpha
+value calculated by the alpha_pll_round_rate() function is only
+32 bits wide which must be extended to 40 bits if it is used on
+a hardware which supports 40 bits wide values.
 
-In that case irq_force_complete_move() is not invoked on the outgoing CPU
-to reclaim the old apicd->prev_vector because the interrupt isn't currently
-affine to the outgoing CPU, and irq_needs_fixup() returns false. Even
-though __vector_schedule_cleanup() is later called on the new CPU, it
-doesn't reclaim apicd->prev_vector; instead, it simply resets both
-apicd->move_in_progress and apicd->prev_vector to 0.
+Extend the clk_alpha_pll_stromer_set_rate() function to convert
+the alpha value to 40 bits before wrinting that into the registers
+in order to ensure that the hardware really uses the requested rate.
 
-As a result, the vector remains unreclaimed in vector_matrix, leading to a
-CPU vector leak.
+After the change the CPU frequency is correct:
 
-To address this issue, move the invocation of irq_force_complete_move()
-before the irq_needs_fixup() call to reclaim apicd->prev_vector, if the
-interrupt is currently or used to be affine to the outgoing CPU.
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
+  800000
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
+  800000
 
-Additionally, reclaim the vector in __vector_schedule_cleanup() as well,
-following a warning message, although theoretically it should never see
-apicd->move_in_progress with apicd->prev_cpu pointing to an offline CPU.
-
-Fixes: f0383c24b485 ("genirq/cpuhotplug: Add support for cleaning up move in progress")
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240522220218.162423-1-dongli.zhang@oracle.com
+Fixes: e47a4f55f240 ("clk: qcom: clk-alpha-pll: Add support for Stromer PLLs")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/r/20240328-alpha-pll-fix-stromer-set-rate-v3-1-1b79714c78bc@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/apic/vector.c |    9 ++++++---
- kernel/irq/cpuhotplug.c       |   16 ++++++++--------
- 2 files changed, 14 insertions(+), 11 deletions(-)
+ drivers/clk/qcom/clk-alpha-pll.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kernel/apic/vector.c
-+++ b/arch/x86/kernel/apic/vector.c
-@@ -915,7 +915,8 @@ static void __send_cleanup_vector(struct
- 		hlist_add_head(&apicd->clist, per_cpu_ptr(&cleanup_list, cpu));
- 		apic->send_IPI(cpu, IRQ_MOVE_CLEANUP_VECTOR);
- 	} else {
--		apicd->prev_vector = 0;
-+		pr_warn("IRQ %u schedule cleanup for offline CPU %u\n", apicd->irq, cpu);
-+		free_moved_vector(apicd);
- 	}
- 	raw_spin_unlock(&vector_lock);
- }
-@@ -951,6 +952,7 @@ void irq_complete_move(struct irq_cfg *c
-  */
- void irq_force_complete_move(struct irq_desc *desc)
- {
-+	unsigned int cpu = smp_processor_id();
- 	struct apic_chip_data *apicd;
- 	struct irq_data *irqd;
- 	unsigned int vector;
-@@ -975,10 +977,11 @@ void irq_force_complete_move(struct irq_
- 		goto unlock;
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -2489,6 +2489,8 @@ static int clk_alpha_pll_stromer_set_rat
+ 	rate = alpha_pll_round_rate(rate, prate, &l, &a, ALPHA_REG_BITWIDTH);
  
- 	/*
--	 * If prev_vector is empty, no action required.
-+	 * If prev_vector is empty or the descriptor is neither currently
-+	 * nor previously on the outgoing CPU no action required.
- 	 */
- 	vector = apicd->prev_vector;
--	if (!vector)
-+	if (!vector || (apicd->cpu != cpu && apicd->prev_cpu != cpu))
- 		goto unlock;
- 
- 	/*
---- a/kernel/irq/cpuhotplug.c
-+++ b/kernel/irq/cpuhotplug.c
-@@ -69,6 +69,14 @@ static bool migrate_one_irq(struct irq_d
- 	}
- 
- 	/*
-+	 * Complete an eventually pending irq move cleanup. If this
-+	 * interrupt was moved in hard irq context, then the vectors need
-+	 * to be cleaned up. It can't wait until this interrupt actually
-+	 * happens and this CPU was involved.
-+	 */
-+	irq_force_complete_move(desc);
+ 	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
 +
-+	/*
- 	 * No move required, if:
- 	 * - Interrupt is per cpu
- 	 * - Interrupt is not started
-@@ -87,14 +95,6 @@ static bool migrate_one_irq(struct irq_d
- 	}
- 
- 	/*
--	 * Complete an eventually pending irq move cleanup. If this
--	 * interrupt was moved in hard irq context, then the vectors need
--	 * to be cleaned up. It can't wait until this interrupt actually
--	 * happens and this CPU was involved.
--	 */
--	irq_force_complete_move(desc);
--
--	/*
- 	 * If there is a setaffinity pending, then try to reuse the pending
- 	 * mask, so the last change of the affinity does not get lost. If
- 	 * there is no move pending or the pending mask does not contain
++	a <<= ALPHA_REG_BITWIDTH - ALPHA_BITWIDTH;
+ 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
+ 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
+ 		     a >> ALPHA_BITWIDTH);
 
 
 
