@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E594F90722E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC761906EEA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AEDA1F21498
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EB75282467
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C298514265E;
-	Thu, 13 Jun 2024 12:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC8B13D512;
+	Thu, 13 Jun 2024 12:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkUHJdNX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFTcECmw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC7120ED;
-	Thu, 13 Jun 2024 12:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6AD143739;
+	Thu, 13 Jun 2024 12:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282681; cv=none; b=UZymYzDs4PuIFleFz0eLYZ2mTeHLq0OdAhbXEqV4jYz6RDlvCmG4wUrnMkucrNounxNC97JR8r0Jo7H9pZWRaQ6XePdBdYlmg8CUWr/N7T/9lzv3wem+pn2UHJ7qR/5Hd9BlJyjLOZEyHgFmmoFRPqQmx8yEnfCVX5ohYaXeELg=
+	t=1718280688; cv=none; b=f0iSpjazcVBTqarzxVX3DSU0pDpQLoymaleTF6xKX9xGuRQahBUCA/Dy3BkuVUc6M76CD41DQMZzC+Ot6Qx1GbDxqVuSkSsfri1Lo92OuOl7172Tp4SMrPdWnZ0qeFwM2LXuv+z/ogkHLgu83p/FG+AhxkbJ/5o13dJQQ03yOuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282681; c=relaxed/simple;
-	bh=2jdWp2zf4EXvcTYj4mMViyRfPDluZOLCLN7NkPSBowc=;
+	s=arc-20240116; t=1718280688; c=relaxed/simple;
+	bh=YeE9rKjh3WvtXrXgw5KLTev9TNyxWWXCP3/iPXuQrOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsmgOEkS1ru1v5KUtWLSHRHQzQALm4jBuy7sGU+1yGigavH6qbFiTOh/e/x4dR+KsRnG24ZfnMqJ8PoPHzxyKhEiTlAsBrS2AC0jQo0D2Ib/tVDhpMdBxNWzDDb94Ea9ITsaHoRQ3cFFtbecbdl900NuODuvZXmtnSSt1rcgjaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkUHJdNX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00402C4AF1A;
-	Thu, 13 Jun 2024 12:44:40 +0000 (UTC)
+	 MIME-Version; b=B1VEr3YvE647a9XpZlDIhfgirl6JLZT/GEIhk0VYElN4xLmbEJV5YxqVz1QriScTh34f5mTkFRrLRuHW/Ls31ATVqVo9MhBCTD1EgftxZSfAbAjl1422Fh02CZTxA1darG0bwBj5otj06QnAnvyaHJzSe8CMiuvwnLieOmJhM/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFTcECmw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC1DC2BBFC;
+	Thu, 13 Jun 2024 12:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282681;
-	bh=2jdWp2zf4EXvcTYj4mMViyRfPDluZOLCLN7NkPSBowc=;
+	s=korg; t=1718280688;
+	bh=YeE9rKjh3WvtXrXgw5KLTev9TNyxWWXCP3/iPXuQrOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FkUHJdNXCSyioBAAV4IGdSn1mcZ6brG4y4BdO69YeQIN6MfKIeem+DGHXQ3BCgBE3
-	 +p4ia2Z9dw4SODsWUBGWYTKpsskgmZXHhzMzESF9U0v+wTn+YPWndf3+EbBsoBsmKM
-	 EpsL7bwx8vVita1P3tpMpKhQoEXMGJ/ZKV+3iHZI=
+	b=uFTcECmwcBaqozdCRMzYCZEfNEOkrp4msbtLuQMOrCHQ24HztDsMEq1HIsAi0wKuM
+	 P1PShS4Nbwyk7iFwZedCvMXh3nUfSVDm7AuG3WFwzp6AWjD7+qbi75jadt0Gs4k9P5
+	 rjzRNX1uovjQe5cPoFrYg5GMO8GcEd2hpyKdJ8ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 5.15 360/402] arm64: tegra: Correct Tegra132 I2C alias
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 137/137] selftests: net: more strict check in net_helper
 Date: Thu, 13 Jun 2024 13:35:17 +0200
-Message-ID: <20240613113316.179065176@linuxfoundation.org>
+Message-ID: <20240613113228.621469365@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 2633c58e1354d7de2c8e7be8bdb6f68a0a01bad7 upstream.
+commit a71d0908e32f3dd41e355d83eeadd44d94811fd6 upstream.
 
-There is no such device as "as3722@40", because its name is "pmic".  Use
-phandles for aliases to fix relying on full node path.  This corrects
-aliases for RTC devices and also fixes dtc W=1 warning:
+The helper waiting for a listener port can match any socket whose
+hexadecimal representation of source or destination addresses
+matches that of the given port.
 
-  tegra132-norrin.dts:12.3-36: Warning (alias_paths): /aliases:rtc0: aliases property is not a valid node (/i2c@7000d000/as3722@40)
+Additionally, any socket state is accepted.
 
-Fixes: 0f279ebdf3ce ("arm64: tegra: Add NVIDIA Tegra132 Norrin support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+All the above can let the helper return successfully before the
+relevant listener is actually ready, with unexpected results.
+
+So far I could not find any related failure in the netdev CI, but
+the next patch is going to make the critical event more easily
+reproducible.
+
+Address the issue matching the port hex only vs the relevant socket
+field and additionally checking the socket state for TCP sockets.
+
+Fixes: 3bdd9fd29cb0 ("selftests/net: synchronize udpgro tests' tx and rx connection")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/192b3dbc443d953be32991d1b0ca432bd4c65008.1707731086.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra132-norrin.dts |    4 ++--
- arch/arm64/boot/dts/nvidia/tegra132.dtsi       |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/net_helper.sh |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-+++ b/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-@@ -9,8 +9,8 @@
- 	compatible = "nvidia,norrin", "nvidia,tegra132", "nvidia,tegra124";
+--- a/tools/testing/selftests/net/net_helper.sh
++++ b/tools/testing/selftests/net/net_helper.sh
+@@ -8,13 +8,16 @@ wait_local_port_listen()
+ 	local listener_ns="${1}"
+ 	local port="${2}"
+ 	local protocol="${3}"
+-	local port_hex
++	local pattern
+ 	local i
  
- 	aliases {
--		rtc0 = "/i2c@7000d000/as3722@40";
--		rtc1 = "/rtc@7000e000";
-+		rtc0 = &as3722;
-+		rtc1 = &tegra_rtc;
- 		serial0 = &uarta;
- 	};
- 
---- a/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-@@ -573,7 +573,7 @@
- 		status = "disabled";
- 	};
- 
--	rtc@7000e000 {
-+	tegra_rtc: rtc@7000e000 {
- 		compatible = "nvidia,tegra124-rtc", "nvidia,tegra20-rtc";
- 		reg = <0x0 0x7000e000 0x0 0x100>;
- 		interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
+-	port_hex="$(printf "%04X" "${port}")"
++	pattern=":$(printf "%04X" "${port}") "
++
++	# for tcp protocol additionally check the socket state
++	[ ${protocol} = "tcp" ] && pattern="${pattern}0A"
+ 	for i in $(seq 10); do
+-		if ip netns exec "${listener_ns}" cat /proc/net/"${protocol}"* | \
+-		   grep -q "${port_hex}"; then
++		if ip netns exec "${listener_ns}" awk '{print $2" "$4}' \
++		   /proc/net/"${protocol}"* | grep -q "${pattern}"; then
+ 			break
+ 		fi
+ 		sleep 0.1
 
 
 
