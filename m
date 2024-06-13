@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-50667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725E2906BCC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BCAD906DC9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:04:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F41CCB22A92
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8DE4B24BDA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900EB14387B;
-	Thu, 13 Jun 2024 11:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CCC146A6F;
+	Thu, 13 Jun 2024 11:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tb4593au"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwRD67PK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DECD142911;
-	Thu, 13 Jun 2024 11:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149D4143C4B;
+	Thu, 13 Jun 2024 11:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279035; cv=none; b=U3EBWOS9xAishnvzkwuPCSp0ru1reYqiP9qL6w4h/mZPUfgj0m/qocPXqf1CnDKIJer2e3f2cnLsBo4Gr78w2mY8gW3UqH/N/H04gk0J02nnH779ai7/HWfMMXp/3cXgvE3mJF0kAs6WFdjo1JXUQPj0FKLIPKg331jueykvyAU=
+	t=1718279962; cv=none; b=rZOFFdgX0BW/Pn0ZFwKdETsGjFGfGvuBoT1JF0POMITZTdJkx/+i37VlTxQdliTGwFarOgi3ekSJehTehCrhpA7yoBN3wziAzGKWlkd6HBHGZnT9UcTDCaWk8GEKZD8vTp+6Z4bmJrrlAwxp/rrPXvzM3rkWm9hymqxKl9kuBQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279035; c=relaxed/simple;
-	bh=F5RXjM0HKQulfGFQRliiG/20FdCDxlGQ1cRlg+bAIFU=;
+	s=arc-20240116; t=1718279962; c=relaxed/simple;
+	bh=TaXGWHWZVSgLd97LcznUVzqOIbJjswMcz589wjfBjkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XAhfpiTGA4akDfw44koijdMilDnN82GeLrkZoOWo/JfkqDAcfZql7479CPIp/oHliNQfV1czo2m4kfsG6RUdbw20wZSjDYP9q0pdUNW3//5KmEYqeC0ydehHYsTFX0V0hX05ZDxxc1hhzoyl+FB3eiQ+lC9sdbIAH64TCKiOBPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tb4593au; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC662C2BBFC;
-	Thu, 13 Jun 2024 11:43:54 +0000 (UTC)
+	 MIME-Version; b=IMT9GW5eBWkwkR/4gKpniYMHYNfngeumRWuBkta8xxK9CWkoJ//w3hDG4chQCOufU6MWTpBT9z/eJIJXjlPCUKMW8HpeetDlHzFWVdRWS9hBIDpEJDFzAULa/CT31kc3MS3bY0uiUCy5Ri3VA6vM0JsnDqCi+jy4D/QTAiYub4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwRD67PK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E19AC4AF1A;
+	Thu, 13 Jun 2024 11:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279035;
-	bh=F5RXjM0HKQulfGFQRliiG/20FdCDxlGQ1cRlg+bAIFU=;
+	s=korg; t=1718279962;
+	bh=TaXGWHWZVSgLd97LcznUVzqOIbJjswMcz589wjfBjkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tb4593auZG4b5cM0waPxfbmJVl+QdCGxphgxUOwqSdMqAtquOcY2oZcHu0pa56sfE
-	 Uv67h386KCWNggKAc4PsHknC5qgFf9GPVEf298YLxMpoPWsFIFRgFdUwg1dhNKcWT7
-	 ef4wtaaeTeCnuWKGgnm5cft+XYuFyK53oJGxfsKk=
+	b=JwRD67PKs9TEiJZHJkd7WO5W08XVMRXySVHmxzybs8qaDvDcvkmxO1HGgRIGXV1b4
+	 oVLIT2GcewvUVNaq7lHU3UMwbZXKGKjQEE10v5DtlpXMnebIC3WlzeESntreJzc4Ux
+	 MiM3eg10u7chiPHfhwxFD5wBXWWtKfNV+Abvw3XI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 4.19 146/213] binder: fix max_thread type inconsistency
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jin Yao <yao.jin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 096/202] perf annotate: Get rid of duplicate --group option item
 Date: Thu, 13 Jun 2024 13:33:14 +0200
-Message-ID: <20240613113233.623090951@linuxfoundation.org>
+Message-ID: <20240613113231.474436149@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +67,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit 42316941335644a98335f209daafa4c122f28983 upstream.
+[ Upstream commit 374af9f1f06b5e991c810d2e4983d6f58df32136 ]
 
-The type defined for the BINDER_SET_MAX_THREADS ioctl was changed from
-size_t to __u32 in order to avoid incompatibility issues between 32 and
-64-bit kernels. However, the internal types used to copy from user and
-store the value were never updated. Use u32 to fix the inconsistency.
+The options array in cmd_annotate() has duplicate --group options.  It
+only needs one and let's get rid of the other.
 
-Fixes: a9350fc859ae ("staging: android: binder: fix BINDER_SET_MAX_THREADS declaration")
-Reported-by: Arve Hjønnevåg <arve@android.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20240421173750.3117808-1-cmllamas@google.com
-[cmllamas: resolve minor conflicts due to missing commit 421518a2740f]
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  $ perf annotate -h 2>&1 | grep group
+        --group           Show event group information together
+        --group           Show event group information together
+
+Fixes: 7ebaf4890f63eb90 ("perf annotate: Support '--group' option")
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240322224313.423181-1-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/builtin-annotate.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -540,7 +540,7 @@ struct binder_proc {
- 	struct list_head todo;
- 	struct binder_stats stats;
- 	struct list_head delivered_death;
--	int max_threads;
-+	u32 max_threads;
- 	int requested_threads;
- 	int requested_threads_started;
- 	int tmp_ref;
-@@ -4658,7 +4658,7 @@ static long binder_ioctl(struct file *fi
- 			goto err;
- 		break;
- 	case BINDER_SET_MAX_THREADS: {
--		int max_threads;
-+		u32 max_threads;
- 
- 		if (copy_from_user(&max_threads, ubuf,
- 				   sizeof(max_threads))) {
+diff --git a/tools/perf/builtin-annotate.c b/tools/perf/builtin-annotate.c
+index a6fea0be3a5d6..31ddb128b2841 100644
+--- a/tools/perf/builtin-annotate.c
++++ b/tools/perf/builtin-annotate.c
+@@ -541,8 +541,6 @@ int cmd_annotate(int argc, const char **argv)
+ 		    "Enable symbol demangling"),
+ 	OPT_BOOLEAN(0, "demangle-kernel", &symbol_conf.demangle_kernel,
+ 		    "Enable kernel symbol demangling"),
+-	OPT_BOOLEAN(0, "group", &symbol_conf.event_group,
+-		    "Show event group information together"),
+ 	OPT_BOOLEAN(0, "show-total-period", &symbol_conf.show_total_period,
+ 		    "Show a column with the sum of periods"),
+ 	OPT_BOOLEAN('n', "show-nr-samples", &symbol_conf.show_nr_samples,
+-- 
+2.43.0
+
 
 
 
