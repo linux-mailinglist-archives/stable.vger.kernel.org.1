@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-50624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDBBD906B99
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E3B906C7D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 865671F22F20
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BE361F21279
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BB21448FA;
-	Thu, 13 Jun 2024 11:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFAAC145A19;
+	Thu, 13 Jun 2024 11:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnreuoVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="goJpBW1U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19011448DC;
-	Thu, 13 Jun 2024 11:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5DE1448DC;
+	Thu, 13 Jun 2024 11:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278911; cv=none; b=LwFXDIkrXClEF7tXUSorzt9nbOnmCb9RA2B/gYBNoDbJJ5ugu7bQGvHcIcVWjsscBF1tiV4F9cIUfWrePj8tWZe6gSpxg6jMtjRt88GWILzCsz2oAUDWCZjHYH3hZ7PX/EJONZl0V0QRdldI17v1wIuKdoWw/V8P14IPmLY0GNo=
+	t=1718279310; cv=none; b=HJCaMi9FnRD6dWqvv4vxRM3CtoA/HDjtc1vUrhWniqH+3ekt6f4E6AedxDgJdT8RC/clb9sBOb6DbKkMfpj4bneypCdJnB5noGVaMNSpr7E/cpypfSrw88zr8x7RBMYuB2z8vDL1sAtrDPqLgTiLcwxsHOW+zbz0Rijd0d5OLEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278911; c=relaxed/simple;
-	bh=hxxNKKHSibE1Ix1wHKljbN2vstLQjhZhuhqs5jDNHls=;
+	s=arc-20240116; t=1718279310; c=relaxed/simple;
+	bh=CkUH9wZW0gK7yexNJKA44NHguSee+evmv2QmaztJs78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nh1/AhFhYVDNAumaZHHyYAnNrOkLZEdSqR2o0vc8LeAg9MbwsoCT+DZBzLc68h9qXRZpZ9pKpubcoGVK+F2SFeZlqS1DxGtUwY1dsJZ/Ud01JmeRI0Vc6++6zD29yaJj7PS+c/YN+ABG4P9Whg/DsWHVTJlDUU+XIbI+/LVLJZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnreuoVD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EACC32786;
-	Thu, 13 Jun 2024 11:41:51 +0000 (UTC)
+	 MIME-Version; b=CxQgwsoBIcRJi72rkO4HfLKA1Zxry3FTJ3cymfqBpXQNrHB+EF9DKy1y3ZbcshoJF1T6TTei4VTI088cdPBhN+Kr4QbnAogALEATLAG9SzaEzEB4HoywzIKqmKh6ZPUd0PVscXjCswKk7PKbtFnWMTTWTZN9bEHQhYigRQD4syY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=goJpBW1U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285A4C2BBFC;
+	Thu, 13 Jun 2024 11:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278911;
-	bh=hxxNKKHSibE1Ix1wHKljbN2vstLQjhZhuhqs5jDNHls=;
+	s=korg; t=1718279310;
+	bh=CkUH9wZW0gK7yexNJKA44NHguSee+evmv2QmaztJs78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HnreuoVD8YuNYJLP7YeoKz4KsFLDYz+asICPHaZmF2HyBD6eWD9ZRofW4bByisTn7
-	 w3GbwdvpGScGvpVdU4Yhm+mZj9pzee2ngB/apJ1QUyF0s8h/gx1m92s8wMA9csqOrt
-	 dBKJCu5MJlXXLy3I2Y0Pnij26SdB30wZRXJf55Dc=
+	b=goJpBW1UwNa+71AP90fsFF+9Go+iTGiRtaquMqwR/HLqVD2zGsR97zb2XbInSCVmU
+	 9HhFta170SvtCn5XWkZ7gk39MUqUQYBtgn4XNoc63hccwgBMj0jAff6YaGooiMfO1E
+	 WNt07h/Fu6d37s0Hs/LSoNKXGlnewBvOsP/WHlYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fenglin Wu <quic_fenglinw@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 110/213] Input: pm8xxx-vibrator - correct VIB_MAX_LEVELS calculation
+	Max Krummenacher <max.krummenacher@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.9 033/157] arm64: dts: ti: verdin-am62: Set memory size to 2gb
 Date: Thu, 13 Jun 2024 13:32:38 +0200
-Message-ID: <20240613113232.244856922@linuxfoundation.org>
+Message-ID: <20240613113228.699005458@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fenglin Wu <quic_fenglinw@quicinc.com>
+From: Max Krummenacher <max.krummenacher@toradex.com>
 
-[ Upstream commit 48c0687a322d54ac7e7a685c0b6db78d78f593af ]
+commit f70a88829723c1b462ea0fec15fa75809a0d670b upstream.
 
-The output voltage is inclusive hence the max level calculation is
-off-by-one-step. Correct it.
+The maximum DDR RAM size stuffed on the Verdin AM62 is 2GB,
+correct the memory node accordingly.
 
-iWhile we are at it also add a define for the step size instead of
-using the magic value.
-
-Fixes: 11205bb63e5c ("Input: add support for pm8xxx based vibrator driver")
-Signed-off-by: Fenglin Wu <quic_fenglinw@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240412-pm8xxx-vibrator-new-design-v10-1-0ec0ad133866@quicinc.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 316b80246b16 ("arm64: dts: ti: add verdin am62")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://lore.kernel.org/r/20240320142937.2028707-1-max.oss.09@gmail.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/pm8xxx-vibrator.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/misc/pm8xxx-vibrator.c b/drivers/input/misc/pm8xxx-vibrator.c
-index 27b3db154a33f..97bf7d94e8c6e 100644
---- a/drivers/input/misc/pm8xxx-vibrator.c
-+++ b/drivers/input/misc/pm8xxx-vibrator.c
-@@ -22,7 +22,8 @@
+--- a/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
+@@ -76,7 +76,7 @@
  
- #define VIB_MAX_LEVEL_mV	(3100)
- #define VIB_MIN_LEVEL_mV	(1200)
--#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV)
-+#define VIB_PER_STEP_mV		(100)
-+#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV + VIB_PER_STEP_mV)
+ 	memory@80000000 {
+ 		device_type = "memory";
+-		reg = <0x00000000 0x80000000 0x00000000 0x40000000>; /* 1G RAM */
++		reg = <0x00000000 0x80000000 0x00000000 0x80000000>; /* 2G RAM */
+ 	};
  
- #define MAX_FF_SPEED		0xff
- 
-@@ -126,10 +127,10 @@ static void pm8xxx_work_handler(struct work_struct *work)
- 		vib->active = true;
- 		vib->level = ((VIB_MAX_LEVELS * vib->speed) / MAX_FF_SPEED) +
- 						VIB_MIN_LEVEL_mV;
--		vib->level /= 100;
-+		vib->level /= VIB_PER_STEP_mV;
- 	} else {
- 		vib->active = false;
--		vib->level = VIB_MIN_LEVEL_mV / 100;
-+		vib->level = VIB_MIN_LEVEL_mV / VIB_PER_STEP_mV;
- 	}
- 
- 	pm8xxx_vib_set(vib, vib->active);
--- 
-2.43.0
-
+ 	opp-table {
 
 
 
