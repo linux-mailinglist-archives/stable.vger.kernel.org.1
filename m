@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-51676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6AA90710E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C92B3906F47
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF7861C248ED
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:33:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9AC31C23C7A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1A417FD;
-	Thu, 13 Jun 2024 12:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C36E130A47;
+	Thu, 13 Jun 2024 12:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2tJrJVY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwGtmzUt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4AC1E501;
-	Thu, 13 Jun 2024 12:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8193209;
+	Thu, 13 Jun 2024 12:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281989; cv=none; b=RBpKFKdVXlZpOODkyW1cvHoom1cBc4GjkGUXR8uNOHqnV1XM2IAey0tJrSk3SY8LGTTSNHX2mHGbC+gbcc/oJpuxLnDNChNl1j5JH5QHvT1A8t/FbxQLbUcDWJeeFem0hqrh3TA3iWRwmuUp3s44Jy6h/nhMS2YHYtx/hCIAx+Y=
+	t=1718280930; cv=none; b=LH+OFETt1CwAD1LNrH3TN/n7gALOc0cXKG8k92qrsoSxxWYoMjZFzTCZESR1ccDZANeLnbC/2g6XiKH8u9jsKTJ9maBrIQHU4i7mqMVu04puJzfhZNoP7NZbonC/kKOmpjMBgRpcOK99MznfZX3FDZoc4IbnxM7n9R3M3IaswhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281989; c=relaxed/simple;
-	bh=yWGErCZqNuy4FX2oZ2BjHjP/ouzNmeGNuLO1txrRPTw=;
+	s=arc-20240116; t=1718280930; c=relaxed/simple;
+	bh=fseM3rD6KBk1ijmsQiJdmCRYYibPZKGyMK/6QYPcjy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iwOyESi3AeubeudAiNVCI0SO1OmXQ2qJNVvEtGPLVk/qpiwy1FYrCG/LgZLaYCMZZo/WmlYYiDoose1QY7RqEQiLw32DXQDBulvenYHx2bO3BjdWY68s4CHD0PptnBzxa9bh8OzXinyXTAzuGhiEWpL/GkxGrKoe4fEiHIZYuQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2tJrJVY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62972C2BBFC;
-	Thu, 13 Jun 2024 12:33:08 +0000 (UTC)
+	 MIME-Version; b=FpBceaaRSK5ir24j7CHcQgE8XnFtGvSn3C71V780jJwJ+q7+MLF14MWUT1yJ0X39rd8jn3kkBBBnLNfycZ8dPtBGwdJ/85tePdUgmwbHqcThvodFc4tasaO97BBn4+JZlr2EzjTzoTpgV6INmFTWV8djAuuqzyi8CNGuuXpo8Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwGtmzUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CD3C2BBFC;
+	Thu, 13 Jun 2024 12:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281988;
-	bh=yWGErCZqNuy4FX2oZ2BjHjP/ouzNmeGNuLO1txrRPTw=;
+	s=korg; t=1718280930;
+	bh=fseM3rD6KBk1ijmsQiJdmCRYYibPZKGyMK/6QYPcjy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B2tJrJVYmgMt4Gf6z5cZ0LaSc/m1Aakly+j69WlHQoeXSZ/bVS9+SCV7oo8Ls/b9P
-	 s2eCYEjzl90ECsXFj//ZHmZhrddhUAdALWndzcJUuyLOjdRQt/QhkaqT+d9ylPOZmk
-	 CRvsxYnlXy5dGw8WrtgWnXMXfnSZoeNJDr2eMk/o=
+	b=KwGtmzUtpXPVdl3ZfBaTy+R17Zb4ecJ8X2GJAy8eBwEaY6vMNvB1CpQ8a2n8wzR0e
+	 sSr0arnO6Y8T2KrpulcrVxbTIPBDpnqJoKgtnsrmsJ7KsUwCtCnJxmPnE+FJhQnGcK
+	 zro2JnBqDK0+cC7BQ8Vmv1AIBuBRyO//NiAV9sEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aapo Vienamo <aapo.vienamo@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 125/402] mtd: core: Report error if first mtd_otp_size() call fails in mtd_otp_nvmem_add()
-Date: Thu, 13 Jun 2024 13:31:22 +0200
-Message-ID: <20240613113307.017807297@linuxfoundation.org>
+Subject: [PATCH 5.10 065/317] net: give more chances to rcu in netdev_wait_allrefs_any()
+Date: Thu, 13 Jun 2024 13:31:23 +0200
+Message-ID: <20240613113250.064618196@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aapo Vienamo <aapo.vienamo@linux.intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d44f0bbbd8d182debcce88bda55b05269f3d33d6 ]
+[ Upstream commit cd42ba1c8ac9deb9032add6adf491110e7442040 ]
 
-Jump to the error reporting code in mtd_otp_nvmem_add() if the
-mtd_otp_size() call fails. Without this fix, the error is not logged.
+This came while reviewing commit c4e86b4363ac ("net: add two more
+call_rcu_hurry()").
 
-Signed-off-by: Aapo Vienamo <aapo.vienamo@linux.intel.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Michael Walle <mwalle@kernel.org>
-Fixes: 4b361cfa8624 ("mtd: core: add OTP nvmem provider support")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240313173425.1325790-2-aapo.vienamo@linux.intel.com
+Paolo asked if adding one synchronize_rcu() would help.
+
+While synchronize_rcu() does not help, making sure to call
+rcu_barrier() before msleep(wait) is definitely helping
+to make sure lazy call_rcu() are completed.
+
+Instead of waiting ~100 seconds in my tests, the ref_tracker
+splats occurs one time only, and netdev_wait_allrefs_any()
+latency is reduced to the strict minimum.
+
+Ideally we should audit our call_rcu() users to make sure
+no refcount (or cascading call_rcu()) is held too long,
+because rcu_barrier() is quite expensive.
+
+Fixes: 0e4be9e57e8c ("net: use exponential backoff in netdev_wait_allrefs")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/all/28bbf698-befb-42f6-b561-851c67f464aa@kernel.org/T/#m76d73ed6b03cd930778ac4d20a777f22a08d6824
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/mtdcore.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/core/dev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
-index 2a228ee32641c..16077e5a2df1c 100644
---- a/drivers/mtd/mtdcore.c
-+++ b/drivers/mtd/mtdcore.c
-@@ -886,8 +886,10 @@ static int mtd_otp_nvmem_add(struct mtd_info *mtd)
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 0e2c433bebcd4..5e91496fd3a36 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -10217,8 +10217,9 @@ static void netdev_wait_allrefs(struct net_device *dev)
+ 			rebroadcast_time = jiffies;
+ 		}
  
- 	if (mtd->_get_user_prot_info && mtd->_read_user_prot_reg) {
- 		size = mtd_otp_size(mtd, true);
--		if (size < 0)
--			return size;
-+		if (size < 0) {
-+			err = size;
-+			goto err;
-+		}
- 
- 		if (size > 0) {
- 			nvmem = mtd_otp_nvmem_register(mtd, "user-otp", size,
++		rcu_barrier();
++
+ 		if (!wait) {
+-			rcu_barrier();
+ 			wait = WAIT_REFS_MIN_MSECS;
+ 		} else {
+ 			msleep(wait);
 -- 
 2.43.0
 
