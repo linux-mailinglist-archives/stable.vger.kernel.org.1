@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-51477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E8590701B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A79907218
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 396621F2308F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A911B27079
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D759145B19;
-	Thu, 13 Jun 2024 12:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404F71428F5;
+	Thu, 13 Jun 2024 12:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLjeeZUU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cse8p3ji"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6DB1459FA;
-	Thu, 13 Jun 2024 12:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BEA1E519;
+	Thu, 13 Jun 2024 12:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281413; cv=none; b=L37zdsErWc6xuifQB2HCgWz1BZsDcz+oXT2D/A64Imuh33G2b3rdI8CLQ4WM1B14ONWyzJv/EnwljZKwRK/U+q9kn3cf6mVYpj2e6EiRVfwiU/32u8dZW0ywiDFYUDxNA1FgypStKDOiBJLhdmx1mpgT/8zMMhD8Pak4ojma+yo=
+	t=1718282569; cv=none; b=ltS8ibQQeesb1doit+yCYGMNVkq7fn3/E7yzn2y8bL3er32b1xVsSz0uB3ynZz4qpu9DF6t9wVVu+6quAlJPzjmeGyOkel8dRvA2M2LEVbMKIukyNH/82tcQX8co3q0EoTBbNSdT9fsRaY+ijF97qyDV3UUZqBuoG2Ew0jDfQ34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281413; c=relaxed/simple;
-	bh=xU2+X5SfxSfFtr+bnGiLJI3jubL/N5S675ulumPm4qY=;
+	s=arc-20240116; t=1718282569; c=relaxed/simple;
+	bh=P2qcha44o+iyv+kaBynde0LW7gEV0Sbs5sEVxoXQTXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uijrUDtoSJ+6UFYG96+ATj9Pf0UEeW+6yVAwXCn83nLtv1zwwoHvHGLUfqb/8Ph8QfN2MTb13ipWZbyp8plIsc62MtQ9hAFap+ooOM4D/ahbuZ2YhXnp/+BOvA1N/MyzwKkMa60CtXUBsYqNRztV/uQ4vWl+pOKGN+dYEd7Z95g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLjeeZUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8156C2BBFC;
-	Thu, 13 Jun 2024 12:23:32 +0000 (UTC)
+	 MIME-Version; b=R/ng52B+SD0Jh5Xa2L5eCU3gQzG4mqZ8bS29XYnogDooSZelRbsvGuzjjqOlfDoRQR3EhLCf9O7CitnDQJx/dg/GanuA/rRKxl8ZqG9BXGVibyhBG5JXXGbDDdNdurWt3amWvO57NyZOwPtF8n+rC0oJ8R0yeDyddh3jLBH39XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cse8p3ji; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABAFC2BBFC;
+	Thu, 13 Jun 2024 12:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281413;
-	bh=xU2+X5SfxSfFtr+bnGiLJI3jubL/N5S675ulumPm4qY=;
+	s=korg; t=1718282568;
+	bh=P2qcha44o+iyv+kaBynde0LW7gEV0Sbs5sEVxoXQTXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLjeeZUUlf+p8Z6k7HLk7MEOm9ONi6XI2vkiWyLtZLJ8pqldH3yGdVN762kTcaBkY
-	 0bmybd4RuuyUb3CNX50uGnjOZUmZxANvlDMtQaieryIbQrAR2/o7QlgKkfxvB8OKwf
-	 P1dIkaaENKiRiQqmYdhBJg+CXknf1mtNtSfhgcyc=
+	b=cse8p3jiKTSPxjIRuTs5xGAQxbt07fUdnemWqpgZrS/mMskcQv15Hn2HcNaeZ144/
+	 wXZkORCiCp35fQ9iCbs+Moxz6lrIfjRDIrj1cFRT5Py8UNfNVaoeykd493bC4y6DMq
+	 aU/faVw+JEHSLZb6qf9URySaaYH5v9xrwpm3rdP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sagi Grimberg <sagi.grimberg@vastdata.com>,
+	Dan Aloni <dan.aloni@vastdata.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 229/317] ASoC: tas2552: Add TX path for capturing AUDIO-OUT data
+Subject: [PATCH 5.15 290/402] rpcrdma: fix handling for RDMA_CM_EVENT_DEVICE_REMOVAL
 Date: Thu, 13 Jun 2024 13:34:07 +0200
-Message-ID: <20240613113256.410155469@linuxfoundation.org>
+Message-ID: <20240613113313.463445024@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Dan Aloni <dan.aloni@vastdata.com>
 
-[ Upstream commit 7078ac4fd179a68d0bab448004fcd357e7a45f8d ]
+[ Upstream commit 4836da219781ec510c4c0303df901aa643507a7a ]
 
-TAS2552 is a Smartamp with I/V sense data, add TX path
-to support capturing I/V data.
+Under the scenario of IB device bonding, when bringing down one of the
+ports, or all ports, we saw xprtrdma entering a non-recoverable state
+where it is not even possible to complete the disconnect and shut it
+down the mount, requiring a reboot. Following debug, we saw that
+transport connect never ended after receiving the
+RDMA_CM_EVENT_DEVICE_REMOVAL callback.
 
-Fixes: 38803ce7b53b ("ASoC: codecs: tas*: merge .digital_mute() into .mute_stream()")
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Link: https://msgid.link/r/20240518033515.866-1-shenghao-ding@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The DEVICE_REMOVAL callback is irrespective of whether the CM_ID is
+connected, and ESTABLISHED may not have happened. So need to work with
+each of these states accordingly.
+
+Fixes: 2acc5cae2923 ('xprtrdma: Prevent dereferencing r_xprt->rx_ep after it is freed')
+Cc: Sagi Grimberg <sagi.grimberg@vastdata.com>
+Signed-off-by: Dan Aloni <dan.aloni@vastdata.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2552.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ net/sunrpc/xprtrdma/verbs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/tas2552.c b/sound/soc/codecs/tas2552.c
-index bd00c35116cd5..f045876c12f17 100644
---- a/sound/soc/codecs/tas2552.c
-+++ b/sound/soc/codecs/tas2552.c
-@@ -2,7 +2,8 @@
- /*
-  * tas2552.c - ALSA SoC Texas Instruments TAS2552 Mono Audio Amplifier
-  *
-- * Copyright (C) 2014 Texas Instruments Incorporated -  https://www.ti.com
-+ * Copyright (C) 2014 - 2024 Texas Instruments Incorporated -
-+ *	https://www.ti.com
-  *
-  * Author: Dan Murphy <dmurphy@ti.com>
-  */
-@@ -119,12 +120,14 @@ static const struct snd_soc_dapm_widget tas2552_dapm_widgets[] =
- 			 &tas2552_input_mux_control),
- 
- 	SND_SOC_DAPM_AIF_IN("DAC IN", "DAC Playback", 0, SND_SOC_NOPM, 0, 0),
-+	SND_SOC_DAPM_AIF_OUT("ASI OUT", "DAC Capture", 0, SND_SOC_NOPM, 0, 0),
- 	SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
- 	SND_SOC_DAPM_OUT_DRV("ClassD", TAS2552_CFG_2, 7, 0, NULL, 0),
- 	SND_SOC_DAPM_SUPPLY("PLL", TAS2552_CFG_2, 3, 0, NULL, 0),
- 	SND_SOC_DAPM_POST("Post Event", tas2552_post_event),
- 
--	SND_SOC_DAPM_OUTPUT("OUT")
-+	SND_SOC_DAPM_OUTPUT("OUT"),
-+	SND_SOC_DAPM_INPUT("DMIC")
- };
- 
- static const struct snd_soc_dapm_route tas2552_audio_map[] = {
-@@ -134,6 +137,7 @@ static const struct snd_soc_dapm_route tas2552_audio_map[] = {
- 	{"ClassD", NULL, "Input selection"},
- 	{"OUT", NULL, "ClassD"},
- 	{"ClassD", NULL, "PLL"},
-+	{"ASI OUT", NULL, "DMIC"}
- };
- 
- #ifdef CONFIG_PM
-@@ -538,6 +542,13 @@ static struct snd_soc_dai_driver tas2552_dai[] = {
- 			.rates = SNDRV_PCM_RATE_8000_192000,
- 			.formats = TAS2552_FORMATS,
- 		},
-+		.capture = {
-+			.stream_name = "Capture",
-+			.channels_min = 2,
-+			.channels_max = 2,
-+			.rates = SNDRV_PCM_RATE_8000_192000,
-+			.formats = TAS2552_FORMATS,
-+		},
- 		.ops = &tas2552_speaker_dai_ops,
- 	},
- };
+diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
+index 41095a278f798..34413d4ab0e52 100644
+--- a/net/sunrpc/xprtrdma/verbs.c
++++ b/net/sunrpc/xprtrdma/verbs.c
+@@ -258,7 +258,11 @@ rpcrdma_cm_event_handler(struct rdma_cm_id *id, struct rdma_cm_event *event)
+ 	case RDMA_CM_EVENT_DEVICE_REMOVAL:
+ 		pr_info("rpcrdma: removing device %s for %pISpc\n",
+ 			ep->re_id->device->name, sap);
+-		fallthrough;
++		switch (xchg(&ep->re_connect_status, -ENODEV)) {
++		case 0: goto wake_connect_worker;
++		case 1: goto disconnected;
++		}
++		return 0;
+ 	case RDMA_CM_EVENT_ADDR_CHANGE:
+ 		ep->re_connect_status = -ENODEV;
+ 		goto disconnected;
 -- 
 2.43.0
 
