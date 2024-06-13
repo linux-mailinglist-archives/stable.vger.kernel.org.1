@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-50979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5103B906DB7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:03:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBBD906B99
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6EC2286B16
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:03:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 865671F22F20
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859EA146A65;
-	Thu, 13 Jun 2024 11:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BB21448FA;
+	Thu, 13 Jun 2024 11:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuhdQJto"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnreuoVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44EC51465A5;
-	Thu, 13 Jun 2024 11:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19011448DC;
+	Thu, 13 Jun 2024 11:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279950; cv=none; b=YIHSjmAi92OiuD+tZM/Tl571te+ARdrR9f6/okdnAXHCW+qOntriSo0LByApVgPjG4hgIc5wrrzheGC8+k2ZwQRa2Go1NPTVmPte+cm90EEd2f2NhCDYAyhax2CJZ8YlpMHy8ttTguBcSn0T3CZu6AoleykTcFlcK3WgBdndP4M=
+	t=1718278911; cv=none; b=LwFXDIkrXClEF7tXUSorzt9nbOnmCb9RA2B/gYBNoDbJJ5ugu7bQGvHcIcVWjsscBF1tiV4F9cIUfWrePj8tWZe6gSpxg6jMtjRt88GWILzCsz2oAUDWCZjHYH3hZ7PX/EJONZl0V0QRdldI17v1wIuKdoWw/V8P14IPmLY0GNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279950; c=relaxed/simple;
-	bh=FVI5Wn8ZvtmMrTB/qECVPMqdDxsgT8+DPOFsDjJuOF4=;
+	s=arc-20240116; t=1718278911; c=relaxed/simple;
+	bh=hxxNKKHSibE1Ix1wHKljbN2vstLQjhZhuhqs5jDNHls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n2QFMVje8ww5JUfuQJKDbKE4cM8/dZwj5YKacIHdGZK6QOZisD4nfTzc7r7Eqv2WxGVptvLxj0bymenCBO3JI89rmCojMTteoIZKMeQzQq6BJqjujnuZZFFtugNvHAAs3GgDs8AfzcFuhU/75lx3Oqi0H7fikyszZaO5SnJC928=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuhdQJto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0245C4AF1C;
-	Thu, 13 Jun 2024 11:59:09 +0000 (UTC)
+	 MIME-Version; b=nh1/AhFhYVDNAumaZHHyYAnNrOkLZEdSqR2o0vc8LeAg9MbwsoCT+DZBzLc68h9qXRZpZ9pKpubcoGVK+F2SFeZlqS1DxGtUwY1dsJZ/Ud01JmeRI0Vc6++6zD29yaJj7PS+c/YN+ABG4P9Whg/DsWHVTJlDUU+XIbI+/LVLJZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnreuoVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EACC32786;
+	Thu, 13 Jun 2024 11:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279950;
-	bh=FVI5Wn8ZvtmMrTB/qECVPMqdDxsgT8+DPOFsDjJuOF4=;
+	s=korg; t=1718278911;
+	bh=hxxNKKHSibE1Ix1wHKljbN2vstLQjhZhuhqs5jDNHls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XuhdQJto+AVd+h7i7a9iOJ7WjHtnY866wmO9baZICW5UAoPUjdJo8Q1xR2gGmhzpY
-	 3UHFmnzcWRbWKvOaFmZ6WKWH9w/mZ0VQpJZ95TuUCNmWUo1TP9JF3ilGjqCb3ySQ1c
-	 3plp70LTPXGNtLL+qM7lhqRLqOcYQcrI1SUY/jJ0=
+	b=HnreuoVD8YuNYJLP7YeoKz4KsFLDYz+asICPHaZmF2HyBD6eWD9ZRofW4bByisTn7
+	 w3GbwdvpGScGvpVdU4Yhm+mZj9pzee2ngB/apJ1QUyF0s8h/gx1m92s8wMA9csqOrt
+	 dBKJCu5MJlXXLy3I2Y0Pnij26SdB30wZRXJf55Dc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Stan Johnson <userm57@yahoo.com>
-Subject: [PATCH 5.4 060/202] m68k: mac: Fix reboot hang on Mac IIci
+	Fenglin Wu <quic_fenglinw@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 110/213] Input: pm8xxx-vibrator - correct VIB_MAX_LEVELS calculation
 Date: Thu, 13 Jun 2024 13:32:38 +0200
-Message-ID: <20240613113230.093248570@linuxfoundation.org>
+Message-ID: <20240613113232.244856922@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Fenglin Wu <quic_fenglinw@quicinc.com>
 
-[ Upstream commit 265a3b322df9a973ff1fc63da70af456ab6ae1d6 ]
+[ Upstream commit 48c0687a322d54ac7e7a685c0b6db78d78f593af ]
 
-Calling mac_reset() on a Mac IIci does reset the system, but what
-follows is a POST failure that requires a manual reset to resolve.
-Avoid that by using the 68030 asm implementation instead of the C
-implementation.
+The output voltage is inclusive hence the max level calculation is
+off-by-one-step. Correct it.
 
-Apparently the SE/30 has a similar problem as it has used the asm
-implementation since before git. This patch extends that solution to
-other systems with a similar ROM.
+iWhile we are at it also add a define for the step size instead of
+using the magic value.
 
-After this patch, the only systems still using the C implementation are
-68040 systems where adb_type is either MAC_ADB_IOP or MAC_ADB_II. This
-implies a 1 MiB Quadra ROM.
-
-This now includes the Quadra 900/950, which previously fell through to
-the "should never get here" catch-all.
-
-Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/480ebd1249d229c6dc1f3f1c6d599b8505483fd8.1714797072.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: 11205bb63e5c ("Input: add support for pm8xxx based vibrator driver")
+Signed-off-by: Fenglin Wu <quic_fenglinw@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240412-pm8xxx-vibrator-new-design-v10-1-0ec0ad133866@quicinc.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/mac/misc.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/input/misc/pm8xxx-vibrator.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/m68k/mac/misc.c b/arch/m68k/mac/misc.c
-index 90f4e9ca1276b..d3b34dd7590de 100644
---- a/arch/m68k/mac/misc.c
-+++ b/arch/m68k/mac/misc.c
-@@ -452,30 +452,18 @@ void mac_poweroff(void)
+diff --git a/drivers/input/misc/pm8xxx-vibrator.c b/drivers/input/misc/pm8xxx-vibrator.c
+index 27b3db154a33f..97bf7d94e8c6e 100644
+--- a/drivers/input/misc/pm8xxx-vibrator.c
++++ b/drivers/input/misc/pm8xxx-vibrator.c
+@@ -22,7 +22,8 @@
  
- void mac_reset(void)
- {
--	if (macintosh_config->adb_type == MAC_ADB_II &&
--	    macintosh_config->ident != MAC_MODEL_SE30) {
--		/* need ROMBASE in booter */
--		/* indeed, plus need to MAP THE ROM !! */
--
--		if (mac_bi_data.rombase == 0)
--			mac_bi_data.rombase = 0x40800000;
--
--		/* works on some */
--		rom_reset = (void *) (mac_bi_data.rombase + 0xa);
--
--		local_irq_disable();
--		rom_reset();
- #ifdef CONFIG_ADB_CUDA
--	} else if (macintosh_config->adb_type == MAC_ADB_EGRET ||
--	           macintosh_config->adb_type == MAC_ADB_CUDA) {
-+	if (macintosh_config->adb_type == MAC_ADB_EGRET ||
-+	    macintosh_config->adb_type == MAC_ADB_CUDA) {
- 		cuda_restart();
-+	} else
- #endif
- #ifdef CONFIG_ADB_PMU
--	} else if (macintosh_config->adb_type == MAC_ADB_PB2) {
-+	if (macintosh_config->adb_type == MAC_ADB_PB2) {
- 		pmu_restart();
-+	} else
- #endif
--	} else if (CPU_IS_030) {
--
-+	if (CPU_IS_030) {
- 		/* 030-specific reset routine.  The idea is general, but the
- 		 * specific registers to reset are '030-specific.  Until I
- 		 * have a non-030 machine, I can't test anything else.
-@@ -523,6 +511,18 @@ void mac_reset(void)
- 		    "jmp %/a0@\n\t" /* jump to the reset vector */
- 		    ".chip 68k"
- 		    : : "r" (offset), "a" (rombase) : "a0");
-+	} else {
-+		/* need ROMBASE in booter */
-+		/* indeed, plus need to MAP THE ROM !! */
-+
-+		if (mac_bi_data.rombase == 0)
-+			mac_bi_data.rombase = 0x40800000;
-+
-+		/* works on some */
-+		rom_reset = (void *)(mac_bi_data.rombase + 0xa);
-+
-+		local_irq_disable();
-+		rom_reset();
+ #define VIB_MAX_LEVEL_mV	(3100)
+ #define VIB_MIN_LEVEL_mV	(1200)
+-#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV)
++#define VIB_PER_STEP_mV		(100)
++#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV + VIB_PER_STEP_mV)
+ 
+ #define MAX_FF_SPEED		0xff
+ 
+@@ -126,10 +127,10 @@ static void pm8xxx_work_handler(struct work_struct *work)
+ 		vib->active = true;
+ 		vib->level = ((VIB_MAX_LEVELS * vib->speed) / MAX_FF_SPEED) +
+ 						VIB_MIN_LEVEL_mV;
+-		vib->level /= 100;
++		vib->level /= VIB_PER_STEP_mV;
+ 	} else {
+ 		vib->active = false;
+-		vib->level = VIB_MIN_LEVEL_mV / 100;
++		vib->level = VIB_MIN_LEVEL_mV / VIB_PER_STEP_mV;
  	}
  
- 	/* should never get here */
+ 	pm8xxx_vib_set(vib, vib->active);
 -- 
 2.43.0
 
