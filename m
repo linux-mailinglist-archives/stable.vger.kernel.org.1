@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-50622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD408906B96
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D2E906D6E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68FE028180B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A071B26E39
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9931448E7;
-	Thu, 13 Jun 2024 11:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03C41487C9;
+	Thu, 13 Jun 2024 11:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1CcG+nq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQxoggW2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4711428FC;
-	Thu, 13 Jun 2024 11:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8691913D512;
+	Thu, 13 Jun 2024 11:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278906; cv=none; b=RTiHaiehirBKUf68dEZABPMjCNEpDjlp6ItSPl86HM0xsnDo2ygWGM5IvIyZPThZQpcSKwJs3MXNISXEEnUA3jkDS6PaFq9c7W9MrNVrNyb+RBjvvKaf2sfyt0ucf9++jWl3QFYomgMs8tp2y8rJ4K6xLEkN6Vz1u/YsUb9OmZI=
+	t=1718279773; cv=none; b=ibPhg7wJOYv7mG5GNlqPko+FLiJXlJWyA4fHGvsPW6iTAQmGcWgC6g1QtE4Trq7GyLSzVJz+P+p4B+wehcW6lf+3SdaFgfFftrssPKSTDYcBp8vEXIZ2zIK4JRLRSlADy0VpEfYzLzC/otYCoPxZZaseUFCkIqKoZKAVwwbiS98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278906; c=relaxed/simple;
-	bh=7PFxlhf68JTllTgzKnUOtckywEDh+CIQcXVlpn7RaJU=;
+	s=arc-20240116; t=1718279773; c=relaxed/simple;
+	bh=2hMJgH4yMqkh3temcOcZaYgwlungMbIScgNi8OYk5Mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TZiWX/K5Sc/ocU4ETwIXu/K4pWI/esU9BZyCzko7G7yNGurXTotoHzzkNSPvF/udAELAyuZycQDuZSQdvx+r340lrHi02TPO6dMWwXWrGxvggcLqcRoTl+4jhC4UOf2FoCl8Q2K539cGyrjq+RHBwhbLmCvo9PLZ+qfnSKDbxRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1CcG+nq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E404C32786;
-	Thu, 13 Jun 2024 11:41:45 +0000 (UTC)
+	 MIME-Version; b=YDwWQk3iKEhITl9U83O5OSyITAjOXxmo7AXqdLWlZA8wEm8vIiS3GWJkShRUC+C8Mi7yjbRbXaMU6GNfaxkDl5A22QjkYV9EuMWjVaWJ7h2u6VEjUAEdji7ANOBK+dfDm24caYNinn5tOjLvw6+aXAtVkEmTPEYExrYLz/pSTIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQxoggW2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060FBC2BBFC;
+	Thu, 13 Jun 2024 11:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278905;
-	bh=7PFxlhf68JTllTgzKnUOtckywEDh+CIQcXVlpn7RaJU=;
+	s=korg; t=1718279773;
+	bh=2hMJgH4yMqkh3temcOcZaYgwlungMbIScgNi8OYk5Mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X1CcG+nqQvjIn5pq0otjQCD4pPqU9ZjranRtePf5kl0iL7ij9eGNJeXhnseDWu6uR
-	 mJ2DRsswgeNIt3lCkZWT/oE6aqp0nW9EU5rKexUKz947wzVh+4rWxfQXzkuFDLZU0c
-	 1YnwQ6sAKMQYzn5x5Yo+OgRLPkmwQxcS55yZ7OT4=
+	b=bQxoggW2uMslLSZ5sDTEUbGCzXt8gDHQJ66fCsaTyX6uohfb7moJjGi6qh7dwaa/i
+	 c2vdTWmmerwWi/9HGrG4Klk8iE+DGJES8Z3hc0h8JsfcRf2APIb2ZGdAiLMbAh0kc9
+	 Sw72UDnsrqk2Zd8eYO0ygbR1KLMBTMWQau4CJchY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 082/213] RDMA/IPoIB: Fix format truncation compilation errors
+Subject: [PATCH 5.4 032/202] scsi: ufs: core: Perform read back after disabling interrupts
 Date: Thu, 13 Jun 2024 13:32:10 +0200
-Message-ID: <20240613113231.173558235@linuxfoundation.org>
+Message-ID: <20240613113229.013791178@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +63,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit 49ca2b2ef3d003402584c68ae7b3055ba72e750a ]
+[ Upstream commit e4a628877119bd40164a651d20321247b6f94a8b ]
 
-Truncate the device name to store IPoIB VLAN name.
+Currently, interrupts are cleared and disabled prior to registering the
+interrupt. An mb() is used to complete the clear/disable writes before the
+interrupt is registered.
 
-[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 allmodconfig
-[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 W=1 drivers/infiniband/ulp/ipoib/
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c: In function ‘ipoib_vlan_add’:
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:52: error: ‘%04x’
-directive output may be truncated writing 4 bytes into a region of size
-between 0 and 15 [-Werror=format-truncation=]
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |                                                    ^~~~
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:48: note: directive
-argument in the range [0, 65535]
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |                                                ^~~~~~~~~
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:9: note: ‘snprintf’ output
-between 6 and 21 bytes into a destination of size 16
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  188 |                  ppriv->dev->name, pkey);
-      |                  ~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:244: drivers/infiniband/ulp/ipoib/ipoib_vlan.o] Error 1
-make[6]: *** Waiting for unfinished jobs....
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring these
+bits have taken effect on the device is to perform a read back to force it
+to make it all the way to the device. This is documented in device-io.rst
+and a talk by Will Deacon on this can be seen over here:
 
-Fixes: 9baa0b036410 ("IB/ipoib: Add rtnl_link_ops support")
-Link: https://lore.kernel.org/r/e9d3e1fef69df4c9beaf402cc3ac342bad680791.1715240029.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
+
+Let's do that to ensure these bits hit the device. Because the mb()'s
+purpose wasn't to add extra ordering (on top of the ordering guaranteed by
+writel()/readl()), it can safely be removed.
+
+Fixes: 199ef13cac7d ("scsi: ufs: avoid spurious UFS host controller interrupts")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-8-181252004586@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/ipoib/ipoib_vlan.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/scsi/ufs/ufshcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-index 341753fbda54d..fed44c01d65ed 100644
---- a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-+++ b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-@@ -179,8 +179,12 @@ int ipoib_vlan_add(struct net_device *pdev, unsigned short pkey)
+diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c
+index 363adf489079a..ea6148ee27835 100644
+--- a/drivers/scsi/ufs/ufshcd.c
++++ b/drivers/scsi/ufs/ufshcd.c
+@@ -8424,7 +8424,7 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
+ 	 * Make sure that UFS interrupts are disabled and any pending interrupt
+ 	 * status is cleared before registering UFS interrupt handler.
+ 	 */
+-	mb();
++	ufshcd_readl(hba, REG_INTERRUPT_ENABLE);
  
- 	ppriv = ipoib_priv(pdev);
- 
--	snprintf(intf_name, sizeof(intf_name), "%s.%04x",
--		 ppriv->dev->name, pkey);
-+	/* If you increase IFNAMSIZ, update snprintf below
-+	 * to allow longer names.
-+	 */
-+	BUILD_BUG_ON(IFNAMSIZ != 16);
-+	snprintf(intf_name, sizeof(intf_name), "%.10s.%04x", ppriv->dev->name,
-+		 pkey);
- 
- 	priv = ipoib_intf_alloc(ppriv->ca, ppriv->port, intf_name);
- 	if (!priv) {
+ 	/* IRQ registration */
+ 	err = devm_request_irq(dev, irq, ufshcd_intr, IRQF_SHARED, UFSHCD, hba);
 -- 
 2.43.0
 
