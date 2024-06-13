@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC45907293
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 612E590722B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36D181C21615
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89FC71C20F3E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA681448CD;
-	Thu, 13 Jun 2024 12:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DD41EEE0;
+	Thu, 13 Jun 2024 12:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0aWA4YD7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHvMoKkr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE05144317;
-	Thu, 13 Jun 2024 12:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AA020ED;
+	Thu, 13 Jun 2024 12:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282878; cv=none; b=Dkqzzk+WavESVHHPoocR7rbMBwlGOOngOnXTN05RgFrxmyd9bIK7FAagWKlEHZKMuvuEsNJEETyWBTeYqih0xeH6tSMX4677Zix7kVAIxpWJgz2X2T4JEGwkqXiVJNbEFRWRB0QAooCuqvMbTlZYFSTISvQ1LDbgkFt4IKMJNb4=
+	t=1718282672; cv=none; b=qfuvIBYG5dzMB2WOwvBksybyD3Gx3k5OF3i9gynJMKnbgvkEyLxKb0xiD1+WAWFAOUoeU/vpcOhbc/KB6k8/NrEZs05Vvlx6ZOigTs0ApInZri1+FLEJd3hRLM3fNXUkcbk/RmYoBCZIglBp3qhY9jJPupEAzSkT03GzogjuHnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282878; c=relaxed/simple;
-	bh=Gvq2R7aifBJsV9mZhzM8tSmja08iRFxYE7IAFb8lEF0=;
+	s=arc-20240116; t=1718282672; c=relaxed/simple;
+	bh=BPVJrwyw/yHIVGL76E4HqJHi63pZYrILmjPrjPfiMu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aw9s2sF8qLiGWtM/k4iy4ipmnAugwQnOIqhMNjnI8SbEKE/VxVBK5bHtJjB481gVg9XkSo+s5xx7ZO3e4Y227X3oQlrCTMsCOgQn7yDbk1kE6x0emCybo0cZLz6Inxy81GkEye990M0TBzmJ411KDaYH5sq3/Nh8AK2Bu5oC+R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0aWA4YD7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED943C4AF1A;
-	Thu, 13 Jun 2024 12:47:57 +0000 (UTC)
+	 MIME-Version; b=Xi2LAloBkKXZfR+I7mxFMtVG00P6pOdVZ8TgWmiWFUxo99sxmbA8kYUw5W+uBR1PD8YiPmSxbENazy6NFW7qMTcYAuHGbeXNeb5WqVizpJlRMmqINFjMF63NX6Hjb2RXtd7WrqjcSrDMS2Cmu5JHhNq1lGPsDo1IsQLvxMvt6Hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHvMoKkr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BC4C2BBFC;
+	Thu, 13 Jun 2024 12:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282878;
-	bh=Gvq2R7aifBJsV9mZhzM8tSmja08iRFxYE7IAFb8lEF0=;
+	s=korg; t=1718282672;
+	bh=BPVJrwyw/yHIVGL76E4HqJHi63pZYrILmjPrjPfiMu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0aWA4YD79AYyuoUGZ4/2bnvCIp/7AMj60r0s6L3icH5geQkpoGd/yHasF8S2ivDHr
-	 mAszelHf2Ow38dGuPO6Q8Knh2E+slloeWh3gDXjjH2XhtDDYx8LgR1vBAlzdmzUMjf
-	 9+IkY+x+DMeMflDIpd6t0P0O3oCfrLjLwOWCEXfk=
+	b=RHvMoKkrWZREKj/wpTSHYZV7QYMGWBfcwsmB5AM4s5F5QhWaLJ9/0b8k6zi29lw5b
+	 vxAxL6JSir9hkCORKkCxPNXIFxtMXkNu8zdqWfeo3ZszXtTNHgBM0lZWsA3744BNMy
+	 rEajLnOldp1wHovrvs+qRGcrzIl1hue+0w6pQ+T4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haorong Lu <ancientmodern4@gmail.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Conor Dooley <conor@kernel.org>
-Subject: [PATCH 6.1 08/85] riscv: signal: handle syscall restart before get_signal
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Simon Horman <simon.horman@corigine.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 349/402] net: dsa: sja1105: always enable the INCL_SRCPT option
 Date: Thu, 13 Jun 2024 13:35:06 +0200
-Message-ID: <20240613113214.460101693@linuxfoundation.org>
+Message-ID: <20240613113315.748575534@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,176 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haorong Lu <ancientmodern4@gmail.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit ce4f78f1b53d3327fbd32764aa333bf05fb68818 upstream.
+commit b4638af8885af93cd70351081da1909c59342440 upstream.
 
-In the current riscv implementation, blocking syscalls like read() may
-not correctly restart after being interrupted by ptrace. This problem
-arises when the syscall restart process in arch_do_signal_or_restart()
-is bypassed due to changes to the regs->cause register, such as an
-ebreak instruction.
+Link-local traffic on bridged SJA1105 ports is sometimes tagged by the
+hardware with source port information (when the port is under a VLAN
+aware bridge).
 
-Steps to reproduce:
-1. Interrupt the tracee process with PTRACE_SEIZE & PTRACE_INTERRUPT.
-2. Backup original registers and instruction at new_pc.
-3. Change pc to new_pc, and inject an instruction (like ebreak) to this
-   address.
-4. Resume with PTRACE_CONT and wait for the process to stop again after
-   executing ebreak.
-5. Restore original registers and instructions, and detach from the
-   tracee process.
-6. Now the read() syscall in tracee will return -1 with errno set to
-   ERESTARTSYS.
+The tag_8021q source port identification has become more loose
+("imprecise") and will report a plausible rather than exact bridge port,
+when under a bridge (be it VLAN-aware or VLAN-unaware). But link-local
+traffic always needs to know the precise source port.
 
-Specifically, during an interrupt, the regs->cause changes from
-EXC_SYSCALL to EXC_BREAKPOINT due to the injected ebreak, which is
-inaccessible via ptrace so we cannot restore it. This alteration breaks
-the syscall restart condition and ends the read() syscall with an
-ERESTARTSYS error. According to include/linux/errno.h, it should never
-be seen by user programs. X86 can avoid this issue as it checks the
-syscall condition using a register (orig_ax) exposed to user space.
-Arm64 handles syscall restart before calling get_signal, where it could
-be paused and inspected by ptrace/debugger.
+Modify the driver logic (and therefore: the tagging protocol itself) to
+always include the source port information with link-local packets,
+regardless of whether the port is standalone, under a VLAN-aware or
+VLAN-unaware bridge. This makes it possible for the tagging driver to
+give priority to that information over the tag_8021q VLAN header.
 
-This patch adjusts the riscv implementation to arm64 style, which also
-checks syscall using a kernel register (syscallno). It ensures the
-syscall restart process is not bypassed when changes to the cause
-register occur, providing more consistent behavior across various
-architectures.
+The big drawback with INCL_SRCPT is that it makes it impossible to
+distinguish between an original MAC DA of 01:80:C2:XX:YY:ZZ and
+01:80:C2:AA:BB:ZZ, because the tagger just patches MAC DA bytes 3 and 4
+with zeroes. Only if PTP RX timestamping is enabled, the switch will
+generate a META follow-up frame containing the RX timestamp and the
+original bytes 3 and 4 of the MAC DA. Those will be used to patch up the
+original packet. Nonetheless, in the absence of PTP RX timestamping, we
+have to live with this limitation, since it is more important to have
+the more precise source port information for link-local traffic.
 
-For a simplified reproduction program, feel free to visit:
-https://github.com/ancientmodern/riscv-ptrace-bug-demo.
-
-Signed-off-by: Haorong Lu <ancientmodern4@gmail.com>
-Link: https://lore.kernel.org/r/20230803224458.4156006-1-ancientmodern4@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Cc: Conor Dooley <conor@kernel.org>
+Fixes: d7f9787a763f ("net: dsa: tag_8021q: add support for imprecise RX based on the VBID")
+Fixes: 91495f21fcec ("net: dsa: tag_8021q: replace the SVL bridging with VLAN-unaware IVL bridging")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: c1ae02d87689 ("net: dsa: tag_sja1105: always prefer source port information from INCL_SRCPT")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/signal.c |   85 ++++++++++++++++++++++++---------------------
- 1 file changed, 46 insertions(+), 39 deletions(-)
+ drivers/net/dsa/sja1105/sja1105_main.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
---- a/arch/riscv/kernel/signal.c
-+++ b/arch/riscv/kernel/signal.c
-@@ -246,30 +246,6 @@ static void handle_signal(struct ksignal
- 	sigset_t *oldset = sigmask_to_save();
- 	int ret;
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -853,11 +853,11 @@ static int sja1105_init_general_params(s
+ 		.hostprio = 7,
+ 		.mac_fltres1 = SJA1105_LINKLOCAL_FILTER_A,
+ 		.mac_flt1    = SJA1105_LINKLOCAL_FILTER_A_MASK,
+-		.incl_srcpt1 = false,
++		.incl_srcpt1 = true,
+ 		.send_meta1  = false,
+ 		.mac_fltres0 = SJA1105_LINKLOCAL_FILTER_B,
+ 		.mac_flt0    = SJA1105_LINKLOCAL_FILTER_B_MASK,
+-		.incl_srcpt0 = false,
++		.incl_srcpt0 = true,
+ 		.send_meta0  = false,
+ 		/* Default to an invalid value */
+ 		.mirr_port = priv->ds->num_ports,
+@@ -2346,11 +2346,6 @@ int sja1105_vlan_filtering(struct dsa_sw
+ 	general_params->tpid = tpid;
+ 	/* EtherType used to identify outer tagged (S-tag) VLAN traffic */
+ 	general_params->tpid2 = tpid2;
+-	/* When VLAN filtering is on, we need to at least be able to
+-	 * decode management traffic through the "backup plan".
+-	 */
+-	general_params->incl_srcpt1 = enabled;
+-	general_params->incl_srcpt0 = enabled;
  
--	/* Are we from a system call? */
--	if (regs->cause == EXC_SYSCALL) {
--		/* Avoid additional syscall restarting via ret_from_exception */
--		regs->cause = -1UL;
--		/* If so, check system call restarting.. */
--		switch (regs->a0) {
--		case -ERESTART_RESTARTBLOCK:
--		case -ERESTARTNOHAND:
--			regs->a0 = -EINTR;
--			break;
--
--		case -ERESTARTSYS:
--			if (!(ksig->ka.sa.sa_flags & SA_RESTART)) {
--				regs->a0 = -EINTR;
--				break;
--			}
--			fallthrough;
--		case -ERESTARTNOINTR:
--                        regs->a0 = regs->orig_a0;
--			regs->epc -= 0x4;
--			break;
--		}
--	}
--
- 	rseq_signal_deliver(ksig, regs);
- 
- 	/* Set up the stack frame */
-@@ -283,36 +259,67 @@ static void handle_signal(struct ksignal
- 
- static void do_signal(struct pt_regs *regs)
- {
-+	unsigned long continue_addr = 0, restart_addr = 0;
-+	int retval = 0;
- 	struct ksignal ksig;
-+	bool syscall = (regs->cause == EXC_SYSCALL);
- 
--	if (get_signal(&ksig)) {
--		/* Actually deliver the signal */
--		handle_signal(&ksig, regs);
--		return;
--	}
-+	/* If we were from a system call, check for system call restarting */
-+	if (syscall) {
-+		continue_addr = regs->epc;
-+		restart_addr = continue_addr - 4;
-+		retval = regs->a0;
- 
--	/* Did we come from a system call? */
--	if (regs->cause == EXC_SYSCALL) {
- 		/* Avoid additional syscall restarting via ret_from_exception */
- 		regs->cause = -1UL;
- 
--		/* Restart the system call - no handlers present */
--		switch (regs->a0) {
-+		/*
-+		 * Prepare for system call restart. We do this here so that a
-+		 * debugger will see the already changed PC.
-+		 */
-+		switch (retval) {
- 		case -ERESTARTNOHAND:
- 		case -ERESTARTSYS:
- 		case -ERESTARTNOINTR:
--                        regs->a0 = regs->orig_a0;
--			regs->epc -= 0x4;
--			break;
- 		case -ERESTART_RESTARTBLOCK:
--                        regs->a0 = regs->orig_a0;
--			regs->a7 = __NR_restart_syscall;
--			regs->epc -= 0x4;
-+			regs->a0 = regs->orig_a0;
-+			regs->epc = restart_addr;
- 			break;
- 		}
- 	}
- 
- 	/*
-+	 * Get the signal to deliver. When running under ptrace, at this point
-+	 * the debugger may change all of our registers.
-+	 */
-+	if (get_signal(&ksig)) {
-+		/*
-+		 * Depending on the signal settings, we may need to revert the
-+		 * decision to restart the system call, but skip this if a
-+		 * debugger has chosen to restart at a different PC.
-+		 */
-+		if (regs->epc == restart_addr &&
-+		    (retval == -ERESTARTNOHAND ||
-+		     retval == -ERESTART_RESTARTBLOCK ||
-+		     (retval == -ERESTARTSYS &&
-+		      !(ksig.ka.sa.sa_flags & SA_RESTART)))) {
-+			regs->a0 = -EINTR;
-+			regs->epc = continue_addr;
-+		}
-+
-+		/* Actually deliver the signal */
-+		handle_signal(&ksig, regs);
-+		return;
-+	}
-+
-+	/*
-+	 * Handle restarting a different system call. As above, if a debugger
-+	 * has chosen to restart at a different PC, ignore the restart.
-+	 */
-+	if (syscall && regs->epc == restart_addr && retval == -ERESTART_RESTARTBLOCK)
-+		regs->a7 = __NR_restart_syscall;
-+
-+	/*
- 	 * If there is no signal to deliver, we just put the saved
- 	 * sigmask back.
- 	 */
+ 	/* VLAN filtering => independent VLAN learning.
+ 	 * No VLAN filtering (or best effort) => shared VLAN learning.
 
 
 
