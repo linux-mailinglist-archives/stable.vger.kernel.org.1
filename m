@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B206907263
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:47:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954769072D1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:51:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0ABB1F21C09
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:47:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CE05B22BB1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02AD4142658;
-	Thu, 13 Jun 2024 12:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E625F14374B;
+	Thu, 13 Jun 2024 12:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGmDOebh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0sm1egb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C2D17FD;
-	Thu, 13 Jun 2024 12:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABE5A59;
+	Thu, 13 Jun 2024 12:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282816; cv=none; b=nMJzx1YzGtWz4o+cfJs1nBiAZU9j2yi57tLHUGbceeni+C6NF6YkAGZ/BNpz0iWl0QR+aQKa3B5OlaHcqEzBNfu55gtZa55qSTi2d+oMFBhCqcD+ft1IL+RFejacJM/CkSr+aEEmQed+GDMgJ9JW57a0CRBvo8ckJiOmSZgQZsg=
+	t=1718282946; cv=none; b=ZMgEv6Ov1/cln/z3R4Ivp3BsTlMXyLhztE0rAlQ8GtGcf7XGgPam+IhshH19c41LxfFu42np7FQq0VdtFfVfZ8j7LtZRAWbsIysXIlcDm1V4y3ju9xlSm17J4z7u+hzJt0gnOY05HsLDfiZP30H+N6lmxVpumoW/eQGIB9jPsSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282816; c=relaxed/simple;
-	bh=mWYtvg7ZqcAKeaeJyG62IC77/yOcKunL+CQq8TL/4gk=;
+	s=arc-20240116; t=1718282946; c=relaxed/simple;
+	bh=fOFXYu2G1+AH77BwNUxaafM3I/Wo45xM8DHn0zxEteg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQgZ9hyizP3r8w6N12RBpIO3WZ4e3mvsqaaj/EDxt5CPa9ea6bImVvleDQK02/1ZqvnEQa/4P4Ho8fDI1Rfr8qFDXNyrpRS97lQj+F/iIJrw693YQ3GCMy4n6zjNY33GxpZNYziRhlhduDuEGiPrYkxWelX9Fa7la+o8QNGQnPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGmDOebh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C6BBC2BBFC;
-	Thu, 13 Jun 2024 12:46:56 +0000 (UTC)
+	 MIME-Version; b=Q+Xl+Y5q5SdipkBp/DNkCHJwOyIfQpbofq6j2BsZKUPyIz3O6VtNsh9lpODg0z5BRIncKJST7XU+f88uq0ob4Rpc3IvSWD5nqInEtvrMRJ8zkKQYK6ThHh37ryxD+/B4vCeG1vG702acmoQB3G8X8MRRknnjd6dRv3YdOc5CuKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0sm1egb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBEE2C2BBFC;
+	Thu, 13 Jun 2024 12:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282816;
-	bh=mWYtvg7ZqcAKeaeJyG62IC77/yOcKunL+CQq8TL/4gk=;
+	s=korg; t=1718282946;
+	bh=fOFXYu2G1+AH77BwNUxaafM3I/Wo45xM8DHn0zxEteg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EGmDOebh8kcqomQeQVGG1qaJ2c7eC60xDmFE2QCWKk+wVNn7kJaN9BQuq0AaPNPfi
-	 yNoL863u1Pg5vr5YvTe8mVGsu9xQ3yjIpIL9Yj6lYb9bG9mxP1GDPhZJFYpgyremiX
-	 Wl+DhB2kTv5Oo9aFB8RU6PxMNrvxtsqWt5jFRf3U=
+	b=b0sm1egbjrQeJKWb81d1fZxHW7Ev9xK9FE35y2mKpDwk8u8EBsEBT0m0J7Mb2M4Ye
+	 wWCa/D3gCfoq8hFsuDC1qeGhMLpBFrR1aWb9JTiSNOLKhKlvbtuXRcBjSwGMD6+H+N
+	 4zQevWa+JydtBMuHqYSOGCbaZBUTslRgFxaLQJlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 5.15 387/402] kdb: Use format-strings rather than \0 injection in kdb_read()
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Dominique Martinet <asmadeus@codewreck.org>
+Subject: [PATCH 6.1 46/85] 9p: add missing locking around taking dentry fid list
 Date: Thu, 13 Jun 2024 13:35:44 +0200
-Message-ID: <20240613113317.241078534@linuxfoundation.org>
+Message-ID: <20240613113215.920179558@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Dominique Martinet <asmadeus@codewreck.org>
 
-commit 09b35989421dfd5573f0b4683c7700a7483c71f9 upstream.
+commit c898afdc15645efb555acb6d85b484eb40a45409 upstream.
 
-Currently when kdb_read() needs to reposition the cursor it uses copy and
-paste code that works by injecting an '\0' at the cursor position before
-delivering a carriage-return and reprinting the line (which stops at the
-'\0').
+Fix a use-after-free on dentry's d_fsdata fid list when a thread
+looks up a fid through dentry while another thread unlinks it:
 
-Tidy up the code by hoisting the copy and paste code into an appropriately
-named function. Additionally let's replace the '\0' injection with a
-proper field width parameter so that the string will be abridged during
-formatting instead.
+UAF thread:
+refcount_t: addition on 0; use-after-free.
+ p9_fid_get linux/./include/net/9p/client.h:262
+ v9fs_fid_find+0x236/0x280 linux/fs/9p/fid.c:129
+ v9fs_fid_lookup_with_uid linux/fs/9p/fid.c:181
+ v9fs_fid_lookup+0xbf/0xc20 linux/fs/9p/fid.c:314
+ v9fs_vfs_getattr_dotl+0xf9/0x360 linux/fs/9p/vfs_inode_dotl.c:400
+ vfs_statx+0xdd/0x4d0 linux/fs/stat.c:248
 
-Cc: stable@vger.kernel.org # Not a bug fix but it is needed for later bug fixes
-Tested-by: Justin Stitt <justinstitt@google.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-2-f236dbe9828d@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Freed by:
+ p9_fid_destroy (inlined)
+ p9_client_clunk+0xb0/0xe0 linux/net/9p/client.c:1456
+ p9_fid_put linux/./include/net/9p/client.h:278
+ v9fs_dentry_release+0xb5/0x140 linux/fs/9p/vfs_dentry.c:55
+ v9fs_remove+0x38f/0x620 linux/fs/9p/vfs_inode.c:518
+ vfs_unlink+0x29a/0x810 linux/fs/namei.c:4335
+
+The problem is that d_fsdata was not accessed under d_lock, because
+d_release() normally is only called once the dentry is otherwise no
+longer accessible but since we also call it explicitly in v9fs_remove
+that lock is required:
+move the hlist out of the dentry under lock then unref its fids once
+they are no longer accessible.
+
+Fixes: 154372e67d40 ("fs/9p: fix create-unlink-getattr idiom")
+Cc: stable@vger.kernel.org
+Reported-by: Meysam Firouzi
+Reported-by: Amirmohammad Eftekhar
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Message-ID: <20240521122947.1080227-1-asmadeus@codewreck.org>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c |   55 ++++++++++++++++++++++++++++------------------
- 1 file changed, 34 insertions(+), 21 deletions(-)
+ fs/9p/vfs_dentry.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -172,6 +172,33 @@ char kdb_getchar(void)
- 	unreachable();
+--- a/fs/9p/vfs_dentry.c
++++ b/fs/9p/vfs_dentry.c
+@@ -50,12 +50,17 @@ static int v9fs_cached_dentry_delete(con
+ static void v9fs_dentry_release(struct dentry *dentry)
+ {
+ 	struct hlist_node *p, *n;
++	struct hlist_head head;
+ 
+ 	p9_debug(P9_DEBUG_VFS, " dentry: %pd (%p)\n",
+ 		 dentry, dentry);
+-	hlist_for_each_safe(p, n, (struct hlist_head *)&dentry->d_fsdata)
++
++	spin_lock(&dentry->d_lock);
++	hlist_move_list((struct hlist_head *)&dentry->d_fsdata, &head);
++	spin_unlock(&dentry->d_lock);
++
++	hlist_for_each_safe(p, n, &head)
+ 		p9_fid_put(hlist_entry(p, struct p9_fid, dlist));
+-	dentry->d_fsdata = NULL;
  }
  
-+/**
-+ * kdb_position_cursor() - Place cursor in the correct horizontal position
-+ * @prompt: Nil-terminated string containing the prompt string
-+ * @buffer: Nil-terminated string containing the entire command line
-+ * @cp: Cursor position, pointer the character in buffer where the cursor
-+ *      should be positioned.
-+ *
-+ * The cursor is positioned by sending a carriage-return and then printing
-+ * the content of the line until we reach the correct cursor position.
-+ *
-+ * There is some additional fine detail here.
-+ *
-+ * Firstly, even though kdb_printf() will correctly format zero-width fields
-+ * we want the second call to kdb_printf() to be conditional. That keeps things
-+ * a little cleaner when LOGGING=1.
-+ *
-+ * Secondly, we can't combine everything into one call to kdb_printf() since
-+ * that renders into a fixed length buffer and the combined print could result
-+ * in unwanted truncation.
-+ */
-+static void kdb_position_cursor(char *prompt, char *buffer, char *cp)
-+{
-+	kdb_printf("\r%s", kdb_prompt_str);
-+	if (cp > buffer)
-+		kdb_printf("%.*s", (int)(cp - buffer), buffer);
-+}
-+
- /*
-  * kdb_read
-  *
-@@ -200,7 +227,6 @@ static char *kdb_read(char *buffer, size
- 						 * and null byte */
- 	char *lastchar;
- 	char *p_tmp;
--	char tmp;
- 	static char tmpbuffer[CMD_BUFLEN];
- 	int len = strlen(buffer);
- 	int len_tmp;
-@@ -237,12 +263,8 @@ poll_again:
- 			}
- 			*(--lastchar) = '\0';
- 			--cp;
--			kdb_printf("\b%s \r", cp);
--			tmp = *cp;
--			*cp = '\0';
--			kdb_printf(kdb_prompt_str);
--			kdb_printf("%s", buffer);
--			*cp = tmp;
-+			kdb_printf("\b%s ", cp);
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 13: /* enter */
-@@ -259,19 +281,14 @@ poll_again:
- 			memcpy(tmpbuffer, cp+1, lastchar - cp - 1);
- 			memcpy(cp, tmpbuffer, lastchar - cp - 1);
- 			*(--lastchar) = '\0';
--			kdb_printf("%s \r", cp);
--			tmp = *cp;
--			*cp = '\0';
--			kdb_printf(kdb_prompt_str);
--			kdb_printf("%s", buffer);
--			*cp = tmp;
-+			kdb_printf("%s ", cp);
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 1: /* Home */
- 		if (cp > buffer) {
--			kdb_printf("\r");
--			kdb_printf(kdb_prompt_str);
- 			cp = buffer;
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 5: /* End */
-@@ -377,13 +394,9 @@ poll_again:
- 				memcpy(cp+1, tmpbuffer, lastchar - cp);
- 				*++lastchar = '\0';
- 				*cp = key;
--				kdb_printf("%s\r", cp);
-+				kdb_printf("%s", cp);
- 				++cp;
--				tmp = *cp;
--				*cp = '\0';
--				kdb_printf(kdb_prompt_str);
--				kdb_printf("%s", buffer);
--				*cp = tmp;
-+				kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 			} else {
- 				*++lastchar = '\0';
- 				*cp++ = key;
+ static int v9fs_lookup_revalidate(struct dentry *dentry, unsigned int flags)
 
 
 
