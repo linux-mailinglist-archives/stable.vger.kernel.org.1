@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E86906FA6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEB3907185
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D58B1C22186
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92AF71C244E1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F119E144D11;
-	Thu, 13 Jun 2024 12:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E015142623;
+	Thu, 13 Jun 2024 12:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeTdbrDN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/Hz6m16"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF4381ABF;
-	Thu, 13 Jun 2024 12:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD7114199C;
+	Thu, 13 Jun 2024 12:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281136; cv=none; b=QMLpPlo9iG0EAmiLN2Ik1OUPGG2JxHnH62drR7XMBAneOPkUKENMVq91+wJWdtw6rh/6jFcU+mrNxoNBsvNBovvQ6itdnbTCv9SP3jO1R1eMo4DQxU70BxoQ7lXm893taG0sSfJuLHbzQuI1WAxX/e8wNxtJEEI1HY6OxcsiFeA=
+	t=1718282253; cv=none; b=Dd8R73OB/pTg/XOe0AZqGH7S1mXsct6VKm07RE8VDxvEOnov+JNYwZFnwbi6Jll+6/qQMzXiZlS1KrJ5JDvLsBjuMolTzYaQ9bbYP4RzgE2VLki19iMKq0/v5XHexixYFr00uxuudBhSzKNP5z/IYgyYO27LngmZsfCv5ruS5U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281136; c=relaxed/simple;
-	bh=k6MPVErl4E93ZRaZf3JQIpaDVJsxMppbffGIiTfMKlA=;
+	s=arc-20240116; t=1718282253; c=relaxed/simple;
+	bh=yF1K98g1TDZmzfsBuVJTwFKjuqMAzLENt6P2tCNLz0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUDyhD+Cy3AslFMR7bFwUYzqqQpW5asm62jZblaWZQz2jXzpqlsS4kWBOBVqdowTC5G/02pNLJue7iGZOkG+aJn3K9980GWIFvshZKfmgCQ4S4HZCiZn64bhMO3zjs0s4c8ohs+rzBJ5T2nxpJFmbIGa4abvTCpG2oDzzya/vh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeTdbrDN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3463EC4AF1A;
-	Thu, 13 Jun 2024 12:18:56 +0000 (UTC)
+	 MIME-Version; b=WiH6FDw/eHle+cYucYEeNQZAJViyPSUDgg/HWZXwPUWc3Hrusfk/k36FkYfkXHEanqNpAQ3ly3ClRt27iQijkwe05JZeNYqSs3/NRxwzB8y/3x+jwsdrKcNMd13OrBmw4ih+4hHNl6CwtbABU549W1KxzMNIsUYgTskuZeixge8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/Hz6m16; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B90C2BBFC;
+	Thu, 13 Jun 2024 12:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281136;
-	bh=k6MPVErl4E93ZRaZf3JQIpaDVJsxMppbffGIiTfMKlA=;
+	s=korg; t=1718282252;
+	bh=yF1K98g1TDZmzfsBuVJTwFKjuqMAzLENt6P2tCNLz0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EeTdbrDNfACYk2LP/ofnz3UKnNPEbDPT+JBeeZ51IH1yPZhT+Wg7M+Gir2ivP8xpx
-	 YQ5GIuUpV6KMJ1b8qD55wmhHY+ylvOX7j1qWnRaSdn+mB9YPlUnRVpEiWAioFfETTn
-	 YmCwRBKAwi9b6o1/3pMfYWXj9K3fFzUw9WWxC21w=
+	b=n/Hz6m1659EXlSKnebkzorh39ftp5rRwBCI0K52ydeyU9mfIp6OH2vhbcE4uMJzf1
+	 mZGuN6VE5bcMqK5YfXKzwlUCUcqAVXGYyjVKFYo+piLGQF0LVcr1LK1W0bWbjyW5NV
+	 6kSWRhcSkp1tgdmjQJaoP1Rs2cTNIAh2NUVg92E4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <yuchao0@huawei.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 152/317] f2fs: compress: clean up parameter of __f2fs_cluster_blocks()
+Subject: [PATCH 5.15 213/402] microblaze: Remove early printk call from cpuinfo-static.c
 Date: Thu, 13 Jun 2024 13:32:50 +0200
-Message-ID: <20240613113253.445290198@linuxfoundation.org>
+Message-ID: <20240613113310.457941322@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <yuchao0@huawei.com>
+From: Michal Simek <michal.simek@amd.com>
 
-[ Upstream commit 91f0fb6903ed30370135381f10c02a10c7872cdc ]
+[ Upstream commit 58d647506c92ccd3cfa0c453c68ddd14f40bf06f ]
 
-Previously, in order to reuse __f2fs_cluster_blocks(),
-f2fs_is_compressed_cluster() assigned a compress_ctx type variable,
-which is used to pass few parameters (cc.inode, cc.cluster_size,
-cc.cluster_idx), it's wasteful to allocate such large space in stack.
+Early printk has been removed already that's why also remove calling it.
+Similar change has been done in cpuinfo-pvr-full.c by commit cfbd8d1979af
+("microblaze: Remove early printk setup").
 
-Let's clean up parameters of __f2fs_cluster_blocks() to avoid that.
-
-Signed-off-by: Chao Yu <yuchao0@huawei.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 7c5dffb3d90c ("f2fs: compress: fix to relocate check condition in f2fs_{release,reserve}_compress_blocks()")
+Fixes: 96f0e6fcc9ad ("microblaze: remove redundant early_printk support")
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/r/2f10db506be8188fa07b6ec331caca01af1b10f8.1712824039.git.michal.simek@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/compress.c | 33 +++++++++++++--------------------
- 1 file changed, 13 insertions(+), 20 deletions(-)
+ arch/microblaze/kernel/cpu/cpuinfo-static.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index 6c870b741cfe5..04b6de1a58744 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -866,14 +866,17 @@ static bool __cluster_may_compress(struct compress_ctx *cc)
- 	return true;
- }
+diff --git a/arch/microblaze/kernel/cpu/cpuinfo-static.c b/arch/microblaze/kernel/cpu/cpuinfo-static.c
+index 85dbda4a08a81..03da36dc6d9c9 100644
+--- a/arch/microblaze/kernel/cpu/cpuinfo-static.c
++++ b/arch/microblaze/kernel/cpu/cpuinfo-static.c
+@@ -18,7 +18,7 @@ static const char family_string[] = CONFIG_XILINX_MICROBLAZE0_FAMILY;
+ static const char cpu_ver_string[] = CONFIG_XILINX_MICROBLAZE0_HW_VER;
  
--static int __f2fs_cluster_blocks(struct compress_ctx *cc, bool compr)
-+static int __f2fs_cluster_blocks(struct inode *inode,
-+				unsigned int cluster_idx, bool compr)
+ #define err_printk(x) \
+-	early_printk("ERROR: Microblaze " x "-different for kernel and DTS\n");
++	pr_err("ERROR: Microblaze " x "-different for kernel and DTS\n");
+ 
+ void __init set_cpuinfo_static(struct cpuinfo *ci, struct device_node *cpu)
  {
- 	struct dnode_of_data dn;
-+	unsigned int cluster_size = F2FS_I(inode)->i_cluster_size;
-+	unsigned int start_idx = cluster_idx <<
-+				F2FS_I(inode)->i_log_cluster_size;
- 	int ret;
- 
--	set_new_dnode(&dn, cc->inode, NULL, NULL, 0);
--	ret = f2fs_get_dnode_of_data(&dn, start_idx_of_cluster(cc),
--							LOOKUP_NODE);
-+	set_new_dnode(&dn, inode, NULL, NULL, 0);
-+	ret = f2fs_get_dnode_of_data(&dn, start_idx, LOOKUP_NODE);
- 	if (ret) {
- 		if (ret == -ENOENT)
- 			ret = 0;
-@@ -884,7 +887,7 @@ static int __f2fs_cluster_blocks(struct compress_ctx *cc, bool compr)
- 		int i;
- 
- 		ret = 1;
--		for (i = 1; i < cc->cluster_size; i++) {
-+		for (i = 1; i < cluster_size; i++) {
- 			block_t blkaddr;
- 
- 			blkaddr = data_blkaddr(dn.inode,
-@@ -906,25 +909,15 @@ static int __f2fs_cluster_blocks(struct compress_ctx *cc, bool compr)
- /* return # of compressed blocks in compressed cluster */
- static int f2fs_compressed_blocks(struct compress_ctx *cc)
- {
--	return __f2fs_cluster_blocks(cc, true);
-+	return __f2fs_cluster_blocks(cc->inode, cc->cluster_idx, true);
- }
- 
- /* return # of valid blocks in compressed cluster */
--static int f2fs_cluster_blocks(struct compress_ctx *cc)
--{
--	return __f2fs_cluster_blocks(cc, false);
--}
--
- int f2fs_is_compressed_cluster(struct inode *inode, pgoff_t index)
- {
--	struct compress_ctx cc = {
--		.inode = inode,
--		.log_cluster_size = F2FS_I(inode)->i_log_cluster_size,
--		.cluster_size = F2FS_I(inode)->i_cluster_size,
--		.cluster_idx = index >> F2FS_I(inode)->i_log_cluster_size,
--	};
--
--	return f2fs_cluster_blocks(&cc);
-+	return __f2fs_cluster_blocks(inode,
-+		index >> F2FS_I(inode)->i_log_cluster_size,
-+		false);
- }
- 
- static bool cluster_may_compress(struct compress_ctx *cc)
-@@ -975,7 +968,7 @@ static int prepare_compress_overwrite(struct compress_ctx *cc,
- 	bool prealloc;
- 
- retry:
--	ret = f2fs_cluster_blocks(cc);
-+	ret = f2fs_is_compressed_cluster(cc->inode, start_idx);
- 	if (ret <= 0)
- 		return ret;
- 
 -- 
 2.43.0
 
