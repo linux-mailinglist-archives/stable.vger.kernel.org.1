@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-51597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42609070A6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:29:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 391AD9070DC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41F7B282EB1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:29:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9D57B20F65
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4936AFAE;
-	Thu, 13 Jun 2024 12:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A8923A0;
+	Thu, 13 Jun 2024 12:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wePALaoc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7iwWCvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E53344C6F;
-	Thu, 13 Jun 2024 12:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757C3161;
+	Thu, 13 Jun 2024 12:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281763; cv=none; b=j7zAcAKLQdPPtusMnfgXOOQsJ54UFaBhTgM2oEFk6K5KZCyB1ZY9gBnc9cQo0tpD9p2pJsqoU66liS8BF1Q1DIRSgf+s+7xcKG0CcozxnmcsAB874GSDKGWHtujS/lppmvsj3FYl2iQdbWO3otpHiJ3JBGmtwhWjRlf/CTky0Zo=
+	t=1718281883; cv=none; b=Xq8KpGc9/8U5CLZWUkvkSe5TAprGTTY+6k2WLz+N9u0mqQqv8VZS5rZSJScdk9VvLOpxnME+9Cu4BzmjTS9WBMfz9ckbd8naGSwX7QKwS+ndAn1H8xq8EcP+AmDqlfpiyqRbOa577xAZvP7X25HGi9jFYkyAXgv7T2a+/eViXeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281763; c=relaxed/simple;
-	bh=ahGgZqp/xqADDfsVrfapp+M+iTTYflmwtLR7UQhaP5E=;
+	s=arc-20240116; t=1718281883; c=relaxed/simple;
+	bh=jdDl5VCFvwqy7vEw12B4WI2SlWL8jUw30SPlDZAckK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqpAO5VK/40xUFZrcR6a5uZqR6Cl0JCIS2XtQXOjQnLRJU8OfiSnP5dy/u9HoeBAOpFSMaBp0F9+uyCdtjHClOeO4OVHW7wfXsd7Ivsd+Ce7oIZ9O692Vz4SUd+TMs4ehlL25KMwsq+4KiEQ5lzHYVid8cFaDAccdyb8iF0a/5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wePALaoc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86ED5C32786;
-	Thu, 13 Jun 2024 12:29:22 +0000 (UTC)
+	 MIME-Version; b=F1qf3ezYwOIPx8OmObgMKd/M0w72+361VKN392x2l8sO5xut0YxJgsQ0oyz1ORpIwM39V4w2co+jEtLQZFYapWLB+tTjQz9XvgmWd3j1lhxwGYfaV+10/40sDc1MRU8IykaKc22iRZmrlb+oorNy9ZrfqnpTflIqvKx4c0TvBoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7iwWCvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AD7C2BBFC;
+	Thu, 13 Jun 2024 12:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281762;
-	bh=ahGgZqp/xqADDfsVrfapp+M+iTTYflmwtLR7UQhaP5E=;
+	s=korg; t=1718281883;
+	bh=jdDl5VCFvwqy7vEw12B4WI2SlWL8jUw30SPlDZAckK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wePALaoci8xvzNq0PLuOuVBc1GuISW+/Bn68qBnfeo4f05tgAiRhpUjc6zD8RsbXH
-	 ZY6C8KdvcliKUtYsseIoxoEDzy36fV+Xff2XE5tm/MGNKrWELtVwfwdFgpZo9AtGOA
-	 whaMyprfo6YaPwzWxIFp2NPt4o00htLjOPjVF/iI=
+	b=G7iwWCvKJ1Xk8EQac6bkDhCA/nY3NUwbjim7SVcEDxtMw6k93eN+wDj6C1B72w7Hc
+	 ihPXInzG2Q/jB/2mkYgvkB0EOzt3EHVLKqp1XUApdZw3EJ4YW0/jZY4pNwBQi9y9mw
+	 H4J+kg7WPH6Di5d6sT2G4M1xqGgstVD0DwVokWOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 046/402] crypto: x86/sha512-avx2 - add missing vzeroupper
-Date: Thu, 13 Jun 2024 13:30:03 +0200
-Message-ID: <20240613113303.933602761@linuxfoundation.org>
+Subject: [PATCH 5.15 047/402] s390/cio: fix tracepoint subchannel type field
+Date: Thu, 13 Jun 2024 13:30:04 +0200
+Message-ID: <20240613113303.973557499@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
 References: <20240613113302.116811394@linuxfoundation.org>
@@ -67,35 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 6a24fdfe1edbafacdacd53516654d99068f20eec ]
+[ Upstream commit 8692a24d0fae19f674d51726d179ad04ba95d958 ]
 
-Since sha512_transform_rorx() uses ymm registers, execute vzeroupper
-before returning from it.  This is necessary to avoid reducing the
-performance of SSE code.
+The subchannel-type field "st" of s390_cio_stsch and s390_cio_msch
+tracepoints is incorrectly filled with the subchannel-enabled SCHIB
+value "ena". Fix this by assigning the correct value.
 
-Fixes: e01d69cb0195 ("crypto: sha512 - Optimized SHA512 x86_64 assembly routine using AVX instructions.")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Acked-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: d1de8633d96a ("s390 cio: Rewrite trace point class s390_class_schib")
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/sha512-avx2-asm.S | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/s390/cio/trace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/crypto/sha512-avx2-asm.S b/arch/x86/crypto/sha512-avx2-asm.S
-index 5cdaab7d69015..1c4e5d88e167e 100644
---- a/arch/x86/crypto/sha512-avx2-asm.S
-+++ b/arch/x86/crypto/sha512-avx2-asm.S
-@@ -679,6 +679,7 @@ done_hash:
- 	pop	%r12
- 	pop	%rbx
- 
-+	vzeroupper
- 	RET
- SYM_FUNC_END(sha512_transform_rorx)
- 
+diff --git a/drivers/s390/cio/trace.h b/drivers/s390/cio/trace.h
+index 86993de253451..a4c5c6736b310 100644
+--- a/drivers/s390/cio/trace.h
++++ b/drivers/s390/cio/trace.h
+@@ -50,7 +50,7 @@ DECLARE_EVENT_CLASS(s390_class_schib,
+ 		__entry->devno = schib->pmcw.dev;
+ 		__entry->schib = *schib;
+ 		__entry->pmcw_ena = schib->pmcw.ena;
+-		__entry->pmcw_st = schib->pmcw.ena;
++		__entry->pmcw_st = schib->pmcw.st;
+ 		__entry->pmcw_dnv = schib->pmcw.dnv;
+ 		__entry->pmcw_dev = schib->pmcw.dev;
+ 		__entry->pmcw_lpm = schib->pmcw.lpm;
 -- 
 2.43.0
 
