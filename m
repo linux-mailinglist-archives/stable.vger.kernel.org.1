@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-51473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1927E907018
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7429071F3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 164A71C23C18
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 828411F27FD9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44AD145B10;
-	Thu, 13 Jun 2024 12:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F821DFE1;
+	Thu, 13 Jun 2024 12:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0XzjF61"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GiZfPEts"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81ABB145A05;
-	Thu, 13 Jun 2024 12:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0378820ED;
+	Thu, 13 Jun 2024 12:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281401; cv=none; b=P71xKKdAXc5HH9K0AMMQ/78t87PQqIxoyOLzkVu5zLE3SsLXA4kNvX+vemNikgq7orNA3IZE6WGeNcru37FdT/zKQmebpNVhWzz4YBJWAW95EWczKXG+t1WhKcXEKeob10ZU79IcG/Bpc0zeT8sgW1jwdGFb17IY/etlc8RQ9dQ=
+	t=1718282519; cv=none; b=GwGrBCx53PcTrJ641ogOxYIDsdW1MB8UKsBlCX+i8+esL2Lyw/BSgeuKgY+h0tRdZLuzmveYLXqFh7NABuRQ1T3/ia9rty8fchcqLe1Rm3qpaz6Je3/9wgxqVzD/Fzq1NJd3Hdl0yJmUCaDL+0Sth0UYZ4BDXziIyMfJm6NwdYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281401; c=relaxed/simple;
-	bh=2vjBHCven7dE4bs/pY/nlqCOphCAhTqKrmWNAhVCfjo=;
+	s=arc-20240116; t=1718282519; c=relaxed/simple;
+	bh=rWmwuCP+at3XqIBdGvf31IY6jB1cs3WZGbLrYvRjweA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKmKqbRHcT7wzHoFf4Ucxz/usxlJiEYZNfBYWb3PzaQ+K7fgsByr9i/Fhp4a9qu6s6c5yCj2l5MetYgDOkXffchOBa/gz2QsdBInzwV81CeI/YcWtbLUGMnoMsW4k3JW6nri2B+dzT7lrFXRiuf2313RRM4cI0EVci+x4rS9cDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0XzjF61; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABADC2BBFC;
-	Thu, 13 Jun 2024 12:23:20 +0000 (UTC)
+	 MIME-Version; b=Otcy24u6Hmn7EbOWiGenC+88woz9dYpiwhx576tfkDuwc842/YzL0usHVmqRc1yTReAxIwG88pJJTk/5xnqniAgoa+zjkc3s2Hahs3kkP+TMZfFmP2Mf9wbaOsnbIelARSaqZ0cuVWbLylQvh/PCesj6hnpQV2LAnhA4QUJRwjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GiZfPEts; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8032AC2BBFC;
+	Thu, 13 Jun 2024 12:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281401;
-	bh=2vjBHCven7dE4bs/pY/nlqCOphCAhTqKrmWNAhVCfjo=;
+	s=korg; t=1718282518;
+	bh=rWmwuCP+at3XqIBdGvf31IY6jB1cs3WZGbLrYvRjweA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d0XzjF61YL/LK0xMhx7eZMLGjlMp2CKtyPQ4+eo/QBX3fmpXwkCq98uODuhuoVOqv
-	 fC01YxJOhS8KYPYbn5/e7w/SRMg1WJ9JEi/z5Tk3ef3w1YPMXZI2FQJ5q3ZBO/UgW0
-	 Tuk2kVZoK1pY7QvdwTIA0XGnJvTfDfOXUtodoim4=
+	b=GiZfPEtsMlOFb1ayBdnTtvlHpsCfGPaYrDL6My/kKoKwxcQ+b0U5xTw0eSxAXUQjP
+	 OL/POz57/3skPF3uRZSmgKBecwveN80QLnnRT/QV9mvCg5Ids1VY5Er4VSA4sD3iev
+	 fx19lOmp/ACJGOdXGFLR1TpeUg4kuccsIeKz3apA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+0438378d6f157baae1a2@syzkaller.appspotmail.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 243/317] nfc: nci: Fix kcov check in nci_rx_work()
+Subject: [PATCH 5.15 304/402] netfilter: nfnetlink_queue: acquire rcu_read_lock() in instance_destroy_rcu()
 Date: Thu, 13 Jun 2024 13:34:21 +0200
-Message-ID: <20240613113256.948156720@linuxfoundation.org>
+Message-ID: <20240613113314.000806540@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 19e35f24750ddf860c51e51c68cf07ea181b4881 ]
+[ Upstream commit dc21c6cc3d6986d938efbf95de62473982c98dec ]
 
-Commit 7e8cdc97148c ("nfc: Add KCOV annotations") added
-kcov_remote_start_common()/kcov_remote_stop() pair into nci_rx_work(),
-with an assumption that kcov_remote_stop() is called upon continue of
-the for loop. But commit d24b03535e5e ("nfc: nci: Fix uninit-value in
-nci_dev_up and nci_ntf_packet") forgot to call kcov_remote_stop() before
-break of the for loop.
+syzbot reported that nf_reinject() could be called without rcu_read_lock() :
 
-Reported-by: syzbot <syzbot+0438378d6f157baae1a2@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=0438378d6f157baae1a2
-Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
-Suggested-by: Andrey Konovalov <andreyknvl@gmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/6d10f829-5a0c-405a-b39a-d7266f3a1a0b@I-love.SAKURA.ne.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 6671e352497c ("nfc: nci: Fix handling of zero-length payload packets in nci_rx_work()")
+WARNING: suspicious RCU usage
+6.9.0-rc7-syzkaller-02060-g5c1672705a1a #0 Not tainted
+
+net/netfilter/nfnetlink_queue.c:263 suspicious rcu_dereference_check() usage!
+
+other info that might help us debug this:
+
+rcu_scheduler_active = 2, debug_locks = 1
+2 locks held by syz-executor.4/13427:
+  #0: ffffffff8e334f60 (rcu_callback){....}-{0:0}, at: rcu_lock_acquire include/linux/rcupdate.h:329 [inline]
+  #0: ffffffff8e334f60 (rcu_callback){....}-{0:0}, at: rcu_do_batch kernel/rcu/tree.c:2190 [inline]
+  #0: ffffffff8e334f60 (rcu_callback){....}-{0:0}, at: rcu_core+0xa86/0x1830 kernel/rcu/tree.c:2471
+  #1: ffff88801ca92958 (&inst->lock){+.-.}-{2:2}, at: spin_lock_bh include/linux/spinlock.h:356 [inline]
+  #1: ffff88801ca92958 (&inst->lock){+.-.}-{2:2}, at: nfqnl_flush net/netfilter/nfnetlink_queue.c:405 [inline]
+  #1: ffff88801ca92958 (&inst->lock){+.-.}-{2:2}, at: instance_destroy_rcu+0x30/0x220 net/netfilter/nfnetlink_queue.c:172
+
+stack backtrace:
+CPU: 0 PID: 13427 Comm: syz-executor.4 Not tainted 6.9.0-rc7-syzkaller-02060-g5c1672705a1a #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+Call Trace:
+ <IRQ>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+  lockdep_rcu_suspicious+0x221/0x340 kernel/locking/lockdep.c:6712
+  nf_reinject net/netfilter/nfnetlink_queue.c:323 [inline]
+  nfqnl_reinject+0x6ec/0x1120 net/netfilter/nfnetlink_queue.c:397
+  nfqnl_flush net/netfilter/nfnetlink_queue.c:410 [inline]
+  instance_destroy_rcu+0x1ae/0x220 net/netfilter/nfnetlink_queue.c:172
+  rcu_do_batch kernel/rcu/tree.c:2196 [inline]
+  rcu_core+0xafd/0x1830 kernel/rcu/tree.c:2471
+  handle_softirqs+0x2d6/0x990 kernel/softirq.c:554
+  __do_softirq kernel/softirq.c:588 [inline]
+  invoke_softirq kernel/softirq.c:428 [inline]
+  __irq_exit_rcu+0xf4/0x1c0 kernel/softirq.c:637
+  irq_exit_rcu+0x9/0x30 kernel/softirq.c:649
+  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1043 [inline]
+  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1043
+ </IRQ>
+ <TASK>
+
+Fixes: 9872bec773c2 ("[NETFILTER]: nfnetlink: use RCU for queue instances hash")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/nci/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nfnetlink_queue.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 7b3f3d6285004..ada7f32d03e48 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1517,6 +1517,7 @@ static void nci_rx_work(struct work_struct *work)
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index 8c96e01f6a023..89b16d36da9cf 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -167,7 +167,9 @@ instance_destroy_rcu(struct rcu_head *head)
+ 	struct nfqnl_instance *inst = container_of(head, struct nfqnl_instance,
+ 						   rcu);
  
- 		if (!nci_valid_size(skb)) {
- 			kfree_skb(skb);
-+			kcov_remote_stop();
- 			break;
- 		}
- 
++	rcu_read_lock();
+ 	nfqnl_flush(inst, NULL, 0);
++	rcu_read_unlock();
+ 	kfree(inst);
+ 	module_put(THIS_MODULE);
+ }
 -- 
 2.43.0
 
