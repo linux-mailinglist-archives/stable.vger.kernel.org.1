@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74CBB9071D2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:41:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C846906DF5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27CB6284644
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:41:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 143651F212C7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF6B143C67;
-	Thu, 13 Jun 2024 12:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A7A147C96;
+	Thu, 13 Jun 2024 12:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8wKjP/C"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/4a4LZM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6859143C51;
-	Thu, 13 Jun 2024 12:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7480D147C8B;
+	Thu, 13 Jun 2024 12:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282431; cv=none; b=GVFllKyNp77H+1pc+FhPmwQ2aA1EmhT69QTzR2LZDp+XRKeSPLfm4GIWhiV7ki1hclO9V3u1jZb3xKc3phGSgE4MwiimJrQxmMKt1xPNbWMA3Ue/n001jrgSCIzO97jg9RxbuElnvn0KaHVi0rnoq66cqVW1JZipF4DgF6wRFGs=
+	t=1718280071; cv=none; b=Ex2M56UFZkHF4kEbV3wqq/3PPBj8po4RhvzSJC9Yn0moBUCtMjEshV8pTlzgGvs5cuKTcVYYxJg2whZhDuFTMs5Jw2+te/iH9LHcK5bn8kLyQ892wkL8qOimPwnxEtVEhfyZL/Pgtczp1M1s/p7e/Zd7yv5iRhPmwqMKX2WbXCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282431; c=relaxed/simple;
-	bh=ytXrhc5G1LOOJncFJ7kLYHeWmXUmfxHwbzYwFKgbS+Y=;
+	s=arc-20240116; t=1718280071; c=relaxed/simple;
+	bh=Gk4W+LwGo1ju84k4dGjmZ1oise48bYYEDTAfOVyTPJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gzt7kumW9Hg72cZUQ+IjZv4/k5eambUSEs2Pcf3mZieO+m4GDhqU6L1s2hor5vzGiRdoE0bzYe8GcWdElNxfJcQYuGTJVqarGB5lHAcOzkXP6s/sxo9LP3QSOeoush5wBZIPQJ+ACZQoW3iFgzyu/LbePlnoYpEBSZASavuBFoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8wKjP/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477EFC32786;
-	Thu, 13 Jun 2024 12:40:30 +0000 (UTC)
+	 MIME-Version; b=ladJrJCLAOYAiKJEChShQqcW1VaoeckbwkcQS7M71fDjVGWiCLBZcmll01cE3HUiVAKMuDw+ckiaJE+1go8Bdp6Ra2njq9kJh3Y1gGtDHtGS9nCdw0K2FtDYcNOhdWK4HlT/pEc4HqDVotYXyTpOwhZ0y6bbDDQaOqNOyikvggA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/4a4LZM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D0EC2BBFC;
+	Thu, 13 Jun 2024 12:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282430;
-	bh=ytXrhc5G1LOOJncFJ7kLYHeWmXUmfxHwbzYwFKgbS+Y=;
+	s=korg; t=1718280071;
+	bh=Gk4W+LwGo1ju84k4dGjmZ1oise48bYYEDTAfOVyTPJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r8wKjP/CWmfj+kzII13BKUkrlfKJH3JB3pdqfeCpUlKm1YGSGTB0xx8l+pV43BKzn
-	 gKvMDVXmC7T5GHqsx91fWjSilJadlkZqnLGHoUG7PT5/wqEbkkhEGMoxXBwoVklm6Y
-	 4qndqLO9zSvxfCE3MGN84gD4RV9YAI7eR63pbIuI=
+	b=E/4a4LZM9tzh8PyQmJdquC1ewMHHKkeDKW2kXoNO3xuLRAXIZiHLyM+hMffncHIZA
+	 MpUdBeNCVXk60C107rxyew/yFsAnpBLKu/Y94eMM0BXXx3kA3fq7SR6Dwzj/Z7xfhY
+	 cZvAYr5+7Lnip/wvFhm0TRzHdr9H/+YzWiJwXra8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	"Yang, Chenyuan" <cy54@illinois.edu>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 274/402] media: cec: abort if the current transmit was canceled
+	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
+Subject: [PATCH 5.4 133/202] media: cec: cec-adap: always cancel work in cec_transmit_msg_fh
 Date: Thu, 13 Jun 2024 13:33:51 +0200
-Message-ID: <20240613113312.840202723@linuxfoundation.org>
+Message-ID: <20240613113232.894526485@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,127 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 590a8e564c6eff7e77a84e728612f1269e3c0685 ]
+[ Upstream commit 9fe2816816a3c765dff3b88af5b5c3d9bbb911ce ]
 
-If a transmit-in-progress was canceled, then, once the transmit
-is done, mark it as aborted and refrain from retrying the transmit.
-
-To signal this situation the new transmit_in_progress_aborted field is
-set to true.
-
-The old implementation would just set adap->transmitting to NULL and
-set adap->transmit_in_progress to false, but on the hardware level
-the transmit was still ongoing. However, the framework would think
-the transmit was aborted, and if a new transmit was issued, then
-it could overwrite the HW buffer containing the old transmit with the
-new transmit, leading to garbled data on the CEC bus.
+Do not check for !data->completed, just always call
+cancel_delayed_work_sync(). This fixes a small race condition.
 
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Yang, Chenyuan <cy54@illinois.edu>
+Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
+Fixes: 490d84f6d73c ("media: cec: forgot to cancel delayed work")
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Stable-dep-of: 47c82aac10a6 ("media: cec: core: avoid recursive cec_claim_log_addrs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/core/cec-adap.c | 14 +++++++++++---
- include/media/cec.h               |  6 ++++++
- 2 files changed, 17 insertions(+), 3 deletions(-)
+ drivers/media/cec/cec-adap.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
-index 730f169c93ba3..a0a19f37ef5ba 100644
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -421,7 +421,7 @@ static void cec_flush(struct cec_adapter *adap)
- 		cec_data_cancel(data, CEC_TX_STATUS_ABORTED);
- 	}
- 	if (adap->transmitting)
--		cec_data_cancel(adap->transmitting, CEC_TX_STATUS_ABORTED);
-+		adap->transmit_in_progress_aborted = true;
- 
- 	/* Cancel the pending timeout work. */
- 	list_for_each_entry_safe(data, n, &adap->wait_queue, list) {
-@@ -572,6 +572,7 @@ int cec_thread_func(void *_adap)
- 		if (data->attempts == 0)
- 			data->attempts = attempts;
- 
-+		adap->transmit_in_progress_aborted = false;
- 		/* Tell the adapter to transmit, cancel on error */
- 		if (adap->ops->adap_transmit(adap, data->attempts,
- 					     signal_free_time, &data->msg))
-@@ -599,6 +600,8 @@ void cec_transmit_done_ts(struct cec_adapter *adap, u8 status,
- 	struct cec_msg *msg;
- 	unsigned int attempts_made = arb_lost_cnt + nack_cnt +
- 				     low_drive_cnt + error_cnt;
-+	bool done = status & (CEC_TX_STATUS_MAX_RETRIES | CEC_TX_STATUS_OK);
-+	bool aborted = adap->transmit_in_progress_aborted;
- 
- 	dprintk(2, "%s: status 0x%02x\n", __func__, status);
- 	if (attempts_made < 1)
-@@ -619,6 +622,7 @@ void cec_transmit_done_ts(struct cec_adapter *adap, u8 status,
- 		goto wake_thread;
- 	}
- 	adap->transmit_in_progress = false;
-+	adap->transmit_in_progress_aborted = false;
- 
- 	msg = &data->msg;
- 
-@@ -639,8 +643,7 @@ void cec_transmit_done_ts(struct cec_adapter *adap, u8 status,
- 	 * the hardware didn't signal that it retried itself (by setting
- 	 * CEC_TX_STATUS_MAX_RETRIES), then we will retry ourselves.
+diff --git a/drivers/media/cec/cec-adap.c b/drivers/media/cec/cec-adap.c
+index 4c1770b8128cb..94ddaca496c94 100644
+--- a/drivers/media/cec/cec-adap.c
++++ b/drivers/media/cec/cec-adap.c
+@@ -908,8 +908,7 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
  	 */
--	if (data->attempts > attempts_made &&
--	    !(status & (CEC_TX_STATUS_MAX_RETRIES | CEC_TX_STATUS_OK))) {
-+	if (!aborted && data->attempts > attempts_made && !done) {
- 		/* Retry this message */
- 		data->attempts -= attempts_made;
- 		if (msg->timeout)
-@@ -655,6 +658,8 @@ void cec_transmit_done_ts(struct cec_adapter *adap, u8 status,
- 		goto wake_thread;
- 	}
+ 	mutex_unlock(&adap->lock);
+ 	wait_for_completion_killable(&data->c);
+-	if (!data->completed)
+-		cancel_delayed_work_sync(&data->work);
++	cancel_delayed_work_sync(&data->work);
+ 	mutex_lock(&adap->lock);
  
-+	if (aborted && !done)
-+		status |= CEC_TX_STATUS_ABORTED;
- 	data->attempts = 0;
- 
- 	/* Always set CEC_TX_STATUS_MAX_RETRIES on error */
-@@ -1576,6 +1581,9 @@ static void cec_activate_cnt_dec(struct cec_adapter *adap)
- 	WARN_ON(adap->ops->adap_enable(adap, false));
- 	adap->last_initiator = 0xff;
- 	adap->transmit_in_progress = false;
-+	adap->transmit_in_progress_aborted = false;
-+	if (adap->transmitting)
-+		cec_data_cancel(adap->transmitting, CEC_TX_STATUS_ABORTED);
- 	mutex_unlock(&adap->devnode.lock);
- }
- 
-diff --git a/include/media/cec.h b/include/media/cec.h
-index 97c5f5bfcbd00..31d704f367074 100644
---- a/include/media/cec.h
-+++ b/include/media/cec.h
-@@ -163,6 +163,11 @@ struct cec_adap_ops {
-  * @wait_queue:		queue of transmits waiting for a reply
-  * @transmitting:	CEC messages currently being transmitted
-  * @transmit_in_progress: true if a transmit is in progress
-+ * @transmit_in_progress_aborted: true if a transmit is in progress is to be
-+ *			aborted. This happens if the logical address is
-+ *			invalidated while the transmit is ongoing. In that
-+ *			case the transmit will finish, but will not retransmit
-+ *			and be marked as ABORTED.
-  * @kthread_config:	kthread used to configure a CEC adapter
-  * @config_completion:	used to signal completion of the config kthread
-  * @kthread:		main CEC processing thread
-@@ -218,6 +223,7 @@ struct cec_adapter {
- 	struct list_head wait_queue;
- 	struct cec_data *transmitting;
- 	bool transmit_in_progress;
-+	bool transmit_in_progress_aborted;
- 
- 	struct task_struct *kthread_config;
- 	struct completion config_completion;
+ 	/* Cancel the transmit if it was interrupted */
 -- 
 2.43.0
 
