@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-51008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ABD6906DE6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED15D906FDE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36894284B20
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9F58B2A0FB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B220146A7D;
-	Thu, 13 Jun 2024 12:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F10914601C;
+	Thu, 13 Jun 2024 12:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cW9G6J4V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCFw3juV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C7B1465BC;
-	Thu, 13 Jun 2024 12:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19F9145FEE;
+	Thu, 13 Jun 2024 12:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280036; cv=none; b=LBO6Ub3HcgilBKXvRXoeLNj3Bz8syQV8j/szSrTgmiZ0wBL/OAGylYpUhARbLezCWhkA7qIIlaB6zVVqJXT3PPOPo3+DBqF0Htgb5VISsS6oe4etoR8sKzx8yg090f//uRyRQUb2OOmPrEXDFM68u3pKflli9pRPxgspQRE8sa8=
+	t=1718281278; cv=none; b=IfMnePqGFt+PqENU4qLMDu7wiwFvpXzIRcUiHOGpqiiKOTx6yLRQj2TgBoCZGJ867tAB1wcmjD4fNP5Cz/WHOKQFpYJl8RqJ2O0hchlsCFN6tJ/23exET8oHvXEXGvBkGwebN44/tVuWSB+e2+dR1zZ6AQ3VwylAvpBmEyWqadE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280036; c=relaxed/simple;
-	bh=y322Da/Bq3Y5aElH9AUOBGGv5yYLZzRTeUQK14voAOE=;
+	s=arc-20240116; t=1718281278; c=relaxed/simple;
+	bh=FdjcBlJaFYeV/5qFhm1KETp7TB2apg/TuhfPPOsLxC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Er4xp7ynMoAKGrr0KQtT7DpNbtZkCCCm/peyCX3sKTvxfOzcMqXOyB1RsaVj8zqnX1BIQJxjD6o/EWec9d140R4rsk5LraCfggu4oOV2CD4U9gDUM0WeuP/fq1wYbv9CLgamfGMf8F+Gkh0oD3sGHc9NLkYLkNjYhbppEyt3G80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cW9G6J4V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B14C2BBFC;
-	Thu, 13 Jun 2024 12:00:35 +0000 (UTC)
+	 MIME-Version; b=N10JkSBoGld7lkT2uS1d/pUII0xrdFf+3DAmMpW9+0n9nkqmQPoLo/7l0BSWrtuF2YX669HCTrOoCcCYu3NLIT+qBthxhnfFWrGz+AMgJ2iwwW8gFJKPiebxhAp++uaS9pJQiMv3Z3214rS3mjs85l8ndjBwaOmY+NZ1O4AP+Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCFw3juV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BCB3C2BBFC;
+	Thu, 13 Jun 2024 12:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280035;
-	bh=y322Da/Bq3Y5aElH9AUOBGGv5yYLZzRTeUQK14voAOE=;
+	s=korg; t=1718281277;
+	bh=FdjcBlJaFYeV/5qFhm1KETp7TB2apg/TuhfPPOsLxC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cW9G6J4VQtMfnt2XK6m4CD9RBQhiqv1AmCEzR1gbYHoudU1z7zPMvFUrOOvfMsEUZ
-	 uyFZfXftyOFCUlgx0qheQwerOq0FoFLkBXYyL+Ag0hrGZEZ825KsQ+/DcLOB7rEHTm
-	 j8Q+j0LLZtMycMjSH7pFU1f6np0CtqJS/GS6aa8U=
+	b=jCFw3juV7gDX5FtLWuLgoeq+zHUO/W8hreddyghIvlWClAY/e7hbsBmp2PiZnSm80
+	 nkgg6+2vNUmIsUlmW6+Ew6izN6WZGEc7/p5yDrszgAuyZbi8cnH8ckMMRQqQqMJKAV
+	 maMIZ+4uf+X/6+XGNS2b+OffA/8z/wxZK/jU1Ng8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neil Horman <nhorman@tuxdriver.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 090/202] af_packet: do not call packet_read_pending() from tpacket_destruct_skb()
-Date: Thu, 13 Jun 2024 13:33:08 +0200
-Message-ID: <20240613113231.243155951@linuxfoundation.org>
+Subject: [PATCH 5.10 171/317] ovl: remove upper umask handling from ovl_create_upper()
+Date: Thu, 13 Jun 2024 13:33:09 +0200
+Message-ID: <20240613113254.175627603@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 581073f626e387d3e7eed55c48c8495584ead7ba ]
+[ Upstream commit 096802748ea1dea8b476938e0a8dc16f4bd2f1ad ]
 
-trafgen performance considerably sank on hosts with many cores
-after the blamed commit.
+This is already done by vfs_prepare_mode() when creating the upper object
+by vfs_create(), vfs_mkdir() and vfs_mknod().
 
-packet_read_pending() is very expensive, and calling it
-in af_packet fast path defeats Daniel intent in commit
-b013840810c2 ("packet: use percpu mmap tx frame pending refcount")
+No regressions have been observed in xfstests run with posix acls turned
+off for the upper filesystem.
 
-tpacket_destruct_skb() makes room for one packet, we can immediately
-wakeup a producer, no need to completely drain the tx ring.
-
-Fixes: 89ed5b519004 ("af_packet: Block execution of tasks waiting for transmit to complete in AF_PACKET")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Neil Horman <nhorman@tuxdriver.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240515163358.4105915-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1639a49ccdce ("fs: move S_ISGID stripping into the vfs_*() helpers")
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/overlayfs/dir.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 9fc020fd7ecc1..1efa42b15c5b9 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2461,8 +2461,7 @@ static void tpacket_destruct_skb(struct sk_buff *skb)
- 		ts = __packet_set_timestamp(po, ph, skb);
- 		__packet_set_status(po, ph, TP_STATUS_AVAILABLE | ts);
+diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
+index a7021c87bfcb0..470ff30851b4d 100644
+--- a/fs/overlayfs/dir.c
++++ b/fs/overlayfs/dir.c
+@@ -323,9 +323,6 @@ static int ovl_create_upper(struct dentry *dentry, struct inode *inode,
+ 	struct dentry *newdentry;
+ 	int err;
  
--		if (!packet_read_pending(&po->tx_ring))
--			complete(&po->skb_completion);
-+		complete(&po->skb_completion);
- 	}
- 
- 	sock_wfree(skb);
+-	if (!attr->hardlink && !IS_POSIXACL(udir))
+-		attr->mode &= ~current_umask();
+-
+ 	inode_lock_nested(udir, I_MUTEX_PARENT);
+ 	newdentry = ovl_create_real(udir,
+ 				    lookup_one_len(dentry->d_name.name,
 -- 
 2.43.0
 
