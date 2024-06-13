@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-50971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36887906DA7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA336906BB1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6D991F27D47
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEF091C2240B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BEC2145B26;
-	Thu, 13 Jun 2024 11:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22308144315;
+	Thu, 13 Jun 2024 11:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZXfLjxu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6oAraBX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0FF143C67;
-	Thu, 13 Jun 2024 11:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C3C144304;
+	Thu, 13 Jun 2024 11:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279927; cv=none; b=a+iAw1U60vr9MRpcA5sLsot4TrhXVimIeXZUylTr2Z9kvRz1v6EIKIytpEPuPy3PiWnfgGgU+ik05IyY70U8nV6aSgGl9Y41T4RDru8+Nbc6QPdtxqTn1RUrm9MBaXYWM4qJZz1bmcMUMOmexyquRrJkZbNGNcdFaOZrUtgaoWI=
+	t=1718278976; cv=none; b=LXovumkuVwL/cSUBHrZCLsl4EwtgshaWEtQu/WlQc13xLkcad66pSdeL+/L7FpzLIXKwJq7FjbRVqHHEgVfshOXDPbtos9WG/EcAXQDC9OIqAFybUy9VZ1hh5XXVPn79e1pQ+QwR0zqa2GsReqDZepGiMG3OcvdHaq/sC5py85s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279927; c=relaxed/simple;
-	bh=A3CasKmYUEtvZJMaKfaZ4/ljKkIVSlwbIjBjNMEVGHk=;
+	s=arc-20240116; t=1718278976; c=relaxed/simple;
+	bh=lSJOZl1nEIyYjtJJsDEzdWPjNTC8cg3C0E36R1XF4Oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=suCMi0Sy3B2HNmBgnpOJ2u81BDePyoJ+GL6qiFtS4FqVkBn24MJJfgMOOwgiO9G8FCt4NgDw2kYUkZyFyca9Jcv82Rva76QkJ9WhYxwnbcDl2bRU4QKL1qrR2CCw0jx6vwE2I85Oc74ZxzjfdLiiR7GZ81A0+tBEhbz+XDFx4tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZXfLjxu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DEDAC32786;
-	Thu, 13 Jun 2024 11:58:46 +0000 (UTC)
+	 MIME-Version; b=AXq8O4VOBoegqy+Aci+d4uWJ0YJu4eNRHaCLPhdDKDejOdMXzRx0sdl0ZHMUwVF4rPeh/Mv4eih9Uud25s9F4eD6BzRD6lMwxIjK7v3SYDGFF09UyM+1ybWAE0PQFlfuLBQfY7dfe5G151FqS0CQ0eivJK3+I/GfKuorAg5vksA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6oAraBX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C87C2BBFC;
+	Thu, 13 Jun 2024 11:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279926;
-	bh=A3CasKmYUEtvZJMaKfaZ4/ljKkIVSlwbIjBjNMEVGHk=;
+	s=korg; t=1718278976;
+	bh=lSJOZl1nEIyYjtJJsDEzdWPjNTC8cg3C0E36R1XF4Oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZXfLjxu2buE1KUxX2U+RMWS4jYq9O+723Z2TdnKbFn0smhYZW0XyauKkikUIqrvE
-	 AHhpFvP1T9UWlhQpwwrXosup535yZU1ur3jZ6QGTuluMbRQO7Qf0x5/KLL9zDCvz2Q
-	 27QUbe4UWSpYn++cN66YN07fGeljKJSbcXhYRvrk=
+	b=i6oAraBX+qYYgr1NnC9kP+8VIN2CikeBLord4uCgNZMJd1s/mX54AspKhE6bEGxfQ
+	 6ZyWbExcsJOVJnH/z7bSKjWwIBbLrEDS+l/qM6uRwzSRWymULxMClznsF8uy1+Y8dA
+	 WKSf058k70A8hT0GkVReSm8tfncnyyGmknuWqv0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 082/202] x86/insn: Fix PUSH instruction in x86 instruction decoder opcode map
-Date: Thu, 13 Jun 2024 13:33:00 +0200
-Message-ID: <20240613113230.939141258@linuxfoundation.org>
+Subject: [PATCH 4.19 133/213] nvmet: fix ns enable/disable possible hang
+Date: Thu, 13 Jun 2024 13:33:01 +0200
+Message-ID: <20240613113233.127815638@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit 59162e0c11d7257cde15f907d19fefe26da66692 ]
+[ Upstream commit f97914e35fd98b2b18fb8a092e0a0799f73afdfe ]
 
-The x86 instruction decoder is used not only for decoding kernel
-instructions. It is also used by perf uprobes (user space probes) and by
-perf tools Intel Processor Trace decoding. Consequently, it needs to
-support instructions executed by user space also.
+When disabling an nvmet namespace, there is a period where the
+subsys->lock is released, as the ns disable waits for backend IO to
+complete, and the ns percpu ref to be properly killed. The original
+intent was to avoid taking the subsystem lock for a prolong period as
+other processes may need to acquire it (for example new incoming
+connections).
 
-Opcode 0x68 PUSH instruction is currently defined as 64-bit operand size
-only i.e. (d64). That was based on Intel SDM Opcode Map. However that is
-contradicted by the Instruction Set Reference section for PUSH in the
-same manual.
+However, it opens up a window where another process may come in and
+enable the ns, (re)intiailizing the ns percpu_ref, causing the disable
+sequence to hang.
 
-Remove 64-bit operand size only annotation from opcode 0x68 PUSH
-instruction.
+Solve this by taking the global nvmet_config_sem over the entire configfs
+enable/disable sequence.
 
-Example:
-
-  $ cat pushw.s
-  .global  _start
-  .text
-  _start:
-          pushw   $0x1234
-          mov     $0x1,%eax   # system call number (sys_exit)
-          int     $0x80
-  $ as -o pushw.o pushw.s
-  $ ld -s -o pushw pushw.o
-  $ objdump -d pushw | tail -4
-  0000000000401000 <.text>:
-    401000:       66 68 34 12             pushw  $0x1234
-    401004:       b8 01 00 00 00          mov    $0x1,%eax
-    401009:       cd 80                   int    $0x80
-  $ perf record -e intel_pt//u ./pushw
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.014 MB perf.data ]
-
- Before:
-
-  $ perf script --insn-trace=disasm
-  Warning:
-  1 instruction trace errors
-           pushw   10349 [000] 10586.869237014:            401000 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           pushw $0x1234
-           pushw   10349 [000] 10586.869237014:            401006 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb %al, (%rax)
-           pushw   10349 [000] 10586.869237014:            401008 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb %cl, %ch
-           pushw   10349 [000] 10586.869237014:            40100a [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb $0x2e, (%rax)
-   instruction trace error type 1 time 10586.869237224 cpu 0 pid 10349 tid 10349 ip 0x40100d code 6: Trace doesn't match instruction
-
- After:
-
-  $ perf script --insn-trace=disasm
-             pushw   10349 [000] 10586.869237014:            401000 [unknown] (./pushw)           pushw $0x1234
-             pushw   10349 [000] 10586.869237014:            401004 [unknown] (./pushw)           movl $1, %eax
-
-Fixes: eb13296cfaf6 ("x86: Instruction decoder API")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240502105853.5338-3-adrian.hunter@intel.com
+Fixes: a07b4970f464 ("nvmet: add a generic NVMe target")
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/lib/x86-opcode-map.txt       | 2 +-
- tools/arch/x86/lib/x86-opcode-map.txt | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/target/configfs.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
-index 5cb9f009f2be3..996a3a250026b 100644
---- a/arch/x86/lib/x86-opcode-map.txt
-+++ b/arch/x86/lib/x86-opcode-map.txt
-@@ -148,7 +148,7 @@ AVXcode:
- 65: SEG=GS (Prefix)
- 66: Operand-Size (Prefix)
- 67: Address-Size (Prefix)
--68: PUSH Iz (d64)
-+68: PUSH Iz
- 69: IMUL Gv,Ev,Iz
- 6a: PUSH Ib (d64)
- 6b: IMUL Gv,Ev,Ib
-diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
-index 5cb9f009f2be3..996a3a250026b 100644
---- a/tools/arch/x86/lib/x86-opcode-map.txt
-+++ b/tools/arch/x86/lib/x86-opcode-map.txt
-@@ -148,7 +148,7 @@ AVXcode:
- 65: SEG=GS (Prefix)
- 66: Operand-Size (Prefix)
- 67: Address-Size (Prefix)
--68: PUSH Iz (d64)
-+68: PUSH Iz
- 69: IMUL Gv,Ev,Iz
- 6a: PUSH Ib (d64)
- 6b: IMUL Gv,Ev,Ib
+diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
+index b37a8e3e3f800..921efb20f6d7b 100644
+--- a/drivers/nvme/target/configfs.c
++++ b/drivers/nvme/target/configfs.c
+@@ -464,10 +464,18 @@ static ssize_t nvmet_ns_enable_store(struct config_item *item,
+ 	if (strtobool(page, &enable))
+ 		return -EINVAL;
+ 
++	/*
++	 * take a global nvmet_config_sem because the disable routine has a
++	 * window where it releases the subsys-lock, giving a chance to
++	 * a parallel enable to concurrently execute causing the disable to
++	 * have a misaccounting of the ns percpu_ref.
++	 */
++	down_write(&nvmet_config_sem);
+ 	if (enable)
+ 		ret = nvmet_ns_enable(ns);
+ 	else
+ 		nvmet_ns_disable(ns);
++	up_write(&nvmet_config_sem);
+ 
+ 	return ret ? ret : count;
+ }
 -- 
 2.43.0
 
