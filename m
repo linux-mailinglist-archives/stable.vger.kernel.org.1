@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D58D906E81
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78AEA906DF6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA445B25B30
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E9B71C21975
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2551448DC;
-	Thu, 13 Jun 2024 12:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD334147C8B;
+	Thu, 13 Jun 2024 12:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iW3sv12O"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/pwilTb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC491442EF;
-	Thu, 13 Jun 2024 12:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A61214535F;
+	Thu, 13 Jun 2024 12:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280430; cv=none; b=belKKoQ+nYEJl8/EkupXSggjUOYAHGrDky4XLUHb5F2H7EPFCb1ZCT8rwBqTxNxYVI3EiI0UdcHovaXNZXyrhAm4zPRXGpCV3LVbLrt5wrxldts59XEhZ3miN5BSay0hCB0rE82QYKkMjJgk0mneB9U9VfuXPzn/HKOM2WshMz8=
+	t=1718280074; cv=none; b=BVMIBQ3zoVrIxYf7/Ye1EtIg1WvBnL5QNmWq619DPNgKClYIqJ3jbh9YoPsDwlgmrwGTsNlJcboxuRKlg29gvP11uyPnoKtnpGbdC22FDYRXNXHKXmPMGDFKTS5m91cZk5vJ/LrD4Mq6Jx/6xEESrJkNzraVV2vSVErHEaHLeZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280430; c=relaxed/simple;
-	bh=OHUeDdaHThiLVj9JsqfAnMXc27lJIYS4RGNKRH+WlLA=;
+	s=arc-20240116; t=1718280074; c=relaxed/simple;
+	bh=kwRO0IxtUvrncdKET2YciifBWel07thNq8dROQtoaos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZdZwDPcYxYeOHPTLeQh3K+TlQs6QqZYSd3NFPa6Ko/M4B6G+bqRH2OmVGUVuYtIrPsxbgsu1PfNyFcSBPYaVkpkPttEjZkcZzF5905rkcJuTabx7T2895upjXxv6kIjpwKHchNbyJwA2Bj9tBE0MzSh6POG8fF/OJgr/BhoqVMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iW3sv12O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D66C2BBFC;
-	Thu, 13 Jun 2024 12:07:08 +0000 (UTC)
+	 MIME-Version; b=Ov8acMlHlTD5xD7b6WFYIRaqjC2RWXhPlGrznhDnMqnbb31NNexESvk3dFPjGO8iq3DAa7E8NBvbPQXD0H3+awRVy9lnD79/+bnI5Vmm57/pQQUMn0rtzXmmK7QqmKD0NTmdFpbp9FrWiSAnrmosngPKpX3Yv6oeKvnaDLVm+t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/pwilTb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5685C4AF1A;
+	Thu, 13 Jun 2024 12:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280429;
-	bh=OHUeDdaHThiLVj9JsqfAnMXc27lJIYS4RGNKRH+WlLA=;
+	s=korg; t=1718280074;
+	bh=kwRO0IxtUvrncdKET2YciifBWel07thNq8dROQtoaos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iW3sv12Ob10mfWk3d3k+08RcYw8DrXkReIS18haReb6r8dntwHiwaLYi6EVsuRCVm
-	 wzEMQorBnyVLBjCO85mjlP5SH79xreXWg8c0bZJukxx081H9A8+HmmFykq3cCGc2jV
-	 oDonau68ylefD2J3xtDf1QOZJ2ND5hRuKr/y2wSA=
+	b=z/pwilTbzlU9ZPTtcBpODsGywAyT5YqAz+C9B+jYGJSY/7ESDuWLX9vAGaS423YeM
+	 sBrD7lrVM33k9i+v1hwR73+cpAe3JtQuhe+O5Iody9hKDd0ZhTO7TLH0a4tLMmpB7H
+	 Qtbm86SuwkoAaSGp0PLY/JPderv03Qjx5Vs8ik58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 051/137] mmc: sdhci-acpi: Fix Lenovo Yoga Tablet 2 Pro 1380 sdcard slot not working
-Date: Thu, 13 Jun 2024 13:33:51 +0200
-Message-ID: <20240613113225.273456666@linuxfoundation.org>
+	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	"Yang, Chenyuan" <cy54@illinois.edu>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
+Subject: [PATCH 5.4 134/202] media: cec: cec-api: add locking in cec_release()
+Date: Thu, 13 Jun 2024 13:33:52 +0200
+Message-ID: <20240613113232.933259601@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit f3521d7cbaefff19cc656325787ed797e5f6a955 upstream.
+[ Upstream commit 42bcaacae924bf18ae387c3f78c202df0b739292 ]
 
-The Lenovo Yoga Tablet 2 Pro 1380 sdcard slot has an active high cd pin
-and a broken wp pin which always reports the card being write-protected.
+When cec_release() uses fh->msgs it has to take fh->lock,
+otherwise the list can get corrupted.
 
-Add a DMI quirk to address both issues.
-
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240410191639.526324-5-hdegoede@redhat.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Yang, Chenyuan <cy54@illinois.edu>
+Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
+Fixes: ca684386e6e2 ("[media] cec: add HDMI CEC framework (api)")
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-acpi.c |   24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/media/cec/cec-api.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -80,6 +80,7 @@ struct sdhci_acpi_host {
- enum {
- 	DMI_QUIRK_RESET_SD_SIGNAL_VOLT_ON_SUSP			= BIT(0),
- 	DMI_QUIRK_SD_NO_WRITE_PROTECT				= BIT(1),
-+	DMI_QUIRK_SD_CD_ACTIVE_HIGH				= BIT(2),
- };
- 
- static inline void *sdhci_acpi_priv(struct sdhci_acpi_host *c)
-@@ -749,6 +750,26 @@ static const struct dmi_system_id sdhci_
- 	},
- 	{
- 		/*
-+		 * Lenovo Yoga Tablet 2 Pro 1380F/L (13" Android version) this
-+		 * has broken WP reporting and an inverted CD signal.
-+		 * Note this has more or less the same BIOS as the Lenovo Yoga
-+		 * Tablet 2 830F/L or 1050F/L (8" and 10" Android), but unlike
-+		 * the 830 / 1050 models which share the same mainboard this
-+		 * model has a different mainboard and the inverted CD and
-+		 * broken WP are unique to this board.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corp."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "VALLEYVIEW C0 PLATFORM"),
-+			DMI_MATCH(DMI_BOARD_NAME, "BYT-T FFD8"),
-+			/* Full match so as to NOT match the 830/1050 BIOS */
-+			DMI_MATCH(DMI_BIOS_VERSION, "BLADE_21.X64.0005.R00.1504101516"),
-+		},
-+		.driver_data = (void *)(DMI_QUIRK_SD_NO_WRITE_PROTECT |
-+					DMI_QUIRK_SD_CD_ACTIVE_HIGH),
-+	},
-+	{
-+		/*
- 		 * The Toshiba WT8-B's microSD slot always reports the card being
- 		 * write-protected.
- 		 */
-@@ -867,6 +888,9 @@ static int sdhci_acpi_probe(struct platf
- 	if (sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD)) {
- 		bool v = sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD_OVERRIDE_LEVEL);
- 
-+		if (quirks & DMI_QUIRK_SD_CD_ACTIVE_HIGH)
-+			host->mmc->caps2 |= MMC_CAP2_CD_ACTIVE_HIGH;
+diff --git a/drivers/media/cec/cec-api.c b/drivers/media/cec/cec-api.c
+index ed75636a6fb34..90e90234f5bd8 100644
+--- a/drivers/media/cec/cec-api.c
++++ b/drivers/media/cec/cec-api.c
+@@ -652,6 +652,8 @@ static int cec_release(struct inode *inode, struct file *filp)
+ 		list_del(&data->xfer_list);
+ 	}
+ 	mutex_unlock(&adap->lock);
 +
- 		err = mmc_gpiod_request_cd(host->mmc, NULL, 0, v, 0);
- 		if (err) {
- 			if (err == -EPROBE_DEFER)
++	mutex_lock(&fh->lock);
+ 	while (!list_empty(&fh->msgs)) {
+ 		struct cec_msg_entry *entry =
+ 			list_first_entry(&fh->msgs, struct cec_msg_entry, list);
+@@ -669,6 +671,7 @@ static int cec_release(struct inode *inode, struct file *filp)
+ 			kfree(entry);
+ 		}
+ 	}
++	mutex_unlock(&fh->lock);
+ 	kfree(fh);
+ 
+ 	cec_put_device(devnode);
+-- 
+2.43.0
+
 
 
 
