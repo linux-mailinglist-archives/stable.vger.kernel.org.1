@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CAE3906EF6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B66B89070C7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CA431C23122
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 474522848A8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE94143C48;
-	Thu, 13 Jun 2024 12:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1625320ED;
+	Thu, 13 Jun 2024 12:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFi3JMGE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxSGLWxk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEB044C6F;
-	Thu, 13 Jun 2024 12:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65BA1EB25;
+	Thu, 13 Jun 2024 12:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280723; cv=none; b=MeE93u0mIvkzDgj25M/So0BC+ZLfgD3YC/Fn0ZwEqAq7jF+aJ+cNgabycmfjGf2JEbshroA/ymsJqmP5fTSzGGMhxgix+U6jCDpKe1nJwbr88wjsXlXjtt3L5eh2hBMHM0l6ut9kzgLhVH4MLBiEW1ZJVBLzPSMlfngI8uUKXLQ=
+	t=1718281842; cv=none; b=Lt4b10PvX6imfsrE7Tz+KCYDwQMLCGIqaAz0/XBLx1TLAPJMF0ILfLHgn0Q8S0VodT1KcAD+kEN/GwPmS6ctwl4r7KUg9mt1XT6dIgA2/ZwI/ZyOfKuxG63z0qJNaJNYgj6v0NNVncDPwGSL1F5eh1taDSekfFiT8zoSD95B5Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280723; c=relaxed/simple;
-	bh=1kVrurtiSbIUVu8ATiXw6GHLsnZuLHvXUUTKImPw9Pc=;
+	s=arc-20240116; t=1718281842; c=relaxed/simple;
+	bh=HIRkVunJ6kYEXeVyMhRE71LT8pPf+U4aKnpp05V9NVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V8uzp/BpcHoSLvTKfdnp5kQZCZS0bniWmNzGlwdXlfJhqtZT7boUTBcX8B82YLa5aYfkfvPdq599AMGk5G+8OiQlEdlkOHgnnv411XetWd3yQ4ounMymFoQZk96usMjRoo9XiUpuOJ2amM0rS7UFICjrmqX+TP6ea+20QjvscRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFi3JMGE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56310C2BBFC;
-	Thu, 13 Jun 2024 12:12:03 +0000 (UTC)
+	 MIME-Version; b=Ls+sam4ZabY2+kiwRmAw+fUHm4QB4J+5XQtqv8bqqvizHyZlmQCLTLl68ncBoJ+alzLCoj9TtVnmGhO0smje+iZszRJm14ciG/cl9oa+WHWYnO+a8tsOrnL4QEq/KUzh2dJ71vo8af+7uveeMnG24b/7ZwqG1xcyWPUOmzbh7LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxSGLWxk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A9BC4AF1D;
+	Thu, 13 Jun 2024 12:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280723;
-	bh=1kVrurtiSbIUVu8ATiXw6GHLsnZuLHvXUUTKImPw9Pc=;
+	s=korg; t=1718281842;
+	bh=HIRkVunJ6kYEXeVyMhRE71LT8pPf+U4aKnpp05V9NVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FFi3JMGEoTfuJID1QjGvHK+eMvhTTyFTwZKCoNq5dCwFL4ge2vFbxunrDuc7QegoJ
-	 1DQ4eK6bH90Wwdb/3Ntv+TFrrF3T9JUGFrWBDJ+Fs55pergmmBct/JDY3JaS+WwRYy
-	 dGLReWXO7Xp2DkRzTdcag0P68efIKTJb9z7HdtRU=
+	b=OxSGLWxkdh/d0Z7nu3/fnRONy83ZiWrCwwmRRt40B20zTukEVteTeUcb3quKWn4Xh
+	 b7NzwsRpDVz/yt0w8PMMaJQVdsK2chSPRi8ckl6mNmUlRaRoWtogN1Hya+XJg+vcSz
+	 Rd+S4Ak3+RObOhim2krFGNu6EJ4tG2JGBi6lMRHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Derek Fang <derek.fang@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 013/317] ASoC: rt5645: Fix the electric noise due to the CBJ contacts floating
+Subject: [PATCH 5.15 074/402] cpufreq: Rearrange locking in cpufreq_remove_dev()
 Date: Thu, 13 Jun 2024 13:30:31 +0200
-Message-ID: <20240613113248.054416684@linuxfoundation.org>
+Message-ID: <20240613113305.023906506@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Derek Fang <derek.fang@realtek.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 103abab975087e1f01b76fcb54c91dbb65dbc249 ]
+[ Upstream commit f339f3541701d824a0256ad4bf14c26ceb6d79c3 ]
 
-The codec leaves tie combo jack's sleeve/ring2 to floating status
-default. It would cause electric noise while connecting the active
-speaker jack during boot or shutdown.
-This patch requests a gpio to control the additional jack circuit
-to tie the contacts to the ground or floating.
+Currently, cpufreq_remove_dev() invokes the ->exit() driver callback
+without holding the policy rwsem which is inconsistent with what
+happens if ->exit() is invoked directly from cpufreq_offline().
 
-Signed-off-by: Derek Fang <derek.fang@realtek.com>
+It also manipulates the real_cpus mask and removes the CPU device
+symlink without holding the policy rwsem, but cpufreq_offline() holds
+the rwsem around the modifications thereof.
 
-Link: https://msgid.link/r/20240408091057.14165-1-derek.fang@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+For consistency, modify cpufreq_remove_dev() to hold the policy rwsem
+until the ->exit() callback has been called (or it has been determined
+that it is not necessary to call it).
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Stable-dep-of: b8f85833c057 ("cpufreq: exit() callback is optional")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5645.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/cpufreq/cpufreq.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
-index 5db63ef33f1a2..ac403827a2290 100644
---- a/sound/soc/codecs/rt5645.c
-+++ b/sound/soc/codecs/rt5645.c
-@@ -414,6 +414,7 @@ struct rt5645_priv {
- 	struct regmap *regmap;
- 	struct i2c_client *i2c;
- 	struct gpio_desc *gpiod_hp_det;
-+	struct gpio_desc *gpiod_cbj_sleeve;
- 	struct snd_soc_jack *hp_jack;
- 	struct snd_soc_jack *mic_jack;
- 	struct snd_soc_jack *btn_jack;
-@@ -3169,6 +3170,9 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
- 		regmap_update_bits(rt5645->regmap, RT5645_IN1_CTRL2,
- 			RT5645_CBJ_MN_JD, 0);
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index ce7d718bdfced..a8b469094cd3d 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -1655,19 +1655,26 @@ static void cpufreq_remove_dev(struct device *dev, struct subsys_interface *sif)
+ 	if (!policy)
+ 		return;
  
-+		if (rt5645->gpiod_cbj_sleeve)
-+			gpiod_set_value(rt5645->gpiod_cbj_sleeve, 1);
++	down_write(&policy->rwsem);
 +
- 		msleep(600);
- 		regmap_read(rt5645->regmap, RT5645_IN1_CTRL3, &val);
- 		val &= 0x7;
-@@ -3185,6 +3189,8 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
- 			snd_soc_dapm_disable_pin(dapm, "Mic Det Power");
- 			snd_soc_dapm_sync(dapm);
- 			rt5645->jack_type = SND_JACK_HEADPHONE;
-+			if (rt5645->gpiod_cbj_sleeve)
-+				gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
- 		}
- 		if (rt5645->pdata.level_trigger_irq)
- 			regmap_update_bits(rt5645->regmap, RT5645_IRQ_CTRL2,
-@@ -3210,6 +3216,9 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
- 		if (rt5645->pdata.level_trigger_irq)
- 			regmap_update_bits(rt5645->regmap, RT5645_IRQ_CTRL2,
- 				RT5645_JD_1_1_MASK, RT5645_JD_1_1_INV);
-+
-+		if (rt5645->gpiod_cbj_sleeve)
-+			gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
+ 	if (cpu_online(cpu))
+-		cpufreq_offline(cpu);
++		__cpufreq_offline(cpu, policy);
+ 
+ 	cpumask_clear_cpu(cpu, policy->real_cpus);
+ 	remove_cpu_dev_symlink(policy, dev);
+ 
+-	if (cpumask_empty(policy->real_cpus)) {
+-		/* We did light-weight exit earlier, do full tear down now */
+-		if (cpufreq_driver->offline)
+-			cpufreq_driver->exit(policy);
+-
+-		cpufreq_policy_free(policy);
++	if (!cpumask_empty(policy->real_cpus)) {
++		up_write(&policy->rwsem);
++		return;
  	}
- 
- 	return rt5645->jack_type;
-@@ -3882,6 +3891,16 @@ static int rt5645_i2c_probe(struct i2c_client *i2c,
- 			return ret;
- 	}
- 
-+	rt5645->gpiod_cbj_sleeve = devm_gpiod_get_optional(&i2c->dev, "cbj-sleeve",
-+							   GPIOD_OUT_LOW);
 +
-+	if (IS_ERR(rt5645->gpiod_cbj_sleeve)) {
-+		ret = PTR_ERR(rt5645->gpiod_cbj_sleeve);
-+		dev_info(&i2c->dev, "failed to initialize gpiod, ret=%d\n", ret);
-+		if (ret != -ENOENT)
-+			return ret;
-+	}
++	/* We did light-weight exit earlier, do full tear down now */
++	if (cpufreq_driver->offline)
++		cpufreq_driver->exit(policy);
 +
- 	for (i = 0; i < ARRAY_SIZE(rt5645->supplies); i++)
- 		rt5645->supplies[i].supply = rt5645_supply_names[i];
- 
-@@ -4125,6 +4144,9 @@ static int rt5645_i2c_remove(struct i2c_client *i2c)
- 	cancel_delayed_work_sync(&rt5645->jack_detect_work);
- 	cancel_delayed_work_sync(&rt5645->rcclock_work);
- 
-+	if (rt5645->gpiod_cbj_sleeve)
-+		gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
++	up_write(&policy->rwsem);
 +
- 	regulator_bulk_disable(ARRAY_SIZE(rt5645->supplies), rt5645->supplies);
- 
- 	return 0;
-@@ -4142,6 +4164,9 @@ static void rt5645_i2c_shutdown(struct i2c_client *i2c)
- 		0);
- 	msleep(20);
- 	regmap_write(rt5645->regmap, RT5645_RESET, 0);
-+
-+	if (rt5645->gpiod_cbj_sleeve)
-+		gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
++	cpufreq_policy_free(policy);
  }
  
- static struct i2c_driver rt5645_i2c_driver = {
+ /**
 -- 
 2.43.0
 
