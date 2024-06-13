@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD048906E2F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C053B906EB8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B75CB27586
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B5BAB27FE4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462DC148856;
-	Thu, 13 Jun 2024 12:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C57B1482F8;
+	Thu, 13 Jun 2024 12:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIKreNs0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7Qbjkgy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0313A14884B;
-	Thu, 13 Jun 2024 12:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21ABC1482ED;
+	Thu, 13 Jun 2024 12:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280204; cv=none; b=a1I4fWZ9zNdl9qmdNjstUJF7rcp9eyt3tGkVlpYyzxN8hmpaX4NW3NOFpAepNa1D3425Ov1/b3VhCPBQPGaa9ev6fLcNFsCmyTfptrRC71mOfCwwIOet4OgNxWH/XJD+1aFmuh+Fs2L18Zl7Kx8eBNl0hcwzZM1Fk85Mq6bd0dQ=
+	t=1718280562; cv=none; b=VaRYtIGC9Z64IKuuampzyPJi6mTHTErRhh2HK97mJlYlsRfBHyTX6Esl0+ikT5PJso8RYWcOQBaPDCPX9ZiDQerApxYXYYUALSzxLy0lrv5t7E5+RyvzSSNTokvGhFErZBQ5qdi1WN8/O4AT3nn53rIpopkdFu83m6yhvtz5r9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280204; c=relaxed/simple;
-	bh=VjHUoFxe6y1EOeXAbLTvFJgDgKBQM+qfKBBcN7QyxSg=;
+	s=arc-20240116; t=1718280562; c=relaxed/simple;
+	bh=m1yF+fnMIgPkhirK3ZBbmXM0CBYP4kZwUaSek6Qvkp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R37Qb7pn1YoWyu3YRUGwb26HXQNA+6x0l4ZNfuBo6uhSjP/uUsDXwRBevuxeDcwRFpNSY6xvhV/RKxhq95F/HBv/qUDBNIEegEthIy7zh3kH7blUqo4rvUQpgtVzZyCh85wbTjLuJIatgIy7roKI4qFNY9V6IS+JyspZ7YENhzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIKreNs0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFBCC2BBFC;
-	Thu, 13 Jun 2024 12:03:23 +0000 (UTC)
+	 MIME-Version; b=upy79cyqyVYdHjg9orMMTRh9/mmphWNiax4kvh10C05YC4u/jG1Ku26eNB7w26Wn0ybZDb3+ZicRrkkcdFFQbP4GhY0K8vMCnlQN8c+atj/2rbRPzKswBSod572IPHLoEsv2PymLlgQcDtfFaEHDppVQsvAXb0DrZFCwCRLyijM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7Qbjkgy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1D0C2BBFC;
+	Thu, 13 Jun 2024 12:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280203;
-	bh=VjHUoFxe6y1EOeXAbLTvFJgDgKBQM+qfKBBcN7QyxSg=;
+	s=korg; t=1718280562;
+	bh=m1yF+fnMIgPkhirK3ZBbmXM0CBYP4kZwUaSek6Qvkp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IIKreNs06icNBYnyXsV0SBu/DYnmO4u1haamECARZxU6aNcpj21DNySuwghXbuKL8
-	 g8kiAgH11TdDneuO2lCbT0MFFFg4F6EFwXqldh6gMCymHr+KzKnlknW/0vbrITRlGY
-	 K5riS7SvTPQqM2gUL6womCKGCjpTsX5dCY2Gdbr4=
+	b=R7QbjkgyCtCkYAbCQrCBawpa4TrKdEPfX4hoiysFkTASVXg2820pTO7by/TJPuItQ
+	 cM9KA623yfk8Jm0IOvH8HJzpOzs+ac34N8RMC4uytOGyvJ16gIV6HO7IQ9bSIkxgR2
+	 yxKBrgg7pNbsHsErILZhTKdW1ZVE3vJSHVlRtU3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 5.4 177/202] arm64: tegra: Correct Tegra132 I2C alias
+	Judith Mendez <jm@ti.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>
+Subject: [PATCH 6.6 095/137] watchdog: rti_wdt: Set min_hw_heartbeat_ms to accommodate a safety margin
 Date: Thu, 13 Jun 2024 13:34:35 +0200
-Message-ID: <20240613113234.569935674@linuxfoundation.org>
+Message-ID: <20240613113226.982016230@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Judith Mendez <jm@ti.com>
 
-commit 2633c58e1354d7de2c8e7be8bdb6f68a0a01bad7 upstream.
+commit cae58516534e110f4a8558d48aa4435e15519121 upstream.
 
-There is no such device as "as3722@40", because its name is "pmic".  Use
-phandles for aliases to fix relying on full node path.  This corrects
-aliases for RTC devices and also fixes dtc W=1 warning:
+On AM62x, the watchdog is pet before the valid window is open. Fix
+min_hw_heartbeat and accommodate a 2% + static offset safety margin.
+The static offset accounts for max hardware error.
 
-  tegra132-norrin.dts:12.3-36: Warning (alias_paths): /aliases:rtc0: aliases property is not a valid node (/i2c@7000d000/as3722@40)
+Remove the hack in the driver which shifts the open window boundary,
+since it is no longer necessary due to the fix mentioned above.
 
-Fixes: 0f279ebdf3ce ("arm64: tegra: Add NVIDIA Tegra132 Norrin support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+cc: stable@vger.kernel.org
+Fixes: 5527483f8f7c ("watchdog: rti-wdt: attach to running watchdog during probe")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240417205700.3947408-1-jm@ti.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra132-norrin.dts |    4 ++--
- arch/arm64/boot/dts/nvidia/tegra132.dtsi       |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/watchdog/rti_wdt.c |   34 +++++++++++++++-------------------
+ 1 file changed, 15 insertions(+), 19 deletions(-)
 
---- a/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-+++ b/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-@@ -9,8 +9,8 @@
- 	compatible = "nvidia,norrin", "nvidia,tegra132", "nvidia,tegra124";
+--- a/drivers/watchdog/rti_wdt.c
++++ b/drivers/watchdog/rti_wdt.c
+@@ -59,6 +59,8 @@
+ #define PON_REASON_EOF_NUM	0xCCCCBBBB
+ #define RESERVED_MEM_MIN_SIZE	12
  
- 	aliases {
--		rtc0 = "/i2c@7000d000/as3722@40";
--		rtc1 = "/rtc@7000e000";
-+		rtc0 = &as3722;
-+		rtc1 = &tegra_rtc;
- 		serial0 = &uarta;
- 	};
++#define MAX_HW_ERROR		250
++
+ static int heartbeat = DEFAULT_HEARTBEAT;
  
---- a/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-@@ -569,7 +569,7 @@
- 		status = "disabled";
- 	};
+ /*
+@@ -97,7 +99,7 @@ static int rti_wdt_start(struct watchdog
+ 	 * to be 50% or less than that; we obviouly want to configure the open
+ 	 * window as large as possible so we select the 50% option.
+ 	 */
+-	wdd->min_hw_heartbeat_ms = 500 * wdd->timeout;
++	wdd->min_hw_heartbeat_ms = 520 * wdd->timeout + MAX_HW_ERROR;
  
--	rtc@7000e000 {
-+	tegra_rtc: rtc@7000e000 {
- 		compatible = "nvidia,tegra124-rtc", "nvidia,tegra20-rtc";
- 		reg = <0x0 0x7000e000 0x0 0x100>;
- 		interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
+ 	/* Generate NMI when wdt expires */
+ 	writel_relaxed(RTIWWDRX_NMI, wdt->base + RTIWWDRXCTRL);
+@@ -131,31 +133,33 @@ static int rti_wdt_setup_hw_hb(struct wa
+ 	 * be petted during the open window; not too early or not too late.
+ 	 * The HW configuration options only allow for the open window size
+ 	 * to be 50% or less than that.
++	 * To avoid any glitches, we accommodate 2% + max hardware error
++	 * safety margin.
+ 	 */
+ 	switch (wsize) {
+ 	case RTIWWDSIZE_50P:
+-		/* 50% open window => 50% min heartbeat */
+-		wdd->min_hw_heartbeat_ms = 500 * heartbeat;
++		/* 50% open window => 52% min heartbeat */
++		wdd->min_hw_heartbeat_ms = 520 * heartbeat + MAX_HW_ERROR;
+ 		break;
+ 
+ 	case RTIWWDSIZE_25P:
+-		/* 25% open window => 75% min heartbeat */
+-		wdd->min_hw_heartbeat_ms = 750 * heartbeat;
++		/* 25% open window => 77% min heartbeat */
++		wdd->min_hw_heartbeat_ms = 770 * heartbeat + MAX_HW_ERROR;
+ 		break;
+ 
+ 	case RTIWWDSIZE_12P5:
+-		/* 12.5% open window => 87.5% min heartbeat */
+-		wdd->min_hw_heartbeat_ms = 875 * heartbeat;
++		/* 12.5% open window => 89.5% min heartbeat */
++		wdd->min_hw_heartbeat_ms = 895 * heartbeat + MAX_HW_ERROR;
+ 		break;
+ 
+ 	case RTIWWDSIZE_6P25:
+-		/* 6.5% open window => 93.5% min heartbeat */
+-		wdd->min_hw_heartbeat_ms = 935 * heartbeat;
++		/* 6.5% open window => 95.5% min heartbeat */
++		wdd->min_hw_heartbeat_ms = 955 * heartbeat + MAX_HW_ERROR;
+ 		break;
+ 
+ 	case RTIWWDSIZE_3P125:
+-		/* 3.125% open window => 96.9% min heartbeat */
+-		wdd->min_hw_heartbeat_ms = 969 * heartbeat;
++		/* 3.125% open window => 98.9% min heartbeat */
++		wdd->min_hw_heartbeat_ms = 989 * heartbeat + MAX_HW_ERROR;
+ 		break;
+ 
+ 	default:
+@@ -233,14 +237,6 @@ static int rti_wdt_probe(struct platform
+ 		return -EINVAL;
+ 	}
+ 
+-	/*
+-	 * If watchdog is running at 32k clock, it is not accurate.
+-	 * Adjust frequency down in this case so that we don't pet
+-	 * the watchdog too often.
+-	 */
+-	if (wdt->freq < 32768)
+-		wdt->freq = wdt->freq * 9 / 10;
+-
+ 	pm_runtime_enable(dev);
+ 	ret = pm_runtime_resume_and_get(dev);
+ 	if (ret < 0) {
 
 
 
