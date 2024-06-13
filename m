@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C2C190722F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F5B90706F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B1DA1C2017A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EA7B1C227B3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E311428EA;
-	Thu, 13 Jun 2024 12:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD87714374F;
+	Thu, 13 Jun 2024 12:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Au+mkPjq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8MCeDcs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C471411DA;
-	Thu, 13 Jun 2024 12:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C15E3209;
+	Thu, 13 Jun 2024 12:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282684; cv=none; b=D6H6H6GN7pK3GpJP+Z0y+1DaO8SYzv/A0/NzqkK8XWcBZyKJzyf6tEvDMWCqxkK5Q+KsU8xipKcCKRxI5Degx9Y94QRvldhuAVfU33Q/1p+mqsAlnNHOZwld4MIQvnHpNH37bsBaRkYrxDtlQfXNfzxetjtRucCGgEofYyT2JQ4=
+	t=1718281633; cv=none; b=WqDuhxaGdHnHWGxrqQu97U2D8Lt3yf8fjhf5IwQ2ZITNDzIaaYEZ4uT62Zbyy691oyqkupKL3qq3gVsJZnp8KhMqIv+jvhHbdBNNbF1g0jZnS7sg+VjygaIvFyHg56ThG8acsMKayXBS9cYz67p9nR3yu33ykP6g0jVzhAIhFaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282684; c=relaxed/simple;
-	bh=IwAJni5htv0cSBYrhLvV9ojo59McoMiMmnMQgYoPT98=;
+	s=arc-20240116; t=1718281633; c=relaxed/simple;
+	bh=lRGFIPSgvR2ue7hzEEBmRAMqmKsj6JgtthzmwIxcs0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PgcStjL36/9ydxc44cgc3lajeOzngB15tmC8+1WmhoCeD7LIDYT68zQKhOoYEwRc8KytAW6NUV6JKTe+5ZjBff1xblpr+UQYVTEEPu7FPPuvRQOMT65NHjcBHHZynBsE2kXabqToecb34E5ZulzCO6IjSCNDmXQFoK23Q79zA8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Au+mkPjq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CF7C2BBFC;
-	Thu, 13 Jun 2024 12:44:43 +0000 (UTC)
+	 MIME-Version; b=I2ULf8lJcA6V9C0QH1RFRrVWsFdZ3HXIfOL7FiAip6SvlO13wPybd+8SN3Le2rNNq06Qcs1/A13PTeP8Trw65pH4Cwl1dKxwPAGYAoN7A3Mt0A9FjB79mzpSWlJnCDe6L59Ftg1NmRtjwQRR0X/azxd7Rb3ZZWMAcqyXGG0KBzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8MCeDcs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD7FC2BBFC;
+	Thu, 13 Jun 2024 12:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282684;
-	bh=IwAJni5htv0cSBYrhLvV9ojo59McoMiMmnMQgYoPT98=;
+	s=korg; t=1718281633;
+	bh=lRGFIPSgvR2ue7hzEEBmRAMqmKsj6JgtthzmwIxcs0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Au+mkPjqi7phKCj5xkHJWds3bJbZLHMC+Be2gLx4sW46s9qMX1S+Bf17fPdQXAdyA
-	 0pxkf0WFYmJbBLUi27NrYkzhJr8hOBDDK/n53nFZ9q8kNpYQjph++iuCc36bSMJx29
-	 OPmDPKLsh0eL+r0i76/eHZ2sCdbBQPlMFL3QVVwk=
+	b=M8MCeDcsTcHY92Gv2z+c/jG92/0oVeEzC22btdzUvnKAtHZceeeUL7zq3FFXyf3q9
+	 p/dkK51A/kKKnE+FjNgbNtV9/xLOBnfigojIuQdnAW4SwJK47RptZ+2i6mpY5r2czB
+	 tvd4h1vc0m2o1kGEY0uc0AXS8Mes+nNor76jM+qI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 361/402] arm64: dts: qcom: qcs404: fix bluetooth device address
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 5.10 300/317] intel_th: pci: Add Meteor Lake-S CPU support
 Date: Thu, 13 Jun 2024 13:35:18 +0200
-Message-ID: <20240613113316.218256189@linuxfoundation.org>
+Message-ID: <20240613113259.155624360@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-commit f5f390a77f18eaeb2c93211a1b7c5e66b5acd423 upstream.
+commit a4f813c3ec9d1c32bc402becd1f011b3904dd699 upstream.
 
-The 'local-bd-address' property is used to pass a unique Bluetooth
-device address from the boot firmware to the kernel and should otherwise
-be left unset so that the OS can prevent the controller from being used
-until a valid address has been provided through some other means (e.g.
-using btmgmt).
+Add support for the Trace Hub in Meteor Lake-S CPU.
 
-Fixes: 60f77ae7d1c1 ("arm64: dts: qcom: qcs404-evb: Enable uart3 and add Bluetooth")
-Cc: stable@vger.kernel.org	# 5.10
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://lore.kernel.org/r/20240501075201.4732-1-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20240429130119.1518073-15-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/qcs404-evb.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi
-@@ -60,7 +60,7 @@
- 		vddrf-supply = <&vreg_l1_1p3>;
- 		vddch0-supply = <&vdd_ch0_3p3>;
- 
--		local-bd-address = [ 02 00 00 00 5a ad ];
-+		local-bd-address = [ 00 00 00 00 00 00 ];
- 
- 		max-speed = <3200000>;
- 	};
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -290,6 +290,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Meteor Lake-S CPU */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xae24),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Raptor Lake-S */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x7a26),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
