@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-52010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE5D9072AD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:50:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF6F4907232
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73D2C28228C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C3131F21727
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16191442EF;
-	Thu, 13 Jun 2024 12:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5DA20ED;
+	Thu, 13 Jun 2024 12:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJuzqypR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRTtC8jD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD568143C79;
-	Thu, 13 Jun 2024 12:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9681A1C32;
+	Thu, 13 Jun 2024 12:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282969; cv=none; b=ahM5ztHhFeaqotq4RF749xQ6uXXbnL0c5qEvVglRiLTtZOb0cBhJul7FItjsEqf6xvvr90qxM3dE8Yeewfqroqpm/+MAc4Zdo4iKHYSuBR2Ch/AySkS1jmXsLdfctAFYm4KVORHKRoZMBVG5Dy2LfF80tIb2MtaZDjivBNYcvMY=
+	t=1718282693; cv=none; b=hRU6m4IwM2L9VYuwQ68yrsxxJOs2/aSnC2sjWr4p/1r4yfOjXsU7BzeGXx6OKx0HOkGYvd03a5uwO8J+jVneTa1nr7aPM8AQilDjyCTN0Smth3Da614i4Z3Xb74H4LYqZ7b/k+84FF+iHESPb3MGQbOqloocUbMUaxoLjzM5Ngo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282969; c=relaxed/simple;
-	bh=NVRRZ5G/ZjUPCFef93jHGA8+hCZ2noKBawSsJsnhldM=;
+	s=arc-20240116; t=1718282693; c=relaxed/simple;
+	bh=2Bfe2X06KL/Rjr5tQh7WOez8JXfcKuSy/sjTG6r5rXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ofm/7HOjU25Yszw6pzUxSA3tlK/yWD5l6MEysysmbDbgVf6QGr5O/egDYyMVp4h1RZrLtcmHf6QBO7vpWMTFCxUDjh3zzj5rzk8FrEA6SIHPNqrQ3niPL0AFgl4O3xXjwQzKbUmiS33qYqXlIvnEFZLiz8YxG6a4jJKi/2p8epQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJuzqypR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354E2C2BBFC;
-	Thu, 13 Jun 2024 12:49:29 +0000 (UTC)
+	 MIME-Version; b=AV9jUq52xYurgvA6/sumfxcQsyQu6oSDrT9dz+HLlBqfMFPHCwTf1Mintk6QCDcTwsvIWooxNTQJ3ccJxu2SIAcC2dyO7FukfRnNMM/ey3aV166m5L9xZA9/gtY8RahPYSz5MIyuMsvnjdqcQRWSAGBXZsKJWIqO40AB8DjFm/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRTtC8jD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04A7C4AF1A;
+	Thu, 13 Jun 2024 12:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282969;
-	bh=NVRRZ5G/ZjUPCFef93jHGA8+hCZ2noKBawSsJsnhldM=;
+	s=korg; t=1718282693;
+	bh=2Bfe2X06KL/Rjr5tQh7WOez8JXfcKuSy/sjTG6r5rXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJuzqypRDGhN1jxr1VSJ6XiCxTW+AdhI0vTjYm2Cq8neJlKJNytSGJVHQVXsUjHEu
-	 PHyHPtcCk40pLP+SfMVPJJox/WBdrb2M3mZv0NsasZ+CE/56Yq2GL7Cxk+nZABCFNq
-	 jXMSIHMS1KJwoH5eESuaVVRCbHXwUnXetKadCCoI=
+	b=jRTtC8jDpN8NR7IkU1Ck3jE0tdNKF5ufaXLZSCFFyP6eA9Z+Jk31EjCrKi+rnZR0n
+	 WfDkilZl74NMH2kL2MHrAXX63a0raNB529+YObNBfbbdnzR73TTPP6tTKhMPYTCXjR
+	 kSI5hOrfbn3COJgvcF1Quv8Z/Vp1zuOabNXcSaks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Maulik Shah <quic_mkshah@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Elliot Berman <quic_eberman@quicinc.com>
-Subject: [PATCH 6.1 23/85] soc: qcom: rpmh-rsc: Enhance check for VRM in-flight request
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 5.15 364/402] wifi: rtlwifi: rtl8192de: Fix low speed with WPA3-SAE
 Date: Thu, 13 Jun 2024 13:35:21 +0200
-Message-ID: <20240613113215.037137091@linuxfoundation.org>
+Message-ID: <20240613113316.336606045@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maulik Shah <quic_mkshah@quicinc.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit f592cc5794747b81e53b53dd6e80219ee25f0611 upstream.
+commit a7c0f48410f546772ac94a0f7b7291a15c4fc173 upstream.
 
-Each RPMh VRM accelerator resource has 3 or 4 contiguous 4-byte aligned
-addresses associated with it. These control voltage, enable state, mode,
-and in legacy targets, voltage headroom. The current in-flight request
-checking logic looks for exact address matches. Requests for different
-addresses of the same RPMh resource as thus not detected as in-flight.
+Some (all?) management frames are incorrectly reported to mac80211 as
+decrypted when actually the hardware did not decrypt them. This results
+in speeds 3-5 times lower than expected, 20-30 Mbps instead of 100
+Mbps.
 
-Add new cmd-db API cmd_db_match_resource_addr() to enhance the in-flight
-request check for VRM requests by ignoring the address offset.
+Fix this by checking the encryption type field of the RX descriptor.
+rtw88 does the same thing.
 
-This ensures that only one request is allowed to be in-flight for a given
-VRM resource. This is needed to avoid scenarios where request commands are
-carried out by RPMh hardware out-of-order leading to LDO regulator
-over-current protection triggering.
+This fix was tested only with rtl8192du, which will use the same code.
 
-Fixes: 658628e7ef78 ("drivers: qcom: rpmh-rsc: add RPMH controller for QCOM SoCs")
 Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Tested-by: Elliot Berman <quic_eberman@quicinc.com> # sm8650-qrd
-Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
-Link: https://lore.kernel.org/r/20240215-rpmh-rsc-fixes-v4-1-9cbddfcba05b@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://msgid.link/4d600435-f0ea-46b0-bdb4-e60f173da8dd@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/cmd-db.c   |   32 +++++++++++++++++++++++++++++++-
- drivers/soc/qcom/rpmh-rsc.c |    3 ++-
- include/soc/qcom/cmd-db.h   |   10 +++++++++-
- 3 files changed, 42 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c |    5 ++---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h |   14 ++++++++++++++
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
---- a/drivers/soc/qcom/cmd-db.c
-+++ b/drivers/soc/qcom/cmd-db.c
-@@ -1,6 +1,10 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright (c) 2016-2018, 2020, The Linux Foundation. All rights reserved. */
-+/*
-+ * Copyright (c) 2016-2018, 2020, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
-+ */
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
+@@ -414,7 +414,8 @@ bool rtl92de_rx_query_desc(struct ieee80
+ 	stats->icv = (u16)get_rx_desc_icv(pdesc);
+ 	stats->crc = (u16)get_rx_desc_crc32(pdesc);
+ 	stats->hwerror = (stats->crc | stats->icv);
+-	stats->decrypted = !get_rx_desc_swdec(pdesc);
++	stats->decrypted = !get_rx_desc_swdec(pdesc) &&
++			   get_rx_desc_enc_type(pdesc) != RX_DESC_ENC_NONE;
+ 	stats->rate = (u8)get_rx_desc_rxmcs(pdesc);
+ 	stats->shortpreamble = (u16)get_rx_desc_splcp(pdesc);
+ 	stats->isampdu = (bool)(get_rx_desc_paggr(pdesc) == 1);
+@@ -427,8 +428,6 @@ bool rtl92de_rx_query_desc(struct ieee80
+ 	rx_status->band = hw->conf.chandef.chan->band;
+ 	if (get_rx_desc_crc32(pdesc))
+ 		rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
+-	if (!get_rx_desc_swdec(pdesc))
+-		rx_status->flag |= RX_FLAG_DECRYPTED;
+ 	if (get_rx_desc_bw(pdesc))
+ 		rx_status->bw = RATE_INFO_BW_40;
+ 	if (get_rx_desc_rxht(pdesc))
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
+@@ -14,6 +14,15 @@
+ #define USB_HWDESC_HEADER_LEN			32
+ #define CRCLENGTH				4
  
-+#include <linux/bitfield.h>
- #include <linux/debugfs.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -17,6 +21,8 @@
- #define MAX_SLV_ID		8
- #define SLAVE_ID_MASK		0x7
- #define SLAVE_ID_SHIFT		16
-+#define SLAVE_ID(addr)		FIELD_GET(GENMASK(19, 16), addr)
-+#define VRM_ADDR(addr)		FIELD_GET(GENMASK(19, 4), addr)
++enum rtl92d_rx_desc_enc {
++	RX_DESC_ENC_NONE	= 0,
++	RX_DESC_ENC_WEP40	= 1,
++	RX_DESC_ENC_TKIP_WO_MIC	= 2,
++	RX_DESC_ENC_TKIP_MIC	= 3,
++	RX_DESC_ENC_AES		= 4,
++	RX_DESC_ENC_WEP104	= 5,
++};
++
+ /* macros to read/write various fields in RX or TX descriptors */
  
- /**
-  * struct entry_header: header for each entry in cmddb
-@@ -221,6 +227,30 @@ const void *cmd_db_read_aux_data(const c
- EXPORT_SYMBOL(cmd_db_read_aux_data);
+ static inline void set_tx_desc_pkt_size(__le32 *__pdesc, u32 __val)
+@@ -246,6 +255,11 @@ static inline u32 get_rx_desc_drv_info_s
+ 	return le32_get_bits(*__pdesc, GENMASK(19, 16));
+ }
  
- /**
-+ * cmd_db_match_resource_addr() - Compare if both Resource addresses are same
-+ *
-+ * @addr1: Resource address to compare
-+ * @addr2: Resource address to compare
-+ *
-+ * Return: true if two addresses refer to the same resource, false otherwise
-+ */
-+bool cmd_db_match_resource_addr(u32 addr1, u32 addr2)
++static inline u32 get_rx_desc_enc_type(__le32 *__pdesc)
 +{
-+	/*
-+	 * Each RPMh VRM accelerator resource has 3 or 4 contiguous 4-byte
-+	 * aligned addresses associated with it. Ignore the offset to check
-+	 * for VRM requests.
-+	 */
-+	if (addr1 == addr2)
-+		return true;
-+	else if (SLAVE_ID(addr1) == CMD_DB_HW_VRM && VRM_ADDR(addr1) == VRM_ADDR(addr2))
-+		return true;
-+
-+	return false;
++	return le32_get_bits(*__pdesc, GENMASK(22, 20));
 +}
-+EXPORT_SYMBOL_GPL(cmd_db_match_resource_addr);
 +
-+/**
-  * cmd_db_read_slave_id - Get the slave ID for a given resource address
-  *
-  * @id: Resource id to query the DB for version
---- a/drivers/soc/qcom/rpmh-rsc.c
-+++ b/drivers/soc/qcom/rpmh-rsc.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-  * Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2023-2024, Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #define pr_fmt(fmt) "%s " fmt, KBUILD_MODNAME
-@@ -519,7 +520,7 @@ static int check_for_req_inflight(struct
- 		for_each_set_bit(j, &curr_enabled, MAX_CMDS_PER_TCS) {
- 			addr = read_tcs_cmd(drv, RSC_DRV_CMD_ADDR, i, j);
- 			for (k = 0; k < msg->num_cmds; k++) {
--				if (addr == msg->cmds[k].addr)
-+				if (cmd_db_match_resource_addr(msg->cmds[k].addr, addr))
- 					return -EBUSY;
- 			}
- 		}
---- a/include/soc/qcom/cmd-db.h
-+++ b/include/soc/qcom/cmd-db.h
-@@ -1,5 +1,8 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright (c) 2016-2018, The Linux Foundation. All rights reserved. */
-+/*
-+ * Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
-+ */
- 
- #ifndef __QCOM_COMMAND_DB_H__
- #define __QCOM_COMMAND_DB_H__
-@@ -21,6 +24,8 @@ u32 cmd_db_read_addr(const char *resourc
- 
- const void *cmd_db_read_aux_data(const char *resource_id, size_t *len);
- 
-+bool cmd_db_match_resource_addr(u32 addr1, u32 addr2);
-+
- enum cmd_db_hw_type cmd_db_read_slave_id(const char *resource_id);
- 
- int cmd_db_ready(void);
-@@ -31,6 +36,9 @@ static inline u32 cmd_db_read_addr(const
- static inline const void *cmd_db_read_aux_data(const char *resource_id, size_t *len)
- { return ERR_PTR(-ENODEV); }
- 
-+static inline bool cmd_db_match_resource_addr(u32 addr1, u32 addr2)
-+{ return false; }
-+
- static inline enum cmd_db_hw_type cmd_db_read_slave_id(const char *resource_id)
- { return -ENODEV; }
- 
+ static inline u32 get_rx_desc_shift(__le32 *__pdesc)
+ {
+ 	return le32_get_bits(*__pdesc, GENMASK(25, 24));
 
 
 
