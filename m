@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617C0906F02
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6425F907107
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D30D01F2354A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BF871F213C4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4570F145A1E;
-	Thu, 13 Jun 2024 12:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CD41DDC5;
+	Thu, 13 Jun 2024 12:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xW2xvpPb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVJMYI3H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036DC130A47;
-	Thu, 13 Jun 2024 12:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370F4EC4;
+	Thu, 13 Jun 2024 12:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280765; cv=none; b=l0J4OuTjkhbzyXj0XIjTUXpC2YAJ5YN6jiFIOqbQGo3VbBpdSsN5nxMpmeFKlRjx2k6WVsHLUd9XA8DOwtbjKCH9avIA6PmF/wjLUvLV9VdqA2hliw5n3V2YaOOUIKQ6dxgWRlG0myOi2YmO0SPXzTma884zhE/tTGr+ISoqBOY=
+	t=1718281971; cv=none; b=e4VPonfqoyzlNM5qS44ASwiwg9UdVu3SMi+Tz53cFdIvNZf4rPbYoj0oXWnehJ2wNWSM2+xsRLiCzk1gTgdqtj1b4flu7g4mCrcxs1pg9IbIuC/Xg185DoMX3yJSYw3Audt4YHQU1iS4rHtAFP5bg7CysU+skdckT6ddxgzqH/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280765; c=relaxed/simple;
-	bh=FFy1bmYa5YOdZ4swGga2DyVv8+vbIqMmPq47/+tfILM=;
+	s=arc-20240116; t=1718281971; c=relaxed/simple;
+	bh=HkgnaXPSnHM0PeDE5RWxB2P1yggoiegIoQLVwm3k5i4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nTMxceAgEBOTDW4x9Ig1opoEfTGsoMbzhnD76BuX+EBq2y/P1hcnOIborXBuoVRNP8bm2HxUotI3uk1Eb1jU5kuTx2ygk98Are9ig3j87xthZRmzhEy4OSiBHEQ2wbAlEG3uHou63ApX0Dq7iePZF5YJYv4+kmP78M+HD8sE3II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xW2xvpPb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DECC4AF1A;
-	Thu, 13 Jun 2024 12:12:44 +0000 (UTC)
+	 MIME-Version; b=OFZKJJrycLlqdLZuuHL87fSzzFT4MNJd45oa/zZbG8+gw0ykTsbqjLJ2QyeS/rN2nZvh50RvSZioM0p2/dCslSdu9ZTde/WJt3o22NK8pLjs2iJvcINStIwUScX0T5aexTDLrUgTyCELFIbPwZTnR68MlO17f6ScrfXEBFsvS+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVJMYI3H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B255FC2BBFC;
+	Thu, 13 Jun 2024 12:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280764;
-	bh=FFy1bmYa5YOdZ4swGga2DyVv8+vbIqMmPq47/+tfILM=;
+	s=korg; t=1718281971;
+	bh=HkgnaXPSnHM0PeDE5RWxB2P1yggoiegIoQLVwm3k5i4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xW2xvpPbNlQgLvRsbt63wGOV/ZzhRc5ezo7pxGrWuPOP0quR5/t36BkseuLPasCPM
-	 FVoW64luqvCe9nw5z1ZlIiy1W7Ii4rpw2sfRHBtvXE6QQL3EGDpgwiGsRLoWh/u9gZ
-	 0favQGG5SgQBQzVMmAh1AK0BujConoOx8mVlQwSw=
+	b=qVJMYI3HzkMuOd49J/nmYglJ1/st9beOjLE3Y+vwIgcfjomu7wGmKnSZglSG82YCN
+	 3P0tSbAUDwxHF6BVq29Y1fVifK1QaeY4HRTsqrngBy5vEVW4quQTDYrNdPt37wt6dI
+	 yJyaoXIMzYpJqvF+jfHzgwcQr1yHC8W0Vbu0GGnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 026/317] crypto: ccp - drop platform ifdef checks
-Date: Thu, 13 Jun 2024 13:30:44 +0200
-Message-ID: <20240613113248.552994574@linuxfoundation.org>
+Subject: [PATCH 5.15 088/402] tcp: avoid premature drops in tcp_add_backlog()
+Date: Thu, 13 Jun 2024 13:30:45 +0200
+Message-ID: <20240613113305.569507785@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 42c2d7d02977ef09d434b1f5b354f5bc6c1027ab ]
+[ Upstream commit ec00ed472bdb7d0af840da68c8c11bff9f4d9caa ]
 
-When both ACPI and OF are disabled, the dev_vdata variable is unused:
+While testing TCP performance with latest trees,
+I saw suspect SOCKET_BACKLOG drops.
 
-drivers/crypto/ccp/sp-platform.c:33:34: error: unused variable 'dev_vdata' [-Werror,-Wunused-const-variable]
+tcp_add_backlog() computes its limit with :
 
-This is not a useful configuration, and there is not much point in saving
-a few bytes when only one of the two is enabled, so just remove all
-these ifdef checks and rely on of_match_node() and acpi_match_device()
-returning NULL when these subsystems are disabled.
+    limit = (u32)READ_ONCE(sk->sk_rcvbuf) +
+            (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
+    limit += 64 * 1024;
 
-Fixes: 6c5063434098 ("crypto: ccp - Add ACPI support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+This does not take into account that sk->sk_backlog.len
+is reset only at the very end of __release_sock().
+
+Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
+sk_rcvbuf in normal conditions.
+
+We should double sk->sk_rcvbuf contribution in the formula
+to absorb bubbles in the backlog, which happen more often
+for very fast flows.
+
+This change maintains decent protection against abuses.
+
+Fixes: c377411f2494 ("net: sk_add_backlog() take rmem_alloc into account")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240423125620.3309458-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/sp-platform.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ net/ipv4/tcp_ipv4.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/ccp/sp-platform.c b/drivers/crypto/ccp/sp-platform.c
-index 9dba52fbee997..121f9d0cb608e 100644
---- a/drivers/crypto/ccp/sp-platform.c
-+++ b/drivers/crypto/ccp/sp-platform.c
-@@ -39,44 +39,38 @@ static const struct sp_dev_vdata dev_vdata[] = {
- 	},
- };
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index e162bed1916ae..e9b1dcf2d463a 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -1817,7 +1817,7 @@ int tcp_v4_early_demux(struct sk_buff *skb)
  
--#ifdef CONFIG_ACPI
- static const struct acpi_device_id sp_acpi_match[] = {
- 	{ "AMDI0C00", (kernel_ulong_t)&dev_vdata[0] },
- 	{ },
- };
- MODULE_DEVICE_TABLE(acpi, sp_acpi_match);
--#endif
- 
--#ifdef CONFIG_OF
- static const struct of_device_id sp_of_match[] = {
- 	{ .compatible = "amd,ccp-seattle-v1a",
- 	  .data = (const void *)&dev_vdata[0] },
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, sp_of_match);
--#endif
- 
- static struct sp_dev_vdata *sp_get_of_version(struct platform_device *pdev)
+ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
  {
--#ifdef CONFIG_OF
- 	const struct of_device_id *match;
+-	u32 limit, tail_gso_size, tail_gso_segs;
++	u32 tail_gso_size, tail_gso_segs;
+ 	struct skb_shared_info *shinfo;
+ 	const struct tcphdr *th;
+ 	struct tcphdr *thtail;
+@@ -1826,6 +1826,7 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
+ 	bool fragstolen;
+ 	u32 gso_segs;
+ 	u32 gso_size;
++	u64 limit;
+ 	int delta;
  
- 	match = of_match_node(sp_of_match, pdev->dev.of_node);
- 	if (match && match->data)
- 		return (struct sp_dev_vdata *)match->data;
--#endif
+ 	/* In case all data was pulled from skb frags (in __pskb_pull_tail()),
+@@ -1922,7 +1923,13 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
+ 	__skb_push(skb, hdrlen);
+ 
+ no_coalesce:
+-	limit = (u32)READ_ONCE(sk->sk_rcvbuf) + (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
++	/* sk->sk_backlog.len is reset only at the end of __release_sock().
++	 * Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
++	 * sk_rcvbuf in normal conditions.
++	 */
++	limit = ((u64)READ_ONCE(sk->sk_rcvbuf)) << 1;
 +
- 	return NULL;
- }
++	limit += ((u32)READ_ONCE(sk->sk_sndbuf)) >> 1;
  
- static struct sp_dev_vdata *sp_get_acpi_version(struct platform_device *pdev)
- {
--#ifdef CONFIG_ACPI
- 	const struct acpi_device_id *match;
+ 	/* Only socket owner can try to collapse/prune rx queues
+ 	 * to reduce memory overhead, so add a little headroom here.
+@@ -1930,6 +1937,8 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
+ 	 */
+ 	limit += 64 * 1024;
  
- 	match = acpi_match_device(sp_acpi_match, &pdev->dev);
- 	if (match && match->driver_data)
- 		return (struct sp_dev_vdata *)match->driver_data;
--#endif
++	limit = min_t(u64, limit, UINT_MAX);
 +
- 	return NULL;
- }
- 
-@@ -222,12 +216,8 @@ static int sp_platform_resume(struct platform_device *pdev)
- static struct platform_driver sp_platform_driver = {
- 	.driver = {
- 		.name = "ccp",
--#ifdef CONFIG_ACPI
- 		.acpi_match_table = sp_acpi_match,
--#endif
--#ifdef CONFIG_OF
- 		.of_match_table = sp_of_match,
--#endif
- 	},
- 	.probe = sp_platform_probe,
- 	.remove = sp_platform_remove,
+ 	if (unlikely(sk_add_backlog(sk, skb, limit))) {
+ 		bh_unlock_sock(sk);
+ 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPBACKLOGDROP);
 -- 
 2.43.0
 
