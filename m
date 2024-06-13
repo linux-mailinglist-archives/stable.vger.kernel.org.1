@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-51432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3965C906FD4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 903C8906FB5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D93841F21767
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48E8B289427
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330E3146582;
-	Thu, 13 Jun 2024 12:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE741459F5;
+	Thu, 13 Jun 2024 12:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6G5scDA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDFC3NZb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3327145FEE;
-	Thu, 13 Jun 2024 12:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8B81459FA;
+	Thu, 13 Jun 2024 12:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281281; cv=none; b=ZyWj6RiPbatCvWllRFp3w7b0K+UM51jCjMQ6kGiQusIKXa/NuxdMr7QCN74qdSMTLca+ah+7oEJrUcTtp1TTreY9Vk6RiE5yaYRC7KTNjJfeIIENicQft+EeJVBIRoYAsPfO5tWdRj0g+R3eVhLMKMLSnwMwydwfDKT07+erstE=
+	t=1718281189; cv=none; b=N+dSqzocwRQxX+1YQ6MSDbxbr088RCwnksHwLnUZeRVp+pwqJP8YoHynnV+iJCoxQXAWj9sJxNADdFxG+EWionUqLA9cU1IUE0Ms1n+7Vw8i6ClR8NDNseAQvxYWekYTxEctgPspwsbYiXFxrNXlFnSYQ+V9li2ryE0j96plxoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281281; c=relaxed/simple;
-	bh=y4FG00olSTX5HsD6vKQDkdie5ig3MVgM1Y8xLTQ2uTk=;
+	s=arc-20240116; t=1718281189; c=relaxed/simple;
+	bh=97xPibskSST2folviux5kU2G1wRp7sV8PIRAYe0dve8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mls30yik7Ty3jTyGjMReMLmGK2Wbk4wjV3S5JKjqbl0p5JAEqwLoIDILAinZZIaX9SrygNn0Ayu9DuV8xCvK+KM9xn217rB5cADyRywKqoVRUsMSpGKxOs/s2AVwzXN7mt8vWFiEZXRsMIBqCGVo8hAaiRHJTRLcfwdClc3DTh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6G5scDA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A72FC2BBFC;
-	Thu, 13 Jun 2024 12:21:20 +0000 (UTC)
+	 MIME-Version; b=KS16dpXKIVWl1a+vsMXjz6cDYs1KVZwEXD5qzyRK9knZ0e1pcgeqJwi/5L3HKvvPEscQbqoQfLvR/A9uiy8tqtUvLvwbCje8YdnvdgX5VLYHlNa37Kjv2SvxgbMmOdkDKtn98K07q+afJ4Mqi0zS+81M12VxlYPCzunQ875SC2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDFC3NZb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D1DC2BBFC;
+	Thu, 13 Jun 2024 12:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281280;
-	bh=y4FG00olSTX5HsD6vKQDkdie5ig3MVgM1Y8xLTQ2uTk=;
+	s=korg; t=1718281189;
+	bh=97xPibskSST2folviux5kU2G1wRp7sV8PIRAYe0dve8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o6G5scDA9hO5sNrGMF21lSa8JNSF2VW4hlKPqPatXwMz425Le36zPK+PQwogjt50+
-	 LoZQv54wwQwffcg8YP389vGXJtDDnTWnFiH2C7b/bUzSXw2VdkrsoxtdrFREJqSOwO
-	 B7b6+spd51I6/xnVbMMrIAJtyud06PVSmIq+9n2k=
+	b=LDFC3NZb8gG/OIcVb0j4FM5/RNtlEBgwgrQblqD+lxZJWlTBA28h4OCIUSHYBGizi
+	 8mmZLZC2bgYwg3y4N3TEOwU/G/qnqky+m+uyXVP2Z0lHI9O1jkObPZ7E7uWVgubA5q
+	 5M+oKNzC1Y2uXVLuFULp9AVS7fdypI+zeT2HAD1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Tom Rix <trix@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 162/317] iio: pressure: dps310: support negative temperature values
-Date: Thu, 13 Jun 2024 13:33:00 +0200
-Message-ID: <20240613113253.832341347@linuxfoundation.org>
+Subject: [PATCH 5.10 163/317] fpga: region: change FPGA indirect article to an
+Date: Thu, 13 Jun 2024 13:33:01 +0200
+Message-ID: <20240613113253.870220789@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
 References: <20240613113247.525431100@linuxfoundation.org>
@@ -66,65 +65,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+From: Tom Rix <trix@redhat.com>
 
-[ Upstream commit 9dd6b32e76ff714308964cd9ec91466a343dcb8b ]
+[ Upstream commit 011c49e3703854e52c0fb88f22cf38aca1d4d514 ]
 
-The current implementation interprets negative values returned from
-`dps310_calculate_temp` as error codes.
-This has a side effect that when negative temperature values are
-calculated, they are interpreted as error.
+Change use of 'a fpga' to 'an fpga'
 
-Fix this by using the return value only for error handling and passing a
-pointer for the value.
-
-Fixes: ba6ec48e76bc ("iio: Add driver for Infineon DPS310")
-Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
-Link: https://lore.kernel.org/r/20240415105030.1161770-2-thomas.haemmerle@leica-geosystems.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Tom Rix <trix@redhat.com>
+Link: https://lore.kernel.org/r/20210608212350.3029742-10-trix@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: b7c0e1ecee40 ("fpga: region: add owner module and take its refcount")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/dps310.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/fpga/fpga-region.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
-index 1b6b9530f1662..7fdc7a0147f0e 100644
---- a/drivers/iio/pressure/dps310.c
-+++ b/drivers/iio/pressure/dps310.c
-@@ -730,7 +730,7 @@ static int dps310_read_pressure(struct dps310_data *data, int *val, int *val2,
- 	}
- }
+diff --git a/drivers/fpga/fpga-region.c b/drivers/fpga/fpga-region.c
+index c3134b89c3fe5..c5c55d2f20b92 100644
+--- a/drivers/fpga/fpga-region.c
++++ b/drivers/fpga/fpga-region.c
+@@ -33,14 +33,14 @@ struct fpga_region *fpga_region_class_find(
+ EXPORT_SYMBOL_GPL(fpga_region_class_find);
  
--static int dps310_calculate_temp(struct dps310_data *data)
-+static int dps310_calculate_temp(struct dps310_data *data, int *val)
+ /**
+- * fpga_region_get - get an exclusive reference to a fpga region
++ * fpga_region_get - get an exclusive reference to an fpga region
+  * @region: FPGA Region struct
+  *
+  * Caller should call fpga_region_put() when done with region.
+  *
+  * Return fpga_region struct if successful.
+  * Return -EBUSY if someone already has a reference to the region.
+- * Return -ENODEV if @np is not a FPGA Region.
++ * Return -ENODEV if @np is not an FPGA Region.
+  */
+ static struct fpga_region *fpga_region_get(struct fpga_region *region)
  {
- 	s64 c0;
- 	s64 t;
-@@ -746,7 +746,9 @@ static int dps310_calculate_temp(struct dps310_data *data)
- 	t = c0 + ((s64)data->temp_raw * (s64)data->c1);
+@@ -234,7 +234,7 @@ struct fpga_region
+ EXPORT_SYMBOL_GPL(fpga_region_create);
  
- 	/* Convert to milliCelsius and scale the temperature */
--	return (int)div_s64(t * 1000LL, kt);
-+	*val = (int)div_s64(t * 1000LL, kt);
-+
-+	return 0;
- }
+ /**
+- * fpga_region_free - free a FPGA region created by fpga_region_create()
++ * fpga_region_free - free an FPGA region created by fpga_region_create()
+  * @region: FPGA region
+  */
+ void fpga_region_free(struct fpga_region *region)
+@@ -257,7 +257,7 @@ static void devm_fpga_region_release(struct device *dev, void *res)
+  * @mgr: manager that programs this region
+  * @get_bridges: optional function to get bridges to a list
+  *
+- * This function is intended for use in a FPGA region driver's probe function.
++ * This function is intended for use in an FPGA region driver's probe function.
+  * After the region driver creates the region struct with
+  * devm_fpga_region_create(), it should register it with fpga_region_register().
+  * The region driver's remove function should call fpga_region_unregister().
+@@ -291,7 +291,7 @@ struct fpga_region
+ EXPORT_SYMBOL_GPL(devm_fpga_region_create);
  
- static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
-@@ -768,11 +770,10 @@ static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
- 		if (rc)
- 			return rc;
+ /**
+- * fpga_region_register - register a FPGA region
++ * fpga_region_register - register an FPGA region
+  * @region: FPGA region
+  *
+  * Return: 0 or -errno
+@@ -303,10 +303,10 @@ int fpga_region_register(struct fpga_region *region)
+ EXPORT_SYMBOL_GPL(fpga_region_register);
  
--		rc = dps310_calculate_temp(data);
--		if (rc < 0)
-+		rc = dps310_calculate_temp(data, val);
-+		if (rc)
- 			return rc;
- 
--		*val = rc;
- 		return IIO_VAL_INT;
- 
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+ /**
+- * fpga_region_unregister - unregister a FPGA region
++ * fpga_region_unregister - unregister an FPGA region
+  * @region: FPGA region
+  *
+- * This function is intended for use in a FPGA region driver's remove function.
++ * This function is intended for use in an FPGA region driver's remove function.
+  */
+ void fpga_region_unregister(struct fpga_region *region)
+ {
 -- 
 2.43.0
 
