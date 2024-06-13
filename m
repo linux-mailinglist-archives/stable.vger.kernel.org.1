@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-50607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 229B9906B84
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79C5C906C64
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D2381C21E6F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 238BE1F21A74
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1F0143C5C;
-	Thu, 13 Jun 2024 11:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C14144313;
+	Thu, 13 Jun 2024 11:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0/XPHNo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SS0gMCb6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7ED143C59;
-	Thu, 13 Jun 2024 11:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C8F14430E;
+	Thu, 13 Jun 2024 11:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278861; cv=none; b=Iw8qlUvBGtV+16W2u5kwPgVhrabMy8NU7aBSj9BfgPra7Z4bveMk8hzr+mK/PVGyvK8gUo6CETvMyGGfj+9w2dVKw9mXpXteq8Yqlq0HVsW+ypo4I6GCELKPmDaI8KkTfAs44jBg+eDGVJGgl139naZ5QTRuh8YxGsF0DgR1FSU=
+	t=1718279266; cv=none; b=HQMKHUqf1SBybNw81EtAsyUbBou+4IymliDGLTndwJwMDLQtIbinRpFWKxUAc4vRyCLrF1MIAhMbBdZ85ttpbWZDAZAu/ZAfBcgdXGT2WgjtuTQps6TJ9TzaDC7E4g0TxovUhgcgClkthUKKS0LB7LRBIG9yIIT19yEl5SU+xNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278861; c=relaxed/simple;
-	bh=DLwW2lpaNBiQrGGNC2cj2STjmF9MCWM0Ug5jQxKJghY=;
+	s=arc-20240116; t=1718279266; c=relaxed/simple;
+	bh=vcQOQbXAj6MtgHf5FV0jFm9rA4KsgajSjYQ9myglI0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=afMvpTUZ8drWyxICryqDcT77f9b3iUBZrqnha6MWbpEC7daFU+CVEzuWFwStKtQAMgw3l1VE2oBY7L6GZ2TrWTSRwwtYgUeObJ0VBxiKNsdXNnWS/Jca9Xz2RJwLFMdYYiZ8sFQZkjzOBHyG69twCa7ZkHboRthDosKdQ1nKmmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0/XPHNo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42EEBC2BBFC;
-	Thu, 13 Jun 2024 11:41:01 +0000 (UTC)
+	 MIME-Version; b=TjgERyofvIibb7wgnrU/jVEJQ7G5OzIMpnIPfH+5FpBsGmZLhlpkG70Lzu2sFkAGsblOS+EyiLrlx0eIunSqFqGQT5e7BZR+9U6WY1PphLcN1Gno/Wih6wY0stJLzz6qdPlY/lAAF+pk9j7Aw7MT1x3z28LVtNIbbTpxYZTwfDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SS0gMCb6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17A5C2BBFC;
+	Thu, 13 Jun 2024 11:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278861;
-	bh=DLwW2lpaNBiQrGGNC2cj2STjmF9MCWM0Ug5jQxKJghY=;
+	s=korg; t=1718279266;
+	bh=vcQOQbXAj6MtgHf5FV0jFm9rA4KsgajSjYQ9myglI0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i0/XPHNoSltfRgsY9zfmvI+qfQMoFR3PrPwT5FHg065tpesWG+kdDaLXIRgE1bLOh
-	 y/gqvC2FATL/BKElfMX5EQqoue1VHrRDR8nk9UADxck5teooNhyDQ7nztqWuyur0S6
-	 FnETt0klnJpGMRJgM73yDG5+SpFkku7+X6GW+q2s=
+	b=SS0gMCb6UUw1Hd5+qYeJjtE9vS3kFBsDE8K6VkLi9s0H+/pzjyXwbGQpG0NnMq96H
+	 GkVxMOiMFLrAj3uQDQyBCkb+nQa4y05Lo2HmIwUKdho65A0/9ogEE16YCha3m3ifN+
+	 Bby/nv/sWizeX61qE2bqM3UiBxeNLzIX1k3AR9/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 095/213] serial: max3100: Fix bitwise types
+	Lalith Rajendran <lalithkraj@chromium.org>,
+	chrome-platform@lists.linux.dev,
+	Karthikeyan Ramasubramanian <kramasub@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>
+Subject: [PATCH 6.9 018/157] platform/chrome: cros_ec: Handle events during suspend after resume completion
 Date: Thu, 13 Jun 2024 13:32:23 +0200
-Message-ID: <20240613113231.674180391@linuxfoundation.org>
+Message-ID: <20240613113228.111203523@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Karthikeyan Ramasubramanian <kramasub@chromium.org>
 
-[ Upstream commit e60955dbecb97f080848a57524827e2db29c70fd ]
+commit 2fbe479c0024e1c6b992184a799055e19932aa48 upstream.
 
-Sparse is not happy about misuse of bitwise types:
+Commit 47ea0ddb1f56 ("platform/chrome: cros_ec_lpc: Separate host
+command and irq disable") re-ordered the resume sequence. Before that
+change, cros_ec resume sequence is:
+1) Enable IRQ
+2) Send resume event
+3) Handle events during suspend
 
-  .../max3100.c:194:13: warning: incorrect type in assignment (different base types)
-  .../max3100.c:194:13:    expected unsigned short [addressable] [usertype] etx
-  .../max3100.c:194:13:    got restricted __be16 [usertype]
-  .../max3100.c:202:15: warning: cast to restricted __be16
+After commit 47ea0ddb1f56 ("platform/chrome: cros_ec_lpc: Separate host
+command and irq disable"), cros_ec resume sequence is:
+1) Enable IRQ
+2) Handle events during suspend
+3) Send resume event.
 
-Fix this by choosing proper types for the respective variables.
+This re-ordering leads to delayed handling of any events queued between
+items 2) and 3) with the updated sequence. Also in certain platforms, EC
+skips triggering interrupt for certain events eg. mkbp events until the
+resume event is received. Such events are stuck in the host event queue
+indefinitely. This change puts back the original order to avoid any
+delay in handling the pending events.
 
-Fixes: 7831d56b0a35 ("tty: MAX3100")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240402195306.269276-4-andriy.shevchenko@linux.intel.com
+Fixes: 47ea0ddb1f56 ("platform/chrome: cros_ec_lpc: Separate host command and irq disable")
+Cc: <stable@vger.kernel.org>
+Cc: Lalith Rajendran <lalithkraj@chromium.org>
+Cc: <chrome-platform@lists.linux.dev>
+Signed-off-by: Karthikeyan Ramasubramanian <kramasub@chromium.org>
+Link: https://lore.kernel.org/r/20240429121343.v2.1.If2e0cef959f1f6df9f4d1ab53a97c54aa54208af@changeid
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max3100.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/platform/chrome/cros_ec.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
-index c1ee88f530334..17b6f4a872d6a 100644
---- a/drivers/tty/serial/max3100.c
-+++ b/drivers/tty/serial/max3100.c
-@@ -45,6 +45,9 @@
- #include <linux/freezer.h>
- #include <linux/tty.h>
- #include <linux/tty_flip.h>
-+#include <linux/types.h>
-+
-+#include <asm/unaligned.h>
- 
- #include <linux/serial_max3100.h>
- 
-@@ -191,7 +194,7 @@ static void max3100_timeout(struct timer_list *t)
- static int max3100_sr(struct max3100_port *s, u16 tx, u16 *rx)
+--- a/drivers/platform/chrome/cros_ec.c
++++ b/drivers/platform/chrome/cros_ec.c
+@@ -432,6 +432,12 @@ static void cros_ec_send_resume_event(st
+ void cros_ec_resume_complete(struct cros_ec_device *ec_dev)
  {
- 	struct spi_message message;
--	u16 etx, erx;
-+	__be16 etx, erx;
- 	int status;
- 	struct spi_transfer tran = {
- 		.tx_buf = &etx,
--- 
-2.43.0
-
+ 	cros_ec_send_resume_event(ec_dev);
++
++	/*
++	 * Let the mfd devices know about events that occur during
++	 * suspend. This way the clients know what to do with them.
++	 */
++	cros_ec_report_events_during_suspend(ec_dev);
+ }
+ EXPORT_SYMBOL(cros_ec_resume_complete);
+ 
+@@ -442,12 +448,6 @@ static void cros_ec_enable_irq(struct cr
+ 
+ 	if (ec_dev->wake_enabled)
+ 		disable_irq_wake(ec_dev->irq);
+-
+-	/*
+-	 * Let the mfd devices know about events that occur during
+-	 * suspend. This way the clients know what to do with them.
+-	 */
+-	cros_ec_report_events_during_suspend(ec_dev);
+ }
+ 
+ /**
+@@ -475,8 +475,8 @@ EXPORT_SYMBOL(cros_ec_resume_early);
+  */
+ int cros_ec_resume(struct cros_ec_device *ec_dev)
+ {
+-	cros_ec_enable_irq(ec_dev);
+-	cros_ec_send_resume_event(ec_dev);
++	cros_ec_resume_early(ec_dev);
++	cros_ec_resume_complete(ec_dev);
+ 	return 0;
+ }
+ EXPORT_SYMBOL(cros_ec_resume);
 
 
 
