@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-50964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 568AA906D9E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C20906C9B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05D56283479
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E4471F2207B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995BF145B00;
-	Thu, 13 Jun 2024 11:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7914A145345;
+	Thu, 13 Jun 2024 11:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wx0Kvumc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGX9zFAg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5844D145A12;
-	Thu, 13 Jun 2024 11:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3757A143870;
+	Thu, 13 Jun 2024 11:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279906; cv=none; b=DsX3IaIp5+GHs2jnT/20tSLuzj4CDD0Zk6N0gpIU+FiZm+IjEnjpG7L2ZRHucg5bpvcmTgLvonMMXETZixOlXcBelEfNY88cQOhNnn9/Hgt3S+VjA0wz4+X1215A7rTmmagXYlMRPI4kOvqIUKbs0OI6pscKyAUjPaZ7OrqnH8Y=
+	t=1718279361; cv=none; b=hiEgZ1qDBT/QC7MgOfYXMtD+PlVGlFTj9YXs0xOM3tmqBFBVYoDXLZAAJzxx/G3Yr2/EWfxXYngWMtFULDAJnM8FDBjHTernE3VGTSsZ5DtMNyTQe3btV3X21V27KNZztiDvNzKdvqDdh5Or4yH5QbNVKRtOQbb9p8ffw41HrJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279906; c=relaxed/simple;
-	bh=cGZKsdNgdviCV9yNBoUugDx2SuyyKWR+ZICm/wDIw8I=;
+	s=arc-20240116; t=1718279361; c=relaxed/simple;
+	bh=4oNfV7tjy4FTwdpevjkID6RsAVRndwpg9QVMDCFTGPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QD0+IAvv/4nH1tpGMWxGE7n57hmQ4e2fl4TDfHxPVDFc26HW3Z2cHhkyIDELImHXBpXbhATNmLLkWxteKyg6Q99ts0J7a8J+fjezOCctE/YI84A2MRtKpnRa/tLOQvNIZfXe5IcYpSD2McooYjuSEWImxDyqAHj3/DVPL+jeSyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wx0Kvumc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4649C2BBFC;
-	Thu, 13 Jun 2024 11:58:25 +0000 (UTC)
+	 MIME-Version; b=AT0Z3pbuHAW+6gUnVDlb4GzfqZNGDnx5xL2h/9sWhocavJHCMgmOkJvGygLh7Qv8bqgCJ1b9evtyRddVuwyEcZRlKzPa6LZvxY3bKxYHhfKRXM0XcKQS97fTxJ3wFAJzOrM/4lx8PD8b3UprHB3KD35GCPZwnLnI8LyDz/psd84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGX9zFAg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52736C32786;
+	Thu, 13 Jun 2024 11:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279906;
-	bh=cGZKsdNgdviCV9yNBoUugDx2SuyyKWR+ZICm/wDIw8I=;
+	s=korg; t=1718279360;
+	bh=4oNfV7tjy4FTwdpevjkID6RsAVRndwpg9QVMDCFTGPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wx0KvumczyIn4oUHT3J1Lutsp//JMdXkgodJRWz9AP4uKdKS0E2kE6uxq0l+4d/VO
-	 eTyOAPETWxuI2p1DuS8i7wjdTh2DWg40tDtP9l0e0nstL2TtQYBryc04xsmormrhwj
-	 V9lJP9njaFfs2ByB0Rrfvfv9qlFwTVC1GVjjcvKo=
+	b=jGX9zFAgR2dUKH4dLZ3GEndg5rdwqv3nsh9sk6XjctOAnjLoy8gBXGCPYtcSNiHy3
+	 KQu89sR+snVgXBUm/odyBAEQaVJ5jXrDQHu0XP4dirR/2bWXiFSbRdOQ9euO018bXp
+	 +aIc/Znl3bQF5asNHmr+aTyU+JRPmISseQ8mmBjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hulk Robot <hulkci@huawei.com>,
-	YueHaibing <yuehaibing@huawei.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 076/202] platform/x86: wmi: Make two functions static
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.9 049/157] mmc: sdhci-acpi: Add quirk to enable pull-up on the card-detect GPIO on Asus T100TA
 Date: Thu, 13 Jun 2024 13:32:54 +0200
-Message-ID: <20240613113230.706885617@linuxfoundation.org>
+Message-ID: <20240613113229.322505739@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YueHaibing <yuehaibing@huawei.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 713df99a9ef0133c09ad05bac10cf7d0163cd272 ]
+commit 431946c0f640c93421439a6c928efb3152c035a4 upstream.
 
-Fix sparse warnings:
+The card-detect GPIO for the microSD slot on Asus T100TA / T100TAM models
+stopped working under Linux after commit 6fd03f024828 ("gpiolib: acpi:
+support bias pull disable").
 
-drivers/platform/x86/xiaomi-wmi.c:26:5: warning: symbol 'xiaomi_wmi_probe' was not declared. Should it be static?
-drivers/platform/x86/xiaomi-wmi.c:51:6: warning: symbol 'xiaomi_wmi_notify' was not declared. Should it be static?
+The GPIO in question is connected to a mechanical switch in the slot
+which shorts the pin to GND when a card is inserted.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Stable-dep-of: 290680c2da80 ("platform/x86: xiaomi-wmi: Fix race condition when reporting key events")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The GPIO pin correctly gets configured with a 20K pull-up by the BIOS,
+but there is a bug in the DSDT where the GpioInt for the card-detect is
+configured with a PullNone setting:
+
+    GpioInt (Edge, ActiveBoth, SharedAndWake, PullNone, 0x2710,
+        "\\_SB.GPO0", 0x00, ResourceConsumer, ,
+        )
+        {   // Pin list
+        0x0026
+        }
+
+Linux now actually honors the PullNone setting and disables the 20K pull-up
+configured by the BIOS.
+
+Add a new DMI_QUIRK_SD_CD_ENABLE_PULL_UP quirk which when set calls
+mmc_gpiod_set_cd_config() to re-enable the pull-up and set this for
+the Asus T100TA models to fix this.
+
+Fixes: 6fd03f024828 ("gpiolib: acpi: support bias pull disable")
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240410191639.526324-7-hdegoede@redhat.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/xiaomi-wmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-acpi.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/platform/x86/xiaomi-wmi.c b/drivers/platform/x86/xiaomi-wmi.c
-index 601cbb282f543..54a2546bb93bf 100644
---- a/drivers/platform/x86/xiaomi-wmi.c
-+++ b/drivers/platform/x86/xiaomi-wmi.c
-@@ -23,7 +23,7 @@ struct xiaomi_wmi {
- 	unsigned int key_code;
+--- a/drivers/mmc/host/sdhci-acpi.c
++++ b/drivers/mmc/host/sdhci-acpi.c
+@@ -10,6 +10,7 @@
+ #include <linux/export.h>
+ #include <linux/module.h>
+ #include <linux/device.h>
++#include <linux/pinctrl/pinconf-generic.h>
+ #include <linux/platform_device.h>
+ #include <linux/ioport.h>
+ #include <linux/io.h>
+@@ -81,6 +82,7 @@ enum {
+ 	DMI_QUIRK_RESET_SD_SIGNAL_VOLT_ON_SUSP			= BIT(0),
+ 	DMI_QUIRK_SD_NO_WRITE_PROTECT				= BIT(1),
+ 	DMI_QUIRK_SD_CD_ACTIVE_HIGH				= BIT(2),
++	DMI_QUIRK_SD_CD_ENABLE_PULL_UP				= BIT(3),
  };
  
--int xiaomi_wmi_probe(struct wmi_device *wdev, const void *context)
-+static int xiaomi_wmi_probe(struct wmi_device *wdev, const void *context)
- {
- 	struct xiaomi_wmi *data;
+ static inline void *sdhci_acpi_priv(struct sdhci_acpi_host *c)
+@@ -735,6 +737,14 @@ static const struct dmi_system_id sdhci_
+ 		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
+ 	},
+ 	{
++		/* Asus T100TA, needs pull-up for cd but DSDT GpioInt has NoPull set */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "T100TA"),
++		},
++		.driver_data = (void *)DMI_QUIRK_SD_CD_ENABLE_PULL_UP,
++	},
++	{
+ 		/*
+ 		 * The Lenovo Miix 320-10ICR has a bug in the _PS0 method of
+ 		 * the SHC1 ACPI device, this bug causes it to reprogram the
+@@ -908,6 +918,9 @@ static int sdhci_acpi_probe(struct platf
+ 				goto err_free;
+ 			dev_warn(dev, "failed to setup card detect gpio\n");
+ 			c->use_runtime_pm = false;
++		} else if (quirks & DMI_QUIRK_SD_CD_ENABLE_PULL_UP) {
++			mmc_gpiod_set_cd_config(host->mmc,
++						PIN_CONF_PACKED(PIN_CONFIG_BIAS_PULL_UP, 20000));
+ 		}
  
-@@ -48,7 +48,7 @@ int xiaomi_wmi_probe(struct wmi_device *wdev, const void *context)
- 	return input_register_device(data->input_dev);
- }
- 
--void xiaomi_wmi_notify(struct wmi_device *wdev, union acpi_object *dummy)
-+static void xiaomi_wmi_notify(struct wmi_device *wdev, union acpi_object *dummy)
- {
- 	struct xiaomi_wmi *data;
- 
--- 
-2.43.0
-
+ 		if (quirks & DMI_QUIRK_RESET_SD_SIGNAL_VOLT_ON_SUSP)
 
 
 
