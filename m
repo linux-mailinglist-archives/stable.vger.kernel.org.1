@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-50905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D3A906D5E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2B7906B6D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:40:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70D982837DD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCD101F216C4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9641474A7;
-	Thu, 13 Jun 2024 11:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F74142E99;
+	Thu, 13 Jun 2024 11:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09MXqJVy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcQoInlT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C0C146D7E;
-	Thu, 13 Jun 2024 11:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76433143883;
+	Thu, 13 Jun 2024 11:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279732; cv=none; b=a9yr1Nr2AutavZ7nYvWZKPwjzrOhL+YmYfA/PNXrszvRdcsRyMrUPTqpfHWgy1kAsNeplJ4T+Ie8H84daUFDeFFVwRHb0LY958wB9RiulfKz+zyCOQX1FDXqJSuHOzaisbmk5vKSYjfs91VX6gV+Bx0drAYA3In1IZdrhqf+huo=
+	t=1718278828; cv=none; b=W24ke/qjnl4S6H8ey6oIZxh1GIHQI+mkZ2nekJxFa5oxDZ6FxiwHp/Yp2DwW0KZ8pf4hyFKdYGnGj0M4Kxe98k+Lu19QM4Ef5nF8mW//nrktL19trazprcCRoCLX1ORoepMlL+hw1VeME4uPws3EZiGk+jzXAs44LNKSV3h/x58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279732; c=relaxed/simple;
-	bh=ffTcdqgLz7rpvb4pWZSzDnlBrJ8VmWAoI5knQZGo+S4=;
+	s=arc-20240116; t=1718278828; c=relaxed/simple;
+	bh=1CZ8CVJQ2PKbjhqjTMOf8XFLi6nS0KqtVCYp8+U+00o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQuaPw+R9adeshuBBvKZrMwRc4L3v+kxcy/own7qEIjS6sND9adKatXCMsDcTsEqM08PZMEgBJQOVrTdlO6yYb6d35hHBoomRyXzthe/imIIQ7wjbm0fq9cSQ36ZNtdW2pHLrxBiP0bnBhlwNcXua1wRHkxD8icRGL2g9kl4ESs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09MXqJVy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F33C2BBFC;
-	Thu, 13 Jun 2024 11:55:31 +0000 (UTC)
+	 MIME-Version; b=eW3+z3zsgEFaTVWyOk+3PCG5CWHA7fEy9ZGmQBl+F1PoDIsiTG2DlX4B3WidHLWXRaz80wVz9wM7r6vyob87qrH0xXhjyIsX1P7u4cLvMPBKRtcPuf/VH6T5QMU0ErBdBVDfG1qMGyn9Jeu9TwriM79rBWzkEituV7lNez2ZAjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcQoInlT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60E0C4AF4D;
+	Thu, 13 Jun 2024 11:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279732;
-	bh=ffTcdqgLz7rpvb4pWZSzDnlBrJ8VmWAoI5knQZGo+S4=;
+	s=korg; t=1718278828;
+	bh=1CZ8CVJQ2PKbjhqjTMOf8XFLi6nS0KqtVCYp8+U+00o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=09MXqJVydN5bss9k7I2Z66FLzQblhNUefJUcNpwBmg/wTqfI3SXbwku8w/8UyKhLF
-	 8s6Qr3IUMDE7zeYi+iRod4nN226+clpdm/781ubRP2uXqVLtcu34+IvgP2SKrQ5SlB
-	 uiDd0hdJ4gUHXzlKZJw8+Rsqz2zn5cudSOimipvE=
+	b=CcQoInlTAVWKmJEb/IHB+GDEKU+OAXbjBrGk3WcKkIsadNP3caiJCYjxkT43kn4vl
+	 7lG81gbg7Zm+6nkebWkO62JHguOw47yuY6eIAx450mp/Mpwb+hygazx6mnlt9L/dye
+	 qN44WAYw/zIjsNXc19Ywkd3L/N1kwgSiNIKN8+L8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	j51569436@gmail.com,
-	Daniel Starke <daniel.starke@siemens.com>
-Subject: [PATCH 5.4 002/202] tty: n_gsm: fix possible out-of-bounds in gsm0_receive()
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 052/213] scsi: qedf: Ensure the copied buf is NUL terminated
 Date: Thu, 13 Jun 2024 13:31:40 +0200
-Message-ID: <20240613113227.857556048@linuxfoundation.org>
+Message-ID: <20240613113230.016883948@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Starke <daniel.starke@siemens.com>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-commit 47388e807f85948eefc403a8a5fdc5b406a65d5a upstream.
+[ Upstream commit d0184a375ee797eb657d74861ba0935b6e405c62 ]
 
-Assuming the following:
-- side A configures the n_gsm in basic option mode
-- side B sends the header of a basic option mode frame with data length 1
-- side A switches to advanced option mode
-- side B sends 2 data bytes which exceeds gsm->len
-  Reason: gsm->len is not used in advanced option mode.
-- side A switches to basic option mode
-- side B keeps sending until gsm0_receive() writes past gsm->buf
-  Reason: Neither gsm->state nor gsm->len have been reset after
-  reconfiguration.
+Currently, we allocate a count-sized kernel buffer and copy count from
+userspace to that buffer. Later, we use kstrtouint on this buffer but we
+don't ensure that the string is terminated inside the buffer, this can
+lead to OOB read when using kstrtouint. Fix this issue by using
+memdup_user_nul instead of memdup_user.
 
-Fix this by changing gsm->count to gsm->len comparison from equal to less
-than. Also add upper limit checks against the constant MAX_MRU in
-gsm0_receive() and gsm1_receive() to harden against memory corruption of
-gsm->len and gsm->mru.
-
-All other checks remain as we still need to limit the data according to the
-user configuration and actual payload size.
-
-Reported-by: j51569436@gmail.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218708
-Tested-by: j51569436@gmail.com
-Fixes: e1eaea46bb40 ("tty: n_gsm line discipline")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
-Link: https://lore.kernel.org/r/20240424054842.7741-1-daniel.starke@siemens.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-4-f1f1b53a10f4@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_gsm.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/scsi/qedf/qedf_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -1974,8 +1974,12 @@ static void gsm0_receive(struct gsm_mux
- 		break;
- 	case GSM_DATA:		/* Data */
- 		gsm->buf[gsm->count++] = c;
--		if (gsm->count == gsm->len)
-+		if (gsm->count >= MAX_MRU) {
-+			gsm->bad_size++;
-+			gsm->state = GSM_SEARCH;
-+		} else if (gsm->count >= gsm->len) {
- 			gsm->state = GSM_FCS;
-+		}
- 		break;
- 	case GSM_FCS:		/* FCS follows the packet */
- 		gsm->received_fcs = c;
-@@ -2055,7 +2059,7 @@ static void gsm1_receive(struct gsm_mux
- 		gsm->state = GSM_DATA;
- 		break;
- 	case GSM_DATA:		/* Data */
--		if (gsm->count > gsm->mru) {	/* Allow one for the FCS */
-+		if (gsm->count > gsm->mru || gsm->count > MAX_MRU) {	/* Allow one for the FCS */
- 			gsm->state = GSM_OVERRUN;
- 			gsm->bad_size++;
- 		} else
+diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
+index 84f1ddcfbb218..4636c045e1e3e 100644
+--- a/drivers/scsi/qedf/qedf_debugfs.c
++++ b/drivers/scsi/qedf/qedf_debugfs.c
+@@ -190,7 +190,7 @@ qedf_dbg_debug_cmd_write(struct file *filp, const char __user *buffer,
+ 	if (!count || *ppos)
+ 		return 0;
+ 
+-	kern_buf = memdup_user(buffer, count);
++	kern_buf = memdup_user_nul(buffer, count);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
+ 
+-- 
+2.43.0
+
 
 
 
