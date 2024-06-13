@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-51073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6C3906E36
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C905B90704C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78EAF1C229F3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71B7C1F23055
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51856148FE5;
-	Thu, 13 Jun 2024 12:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8752144D2C;
+	Thu, 13 Jun 2024 12:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMXnNuIc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XF36S+7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C78D146597;
-	Thu, 13 Jun 2024 12:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A1F143861;
+	Thu, 13 Jun 2024 12:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280228; cv=none; b=rx3f6ixu4NJ23OWJMZ1QNfrLKAt2V8Ne5sX88rUbmuhFkgkTQlr1U7+y2xBbIp2KDyATpWPi8IsYeo6jear1nmTFqNQFodSZJ/MUZol7h9E40QyWrTNMGCdKV/QQqEc5meqWWYiSn+pFE/irvCFDQhc2xuilUfOefoZD8zkr24o=
+	t=1718281545; cv=none; b=Z+texx1eLw7efhTg3ltSVV55knT5YfzSDyeyWbd+ZHKvZ5Oz/0kCoLRECAoJPgx4xNn0csIQdFvJNYh532clfjd2a0k8dwgyoKvryNY6bXJt+d1vxnDI4Y/QG4TdcmkPwPDn5dAGsy3nj1tHOY4Wx1is6U6sqOX75HU+Ovm7cYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280228; c=relaxed/simple;
-	bh=mrFdc0MtG5V7lKHJbTehSRf4NQHoKLCJtuSsrqFXyeo=;
+	s=arc-20240116; t=1718281545; c=relaxed/simple;
+	bh=x876JyfMDwrcxP87hIjUVbHZItOEGXn7JsX2PIcZVuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JWuYybYkdtMhpc3joXtKh9w1dsXwgjFbOaKTVp8HqR2+O6wa0GwePb1w5kmg6gEVNsegxlBzGHiKCrBbnsLuXWNnvt50yFNrPNPR8uKj7wS8tuLHjaK20n+m4WRZTyJAhbboIbEfTnhGFIoiLXQxVwbbw4lND/+1XM4djvnByZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMXnNuIc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87735C4AF1A;
-	Thu, 13 Jun 2024 12:03:47 +0000 (UTC)
+	 MIME-Version; b=p2Oa/ds/FsCP8+laGajGQh+8a+SaMy0SXDp8HJmOkBdSXbYzSKxP7V6qeEAwBrKMGnRVeFnRoBSdmlB3MP+Xos0J1YCWbE9TzDZv0i1ooUUwFWZoXJ7SoVbEIpAcyjQxeR6a4goFfvUjiwOuIz7MKnimcKXJp3u9mVFsgQxk1zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XF36S+7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0FEEC2BBFC;
+	Thu, 13 Jun 2024 12:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280227;
-	bh=mrFdc0MtG5V7lKHJbTehSRf4NQHoKLCJtuSsrqFXyeo=;
+	s=korg; t=1718281545;
+	bh=x876JyfMDwrcxP87hIjUVbHZItOEGXn7JsX2PIcZVuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GMXnNuIcGrSipSk7Z9P1EfG2en0xiJ85PedGLU3VwTb4Uq2zFxX+UJ8pEh7wAKS1l
-	 kBP+KFwgXAvuIpzb9u7f6Fp9N4aOlb15IzJo38XuvOriwTpfn79hn08AXrtUi5bFwZ
-	 k9pMVjge6bXBgvCkvyMkzwmU+eGhlrIh2KJHYRHQ=
+	b=XF36S+7OrMOmm2s6ccKYHRvUnrVcDhyRZzP3m6dx90vIU2MkmrGM77vKff2h5anyu
+	 9bofWoP5ZxN2WXTT8+Horm19d/Sh8UGIf/KVTgtXhmhNLUvXLMdGBb/FwmnXX4jOBv
+	 +mSfFxXBbF01B86clQvYBGEfba7okotOdIz5cGeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cai Xinchen <caixinchen1@huawei.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.4 184/202] fbdev: savage: Handle err return when savagefb_check_var failed
+	Zheng Zhang <zheng.zhang@email.ucr.edu>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 5.10 264/317] media: cec: core: add adap_nb_transmit_canceled() callback
 Date: Thu, 13 Jun 2024 13:34:42 +0200
-Message-ID: <20240613113234.839027124@linuxfoundation.org>
+Message-ID: <20240613113257.758975088@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cai Xinchen <caixinchen1@huawei.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit 6ad959b6703e2c4c5d7af03b4cfd5ff608036339 upstream.
+commit da53c36ddd3f118a525a04faa8c47ca471e6c467 upstream.
 
-The commit 04e5eac8f3ab("fbdev: savage: Error out if pixclock equals zero")
-checks the value of pixclock to avoid divide-by-zero error. However
-the function savagefb_probe doesn't handle the error return of
-savagefb_check_var. When pixclock is 0, it will cause divide-by-zero error.
+A potential deadlock was found by Zheng Zhang with a local syzkaller
+instance.
 
-Fixes: 04e5eac8f3ab ("fbdev: savage: Error out if pixclock equals zero")
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+The problem is that when a non-blocking CEC transmit is canceled by calling
+cec_data_cancel, that in turn can call the high-level received() driver
+callback, which can call cec_transmit_msg() to transmit a new message.
+
+The cec_data_cancel() function is called with the adap->lock mutex held,
+and cec_transmit_msg() tries to take that same lock.
+
+The root cause is that the received() callback can either be used to pass
+on a received message (and then adap->lock is not held), or to report a
+canceled transmit (and then adap->lock is held).
+
+This is confusing, so create a new low-level adap_nb_transmit_canceled
+callback that reports back that a non-blocking transmit was canceled.
+
+And the received() callback is only called when a message is received,
+as was the case before commit f9d0ecbf56f4 ("media: cec: correctly pass
+on reply results") complicated matters.
+
+Reported-by: Zheng Zhang <zheng.zhang@email.ucr.edu>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: f9d0ecbf56f4 ("media: cec: correctly pass on reply results")
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/savage/savagefb_driver.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/media/cec/core/cec-adap.c |    4 ++--
+ include/media/cec.h               |    6 ++++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/video/fbdev/savage/savagefb_driver.c
-+++ b/drivers/video/fbdev/savage/savagefb_driver.c
-@@ -2273,7 +2273,10 @@ static int savagefb_probe(struct pci_dev
- 	if (info->var.xres_virtual > 0x1000)
- 		info->var.xres_virtual = 0x1000;
- #endif
--	savagefb_check_var(&info->var, info);
-+	err = savagefb_check_var(&info->var, info);
-+	if (err)
-+		goto failed;
-+
- 	savagefb_set_fix(info);
+--- a/drivers/media/cec/core/cec-adap.c
++++ b/drivers/media/cec/core/cec-adap.c
+@@ -397,8 +397,8 @@ static void cec_data_cancel(struct cec_d
+ 	cec_queue_msg_monitor(adap, &data->msg, 1);
  
- 	/*
+ 	if (!data->blocking && data->msg.sequence)
+-		/* Allow drivers to process the message first */
+-		call_op(adap, received, &data->msg);
++		/* Allow drivers to react to a canceled transmit */
++		call_void_op(adap, adap_nb_transmit_canceled, &data->msg);
+ 
+ 	cec_data_completed(data);
+ }
+--- a/include/media/cec.h
++++ b/include/media/cec.h
+@@ -120,14 +120,16 @@ struct cec_adap_ops {
+ 	int (*adap_log_addr)(struct cec_adapter *adap, u8 logical_addr);
+ 	int (*adap_transmit)(struct cec_adapter *adap, u8 attempts,
+ 			     u32 signal_free_time, struct cec_msg *msg);
++	void (*adap_nb_transmit_canceled)(struct cec_adapter *adap,
++					  const struct cec_msg *msg);
+ 	void (*adap_status)(struct cec_adapter *adap, struct seq_file *file);
+ 	void (*adap_free)(struct cec_adapter *adap);
+ 
+-	/* Error injection callbacks */
++	/* Error injection callbacks, called without adap->lock held */
+ 	int (*error_inj_show)(struct cec_adapter *adap, struct seq_file *sf);
+ 	bool (*error_inj_parse_line)(struct cec_adapter *adap, char *line);
+ 
+-	/* High-level CEC message callback */
++	/* High-level CEC message callback, called without adap->lock held */
+ 	int (*received)(struct cec_adapter *adap, struct cec_msg *msg);
+ };
+ 
 
 
 
