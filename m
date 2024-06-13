@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-51927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84791907244
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B90A907061
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 319011F216F0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F2BA1C23F1A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5A61EEE0;
-	Thu, 13 Jun 2024 12:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44CCF6EB56;
+	Thu, 13 Jun 2024 12:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhXc7tbW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIRj83zZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24991EB30;
-	Thu, 13 Jun 2024 12:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022786AFAE;
+	Thu, 13 Jun 2024 12:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282725; cv=none; b=lqNdO6+L+1tSkSOu6I8chj5LCrpLx31zPpsQjKHoNaPRENBYC7AGH4zjxn5NMTyB9GtR/8BzOOM5G5GvUJm/lIdFyJXt3BoiUkLyMXi3HmFd9+ogLmLekeWmla62MykVTTI68mmPIXtcUNevqKKmlRhXrUXtjGBhw5Fq/GSRAow=
+	t=1718281607; cv=none; b=IJDlR13QCMADmT84AUgHCXxqM7Xze6PZrKyyG9aWC0ZCdJ+Fc0OtlaXPakzFIbAlbyJ4fX0cxNIzzmCpkO64J7fdVTT8y1rxGd5sKzqrEbZalOokT5GMYvTumiygFgbu3z4l0xhe+Re9hIbiyTxLZn5mRS23k+E+7TDZSnckajQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282725; c=relaxed/simple;
-	bh=1nOrWV+IjFBfL7zU/PW5GrTfEGNNxSilD9cDfv2PE+0=;
+	s=arc-20240116; t=1718281607; c=relaxed/simple;
+	bh=ILGnX9vduPip0RFNgUNeXdlRv3TpS5z4QZaowiMml3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dp3j8zrWQrmF2CxwC2UvsdPDL4keWausZQNq7XcbkEYUr4OOREPViEaWvfnhlKn+93qLOCP/Z3N3X/wjAoCIpkWplWKE4x57QOCOMcXlVVG/Tq3UKUeTk5sA+68K41jTPUbsxpJ1YYIiiJC/GzEvNcfOupQVx18MSr3plaTPLdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhXc7tbW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53FECC2BBFC;
-	Thu, 13 Jun 2024 12:45:25 +0000 (UTC)
+	 MIME-Version; b=oXLkKvTdbhbamQRMCXx7J5VFyRyJoDkakT8S5CizCyfbCQAw3GAR/XI3F/BrGkMR6aoUJxoI2Yvz4wmY/smlnYCbyb9GgXeKpTCIIsS1yYg74PI3md+b8zk/hlFv0gEnmhy3TTmrctzOmI+//BP9zXQF/4oo+aA+i7GA+Un580c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIRj83zZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76933C2BBFC;
+	Thu, 13 Jun 2024 12:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282725;
-	bh=1nOrWV+IjFBfL7zU/PW5GrTfEGNNxSilD9cDfv2PE+0=;
+	s=korg; t=1718281606;
+	bh=ILGnX9vduPip0RFNgUNeXdlRv3TpS5z4QZaowiMml3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LhXc7tbWWcSopVDAPMlV/Tio1chH7dntIyUZdj6OX8f5D8cXT09n/9UyIOEVxen8p
-	 PaVuSk0YgbKQWd5ypkUP2mU/FCp9GqCy3cAgZnnldaWXxfjRw0j7ZhNyarqV80Yxga
-	 S3D2nz3zmropkW3ksGImIWRNfxQDyicVsv3PzCdk=
+	b=iIRj83zZ28lIMzy+7TWRT6IXaKCgcPhNogcdnozmfut+Ut/EFVN6GPReh1dIyxNnt
+	 q72hRQW8PJElJ4/Yt5GqkAvoJf9jzur0OOX+O9Gf6lGxzi4uoCjFzQJ9yMPwa9fZ2u
+	 vwmXrZgNBTdRoL6dpYJYAMr8dzuZS++Be5TYmA14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cai Xinchen <caixinchen1@huawei.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.15 374/402] fbdev: savage: Handle err return when savagefb_check_var failed
+	Olga Kornievskaia <kolga@netapp.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: [PATCH 5.10 313/317] NFS: Fix READ_PLUS when server doesnt support OP_READ_PLUS
 Date: Thu, 13 Jun 2024 13:35:31 +0200
-Message-ID: <20240613113316.724798965@linuxfoundation.org>
+Message-ID: <20240613113259.661332882@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cai Xinchen <caixinchen1@huawei.com>
+From: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-commit 6ad959b6703e2c4c5d7af03b4cfd5ff608036339 upstream.
+commit f06d1b10cb016d5aaecdb1804fefca025387bd10 upstream.
 
-The commit 04e5eac8f3ab("fbdev: savage: Error out if pixclock equals zero")
-checks the value of pixclock to avoid divide-by-zero error. However
-the function savagefb_probe doesn't handle the error return of
-savagefb_check_var. When pixclock is 0, it will cause divide-by-zero error.
+Olga showed me a case where the client was sending multiple READ_PLUS
+calls to the server in parallel, and the server replied
+NFS4ERR_OPNOTSUPP to each. The client would fall back to READ for the
+first reply, but fail to retry the other calls.
 
-Fixes: 04e5eac8f3ab ("fbdev: savage: Error out if pixclock equals zero")
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+I fix this by removing the test for NFS_CAP_READ_PLUS in
+nfs4_read_plus_not_supported(). This allows us to reschedule any
+READ_PLUS call that has a NFS4ERR_OPNOTSUPP return value, even after the
+capability has been cleared.
+
+Reported-by: Olga Kornievskaia <kolga@netapp.com>
+Fixes: c567552612ec ("NFS: Add READ_PLUS data segment support")
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/savage/savagefb_driver.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/savage/savagefb_driver.c
-+++ b/drivers/video/fbdev/savage/savagefb_driver.c
-@@ -2271,7 +2271,10 @@ static int savagefb_probe(struct pci_dev
- 	if (info->var.xres_virtual > 0x1000)
- 		info->var.xres_virtual = 0x1000;
- #endif
--	savagefb_check_var(&info->var, info);
-+	err = savagefb_check_var(&info->var, info);
-+	if (err)
-+		goto failed;
-+
- 	savagefb_set_fix(info);
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -5320,7 +5320,7 @@ static bool nfs4_read_plus_not_supported
+ 	struct rpc_message *msg = &task->tk_msg;
  
- 	/*
+ 	if (msg->rpc_proc == &nfs4_procedures[NFSPROC4_CLNT_READ_PLUS] &&
+-	    server->caps & NFS_CAP_READ_PLUS && task->tk_status == -ENOTSUPP) {
++	    task->tk_status == -ENOTSUPP) {
+ 		server->caps &= ~NFS_CAP_READ_PLUS;
+ 		msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_READ];
+ 		rpc_restart_call_prepare(task);
 
 
 
