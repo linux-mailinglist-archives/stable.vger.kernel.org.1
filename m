@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-51883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8512C907210
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D45906E50
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D10A281EB1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD9C01C22940
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DC8441D;
-	Thu, 13 Jun 2024 12:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CFA1428E9;
+	Thu, 13 Jun 2024 12:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3l005bG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcDG39y6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF8B17FD;
-	Thu, 13 Jun 2024 12:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D8613CFA3;
+	Thu, 13 Jun 2024 12:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282596; cv=none; b=K/2Di4Rws2w1YiyREcxM27+64e6z0RSOTmCdab0S6UWeg5azrsozOXW4yMvSZwUrzyPktpr73tyhLr2PSC+dqJarNG+NhiuTWsFVZ3D1FoDl4k48mJnhCc6q3z3w7Cb3xw9hB6B7rVqAxEWlwjTgaBmryX7Mw+7SUghx3vMO2Io=
+	t=1718280291; cv=none; b=jF6pBr+Vkk+4HX+IsldrvK1v4NeeO8qeetKXMnufanfruiUz+mj1C293Wku8lQlCFISwyYsf3jsUgRlZRDIas8/ji/nkRCYH61hc1fn9tXSrZPzxKV0givtyDLMKNfxl8F23ce708bLsQOop4OIX8VHppBxZD+68iz4w07Z3nns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282596; c=relaxed/simple;
-	bh=8t0925JMUmBcW2I78EIYfJVXR2QwriXrdyXJbTXH0aQ=;
+	s=arc-20240116; t=1718280291; c=relaxed/simple;
+	bh=lxMHIYlWE/c4gdle/sTMG/rMicPUf6rL0WO7k7qPaUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oMqBpoxIs0gW5kXP7lHPTuShxfaLSZQd5ekZ71kWXcKTocp/6ejLuGyUP9OGix4m4L8IBqFujauIxQCBWBJvMLNZ0A3OLLPjbqWRsxUFiAktxUitFm+06h9HvtXq1RSvmkzqxoVL+yw3kGlLKvo82yXIwLEnjSQZES978pzBcz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3l005bG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1E4C2BBFC;
-	Thu, 13 Jun 2024 12:43:15 +0000 (UTC)
+	 MIME-Version; b=gWw2MlWrb2GQOCE14sPotTpWOkVhRpUUj8VomVdz9UWGb7iS2TC/RTExMe1KZ4CBJbZbP5cZB4UYqytc6CiJ5Pz0XTvqvKYbH83Pr/4kjJDOd0QzqV7XH49OgXGNN7i6zPuHUQXCoqwgxG1k/Ay6ptu+b/g53LPatYWk+kupup4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcDG39y6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714A8C2BBFC;
+	Thu, 13 Jun 2024 12:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282595;
-	bh=8t0925JMUmBcW2I78EIYfJVXR2QwriXrdyXJbTXH0aQ=;
+	s=korg; t=1718280290;
+	bh=lxMHIYlWE/c4gdle/sTMG/rMicPUf6rL0WO7k7qPaUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3l005bG/eGWeHy4RBgG+8HKmh5L2NFhZBBOv5R1vZF2XM83WzrVULBFw4S/Yzxuy
-	 2XN6MEXsyu7EIt7sOJyZHC+V1HSDy3eK1U64u1jONWz9LuVd69AwfSILnidMMhSviV
-	 3a5iBky35h1SHPxlePWsT/WcxVzaUdmMHccJReKM=
+	b=WcDG39y6FMtHbtfa6Lum+c0Oyp8eVi8YB/d3pIS3Jp3wIyUfcLKlM/QZjbuFoufvk
+	 Dj/jSY+LpNcGDdVNdNLtZk0ai3CQEtfpsNLKikrDRqP/3nB7GA/w4y3l8I6g2XVH2l
+	 YtSDfB99qx/WMTk24n1iD+lm8fNvplfvsHM44iGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Agroskin <shayagr@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 331/402] net: ena: Fix redundant device NUMA node override
-Date: Thu, 13 Jun 2024 13:34:48 +0200
-Message-ID: <20240613113315.050006945@linuxfoundation.org>
+	Sam Ravnborg <sam@ravnborg.org>,
+	Nick Bowler <nbowler@draconx.ca>,
+	Andreas Larsson <andreas@gaisler.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Atish Patra <atish.patra@oracle.com>,
+	Bob Picco <bob.picco@oracle.com>,
+	Vijay Kumar <vijay.ac.kumar@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.4 191/202] sparc64: Fix number of online CPUs
+Date: Thu, 13 Jun 2024 13:34:49 +0200
+Message-ID: <20240613113235.111263034@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +67,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Agroskin <shayagr@amazon.com>
+From: Sam Ravnborg <sam@ravnborg.org>
 
-[ Upstream commit 2dc8b1e7177d4f49f492ce648440caf2de0c3616 ]
+commit 98937707fea8375e8acea0aaa0b68a956dd52719 upstream.
 
-The driver overrides the NUMA node id of the device regardless of
-whether it knows its correct value (often setting it to -1 even though
-the node id is advertised in 'struct device'). This can lead to
-suboptimal configurations.
+Nick Bowler reported:
+    When using newer kernels on my Ultra 60 with dual 450MHz UltraSPARC-II
+    CPUs, I noticed that only CPU 0 comes up, while older kernels (including
+    4.7) are working fine with both CPUs.
 
-This patch fixes this behavior and makes the shared memory allocation
-functions use the NUMA node id advertised by the underlying device.
+      I bisected the failure to this commit:
 
-Fixes: 1738cd3ed342 ("net: ena: Add a driver for Amazon Elastic Network Adapters (ENA)")
-Signed-off-by: Shay Agroskin <shayagr@amazon.com>
-Link: https://lore.kernel.org/r/20240528170912.1204417-1-shayagr@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+      9b2f753ec23710aa32c0d837d2499db92fe9115b is the first bad commit
+      commit 9b2f753ec23710aa32c0d837d2499db92fe9115b
+      Author: Atish Patra <atish.patra@oracle.com>
+      Date:   Thu Sep 15 14:54:40 2016 -0600
+
+      sparc64: Fix cpu_possible_mask if nr_cpus is set
+
+    This is a small change that reverts very easily on top of 5.18: there is
+    just one trivial conflict.  Once reverted, both CPUs work again.
+
+    Maybe this is related to the fact that the CPUs on this system are
+    numbered CPU0 and CPU2 (there is no CPU1)?
+
+The current code that adjust cpu_possible based on nr_cpu_ids do not
+take into account that CPU's may not come one after each other.
+Move the chech to the function that setup the cpu_possible mask
+so there is no need to adjust it later.
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Fixes: 9b2f753ec237 ("sparc64: Fix cpu_possible_mask if nr_cpus is set")
+Reported-by: Nick Bowler <nbowler@draconx.ca>
+Tested-by: Nick Bowler <nbowler@draconx.ca>
+Link: https://lore.kernel.org/sparclinux/20201009161924.c8f031c079dd852941307870@gmx.de/
+Link: https://lore.kernel.org/all/CADyTPEwt=ZNams+1bpMB1F9w_vUdPsGCt92DBQxxq_VtaLoTdw@mail.gmail.com/
+Cc: stable@vger.kernel.org # v4.8+
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Atish Patra <atish.patra@oracle.com>
+Cc: Bob Picco <bob.picco@oracle.com>
+Cc: Vijay Kumar <vijay.ac.kumar@oracle.com>
+Cc: David S. Miller <davem@davemloft.net>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240330-sparc64-warnings-v1-9-37201023ee2f@ravnborg.org
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_com.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ arch/sparc/include/asm/smp_64.h |    2 --
+ arch/sparc/kernel/prom_64.c     |    4 +++-
+ arch/sparc/kernel/setup_64.c    |    1 -
+ arch/sparc/kernel/smp_64.c      |   14 --------------
+ 4 files changed, 3 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
-index e733419dd3f49..276f6a8631fb1 100644
---- a/drivers/net/ethernet/amazon/ena/ena_com.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_com.c
-@@ -312,7 +312,6 @@ static int ena_com_init_io_sq(struct ena_com_dev *ena_dev,
- 			      struct ena_com_io_sq *io_sq)
+--- a/arch/sparc/include/asm/smp_64.h
++++ b/arch/sparc/include/asm/smp_64.h
+@@ -47,7 +47,6 @@ void arch_send_call_function_ipi_mask(co
+ int hard_smp_processor_id(void);
+ #define raw_smp_processor_id() (current_thread_info()->cpu)
+ 
+-void smp_fill_in_cpu_possible_map(void);
+ void smp_fill_in_sib_core_maps(void);
+ void cpu_play_dead(void);
+ 
+@@ -77,7 +76,6 @@ void __cpu_die(unsigned int cpu);
+ #define smp_fill_in_sib_core_maps() do { } while (0)
+ #define smp_fetch_global_regs() do { } while (0)
+ #define smp_fetch_global_pmu() do { } while (0)
+-#define smp_fill_in_cpu_possible_map() do { } while (0)
+ #define smp_init_cpu_poke() do { } while (0)
+ #define scheduler_poke() do { } while (0)
+ 
+--- a/arch/sparc/kernel/prom_64.c
++++ b/arch/sparc/kernel/prom_64.c
+@@ -483,7 +483,9 @@ static void *record_one_cpu(struct devic
+ 	ncpus_probed++;
+ #ifdef CONFIG_SMP
+ 	set_cpu_present(cpuid, true);
+-	set_cpu_possible(cpuid, true);
++
++	if (num_possible_cpus() < nr_cpu_ids)
++		set_cpu_possible(cpuid, true);
+ #endif
+ 	return NULL;
+ }
+--- a/arch/sparc/kernel/setup_64.c
++++ b/arch/sparc/kernel/setup_64.c
+@@ -695,7 +695,6 @@ void __init setup_arch(char **cmdline_p)
+ 
+ 	paging_init();
+ 	init_sparc64_elf_hwcap();
+-	smp_fill_in_cpu_possible_map();
+ 	/*
+ 	 * Once the OF device tree and MDESC have been setup and nr_cpus has
+ 	 * been parsed, we know the list of possible cpus.  Therefore we can
+--- a/arch/sparc/kernel/smp_64.c
++++ b/arch/sparc/kernel/smp_64.c
+@@ -1213,20 +1213,6 @@ void __init smp_setup_processor_id(void)
+ 		xcall_deliver_impl = hypervisor_xcall_deliver;
+ }
+ 
+-void __init smp_fill_in_cpu_possible_map(void)
+-{
+-	int possible_cpus = num_possible_cpus();
+-	int i;
+-
+-	if (possible_cpus > nr_cpu_ids)
+-		possible_cpus = nr_cpu_ids;
+-
+-	for (i = 0; i < possible_cpus; i++)
+-		set_cpu_possible(i, true);
+-	for (; i < NR_CPUS; i++)
+-		set_cpu_possible(i, false);
+-}
+-
+ void smp_fill_in_sib_core_maps(void)
  {
- 	size_t size;
--	int dev_node = 0;
- 
- 	memset(&io_sq->desc_addr, 0x0, sizeof(io_sq->desc_addr));
- 
-@@ -325,12 +324,9 @@ static int ena_com_init_io_sq(struct ena_com_dev *ena_dev,
- 	size = io_sq->desc_entry_size * io_sq->q_depth;
- 
- 	if (io_sq->mem_queue_type == ENA_ADMIN_PLACEMENT_POLICY_HOST) {
--		dev_node = dev_to_node(ena_dev->dmadev);
--		set_dev_node(ena_dev->dmadev, ctx->numa_node);
- 		io_sq->desc_addr.virt_addr =
- 			dma_alloc_coherent(ena_dev->dmadev, size, &io_sq->desc_addr.phys_addr,
- 					   GFP_KERNEL);
--		set_dev_node(ena_dev->dmadev, dev_node);
- 		if (!io_sq->desc_addr.virt_addr) {
- 			io_sq->desc_addr.virt_addr =
- 				dma_alloc_coherent(ena_dev->dmadev, size,
-@@ -354,10 +350,7 @@ static int ena_com_init_io_sq(struct ena_com_dev *ena_dev,
- 		size = (size_t)io_sq->bounce_buf_ctrl.buffer_size *
- 			io_sq->bounce_buf_ctrl.buffers_num;
- 
--		dev_node = dev_to_node(ena_dev->dmadev);
--		set_dev_node(ena_dev->dmadev, ctx->numa_node);
- 		io_sq->bounce_buf_ctrl.base_buffer = devm_kzalloc(ena_dev->dmadev, size, GFP_KERNEL);
--		set_dev_node(ena_dev->dmadev, dev_node);
- 		if (!io_sq->bounce_buf_ctrl.base_buffer)
- 			io_sq->bounce_buf_ctrl.base_buffer =
- 				devm_kzalloc(ena_dev->dmadev, size, GFP_KERNEL);
-@@ -397,7 +390,6 @@ static int ena_com_init_io_cq(struct ena_com_dev *ena_dev,
- 			      struct ena_com_io_cq *io_cq)
- {
- 	size_t size;
--	int prev_node = 0;
- 
- 	memset(&io_cq->cdesc_addr, 0x0, sizeof(io_cq->cdesc_addr));
- 
-@@ -409,11 +401,8 @@ static int ena_com_init_io_cq(struct ena_com_dev *ena_dev,
- 
- 	size = io_cq->cdesc_entry_size_in_bytes * io_cq->q_depth;
- 
--	prev_node = dev_to_node(ena_dev->dmadev);
--	set_dev_node(ena_dev->dmadev, ctx->numa_node);
- 	io_cq->cdesc_addr.virt_addr =
- 		dma_alloc_coherent(ena_dev->dmadev, size, &io_cq->cdesc_addr.phys_addr, GFP_KERNEL);
--	set_dev_node(ena_dev->dmadev, prev_node);
- 	if (!io_cq->cdesc_addr.virt_addr) {
- 		io_cq->cdesc_addr.virt_addr =
- 			dma_alloc_coherent(ena_dev->dmadev, size, &io_cq->cdesc_addr.phys_addr,
--- 
-2.43.0
-
+ 	unsigned int i;
 
 
 
