@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-51000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C8A1906DDC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC05906FCD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C07E6283F68
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0E80289156
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 158831459F8;
-	Thu, 13 Jun 2024 12:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7871145FF9;
+	Thu, 13 Jun 2024 12:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urnhMY6s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xp2gLjSM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07C114535E;
-	Thu, 13 Jun 2024 12:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E5D145FED;
+	Thu, 13 Jun 2024 12:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280011; cv=none; b=bker7zavoZ3BuxXUq3naKNBXy8GqWZwwud1LzF79zyZy7ruIcUxNQZ8/RQRD6M0//MpaIKvvN5VfZwqjMSxYvum/IGhU4/HROIfgrgF/MiJf7JbrMjM0xpWoalxn8q/ByuqrRQOFLVUz4VLYlm1AmWuou2SUrsr9/hrh9BTZk2I=
+	t=1718281257; cv=none; b=AGthcE2mBsT0KZLyGZR62kqziQQ+GfMvUplfpoTkFCIpPshGhT83s2PiLAs9Fo1WuMdAJ6e1jXfM7K5rceUq4dnE3TvBSOaaTL/WA886xGeRCTquDUBabOa0mmAMxSOhecXdsnA5bvnIEawpwoBTAiJ0dQDy43GvW/trvHyFu8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280011; c=relaxed/simple;
-	bh=4T36Y1RBxruxdyh+mg6c/FRqaCWbQsmEnq3qcoeFqfM=;
+	s=arc-20240116; t=1718281257; c=relaxed/simple;
+	bh=oqRvMv0zGCVguUzVd0jTeHiitwtJ3oE53HUMrbK6fsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UAOm/vMd4oUeQa3w9JN5jS9s//3Fk45gu7rKEiL5fraCSzwfEIk2jrBQZnfe+oVoK6QGXFJ7AWUL5/K/+lxlDZgdvUNs3GhDEdOHO+DG8aJtzV8nSAi9YT8gt0xPajMaI0A3PVYZWFW5/BtxcJfH654PH7IZ46IS1nxD67WgDEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urnhMY6s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47163C2BBFC;
-	Thu, 13 Jun 2024 12:00:11 +0000 (UTC)
+	 MIME-Version; b=pijucVeiQ5djYsLnHW7EHuVo6wDRZXickrVQlSuas9OtX5oXfxeNh7H8XIkljXnn9rNUry3L3pTGJ0pc1Sl98wnqirQTDEt0kvihPD/YdM4m03IQzNA2nVMlQIajb9VMA/adTgvmj0nMofwWE69MsBlpi3IEiVwXmxRVrH3Suec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xp2gLjSM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29426C2BBFC;
+	Thu, 13 Jun 2024 12:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280011;
-	bh=4T36Y1RBxruxdyh+mg6c/FRqaCWbQsmEnq3qcoeFqfM=;
+	s=korg; t=1718281257;
+	bh=oqRvMv0zGCVguUzVd0jTeHiitwtJ3oE53HUMrbK6fsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=urnhMY6szCtKsgA2+D4u3AXogClpDu5V4nyPmWxy0vIvrm5UoLuLORQ+MhRSAC0pB
-	 Bu5OPNbM7lSZARMyYfZFG6vlNUpnzwtPg7RhawAuxnM8Br3Jg8T0VxFgrtA7f5/RGl
-	 zsy0zeRlRRN6AHbuASYVA8AkRJLqiLtbnbnsQZv8=
+	b=xp2gLjSMLHt20lDokGJ/MBHnjqz4NyT2vHjvtttsgSOVbvUmb6/vKRMPdV/elwU9e
+	 2eMvOS5y/DV/a5XbvaUs6DjINTViQi6jEO3rh7Sex501LNFUw6n8wrK9kdLIkQVpjS
+	 K9BPuK35/IfiCHcuS/k787SMsWyn5vAiw1um7mMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Egorenkov <egorenar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 112/202] stm class: Fix a double free in stm_register_device()
+Subject: [PATCH 5.10 192/317] s390/ipl: Fix incorrect initialization of nvme dump block
 Date: Thu, 13 Jun 2024 13:33:30 +0200
-Message-ID: <20240613113232.083886226@linuxfoundation.org>
+Message-ID: <20240613113254.984241315@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Alexander Egorenkov <egorenar@linux.ibm.com>
 
-[ Upstream commit 3df463865ba42b8f88a590326f4c9ea17a1ce459 ]
+[ Upstream commit 7faacaeaf6ce12fae78751de5ad869d8f1e1cd7a ]
 
-The put_device(&stm->dev) call will trigger stm_device_release() which
-frees "stm" so the vfree(stm) on the next line is a double free.
+Initialize the correct fields of the nvme dump block.
+This bug had not been detected before because first, the fcp and nvme fields
+of struct ipl_parameter_block are part of the same union and, therefore,
+overlap in memory and second, they are identical in structure and size.
 
-Fixes: 389b6699a2aa ("stm class: Fix stm device initialization order")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Link: https://lore.kernel.org/r/20240429130119.1518073-2-alexander.shishkin@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d70e38cb1dee ("s390: nvme dump support")
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/stm/core.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/s390/kernel/ipl.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwtracing/stm/core.c b/drivers/hwtracing/stm/core.c
-index 603b83ac50852..1cfae56c4fdbd 100644
---- a/drivers/hwtracing/stm/core.c
-+++ b/drivers/hwtracing/stm/core.c
-@@ -878,8 +878,11 @@ int stm_register_device(struct device *parent, struct stm_data *stm_data,
- 		return -ENOMEM;
- 
- 	stm->major = register_chrdev(0, stm_data->name, &stm_fops);
--	if (stm->major < 0)
--		goto err_free;
-+	if (stm->major < 0) {
-+		err = stm->major;
-+		vfree(stm);
-+		return err;
-+	}
- 
- 	device_initialize(&stm->dev);
- 	stm->dev.devt = MKDEV(stm->major, 0);
-@@ -923,10 +926,8 @@ int stm_register_device(struct device *parent, struct stm_data *stm_data,
- err_device:
- 	unregister_chrdev(stm->major, stm_data->name);
- 
--	/* matches device_initialize() above */
-+	/* calls stm_device_release() */
- 	put_device(&stm->dev);
--err_free:
--	vfree(stm);
- 
- 	return err;
+diff --git a/arch/s390/kernel/ipl.c b/arch/s390/kernel/ipl.c
+index ab23742088d05..939ceec83048f 100644
+--- a/arch/s390/kernel/ipl.c
++++ b/arch/s390/kernel/ipl.c
+@@ -1602,9 +1602,9 @@ static int __init dump_nvme_init(void)
+ 	}
+ 	dump_block_nvme->hdr.len = IPL_BP_NVME_LEN;
+ 	dump_block_nvme->hdr.version = IPL_PARM_BLOCK_VERSION;
+-	dump_block_nvme->fcp.len = IPL_BP0_NVME_LEN;
+-	dump_block_nvme->fcp.pbt = IPL_PBT_NVME;
+-	dump_block_nvme->fcp.opt = IPL_PB0_NVME_OPT_DUMP;
++	dump_block_nvme->nvme.len = IPL_BP0_NVME_LEN;
++	dump_block_nvme->nvme.pbt = IPL_PBT_NVME;
++	dump_block_nvme->nvme.opt = IPL_PB0_NVME_OPT_DUMP;
+ 	dump_capabilities |= DUMP_TYPE_NVME;
+ 	return 0;
  }
 -- 
 2.43.0
