@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-50761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A89906C7A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5103B906DB7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:03:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C24DC282B3D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6EC2286B16
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA0B145A18;
-	Thu, 13 Jun 2024 11:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859EA146A65;
+	Thu, 13 Jun 2024 11:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1EFKE8/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuhdQJto"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD681448CD;
-	Thu, 13 Jun 2024 11:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44EC51465A5;
+	Thu, 13 Jun 2024 11:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279308; cv=none; b=JCajwg4FguazmA4A4TN0WVTNQhJkWnM4hiu11yw8LwYrQbzfGdlGU5gP003nK3Mv0FaXwQxZjFsBg0odMTwcIGb6P4QIolX7oTwftVBHMV1WuqC2/NoVpFMYVTky4/8JOaSe1qX8FaQWACnX4FHvXXXrcDkh07SWabuyIsUG9rs=
+	t=1718279950; cv=none; b=YIHSjmAi92OiuD+tZM/Tl571te+ARdrR9f6/okdnAXHCW+qOntriSo0LByApVgPjG4hgIc5wrrzheGC8+k2ZwQRa2Go1NPTVmPte+cm90EEd2f2NhCDYAyhax2CJZ8YlpMHy8ttTguBcSn0T3CZu6AoleykTcFlcK3WgBdndP4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279308; c=relaxed/simple;
-	bh=lhFOPcgCLyKR4PC08gHnfV1tfrlIThcFcN1tCE4tdaA=;
+	s=arc-20240116; t=1718279950; c=relaxed/simple;
+	bh=FVI5Wn8ZvtmMrTB/qECVPMqdDxsgT8+DPOFsDjJuOF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C0e6AcYq1+690jd87hwGHCIu3UqYsZRQ0UnE3SUm5shPd5fXl4aBS6DD9IRy0MYk643sKfLmsUAuF19FT+AEKEHigaqHtJ+zRofxz4HQYkQIqIAyB13pK1Ym7xi13I201Ps0zIz/r68xtzCGDECZyFFqU3N24mOCNrX2y/I4wzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1EFKE8/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3933EC32786;
-	Thu, 13 Jun 2024 11:48:27 +0000 (UTC)
+	 MIME-Version; b=n2QFMVje8ww5JUfuQJKDbKE4cM8/dZwj5YKacIHdGZK6QOZisD4nfTzc7r7Eqv2WxGVptvLxj0bymenCBO3JI89rmCojMTteoIZKMeQzQq6BJqjujnuZZFFtugNvHAAs3GgDs8AfzcFuhU/75lx3Oqi0H7fikyszZaO5SnJC928=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuhdQJto; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0245C4AF1C;
+	Thu, 13 Jun 2024 11:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279307;
-	bh=lhFOPcgCLyKR4PC08gHnfV1tfrlIThcFcN1tCE4tdaA=;
+	s=korg; t=1718279950;
+	bh=FVI5Wn8ZvtmMrTB/qECVPMqdDxsgT8+DPOFsDjJuOF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o1EFKE8/tsi1yB3HJesOIPqJsttcFC92Ck/e5ddFeRTL949PUpFI84EPIXUURew0O
-	 tvdba3lzvueXy9eVfpk4UnFW5qx/uOXr/RMe8Yv17DqwJNMhKOhuI3ivJ6I2FrvEk0
-	 sX5bML0ukk1QMUAQYONoDFFT9XKHMscQBzvJRVGs=
+	b=XuhdQJto+AVd+h7i7a9iOJ7WjHtnY866wmO9baZICW5UAoPUjdJo8Q1xR2gGmhzpY
+	 3UHFmnzcWRbWKvOaFmZ6WKWH9w/mZ0VQpJZ95TuUCNmWUo1TP9JF3ilGjqCb3ySQ1c
+	 3plp70LTPXGNtLL+qM7lhqRLqOcYQcrI1SUY/jJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Xiwen <forbidden405@outlook.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.9 032/157] arm64: dts: hi3798cv200: fix the size of GICR
-Date: Thu, 13 Jun 2024 13:32:37 +0200
-Message-ID: <20240613113228.661011966@linuxfoundation.org>
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Stan Johnson <userm57@yahoo.com>
+Subject: [PATCH 5.4 060/202] m68k: mac: Fix reboot hang on Mac IIci
+Date: Thu, 13 Jun 2024 13:32:38 +0200
+Message-ID: <20240613113230.093248570@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Xiwen <forbidden405@outlook.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-commit 428a575dc9038846ad259466d5ba109858c0a023 upstream.
+[ Upstream commit 265a3b322df9a973ff1fc63da70af456ab6ae1d6 ]
 
-During boot, Linux kernel complains:
+Calling mac_reset() on a Mac IIci does reset the system, but what
+follows is a POST failure that requires a manual reset to resolve.
+Avoid that by using the 68030 asm implementation instead of the C
+implementation.
 
-[    0.000000] GIC: GICv2 detected, but range too small and irqchip.gicv2_force_probe not set
+Apparently the SE/30 has a similar problem as it has used the asm
+implementation since before git. This patch extends that solution to
+other systems with a similar ROM.
 
-This SoC is using a regular GIC-400 and the GICR space size should be
-8KB rather than 256B.
+After this patch, the only systems still using the C implementation are
+68040 systems where adb_type is either MAC_ADB_IOP or MAC_ADB_II. This
+implies a 1 MiB Quadra ROM.
 
-With this patch:
+This now includes the Quadra 900/950, which previously fell through to
+the "should never get here" catch-all.
 
-[    0.000000] GIC: Using split EOI/Deactivate mode
-
-So this should be the correct fix.
-
-Fixes: 2f20182ed670 ("arm64: dts: hisilicon: add dts files for hi3798cv200-poplar board")
-Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240219-cache-v3-1-a33c57534ae9@outlook.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/480ebd1249d229c6dc1f3f1c6d599b8505483fd8.1714797072.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/m68k/mac/misc.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
---- a/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
-+++ b/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
-@@ -58,7 +58,7 @@
- 	gic: interrupt-controller@f1001000 {
- 		compatible = "arm,gic-400";
- 		reg = <0x0 0xf1001000 0x0 0x1000>,  /* GICD */
--		      <0x0 0xf1002000 0x0 0x100>;   /* GICC */
-+		      <0x0 0xf1002000 0x0 0x2000>;  /* GICC */
- 		#address-cells = <0>;
- 		#interrupt-cells = <3>;
- 		interrupt-controller;
+diff --git a/arch/m68k/mac/misc.c b/arch/m68k/mac/misc.c
+index 90f4e9ca1276b..d3b34dd7590de 100644
+--- a/arch/m68k/mac/misc.c
++++ b/arch/m68k/mac/misc.c
+@@ -452,30 +452,18 @@ void mac_poweroff(void)
+ 
+ void mac_reset(void)
+ {
+-	if (macintosh_config->adb_type == MAC_ADB_II &&
+-	    macintosh_config->ident != MAC_MODEL_SE30) {
+-		/* need ROMBASE in booter */
+-		/* indeed, plus need to MAP THE ROM !! */
+-
+-		if (mac_bi_data.rombase == 0)
+-			mac_bi_data.rombase = 0x40800000;
+-
+-		/* works on some */
+-		rom_reset = (void *) (mac_bi_data.rombase + 0xa);
+-
+-		local_irq_disable();
+-		rom_reset();
+ #ifdef CONFIG_ADB_CUDA
+-	} else if (macintosh_config->adb_type == MAC_ADB_EGRET ||
+-	           macintosh_config->adb_type == MAC_ADB_CUDA) {
++	if (macintosh_config->adb_type == MAC_ADB_EGRET ||
++	    macintosh_config->adb_type == MAC_ADB_CUDA) {
+ 		cuda_restart();
++	} else
+ #endif
+ #ifdef CONFIG_ADB_PMU
+-	} else if (macintosh_config->adb_type == MAC_ADB_PB2) {
++	if (macintosh_config->adb_type == MAC_ADB_PB2) {
+ 		pmu_restart();
++	} else
+ #endif
+-	} else if (CPU_IS_030) {
+-
++	if (CPU_IS_030) {
+ 		/* 030-specific reset routine.  The idea is general, but the
+ 		 * specific registers to reset are '030-specific.  Until I
+ 		 * have a non-030 machine, I can't test anything else.
+@@ -523,6 +511,18 @@ void mac_reset(void)
+ 		    "jmp %/a0@\n\t" /* jump to the reset vector */
+ 		    ".chip 68k"
+ 		    : : "r" (offset), "a" (rombase) : "a0");
++	} else {
++		/* need ROMBASE in booter */
++		/* indeed, plus need to MAP THE ROM !! */
++
++		if (mac_bi_data.rombase == 0)
++			mac_bi_data.rombase = 0x40800000;
++
++		/* works on some */
++		rom_reset = (void *)(mac_bi_data.rombase + 0xa);
++
++		local_irq_disable();
++		rom_reset();
+ 	}
+ 
+ 	/* should never get here */
+-- 
+2.43.0
+
 
 
 
