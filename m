@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-51865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85AD39071F9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A13C906EAC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BE041F231BB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00E0B1F219D3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F1C143C75;
-	Thu, 13 Jun 2024 12:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE033147C9A;
+	Thu, 13 Jun 2024 12:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="da17+e0G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKF6L6JW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D56384;
-	Thu, 13 Jun 2024 12:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F93143C52;
+	Thu, 13 Jun 2024 12:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282542; cv=none; b=GkI+Ox1gYD9ZfWvR/6IfzTYyOxPup3AffE9bAiYaYwwNfILzboP5yY3svzG/gACssS4LLYD5WivbPhS6iswUzWT/osZ9UPrNbNKKZhReGLoLfjnwP+NpzDh+x9NLoI8uetPm9xuooMjfPAF0580CsJqiMI5ulcGKFvVPvk/tO9s=
+	t=1718280538; cv=none; b=ENWR+obteW0LabOgeOUKMNaF4E9ohr/yakKEPeQ6OyvTCKR/kYZ9XGX+wCuGBIt3dX83QU+nHZbQkubznPtUqLEtj95wZqXNbr2Ssh0K7VGmWVQOUjSK/0c9P2sCi6zFL25Dy95EkGwKmbWNahdWQqfTDGuGbnDnTTGaLsw32qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282542; c=relaxed/simple;
-	bh=EopPKw5Y+sHmq9S7IdIdGwFHLaldZEoMIrp7ENFrPBw=;
+	s=arc-20240116; t=1718280538; c=relaxed/simple;
+	bh=Ru204zuSrx3yr+kIvmQdQToMvNf/eHW8wzelmTK6PwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=osY7QP5HyN9At6KaSPopFnoIjaGqWO6D1tfJbPMoAw73vi644Gxo7hY4jVAjZMmR3+O3AfUVeBIsJBMPnqM6+h7VOxpLRpgVOR1yBNxI09NAXtgaOiK/iUTviv5UvjG9MogPhd1tj1Fm90/XozzSyGG2SMXTG33aLWhFCx7CaJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=da17+e0G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D10C4AF1A;
-	Thu, 13 Jun 2024 12:42:21 +0000 (UTC)
+	 MIME-Version; b=fUrwL6frJi54AoD6eZGXloSZ88rGft57Qai/0/zuDfRgvrNA5Z88si+i8NSIaLTZu8/co2yKmF8jrITTheVVSsCEWsXHQxXiU9zUrYCl/zguh/3nujuO6zGZFj2YQQywihZC8rSDCmzAnL9ij/pBVS62kAT8MTBQMyvcfXbZLxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKF6L6JW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24254C2BBFC;
+	Thu, 13 Jun 2024 12:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282542;
-	bh=EopPKw5Y+sHmq9S7IdIdGwFHLaldZEoMIrp7ENFrPBw=;
+	s=korg; t=1718280538;
+	bh=Ru204zuSrx3yr+kIvmQdQToMvNf/eHW8wzelmTK6PwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=da17+e0GU6F+lFrS+AP/qZh6YyuBjUcaaz2wDNonUbdSvvEROzBEQagX23wtrwhzi
-	 RtzOWQ1Y6d64Fhq0ij6i3tyhDpBYQKlW4fsB8XbKn4VZXgk7skRJQWU1KU2/+N5paw
-	 s2z8y4+g6/rwh2Qscnq0h5g/7a3sNqE2ByLrZvhg=
+	b=dKF6L6JWhHOE3LwYE55OckfsGu11Z02JzC0TQWgpm4IsSWNCCnNW9RukwNBbjW0gC
+	 t581v/RXECvOWWz9mdLu3p7iGZSrDmYAK1FM8BpwnEU5tiF1mYcIcdDTUA+L7qeG/Q
+	 9jwtXGC9O8fpqc8QwOYsKEarvB5sKU99jk/oUcTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Nick Bowler <nbowler@draconx.ca>,
+	Andreas Larsson <andreas@gaisler.com>,
 	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 311/402] net/mlx5e: Fix IPsec tunnel mode offload feature check
+	Atish Patra <atish.patra@oracle.com>,
+	Bob Picco <bob.picco@oracle.com>,
+	Vijay Kumar <vijay.ac.kumar@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.6 088/137] sparc64: Fix number of online CPUs
 Date: Thu, 13 Jun 2024 13:34:28 +0200
-Message-ID: <20240613113314.274504428@linuxfoundation.org>
+Message-ID: <20240613113226.712936529@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +67,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Sam Ravnborg <sam@ravnborg.org>
 
-[ Upstream commit 9a52f6d44f4521773b4699b4ed34b8e21d5a175c ]
+commit 98937707fea8375e8acea0aaa0b68a956dd52719 upstream.
 
-Remove faulty check disabling checksum offload and GSO for offload of
-simple IPsec tunnel L4 traffic. Comment previously describing the deleted
-code incorrectly claimed the check prevented double tunnel (or three layers
-of ip headers).
+Nick Bowler reported:
+    When using newer kernels on my Ultra 60 with dual 450MHz UltraSPARC-II
+    CPUs, I noticed that only CPU 0 comes up, while older kernels (including
+    4.7) are working fine with both CPUs.
 
-Fixes: f1267798c980 ("net/mlx5: Fix checksum issue of VXLAN and IPsec crypto offload")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+      I bisected the failure to this commit:
+
+      9b2f753ec23710aa32c0d837d2499db92fe9115b is the first bad commit
+      commit 9b2f753ec23710aa32c0d837d2499db92fe9115b
+      Author: Atish Patra <atish.patra@oracle.com>
+      Date:   Thu Sep 15 14:54:40 2016 -0600
+
+      sparc64: Fix cpu_possible_mask if nr_cpus is set
+
+    This is a small change that reverts very easily on top of 5.18: there is
+    just one trivial conflict.  Once reverted, both CPUs work again.
+
+    Maybe this is related to the fact that the CPUs on this system are
+    numbered CPU0 and CPU2 (there is no CPU1)?
+
+The current code that adjust cpu_possible based on nr_cpu_ids do not
+take into account that CPU's may not come one after each other.
+Move the chech to the function that setup the cpu_possible mask
+so there is no need to adjust it later.
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Fixes: 9b2f753ec237 ("sparc64: Fix cpu_possible_mask if nr_cpus is set")
+Reported-by: Nick Bowler <nbowler@draconx.ca>
+Tested-by: Nick Bowler <nbowler@draconx.ca>
+Link: https://lore.kernel.org/sparclinux/20201009161924.c8f031c079dd852941307870@gmx.de/
+Link: https://lore.kernel.org/all/CADyTPEwt=ZNams+1bpMB1F9w_vUdPsGCt92DBQxxq_VtaLoTdw@mail.gmail.com/
+Cc: stable@vger.kernel.org # v4.8+
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Atish Patra <atish.patra@oracle.com>
+Cc: Bob Picco <bob.picco@oracle.com>
+Cc: Vijay Kumar <vijay.ac.kumar@oracle.com>
+Cc: David S. Miller <davem@davemloft.net>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240330-sparc64-warnings-v1-9-37201023ee2f@ravnborg.org
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlx5/core/en_accel/ipsec_rxtx.h    | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ arch/sparc/include/asm/smp_64.h |    2 --
+ arch/sparc/kernel/prom_64.c     |    4 +++-
+ arch/sparc/kernel/setup_64.c    |    1 -
+ arch/sparc/kernel/smp_64.c      |   14 --------------
+ 4 files changed, 3 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h
-index 428881e0adcbe..6621f6cd43151 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h
-@@ -105,18 +105,11 @@ mlx5e_ipsec_feature_check(struct sk_buff *skb, netdev_features_t features)
- 		if (!x || !x->xso.offload_handle)
- 			goto out_disable;
+--- a/arch/sparc/include/asm/smp_64.h
++++ b/arch/sparc/include/asm/smp_64.h
+@@ -47,7 +47,6 @@ void arch_send_call_function_ipi_mask(co
+ int hard_smp_processor_id(void);
+ #define raw_smp_processor_id() (current_thread_info()->cpu)
  
--		if (xo->inner_ipproto) {
--			/* Cannot support tunnel packet over IPsec tunnel mode
--			 * because we cannot offload three IP header csum
--			 */
--			if (x->props.mode == XFRM_MODE_TUNNEL)
--				goto out_disable;
+-void smp_fill_in_cpu_possible_map(void);
+ void smp_fill_in_sib_core_maps(void);
+ void __noreturn cpu_play_dead(void);
+ 
+@@ -77,7 +76,6 @@ void __cpu_die(unsigned int cpu);
+ #define smp_fill_in_sib_core_maps() do { } while (0)
+ #define smp_fetch_global_regs() do { } while (0)
+ #define smp_fetch_global_pmu() do { } while (0)
+-#define smp_fill_in_cpu_possible_map() do { } while (0)
+ #define smp_init_cpu_poke() do { } while (0)
+ #define scheduler_poke() do { } while (0)
+ 
+--- a/arch/sparc/kernel/prom_64.c
++++ b/arch/sparc/kernel/prom_64.c
+@@ -483,7 +483,9 @@ static void *record_one_cpu(struct devic
+ 	ncpus_probed++;
+ #ifdef CONFIG_SMP
+ 	set_cpu_present(cpuid, true);
+-	set_cpu_possible(cpuid, true);
++
++	if (num_possible_cpus() < nr_cpu_ids)
++		set_cpu_possible(cpuid, true);
+ #endif
+ 	return NULL;
+ }
+--- a/arch/sparc/kernel/setup_64.c
++++ b/arch/sparc/kernel/setup_64.c
+@@ -684,7 +684,6 @@ void __init setup_arch(char **cmdline_p)
+ 
+ 	paging_init();
+ 	init_sparc64_elf_hwcap();
+-	smp_fill_in_cpu_possible_map();
+ 	/*
+ 	 * Once the OF device tree and MDESC have been setup and nr_cpus has
+ 	 * been parsed, we know the list of possible cpus.  Therefore we can
+--- a/arch/sparc/kernel/smp_64.c
++++ b/arch/sparc/kernel/smp_64.c
+@@ -1220,20 +1220,6 @@ void __init smp_setup_processor_id(void)
+ 		xcall_deliver_impl = hypervisor_xcall_deliver;
+ }
+ 
+-void __init smp_fill_in_cpu_possible_map(void)
+-{
+-	int possible_cpus = num_possible_cpus();
+-	int i;
 -
--			/* Only support UDP or TCP L4 checksum */
--			if (xo->inner_ipproto != IPPROTO_UDP &&
--			    xo->inner_ipproto != IPPROTO_TCP)
--				goto out_disable;
--		}
-+		/* Only support UDP or TCP L4 checksum */
-+		if (xo->inner_ipproto &&
-+		    xo->inner_ipproto != IPPROTO_UDP &&
-+		    xo->inner_ipproto != IPPROTO_TCP)
-+			goto out_disable;
- 
- 		return features;
- 
--- 
-2.43.0
-
+-	if (possible_cpus > nr_cpu_ids)
+-		possible_cpus = nr_cpu_ids;
+-
+-	for (i = 0; i < possible_cpus; i++)
+-		set_cpu_possible(i, true);
+-	for (; i < NR_CPUS; i++)
+-		set_cpu_possible(i, false);
+-}
+-
+ void smp_fill_in_sib_core_maps(void)
+ {
+ 	unsigned int i;
 
 
 
