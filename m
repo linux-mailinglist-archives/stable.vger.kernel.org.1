@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2189F907024
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 337D8906E2B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2485B1C22FEF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B40D22810D6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B05145FE5;
-	Thu, 13 Jun 2024 12:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E0F148853;
+	Thu, 13 Jun 2024 12:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpBm5RfF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNvzfS6F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BC2140391;
-	Thu, 13 Jun 2024 12:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216701465BB;
+	Thu, 13 Jun 2024 12:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281439; cv=none; b=m0QvcX2tzevVR14Q36nHrKcQ10HELuasGucSgTSzjladvQzz8c2g5uT5Rff7J1U21OQtrLrMM/9eOeVlSzLzaf3QP3y5yS96GVu3tbWfbUZRwiVzDB4XywUQWWtLDZCVMiHi1HgGTGpcZwo5fc5ObXrmhm7uzliAGJuMlsBocZ0=
+	t=1718280198; cv=none; b=nFEMoyy4sXHkvnnS1EeG87HuQYE6Eu3CIU9v9AlqYBBwrDP+mauMarBcwxNlMrOugAW+qqpaNw5lv7X3xGSi9QfYhByPaz5U42p/w+RzHlBIbsVf39Em66DX732yzI5BjnCSjmTMWhD+2N9FDRdcyM55xbCg3kt7xQI1i74fIyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281439; c=relaxed/simple;
-	bh=HoTuVgK3RwPH/AiDsChYmjRQLEy6V9zhp9GsiOSE43Q=;
+	s=arc-20240116; t=1718280198; c=relaxed/simple;
+	bh=dOyUHkCIqHdgyD4d1l5+ZmyH0yeqvj+hZN9woY9vShw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kz45oumgEr5o+yBXMnFfxpWuEydxLNSECo5t7l5jjI7ahQUplTc/mxGun7nRkEF0IOWrCrhlj7r3PkuP3ZWEn6doA4hHAxtEjGzW0DNB6cq3N8Uw2YzFiHhweW595pajCCuynsGBYE3TCzuYJ3O1HRCpnPxsXIyW9mSSLn8tDh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpBm5RfF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325A5C2BBFC;
-	Thu, 13 Jun 2024 12:23:59 +0000 (UTC)
+	 MIME-Version; b=TYfDMUpc3xU/wi7tlLTLomFONxghg/R/Z9NDCavwHw8JhCiwpviTiBK2lSZaePPpcW/BSkIk96la9btwFq4b7GJB2E7ufZMKIo4X/hjXttusq7p701z4gkxUFlAnYzKHAD9e+QM84ZpbGGpNt4020Kb7A575Z2OQhmLTQ0RPwkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNvzfS6F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C590C32786;
+	Thu, 13 Jun 2024 12:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281439;
-	bh=HoTuVgK3RwPH/AiDsChYmjRQLEy6V9zhp9GsiOSE43Q=;
+	s=korg; t=1718280198;
+	bh=dOyUHkCIqHdgyD4d1l5+ZmyH0yeqvj+hZN9woY9vShw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FpBm5RfFcOagpFW1+UGrUzYGN9+47lSZsLEAcwDZUuUL/BmqgJsNc0ZGaDclbm+8Y
-	 xm7chIb96qpsLABEKBEj2og7mSFjeJzGl0dOhVq1Y7UYWNQGuSTL1nQV1MBh0GsS9n
-	 ltoqqr3xmfpOQ8vXkZFzxXfW/1VNRMWS0BXqXhwo=
+	b=KNvzfS6FgQsCBuuPHL9A8vNZRT+Dl/5dDJ2Jrm5KZoPwICMGDwcUVrxlz2qWX2O5P
+	 82V0ZVEVyTy2NSorqbOlR1fDThgAoIiUmseJkENSg51KnLFRoe9YGczbKxJl0bXjWE
+	 nNLDnGZkxrMGcyT3MMw8ufALTlq9jzINf7kgmkoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 255/317] net:fec: Add fec_enet_deinit()
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Niklas Cassel <cassel@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 5.4 175/202] ata: pata_legacy: make legacy_exit() work again
 Date: Thu, 13 Jun 2024 13:34:33 +0200
-Message-ID: <20240613113257.413749274@linuxfoundation.org>
+Message-ID: <20240613113234.494485138@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit bf0497f53c8535f99b72041529d3f7708a6e2c0d ]
+commit d4a89339f17c87c4990070e9116462d16e75894f upstream.
 
-When fec_probe() fails or fec_drv_remove() needs to release the
-fec queue and remove a NAPI context, therefore add a function
-corresponding to fec_enet_init() and call fec_enet_deinit() which
-does the opposite to release memory and remove a NAPI context.
+Commit defc9cd826e4 ("pata_legacy: resychronize with upstream changes and
+resubmit") missed to update legacy_exit(), so that it now fails to do any
+cleanup -- the loop body there can never be entered.  Fix that and finally
+remove now useless nr_legacy_host variable...
 
-Fixes: 59d0f7465644 ("net: fec: init multi queue date structure")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240524050528.4115581-1-xiaolei.wang@windriver.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
+
+Fixes: defc9cd826e4 ("pata_legacy: resychronize with upstream changes and resubmit")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/ata/pata_legacy.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index fe29769cb1589..adb76db66031f 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -3443,6 +3443,14 @@ static int fec_enet_init(struct net_device *ndev)
- 	return ret;
- }
+--- a/drivers/ata/pata_legacy.c
++++ b/drivers/ata/pata_legacy.c
+@@ -114,8 +114,6 @@ static int legacy_port[NR_HOST] = { 0x1f
+ static struct legacy_probe probe_list[NR_HOST];
+ static struct legacy_data legacy_data[NR_HOST];
+ static struct ata_host *legacy_host[NR_HOST];
+-static int nr_legacy_host;
+-
  
-+static void fec_enet_deinit(struct net_device *ndev)
-+{
-+	struct fec_enet_private *fep = netdev_priv(ndev);
-+
-+	netif_napi_del(&fep->napi);
-+	fec_enet_free_queue(ndev);
-+}
-+
- #ifdef CONFIG_OF
- static int fec_reset_phy(struct platform_device *pdev)
+ static int probe_all;		/* Set to check all ISA port ranges */
+ static int ht6560a;		/* HT 6560A on primary 1, second 2, both 3 */
+@@ -1239,9 +1237,11 @@ static __exit void legacy_exit(void)
  {
-@@ -3813,6 +3821,7 @@ fec_probe(struct platform_device *pdev)
- 	fec_enet_mii_remove(fep);
- failed_mii_init:
- failed_irq:
-+	fec_enet_deinit(ndev);
- failed_init:
- 	fec_ptp_stop(pdev);
- failed_reset:
-@@ -3874,6 +3883,7 @@ fec_drv_remove(struct platform_device *pdev)
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
+ 	int i;
  
-+	fec_enet_deinit(ndev);
- 	free_netdev(ndev);
- 	return 0;
+-	for (i = 0; i < nr_legacy_host; i++) {
++	for (i = 0; i < NR_HOST; i++) {
+ 		struct legacy_data *ld = &legacy_data[i];
+-		ata_host_detach(legacy_host[i]);
++
++		if (legacy_host[i])
++			ata_host_detach(legacy_host[i]);
+ 		platform_device_unregister(ld->platform_dev);
+ 	}
  }
--- 
-2.43.0
-
 
 
 
