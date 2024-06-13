@@ -1,144 +1,116 @@
-Return-Path: <stable+bounces-52065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 129EF907687
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 17:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C259A907839
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 18:24:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B67E21F21E51
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 15:25:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75A1E1F2303C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 16:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3371494CD;
-	Thu, 13 Jun 2024 15:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1622F143C7E;
+	Thu, 13 Jun 2024 16:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="Cnu34rAF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FZVdLj6I"
 X-Original-To: stable@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC0353E31;
-	Thu, 13 Jun 2024 15:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BE41494CD;
+	Thu, 13 Jun 2024 16:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718292299; cv=none; b=pqblUv7/HGE+djPfyM0du1b7yGi3Ldy3qZAdU2nHt7rmN3p8HjjH3YV7it7wuSOl/owB9gwYVfX0tnyPFBjgpQpVpyfN1afKKp1Nx3NjYR2DB/pcXo0To+oM4EOND/Af/7EQQrM3R2YOx2YBYCBGujIRtS3Xl8Mwvchz34mqDDs=
+	t=1718295854; cv=none; b=T72lwmaWEsAD/P/HlTqEXiUkupuCki6OThn0z+XItil3wc1VF8Xbhrr25YEJWifr2FsYuRm6mza2TVTQKjWrhEZbpkWK/cBKNVDwN5/r+vAfShYHXNT/2DD3GfG62fyqF4tZssC01V/fj4tmlPq9me8SfS1IMZzdLyd4KKY6lyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718292299; c=relaxed/simple;
-	bh=lkr1QctdrwBqiaLGk73+KO5d+sPtA7Bi31a8uXsZvLM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cVOIyj5ueQLQfyeDh+TfFp9KdSZsstSJkAyFjb4fkJKLd91pAyTZWC3pj23K3NcudiSKYGz2Ggl8T5Zb2BueQrDzUu2yJfjxk46p3IUTBZusSdaF38uDwGfSDT9hAYJWUjerzYGq95Y1Fp6JX5Uj+g40rv59SUfW05qhnECUvFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=Cnu34rAF; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1718292294;
-	bh=lkr1QctdrwBqiaLGk73+KO5d+sPtA7Bi31a8uXsZvLM=;
-	h=From:Date:Subject:To:Cc:From;
-	b=Cnu34rAFfuzqEBAV0IjuFq/EN2ECf8/ZV5aHa4+ePvlZH+OKMghnKuChzzvAa2KHX
-	 UsiYq7xIgploRqfmtwYS4diz0VVXq/605mXxHCKZBH7hhOROomK14crNZzvbebMRt+
-	 x7PIp4bW9gApLYTQBdejF38nyGOlAxxgmT7UTq4w=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Thu, 13 Jun 2024 17:24:51 +0200
-Subject: [PATCH v2] leds: triggers: flush pending brightness before
- activating trigger
+	s=arc-20240116; t=1718295854; c=relaxed/simple;
+	bh=ZMO54sEj6G7+dnyZmApzdzks0Br8TpFhp9WbA1x5IPA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=euHEoexNhH6CsEtcJGjNTTCzfy8ZwPxqoNaj7pvozuaIhfEqew9RsGwUTFaxro7Efk7+1iQbg9Okfw9URnF/CtRICo2FsQAjBna/+aldp4/AgfMOcHv6UhKv5Behk8P9ahXwxOXyZh70IcshbZ2SO4xJ0G++J3N1KYivvqEQayU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FZVdLj6I; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1f4c7b022f8so11816525ad.1;
+        Thu, 13 Jun 2024 09:24:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718295853; x=1718900653; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jtbozP1bj1RT/YO+b6J5IfcQJsTgR/wm/yUx2H9BANo=;
+        b=FZVdLj6IMG9bQs7sjZnutLDt8p9W+WrSFL6DbnRsvZhW5SZ6ggZe4uM9GpSxFH5ajn
+         Gg7yNYBpLysmWC36WMU1ELjBGOJo1FsKTlBJFMzOFvFRwFTzsaBatidhMOWBvIKGeMbJ
+         usHfX8vCoy8E2dCNAhNhq8Rr5ujP1w9Yei/C8blswkk3ps5opiRxVG3xcCA+MYDYNQUB
+         Nmodoj0Pk3adfvDUwYFlo+YtBuwm+f6NfiB+mH9ggh2wMeazaBBGirBQE8rGlmVGdjPz
+         n2JWkv5f55XrHM7h8LRPkdvGsMBQmZduBNtKbMcDUIoep3Gd8B/iDZkvwJaHEMxrbLT9
+         bcXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718295853; x=1718900653;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jtbozP1bj1RT/YO+b6J5IfcQJsTgR/wm/yUx2H9BANo=;
+        b=LdLjEwwBId7lLKe3msliuQXYOXPr9FQ6s0htxmVBO4zYOJ7AZpMcVArvRKoVWo+9uE
+         izV0pdHkpQjrAnQnVoMD+oh986CT0n5TQhETWnVI6Vwns1datQDqkEbz7V3dDotCK8jh
+         Z4JZ5FoighzikEy9pd3a43dxlRVLwUpuAgz8pV+LjQuf2eYfjt+5AVgd4vU6kvLWUzKL
+         fukjXlr9e94ktQ//PE9HLaWqluHzVgFeX8GBN5mLUxpbgqB7d2U2e0+0bsWD9WQ53fQG
+         FDygWjwzO8Dhuv6LFD4Dwen9gGGvhwrwzmbCeE1eG0kTrV8O3YfTej/OCZ/LIEcP4Wpw
+         J9XQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX79GXQM+o4ZuYqSeavqAIp0WP/uGgboqoyMJ+553uY8Ls0dGw19lqXhMs9RznCuLh49bBV3ctCNA5hagBfLaqyxm/Ap0jrHfF77dXi
+X-Gm-Message-State: AOJu0Ywetf7kRF0dSA15w718YkqdK+pP+fLKpSLfpKyWPs/lwrenwlHg
+	UNEQbgB6mgFWY+6vA2h3DhOyfpe+EiAtwqmuWbSPeoP75GK+FRKN2AX+tA==
+X-Google-Smtp-Source: AGHT+IFwXiHO/szr9rGN1ZzQ5d1mtO9VMwLAtzaq4KCnnCjvlmgsVWLYkjqN8iqF2OT683d0Mi5l0g==
+X-Received: by 2002:a17:902:b587:b0:1f7:2051:c816 with SMTP id d9443c01a7336-1f8627ea802mr1470735ad.35.1718295852641;
+        Thu, 13 Jun 2024 09:24:12 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855e55e5fsm15906145ad.59.2024.06.13.09.24.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Jun 2024 09:24:11 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Thu, 13 Jun 2024 09:24:09 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 4.19 000/213] 4.19.316-rc1 review
+Message-ID: <5adf6fda-7936-4a45-8372-dde37f993afb@roeck-us.net>
+References: <20240613113227.969123070@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240613-led-trigger-flush-v2-1-f4f970799d77@weissschuh.net>
-X-B4-Tracking: v=1; b=H4sIAEIPa2YC/32NQQqDMBBFryKz7pSYiGBXvUdxUeMkGRAtmagtk
- rs39QBdvgf//QOEIpPArTog0sbCy1xAXyqw4Tl7Qh4Lg1a6Ua0yONGIKbL3FNFNqwQ0AzmjDA2
- d0lB2r0iO32fz0RcOLGmJn/Niq3/2X22rsUbbqca2pN1gmvtOLCI2rOE6U4I+5/wFfRGb/rcAA
- AA=
-To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
- Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Cc: linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Dustin Howett <dustin@howett.net>, stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1718292294; l=2694;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=lkr1QctdrwBqiaLGk73+KO5d+sPtA7Bi31a8uXsZvLM=;
- b=BeT9bQPIN0S2PP6EGAIJapWFwWehZhBUWYDfHdhDO6u9Gytb+cpAPkWQ7AsdxmI/Gl+AsLJhQ
- zpM2cThQSCvDSNPdcKU0lKtFti+HZHNHX69XZIXFqyy+9t6B5UZE8pP
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
 
-The race fixed in timer_trig_activate() between a blocking
-set_brightness() call and trigger->activate() can affect any trigger.
-So move the call to flush_work() into led_trigger_set() where it can
-avoid the race for all triggers.
+On Thu, Jun 13, 2024 at 01:30:48PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.19.316 release.
+> There are 213 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 15 Jun 2024 11:31:50 +0000.
+> Anything received after that time might be too late.
+>
 
-Fixes: 0db37915d912 ("leds: avoid races with workqueue")
-Fixes: 8c0f693c6eff ("leds: avoid flush_work in atomic context")
-Cc: stable@vger.kernel.org
-Tested-by: Dustin L. Howett <dustin@howett.net>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
-Changes in v2:
-- Cc stable
-- Add Dustin's Tested-by
-- Rebase against led/for-leds-next
-- Always execute flush_work(), similar to synchronize_rcu()
-- Link to v1: https://lore.kernel.org/r/20240603-led-trigger-flush-v1-1-c904c6e2fb34@weissschuh.net
----
+$ git grep remove_new
+drivers/hsi/controllers/omap_ssi_core.c:        .remove_new = ssi_remove,
+drivers/hsi/controllers/omap_ssi_port.c:        .remove_new = ssi_port_remove,
 
-Commit 7abae7a11fc9 ("leds: trigger: Call synchronize_rcu() before calling trig->activate()")
-alone also solves the issue that the LED stays completely off after
-enabling the trigger.
-But there is a recognizable timeframe where it is disabled in between.
+There is no remove_new callback in v4.19.y, so this results in
 
-Also from a correctness perspective, this seems like a coincidence and
-the call to flush_work() is the correct fix for that race.
----
- drivers/leds/led-triggers.c          | 6 ++++++
- drivers/leds/trigger/ledtrig-timer.c | 5 -----
- 2 files changed, 6 insertions(+), 5 deletions(-)
+drivers/hsi/controllers/omap_ssi_core.c:653:3: error:
+      field designator 'remove_new' does not refer to any field in type
+      'struct platform_driver'
+  653 |         .remove_new = ssi_remove,
 
-diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
-index 59deadb86335..78eb20093b2c 100644
---- a/drivers/leds/led-triggers.c
-+++ b/drivers/leds/led-triggers.c
-@@ -201,6 +201,12 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
- 		 */
- 		synchronize_rcu();
- 
-+		/*
-+		 * If "set brightness to 0" is pending in workqueue,
-+		 * we don't want that to be reordered after ->activate()
-+		 */
-+		flush_work(&led_cdev->set_brightness_work);
-+
- 		ret = 0;
- 		if (trig->activate)
- 			ret = trig->activate(led_cdev);
-diff --git a/drivers/leds/trigger/ledtrig-timer.c b/drivers/leds/trigger/ledtrig-timer.c
-index b4688d1d9d2b..1d213c999d40 100644
---- a/drivers/leds/trigger/ledtrig-timer.c
-+++ b/drivers/leds/trigger/ledtrig-timer.c
-@@ -110,11 +110,6 @@ static int timer_trig_activate(struct led_classdev *led_cdev)
- 		led_cdev->flags &= ~LED_INIT_DEFAULT_TRIGGER;
- 	}
- 
--	/*
--	 * If "set brightness to 0" is pending in workqueue, we don't
--	 * want that to be reordered after blink_set()
--	 */
--	flush_work(&led_cdev->set_brightness_work);
- 	led_blink_set(led_cdev, &led_cdev->blink_delay_on,
- 		      &led_cdev->blink_delay_off);
- 
-
----
-base-commit: 005408af25d5550e1bd22a18bf371651969c17ee
-change-id: 20240603-led-trigger-flush-3bef303eb902
-
-Best regards,
--- 
-Thomas Weißschuh <linux@weissschuh.net>
-
+Guenter
 
