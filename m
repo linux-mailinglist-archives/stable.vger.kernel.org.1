@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-51235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C5B906EF0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E629E907215
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 398191F2303A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64DB01F24A20
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA00144D10;
-	Thu, 13 Jun 2024 12:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E139143759;
+	Thu, 13 Jun 2024 12:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJ/gZA0w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ol4gx0IO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E65544C6F;
-	Thu, 13 Jun 2024 12:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE29A1428EA;
+	Thu, 13 Jun 2024 12:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280703; cv=none; b=oWUm/TecB0WcDToUbAInaJLgiZTGCnilfggnXN66nZ+Tgj269G1GKxKEztWQe53JsxKR3+9FyCa5BttWMgm+acAEQmklChPH/XdGlbXncQjNkqxVCMHNJ6881o284qfrg2G9udezKdL4RjGEeleTzw+vAlTKcau1LNdmQIHtJvw=
+	t=1718282613; cv=none; b=Xy5cpJ8FD/PPNsO8+jNFsUgNu/0EjSOcN9Q63FM3bdRx41TUXRwdD62UNcPk/RAixj/+NCoh7ox9xfqtuaUOi94VT3lXVuD0sazZhjwPcgwdFQs1PxgWgSOgiOfsWtRtokYIwSgmk5i9Qrzd333GRlP3oQIVDf3UTqMpqD4ZYf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280703; c=relaxed/simple;
-	bh=kFl/txhKEVmfZFxpuVvzQkwxLE3HKhjdVTkpw8fq1/s=;
+	s=arc-20240116; t=1718282613; c=relaxed/simple;
+	bh=QIsA47UqU6KSrw0Wb9LtU5NdCIXRK/vZ3SqcdVKLw7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MSQuW/ZtCxYC0D/qlm7YIQRkOZMpLgUqC4kt1M6vv5mXaBdpK0Pxo4ggwVJlHTYE+HY+NQMxyTl3ha3+majDNjs3Cwcf7CUwair5ncQoSK65Sbohzl8lSAgmmro500IA2qe8GEKFttpKrf08edplaASUBzwXcpYJXYUoowYYW4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJ/gZA0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1276C32786;
-	Thu, 13 Jun 2024 12:11:42 +0000 (UTC)
+	 MIME-Version; b=YVAn08Egho18Kp0dLpCVzGqD+HA4pENhtku5pheKwBRkvOFhkRiPISTtqQONKXwlTLhBDr9eJJzUy/Ad37jFXnghYYhYBHpdwCGy2z4S/EowVvC6TBLCftjTJfQxKWaLqL6/BGMfKJYi2T+WkFZf/n0FvYMACVv2WoyoZbqjcMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ol4gx0IO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CF6C2BBFC;
+	Thu, 13 Jun 2024 12:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280703;
-	bh=kFl/txhKEVmfZFxpuVvzQkwxLE3HKhjdVTkpw8fq1/s=;
+	s=korg; t=1718282613;
+	bh=QIsA47UqU6KSrw0Wb9LtU5NdCIXRK/vZ3SqcdVKLw7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJ/gZA0w9usM1JgD8L7z4HI03X/6vLzY/dWqqr6n+bqFgSrm8UUnW0+0hrwpT1L+i
-	 31MlJ+pSCGSUrkR9VOg//OdTqV/voFwuH29sx0/MxRfyADNTLZQHpI/ESsm5PvJOsA
-	 UPrOUU2/aF4hG0z+d4oR/wdgSCdb7uKezW7qAfb0=
+	b=Ol4gx0IOe2dP0sGTZiw6PybwD4+zaHrGfH30+RqJ+2U7RfRRdDOfqcSDRG7fj1Yoa
+	 vo5zFy5zl/QVQo7DXUrb+KOtM7fRPIPfYOUykIioXGhuc5gWtRLTMalgPtGnc+bInl
+	 1rWlHEorKT5BxPBnA840R4n3EjUzuo3T+WPQkICc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.6 113/137] ARM: dts: samsung: exynos4412-origen: fix keypad no-autorepeat
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.15 336/402] genirq/cpuhotplug, x86/vector: Prevent vector leak during CPU offline
 Date: Thu, 13 Jun 2024 13:34:53 +0200
-Message-ID: <20240613113227.680992148@linuxfoundation.org>
+Message-ID: <20240613113315.243301890@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-commit 88208d3cd79821117fd3fb80d9bcab618467d37b upstream.
+commit a6c11c0a5235fb144a65e0cb2ffd360ddc1f6c32 upstream.
 
-Although the Samsung SoC keypad binding defined
-linux,keypad-no-autorepeat property, Linux driver never implemented it
-and always used linux,input-no-autorepeat.  Correct the DTS to use
-property actually implemented.
+The absence of IRQD_MOVE_PCNTXT prevents immediate effectiveness of
+interrupt affinity reconfiguration via procfs. Instead, the change is
+deferred until the next instance of the interrupt being triggered on the
+original CPU.
 
-This also fixes dtbs_check errors like:
+When the interrupt next triggers on the original CPU, the new affinity is
+enforced within __irq_move_irq(). A vector is allocated from the new CPU,
+but the old vector on the original CPU remains and is not immediately
+reclaimed. Instead, apicd->move_in_progress is flagged, and the reclaiming
+process is delayed until the next trigger of the interrupt on the new CPU.
 
-  exynos4412-origen.dtb: keypad@100a0000: 'linux,keypad-no-autorepeat' does not match any of the regexes: '^key-[0-9a-z]+$', 'pinctrl-[0-9]+'
+Upon the subsequent triggering of the interrupt on the new CPU,
+irq_complete_move() adds a task to the old CPU's vector_cleanup list if it
+remains online. Subsequently, the timer on the old CPU iterates over its
+vector_cleanup list, reclaiming old vectors.
 
-Cc: <stable@vger.kernel.org>
-Fixes: bd08f6277e44 ("ARM: dts: Add keypad entries to Exynos4412 based Origen")
-Link: https://lore.kernel.org/r/20240312183105.715735-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+However, a rare scenario arises if the old CPU is outgoing before the
+interrupt triggers again on the new CPU.
+
+In that case irq_force_complete_move() is not invoked on the outgoing CPU
+to reclaim the old apicd->prev_vector because the interrupt isn't currently
+affine to the outgoing CPU, and irq_needs_fixup() returns false. Even
+though __vector_schedule_cleanup() is later called on the new CPU, it
+doesn't reclaim apicd->prev_vector; instead, it simply resets both
+apicd->move_in_progress and apicd->prev_vector to 0.
+
+As a result, the vector remains unreclaimed in vector_matrix, leading to a
+CPU vector leak.
+
+To address this issue, move the invocation of irq_force_complete_move()
+before the irq_needs_fixup() call to reclaim apicd->prev_vector, if the
+interrupt is currently or used to be affine to the outgoing CPU.
+
+Additionally, reclaim the vector in __vector_schedule_cleanup() as well,
+following a warning message, although theoretically it should never see
+apicd->move_in_progress with apicd->prev_cpu pointing to an offline CPU.
+
+Fixes: f0383c24b485 ("genirq/cpuhotplug: Add support for cleaning up move in progress")
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240522220218.162423-1-dongli.zhang@oracle.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/samsung/exynos4412-origen.dts |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/apic/vector.c |    9 ++++++---
+ kernel/irq/cpuhotplug.c       |   16 ++++++++--------
+ 2 files changed, 14 insertions(+), 11 deletions(-)
 
---- a/arch/arm/boot/dts/samsung/exynos4412-origen.dts
-+++ b/arch/arm/boot/dts/samsung/exynos4412-origen.dts
-@@ -453,7 +453,7 @@
- &keypad {
- 	samsung,keypad-num-rows = <3>;
- 	samsung,keypad-num-columns = <2>;
--	linux,keypad-no-autorepeat;
-+	linux,input-no-autorepeat;
- 	wakeup-source;
- 	pinctrl-0 = <&keypad_rows &keypad_cols>;
- 	pinctrl-names = "default";
+--- a/arch/x86/kernel/apic/vector.c
++++ b/arch/x86/kernel/apic/vector.c
+@@ -982,7 +982,8 @@ static void __send_cleanup_vector(struct
+ 		hlist_add_head(&apicd->clist, per_cpu_ptr(&cleanup_list, cpu));
+ 		apic->send_IPI(cpu, IRQ_MOVE_CLEANUP_VECTOR);
+ 	} else {
+-		apicd->prev_vector = 0;
++		pr_warn("IRQ %u schedule cleanup for offline CPU %u\n", apicd->irq, cpu);
++		free_moved_vector(apicd);
+ 	}
+ 	raw_spin_unlock(&vector_lock);
+ }
+@@ -1019,6 +1020,7 @@ void irq_complete_move(struct irq_cfg *c
+  */
+ void irq_force_complete_move(struct irq_desc *desc)
+ {
++	unsigned int cpu = smp_processor_id();
+ 	struct apic_chip_data *apicd;
+ 	struct irq_data *irqd;
+ 	unsigned int vector;
+@@ -1043,10 +1045,11 @@ void irq_force_complete_move(struct irq_
+ 		goto unlock;
+ 
+ 	/*
+-	 * If prev_vector is empty, no action required.
++	 * If prev_vector is empty or the descriptor is neither currently
++	 * nor previously on the outgoing CPU no action required.
+ 	 */
+ 	vector = apicd->prev_vector;
+-	if (!vector)
++	if (!vector || (apicd->cpu != cpu && apicd->prev_cpu != cpu))
+ 		goto unlock;
+ 
+ 	/*
+--- a/kernel/irq/cpuhotplug.c
++++ b/kernel/irq/cpuhotplug.c
+@@ -70,6 +70,14 @@ static bool migrate_one_irq(struct irq_d
+ 	}
+ 
+ 	/*
++	 * Complete an eventually pending irq move cleanup. If this
++	 * interrupt was moved in hard irq context, then the vectors need
++	 * to be cleaned up. It can't wait until this interrupt actually
++	 * happens and this CPU was involved.
++	 */
++	irq_force_complete_move(desc);
++
++	/*
+ 	 * No move required, if:
+ 	 * - Interrupt is per cpu
+ 	 * - Interrupt is not started
+@@ -88,14 +96,6 @@ static bool migrate_one_irq(struct irq_d
+ 	}
+ 
+ 	/*
+-	 * Complete an eventually pending irq move cleanup. If this
+-	 * interrupt was moved in hard irq context, then the vectors need
+-	 * to be cleaned up. It can't wait until this interrupt actually
+-	 * happens and this CPU was involved.
+-	 */
+-	irq_force_complete_move(desc);
+-
+-	/*
+ 	 * If there is a setaffinity pending, then try to reuse the pending
+ 	 * mask, so the last change of the affinity does not get lost. If
+ 	 * there is no move pending or the pending mask does not contain
 
 
 
