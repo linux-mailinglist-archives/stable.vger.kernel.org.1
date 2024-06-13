@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB636906E8A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97427907001
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 665BB1F216D9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FB211F21A24
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F2D144D1A;
-	Thu, 13 Jun 2024 12:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57123144D34;
+	Thu, 13 Jun 2024 12:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnQI+rlh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alzM9TNW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3004A143C7B;
-	Thu, 13 Jun 2024 12:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100CB1448FD;
+	Thu, 13 Jun 2024 12:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280450; cv=none; b=lAGoN5TlGQcgBx4pqyBHpTx3W2UhdPEq1JKpJv01M7cpFAe61CJHL8WMwRtxFlypJNtIrNeTc/h+VUp0MvK+/jCdltaZ1y5/yWlWh6jni6sjycX09j+7xJ5VTMpAjCOQvrskny2M1zW9TvNLoVmA+jWtfkvcGaZ3o8CtxSgYIuU=
+	t=1718281372; cv=none; b=XuRFK+Gfv6TLnH5OKfwcm82JBqbt1qZAX52Zf17kSzSZvo6qWD/IFb6zfj/NH1lLKQvCfPJXCM8qvRt0f+sXfKEJEVvm2ePeXpSc5Ur/jNhW4xet6XRnqyEgH1TCjieZACKrYH8eK3NWwKfS3g+nYhc8rdMvMuPB1NaVpLSSlY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280450; c=relaxed/simple;
-	bh=16RQvKe0T4Tn5NYOsEpKvxp3azjf6QQnhmjnnpDREME=;
+	s=arc-20240116; t=1718281372; c=relaxed/simple;
+	bh=Pok/gAHShtsW6QtZ59eRMyYZVba/x1Yix9f03qrx3U0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AiDGpMngTyqCiwmXP4AHLT4XGiPmaFLZ6S34iySgh7MsCmNk/1LqlRguKeQe2bd5Osv3LOhyNzhmq7+EKYruY+r1Au+3cOR7GZ8zhPaOyL6lfXBAYnP3PAmXJtfOjwuzgUU/bqMVLRzqen44ZOXlRpeePIF4ruNbD21Yn2EXI20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnQI+rlh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BA4C2BBFC;
-	Thu, 13 Jun 2024 12:07:29 +0000 (UTC)
+	 MIME-Version; b=IkLXAettu+1+nnukg0bpYGY5cRnV2xS7CsMKmxwAj+8eQVynoVto4aGieWr4IBXk936i1Bu2cQDIxNo8wkpFtHItMUHOBEP+iBo+LWj0kcVjBfVj5JcoAqQ7cGpJwFNkHmt2ToMuHAPbunhS1W2MXcZRrFepUIq0qriizmJCTP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alzM9TNW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891E2C2BBFC;
+	Thu, 13 Jun 2024 12:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280450;
-	bh=16RQvKe0T4Tn5NYOsEpKvxp3azjf6QQnhmjnnpDREME=;
+	s=korg; t=1718281371;
+	bh=Pok/gAHShtsW6QtZ59eRMyYZVba/x1Yix9f03qrx3U0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fnQI+rlh1uTNV+JKdtYY3gJqwHgO3ULEOEL9ybPekazXsS+TSh6hf3qOzpNW3PskI
-	 shoJ9OHLI30XyrpFBAgda4KV9rtOoEjZB6A+Wq5E/mG+A9zZ2IOe47eX16G3qwMLZ+
-	 PbwnTxDkufARyHVyTKYwhvN1CdQCzGc9MQ5OA/iA=
+	b=alzM9TNWSS4/wsSVLC0vkU1uq9ZkAwnTVhn87crOJYemQKy0tWBZPhA19CwyYjrJm
+	 NK+QN9Zlf0TDmFBoODYBb3NmuOWoojWhMT9W0VewaerpNTfX8tzjiOvrDblXDMeL3B
+	 zZdlZAxDPujPjDVUUDxcadrGQXkCGARKuEyICZDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 040/137] media: mc: Fix graph walk in media_pipeline_start
+	Fenglin Wu <quic_fenglinw@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 202/317] Input: pm8xxx-vibrator - correct VIB_MAX_LEVELS calculation
 Date: Thu, 13 Jun 2024 13:33:40 +0200
-Message-ID: <20240613113224.845457245@linuxfoundation.org>
+Message-ID: <20240613113255.370506198@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Fenglin Wu <quic_fenglinw@quicinc.com>
 
-commit 8a9d420149c477e7c97fbd6453704e4612bdd3fa upstream.
+[ Upstream commit 48c0687a322d54ac7e7a685c0b6db78d78f593af ]
 
-The graph walk tries to follow all links, even if they are not between
-pads. This causes a crash with, e.g. a MEDIA_LNK_FL_ANCILLARY_LINK link.
+The output voltage is inclusive hence the max level calculation is
+off-by-one-step. Correct it.
 
-Fix this by allowing the walk to proceed only for MEDIA_LNK_FL_DATA_LINK
-links.
+iWhile we are at it also add a define for the step size instead of
+using the magic value.
 
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: stable@vger.kernel.org # for 6.1 and later
-Fixes: ae219872834a ("media: mc: entity: Rewrite media_pipeline_start()")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 11205bb63e5c ("Input: add support for pm8xxx based vibrator driver")
+Signed-off-by: Fenglin Wu <quic_fenglinw@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240412-pm8xxx-vibrator-new-design-v10-1-0ec0ad133866@quicinc.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/mc/mc-entity.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/input/misc/pm8xxx-vibrator.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/media/mc/mc-entity.c
-+++ b/drivers/media/mc/mc-entity.c
-@@ -606,6 +606,12 @@ static int media_pipeline_explore_next_l
- 	link = list_entry(entry->links, typeof(*link), list);
- 	last_link = media_pipeline_walk_pop(walk);
+diff --git a/drivers/input/misc/pm8xxx-vibrator.c b/drivers/input/misc/pm8xxx-vibrator.c
+index 53ad25eaf1a28..8bfe5c7b1244c 100644
+--- a/drivers/input/misc/pm8xxx-vibrator.c
++++ b/drivers/input/misc/pm8xxx-vibrator.c
+@@ -14,7 +14,8 @@
  
-+	if ((link->flags & MEDIA_LNK_FL_LINK_TYPE) != MEDIA_LNK_FL_DATA_LINK) {
-+		dev_dbg(walk->mdev->dev,
-+			"media pipeline: skipping link (not data-link)\n");
-+		return 0;
-+	}
-+
- 	dev_dbg(walk->mdev->dev,
- 		"media pipeline: exploring link '%s':%u -> '%s':%u\n",
- 		link->source->entity->name, link->source->index,
+ #define VIB_MAX_LEVEL_mV	(3100)
+ #define VIB_MIN_LEVEL_mV	(1200)
+-#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV)
++#define VIB_PER_STEP_mV		(100)
++#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV + VIB_PER_STEP_mV)
+ 
+ #define MAX_FF_SPEED		0xff
+ 
+@@ -118,10 +119,10 @@ static void pm8xxx_work_handler(struct work_struct *work)
+ 		vib->active = true;
+ 		vib->level = ((VIB_MAX_LEVELS * vib->speed) / MAX_FF_SPEED) +
+ 						VIB_MIN_LEVEL_mV;
+-		vib->level /= 100;
++		vib->level /= VIB_PER_STEP_mV;
+ 	} else {
+ 		vib->active = false;
+-		vib->level = VIB_MIN_LEVEL_mV / 100;
++		vib->level = VIB_MIN_LEVEL_mV / VIB_PER_STEP_mV;
+ 	}
+ 
+ 	pm8xxx_vib_set(vib, vib->active);
+-- 
+2.43.0
+
 
 
 
