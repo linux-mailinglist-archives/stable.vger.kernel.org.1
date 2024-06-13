@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FBE59070DD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5552906F14
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:16:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF1371F2327D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAC6D1C23161
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776831DFF0;
-	Thu, 13 Jun 2024 12:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC16146A60;
+	Thu, 13 Jun 2024 12:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ug0ocvM5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDtKLlb0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354851DDC5;
-	Thu, 13 Jun 2024 12:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99761465B3;
+	Thu, 13 Jun 2024 12:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281892; cv=none; b=N/AZhdfgW9BZREUbdCmAe6ec0DNSFMMgpE/ORARrIm449l0+Xo4RpIr7HsMC3suDBVlj364OCfHO03KeXG5v+QiCMN0DkDlvCTf2yV/+bJSPQk/zH76cZ52ThtYb4UMOicyaoAIR7cS6va9jkHGsw/FMje3kK+j8CZVqxoxySNc=
+	t=1718280800; cv=none; b=GBe7EKTWMsRuj8vOlhiokQ2s3HVvai4V8Tnw7m6WXxkkBzm5+b+9uIXV4YHSR8LuaFc3yVztywbblfLHiL9uZs7DYOdxDtmHPx+IXMmIOy9HI+oINrSgUu2hs/Q7RfdoRRJCwoA08x4IWHCDuXuiRkijx+v48UmWNCwSupgHyGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281892; c=relaxed/simple;
-	bh=1obTltwYabfVr65LqJy5rwEUEFtMQHktkOx6Vshdb6E=;
+	s=arc-20240116; t=1718280800; c=relaxed/simple;
+	bh=4DT4Qd0iFsnJbaU0vm+rMzaD2O/tufW5UvtLMo6jS2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pCbKdmm+zS7IgAaarzNqV8Id+NYU/hKZnVv6K54zsDiT0U6Tm4geLfukcMHLY/nOVyMm6isa/+Z9TBRywqzRHcCjAQJ6qe7yQzNyKhwpt5DqdOxcBRN9WyFc5APaaUSHe8+GklWRLnXoPxAGd8Zz0GxL7Es8h4dR226BrINodz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ug0ocvM5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F77C2BBFC;
-	Thu, 13 Jun 2024 12:31:31 +0000 (UTC)
+	 MIME-Version; b=Np3tm0wWHFJlA+ZDETM6e9o6v+auUq4LvZOW/fvGKYoP2cjpYGkeieT7j9FhSG5K6eZTC4fusjqihBTQxmmV3jm3HhcrjMh7SL3gySKZMeIBfq7a7gko0YGsSg1kGk7Rv+kxpnisu8IjdRvfH/BMg2Dv/DtjLAIhwwN+2FyAa2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDtKLlb0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E33C2BBFC;
+	Thu, 13 Jun 2024 12:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281892;
-	bh=1obTltwYabfVr65LqJy5rwEUEFtMQHktkOx6Vshdb6E=;
+	s=korg; t=1718280800;
+	bh=4DT4Qd0iFsnJbaU0vm+rMzaD2O/tufW5UvtLMo6jS2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ug0ocvM5pxx8KHBqOq/oKl60z4s/YeTPmPE6uYUjbpFRQEsGbxCeOKGWqb5fPdKdi
-	 T+oU8aO6X1qEqcNllKObQlKX9uR/Ks2ALarB+dTc2WuDNQc/kvA8uZRbWzcOgkX2PE
-	 BCiUdeJZAa8xdRTjUZROZx3JJVyGt9hcTFtdGoEQ=
+	b=QDtKLlb03axa/pnV2OctdmVQlXM79V7PttYPIQSnvb0TPS/Xf6PSbvVH8uA5qkGa3
+	 n7UNrv+DWweorEE5fJSyQyvFTAkpn9qL6LcGMnqHZjyLcZW1SrNk3VkYcjHAtXEHj8
+	 kxfuEVXDARCVAsFsvJVQSvyzpknNy9t10nbB94/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 092/402] net: give more chances to rcu in netdev_wait_allrefs_any()
+Subject: [PATCH 5.10 031/317] soc: mediatek: cmdq: Fix typo of CMDQ_JUMP_RELATIVE
 Date: Thu, 13 Jun 2024 13:30:49 +0200
-Message-ID: <20240613113305.727251453@linuxfoundation.org>
+Message-ID: <20240613113248.746327989@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 
-[ Upstream commit cd42ba1c8ac9deb9032add6adf491110e7442040 ]
+[ Upstream commit ed4d5ab179b9f0a60da87c650a31f1816db9b4b4 ]
 
-This came while reviewing commit c4e86b4363ac ("net: add two more
-call_rcu_hurry()").
+For cmdq jump command, offset 0 means relative jump and offset 1
+means absolute jump. cmdq_pkt_jump() is absolute jump, so fix the
+typo of CMDQ_JUMP_RELATIVE in cmdq_pkt_jump().
 
-Paolo asked if adding one synchronize_rcu() would help.
-
-While synchronize_rcu() does not help, making sure to call
-rcu_barrier() before msleep(wait) is definitely helping
-to make sure lazy call_rcu() are completed.
-
-Instead of waiting ~100 seconds in my tests, the ref_tracker
-splats occurs one time only, and netdev_wait_allrefs_any()
-latency is reduced to the strict minimum.
-
-Ideally we should audit our call_rcu() users to make sure
-no refcount (or cascading call_rcu()) is held too long,
-because rcu_barrier() is quite expensive.
-
-Fixes: 0e4be9e57e8c ("net: use exponential backoff in netdev_wait_allrefs")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/all/28bbf698-befb-42f6-b561-851c67f464aa@kernel.org/T/#m76d73ed6b03cd930778ac4d20a777f22a08d6824
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 946f1792d3d7 ("soc: mediatek: cmdq: add jump function")
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240222154120.16959-2-chunkuang.hu@kernel.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/soc/mediatek/mtk-cmdq-helper.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index f80bc2ca888aa..e86ef1a1647ec 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -10549,8 +10549,9 @@ static void netdev_wait_allrefs(struct net_device *dev)
- 			rebroadcast_time = jiffies;
- 		}
+diff --git a/drivers/soc/mediatek/mtk-cmdq-helper.c b/drivers/soc/mediatek/mtk-cmdq-helper.c
+index 505651b0d715f..c0b2f9397ea8a 100644
+--- a/drivers/soc/mediatek/mtk-cmdq-helper.c
++++ b/drivers/soc/mediatek/mtk-cmdq-helper.c
+@@ -13,7 +13,8 @@
+ #define CMDQ_POLL_ENABLE_MASK	BIT(0)
+ #define CMDQ_EOC_IRQ_EN		BIT(0)
+ #define CMDQ_REG_TYPE		1
+-#define CMDQ_JUMP_RELATIVE	1
++#define CMDQ_JUMP_RELATIVE	0
++#define CMDQ_JUMP_ABSOLUTE	1
  
-+		rcu_barrier();
-+
- 		if (!wait) {
--			rcu_barrier();
- 			wait = WAIT_REFS_MIN_MSECS;
- 		} else {
- 			msleep(wait);
+ struct cmdq_instruction {
+ 	union {
+@@ -414,7 +415,7 @@ int cmdq_pkt_jump(struct cmdq_pkt *pkt, dma_addr_t addr)
+ 	struct cmdq_instruction inst = {};
+ 
+ 	inst.op = CMDQ_CODE_JUMP;
+-	inst.offset = CMDQ_JUMP_RELATIVE;
++	inst.offset = CMDQ_JUMP_ABSOLUTE;
+ 	inst.value = addr >>
+ 		cmdq_get_shift_pa(((struct cmdq_client *)pkt->cl)->chan);
+ 	return cmdq_pkt_append_command(pkt, inst);
 -- 
 2.43.0
 
