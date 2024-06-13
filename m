@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-51481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77AB90701E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F28F906EAE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 923EC1F20B67
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25A8D1F211AC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4535A145B2C;
-	Thu, 13 Jun 2024 12:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E9E1482E2;
+	Thu, 13 Jun 2024 12:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZKnpljf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Zk4flRz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026EE1459FA;
-	Thu, 13 Jun 2024 12:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8699B1448DD;
+	Thu, 13 Jun 2024 12:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281425; cv=none; b=oHTiOLDkNxr9/EK81GrWBDRnweOTGjYce6vwDJ+XVMUWzEJXb4C6IpDOl0OKOUzpKoRQiXman+EXukW6pYz7MFAePd3VmDQY8Fk3S5pcBnxtTIEuJASs54i+CH0BQgnI+AS1dTZ2/YLw053z8lksiKK1Hs/86oCg5eSR00GV1Uw=
+	t=1718280541; cv=none; b=TC8IzzejuTdTiZ671KoSb++WDNKnxw2xRyTLRsq8YAmO7hjd45IRIWy0Tfu7jGoi8tHAkfdbiPH3g6+1+UttXSoYFeH8idy7s29jaJHIZQQSSBBjf9ojXsfZ+/m9YdmxZ9paOAJ3jtqX3YLN3ap6e2MSH3y8E5AkkbAePZOEaiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281425; c=relaxed/simple;
-	bh=FpVwy4ghgGWEBaxFmbF8Q4XwGMJ3Ka4g+StwI71WuMY=;
+	s=arc-20240116; t=1718280541; c=relaxed/simple;
+	bh=9SyS69gAEoipQSV0zGvhTy2YWeeYoJnFnyeqEtsxXJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D8BIowCddOWw3PddteB0fLBQ61HtLHA6oQyfeHl9qkZYoqRRi3U3UVEvA9RF2uMIS7il7lrxGJPQ4xs6b+Re6g61QO2JoEmIQvUEbbqP2l52GB4/VVQr5EEHQ3pTkFSVt6gxUNMjqRZ6mOuqOPL28O/V7fLGjz8HFCDLrDWonXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZKnpljf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E713C2BBFC;
-	Thu, 13 Jun 2024 12:23:44 +0000 (UTC)
+	 MIME-Version; b=n+EFnGDBHJvcvcxG8VcFWteqEHU9dH6VoGXsb8U8Y+O7rt8KMVTvr+sKnDPxZaIDW3wqTVItSeCBn/UtFWSiYa5VVdTtr7FOds5AB0ZhB9PznAq+J46Xdajmv11gxGsmd0EnJ5V2Nj3aWjtPC5Oc7zajU0k8LK8iBRg8XcYUFOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Zk4flRz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD8FC4AF1A;
+	Thu, 13 Jun 2024 12:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281424;
-	bh=FpVwy4ghgGWEBaxFmbF8Q4XwGMJ3Ka4g+StwI71WuMY=;
+	s=korg; t=1718280541;
+	bh=9SyS69gAEoipQSV0zGvhTy2YWeeYoJnFnyeqEtsxXJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZKnpljf2Whu/CwzJdjpvWHeUIHUadwLaQeMXPmE/hqAXjmJE49yz9jmwlBVBk25r
-	 X1q3iW+Mw/4F7dkzNwXW1W8ORm78buBryVznEPlfZbsZVFIvpDLTn1J2a2mmmZPXXu
-	 H8LF+wYR/Y/Ktfsgga4MSDmp5OIwbn8Ejpw3upKU=
+	b=1Zk4flRzCbcJGCmskQ0imT9TmvF9C0IjOs335ZTqSfKUJKP+KlSmXyX7ipmMpO1xx
+	 D9rBXQJ7Wdk94kdJMqd+43ZsCQF9kIkzptwlJVZkkFUIgj3US4fkEB3ZLGYp/viLqR
+	 Z5v9zeaHXAdsGz4UtLr40cHZoVOJ8otpK7N7gYj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 250/317] dma-buf/sw-sync: dont enable IRQ from sync_print_obj()
-Date: Thu, 13 Jun 2024 13:34:28 +0200
-Message-ID: <20240613113257.221395293@linuxfoundation.org>
+	Frank van der Linden <fvdl@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 089/137] mm/cma: drop incorrect alignment check in cma_init_reserved_mem
+Date: Thu, 13 Jun 2024 13:34:29 +0200
+Message-ID: <20240613113226.751704726@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Frank van der Linden <fvdl@google.com>
 
-[ Upstream commit b794918961516f667b0c745aebdfebbb8a98df39 ]
+commit b174f139bdc8aaaf72f5b67ad1bd512c4868a87e upstream.
 
-Since commit a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from
-known context") by error replaced spin_unlock_irqrestore() with
-spin_unlock_irq() for both sync_debugfs_show() and sync_print_obj() despite
-sync_print_obj() is called from sync_debugfs_show(), lockdep complains
-inconsistent lock state warning.
+cma_init_reserved_mem uses IS_ALIGNED to check if the size represented by
+one bit in the cma allocation bitmask is aligned with
+CMA_MIN_ALIGNMENT_BYTES (pageblock size).
 
-Use plain spin_{lock,unlock}() for sync_print_obj(), for
-sync_debugfs_show() is already using spin_{lock,unlock}_irq().
+However, this is too strict, as this will fail if order_per_bit >
+pageblock_order, which is a valid configuration.
 
-Reported-by: syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=a225ee3df7e7f9372dbe
-Fixes: a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from known context")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/c2e46020-aaa6-4e06-bf73-f05823f913f0@I-love.SAKURA.ne.jp
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We could check IS_ALIGNED both ways, but since both numbers are powers of
+two, no check is needed at all.
+
+Link: https://lkml.kernel.org/r/20240404162515.527802-1-fvdl@google.com
+Fixes: de9e14eebf33 ("drivers: dma-contiguous: add initialization from device tree")
+Signed-off-by: Frank van der Linden <fvdl@google.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/sync_debug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/cma.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/dma-buf/sync_debug.c b/drivers/dma-buf/sync_debug.c
-index 101394f16930f..237bce21d1e72 100644
---- a/drivers/dma-buf/sync_debug.c
-+++ b/drivers/dma-buf/sync_debug.c
-@@ -110,12 +110,12 @@ static void sync_print_obj(struct seq_file *s, struct sync_timeline *obj)
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -187,10 +187,6 @@ int __init cma_init_reserved_mem(phys_ad
+ 	if (!size || !memblock_is_region_reserved(base, size))
+ 		return -EINVAL;
  
- 	seq_printf(s, "%s: %d\n", obj->name, obj->value);
- 
--	spin_lock_irq(&obj->lock);
-+	spin_lock(&obj->lock); /* Caller already disabled IRQ. */
- 	list_for_each(pos, &obj->pt_list) {
- 		struct sync_pt *pt = container_of(pos, struct sync_pt, link);
- 		sync_print_fence(s, &pt->base, false);
- 	}
--	spin_unlock_irq(&obj->lock);
-+	spin_unlock(&obj->lock);
- }
- 
- static void sync_print_sync_file(struct seq_file *s,
--- 
-2.43.0
-
+-	/* alignment should be aligned with order_per_bit */
+-	if (!IS_ALIGNED(CMA_MIN_ALIGNMENT_PAGES, 1 << order_per_bit))
+-		return -EINVAL;
+-
+ 	/* ensure minimal alignment required by mm core */
+ 	if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
+ 		return -EINVAL;
 
 
 
