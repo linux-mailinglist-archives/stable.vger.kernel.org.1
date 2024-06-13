@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-50969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68F0906DA5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F15E906B91
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A78221C2344E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 744CB1C21CC5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F81145B1C;
-	Thu, 13 Jun 2024 11:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF3C1448C6;
+	Thu, 13 Jun 2024 11:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1L6AQNC5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6K8PB4j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EB2145B2B;
-	Thu, 13 Jun 2024 11:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB37143887;
+	Thu, 13 Jun 2024 11:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279921; cv=none; b=HGWhwRdxtR4e1d5y4YiLFZi//wvn8LCKkzdgGodZvZ1/Z142HriQXw6mrwy6PfutQ+vdL04Ej065eVesx1RucbpG8iMNeVqYKgPeNiuwQPj7K9D39EQZAEzZuVE31si5zls219ryvyKwnDgLtHm0B10pKTlHxsm6bZ//4quEJxQ=
+	t=1718278891; cv=none; b=Ki+hk9SKduwQXxzCq+KBLb4MhYh69yf0HXEQl7c7yqhVimjAhehJ8U8ssohNCYGUzT/iDvhX9tqs3o1Kxdi6T+QhEcAf9qDfFeLnoW6Ha4W0CSHZvaltkrdjO/9Bf8ZfjWr8g8toZKYfwQKEVx1qAaZnJuR020W6fmciSdscEkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279921; c=relaxed/simple;
-	bh=MPEeA7+uat9tcgR1gNw3ZofER6qu4ZjaoiNxUseyGcw=;
+	s=arc-20240116; t=1718278891; c=relaxed/simple;
+	bh=xW7XNGJGMRXhINOAzTvcRARWvUE+8nH5/oHeWebnPP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPLzwi5SWgQUov5MU+TSusC7Fbm81DZoORcQoJYSOTVBWhra0q0Hisv2ya19kKByAU3vrm6/VpeISAloarEBo4whbEeHnW2cIzKaWYRulueRTNJE/tp7IjNLFLbtKuNq+D5YY076T4fFLqFMkyRtzA5IN+5vPgKfMdkISTRBugk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1L6AQNC5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE01C2BBFC;
-	Thu, 13 Jun 2024 11:58:40 +0000 (UTC)
+	 MIME-Version; b=O5W3Or8n7gll+Ha/iw3R57yFcO5DcluqO30VNL0euvMrBtZuVqrt4m9n9o62HdjKCdIhaefeDiae4c5o+bU4usN3+i/2QVrdOcDAGPneCSykGGM8iFifppQJzxW3OqGJA6vSooRpkVW8KGP8amELjwiiWmPVmj+X6T5zBkK8O1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6K8PB4j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98932C2BBFC;
+	Thu, 13 Jun 2024 11:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279920;
-	bh=MPEeA7+uat9tcgR1gNw3ZofER6qu4ZjaoiNxUseyGcw=;
+	s=korg; t=1718278891;
+	bh=xW7XNGJGMRXhINOAzTvcRARWvUE+8nH5/oHeWebnPP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1L6AQNC5OS+Jj96ZZJ3XjVyBUqth7TPBDzHtUr2m+b3sv8u3CWT/nrA2Mx2+7Vi98
-	 KB5jGNW1M3pQ9Z0k3dxEjZwmwrspNYx7zrUooH5rQoZdlqUNDFHsN4gHDz85NQLeOC
-	 Di4SoGYs3BERPLs7byVa+U2G2JED0nRJKlZGVCYo=
+	b=w6K8PB4jMLdFMMrJpvivZydNNMhVQFr40af5GclPsnPHgHy4jdbVkD1llGAzlzEj5
+	 zOtHnKxNqKbNSZqKJ3zpRkXRPk0V4Bb2YD9BhEsCEt0rtUY9d6+GNLsvHNxzA0r40N
+	 l2BeA1EJqatqWCAHizZYkSqlNfAesdzECZXgKRVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sahitya Tummala <stummala@codeaurora.org>,
+	Chao Yu <yuchao0@huawei.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 054/202] scsi: bfa: Ensure the copied buf is NUL terminated
+Subject: [PATCH 4.19 104/213] f2fs: add error prints for debugging mount failure
 Date: Thu, 13 Jun 2024 13:32:32 +0200
-Message-ID: <20240613113229.863075204@linuxfoundation.org>
+Message-ID: <20240613113232.016467344@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Sahitya Tummala <stummala@codeaurora.org>
 
-[ Upstream commit 13d0cecb4626fae67c00c84d3c7851f6b62f7df3 ]
+[ Upstream commit 9227d5227b8db354d386f592f159eaa44db1c0b8 ]
 
-Currently, we allocate a nbytes-sized kernel buffer and copy nbytes from
-userspace to that buffer. Later, we use sscanf on this buffer but we don't
-ensure that the string is terminated inside the buffer, this can lead to
-OOB read when using sscanf. Fix this issue by using memdup_user_nul instead
-of memdup_user.
+Add error prints to get more details on the mount failure.
 
-Fixes: 9f30b674759b ("bfa: replace 2 kzalloc/copy_from_user by memdup_user")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-3-f1f1b53a10f4@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sahitya Tummala <stummala@codeaurora.org>
+Reviewed-by: Chao Yu <yuchao0@huawei.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 0fa4e57c1db2 ("f2fs: fix to release node block count in error path of f2fs_new_node_page()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/bfa/bfad_debugfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/segment.c | 6 +++++-
+ fs/f2fs/super.c   | 4 ++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/bfa/bfad_debugfs.c b/drivers/scsi/bfa/bfad_debugfs.c
-index fd1b378a263a0..d3c7d4423c514 100644
---- a/drivers/scsi/bfa/bfad_debugfs.c
-+++ b/drivers/scsi/bfa/bfad_debugfs.c
-@@ -250,7 +250,7 @@ bfad_debugfs_write_regrd(struct file *file, const char __user *buf,
- 	unsigned long flags;
- 	void *kern_buf;
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 7596fce92bef1..34090edc8ce25 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -3409,8 +3409,12 @@ static int restore_curseg_summaries(struct f2fs_sb_info *sbi)
  
--	kern_buf = memdup_user(buf, nbytes);
-+	kern_buf = memdup_user_nul(buf, nbytes);
- 	if (IS_ERR(kern_buf))
- 		return PTR_ERR(kern_buf);
+ 	/* sanity check for summary blocks */
+ 	if (nats_in_cursum(nat_j) > NAT_JOURNAL_ENTRIES ||
+-			sits_in_cursum(sit_j) > SIT_JOURNAL_ENTRIES)
++			sits_in_cursum(sit_j) > SIT_JOURNAL_ENTRIES) {
++		f2fs_msg(sbi->sb, KERN_ERR,
++			"invalid journal entries nats %u sits %u\n",
++			nats_in_cursum(nat_j), sits_in_cursum(sit_j));
+ 		return -EINVAL;
++	}
  
-@@ -317,7 +317,7 @@ bfad_debugfs_write_regwr(struct file *file, const char __user *buf,
- 	unsigned long flags;
- 	void *kern_buf;
- 
--	kern_buf = memdup_user(buf, nbytes);
-+	kern_buf = memdup_user_nul(buf, nbytes);
- 	if (IS_ERR(kern_buf))
- 		return PTR_ERR(kern_buf);
+ 	return 0;
+ }
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 89fc8a4ce1497..b075ba3e62dcd 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -3016,13 +3016,13 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
+ 	err = f2fs_build_segment_manager(sbi);
+ 	if (err) {
+ 		f2fs_msg(sb, KERN_ERR,
+-			"Failed to initialize F2FS segment manager");
++			"Failed to initialize F2FS segment manager (%d)", err);
+ 		goto free_sm;
+ 	}
+ 	err = f2fs_build_node_manager(sbi);
+ 	if (err) {
+ 		f2fs_msg(sb, KERN_ERR,
+-			"Failed to initialize F2FS node manager");
++			"Failed to initialize F2FS node manager (%d)", err);
+ 		goto free_nm;
+ 	}
  
 -- 
 2.43.0
