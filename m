@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-51405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725DE906FBA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 939819071A4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 700371C2365E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E53228245D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92BA145A1D;
-	Thu, 13 Jun 2024 12:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A61F384;
+	Thu, 13 Jun 2024 12:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9PNHlg5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFj6oQY6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6630D145A16;
-	Thu, 13 Jun 2024 12:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2634142903;
+	Thu, 13 Jun 2024 12:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281201; cv=none; b=oH/pMMAiHcd7LD1jn20n++PuPtMLhgFV/6nn2WPNC46Klas7LZ1aauPDdLTH9unzUnGKTXZOfbzNYvLUoGPxTMPYDpXnD1Tr/ImbtXgRcOYzwr88BESVCOehOLTpGkTM44RC8rVpfao7TcwT0VIrIdzVrFHtNgIUmNgW/8kw5go=
+	t=1718282322; cv=none; b=CofHJwPdUh3wZqc9IVw5CTXRq7MQAhAmvbYURDIJnvzL18TWcvIdJ928X9UsyqlB96OWDZQmRrB4Lamgmgvi1Mg+rVkyXO2nNyKrQcHN6vbin8OcXNFWLMYpJEE31JzgrvpFppEHK0qKiVhiG45IynxRA5dEbHjDGywewo3YskQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281201; c=relaxed/simple;
-	bh=/Ef6Zuzv+vgeEEVUGyq5fxGVRkPYymZBJB6rm/51nLg=;
+	s=arc-20240116; t=1718282322; c=relaxed/simple;
+	bh=Zs7upTfSJS1B7h3B0TrFXdS5Vr3Q6oS8XPfsMfmZ3kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=la3GI7o3EEqUJLaHuWYASaO+KpJEGPsXbg2jOdA9Qh+3lMTQQSHRqF0Fo1N7XHsS1mz1gyYkbxwRyCUXUCRapTU3Xnhh7cGD6R8dN2Amp8j0KyJ1eHeYzY6XcrAZh0lffZxPejcyqo6g0N6k5PhKlLlsFVPrw1i0IwfVIJEIpOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9PNHlg5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89D8C2BBFC;
-	Thu, 13 Jun 2024 12:20:00 +0000 (UTC)
+	 MIME-Version; b=ON/loqn/i3UUkDojw0yl0FS7Xb8i03zkNdOb3fG1swjsxDtvch2IXi1pIPDigYTjgNZ9lwiFcW6+Ra/BC8t5wX8zQKKxtZZSeYmn8HX3JNdYL55a98ZyxLzZidn//3BcDyI+xvB1ybrO9rP+XD8TCQqDqRbmmvzaOQREtpyGhz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFj6oQY6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F83CC2BBFC;
+	Thu, 13 Jun 2024 12:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281201;
-	bh=/Ef6Zuzv+vgeEEVUGyq5fxGVRkPYymZBJB6rm/51nLg=;
+	s=korg; t=1718282321;
+	bh=Zs7upTfSJS1B7h3B0TrFXdS5Vr3Q6oS8XPfsMfmZ3kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f9PNHlg5frZ9h/wywYs+5/qaR7TCKGPn1XcEPSlOFm2s3uXSdqulSQLuGWAGQyZR0
-	 i07qQQ1KZm0gZkjZku4T4G6fuQ8xSPsGd8DyJ7SjEuR2wrTZI4V/+hfXMDDyhr21ye
-	 7EjxEU7+xaKg9Rx5JpfwRQ9yBDm7YyZhvxh8AFNg=
+	b=SFj6oQY6rIYsa6KSvXhfyB7Xw6kNGkdz72BKO4VcZVttS/cz0sgmB0P8hhuUCM5xI
+	 XpZAcjmo9Xk1Zpwt7RJ+tdOROa0naWgQ4TxrBU/2irzyQMYsemuVhD+CfKI1rVBa7b
+	 5gP831N2qFt0Cm/uF8QrhQuJ2nI0DoHM+QReto7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huai-Yuan Liu <qq810974084@gmail.com>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 175/317] ppdev: Add an error check in register_device
-Date: Thu, 13 Jun 2024 13:33:13 +0200
-Message-ID: <20240613113254.328367654@linuxfoundation.org>
+Subject: [PATCH 5.15 237/402] perf daemon: Fix file leak in daemon_session__control
+Date: Thu, 13 Jun 2024 13:33:14 +0200
+Message-ID: <20240613113311.387793190@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +70,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huai-Yuan Liu <qq810974084@gmail.com>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit fbf740aeb86a4fe82ad158d26d711f2f3be79b3e ]
+[ Upstream commit 09541603462c399c7408d50295db99b4b8042eaa ]
 
-In register_device, the return value of ida_simple_get is unchecked,
-in witch ida_simple_get will use an invalid index value.
+The open() function returns -1 on error.
 
-To address this issue, index should be checked after ida_simple_get. When
-the index value is abnormal, a warning message should be printed, the port
-should be dropped, and the value should be recorded.
+The 'control' and 'ack' file descriptors are both initialized with
+open() and further validated with 'if' statement.
 
-Fixes: 9a69645dde11 ("ppdev: fix registering same device name")
-Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
-Link: https://lore.kernel.org/r/20240412083840.234085-1-qq810974084@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+'if (!control)' would evaluate to 'true' if returned value on error were
+'0' but it is actually '-1'.
+
+Fixes: edcaa47958c7438b ("perf daemon: Add 'ping' command")
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240510003424.2016914-1-samasth.norway.ananda@oracle.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ppdev.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ tools/perf/builtin-daemon.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/ppdev.c b/drivers/char/ppdev.c
-index f6024d97fe70b..a97edbf7455a6 100644
---- a/drivers/char/ppdev.c
-+++ b/drivers/char/ppdev.c
-@@ -296,28 +296,35 @@ static int register_device(int minor, struct pp_struct *pp)
- 	if (!port) {
- 		pr_warn("%s: no associated port!\n", name);
- 		rc = -ENXIO;
--		goto err;
-+		goto err_free_name;
- 	}
+diff --git a/tools/perf/builtin-daemon.c b/tools/perf/builtin-daemon.c
+index 61929f63a0474..361fbee36b35c 100644
+--- a/tools/perf/builtin-daemon.c
++++ b/tools/perf/builtin-daemon.c
+@@ -523,7 +523,7 @@ static int daemon_session__control(struct daemon_session *session,
+ 		  session->base, SESSION_CONTROL);
  
- 	index = ida_alloc(&ida_index, GFP_KERNEL);
-+	if (index < 0) {
-+		pr_warn("%s: failed to get index!\n", name);
-+		rc = index;
-+		goto err_put_port;
-+	}
-+
- 	memset(&ppdev_cb, 0, sizeof(ppdev_cb));
- 	ppdev_cb.irq_func = pp_irq;
- 	ppdev_cb.flags = (pp->flags & PP_EXCL) ? PARPORT_FLAG_EXCL : 0;
- 	ppdev_cb.private = pp;
- 	pdev = parport_register_dev_model(port, name, &ppdev_cb, index);
--	parport_put_port(port);
+ 	control = open(control_path, O_WRONLY|O_NONBLOCK);
+-	if (!control)
++	if (control < 0)
+ 		return -1;
  
- 	if (!pdev) {
- 		pr_warn("%s: failed to register device!\n", name);
- 		rc = -ENXIO;
- 		ida_free(&ida_index, index);
--		goto err;
-+		goto err_put_port;
- 	}
+ 	if (do_ack) {
+@@ -532,7 +532,7 @@ static int daemon_session__control(struct daemon_session *session,
+ 			  session->base, SESSION_ACK);
  
- 	pp->pdev = pdev;
- 	pp->index = index;
- 	dev_dbg(&pdev->dev, "registered pardevice\n");
--err:
-+err_put_port:
-+	parport_put_port(port);
-+err_free_name:
- 	kfree(name);
- 	return rc;
- }
+ 		ack = open(ack_path, O_RDONLY, O_NONBLOCK);
+-		if (!ack) {
++		if (ack < 0) {
+ 			close(control);
+ 			return -1;
+ 		}
 -- 
 2.43.0
 
