@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-50531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ECF5906B1D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 685FA906B15
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD5771F24383
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:37:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10FA21F24496
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538A5142E83;
-	Thu, 13 Jun 2024 11:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312FA142E99;
+	Thu, 13 Jun 2024 11:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEiZlsZ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RaBS8ODF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DA2DDB1;
-	Thu, 13 Jun 2024 11:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E04DDB1;
+	Thu, 13 Jun 2024 11:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278636; cv=none; b=YZ5IIVehsHNEGZgSy9WRKkV+WgQ7kt2Drbx9AbrNssWFXZ6i0vSxvW483AokdDGeuJLqfR1N6NjFXOSg++1VNVZ1v0kYuxIUmXAMUQeqTcVZ8hPTmAxwg6iGeN/QdE6p8rtHHnJN0/UGgrzaf/o1pCPMgnouv0CfoX15MR2OYPI=
+	t=1718278610; cv=none; b=fLGskRwaDFqC69nFnGPe7JFDnCBEDwtRktWU1qJw+NzbiVybqHrEEqXIrzj+ens6FY7yUt95UiJ6Q/ZT3Lt2Vil8NVviyUksrUPbSOGq3KvMLt0XX73vFOnDjRFf1aoTqzLrGuvUWTR1pqezXYor8hvw5IPIavv8w9YX9RJVQG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278636; c=relaxed/simple;
-	bh=4LAsAIKYSD4/kkJuB5hmoK45f3Et/ahvqPV/ZjGJiK4=;
+	s=arc-20240116; t=1718278610; c=relaxed/simple;
+	bh=HwHJnATovnAQOkHhdCmX/wl8Bad/RW+2ftCxX+KkwnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFjW7o26KIBu7Rkboe9w+w4JSP0FVTvB5j8u6m/rpm6PyrD68LlJpal+E8OenUtwZtDXNixn4lhh+XHR4fe8fxN+wws+G+2TE4FJCrAtNt5azOqD5olRTG6fbcboQ8oWN1EP8lmPOZ5IY7LPXYCpoQZRbdLtLak3x2qiLZBspbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEiZlsZ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86BA5C2BBFC;
-	Thu, 13 Jun 2024 11:37:15 +0000 (UTC)
+	 MIME-Version; b=s2KOpIZ4+Jjmp7wrGWWVquFAf+8dQDIzIPKuqugsFPinNiQVMBkTBCm4GLxIsZM73qMJhDHeczLRJllbMqJJZmX+DPwRB29/W9LW5CI3SBfVcT5C9KC1Uljf4kulpgO5WAL8RfpAMCnUrLgoX4LXG/pyJWQY2geh/ZfgfldZ1HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RaBS8ODF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03363C2BBFC;
+	Thu, 13 Jun 2024 11:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278635;
-	bh=4LAsAIKYSD4/kkJuB5hmoK45f3Et/ahvqPV/ZjGJiK4=;
+	s=korg; t=1718278609;
+	bh=HwHJnATovnAQOkHhdCmX/wl8Bad/RW+2ftCxX+KkwnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zEiZlsZ6bEtiHM79IZ8A29IC7dt1Vt76xSn22d22utYYJt5Bewo/dlLIGSAvSJ0xN
-	 9kJAo4SBsw6GVPvKjiQ24+pE1Y+SIN7ebv/iOIruBMTgqPk6QlWKYrz/68Cvj3su/W
-	 AKiljuVRGDnNAOKMPbAezQ4Ai1Y72Cb+8vmaWnxs=
+	b=RaBS8ODFlLprPw+2fSW5jhnRnrzy2cxPgfIesFVGadhNz/9gRr3uqXXD2pTXbLJea
+	 fnT1VJvu/vYL4AZ3/4hIEHVq9mLrRuOyX5CR0UldceHZMa6Du0ERXJ/DpoLHOY3foc
+	 Bh18l+GyN5Gp1rf3hXrVkPRKC/Ap+pCMlJy49skU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Joshua Ashton <joshua@froggi.es>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 009/213] net: usb: qmi_wwan: add Telit FN920C04 compositions
-Date: Thu, 13 Jun 2024 13:30:57 +0200
-Message-ID: <20240613113228.338790846@linuxfoundation.org>
+Subject: [PATCH 4.19 010/213] drm/amd/display: Set color_mgmt_changed to true on unsuspend
+Date: Thu, 13 Jun 2024 13:30:58 +0200
+Message-ID: <20240613113228.378463747@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
 References: <20240613113227.969123070@linuxfoundation.org>
@@ -66,106 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Joshua Ashton <joshua@froggi.es>
 
-[ Upstream commit 0b8fe5bd73249dc20be2e88a12041f8920797b59 ]
+[ Upstream commit 2eb9dd497a698dc384c0dd3e0311d541eb2e13dd ]
 
-Add the following Telit FN920C04 compositions:
+Otherwise we can end up with a frame on unsuspend where color management
+is not applied when userspace has not committed themselves.
 
-0x10a0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  5 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a0 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Fixes re-applying color management on Steam Deck/Gamescope on S3 resume.
 
-0x10a4: rmnet + tty (AT) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a4 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-0x10a9: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  9 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a9 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Joshua Ashton <joshua@froggi.es>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index b4d436f985cfb..3e59b63b838f6 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1326,6 +1326,9 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1060, 2)},	/* Telit LN920 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1070, 2)},	/* Telit FN990 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1080, 2)}, /* Telit FE990 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a9, 0)}, /* Telit FN920C04 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 98d51bc204172..e4139723c473c 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -816,6 +816,7 @@ static int dm_resume(void *handle)
+ 			dc_stream_release(dm_new_crtc_state->stream);
+ 			dm_new_crtc_state->stream = NULL;
+ 		}
++		dm_new_crtc_state->base.color_mgmt_changed = true;
+ 	}
+ 
+ 	for_each_new_plane_in_state(dm->cached_state, plane, new_plane_state, i) {
 -- 
 2.43.0
 
