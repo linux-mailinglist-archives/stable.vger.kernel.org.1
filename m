@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-51681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F2290711A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DFFD906F5A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:19:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2777280CF2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F017E1F2218B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC01813E3F9;
-	Thu, 13 Jun 2024 12:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647F8145B08;
+	Thu, 13 Jun 2024 12:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfcB3P0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JV+fMUku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89ABF12C81F;
-	Thu, 13 Jun 2024 12:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C721142E84;
+	Thu, 13 Jun 2024 12:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282003; cv=none; b=O8wgP1Hvb/hsT1pg2W8zq+lbx2uSIKjXTGsZLYb+ngAtnW0CmjjFwOusoNkb3eQQBEvMfCejVDBy0f6Jo6774HzUqVf7Q8TaoCmWbWsMn8Nddwb6Keq+QYIvXnm6MdZikT4jmBvhrHFw44d544cdQoJmhvXpkHgMKt3fT2Qspe4=
+	t=1718280986; cv=none; b=aBOouranRgLgJPxXguMORng1LMoro/cJu0E08TXmsLCGHXEn4OP7zxgdcUnM1YuyvU85F49bM0KwTTk22Jy6fXg1/LSsMW4WPx9C3+K+2XlCdco52U2PbYDFUgFCGtYL/sEFaGxuE1HTurRO6Hg0v0SWn9rku5VnKgEjJCbIKcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282003; c=relaxed/simple;
-	bh=GB4FgU0RZ7+SVJ+IL1DcZvP9fi16DeyoiXS5Q2nQX90=;
+	s=arc-20240116; t=1718280986; c=relaxed/simple;
+	bh=EXyBood2MgsJpdW6d6y0oC4v1pQAx/EkEXMQwfrwDKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5hJV2RKDNxJdPh+3pJTk0J2EhXwEV83pl0zHggqkMoUnQ1DwMZYaJjfuRScHW6M6gMX3LZWtR1kP5HebWYvDY9eZYLGR6E4+r+9F0ttte8kRs+RAI/BX1i7LBRBW/bHEY2dxeDRYt6YXUdkNrHI3L/FeW+GFukktYHk9oBtMOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfcB3P0i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12000C2BBFC;
-	Thu, 13 Jun 2024 12:33:22 +0000 (UTC)
+	 MIME-Version; b=YUie0I6hH7ryQwGyJ59L10ZYi8Y7hQZgpZZThMFi8SEVvwXmwssqn6jJbXfnPLN3TkgHxJ15qrGchnUpUUr/RSqRf4x53bXfGR+44acQFFJk2egMxCePcB2TuqL7dXltgx0vgyvI9w45aOvYlvw4U7SpbaJyu90SSYDyzHqB3qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JV+fMUku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B01EC2BBFC;
+	Thu, 13 Jun 2024 12:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282003;
-	bh=GB4FgU0RZ7+SVJ+IL1DcZvP9fi16DeyoiXS5Q2nQX90=;
+	s=korg; t=1718280986;
+	bh=EXyBood2MgsJpdW6d6y0oC4v1pQAx/EkEXMQwfrwDKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PfcB3P0i9pLcr6oF2Ll2QR+0J1wf0CasEiWMLLIySMLM9UBmBUi8nCUK9q8d75u0i
-	 BEpJdES8oUDfapSgIUf7aE96rb76K2NTfsVfOTzpcsJa7YhTAicFTcEjK1e8RJdE+V
-	 KDCg7qbD2o51k5UNBihkYaxP7mLb5xBfkeXpxzU4=
+	b=JV+fMUku4YMtCkIZmMbbxPStuiEAXwYyywIcnZqRf0soT5xKZ8VRdfB9CA9m6lJT1
+	 T5eAUW9dibtl598gylrWZYSTX0iIbPXT1ooINrbSpIfgsTJXGmaSynLln6ZJh/r9AQ
+	 Gz8TbEs11/LswKvBMXWSXGQlDugwnCeT8iweJU7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Green <greenjustin@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 130/402] drm/mediatek: Add 0 size check to mtk_drm_gem_obj
-Date: Thu, 13 Jun 2024 13:31:27 +0200
-Message-ID: <20240613113307.210472867@linuxfoundation.org>
+Subject: [PATCH 5.10 070/317] Revert "sh: Handle calling csum_partial with misaligned data"
+Date: Thu, 13 Jun 2024 13:31:28 +0200
+Message-ID: <20240613113250.257719763@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Green <greenjustin@chromium.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 1e4350095e8ab2577ee05f8c3b044e661b5af9a0 ]
+[ Upstream commit b5319c96292ff877f6b58d349acf0a9dc8d3b454 ]
 
-Add a check to mtk_drm_gem_init if we attempt to allocate a GEM object
-of 0 bytes. Currently, no such check exists and the kernel will panic if
-a userspace application attempts to allocate a 0x0 GBM buffer.
+This reverts commit cadc4e1a2b4d20d0cc0e81f2c6ba0588775e54e5.
 
-Tested by attempting to allocate a 0x0 GBM buffer on an MT8188 and
-verifying that we now return EINVAL.
+Commit cadc4e1a2b4d ("sh: Handle calling csum_partial with misaligned
+data") causes bad checksum calculations on unaligned data. Reverting
+it fixes the problem.
 
-Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
-Signed-off-by: Justin Green <greenjustin@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240307180051.4104425-1-greenjustin@chromium.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+    # Subtest: checksum
+    # module: checksum_kunit
+    1..5
+    # test_csum_fixed_random_inputs: ASSERTION FAILED at lib/checksum_kunit.c:500
+    Expected ( u64)result == ( u64)expec, but
+        ( u64)result == 53378 (0xd082)
+        ( u64)expec == 33488 (0x82d0)
+    # test_csum_fixed_random_inputs: pass:0 fail:1 skip:0 total:1
+    not ok 1 test_csum_fixed_random_inputs
+    # test_csum_all_carry_inputs: ASSERTION FAILED at lib/checksum_kunit.c:525
+    Expected ( u64)result == ( u64)expec, but
+        ( u64)result == 65281 (0xff01)
+        ( u64)expec == 65280 (0xff00)
+    # test_csum_all_carry_inputs: pass:0 fail:1 skip:0 total:1
+    not ok 2 test_csum_all_carry_inputs
+    # test_csum_no_carry_inputs: ASSERTION FAILED at lib/checksum_kunit.c:573
+    Expected ( u64)result == ( u64)expec, but
+        ( u64)result == 65535 (0xffff)
+        ( u64)expec == 65534 (0xfffe)
+    # test_csum_no_carry_inputs: pass:0 fail:1 skip:0 total:1
+    not ok 3 test_csum_no_carry_inputs
+    # test_ip_fast_csum: pass:1 fail:0 skip:0 total:1
+    ok 4 test_ip_fast_csum
+    # test_csum_ipv6_magic: pass:1 fail:0 skip:0 total:1
+    ok 5 test_csum_ipv6_magic
+ # checksum: pass:2 fail:3 skip:0 total:5
+ # Totals: pass:2 fail:3 skip:0 total:5
+not ok 22 checksum
+
+Fixes: cadc4e1a2b4d ("sh: Handle calling csum_partial with misaligned data")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20240324231804.841099-1-linux@roeck-us.net
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_gem.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/sh/lib/checksum.S | 67 ++++++++++++------------------------------
+ 1 file changed, 18 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-index b983adffa3929..88bdb8eeba81a 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-@@ -33,6 +33,9 @@ static struct mtk_drm_gem_obj *mtk_drm_gem_init(struct drm_device *dev,
+diff --git a/arch/sh/lib/checksum.S b/arch/sh/lib/checksum.S
+index 3e07074e00981..06fed5a21e8ba 100644
+--- a/arch/sh/lib/checksum.S
++++ b/arch/sh/lib/checksum.S
+@@ -33,7 +33,8 @@
+  */
  
- 	size = round_up(size, PAGE_SIZE);
+ /*	
+- * asmlinkage __wsum csum_partial(const void *buf, int len, __wsum sum);
++ * unsigned int csum_partial(const unsigned char *buf, int len,
++ *                           unsigned int sum);
+  */
  
-+	if (size == 0)
-+		return ERR_PTR(-EINVAL);
-+
- 	mtk_gem_obj = kzalloc(sizeof(*mtk_gem_obj), GFP_KERNEL);
- 	if (!mtk_gem_obj)
- 		return ERR_PTR(-ENOMEM);
+ .text
+@@ -45,31 +46,11 @@ ENTRY(csum_partial)
+ 	   * Fortunately, it is easy to convert 2-byte alignment to 4-byte
+ 	   * alignment for the unrolled loop.
+ 	   */
++	mov	r5, r1
+ 	mov	r4, r0
+-	tst	#3, r0		! Check alignment.
+-	bt/s	2f		! Jump if alignment is ok.
+-	 mov	r4, r7		! Keep a copy to check for alignment
++	tst	#2, r0		! Check alignment.
++	bt	2f		! Jump if alignment is ok.
+ 	!
+-	tst	#1, r0		! Check alignment.
+-	bt	21f		! Jump if alignment is boundary of 2bytes.
+-
+-	! buf is odd
+-	tst	r5, r5
+-	add	#-1, r5
+-	bt	9f
+-	mov.b	@r4+, r0
+-	extu.b	r0, r0
+-	addc	r0, r6		! t=0 from previous tst
+-	mov	r6, r0
+-	shll8	r6
+-	shlr16	r0
+-	shlr8	r0
+-	or	r0, r6
+-	mov	r4, r0
+-	tst	#2, r0
+-	bt	2f
+-21:
+-	! buf is 2 byte aligned (len could be 0)
+ 	add	#-2, r5		! Alignment uses up two bytes.
+ 	cmp/pz	r5		!
+ 	bt/s	1f		! Jump if we had at least two bytes.
+@@ -77,17 +58,16 @@ ENTRY(csum_partial)
+ 	bra	6f
+ 	 add	#2, r5		! r5 was < 2.  Deal with it.
+ 1:
++	mov	r5, r1		! Save new len for later use.
+ 	mov.w	@r4+, r0
+ 	extu.w	r0, r0
+ 	addc	r0, r6
+ 	bf	2f
+ 	add	#1, r6
+ 2:
+-	! buf is 4 byte aligned (len could be 0)
+-	mov	r5, r1
+ 	mov	#-5, r0
+-	shld	r0, r1
+-	tst	r1, r1
++	shld	r0, r5
++	tst	r5, r5
+ 	bt/s	4f		! if it's =0, go to 4f
+ 	 clrt
+ 	.align	2
+@@ -109,31 +89,30 @@ ENTRY(csum_partial)
+ 	addc	r0, r6
+ 	addc	r2, r6
+ 	movt	r0
+-	dt	r1
++	dt	r5
+ 	bf/s	3b
+ 	 cmp/eq	#1, r0
+-	! here, we know r1==0
+-	addc	r1, r6			! add carry to r6
++	! here, we know r5==0
++	addc	r5, r6			! add carry to r6
+ 4:
+-	mov	r5, r0
++	mov	r1, r0
+ 	and	#0x1c, r0
+ 	tst	r0, r0
+-	bt	6f
+-	! 4 bytes or more remaining
+-	mov	r0, r1
+-	shlr2	r1
++	bt/s	6f
++	 mov	r0, r5
++	shlr2	r5
+ 	mov	#0, r2
+ 5:
+ 	addc	r2, r6
+ 	mov.l	@r4+, r2
+ 	movt	r0
+-	dt	r1
++	dt	r5
+ 	bf/s	5b
+ 	 cmp/eq	#1, r0
+ 	addc	r2, r6
+-	addc	r1, r6		! r1==0 here, so it means add carry-bit
++	addc	r5, r6		! r5==0 here, so it means add carry-bit
+ 6:
+-	! 3 bytes or less remaining
++	mov	r1, r5
+ 	mov	#3, r0
+ 	and	r0, r5
+ 	tst	r5, r5
+@@ -159,16 +138,6 @@ ENTRY(csum_partial)
+ 	mov	#0, r0
+ 	addc	r0, r6
+ 9:
+-	! Check if the buffer was misaligned, if so realign sum
+-	mov	r7, r0
+-	tst	#1, r0
+-	bt	10f
+-	mov	r6, r0
+-	shll8	r6
+-	shlr16	r0
+-	shlr8	r0
+-	or	r0, r6
+-10:
+ 	rts
+ 	 mov	r6, r0
+ 
 -- 
 2.43.0
 
