@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B33906F1A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0B09070F1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDDB1283065
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 177161F22D59
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DB514374B;
-	Thu, 13 Jun 2024 12:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A791877;
+	Thu, 13 Jun 2024 12:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLLU9DrH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qSx9/kdb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD06D137914;
-	Thu, 13 Jun 2024 12:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32409384;
+	Thu, 13 Jun 2024 12:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280815; cv=none; b=XtoAN670G0rQvPH9Byb4Q/hOpbKyKd/LOUudjB+EuVr6XTzHwlRMLSEcPnjh4rYquJXWStdCBE0c2vhwSSZl1QppcIuXwZAbm79LS+6TrNMz6PUCxkcFDZA51CVcsRIsEzBWtySkJxVhEGU5jl5GpYSt8ISBKNhweLFWwAH9LpI=
+	t=1718281933; cv=none; b=C0P6QjJL73BjenfP6+bolVAt6MFKZvY8gCBOI0THFfR2jN/xcVjqvNWAdvj7FkZQpSBfrPR33AG6UBEeU7WitbfKWZLqrP4QI12r8Wy5YnjOeHFsw4V/Ermsw++i1eO+sASJy+h6q9Jh7Qox8ohtekHUV9itNyANKuWGASbaf8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280815; c=relaxed/simple;
-	bh=AH83VDn32fWqiOpwcktNCDxA4xUV5lhBXFTeZQxmGLc=;
+	s=arc-20240116; t=1718281933; c=relaxed/simple;
+	bh=7E+36LT0uwLlALQsyahV4KskEaNpcvN3dUdYDct6DTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NRLTzpQhSAvnZfDDG7OZyBv5kACeHX8XXujey1kCyXaWcxQXimZP6OB7S5TxOZFHWg/nv0c3hTNYDR+gYebvRZoYrQvph+K64U6yPJ/KpszM3mHX4TlKY6My/wBEzRnyYdREoKULLuCH1UEksx3n7FhNX+rEAbq7a4eHFq9ntB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLLU9DrH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7DD8C2BBFC;
-	Thu, 13 Jun 2024 12:13:34 +0000 (UTC)
+	 MIME-Version; b=cH1AmTADn9BCK4sIAKZhID7dTZFkrUk4E4WLHd4mUThulAq5S3Vj71M0cQRtlA9LvfdM5hb6BOJCRut60brOpsx02qjGfdV57+9T2HnUHQjDp3/CIihLu+xy+BzZI4wWlSKg1sLVTvsjXGEkBbU3rs7+RtzKYVAHv45TYmcWHf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qSx9/kdb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1BE9C2BBFC;
+	Thu, 13 Jun 2024 12:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280815;
-	bh=AH83VDn32fWqiOpwcktNCDxA4xUV5lhBXFTeZQxmGLc=;
+	s=korg; t=1718281933;
+	bh=7E+36LT0uwLlALQsyahV4KskEaNpcvN3dUdYDct6DTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uLLU9DrHnBU2Soi4hd05e8uvV8Z7LK+6WFJt4u1OyNhikl71FlMFrBkeIzX25f5Ub
-	 85i5GxcFoNd5LapiKV0gOX1g37AcLUk03jNUV9C6ZNB1k4TJ8192eeoyOJfhr5xA1/
-	 WcCG4GF1ZQkpkuaMzo3PMuSuBYtmjekRnxgX+Vhc=
+	b=qSx9/kdbmrgLLyDqfPOqgXmD1hO3Vkbc59Qx0WFU9bStR1dJD+hUfn2DNqC1mHkLc
+	 wsgqbDpRF2mrIDG7HpGvjbpFCOfwoeJ2PWbWRxbRC/kXwTMRElgOEPOjdf2GkVUkF1
+	 +Y4CZ9QnmEHAkNXBAxwtMJKrInSnf6QndOO1Q/W8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Andrew Halaney <ahalaney@redhat.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/317] scsi: ufs: cdns-pltfrm: Perform read back after writing HCLKDIV
+Subject: [PATCH 5.15 105/402] usb: aqc111: stop lying about skb->truesize
 Date: Thu, 13 Jun 2024 13:31:02 +0200
-Message-ID: <20240613113249.255555187@linuxfoundation.org>
+Message-ID: <20240613113306.227988107@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Halaney <ahalaney@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b715c55daf598aac8fa339048e4ca8a0916b332e ]
+[ Upstream commit 9aad6e45c4e7d16b2bb7c3794154b828fb4384b4 ]
 
-Currently, HCLKDIV is written to and then completed with an mb().
+Some usb drivers try to set small skb->truesize and break
+core networking stacks.
 
-mb() ensures that the write completes, but completion doesn't mean that it
-isn't stored in a buffer somewhere. The recommendation for ensuring this
-bit has taken effect on the device is to perform a read back to force it to
-make it all the way to the device. This is documented in device-io.rst and
-a talk by Will Deacon on this can be seen over here:
+I replace one skb_clone() by an allocation of a fresh
+and small skb, to get minimally sized skbs, like we did
+in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
+in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
+stop lying about skb->truesize")
 
-    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
-
-Let's do that to ensure the bit hits the device. Because the mb()'s purpose
-wasn't to add extra ordering (on top of the ordering guaranteed by
-writel()/readl()), it can safely be removed.
-
-Fixes: d90996dae8e4 ("scsi: ufs: Add UFS platform driver for Cadence UFS")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-6-181252004586@redhat.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 361459cd9642 ("net: usb: aqc111: Implement RX data path")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240506135546.3641185-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/ufs/cdns-pltfrm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/aqc111.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/ufs/cdns-pltfrm.c b/drivers/scsi/ufs/cdns-pltfrm.c
-index da065a259f6e4..408ba52671dec 100644
---- a/drivers/scsi/ufs/cdns-pltfrm.c
-+++ b/drivers/scsi/ufs/cdns-pltfrm.c
-@@ -135,7 +135,7 @@ static int cdns_ufs_set_hclkdiv(struct ufs_hba *hba)
- 	 * Make sure the register was updated,
- 	 * UniPro layer will not work with an incorrect value.
- 	 */
--	mb();
-+	ufshcd_readl(hba, CDNS_UFS_REG_HCLKDIV);
+diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
+index 6db37eb6c5cc8..4b48a5c09bd49 100644
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -1141,17 +1141,15 @@ static int aqc111_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 			continue;
+ 		}
  
- 	return 0;
- }
+-		/* Clone SKB */
+-		new_skb = skb_clone(skb, GFP_ATOMIC);
++		new_skb = netdev_alloc_skb_ip_align(dev->net, pkt_len);
+ 
+ 		if (!new_skb)
+ 			goto err;
+ 
+-		new_skb->len = pkt_len;
++		skb_put(new_skb, pkt_len);
++		memcpy(new_skb->data, skb->data, pkt_len);
+ 		skb_pull(new_skb, AQ_RX_HW_PAD);
+-		skb_set_tail_pointer(new_skb, new_skb->len);
+ 
+-		new_skb->truesize = SKB_TRUESIZE(new_skb->len);
+ 		if (aqc111_data->rx_checksum)
+ 			aqc111_rx_checksum(new_skb, pkt_desc);
+ 
 -- 
 2.43.0
 
