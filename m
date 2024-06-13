@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DCDF90705B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F836907238
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8057E1C229D1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27C0F1F215FC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51A61459E6;
-	Thu, 13 Jun 2024 12:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD5A143724;
+	Thu, 13 Jun 2024 12:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Op2xJQ+r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eVKY9vpS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D971411CD;
-	Thu, 13 Jun 2024 12:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29082142E73;
+	Thu, 13 Jun 2024 12:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281586; cv=none; b=Hcino4Tj/k+8jjcXBCytzkGISDKMKZGfS+NU974OoAGOWW3ZsK0vnwpD58LiO0RQ56Dffr/0+TnoVh3FsfENpVILYW6edTR7sxliHuc9FscLkDpaNbd9sxq5Vql317m+ueFblDGe4g+5oZsL2Mytws0s9vxAZvT6wvpzBpGZnv0=
+	t=1718282702; cv=none; b=AKe0t2F15H40xMnw0RU7lkMV8g4aTsyYiJXYzH4xi/oOX5g5C17aebfrOg/RVYCU99MgqBheDGUlHS292YcBHkNocok5KCksKI6aWS5p+PYheSuDMJoLyUCaoIwRudUcz7hTofEpx2mY8kSDPypA75D5Nix9T2+j6qyG/ytB2jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281586; c=relaxed/simple;
-	bh=Zk6IUx7UjsafQcWCCPdA5JjTj8Jhpa7euY3ezyfKaa4=;
+	s=arc-20240116; t=1718282702; c=relaxed/simple;
+	bh=iezzJr9772thFPJOpNusdKpRpV+KgKGvylTtA428G2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0Re3Wwgz6Eg+sVTDg5ryfXzC2+NJlg8Md+Il2I8ZrINF4ag+ad9ki8xMbzjMrH0QEIvdcMweI7XggrNhGdgQ3dyERXEZxAkucD+o2sh1cEo4d82h6rjiLm9f+21lbPxxYPKNom2DiAc17D4gc8pcImP8EoI91u/LhjTWahY0Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Op2xJQ+r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1183EC2BBFC;
-	Thu, 13 Jun 2024 12:26:25 +0000 (UTC)
+	 MIME-Version; b=ps3oxBDsnZW5AD9q7MJbPoBGtPrs7tvwO8e+p3igPy4IiSrNfL3yMLSt6uPq5w5X4v38Kbv8dhpEWsA2rB0kHfXzEXOzj6HOXwzI/nxfxMsc6dXcq05GMaUuyicHPFO/kl+G+UoFc6MVHRZWkDXJbq2QzP4VKSv9l8WA8wfawTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVKY9vpS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96328C2BBFC;
+	Thu, 13 Jun 2024 12:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281586;
-	bh=Zk6IUx7UjsafQcWCCPdA5JjTj8Jhpa7euY3ezyfKaa4=;
+	s=korg; t=1718282702;
+	bh=iezzJr9772thFPJOpNusdKpRpV+KgKGvylTtA428G2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Op2xJQ+rg9ZElyArNJeDK3FMhgHohgnJthKarO9OXYKzyqz9C4ATKvYTUzNUg9kna
-	 AyTJocYIzAwBy4T5PwNt/V7avQ1hvaQeZCwVwgKrXqiSPCMMJx1E2OhEXYtVNS1Akx
-	 lkdVIpt6LUVI+2q9y5hcNXH09fA7Itlv0zeRKugk=
+	b=eVKY9vpSsm2AMWv1ocKr9h+M84XVXzoZSE2D6trsOtSCOVJHvaKnVnQyTLhH3On/R
+	 zZzhnURqKtovMb37uuK4ekJoiF75C6t4l0mDLre8gztRJdS+GnijtToMPrma+sBVc4
+	 Htn1jrqpw4/ltDc0eVaNloMVsvHMQT4tdg8m9RHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Justin Stitt <justinstitt@google.com>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 5.10 306/317] kdb: Merge identical case statements in kdb_read()
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: [PATCH 5.15 367/402] media: mc: mark the media devnode as registered from the, start
 Date: Thu, 13 Jun 2024 13:35:24 +0200
-Message-ID: <20240613113259.389080643@linuxfoundation.org>
+Message-ID: <20240613113316.450917228@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit 6244917f377bf64719551b58592a02a0336a7439 upstream.
+commit 4bc60736154bc9e0e39d3b88918f5d3762ebe5e0 upstream.
 
-The code that handles case 14 (down) and case 16 (up) has been copy and
-pasted despite being byte-for-byte identical. Combine them.
+First the media device node was created, and if successful it was
+marked as 'registered'. This leaves a small race condition where
+an application can open the device node and get an error back
+because the 'registered' flag was not yet set.
 
-Cc: stable@vger.kernel.org # Not a bug fix but it is needed for later bug fixes
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Justin Stitt <justinstitt@google.com>
-Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-4-f236dbe9828d@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Change the order: first set the 'registered' flag, then actually
+register the media device node. If that fails, then clear the flag.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: cf4b9211b568 ("[media] media: Media device node support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c |   10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/media/mc/mc-devnode.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -304,6 +304,7 @@ poll_again:
- 		}
- 		break;
- 	case 14: /* Down */
-+	case 16: /* Up */
- 		memset(tmpbuffer, ' ',
- 		       strlen(kdb_prompt_str) + (lastchar-buffer));
- 		*(tmpbuffer+strlen(kdb_prompt_str) +
-@@ -318,15 +319,6 @@ poll_again:
- 			++cp;
- 		}
- 		break;
--	case 16: /* Up */
--		memset(tmpbuffer, ' ',
--		       strlen(kdb_prompt_str) + (lastchar-buffer));
--		*(tmpbuffer+strlen(kdb_prompt_str) +
--		  (lastchar-buffer)) = '\0';
--		kdb_printf("\r%s\r", tmpbuffer);
--		*lastchar = (char)key;
--		*(lastchar+1) = '\0';
--		return lastchar;
- 	case 9: /* Tab */
- 		if (tab < 2)
- 			++tab;
+--- a/drivers/media/mc/mc-devnode.c
++++ b/drivers/media/mc/mc-devnode.c
+@@ -246,15 +246,14 @@ int __must_check media_devnode_register(
+ 	kobject_set_name(&devnode->cdev.kobj, "media%d", devnode->minor);
+ 
+ 	/* Part 3: Add the media and char device */
++	set_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
+ 	ret = cdev_device_add(&devnode->cdev, &devnode->dev);
+ 	if (ret < 0) {
++		clear_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
+ 		pr_err("%s: cdev_device_add failed\n", __func__);
+ 		goto cdev_add_error;
+ 	}
+ 
+-	/* Part 4: Activate this minor. The char device can now be used. */
+-	set_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
+-
+ 	return 0;
+ 
+ cdev_add_error:
 
 
 
