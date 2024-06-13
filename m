@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43BA5906F06
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43513907108
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0C261F22DF9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E76212840B1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E98F145B1D;
-	Thu, 13 Jun 2024 12:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C81A143878;
+	Thu, 13 Jun 2024 12:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PiagIZxy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OoBVZ1jj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4221448D8;
-	Thu, 13 Jun 2024 12:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288A4143867;
+	Thu, 13 Jun 2024 12:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280771; cv=none; b=uspUYPG9mBWICIb8DCReNFSFujN8WqFAKEWXGdukX4KzvUVZ9stXiMe3FUa3FlbCwZPV1o+3WdATw0RxqJFtwMIoqSVyzEVw0dtoih7Ic2Np4YE2fFU0XkYxoOSK9Eht3MW47FEWLG+YFifvG32sC4YHtR5hWE1zdJJ9LQlcjeQ=
+	t=1718281974; cv=none; b=ej2V6KSdVN1bFIvHFI6nBz3mdW6WfdLFVNLPSaQPuogsNDgija3v6k9n20HTvCyBryXEi+xwDxTgfqZYROuyGElZjdWcifx7zrmVDTgoXvJNw23aGOOl4eRjkUcgBxwV5qzJuRLN6HC23ZqpTJDnHhjENzvHk0xAy/22gS0uGBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280771; c=relaxed/simple;
-	bh=GgSuZcAyofVRip0pOGM/N1XhcKp4qNH+TLt1hvTdGNE=;
+	s=arc-20240116; t=1718281974; c=relaxed/simple;
+	bh=TjouqR8cMyE1CNGGZT7c+weBBoxOr3n3i7UT584FKhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B+B9TQMPNCTDUicJUPIJb4TuES42xDXeavrx3U+SUUeU/aLunPXotOxpKZRS7OKMpdy3BHm+xRcbdX/Mz+2tBatrw6/wK3RVtvGtYN43yBUN5d9KZ76yLC6cL2x1QmBmShJE/g/iLgADRh3BDs0ePD8dqruQwCi8MmoofG4jE5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PiagIZxy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81883C2BBFC;
-	Thu, 13 Jun 2024 12:12:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j/+bYQOln2TAYOFnWw/WeYVXDhXAo5MROT/8KM2riL6Vcvd74F3ReKij76MvQX8edY8b31bD68cV0ieoL40Q5aB6vSW7Ppy9Kqkw4yVRv4OcN7IiG4q/Mvw8TWPtzjgqa6BuPdLpJi0dg9jVJ0xP8Sjz2ey1mgTxEdQqrQC7uXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OoBVZ1jj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DE5C2BBFC;
+	Thu, 13 Jun 2024 12:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280770;
-	bh=GgSuZcAyofVRip0pOGM/N1XhcKp4qNH+TLt1hvTdGNE=;
+	s=korg; t=1718281974;
+	bh=TjouqR8cMyE1CNGGZT7c+weBBoxOr3n3i7UT584FKhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PiagIZxy2Cm5Tq3dTcxjjtXuP4Ykh+4gnEYQCJB9+oF86RwWVkl4GQX6g9uodwAQv
-	 rOoIqYrnLDyPflQjcW79vFGsauq9PhOB7Iipa1Ua9mijFwC8hhuITh5kB8d/Dy4qOd
-	 4vm0an76o3gbjJr8nrTrdqX/Tpe3nDak4Say8Nd8=
+	b=OoBVZ1jjasYhWW4OhaFM3hUUfk6ymouTBvnEpnhoQVcy7qZlwtcdyHXfdHo6R+u2Q
+	 PmlxxLRnYBeg2GjExzZtrk5PEoounv/iJfLWcwzhbMGkAhMjTOqDijECKjtKyFxXR4
+	 qI6BjSXIAfRN1ui1fLCnJq5cvrOMhlkW8yIehPcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Thierry Reding <thierry.reding@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 028/317] crypto: x86/sha256-avx2 - add missing vzeroupper
+Subject: [PATCH 5.15 089/402] pwm: sti: Convert to platform remove callback returning void
 Date: Thu, 13 Jun 2024 13:30:46 +0200
-Message-ID: <20240613113248.629382074@linuxfoundation.org>
+Message-ID: <20240613113305.611416201@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 57ce8a4e162599cf9adafef1f29763160a8e5564 ]
+[ Upstream commit e13cec3617c6ace4fc389b60d2a7d5b305b62683 ]
 
-Since sha256_transform_rorx() uses ymm registers, execute vzeroupper
-before returning from it.  This is necessary to avoid reducing the
-performance of SSE code.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-Fixes: d34a460092d8 ("crypto: sha256 - Optimized sha256 x86_64 routine using AVX2's RORX instructions")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Acked-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Stable-dep-of: 5bb0b194aeee ("pwm: sti: Simplify probe function using devm functions")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/sha256-avx2-asm.S | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pwm/pwm-sti.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/crypto/sha256-avx2-asm.S b/arch/x86/crypto/sha256-avx2-asm.S
-index 3439aaf4295d2..81c8053152bb9 100644
---- a/arch/x86/crypto/sha256-avx2-asm.S
-+++ b/arch/x86/crypto/sha256-avx2-asm.S
-@@ -711,6 +711,7 @@ done_hash:
- 	popq	%r13
- 	popq	%r12
- 	popq	%rbx
-+	vzeroupper
- 	RET
- SYM_FUNC_END(sha256_transform_rorx)
+diff --git a/drivers/pwm/pwm-sti.c b/drivers/pwm/pwm-sti.c
+index 0a7920cbd4949..c782378dff5e5 100644
+--- a/drivers/pwm/pwm-sti.c
++++ b/drivers/pwm/pwm-sti.c
+@@ -677,7 +677,7 @@ static int sti_pwm_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static int sti_pwm_remove(struct platform_device *pdev)
++static void sti_pwm_remove(struct platform_device *pdev)
+ {
+ 	struct sti_pwm_chip *pc = platform_get_drvdata(pdev);
+ 
+@@ -685,8 +685,6 @@ static int sti_pwm_remove(struct platform_device *pdev)
+ 
+ 	clk_unprepare(pc->pwm_clk);
+ 	clk_unprepare(pc->cpt_clk);
+-
+-	return 0;
+ }
+ 
+ static const struct of_device_id sti_pwm_of_match[] = {
+@@ -701,7 +699,7 @@ static struct platform_driver sti_pwm_driver = {
+ 		.of_match_table = sti_pwm_of_match,
+ 	},
+ 	.probe = sti_pwm_probe,
+-	.remove = sti_pwm_remove,
++	.remove_new = sti_pwm_remove,
+ };
+ module_platform_driver(sti_pwm_driver);
  
 -- 
 2.43.0
