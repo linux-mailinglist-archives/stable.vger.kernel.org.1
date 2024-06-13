@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6276C9072A4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D870B90727B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6434280DDF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB94B1C22572
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E166F1428EA;
-	Thu, 13 Jun 2024 12:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B2D145336;
+	Thu, 13 Jun 2024 12:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWjiiTh8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCjRETEp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11552566;
-	Thu, 13 Jun 2024 12:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01F714532B;
+	Thu, 13 Jun 2024 12:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282931; cv=none; b=UCttnvzo62dm3z9d3o4eEB8oWyRqm0ED9Itke9G1Rbu9CP8xeSySOUt+HkMeOYnsREygPG2f+tT+MVCGT0DgwA/oQhC1ASPNGlVj2Ed9+J1ifkUXv6bFE5ZdZN7j7MAQeRdAF8baUrPRBDV6otMkmeo/md64D0f+SDxeiZYcA3M=
+	t=1718282831; cv=none; b=hAO/ZsIA6dkLGfKpDt9+n5+WRjSuXduZ5VKr+W3p2nnTBJNmuc+63Y8gDdmD2LZCW4UTi6bjLbUsnZ6eNc8MzCoV4inun4k68oE1zzgp9CkaIIz5xVaFIIBaZpWX/YP2qQ5n6yolWgZMhoKbTmWQFJcDsSwAc5Lc12Z0HlFSfvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282931; c=relaxed/simple;
-	bh=mdrmBLfPAn0inyZY8mbwCq4pbd61w8g2/HXxs0WYmTI=;
+	s=arc-20240116; t=1718282831; c=relaxed/simple;
+	bh=VbRxO1BSly1TP385EO540AXawbuUsphzCvGPthH9Rfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5UvvodAILKmLb15ebe39nrwLONIFu//J6fmGau9xnCq+rhnZP8FtKlX1B7P3RcO/x/XdV+jDa1Hkda1DtA5HaBIAwZWsqUbVSXHdlh4v7v7p43E/P5+DKU46Kk/TwxuuZh4MFj556Wkbyh/YL+dRKQKxZVCitaaNDKcDDnTV5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWjiiTh8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26964C2BBFC;
-	Thu, 13 Jun 2024 12:48:50 +0000 (UTC)
+	 MIME-Version; b=Wed5QM/kaXjEOnIQFqjfx7rdOZX9qdDe7CxsfxMVwxoVE6TEutwnFZQn6PjORX2PQejLAdwijqG/K4HUsYIrujvHb6MH5fK2ZzolJKRbVYy9bzI9EGIgW65KgBexkUO0g+p9GE4+S6gIitcZcwklJhuceXt9FBfWjnJL03cqJ4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCjRETEp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6586C2BBFC;
+	Thu, 13 Jun 2024 12:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282931;
-	bh=mdrmBLfPAn0inyZY8mbwCq4pbd61w8g2/HXxs0WYmTI=;
+	s=korg; t=1718282831;
+	bh=VbRxO1BSly1TP385EO540AXawbuUsphzCvGPthH9Rfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWjiiTh89RSqven3kxIDC70H+VLmDRMwcFVIkCtfKarsUqXyHKw5oy+HUulGVH997
-	 Td7jcx1IJ37B9YKsrEHpB2c9ttlc5Ge+JLslPx8TTzkvAvijNwrYbvx/OtGhpR+WOr
-	 EEXE5E1Gji5g4fJ+KM3zwe8u5DRRuEpiFi4LZ3xw=
+	b=YCjRETEpe3btK/9cI4G5cGBXgl4kmZvP4EQopChz6g5TkB/73LtjNiXuHzVJQ6a0v
+	 13S6cM7+OOhFYOWeAF3II2dz5TsW65vQnwn5nibZTnLbehtlWAt8+TTGn3DTLLiO2a
+	 WPDITF7qkgVfnyYvKCE6oOYW7No/+KsaNgK8aCS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 41/85] mmc: sdhci-acpi: Fix Lenovo Yoga Tablet 2 Pro 1380 sdcard slot not working
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 382/402] net/9p: fix uninit-value in p9_client_rpc()
 Date: Thu, 13 Jun 2024 13:35:39 +0200
-Message-ID: <20240613113215.730839955@linuxfoundation.org>
+Message-ID: <20240613113317.044939238@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit f3521d7cbaefff19cc656325787ed797e5f6a955 upstream.
+commit 25460d6f39024cc3b8241b14c7ccf0d6f11a736a upstream.
 
-The Lenovo Yoga Tablet 2 Pro 1380 sdcard slot has an active high cd pin
-and a broken wp pin which always reports the card being write-protected.
+Syzbot with the help of KMSAN reported the following error:
 
-Add a DMI quirk to address both issues.
+BUG: KMSAN: uninit-value in trace_9p_client_res include/trace/events/9p.h:146 [inline]
+BUG: KMSAN: uninit-value in p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
+ trace_9p_client_res include/trace/events/9p.h:146 [inline]
+ p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
+ p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
+ v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
+ v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
+ legacy_get_tree+0x114/0x290 fs/fs_context.c:662
+ vfs_get_tree+0xa7/0x570 fs/super.c:1797
+ do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
+ path_mount+0x742/0x1f20 fs/namespace.c:3679
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x725/0x810 fs/namespace.c:3875
+ __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
 
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Uninit was created at:
+ __alloc_pages+0x9d6/0xe70 mm/page_alloc.c:4598
+ __alloc_pages_node include/linux/gfp.h:238 [inline]
+ alloc_pages_node include/linux/gfp.h:261 [inline]
+ alloc_slab_page mm/slub.c:2175 [inline]
+ allocate_slab mm/slub.c:2338 [inline]
+ new_slab+0x2de/0x1400 mm/slub.c:2391
+ ___slab_alloc+0x1184/0x33d0 mm/slub.c:3525
+ __slab_alloc mm/slub.c:3610 [inline]
+ __slab_alloc_node mm/slub.c:3663 [inline]
+ slab_alloc_node mm/slub.c:3835 [inline]
+ kmem_cache_alloc+0x6d3/0xbe0 mm/slub.c:3852
+ p9_tag_alloc net/9p/client.c:278 [inline]
+ p9_client_prepare_req+0x20a/0x1770 net/9p/client.c:641
+ p9_client_rpc+0x27e/0x1340 net/9p/client.c:688
+ p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
+ v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
+ v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
+ legacy_get_tree+0x114/0x290 fs/fs_context.c:662
+ vfs_get_tree+0xa7/0x570 fs/super.c:1797
+ do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
+ path_mount+0x742/0x1f20 fs/namespace.c:3679
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x725/0x810 fs/namespace.c:3875
+ __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+
+If p9_check_errors() fails early in p9_client_rpc(), req->rc.tag
+will not be properly initialized. However, trace_9p_client_res()
+ends up trying to print it out anyway before p9_client_rpc()
+finishes.
+
+Fix this issue by assigning default values to p9_fcall fields
+such as 'tag' and (just in case KMSAN unearths something new) 'id'
+during the tag allocation stage.
+
+Reported-and-tested-by: syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
+Fixes: 348b59012e5c ("net/9p: Convert net/9p protocol dumps to tracepoints")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240410191639.526324-5-hdegoede@redhat.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Message-ID: <20240408141039.30428-1-n.zhandarovich@fintech.ru>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-acpi.c |   24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ net/9p/client.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -80,6 +80,7 @@ struct sdhci_acpi_host {
- enum {
- 	DMI_QUIRK_RESET_SD_SIGNAL_VOLT_ON_SUSP			= BIT(0),
- 	DMI_QUIRK_SD_NO_WRITE_PROTECT				= BIT(1),
-+	DMI_QUIRK_SD_CD_ACTIVE_HIGH				= BIT(2),
- };
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -233,6 +233,8 @@ static int p9_fcall_init(struct p9_clien
+ 	if (!fc->sdata)
+ 		return -ENOMEM;
+ 	fc->capacity = alloc_msize;
++	fc->id = 0;
++	fc->tag = P9_NOTAG;
+ 	return 0;
+ }
  
- static inline void *sdhci_acpi_priv(struct sdhci_acpi_host *c)
-@@ -749,6 +750,26 @@ static const struct dmi_system_id sdhci_
- 	},
- 	{
- 		/*
-+		 * Lenovo Yoga Tablet 2 Pro 1380F/L (13" Android version) this
-+		 * has broken WP reporting and an inverted CD signal.
-+		 * Note this has more or less the same BIOS as the Lenovo Yoga
-+		 * Tablet 2 830F/L or 1050F/L (8" and 10" Android), but unlike
-+		 * the 830 / 1050 models which share the same mainboard this
-+		 * model has a different mainboard and the inverted CD and
-+		 * broken WP are unique to this board.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corp."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "VALLEYVIEW C0 PLATFORM"),
-+			DMI_MATCH(DMI_BOARD_NAME, "BYT-T FFD8"),
-+			/* Full match so as to NOT match the 830/1050 BIOS */
-+			DMI_MATCH(DMI_BIOS_VERSION, "BLADE_21.X64.0005.R00.1504101516"),
-+		},
-+		.driver_data = (void *)(DMI_QUIRK_SD_NO_WRITE_PROTECT |
-+					DMI_QUIRK_SD_CD_ACTIVE_HIGH),
-+	},
-+	{
-+		/*
- 		 * The Toshiba WT8-B's microSD slot always reports the card being
- 		 * write-protected.
- 		 */
-@@ -867,6 +888,9 @@ static int sdhci_acpi_probe(struct platf
- 	if (sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD)) {
- 		bool v = sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD_OVERRIDE_LEVEL);
- 
-+		if (quirks & DMI_QUIRK_SD_CD_ACTIVE_HIGH)
-+			host->mmc->caps2 |= MMC_CAP2_CD_ACTIVE_HIGH;
-+
- 		err = mmc_gpiod_request_cd(host->mmc, NULL, 0, v, 0);
- 		if (err) {
- 			if (err == -EPROBE_DEFER)
 
 
 
