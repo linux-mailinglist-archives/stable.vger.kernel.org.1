@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9142B90708D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27272907201
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D4ABB270F5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74F23B276AB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A576C145B12;
-	Thu, 13 Jun 2024 12:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A91B1428FC;
+	Thu, 13 Jun 2024 12:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StqEDNvU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKfsrGP6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641FA1459FA;
-	Thu, 13 Jun 2024 12:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD69E1442EF;
+	Thu, 13 Jun 2024 12:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281407; cv=none; b=gEqJBSlzUhfmBLJ6dgZEJHwhJcztmJwKRdISOTu/qX38UZMWhpdTm2ze5T0P6lgNCC021FtyPhVBj5lrDDv7d3cgrneqOsEDYzwAgXjO3UHFKHP8RZY7LjDzH9uoeoP/TS7bjM/9elZcFUTOgIrVxZnwhnys2/jXRbqztFZZ7yI=
+	t=1718282524; cv=none; b=SvN0J31XBvB+y5AHRdH6MtxodjrjAoltD12mWXgLyD5EC55D4WTU51LCyjxKxC3FMoHMNJXJzWh9nF0trX+KLrMG0U2S5XHlcAHSEQKj1vgXiKmW4Xpc4XQ7e7fCspQ9cfgH4jdUHLcf1dtmHUtXpyq5VcEXLwKijcnTznGglRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281407; c=relaxed/simple;
-	bh=HpglYwRDXveDenCgkUTQWh/cX3lDdNnV6LeWjMhsO58=;
+	s=arc-20240116; t=1718282524; c=relaxed/simple;
+	bh=dP2FWqpX+GyMhgRQAwgSbnWNrGundewa3006KUvldQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mlu91JwR9QKs8K1/tDjVEGrVi6lujU9kKpkC5CwYezxBfA63H6598HCky/5qV9jW/6FRpPAurh3q06UzI7h79Fn3XopJa6h2wZP8R1Dxx3n0a/ftzoXryQeM1Y6kVSBFCXZvmIZVNOlzuGiCOEkqa/GGj7daLLvC/Levm/z8pAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StqEDNvU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB94AC2BBFC;
-	Thu, 13 Jun 2024 12:23:26 +0000 (UTC)
+	 MIME-Version; b=aynLXwBeDqr537C+P0VjjOD0aNNGzyFgHsrOl+/cATnmjoKqWO8DjUEEegRwz1DnrauEQYR+loIhygv8nRMxWt+nDvmLm7gWmGeamNYwDgdAl6ytq3fEFmhEL5DvoH/yYGCWK/wNSpBdGxMmlaxK/QqMb7sSbEZcaCvZ/BkzxfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKfsrGP6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5563EC32786;
+	Thu, 13 Jun 2024 12:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281407;
-	bh=HpglYwRDXveDenCgkUTQWh/cX3lDdNnV6LeWjMhsO58=;
+	s=korg; t=1718282524;
+	bh=dP2FWqpX+GyMhgRQAwgSbnWNrGundewa3006KUvldQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=StqEDNvUmIVAKa2MJlfvBoI2QYou/YdpvXk8Wp1RCbi8wr4DYNGg/Czilj8diqF7e
-	 R3ypS0fZtUihHiA0j4Rq+weP6q0BqL8MWqnqp69bUSk1mqop3nmVtKUnGZEP/0eAUM
-	 VTo4ihv38xZmf0UsYSOIg+psGbPfP7288qCuEBas=
+	b=AKfsrGP6pT0B+lI+5QEnNQWbFiZhXeCJsGyz6McUiBFNgp3SgZvAqUA4HU98v8PYN
+	 ObKQ+csFAJ8KKN27wez7yPY4ZPxfzu8EwxSpnK3qqcPFBuhJX4p0wcVjIeWzc5XShd
+	 +k2b5AsiH0MQQBh9j4Wq9aFecweJuhZRDOOwGjG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 245/317] netfilter: nfnetlink_queue: acquire rcu_read_lock() in instance_destroy_rcu()
+Subject: [PATCH 5.15 306/402] spi: Dont mark message DMA mapped when no transfer in it is
 Date: Thu, 13 Jun 2024 13:34:23 +0200
-Message-ID: <20240613113257.029625387@linuxfoundation.org>
+Message-ID: <20240613113314.077837706@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit dc21c6cc3d6986d938efbf95de62473982c98dec ]
+[ Upstream commit 9f788ba457b45b0ce422943fcec9fa35c4587764 ]
 
-syzbot reported that nf_reinject() could be called without rcu_read_lock() :
+There is no need to set the DMA mapped flag of the message if it has
+no mapped transfers. Moreover, it may give the code a chance to take
+the wrong paths, i.e. to exercise DMA related APIs on unmapped data.
+Make __spi_map_msg() to bail earlier on the above mentioned cases.
 
-WARNING: suspicious RCU usage
-6.9.0-rc7-syzkaller-02060-g5c1672705a1a #0 Not tainted
-
-net/netfilter/nfnetlink_queue.c:263 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-2 locks held by syz-executor.4/13427:
-  #0: ffffffff8e334f60 (rcu_callback){....}-{0:0}, at: rcu_lock_acquire include/linux/rcupdate.h:329 [inline]
-  #0: ffffffff8e334f60 (rcu_callback){....}-{0:0}, at: rcu_do_batch kernel/rcu/tree.c:2190 [inline]
-  #0: ffffffff8e334f60 (rcu_callback){....}-{0:0}, at: rcu_core+0xa86/0x1830 kernel/rcu/tree.c:2471
-  #1: ffff88801ca92958 (&inst->lock){+.-.}-{2:2}, at: spin_lock_bh include/linux/spinlock.h:356 [inline]
-  #1: ffff88801ca92958 (&inst->lock){+.-.}-{2:2}, at: nfqnl_flush net/netfilter/nfnetlink_queue.c:405 [inline]
-  #1: ffff88801ca92958 (&inst->lock){+.-.}-{2:2}, at: instance_destroy_rcu+0x30/0x220 net/netfilter/nfnetlink_queue.c:172
-
-stack backtrace:
-CPU: 0 PID: 13427 Comm: syz-executor.4 Not tainted 6.9.0-rc7-syzkaller-02060-g5c1672705a1a #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-Call Trace:
- <IRQ>
-  __dump_stack lib/dump_stack.c:88 [inline]
-  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
-  lockdep_rcu_suspicious+0x221/0x340 kernel/locking/lockdep.c:6712
-  nf_reinject net/netfilter/nfnetlink_queue.c:323 [inline]
-  nfqnl_reinject+0x6ec/0x1120 net/netfilter/nfnetlink_queue.c:397
-  nfqnl_flush net/netfilter/nfnetlink_queue.c:410 [inline]
-  instance_destroy_rcu+0x1ae/0x220 net/netfilter/nfnetlink_queue.c:172
-  rcu_do_batch kernel/rcu/tree.c:2196 [inline]
-  rcu_core+0xafd/0x1830 kernel/rcu/tree.c:2471
-  handle_softirqs+0x2d6/0x990 kernel/softirq.c:554
-  __do_softirq kernel/softirq.c:588 [inline]
-  invoke_softirq kernel/softirq.c:428 [inline]
-  __irq_exit_rcu+0xf4/0x1c0 kernel/softirq.c:637
-  irq_exit_rcu+0x9/0x30 kernel/softirq.c:649
-  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1043 [inline]
-  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1043
- </IRQ>
- <TASK>
-
-Fixes: 9872bec773c2 ("[NETFILTER]: nfnetlink: use RCU for queue instances hash")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 99adef310f68 ("spi: Provide core support for DMA mapping transfers")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://msgid.link/r/20240522171018.3362521-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_queue.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index 9d87606c76ff4..dc6af1919deaf 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -167,7 +167,9 @@ instance_destroy_rcu(struct rcu_head *head)
- 	struct nfqnl_instance *inst = container_of(head, struct nfqnl_instance,
- 						   rcu);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index d4b186a35bb22..128f1cda39920 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1047,6 +1047,7 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 	else
+ 		rx_dev = ctlr->dev.parent;
  
-+	rcu_read_lock();
- 	nfqnl_flush(inst, NULL, 0);
-+	rcu_read_unlock();
- 	kfree(inst);
- 	module_put(THIS_MODULE);
- }
++	ret = -ENOMSG;
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		if (!ctlr->can_dma(ctlr, msg->spi, xfer))
+ 			continue;
+@@ -1070,6 +1071,9 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 			}
+ 		}
+ 	}
++	/* No transfer has been mapped, bail out with success */
++	if (ret)
++		return 0;
+ 
+ 	ctlr->cur_msg_mapped = true;
+ 
 -- 
 2.43.0
 
