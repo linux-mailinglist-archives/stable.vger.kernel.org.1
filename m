@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7663906E4A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 763909072AC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:50:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F18A2813F9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 384BCB2937D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94EA56EB56;
-	Thu, 13 Jun 2024 12:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F7A143C62;
+	Thu, 13 Jun 2024 12:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLQrAvDe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNWXs6L2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EF2144303;
-	Thu, 13 Jun 2024 12:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3420143C48;
+	Thu, 13 Jun 2024 12:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280276; cv=none; b=umNzkEau4l7WBPlQXaLd57CACmoRqYX7ontqDroGoOhMjVioL5VBugp6u1SM+bKxihUWbJKwNB3uyRaQSq5gXVZiYdVpw7BwJLBDPRBXFCCWPzN0VVrwx6h+sEitAfZ+8I7IRQHbpnC0idiwM4Q+7xvYbSbfpR4reFMgmEgDALs=
+	t=1718282863; cv=none; b=VQPgnwSsjEJOccPNiXfWhwYRdXX3dhuE3uDBeCGYQdCFPue5kmBgHgnGwIfcqfLUkdilhN1cPcrIKcpDYIHWLakmBnmEhE5r7PEhRsixXgvt82bDRGO2WhrxoGhroTXxvp1Ivub72RVKvCpzCQg/6MZrEgPYKGmBG9gN1gioUds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280276; c=relaxed/simple;
-	bh=Hm+DjUXPmuyGSmxbdydQqvAsLJoQ1clnDTa7VhjTw8o=;
+	s=arc-20240116; t=1718282863; c=relaxed/simple;
+	bh=zFR6MRw5F125K6VMJ5dvvx3wSJrfxfyRU/sm9/7HlTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mgxTKBVA+IodrSxWVICDsamYrNXjBn0CkcpVJaMRsQ8xu4mMjiUjZM7lFQLu+n82uR8V3LPtKs1058cJUCWprC7SeEboYKlthybhoIoenX6eEFzBEjfJvPAYFabqIPCy3Kirj64e2Y5eFJwhKR5lvRRylNK8leSW2RCo1UsVX1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLQrAvDe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B59C2BBFC;
-	Thu, 13 Jun 2024 12:04:35 +0000 (UTC)
+	 MIME-Version; b=tNKSkF6XLhuui7veBGrVLpsxFMZEhIew/vq1vaX+ffiHD2y6peKGXHviL5IUhh3EO4c/X5FVRbPoS+zcoBMrDd/2Ak6M2AmALyE0HqksHBe4Ic+aMLN1AnvrCQnZ3L0KYRlqAxulg3pszty7cZ71kmXvdP+n8ATTxykzP4sK6YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNWXs6L2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7A7C4AF4D;
+	Thu, 13 Jun 2024 12:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280276;
-	bh=Hm+DjUXPmuyGSmxbdydQqvAsLJoQ1clnDTa7VhjTw8o=;
+	s=korg; t=1718282863;
+	bh=zFR6MRw5F125K6VMJ5dvvx3wSJrfxfyRU/sm9/7HlTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLQrAvDeN2N83CoHspw8RYYNS4MkJBGz5y0iTxdW24gHLq+8kl5Gn6loJ+V8e9ZXl
-	 IReMU+Rrta6F2Snb/htMWajdTGCZldSdfyvyupLrz81oKsSpcMgEujty6xp0sNAEdY
-	 bm9KlE/6ul+0U15aBe+MnpiljAOL+6cGFmzMGpF4=
+	b=VNWXs6L2YgZZgZT3t6zoKGhO+/nNuj9x6/MCH7z9AT6CyqSJocqqnnmpT9qg5b7VK
+	 4H6D4ECvmeBQ7OgT+vGdHl+TZg4WhAc1zGVSIKC+BzG2+8aGTfA+qACzL5eOBiRDH5
+	 YZk4I7mEt1W0+k0/7S4iL0muoA3DXxi4Yyd3eNLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>
-Subject: [PATCH 5.4 202/202] nfs: fix undefined behavior in nfs_block_bits()
-Date: Thu, 13 Jun 2024 13:35:00 +0200
-Message-ID: <20240613113235.534548096@linuxfoundation.org>
+	Dan Gora <dan.gora@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 03/85] Bluetooth: btrtl: Add missing MODULE_FIRMWARE declarations
+Date: Thu, 13 Jun 2024 13:35:01 +0200
+Message-ID: <20240613113214.269286241@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Dan Gora <dan.gora@gmail.com>
 
-commit 3c0a2e0b0ae661457c8505fecc7be5501aa7a715 upstream.
+commit bb23f07cb63975968bbabe314486e2b087234fc5 upstream.
 
-Shifting *signed int* typed constant 1 left by 31 bits causes undefined
-behavior. Specify the correct *unsigned long* type by using 1UL instead.
+Add missing MODULE_FIRMWARE declarations for firmware referenced in
+btrtl.c.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Dan Gora <dan.gora@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/internal.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btrtl.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -609,9 +609,9 @@ unsigned long nfs_block_bits(unsigned lo
- 	if ((bsize & (bsize - 1)) || nrbitsp) {
- 		unsigned char	nrbits;
- 
--		for (nrbits = 31; nrbits && !(bsize & (1 << nrbits)); nrbits--)
-+		for (nrbits = 31; nrbits && !(bsize & (1UL << nrbits)); nrbits--)
- 			;
--		bsize = 1 << nrbits;
-+		bsize = 1UL << nrbits;
- 		if (nrbitsp)
- 			*nrbitsp = nrbits;
- 	}
+--- a/drivers/bluetooth/btrtl.c
++++ b/drivers/bluetooth/btrtl.c
+@@ -1074,19 +1074,33 @@ MODULE_FIRMWARE("rtl_bt/rtl8723cs_vf_fw.
+ MODULE_FIRMWARE("rtl_bt/rtl8723cs_vf_config.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8723cs_xx_fw.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8723cs_xx_config.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8723d_fw.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8723d_config.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8723ds_fw.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8723ds_config.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8761a_fw.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8761a_config.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8761b_fw.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8761b_config.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8761bu_fw.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8761bu_config.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8821a_fw.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8821a_config.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8821c_fw.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8821c_config.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8821cs_fw.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8821cs_config.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8822b_fw.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8822b_config.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8822cs_fw.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8822cs_config.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8822cu_fw.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8822cu_config.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8851bu_fw.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8851bu_config.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8852au_fw.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8852au_config.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8852bu_fw.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8852bu_config.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8852cu_config.bin");
+-MODULE_FIRMWARE("rtl_bt/rtl8851bu_fw.bin");
+-MODULE_FIRMWARE("rtl_bt/rtl8851bu_config.bin");
 
 
 
