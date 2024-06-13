@@ -1,122 +1,153 @@
-Return-Path: <stable+bounces-50489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07399069B2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C0C9069B5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6047BB23BB7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:10:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C884D282A3D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE79141981;
-	Thu, 13 Jun 2024 10:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9311411CC;
+	Thu, 13 Jun 2024 10:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S+jejdCP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVMgDxPw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0101411E5
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:10:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8B613E3E4
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718273440; cv=none; b=JdCSqYMu2XxsC/hIhNlnRguiOndWxz90WFf/cmz6eT7RbyD7qtg7gnDR5y8vW+RcOKROfU52Vk98A1Tz7aAXp/dsLwiPvjZ1r9AKFvJMq2jXqapJo0jqddEz0Hi68U5xug4rpIp7mKPyNUCl4VAl38drht0DuGqsJJn9w8ZtuLc=
+	t=1718273497; cv=none; b=GLCD0b5DKnMbhkXfvKsAcrEVrFqPHTSj762aBiMAGAODOay0gzjLOFhVPo4GJ6iYS27o+5XhwceRL867JNy6Ef+geTYEIT3HCmyKf2Ug0ad6BOkELPvc+bV8wUY1/aolIStAtpKB9mssHXwhNBUDV1G4+msWCPQSBWV541kC4zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718273440; c=relaxed/simple;
-	bh=mOMZE1BImQgQqVos0pSrYVwUrtiIOEk/BT5krayXtjI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UIA1hJSECG+9ASMFr2EhtzLiIKgON9PHoGA7AqoeBOnbFQtwCuixb+Sc12r1ffXTRGLAkkgtz1GAXJ1nhs9zHKLbTHn8scxdnRWgnh5t9FUaszY6rJfdkxfshD9LzAFqJ6c5UPszQkU7eJxc/yyp4E9iGm9YeO9Gid/s+vpN14c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S+jejdCP; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-52c89d6b4adso830679e87.3
-        for <stable@vger.kernel.org>; Thu, 13 Jun 2024 03:10:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718273437; x=1718878237; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VnOXzfBQPF+LHXjU6pXBEMJF3WvZiisnuKFTk0ZYuAo=;
-        b=S+jejdCPSgiDz1ZDqAOPS79cij4ikRaQJnFPWZjdD6wTKuVVopRz3lllO8SKqrvFSw
-         C90yFR52ZUGIC0jUbbhnFrMnlGlJw2Rb7NxesuEnfpSPlotY+yvJbQkmKJLZBR6MxRiE
-         rROuYy8ZlhB4EEa7viqg/m7j/qZ5OjoTPN6qMxxzgCfv6PNH4qg6xNGwyfKbValyW/LL
-         KQ6omeOHDMuupUUycGOIoea0n/vhIJIND5ooye/jIqWVIy8A/3WbkuPnVyHoG/3WXX5l
-         gFnbiNT9GeExEqiCHSl77azExi6zvAVccfQfR/TbFMaq5WWCzZgevXbU5Ev5FhxqKuOM
-         Biiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718273437; x=1718878237;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VnOXzfBQPF+LHXjU6pXBEMJF3WvZiisnuKFTk0ZYuAo=;
-        b=Vev3DGAExN/qxtGBf9TBtUzfmquOo1mqQNKU282+3YiPEjkNIcIeGmKSD4iYaKXHmX
-         cMr7+QvRnJTyYYw1hgabH2n4SRbfKR5tCOCcGO+VDEPuakuzV/xAWP+FdVqpfyjwaX3/
-         DvSR6yq3pL2D9LM+0nczAug2bDoVNO7MuE8PeC9iQgp888rrTIGGoTQJSSRlQRB46XFR
-         8xJ0Kwc1Ugxg90Bp6AzfYPJfEmR0oqlpE3OO4hijN4aWsUqBz7QzxF5ax3ZOyLIYrTHC
-         l0oUSPkBKM5xLsDxbXuOa1lhBZiOsZeEia01ir6wE193gZqvefeV11XqxkEfVx2ejzuI
-         qWIA==
-X-Forwarded-Encrypted: i=1; AJvYcCVfC5U3oZhW/qkeZjvuQJQK+bP07vQu/BQjoYC0rd5rm24/ID5fMlyWZZLXFbSqMn3Qj0HRqxSLym2Q+HK5JgN5HTmRCPe3
-X-Gm-Message-State: AOJu0Ywu6e5csAEO/lAONUNK1WuN0t0eDkiN6X95codmT4aG+f7/sdVU
-	Fi/hCAVyCGnePq4aEVJlGDNUwo8f1c5Sk47uYYNx9N+etmJWk2LmrU4synffBxc=
-X-Google-Smtp-Source: AGHT+IEnmrWgnM5SGxICW1vWwc2O/mTW96VNMeI3/JiExHdDPaxx2NlTGNeh1bZrVaDWkM08FDbyLQ==
-X-Received: by 2002:a05:6512:44a:b0:52c:8a4e:f4bf with SMTP id 2adb3069b0e04-52c9a400d27mr2332640e87.51.1718273437098;
-        Thu, 13 Jun 2024 03:10:37 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca287ad17sm146604e87.225.2024.06.13.03.10.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jun 2024 03:10:36 -0700 (PDT)
-Date: Thu, 13 Jun 2024 13:10:35 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: x1e80100-crd: fix DAI used for
- headset recording
-Message-ID: <7rfoogp7w3gmtyawmil5lilx4blbpnb3nzl5tv2onydmzblcqw@qooqesspnrp4>
-References: <20240611142555.994675-1-krzysztof.kozlowski@linaro.org>
- <20240611142555.994675-2-krzysztof.kozlowski@linaro.org>
- <90f5ad41-7192-4c01-90c0-ad9c54094917@linaro.org>
- <9e9cbc0b-f9fd-439c-93d1-054179f7b07f@linaro.org>
+	s=arc-20240116; t=1718273497; c=relaxed/simple;
+	bh=y7U8i42HhXQ/QU9PPndWgg/LLxiGuQDUuioYabxvbBg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=omY+inkYPj73sy+8GCG0UzW/aYf2+5QWB8VT4E+HpJnMJQrIiZCRhkboI0yElqXcnf/MmLZ5SPSguXUfEL5gbopCgVSuBHSXUBBvmYDWGBOxpcas6evYBdRGbGdC0X/chG3/W2ka7DeuOTwCXEvZTDijEiNLXpkD0ceV/lneckw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVMgDxPw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC6BC3277B;
+	Thu, 13 Jun 2024 10:11:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718273496;
+	bh=y7U8i42HhXQ/QU9PPndWgg/LLxiGuQDUuioYabxvbBg=;
+	h=Subject:To:Cc:From:Date:From;
+	b=dVMgDxPwlLcO0ThEloEplc5HP70qfueHG2VEFN3GnWVr39NbVgOriHEHwoVEobPif
+	 y4+hq159INCY0YZAlqaK358ZQK9ieONEpM5EnKyJ5fjGE8Q3OV8A/z7blbXHCeA0nX
+	 hyure0BHgkUSsRGcvOWzRx8KlQe8b8WgkVrZGbME=
+Subject: FAILED: patch "[PATCH] 9p: add missing locking around taking dentry fid list" failed to apply to 5.15-stable tree
+To: asmadeus@codewreck.org,linux_oss@crudebyte.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 13 Jun 2024 12:11:33 +0200
+Message-ID: <2024061333-wincing-tackle-2315@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9e9cbc0b-f9fd-439c-93d1-054179f7b07f@linaro.org>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 13, 2024 at 11:11:05AM +0200, Krzysztof Kozlowski wrote:
-> On 13/06/2024 09:45, Konrad Dybcio wrote:
-> > 
-> > 
-> > On 6/11/24 16:25, Krzysztof Kozlowski wrote:
-> >> The SWR2 Soundwire instance has 1 output and 4 input ports, so for the
-> >> headset recording (via the WCD9385 codec and the TX macro codec) we want
-> >> to use the next DAI, not the first one (see qcom,dout-ports and
-> >> qcom,din-ports for soundwire@6d30000 node).
-> >>
-> >> Original code was copied from other devices like SM8450 and SM8550.  On
-> >> the SM8450 this was a correct setting, however on the SM8550 this worked
-> >> probably only by coincidence, because the DTS defined no output ports on
-> >> SWR2 Soundwire.
-> > 
-> > Planning to send a fix for that?
-> > 
-> > Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> 
-> Not really, because microphone works on these targets and changing it
-> would require testing. I don't have boards suitable for testing, so
-> let's just leave it.
 
-If you provide instructions, I can test microphones on SM8450 HDK.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
--- 
-With best wishes
-Dmitry
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x c898afdc15645efb555acb6d85b484eb40a45409
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061333-wincing-tackle-2315@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+c898afdc1564 ("9p: add missing locking around taking dentry fid list")
+b48dbb998d70 ("9p fid refcount: add p9_fid_get/put wrappers")
+47b1e3432b06 ("9p: Remove unnecessary variable for old fids while walking from d_parent")
+cba83f47fc0e ("9p: Track the root fid with its own variable during lookups")
+b0017602fdf6 ("9p: fix EBADF errors in cached mode")
+2a3dcbccd64b ("9p: Fix refcounting during full path walks for fid lookups")
+beca774fc51a ("9p: fix fid refcount leak in v9fs_vfs_atomic_open_dotl")
+6e195b0f7c8e ("9p: fix a bunch of checkpatch warnings")
+eb497943fa21 ("9p: Convert to using the netfs helper lib to do reads and caching")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From c898afdc15645efb555acb6d85b484eb40a45409 Mon Sep 17 00:00:00 2001
+From: Dominique Martinet <asmadeus@codewreck.org>
+Date: Tue, 21 May 2024 21:13:36 +0900
+Subject: [PATCH] 9p: add missing locking around taking dentry fid list
+
+Fix a use-after-free on dentry's d_fsdata fid list when a thread
+looks up a fid through dentry while another thread unlinks it:
+
+UAF thread:
+refcount_t: addition on 0; use-after-free.
+ p9_fid_get linux/./include/net/9p/client.h:262
+ v9fs_fid_find+0x236/0x280 linux/fs/9p/fid.c:129
+ v9fs_fid_lookup_with_uid linux/fs/9p/fid.c:181
+ v9fs_fid_lookup+0xbf/0xc20 linux/fs/9p/fid.c:314
+ v9fs_vfs_getattr_dotl+0xf9/0x360 linux/fs/9p/vfs_inode_dotl.c:400
+ vfs_statx+0xdd/0x4d0 linux/fs/stat.c:248
+
+Freed by:
+ p9_fid_destroy (inlined)
+ p9_client_clunk+0xb0/0xe0 linux/net/9p/client.c:1456
+ p9_fid_put linux/./include/net/9p/client.h:278
+ v9fs_dentry_release+0xb5/0x140 linux/fs/9p/vfs_dentry.c:55
+ v9fs_remove+0x38f/0x620 linux/fs/9p/vfs_inode.c:518
+ vfs_unlink+0x29a/0x810 linux/fs/namei.c:4335
+
+The problem is that d_fsdata was not accessed under d_lock, because
+d_release() normally is only called once the dentry is otherwise no
+longer accessible but since we also call it explicitly in v9fs_remove
+that lock is required:
+move the hlist out of the dentry under lock then unref its fids once
+they are no longer accessible.
+
+Fixes: 154372e67d40 ("fs/9p: fix create-unlink-getattr idiom")
+Cc: stable@vger.kernel.org
+Reported-by: Meysam Firouzi
+Reported-by: Amirmohammad Eftekhar
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Message-ID: <20240521122947.1080227-1-asmadeus@codewreck.org>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+
+diff --git a/fs/9p/vfs_dentry.c b/fs/9p/vfs_dentry.c
+index f16f73581634..01338d4c2d9e 100644
+--- a/fs/9p/vfs_dentry.c
++++ b/fs/9p/vfs_dentry.c
+@@ -48,12 +48,17 @@ static int v9fs_cached_dentry_delete(const struct dentry *dentry)
+ static void v9fs_dentry_release(struct dentry *dentry)
+ {
+ 	struct hlist_node *p, *n;
++	struct hlist_head head;
+ 
+ 	p9_debug(P9_DEBUG_VFS, " dentry: %pd (%p)\n",
+ 		 dentry, dentry);
+-	hlist_for_each_safe(p, n, (struct hlist_head *)&dentry->d_fsdata)
++
++	spin_lock(&dentry->d_lock);
++	hlist_move_list((struct hlist_head *)&dentry->d_fsdata, &head);
++	spin_unlock(&dentry->d_lock);
++
++	hlist_for_each_safe(p, n, &head)
+ 		p9_fid_put(hlist_entry(p, struct p9_fid, dlist));
+-	dentry->d_fsdata = NULL;
+ }
+ 
+ static int v9fs_lookup_revalidate(struct dentry *dentry, unsigned int flags)
+
 
