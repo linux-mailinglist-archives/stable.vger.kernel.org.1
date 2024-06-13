@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-51282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD02C906F27
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF5C9070FF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CE57283609
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78CA41F23515
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC3113D601;
-	Thu, 13 Jun 2024 12:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3601DFD8;
+	Thu, 13 Jun 2024 12:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4Sil+uG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTZa/gsz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21C756458;
-	Thu, 13 Jun 2024 12:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D045161;
+	Thu, 13 Jun 2024 12:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280842; cv=none; b=T7yldVDhv3ymLBiH4L3QJxDPNHZYQsnTxCdnmzkgzhccDu98ZG82zS5zEWDGLPwpfQhNGzR36c2mBmHSCN+2xFkZCnZaUTaqqF1xcq2vTvIE9K1m1st54GzzTxWkSImKXrmBNIHkU4KhwLw/UQheY17EtZTkmMNWSGQ3k6xzFrc=
+	t=1718281959; cv=none; b=mXyAroK4Bha/pVwqi/TAegXPF4YHSoiJ8Pb2pJMxcnnmF3LwUm/OKeHGq1k/I9HWbLhy0CBTEggEIuSvV9kVtnfU5NXjSmlB7oa7JyKH3swxcu6vJS0+lfF1hqX4ozdiLUZyddzD5XlXcLiH8p/1gd1k3eniM8k+rdATedbWQ88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280842; c=relaxed/simple;
-	bh=ex+gi2fw8sH/lAY07yVysmWgxWvdd2+vDZisjujB45s=;
+	s=arc-20240116; t=1718281959; c=relaxed/simple;
+	bh=2m64ye5IGMeAy8rdBK9h3I0N87Cu2Se99ZYRbo1hIms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkWrX/5pjxIzz1yOw0NevyURZ+aWy4ZQFJufiZgOIvyQFDEq/i5NybaGy2/hdlGlAtLFzdByn0+W1DVmDdDF2jMm5xMRQrDujYsXKl554L4g5HMt0XCHoKSjfKGVeubt6ju/QO5jlz6Vzs10Daim+iQmJusnHWyII6YEQO1YqTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4Sil+uG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78713C2BBFC;
-	Thu, 13 Jun 2024 12:14:01 +0000 (UTC)
+	 MIME-Version; b=Xm7SceQg4IFaaoXxyc3zKAJz9PwxaALmR4IvOaklUxiILbFAsDJDxxE+Dn9zj8tr2nSedgS7TKXcOT+BT2ac2Xf/p7C9o3r4Vy1hd7u9P8P82FcNCkN9bz5qJOpAvkJbWsBUKDyNBxXWMbHMT/c2QFk/UmUFP9zOqpb+tBMwLKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTZa/gsz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14249C2BBFC;
+	Thu, 13 Jun 2024 12:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280841;
-	bh=ex+gi2fw8sH/lAY07yVysmWgxWvdd2+vDZisjujB45s=;
+	s=korg; t=1718281959;
+	bh=2m64ye5IGMeAy8rdBK9h3I0N87Cu2Se99ZYRbo1hIms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y4Sil+uGCJ7Ic/JpBzQKLtvP4cB0G3j5sdw9TvdBw6B61UgvAeTXVofPD4GQM54lt
-	 SlT3MaBZ+2iE6lCd0eyACp6jgBpgqtmg6H5QQ3+aQBugHgeLy1JC/35cYACyLc7rhV
-	 A/P7dZiv2+9yuoqw6rsFnthw8eWFunK+qoeT9wKg=
+	b=RTZa/gsze8rI3+KWlbO4HvID5sQB8dpiElOFQmxZy3pd+h1Oo7ADa5x2SAV/bT3ga
+	 DD6qKZQAoqay1NigPGJoSn8QEagh1Gp5Mam+VOUU3rpNnZxxr/8CstUzMgsAlk5R25
+	 pyPoYmBNaWPZ1/KIcOc3nSi/0eh+Ls1reiWzKwf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Steve Glendinning <steve.glendinning@shawell.net>,
+	UNGLinuxDriver@microchip.com,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 052/317] cpufreq: Reorganize checks in cpufreq_offline()
+Subject: [PATCH 5.15 113/402] net: usb: smsc95xx: stop lying about skb->truesize
 Date: Thu, 13 Jun 2024 13:31:10 +0200
-Message-ID: <20240613113249.560972740@linuxfoundation.org>
+Message-ID: <20240613113306.541276017@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +65,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e1e962c5b9edbc628a335bcdbd010331a12d3e5b ]
+[ Upstream commit d50729f1d60bca822ef6d9c1a5fb28d486bd7593 ]
 
-Notice that cpufreq_offline() only needs to check policy_is_inactive()
-once and rearrange the code in there to make that happen.
+Some usb drivers try to set small skb->truesize and break
+core networking stacks.
 
-No expected functional impact.
+In this patch, I removed one of the skb->truesize override.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Stable-dep-of: b8f85833c057 ("cpufreq: exit() callback is optional")
+I also replaced one skb_clone() by an allocation of a fresh
+and small skb, to get minimally sized skbs, like we did
+in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
+in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
+stop lying about skb->truesize")
+
+v3: also fix a sparse error ( https://lore.kernel.org/oe-kbuild-all/202405091310.KvncIecx-lkp@intel.com/ )
+v2: leave the skb_trim() game because smsc95xx_rx_csum_offload()
+    needs the csum part. (Jakub)
+    While we are it, use get_unaligned() in smsc95xx_rx_csum_offload().
+
+Fixes: 2f7ca802bdae ("net: Add SMSC LAN9500 USB2.0 10/100 ethernet adapter driver")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Steve Glendinning <steve.glendinning@shawell.net>
+Cc: UNGLinuxDriver@microchip.com
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240509083313.2113832-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/net/usb/smsc95xx.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 5b4bca71f201d..97999bda188dd 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -1573,24 +1573,18 @@ static int cpufreq_offline(unsigned int cpu)
- 	}
+diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
+index 5f962f58ff496..10fae3989fbdb 100644
+--- a/drivers/net/usb/smsc95xx.c
++++ b/drivers/net/usb/smsc95xx.c
+@@ -1785,9 +1785,11 @@ static int smsc95xx_reset_resume(struct usb_interface *intf)
  
- 	down_write(&policy->rwsem);
+ static void smsc95xx_rx_csum_offload(struct sk_buff *skb)
+ {
+-	skb->csum = *(u16 *)(skb_tail_pointer(skb) - 2);
++	u16 *csum_ptr = (u16 *)(skb_tail_pointer(skb) - 2);
 +
- 	if (has_target())
- 		cpufreq_stop_governor(policy);
++	skb->csum = (__force __wsum)get_unaligned(csum_ptr);
+ 	skb->ip_summed = CHECKSUM_COMPLETE;
+-	skb_trim(skb, skb->len - 2);
++	skb_trim(skb, skb->len - 2); /* remove csum */
+ }
  
- 	cpumask_clear_cpu(cpu, policy->cpus);
+ static int smsc95xx_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+@@ -1845,25 +1847,22 @@ static int smsc95xx_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 				if (dev->net->features & NETIF_F_RXCSUM)
+ 					smsc95xx_rx_csum_offload(skb);
+ 				skb_trim(skb, skb->len - 4); /* remove fcs */
+-				skb->truesize = size + sizeof(struct sk_buff);
  
--	if (policy_is_inactive(policy)) {
--		if (has_target())
--			strncpy(policy->last_governor, policy->governor->name,
--				CPUFREQ_NAME_LEN);
--		else
--			policy->last_policy = policy->policy;
--	} else if (cpu == policy->cpu) {
--		/* Nominate new CPU */
--		policy->cpu = cpumask_any(policy->cpus);
--	}
--
--	/* Start governor again for active policy */
- 	if (!policy_is_inactive(policy)) {
-+		/* Nominate a new CPU if necessary. */
-+		if (cpu == policy->cpu)
-+			policy->cpu = cpumask_any(policy->cpus);
-+
-+		/* Start the governor again for the active policy. */
- 		if (has_target()) {
- 			ret = cpufreq_start_governor(policy);
- 			if (ret)
-@@ -1600,6 +1594,12 @@ static int cpufreq_offline(unsigned int cpu)
- 		goto unlock;
- 	}
+ 				return 1;
+ 			}
  
-+	if (has_target())
-+		strncpy(policy->last_governor, policy->governor->name,
-+			CPUFREQ_NAME_LEN);
-+	else
-+		policy->last_policy = policy->policy;
-+
- 	if (cpufreq_thermal_control_enabled(cpufreq_driver)) {
- 		cpufreq_cooling_unregister(policy->cdev);
- 		policy->cdev = NULL;
+-			ax_skb = skb_clone(skb, GFP_ATOMIC);
++			ax_skb = netdev_alloc_skb_ip_align(dev->net, size);
+ 			if (unlikely(!ax_skb)) {
+ 				netdev_warn(dev->net, "Error allocating skb\n");
+ 				return 0;
+ 			}
+ 
+-			ax_skb->len = size;
+-			ax_skb->data = packet;
+-			skb_set_tail_pointer(ax_skb, size);
++			skb_put(ax_skb, size);
++			memcpy(ax_skb->data, packet, size);
+ 
+ 			if (dev->net->features & NETIF_F_RXCSUM)
+ 				smsc95xx_rx_csum_offload(ax_skb);
+ 			skb_trim(ax_skb, ax_skb->len - 4); /* remove fcs */
+-			ax_skb->truesize = size + sizeof(struct sk_buff);
+ 
+ 			usbnet_skb_return(dev, ax_skb);
+ 		}
 -- 
 2.43.0
 
