@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-50570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67B3906B4B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:39:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BC6906D65
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEE361C21FD2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:39:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3AEC286113
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2725614265E;
-	Thu, 13 Jun 2024 11:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B06C1474CF;
+	Thu, 13 Jun 2024 11:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6ZuFAte"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wduIRIRa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C4EDDB1;
-	Thu, 13 Jun 2024 11:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB63C1474C9;
+	Thu, 13 Jun 2024 11:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278751; cv=none; b=XHrcpafCblJpqjSvXT/zOktfuy7tXC1IkmKiKUP8ms7Jo+p0K82pNJM1Qce0hBdkNz1Q17ixh0CSsOOn71RxVEaXRerUPR8FAzLv6/npndoCpmfs3hkTfbfwpdJPlRNABp+GIsLASb9DsFiC3j4tl+/JOeb+jQ/9kk0GKf0OPGQ=
+	t=1718279749; cv=none; b=kAD48EoP1IP/E78D/vYWpFIxuzWkeJLo9pqxj0C34CF2aXYTgBVG8fCn4JOW73OpHqk4dIdDvWjXSR/6OJ4cp/ZaPE5jLZEt4Q02z218z1RIqLL3xhSW3ES8v+pk8I9onmV+s/bjq0Hdtoi/96W2apAB+GbYQkd94ShDaupnV50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278751; c=relaxed/simple;
-	bh=Mtf03na9Ax2N5S29JPmKPjRxA2eTkGJmrOfm5qHvE0g=;
+	s=arc-20240116; t=1718279749; c=relaxed/simple;
+	bh=Y5OMvtCpgJ3IgF+PhUtCQAnzfTDeCm3YWMiKHHRjUJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sGmrmOU8NH93IT00bRr6T9afuKudJD/hKsyhrKhREziuqh9B8FtW2tLFehg/PAxxutzQ0vw6gJzkAa/c0A7QP9CwJfV5NuH79nf0bbsiReqC13YHD4a5oOJt8KgJiNAfO7ICJL98iy9/R62fgeWhA9pzU/KKcsDJ1EM+VKAI2Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6ZuFAte; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1C0C2BBFC;
-	Thu, 13 Jun 2024 11:39:11 +0000 (UTC)
+	 MIME-Version; b=bzxa0h2NC1oRJGVtKnNwUFzdB+l/CCFOgUOaPmrSMW1MDnNyTiLEAalP5YJ6ysXOQWI762TGeTnxGtvkASFC445Gxb6pLeIWwxJ8Csjeg929ZPvZugUUtwsD7ls3dmN9TTqt50SlkBgopGh/NypSBvBkqVOdqn0hrr9K/+oJIU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wduIRIRa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A58C32786;
+	Thu, 13 Jun 2024 11:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278751;
-	bh=Mtf03na9Ax2N5S29JPmKPjRxA2eTkGJmrOfm5qHvE0g=;
+	s=korg; t=1718279749;
+	bh=Y5OMvtCpgJ3IgF+PhUtCQAnzfTDeCm3YWMiKHHRjUJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d6ZuFAteasf4K22ZtFuAFlxNY7pOlt8aU0YaD1m1odwvC/6dDlleY7nTfQOitGhoH
-	 t//eKERUhJC/BESHM/qnJCEXYk7v1k7t1MBINM00FPdqE4hmmxc00HPtT1AiE9dXSG
-	 dwv33YJ9ahDmH1vA/GBoRqMkTPdZdCVneKe8wGZo=
+	b=wduIRIRaZ8wHqMNnTeA8btfd7kGR17B6sNckPfE65Gqr6TMFQJ5k7gQgzXqnUAENC
+	 yKO6X78kvkfBVI8TkzLFbP3IlSst8YaZWEg7kkVEksyv2sP5ffwK+OTiQR2V1tKm3I
+	 dQHGbiVcWgYOOP2n7a5Cip+0KWzJdObnOueFUZWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 058/213] net: ethernet: cortina: Locking fixes
+Subject: [PATCH 5.4 008/202] wifi: cfg80211: fix the order of arguments for trace events of the tx_rx_evt class
 Date: Thu, 13 Jun 2024 13:31:46 +0200
-Message-ID: <20240613113230.247847898@linuxfoundation.org>
+Message-ID: <20240613113228.085055952@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
 
-[ Upstream commit 812552808f7ff71133fc59768cdc253c5b8ca1bf ]
+[ Upstream commit 9ef369973cd2c97cce3388d2c0c7e3c056656e8a ]
 
-This fixes a probably long standing problem in the Cortina
-Gemini ethernet driver: there are some paths in the code
-where the IRQ registers are written without taking the proper
-locks.
+The declarations of the tx_rx_evt class and the rdev_set_antenna event
+use the wrong order of arguments in the TP_ARGS macro.
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240509-gemini-ethernet-locking-v1-1-afd00a528b95@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix the order of arguments in the TP_ARGS macro.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+Link: https://msgid.link/20240405152431.270267-1-Igor.A.Artemiev@mcst.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ net/wireless/trace.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index b7ebe5eb46f5a..d464dec9825ad 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1116,10 +1116,13 @@ static void gmac_tx_irq_enable(struct net_device *netdev,
- {
- 	struct gemini_ethernet_port *port = netdev_priv(netdev);
- 	struct gemini_ethernet *geth = port->geth;
-+	unsigned long flags;
- 	u32 val, mask;
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index 630b72355ebb5..90307fe4639b2 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -1630,7 +1630,7 @@ TRACE_EVENT(rdev_return_void_tx_rx,
  
- 	netdev_dbg(netdev, "%s device %d\n", __func__, netdev->dev_id);
+ DECLARE_EVENT_CLASS(tx_rx_evt,
+ 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
+-	TP_ARGS(wiphy, rx, tx),
++	TP_ARGS(wiphy, tx, rx),
+ 	TP_STRUCT__entry(
+ 		WIPHY_ENTRY
+ 		__field(u32, tx)
+@@ -1647,7 +1647,7 @@ DECLARE_EVENT_CLASS(tx_rx_evt,
  
-+	spin_lock_irqsave(&geth->irq_lock, flags);
-+
- 	mask = GMAC0_IRQ0_TXQ0_INTS << (6 * netdev->dev_id + txq);
+ DEFINE_EVENT(tx_rx_evt, rdev_set_antenna,
+ 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
+-	TP_ARGS(wiphy, rx, tx)
++	TP_ARGS(wiphy, tx, rx)
+ );
  
- 	if (en)
-@@ -1128,6 +1131,8 @@ static void gmac_tx_irq_enable(struct net_device *netdev,
- 	val = readl(geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
- 	val = en ? val | mask : val & ~mask;
- 	writel(val, geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
-+
-+	spin_unlock_irqrestore(&geth->irq_lock, flags);
- }
- 
- static void gmac_tx_irq(struct net_device *netdev, unsigned int txq_num)
-@@ -1436,15 +1441,19 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	union gmac_rxdesc_3 word3;
- 	struct page *page = NULL;
- 	unsigned int page_offs;
-+	unsigned long flags;
- 	unsigned short r, w;
- 	union dma_rwptr rw;
- 	dma_addr_t mapping;
- 	int frag_nr = 0;
- 
-+	spin_lock_irqsave(&geth->irq_lock, flags);
- 	rw.bits32 = readl(ptr_reg);
- 	/* Reset interrupt as all packages until here are taken into account */
- 	writel(DEFAULT_Q0_INT_BIT << netdev->dev_id,
- 	       geth->base + GLOBAL_INTERRUPT_STATUS_1_REG);
-+	spin_unlock_irqrestore(&geth->irq_lock, flags);
-+
- 	r = rw.bits.rptr;
- 	w = rw.bits.wptr;
- 
-@@ -1747,10 +1756,9 @@ static irqreturn_t gmac_irq(int irq, void *data)
- 		gmac_update_hw_stats(netdev);
- 
- 	if (val & (GMAC0_RX_OVERRUN_INT_BIT << (netdev->dev_id * 8))) {
-+		spin_lock(&geth->irq_lock);
- 		writel(GMAC0_RXDERR_INT_BIT << (netdev->dev_id * 8),
- 		       geth->base + GLOBAL_INTERRUPT_STATUS_4_REG);
--
--		spin_lock(&geth->irq_lock);
- 		u64_stats_update_begin(&port->ir_stats_syncp);
- 		++port->stats.rx_fifo_errors;
- 		u64_stats_update_end(&port->ir_stats_syncp);
+ DECLARE_EVENT_CLASS(wiphy_netdev_id_evt,
 -- 
 2.43.0
 
