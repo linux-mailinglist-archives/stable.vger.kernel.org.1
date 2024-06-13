@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-50634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E47C9906BA3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32AE9906D9A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 958742819EC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 322741C23592
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDFF143882;
-	Thu, 13 Jun 2024 11:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFA9145346;
+	Thu, 13 Jun 2024 11:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mWpuSj02"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXitEos/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A948142E8E;
-	Thu, 13 Jun 2024 11:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1611448FA;
+	Thu, 13 Jun 2024 11:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278941; cv=none; b=Vyaczj3fR1Gs4jDeZYH/I12cSTPTng0BHURoirNHYHha6fBncUQi2bUBIjmpqnCMmih2McM3D1QM0BpLA3TV0NUo/LndQEI9FnyLJXJjNOSqPl7Pg2UU7rykpA+Pqz/tf5VEf2vDNGfoGoBXYmNa+e8ryI3VnMLQO39xpqH+iSU=
+	t=1718279894; cv=none; b=Y8a0/uy9ISntGeubhjI/fyHCk5Jb5L54APuc0SdxtCAEnMuMMX+sDXTs4p7TF2IaT9ZfeNBURWOYtnbJO5Vh40yNQ/rArkuKPL65XirBU+0Ih7S1tmvFSsUvzjPPukOPUJP4wQfb7deyBX9jdBwtlL9BLB2ndHqvneHd7V42yHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278941; c=relaxed/simple;
-	bh=ZasOFq/usb5XVh0ipb5F3TzRx/Y3Ce6vH4rArzviP2U=;
+	s=arc-20240116; t=1718279894; c=relaxed/simple;
+	bh=WgLDTaQZr/+9RixtYgnCxDGOAz/zEl+cl92hm/ds3b4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ldr5vJtbrxOhxESVU/xHrwLvt9PHJBNs7tB2ndFGaMzOU7BM8OlevtKqjavfTQvP3NM/rBNdSjttlBsRxLN86MUCWz0T2rROzX/Ah+O1cD6aV0KZN53xJDd0M6XFYDonwDwz6ygvAtV5m1Fd2hhUbjyIetaRozHoznVNn6Qud+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mWpuSj02; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8437CC2BBFC;
-	Thu, 13 Jun 2024 11:42:20 +0000 (UTC)
+	 MIME-Version; b=u4BqK0avEeoglWR/sLq181O9TnRuyvFRAZn0FaEFwu2TkNGkS6Yq1wuoUAVbrgrxcCjHYnH7WsJB5XbTlMvNRbqHjezyiBn+QDgt6ohRztZiKpoqiaxslcX3jrOc28oUQoIy1JSfIAYdP2mECn82ol3dYkVDlxcP4JnI3lILIDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXitEos/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8ECC2BBFC;
+	Thu, 13 Jun 2024 11:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278940;
-	bh=ZasOFq/usb5XVh0ipb5F3TzRx/Y3Ce6vH4rArzviP2U=;
+	s=korg; t=1718279894;
+	bh=WgLDTaQZr/+9RixtYgnCxDGOAz/zEl+cl92hm/ds3b4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mWpuSj02Myra4vRN+hT3RtKOMV3MT4BZGCCmVi6i7kfuNNm7LvXTEDNAmRCIzULQG
-	 ps72Jx/IRyWsqd4oaLRbdACBOe+aEi5BMlYu2FNud+DuNtWzayn+u0qx2ZRjsd51Nc
-	 c/6uHSRtK9K0ImdoYY+D8EODbkCmTSCM6ZjEjtfY=
+	b=JXitEos/rNGyfjTxkEbkFEimMEHWlkGSF/agufM4nhMahNQAP3lAF9JbEhYo6svPz
+	 uLLijIPV46plR786ELVAA9HyzepBJlNssKFlO7ETPETm0JLjc0SZ8fbEF3kP0xDKy/
+	 mgFcaS2trnD2yuKZwadnYnEHdjZKh+MHgaqT6VVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 122/213] ipv6: sr: fix memleak in seg6_hmac_init_algo
+Subject: [PATCH 5.4 072/202] powerpc/fsl-soc: hide unused const variable
 Date: Thu, 13 Jun 2024 13:32:50 +0200
-Message-ID: <20240613113232.703386724@linuxfoundation.org>
+Message-ID: <20240613113230.555836564@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,127 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit efb9f4f19f8e37fde43dfecebc80292d179f56c6 ]
+[ Upstream commit 01acaf3aa75e1641442cc23d8fe0a7bb4226efb1 ]
 
-seg6_hmac_init_algo returns without cleaning up the previous allocations
-if one fails, so it's going to leak all that memory and the crypto tfms.
+vmpic_msi_feature is only used conditionally, which triggers a rare
+-Werror=unused-const-variable= warning with gcc:
 
-Update seg6_hmac_exit to only free the memory when allocated, so we can
-reuse the code directly.
+arch/powerpc/sysdev/fsl_msi.c:567:37: error: 'vmpic_msi_feature' defined but not used [-Werror=unused-const-variable=]
+  567 | static const struct fsl_msi_feature vmpic_msi_feature =
 
-Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
-Reported-by: Sabrina Dubroca <sd@queasysnail.net>
-Closes: https://lore.kernel.org/netdev/Zj3bh-gE7eT6V6aH@hog/
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/20240517005435.2600277-1-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Hide this one in the same #ifdef as the reference so we can turn on
+the warning by default.
+
+Fixes: 305bcf26128e ("powerpc/fsl-soc: use CONFIG_EPAPR_PARAVIRT for hcalls")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240403080702.3509288-2-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6_hmac.c | 42 ++++++++++++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 14 deletions(-)
+ arch/powerpc/sysdev/fsl_msi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index b801283da28df..9a077a4fa10e4 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -361,6 +361,7 @@ static int seg6_hmac_init_algo(void)
- 	struct crypto_shash *tfm;
- 	struct shash_desc *shash;
- 	int i, alg_count, cpu;
-+	int ret = -ENOMEM;
+diff --git a/arch/powerpc/sysdev/fsl_msi.c b/arch/powerpc/sysdev/fsl_msi.c
+index d276c5e964458..77aa7a13ab1db 100644
+--- a/arch/powerpc/sysdev/fsl_msi.c
++++ b/arch/powerpc/sysdev/fsl_msi.c
+@@ -573,10 +573,12 @@ static const struct fsl_msi_feature ipic_msi_feature = {
+ 	.msiir_offset = 0x38,
+ };
  
- 	alg_count = ARRAY_SIZE(hmac_algos);
++#ifdef CONFIG_EPAPR_PARAVIRT
+ static const struct fsl_msi_feature vmpic_msi_feature = {
+ 	.fsl_pic_ip = FSL_PIC_IP_VMPIC,
+ 	.msiir_offset = 0,
+ };
++#endif
  
-@@ -371,12 +372,14 @@ static int seg6_hmac_init_algo(void)
- 		algo = &hmac_algos[i];
- 		algo->tfms = alloc_percpu(struct crypto_shash *);
- 		if (!algo->tfms)
--			return -ENOMEM;
-+			goto error_out;
- 
- 		for_each_possible_cpu(cpu) {
- 			tfm = crypto_alloc_shash(algo->name, 0, 0);
--			if (IS_ERR(tfm))
--				return PTR_ERR(tfm);
-+			if (IS_ERR(tfm)) {
-+				ret = PTR_ERR(tfm);
-+				goto error_out;
-+			}
- 			p_tfm = per_cpu_ptr(algo->tfms, cpu);
- 			*p_tfm = tfm;
- 		}
-@@ -388,18 +391,22 @@ static int seg6_hmac_init_algo(void)
- 
- 		algo->shashs = alloc_percpu(struct shash_desc *);
- 		if (!algo->shashs)
--			return -ENOMEM;
-+			goto error_out;
- 
- 		for_each_possible_cpu(cpu) {
- 			shash = kzalloc_node(shsize, GFP_KERNEL,
- 					     cpu_to_node(cpu));
- 			if (!shash)
--				return -ENOMEM;
-+				goto error_out;
- 			*per_cpu_ptr(algo->shashs, cpu) = shash;
- 		}
- 	}
- 
- 	return 0;
-+
-+error_out:
-+	seg6_hmac_exit();
-+	return ret;
- }
- 
- int __init seg6_hmac_init(void)
-@@ -419,22 +426,29 @@ int __net_init seg6_hmac_net_init(struct net *net)
- void seg6_hmac_exit(void)
- {
- 	struct seg6_hmac_algo *algo = NULL;
-+	struct crypto_shash *tfm;
-+	struct shash_desc *shash;
- 	int i, alg_count, cpu;
- 
- 	alg_count = ARRAY_SIZE(hmac_algos);
- 	for (i = 0; i < alg_count; i++) {
- 		algo = &hmac_algos[i];
--		for_each_possible_cpu(cpu) {
--			struct crypto_shash *tfm;
--			struct shash_desc *shash;
- 
--			shash = *per_cpu_ptr(algo->shashs, cpu);
--			kfree(shash);
--			tfm = *per_cpu_ptr(algo->tfms, cpu);
--			crypto_free_shash(tfm);
-+		if (algo->shashs) {
-+			for_each_possible_cpu(cpu) {
-+				shash = *per_cpu_ptr(algo->shashs, cpu);
-+				kfree(shash);
-+			}
-+			free_percpu(algo->shashs);
-+		}
-+
-+		if (algo->tfms) {
-+			for_each_possible_cpu(cpu) {
-+				tfm = *per_cpu_ptr(algo->tfms, cpu);
-+				crypto_free_shash(tfm);
-+			}
-+			free_percpu(algo->tfms);
- 		}
--		free_percpu(algo->tfms);
--		free_percpu(algo->shashs);
- 	}
- }
- EXPORT_SYMBOL(seg6_hmac_exit);
+ static const struct of_device_id fsl_of_msi_ids[] = {
+ 	{
 -- 
 2.43.0
 
