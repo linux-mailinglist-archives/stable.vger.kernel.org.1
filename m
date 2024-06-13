@@ -1,30 +1,31 @@
-Return-Path: <stable+bounces-52091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A370907B55
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 20:31:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C72F907B58
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 20:31:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F09C2285591
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 18:30:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38ECF1C238C5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 18:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB6114A4ED;
-	Thu, 13 Jun 2024 18:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8AC314A0AD;
+	Thu, 13 Jun 2024 18:31:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC7E130AC8
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 18:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A9E26AF0
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 18:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718303458; cv=none; b=ATuba37+0cI+L7LT0jQEQABBTbecEoQrs/PSr7fi+vIrVl2Od1oaKTnELOocDmylNnirJkc2SZ0F9NGlfWbpfd/y++im+dSG/q3rHeCfpTGmIGXpgfWC8DGBIVkgxmRVotwkI82KR6EQSXCt11FO3kl/+3mw8awiJ8iVIBRQ80A=
+	t=1718303460; cv=none; b=GhlpfapnWBpcfQ13DdJMBJ4NwVBBPWDqAw/noCiswUSwCd/UM/jxS9d6J960otd5OPfTGTmJQdc2B1QUhhXOqYe+2/OoVXZE1GH+lpDBWsz75eCCWxtKHKtLupRPVhXUh7ix7Ur0J7YKjiFvmnLvkFtFjwdhc3OGVs0X/Us5tOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718303458; c=relaxed/simple;
-	bh=L+BkJHJ93ZoZnAv3yF+VnHGw4NT9HnFM5BeOcKm1xfQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HakuSNYkJ3h4stEIoAvmQOYklYyR6u6XYmGvhblgYOFWl89pZJde47vtH7DUKg498XVmBr0SGbYullwuRZtBRjkgLQ/VlwwcYQ5t7GeG+SZH5voBpvLgLILpsjZUfOuksxOxbXLXfJzE3hVzctuU6Kn/c2K2ZeKkXiHNgpxowJw=
+	s=arc-20240116; t=1718303460; c=relaxed/simple;
+	bh=0e+G3kQB6Uq5qxJSceMPJhaKZk0F5S/1gS0TWqkhT+Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=M1J06fl4jbtBhO14ns56XE3D3JQ/k2cNp2Zb5gbeVkCsiDvrUYNFttJYdYmdsAjHTyC+9zHTbTN4NMZJJiqNpTA0mgT6krSxZWkWEWtca+zYtcApFRQE3ewLbCgDmfcMb9hgLKjf7CmL70Al/RdFCtkgO+TlEl0bE99YFQ1p5Vg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -32,15 +33,15 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1sHpDZ-0003UU-7p; Thu, 13 Jun 2024 20:30:37 +0200
+	id 1sHpDZ-0003UW-7p; Thu, 13 Jun 2024 20:30:37 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1sHpDX-0025Xj-TO; Thu, 13 Jun 2024 20:30:35 +0200
+	id 1sHpDX-0025Xk-UN; Thu, 13 Jun 2024 20:30:35 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1sHpDX-00A6Nn-2i;
+	id 1sHpDX-00A6Nx-2p;
 	Thu, 13 Jun 2024 20:30:35 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Andrew Lunn <andrew@lunn.ch>,
@@ -55,10 +56,12 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH net v1 1/2] net: phy: dp83tg720: wake up PHYs in managed mode
-Date: Thu, 13 Jun 2024 20:30:33 +0200
-Message-Id: <20240613183034.2407798-1-o.rempel@pengutronix.de>
+Subject: [PATCH net v1 2/2] net: phy: dp83tg720: get initial master/slave configuration
+Date: Thu, 13 Jun 2024 20:30:34 +0200
+Message-Id: <20240613183034.2407798-2-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240613183034.2407798-1-o.rempel@pengutronix.de>
+References: <20240613183034.2407798-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,50 +74,34 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: stable@vger.kernel.org
 
-In case this PHY is bootstrapped for managed mode, we need to manually
-wake it. Otherwise no link will be detected.
+Get initial master/slave configuration, otherwise ethtool
+wont be able to provide this information until link is
+established. This makes troubleshooting harder, since wrong
+role configuration would prevent the link start.
 
-Cc: stable@vger.kernel.org
 Fixes: cb80ee2f9bee1 ("net: phy: Add support for the DP83TG720S Ethernet PHY")
+Cc: stable@vger.kernel.org
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/phy/dp83tg720.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/net/phy/dp83tg720.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/phy/dp83tg720.c b/drivers/net/phy/dp83tg720.c
-index 326c9770a6dcc..1186dfc70fb3c 100644
+index 1186dfc70fb3c..84256827a03bf 100644
 --- a/drivers/net/phy/dp83tg720.c
 +++ b/drivers/net/phy/dp83tg720.c
-@@ -17,6 +17,11 @@
- #define DP83TG720S_PHY_RESET			0x1f
- #define DP83TG720S_HW_RESET			BIT(15)
- 
-+#define DP83TG720S_LPS_CFG3			0x18c
-+/* Power modes are documented as bit fields but used as values */
-+/* Power Mode 0 is Normal mode */
-+#define DP83TG720S_LPS_CFG3_PWR_MODE_0		BIT(0)
-+
- #define DP83TG720S_RGMII_DELAY_CTRL		0x602
- /* In RGMII mode, Enable or disable the internal delay for RXD */
- #define DP83TG720S_RGMII_RX_CLK_SEL		BIT(1)
-@@ -154,10 +159,17 @@ static int dp83tg720_config_init(struct phy_device *phydev)
+@@ -168,8 +168,12 @@ static int dp83tg720_config_init(struct phy_device *phydev)
+ 	/* In case the PHY is bootstrapped in managed mode, we need to
+ 	 * wake it.
  	 */
- 	usleep_range(1000, 2000);
- 
--	if (phy_interface_is_rgmii(phydev))
--		return dp83tg720_config_rgmii_delay(phydev);
-+	if (phy_interface_is_rgmii(phydev)) {
-+		ret = dp83tg720_config_rgmii_delay(phydev);
-+		if (ret)
-+			return ret;
-+	}
- 
--	return 0;
-+	/* In case the PHY is bootstrapped in managed mode, we need to
-+	 * wake it.
-+	 */
-+	return phy_write_mmd(phydev, MDIO_MMD_VEND2, DP83TG720S_LPS_CFG3,
-+			     DP83TG720S_LPS_CFG3_PWR_MODE_0);
+-	return phy_write_mmd(phydev, MDIO_MMD_VEND2, DP83TG720S_LPS_CFG3,
+-			     DP83TG720S_LPS_CFG3_PWR_MODE_0);
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, DP83TG720S_LPS_CFG3,
++			    DP83TG720S_LPS_CFG3_PWR_MODE_0);
++	if (ret)
++		return ret;
++
++	return genphy_c45_pma_baset1_read_master_slave(phydev);
  }
  
  static struct phy_driver dp83tg720_driver[] = {
