@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-50616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3F4906B90
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6368C906D98
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB017281A4F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5C2E282A7C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD461448D4;
-	Thu, 13 Jun 2024 11:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EECD7145343;
+	Thu, 13 Jun 2024 11:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEmpdfpX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWUNVOZl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369AD1448C7;
-	Thu, 13 Jun 2024 11:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3CC144D31;
+	Thu, 13 Jun 2024 11:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278888; cv=none; b=sG/GJzuBxsuBKpGknSzN6uOZ8YHJtSn/N43H2DTdMGAno0n8muDG0pahiO4MX/yHlub1mnDbjgq4lx+bVEhfDu2qcqmIC+qxfwf28qGNzCx0aAc1N4qO4RxMXiSAhZTSvTiG/6RnInUtrYaSba0q364Ai04yllDsuxxeY0rDkHE=
+	t=1718279888; cv=none; b=dOBNwMs0SoRwFsZVaj8rcLUs9BR7otNoRfh3r9kkh6NtpBcjFgHizF6z8KLWbJjAUi4e6w27SJacjEcbrwCoWdZf3cRpZ0LfokhJvitW+tAkhf2yZVjyvmhJobrrkoTPNUWi2ZSHBr2D8ZT6FVFtYMzysGY6A9nbBJh/rDCO3S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278888; c=relaxed/simple;
-	bh=UyQeI0OqrTF9oKxfB2XN/7FtmWCyn/4HY3wPwSYkNyA=;
+	s=arc-20240116; t=1718279888; c=relaxed/simple;
+	bh=8jMM2/SJ0Ze+AmVOPCLcL9H0rwmiODsMKCLetZFSxWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qZxeyDZpHFVxwCuR4HWgpeoVIw8zh6YJWXD2O/V+K+7vDYPJ7XSjXnw7FIPl7CtNJ9tdyYNJpI/Yijb4d6ezTaH8dR+trzzrTmeeHS3t7Ui5fnn7nGN+nMnZXQN6EebxYgmGA7P9e9/ywVha9FXvpawotd4ac3e3GE6WsrtoJmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEmpdfpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F9DC32786;
-	Thu, 13 Jun 2024 11:41:27 +0000 (UTC)
+	 MIME-Version; b=qHrnsuQJfgpfu2vuDuqZLM/ZZwdbak8VE8Ivw+g2v2MmDvSrA89d1BaSzVuabFx5M/KdxCHAt71YTffYq93U0IKK4hSk8NhzoL//gjzYDIFi3hjsQD/iQy/fbRE5tvCQbXO+LJMlj4rrE27l6gISLjEuWI8Khzf1YzvpDYOebMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWUNVOZl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30186C2BBFC;
+	Thu, 13 Jun 2024 11:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278888;
-	bh=UyQeI0OqrTF9oKxfB2XN/7FtmWCyn/4HY3wPwSYkNyA=;
+	s=korg; t=1718279888;
+	bh=8jMM2/SJ0Ze+AmVOPCLcL9H0rwmiODsMKCLetZFSxWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VEmpdfpXtqI3gaJkaNbMgEPqvBCfWfoqk5JPUMT8WA8WM7ocatPFxbVmlMut5eKEr
-	 +SQjQ8kPxI4uf+dPsAhMia+h4ep+cD6Eom8MLLjsLTDw1PKAowBhtlkoUcK/kMywWv
-	 WhGeFaYnK+1ylVgs4VHJOs98cmIxmUkm5a/ZO+F0=
+	b=FWUNVOZlQxm1XZD8A5LAs+K/slF0aoAAetIPYux4BD+AlC4yne6aR2MvNbk66H84H
+	 0sOxpnI36S4WN2rE0Pj4mpQM3Zmqoz4qUzQi4OvFUVZyHjzneT7iDSAnp6MfrNa9t0
+	 16zKbP99JqTkaUfpgmkI4e2D0kEnULe0HHGsCYf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 103/213] extcon: max8997: select IRQ_DOMAIN instead of depending on it
+Subject: [PATCH 5.4 053/202] HID: intel-ish-hid: ipc: Add check for pci_alloc_irq_vectors
 Date: Thu, 13 Jun 2024 13:32:31 +0200
-Message-ID: <20240613113231.979319997@linuxfoundation.org>
+Message-ID: <20240613113229.822379551@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit b1781d0a1458070d40134e4f3412ec9d70099bec ]
+[ Upstream commit 6baa4524027fd64d7ca524e1717c88c91a354b93 ]
 
-IRQ_DOMAIN is a hidden (not user visible) symbol. Users cannot set
-it directly thru "make *config", so drivers should select it instead
-of depending on it if they need it.
-Relying on it being set for a dependency is risky.
+Add a check for the return value of pci_alloc_irq_vectors() and return
+error if it fails.
 
-Consistently using "select" or "depends on" can also help reduce
-Kconfig circular dependency issues.
-
-Therefore, change EXTCON_MAX8997's use of "depends on" for
-IRQ_DOMAIN to "select".
-
-Link: https://lore.kernel.org/lkml/20240213060028.9744-1-rdunlap@infradead.org/
-Fixes: dca1a71e4108 ("extcon: Add support irq domain for MAX8997 muic")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+[jkosina@suse.com: reworded changelog based on Srinivas' suggestion]
+Fixes: 74fbc7d371d9 ("HID: intel-ish-hid: add MSI interrupt support")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/extcon/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/intel-ish-hid/ipc/pci-ish.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
-index de15bf55895bd..19a1e32c3a7e9 100644
---- a/drivers/extcon/Kconfig
-+++ b/drivers/extcon/Kconfig
-@@ -101,7 +101,8 @@ config EXTCON_MAX77843
+diff --git a/drivers/hid/intel-ish-hid/ipc/pci-ish.c b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+index f491d8b4e24c7..05134ee802778 100644
+--- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
++++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+@@ -159,6 +159,11 @@ static int ish_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  
- config EXTCON_MAX8997
- 	tristate "Maxim MAX8997 EXTCON Support"
--	depends on MFD_MAX8997 && IRQ_DOMAIN
-+	depends on MFD_MAX8997
-+	select IRQ_DOMAIN
- 	help
- 	  If you say yes here you get support for the MUIC device of
- 	  Maxim MAX8997 PMIC. The MAX8997 MUIC is a USB port accessory
+ 	/* request and enable interrupt */
+ 	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
++	if (ret < 0) {
++		dev_err(dev, "ISH: Failed to allocate IRQ vectors\n");
++		return ret;
++	}
++
+ 	if (!pdev->msi_enabled && !pdev->msix_enabled)
+ 		irq_flag = IRQF_SHARED;
+ 
 -- 
 2.43.0
 
