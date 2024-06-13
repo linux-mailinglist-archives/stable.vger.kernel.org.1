@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-50932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096D7906D7C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 229B9906B84
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22D161C23E86
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D2381C21E6F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F41148840;
-	Thu, 13 Jun 2024 11:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1F0143C5C;
+	Thu, 13 Jun 2024 11:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3Tyw+tG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0/XPHNo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5F2143C55;
-	Thu, 13 Jun 2024 11:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7ED143C59;
+	Thu, 13 Jun 2024 11:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279812; cv=none; b=a+RYe5Uiq7BnDwJYRrPzpWXRHox960fMnu/UZHLiW/dYhZnhIr4j72kbvnQuF4YOKu1sGHSrztftzd0pzTh08qD20fMlAq9Tx1DwT8XE0Uesw5VJ0wLlPWVWF4PaG2NkFvuMoNM3Ev9AFpbsgKxe4spp3lYvsdjaDe+Ltg0/5E8=
+	t=1718278861; cv=none; b=Iw8qlUvBGtV+16W2u5kwPgVhrabMy8NU7aBSj9BfgPra7Z4bveMk8hzr+mK/PVGyvK8gUo6CETvMyGGfj+9w2dVKw9mXpXteq8Yqlq0HVsW+ypo4I6GCELKPmDaI8KkTfAs44jBg+eDGVJGgl139naZ5QTRuh8YxGsF0DgR1FSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279812; c=relaxed/simple;
-	bh=58uQ8VqzpJTAs4wWyzAoiMV3VJk8m0+JLdf/TQHU5jc=;
+	s=arc-20240116; t=1718278861; c=relaxed/simple;
+	bh=DLwW2lpaNBiQrGGNC2cj2STjmF9MCWM0Ug5jQxKJghY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OEarB2FQUbpeqp9NziRXOLlsVCtJTgQxPy5PzCYHoITflpdrYfXojGa1zjjjcKXGj6u6bq5+521qaIPWyO+Kyzcsp2xBbTAyx+AoyO43wRaDatqL9uyuU/SOO7AyVnK1LaK8EPnVkkROtqwcCXxPMEITV8vnCcbhvZnXemjWfqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3Tyw+tG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8F4C2BBFC;
-	Thu, 13 Jun 2024 11:56:51 +0000 (UTC)
+	 MIME-Version; b=afMvpTUZ8drWyxICryqDcT77f9b3iUBZrqnha6MWbpEC7daFU+CVEzuWFwStKtQAMgw3l1VE2oBY7L6GZ2TrWTSRwwtYgUeObJ0VBxiKNsdXNnWS/Jca9Xz2RJwLFMdYYiZ8sFQZkjzOBHyG69twCa7ZkHboRthDosKdQ1nKmmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0/XPHNo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42EEBC2BBFC;
+	Thu, 13 Jun 2024 11:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279811;
-	bh=58uQ8VqzpJTAs4wWyzAoiMV3VJk8m0+JLdf/TQHU5jc=;
+	s=korg; t=1718278861;
+	bh=DLwW2lpaNBiQrGGNC2cj2STjmF9MCWM0Ug5jQxKJghY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g3Tyw+tGpOo2PxXjIVhUbvUfDESbORO9+327tr03IHf23hokDCThdxywIjbRHG8Pd
-	 V/SGWHWjk9/DYbkC4fAq83yLTwlXgXgMpOVa2mtqGO5ziRk9DdKoxG/yNiSxlPlLkG
-	 h2J0pcFPD0eIRWc6ddPVM5q5l7GSp54nkArYPbAc=
+	b=i0/XPHNoSltfRgsY9zfmvI+qfQMoFR3PrPwT5FHg065tpesWG+kdDaLXIRgE1bLOh
+	 y/gqvC2FATL/BKElfMX5EQqoue1VHrRDR8nk9UADxck5teooNhyDQ7nztqWuyur0S6
+	 FnETt0klnJpGMRJgM73yDG5+SpFkku7+X6GW+q2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongqin Liu <yongqin.liu@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 044/202] wifi: ath10k: populate board data for WCN3990
-Date: Thu, 13 Jun 2024 13:32:22 +0200
-Message-ID: <20240613113229.471801384@linuxfoundation.org>
+Subject: [PATCH 4.19 095/213] serial: max3100: Fix bitwise types
+Date: Thu, 13 Jun 2024 13:32:23 +0200
+Message-ID: <20240613113231.674180391@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit f1f1b5b055c9f27a2f90fd0f0521f5920e9b3c18 ]
+[ Upstream commit e60955dbecb97f080848a57524827e2db29c70fd ]
 
-Specify board data size (and board.bin filename) for the WCN3990
-platform.
+Sparse is not happy about misuse of bitwise types:
 
-Reported-by: Yongqin Liu <yongqin.liu@linaro.org>
-Fixes: 03a72288c546 ("ath10k: wmi: add hw params entry for wcn3990")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240130-wcn3990-board-fw-v1-1-738f7c19a8c8@linaro.org
+  .../max3100.c:194:13: warning: incorrect type in assignment (different base types)
+  .../max3100.c:194:13:    expected unsigned short [addressable] [usertype] etx
+  .../max3100.c:194:13:    got restricted __be16 [usertype]
+  .../max3100.c:202:15: warning: cast to restricted __be16
+
+Fix this by choosing proper types for the respective variables.
+
+Fixes: 7831d56b0a35 ("tty: MAX3100")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240402195306.269276-4-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/core.c      | 3 +++
- drivers/net/wireless/ath/ath10k/hw.h        | 1 +
- drivers/net/wireless/ath/ath10k/targaddrs.h | 3 +++
- 3 files changed, 7 insertions(+)
+ drivers/tty/serial/max3100.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 09e77be6e3142..0b8d725338e25 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -579,6 +579,9 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.max_spatial_stream = 4,
- 		.fw = {
- 			.dir = WCN3990_HW_1_0_FW_DIR,
-+			.board = WCN3990_HW_1_0_BOARD_DATA_FILE,
-+			.board_size = WCN3990_BOARD_DATA_SZ,
-+			.board_ext_size = WCN3990_BOARD_EXT_DATA_SZ,
- 		},
- 		.sw_decrypt_mcast_mgmt = true,
- 		.hw_ops = &wcn3990_ops,
-diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
-index 705ab83cdff43..eb27aeeb94c8f 100644
---- a/drivers/net/wireless/ath/ath10k/hw.h
-+++ b/drivers/net/wireless/ath/ath10k/hw.h
-@@ -132,6 +132,7 @@ enum qca9377_chip_id_rev {
- /* WCN3990 1.0 definitions */
- #define WCN3990_HW_1_0_DEV_VERSION	ATH10K_HW_WCN3990
- #define WCN3990_HW_1_0_FW_DIR		ATH10K_FW_DIR "/WCN3990/hw1.0"
-+#define WCN3990_HW_1_0_BOARD_DATA_FILE "board.bin"
- 
- #define ATH10K_FW_FILE_BASE		"firmware"
- #define ATH10K_FW_API_MAX		6
-diff --git a/drivers/net/wireless/ath/ath10k/targaddrs.h b/drivers/net/wireless/ath/ath10k/targaddrs.h
-index dff6c8ac9dba3..362508ac37fed 100644
---- a/drivers/net/wireless/ath/ath10k/targaddrs.h
-+++ b/drivers/net/wireless/ath/ath10k/targaddrs.h
-@@ -480,4 +480,7 @@ struct host_interest {
- #define QCA4019_BOARD_DATA_SZ	  12064
- #define QCA4019_BOARD_EXT_DATA_SZ 0
- 
-+#define WCN3990_BOARD_DATA_SZ	  26328
-+#define WCN3990_BOARD_EXT_DATA_SZ 0
+diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
+index c1ee88f530334..17b6f4a872d6a 100644
+--- a/drivers/tty/serial/max3100.c
++++ b/drivers/tty/serial/max3100.c
+@@ -45,6 +45,9 @@
+ #include <linux/freezer.h>
+ #include <linux/tty.h>
+ #include <linux/tty_flip.h>
++#include <linux/types.h>
 +
- #endif /* __TARGADDRS_H__ */
++#include <asm/unaligned.h>
+ 
+ #include <linux/serial_max3100.h>
+ 
+@@ -191,7 +194,7 @@ static void max3100_timeout(struct timer_list *t)
+ static int max3100_sr(struct max3100_port *s, u16 tx, u16 *rx)
+ {
+ 	struct spi_message message;
+-	u16 etx, erx;
++	__be16 etx, erx;
+ 	int status;
+ 	struct spi_transfer tran = {
+ 		.tx_buf = &etx,
 -- 
 2.43.0
 
