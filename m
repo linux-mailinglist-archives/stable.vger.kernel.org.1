@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-51320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2D79906F4D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC950907148
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9895E286AC5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 304E228324B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A9F145346;
-	Thu, 13 Jun 2024 12:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B451143870;
+	Thu, 13 Jun 2024 12:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAVX5wx7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BA0eLkM0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D9A1448DA;
-	Thu, 13 Jun 2024 12:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8EA14374F;
+	Thu, 13 Jun 2024 12:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280950; cv=none; b=Yb/ZWptLA52SYy9cQGmQJbMgdJ3CzA2ywBrHRvhBjyeMGVNxmmQdVFiIZjxSFinBWnKMNShBLxw6xPLl8inFF7YBwcUlyC3AFj5Wq2A7JNJ496p98zHF84sG+XocXtXyWaKOMjzW8tYyKodDP+FVhBT5fWJCo69RJGhuFwnwC+Q=
+	t=1718282115; cv=none; b=cxI+db8N9QBKuuIsBmPKU1TOiZDIIZOg5Xs1y72jYUwxJoP872Jt/1WpIPxmQEaBCs4WiBl3EUIy+pbr/z0cSTWLRatuJfmJ8Py68iWIW7+BQ8n3N1oWhP3kJcFAqPqbdTr2OVrLppv5B6AfWf7A+zzHt4OC2XDBwF4npMa5+24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280950; c=relaxed/simple;
-	bh=s9w6sDYTHflbtATLNaD9+ok7fzk2OQPEQpOTFC8Iunk=;
+	s=arc-20240116; t=1718282115; c=relaxed/simple;
+	bh=cru/ZOCuNRNj/tnQn/u9r38188JQaZEwH8G7+xJY21c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kh8QOugDMnT8bQxgp8daEx4qgR8EWu1xNokRxSNw/5CSicCeHo1wlCULr1Y7VUsuMgV65s7stA7FmV3VThhz4Iobdz7c7tlEz7ZG0cr+4kKFh0Z5ZhTQlEJ3NGF2OK0lBA5mTVjUC/N3zK1iu2NoC+PIq1Mq5AhifhGOHpYn3+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAVX5wx7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57BA8C2BBFC;
-	Thu, 13 Jun 2024 12:15:50 +0000 (UTC)
+	 MIME-Version; b=sPB5EelLF8yu6k2JZ82SeasyjBOprkh8mpNKJ0bwKd1eOjcGsM3xR59pRMIWuJMuS0UUZKFIbql6xmZc0b9Xw1vkImV/VOMwKwm4kGGe/XqHQy5dsKLxkJ/5vGbz+3lON0i9s1wbkANX6BwuQsCEhYcGjMHYlqk65jgteNeFo9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BA0eLkM0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD1FC4AF4D;
+	Thu, 13 Jun 2024 12:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280950;
-	bh=s9w6sDYTHflbtATLNaD9+ok7fzk2OQPEQpOTFC8Iunk=;
+	s=korg; t=1718282114;
+	bh=cru/ZOCuNRNj/tnQn/u9r38188JQaZEwH8G7+xJY21c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NAVX5wx7mVr+0MtDjWMFkWv6GrgFsh/GSzHqE6EVM1S9as3LzDU8HKX5PuFM5r+oA
-	 aBRQenD3b8rdFatBBKKuWo4hEL8FDuBJrWoxJHeKBuuvex3vLJerSojD8QwgMryX/n
-	 pPQsKJvZ6BVaWQ5kq+M2n4qRymUlU/vHC1df28lY=
+	b=BA0eLkM0+PO9V+aWRJX4nOQti5UuC5Zysj0/7jOB9QxeMxrDy+niV4uSDIHMJ2giM
+	 LdmVr6zurzpa3dwOM8pUBbUnROea1f9tqDzbwgOOW6UggICxxI+u6UBUUvIGBfEqLm
+	 9Ak8WrbqDSmJ+1hBbus9UPflYqYz3Yjs1KTPwy6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akiva Goldberger <agoldberger@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 089/317] net/mlx5: Discard command completions in internal error
+Subject: [PATCH 5.15 150/402] RDMA/hns: Fix return value in hns_roce_map_mr_sg
 Date: Thu, 13 Jun 2024 13:31:47 +0200
-Message-ID: <20240613113250.993757809@linuxfoundation.org>
+Message-ID: <20240613113307.987016297@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akiva Goldberger <agoldberger@nvidia.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit db9b31aa9bc56ff0d15b78f7e827d61c4a096e40 ]
+[ Upstream commit 203b70fda63425a4eb29f03f9074859afe821a39 ]
 
-Fix use after free when FW completion arrives while device is in
-internal error state. Avoid calling completion handler in this case,
-since the device will flush the command interface and trigger all
-completions manually.
+As described in the ib_map_mr_sg function comment, it returns the number
+of sg elements that were mapped to the memory region. However,
+hns_roce_map_mr_sg returns the number of pages required for mapping the
+DMA area. Fix it.
 
-Kernel log:
-------------[ cut here ]------------
-refcount_t: underflow; use-after-free.
-...
-RIP: 0010:refcount_warn_saturate+0xd8/0xe0
-...
-Call Trace:
-<IRQ>
-? __warn+0x79/0x120
-? refcount_warn_saturate+0xd8/0xe0
-? report_bug+0x17c/0x190
-? handle_bug+0x3c/0x60
-? exc_invalid_op+0x14/0x70
-? asm_exc_invalid_op+0x16/0x20
-? refcount_warn_saturate+0xd8/0xe0
-cmd_ent_put+0x13b/0x160 [mlx5_core]
-mlx5_cmd_comp_handler+0x5f9/0x670 [mlx5_core]
-cmd_comp_notifier+0x1f/0x30 [mlx5_core]
-notifier_call_chain+0x35/0xb0
-atomic_notifier_call_chain+0x16/0x20
-mlx5_eq_async_int+0xf6/0x290 [mlx5_core]
-notifier_call_chain+0x35/0xb0
-atomic_notifier_call_chain+0x16/0x20
-irq_int_handler+0x19/0x30 [mlx5_core]
-__handle_irq_event_percpu+0x4b/0x160
-handle_irq_event+0x2e/0x80
-handle_edge_irq+0x98/0x230
-__common_interrupt+0x3b/0xa0
-common_interrupt+0x7b/0xa0
-</IRQ>
-<TASK>
-asm_common_interrupt+0x22/0x40
-
-Fixes: 51d138c2610a ("net/mlx5: Fix health error state handling")
-Signed-off-by: Akiva Goldberger <agoldberger@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240509112951.590184-6-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9b2cf76c9f05 ("RDMA/hns: Optimize PBL buffer allocation process")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://lore.kernel.org/r/20240411033851.2884771-1-shaozhengchao@huawei.com
+Reviewed-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_mr.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-index 0ba43c93abb26..42dc76f85c62c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -1523,6 +1523,9 @@ static int cmd_comp_notifier(struct notifier_block *nb,
- 	dev = container_of(cmd, struct mlx5_core_dev, cmd);
- 	eqe = data;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
+index 12c482f4a1c48..7106e51d5fad1 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_mr.c
++++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
+@@ -444,18 +444,18 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+ 	struct ib_device *ibdev = &hr_dev->ib_dev;
+ 	struct hns_roce_mr *mr = to_hr_mr(ibmr);
+ 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
+-	int ret = 0;
++	int ret, sg_num = 0;
  
-+	if (dev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
-+		return NOTIFY_DONE;
-+
- 	mlx5_cmd_comp_handler(dev, be32_to_cpu(eqe->data.cmd.vector), false);
+ 	mr->npages = 0;
+ 	mr->page_list = kvcalloc(mr->pbl_mtr.hem_cfg.buf_pg_count,
+ 				 sizeof(dma_addr_t), GFP_KERNEL);
+ 	if (!mr->page_list)
+-		return ret;
++		return sg_num;
  
- 	return NOTIFY_OK;
+-	ret = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
+-	if (ret < 1) {
++	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
++	if (sg_num < 1) {
+ 		ibdev_err(ibdev, "failed to store sg pages %u %u, cnt = %d.\n",
+-			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, ret);
++			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, sg_num);
+ 		goto err_page_list;
+ 	}
+ 
+@@ -466,17 +466,16 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+ 	ret = hns_roce_mtr_map(hr_dev, mtr, mr->page_list, mr->npages);
+ 	if (ret) {
+ 		ibdev_err(ibdev, "failed to map sg mtr, ret = %d.\n", ret);
+-		ret = 0;
++		sg_num = 0;
+ 	} else {
+ 		mr->pbl_mtr.hem_cfg.buf_pg_shift = (u32)ilog2(ibmr->page_size);
+-		ret = mr->npages;
+ 	}
+ 
+ err_page_list:
+ 	kvfree(mr->page_list);
+ 	mr->page_list = NULL;
+ 
+-	return ret;
++	return sg_num;
+ }
+ 
+ static void hns_roce_mw_free(struct hns_roce_dev *hr_dev,
 -- 
 2.43.0
 
