@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C12A906F0E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:16:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8CA9070EC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:32:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46FC8B26F30
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7C7A1C22EBC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC0C1459FA;
-	Thu, 13 Jun 2024 12:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9EF1428EA;
+	Thu, 13 Jun 2024 12:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wW8xSrw8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFrclsqj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A5244C6F;
-	Thu, 13 Jun 2024 12:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3DC1420C6;
+	Thu, 13 Jun 2024 12:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280751; cv=none; b=rxYHuKjl8SF74NHpfHNuvidYXNDBKru98YRrt5omM0WOXryEjm4irwrwhIW90QFSUBzOsRokJsPI+xmvTEtphr4NzmOeHzmyK6t4a1sDUk09yLyl2MCtxB+kSmv8LEh+DNe+M8UTi+jHt5FrOJ4pdJVhzK2DDtffnnenalx6SNE=
+	t=1718281918; cv=none; b=TQda/NRmyMf8z1fn3Xk5nF27+JbFTFfmGM2DlTZVRMVf2wXwHaeBjAMyd+WloVJsC/f67HHGuXMS1UfMe/Tab0BtpYgy4lrlp57itYEijXW0xTqk/RJy7Vo668/VH+HEmg3kIn1xUw62gpXcaXJzPdkvz5VqXIb0tJ55XSxj3TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280751; c=relaxed/simple;
-	bh=FuDCdxQzBvs6+acHn3P9Hjj5p5pY0CpHyHOSV0FRmJc=;
+	s=arc-20240116; t=1718281918; c=relaxed/simple;
+	bh=Jd4GKJ6riX+nVRgCyLLeuOgcqJsIyhS0VKcEhxDGCB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NgL0JfYxHx2XjWqHBkjcjeUQ4uklVdsLLuAfpTeOIRDECMY6c9PYERpFsOeTVw5fkQTDMZrSb7P/ARtpPEUj31g0n8p/hyqKjOodtygNtOBy6FcyZzeiFJHxRIaB+BkFLpwJkt07pR08886sCZH93vQ9nKJeZKwqTqi9xZYXF1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wW8xSrw8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED8DC2BBFC;
-	Thu, 13 Jun 2024 12:12:29 +0000 (UTC)
+	 MIME-Version; b=atZ43RuNFxDxOBI7Te8DCTQsqIN5GEkjo7ETt9sqBrjjB1+aW84chQd2h/AJe75TWsYj2ozAezH2NbfgG4/IOQMb5n1SCr953Cm46W4IShfI5DH6ZpEd40nnJNGxXFjNKnUcKfu2Y6yJZR7v/Plk9l/aVrIu3OKM7FAj3gHrjps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFrclsqj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1399EC4AF1C;
+	Thu, 13 Jun 2024 12:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280750;
-	bh=FuDCdxQzBvs6+acHn3P9Hjj5p5pY0CpHyHOSV0FRmJc=;
+	s=korg; t=1718281918;
+	bh=Jd4GKJ6riX+nVRgCyLLeuOgcqJsIyhS0VKcEhxDGCB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wW8xSrw8uXw0XC1y1DRK85UHss+pgq06mG1oUyJbx1+U7tQiM3f/xxAGgivh+P11z
-	 lBNbk4UNvb9TsInRZPQjPQkY8cANc6q2pBvbsyOdgeU0fb9ulUvcBt22omMe93UF6d
-	 QGRMn8p7acfOL3eR7prPYOnAYPjvZ8kGc7irHycU=
+	b=mFrclsqjLhf9oN+vStFH2lfk5RKJOADjB7BLfnjpvKY+8eRh2L1oMDdwtRzrxV0x/
+	 aRZVpKUkBW5P/FRTReEeifGDjlVkB8L7m/ZXssqjP8xr8xHmP3myDprumHBw6dbSmY
+	 Yeyhx9jdscmoJFSSzH0QOu6HrDcsYblRvfNxqs3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Aleksandr Mishin <amishin@t-argos.ru>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 021/317] crypto: bcm - Fix pointer arithmetic
-Date: Thu, 13 Jun 2024 13:30:39 +0200
-Message-ID: <20240613113248.362066562@linuxfoundation.org>
+Subject: [PATCH 5.15 083/402] thermal/drivers/tsens: Fix null pointer dereference
+Date: Thu, 13 Jun 2024 13:30:40 +0200
+Message-ID: <20240613113305.374649231@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 2b3460cbf454c6b03d7429e9ffc4fe09322eb1a9 ]
+[ Upstream commit d998ddc86a27c92140b9f7984ff41e3d1d07a48f ]
 
-In spu2_dump_omd() value of ptr is increased by ciph_key_len
-instead of hash_iv_len which could lead to going beyond the
-buffer boundaries.
-Fix this bug by changing ciph_key_len to hash_iv_len.
+compute_intercept_slope() is called from calibrate_8960() (in tsens-8960.c)
+as compute_intercept_slope(priv, p1, NULL, ONE_PT_CALIB) which lead to null
+pointer dereference (if DEBUG or DYNAMIC_DEBUG set).
+Fix this bug by adding null pointer check.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 9d12ba86f818 ("crypto: brcm - Add Broadcom SPU driver")
+Fixes: dfc1193d4dbd ("thermal/drivers/tsens: Replace custom 8960 apis with generic apis")
 Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20240411114021.12203-1-amishin@t-argos.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/bcm/spu2.c | 2 +-
+ drivers/thermal/qcom/tsens.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/bcm/spu2.c b/drivers/crypto/bcm/spu2.c
-index c860ffb0b4c38..670d439f204c5 100644
---- a/drivers/crypto/bcm/spu2.c
-+++ b/drivers/crypto/bcm/spu2.c
-@@ -495,7 +495,7 @@ static void spu2_dump_omd(u8 *omd, u16 hash_key_len, u16 ciph_key_len,
- 	if (hash_iv_len) {
- 		packet_log("  Hash IV Length %u bytes\n", hash_iv_len);
- 		packet_dump("  hash IV: ", ptr, hash_iv_len);
--		ptr += ciph_key_len;
-+		ptr += hash_iv_len;
- 	}
+diff --git a/drivers/thermal/qcom/tsens.c b/drivers/thermal/qcom/tsens.c
+index 926cd8b41132c..2f31129cd5471 100644
+--- a/drivers/thermal/qcom/tsens.c
++++ b/drivers/thermal/qcom/tsens.c
+@@ -84,7 +84,7 @@ void compute_intercept_slope(struct tsens_priv *priv, u32 *p1,
+ 	for (i = 0; i < priv->num_sensors; i++) {
+ 		dev_dbg(priv->dev,
+ 			"%s: sensor%d - data_point1:%#x data_point2:%#x\n",
+-			__func__, i, p1[i], p2[i]);
++			__func__, i, p1[i], p2 ? p2[i] : 0);
  
- 	if (ciph_iv_len) {
+ 		if (!priv->sensor[i].slope)
+ 			priv->sensor[i].slope = SLOPE_DEFAULT;
 -- 
 2.43.0
 
