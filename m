@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-51553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F5B90706F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C2390729F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EA7B1C227B3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:28:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 689C01C21615
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD87714374F;
-	Thu, 13 Jun 2024 12:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329A714264C;
+	Thu, 13 Jun 2024 12:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8MCeDcs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UiD7svLT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C15E3209;
-	Thu, 13 Jun 2024 12:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA711C32;
+	Thu, 13 Jun 2024 12:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281633; cv=none; b=WqDuhxaGdHnHWGxrqQu97U2D8Lt3yf8fjhf5IwQ2ZITNDzIaaYEZ4uT62Zbyy691oyqkupKL3qq3gVsJZnp8KhMqIv+jvhHbdBNNbF1g0jZnS7sg+VjygaIvFyHg56ThG8acsMKayXBS9cYz67p9nR3yu33ykP6g0jVzhAIhFaQ=
+	t=1718282920; cv=none; b=gMF3EHf4z0tW9wO7woRqh3c4H/TdaYeHyjPNTdRj7On0AcDOgNG8bKx5lwKjjAFGABdS0csg6s5YsKbRMeZyRK+A/PsLnLt8bCfP61MF88aEm40xR3YAfLzQ6NnvsRnbOFv8Lw+hbQy2fiNTWcPnXhA/JMHolzjjuQf6Fi2G7jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281633; c=relaxed/simple;
-	bh=lRGFIPSgvR2ue7hzEEBmRAMqmKsj6JgtthzmwIxcs0A=;
+	s=arc-20240116; t=1718282920; c=relaxed/simple;
+	bh=kfnYECqkozsAQjHem5xSAkvFCb8hYjqrvjd8axuLc9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2ULf8lJcA6V9C0QH1RFRrVWsFdZ3HXIfOL7FiAip6SvlO13wPybd+8SN3Le2rNNq06Qcs1/A13PTeP8Trw65pH4Cwl1dKxwPAGYAoN7A3Mt0A9FjB79mzpSWlJnCDe6L59Ftg1NmRtjwQRR0X/azxd7Rb3ZZWMAcqyXGG0KBzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8MCeDcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD7FC2BBFC;
-	Thu, 13 Jun 2024 12:27:12 +0000 (UTC)
+	 MIME-Version; b=mjFU696Kke1L25fFXYRBnLuExbEWfif7T7BpiRLJtgpFQQY7ZrYED9PDKXHdRs6nDEIBlU7CAhGGxRIYjWdGvqhVUpbHNUd019T4c0LTOutWQ8VaWstIaD5zA6a9M1J3djxNDY4smyCbV1VLLKWASlOg504k8MQX9bTI+4w5UpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UiD7svLT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 647A9C2BBFC;
+	Thu, 13 Jun 2024 12:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281633;
-	bh=lRGFIPSgvR2ue7hzEEBmRAMqmKsj6JgtthzmwIxcs0A=;
+	s=korg; t=1718282919;
+	bh=kfnYECqkozsAQjHem5xSAkvFCb8hYjqrvjd8axuLc9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8MCeDcsTcHY92Gv2z+c/jG92/0oVeEzC22btdzUvnKAtHZceeeUL7zq3FFXyf3q9
-	 p/dkK51A/kKKnE+FjNgbNtV9/xLOBnfigojIuQdnAW4SwJK47RptZ+2i6mpY5r2czB
-	 tvd4h1vc0m2o1kGEY0uc0AXS8Mes+nNor76jM+qI=
+	b=UiD7svLTxe2AxYOPqbi1qQTLwGs5u8c4M6AmI2KaIKJ4NeDKSdWq5G8f7+GLak2xS
+	 IMpmwYEZ8BQArbnK1thommNcs9Mg/CP3yowZDC9blfzViqK5TX12+QivDnIqxSa3/t
+	 Tp3NKTDxcZXFykTyANejA8kkWAAEyVQZug+hgwoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 5.10 300/317] intel_th: pci: Add Meteor Lake-S CPU support
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.1 20/85] wifi: rtw89: correct aSIFSTime for 6GHz band
 Date: Thu, 13 Jun 2024 13:35:18 +0200
-Message-ID: <20240613113259.155624360@linuxfoundation.org>
+Message-ID: <20240613113214.923003617@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-commit a4f813c3ec9d1c32bc402becd1f011b3904dd699 upstream.
+commit f506e3ee547669cd96842e03c8a772aa7df721fa upstream.
 
-Add support for the Trace Hub in Meteor Lake-S CPU.
+aSIFSTime is 10us for 2GHz band and 16us for 5GHz and 6GHz bands.
+Originally, it doesn't consider 6GHz band and use wrong value, so correct
+it accordingly.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20240429130119.1518073-15-alexander.shishkin@linux.intel.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://msgid.link/20240430020515.8399-1-pkshih@realtek.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/realtek/rtw89/mac80211.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -290,6 +290,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Meteor Lake-S CPU */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xae24),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Raptor Lake-S */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x7a26),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -263,7 +263,7 @@ static u8 rtw89_aifsn_to_aifs(struct rtw
+ 	u8 sifs;
+ 
+ 	slot_time = vif->bss_conf.use_short_slot ? 9 : 20;
+-	sifs = chan->band_type == RTW89_BAND_5G ? 16 : 10;
++	sifs = chan->band_type == RTW89_BAND_2G ? 10 : 16;
+ 
+ 	return aifsn * slot_time + sifs;
+ }
 
 
 
