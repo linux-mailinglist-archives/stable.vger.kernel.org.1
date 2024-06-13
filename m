@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-52045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 955809072CE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:51:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7043890725F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45EA01F211F7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:51:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EBBD282025
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38FD2566;
-	Thu, 13 Jun 2024 12:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C3F142633;
+	Thu, 13 Jun 2024 12:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LmE5mtb2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tf7Zf53D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829592F55;
-	Thu, 13 Jun 2024 12:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A4C17FD;
+	Thu, 13 Jun 2024 12:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718283072; cv=none; b=MM9jm32xVrrSk31/RXASXPPVPWQ+I/prpTJxRkuCHtsxgouGimmTwbmZXbgIMtPey6Bf6lzGiXrWF+bPgb/+4UjcA7xzNdMfRV6PaTrxLQ9YKiFg8DFAaB7SK2J3JSL/dlGlitgykQJejvEqRL8x+P96hIMRn/JO5upBxGtdV+E=
+	t=1718282799; cv=none; b=qKWLQjrk1VhRKGzPr19sAyNsaoVb5VSE1s870OGbx00S5hlGnx+oSP+074X5UDnCX7AuUuETyXsjgcPfNXd1fkJlnOU12E2DOZFphGxyhz+FZpqt/3dwaytaRK1tI1PBGs3pQGMAfiNsLB+PfLLr8VjLHY88Q1teSNBPI8QUv6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718283072; c=relaxed/simple;
-	bh=rMD+CARkSdMQGPxZ/pm58JcGO4jnI5LiQRC2wcqBfCQ=;
+	s=arc-20240116; t=1718282799; c=relaxed/simple;
+	bh=2fP1PbffNpVV7iTyDk0JQZY+xPopjUyez0STC7fLsyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fLwty4Dx8F0He1TPkeiO3zd2QVKRsQvzds8httVJTklouCij4UPM2OXAZ//e5Mc9ybKsIpcPdIC5jYbM8CxxirLI0KD1Xa2qaYSsaTcrBIh4RiWkLBYEmyN5OJRl7cIZgetIDU/R1Qn+LwTX3bvhU6N3zgPKIOntwiqLOIkcTkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmE5mtb2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0746FC2BBFC;
-	Thu, 13 Jun 2024 12:51:11 +0000 (UTC)
+	 MIME-Version; b=C4TRST0z5PfaUd0cKYz97Q/FcMbXK0y607+7hsZ9IRTLsR04xbtnVQWldPPcgifItC+6TTVKoWunn5GS3ugziA42g4CqERdB/ktZBcutV4Qhs/1jqCu/jkotiG/gliE15ViN/8dFADECjintwgHN5EamNoIt/UNR7DrR0eQebLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tf7Zf53D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F172C32786;
+	Thu, 13 Jun 2024 12:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718283072;
-	bh=rMD+CARkSdMQGPxZ/pm58JcGO4jnI5LiQRC2wcqBfCQ=;
+	s=korg; t=1718282799;
+	bh=2fP1PbffNpVV7iTyDk0JQZY+xPopjUyez0STC7fLsyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LmE5mtb2boWGghFrgqceFA3OJDUxycWdOzjymMZYjLdBNIj15gKgDF21nSFoa6iDk
-	 3yqxYsjaxpAlVLbnDkiJvbFupOsgCO/AXVys3R7sTL78EI7KVFSDeUTfU5VBzi+cRQ
-	 VXMy4EyZdvpnz8/0G/w3sVn9jIejwqRxE7H4hexg=
+	b=Tf7Zf53Drm+yCYokzQJX9j+gtu33wJBY9mDNyqrJW9x6ml2Vqld7CGWb4Pm99DNzA
+	 PznITDoJND86XLbr1Tj4YsEWVQ3qHTHo5YfNGoJubU2AradAjv5fxPmvyOmjGB/fB/
+	 fmWlj6h+4KdQpbD9pydtHAvl7oZyD7g/wo0XYbG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Peter Jung <ptr1337@cachyos.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 59/85] cpufreq: amd-pstate: Fix the inconsistency in max frequency units
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: [PATCH 5.15 400/402] nfs: fix undefined behavior in nfs_block_bits()
 Date: Thu, 13 Jun 2024 13:35:57 +0200
-Message-ID: <20240613113216.415839529@linuxfoundation.org>
+Message-ID: <20240613113317.754711260@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-commit e4731baaf29438508197d3a8a6d4f5a8c51663f8 upstream.
+commit 3c0a2e0b0ae661457c8505fecc7be5501aa7a715 upstream.
 
-The nominal frequency in cpudata is maintained in MHz whereas all other
-frequencies are in KHz. This means we have to convert nominal frequency
-value to KHz before we do any interaction with other frequency values.
+Shifting *signed int* typed constant 1 left by 31 bits causes undefined
+behavior. Specify the correct *unsigned long* type by using 1UL instead.
 
-In amd_pstate_set_boost(), this conversion from MHz to KHz is missed,
-fix that.
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
 
-Tested on a AMD Zen4 EPYC server
-
-Before:
-$ cat /sys/devices/system/cpu/cpufreq/policy*/scaling_max_freq | uniq
-2151
-$ cat /sys/devices/system/cpu/cpufreq/policy*/cpuinfo_min_freq | uniq
-400000
-$ cat /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq | uniq
-2151
-409422
-
-After:
-$ cat /sys/devices/system/cpu/cpufreq/policy*/scaling_max_freq | uniq
-2151000
-$ cat /sys/devices/system/cpu/cpufreq/policy*/cpuinfo_min_freq | uniq
-400000
-$ cat /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq | uniq
-2151000
-1799527
-
-Fixes: ec437d71db77 ("cpufreq: amd-pstate: Introduce a new AMD P-State driver to support future processors")
-Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
-Acked-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Tested-by: Peter Jung <ptr1337@cachyos.org>
-Cc: 5.17+ <stable@vger.kernel.org> # 5.17+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/amd-pstate.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/internal.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -424,7 +424,7 @@ static int amd_pstate_set_boost(struct c
- 	if (state)
- 		policy->cpuinfo.max_freq = cpudata->max_freq;
- 	else
--		policy->cpuinfo.max_freq = cpudata->nominal_freq;
-+		policy->cpuinfo.max_freq = cpudata->nominal_freq * 1000;
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -653,9 +653,9 @@ unsigned long nfs_block_bits(unsigned lo
+ 	if ((bsize & (bsize - 1)) || nrbitsp) {
+ 		unsigned char	nrbits;
  
- 	policy->max = policy->cpuinfo.max_freq;
- 
+-		for (nrbits = 31; nrbits && !(bsize & (1 << nrbits)); nrbits--)
++		for (nrbits = 31; nrbits && !(bsize & (1UL << nrbits)); nrbits--)
+ 			;
+-		bsize = 1 << nrbits;
++		bsize = 1UL << nrbits;
+ 		if (nrbitsp)
+ 			*nrbitsp = nrbits;
+ 	}
 
 
 
