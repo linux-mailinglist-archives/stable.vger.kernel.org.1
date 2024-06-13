@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-51063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337D8906E2B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15811907207
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B40D22810D6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2FB41F24B00
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E0F148853;
-	Thu, 13 Jun 2024 12:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E02E143C79;
+	Thu, 13 Jun 2024 12:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNvzfS6F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boQszd73"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216701465BB;
-	Thu, 13 Jun 2024 12:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4A356458;
+	Thu, 13 Jun 2024 12:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280198; cv=none; b=nFEMoyy4sXHkvnnS1EeG87HuQYE6Eu3CIU9v9AlqYBBwrDP+mauMarBcwxNlMrOugAW+qqpaNw5lv7X3xGSi9QfYhByPaz5U42p/w+RzHlBIbsVf39Em66DX732yzI5BjnCSjmTMWhD+2N9FDRdcyM55xbCg3kt7xQI1i74fIyQ=
+	t=1718282575; cv=none; b=G3S8pouxKVtHUJjI9ex0LLzZy5knjDCISJEOPigjCnB+MG9uD+kgWypDc6ZhjCw4y7l5DAEw/ug5ZvQQwCcquko2GW8tSkw2o8sdMvlm+LMi3NIwOauojAl7y/1gv/awYQthVjIhU3iJpgpFrSCp+gQFxWQWSONmHHziBe4UxA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280198; c=relaxed/simple;
-	bh=dOyUHkCIqHdgyD4d1l5+ZmyH0yeqvj+hZN9woY9vShw=;
+	s=arc-20240116; t=1718282575; c=relaxed/simple;
+	bh=jaz7ZNxztLYHw9oKOn5vBW3wHe5GZuxE0wB4W3u8DvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYfDMUpc3xU/wi7tlLTLomFONxghg/R/Z9NDCavwHw8JhCiwpviTiBK2lSZaePPpcW/BSkIk96la9btwFq4b7GJB2E7ufZMKIo4X/hjXttusq7p701z4gkxUFlAnYzKHAD9e+QM84ZpbGGpNt4020Kb7A575Z2OQhmLTQ0RPwkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNvzfS6F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C590C32786;
-	Thu, 13 Jun 2024 12:03:17 +0000 (UTC)
+	 MIME-Version; b=dtzqN+stHWbemfqahJP8KpDaDRfWmFEwKCdRZN29UZAIwIonEhtRuY9TQsAOanjqTMjJeAzeu6g4zXJ79k1B1QbZQvXjDTvDrMcv178a7PM5Xu2+4g03rVTZnq+eLXDHAIM/uM6s7dfcnFvlS/HM9tjDBqYmF3KuT8vZGfPgcsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boQszd73; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62753C2BBFC;
+	Thu, 13 Jun 2024 12:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280198;
-	bh=dOyUHkCIqHdgyD4d1l5+ZmyH0yeqvj+hZN9woY9vShw=;
+	s=korg; t=1718282574;
+	bh=jaz7ZNxztLYHw9oKOn5vBW3wHe5GZuxE0wB4W3u8DvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KNvzfS6FgQsCBuuPHL9A8vNZRT+Dl/5dDJ2Jrm5KZoPwICMGDwcUVrxlz2qWX2O5P
-	 82V0ZVEVyTy2NSorqbOlR1fDThgAoIiUmseJkENSg51KnLFRoe9YGczbKxJl0bXjWE
-	 nNLDnGZkxrMGcyT3MMw8ufALTlq9jzINf7kgmkoY=
+	b=boQszd73QIP89LSYt/y09T/t+M5kuG4MPjGv3SnISiAb6kxKyaJLQH0fAas6myTUa
+	 j8rZvmUtQ4tV/sKE8Iv5tqDkFyEM7N9YEFZAin6Q56miGNWS2yIBfyi9jXIzVq5J6f
+	 7r6AubMdCmGwYmL366Q7sYMYyyUyLvuNiHA/T+Xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Niklas Cassel <cassel@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 5.4 175/202] ata: pata_legacy: make legacy_exit() work again
+	Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
+	Simon Horman <horms@kernel.org>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 316/402] net: usb: smsc95xx: fix changing LED_SEL bit value updated from EEPROM
 Date: Thu, 13 Jun 2024 13:34:33 +0200
-Message-ID: <20240613113234.494485138@linuxfoundation.org>
+Message-ID: <20240613113314.466803320@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
 
-commit d4a89339f17c87c4990070e9116462d16e75894f upstream.
+[ Upstream commit 52a2f0608366a629d43dacd3191039c95fef74ba ]
 
-Commit defc9cd826e4 ("pata_legacy: resychronize with upstream changes and
-resubmit") missed to update legacy_exit(), so that it now fails to do any
-cleanup -- the loop body there can never be entered.  Fix that and finally
-remove now useless nr_legacy_host variable...
+LED Select (LED_SEL) bit in the LED General Purpose IO Configuration
+register is used to determine the functionality of external LED pins
+(Speed Indicator, Link and Activity Indicator, Full Duplex Link
+Indicator). The default value for this bit is 0 when no EEPROM is
+present. If a EEPROM is present, the default value is the value of the
+LED Select bit in the Configuration Flags of the EEPROM. A USB Reset or
+Lite Reset (LRST) will cause this bit to be restored to the image value
+last loaded from EEPROM, or to be set to 0 if no EEPROM is present.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
+While configuring the dual purpose GPIO/LED pins to LED outputs in the
+LED General Purpose IO Configuration register, the LED_SEL bit is changed
+as 0 and resulting the configured value from the EEPROM is cleared. The
+issue is fixed by using read-modify-write approach.
 
-Fixes: defc9cd826e4 ("pata_legacy: resychronize with upstream changes and resubmit")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f293501c61c5 ("smsc95xx: configure LED outputs")
+Signed-off-by: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Woojung Huh <woojung.huh@microchip.com>
+Link: https://lore.kernel.org/r/20240523085314.167650-1-Parthiban.Veerasooran@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_legacy.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/usb/smsc95xx.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/ata/pata_legacy.c
-+++ b/drivers/ata/pata_legacy.c
-@@ -114,8 +114,6 @@ static int legacy_port[NR_HOST] = { 0x1f
- static struct legacy_probe probe_list[NR_HOST];
- static struct legacy_data legacy_data[NR_HOST];
- static struct ata_host *legacy_host[NR_HOST];
--static int nr_legacy_host;
--
- 
- static int probe_all;		/* Set to check all ISA port ranges */
- static int ht6560a;		/* HT 6560A on primary 1, second 2, both 3 */
-@@ -1239,9 +1237,11 @@ static __exit void legacy_exit(void)
+diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
+index 10fae3989fbdb..8a38939dd57e4 100644
+--- a/drivers/net/usb/smsc95xx.c
++++ b/drivers/net/usb/smsc95xx.c
+@@ -842,7 +842,7 @@ static int smsc95xx_start_rx_path(struct usbnet *dev, int in_pm)
+ static int smsc95xx_reset(struct usbnet *dev)
  {
- 	int i;
+ 	struct smsc95xx_priv *pdata = dev->driver_priv;
+-	u32 read_buf, write_buf, burst_cap;
++	u32 read_buf, burst_cap;
+ 	int ret = 0, timeout;
  
--	for (i = 0; i < nr_legacy_host; i++) {
-+	for (i = 0; i < NR_HOST; i++) {
- 		struct legacy_data *ld = &legacy_data[i];
--		ata_host_detach(legacy_host[i]);
-+
-+		if (legacy_host[i])
-+			ata_host_detach(legacy_host[i]);
- 		platform_device_unregister(ld->platform_dev);
- 	}
- }
+ 	netif_dbg(dev, ifup, dev->net, "entering smsc95xx_reset\n");
+@@ -984,10 +984,13 @@ static int smsc95xx_reset(struct usbnet *dev)
+ 		return ret;
+ 	netif_dbg(dev, ifup, dev->net, "ID_REV = 0x%08x\n", read_buf);
+ 
++	ret = smsc95xx_read_reg(dev, LED_GPIO_CFG, &read_buf);
++	if (ret < 0)
++		return ret;
+ 	/* Configure GPIO pins as LED outputs */
+-	write_buf = LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
+-		LED_GPIO_CFG_FDX_LED;
+-	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, write_buf);
++	read_buf |= LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
++		    LED_GPIO_CFG_FDX_LED;
++	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, read_buf);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-- 
+2.43.0
+
 
 
 
