@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-50698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7168B906C02
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01914906CCA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:54:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFB1DB24862
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:46:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81F68B2642B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A2313C805;
-	Thu, 13 Jun 2024 11:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59136144D3F;
+	Thu, 13 Jun 2024 11:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DB7QhEdv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EtucGcn0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E763143C5D;
-	Thu, 13 Jun 2024 11:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C551428FC;
+	Thu, 13 Jun 2024 11:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279128; cv=none; b=u6o9yVAFEj36V9rcpH52orh4WEYXNZh8+t8plgii6XGHE2teUFcVllIHnVXDgYbCNNGMBBl4QEZ/dqj7ruI9DKjer9KcvFyDokia9+Fjr+BtwJYlSNUoSgywpBcSg9P6hZoX4gG+WS/QKfbM+f14p/2g94iwoIjRQY7zDEL6/Ng=
+	t=1718279440; cv=none; b=NFjFdtdfFY+vYxwPdZ0UWTc5wbYrwBD/HQGJ19umlRJ9U94G/MI5Gew21ZK90aicNiyNKpimC14uy17zTJP1VzO9Gs9ktuZCevapV5gkGxd8uH8SdTH2gKA7k25CZII3ajJcvW3v94Vhxt2gXgOfuCvFHX4VdkE5EpI1z3nePQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279128; c=relaxed/simple;
-	bh=tt+wgC28sn/B4wlrN3QcONwQVsT52YIMGcUQC/vwrIQ=;
+	s=arc-20240116; t=1718279440; c=relaxed/simple;
+	bh=V9fl3khetk4kRC5Jw1ZN+ArSNqv1spUAmoJ1g13tvQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nFAVxTs5RK8WrTCamZixfoHfG/THJb1yFPxA3MJA6/kzYh01KEkZ/KFJYuPFY9EWUTZGuE0j+fYiFHAXqtwCuhNbF/jqenjpr4vBEMTzfPnc8QiAZLLPWD6NYvMRZtB/of+krRGDdkGop0sk/h3U7QGHbVxIkqbvz2nvAunddzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DB7QhEdv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E69C2BBFC;
-	Thu, 13 Jun 2024 11:45:27 +0000 (UTC)
+	 MIME-Version; b=gkIcK1vj5JkQIc8n6QLwz7s4NyM8twQF8WNBzeeHY5EBs5sQ/3Kda/dB5O/8sb/l9PV2wk2Jq2zTxX7bHR88DHEjanxQc5rEe5LbrX4MjznZogZYcb53JDhulHXCLSOAyebbCM6MQkBb3tLOo/jyoloIXd34nhkQQcpCW+GKW4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EtucGcn0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DCDC2BBFC;
+	Thu, 13 Jun 2024 11:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279127;
-	bh=tt+wgC28sn/B4wlrN3QcONwQVsT52YIMGcUQC/vwrIQ=;
+	s=korg; t=1718279440;
+	bh=V9fl3khetk4kRC5Jw1ZN+ArSNqv1spUAmoJ1g13tvQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DB7QhEdvAJX1ru37EYRTHKdCCk14BgthFAtiVB5Nfzcvkh4/1aaquA5WWmKO7ZpaK
-	 Ggu+YaWDhdVR+cqXsyAwKo2HtmZ1hKmqMKh/p5QWisedp4Pk5EMYBQZLSNxS6fttau
-	 VhT7G+E7253K5tBamjfiuDCsMs+HkrcuYhDAzGDY=
+	b=EtucGcn0a2OJZWgQ1H4PGiOm5MD0YrBE5aQhoCb9fwXdNf9ne9THW7oEBPcYa5RTY
+	 IiyjmjiFocTOCtQYCNeTpDACF/AkwjcI9I0kqB+HFGQW63WvkIiBmp006FsXZsifdy
+	 CRDzgarRsQkl9hUD6FT4Hf/vEQfkcWMYF69GNwEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
-	Dan Moulding <dan@danm.net>,
-	Junxiao Bi <junxiao.bi@oracle.com>
-Subject: [PATCH 4.19 153/213] md/raid5: fix deadlock that raid5d() wait for itself to clear MD_SB_CHANGE_PENDING
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.9 076/157] filemap: add helper mapping_max_folio_size()
 Date: Thu, 13 Jun 2024 13:33:21 +0200
-Message-ID: <20240613113233.889736589@linuxfoundation.org>
+Message-ID: <20240613113230.363189584@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +65,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 151f66bb618d1fd0eeb84acb61b4a9fa5d8bb0fa upstream.
+commit 79c137454815ba5554caa8eeb4ad5c94e96e45ce upstream.
 
-Xiao reported that lvm2 test lvconvert-raid-takeover.sh can hang with
-small possibility, the root cause is exactly the same as commit
-bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
+Add mapping_max_folio_size() to get the maximum folio size for this
+pagecache mapping.
 
-However, Dan reported another hang after that, and junxiao investigated
-the problem and found out that this is caused by plugged bio can't issue
-from raid5d().
-
-Current implementation in raid5d() has a weird dependence:
-
-1) md_check_recovery() from raid5d() must hold 'reconfig_mutex' to clear
-   MD_SB_CHANGE_PENDING;
-2) raid5d() handles IO in a deadloop, until all IO are issued;
-3) IO from raid5d() must wait for MD_SB_CHANGE_PENDING to be cleared;
-
-This behaviour is introduce before v2.6, and for consequence, if other
-context hold 'reconfig_mutex', and md_check_recovery() can't update
-super_block, then raid5d() will waste one cpu 100% by the deadloop, until
-'reconfig_mutex' is released.
-
-Refer to the implementation from raid1 and raid10, fix this problem by
-skipping issue IO if MD_SB_CHANGE_PENDING is still set after
-md_check_recovery(), daemon thread will be woken up when 'reconfig_mutex'
-is released. Meanwhile, the hang problem will be fixed as well.
-
-Fixes: 5e2cf333b7bd ("md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d")
-Cc: stable@vger.kernel.org # v5.19+
-Reported-and-tested-by: Dan Moulding <dan@danm.net>
-Closes: https://lore.kernel.org/all/20240123005700.9302-1-dan@danm.net/
-Investigated-by: Junxiao Bi <junxiao.bi@oracle.com>
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240322081005.1112401-1-yukuai1@huaweicloud.com
-Signed-off-by: Song Liu <song@kernel.org>
+Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+Cc: stable@vger.kernel.org
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20240521114939.2541461-1-xu.yang_2@nxp.com
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid5.c |   15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ include/linux/pagemap.h |   34 +++++++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
 
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -44,7 +44,6 @@
-  */
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -344,6 +344,19 @@ static inline void mapping_set_gfp_mask(
+ 	m->gfp_mask = mask;
+ }
  
- #include <linux/blkdev.h>
--#include <linux/delay.h>
- #include <linux/kthread.h>
- #include <linux/raid/pq.h>
- #include <linux/async_tx.h>
-@@ -6294,6 +6293,9 @@ static void raid5d(struct md_thread *thr
- 		int batch_size, released;
- 		unsigned int offset;
- 
-+		if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
-+			break;
++/*
++ * There are some parts of the kernel which assume that PMD entries
++ * are exactly HPAGE_PMD_ORDER.  Those should be fixed, but until then,
++ * limit the maximum allocation order to PMD size.  I'm not aware of any
++ * assumptions about maximum order if THP are disabled, but 8 seems like
++ * a good order (that's 1MB if you're using 4kB pages)
++ */
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++#define MAX_PAGECACHE_ORDER	HPAGE_PMD_ORDER
++#else
++#define MAX_PAGECACHE_ORDER	8
++#endif
 +
- 		released = release_stripe_list(conf, conf->temp_inactive_list);
- 		if (released)
- 			clear_bit(R5_DID_ALLOC, &conf->cache_state);
-@@ -6330,18 +6332,7 @@ static void raid5d(struct md_thread *thr
- 			spin_unlock_irq(&conf->device_lock);
- 			md_check_recovery(mddev);
- 			spin_lock_irq(&conf->device_lock);
--
--			/*
--			 * Waiting on MD_SB_CHANGE_PENDING below may deadlock
--			 * seeing md_check_recovery() is needed to clear
--			 * the flag when using mdmon.
--			 */
--			continue;
- 		}
--
--		wait_event_lock_irq(mddev->sb_wait,
--			!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags),
--			conf->device_lock);
- 	}
- 	pr_debug("%d stripes handled\n", handled);
+ /**
+  * mapping_set_large_folios() - Indicate the file supports large folios.
+  * @mapping: The file.
+@@ -370,6 +383,14 @@ static inline bool mapping_large_folio_s
+ 		test_bit(AS_LARGE_FOLIO_SUPPORT, &mapping->flags);
+ }
  
++/* Return the maximum folio size for this pagecache mapping, in bytes. */
++static inline size_t mapping_max_folio_size(struct address_space *mapping)
++{
++	if (mapping_large_folio_support(mapping))
++		return PAGE_SIZE << MAX_PAGECACHE_ORDER;
++	return PAGE_SIZE;
++}
++
+ static inline int filemap_nr_thps(struct address_space *mapping)
+ {
+ #ifdef CONFIG_READ_ONLY_THP_FOR_FS
+@@ -528,19 +549,6 @@ static inline void *detach_page_private(
+ 	return folio_detach_private(page_folio(page));
+ }
+ 
+-/*
+- * There are some parts of the kernel which assume that PMD entries
+- * are exactly HPAGE_PMD_ORDER.  Those should be fixed, but until then,
+- * limit the maximum allocation order to PMD size.  I'm not aware of any
+- * assumptions about maximum order if THP are disabled, but 8 seems like
+- * a good order (that's 1MB if you're using 4kB pages)
+- */
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-#define MAX_PAGECACHE_ORDER	HPAGE_PMD_ORDER
+-#else
+-#define MAX_PAGECACHE_ORDER	8
+-#endif
+-
+ #ifdef CONFIG_NUMA
+ struct folio *filemap_alloc_folio(gfp_t gfp, unsigned int order);
+ #else
 
 
 
