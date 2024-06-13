@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E07B90728A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:48:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F31139072E1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:53:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D7A4B2884E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:47:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98A80B20FD3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F23137914;
-	Thu, 13 Jun 2024 12:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2182566;
+	Thu, 13 Jun 2024 12:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1iIwURG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVkZlsfm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DEE17FD;
-	Thu, 13 Jun 2024 12:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC096A59;
+	Thu, 13 Jun 2024 12:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282787; cv=none; b=S5vinmIF1gSqXZv79AhJHAsFwy8C3u3iRhwaSjUdHphEYMq5kq9fBqo/Mno5JR3p9CABxtS0WJ89YG6pvhedUdXY/RerScH8y+Iuszj0rGog7KwlIjsokxM6RZVsb3OJVzTv5/UWVvE6gvKiolUg02pRIu0PZP/9dba1Dz/tBkE=
+	t=1718283052; cv=none; b=px1odFaALmhKRXOCh6RAIam63TfEdZVRH+TsRtITxI/lMV18ie6siQyT0fME1l7+kaHG4cT/fLatd66padYXl4eGe9EQ9y5FbRXE0XoXmM+kG+udzxjI95YN0nUbD0fQl0gcC/kp9VqbfOqdQIUBfmlEjvTgxwyipTM1RqQBHKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282787; c=relaxed/simple;
-	bh=Ld5Ev4byB97TlsyxaJlGgX3LjzLekoW+arg5L4XSaDY=;
+	s=arc-20240116; t=1718283052; c=relaxed/simple;
+	bh=TMCTxcLRmb9vhKT8KP57swlb6wHpSwQaKrKbaiTv2xU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X9XNf7G11j5hqzbiKXBlXmyWjJwL3Bax9pnI93SFXYfAeqQ6ya4/6Tx6uaHb/MCesuF37Iov72zcstGjui/rWj7al5J5ZdsA6UjTGH1OPaW2XuPlmMiQC2zHLwAyuCrJKFL/D+GTQBU6qa0BeX65jIL8vc0Etcvc9TK+SEJiVag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1iIwURG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEC6C32786;
-	Thu, 13 Jun 2024 12:46:26 +0000 (UTC)
+	 MIME-Version; b=LtTI2WZ5m2qurTd172ay5uiuzlYlexMQa+fJJ7xV/W2a6FWtZ4QBkMuIk97LmlRclhp/oMHVZFCKOXwuZ0Hhe+pbEnlp/jz6jKPqhc2TS5icxZdZUaf9o2RbGpyry8hFfGxBz3BAxKdfD0KZ9c3rk068+5Yx1xoeSHJV50xuh8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVkZlsfm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73381C2BBFC;
+	Thu, 13 Jun 2024 12:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282787;
-	bh=Ld5Ev4byB97TlsyxaJlGgX3LjzLekoW+arg5L4XSaDY=;
+	s=korg; t=1718283051;
+	bh=TMCTxcLRmb9vhKT8KP57swlb6wHpSwQaKrKbaiTv2xU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b1iIwURGsIEahvwzGxXDdvC/RNr2Msznj0p22EY7iHoq9eoKJXlCtzo1zqUK0TdD6
-	 8+O/euHNGsuSJ106MBOubrEP19QTWmddEw4LDYIZlPoTqZqcBuQOaFHBKNNh+YjasX
-	 TdktbjzIv90gCY7zp1N9cMx2j8gy5HjhlUtrIwAA=
+	b=RVkZlsfmN/40VAYywjN3xz6XRJumFmzQi6wwKPuiJ0/QgdTCYtDd/MBwoZ3brY71n
+	 Q9wOF6PLooYMDt/u4Y5R5Ie3MUes+Df8kimWHafe00bfls/eLXn4k1esjEH/hcz1Zg
+	 mc9jFunkOpILPTlW78B69resstc/86QgqkwAHlzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Juergen Christ <jchrist@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>
-Subject: [PATCH 5.15 396/402] s390/cpacf: Split and rework cpacf query functions
+	Peter Schneider <pschneider1968@googlemail.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 55/85] scsi: core: Handle devices which return an unusually large VPD page count
 Date: Thu, 13 Jun 2024 13:35:53 +0200
-Message-ID: <20240613113317.601029265@linuxfoundation.org>
+Message-ID: <20240613113216.262781939@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,152 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Martin K. Petersen <martin.petersen@oracle.com>
 
-commit 830999bd7e72f4128b9dfa37090d9fa8120ce323 upstream.
+commit d09c05aa35909adb7d29f92f0cd79fdcd1338ef0 upstream.
 
-Rework the cpacf query functions to use the correct RRE
-or RRF instruction formats and set register fields within
-instructions correctly.
+Peter Schneider reported that a system would no longer boot after
+updating to 6.8.4.  Peter bisected the issue and identified commit
+b5fc07a5fb56 ("scsi: core: Consult supported VPD page list prior to
+fetching page") as being the culprit.
 
-Fixes: 1afd43e0fbba ("s390/crypto: allow to query all known cpacf functions")
-Reported-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Suggested-by: Heiko Carstens <hca@linux.ibm.com>
-Suggested-by: Juergen Christ <jchrist@linux.ibm.com>
-Suggested-by: Holger Dengler <dengler@linux.ibm.com>
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-Reviewed-by: Juergen Christ <jchrist@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Turns out the enclosure device in Peter's system reports a byteswapped
+page length for VPD page 0. It reports "02 00" as page length instead
+of "00 02". This causes us to attempt to access 516 bytes (page length
++ header) of information despite only 2 pages being present.
+
+Limit the page search scope to the size of our VPD buffer to guard
+against devices returning a larger page count than requested.
+
+Link: https://lore.kernel.org/r/20240521023040.2703884-1-martin.petersen@oracle.com
+Fixes: b5fc07a5fb56 ("scsi: core: Consult supported VPD page list prior to fetching page")
+Cc: stable@vger.kernel.org
+Reported-by: Peter Schneider <pschneider1968@googlemail.com>
+Closes: https://lore.kernel.org/all/eec6ebbf-061b-4a7b-96dc-ea748aa4d035@googlemail.com/
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/include/asm/cpacf.h |  101 +++++++++++++++++++++++++++++++++---------
- 1 file changed, 81 insertions(+), 20 deletions(-)
+ drivers/scsi/scsi.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/s390/include/asm/cpacf.h
-+++ b/arch/s390/include/asm/cpacf.h
-@@ -161,28 +161,79 @@
+diff --git a/drivers/scsi/scsi.c b/drivers/scsi/scsi.c
+index 3e0c0381277a..f0464db3f9de 100644
+--- a/drivers/scsi/scsi.c
++++ b/drivers/scsi/scsi.c
+@@ -350,6 +350,13 @@ static int scsi_get_vpd_size(struct scsi_device *sdev, u8 page)
+ 		if (result < SCSI_VPD_HEADER_SIZE)
+ 			return 0;
  
- typedef struct { unsigned char bytes[16]; } cpacf_mask_t;
- 
--/**
-- * cpacf_query() - check if a specific CPACF function is available
-- * @opcode: the opcode of the crypto instruction
-- * @func: the function code to test for
-- *
-- * Executes the query function for the given crypto instruction @opcode
-- * and checks if @func is available
-- *
-- * Returns 1 if @func is available for @opcode, 0 otherwise
-- */
--static __always_inline void __cpacf_query(unsigned int opcode, cpacf_mask_t *mask)
-+static __always_inline void __cpacf_query_rre(u32 opc, u8 r1, u8 r2,
-+					      cpacf_mask_t *mask)
-+{
-+	asm volatile(
-+		"	la	%%r1,%[mask]\n"
-+		"	xgr	%%r0,%%r0\n"
-+		"	.insn	rre,%[opc] << 16,%[r1],%[r2]\n"
-+		: [mask] "=R" (*mask)
-+		: [opc] "i" (opc),
-+		  [r1] "i" (r1), [r2] "i" (r2)
-+		: "cc", "r0", "r1");
-+}
++		if (result > sizeof(vpd)) {
++			dev_warn_once(&sdev->sdev_gendev,
++				      "%s: long VPD page 0 length: %d bytes\n",
++				      __func__, result);
++			result = sizeof(vpd);
++		}
 +
-+static __always_inline void __cpacf_query_rrf(u32 opc,
-+					      u8 r1, u8 r2, u8 r3, u8 m4,
-+					      cpacf_mask_t *mask)
- {
- 	asm volatile(
--		"	lghi	0,0\n" /* query function */
--		"	lgr	1,%[mask]\n"
--		"	spm	0\n" /* pckmo doesn't change the cc */
--		/* Parameter regs are ignored, but must be nonzero and unique */
--		"0:	.insn	rrf,%[opc] << 16,2,4,6,0\n"
--		"	brc	1,0b\n"	/* handle partial completion */
--		: "=m" (*mask)
--		: [mask] "d" ((unsigned long)mask), [opc] "i" (opcode)
--		: "cc", "0", "1");
-+		"	la	%%r1,%[mask]\n"
-+		"	xgr	%%r0,%%r0\n"
-+		"	.insn	rrf,%[opc] << 16,%[r1],%[r2],%[r3],%[m4]\n"
-+		: [mask] "=R" (*mask)
-+		: [opc] "i" (opc), [r1] "i" (r1), [r2] "i" (r2),
-+		  [r3] "i" (r3), [m4] "i" (m4)
-+		: "cc", "r0", "r1");
-+}
-+
-+static __always_inline void __cpacf_query(unsigned int opcode,
-+					  cpacf_mask_t *mask)
-+{
-+	switch (opcode) {
-+	case CPACF_KDSA:
-+		__cpacf_query_rre(CPACF_KDSA, 0, 2, mask);
-+		break;
-+	case CPACF_KIMD:
-+		__cpacf_query_rre(CPACF_KIMD, 0, 2, mask);
-+		break;
-+	case CPACF_KLMD:
-+		__cpacf_query_rre(CPACF_KLMD, 0, 2, mask);
-+		break;
-+	case CPACF_KM:
-+		__cpacf_query_rre(CPACF_KM, 2, 4, mask);
-+		break;
-+	case CPACF_KMA:
-+		__cpacf_query_rrf(CPACF_KMA, 2, 4, 6, 0, mask);
-+		break;
-+	case CPACF_KMAC:
-+		__cpacf_query_rre(CPACF_KMAC, 0, 2, mask);
-+		break;
-+	case CPACF_KMC:
-+		__cpacf_query_rre(CPACF_KMC, 2, 4, mask);
-+		break;
-+	case CPACF_KMCTR:
-+		__cpacf_query_rrf(CPACF_KMCTR, 2, 4, 6, 0, mask);
-+		break;
-+	case CPACF_KMF:
-+		__cpacf_query_rre(CPACF_KMF, 2, 4, mask);
-+		break;
-+	case CPACF_KMO:
-+		__cpacf_query_rre(CPACF_KMO, 2, 4, mask);
-+		break;
-+	case CPACF_PCC:
-+		__cpacf_query_rre(CPACF_PCC, 0, 0, mask);
-+		break;
-+	case CPACF_PCKMO:
-+		__cpacf_query_rre(CPACF_PCKMO, 0, 0, mask);
-+		break;
-+	case CPACF_PRNO:
-+		__cpacf_query_rre(CPACF_PRNO, 2, 4, mask);
-+		break;
-+	default:
-+		BUG();
-+	}
- }
- 
- static __always_inline int __cpacf_check_opcode(unsigned int opcode)
-@@ -210,6 +261,16 @@ static __always_inline int __cpacf_check
- 	}
- }
- 
-+/**
-+ * cpacf_query() - check if a specific CPACF function is available
-+ * @opcode: the opcode of the crypto instruction
-+ * @func: the function code to test for
-+ *
-+ * Executes the query function for the given crypto instruction @opcode
-+ * and checks if @func is available
-+ *
-+ * Returns 1 if @func is available for @opcode, 0 otherwise
-+ */
- static __always_inline int cpacf_query(unsigned int opcode, cpacf_mask_t *mask)
- {
- 	if (__cpacf_check_opcode(opcode)) {
+ 		result -= SCSI_VPD_HEADER_SIZE;
+ 		if (!memchr(&vpd[SCSI_VPD_HEADER_SIZE], page, result))
+ 			return 0;
+-- 
+2.45.2
+
 
 
 
