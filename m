@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-51086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3EC1906E46
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50BE290703E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 459C61F21473
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 611481C2375F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC1D1465A3;
-	Thu, 13 Jun 2024 12:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552831448DA;
+	Thu, 13 Jun 2024 12:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ocuzg1Sr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LH3i9TfP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D955143747;
-	Thu, 13 Jun 2024 12:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A991411C5;
+	Thu, 13 Jun 2024 12:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280267; cv=none; b=fpO2wSv1zvmI2OMB3/USZQzDNkQX8RyipvYDAg5Z00Nd789RY9d1KWQUlV4/tPjCAMWqxAfhRZVAoN3S1EBWHVWQjwa3FIfueDlsTKcPsZQLiNk8hl9mzFlqrsZxZCyspIS6+cvpqzq43q5d2Ocm1Zan5/Srs2677I37NcpDFQA=
+	t=1718281510; cv=none; b=V7bRJ9umXiAB4lfVAYwYXVYQjLe60XnyudY4/isxvSZUCz8p4eMfCOXGcRjHEhRMzD2I7Apt9DKBs58VZbszi9fb+7ZCz6dX3B0u7S9sQrY8oAtdaeN8mpnAVvQm9+X2K4yvuw2x8VO1JKR4kY4uWsKv/JmuluBmNPGJ6Hu7id8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280267; c=relaxed/simple;
-	bh=sEVtyOjvwrVK9ooazGnqCpjLRap7GGj0c4CyZyMLZv0=;
+	s=arc-20240116; t=1718281510; c=relaxed/simple;
+	bh=Zl3g4Gl+9Max8veYXrL2TJcw8GTfzNt0D5g3C6q2IZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sYDsNXXeDjQBBwbp84pzvGDOC9gvJk4k0oLvcXscmZZlIlcpchL2pxpVFa32MLWJqwQEySEN/chXx4TjbAk79TrSgHR/7URiO+iWGfg4aZuZMa50/cmmzLxNKa6mkSo4EwbxhapNpBABQff9ltPVnKtNYV6n+XD6nZppp+3j+pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ocuzg1Sr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8257CC2BBFC;
-	Thu, 13 Jun 2024 12:04:26 +0000 (UTC)
+	 MIME-Version; b=aJ500+tIS7W3+e/8BCCQwfup0rZxtT/AMqwM4T+xrN6gUbVqOunKsjRdbtud++ZmS5VAklLAPhRSY1dxv9owVUkFrmxzTrFqPzWz2sRGyK6hGFcS1dvEBmjxafK1tnUBo26Mia4n5Igx3jZcx+VDKSO1GxvC9oNkbgxgAEJviSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LH3i9TfP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90EAAC2BBFC;
+	Thu, 13 Jun 2024 12:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280266;
-	bh=sEVtyOjvwrVK9ooazGnqCpjLRap7GGj0c4CyZyMLZv0=;
+	s=korg; t=1718281510;
+	bh=Zl3g4Gl+9Max8veYXrL2TJcw8GTfzNt0D5g3C6q2IZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ocuzg1SrS+jmOJB9b93QfbdSIH3ZTiQpuCG1u4Xk+lyoYQQ+F1FWw+cQnkQvMwrPZ
-	 7vspVg//tHAKf5vqeJVwIhkMb67LbGVl7gEyZ6AXWX6oXf2qm0TG5ADP87UhP/akaB
-	 CFBcIJQRFYRZ5ZSXiGletKEv728+sI/yeTlkJd5c=
+	b=LH3i9TfPiGwqI1g9JbEj+3ThPHHCd60312gETqC+kgaMdhmWD/y2B+t6lPJFIlaYR
+	 FeUYgs9X9xBMfxMfUPyvILfRpSC81ErI8DGfYIcn4CTjFmLUsljGCbGoKyIYoPha43
+	 VeAYtLo8KNmFfgeNMe/mWI8qgSOanjUqnKZ96Ork=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Gilbert <floppym@gentoo.org>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH 5.4 199/202] sparc: move struct termio to asm/termios.h
-Date: Thu, 13 Jun 2024 13:34:57 +0200
-Message-ID: <20240613113235.417711741@linuxfoundation.org>
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 5.10 280/317] arm64: tegra: Correct Tegra132 I2C alias
+Date: Thu, 13 Jun 2024 13:34:58 +0200
+Message-ID: <20240613113258.381309466@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Gilbert <floppym@gentoo.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 
-commit c32d18e7942d7589b62e301eb426b32623366565 upstream.
+commit 2633c58e1354d7de2c8e7be8bdb6f68a0a01bad7 upstream.
 
-Every other arch declares struct termio in asm/termios.h, so make sparc
-match them.
+There is no such device as "as3722@40", because its name is "pmic".  Use
+phandles for aliases to fix relying on full node path.  This corrects
+aliases for RTC devices and also fixes dtc W=1 warning:
 
-Resolves a build failure in the PPP software package, which includes
-both bits/ioctl-types.h via sys/ioctl.h (glibc) and asm/termbits.h.
+  tegra132-norrin.dts:12.3-36: Warning (alias_paths): /aliases:rtc0: aliases property is not a valid node (/i2c@7000d000/as3722@40)
 
-Closes: https://bugs.gentoo.org/918992
-Signed-off-by: Mike Gilbert <floppym@gentoo.org>
+Fixes: 0f279ebdf3ce ("arm64: tegra: Add NVIDIA Tegra132 Norrin support")
 Cc: stable@vger.kernel.org
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Tested-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20240306171149.3843481-1-floppym@gentoo.org
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/include/uapi/asm/termbits.h |   10 ----------
- arch/sparc/include/uapi/asm/termios.h  |    9 +++++++++
- 2 files changed, 9 insertions(+), 10 deletions(-)
+ arch/arm64/boot/dts/nvidia/tegra132-norrin.dts |    4 ++--
+ arch/arm64/boot/dts/nvidia/tegra132.dtsi       |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/sparc/include/uapi/asm/termbits.h
-+++ b/arch/sparc/include/uapi/asm/termbits.h
-@@ -13,16 +13,6 @@ typedef unsigned int    tcflag_t;
- typedef unsigned long   tcflag_t;
- #endif
+--- a/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
++++ b/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
+@@ -9,8 +9,8 @@
+ 	compatible = "nvidia,norrin", "nvidia,tegra132", "nvidia,tegra124";
  
--#define NCC 8
--struct termio {
--	unsigned short c_iflag;		/* input mode flags */
--	unsigned short c_oflag;		/* output mode flags */
--	unsigned short c_cflag;		/* control mode flags */
--	unsigned short c_lflag;		/* local mode flags */
--	unsigned char c_line;		/* line discipline */
--	unsigned char c_cc[NCC];	/* control characters */
--};
--
- #define NCCS 17
- struct termios {
- 	tcflag_t c_iflag;		/* input mode flags */
---- a/arch/sparc/include/uapi/asm/termios.h
-+++ b/arch/sparc/include/uapi/asm/termios.h
-@@ -40,5 +40,14 @@ struct winsize {
- 	unsigned short ws_ypixel;
- };
+ 	aliases {
+-		rtc0 = "/i2c@7000d000/as3722@40";
+-		rtc1 = "/rtc@7000e000";
++		rtc0 = &as3722;
++		rtc1 = &tegra_rtc;
+ 		serial0 = &uarta;
+ 	};
  
-+#define NCC 8
-+struct termio {
-+	unsigned short c_iflag;		/* input mode flags */
-+	unsigned short c_oflag;		/* output mode flags */
-+	unsigned short c_cflag;		/* control mode flags */
-+	unsigned short c_lflag;		/* local mode flags */
-+	unsigned char c_line;		/* line discipline */
-+	unsigned char c_cc[NCC];	/* control characters */
-+};
+--- a/arch/arm64/boot/dts/nvidia/tegra132.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra132.dtsi
+@@ -573,7 +573,7 @@
+ 		status = "disabled";
+ 	};
  
- #endif /* _UAPI_SPARC_TERMIOS_H */
+-	rtc@7000e000 {
++	tegra_rtc: rtc@7000e000 {
+ 		compatible = "nvidia,tegra124-rtc", "nvidia,tegra20-rtc";
+ 		reg = <0x0 0x7000e000 0x0 0x100>;
+ 		interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
 
 
 
