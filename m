@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0EF907196
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:39:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC221906E7D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57F7A1C24227
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:39:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A06BB27E29
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC5D143C55;
-	Thu, 13 Jun 2024 12:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1BA146D6A;
+	Thu, 13 Jun 2024 12:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="herlh3tj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEilX1Mh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0E21E49B;
-	Thu, 13 Jun 2024 12:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED190145A14;
+	Thu, 13 Jun 2024 12:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282292; cv=none; b=iuJ2GZ/wDaZcpr1yIa8CJ3iqatRn3sb8aVyH06sL1WHaNZp9+Tsf3MQR6sPZ6v33vIx5wTF3Cardm5ahbPnT8sKdVDcPZDEmammz5B32KQ7F13tg3wokUwE8Ug3kVXWSpwdqHao3SUsNscNKEZfRz53HNntRTkYm0zUi8iqQz3Y=
+	t=1718280415; cv=none; b=WwAZkSIpXtQsjqOb4JCmZYFkgdQ+VNzzj4dlAJxCRYqqQO+kd0gabyKEWB8GnbYUOYyTaPEddUpbGCLg22XvmhND023DGTIhncZ4ISjDzPpahTbQr7X2ZyhyO+bVh2MHKTXb6vf8mVPyz6R4pufQkRyFiuR7/UEFbDjtBOqfkmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282292; c=relaxed/simple;
-	bh=tJE/s18zy6S+rcUVzxqijenhBnrYaSF8hk1QnZfIf4I=;
+	s=arc-20240116; t=1718280415; c=relaxed/simple;
+	bh=2RPAtC8tnjMW7TpA46eSO4G8KqDRggUz8hSW2KHEp1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jDmJ//PdBGSL267IgFvh4hpoaQl9qVpG2zzTKXzv1PgADHxM9OGKf9UJZOVuq7xp5AM5vy8TSOn+tKSMhTSNOpdzXTU9u0pNJbFXWeTVuBh/y9ZXtUldGeMtHR4tmitwUgIFlAMrV/GB2nzyvLwoUy590uBadPdm5uX6dEjefKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=herlh3tj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4407C2BBFC;
-	Thu, 13 Jun 2024 12:38:11 +0000 (UTC)
+	 MIME-Version; b=kKVH4qywlDxT2yMETnHZSiCU2T8su9heM76RQwhTZ3/TUZByMZINsTJKLerJvApt6hJurj1llOpQaTPatGH9vZz6jWQmYJNkRDdoWzzV0A6yHRO/uoxvT7BShD3YSonsejQZyWHQMpxR2OsrAArBAXYG7TjLBqBl6U7xJ52J53M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEilX1Mh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4B5C4AF1A;
+	Thu, 13 Jun 2024 12:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282292;
-	bh=tJE/s18zy6S+rcUVzxqijenhBnrYaSF8hk1QnZfIf4I=;
+	s=korg; t=1718280414;
+	bh=2RPAtC8tnjMW7TpA46eSO4G8KqDRggUz8hSW2KHEp1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=herlh3tjXOq6SXIAsezFaN99K1kS2RVxxcwXktbLvcdrkLrdjEvrHjDksP+ducgII
-	 6AXCLwnCi/WS+zl1r71IVK79N4noQiRrbvnc1tQABw8gCUkubicYWlCypXRPBCi0Ad
-	 0uaInBYmOZ09HYfj01UmsjQRCAlVgsrCOSZlevlA=
+	b=vEilX1Mh93QiT6SuWbP9hK0InphU8A743nDm8/b69FyLIZP5sAPrAa1BFoBlkNII2
+	 S6/KA7qfU7LtHeYQiwWFHrChWTx06jt/N/mxSLdOrI0DhR8jB1xfWwIo0Yo14fJ17P
+	 deGnkI/La0eZDCe6m2WnbLKAXJRp8Q1FDmudcgm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com>
-Subject: [PATCH 5.15 228/402] PCI/EDR: Align EDR_PORT_DPC_ENABLE_DSM with PCI Firmware r3.3
+	Haorong Lu <ancientmodern4@gmail.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Conor Dooley <conor@kernel.org>
+Subject: [PATCH 6.6 005/137] riscv: signal: handle syscall restart before get_signal
 Date: Thu, 13 Jun 2024 13:33:05 +0200
-Message-ID: <20240613113311.036804957@linuxfoundation.org>
+Message-ID: <20240613113223.492688171@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+From: Haorong Lu <ancientmodern4@gmail.com>
 
-[ Upstream commit f24ba846133d0edec785ac6430d4daf6e9c93a09 ]
+commit ce4f78f1b53d3327fbd32764aa333bf05fb68818 upstream.
 
-The "Downstream Port Containment related Enhancements" ECN of Jan 28, 2019
-(document 12888 below), defined the EDR_PORT_DPC_ENABLE_DSM function with
-Revision ID 5 with Arg3 being an integer.  But when the ECN was integrated
-into PCI Firmware r3.3, sec 4.6.12, it was defined as Revision ID 6 with
-Arg3 being a package containing an integer.
+In the current riscv implementation, blocking syscalls like read() may
+not correctly restart after being interrupted by ptrace. This problem
+arises when the syscall restart process in arch_do_signal_or_restart()
+is bypassed due to changes to the regs->cause register, such as an
+ebreak instruction.
 
-The implementation in acpi_enable_dpc() supplies a package as Arg3 (arg4 in
-the code), but it previously specified Revision ID 5.  Align this with PCI
-Firmware r3.3 by using Revision ID 6.
+Steps to reproduce:
+1. Interrupt the tracee process with PTRACE_SEIZE & PTRACE_INTERRUPT.
+2. Backup original registers and instruction at new_pc.
+3. Change pc to new_pc, and inject an instruction (like ebreak) to this
+   address.
+4. Resume with PTRACE_CONT and wait for the process to stop again after
+   executing ebreak.
+5. Restore original registers and instructions, and detach from the
+   tracee process.
+6. Now the read() syscall in tracee will return -1 with errno set to
+   ERESTARTSYS.
 
-If firmware implemented per the ECN, its Revision 5 function would receive
-a package as Arg3 when it expects an integer, so acpi_enable_dpc() would
-likely fail.  If such firmware exists and lacks a Revision 6 function that
-expects a package, we may have to add support for Revision 5.
+Specifically, during an interrupt, the regs->cause changes from
+EXC_SYSCALL to EXC_BREAKPOINT due to the injected ebreak, which is
+inaccessible via ptrace so we cannot restore it. This alteration breaks
+the syscall restart condition and ends the read() syscall with an
+ERESTARTSYS error. According to include/linux/errno.h, it should never
+be seen by user programs. X86 can avoid this issue as it checks the
+syscall condition using a register (orig_ax) exposed to user space.
+Arm64 handles syscall restart before calling get_signal, where it could
+be paused and inspected by ptrace/debugger.
 
-Link: https://lore.kernel.org/r/20240501022543.1626025-1-sathyanarayanan.kuppuswamy@linux.intel.com
-Link: https://members.pcisig.com/wg/PCI-SIG/document/12888
-Fixes: ac1c8e35a326 ("PCI/DPC: Add Error Disconnect Recover (EDR) support")
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-[bhelgaas: split into two patches, update commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com> # one platform
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch adjusts the riscv implementation to arm64 style, which also
+checks syscall using a kernel register (syscallno). It ensures the
+syscall restart process is not bypassed when changes to the cause
+register occur, providing more consistent behavior across various
+architectures.
+
+For a simplified reproduction program, feel free to visit:
+https://github.com/ancientmodern/riscv-ptrace-bug-demo.
+
+Signed-off-by: Haorong Lu <ancientmodern4@gmail.com>
+Link: https://lore.kernel.org/r/20230803224458.4156006-1-ancientmodern4@gmail.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Conor Dooley <conor@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pcie/edr.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ arch/riscv/kernel/signal.c |   85 ++++++++++++++++++++++++---------------------
+ 1 file changed, 46 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
-index 87734e4c3c204..5b5a502363c00 100644
---- a/drivers/pci/pcie/edr.c
-+++ b/drivers/pci/pcie/edr.c
-@@ -32,10 +32,10 @@ static int acpi_enable_dpc(struct pci_dev *pdev)
- 	int status = 0;
+--- a/arch/riscv/kernel/signal.c
++++ b/arch/riscv/kernel/signal.c
+@@ -384,30 +384,6 @@ static void handle_signal(struct ksignal
+ 	sigset_t *oldset = sigmask_to_save();
+ 	int ret;
+ 
+-	/* Are we from a system call? */
+-	if (regs->cause == EXC_SYSCALL) {
+-		/* Avoid additional syscall restarting via ret_from_exception */
+-		regs->cause = -1UL;
+-		/* If so, check system call restarting.. */
+-		switch (regs->a0) {
+-		case -ERESTART_RESTARTBLOCK:
+-		case -ERESTARTNOHAND:
+-			regs->a0 = -EINTR;
+-			break;
+-
+-		case -ERESTARTSYS:
+-			if (!(ksig->ka.sa.sa_flags & SA_RESTART)) {
+-				regs->a0 = -EINTR;
+-				break;
+-			}
+-			fallthrough;
+-		case -ERESTARTNOINTR:
+-                        regs->a0 = regs->orig_a0;
+-			regs->epc -= 0x4;
+-			break;
+-		}
+-	}
+-
+ 	rseq_signal_deliver(ksig, regs);
+ 
+ 	/* Set up the stack frame */
+@@ -421,36 +397,67 @@ static void handle_signal(struct ksignal
+ 
+ void arch_do_signal_or_restart(struct pt_regs *regs)
+ {
++	unsigned long continue_addr = 0, restart_addr = 0;
++	int retval = 0;
+ 	struct ksignal ksig;
++	bool syscall = (regs->cause == EXC_SYSCALL);
+ 
+-	if (get_signal(&ksig)) {
+-		/* Actually deliver the signal */
+-		handle_signal(&ksig, regs);
+-		return;
+-	}
++	/* If we were from a system call, check for system call restarting */
++	if (syscall) {
++		continue_addr = regs->epc;
++		restart_addr = continue_addr - 4;
++		retval = regs->a0;
+ 
+-	/* Did we come from a system call? */
+-	if (regs->cause == EXC_SYSCALL) {
+ 		/* Avoid additional syscall restarting via ret_from_exception */
+ 		regs->cause = -1UL;
+ 
+-		/* Restart the system call - no handlers present */
+-		switch (regs->a0) {
++		/*
++		 * Prepare for system call restart. We do this here so that a
++		 * debugger will see the already changed PC.
++		 */
++		switch (retval) {
+ 		case -ERESTARTNOHAND:
+ 		case -ERESTARTSYS:
+ 		case -ERESTARTNOINTR:
+-                        regs->a0 = regs->orig_a0;
+-			regs->epc -= 0x4;
+-			break;
+ 		case -ERESTART_RESTARTBLOCK:
+-                        regs->a0 = regs->orig_a0;
+-			regs->a7 = __NR_restart_syscall;
+-			regs->epc -= 0x4;
++			regs->a0 = regs->orig_a0;
++			regs->epc = restart_addr;
+ 			break;
+ 		}
+ 	}
  
  	/*
--	 * Behavior when calling unsupported _DSM functions is undefined,
--	 * so check whether EDR_PORT_DPC_ENABLE_DSM is supported.
-+	 * Per PCI Firmware r3.3, sec 4.6.12, EDR_PORT_DPC_ENABLE_DSM is
-+	 * optional. Return success if it's not implemented.
++	 * Get the signal to deliver. When running under ptrace, at this point
++	 * the debugger may change all of our registers.
++	 */
++	if (get_signal(&ksig)) {
++		/*
++		 * Depending on the signal settings, we may need to revert the
++		 * decision to restart the system call, but skip this if a
++		 * debugger has chosen to restart at a different PC.
++		 */
++		if (regs->epc == restart_addr &&
++		    (retval == -ERESTARTNOHAND ||
++		     retval == -ERESTART_RESTARTBLOCK ||
++		     (retval == -ERESTARTSYS &&
++		      !(ksig.ka.sa.sa_flags & SA_RESTART)))) {
++			regs->a0 = -EINTR;
++			regs->epc = continue_addr;
++		}
++
++		/* Actually deliver the signal */
++		handle_signal(&ksig, regs);
++		return;
++	}
++
++	/*
++	 * Handle restarting a different system call. As above, if a debugger
++	 * has chosen to restart at a different PC, ignore the restart.
++	 */
++	if (syscall && regs->epc == restart_addr && retval == -ERESTART_RESTARTBLOCK)
++		regs->a7 = __NR_restart_syscall;
++
++	/*
+ 	 * If there is no signal to deliver, we just put the saved
+ 	 * sigmask back.
  	 */
--	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
-+	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 6,
- 			    1ULL << EDR_PORT_DPC_ENABLE_DSM))
- 		return 0;
- 
-@@ -46,12 +46,7 @@ static int acpi_enable_dpc(struct pci_dev *pdev)
- 	argv4.package.count = 1;
- 	argv4.package.elements = &req;
- 
--	/*
--	 * Per Downstream Port Containment Related Enhancements ECN to PCI
--	 * Firmware Specification r3.2, sec 4.6.12, EDR_PORT_DPC_ENABLE_DSM is
--	 * optional.  Return success if it's not implemented.
--	 */
--	obj = acpi_evaluate_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
-+	obj = acpi_evaluate_dsm(adev->handle, &pci_acpi_dsm_guid, 6,
- 				EDR_PORT_DPC_ENABLE_DSM, &argv4);
- 	if (!obj)
- 		return 0;
--- 
-2.43.0
-
 
 
 
