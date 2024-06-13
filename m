@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-51030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D01A906E04
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61BC2906E8D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26AA41F21767
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14C4B1F218A2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE69145A16;
-	Thu, 13 Jun 2024 12:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4918813C805;
+	Thu, 13 Jun 2024 12:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xu5XXORf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1VHkz8p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5A044C6F;
-	Thu, 13 Jun 2024 12:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06315144D3C;
+	Thu, 13 Jun 2024 12:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280100; cv=none; b=uE15D2fwprlhhrZ4eB0hd69Y21Lgkw648+uHBuR2lYGIOrOKFR9Ww6K/+DOhui3Hk7zEoZjMWbBw5TeOFZ95iRGFNCPq1U3+/uVLJbK9Q8DJ59gS0SDih8HU5FFFd4yVUj2dn8bZJrfI8VfG0BgAYjba2XNumpxKGJ0D146TRLI=
+	t=1718280459; cv=none; b=SA0V9rxVdnRcQHGGn7NW5mxKENtggqjhCPjnWLMutjosMH0f8JFCVZZirun0aZDbrdQdsJDLqR1fH4PVCe9kymuv0VUsNZ0VJ+kMdu0+Z3ISC4XhVFogGdB1fDupEQZNl9YdpGUngKkaIJjdesSckMBKx5LNfTXyeCMnwu4WDOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280100; c=relaxed/simple;
-	bh=8WApcQ7W8NwuoKP24zxTm0NBaK137n+B5PUzAIE1kLI=;
+	s=arc-20240116; t=1718280459; c=relaxed/simple;
+	bh=ojAj5Yv4nmqlmh83q5Kw1e/tiRcZYb8iJ+MEo0cqjK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NMEfa6BnuECgWG+pxjWx0eL1HfDOvU5Itac0S/9lfbZ+ix6a6hnS4VBdig9sQZH5BM9xlKvmU5ZXZSofkMbvy0N3c0D8zYi8BzJcN+fd4Ibvt08kP7JaOCcUxy6wlkLTVrjC77t5dmfWiP6hJ1MWIOon/pUZ5qeiWPLP34OZixw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xu5XXORf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37590C2BBFC;
-	Thu, 13 Jun 2024 12:01:40 +0000 (UTC)
+	 MIME-Version; b=imd2nbg52TPFufIJhieHinp1kMSQAjUx/e6tpRw7rGu3huNqBy5W9oop4gBcr+OCSyOaU4jktGyMoFBTHvc5BnQLJWwBOigMxDwMVY4t9yR+UvculAbfkQ4IsFhgrVW9IJVmIB/UGASjbilmrpDbEhehCQuctaQdwlJaBBTciOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1VHkz8p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803B3C2BBFC;
+	Thu, 13 Jun 2024 12:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280100;
-	bh=8WApcQ7W8NwuoKP24zxTm0NBaK137n+B5PUzAIE1kLI=;
+	s=korg; t=1718280458;
+	bh=ojAj5Yv4nmqlmh83q5Kw1e/tiRcZYb8iJ+MEo0cqjK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xu5XXORfCDYQ5rNJvYyHGb+ellnFjV1z6Zf9YqhQTqQ/YD5PAMkuhHL3n0Lm8NAqj
-	 0VD3q+q64Vt/FBLHnY7wmnOnLwijoaWCBbwcBymlGqQsVtiARnnGU1Vh1opujArXGO
-	 5OxXs47B6f2chs+TW568dF61ztgXbPiILQrFLPIk=
+	b=l1VHkz8pQhc1hxi7YLtGtqPUKYHhrui30OK2ycD5/VLBFOGgWk8K8XUN3LnShKqdT
+	 WhmttFpEoDe5TGjG5ors3IhGAXhQQrTBD0QOjGscfJxfeaSS+WYkvZ4uddFE2z3HWK
+	 NbsA9V1WElZBIMbw+6Q3bqvJEC8BKkHre/JiwLd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaime Caamano <jcaamano@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 142/202] openvswitch: Set the skbuff pkt_type for proper pmtud support.
+	Santosh Shukla <Santosh.Shukla@amd.com>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 060/137] KVM: SVM: WARN on vNMI + NMI window iff NMIs are outright masked
 Date: Thu, 13 Jun 2024 13:34:00 +0200
-Message-ID: <20240613113233.240564512@linuxfoundation.org>
+Message-ID: <20240613113225.631292183@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Conole <aconole@redhat.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 30a92c9e3d6b073932762bef2ac66f4ee784c657 ]
+commit b4bd556467477420ee3a91fbcba73c579669edc6 upstream.
 
-Open vSwitch is originally intended to switch at layer 2, only dealing with
-Ethernet frames.  With the introduction of l3 tunnels support, it crossed
-into the realm of needing to care a bit about some routing details when
-making forwarding decisions.  If an oversized packet would need to be
-fragmented during this forwarding decision, there is a chance for pmtu
-to get involved and generate a routing exception.  This is gated by the
-skbuff->pkt_type field.
+When requesting an NMI window, WARN on vNMI support being enabled if and
+only if NMIs are actually masked, i.e. if the vCPU is already handling an
+NMI.  KVM's ABI for NMIs that arrive simultanesouly (from KVM's point of
+view) is to inject one NMI and pend the other.  When using vNMI, KVM pends
+the second NMI simply by setting V_NMI_PENDING, and lets the CPU do the
+rest (hardware automatically sets V_NMI_BLOCKING when an NMI is injected).
 
-When a flow is already loaded into the openvswitch module this field is
-set up and transitioned properly as a packet moves from one port to
-another.  In the case that a packet execute is invoked after a flow is
-newly installed this field is not properly initialized.  This causes the
-pmtud mechanism to omit sending the required exception messages across
-the tunnel boundary and a second attempt needs to be made to make sure
-that the routing exception is properly setup.  To fix this, we set the
-outgoing packet's pkt_type to PACKET_OUTGOING, since it can only get
-to the openvswitch module via a port device or packet command.
+However, if KVM can't immediately inject an NMI, e.g. because the vCPU is
+in an STI shadow or is running with GIF=0, then KVM will request an NMI
+window and trigger the WARN (but still function correctly).
 
-Even for bridge ports as users, the pkt_type needs to be reset when
-doing the transmit as the packet is truly outgoing and routing needs
-to get involved post packet transformations, in the case of
-VXLAN/GENEVE/udp-tunnel packets.  In general, the pkt_type on output
-gets ignored, since we go straight to the driver, but in the case of
-tunnel ports they go through IP routing layer.
+Whether or not the GIF=0 case makes sense is debatable, as the intent of
+KVM's behavior is to provide functionality that is as close to real
+hardware as possible.  E.g. if two NMIs are sent in quick succession, the
+probability of both NMIs arriving in an STI shadow is infinitesimally low
+on real hardware, but significantly larger in a virtual environment, e.g.
+if the vCPU is preempted in the STI shadow.  For GIF=0, the argument isn't
+as clear cut, because the window where two NMIs can collide is much larger
+in bare metal (though still small).
 
-This issue is periodically encountered in complex setups, such as large
-openshift deployments, where multiple sets of tunnel traversal occurs.
-A way to recreate this is with the ovn-heater project that can setup
-a networking environment which mimics such large deployments.  We need
-larger environments for this because we need to ensure that flow
-misses occur.  In these environment, without this patch, we can see:
+That said, KVM should not have divergent behavior for the GIF=0 case based
+on whether or not vNMI support is enabled.  And KVM has allowed
+simultaneous NMIs with GIF=0 for over a decade, since commit 7460fb4a3400
+("KVM: Fix simultaneous NMIs").  I.e. KVM's GIF=0 handling shouldn't be
+modified without a *really* good reason to do so, and if KVM's behavior
+were to be modified, it should be done irrespective of vNMI support.
 
-  ./ovn_cluster.sh start
-  podman exec ovn-chassis-1 ip r a 170.168.0.5/32 dev eth1 mtu 1200
-  podman exec ovn-chassis-1 ip netns exec sw01p1 ip r flush cache
-  podman exec ovn-chassis-1 ip netns exec sw01p1 \
-         ping 21.0.0.3 -M do -s 1300 -c2
-  PING 21.0.0.3 (21.0.0.3) 1300(1328) bytes of data.
-  From 21.0.0.3 icmp_seq=2 Frag needed and DF set (mtu = 1142)
-
-  --- 21.0.0.3 ping statistics ---
-  ...
-
-Using tcpdump, we can also see the expected ICMP FRAG_NEEDED message is not
-sent into the server.
-
-With this patch, setting the pkt_type, we see the following:
-
-  podman exec ovn-chassis-1 ip netns exec sw01p1 \
-         ping 21.0.0.3 -M do -s 1300 -c2
-  PING 21.0.0.3 (21.0.0.3) 1300(1328) bytes of data.
-  From 21.0.0.3 icmp_seq=1 Frag needed and DF set (mtu = 1222)
-  ping: local error: message too long, mtu=1222
-
-  --- 21.0.0.3 ping statistics ---
-  ...
-
-In this case, the first ping request receives the FRAG_NEEDED message and
-a local routing exception is created.
-
-Tested-by: Jaime Caamano <jcaamano@redhat.com>
-Reported-at: https://issues.redhat.com/browse/FDP-164
-Fixes: 58264848a5a7 ("openvswitch: Add vxlan tunneling support.")
-Signed-off-by: Aaron Conole <aconole@redhat.com>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Link: https://lore.kernel.org/r/20240516200941.16152-1-aconole@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fa4c027a7956 ("KVM: x86: Add support for SVM's Virtual NMI")
+Cc: stable@vger.kernel.org
+Cc: Santosh Shukla <Santosh.Shukla@amd.com>
+Cc: Maxim Levitsky <mlevitsk@redhat.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20240522021435.1684366-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/actions.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/kvm/svm/svm.c |   27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index 9e8a5c4862d04..7cef078304c3d 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -931,6 +931,12 @@ static void do_output(struct datapath *dp, struct sk_buff *skb, int out_port,
- 				pskb_trim(skb, ovs_mac_header_len(key));
- 		}
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3856,16 +3856,27 @@ static void svm_enable_nmi_window(struct
+ 	struct vcpu_svm *svm = to_svm(vcpu);
  
-+		/* Need to set the pkt_type to involve the routing layer.  The
-+		 * packet movement through the OVS datapath doesn't generally
-+		 * use routing, but this is needed for tunnel cases.
-+		 */
-+		skb->pkt_type = PACKET_OUTGOING;
-+
- 		if (likely(!mru ||
- 		           (skb->len <= mru + vport->dev->hard_header_len))) {
- 			ovs_vport_send(vport, skb, ovs_key_mac_proto(key));
--- 
-2.43.0
-
+ 	/*
+-	 * KVM should never request an NMI window when vNMI is enabled, as KVM
+-	 * allows at most one to-be-injected NMI and one pending NMI, i.e. if
+-	 * two NMIs arrive simultaneously, KVM will inject one and set
+-	 * V_NMI_PENDING for the other.  WARN, but continue with the standard
+-	 * single-step approach to try and salvage the pending NMI.
++	 * If NMIs are outright masked, i.e. the vCPU is already handling an
++	 * NMI, and KVM has not yet intercepted an IRET, then there is nothing
++	 * more to do at this time as KVM has already enabled IRET intercepts.
++	 * If KVM has already intercepted IRET, then single-step over the IRET,
++	 * as NMIs aren't architecturally unmasked until the IRET completes.
++	 *
++	 * If vNMI is enabled, KVM should never request an NMI window if NMIs
++	 * are masked, as KVM allows at most one to-be-injected NMI and one
++	 * pending NMI.  If two NMIs arrive simultaneously, KVM will inject one
++	 * NMI and set V_NMI_PENDING for the other, but if and only if NMIs are
++	 * unmasked.  KVM _will_ request an NMI window in some situations, e.g.
++	 * if the vCPU is in an STI shadow or if GIF=0, KVM can't immediately
++	 * inject the NMI.  In those situations, KVM needs to single-step over
++	 * the STI shadow or intercept STGI.
+ 	 */
+-	WARN_ON_ONCE(is_vnmi_enabled(svm));
++	if (svm_get_nmi_mask(vcpu)) {
++		WARN_ON_ONCE(is_vnmi_enabled(svm));
+ 
+-	if (svm_get_nmi_mask(vcpu) && !svm->awaiting_iret_completion)
+-		return; /* IRET will cause a vm exit */
++		if (!svm->awaiting_iret_completion)
++			return; /* IRET will cause a vm exit */
++	}
+ 
+ 	/*
+ 	 * SEV-ES guests are responsible for signaling when a vCPU is ready to
 
 
 
