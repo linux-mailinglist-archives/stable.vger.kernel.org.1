@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-51236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CECA8906EF1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64F4B90708B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A0D71F22198
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0394AB20F88
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E8E1448E5;
-	Thu, 13 Jun 2024 12:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C121448C1;
+	Thu, 13 Jun 2024 12:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvvwhD71"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ye5/u8iG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DC944C6F;
-	Thu, 13 Jun 2024 12:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BC6143878;
+	Thu, 13 Jun 2024 12:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280706; cv=none; b=Bmuf0JQkJhBLjcVlHjNBUJgLCmZuBadUMOEGu7bcu5NdzkXhbrO0+t4v0h/sDdhhIE0fY6FlQ6ibgYxt84sC4CFC+MMsfTyLFM95xZj5+BLsoJNt0DQAYjd4NTcdIpi0FpM0DAjBawc5krOJTrq6/8FJYyvg8BkBiG/S9QtJjgk=
+	t=1718281498; cv=none; b=u15ktLcbWoiCtoJ8ExeFlEKcxeZ/myqiD1hH8jtVBILRszoSUhyXRANQLMiYs/nLWtSmSY9GaGd498OeJCW+XAY/4AuBkL8gUZeHUsC7q/+3IWayAXzGAnWc3M4y/PyAdP8sH8y7zmMAbIx5gOaXjcuBGP+PcpMpFZVpJRGW9uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280706; c=relaxed/simple;
-	bh=Lel2nnbRqt/xP1Ikh/CoiFYzNHyTn+6EPvP7asrG9P0=;
+	s=arc-20240116; t=1718281498; c=relaxed/simple;
+	bh=5FZ1wdKSzBEcwa4120FtmfMzrS9t5YboVwFVLLjg59A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qby9Uu8I+/u/0JZergspptQnlShSpl5ErTkCo6faV/DdyXIuOMj5uSBNX0GeR+PFKxOvGy80sjj/zyFM80G4+qMsRRyunNRBAv0Mlhovpnb/s7Jj2iU5yHzoo1/Mc1+hfdjSZa33tggpaa0hsy8ho0vxRXSE4x4ly2yT2tiY3Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvvwhD71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925A3C2BBFC;
-	Thu, 13 Jun 2024 12:11:45 +0000 (UTC)
+	 MIME-Version; b=c0CnraLp9No16sHTBXyVW+DPciYd2icNTfhGooUWCqpUD+jtoNwfLRWWYuVPzLlIwigFUDQXykAjgKdbftnjdPfwWuekMr5hBnL+EdwNhr1o/JjCRJDuRgixtJwIeJzg1nPgw3+EaEcwXD5/N3SaCG+soeHcRwsP5JfvFWZnu/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ye5/u8iG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D84ECC2BBFC;
+	Thu, 13 Jun 2024 12:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280706;
-	bh=Lel2nnbRqt/xP1Ikh/CoiFYzNHyTn+6EPvP7asrG9P0=;
+	s=korg; t=1718281498;
+	bh=5FZ1wdKSzBEcwa4120FtmfMzrS9t5YboVwFVLLjg59A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vvvwhD7122YTNEXbmvpBwUmpDmNgP4BHzdb1A5BTweCk5dauPMv3ypKeD6uH646bk
-	 dI5D2CgeQMxKXux3vTVRuw8XQdjWL/FkPCgXe83X1PPICtfRmkbkc9aZd7O33WPS63
-	 f4jLAp9wIJzNlJsCVJQ1JQ5ZmXN26i5pDKrufzN0=
+	b=Ye5/u8iGetQTZPGDG1SM1SKQyc2r0CKHjiRz1EUJxC29C2sO+CvfcfJRFbzLVLa+w
+	 +hMOv9nD4+xir6Q/ZgdpIXv0DbewSTL6IswPFotZJJ2gicGta48SYm80nJNaPfFOkQ
+	 7Xp6F8qz7M8QHree/IOBSYqg0H1ZZVuY4VcnLnOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH 6.6 114/137] parisc: Define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
+	Zheyu Ma <zheyuma97@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 5.10 276/317] media: lgdt3306a: Add a check against null-pointer-def
 Date: Thu, 13 Jun 2024 13:34:54 +0200
-Message-ID: <20240613113227.719608686@linuxfoundation.org>
+Message-ID: <20240613113258.229010631@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Zheyu Ma <zheyuma97@gmail.com>
 
-commit d4a599910193b85f76c100e30d8551c8794f8c2a upstream.
+commit c1115ddbda9c930fba0fdd062e7a8873ebaf898d upstream.
 
-Define the HAVE_ARCH_HUGETLB_UNMAPPED_AREA macro like other platforms do in
-their page.h files to avoid this compile warning:
-arch/parisc/mm/hugetlbpage.c:25:1: warning: no previous prototype for 'hugetlb_get_unmapped_area' [-Wmissing-prototypes]
+The driver should check whether the client provides the platform_data.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org  # 6.0+
-Reported-by: John David Anglin <dave.anglin@bell.net>
-Tested-by: John David Anglin <dave.anglin@bell.net>
+The following log reveals it:
+
+[   29.610324] BUG: KASAN: null-ptr-deref in kmemdup+0x30/0x40
+[   29.610730] Read of size 40 at addr 0000000000000000 by task bash/414
+[   29.612820] Call Trace:
+[   29.613030]  <TASK>
+[   29.613201]  dump_stack_lvl+0x56/0x6f
+[   29.613496]  ? kmemdup+0x30/0x40
+[   29.613754]  print_report.cold+0x494/0x6b7
+[   29.614082]  ? kmemdup+0x30/0x40
+[   29.614340]  kasan_report+0x8a/0x190
+[   29.614628]  ? kmemdup+0x30/0x40
+[   29.614888]  kasan_check_range+0x14d/0x1d0
+[   29.615213]  memcpy+0x20/0x60
+[   29.615454]  kmemdup+0x30/0x40
+[   29.615700]  lgdt3306a_probe+0x52/0x310
+[   29.616339]  i2c_device_probe+0x951/0xa90
+
+Link: https://lore.kernel.org/linux-media/20220405095018.3993578-1-zheyuma97@gmail.com
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/include/asm/page.h |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/dvb-frontends/lgdt3306a.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/parisc/include/asm/page.h
-+++ b/arch/parisc/include/asm/page.h
-@@ -16,6 +16,7 @@
- #define PAGE_SIZE	(_AC(1,UL) << PAGE_SHIFT)
- #define PAGE_MASK	(~(PAGE_SIZE-1))
+--- a/drivers/media/dvb-frontends/lgdt3306a.c
++++ b/drivers/media/dvb-frontends/lgdt3306a.c
+@@ -2213,6 +2213,11 @@ static int lgdt3306a_probe(struct i2c_cl
+ 	struct dvb_frontend *fe;
+ 	int ret;
  
-+#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
- 
- #ifndef __ASSEMBLY__
- 
++	if (!client->dev.platform_data) {
++		dev_err(&client->dev, "platform data is mandatory\n");
++		return -EINVAL;
++	}
++
+ 	config = kmemdup(client->dev.platform_data,
+ 			 sizeof(struct lgdt3306a_config), GFP_KERNEL);
+ 	if (config == NULL) {
 
 
 
