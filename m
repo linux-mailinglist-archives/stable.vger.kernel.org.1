@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C18906E3C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 260B4906EC1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A35C9B276B5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BDFE1F21BA5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBC8148FF7;
-	Thu, 13 Jun 2024 12:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76A2142649;
+	Thu, 13 Jun 2024 12:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2ODDP0P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LksmmHXh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F7A148FEB;
-	Thu, 13 Jun 2024 12:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E4E6EB56;
+	Thu, 13 Jun 2024 12:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280239; cv=none; b=t7DxhvWMjZ3krad65XGBsYJiVmpb0RnrJafLEJLHI6xNTcmyT8w/r2lKBLmWxHH1iwkYxYCEqf9MvDtybZ7zn272vk0c7/aRZZ1XgAQ3neVGEgSSZOVwDUraOXsw7kUBPlC3whBDSk+LjHfwEmr25w+ozFBUVMLnPkj+96sQ9/4=
+	t=1718280594; cv=none; b=uvc18UxqcFeWF9LrKLw8Yv92HdmIYcp+zwjj2tOom6TPgukVP+ClrBnn/kG/XWdzD6H2tM1+PkaNnkSWDm+KP+yW9jk1qq84qNrcDj7dbaegzLm7vBWlfFLLsWMI6zM3ctPJd0CR+2Y/aNGBlRIF/aUPi1cgu/Ee3xPXEenSfPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280239; c=relaxed/simple;
-	bh=z0sRN5WE/PgwUbOhdgtC3zBo44SCOK72QCWPRMVMw8U=;
+	s=arc-20240116; t=1718280594; c=relaxed/simple;
+	bh=IjpFLinK6FLXnvqEKRt8G5CtVBCLQcp3U22Al2yK0qU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qw6SePR16ntFECetPLBZGdd8j3o3KPSL/BuFcV1PaVIXNm3tOOfYW/6VkpFkheJnuv4xF3iX8l8N8zxaHUfLZTj7WUE3ThiZOvTwLjdig2DWz8nGfkBK+zMCZixPX7W0+9VDYQfuAIMmHlWvPnnX3CdRoVbykPHz9jSeaOe3mqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2ODDP0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598C5C2BBFC;
-	Thu, 13 Jun 2024 12:03:59 +0000 (UTC)
+	 MIME-Version; b=OByNDwnN+TIVa6CmLV0pjFW5YNbIMUBS1hkOAyFp+nDp9UzwDvaUcqgd0cwze80IHQ/LWHTqz1CZAob9IzK5/02H4Ivb2AREpbrfSzLOEnxjaK9utZ5yncyrguIBSTW+yEMcZc4qHTOk6kxy0uePh5kwIN8LTsLTxt5xPworQiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LksmmHXh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36A7C2BBFC;
+	Thu, 13 Jun 2024 12:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280239;
-	bh=z0sRN5WE/PgwUbOhdgtC3zBo44SCOK72QCWPRMVMw8U=;
+	s=korg; t=1718280594;
+	bh=IjpFLinK6FLXnvqEKRt8G5CtVBCLQcp3U22Al2yK0qU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2ODDP0P2E3J/x84SbcLZBmi0zv6Ulq9zi14B2fOvrd+/PtIXGMgV+uegCKPd+yYX
-	 RIBGlBvrlR7W4ELGF22M9M3GSFMy1+9RpE2FCP5QpZpvpZvcC6kYllZsA7jB7g2I4O
-	 Vp95xthV/A5+TWlNO/i1oTr50M13hW20Pyy/K2Q0=
+	b=LksmmHXhqZnY75lCKSJ9AhjlgFHkbUh2VkT2+RC9nmqoJA8nlC4XyCcjoJPrbYvKo
+	 2LHYPg8dQizHLynO0k47VZIs0QryghjwSMZ7/NcxWd6fbwDhhfg6rUGrMU0Q0+mmcx
+	 DkSlTpKin6urGnC695+waU2OSVWgEQsM3EhFaTP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+b94a6818504ea90d7661@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 158/202] netfilter: tproxy: bail out if IP has been disabled on the device
+	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 6.6 076/137] i2c: acpi: Unbind mux adapters before delete
 Date: Thu, 13 Jun 2024 13:34:16 +0200
-Message-ID: <20240613113233.845157572@linuxfoundation.org>
+Message-ID: <20240613113226.243183703@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
 
-[ Upstream commit 21a673bddc8fd4873c370caf9ae70ffc6d47e8d3 ]
+commit 3f858bbf04dbac934ac279aaee05d49eb9910051 upstream.
 
-syzbot reports:
-general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
-[..]
-RIP: 0010:nf_tproxy_laddr4+0xb7/0x340 net/ipv4/netfilter/nf_tproxy_ipv4.c:62
+There is an issue with ACPI overlay table removal specifically related
+to I2C multiplexers.
+
+Consider an ACPI SSDT Overlay that defines a PCA9548 I2C mux on an
+existing I2C bus. When this table is loaded we see the creation of a
+device for the overall PCA9548 chip and 8 further devices - one
+i2c_adapter each for the mux channels. These are all bound to their
+ACPI equivalents via an eventual invocation of acpi_bind_one().
+
+When we unload the SSDT overlay we run into the problem. The ACPI
+devices are deleted as normal via acpi_device_del_work_fn() and the
+acpi_device_del_list.
+
+However, the following warning and stack trace is output as the
+deletion does not go smoothly:
+------------[ cut here ]------------
+kernfs: can not remove 'physical_node', no directory
+WARNING: CPU: 1 PID: 11 at fs/kernfs/dir.c:1674 kernfs_remove_by_name_ns+0xb9/0xc0
+Modules linked in:
+CPU: 1 PID: 11 Comm: kworker/u128:0 Not tainted 6.8.0-rc6+ #1
+Hardware name: congatec AG conga-B7E3/conga-B7E3, BIOS 5.13 05/16/2023
+Workqueue: kacpi_hotplug acpi_device_del_work_fn
+RIP: 0010:kernfs_remove_by_name_ns+0xb9/0xc0
+Code: e4 00 48 89 ef e8 07 71 db ff 5b b8 fe ff ff ff 5d 41 5c 41 5d e9 a7 55 e4 00 0f 0b eb a6 48 c7 c7 f0 38 0d 9d e8 97 0a d5 ff <0f> 0b eb dc 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffff9f864008fb28 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: ffff8ef90a8d4940 RCX: 0000000000000000
+RDX: ffff8f000e267d10 RSI: ffff8f000e25c780 RDI: ffff8f000e25c780
+RBP: ffff8ef9186f9870 R08: 0000000000013ffb R09: 00000000ffffbfff
+R10: 00000000ffffbfff R11: ffff8f000e0a0000 R12: ffff9f864008fb50
+R13: ffff8ef90c93dd60 R14: ffff8ef9010d0958 R15: ffff8ef9186f98c8
+FS:  0000000000000000(0000) GS:ffff8f000e240000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f48f5253a08 CR3: 00000003cb82e000 CR4: 00000000003506f0
 Call Trace:
- nft_tproxy_eval_v4 net/netfilter/nft_tproxy.c:56 [inline]
- nft_tproxy_eval+0xa9a/0x1a00 net/netfilter/nft_tproxy.c:168
+ <TASK>
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? __warn+0x7c/0x130
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? report_bug+0x171/0x1a0
+ ? handle_bug+0x3c/0x70
+ ? exc_invalid_op+0x17/0x70
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ acpi_unbind_one+0x108/0x180
+ device_del+0x18b/0x490
+ ? srso_return_thunk+0x5/0x5f
+ ? srso_return_thunk+0x5/0x5f
+ device_unregister+0xd/0x30
+ i2c_del_adapter.part.0+0x1bf/0x250
+ i2c_mux_del_adapters+0xa1/0xe0
+ i2c_device_remove+0x1e/0x80
+ device_release_driver_internal+0x19a/0x200
+ bus_remove_device+0xbf/0x100
+ device_del+0x157/0x490
+ ? __pfx_device_match_fwnode+0x10/0x10
+ ? srso_return_thunk+0x5/0x5f
+ device_unregister+0xd/0x30
+ i2c_acpi_notify+0x10f/0x140
+ notifier_call_chain+0x58/0xd0
+ blocking_notifier_call_chain+0x3a/0x60
+ acpi_device_del_work_fn+0x85/0x1d0
+ process_one_work+0x134/0x2f0
+ worker_thread+0x2f0/0x410
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xe3/0x110
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2f/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
+---[ end trace 0000000000000000 ]---
+...
+repeated 7 more times, 1 for each channel of the mux
+...
 
-__in_dev_get_rcu() can return NULL, so check for this.
+The issue is that the binding of the ACPI devices to their peer I2C
+adapters is not correctly cleaned up. Digging deeper into the issue we
+see that the deletion order is such that the ACPI devices matching the
+mux channel i2c adapters are deleted first during the SSDT overlay
+removal. For each of the channels we see a call to i2c_acpi_notify()
+with ACPI_RECONFIG_DEVICE_REMOVE but, because these devices are not
+actually i2c_clients, nothing is done for them.
 
-Reported-and-tested-by: syzbot+b94a6818504ea90d7661@syzkaller.appspotmail.com
-Fixes: cc6eb4338569 ("tproxy: use the interface primary IP address as a default value for --on-ip")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Later on, after each of the mux channels has been dealt with, we come
+to delete the i2c_client representing the PCA9548 device. This is the
+call stack we see above, whereby the kernel cleans up the i2c_client
+including destruction of the mux and its channel adapters. At this
+point we do attempt to unbind from the ACPI peers but those peers no
+longer exist and so we hit the kernfs errors.
+
+The fix is to augment i2c_acpi_notify() to handle i2c_adapters. But,
+given that the life cycle of the adapters is linked to the i2c_client,
+instead of deleting the i2c_adapters during the i2c_acpi_notify(), we
+just trigger unbinding of the ACPI device from the adapter device, and
+allow the clean up of the adapter to continue in the way it always has.
+
+Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 525e6fabeae2 ("i2c / ACPI: add support for ACPI reconfigure notifications")
+Cc: <stable@vger.kernel.org> # v4.8+
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/netfilter/nf_tproxy_ipv4.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i2c/i2c-core-acpi.c |   19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/netfilter/nf_tproxy_ipv4.c b/net/ipv4/netfilter/nf_tproxy_ipv4.c
-index 61cb2341f50fe..7c1a0cd9f4359 100644
---- a/net/ipv4/netfilter/nf_tproxy_ipv4.c
-+++ b/net/ipv4/netfilter/nf_tproxy_ipv4.c
-@@ -58,6 +58,8 @@ __be32 nf_tproxy_laddr4(struct sk_buff *skb, __be32 user_laddr, __be32 daddr)
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -445,6 +445,11 @@ static struct i2c_client *i2c_acpi_find_
+ 	return i2c_find_device_by_fwnode(acpi_fwnode_handle(adev));
+ }
  
- 	laddr = 0;
- 	indev = __in_dev_get_rcu(skb->dev);
-+	if (!indev)
-+		return daddr;
++static struct i2c_adapter *i2c_acpi_find_adapter_by_adev(struct acpi_device *adev)
++{
++	return i2c_find_adapter_by_fwnode(acpi_fwnode_handle(adev));
++}
++
+ static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
+ 			   void *arg)
+ {
+@@ -471,11 +476,17 @@ static int i2c_acpi_notify(struct notifi
+ 			break;
  
- 	in_dev_for_each_ifa_rcu(ifa, indev) {
- 		if (ifa->ifa_flags & IFA_F_SECONDARY)
--- 
-2.43.0
-
+ 		client = i2c_acpi_find_client_by_adev(adev);
+-		if (!client)
+-			break;
++		if (client) {
++			i2c_unregister_device(client);
++			put_device(&client->dev);
++		}
++
++		adapter = i2c_acpi_find_adapter_by_adev(adev);
++		if (adapter) {
++			acpi_unbind_one(&adapter->dev);
++			put_device(&adapter->dev);
++		}
+ 
+-		i2c_unregister_device(client);
+-		put_device(&client->dev);
+ 		break;
+ 	}
+ 
 
 
 
