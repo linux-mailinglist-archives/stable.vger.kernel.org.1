@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE149071BD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85802907034
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD8F5B26744
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92AADB22B26
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB2B1428EF;
-	Thu, 13 Jun 2024 12:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFEC82C76;
+	Thu, 13 Jun 2024 12:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNxcS9tG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLIh1ZMw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBCD13E3F9;
-	Thu, 13 Jun 2024 12:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0D156458;
+	Thu, 13 Jun 2024 12:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282380; cv=none; b=qYPShL7uhTUT5p0Q5Fkmzi4g9QqfzDt6V4PWWISzGtmNP5AykfhzsLMp1SubN6Q+eQD3FZiKKZLFwuLXtDbLRp6sZwzIqPeNqiFKsfTuIFNb2enNTg5x61qxGK5L+bN01myiaFSOFbavPIWlcIWtalvMlsbLxqpZM96a7WRqHsc=
+	t=1718281348; cv=none; b=EbGeeuXktEWQOy5tmLxf7speivyfuL0lPSlNNhgfP3oWVPNJ/TA2okyag3L3Z/ZkGix8dU8Qq/qgSkmVnVEps31hYSlZ1oRjkEvf6ImXCSJLYq9YeMKKrAQq7l+wNPuOHNxUz3aDavw6uitlOVfi8MY14RWcc26VjG/lN5/ydcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282380; c=relaxed/simple;
-	bh=dHhyJWSlMYpv/Rj3mLB65nyV6l2BwnFN0ZFItneX6NE=;
+	s=arc-20240116; t=1718281348; c=relaxed/simple;
+	bh=KtkuAShG93W1ZF2yDQCi+FZhH7ID+GyzFiTrcXapoHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lEy9tmkioMCHCFiOSJElYWepmHnxE/1Msp05LmD/5qLvxvWEb/SP8e/1/jgHztRUgh1kapwOqO/LH1s3UrWqP5Mg+KN/qtBIkpupi1xn5l+iZwADdpDm5yjFm+AM2cV3ihWSsjaS50/nvceAIisPyp43nWc33crcfwCv/COtlg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNxcS9tG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5484BC2BBFC;
-	Thu, 13 Jun 2024 12:39:40 +0000 (UTC)
+	 MIME-Version; b=jy8z/k7ym8PFdDO5A9BFUL2HyKtDs32POxW9G7tnxNVoVYNtV4l9RgZz/ZeR249lTpf4VZrcdaF0X9pIc3nlanWPiS43n/WeiozYQXmexKA7Nw4sUFEmBxES5964a7hY27eyP6S3zgRmx9ZOVMQzsB3gpYkai2L3+IqHN/HLS4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLIh1ZMw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C47C2BBFC;
+	Thu, 13 Jun 2024 12:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282380;
-	bh=dHhyJWSlMYpv/Rj3mLB65nyV6l2BwnFN0ZFItneX6NE=;
+	s=korg; t=1718281348;
+	bh=KtkuAShG93W1ZF2yDQCi+FZhH7ID+GyzFiTrcXapoHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JNxcS9tGPhaa/h5PRLxLidbW58vYLexVHdpk1wt29Y3tUUwtRbN7D3Us3QptXa/7j
-	 v6tCWhWUHu56nyW1nsv91ypDC3EKfwT/60xuyK15qOm/4DPxJntFYLqY+D/g0LUmEN
-	 ya4L/4qBWWfGGCTmxWImt4IO/xW/uDCGiOyEwfQs=
+	b=XLIh1ZMwJELGBMNCSaZ1NBBt0vmMjNP+x+BTbqE1UQUTh3PV19peD4+U3n5Jy5vxq
+	 Yd0Cim4AzyiD188ao1/R2cmwDcY0zUDvGrMG6plzLFjqn8G+xUdL8YZ8WiNDb30PAV
+	 zAgAE7kRSWCNeSd7f4Jiw9sgpAHrP4vodtwAfSOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Richard Weinberger <richard@nod.at>,
+	Judith Mendez <jm@ti.com>,
+	Andrew Davis <afd@ti.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 258/402] um: Fix return value in ubd_init()
+Subject: [PATCH 5.10 197/317] mmc: sdhci_am654: Write ITAPDLY for DDR52 timing
 Date: Thu, 13 Jun 2024 13:33:35 +0200
-Message-ID: <20240613113312.210622655@linuxfoundation.org>
+Message-ID: <20240613113255.179309279@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit 31a5990ed253a66712d7ddc29c92d297a991fdf2 ]
+[ Upstream commit d465234493bb6ad1b9c10a0c9ef9881b8d85081a ]
 
-When kmalloc_array() fails to allocate memory, the ubd_init()
-should return -ENOMEM instead of -1. So, fix it.
+For DDR52 timing, DLL is enabled but tuning is not carried
+out, therefore the ITAPDLY value in PHY CTRL 4 register is
+not correct. Fix this by writing ITAPDLY after enabling DLL.
 
-Fixes: f88f0bdfc32f ("um: UBD Improvements")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Fixes: a161c45f2979 ("mmc: sdhci_am654: Enable DLL only for some speed modes")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Andrew Davis <afd@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240320223837.959900-3-jm@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/ubd_kern.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci_am654.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/um/drivers/ubd_kern.c b/arch/um/drivers/ubd_kern.c
-index fefd343412c79..b3a4cc5a2091f 100644
---- a/arch/um/drivers/ubd_kern.c
-+++ b/arch/um/drivers/ubd_kern.c
-@@ -1097,7 +1097,7 @@ static int __init ubd_init(void)
- 
- 	if (irq_req_buffer == NULL) {
- 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
--		return -1;
-+		return -ENOMEM;
- 	}
- 	io_req_buffer = kmalloc_array(UBD_REQ_BUFFER_SIZE,
- 				      sizeof(struct io_thread_req *),
-@@ -1108,7 +1108,7 @@ static int __init ubd_init(void)
- 
- 	if (io_req_buffer == NULL) {
- 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
--		return -1;
-+		return -ENOMEM;
- 	}
- 	platform_driver_register(&ubd_driver);
- 	mutex_lock(&ubd_lock);
+diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+index 2e302c2b0ac12..13bff543f7c06 100644
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -304,6 +304,7 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
+ 	if (timing > MMC_TIMING_UHS_SDR25 && clock >= CLOCK_TOO_SLOW_HZ) {
+ 		sdhci_am654_setup_dll(host, clock);
+ 		sdhci_am654->dll_enable = true;
++		sdhci_am654_write_itapdly(sdhci_am654, sdhci_am654->itap_del_sel[timing]);
+ 	} else {
+ 		sdhci_am654_setup_delay_chain(sdhci_am654, timing);
+ 		sdhci_am654->dll_enable = false;
 -- 
 2.43.0
 
