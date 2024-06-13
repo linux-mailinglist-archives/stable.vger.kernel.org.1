@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14232907071
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE5D9072AD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B92D1C2383B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:28:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73D2C28228C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75184144306;
-	Thu, 13 Jun 2024 12:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16191442EF;
+	Thu, 13 Jun 2024 12:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ha6yUeZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJuzqypR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333153209;
-	Thu, 13 Jun 2024 12:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD568143C79;
+	Thu, 13 Jun 2024 12:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281639; cv=none; b=Dt8Hg2IqjFUnK0lY2yuY/iz/HzMXs8QBMGoi9YyE51v3MAdKXawYYhTqdg46yCyI8lMh5cYn125J/PSr1tSD0t8V71rLds/ehk1XGBUsE7cK8R+ZELX2SKT+yXjjfyVkHNUyj2jaqQmY4aARdWVbcojNTOBSJ/bO48cAtf6X+60=
+	t=1718282969; cv=none; b=ahM5ztHhFeaqotq4RF749xQ6uXXbnL0c5qEvVglRiLTtZOb0cBhJul7FItjsEqf6xvvr90qxM3dE8Yeewfqroqpm/+MAc4Zdo4iKHYSuBR2Ch/AySkS1jmXsLdfctAFYm4KVORHKRoZMBVG5Dy2LfF80tIb2MtaZDjivBNYcvMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281639; c=relaxed/simple;
-	bh=e9QzWVF5CEBugPqPFD408ZIZr61lgu7LhBz+B7wEJek=;
+	s=arc-20240116; t=1718282969; c=relaxed/simple;
+	bh=NVRRZ5G/ZjUPCFef93jHGA8+hCZ2noKBawSsJsnhldM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cNK0AYPyQ5TW7pLDwv6JYcSJ8oB796Xh17XFp730vterjkx4oTd5nQII5opARcldlntCuxl/IDhFoCIp05XNh6SWRpN3OzGgYREfKc8PWvyNKvMxntEU0lTzEWGC3UeuN6dvpdNGpebL5thnXaTuWwtQF0a1LCpq7cP7UJAt/eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ha6yUeZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA18C2BBFC;
-	Thu, 13 Jun 2024 12:27:18 +0000 (UTC)
+	 MIME-Version; b=Ofm/7HOjU25Yszw6pzUxSA3tlK/yWD5l6MEysysmbDbgVf6QGr5O/egDYyMVp4h1RZrLtcmHf6QBO7vpWMTFCxUDjh3zzj5rzk8FrEA6SIHPNqrQ3niPL0AFgl4O3xXjwQzKbUmiS33qYqXlIvnEFZLiz8YxG6a4jJKi/2p8epQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJuzqypR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354E2C2BBFC;
+	Thu, 13 Jun 2024 12:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281639;
-	bh=e9QzWVF5CEBugPqPFD408ZIZr61lgu7LhBz+B7wEJek=;
+	s=korg; t=1718282969;
+	bh=NVRRZ5G/ZjUPCFef93jHGA8+hCZ2noKBawSsJsnhldM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ha6yUeZWXDYbzpmI0ie31Gw2vgStr4zU8/IQ/VDjdL92t55iuoRS4yzF/VsVREMjD
-	 OqX+HwZLO5Re1TotGV8jEJ+ELxwJ/Ga/k1r+VJ4/lNHdbxN3qb2Npqi+zfDZ6cwOUg
-	 /SOaJxzTAZqkW3xw53TOV3fxAJ0tVTGiQt8HqnCA=
+	b=WJuzqypRDGhN1jxr1VSJ6XiCxTW+AdhI0vTjYm2Cq8neJlKJNytSGJVHQVXsUjHEu
+	 PHyHPtcCk40pLP+SfMVPJJox/WBdrb2M3mZv0NsasZ+CE/56Yq2GL7Cxk+nZABCFNq
+	 jXMSIHMS1KJwoH5eESuaVVRCbHXwUnXetKadCCoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>
-Subject: [PATCH 5.10 302/317] watchdog: rti_wdt: Set min_hw_heartbeat_ms to accommodate a safety margin
-Date: Thu, 13 Jun 2024 13:35:20 +0200
-Message-ID: <20240613113259.234554634@linuxfoundation.org>
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Maulik Shah <quic_mkshah@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Elliot Berman <quic_eberman@quicinc.com>
+Subject: [PATCH 6.1 23/85] soc: qcom: rpmh-rsc: Enhance check for VRM in-flight request
+Date: Thu, 13 Jun 2024 13:35:21 +0200
+Message-ID: <20240613113215.037137091@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Maulik Shah <quic_mkshah@quicinc.com>
 
-commit cae58516534e110f4a8558d48aa4435e15519121 upstream.
+commit f592cc5794747b81e53b53dd6e80219ee25f0611 upstream.
 
-On AM62x, the watchdog is pet before the valid window is open. Fix
-min_hw_heartbeat and accommodate a 2% + static offset safety margin.
-The static offset accounts for max hardware error.
+Each RPMh VRM accelerator resource has 3 or 4 contiguous 4-byte aligned
+addresses associated with it. These control voltage, enable state, mode,
+and in legacy targets, voltage headroom. The current in-flight request
+checking logic looks for exact address matches. Requests for different
+addresses of the same RPMh resource as thus not detected as in-flight.
 
-Remove the hack in the driver which shifts the open window boundary,
-since it is no longer necessary due to the fix mentioned above.
+Add new cmd-db API cmd_db_match_resource_addr() to enhance the in-flight
+request check for VRM requests by ignoring the address offset.
 
-cc: stable@vger.kernel.org
-Fixes: 5527483f8f7c ("watchdog: rti-wdt: attach to running watchdog during probe")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240417205700.3947408-1-jm@ti.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+This ensures that only one request is allowed to be in-flight for a given
+VRM resource. This is needed to avoid scenarios where request commands are
+carried out by RPMh hardware out-of-order leading to LDO regulator
+over-current protection triggering.
+
+Fixes: 658628e7ef78 ("drivers: qcom: rpmh-rsc: add RPMH controller for QCOM SoCs")
+Cc: stable@vger.kernel.org
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Tested-by: Elliot Berman <quic_eberman@quicinc.com> # sm8650-qrd
+Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
+Link: https://lore.kernel.org/r/20240215-rpmh-rsc-fixes-v4-1-9cbddfcba05b@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/rti_wdt.c |   34 +++++++++++++++-------------------
- 1 file changed, 15 insertions(+), 19 deletions(-)
+ drivers/soc/qcom/cmd-db.c   |   32 +++++++++++++++++++++++++++++++-
+ drivers/soc/qcom/rpmh-rsc.c |    3 ++-
+ include/soc/qcom/cmd-db.h   |   10 +++++++++-
+ 3 files changed, 42 insertions(+), 3 deletions(-)
 
---- a/drivers/watchdog/rti_wdt.c
-+++ b/drivers/watchdog/rti_wdt.c
-@@ -52,6 +52,8 @@
+--- a/drivers/soc/qcom/cmd-db.c
++++ b/drivers/soc/qcom/cmd-db.c
+@@ -1,6 +1,10 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright (c) 2016-2018, 2020, The Linux Foundation. All rights reserved. */
++/*
++ * Copyright (c) 2016-2018, 2020, The Linux Foundation. All rights reserved.
++ * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
++ */
  
- #define DWDST			BIT(1)
++#include <linux/bitfield.h>
+ #include <linux/debugfs.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -17,6 +21,8 @@
+ #define MAX_SLV_ID		8
+ #define SLAVE_ID_MASK		0x7
+ #define SLAVE_ID_SHIFT		16
++#define SLAVE_ID(addr)		FIELD_GET(GENMASK(19, 16), addr)
++#define VRM_ADDR(addr)		FIELD_GET(GENMASK(19, 4), addr)
  
-+#define MAX_HW_ERROR		250
+ /**
+  * struct entry_header: header for each entry in cmddb
+@@ -221,6 +227,30 @@ const void *cmd_db_read_aux_data(const c
+ EXPORT_SYMBOL(cmd_db_read_aux_data);
+ 
+ /**
++ * cmd_db_match_resource_addr() - Compare if both Resource addresses are same
++ *
++ * @addr1: Resource address to compare
++ * @addr2: Resource address to compare
++ *
++ * Return: true if two addresses refer to the same resource, false otherwise
++ */
++bool cmd_db_match_resource_addr(u32 addr1, u32 addr2)
++{
++	/*
++	 * Each RPMh VRM accelerator resource has 3 or 4 contiguous 4-byte
++	 * aligned addresses associated with it. Ignore the offset to check
++	 * for VRM requests.
++	 */
++	if (addr1 == addr2)
++		return true;
++	else if (SLAVE_ID(addr1) == CMD_DB_HW_VRM && VRM_ADDR(addr1) == VRM_ADDR(addr2))
++		return true;
 +
- static int heartbeat = DEFAULT_HEARTBEAT;
- 
++	return false;
++}
++EXPORT_SYMBOL_GPL(cmd_db_match_resource_addr);
++
++/**
+  * cmd_db_read_slave_id - Get the slave ID for a given resource address
+  *
+  * @id: Resource id to query the DB for version
+--- a/drivers/soc/qcom/rpmh-rsc.c
++++ b/drivers/soc/qcom/rpmh-rsc.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
  /*
-@@ -90,7 +92,7 @@ static int rti_wdt_start(struct watchdog
- 	 * to be 50% or less than that; we obviouly want to configure the open
- 	 * window as large as possible so we select the 50% option.
- 	 */
--	wdd->min_hw_heartbeat_ms = 500 * wdd->timeout;
-+	wdd->min_hw_heartbeat_ms = 520 * wdd->timeout + MAX_HW_ERROR;
+  * Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
++ * Copyright (c) 2023-2024, Qualcomm Innovation Center, Inc. All rights reserved.
+  */
  
- 	/* Generate NMI when wdt expires */
- 	writel_relaxed(RTIWWDRX_NMI, wdt->base + RTIWWDRXCTRL);
-@@ -124,31 +126,33 @@ static int rti_wdt_setup_hw_hb(struct wa
- 	 * be petted during the open window; not too early or not too late.
- 	 * The HW configuration options only allow for the open window size
- 	 * to be 50% or less than that.
-+	 * To avoid any glitches, we accommodate 2% + max hardware error
-+	 * safety margin.
- 	 */
- 	switch (wsize) {
- 	case RTIWWDSIZE_50P:
--		/* 50% open window => 50% min heartbeat */
--		wdd->min_hw_heartbeat_ms = 500 * heartbeat;
-+		/* 50% open window => 52% min heartbeat */
-+		wdd->min_hw_heartbeat_ms = 520 * heartbeat + MAX_HW_ERROR;
- 		break;
+ #define pr_fmt(fmt) "%s " fmt, KBUILD_MODNAME
+@@ -519,7 +520,7 @@ static int check_for_req_inflight(struct
+ 		for_each_set_bit(j, &curr_enabled, MAX_CMDS_PER_TCS) {
+ 			addr = read_tcs_cmd(drv, RSC_DRV_CMD_ADDR, i, j);
+ 			for (k = 0; k < msg->num_cmds; k++) {
+-				if (addr == msg->cmds[k].addr)
++				if (cmd_db_match_resource_addr(msg->cmds[k].addr, addr))
+ 					return -EBUSY;
+ 			}
+ 		}
+--- a/include/soc/qcom/cmd-db.h
++++ b/include/soc/qcom/cmd-db.h
+@@ -1,5 +1,8 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright (c) 2016-2018, The Linux Foundation. All rights reserved. */
++/*
++ * Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
++ * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
++ */
  
- 	case RTIWWDSIZE_25P:
--		/* 25% open window => 75% min heartbeat */
--		wdd->min_hw_heartbeat_ms = 750 * heartbeat;
-+		/* 25% open window => 77% min heartbeat */
-+		wdd->min_hw_heartbeat_ms = 770 * heartbeat + MAX_HW_ERROR;
- 		break;
+ #ifndef __QCOM_COMMAND_DB_H__
+ #define __QCOM_COMMAND_DB_H__
+@@ -21,6 +24,8 @@ u32 cmd_db_read_addr(const char *resourc
  
- 	case RTIWWDSIZE_12P5:
--		/* 12.5% open window => 87.5% min heartbeat */
--		wdd->min_hw_heartbeat_ms = 875 * heartbeat;
-+		/* 12.5% open window => 89.5% min heartbeat */
-+		wdd->min_hw_heartbeat_ms = 895 * heartbeat + MAX_HW_ERROR;
- 		break;
+ const void *cmd_db_read_aux_data(const char *resource_id, size_t *len);
  
- 	case RTIWWDSIZE_6P25:
--		/* 6.5% open window => 93.5% min heartbeat */
--		wdd->min_hw_heartbeat_ms = 935 * heartbeat;
-+		/* 6.5% open window => 95.5% min heartbeat */
-+		wdd->min_hw_heartbeat_ms = 955 * heartbeat + MAX_HW_ERROR;
- 		break;
++bool cmd_db_match_resource_addr(u32 addr1, u32 addr2);
++
+ enum cmd_db_hw_type cmd_db_read_slave_id(const char *resource_id);
  
- 	case RTIWWDSIZE_3P125:
--		/* 3.125% open window => 96.9% min heartbeat */
--		wdd->min_hw_heartbeat_ms = 969 * heartbeat;
-+		/* 3.125% open window => 98.9% min heartbeat */
-+		wdd->min_hw_heartbeat_ms = 989 * heartbeat + MAX_HW_ERROR;
- 		break;
+ int cmd_db_ready(void);
+@@ -31,6 +36,9 @@ static inline u32 cmd_db_read_addr(const
+ static inline const void *cmd_db_read_aux_data(const char *resource_id, size_t *len)
+ { return ERR_PTR(-ENODEV); }
  
- 	default:
-@@ -222,14 +226,6 @@ static int rti_wdt_probe(struct platform
- 		return -EINVAL;
- 	}
++static inline bool cmd_db_match_resource_addr(u32 addr1, u32 addr2)
++{ return false; }
++
+ static inline enum cmd_db_hw_type cmd_db_read_slave_id(const char *resource_id)
+ { return -ENODEV; }
  
--	/*
--	 * If watchdog is running at 32k clock, it is not accurate.
--	 * Adjust frequency down in this case so that we don't pet
--	 * the watchdog too often.
--	 */
--	if (wdt->freq < 32768)
--		wdt->freq = wdt->freq * 9 / 10;
--
- 	pm_runtime_enable(dev);
- 	ret = pm_runtime_get_sync(dev);
- 	if (ret < 0) {
 
 
 
