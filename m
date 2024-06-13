@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-51519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3EB907048
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B6C907250
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:46:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B95DE1F21353
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FEC71F218DD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49CE1144D0F;
-	Thu, 13 Jun 2024 12:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FAAB20ED;
+	Thu, 13 Jun 2024 12:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urIcriiL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1LAA5rb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090FB143747;
-	Thu, 13 Jun 2024 12:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2949384;
+	Thu, 13 Jun 2024 12:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281534; cv=none; b=BC3dJiSovww8ZXIX1jW1YBaoIt1iyXek6i9iMOZj24yxTZaP9ZNlU0rkSJ3wx1JkApCG5IpJNY6kA5gWL9Jb/WqrRKeYSueuj0BI1gpoMlyg6cRQ98zP+Wuv1BboNn9cMUQFbzQLQvkDe6Tt2/5+8KYxXP4xtQSxgEZ6vonW+u4=
+	t=1718282769; cv=none; b=IRN4oEzLEjo101yBUcO2Oe4+mN6IsvgVCMZOoIDI1AjWwmnUivrpMyzrcMbXWkZZmGXxNQO8HjPdw3IokYyhHpk9DgEqVz3zTmIccvMjcuq/5cvr9TQNRPpU9cxI2tvVaVuaCMj4nl9uGj/IP71bkyPTTM+C5wNj+ZU8K71cP1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281534; c=relaxed/simple;
-	bh=kPuCVOBN1lPQIcK487T6vrxKB3EUw2K8Nrl4ZlBjEmQ=;
+	s=arc-20240116; t=1718282769; c=relaxed/simple;
+	bh=r9afCRfBLtcZwbwImoN3EEYTOYlFKAL96TynG1SlpEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DrTDrMLEun6Tx6HhJxAgcUaqCrYzycbXNL2gR6f2A9q5ytin/dXGzYaSVz/mHIvP/8uZHUCBHS0p83bBk1Dr7NsmV+7z7frAF9xbmbHHgU6DEyPs3MkXCXFtDcGm1ZizX9lrTWqKk9Zdq6ET97W5x6ajZ2UY2E++pt9Cp68I+Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urIcriiL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA3EC2BBFC;
-	Thu, 13 Jun 2024 12:25:32 +0000 (UTC)
+	 MIME-Version; b=Q6/C1OhLQ90V1FRP9JSb2VLwTsTsG+Dbvc7Sek7n089YBZV/MTw8H0SLvafeJcxC+L5Cm9DnWVbhewqZOV4PdrYsXqmrg/ZhOlnYprn70dSQ2fze+46iSY4rCMr86me5azulskfqjY7hwICKntwH6gWXiRa8snFzmtoOBhfzx6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1LAA5rb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591EAC2BBFC;
+	Thu, 13 Jun 2024 12:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281533;
-	bh=kPuCVOBN1lPQIcK487T6vrxKB3EUw2K8Nrl4ZlBjEmQ=;
+	s=korg; t=1718282769;
+	bh=r9afCRfBLtcZwbwImoN3EEYTOYlFKAL96TynG1SlpEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=urIcriiLMUCRUjOQpD/Z8VhbEgOrWDg8VQIGz9ptTRbpycT9STSnACRjCClrcLJV/
-	 RLiGcGVO1ulzKjegOGLbhq9S6lNsEjT030pUIkRDroi52lDuixOJWdTTO61tWmlL2Q
-	 PCnmni97hX6IbWxrSPYKx+tiY+hzXIfuopKXu/uU=
+	b=A1LAA5rby6braQFOpe6wosY+0fU1SJcDQWNI0V70qjjkg7jBtp5V2aqOIfKSE+KkB
+	 k+FIQeFxAqTlUtB807+ap/rKxXKQBq2oXaVo6t6/YqB0mT5ld4NcagjvkMkzGY913S
+	 hij0tCrbEUd/bSt03G7ORem6d7BLR6/mQEdkLukg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH 5.10 287/317] media: mc: mark the media devnode as registered from the, start
+	Daniel Borkmann <daniel@iogearbox.net>,
+	David Bauer <mail@david-bauer.net>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 348/402] vxlan: Fix regression when dropping packets due to invalid src addresses
 Date: Thu, 13 Jun 2024 13:35:05 +0200
-Message-ID: <20240613113258.654438868@linuxfoundation.org>
+Message-ID: <20240613113315.709989926@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit 4bc60736154bc9e0e39d3b88918f5d3762ebe5e0 upstream.
+commit 1cd4bc987abb2823836cbb8f887026011ccddc8a upstream.
 
-First the media device node was created, and if successful it was
-marked as 'registered'. This leaves a small race condition where
-an application can open the device node and get an error back
-because the 'registered' flag was not yet set.
+Commit f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
+has recently been added to vxlan mainly in the context of source
+address snooping/learning so that when it is enabled, an entry in the
+FDB is not being created for an invalid address for the corresponding
+tunnel endpoint.
 
-Change the order: first set the 'registered' flag, then actually
-register the media device node. If that fails, then clear the flag.
+Before commit f58f45c1e5b9 vxlan was similarly behaving as geneve in
+that it passed through whichever macs were set in the L2 header. It
+turns out that this change in behavior breaks setups, for example,
+Cilium with netkit in L3 mode for Pods as well as tunnel mode has been
+passing before the change in f58f45c1e5b9 for both vxlan and geneve.
+After mentioned change it is only passing for geneve as in case of
+vxlan packets are dropped due to vxlan_set_mac() returning false as
+source and destination macs are zero which for E/W traffic via tunnel
+is totally fine.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Fixes: cf4b9211b568 ("[media] media: Media device node support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Fix it by only opting into the is_valid_ether_addr() check in
+vxlan_set_mac() when in fact source address snooping/learning is
+actually enabled in vxlan. This is done by moving the check into
+vxlan_snoop(). With this change, the Cilium connectivity test suite
+passes again for both tunnel flavors.
+
+Fixes: f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: David Bauer <mail@david-bauer.net>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: David Bauer <mail@david-bauer.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[ Backport note: vxlan snooping/learning not supported in 6.8 or older,
+  so commit is simply a revert. ]
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/mc/mc-devnode.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/vxlan/vxlan_core.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/media/mc/mc-devnode.c
-+++ b/drivers/media/mc/mc-devnode.c
-@@ -246,15 +246,14 @@ int __must_check media_devnode_register(
- 	kobject_set_name(&devnode->cdev.kobj, "media%d", devnode->minor);
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1779,10 +1779,6 @@ static bool vxlan_set_mac(struct vxlan_d
+ 	if (ether_addr_equal(eth_hdr(skb)->h_source, vxlan->dev->dev_addr))
+ 		return false;
  
- 	/* Part 3: Add the media and char device */
-+	set_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
- 	ret = cdev_device_add(&devnode->cdev, &devnode->dev);
- 	if (ret < 0) {
-+		clear_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
- 		pr_err("%s: cdev_device_add failed\n", __func__);
- 		goto cdev_add_error;
- 	}
- 
--	/* Part 4: Activate this minor. The char device can now be used. */
--	set_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
+-	/* Ignore packets from invalid src-address */
+-	if (!is_valid_ether_addr(eth_hdr(skb)->h_source))
+-		return false;
 -
- 	return 0;
- 
- cdev_add_error:
+ 	/* Get address from the outer IP header */
+ 	if (vxlan_get_sk_family(vs) == AF_INET) {
+ 		saddr.sin.sin_addr.s_addr = ip_hdr(skb)->saddr;
 
 
 
