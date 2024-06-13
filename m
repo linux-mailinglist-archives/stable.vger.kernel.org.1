@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C157E906F8D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:21:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43AAB90718A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:38:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 744BD1F212EF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:21:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 582891C23AAF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CFCE143C63;
-	Thu, 13 Jun 2024 12:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AF6144D12;
+	Thu, 13 Jun 2024 12:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qr+DYYN/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6ZY8/It"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5D86EB56;
-	Thu, 13 Jun 2024 12:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5E31DFE1;
+	Thu, 13 Jun 2024 12:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281051; cv=none; b=k7iW+VqPcFM7x0fLntbOCwadbtvbl5qUih0+vfcG/Mz2OeOr/FOAXyTwp8sdp/Kif0DkXAPKfAeI/6YXphdFjY/qZys/9Ow/QQYp8HeJM0YG7aCUjp461qoc5qDyXcvUEg9ETRAOmgk0SIJFu5+gk6OyiHhS7nl0OhstNeHy4/U=
+	t=1718282259; cv=none; b=MbpPn6XVgauj+06+MScYc+COOGZmkmrx7hO6erYhRmfXMuoxjKO053wq18mfP3DzRXNLmo+qbEsAwjMABgUZXDQVO9agvFv5zEhHhJ7ttLxCsbvDRJ8A4hYDqnHLn+WMrAvWT6A5A6sRscAjC5r7144+ArC2XBgXPABdsxndJVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281051; c=relaxed/simple;
-	bh=CY9+iCuVE1JlSds7/D/Y+Goh484XRD2tA1Mw7xMwF1k=;
+	s=arc-20240116; t=1718282259; c=relaxed/simple;
+	bh=aPAo7/7+Xf5W6dNWoaifJXihNksllSK/REEJXvC7s2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5WUPh9YcuQWCVJplPuv2cOBTlvf8COcC4rPwpnoUb7cwF7SfLOsLv0mMQoI6HQmuDTYCPK60yS45XKtfqBe+Rfgwo1uNdUo6sA4mBkFd3fN4zfCLpjyhXKFBU6FIy22Ftgrv51BNAH6KGrYQUAe7vuTnmlDgYhmDvjPBm4SQHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qr+DYYN/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBA5C2BBFC;
-	Thu, 13 Jun 2024 12:17:30 +0000 (UTC)
+	 MIME-Version; b=lyyX+K0hl/h0gNZwauZIiwTfu6npdEJxlZKHCeHyu9ybpjqmjIfZX6qfGW0h2pFdEnTtm06H/hGYYxl0bcCXl6msJC8LJYl/+iKscCue2vIKR1GKRCLUWRpoRC38h50FhoVLhfkAQ411MXQAeXHTSDTAWlIEISUo2OGurs1d+ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6ZY8/It; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9EBC2BBFC;
+	Thu, 13 Jun 2024 12:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281051;
-	bh=CY9+iCuVE1JlSds7/D/Y+Goh484XRD2tA1Mw7xMwF1k=;
+	s=korg; t=1718282258;
+	bh=aPAo7/7+Xf5W6dNWoaifJXihNksllSK/REEJXvC7s2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qr+DYYN/5tLS2SDrDfk04/R7IT197rS8YwaWCQgahtTOFlTLIZB20oR9TpneG7OsE
-	 IPtsBoehDrNf8Khk8ek7mJeBLdoGqES6xWCK9TpS2cfzA4RohmITF5Yt8eTZnlztKF
-	 9p5nHmg+TaU7qjQxtLk4aaSHcfYpr/p3RJUoaeXo=
+	b=g6ZY8/It2YYGarx8/ABrNdJusQKoBQY/BSFwmg0JVqqlJkhD68r5Ml89ThMBLlTQg
+	 bGdGbhTLGqKM+M/zn3j8M2oHBZKOtNyBNY9x/J3W6LHrRtVt3FIrYjpnhxjfGKfVkB
+	 o8SkkFEPdSUWpdTZT0t72JMEgNSSTZj4d0bw8TuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jean Delvare <jdelvare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 123/317] ext4: try all groups in ext4_mb_new_blocks_simple
-Date: Thu, 13 Jun 2024 13:32:21 +0200
-Message-ID: <20240613113252.308554818@linuxfoundation.org>
+Subject: [PATCH 5.15 185/402] firmware: dmi-id: add a release callback function
+Date: Thu, 13 Jun 2024 13:32:22 +0200
+Message-ID: <20240613113309.364530618@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 19a043bb1fd1b5cb2652ca33536c55e6c0a70df0 ]
+[ Upstream commit cf770af5645a41a753c55a053fa1237105b0964a ]
 
-ext4_mb_new_blocks_simple ignores the group before goal, so it will fail
-if free blocks reside in group before goal. Try all groups to avoid
-unexpected failure.
-Search finishes either if any free block is found or if no available
-blocks are found. Simpliy check "i >= max" to distinguish the above
-cases.
+dmi_class uses kfree() as the .release function, but that now causes
+a warning with clang-16 as it violates control flow integrity (KCFI)
+rules:
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Suggested-by: Theodore Ts'o <tytso@mit.edu>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230603150327.3596033-8-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 3f4830abd236 ("ext4: fix potential unnitialized variable")
+drivers/firmware/dmi-id.c:174:17: error: cast from 'void (*)(const void *)' to 'void (*)(struct device *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+  174 |         .dev_release = (void(*)(struct device *)) kfree,
+
+Add an explicit function to call kfree() instead.
+
+Fixes: 4f5c791a850e ("DMI-based module autoloading")
+Link: https://lore.kernel.org/lkml/20240213100238.456912-1-arnd@kernel.org/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/firmware/dmi-id.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index f54f23afd93d2..de69929495a5a 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5350,7 +5350,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
- 	struct buffer_head *bitmap_bh;
- 	struct super_block *sb = ar->inode->i_sb;
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
--	ext4_group_t group;
-+	ext4_group_t group, nr;
- 	ext4_grpblk_t blkoff;
- 	ext4_grpblk_t max = EXT4_CLUSTERS_PER_GROUP(sb);
- 	ext4_grpblk_t i = 0;
-@@ -5364,7 +5364,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+diff --git a/drivers/firmware/dmi-id.c b/drivers/firmware/dmi-id.c
+index 940ddf916202a..77a8d43e65d3c 100644
+--- a/drivers/firmware/dmi-id.c
++++ b/drivers/firmware/dmi-id.c
+@@ -169,9 +169,14 @@ static int dmi_dev_uevent(struct device *dev, struct kobj_uevent_env *env)
+ 	return 0;
+ }
  
- 	ar->len = 0;
- 	ext4_get_group_no_and_offset(sb, goal, &group, &blkoff);
--	for (; group < ext4_get_groups_count(sb); group++) {
-+	for (nr = ext4_get_groups_count(sb); nr > 0; nr--) {
- 		bitmap_bh = ext4_read_block_bitmap(sb, group);
- 		if (IS_ERR(bitmap_bh)) {
- 			*errp = PTR_ERR(bitmap_bh);
-@@ -5388,10 +5388,13 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
- 		if (i < max)
- 			break;
- 
-+		if (++group >= ext4_get_groups_count(sb))
-+			group = 0;
++static void dmi_dev_release(struct device *dev)
++{
++	kfree(dev);
++}
 +
- 		blkoff = 0;
- 	}
+ static struct class dmi_class = {
+ 	.name = "dmi",
+-	.dev_release = (void(*)(struct device *)) kfree,
++	.dev_release = dmi_dev_release,
+ 	.dev_uevent = dmi_dev_uevent,
+ };
  
--	if (group >= ext4_get_groups_count(sb) || i >= max) {
-+	if (i >= max) {
- 		*errp = -ENOSPC;
- 		return 0;
- 	}
 -- 
 2.43.0
 
