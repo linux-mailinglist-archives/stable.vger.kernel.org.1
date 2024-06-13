@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-51159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A8F906E96
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C53B4906E99
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD08D1F2166B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F9491F21D5D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE7D143C48;
-	Thu, 13 Jun 2024 12:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BCF5145B34;
+	Thu, 13 Jun 2024 12:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTDqEcIH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCntVYuI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD72913D635;
-	Thu, 13 Jun 2024 12:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA301448F2;
+	Thu, 13 Jun 2024 12:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280479; cv=none; b=T6C+vfW3ZRrviupn6MVe9LDgu8yL+dnYUC84sJXsN25BNQBtTdnjX5lsopIFAi+0DVXKoB9thTJmwB2/Rcv7fjdeoHla4rCC5S1hNP0byyVPZc/3wDlWHoQbhNpPOZax/xhZ5n/e+sPJRG5EMnvdWg4BtJZ+uQiRr5oMPMedSRg=
+	t=1718280485; cv=none; b=j+cZJK9TTAMwCgur9/OFlgNt+lL+Dl7qYq6nRNimw7oELkryFf0bH32lc40T2JJ+x7dz5yi6TjDs4gtPNwd+QeFGLGyqXopBDiZZLWd110Knpb2eSsXNff1YBKCa3pNrk26TnFaT1HX3dz0zPF4RrscFXOY1/HtPmiS4m93PHos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280479; c=relaxed/simple;
-	bh=BDoma/6ZSQoW+gsljdlHF793t/dAmvznBwiV7qN4OUU=;
+	s=arc-20240116; t=1718280485; c=relaxed/simple;
+	bh=cy8tHtazjNtqC7bgbsr8zwtWZmigX+c7pcTpf20XTeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ArhhoV+iY7pM6BX2PyP/CZQ1IXAPbbGUA5cPNzQDvIwt13QphZFXTMfsiZVswC/jvHT7hlIHThIYh4clA8r7SBVFFrZIArISYQj8tx62Q2qtTMaOfQ2ASjxSi3ZX+675yj8IvBwkqARC04vLRvMri7SgIJawGVtkysXBRcVhwsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTDqEcIH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D0CC2BBFC;
-	Thu, 13 Jun 2024 12:07:59 +0000 (UTC)
+	 MIME-Version; b=R9XUe/UcZMiRzd03G4pOHMkudJVI4nnwM0MiRHDpKfke44tUbZAhGe7M9jzlLRYFvG4MW+w3+tAzGaKtj0kAyYhkUNop4ZRXi/3PgpEl8Hs3+3IDyoPG/s+yr/y4GXAdL+QjKhX0O6OmK7bBzLmeR4wQ/g6A0uu4fNdsAPZqyAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCntVYuI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45295C4AF1D;
+	Thu, 13 Jun 2024 12:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280479;
-	bh=BDoma/6ZSQoW+gsljdlHF793t/dAmvznBwiV7qN4OUU=;
+	s=korg; t=1718280485;
+	bh=cy8tHtazjNtqC7bgbsr8zwtWZmigX+c7pcTpf20XTeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vTDqEcIHVnHUfkc50hVcOWDQcMnrm6xZg4RYZkKeJCNLjzJGgP0J++Lx3UzZVvgaX
-	 ZqRzBqwds02QMBSr+CyvjcJxR5/ML+/4Tch5zR9CpR1Gl3L75FR/IRHtCbySk8FrTi
-	 Fgysz4QyfcOHL0pJ3F2+wnnjqqZ+9DsD4sb4RlPg=
+	b=DCntVYuIDCXJxRvnkJ+uMU4XOWDwDqvB+Ajud/ivONquQdovC61FhAc0eCSqzzWhe
+	 uTDoAvqFHZ4EipBLKdhi4zHZ3EFSU+GhaFUER6orWdHw72//AKB9ixMGOROSs232Bw
+	 k5RsEDa2nUJd9K5mVQvDikPf3oULV614+3aVHz/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.6 067/137] clk: bcm: rpi: Assign ->num before accessing ->hws
-Date: Thu, 13 Jun 2024 13:34:07 +0200
-Message-ID: <20240613113225.898955993@linuxfoundation.org>
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 068/137] clk: qcom: clk-alpha-pll: fix rate setting for Stromer PLLs
+Date: Thu, 13 Jun 2024 13:34:08 +0200
+Message-ID: <20240613113225.935946081@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
 References: <20240613113223.281378087@linuxfoundation.org>
@@ -67,56 +66,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 6dc445c1905096b2ed4db1a84570375b4e00cc0f upstream.
+commit 3c5b3e17b8fd1f1add5a9477306c355fab126977 upstream.
 
-Commit f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with
-__counted_by") annotated the hws member of 'struct clk_hw_onecell_data'
-with __counted_by, which informs the bounds sanitizer about the number
-of elements in hws, so that it can warn when hws is accessed out of
-bounds. As noted in that change, the __counted_by member must be
-initialized with the number of elements before the first array access
-happens, otherwise there will be a warning from each access prior to the
-initialization because the number of elements is zero. This occurs in
-raspberrypi_discover_clocks() due to ->num being assigned after ->hws
-has been accessed:
+The clk_alpha_pll_stromer_set_rate() function writes inproper
+values into the ALPHA_VAL{,_U} registers which results in wrong
+clock rates when the alpha value is used.
 
-  UBSAN: array-index-out-of-bounds in drivers/clk/bcm/clk-raspberrypi.c:374:4
-  index 3 is out of range for type 'struct clk_hw *[] __counted_by(num)' (aka 'struct clk_hw *[]')
+The broken behaviour can be seen on IPQ5018 for example, when
+dynamic scaling sets the CPU frequency to 800000 KHz. In this
+case the CPU cores are running only at 792031 KHz:
 
-Move the ->num initialization to before the first access of ->hws, which
-clears up the warning.
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
+  800000
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
+  792031
+
+This happens because the function ignores the fact that the alpha
+value calculated by the alpha_pll_round_rate() function is only
+32 bits wide which must be extended to 40 bits if it is used on
+a hardware which supports 40 bits wide values.
+
+Extend the clk_alpha_pll_stromer_set_rate() function to convert
+the alpha value to 40 bits before wrinting that into the registers
+in order to ensure that the hardware really uses the requested rate.
+
+After the change the CPU frequency is correct:
+
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
+  800000
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
+  800000
 
 Cc: stable@vger.kernel.org
-Fixes: f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with __counted_by")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20240425-cbl-bcm-assign-counted-by-val-before-access-v1-2-e2db3b82d5ef@kernel.org
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: e47a4f55f240 ("clk: qcom: clk-alpha-pll: Add support for Stromer PLLs")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/r/20240328-alpha-pll-fix-stromer-set-rate-v3-1-1b79714c78bc@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/bcm/clk-raspberrypi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/clk-alpha-pll.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/bcm/clk-raspberrypi.c b/drivers/clk/bcm/clk-raspberrypi.c
-index 829406dc44a2..4d411408e4af 100644
---- a/drivers/clk/bcm/clk-raspberrypi.c
-+++ b/drivers/clk/bcm/clk-raspberrypi.c
-@@ -371,8 +371,8 @@ static int raspberrypi_discover_clocks(struct raspberrypi_clk *rpi,
- 			if (IS_ERR(hw))
- 				return PTR_ERR(hw);
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -2444,6 +2444,8 @@ static int clk_alpha_pll_stromer_set_rat
+ 	rate = alpha_pll_round_rate(rate, prate, &l, &a, ALPHA_REG_BITWIDTH);
  
--			data->hws[clks->id] = hw;
- 			data->num = clks->id + 1;
-+			data->hws[clks->id] = hw;
- 		}
- 
- 		clks++;
--- 
-2.45.2
-
+ 	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
++
++	a <<= ALPHA_REG_BITWIDTH - ALPHA_BITWIDTH;
+ 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
+ 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
+ 		     a >> ALPHA_BITWIDTH);
 
 
 
