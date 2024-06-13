@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56BB8906E4D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB0C907055
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 589DF1C21045
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5456284669
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D1613C8E1;
-	Thu, 13 Jun 2024 12:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440A8143747;
+	Thu, 13 Jun 2024 12:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oe3BkYNI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpV6F5jG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A13B13C660;
-	Thu, 13 Jun 2024 12:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E281B145346;
+	Thu, 13 Jun 2024 12:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280285; cv=none; b=G+HNHr6K77+DugTUP/tbCj9/qIS0cLMj76dTZaQ4W0VBozaWI0KSEGlJjA6pDF6VlXB8hBLoedX7DGO1HaEfkz9aZjltYeUZ/9DhmuOltBV7iblVcrA0Hyyt67Gcnlb3X5P7Q+7l5MMIK0AzqSSPXOkg7h9GYuCoOVKPZMZqpbA=
+	t=1718281572; cv=none; b=KSs+l72S2smgLN8F7mZbJMBpv1GRpUteyQnIzRheSAtV+105ZmNeUSOcF4OKcqNc3KorrmkbkTRVlldGmRGMmf6DYe21JvZTl9xyEMl+A/KW3B49r+s0wU6MEPr+1iU0DWiJdtAXPWCpITvKm0WgmUDzbcevhxki3lPsg/taDlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280285; c=relaxed/simple;
-	bh=Db/CbTG4uvisEV1tR2H+TcxGs+JDzEZtBS6ZhSiZ6bY=;
+	s=arc-20240116; t=1718281572; c=relaxed/simple;
+	bh=dCqor+CLr4sQ+njNvU7mEhSQKXz29bqfnVCWlU5bJQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UtcRQzo3bkx6OfJ6JrrXH5pyJDnTfsw1E3BrqkFSlmzw53QdGL+TsSYdBuDRExtK1nXqZh1s8bEmYeu4GYZzXRk1yI00Z4iyMprjlUnwh4aboBvhD0pCAsNMvjAPTo54bWL5UjVORBP98gmxDcQIFkr3Sf2SdyhsBzJgSI3bu5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oe3BkYNI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874D3C2BBFC;
-	Thu, 13 Jun 2024 12:04:44 +0000 (UTC)
+	 MIME-Version; b=DmMztsdjR1EALwMZVwMvqW72dUZmVmV6Pxu77gWf8yYMbYiL1vnp8uKN9bvj8OrCETi/9Cqp6xpfnpxecu95vbryDtYFUHVip9cfxpUNeETfX5q7wm45YsMSHtBTxzSIrPjBtzDj1hNp5vLN9SyDO+A8dquD01ccOXaDud3ZB2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpV6F5jG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614DDC2BBFC;
+	Thu, 13 Jun 2024 12:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280284;
-	bh=Db/CbTG4uvisEV1tR2H+TcxGs+JDzEZtBS6ZhSiZ6bY=;
+	s=korg; t=1718281571;
+	bh=dCqor+CLr4sQ+njNvU7mEhSQKXz29bqfnVCWlU5bJQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oe3BkYNIusBo31HSA4nESxpau+w826gGsj6wPYzh5G7IDktn4ZX0pt9W2eb3zAKC/
-	 8Ldry0hzfl6WoCj5lhbbNaPOK5+wLrWLkOoWOL85ouJvXK6NvmyEhp/yf/Cj9Ox6Gh
-	 qrxohvc9IGcuy+WWxROdh2EIDb0Ru48uvZ9e5yYU=
+	b=zpV6F5jGB61QwdH/pqnXR7WCYlOxVMDCj+K7IxNSIhNYJLhZzUDNvdKEeur0kHV5e
+	 +0LHiZ/69aG6sVQyDRq353RQ3txXlr/3FCmZn6HvHCuZ0Ztqt7WgpoV7GQqprZIz/K
+	 F4uM0oyhC8xCrTz9I3Q4zm5TO3FzmMW7J5jWiWgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 189/202] net/9p: fix uninit-value in p9_client_rpc()
-Date: Thu, 13 Jun 2024 13:34:47 +0200
-Message-ID: <20240613113235.034416277@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	"Bai, Shuangpeng" <sjb7183@psu.edu>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 270/317] nilfs2: fix use-after-free of timer for log writer thread
+Date: Thu, 13 Jun 2024 13:34:48 +0200
+Message-ID: <20240613113257.998024112@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 25460d6f39024cc3b8241b14c7ccf0d6f11a736a upstream.
+commit f5d4e04634c9cf68bdf23de08ada0bb92e8befe7 upstream.
 
-Syzbot with the help of KMSAN reported the following error:
+Patch series "nilfs2: fix log writer related issues".
 
-BUG: KMSAN: uninit-value in trace_9p_client_res include/trace/events/9p.h:146 [inline]
-BUG: KMSAN: uninit-value in p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
- trace_9p_client_res include/trace/events/9p.h:146 [inline]
- p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
- p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
- v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
- v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
- legacy_get_tree+0x114/0x290 fs/fs_context.c:662
- vfs_get_tree+0xa7/0x570 fs/super.c:1797
- do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
- path_mount+0x742/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount+0x725/0x810 fs/namespace.c:3875
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
+This bug fix series covers three nilfs2 log writer-related issues,
+including a timer use-after-free issue and potential deadlock issue on
+unmount, and a potential freeze issue in event synchronization found
+during their analysis.  Details are described in each commit log.
 
-Uninit was created at:
- __alloc_pages+0x9d6/0xe70 mm/page_alloc.c:4598
- __alloc_pages_node include/linux/gfp.h:238 [inline]
- alloc_pages_node include/linux/gfp.h:261 [inline]
- alloc_slab_page mm/slub.c:2175 [inline]
- allocate_slab mm/slub.c:2338 [inline]
- new_slab+0x2de/0x1400 mm/slub.c:2391
- ___slab_alloc+0x1184/0x33d0 mm/slub.c:3525
- __slab_alloc mm/slub.c:3610 [inline]
- __slab_alloc_node mm/slub.c:3663 [inline]
- slab_alloc_node mm/slub.c:3835 [inline]
- kmem_cache_alloc+0x6d3/0xbe0 mm/slub.c:3852
- p9_tag_alloc net/9p/client.c:278 [inline]
- p9_client_prepare_req+0x20a/0x1770 net/9p/client.c:641
- p9_client_rpc+0x27e/0x1340 net/9p/client.c:688
- p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
- v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
- v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
- legacy_get_tree+0x114/0x290 fs/fs_context.c:662
- vfs_get_tree+0xa7/0x570 fs/super.c:1797
- do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
- path_mount+0x742/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount+0x725/0x810 fs/namespace.c:3875
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
 
-If p9_check_errors() fails early in p9_client_rpc(), req->rc.tag
-will not be properly initialized. However, trace_9p_client_res()
-ends up trying to print it out anyway before p9_client_rpc()
-finishes.
+This patch (of 3):
 
-Fix this issue by assigning default values to p9_fcall fields
-such as 'tag' and (just in case KMSAN unearths something new) 'id'
-during the tag allocation stage.
+A use-after-free issue has been reported regarding the timer sc_timer on
+the nilfs_sc_info structure.
 
-Reported-and-tested-by: syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
-Fixes: 348b59012e5c ("net/9p: Convert net/9p protocol dumps to tracepoints")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: stable@vger.kernel.org
-Message-ID: <20240408141039.30428-1-n.zhandarovich@fintech.ru>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+The problem is that even though it is used to wake up a sleeping log
+writer thread, sc_timer is not shut down until the nilfs_sc_info structure
+is about to be freed, and is used regardless of the thread's lifetime.
+
+Fix this issue by limiting the use of sc_timer only while the log writer
+thread is alive.
+
+Link: https://lkml.kernel.org/r/20240520132621.4054-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20240520132621.4054-2-konishi.ryusuke@gmail.com
+Fixes: fdce895ea5dd ("nilfs2: change sc_timer from a pointer to an embedded one in struct nilfs_sc_info")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: "Bai, Shuangpeng" <sjb7183@psu.edu>
+Closes: https://groups.google.com/g/syzkaller/c/MK_LYqtt8ko/m/8rgdWeseAwAJ
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/9p/client.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nilfs2/segment.c |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -235,6 +235,8 @@ static int p9_fcall_init(struct p9_clien
- 	if (!fc->sdata)
- 		return -ENOMEM;
- 	fc->capacity = alloc_msize;
-+	fc->id = 0;
-+	fc->tag = P9_NOTAG;
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2164,8 +2164,10 @@ static void nilfs_segctor_start_timer(st
+ {
+ 	spin_lock(&sci->sc_state_lock);
+ 	if (!(sci->sc_state & NILFS_SEGCTOR_COMMIT)) {
+-		sci->sc_timer.expires = jiffies + sci->sc_interval;
+-		add_timer(&sci->sc_timer);
++		if (sci->sc_task) {
++			sci->sc_timer.expires = jiffies + sci->sc_interval;
++			add_timer(&sci->sc_timer);
++		}
+ 		sci->sc_state |= NILFS_SEGCTOR_COMMIT;
+ 	}
+ 	spin_unlock(&sci->sc_state_lock);
+@@ -2385,10 +2387,21 @@ int nilfs_construct_dsync_segment(struct
+  */
+ static void nilfs_segctor_accept(struct nilfs_sc_info *sci)
+ {
++	bool thread_is_alive;
++
+ 	spin_lock(&sci->sc_state_lock);
+ 	sci->sc_seq_accepted = sci->sc_seq_request;
++	thread_is_alive = (bool)sci->sc_task;
+ 	spin_unlock(&sci->sc_state_lock);
+-	del_timer_sync(&sci->sc_timer);
++
++	/*
++	 * This function does not race with the log writer thread's
++	 * termination.  Therefore, deleting sc_timer, which should not be
++	 * done after the log writer thread exits, can be done safely outside
++	 * the area protected by sc_state_lock.
++	 */
++	if (thread_is_alive)
++		del_timer_sync(&sci->sc_timer);
+ }
+ 
+ /**
+@@ -2414,7 +2427,7 @@ static void nilfs_segctor_notify(struct
+ 			sci->sc_flush_request &= ~FLUSH_DAT_BIT;
+ 
+ 		/* re-enable timer if checkpoint creation was not done */
+-		if ((sci->sc_state & NILFS_SEGCTOR_COMMIT) &&
++		if ((sci->sc_state & NILFS_SEGCTOR_COMMIT) && sci->sc_task &&
+ 		    time_before(jiffies, sci->sc_timer.expires))
+ 			add_timer(&sci->sc_timer);
+ 	}
+@@ -2604,6 +2617,7 @@ static int nilfs_segctor_thread(void *ar
+ 	int timeout = 0;
+ 
+ 	sci->sc_timer_task = current;
++	timer_setup(&sci->sc_timer, nilfs_construction_timeout, 0);
+ 
+ 	/* start sync. */
+ 	sci->sc_task = current;
+@@ -2670,6 +2684,7 @@ static int nilfs_segctor_thread(void *ar
+  end_thread:
+ 	/* end sync. */
+ 	sci->sc_task = NULL;
++	del_timer_sync(&sci->sc_timer);
+ 	wake_up(&sci->sc_wait_task); /* for nilfs_segctor_kill_thread() */
+ 	spin_unlock(&sci->sc_state_lock);
  	return 0;
+@@ -2733,7 +2748,6 @@ static struct nilfs_sc_info *nilfs_segct
+ 	INIT_LIST_HEAD(&sci->sc_gc_inodes);
+ 	INIT_LIST_HEAD(&sci->sc_iput_queue);
+ 	INIT_WORK(&sci->sc_iput_work, nilfs_iput_work_func);
+-	timer_setup(&sci->sc_timer, nilfs_construction_timeout, 0);
+ 
+ 	sci->sc_interval = HZ * NILFS_SC_DEFAULT_TIMEOUT;
+ 	sci->sc_mjcp_freq = HZ * NILFS_SC_DEFAULT_SR_FREQ;
+@@ -2819,7 +2833,6 @@ static void nilfs_segctor_destroy(struct
+ 
+ 	down_write(&nilfs->ns_segctor_sem);
+ 
+-	del_timer_sync(&sci->sc_timer);
+ 	kfree(sci);
  }
  
 
