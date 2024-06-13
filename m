@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF4C69071DC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:41:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A4DD906DDD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24C31282ABA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:41:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05726B271DA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE721EEF8;
-	Thu, 13 Jun 2024 12:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D971428F0;
+	Thu, 13 Jun 2024 12:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r39uQgs1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0SmFbLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A551384;
-	Thu, 13 Jun 2024 12:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40B614198E;
+	Thu, 13 Jun 2024 12:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282460; cv=none; b=COmyc7xtEGzkY7M5qeWtUNO26qqYmb32J0F16SHC6V5TGIw8YMIHdhg087khYAnt7LeizxvXf1oG5PuZMMhZ6uOH8OsJhMFdwDmL/Pv6AIKKjecpMdLNErQg+VD5/2dl0WETHBn1e3g+2gwcIwHYJ9AV6g8DpYZLYGm6yHImWHc=
+	t=1718280014; cv=none; b=KLg7SZTg1jli/PHkPPScC5+OoJfYr/BthIx5NL0xrt8GYFcbhQz8kihnOlb9Gg44NDWCPi9yRcs7V9C+Tde5rdx/BwaiW/QPkSEWCgVZYmZS3uDT1nIrtFYnafx5dq6cKaeYLc5K4BceaztltKwJWqCO1vEBFWh5nj6amXFWbk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282460; c=relaxed/simple;
-	bh=oVL+8O6vtsnn3x8Szj1HaP1r9LJtjTA7fc5JK6K7K5s=;
+	s=arc-20240116; t=1718280014; c=relaxed/simple;
+	bh=DCp4jC7dg0uNn6aSqgvaePNcLHMQ3hXhcBcTaCOcfSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tqfa/gxdubzj7PgKRf4ruLlnY0WH48ni0Jv52pjVzCGpKmy9zl1uGsaXa395yuCrtMlx2WFLQ+XAzKeW2HKJbNVyOmb6KiyUAnetjGGCQi0a7CjXpEQj1eC67mTcbN5C/xZGbWrTOPFg7gUWoL1FZpgbhMDPSM6MuaFp2u9BpKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r39uQgs1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E98C4AF1A;
-	Thu, 13 Jun 2024 12:40:59 +0000 (UTC)
+	 MIME-Version; b=Cqaixbodc1B83BrD1FDCx3kHOM2P6ToQsms4KYO8nwmalu/OffixutAnRPQq1AC9pziRlr4Z6pgfMouOeiJkK50dQxJUaf3qLik/zf7j1HhITM6HWKZZkjUatuqJHBv8pUe1YZEWGe7pwaAUkw/YvfGa1s8Kowx7ps456WhPltY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0SmFbLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383B5C2BBFC;
+	Thu, 13 Jun 2024 12:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282460;
-	bh=oVL+8O6vtsnn3x8Szj1HaP1r9LJtjTA7fc5JK6K7K5s=;
+	s=korg; t=1718280014;
+	bh=DCp4jC7dg0uNn6aSqgvaePNcLHMQ3hXhcBcTaCOcfSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r39uQgs1CdaeECuYomeZTyU3zoGe0D8C/R44a4fs1T2b6XhMHpwSp9SRjDADO3tu1
-	 FUVP6YPnLK0UcUBP26R3HOWt/5GiLF/o8j+Xn5tWWYlnVFgFJ/MgFwI1gWbajhbGsQ
-	 GuYr6d/E95sSPAfYHzb36teaUw5VY8AzMhvAUs2I=
+	b=W0SmFbLxnDGIl89pe9VPdN6HABZ/Qf7+Wm4PWN5idCfpIjMZFH/3pSIe84gw0Yb7i
+	 dh0jdyWTCJfrEOxz1C7JUqxCCCKYV98hTZZ4jkFKhfv1ejiYVx6rWEp09i5mSDiOoQ
+	 vuwds6j6Jo8MlVaZyxRdwcZU0lvYDY79KOwKJF0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 254/402] mmc: sdhci_am654: Fix ITAPDLY for HS400 timing
+Subject: [PATCH 5.4 113/202] ppdev: Remove usage of the deprecated ida_simple_xx() API
 Date: Thu, 13 Jun 2024 13:33:31 +0200
-Message-ID: <20240613113312.054644085@linuxfoundation.org>
+Message-ID: <20240613113232.120601526@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit d3182932bb070e7518411fd165e023f82afd7d25 ]
+[ Upstream commit d8407f71ebeaeb6f50bd89791837873e44609708 ]
 
-While STRB is currently used for DATA and CRC responses, the CMD
-responses from the device to the host still require ITAPDLY for
-HS400 timing.
+ida_alloc() and ida_free() should be preferred to the deprecated
+ida_simple_get() and ida_simple_remove().
 
-Currently what is stored for HS400 is the ITAPDLY from High Speed
-mode which is incorrect. The ITAPDLY for HS400 speed mode should
-be the same as ITAPDLY as HS200 timing after tuning is executed.
-Add the functionality to save ITAPDLY from HS200 tuning and save
-as HS400 ITAPDLY.
+This is less verbose.
 
-Fixes: a161c45f2979 ("mmc: sdhci_am654: Enable DLL only for some speed modes")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240320223837.959900-8-jm@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/ba9da12fdd5cdb2c28180b7160af5042447d803f.1702962092.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: fbf740aeb86a ("ppdev: Add an error check in register_device")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci_am654.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/char/ppdev.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-index 9cdc5e7889b45..230b61902e39d 100644
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -300,6 +300,12 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
- 	if (timing > MMC_TIMING_UHS_SDR25 && clock >= CLOCK_TOO_SLOW_HZ) {
- 		sdhci_am654_setup_dll(host, clock);
- 		sdhci_am654->dll_enable = true;
-+
-+		if (timing == MMC_TIMING_MMC_HS400) {
-+			sdhci_am654->itap_del_ena[timing] = 0x1;
-+			sdhci_am654->itap_del_sel[timing] = sdhci_am654->itap_del_sel[timing - 1];
-+		}
-+
- 		sdhci_am654_write_itapdly(sdhci_am654, sdhci_am654->itap_del_sel[timing],
- 					  sdhci_am654->itap_del_ena[timing]);
- 	} else {
-@@ -530,6 +536,9 @@ static int sdhci_am654_platform_execute_tuning(struct sdhci_host *host,
+diff --git a/drivers/char/ppdev.c b/drivers/char/ppdev.c
+index 34bb88fe0b0a6..5246e0faaf9ae 100644
+--- a/drivers/char/ppdev.c
++++ b/drivers/char/ppdev.c
+@@ -299,7 +299,7 @@ static int register_device(int minor, struct pp_struct *pp)
+ 		goto err;
+ 	}
  
- 	sdhci_am654_write_itapdly(sdhci_am654, itap, sdhci_am654->itap_del_ena[timing]);
+-	index = ida_simple_get(&ida_index, 0, 0, GFP_KERNEL);
++	index = ida_alloc(&ida_index, GFP_KERNEL);
+ 	memset(&ppdev_cb, 0, sizeof(ppdev_cb));
+ 	ppdev_cb.irq_func = pp_irq;
+ 	ppdev_cb.flags = (pp->flags & PP_EXCL) ? PARPORT_FLAG_EXCL : 0;
+@@ -310,7 +310,7 @@ static int register_device(int minor, struct pp_struct *pp)
+ 	if (!pdev) {
+ 		pr_warn("%s: failed to register device!\n", name);
+ 		rc = -ENXIO;
+-		ida_simple_remove(&ida_index, index);
++		ida_free(&ida_index, index);
+ 		goto err;
+ 	}
  
-+	/* Save ITAPDLY */
-+	sdhci_am654->itap_del_sel[timing] = itap;
-+
- 	return 0;
- }
+@@ -762,7 +762,7 @@ static int pp_release(struct inode *inode, struct file *file)
  
+ 	if (pp->pdev) {
+ 		parport_unregister_device(pp->pdev);
+-		ida_simple_remove(&ida_index, pp->index);
++		ida_free(&ida_index, pp->index);
+ 		pp->pdev = NULL;
+ 		pr_debug(CHRDEV "%x: unregistered pardevice\n", minor);
+ 	}
 -- 
 2.43.0
 
