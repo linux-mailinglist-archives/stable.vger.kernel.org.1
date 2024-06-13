@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-50751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7A4906C68
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F54906B89
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 087AC281185
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C46E51F21AFA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5C11448D7;
-	Thu, 13 Jun 2024 11:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA35143C69;
+	Thu, 13 Jun 2024 11:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcBerGOi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCjlofae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC711428E9;
-	Thu, 13 Jun 2024 11:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C30A14388E;
+	Thu, 13 Jun 2024 11:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279278; cv=none; b=eGMukPVNGAezFYhV218zJROYl961C2SJ5F47msyKtxKN346c2fi52wZ0KqvkrEW+sOkf9ovGRtgDjm4k3W1+2NnjIylb7K975KvyoYSkrrpkh5B3a1NFet1Mw0cmAuzdm79rxTUX+0L/HSS220rtaNH2fzoeH/ZYwhdnXEcxLFw=
+	t=1718278876; cv=none; b=aB5RyousV5pwylzzj9h53RKc3ain1OLY6ipVR1HeLNkqqPj5odCkCddQ83lzbYj996ph6hD/dQcW38b05xQEqZrDqwmwrBu24Egoi9f2KCvFse4CNIo2fzzTT3n/NTrnCBnqLc90Cv4FzmVgpVA0Un/mMkMicV5CrJO5j2lciao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279278; c=relaxed/simple;
-	bh=VH5ZiWY8QJ7UAjyqVZ7zox3fXbyfTh8je01bOiaf6eE=;
+	s=arc-20240116; t=1718278876; c=relaxed/simple;
+	bh=DcMWXBjhnO5/011n5xySqPTSxvESynmLui1G7CRy6Qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cSs0e4HzSMbqs7g+Vag7II+VBk9lFShv8e64veeLnlsHDWQ7bKMAHzjffR4UaEcs+j1N+X8Y7jT80C6n4a11cHaTdRnzIZJRdm3XQXyOtux89pp9YfRVzqG7r3oUcZ96sX9aSY70E2ky7oIHNcvIidY42lKmDoWpmErtLC62SDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcBerGOi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7968C2BBFC;
-	Thu, 13 Jun 2024 11:47:57 +0000 (UTC)
+	 MIME-Version; b=Ws9W08g2QDMZ16GB2EgomD5hZtOEppg096qkmJtQPNgkBoyWhk7K45ER/QN/Em7N4VcRSW9CIg1j2luBG/jLCBX7gFP1O3TSVyvHyVT85o0Zi3xqFVUqFEqvP+xfpQx8Yz8jvU9f83K/4PoO3PDKrY6Pe+JKOW+2ZEhoKYhQ6J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCjlofae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0E7C4AF1A;
+	Thu, 13 Jun 2024 11:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279278;
-	bh=VH5ZiWY8QJ7UAjyqVZ7zox3fXbyfTh8je01bOiaf6eE=;
+	s=korg; t=1718278876;
+	bh=DcMWXBjhnO5/011n5xySqPTSxvESynmLui1G7CRy6Qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WcBerGOi4//axGWodxmRUQgWp2wGYuixfGqsdEn0VLwdk5elRtlqlhUvfOfcL1FYR
-	 uWjiPXIw1+eAkBLNo5BWtrr7OJ597Xucrh6KGmjlmdbLSOQn7/+gqhA00baxfJfoCi
-	 0qR1QyzmwqtkZVmJMj1hsYcbxvd8j5b5Gj+Cgu5Q=
+	b=UCjlofaeb1T3ByoY6oxk+WQLGGxr0IJ3HD5VKc6JWEVC6QWgaGCVp50qQTQWXAGcU
+	 bWFS4CeA/u4Rky2plv1uiUgai82UAQPlnziID5eUs2JOcVymFbcIj/oq342wt33amj
+	 f93lfOt3fDkguYTY8sUGmaXmSGgsF+5nGkndvPFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.9 021/157] ACPI: resource: Do IRQ override on TongFang GXxHRXx and GMxHGxx
-Date: Thu, 13 Jun 2024 13:32:26 +0200
-Message-ID: <20240613113228.229779857@linuxfoundation.org>
+	Chris Wulff <chris.wulff@biamp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 099/213] usb: gadget: u_audio: Clear uac pointer when freed.
+Date: Thu, 13 Jun 2024 13:32:27 +0200
+Message-ID: <20240613113231.827681818@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Chris Wulff <Chris.Wulff@biamp.com>
 
-commit c81bf14f9db68311c2e75428eea070d97d603975 upstream.
+[ Upstream commit a2cf936ebef291ef7395172b9e2f624779fb6dc0 ]
 
-Listed devices need the override for the keyboard to work.
+This prevents use of a stale pointer if functions are called after
+g_cleanup that shouldn't be. This doesn't fix any races, but converts
+a possibly silent kernel memory corruption into an obvious NULL pointer
+dereference report.
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: eb9fecb9e69b ("usb: gadget: f_uac2: split out audio core")
+Signed-off-by: Chris Wulff <chris.wulff@biamp.com>
+Link: https://lore.kernel.org/stable/CO1PR17MB54194226DA08BFC9EBD8C163E1172%40CO1PR17MB5419.namprd17.prod.outlook.com
+Link: https://lore.kernel.org/r/CO1PR17MB54194226DA08BFC9EBD8C163E1172@CO1PR17MB5419.namprd17.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/usb/gadget/function/u_audio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -630,6 +630,18 @@ static const struct dmi_system_id irq1_e
- 			DMI_MATCH(DMI_BOARD_NAME, "X565"),
- 		},
- 	},
-+	{
-+		/* TongFang GXxHRXx/TUXEDO InfinityBook Pro Gen9 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GXxHRXx"),
-+		},
-+	},
-+	{
-+		/* TongFang GMxHGxx/TUXEDO Stellaris Slim Gen1 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
-+		},
-+	},
- 	{ }
- };
+diff --git a/drivers/usb/gadget/function/u_audio.c b/drivers/usb/gadget/function/u_audio.c
+index 3136a239e7828..f7c610b7e3fd3 100644
+--- a/drivers/usb/gadget/function/u_audio.c
++++ b/drivers/usb/gadget/function/u_audio.c
+@@ -624,6 +624,8 @@ void g_audio_cleanup(struct g_audio *g_audio)
+ 		return;
  
+ 	uac = g_audio->uac;
++	g_audio->uac = NULL;
++
+ 	card = uac->card;
+ 	if (card)
+ 		snd_card_free_when_closed(card);
+-- 
+2.43.0
+
 
 
 
