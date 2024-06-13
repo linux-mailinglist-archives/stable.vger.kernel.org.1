@@ -1,73 +1,57 @@
-Return-Path: <stable+bounces-51729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B812907152
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E89D8906F86
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:21:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E71341F2435F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DAB5288E73
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7A71428EF;
-	Thu, 13 Jun 2024 12:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BAA14885D;
+	Thu, 13 Jun 2024 12:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/Jp1qy9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hi0eq/zL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FC481ABE;
-	Thu, 13 Jun 2024 12:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9D4148851;
+	Thu, 13 Jun 2024 12:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282144; cv=none; b=in/0tXsbg4RSAX2u0UwKKeURfuU1VRMkCwJxlcBmd08+M9mfgZx0Gd5KEAZOqRV73xjpq/XvpeuvoKD5anygE6yqfchrIhX/A3WPImmrcshJ10nhcoh9VafzxzAr+1+b7wSsgtwhUxkO/zYUMesHZs2LX5D7xOsghDN1+nchDHU=
+	t=1718281027; cv=none; b=ckNuK9fjP/XOQ6gT30uth9vFfrQ4VvUkWAUbHeDoiT2k4wS7bWHECvqn2OcI34o+XW9T2WDLq1pKTT/sMPK+XIL2AuNstfDlxICLpqYXJkH4k0nkkrkmMi81cMWSRgNZW2bfl7Uyw3hkoJGCB0VohFrlxRI8gkZgq+nN60geZyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282144; c=relaxed/simple;
-	bh=D68yCndCHIjNXg40ZVShUEXpyIiQwk/HJGdY+cr4w1g=;
+	s=arc-20240116; t=1718281027; c=relaxed/simple;
+	bh=QyusormFuD5vpeTs5+qpetVJ5BCmydERi0ZW+G1N1qY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=McGwFHiqV/18VsceYf/s8NKWiboKrL3oPBKGW/jK+myGN6c/E9eoZVG1RWyA52ImmcMjSgSiQgRaNEs6H1xM45MM+1p36/7HvVzdqPgoVnz3l+BdZagJMrFDbCssTXaeZaI+W9bKwnGj/K+0jZPAlPZOlsQMMhMhdws71XRIRKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/Jp1qy9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2ECC2BBFC;
-	Thu, 13 Jun 2024 12:35:43 +0000 (UTC)
+	 MIME-Version; b=nQCHiqj7zSAFy5X3oZMsxybGAXykQM9FVGk2lKrKkTU9VCicdZaqqEubVj/4+QnFGWpITcYkgptyU5uiEBa+Ki4VSD7b5bHKNP542uSorInfEjxb8fhISFKqJLpoB6iMSjzCXBHLuWRRVkHF9y4aMHB36mtnhK3MBzMYHbg66qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hi0eq/zL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32A1C32786;
+	Thu, 13 Jun 2024 12:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282144;
-	bh=D68yCndCHIjNXg40ZVShUEXpyIiQwk/HJGdY+cr4w1g=;
+	s=korg; t=1718281027;
+	bh=QyusormFuD5vpeTs5+qpetVJ5BCmydERi0ZW+G1N1qY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/Jp1qy9p2N1UXZYjXIzAVqHUJoxf9iTxtwbjqS2iPzRAxxb1w/SJY2a8nA+U8ZH6
-	 nr89muiX1/3cOA7hSLR8U2veFjB38bvN+PwGZOxEmGJMkwxeOThGJDZG6ve/WZtfG0
-	 tMvUv+f4he+ch256V9LkuTHVxm60a7hqF+tz7Bak=
+	b=hi0eq/zLpHjjaorTkCTXtiY8WGv4WLOWTy2sR2a0/0ZzJ2gZ2MZc4TaKEYBcM5otP
+	 DUuchcI4pSPvVj2dVyKW+XQbgWCYwT6SnkayTZNL9emg7AbcPLu/5b1yC81eWjymnE
+	 wSb9zDJuOqINhrtPhDOZlzV+67BuGnAKpRV+hmmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Disha Goel <disgoel@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Song Liu <songliubraving@fb.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 177/402] perf record: Delete session after stopping sideband thread
+Subject: [PATCH 5.10 116/317] RDMA/hns: Modify the print level of CQE error
 Date: Thu, 13 Jun 2024 13:32:14 +0200
-Message-ID: <20240613113309.052697179@linuxfoundation.org>
+Message-ID: <20240613113252.038425196@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,85 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 88ce0106a1f603bf360cb397e8fe293f8298fabb ]
+[ Upstream commit 349e859952285ab9689779fb46de163f13f18f43 ]
 
-The session has a header in it which contains a perf env with
-bpf_progs. The bpf_progs are accessed by the sideband thread and so
-the sideband thread must be stopped before the session is deleted, to
-avoid a use after free.  This error was detected by AddressSanitizer
-in the following:
+Too much print may lead to a panic in kernel. Change ibdev_err() to
+ibdev_err_ratelimited(), and change the printing level of cqe dump
+to debug level.
 
-  ==2054673==ERROR: AddressSanitizer: heap-use-after-free on address 0x61d000161e00 at pc 0x55769289de54 bp 0x7f9df36d4ab0 sp 0x7f9df36d4aa8
-  READ of size 8 at 0x61d000161e00 thread T1
-      #0 0x55769289de53 in __perf_env__insert_bpf_prog_info util/env.c:42
-      #1 0x55769289dbb1 in perf_env__insert_bpf_prog_info util/env.c:29
-      #2 0x557692bbae29 in perf_env__add_bpf_info util/bpf-event.c:483
-      #3 0x557692bbb01a in bpf_event__sb_cb util/bpf-event.c:512
-      #4 0x5576928b75f4 in perf_evlist__poll_thread util/sideband_evlist.c:68
-      #5 0x7f9df96a63eb in start_thread nptl/pthread_create.c:444
-      #6 0x7f9df9726a4b in clone3 ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
-
-  0x61d000161e00 is located 384 bytes inside of 2136-byte region [0x61d000161c80,0x61d0001624d8)
-  freed by thread T0 here:
-      #0 0x7f9dfa6d7288 in __interceptor_free libsanitizer/asan/asan_malloc_linux.cpp:52
-      #1 0x557692978d50 in perf_session__delete util/session.c:319
-      #2 0x557692673959 in __cmd_record tools/perf/builtin-record.c:2884
-      #3 0x55769267a9f0 in cmd_record tools/perf/builtin-record.c:4259
-      #4 0x55769286710c in run_builtin tools/perf/perf.c:349
-      #5 0x557692867678 in handle_internal_command tools/perf/perf.c:402
-      #6 0x557692867a40 in run_argv tools/perf/perf.c:446
-      #7 0x557692867fae in main tools/perf/perf.c:562
-      #8 0x7f9df96456c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
-
-Fixes: 657ee5531903339b ("perf evlist: Introduce side band thread")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Disha Goel <disgoel@linux.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Tim Chen <tim.c.chen@linux.intel.com>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20240301074639.2260708-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 7c044adca272 ("RDMA/hns: Simplify the cqe code of poll cq")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240412091616.370789-11-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-record.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
-index b92c26f6aa1d7..95ea3a9867c58 100644
---- a/tools/perf/builtin-record.c
-+++ b/tools/perf/builtin-record.c
-@@ -2075,10 +2075,10 @@ static int __cmd_record(struct record *rec, int argc, const char **argv)
- 		close(done_fd);
- #endif
- 	zstd_fini(&session->zstd_data);
--	perf_session__delete(session);
--
- 	if (!opts->no_bpf_event)
- 		evlist__stop_sb_thread(rec->sb_evlist);
-+
-+	perf_session__delete(session);
- 	return status;
- }
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 10ffad061f94a..13aa8dd42f7d6 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -3278,8 +3278,9 @@ static void get_cqe_status(struct hns_roce_dev *hr_dev, struct hns_roce_qp *qp,
+ 		   wc->status == IB_WC_WR_FLUSH_ERR))
+ 		return;
  
+-	ibdev_err(&hr_dev->ib_dev, "error cqe status 0x%x:\n", cqe_status);
+-	print_hex_dump(KERN_ERR, "", DUMP_PREFIX_NONE, 16, 4, cqe,
++	ibdev_err_ratelimited(&hr_dev->ib_dev, "error cqe status 0x%x:\n",
++			      cqe_status);
++	print_hex_dump(KERN_DEBUG, "", DUMP_PREFIX_NONE, 16, 4, cqe,
+ 		       cq->cqe_size, false);
+ 
+ 	/*
 -- 
 2.43.0
 
