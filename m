@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F08A9071D1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:41:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8BD906FE1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A035DB26C3D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:41:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5DB41C20E06
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA9A144D2C;
-	Thu, 13 Jun 2024 12:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89793142649;
+	Thu, 13 Jun 2024 12:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0VIghxX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMnrrWqJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B358161;
-	Thu, 13 Jun 2024 12:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F0B13C68A;
+	Thu, 13 Jun 2024 12:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282425; cv=none; b=hXS23NtHISRa70blTVs5hMsa5p+8Y/kxr9ZFBzrkDqozakVdEwoFHq/CYHm88vKyoTJ3HKnB73jnzWjZISFtSLTWVdhSdnZ9JE82x/Q/IJnRTwwNg945OBl9Mc2y/oU121vnYQmpEqyiB3vw0nrunlCA3HCE82XCrbEm9aV4T0A=
+	t=1718281310; cv=none; b=Epxqjqg8XrZ29MCsV5rSjtz2aKskuWw/oKCi9iar/WuQvwjBegDSec+g9aDtUYhetzKQ1eKLT/7m2mKzXH8mLxGG1wALDs9gMaAZ639YjJQ4WwcSlx/5JBbNGOUohc949zXq25igKI59S1WE+bjxcc9UeHGnJacDMFdUMBTs9o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282425; c=relaxed/simple;
-	bh=hWndqZ6PhTt7ynk7D4F6QLB67xLZdVZCamZ2O5HuN0I=;
+	s=arc-20240116; t=1718281310; c=relaxed/simple;
+	bh=WPDk4suXbHa5zxOmshpeO1zx+1zCCmWQQQE/uxrMT/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDnauobquuJzHfBINzdKkkhr7wF7F+pxqTOjhCtYsHhMQaDzvIbhirRWrdkatYvYiG4w3F+KDHpO9rJpjK1STgLyYjvcYMqXBBc3gIGs2n8HNivazpEzLwipr6qwOQ1fK+P+32FKnG6vBZhE/EXxPE2zZYLh6hmqjF/JBmWtxQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0VIghxX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59AAEC2BBFC;
-	Thu, 13 Jun 2024 12:40:24 +0000 (UTC)
+	 MIME-Version; b=C1jETCYudBR9lElpZ/CW6q24nVap3W34oiIfXiwjG8ERu5/F8omldb2L+cftKEDvH1MwqRUZjj110SgLNWBmnf4kN7s5RGwdRX8rKuCqh/cSZm77XaxuLz0S88tIchXzLzGTk9BGejuQnFK9/9v5AVYFo7CaNvfSbrqLWQbOY7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMnrrWqJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3E5C2BBFC;
+	Thu, 13 Jun 2024 12:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282424;
-	bh=hWndqZ6PhTt7ynk7D4F6QLB67xLZdVZCamZ2O5HuN0I=;
+	s=korg; t=1718281310;
+	bh=WPDk4suXbHa5zxOmshpeO1zx+1zCCmWQQQE/uxrMT/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k0VIghxXUZ3QFjyGc7uHdeugdfafanna6cYwYDpGyOIdxJZN5vkBCCPz2OOyiWu0R
-	 GJGAyFkk/QlEhBSu8oR2pOTDwErWDESzQDAEJb7WGG2REdBgXyECFlCwbsIJGr+YIj
-	 JkbBpVKkPLnSAIv9OLKsrlL8a2CvdoIYwiHYTS/o=
+	b=gMnrrWqJ5I1qfLuQcTyN3HWcXDiJEuRNLyAz8esYbWKi4ZCee+7q5EXwe07JOfuwN
+	 CAWVs43ksEfwEKgNE9saVkbLKJPejwPlPDN9Oxe1ucK44vGTjdm6zTr6kKny1RJMpi
+	 8B/UDzXLHnX7X2jiJcZo5wMPmpJ+DI1DOz1RlsdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	"Yang, Chenyuan" <cy54@illinois.edu>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
-Subject: [PATCH 5.15 272/402] media: cec: cec-api: add locking in cec_release()
-Date: Thu, 13 Jun 2024 13:33:49 +0200
-Message-ID: <20240613113312.762819479@linuxfoundation.org>
+	patches@lists.linux.dev,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 212/317] powerpc/pseries: Add failure related checks for h_get_mpp and h_get_ppp
+Date: Thu, 13 Jun 2024 13:33:50 +0200
+Message-ID: <20240613113255.756646043@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-[ Upstream commit 42bcaacae924bf18ae387c3f78c202df0b739292 ]
+[ Upstream commit 6d4341638516bf97b9a34947e0bd95035a8230a5 ]
 
-When cec_release() uses fh->msgs it has to take fh->lock,
-otherwise the list can get corrupted.
+Couple of Minor fixes:
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Yang, Chenyuan <cy54@illinois.edu>
-Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
-Fixes: ca684386e6e2 ("[media] cec: add HDMI CEC framework (api)")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+- hcall return values are long. Fix that for h_get_mpp, h_get_ppp and
+parse_ppp_data
+
+- If hcall fails, values set should be at-least zero. It shouldn't be
+uninitialized values. Fix that for h_get_mpp and h_get_ppp
+
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240412092047.455483-3-sshegde@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/core/cec-api.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/include/asm/hvcall.h        | 2 +-
+ arch/powerpc/platforms/pseries/lpar.c    | 6 +++---
+ arch/powerpc/platforms/pseries/lparcfg.c | 6 +++---
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/cec/core/cec-api.c b/drivers/media/cec/core/cec-api.c
-index 52c30e4e20055..4510a4bec659a 100644
---- a/drivers/media/cec/core/cec-api.c
-+++ b/drivers/media/cec/core/cec-api.c
-@@ -678,6 +678,8 @@ static int cec_release(struct inode *inode, struct file *filp)
- 		list_del(&data->xfer_list);
- 	}
- 	mutex_unlock(&adap->lock);
-+
-+	mutex_lock(&fh->lock);
- 	while (!list_empty(&fh->msgs)) {
- 		struct cec_msg_entry *entry =
- 			list_first_entry(&fh->msgs, struct cec_msg_entry, list);
-@@ -695,6 +697,7 @@ static int cec_release(struct inode *inode, struct file *filp)
- 			kfree(entry);
- 		}
- 	}
-+	mutex_unlock(&fh->lock);
- 	kfree(fh);
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index 00c8cda1c9c31..1a60188f74ad8 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -494,7 +494,7 @@ struct hvcall_mpp_data {
+ 	unsigned long backing_mem;
+ };
  
- 	cec_put_device(devnode);
+-int h_get_mpp(struct hvcall_mpp_data *);
++long h_get_mpp(struct hvcall_mpp_data *mpp_data);
+ 
+ struct hvcall_mpp_x_data {
+ 	unsigned long coalesced_bytes;
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index 4a3425fb19398..aed67f1a1bc56 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -1883,10 +1883,10 @@ void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
+  * h_get_mpp
+  * H_GET_MPP hcall returns info in 7 parms
+  */
+-int h_get_mpp(struct hvcall_mpp_data *mpp_data)
++long h_get_mpp(struct hvcall_mpp_data *mpp_data)
+ {
+-	int rc;
+-	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
++	long rc;
+ 
+ 	rc = plpar_hcall9(H_GET_MPP, retbuf);
+ 
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index a7d4e25ae82a1..e0c5fc9ab242e 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -112,8 +112,8 @@ struct hvcall_ppp_data {
+  */
+ static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
+ {
+-	unsigned long rc;
+-	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
++	long rc;
+ 
+ 	rc = plpar_hcall9(H_GET_PPP, retbuf);
+ 
+@@ -192,7 +192,7 @@ static void parse_ppp_data(struct seq_file *m)
+ 	struct hvcall_ppp_data ppp_data;
+ 	struct device_node *root;
+ 	const __be32 *perf_level;
+-	int rc;
++	long rc;
+ 
+ 	rc = h_get_ppp(&ppp_data);
+ 	if (rc)
 -- 
 2.43.0
 
