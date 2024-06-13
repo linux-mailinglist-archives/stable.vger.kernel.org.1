@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C6490725D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:47:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6C59072F8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:56:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5711B281795
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:47:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1140B29D55
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9911513E3F9;
-	Thu, 13 Jun 2024 12:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F061DDDB;
+	Thu, 13 Jun 2024 12:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhwwbEWy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Whs5oSc7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B7817FD;
-	Thu, 13 Jun 2024 12:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF87A59;
+	Thu, 13 Jun 2024 12:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282793; cv=none; b=uHITCCoZysgVXbXutU4cirNMUSBm+5ywIKFgr4evazgRv92ngAXWmUGDVC+R1d74T9V/HzvwUDvntej+ecWOT5EdgNmbiFNiCazLvbNNSMGSZVPrY+PzRH/eQjy0c3KojBk8Piq+cve2esFCKxCYikKEF7MHxWN3cGjVfCLQCo4=
+	t=1718283066; cv=none; b=SSycvjzzvwh0MDodtI3XdtsDbXOR+gWjJwuyN4bOlKsDhnTX7EeEI6fR2Acc7FuEuz42M/a43Eq9b0K5sqUlm17xXcszKQow3ENST5dhzk/pMlIi2er+9Wu79nJ1hbgOw7WicBSxmRETi01far70xbzW4Pj/Oa2WOC2jQV10oJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282793; c=relaxed/simple;
-	bh=Kl1ka0btppb6JppJVQRVw6zGbPKGyFj3HfrLgQcalzk=;
+	s=arc-20240116; t=1718283066; c=relaxed/simple;
+	bh=J/HjqBuNEN/hV6EGCgBdqexqWKmjagNWhnhgfOQvPj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZAuTXrRM5NN2laf8U9K7fDItyzahSfrcPs0iXJuh8Rmd3v7GGAGYFMVvSHnWmifp5XBLCrUOl6Pj3q2cpor6d/rEUdcxKTjdZcY5DBdTzFOrhIvlPnOXoDyidVODcjBeIKWMx0ssPiStuoiTijrZ96P92CU8a94agVzN1dyZeTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhwwbEWy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90F7C2BBFC;
-	Thu, 13 Jun 2024 12:46:32 +0000 (UTC)
+	 MIME-Version; b=qyJ5X/CH0iGWT5bOJo5QDrzWnlppXkNhhHI86ASg00IROk+QZu+T9ZbuBIDiSeAAXI0uFEpVPvPTyLUc1J8TE6wotGFU6v4uHdLq9YCMuvcOprjcgJYPDiU9tyUI+fHHt1HYUMzKCPIeKzwxRTnBAyLL1JmnLUzAPY/o3uu+keE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Whs5oSc7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8B6C2BBFC;
+	Thu, 13 Jun 2024 12:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282793;
-	bh=Kl1ka0btppb6JppJVQRVw6zGbPKGyFj3HfrLgQcalzk=;
+	s=korg; t=1718283066;
+	bh=J/HjqBuNEN/hV6EGCgBdqexqWKmjagNWhnhgfOQvPj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhwwbEWyirP2altuluypFzNvJ1XZBtCdl2N/DkxzUfjVmtQkz77eOZK5k4fcWvQsi
-	 BNEs0rLY3JpNbOnuBRS2zsC73d1w+tACMNDoeQnpyTzMkghem3Cp9pn6mAwwKEnvaU
-	 wSIQtriPZ1bQFmnpN3/olUBq/lpkZSIsMIsOS9IQ=
+	b=Whs5oSc7YU/8C2Tt77SxCSbRJkZ56ZrFqrLaPujvPRjoNtgRonOuZz8NO7z5u50vE
+	 uwUNTJJIWFu8ID1GUMhos8cw/qLxmAticJIpNwCvzwD7+Kz7dxPEnpOLu/+q2UpPpH
+	 uaPT7LzjwGrnYskmL/IJGvbSvmZNa8K6g+CzWipY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.15 398/402] i3c: master: svc: fix invalidate IBI type and miss call client IBI handler
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 57/85] net/9p: fix uninit-value in p9_client_rpc()
 Date: Thu, 13 Jun 2024 13:35:55 +0200
-Message-ID: <20240613113317.678010263@linuxfoundation.org>
+Message-ID: <20240613113216.340731559@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 38baed9b8600008e5d7bc8cb9ceccc1af3dd54b7 upstream.
+commit 25460d6f39024cc3b8241b14c7ccf0d6f11a736a upstream.
 
-In an In-Band Interrupt (IBI) handle, the code logic is as follows:
+Syzbot with the help of KMSAN reported the following error:
 
-1: writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI | SVC_I3C_MCTRL_IBIRESP_AUTO,
-	  master->regs + SVC_I3C_MCTRL);
+BUG: KMSAN: uninit-value in trace_9p_client_res include/trace/events/9p.h:146 [inline]
+BUG: KMSAN: uninit-value in p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
+ trace_9p_client_res include/trace/events/9p.h:146 [inline]
+ p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
+ p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
+ v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
+ v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
+ legacy_get_tree+0x114/0x290 fs/fs_context.c:662
+ vfs_get_tree+0xa7/0x570 fs/super.c:1797
+ do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
+ path_mount+0x742/0x1f20 fs/namespace.c:3679
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x725/0x810 fs/namespace.c:3875
+ __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
 
-2: ret = readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
-                                    SVC_I3C_MSTATUS_IBIWON(val), 0, 1000);
-	...
-3: ibitype = SVC_I3C_MSTATUS_IBITYPE(status);
-   ibiaddr = SVC_I3C_MSTATUS_IBIADDR(status);
+Uninit was created at:
+ __alloc_pages+0x9d6/0xe70 mm/page_alloc.c:4598
+ __alloc_pages_node include/linux/gfp.h:238 [inline]
+ alloc_pages_node include/linux/gfp.h:261 [inline]
+ alloc_slab_page mm/slub.c:2175 [inline]
+ allocate_slab mm/slub.c:2338 [inline]
+ new_slab+0x2de/0x1400 mm/slub.c:2391
+ ___slab_alloc+0x1184/0x33d0 mm/slub.c:3525
+ __slab_alloc mm/slub.c:3610 [inline]
+ __slab_alloc_node mm/slub.c:3663 [inline]
+ slab_alloc_node mm/slub.c:3835 [inline]
+ kmem_cache_alloc+0x6d3/0xbe0 mm/slub.c:3852
+ p9_tag_alloc net/9p/client.c:278 [inline]
+ p9_client_prepare_req+0x20a/0x1770 net/9p/client.c:641
+ p9_client_rpc+0x27e/0x1340 net/9p/client.c:688
+ p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
+ v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
+ v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
+ legacy_get_tree+0x114/0x290 fs/fs_context.c:662
+ vfs_get_tree+0xa7/0x570 fs/super.c:1797
+ do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
+ path_mount+0x742/0x1f20 fs/namespace.c:3679
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x725/0x810 fs/namespace.c:3875
+ __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
 
-SVC_I3C_MSTATUS_IBIWON may be set before step 1. Thus, step 2 will return
-immediately, and the I3C controller has not sent out the 9th SCL yet.
-Consequently, ibitype and ibiaddr are 0, resulting in an unknown IBI type
-occurrence and missing call I3C client driver's IBI handler.
+If p9_check_errors() fails early in p9_client_rpc(), req->rc.tag
+will not be properly initialized. However, trace_9p_client_res()
+ends up trying to print it out anyway before p9_client_rpc()
+finishes.
 
-A typical case is that SVC_I3C_MSTATUS_IBIWON is set when an IBI occurs
-during the controller send start frame in svc_i3c_master_xfer().
+Fix this issue by assigning default values to p9_fcall fields
+such as 'tag' and (just in case KMSAN unearths something new) 'id'
+during the tag allocation stage.
 
-Clear SVC_I3C_MSTATUS_IBIWON before issue SVC_I3C_MCTRL_REQUEST_AUTO_IBI
-to fix this issue.
-
+Reported-and-tested-by: syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
+Fixes: 348b59012e5c ("net/9p: Convert net/9p protocol dumps to tracepoints")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
 Cc: stable@vger.kernel.org
-Fixes: 5e5e3c92e748 ("i3c: master: svc: fix wrong data return when IBI happen during start frame")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20240506164009.21375-3-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Message-ID: <20240408141039.30428-1-n.zhandarovich@fintech.ru>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ net/9p/client.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -356,6 +356,19 @@ static void svc_i3c_master_ibi_work(stru
- 	int ret;
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -231,6 +231,8 @@ static int p9_fcall_init(struct p9_clien
+ 	if (!fc->sdata)
+ 		return -ENOMEM;
+ 	fc->capacity = alloc_msize;
++	fc->id = 0;
++	fc->tag = P9_NOTAG;
+ 	return 0;
+ }
  
- 	mutex_lock(&master->lock);
-+	/*
-+	 * IBIWON may be set before SVC_I3C_MCTRL_REQUEST_AUTO_IBI, causing
-+	 * readl_relaxed_poll_timeout() to return immediately. Consequently,
-+	 * ibitype will be 0 since it was last updated only after the 8th SCL
-+	 * cycle, leading to missed client IBI handlers.
-+	 *
-+	 * A typical scenario is when IBIWON occurs and bus arbitration is lost
-+	 * at svc_i3c_master_priv_xfers().
-+	 *
-+	 * Clear SVC_I3C_MINT_IBIWON before sending SVC_I3C_MCTRL_REQUEST_AUTO_IBI.
-+	 */
-+	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
-+
- 	/* Acknowledge the incoming interrupt with the AUTOIBI mechanism */
- 	writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI |
- 	       SVC_I3C_MCTRL_IBIRESP_AUTO,
-@@ -370,9 +383,6 @@ static void svc_i3c_master_ibi_work(stru
- 		goto reenable_ibis;
- 	}
- 
--	/* Clear the interrupt status */
--	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
--
- 	status = readl(master->regs + SVC_I3C_MSTATUS);
- 	ibitype = SVC_I3C_MSTATUS_IBITYPE(status);
- 	ibiaddr = SVC_I3C_MSTATUS_IBIADDR(status);
 
 
 
