@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-50688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB16906BF2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:46:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5219E906D28
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2687E1C21863
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:46:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 080371F27D29
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DABA1144D2D;
-	Thu, 13 Jun 2024 11:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57A3146A72;
+	Thu, 13 Jun 2024 11:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDJCKGVZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iB4ZtLzU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954F5143C5B;
-	Thu, 13 Jun 2024 11:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DDC144D13;
+	Thu, 13 Jun 2024 11:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279098; cv=none; b=HDgOuqmN78wPc+gsAgzxKT1jHeSFVIZbdSj80+9fypPMj3AeQlvr7RkjR6bH2TAyvgwQB91lxr/JP+sFLp44OuxaKMfswGHTA83IvNdw0K3b8clxcF9+4ZxVYRJLbSTj6mCRPCc1tj+3rRq6KdkmOI907Sec8YpIdt+03ZGkPOo=
+	t=1718279593; cv=none; b=dA1PrW1/4bltBsrfC9e09Bnnzatfz8RDpalQsu2m2M8pCilwB+58hWgNkhsKx1q6vjNgTgC2jkVvx2IDkjtgABg9SvR3L/3QPf+NBpfZK8g5dS8v0LvqWKvmv7sauJsfBraBalWYHv9tcOiZMEIwjWQwb3GQxfsM8HBHMO7f36E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279098; c=relaxed/simple;
-	bh=vuUGKXyo3cBW47MCyZgNii3Dq2fDB+TLJdslECmExfI=;
+	s=arc-20240116; t=1718279593; c=relaxed/simple;
+	bh=zMfVX9yoL6hdzZYQdQRaxicqUWw8wjh2CrQfljW6wos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qwh6zTSc9aD5kJ/6SOExn+qCuqJl5U0Kz8yBg1cIpI7UF5LHxjSa6ULO2MUv/KFAkLvFOevXAWbc9tHJQB95GA9PbKN554Ug6+ZLRatH6zkMvIO2z3PBbaIyAt9Uge/IjDfUKqZXMlbzn+RiS/+Si5rlzYMWyhR+9p+7qDb8Qqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDJCKGVZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC10C2BBFC;
-	Thu, 13 Jun 2024 11:44:57 +0000 (UTC)
+	 MIME-Version; b=u1vhS9V4rehjTXhfZ8QPhj/x0Cro0RPcd/Z5qTwexu7ljmyLztHrPu6GtVyQfi+oXu5OOJ/TRcv+Ocwc63oS4+snwgcCLTCNI5uwzDJhUeH8SCbcgivWcSHmTOYaLSguawAf4omenUDzjLunh3DvHQGOlpuGssF8WiGuktCvTLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iB4ZtLzU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42B0C2BBFC;
+	Thu, 13 Jun 2024 11:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279098;
-	bh=vuUGKXyo3cBW47MCyZgNii3Dq2fDB+TLJdslECmExfI=;
+	s=korg; t=1718279593;
+	bh=zMfVX9yoL6hdzZYQdQRaxicqUWw8wjh2CrQfljW6wos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDJCKGVZ0ElpXZ6cLsxFYJsDG1KnI6rM0NUYxo4nghDeS+BUt3hvG5h/vRs1ssvJ7
-	 yeLu1HEDqCO3UOfTpZYzm9rIJZ/t5WyD1iG7+UHOFpUGG5sfxR5++BGF+/Y+9RQP5A
-	 r0OgG0E5sq/gcQZ1/Fcx9qCG6hgzOiFpeWhP4DEQ=
+	b=iB4ZtLzUSTu8Ei4LmZTsnAsN7kFxUAMoaSxtOBZ1I69miSFWsh5XbhpFOUQkVZe/S
+	 uww2H/gwjh8FnFgs9q+baDLAAiiLZUEV954L19qu/NZ8w+g36t0xTTNhwZI3Zb3Uid
+	 URYPMH4s2sEl5LGkiX5Gr+ta/el1XtFa05VtPpho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>
-Subject: [PATCH 4.19 174/213] netfilter: nf_tables: defer gc run if previous batch is still pending
-Date: Thu, 13 Jun 2024 13:33:42 +0200
-Message-ID: <20240613113234.694621487@linuxfoundation.org>
+	Yuanyuan Zhong <yzhong@purestorage.com>,
+	Mohamed Khalfella <mkhalfella@purestorage.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 098/157] mm: /proc/pid/smaps_rollup: avoid skipping vma after getting mmap_lock again
+Date: Thu, 13 Jun 2024 13:33:43 +0200
+Message-ID: <20240613113231.214879354@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Yuanyuan Zhong <yzhong@purestorage.com>
 
-commit 8e51830e29e12670b4c10df070a4ea4c9593e961 upstream.
+commit 6d065f507d82307d6161ac75c025111fb8b08a46 upstream.
 
-Don't queue more gc work, else we may queue the same elements multiple
-times.
+After switching smaps_rollup to use VMA iterator, searching for next entry
+is part of the condition expression of the do-while loop.  So the current
+VMA needs to be addressed before the continue statement.
 
-If an element is flagged as dead, this can mean that either the previous
-gc request was invalidated/discarded by a transaction or that the previous
-request is still pending in the system work queue.
+Otherwise, with some VMAs skipped, userspace observed memory
+consumption from /proc/pid/smaps_rollup will be smaller than the sum of
+the corresponding fields from /proc/pid/smaps.
 
-The latter will happen if the gc interval is set to a very low value,
-e.g. 1ms, and system work queue is backlogged.
-
-The sets refcount is 1 if no previous gc requeusts are queued, so add
-a helper for this and skip gc run if old requests are pending.
-
-Add a helper for this and skip the gc run in this case.
-
-Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Link: https://lkml.kernel.org/r/20240523183531.2535436-1-yzhong@purestorage.com
+Fixes: c4c84f06285e ("fs/proc/task_mmu: stop using linked list and highest_vm_end")
+Signed-off-by: Yuanyuan Zhong <yzhong@purestorage.com>
+Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h |    5 +++++
- net/netfilter/nft_set_hash.c      |    3 +++
- net/netfilter/nft_set_rbtree.c    |    3 +++
- 3 files changed, 11 insertions(+)
+ fs/proc/task_mmu.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -445,6 +445,11 @@ static inline void *nft_set_priv(const s
- 	return (void *)set->data;
- }
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -965,12 +965,17 @@ static int show_smaps_rollup(struct seq_
+ 				break;
  
-+static inline bool nft_set_gc_is_pending(const struct nft_set *s)
-+{
-+	return refcount_read(&s->refs) != 1;
-+}
-+
- static inline struct nft_set *nft_set_container_of(const void *priv)
- {
- 	return (void *)priv - offsetof(struct nft_set, data);
---- a/net/netfilter/nft_set_hash.c
-+++ b/net/netfilter/nft_set_hash.c
-@@ -304,6 +304,9 @@ static void nft_rhash_gc(struct work_str
- 	nft_net = net_generic(net, nf_tables_net_id);
- 	gc_seq = READ_ONCE(nft_net->gc_seq);
+ 			/* Case 1 and 2 above */
+-			if (vma->vm_start >= last_vma_end)
++			if (vma->vm_start >= last_vma_end) {
++				smap_gather_stats(vma, &mss, 0);
++				last_vma_end = vma->vm_end;
+ 				continue;
++			}
  
-+	if (nft_set_gc_is_pending(set))
-+		goto done;
-+
- 	gc = nft_trans_gc_alloc(set, gc_seq, GFP_KERNEL);
- 	if (!gc)
- 		goto done;
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -618,6 +618,9 @@ static void nft_rbtree_gc(struct work_st
- 	nft_net = net_generic(net, nf_tables_net_id);
- 	gc_seq  = READ_ONCE(nft_net->gc_seq);
+ 			/* Case 4 above */
+-			if (vma->vm_end > last_vma_end)
++			if (vma->vm_end > last_vma_end) {
+ 				smap_gather_stats(vma, &mss, last_vma_end);
++				last_vma_end = vma->vm_end;
++			}
+ 		}
+ 	} for_each_vma(vmi, vma);
  
-+	if (nft_set_gc_is_pending(set))
-+		goto done;
-+
- 	gc = nft_trans_gc_alloc(set, gc_seq, GFP_KERNEL);
- 	if (!gc)
- 		goto done;
 
 
 
