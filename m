@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-51093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A6B0906E4E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB49E906EE5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A77D1C21135
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABAB81C217D6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5380313CF85;
-	Thu, 13 Jun 2024 12:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08655143C6B;
+	Thu, 13 Jun 2024 12:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VVXq9dw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kn07oqh3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1172B1428E9;
-	Thu, 13 Jun 2024 12:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88C113D881;
+	Thu, 13 Jun 2024 12:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280288; cv=none; b=KMRZHjNV8jHnQ4lO3zS2uEFMLMEGSRMdiX6x+3Z93GoSDb9TJ8F1klQV9TwFS7kG6+Oq4EO1Db3QLotnBmehho5etvTfIeVcx0c7MxYXldElr6yNiaXPOEMlKV4LL86SRIbktRhB0wlxFAsyBFM1m2cShVbN7xgPBoWBp5nKq5c=
+	t=1718280679; cv=none; b=OW11RkqMbGXpLOq/na995tstMXiBx80XEQRSx1qS2P4RJ6ymO2gB5mCiAfR/rtyUpP9YiKsAfVvVfvJEnr+tP7Fi0yC4XyZ3VEzDRFcXqY9BYERW0zHWteboDPHzp7+PANDURHuvzKjgzXCTjLP23asRDOFSq8a7TWXTMFPaF0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280288; c=relaxed/simple;
-	bh=ODrIKstFGP+iROuBE4v3xIz/tDEhJXFdePOVJ8bZEuk=;
+	s=arc-20240116; t=1718280679; c=relaxed/simple;
+	bh=mc6QM7F+Ti2rr+d0DRywV2UYiAycDpTu5FueXls0oSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oKr0eCLsdP+649azicOtHi2ncoot4AEv1Pu5i4IE1kRQgzpl1/kvyHL1nW2/BBXzcnEkLtZehSMe2xSufIsMZR2n6+rO9k/SeHonhC7aCu1Umea8BR8NHgtCMJV4OlNYUEmgkWY64jzBXqbzyWyCzZUzQNPNBEpCgeaeAYAZ8Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VVXq9dw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824CAC2BBFC;
-	Thu, 13 Jun 2024 12:04:47 +0000 (UTC)
+	 MIME-Version; b=QaTMtdxXRYhkEH31aMFeIpQLc2ArYOyh6nM7N571d1PZkFk3wEbOMmqrB/TkhXh9ogwtqH0Fh+UymtbDcecfbG2qyIQxcRqZ9AwgZpX12oIn/3d9NDYSNBJD1kreg7ZpmRO8D5MqyBWhmGCvWbioafmY6T9NVSdN1TSrOAqOb4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kn07oqh3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409ACC32786;
+	Thu, 13 Jun 2024 12:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280287;
-	bh=ODrIKstFGP+iROuBE4v3xIz/tDEhJXFdePOVJ8bZEuk=;
+	s=korg; t=1718280679;
+	bh=mc6QM7F+Ti2rr+d0DRywV2UYiAycDpTu5FueXls0oSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1VVXq9dwqU0IyAkdNNXF6IKV09DAS7x+30OYz3TEGljghwPsBsyBfkqaRk0O+CEmr
-	 L+U22DAchCGkkL+NOJFau1hSH/2I9XUwCoFYX93UWNiVaR7yu3XS+yC4JNKPWOI3si
-	 rvkpPwuwvv0Ysiy5GDwei/J/MrYNcQNrdzdIb0g0=
+	b=Kn07oqh3NmsZ4dMwzXT2RXykvvjObjgi5Yt+LQwZnUQ2tQPC1bXENyzQT/703QG2c
+	 cpWKigjVdO+xFl2om3ryektwGZ5Nseo3GLUKZeR7TjXw5fLFosB4M58SnAdHYDgEtf
+	 oZDq3Z59g6ejPFeUlGib2NXdpSmACzF1SatlQMuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 5.4 190/202] intel_th: pci: Add Meteor Lake-S CPU support
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 108/137] ext4: set type of ac_groups_linear_remaining to __u32 to avoid overflow
 Date: Thu, 13 Jun 2024 13:34:48 +0200
-Message-ID: <20240613113235.072782546@linuxfoundation.org>
+Message-ID: <20240613113227.488150780@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit a4f813c3ec9d1c32bc402becd1f011b3904dd699 upstream.
+commit 9a9f3a9842927e4af7ca10c19c94dad83bebd713 upstream.
 
-Add support for the Trace Hub in Meteor Lake-S CPU.
+Now ac_groups_linear_remaining is of type __u16 and s_mb_max_linear_groups
+is of type unsigned int, so an overflow occurs when setting a value above
+65535 through the mb_max_linear_groups sysfs interface. Therefore, the
+type of ac_groups_linear_remaining is set to __u32 to avoid overflow.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20240429130119.1518073-15-alexander.shishkin@linux.intel.com
+Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
+CC: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240319113325.3110393-8-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/ext4/mballoc.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -290,6 +290,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Meteor Lake-S CPU */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xae24),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Raptor Lake-S */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x7a26),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+--- a/fs/ext4/mballoc.h
++++ b/fs/ext4/mballoc.h
+@@ -194,8 +194,8 @@ struct ext4_allocation_context {
+ 
+ 	__u32 ac_groups_considered;
+ 	__u32 ac_flags;		/* allocation hints */
++	__u32 ac_groups_linear_remaining;
+ 	__u16 ac_groups_scanned;
+-	__u16 ac_groups_linear_remaining;
+ 	__u16 ac_found;
+ 	__u16 ac_cX_found[EXT4_MB_NUM_CRS];
+ 	__u16 ac_tail;
 
 
 
