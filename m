@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09ACF906E5D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD029071A9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:39:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B42972810B6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CDF3B2617B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2D01459E5;
-	Thu, 13 Jun 2024 12:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DBB1448DE;
+	Thu, 13 Jun 2024 12:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mluTJvwz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaacwcV6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08A456458;
-	Thu, 13 Jun 2024 12:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F6F144D11;
+	Thu, 13 Jun 2024 12:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280327; cv=none; b=tPJEBQ1pBh8OhilEOzecYgBRS+cw+U6mcGd+dCR7V5hjJP+6yMUkbYIOEAFsuecEaIug1/bNQ+MtLPqnFernpA94gvCwFbC7h/5YyfzHt0GatFh4nhD84omgFWFHdSxVEwOPXf309OYpGqhHC1IYtMzNGxvp3Kj610m+DZq8vo4=
+	t=1718282327; cv=none; b=Pu4iTB6vhO25t86o+vBccCmI1N/7/793nIzDbgC9B7ZIs0qi/sHXznjlFCs54WXfjKaejy6ll0Md/6BbSiRvth9NbaThfmIpXMeF8LhEH7Powfli7dYeMsPS+w6QwjEhsLe7ggIGH1Oz6uHfUv5wFJnqRvYRf+i6aZUQe678stQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280327; c=relaxed/simple;
-	bh=eyWNVO3pDoEz7AFMcwacsF1DUwmdMcCWJwRgG9cBMAU=;
+	s=arc-20240116; t=1718282327; c=relaxed/simple;
+	bh=gVDqgk19bp3XRqIPS362bFyRSz9H6FR/+zcRkG9a0Qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=et3zrTIh7QwJZ50/LGQ4lwN6p4LaS/BmTJEe1s8uHktzWgVcuCvgo244aPHBllRO3VeYE4Dq515DFdEayy3qE1DYVneD9eG/GeaLJJBx3/81idCEVwwZUx3yjCoKbOpYEko3Q5Gyh8SZb/bNRtpOv5H8B+tRvubUijYdJUsI5jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mluTJvwz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119ECC2BBFC;
-	Thu, 13 Jun 2024 12:05:25 +0000 (UTC)
+	 MIME-Version; b=RKFMh4fuNpOKX1aaEAoVfDIWnmVy+CouCEZVF3JOV9CpEGlGkmD9bLbwp4fL5USbXxJ5oFsbRAxGirEbpCTb518EwMhe23dricnddfD2WeiyT9KChz8W0xR4sE0i8NjlNmxnm7+ir5h6b3tb45oQCP/kTxQrncJ5tJZTDoF6bBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaacwcV6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A65C4AF1A;
+	Thu, 13 Jun 2024 12:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280326;
-	bh=eyWNVO3pDoEz7AFMcwacsF1DUwmdMcCWJwRgG9cBMAU=;
+	s=korg; t=1718282327;
+	bh=gVDqgk19bp3XRqIPS362bFyRSz9H6FR/+zcRkG9a0Qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mluTJvwz2aRQqq6LHKzLoE4w0AUAMsa+i13qRZnGr17OY7yoONozqxUOyahMdPk3L
-	 ldfvSNwLr1y9uWAtfqEIACHNh9ZrTTnhsiWnHwAP0uvoqJelKcsfLpPaSlYoki5kAm
-	 JfN7ew3g8Oo3+PbM8Fqv6gPQ4pij+UqB25MeaciQ=
+	b=TaacwcV6tJ5TGcyVnLfLp+uGbkRFL6aSobGdnKo2K14dc/30JaushDTC2GBskJaIG
+	 0k6ZODZ+dRFhEcOlu1Vw8ODHJUxMRxEOVnSwJ9J0BUxueSTrfRZEG+5B3xtrFhI0sP
+	 8YlorApkRqpMekHkxxnmOA3s5dp+DvOfgcxXNE8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>
-Subject: [PATCH 6.6 016/137] drm/sun4i: hdmi: Move mode_set into enable
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 239/402] s390/vdso: filter out mno-pic-data-is-text-relative cflag
 Date: Thu, 13 Jun 2024 13:33:16 +0200
-Message-ID: <20240613113223.920831380@linuxfoundation.org>
+Message-ID: <20240613113311.466491894@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <mripard@kernel.org>
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
 
-commit 9ca6bc2460359ed49b0ee87467fea784b1a42bf5 upstream.
+[ Upstream commit d15e4314abec83e4f910659437bc809b0889e3a5 ]
 
-We're not doing anything special in atomic_mode_set so we can simply
-merge it into atomic_enable.
+cmd_vdso_check checks if there are any dynamic relocations in
+vdso64.so.dbg. When kernel is compiled with
+-mno-pic-data-is-text-relative, R_390_RELATIVE relocs are generated and
+this results in kernel build error.
 
-Acked-by: Sui Jingfeng <sui.jingfeng@linux.dev>
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240222-kms-hdmi-connector-state-v7-33-8f4af575fce2@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+kpatch uses -mno-pic-data-is-text-relative option when building the
+kernel to prevent relative addressing between code and data. The flag
+avoids relocation error when klp text and data are too far apart
+
+kpatch does not patch vdso code and hence the
+mno-pic-data-is-text-relative flag is not essential.
+
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Stable-dep-of: 10f705253651 ("s390/vdso: Generate unwind information for C modules")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/sun4i/sun4i_hdmi_enc.c |   38 ++++++++++++---------------------
- 1 file changed, 14 insertions(+), 24 deletions(-)
+ arch/s390/kernel/vdso32/Makefile | 1 +
+ arch/s390/kernel/vdso64/Makefile | 1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/sun4i/sun4i_hdmi_enc.c
-+++ b/drivers/gpu/drm/sun4i/sun4i_hdmi_enc.c
-@@ -103,33 +103,11 @@ static void sun4i_hdmi_enable(struct drm
- 	struct drm_display_mode *mode = &encoder->crtc->state->adjusted_mode;
- 	struct sun4i_hdmi *hdmi = drm_encoder_to_sun4i_hdmi(encoder);
- 	struct drm_display_info *display = &hdmi->connector.display_info;
-+	unsigned int x, y;
- 	u32 val = 0;
+diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
+index cc513add48eb5..1783e4d335136 100644
+--- a/arch/s390/kernel/vdso32/Makefile
++++ b/arch/s390/kernel/vdso32/Makefile
+@@ -20,6 +20,7 @@ KBUILD_AFLAGS_32 := $(filter-out -m64,$(KBUILD_AFLAGS))
+ KBUILD_AFLAGS_32 += -m31 -s
  
- 	DRM_DEBUG_DRIVER("Enabling the HDMI Output\n");
+ KBUILD_CFLAGS_32 := $(filter-out -m64,$(KBUILD_CFLAGS))
++KBUILD_CFLAGS_32 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_32))
+ KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin
  
--	clk_prepare_enable(hdmi->tmds_clk);
--
--	sun4i_hdmi_setup_avi_infoframes(hdmi, mode);
--	val |= SUN4I_HDMI_PKT_CTRL_TYPE(0, SUN4I_HDMI_PKT_AVI);
--	val |= SUN4I_HDMI_PKT_CTRL_TYPE(1, SUN4I_HDMI_PKT_END);
--	writel(val, hdmi->base + SUN4I_HDMI_PKT_CTRL_REG(0));
--
--	val = SUN4I_HDMI_VID_CTRL_ENABLE;
--	if (display->is_hdmi)
--		val |= SUN4I_HDMI_VID_CTRL_HDMI_MODE;
--
--	writel(val, hdmi->base + SUN4I_HDMI_VID_CTRL_REG);
--}
--
--static void sun4i_hdmi_mode_set(struct drm_encoder *encoder,
--				struct drm_crtc_state *crtc_state,
--				struct drm_connector_state *conn_state)
--{
--	const struct drm_display_mode *mode = &crtc_state->mode;
--	struct sun4i_hdmi *hdmi = drm_encoder_to_sun4i_hdmi(encoder);
--	unsigned int x, y;
--	u32 val;
--
- 	clk_set_rate(hdmi->mod_clk, mode->crtc_clock * 1000);
- 	clk_set_rate(hdmi->tmds_clk, mode->crtc_clock * 1000);
+ LDFLAGS_vdso32.so.dbg += -shared -soname=linux-vdso32.so.1 \
+diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
+index 42d918d50a1ff..08e87b083647c 100644
+--- a/arch/s390/kernel/vdso64/Makefile
++++ b/arch/s390/kernel/vdso64/Makefile
+@@ -25,6 +25,7 @@ KBUILD_AFLAGS_64 := $(filter-out -m64,$(KBUILD_AFLAGS))
+ KBUILD_AFLAGS_64 += -m64 -s
  
-@@ -181,6 +159,19 @@ static void sun4i_hdmi_mode_set(struct d
- 		val |= SUN4I_HDMI_VID_TIMING_POL_VSYNC;
- 
- 	writel(val, hdmi->base + SUN4I_HDMI_VID_TIMING_POL_REG);
-+
-+	clk_prepare_enable(hdmi->tmds_clk);
-+
-+	sun4i_hdmi_setup_avi_infoframes(hdmi, mode);
-+	val |= SUN4I_HDMI_PKT_CTRL_TYPE(0, SUN4I_HDMI_PKT_AVI);
-+	val |= SUN4I_HDMI_PKT_CTRL_TYPE(1, SUN4I_HDMI_PKT_END);
-+	writel(val, hdmi->base + SUN4I_HDMI_PKT_CTRL_REG(0));
-+
-+	val = SUN4I_HDMI_VID_CTRL_ENABLE;
-+	if (display->is_hdmi)
-+		val |= SUN4I_HDMI_VID_CTRL_HDMI_MODE;
-+
-+	writel(val, hdmi->base + SUN4I_HDMI_VID_CTRL_REG);
- }
- 
- static enum drm_mode_status sun4i_hdmi_mode_valid(struct drm_encoder *encoder,
-@@ -206,7 +197,6 @@ static const struct drm_encoder_helper_f
- 	.atomic_check	= sun4i_hdmi_atomic_check,
- 	.atomic_disable	= sun4i_hdmi_disable,
- 	.atomic_enable	= sun4i_hdmi_enable,
--	.atomic_mode_set	= sun4i_hdmi_mode_set,
- 	.mode_valid	= sun4i_hdmi_mode_valid,
- };
- 
+ KBUILD_CFLAGS_64 := $(filter-out -m64,$(KBUILD_CFLAGS))
++KBUILD_CFLAGS_64 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_64))
+ KBUILD_CFLAGS_64 += -m64 -fPIC -fno-common -fno-builtin
+ ldflags-y := -shared -soname=linux-vdso64.so.1 \
+ 	     --hash-style=both --build-id=sha1 -T
+-- 
+2.43.0
+
 
 
 
