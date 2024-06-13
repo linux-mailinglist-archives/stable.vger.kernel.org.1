@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-51034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0CAF906E09
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 482F0906E91
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76E02B229B1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F244D1F21655
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C311A143C55;
-	Thu, 13 Jun 2024 12:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E69F145A06;
+	Thu, 13 Jun 2024 12:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mL2EKktF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVz/CMHt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FCF44C6F;
-	Thu, 13 Jun 2024 12:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C29E13D635;
+	Thu, 13 Jun 2024 12:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280112; cv=none; b=ezdaLKnJ6Utj9cg9OsVe8t9a6vKSWqLbDEyV0YZ8DJbijhQM4dztEBVZP88AAJ9HdGWp3H7Pu6/d88Av/IF3hZSmNnltzPoF9clFUbsjJNsQ48Cg8YCSWqJ+7aokJrtGWBXvas7IR9U8JjLz+36ACRBKogPWPMz537u5uIno9lo=
+	t=1718280471; cv=none; b=SuuRqtSNOhQ3A29bDwMk9RX/aypqEa5+14SdNZUgHQ6UwgQUdcGAiMC4yFHO4s0bHS9opuZYg48K54A0Y8yIemJ26rI0PXiFU13NxxhOZGCEmidEqBUnCZr/KsO5pIM5VLIPbL4xbCP9qEJgtCy+9dkCx81y5lfjlQfKl8idxiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280112; c=relaxed/simple;
-	bh=cw+ZSv+71iQYLZS3XgSfh11+bWAQEF6PishnUAX6zLM=;
+	s=arc-20240116; t=1718280471; c=relaxed/simple;
+	bh=Cn/4wXCuUj6OXb/FxZcuM+tJfzWV7Pm+H4EjvneQ/OU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZki1ZLWE23akdl8fq4wyhD9eca5BFP8s07Z/dEhvY4iJeXLrwhVB8XxGNs14fHOgnkmWISjPt1dIWSnZ9I9Dvw9bH6pOdIcq81RFGerNTXAwsZsyYBak9QnVdtChPfKrx/f5g9VDcvxEelCr2ueOIR5GgvzdPa6UzYxCgF8+XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mL2EKktF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B16C2BBFC;
-	Thu, 13 Jun 2024 12:01:51 +0000 (UTC)
+	 MIME-Version; b=VdUCngWfJK53XDXS6Af0hJ7SqSNjjqP6LHqWI4T+Wu3o1l/fSMg+IqzRwpCO5xvXqyk5pqOxmGDTIK9rsaFBSQ2xpjks++aYZXRYX8KeIlKEKzpuwsmoU62E9OAV2B8+U0vOz+xpoG7RB+3GedsQ4eUUUCqOwypZZy1bnMcGA5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVz/CMHt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C659C2BBFC;
+	Thu, 13 Jun 2024 12:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280112;
-	bh=cw+ZSv+71iQYLZS3XgSfh11+bWAQEF6PishnUAX6zLM=;
+	s=korg; t=1718280470;
+	bh=Cn/4wXCuUj6OXb/FxZcuM+tJfzWV7Pm+H4EjvneQ/OU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mL2EKktFAKQ8Ks1yjirbwdcjlGqUTGQGzqt5S7S3IV+1C/ORsMf9D87k9y3nPnyx5
-	 /Dsdy5xKXEUlvJC66K6NgvaU7/DQJTge4FRTwAgtJOkEKYEBT1DMPugd/saa9wYgnL
-	 As6ZGNHb3xIsBaf4RlC2xfT0GRdAnxhsknGwo5vU=
+	b=bVz/CMHtEjr5Ikzf9iwZ0S+PFTyHmadslA7z4MZJW9NFZutyw15JoieR+dBtLMas7
+	 /7PYoKBINAFJcPBI9uhRHKo5LyCeoK8DhhEP7f1i8RTEgz28LWWzUV0sMLoDGHwSZp
+	 JdF4InxLSisMpSxfPD42AyrTvTmCzPnlkxjSQQbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+0438378d6f157baae1a2@syzkaller.appspotmail.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 146/202] nfc: nci: Fix kcov check in nci_rx_work()
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 064/137] LoongArch: Add all CPUs enabled by fdt to NUMA node 0
 Date: Thu, 13 Jun 2024 13:34:04 +0200
-Message-ID: <20240613113233.393092995@linuxfoundation.org>
+Message-ID: <20240613113225.785305265@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 19e35f24750ddf860c51e51c68cf07ea181b4881 ]
+commit 3de9c42d02a79a5e09bbee7a4421ddc00cfd5c6d upstream.
 
-Commit 7e8cdc97148c ("nfc: Add KCOV annotations") added
-kcov_remote_start_common()/kcov_remote_stop() pair into nci_rx_work(),
-with an assumption that kcov_remote_stop() is called upon continue of
-the for loop. But commit d24b03535e5e ("nfc: nci: Fix uninit-value in
-nci_dev_up and nci_ntf_packet") forgot to call kcov_remote_stop() before
-break of the for loop.
+NUMA enabled kernel on FDT based machine fails to boot because CPUs
+are all in NUMA_NO_NODE and mm subsystem won't accept that.
 
-Reported-by: syzbot <syzbot+0438378d6f157baae1a2@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=0438378d6f157baae1a2
-Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
-Suggested-by: Andrey Konovalov <andreyknvl@gmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/6d10f829-5a0c-405a-b39a-d7266f3a1a0b@I-love.SAKURA.ne.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 6671e352497c ("nfc: nci: Fix handling of zero-length payload packets in nci_rx_work()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by adding them to default NUMA node at FDT parsing phase and move
+numa_add_cpu(0) to a later point.
+
+Cc: stable@vger.kernel.org
+Fixes: 88d4d957edc7 ("LoongArch: Add FDT booting support from efi system table")
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/loongarch/include/asm/numa.h |    1 +
+ arch/loongarch/kernel/smp.c       |    5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 61b12281ec47c..ebf1b511d8e3b 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1514,6 +1514,7 @@ static void nci_rx_work(struct work_struct *work)
+--- a/arch/loongarch/include/asm/numa.h
++++ b/arch/loongarch/include/asm/numa.h
+@@ -56,6 +56,7 @@ extern int early_cpu_to_node(int cpu);
+ static inline void early_numa_add_cpu(int cpuid, s16 node)	{ }
+ static inline void numa_add_cpu(unsigned int cpu)		{ }
+ static inline void numa_remove_cpu(unsigned int cpu)		{ }
++static inline void set_cpuid_to_node(int cpuid, s16 node)	{ }
  
- 		if (!nci_valid_size(skb)) {
- 			kfree_skb(skb);
-+			kcov_remote_stop();
- 			break;
+ static inline int early_cpu_to_node(int cpu)
+ {
+--- a/arch/loongarch/kernel/smp.c
++++ b/arch/loongarch/kernel/smp.c
+@@ -262,7 +262,6 @@ static void __init fdt_smp_setup(void)
+ 
+ 		if (cpuid == loongson_sysconf.boot_cpu_id) {
+ 			cpu = 0;
+-			numa_add_cpu(cpu);
+ 		} else {
+ 			cpu = cpumask_next_zero(-1, cpu_present_mask);
  		}
+@@ -272,6 +271,9 @@ static void __init fdt_smp_setup(void)
+ 		set_cpu_present(cpu, true);
+ 		__cpu_number_map[cpuid] = cpu;
+ 		__cpu_logical_map[cpu] = cpuid;
++
++		early_numa_add_cpu(cpu, 0);
++		set_cpuid_to_node(cpuid, 0);
+ 	}
  
--- 
-2.43.0
-
+ 	loongson_sysconf.nr_cpus = num_processors;
+@@ -453,6 +455,7 @@ void smp_prepare_boot_cpu(void)
+ 	set_cpu_possible(0, true);
+ 	set_cpu_online(0, true);
+ 	set_my_cpu_offset(per_cpu_offset(0));
++	numa_add_cpu(0);
+ 
+ 	rr_node = first_node(node_online_map);
+ 	for_each_possible_cpu(cpu) {
 
 
 
