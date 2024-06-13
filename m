@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-51813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836BA9071BF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A74906EA4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB2AD1C24578
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C91CC281736
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B8F144304;
-	Thu, 13 Jun 2024 12:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6991422AB;
+	Thu, 13 Jun 2024 12:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhbK6pFO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snTBxytA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7EC1EEE0;
-	Thu, 13 Jun 2024 12:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2797114600D;
+	Thu, 13 Jun 2024 12:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282389; cv=none; b=jRtaaOLCV6E4ZYM3Fy1Sx8iJx79KCo4GIEdk5jV3AA4MRHY8D5ocp3vop/LLI2xPwVMK9zYH6xyEm+gXQ/t+nLpiqdF1WgLjpKaq+rVmGsGsOY5CuQmiVaAB4P/u6cYOVCOZrpGAEvADiVA7bnkYN59YTA+x24fZF0aisuB6aCk=
+	t=1718280515; cv=none; b=F7TUBSKLfsG0bw6h7ZNuRxlmarTPiNuLiTfLAzXd/KbmTWQBp+n95qK4sFv99p8M7yx2MGw46M5BMvLNB5sYbVXCdiKrVAmwN0JM/EJ1eHKS8nYSXnNn/dQVkuhbWcDMB1/5vrWKuFiaY+FrENZT8O84whPTnfIlC0wP32Z2a80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282389; c=relaxed/simple;
-	bh=8Rz1Y3/je7dXhFgZdrfc8NjbXxJ0e3VWoxNB8fbJI3g=;
+	s=arc-20240116; t=1718280515; c=relaxed/simple;
+	bh=LM/UywQQty3CBWf+rXwDuYuc5nt56kWYAYlAMtDJJFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eQ+lwzKvYL/X+dQMqRRftU8Y0i/Oc/upD7y082ogNXRe6NP9TksYRNNmZbnscV6QEilvVKktPWHudlqL7ZV52eAABC/12UBOoG5aIeZwaatf+C9cGQKB1JD5+BSAVRgZq9QpiQxP4OFsdkZm7NTbhS3F0M71AAdckc177GbpLVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhbK6pFO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F47C2BBFC;
-	Thu, 13 Jun 2024 12:39:48 +0000 (UTC)
+	 MIME-Version; b=Xeg4pEGSe/r4WNaJcxRexfDmv5XIJCEHdZ2YlJNt54J0/IQaZZ4dgn+mGk/8dGfeXgOgQEt356nhi+O9rQZMccUozJ6TjydFsezLgyaZudlTaziDOo2O+AYxOE2lzxe3JpNFJ3RuAgm+vFyeDjWqf9xYqcHLZSK3B9S8uxRjyko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snTBxytA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F78FC2BBFC;
+	Thu, 13 Jun 2024 12:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282389;
-	bh=8Rz1Y3/je7dXhFgZdrfc8NjbXxJ0e3VWoxNB8fbJI3g=;
+	s=korg; t=1718280515;
+	bh=LM/UywQQty3CBWf+rXwDuYuc5nt56kWYAYlAMtDJJFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yhbK6pFO5k0NrzhXQXPbtW5FM+4t7jMmeiCvJO9c1kZ8gqVkiOucXG8rOA4D5w0Ii
-	 1+IvRsDobDscoouyk6CTxwVAg655f61IME+UGA111aJtfqVezfFJlJ67qb7pPOj/1M
-	 a7MwkKt9/05z650buVyWcMQZ58IWBFAuAj1eIxx0=
+	b=snTBxytAAh22SsTHlr6QvkSE68BEbjJ4oWD8aM15NHyNsfjw251mEfD3LulSEP8I3
+	 2ySlctJ80WnOufAAQLu+lE+zk8BqF1iVLKI6VgDCEsjGu0SSAFtBrZp4j6nm8nVH+e
+	 p7gvLfeUM+uRY3fD2eAlBgulQT8WsZ0FUALCY8rc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 261/402] fs/ntfs3: Use 64 bit variable to avoid 32 bit overflow
+	Yang Xiwen <forbidden405@outlook.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.6 038/137] arm64: dts: hi3798cv200: fix the size of GICR
 Date: Thu, 13 Jun 2024 13:33:38 +0200
-Message-ID: <20240613113312.329267127@linuxfoundation.org>
+Message-ID: <20240613113224.769275363@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Yang Xiwen <forbidden405@outlook.com>
 
-[ Upstream commit e931f6b630ffb22d66caab202a52aa8cbb10c649 ]
+commit 428a575dc9038846ad259466d5ba109858c0a023 upstream.
 
-For example, in the expression:
-	vbo = 2 * vbo + skip
+During boot, Linux kernel complains:
 
-Fixes: b46acd6a6a627 ("fs/ntfs3: Add NTFS journal")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[    0.000000] GIC: GICv2 detected, but range too small and irqchip.gicv2_force_probe not set
+
+This SoC is using a regular GIC-400 and the GICR space size should be
+8KB rather than 256B.
+
+With this patch:
+
+[    0.000000] GIC: Using split EOI/Deactivate mode
+
+So this should be the correct fix.
+
+Fixes: 2f20182ed670 ("arm64: dts: hisilicon: add dts files for hi3798cv200-poplar board")
+Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240219-cache-v3-1-a33c57534ae9@outlook.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/fslog.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index 6ba1357f3ed4c..369ab64a0b844 100644
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -1181,7 +1181,8 @@ static int read_log_page(struct ntfs_log *log, u32 vbo,
- static int log_read_rst(struct ntfs_log *log, u32 l_size, bool first,
- 			struct restart_info *info)
- {
--	u32 skip, vbo;
-+	u32 skip;
-+	u64 vbo;
- 	struct RESTART_HDR *r_page = NULL;
- 
- 	/* Determine which restart area we are looking for. */
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
++++ b/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
+@@ -58,7 +58,7 @@
+ 	gic: interrupt-controller@f1001000 {
+ 		compatible = "arm,gic-400";
+ 		reg = <0x0 0xf1001000 0x0 0x1000>,  /* GICD */
+-		      <0x0 0xf1002000 0x0 0x100>;   /* GICC */
++		      <0x0 0xf1002000 0x0 0x2000>;  /* GICC */
+ 		#address-cells = <0>;
+ 		#interrupt-cells = <3>;
+ 		interrupt-controller;
 
 
 
