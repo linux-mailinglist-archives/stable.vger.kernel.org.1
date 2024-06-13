@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261BF90700B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:25:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0569906E11
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75AF6B294CF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6CDB1C21F06
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9EA146587;
-	Thu, 13 Jun 2024 12:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0741448FA;
+	Thu, 13 Jun 2024 12:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQvp4coM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4m24B9I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7D2146584;
-	Thu, 13 Jun 2024 12:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8A944C6F;
+	Thu, 13 Jun 2024 12:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281286; cv=none; b=j1EExFtLXEjVit6Sz6cf1NPKBUj5/CZ22NphxX/jor6EmEGprYGnqGLiXIp3Z/Hlt7LSJ3riTdunpTp+4fNpn+wqigASWlNZWh2c6a6KO1xc6Tz2sjuIpFFJiTQS4PXlA7GzMR+uSVGifjlEsDmhfZRXnTrZxjT+TxIE5GdaNBU=
+	t=1718280136; cv=none; b=U2/edjFmirG5ayJXoDkLR377bDcSV7r2rUQ7kcwWKWDTr24UaXoFqlcSQg0ND2nbQ4rV20hWiNqmFPAAdGVf/v2ngiik8VDLzVzv82awCeK1iPcebYUzYUhtcoQFPSrS57o38aIi9UUh1JjJyclsjcs3j6JlmN02hN0HtznV2Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281286; c=relaxed/simple;
-	bh=eiMOiNHS9s8S01cyG6oNX0qGk/w5fYO1P5IDeOmFpWQ=;
+	s=arc-20240116; t=1718280136; c=relaxed/simple;
+	bh=jEwlagI5KE8tT1BM6moWcVAOWZvZxFT33B6Y7/zXZ0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gSSk1AGkPo9XiFpPpyUdxTPOrF10Y2YQ6jBWvPzKJ/vGbqwGsoPy6pKSwpdmpnjZXXK6v5tx2dwrBsR8oqADkGBCg6HEGULALhiLwhTc622LWCVmHu9v+Pn6henQ/g1sJXGzSJOusWiVMz7O7IcGFmR+aZMAU6BRerK28XN66DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQvp4coM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5622BC32786;
-	Thu, 13 Jun 2024 12:21:26 +0000 (UTC)
+	 MIME-Version; b=hx4VTVNXzCjB11JY4ZndEDhFcF0pk09ueiIfEOi1+aGtHbTu6xzGx87THQO/qfwv4pGrsrE3FT32FLMYgAyc22ECpGpigGSDbNS35UZMs3TX3mOO8ZLnKSdoYDZru0rk1jAiiN0VgRNk2RqwdWk9fyBjnkm0Q4O4iRAnrFlumqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4m24B9I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4B9C2BBFC;
+	Thu, 13 Jun 2024 12:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281286;
-	bh=eiMOiNHS9s8S01cyG6oNX0qGk/w5fYO1P5IDeOmFpWQ=;
+	s=korg; t=1718280136;
+	bh=jEwlagI5KE8tT1BM6moWcVAOWZvZxFT33B6Y7/zXZ0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQvp4coMIvlDqiluQ8TBO2bCdsKg7/ZmiF2EzxFW/dNY1GVSnL6w1C/yxu1JPj1/D
-	 A0ME+AXSlcVZkACsuLy5irsh+GGls88etNqu2RBJZOr+hUHVdNhgg5vpMteipK8sMT
-	 xRuuANjsSAZEcCpt4KqEi7/BBZsvF5g/YUaLvGaw=
+	b=w4m24B9IckkOFEixPS3wdsU5D6JIjGI2Mv1gmApbKH5OE0Baes156PKw9iPEoeD7b
+	 5g0F8PqgR59SFMMvupyu4bt1vAD0ROiDEfMSLvmBluJnxqrBMK7wEirqBlaQen+iC0
+	 aeRKBDRRdQ8NW91rW38YZ/cFDUf14j515jR7IOQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Richard Weinberger <richard@nod.at>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 204/317] um: Fix return value in ubd_init()
+Subject: [PATCH 5.4 124/202] Input: ims-pcu - fix printf string overflow
 Date: Thu, 13 Jun 2024 13:33:42 +0200
-Message-ID: <20240613113255.446539292@linuxfoundation.org>
+Message-ID: <20240613113232.548148919@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 31a5990ed253a66712d7ddc29c92d297a991fdf2 ]
+[ Upstream commit bf32bceedd0453c70d9d022e2e29f98e446d7161 ]
 
-When kmalloc_array() fails to allocate memory, the ubd_init()
-should return -ENOMEM instead of -1. So, fix it.
+clang warns about a string overflow in this driver
 
-Fixes: f88f0bdfc32f ("um: UBD Improvements")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+drivers/input/misc/ims-pcu.c:1802:2: error: 'snprintf' will always be truncated; specified size is 10, but format string expands to at least 12 [-Werror,-Wformat-truncation]
+drivers/input/misc/ims-pcu.c:1814:2: error: 'snprintf' will always be truncated; specified size is 10, but format string expands to at least 12 [-Werror,-Wformat-truncation]
+
+Make the buffer a little longer to ensure it always fits.
+
+Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240326223825.4084412-7-arnd@kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/ubd_kern.c | 4 ++--
+ drivers/input/misc/ims-pcu.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/um/drivers/ubd_kern.c b/arch/um/drivers/ubd_kern.c
-index b12c1b0d3e1d0..de28ce711687e 100644
---- a/arch/um/drivers/ubd_kern.c
-+++ b/arch/um/drivers/ubd_kern.c
-@@ -1158,7 +1158,7 @@ static int __init ubd_init(void)
+diff --git a/drivers/input/misc/ims-pcu.c b/drivers/input/misc/ims-pcu.c
+index d8dbfc030d0fa..4dfed127952d3 100644
+--- a/drivers/input/misc/ims-pcu.c
++++ b/drivers/input/misc/ims-pcu.c
+@@ -42,8 +42,8 @@ struct ims_pcu_backlight {
+ #define IMS_PCU_PART_NUMBER_LEN		15
+ #define IMS_PCU_SERIAL_NUMBER_LEN	8
+ #define IMS_PCU_DOM_LEN			8
+-#define IMS_PCU_FW_VERSION_LEN		(9 + 1)
+-#define IMS_PCU_BL_VERSION_LEN		(9 + 1)
++#define IMS_PCU_FW_VERSION_LEN		16
++#define IMS_PCU_BL_VERSION_LEN		16
+ #define IMS_PCU_BL_RESET_REASON_LEN	(2 + 1)
  
- 	if (irq_req_buffer == NULL) {
- 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
--		return -1;
-+		return -ENOMEM;
- 	}
- 	io_req_buffer = kmalloc_array(UBD_REQ_BUFFER_SIZE,
- 				      sizeof(struct io_thread_req *),
-@@ -1169,7 +1169,7 @@ static int __init ubd_init(void)
- 
- 	if (io_req_buffer == NULL) {
- 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
--		return -1;
-+		return -ENOMEM;
- 	}
- 	platform_driver_register(&ubd_driver);
- 	mutex_lock(&ubd_lock);
+ #define IMS_PCU_PCU_B_DEVICE_ID		5
 -- 
 2.43.0
 
