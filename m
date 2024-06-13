@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-50808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22EF5906CCB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:54:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB5A906BCB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFE2E1F248A2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:54:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFF712813E5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B34145350;
-	Thu, 13 Jun 2024 11:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D171143882;
+	Thu, 13 Jun 2024 11:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Paekuivy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFwx/N1E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34101428FC;
-	Thu, 13 Jun 2024 11:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C23D14265E;
+	Thu, 13 Jun 2024 11:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279446; cv=none; b=GnYMQfqoxZ65YILGkuwIvFWV0NMFaYdXD3wQMUwVhWoytbMy0GwyAEa0UjP4T/254ABUAqET0DA56YfqKvFhmBaZI0OPmthTYjCGqbG2i92ScBhGUYZm3rPz2EpZyjCdF3M1arXvlhmhc1VPf5ioxNtxPi7cRGKdviQlvYzvAAE=
+	t=1718279038; cv=none; b=IiGdX9iqOq/kiROS/m+QdNm+SKpu9CHCRziOxBN5IL5PYqwIwKRybhwcCbTXDRyr8P3/P2exsTWwEOWOsgDTN1phw/Bpaf4OEMs67f8PeAOGSHGE9ft4ptlkBYocoov12yLW69AEkjc2r9gNs3bEP4EIYCQsiTxrUJD1/a9KkDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279446; c=relaxed/simple;
-	bh=jDp9Hu+ZfN/PSIoWoDahX5esE7oIR0zso6XfAQBRTDI=;
+	s=arc-20240116; t=1718279038; c=relaxed/simple;
+	bh=XW/+ZZNX2PLvfYaaQsn3ACNIKCOy5eQZox3kidn5uiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2xMWI+9JH/ZEmPUN5Gxxi7DnlXdUKCha08TlIj8TalAS5v/OAPT+UG4dDOmrHEc4ePRPAI6R1HEOItHefsfmSg+pghCmRansOHu3FODQN3mdM+aQRy9xlt0hZYwuk4Lh205KSC7WH6SfEJxkdiY0lmZAJdWs3L4sHMujn8P1/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Paekuivy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7501CC32786;
-	Thu, 13 Jun 2024 11:50:45 +0000 (UTC)
+	 MIME-Version; b=rfYK1YCgQ801lH7i3pk90FEyRuFentVemKLE2wXOXeDY+xBosu1A9EDv7rXtJDyorNBNqs0tpv2dXq6keNmnAQVAipkJSgK2p4dyxYXzKFehMLFsFv439abCed9jTpG6P2jNbkYWwBo3RR3dNyik5MBh/NYZRDvck/zNTpbrtCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFwx/N1E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B85BBC2BBFC;
+	Thu, 13 Jun 2024 11:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279445;
-	bh=jDp9Hu+ZfN/PSIoWoDahX5esE7oIR0zso6XfAQBRTDI=;
+	s=korg; t=1718279038;
+	bh=XW/+ZZNX2PLvfYaaQsn3ACNIKCOy5eQZox3kidn5uiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PaekuivyqUyyb1FvsruW4245Hlty+cMFAfG7rmK6ySXyFWivAMr+zfbH1KrMJlbdQ
-	 GCk3oOwBoUMdtElb9GX7O0ISs4BvCstdq/zW2DH8UhWwnD06zN1LkKX04aj6kB3BdX
-	 yoZfzI3T4zukegkZnlMhXIQwr1xRocoyD2gxmaVM=
+	b=oFwx/N1EXsTQ6MlIWu0HWjqh1wWWlvo3HKapYCjbJC7h+aMHA+90kj1OWc7MDg+am
+	 BNrzM52Wa29yfvkRAqeuGl3hQSbsFHXzT8bqRSrV962B624k63NWJ/L4vQymvW7Gee
+	 iF4vM/MemILsg2BKaZaP53dlvqF2wijuCjf7ELIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Williams <dan.j.williams@intel.com>,
-	Ben Cheatham <Benjamin.Cheatham@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.9 078/157] ACPI: APEI: EINJ: Fix einj_dev release leak
+	Yang Xiwen <forbidden405@outlook.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 4.19 155/213] arm64: dts: hi3798cv200: fix the size of GICR
 Date: Thu, 13 Jun 2024 13:33:23 +0200
-Message-ID: <20240613113230.439580684@linuxfoundation.org>
+Message-ID: <20240613113233.967934858@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Yang Xiwen <forbidden405@outlook.com>
 
-commit 7ff6c798eca05e4a9dcb80163cb454d7787a4bc3 upstream.
+commit 428a575dc9038846ad259466d5ba109858c0a023 upstream.
 
-The platform driver conversion of EINJ mistakenly used
-platform_device_del() to unwind platform_device_register_full() at
-module exit. This leads to a small leak of one 'struct platform_device'
-instance per module load/unload cycle. Switch to
-platform_device_unregister() which performs both device_del() and final
-put_device().
+During boot, Linux kernel complains:
 
-Fixes: 5621fafaac00 ("EINJ: Migrate to a platform driver")
-Cc: 6.9+ <stable@vger.kernel.org> # 6.9+
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[    0.000000] GIC: GICv2 detected, but range too small and irqchip.gicv2_force_probe not set
+
+This SoC is using a regular GIC-400 and the GICR space size should be
+8KB rather than 256B.
+
+With this patch:
+
+[    0.000000] GIC: Using split EOI/Deactivate mode
+
+So this should be the correct fix.
+
+Fixes: 2f20182ed670 ("arm64: dts: hisilicon: add dts files for hi3798cv200-poplar board")
+Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240219-cache-v3-1-a33c57534ae9@outlook.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/apei/einj-core.c |    2 +-
+ arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/apei/einj-core.c
-+++ b/drivers/acpi/apei/einj-core.c
-@@ -903,7 +903,7 @@ static void __exit einj_exit(void)
- 	if (einj_initialized)
- 		platform_driver_unregister(&einj_driver);
- 
--	platform_device_del(einj_dev);
-+	platform_device_unregister(einj_dev);
- }
- 
- module_init(einj_init);
+--- a/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
++++ b/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
+@@ -60,7 +60,7 @@
+ 	gic: interrupt-controller@f1001000 {
+ 		compatible = "arm,gic-400";
+ 		reg = <0x0 0xf1001000 0x0 0x1000>,  /* GICD */
+-		      <0x0 0xf1002000 0x0 0x100>;   /* GICC */
++		      <0x0 0xf1002000 0x0 0x2000>;  /* GICC */
+ 		#address-cells = <0>;
+ 		#interrupt-cells = <3>;
+ 		interrupt-controller;
 
 
 
