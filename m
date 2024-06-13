@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-51557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B868A907074
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89A5F907283
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:48:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64CC81F21E2E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:28:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35F381F24318
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593BF1448C6;
-	Thu, 13 Jun 2024 12:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5A8142E81;
+	Thu, 13 Jun 2024 12:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jO5Fcyfz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZjp4poG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168F33209;
-	Thu, 13 Jun 2024 12:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B1C384;
+	Thu, 13 Jun 2024 12:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281645; cv=none; b=OER7Fu+32vQ28RZbjUpGHb1nzb4oLzNFOvUf28CniVBJuedhj4ZEh6SUd1EzjOoNouPgikng/1rQQdq0qEm88MAUPulsvtyTMlc5ANZ19InoS8NegQMZLkehexBoPcAAynk7FzyXyihhbXDYk68R4jBEGmuJxEFlLpeh7sw1FVc=
+	t=1718282849; cv=none; b=a2YvUo5e+BKPT24ELJclPjbOr1iDj8mPQ295wDfnuHO8EmUlXYq6f0H297281jWpecmHVkCnaniUT77hcRAB1rfJ5t39tfKP6gXoyWcAvAAuqePgPOBWaeiqGFk/1hkXA8gjS2HjVRQtUGjy1zdtkeLQvQcJLQkJbiGZM7ESsAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281645; c=relaxed/simple;
-	bh=0AGlWFyGXxx2lJqEYhYziZM3GssaRQ2XT6Lt96GQrgs=;
+	s=arc-20240116; t=1718282849; c=relaxed/simple;
+	bh=i8+OKxgzSor74MFINiJQFDHRfmDhBI3RQP1TwXOAiFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cya/47QkdX92pukFPv8oA874xG0hI+VBsu/z0MVpQY59bgsi58E+019nkKeF9Y3/hoQ1ujghUEq4Jaw4f94KaeMv9AqcbceMV07za4fES6ztTNGBAep/P7cAz23j3jLsc5fxP9Y74L/CkvR92Z0uUkBVB6I6ML+goBMh1g6YUrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jO5Fcyfz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A48C2BBFC;
-	Thu, 13 Jun 2024 12:27:24 +0000 (UTC)
+	 MIME-Version; b=UWhAoIJslkzfiaC8t0QNe9kwaLSS0UuPjgjv2wKG4gNeXxkaSiPlTu2V2cJQ+moOq53F1fKc0vgIOvzFufozkX+zL7+fncke0Pwzo+7ixDHxIvRR9O0LDBlmYzks+Ez5CyyrcmHuSSwQ13Y3iVub9qVy55AnTBEld3YglINtkz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZjp4poG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95362C2BBFC;
+	Thu, 13 Jun 2024 12:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281645;
-	bh=0AGlWFyGXxx2lJqEYhYziZM3GssaRQ2XT6Lt96GQrgs=;
+	s=korg; t=1718282849;
+	bh=i8+OKxgzSor74MFINiJQFDHRfmDhBI3RQP1TwXOAiFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jO5FcyfzTBQ4mUMCAVvcqXtcN7E/KCTj0NW/9K8OaO269Fh0FYwYh4qHHrjcuDsL5
-	 nthpWLh9SrLUCN3CUGC76BjyGVnCE0IPOkMPGJ/R1AMWT6bg7lyGYlGi2XdqZ44lcU
-	 PvUz4+eeF7czV+dGPvseEy1fCfHD5xa2c18BsuKQ=
+	b=KZjp4poGpbI54D9b5nMVD+I5GlV6xjlxpH0AG3PLLPOBRvXG2TDBKLcXi5iYNC7oA
+	 USWzW6xcjly7RZlkVDXq2KXK7ULO6gHvZ5uUPgMh8wSLhJoPXPIejY2BnB4wNsYijP
+	 Lo4l8BRYftLOXtVKF6RtqcTYSnw4jHhtGU85dn0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cai Xinchen <caixinchen1@huawei.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 294/317] fbdev: savage: Handle err return when savagefb_check_var failed
+	Daniel Borkmann <daniel@iogearbox.net>,
+	David Bauer <mail@david-bauer.net>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 14/85] vxlan: Fix regression when dropping packets due to invalid src addresses
 Date: Thu, 13 Jun 2024 13:35:12 +0200
-Message-ID: <20240613113258.923752717@linuxfoundation.org>
+Message-ID: <20240613113214.694732528@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cai Xinchen <caixinchen1@huawei.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit 6ad959b6703e2c4c5d7af03b4cfd5ff608036339 upstream.
+commit 1cd4bc987abb2823836cbb8f887026011ccddc8a upstream.
 
-The commit 04e5eac8f3ab("fbdev: savage: Error out if pixclock equals zero")
-checks the value of pixclock to avoid divide-by-zero error. However
-the function savagefb_probe doesn't handle the error return of
-savagefb_check_var. When pixclock is 0, it will cause divide-by-zero error.
+Commit f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
+has recently been added to vxlan mainly in the context of source
+address snooping/learning so that when it is enabled, an entry in the
+FDB is not being created for an invalid address for the corresponding
+tunnel endpoint.
 
-Fixes: 04e5eac8f3ab ("fbdev: savage: Error out if pixclock equals zero")
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+Before commit f58f45c1e5b9 vxlan was similarly behaving as geneve in
+that it passed through whichever macs were set in the L2 header. It
+turns out that this change in behavior breaks setups, for example,
+Cilium with netkit in L3 mode for Pods as well as tunnel mode has been
+passing before the change in f58f45c1e5b9 for both vxlan and geneve.
+After mentioned change it is only passing for geneve as in case of
+vxlan packets are dropped due to vxlan_set_mac() returning false as
+source and destination macs are zero which for E/W traffic via tunnel
+is totally fine.
+
+Fix it by only opting into the is_valid_ether_addr() check in
+vxlan_set_mac() when in fact source address snooping/learning is
+actually enabled in vxlan. This is done by moving the check into
+vxlan_snoop(). With this change, the Cilium connectivity test suite
+passes again for both tunnel flavors.
+
+Fixes: f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: David Bauer <mail@david-bauer.net>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: David Bauer <mail@david-bauer.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[ Backport note: vxlan snooping/learning not supported in 6.8 or older,
+  so commit is simply a revert. ]
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/savage/savagefb_driver.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/vxlan/vxlan_core.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/video/fbdev/savage/savagefb_driver.c
-+++ b/drivers/video/fbdev/savage/savagefb_driver.c
-@@ -2271,7 +2271,10 @@ static int savagefb_probe(struct pci_dev
- 	if (info->var.xres_virtual > 0x1000)
- 		info->var.xres_virtual = 0x1000;
- #endif
--	savagefb_check_var(&info->var, info);
-+	err = savagefb_check_var(&info->var, info);
-+	if (err)
-+		goto failed;
-+
- 	savagefb_set_fix(info);
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1662,10 +1662,6 @@ static bool vxlan_set_mac(struct vxlan_d
+ 	if (ether_addr_equal(eth_hdr(skb)->h_source, vxlan->dev->dev_addr))
+ 		return false;
  
- 	/*
+-	/* Ignore packets from invalid src-address */
+-	if (!is_valid_ether_addr(eth_hdr(skb)->h_source))
+-		return false;
+-
+ 	/* Get address from the outer IP header */
+ 	if (vxlan_get_sk_family(vs) == AF_INET) {
+ 		saddr.sin.sin_addr.s_addr = ip_hdr(skb)->saddr;
 
 
 
