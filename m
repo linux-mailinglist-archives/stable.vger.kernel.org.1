@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-51951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6091B90726A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:47:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE3B9072CC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:51:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3A5AB28248
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:47:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B83B2822D7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C16142659;
-	Thu, 13 Jun 2024 12:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB632913;
+	Thu, 13 Jun 2024 12:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGwfPrFB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQS0LOPp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D31414264C;
-	Thu, 13 Jun 2024 12:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E183520ED;
+	Thu, 13 Jun 2024 12:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282796; cv=none; b=T0q24vTcRo6iSTGYRcMhjER0RlQVMPv/e1Z77PRSZ5EHs3ECdPPN9SlYOmgb4Rqpga4J8bYm1iS+GiIlKIiLpzktfGC55kcgjEPgsGEW+KYMNy9P4D4wI6ZjC75tCqEeM733Es7KDxE3sHNprcyvYb4Et2UZuANkMAvxz5FvShQ=
+	t=1718283070; cv=none; b=Y8Of750kDZXzq88sLwclSfyU7nIXPqNBkvIvqDjA73ckGWk0VGV9YxfIpKWgtHWbHJE1jJAZw9lJ1vkB8/DgdrBrfSh3hHdDvG9QkKgbB7sC+MN6oy22GbmNIoy2RJr3m+1z5qyPfCVjNddGtNzpgLfCWlREfENUSIG27Eu2JkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282796; c=relaxed/simple;
-	bh=kMQXDTqKBTbkAbvxWrjlpU6npOeojG+qgV7SNa3MXzk=;
+	s=arc-20240116; t=1718283070; c=relaxed/simple;
+	bh=4Qgo1WefyfOYsir7tSRNbFjydve8Y5fQZ3CywWNHuX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o/ORWo58UEDIIBHPnurMHU9SLIVDHuHyRtP1VjRZm2+cMn1TlimQTbXrNgdySx4GCcXmco1rN6ycgQlSdyjXqlIeX9qIXc4AI/MwaVC3kf5Fy0CIzAWXvtNTw7mtPN0UWOZKxxmdPOFiL52tV7YwqF9OS/2HlXa0gWv4laYSoh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGwfPrFB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9765CC32786;
-	Thu, 13 Jun 2024 12:46:35 +0000 (UTC)
+	 MIME-Version; b=jdotEmUvmU81R+Qiziw8lUuGDilwb23gTDxMfaXC5Ax/ooAn17S5ADGXt/mY29LKIW0gY8Lzu3sttoEO4f4pirG2GfORdypfS1T0JIzwmWYkkCWVIgqIEuFo7g6eN/oRBkZXufKqYkXVN8IkXkw8Bxal9+U35fzSstpZzZMzjf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQS0LOPp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6B0C2BBFC;
+	Thu, 13 Jun 2024 12:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282796;
-	bh=kMQXDTqKBTbkAbvxWrjlpU6npOeojG+qgV7SNa3MXzk=;
+	s=korg; t=1718283069;
+	bh=4Qgo1WefyfOYsir7tSRNbFjydve8Y5fQZ3CywWNHuX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XGwfPrFB360G9g0Amlhi7E2W0QvhXcKv6I17dv5v1jY11iBwg/4h9PDu8fI5dmBJb
-	 9rUD+/7m8t7ldnrKx4eGd3OLG2AoUcQL/B6w35RfGnnZOpQY0hOByghxZtg2raK9tW
-	 e2VOv8Gfk0HY8yysPpf4xfM3yzuAXs8FMx8oTQvI=
+	b=bQS0LOPpvkoatswAT9c25x/cEp/sHhuI6PY/LPKC3RiAEIQGEvqjpiMyA4SUOWwHw
+	 ueB39UYo6kbwdndXozNjQk+AIkYeO6EhIPFU3YHfGxyYYdeJCZeTrIOC7l0qn0aIQZ
+	 0NcmGxTvQPKtD2rZcKTixF8zCkF9iYrUjd1EM/4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Subject: [PATCH 5.15 399/402] EDAC/igen6: Convert PCIBIOS_* return codes to errnos
+	Alexander Potapenko <glider@google.com>,
+	Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
+	Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Kees Cook <keescook@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 58/85] kmsan: do not wipe out origin when doing partial unpoisoning
 Date: Thu, 13 Jun 2024 13:35:56 +0200
-Message-ID: <20240613113317.716744869@linuxfoundation.org>
+Message-ID: <20240613113216.377891197@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +63,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Alexander Potapenko <glider@google.com>
 
-commit f8367a74aebf88dc8b58a0db6a6c90b4cb8fc9d3 upstream.
+commit 2ef3cec44c60ae171b287db7fc2aa341586d65ba upstream.
 
-errcmd_enable_error_reporting() uses pci_{read,write}_config_word()
-that return PCIBIOS_* codes. The return code is then returned all the
-way into the probe function igen6_probe() that returns it as is. The
-probe functions, however, should return normal errnos.
+As noticed by Brian, KMSAN should not be zeroing the origin when
+unpoisoning parts of a four-byte uninitialized value, e.g.:
 
-Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-errno before returning it from errcmd_enable_error_reporting().
+    char a[4];
+    kmsan_unpoison_memory(a, 1);
 
-Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240527132236.13875-2-ilpo.jarvinen@linux.intel.com
+This led to false negatives, as certain poisoned values could receive zero
+origins, preventing those values from being reported.
+
+To fix the problem, check that kmsan_internal_set_shadow_origin() writes
+zero origins only to slots which have zero shadow.
+
+Link: https://lkml.kernel.org/r/20240528104807.738758-1-glider@google.com
+Fixes: f80be4571b19 ("kmsan: add KMSAN runtime core")
+Signed-off-by: Alexander Potapenko <glider@google.com>
+Reported-by: Brian Johannesmeyer <bjohannesmeyer@gmail.com>
+  Link: https://lore.kernel.org/lkml/20240524232804.1984355-1-bjohannesmeyer@gmail.com/T/
+Reviewed-by: Marco Elver <elver@google.com>
+Tested-by: Brian Johannesmeyer <bjohannesmeyer@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/igen6_edac.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/kmsan/core.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -627,7 +627,7 @@ static int errcmd_enable_error_reporting
+--- a/mm/kmsan/core.c
++++ b/mm/kmsan/core.c
+@@ -258,8 +258,7 @@ void kmsan_internal_set_shadow_origin(vo
+ 				      u32 origin, bool checked)
+ {
+ 	u64 address = (u64)addr;
+-	void *shadow_start;
+-	u32 *origin_start;
++	u32 *shadow_start, *origin_start;
+ 	size_t pad = 0;
  
- 	rc = pci_read_config_word(imc->pdev, ERRCMD_OFFSET, &errcmd);
- 	if (rc)
--		return rc;
-+		return pcibios_err_to_errno(rc);
+ 	KMSAN_WARN_ON(!kmsan_metadata_is_contiguous(addr, size));
+@@ -287,8 +286,16 @@ void kmsan_internal_set_shadow_origin(vo
+ 	origin_start =
+ 		(u32 *)kmsan_get_metadata((void *)address, KMSAN_META_ORIGIN);
  
- 	if (enable)
- 		errcmd |= ERRCMD_CE | ERRSTS_UE;
-@@ -636,7 +636,7 @@ static int errcmd_enable_error_reporting
- 
- 	rc = pci_write_config_word(imc->pdev, ERRCMD_OFFSET, errcmd);
- 	if (rc)
--		return rc;
-+		return pcibios_err_to_errno(rc);
- 
- 	return 0;
+-	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++)
+-		origin_start[i] = origin;
++	/*
++	 * If the new origin is non-zero, assume that the shadow byte is also non-zero,
++	 * and unconditionally overwrite the old origin slot.
++	 * If the new origin is zero, overwrite the old origin slot iff the
++	 * corresponding shadow slot is zero.
++	 */
++	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++) {
++		if (origin || !shadow_start[i])
++			origin_start[i] = origin;
++	}
  }
+ 
+ struct page *kmsan_vmalloc_to_page_or_null(void *vaddr)
 
 
 
