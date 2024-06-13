@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A48D907058
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6873C907173
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DB9BB295C1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BED71F25B22
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9766144D2F;
-	Thu, 13 Jun 2024 12:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B09A4A07;
+	Thu, 13 Jun 2024 12:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6pNb7Uv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+arEH4L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781AA144D16;
-	Thu, 13 Jun 2024 12:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFAE1EEF8;
+	Thu, 13 Jun 2024 12:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281104; cv=none; b=tpvYiT2unLtW4LmNu67Q0txaj9TRHiuFO5T8qsRSkHeSrYEhKMn4fRnvW40nem2F1Hds/WmO8Fz2+GSjnNEviTIee0yNqqRpPGb90NTAqxebo402n0iwrOOUz+pbRZKAbnIylnN5KICpHhhWiWDotslrFvTXqJ0jtq5u15/HnIg=
+	t=1718282221; cv=none; b=XKQPaUkV7WRewJmsiW1BtCf4WMOK9htjzWqhYN1GVWoW/JT2E+V/wx0hVa1D5+Yi1c+EXTEmQFgiXFGuN+nZfweZAgsgHUqDfrVe8dI3x8VfuLoD7Pipyn3pVvKLTwHZ6DMypbpSjJH9s4OkBpLsZTeOTpYrlRlYyYvuvIrqdUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281104; c=relaxed/simple;
-	bh=kt8w/EjjXYiJZOgxE6X5i6DdcqwhlKLq3gEcGDgs37o=;
+	s=arc-20240116; t=1718282221; c=relaxed/simple;
+	bh=4aDKwESArYrT+rzHDXYtRCWjfwdKNl7re+KuaVxHu9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XJ8NDUh1XalzT9nLCTf2kpgfufVxOUeigFR3aT0VywRgjcNb88/Auu9cLu4DCTTAaAyzzzlOmh1L0UV40/Lnplg2r/m7nboujNlcRF/OxLt6qQ/5okatCU8rj5yw26EYVgKAiCB2wWPmlkA1nYrlkxD6whkxiix655l14ac2nuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6pNb7Uv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E65C32786;
-	Thu, 13 Jun 2024 12:18:23 +0000 (UTC)
+	 MIME-Version; b=TjKMHuXO1UdxllhhrtsaANMPVgGyyYSxtg2mR5EzSPrTQK9RGQm+bFzJFyIZ4HtRLpsi0VWbY+PeD5Acf2VdHU34LQKuwVkJkYGthg4O3hsn5B3Ty9KCttmKaeQdoSZM+29VK6TDY2CJge1kXKTnQBAZ8IPiOcWBySdXpsMPU00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+arEH4L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3D7C2BBFC;
+	Thu, 13 Jun 2024 12:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281104;
-	bh=kt8w/EjjXYiJZOgxE6X5i6DdcqwhlKLq3gEcGDgs37o=;
+	s=korg; t=1718282220;
+	bh=4aDKwESArYrT+rzHDXYtRCWjfwdKNl7re+KuaVxHu9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U6pNb7Uvrbq2Tq+FLrxCnDKkv5zvAhCtUGSZYV3UdRaarpdLxRgvBZvgKbGi/TT+Q
-	 QuElPJC15tHLC39V2TgronynZSh22fLWMwtipZqn+8/VI+76U7/0hHgtAKEJGa92m9
-	 qYWw9Gp4caPzIG/1AVRPE12Pow3GQSpeHZPekVMU=
+	b=T+arEH4L+uxA1C/qNnAly0yqvV4e3ac0O+awKZvWFZk8Bj/lJZqlhfQMP26D+ZPKp
+	 c9CoeFGXiql3UBUHl3KRrbw44cN/X6WZ+0RxLlCZzUqrtbUrpuNJ896w+fLEpgpQbB
+	 2LAZ+ZyfwZiEZoSFWTeyQeqJEBKEW/AOY9cGfIlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Rander Wang <rander.wang@intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 142/317] soundwire: cadence: fix invalid PDI offset
+Subject: [PATCH 5.15 203/402] iio: pressure: dps310: support negative temperature values
 Date: Thu, 13 Jun 2024 13:32:40 +0200
-Message-ID: <20240613113253.061223281@linuxfoundation.org>
+Message-ID: <20240613113310.066606754@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
 
-[ Upstream commit 8ee1b439b1540ae543149b15a2a61b9dff937d91 ]
+[ Upstream commit 9dd6b32e76ff714308964cd9ec91466a343dcb8b ]
 
-For some reason, we add an offset to the PDI, presumably to skip the
-PDI0 and PDI1 which are reserved for BPT.
+The current implementation interprets negative values returned from
+`dps310_calculate_temp` as error codes.
+This has a side effect that when negative temperature values are
+calculated, they are interpreted as error.
 
-This code is however completely wrong and leads to an out-of-bounds
-access. We were just lucky so far since we used only a couple of PDIs
-and remained within the PDI array bounds.
+Fix this by using the return value only for error handling and passing a
+pointer for the value.
 
-A Fixes: tag is not provided since there are no known platforms where
-the out-of-bounds would be accessed, and the initial code had problems
-as well.
-
-A follow-up patch completely removes this useless offset.
-
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://lore.kernel.org/r/20240326090122.1051806-2-yung-chuan.liao@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: ba6ec48e76bc ("iio: Add driver for Infineon DPS310")
+Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+Link: https://lore.kernel.org/r/20240415105030.1161770-2-thomas.haemmerle@leica-geosystems.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/cadence_master.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/pressure/dps310.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
-index 18e7d158fcca4..d3e9cd3faadfd 100644
---- a/drivers/soundwire/cadence_master.c
-+++ b/drivers/soundwire/cadence_master.c
-@@ -1698,7 +1698,7 @@ struct sdw_cdns_pdi *sdw_cdns_alloc_pdi(struct sdw_cdns *cdns,
+diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
+index 1b6b9530f1662..7fdc7a0147f0e 100644
+--- a/drivers/iio/pressure/dps310.c
++++ b/drivers/iio/pressure/dps310.c
+@@ -730,7 +730,7 @@ static int dps310_read_pressure(struct dps310_data *data, int *val, int *val2,
+ 	}
+ }
  
- 	/* check if we found a PDI, else find in bi-directional */
- 	if (!pdi)
--		pdi = cdns_find_pdi(cdns, 2, stream->num_bd, stream->bd,
-+		pdi = cdns_find_pdi(cdns, 0, stream->num_bd, stream->bd,
- 				    dai_id);
+-static int dps310_calculate_temp(struct dps310_data *data)
++static int dps310_calculate_temp(struct dps310_data *data, int *val)
+ {
+ 	s64 c0;
+ 	s64 t;
+@@ -746,7 +746,9 @@ static int dps310_calculate_temp(struct dps310_data *data)
+ 	t = c0 + ((s64)data->temp_raw * (s64)data->c1);
  
- 	if (pdi) {
+ 	/* Convert to milliCelsius and scale the temperature */
+-	return (int)div_s64(t * 1000LL, kt);
++	*val = (int)div_s64(t * 1000LL, kt);
++
++	return 0;
+ }
+ 
+ static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
+@@ -768,11 +770,10 @@ static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
+ 		if (rc)
+ 			return rc;
+ 
+-		rc = dps310_calculate_temp(data);
+-		if (rc < 0)
++		rc = dps310_calculate_temp(data, val);
++		if (rc)
+ 			return rc;
+ 
+-		*val = rc;
+ 		return IIO_VAL_INT;
+ 
+ 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
 -- 
 2.43.0
 
