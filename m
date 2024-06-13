@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6F6906E5F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF207906FBF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D288F1C20AC6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 038061C226A5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EAD145A09;
-	Thu, 13 Jun 2024 12:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE8F145B18;
+	Thu, 13 Jun 2024 12:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QaXrYrWI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0H1oOSg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB70145359;
-	Thu, 13 Jun 2024 12:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62C8145B10;
+	Thu, 13 Jun 2024 12:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280335; cv=none; b=GcK0YauX4H8dZE446r/Siz/Tn53kgloelxUIiUoRd6TnnCb93oGkd0YM+U6lVquVetOK7LZYcK3UshKOYEk7dv9YJyvtZz5eDD7scHy5WUwivqO8Nt9T+vNSGizXPUQFE4mQBqY3gsH9YXXVb/wuFxh4Xs4wCPpK+yz0195wTGE=
+	t=1718281219; cv=none; b=CpTeTRAFMZl5aYKoACnT5+vyL2CT1kFm3MIswGtQUQ4EkjZBgdcVCiol+gWJbjZXP5/YNTs02ucq4MfpNIYaW9Utm+pLwn6GB07KjLekcpRqWzfnQVHcTreGkSMylSvFpR9DuczI0CgBylOZ3UMsEogMtq1GVryl2U81+ilx+08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280335; c=relaxed/simple;
-	bh=dW1q/yuhHWOymMZkqqG431RPpeD1vNIcUMKGs8hLYN0=;
+	s=arc-20240116; t=1718281219; c=relaxed/simple;
+	bh=c9Lj4d3XVqiR1r66Qr8vbqtiu8Z6y3pWuxSZtOIHE0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U+F+EPdAVZCmfHmivKW3XKrywWuZQ57EkwAtMF1BOrk2b7Po7cfld1MRyFf4oDZljgrnnY2UilYZdBHz/Jc/JoJ3dF7J3C/x0Ig7REH/sfAT3nWAvNgnlVI0tRp1uCMIEuhfCaTqiwz4CNg8gYJo5FzHlKByIzVgr9gprRqvOv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QaXrYrWI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F07C32786;
-	Thu, 13 Jun 2024 12:05:34 +0000 (UTC)
+	 MIME-Version; b=pkbFcnVdPYXS2j85dVgC3sddYZPLtCC+SNDt2n1S7YelyNQsI1Synfrc3ZuZGgm0eiWN9TVzgPbXmeMm4X5klddPeYTv6txzsQhI7g1yCtOsTyJruWFr/59jIA7U40YTIWCSCFa9nmYKiccDe3E4V+NVicszml9XYMxHyLEKVEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N0H1oOSg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02453C2BBFC;
+	Thu, 13 Jun 2024 12:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280335;
-	bh=dW1q/yuhHWOymMZkqqG431RPpeD1vNIcUMKGs8hLYN0=;
+	s=korg; t=1718281219;
+	bh=c9Lj4d3XVqiR1r66Qr8vbqtiu8Z6y3pWuxSZtOIHE0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QaXrYrWIGeuHOB6ZZG4WlZ3EtrTV5oXGA+mo64wH6HKljMadZb0SpxndyqHaEsm42
-	 eDDgAx7Xx6wA4Zd9zfNTOwJUDspo9gjF359uEUWdiGnJn+lTak5K2N4BB824STVyDq
-	 gjD8QWoNql0j6NhDasisA4eAfIegeWJWb6cBbevA=
+	b=N0H1oOSgdAk7KRMDM8skoBP7Uhw1M0XtKLaZEdGyfmkvSJyEavLHY1AP4FrydR9Yt
+	 nCYwMASr/Wc1s7xraRXo13Phoz44B7q3w0N0evlbU+vgxxnXc4HQyqFC3C8aLK8Ngd
+	 l8hqm1xCG2PuaSwX9XNXgsI0c6sAjS/jryj3pRS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bob Zhou <bob.zhou@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Le Ma <le.ma@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 019/137] drm/amdgpu: add error handle to avoid out-of-bounds
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com>
+Subject: [PATCH 5.10 181/317] PCI/EDR: Align EDR_PORT_DPC_ENABLE_DSM with PCI Firmware r3.3
 Date: Thu, 13 Jun 2024 13:33:19 +0200
-Message-ID: <20240613113224.036090607@linuxfoundation.org>
+Message-ID: <20240613113254.560694185@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bob Zhou <bob.zhou@amd.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-commit 8b2faf1a4f3b6c748c0da36cda865a226534d520 upstream.
+[ Upstream commit f24ba846133d0edec785ac6430d4daf6e9c93a09 ]
 
-if the sdma_v4_0_irq_id_to_seq return -EINVAL, the process should
-be stop to avoid out-of-bounds read, so directly return -EINVAL.
+The "Downstream Port Containment related Enhancements" ECN of Jan 28, 2019
+(document 12888 below), defined the EDR_PORT_DPC_ENABLE_DSM function with
+Revision ID 5 with Arg3 being an integer.  But when the ECN was integrated
+into PCI Firmware r3.3, sec 4.6.12, it was defined as Revision ID 6 with
+Arg3 being a package containing an integer.
 
-Signed-off-by: Bob Zhou <bob.zhou@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Le Ma <le.ma@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The implementation in acpi_enable_dpc() supplies a package as Arg3 (arg4 in
+the code), but it previously specified Revision ID 5.  Align this with PCI
+Firmware r3.3 by using Revision ID 6.
+
+If firmware implemented per the ECN, its Revision 5 function would receive
+a package as Arg3 when it expects an integer, so acpi_enable_dpc() would
+likely fail.  If such firmware exists and lacks a Revision 6 function that
+expects a package, we may have to add support for Revision 5.
+
+Link: https://lore.kernel.org/r/20240501022543.1626025-1-sathyanarayanan.kuppuswamy@linux.intel.com
+Link: https://members.pcisig.com/wg/PCI-SIG/document/12888
+Fixes: ac1c8e35a326 ("PCI/DPC: Add Error Disconnect Recover (EDR) support")
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+[bhelgaas: split into two patches, update commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com> # one platform
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pci/pcie/edr.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -2031,6 +2031,9 @@ static int sdma_v4_0_process_trap_irq(st
+diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
+index 87734e4c3c204..5b5a502363c00 100644
+--- a/drivers/pci/pcie/edr.c
++++ b/drivers/pci/pcie/edr.c
+@@ -32,10 +32,10 @@ static int acpi_enable_dpc(struct pci_dev *pdev)
+ 	int status = 0;
  
- 	DRM_DEBUG("IH: SDMA trap\n");
- 	instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
-+	if (instance < 0)
-+		return instance;
-+
- 	switch (entry->ring_id) {
- 	case 0:
- 		amdgpu_fence_process(&adev->sdma.instance[instance].ring);
+ 	/*
+-	 * Behavior when calling unsupported _DSM functions is undefined,
+-	 * so check whether EDR_PORT_DPC_ENABLE_DSM is supported.
++	 * Per PCI Firmware r3.3, sec 4.6.12, EDR_PORT_DPC_ENABLE_DSM is
++	 * optional. Return success if it's not implemented.
+ 	 */
+-	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
++	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 6,
+ 			    1ULL << EDR_PORT_DPC_ENABLE_DSM))
+ 		return 0;
+ 
+@@ -46,12 +46,7 @@ static int acpi_enable_dpc(struct pci_dev *pdev)
+ 	argv4.package.count = 1;
+ 	argv4.package.elements = &req;
+ 
+-	/*
+-	 * Per Downstream Port Containment Related Enhancements ECN to PCI
+-	 * Firmware Specification r3.2, sec 4.6.12, EDR_PORT_DPC_ENABLE_DSM is
+-	 * optional.  Return success if it's not implemented.
+-	 */
+-	obj = acpi_evaluate_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
++	obj = acpi_evaluate_dsm(adev->handle, &pci_acpi_dsm_guid, 6,
+ 				EDR_PORT_DPC_ENABLE_DSM, &argv4);
+ 	if (!obj)
+ 		return 0;
+-- 
+2.43.0
+
 
 
 
