@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-51484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4A0907022
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66627906E2A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEF9A28958B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77C531C20FD3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13878145B37;
-	Thu, 13 Jun 2024 12:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F97E14659F;
+	Thu, 13 Jun 2024 12:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdAkLXI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrqLgJNx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C409D13D607;
-	Thu, 13 Jun 2024 12:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2211465A4;
+	Thu, 13 Jun 2024 12:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281433; cv=none; b=XSLlp0TTJZPAegqnO8LjGI5VINa24rE3ggzrh2TeQjemOuE7TiwzMLe3hqHuW6VRLy4dejy+UJI9z2sJcU0LQ1nThCzHfsKfh5usu6nixYb5AKa/JZFqd8fb/d3u6a//zf3JsMMIzQxWUJr0jTdG7d+SVFKDqAnyukv3gsDaGEk=
+	t=1718280192; cv=none; b=TU+iY/jIQZx+R4ZB8yXC2/Xmi+3p3uclf97QwwRARdOLmwTd59nsnkEj2yGXltRk6raFsIS/4LPYaiqxKD7wCAE8r5bawKL02iOqDfzqbiy+kjxnd5uDj+s7K804J8pj3HTC/UNhsJg7cezYqYdaYp3pJnEhOaPMadMzoyyaj0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281433; c=relaxed/simple;
-	bh=cJDI3yQGflhXjtp4lXvr/K3iKWEh2x81IGXCbIPaO5c=;
+	s=arc-20240116; t=1718280192; c=relaxed/simple;
+	bh=fQnmABLythWs9w2vbhLfkqcF0ZmhCMzu93P8JAEnckQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lIHI/BzSFGdfg7GdigWO7SYO89S9NLBPP1YTGEpG/G0WfSIdRfhDILL9pMKO1BlNw/QoIxToyh03Zh10Fa7f6ckMWU+0PB+TkbXv5W+9BN13cT/xRFbSajK/eerfeJkUlETw9RdPQGbM0DRqbT0MlXddG7g0q2YxEIWCR+FDa/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdAkLXI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E47FC2BBFC;
-	Thu, 13 Jun 2024 12:23:53 +0000 (UTC)
+	 MIME-Version; b=bAU9vzjYGHdZM8GLLKZIKI5mIh+fRl6Mzr6dhhZhJzURLMPDnfv/nLtYVpAoPz5EykziGvlfiIt8et4lLVUMQK5BMDEa1i0Yl5zNmcW6ZmW7y2fiE/lyHUIrDBAJWZL/TU/7upLc937MUXPK8E4s9VNFt5BGxRViDWEgv6GgacA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrqLgJNx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78B1C2BBFC;
+	Thu, 13 Jun 2024 12:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281433;
-	bh=cJDI3yQGflhXjtp4lXvr/K3iKWEh2x81IGXCbIPaO5c=;
+	s=korg; t=1718280192;
+	bh=fQnmABLythWs9w2vbhLfkqcF0ZmhCMzu93P8JAEnckQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AdAkLXI/cQ8v94mNLpkpOh+yeTw8hVxn452jsD9sZQfVuG19BNlyGrcHUMbRMmx2r
-	 iJrUc7pl4H5OIUkvfcGXfxncLBGMU2s4iNyqPiN64YWmJwWQV6KSw146neoMOUBKM1
-	 30TLWl0j+qh21ZOJ0/r1c8YPXD0y9YxdkN06nULk=
+	b=zrqLgJNxekJcfKfvIS+l47jI3bE9pLWyI9/4pFYcfYeNy87Y8ZLzXfRyG70FP6aqh
+	 vKYnUpYybz3CTNG0jLAbNNtjMxeLJDzIRcq54WrqqxZvI9terBB4dwo7jaiiYMhawj
+	 M2iHT0qNR/KGfW8tcZUueVbf55EuqeJzQKrmqAi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
-	Simon Horman <horms@kernel.org>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 253/317] net: usb: smsc95xx: fix changing LED_SEL bit value updated from EEPROM
+	Zheyu Ma <zheyuma97@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 5.4 173/202] media: lgdt3306a: Add a check against null-pointer-def
 Date: Thu, 13 Jun 2024 13:34:31 +0200
-Message-ID: <20240613113257.336386551@linuxfoundation.org>
+Message-ID: <20240613113234.418705832@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
+From: Zheyu Ma <zheyuma97@gmail.com>
 
-[ Upstream commit 52a2f0608366a629d43dacd3191039c95fef74ba ]
+commit c1115ddbda9c930fba0fdd062e7a8873ebaf898d upstream.
 
-LED Select (LED_SEL) bit in the LED General Purpose IO Configuration
-register is used to determine the functionality of external LED pins
-(Speed Indicator, Link and Activity Indicator, Full Duplex Link
-Indicator). The default value for this bit is 0 when no EEPROM is
-present. If a EEPROM is present, the default value is the value of the
-LED Select bit in the Configuration Flags of the EEPROM. A USB Reset or
-Lite Reset (LRST) will cause this bit to be restored to the image value
-last loaded from EEPROM, or to be set to 0 if no EEPROM is present.
+The driver should check whether the client provides the platform_data.
 
-While configuring the dual purpose GPIO/LED pins to LED outputs in the
-LED General Purpose IO Configuration register, the LED_SEL bit is changed
-as 0 and resulting the configured value from the EEPROM is cleared. The
-issue is fixed by using read-modify-write approach.
+The following log reveals it:
 
-Fixes: f293501c61c5 ("smsc95xx: configure LED outputs")
-Signed-off-by: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Woojung Huh <woojung.huh@microchip.com>
-Link: https://lore.kernel.org/r/20240523085314.167650-1-Parthiban.Veerasooran@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[   29.610324] BUG: KASAN: null-ptr-deref in kmemdup+0x30/0x40
+[   29.610730] Read of size 40 at addr 0000000000000000 by task bash/414
+[   29.612820] Call Trace:
+[   29.613030]  <TASK>
+[   29.613201]  dump_stack_lvl+0x56/0x6f
+[   29.613496]  ? kmemdup+0x30/0x40
+[   29.613754]  print_report.cold+0x494/0x6b7
+[   29.614082]  ? kmemdup+0x30/0x40
+[   29.614340]  kasan_report+0x8a/0x190
+[   29.614628]  ? kmemdup+0x30/0x40
+[   29.614888]  kasan_check_range+0x14d/0x1d0
+[   29.615213]  memcpy+0x20/0x60
+[   29.615454]  kmemdup+0x30/0x40
+[   29.615700]  lgdt3306a_probe+0x52/0x310
+[   29.616339]  i2c_device_probe+0x951/0xa90
+
+Link: https://lore.kernel.org/linux-media/20220405095018.3993578-1-zheyuma97@gmail.com
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/smsc95xx.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/media/dvb-frontends/lgdt3306a.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
-index 2778ad6726f03..30e5f6910e6fd 100644
---- a/drivers/net/usb/smsc95xx.c
-+++ b/drivers/net/usb/smsc95xx.c
-@@ -845,7 +845,7 @@ static int smsc95xx_start_rx_path(struct usbnet *dev, int in_pm)
- static int smsc95xx_reset(struct usbnet *dev)
- {
- 	struct smsc95xx_priv *pdata = dev->driver_priv;
--	u32 read_buf, write_buf, burst_cap;
-+	u32 read_buf, burst_cap;
- 	int ret = 0, timeout;
+--- a/drivers/media/dvb-frontends/lgdt3306a.c
++++ b/drivers/media/dvb-frontends/lgdt3306a.c
+@@ -2199,6 +2199,11 @@ static int lgdt3306a_probe(struct i2c_cl
+ 	struct dvb_frontend *fe;
+ 	int ret;
  
- 	netif_dbg(dev, ifup, dev->net, "entering smsc95xx_reset\n");
-@@ -987,10 +987,13 @@ static int smsc95xx_reset(struct usbnet *dev)
- 		return ret;
- 	netif_dbg(dev, ifup, dev->net, "ID_REV = 0x%08x\n", read_buf);
- 
-+	ret = smsc95xx_read_reg(dev, LED_GPIO_CFG, &read_buf);
-+	if (ret < 0)
-+		return ret;
- 	/* Configure GPIO pins as LED outputs */
--	write_buf = LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
--		LED_GPIO_CFG_FDX_LED;
--	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, write_buf);
-+	read_buf |= LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
-+		    LED_GPIO_CFG_FDX_LED;
-+	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, read_buf);
- 	if (ret < 0)
- 		return ret;
- 
--- 
-2.43.0
-
++	if (!client->dev.platform_data) {
++		dev_err(&client->dev, "platform data is mandatory\n");
++		return -EINVAL;
++	}
++
+ 	config = kmemdup(client->dev.platform_data,
+ 			 sizeof(struct lgdt3306a_config), GFP_KERNEL);
+ 	if (config == NULL) {
 
 
 
