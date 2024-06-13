@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-50747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79C5C906C64
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FDD8906D7D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 238BE1F21A74
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D49932859AC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C14144313;
-	Thu, 13 Jun 2024 11:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1C7148849;
+	Thu, 13 Jun 2024 11:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SS0gMCb6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTff/jVF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C8F14430E;
-	Thu, 13 Jun 2024 11:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C81143C55;
+	Thu, 13 Jun 2024 11:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279266; cv=none; b=HQMKHUqf1SBybNw81EtAsyUbBou+4IymliDGLTndwJwMDLQtIbinRpFWKxUAc4vRyCLrF1MIAhMbBdZ85ttpbWZDAZAu/ZAfBcgdXGT2WgjtuTQps6TJ9TzaDC7E4g0TxovUhgcgClkthUKKS0LB7LRBIG9yIIT19yEl5SU+xNA=
+	t=1718279814; cv=none; b=n8nHKDW9BjF34yj1XMdHPqZGQWVaFLd2w8zyrhg7qyqvp/mg7SxIIcpU14HJse5Xk+EHHct9FnPCa2Xwx4CSbUMl5cc/De30rYnSFR2aNji1NRgazxiWPExl5wCZ6MRScOXPoEt2C7cxzuLy1rLMVNkQgh0ooMfKgx2+JhDWVa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279266; c=relaxed/simple;
-	bh=vcQOQbXAj6MtgHf5FV0jFm9rA4KsgajSjYQ9myglI0k=;
+	s=arc-20240116; t=1718279814; c=relaxed/simple;
+	bh=00U4CHykbZ93jA+8XqLPfe+7cH8K2Z8l0qQfZZbPr9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TjgERyofvIibb7wgnrU/jVEJQ7G5OzIMpnIPfH+5FpBsGmZLhlpkG70Lzu2sFkAGsblOS+EyiLrlx0eIunSqFqGQT5e7BZR+9U6WY1PphLcN1Gno/Wih6wY0stJLzz6qdPlY/lAAF+pk9j7Aw7MT1x3z28LVtNIbbTpxYZTwfDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SS0gMCb6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17A5C2BBFC;
-	Thu, 13 Jun 2024 11:47:45 +0000 (UTC)
+	 MIME-Version; b=s/Qw5pBFW/Wbf1YREXGAeLLl2lwEjaTWFLAGixLuasH+76K/XcL14OgFPWKn7MN8XY+xxsqNNOPLHAUx7fAGJSe4PkM8DCThaZlosg8ERSD4bDxt18uGrSJ1YAQimsyCeMZxHvncfmm8JyNg9Ewt7l9SZTXiBX8KZSW8EdaonF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTff/jVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4A8C2BBFC;
+	Thu, 13 Jun 2024 11:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279266;
-	bh=vcQOQbXAj6MtgHf5FV0jFm9rA4KsgajSjYQ9myglI0k=;
+	s=korg; t=1718279814;
+	bh=00U4CHykbZ93jA+8XqLPfe+7cH8K2Z8l0qQfZZbPr9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SS0gMCb6UUw1Hd5+qYeJjtE9vS3kFBsDE8K6VkLi9s0H+/pzjyXwbGQpG0NnMq96H
-	 GkVxMOiMFLrAj3uQDQyBCkb+nQa4y05Lo2HmIwUKdho65A0/9ogEE16YCha3m3ifN+
-	 Bby/nv/sWizeX61qE2bqM3UiBxeNLzIX1k3AR9/c=
+	b=rTff/jVFA0aPN4UWBBI8bxjZrJa35JL+E/cenACFWbbONaXzhZbKkNY7R6aGJF7JI
+	 0wdq6qsXODNw2gDrwUKT7hfMG/p5Qzo6OOXmjjkMz0YgN9fYHoOq559dQ3fJwyWbQy
+	 vF8SiZaTMjhQAHgeIj04ghgmlnYAcG+HSV1wtMZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lalith Rajendran <lalithkraj@chromium.org>,
-	chrome-platform@lists.linux.dev,
-	Karthikeyan Ramasubramanian <kramasub@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>
-Subject: [PATCH 6.9 018/157] platform/chrome: cros_ec: Handle events during suspend after resume completion
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 045/202] tcp: minor optimization in tcp_add_backlog()
 Date: Thu, 13 Jun 2024 13:32:23 +0200
-Message-ID: <20240613113228.111203523@linuxfoundation.org>
+Message-ID: <20240613113229.510301703@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karthikeyan Ramasubramanian <kramasub@chromium.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 2fbe479c0024e1c6b992184a799055e19932aa48 upstream.
+[ Upstream commit d519f350967a60b85a574ad8aeac43f2b4384746 ]
 
-Commit 47ea0ddb1f56 ("platform/chrome: cros_ec_lpc: Separate host
-command and irq disable") re-ordered the resume sequence. Before that
-change, cros_ec resume sequence is:
-1) Enable IRQ
-2) Send resume event
-3) Handle events during suspend
+If packet is going to be coalesced, sk_sndbuf/sk_rcvbuf values
+are not used. Defer their access to the point we need them.
 
-After commit 47ea0ddb1f56 ("platform/chrome: cros_ec_lpc: Separate host
-command and irq disable"), cros_ec resume sequence is:
-1) Enable IRQ
-2) Handle events during suspend
-3) Send resume event.
-
-This re-ordering leads to delayed handling of any events queued between
-items 2) and 3) with the updated sequence. Also in certain platforms, EC
-skips triggering interrupt for certain events eg. mkbp events until the
-resume event is received. Such events are stuck in the host event queue
-indefinitely. This change puts back the original order to avoid any
-delay in handling the pending events.
-
-Fixes: 47ea0ddb1f56 ("platform/chrome: cros_ec_lpc: Separate host command and irq disable")
-Cc: <stable@vger.kernel.org>
-Cc: Lalith Rajendran <lalithkraj@chromium.org>
-Cc: <chrome-platform@lists.linux.dev>
-Signed-off-by: Karthikeyan Ramasubramanian <kramasub@chromium.org>
-Link: https://lore.kernel.org/r/20240429121343.v2.1.If2e0cef959f1f6df9f4d1ab53a97c54aa54208af@changeid
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: ec00ed472bdb ("tcp: avoid premature drops in tcp_add_backlog()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/chrome/cros_ec.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ net/ipv4/tcp_ipv4.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/platform/chrome/cros_ec.c
-+++ b/drivers/platform/chrome/cros_ec.c
-@@ -432,6 +432,12 @@ static void cros_ec_send_resume_event(st
- void cros_ec_resume_complete(struct cros_ec_device *ec_dev)
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 0dd917c5a7da6..1567072071633 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -1678,8 +1678,7 @@ int tcp_v4_early_demux(struct sk_buff *skb)
+ 
+ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
  {
- 	cros_ec_send_resume_event(ec_dev);
-+
-+	/*
-+	 * Let the mfd devices know about events that occur during
-+	 * suspend. This way the clients know what to do with them.
-+	 */
-+	cros_ec_report_events_during_suspend(ec_dev);
- }
- EXPORT_SYMBOL(cros_ec_resume_complete);
+-	u32 limit = READ_ONCE(sk->sk_rcvbuf) + READ_ONCE(sk->sk_sndbuf);
+-	u32 tail_gso_size, tail_gso_segs;
++	u32 limit, tail_gso_size, tail_gso_segs;
+ 	struct skb_shared_info *shinfo;
+ 	const struct tcphdr *th;
+ 	struct tcphdr *thtail;
+@@ -1786,7 +1785,7 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
+ 	 * to reduce memory overhead, so add a little headroom here.
+ 	 * Few sockets backlog are possibly concurrently non empty.
+ 	 */
+-	limit += 64*1024;
++	limit = READ_ONCE(sk->sk_rcvbuf) + READ_ONCE(sk->sk_sndbuf) + 64*1024;
  
-@@ -442,12 +448,6 @@ static void cros_ec_enable_irq(struct cr
- 
- 	if (ec_dev->wake_enabled)
- 		disable_irq_wake(ec_dev->irq);
--
--	/*
--	 * Let the mfd devices know about events that occur during
--	 * suspend. This way the clients know what to do with them.
--	 */
--	cros_ec_report_events_during_suspend(ec_dev);
- }
- 
- /**
-@@ -475,8 +475,8 @@ EXPORT_SYMBOL(cros_ec_resume_early);
-  */
- int cros_ec_resume(struct cros_ec_device *ec_dev)
- {
--	cros_ec_enable_irq(ec_dev);
--	cros_ec_send_resume_event(ec_dev);
-+	cros_ec_resume_early(ec_dev);
-+	cros_ec_resume_complete(ec_dev);
- 	return 0;
- }
- EXPORT_SYMBOL(cros_ec_resume);
+ 	if (unlikely(sk_add_backlog(sk, skb, limit))) {
+ 		bh_unlock_sock(sk);
+-- 
+2.43.0
+
 
 
 
