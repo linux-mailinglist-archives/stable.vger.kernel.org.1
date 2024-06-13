@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60289071E5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9A48906E9A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7662328415D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF6811C22EEB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DD4143892;
-	Thu, 13 Jun 2024 12:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7387145B3C;
+	Thu, 13 Jun 2024 12:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5uYMH86"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LA+RQ9J/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E741448D4;
-	Thu, 13 Jun 2024 12:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AE2145A1B;
+	Thu, 13 Jun 2024 12:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282480; cv=none; b=auIThGyAlRRyIeh0RpcPHL9UFfYvgzuaiLw1F97RLk/078GuhI2CS3QO63iWutLMpaAUUehWEPPKWbu0IWlbT84/l+IxmiIpHDLWcD3lRpYmb57wYJE5TJW+vzCBzq/aUk81jwDQbhw6TKxFYD+QXmBx9x9AImN8ExO7uk6gl3k=
+	t=1718280488; cv=none; b=WnuM+IzEPfK5hycVu463+Zy1uJPdvHPZ6N9OCTASvH6dr9UQuF4vvL0JJOoJGDVTMDqxSpVP0AHbV/irz6A4MLN64VaScCL4eCUoJ7AyTB2pU2ml+LSKkKQlmkL0wRpVHkmlX6E5KnvgmaOeMpGWRG9mtOvhX27o+Ka6B3IryRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282480; c=relaxed/simple;
-	bh=6Z9tPG4LGBrFCLLwARhTD+LrKymXGNfn8mtI3BQwrow=;
+	s=arc-20240116; t=1718280488; c=relaxed/simple;
+	bh=Sscp5pEw5y5vgTUJtbCKaoc+gLFR8/RJ3BCJEDVi9s4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eAQIfYFIyXT5ypGXiILhWivNmEJfGaE1Q4cjLoLUhwueHzSmlj6ijdS8yIToOreY7KtgwhpdjATuKMGw4OMg9+vL5vZcQwzGjX9TPX6aaLEGkmJlUqT/XdrpynYH/WCBOq7GVXr/Pazduy4Zz0mivongc0hbRPfiC9wqdfgxRgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5uYMH86; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BDAC2BBFC;
-	Thu, 13 Jun 2024 12:41:20 +0000 (UTC)
+	 MIME-Version; b=lsmBLT7yQLAXrcPZUDho/H9bPF4BD2Ue0vpu1+py9fWMY7oBj+Sp9AVGMeZueOYw4jyi6C/icSfDNi4hMehN1b07/F83lN3TqVBl5xTqPxMc/opBmIFh6qG8aWQ9PFV8Gu0ANGlL+Aeq/K0QOnX70PK7zYKz3KNg7rTokzF4Qm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LA+RQ9J/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315A4C2BBFC;
+	Thu, 13 Jun 2024 12:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282480;
-	bh=6Z9tPG4LGBrFCLLwARhTD+LrKymXGNfn8mtI3BQwrow=;
+	s=korg; t=1718280488;
+	bh=Sscp5pEw5y5vgTUJtbCKaoc+gLFR8/RJ3BCJEDVi9s4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W5uYMH86kdR8LepDlJ9tHlsGtjEZm/QEdkyU+4q1fhe+yzorhNFV4dxOkZyvKZZhF
-	 4E0XeLyyxLDBz6fPiENA0h4EvU3Opn9Wja5iX3QrUm7G7Gvc0OAPhK5sXalOw4m00k
-	 H9YDFC0yz6RMa0bG/nJqi9eDkF7SCto0sMt/ag6I=
+	b=LA+RQ9J/ETbZIm4N84/oYlP1uAFk15ESdBelpYMNvHkjXA1ozLStImLGuXv6TU6MT
+	 WdQ9we5H82HDVSkz3qo17Lm9oQCg7Bv8smcPb6nz/diMi/0oJV5p7feJ+s2AWwtUuw
+	 C6egKKMrXYALmQJ+yN0C9ovVabXhhry+swZGpEpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 292/402] ipv6: sr: fix memleak in seg6_hmac_init_algo
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Vitaly Chikunov <vt@altlinux.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 069/137] crypto: ecdsa - Fix module auto-load on add-key
 Date: Thu, 13 Jun 2024 13:34:09 +0200
-Message-ID: <20240613113313.540294392@linuxfoundation.org>
+Message-ID: <20240613113225.974319771@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Stefan Berger <stefanb@linux.ibm.com>
 
-[ Upstream commit efb9f4f19f8e37fde43dfecebc80292d179f56c6 ]
+commit 48e4fd6d54f54d0ceab5a952d73e47a9454a6ccb upstream.
 
-seg6_hmac_init_algo returns without cleaning up the previous allocations
-if one fails, so it's going to leak all that memory and the crypto tfms.
+Add module alias with the algorithm cra_name similar to what we have for
+RSA-related and other algorithms.
 
-Update seg6_hmac_exit to only free the memory when allocated, so we can
-reuse the code directly.
+The kernel attempts to modprobe asymmetric algorithms using the names
+"crypto-$cra_name" and "crypto-$cra_name-all." However, since these
+aliases are currently missing, the modules are not loaded. For instance,
+when using the `add_key` function, the hash algorithm is typically
+loaded automatically, but the asymmetric algorithm is not.
 
-Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
-Reported-by: Sabrina Dubroca <sd@queasysnail.net>
-Closes: https://lore.kernel.org/netdev/Zj3bh-gE7eT6V6aH@hog/
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/20240517005435.2600277-1-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Steps to test:
+
+1. Create certificate
+
+  openssl req -x509 -sha256 -newkey ec \
+  -pkeyopt "ec_paramgen_curve:secp384r1" -keyout key.pem -days 365 \
+  -subj '/CN=test' -nodes -outform der -out nist-p384.der
+
+2. Optionally, trace module requests with: trace-cmd stream -e module &
+
+3. Trigger add_key call for the cert:
+
+   # keyctl padd asymmetric "" @u < nist-p384.der
+   641069229
+   # lsmod | head -2
+   Module                  Size  Used by
+   ecdsa_generic          16384  0
+
+Fixes: c12d448ba939 ("crypto: ecdsa - Register NIST P384 and extend test suite")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+Reviewed-by: Vitaly Chikunov <vt@altlinux.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/seg6_hmac.c | 42 ++++++++++++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 14 deletions(-)
+ crypto/ecdsa.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index b7d6b64cc5320..fdbc06f356d66 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -354,6 +354,7 @@ static int seg6_hmac_init_algo(void)
- 	struct crypto_shash *tfm;
- 	struct shash_desc *shash;
- 	int i, alg_count, cpu;
-+	int ret = -ENOMEM;
- 
- 	alg_count = ARRAY_SIZE(hmac_algos);
- 
-@@ -364,12 +365,14 @@ static int seg6_hmac_init_algo(void)
- 		algo = &hmac_algos[i];
- 		algo->tfms = alloc_percpu(struct crypto_shash *);
- 		if (!algo->tfms)
--			return -ENOMEM;
-+			goto error_out;
- 
- 		for_each_possible_cpu(cpu) {
- 			tfm = crypto_alloc_shash(algo->name, 0, 0);
--			if (IS_ERR(tfm))
--				return PTR_ERR(tfm);
-+			if (IS_ERR(tfm)) {
-+				ret = PTR_ERR(tfm);
-+				goto error_out;
-+			}
- 			p_tfm = per_cpu_ptr(algo->tfms, cpu);
- 			*p_tfm = tfm;
- 		}
-@@ -381,18 +384,22 @@ static int seg6_hmac_init_algo(void)
- 
- 		algo->shashs = alloc_percpu(struct shash_desc *);
- 		if (!algo->shashs)
--			return -ENOMEM;
-+			goto error_out;
- 
- 		for_each_possible_cpu(cpu) {
- 			shash = kzalloc_node(shsize, GFP_KERNEL,
- 					     cpu_to_node(cpu));
- 			if (!shash)
--				return -ENOMEM;
-+				goto error_out;
- 			*per_cpu_ptr(algo->shashs, cpu) = shash;
- 		}
- 	}
- 
- 	return 0;
-+
-+error_out:
-+	seg6_hmac_exit();
-+	return ret;
- }
- 
- int __init seg6_hmac_init(void)
-@@ -412,22 +419,29 @@ int __net_init seg6_hmac_net_init(struct net *net)
- void seg6_hmac_exit(void)
- {
- 	struct seg6_hmac_algo *algo = NULL;
-+	struct crypto_shash *tfm;
-+	struct shash_desc *shash;
- 	int i, alg_count, cpu;
- 
- 	alg_count = ARRAY_SIZE(hmac_algos);
- 	for (i = 0; i < alg_count; i++) {
- 		algo = &hmac_algos[i];
--		for_each_possible_cpu(cpu) {
--			struct crypto_shash *tfm;
--			struct shash_desc *shash;
- 
--			shash = *per_cpu_ptr(algo->shashs, cpu);
--			kfree(shash);
--			tfm = *per_cpu_ptr(algo->tfms, cpu);
--			crypto_free_shash(tfm);
-+		if (algo->shashs) {
-+			for_each_possible_cpu(cpu) {
-+				shash = *per_cpu_ptr(algo->shashs, cpu);
-+				kfree(shash);
-+			}
-+			free_percpu(algo->shashs);
-+		}
-+
-+		if (algo->tfms) {
-+			for_each_possible_cpu(cpu) {
-+				tfm = *per_cpu_ptr(algo->tfms, cpu);
-+				crypto_free_shash(tfm);
-+			}
-+			free_percpu(algo->tfms);
- 		}
--		free_percpu(algo->tfms);
--		free_percpu(algo->shashs);
- 	}
- }
- EXPORT_SYMBOL(seg6_hmac_exit);
--- 
-2.43.0
-
+--- a/crypto/ecdsa.c
++++ b/crypto/ecdsa.c
+@@ -373,4 +373,7 @@ module_exit(ecdsa_exit);
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Stefan Berger <stefanb@linux.ibm.com>");
+ MODULE_DESCRIPTION("ECDSA generic algorithm");
++MODULE_ALIAS_CRYPTO("ecdsa-nist-p192");
++MODULE_ALIAS_CRYPTO("ecdsa-nist-p256");
++MODULE_ALIAS_CRYPTO("ecdsa-nist-p384");
+ MODULE_ALIAS_CRYPTO("ecdsa-generic");
 
 
 
