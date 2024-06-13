@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-51476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C8190701A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B2B906EA9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03781289565
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7BFF28168B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B830145B16;
-	Thu, 13 Jun 2024 12:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446E5147C9B;
+	Thu, 13 Jun 2024 12:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jItWVXPw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrqenJbl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8AB1459FA;
-	Thu, 13 Jun 2024 12:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F256E1448F2;
+	Thu, 13 Jun 2024 12:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281410; cv=none; b=LLVoA2Iy9R7/f05BiahduDZ5jDo8FsTIt/f6PWPHjgdsH5wQ64++p5jD5qFTiA2Oy25jfZlWPfbzsH1eXQAxOBVVm/yeiK3m/IJuYR1U983WyAAsOqbRoBLMHw/0dMvPWZMc6jVBmdmAHRWyqC5SLaVF46wuCMX2fKO0IX96fp4=
+	t=1718280527; cv=none; b=JNyazrrNuUJyBbKVDu5Y4+Fri06LwUIkB/pbxl3CtT893xx4+EUis2/A9s4k6NNdPMDX46j6KPcD8lMJ/6FnnZ/mN0c/57GgpaaD/Afe7YE6pkvqxwWLmcKDYMk2CLXvBGlwBfTq+1iCm15jFh+V3mb3NuslaOssEYE8jrh9fuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281410; c=relaxed/simple;
-	bh=+CKJeWFj0UnLQEH3XrttvvxvDYA6oTFyPYzZVnE1Kec=;
+	s=arc-20240116; t=1718280527; c=relaxed/simple;
+	bh=LAOvfE1yr09/pUeE/mueuh/clxWJBZ9KQkqhgNsHbFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GJtYyJEjvAqTd7Je13ku5ZDdkO3lsOAbg5caqEtnpKb9jT0cgaO07rgq4+8uJw0GAfJ/ca+U1nR+Hw/1ZVQk71c9X7v3XjYNoM5c8tqO3oF8xauF0Faq/8HUw+IvnJN80I0a+0hRIIU/VFlaRxesm46Q0JP67zJydJGvitxHSwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jItWVXPw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D49DAC2BBFC;
-	Thu, 13 Jun 2024 12:23:29 +0000 (UTC)
+	 MIME-Version; b=cDUuFB6ZSE+WrcKjEM8z9ZOwIQHOSH6b27AINu9h3MSfq7hOu2wEMFic1HWOPL7tO7Tb1OR13t82DJkBO9QrFP7naYgXAxjEDCTp1kirlirCXnqdo1KOwBqPbgN9VBaBd6YljS74agm1lvyub2UMYamB4PRkSQxGyiXA9ihobWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrqenJbl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74294C2BBFC;
+	Thu, 13 Jun 2024 12:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281410;
-	bh=+CKJeWFj0UnLQEH3XrttvvxvDYA6oTFyPYzZVnE1Kec=;
+	s=korg; t=1718280526;
+	bh=LAOvfE1yr09/pUeE/mueuh/clxWJBZ9KQkqhgNsHbFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jItWVXPwFbX0tbp6LZkI3lBIFUjWmaam79NAUwqmQ2GY6WobxPrZBbCT66E4EHADz
-	 8Lflbjyvse23XFqLPuPrciHPf/n4/uATURFz+5n0XkMNO0D6qiImWe2Qhzt8e1du4y
-	 4LWngB1eyGqeAdu4UdBgJb4PMUMATAvrBxGMSkAc=
+	b=DrqenJbl1RIrcV8FtX+WyV5nSR06+wholD7G8sf0+65pn8ZeI/xKAAAMn5uDrSD/9
+	 VgSX6oTKoFJETU/BmRZcjWove01NqOeyL5YOqtaj0A8w86ImaKUWCYQraXIUfMnb4A
+	 JUVAYW2QlkBrY1gFMSNOD1rCvck/5q91OHilNm/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 246/317] netfilter: nft_payload: restore vlan q-in-q match support
+	Jan Beulich <jbeulich@suse.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.6 084/137] tpm_tis: Do *not* flush uninitialized work
 Date: Thu, 13 Jun 2024 13:34:24 +0200
-Message-ID: <20240613113257.068441563@linuxfoundation.org>
+Message-ID: <20240613113226.555386140@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jan Beulich <jbeulich@suse.com>
 
-[ Upstream commit aff5c01fa1284d606f8e7cbdaafeef2511bb46c1 ]
+commit 0ea00e249ca992adee54dc71a526ee70ef109e40 upstream.
 
-Revert f6ae9f120dad ("netfilter: nft_payload: add C-VLAN support").
+tpm_tis_core_init() may fail before tpm_tis_probe_irq_single() is
+called, in which case tpm_tis_remove() unconditionally calling
+flush_work() is triggering a warning for .func still being NULL.
 
-f41f72d09ee1 ("netfilter: nft_payload: simplify vlan header handling")
-already allows to match on inner vlan tags by subtract the vlan header
-size to the payload offset which has been popped and stored in skbuff
-metadata fields.
-
-Fixes: f6ae9f120dad ("netfilter: nft_payload: add C-VLAN support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v6.5+
+Fixes: 481c2d14627d ("tpm,tpm_tis: Disable interrupts after 1000 unhandled IRQs")
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_payload.c | 23 +++++++----------------
- 1 file changed, 7 insertions(+), 16 deletions(-)
+ drivers/char/tpm/tpm_tis_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index 56f6c05362ae8..fa64b1b8ae918 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -44,36 +44,27 @@ nft_payload_copy_vlan(u32 *d, const struct sk_buff *skb, u8 offset, u8 len)
- 	int mac_off = skb_mac_header(skb) - skb->data;
- 	u8 *vlanh, *dst_u8 = (u8 *) d;
- 	struct vlan_ethhdr veth;
--	u8 vlan_hlen = 0;
--
--	if ((skb->protocol == htons(ETH_P_8021AD) ||
--	     skb->protocol == htons(ETH_P_8021Q)) &&
--	    offset >= VLAN_ETH_HLEN && offset < VLAN_ETH_HLEN + VLAN_HLEN)
--		vlan_hlen += VLAN_HLEN;
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index 176cd8dbf1db..fdef214b9f6b 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -1020,7 +1020,8 @@ void tpm_tis_remove(struct tpm_chip *chip)
+ 		interrupt = 0;
  
- 	vlanh = (u8 *) &veth;
--	if (offset < VLAN_ETH_HLEN + vlan_hlen) {
-+	if (offset < VLAN_ETH_HLEN) {
- 		u8 ethlen = len;
+ 	tpm_tis_write32(priv, reg, ~TPM_GLOBAL_INT_ENABLE & interrupt);
+-	flush_work(&priv->free_irq_work);
++	if (priv->free_irq_work.func)
++		flush_work(&priv->free_irq_work);
  
--		if (vlan_hlen &&
--		    skb_copy_bits(skb, mac_off, &veth, VLAN_ETH_HLEN) < 0)
--			return false;
--		else if (!nft_payload_rebuild_vlan_hdr(skb, mac_off, &veth))
-+		if (!nft_payload_rebuild_vlan_hdr(skb, mac_off, &veth))
- 			return false;
+ 	tpm_tis_clkrun_enable(chip, false);
  
--		if (offset + len > VLAN_ETH_HLEN + vlan_hlen)
--			ethlen -= offset + len - VLAN_ETH_HLEN - vlan_hlen;
-+		if (offset + len > VLAN_ETH_HLEN)
-+			ethlen -= offset + len - VLAN_ETH_HLEN;
- 
--		memcpy(dst_u8, vlanh + offset - vlan_hlen, ethlen);
-+		memcpy(dst_u8, vlanh + offset, ethlen);
- 
- 		len -= ethlen;
- 		if (len == 0)
- 			return true;
- 
- 		dst_u8 += ethlen;
--		offset = ETH_HLEN + vlan_hlen;
-+		offset = ETH_HLEN;
- 	} else {
--		offset -= VLAN_HLEN + vlan_hlen;
-+		offset -= VLAN_HLEN;
- 	}
- 
- 	return skb_copy_bits(skb, offset + mac_off, dst_u8, len) == 0;
 -- 
-2.43.0
+2.45.2
 
 
 
