@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-51278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8879D906F82
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:21:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F9A906F24
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11F55B2913B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D726A1C233FF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6774B13C660;
-	Thu, 13 Jun 2024 12:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DC2143759;
+	Thu, 13 Jun 2024 12:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AReWmrca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRHvJsz9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B587F47B;
-	Thu, 13 Jun 2024 12:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E53143C63;
+	Thu, 13 Jun 2024 12:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280830; cv=none; b=cWLyfDy/KMZDZUXtDAMNjJcs1WdvnAqr344tpAp4pugQ1MeDJrxQsUqA8ZqEGNx5ho4dZOadviXQtfGpxaD9w2lkfh64PihN96WJRVIy/0n04Rh8uD6js0LOWeyv3dq+sQvnnZdTr0zeLzdPkWL6i+2dherodV9ibtAlLt7t7bI=
+	t=1718280836; cv=none; b=CQMw6SaQDg6+cwRstRnx/pGXV/aUiGHlU4a08WqGsJ23tXQ46XEhXLb6uWPa4XaXlWP62VATRoinHkZLX5O8yBzYJx52m4VCATiBBGTPwS+iyy1DAhKUXhu6MmsX/ezFKOjYKRgFbpIrsQrtUXk2/SjlUw63rDVqrcy80apv7aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280830; c=relaxed/simple;
-	bh=BTJ6fSCj3ThmzAgfezsdLoQU3p3tzxpvuR2TKYgOCBs=;
+	s=arc-20240116; t=1718280836; c=relaxed/simple;
+	bh=4VMUUW+4pTmYWzduof5UIiA8R6v7s6ps3lQpAj4vDtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CgFExtMJKS2Kh/FfmjHdk21sEwfSai3B1OKZxvokTxSq6m0F7KLUbz5HxP2uRSL+S2VyhyWjYCfss6efXhV/o3Q+ZCBW86lWCUoBQjBlmmqfueM52ipcAFcvLjgx9YaYA6bNxD19w0BYXTrJNAF2zIkoQSXwWoze7ra5WR/aSIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AReWmrca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BACC2BBFC;
-	Thu, 13 Jun 2024 12:13:49 +0000 (UTC)
+	 MIME-Version; b=aTQNlVtuAfBd4IjKdvOrR5arT/zR5wj5qQWMveXIL0ZfJoCEIzfsvXsh0g7rnhzkQajgtUalvp26tnsp5QNYlHzK+accELWd9tdZks7Xe7BVuNzXZ7chH8S8Lt6NubNsiMutNmmIKQxcv6XpUCTW7xbdXZJp0WaB9aJHnoyHikg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRHvJsz9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F665C2BBFC;
+	Thu, 13 Jun 2024 12:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280830;
-	bh=BTJ6fSCj3ThmzAgfezsdLoQU3p3tzxpvuR2TKYgOCBs=;
+	s=korg; t=1718280836;
+	bh=4VMUUW+4pTmYWzduof5UIiA8R6v7s6ps3lQpAj4vDtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AReWmrcad6c+DhgVDIF7J+z4hqbgPY3ewxm/nmldYYiydK0+ITmL8fZ/N3Kf20Wgy
-	 8dgIsUVsZFeyaefqQ290Gve2CXwmTGRKUTSGTw80kYFWdApwkRYnpL9tzgtisoaBPQ
-	 qMHvRI/M8YbVPO3ymRZuPFSolV7Uxqkug6W9pTdI=
+	b=JRHvJsz9F8YgPop0IQBNhGHrKWi45U+sT/LtQSj3idn3U0RVgoRaUnkPZ7JcCTPUK
+	 4t7pGgnDQk60AUkWr6M+TchfxuD41OSca51MYmluDBeX4SLhqQMSqrvGinShjQGfig
+	 /lPsop5174Fq/nBF6Egtt2AT33llGJmnMEXI1zus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 049/317] ACPI: disable -Wstringop-truncation
-Date: Thu, 13 Jun 2024 13:31:07 +0200
-Message-ID: <20240613113249.446293730@linuxfoundation.org>
+Subject: [PATCH 5.10 050/317] gfs2: Fix "ignore unlock failures after withdraw"
+Date: Thu, 13 Jun 2024 13:31:08 +0200
+Message-ID: <20240613113249.484206023@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
 References: <20240613113247.525431100@linuxfoundation.org>
@@ -66,46 +65,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit a3403d304708f60565582d60af4316289d0316a0 ]
+[ Upstream commit 5d9231111966b6c5a65016d58dcbeab91055bc91 ]
 
-gcc -Wstringop-truncation warns about copying a string that results in a
-missing nul termination:
+Commit 3e11e53041502 tries to suppress dlm_lock() lock conversion errors
+that occur when the lockspace has already been released.
 
-drivers/acpi/acpica/tbfind.c: In function 'acpi_tb_find_table':
-drivers/acpi/acpica/tbfind.c:60:9: error: 'strncpy' specified bound 6 equals destination size [-Werror=stringop-truncation]
-   60 |         strncpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/acpi/acpica/tbfind.c:61:9: error: 'strncpy' specified bound 8 equals destination size [-Werror=stringop-truncation]
-   61 |         strncpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE_ID_SIZE);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+It does that by setting and checking the SDF_SKIP_DLM_UNLOCK flag.  This
+conflicts with the intended meaning of the SDF_SKIP_DLM_UNLOCK flag, so
+check whether the lockspace is still allocated instead.
 
-The code works as intended, and the warning could be addressed by using
-a memcpy(), but turning the warning off for this file works equally well
-and may be easier to merge.
+(Given the current DLM API, checking for this kind of error after the
+fact seems easier that than to make sure that the lockspace is still
+allocated before calling dlm_lock().  Changing the DLM API so that users
+maintain the lockspace references themselves would be an option.)
 
-Fixes: 47c08729bf1c ("ACPICA: Fix for LoadTable operator, input strings")
-Link: https://lore.kernel.org/lkml/CAJZ5v0hoUfv54KW7y4223Mn9E7D4xvR7whRFNLTBqCZMUxT50Q@mail.gmail.com/#t
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 3e11e53041502 ("GFS2: ignore unlock failures after withdraw")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ fs/gfs2/glock.c | 4 +++-
+ fs/gfs2/util.c  | 1 -
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/acpica/Makefile b/drivers/acpi/acpica/Makefile
-index f919811156b1f..b6cf9c9bd6396 100644
---- a/drivers/acpi/acpica/Makefile
-+++ b/drivers/acpi/acpica/Makefile
-@@ -5,6 +5,7 @@
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index dd052101e2266..b0f01a8e37766 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -691,11 +691,13 @@ __acquires(&gl->gl_lockref.lock)
+ 	}
  
- ccflags-y			:= -D_LINUX -DBUILDING_ACPICA
- ccflags-$(CONFIG_ACPI_DEBUG)	+= -DACPI_DEBUG_OUTPUT
-+CFLAGS_tbfind.o 		+= $(call cc-disable-warning, stringop-truncation)
- 
- # use acpi.o to put all files here into acpi.o modparam namespace
- obj-y	+= acpi.o
+ 	if (sdp->sd_lockstruct.ls_ops->lm_lock)	{
++		struct lm_lockstruct *ls = &sdp->sd_lockstruct;
++
+ 		/* lock_dlm */
+ 		ret = sdp->sd_lockstruct.ls_ops->lm_lock(gl, target, lck_flags);
+ 		if (ret == -EINVAL && gl->gl_target == LM_ST_UNLOCKED &&
+ 		    target == LM_ST_UNLOCKED &&
+-		    test_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags)) {
++		    test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
+ 			finish_xmote(gl, target);
+ 			gfs2_glock_queue_work(gl, 0);
+ 		} else if (ret) {
+diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
+index 3ece99e6490c2..d11152dedb803 100644
+--- a/fs/gfs2/util.c
++++ b/fs/gfs2/util.c
+@@ -348,7 +348,6 @@ int gfs2_withdraw(struct gfs2_sbd *sdp)
+ 			fs_err(sdp, "telling LM to unmount\n");
+ 			lm->lm_unmount(sdp);
+ 		}
+-		set_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags);
+ 		fs_err(sdp, "File system withdrawn\n");
+ 		dump_stack();
+ 		clear_bit(SDF_WITHDRAW_IN_PROG, &sdp->sd_flags);
 -- 
 2.43.0
 
