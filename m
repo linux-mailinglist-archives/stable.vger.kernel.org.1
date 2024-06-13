@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-51182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156B8906EAF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4A0907022
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97047280FD1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEF9A28958B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CD91482E4;
-	Thu, 13 Jun 2024 12:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13878145B37;
+	Thu, 13 Jun 2024 12:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6UyQx3E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdAkLXI/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A4F1448DD;
-	Thu, 13 Jun 2024 12:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C409D13D607;
+	Thu, 13 Jun 2024 12:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280547; cv=none; b=O57olow6JHAEljsCZ/0e5nfAiAZr49SRk/8vCox/zJkhKcXvScp0JaS3vrxdRVtTLFEDTLwvckIw5xTSuF9eYuTd4ftG4FrOXpcUVpMtCgNYa7S0j3HGf/0+ohZTtrehYTC8nRxrq0hJlW2m+Hjq+Of1J5BGcsCe8K3toKBsUXo=
+	t=1718281433; cv=none; b=XSLlp0TTJZPAegqnO8LjGI5VINa24rE3ggzrh2TeQjemOuE7TiwzMLe3hqHuW6VRLy4dejy+UJI9z2sJcU0LQ1nThCzHfsKfh5usu6nixYb5AKa/JZFqd8fb/d3u6a//zf3JsMMIzQxWUJr0jTdG7d+SVFKDqAnyukv3gsDaGEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280547; c=relaxed/simple;
-	bh=mizYFAY7BciW2jqY9M3Dhm7RtJFQa+bMtaWxW2HKVrU=;
+	s=arc-20240116; t=1718281433; c=relaxed/simple;
+	bh=cJDI3yQGflhXjtp4lXvr/K3iKWEh2x81IGXCbIPaO5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=njZ1ZzpPnAWmZ9YZp7OoVq9rl7lTyUk96zvXVblleFzfaPepz4f368LMCoXRO60rH6NQ2OeKIDJrn2sSjm3bMzbILV3suXsmuS9xUUzisPzab3OTf9DIVw+rxCD9JYN/ko7smtnG4hsPzvgTjddBD7zUIKrb1KNVC+hZF/QIDV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6UyQx3E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5F7C2BBFC;
-	Thu, 13 Jun 2024 12:09:06 +0000 (UTC)
+	 MIME-Version; b=lIHI/BzSFGdfg7GdigWO7SYO89S9NLBPP1YTGEpG/G0WfSIdRfhDILL9pMKO1BlNw/QoIxToyh03Zh10Fa7f6ckMWU+0PB+TkbXv5W+9BN13cT/xRFbSajK/eerfeJkUlETw9RdPQGbM0DRqbT0MlXddG7g0q2YxEIWCR+FDa/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdAkLXI/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E47FC2BBFC;
+	Thu, 13 Jun 2024 12:23:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280547;
-	bh=mizYFAY7BciW2jqY9M3Dhm7RtJFQa+bMtaWxW2HKVrU=;
+	s=korg; t=1718281433;
+	bh=cJDI3yQGflhXjtp4lXvr/K3iKWEh2x81IGXCbIPaO5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6UyQx3Eenk7uBq3Mw8RFjO/+NwZCBHgRuOGnk/yd6G1VJyivQbez+fbfmz6aq/OT
-	 aQojOkwdUOkd+XW3K83l9+l+oyLEFuyQJEMe9vFHfZf3C1i1AVTms+u1p/XSiL+fFh
-	 Wj/jdKZ2BobwkTW1vDC9uZo8dZPjrPDBLAWcIJWA=
+	b=AdAkLXI/cQ8v94mNLpkpOh+yeTw8hVxn452jsD9sZQfVuG19BNlyGrcHUMbRMmx2r
+	 iJrUc7pl4H5OIUkvfcGXfxncLBGMU2s4iNyqPiN64YWmJwWQV6KSw146neoMOUBKM1
+	 30TLWl0j+qh21ZOJ0/r1c8YPXD0y9YxdkN06nULk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuanyuan Zhong <yzhong@purestorage.com>,
-	Mohamed Khalfella <mkhalfella@purestorage.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 091/137] mm: /proc/pid/smaps_rollup: avoid skipping vma after getting mmap_lock again
+	Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
+	Simon Horman <horms@kernel.org>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 253/317] net: usb: smsc95xx: fix changing LED_SEL bit value updated from EEPROM
 Date: Thu, 13 Jun 2024 13:34:31 +0200
-Message-ID: <20240613113226.826888135@linuxfoundation.org>
+Message-ID: <20240613113257.336386551@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuanyuan Zhong <yzhong@purestorage.com>
+From: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
 
-commit 6d065f507d82307d6161ac75c025111fb8b08a46 upstream.
+[ Upstream commit 52a2f0608366a629d43dacd3191039c95fef74ba ]
 
-After switching smaps_rollup to use VMA iterator, searching for next entry
-is part of the condition expression of the do-while loop.  So the current
-VMA needs to be addressed before the continue statement.
+LED Select (LED_SEL) bit in the LED General Purpose IO Configuration
+register is used to determine the functionality of external LED pins
+(Speed Indicator, Link and Activity Indicator, Full Duplex Link
+Indicator). The default value for this bit is 0 when no EEPROM is
+present. If a EEPROM is present, the default value is the value of the
+LED Select bit in the Configuration Flags of the EEPROM. A USB Reset or
+Lite Reset (LRST) will cause this bit to be restored to the image value
+last loaded from EEPROM, or to be set to 0 if no EEPROM is present.
 
-Otherwise, with some VMAs skipped, userspace observed memory
-consumption from /proc/pid/smaps_rollup will be smaller than the sum of
-the corresponding fields from /proc/pid/smaps.
+While configuring the dual purpose GPIO/LED pins to LED outputs in the
+LED General Purpose IO Configuration register, the LED_SEL bit is changed
+as 0 and resulting the configured value from the EEPROM is cleared. The
+issue is fixed by using read-modify-write approach.
 
-Link: https://lkml.kernel.org/r/20240523183531.2535436-1-yzhong@purestorage.com
-Fixes: c4c84f06285e ("fs/proc/task_mmu: stop using linked list and highest_vm_end")
-Signed-off-by: Yuanyuan Zhong <yzhong@purestorage.com>
-Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f293501c61c5 ("smsc95xx: configure LED outputs")
+Signed-off-by: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Woojung Huh <woojung.huh@microchip.com>
+Link: https://lore.kernel.org/r/20240523085314.167650-1-Parthiban.Veerasooran@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/task_mmu.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/usb/smsc95xx.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -965,12 +965,17 @@ static int show_smaps_rollup(struct seq_
- 				break;
+diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
+index 2778ad6726f03..30e5f6910e6fd 100644
+--- a/drivers/net/usb/smsc95xx.c
++++ b/drivers/net/usb/smsc95xx.c
+@@ -845,7 +845,7 @@ static int smsc95xx_start_rx_path(struct usbnet *dev, int in_pm)
+ static int smsc95xx_reset(struct usbnet *dev)
+ {
+ 	struct smsc95xx_priv *pdata = dev->driver_priv;
+-	u32 read_buf, write_buf, burst_cap;
++	u32 read_buf, burst_cap;
+ 	int ret = 0, timeout;
  
- 			/* Case 1 and 2 above */
--			if (vma->vm_start >= last_vma_end)
-+			if (vma->vm_start >= last_vma_end) {
-+				smap_gather_stats(vma, &mss, 0);
-+				last_vma_end = vma->vm_end;
- 				continue;
-+			}
+ 	netif_dbg(dev, ifup, dev->net, "entering smsc95xx_reset\n");
+@@ -987,10 +987,13 @@ static int smsc95xx_reset(struct usbnet *dev)
+ 		return ret;
+ 	netif_dbg(dev, ifup, dev->net, "ID_REV = 0x%08x\n", read_buf);
  
- 			/* Case 4 above */
--			if (vma->vm_end > last_vma_end)
-+			if (vma->vm_end > last_vma_end) {
- 				smap_gather_stats(vma, &mss, last_vma_end);
-+				last_vma_end = vma->vm_end;
-+			}
- 		}
- 	} for_each_vma(vmi, vma);
++	ret = smsc95xx_read_reg(dev, LED_GPIO_CFG, &read_buf);
++	if (ret < 0)
++		return ret;
+ 	/* Configure GPIO pins as LED outputs */
+-	write_buf = LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
+-		LED_GPIO_CFG_FDX_LED;
+-	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, write_buf);
++	read_buf |= LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
++		    LED_GPIO_CFG_FDX_LED;
++	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, read_buf);
+ 	if (ret < 0)
+ 		return ret;
  
+-- 
+2.43.0
+
 
 
 
