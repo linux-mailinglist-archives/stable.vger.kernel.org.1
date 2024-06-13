@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-51988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD9189072A3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84791907244
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3770FB2394E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 319011F216F0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCF4144D34;
-	Thu, 13 Jun 2024 12:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5A61EEE0;
+	Thu, 13 Jun 2024 12:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWEznvV1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhXc7tbW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29397144D2C;
-	Thu, 13 Jun 2024 12:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24991EB30;
+	Thu, 13 Jun 2024 12:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282905; cv=none; b=BhrBOEOCUbQ5u+LATCHLe+M2Nu5tw+RaiDKmTUlOUMVWXiEVsRRId/jxOjR0JUETh9ZtQSg+PYv8o6T+yRFMsLOT8XQONh0GkVOb2dh6DZlp7bTrAI9T5SELRcjC2HBekOM/Jo0OS3LmKUXTU9GiI5jYQgQJ/3tLiSPpodl1AMw=
+	t=1718282725; cv=none; b=lqNdO6+L+1tSkSOu6I8chj5LCrpLx31zPpsQjKHoNaPRENBYC7AGH4zjxn5NMTyB9GtR/8BzOOM5G5GvUJm/lIdFyJXt3BoiUkLyMXi3HmFd9+ogLmLekeWmla62MykVTTI68mmPIXtcUNevqKKmlRhXrUXtjGBhw5Fq/GSRAow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282905; c=relaxed/simple;
-	bh=7ygMqliGdX/4wwaHFsBHMLUMIYnh3iuG2i181JO9aRs=;
+	s=arc-20240116; t=1718282725; c=relaxed/simple;
+	bh=1nOrWV+IjFBfL7zU/PW5GrTfEGNNxSilD9cDfv2PE+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dV6WS9Ej1pT6qvBqvwjpoO7RRoheqIWGxP7o3mZBz3K9VDYzW1gYQ2CEDuI5/uCBJxW0O4jtmQO8eZKvBtChtMMgVxcvQr7VwtAEOSlSbvu001oFB5xgOBlyw6sashd1hDCZe/gRb6N/Bo9UivanFVRfedQhpe5xipybJgAzW1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWEznvV1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9785AC2BBFC;
-	Thu, 13 Jun 2024 12:48:24 +0000 (UTC)
+	 MIME-Version; b=dp3j8zrWQrmF2CxwC2UvsdPDL4keWausZQNq7XcbkEYUr4OOREPViEaWvfnhlKn+93qLOCP/Z3N3X/wjAoCIpkWplWKE4x57QOCOMcXlVVG/Tq3UKUeTk5sA+68K41jTPUbsxpJ1YYIiiJC/GzEvNcfOupQVx18MSr3plaTPLdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhXc7tbW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53FECC2BBFC;
+	Thu, 13 Jun 2024 12:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282905;
-	bh=7ygMqliGdX/4wwaHFsBHMLUMIYnh3iuG2i181JO9aRs=;
+	s=korg; t=1718282725;
+	bh=1nOrWV+IjFBfL7zU/PW5GrTfEGNNxSilD9cDfv2PE+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nWEznvV1ESjw5bDjJ8qjqg2I7Rb8AUJ1vteQDxxuCUP5iup0FUCDwH9G5xlgXBZoE
-	 Zz7lXRp+K2AWMkSRyZIiG2xRfR3OsztPHNNpEkTf8FRqJ/Eqv7khf7UeThZtChWvix
-	 xNMt+ZHLEofFFjTwIl0TVxvpYPBLcy5wgSklL9hw=
+	b=LhXc7tbWWcSopVDAPMlV/Tio1chH7dntIyUZdj6OX8f5D8cXT09n/9UyIOEVxen8p
+	 PaVuSk0YgbKQWd5ypkUP2mU/FCp9GqCy3cAgZnnldaWXxfjRw0j7ZhNyarqV80Yxga
+	 S3D2nz3zmropkW3ksGImIWRNfxQDyicVsv3PzCdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Xiwen <forbidden405@outlook.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.1 33/85] arm64: dts: hi3798cv200: fix the size of GICR
+	Cai Xinchen <caixinchen1@huawei.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.15 374/402] fbdev: savage: Handle err return when savagefb_check_var failed
 Date: Thu, 13 Jun 2024 13:35:31 +0200
-Message-ID: <20240613113215.423214036@linuxfoundation.org>
+Message-ID: <20240613113316.724798965@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Xiwen <forbidden405@outlook.com>
+From: Cai Xinchen <caixinchen1@huawei.com>
 
-commit 428a575dc9038846ad259466d5ba109858c0a023 upstream.
+commit 6ad959b6703e2c4c5d7af03b4cfd5ff608036339 upstream.
 
-During boot, Linux kernel complains:
+The commit 04e5eac8f3ab("fbdev: savage: Error out if pixclock equals zero")
+checks the value of pixclock to avoid divide-by-zero error. However
+the function savagefb_probe doesn't handle the error return of
+savagefb_check_var. When pixclock is 0, it will cause divide-by-zero error.
 
-[    0.000000] GIC: GICv2 detected, but range too small and irqchip.gicv2_force_probe not set
-
-This SoC is using a regular GIC-400 and the GICR space size should be
-8KB rather than 256B.
-
-With this patch:
-
-[    0.000000] GIC: Using split EOI/Deactivate mode
-
-So this should be the correct fix.
-
-Fixes: 2f20182ed670 ("arm64: dts: hisilicon: add dts files for hi3798cv200-poplar board")
-Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
+Fixes: 04e5eac8f3ab ("fbdev: savage: Error out if pixclock equals zero")
+Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240219-cache-v3-1-a33c57534ae9@outlook.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/savage/savagefb_driver.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
-+++ b/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
-@@ -58,7 +58,7 @@
- 	gic: interrupt-controller@f1001000 {
- 		compatible = "arm,gic-400";
- 		reg = <0x0 0xf1001000 0x0 0x1000>,  /* GICD */
--		      <0x0 0xf1002000 0x0 0x100>;   /* GICC */
-+		      <0x0 0xf1002000 0x0 0x2000>;  /* GICC */
- 		#address-cells = <0>;
- 		#interrupt-cells = <3>;
- 		interrupt-controller;
+--- a/drivers/video/fbdev/savage/savagefb_driver.c
++++ b/drivers/video/fbdev/savage/savagefb_driver.c
+@@ -2271,7 +2271,10 @@ static int savagefb_probe(struct pci_dev
+ 	if (info->var.xres_virtual > 0x1000)
+ 		info->var.xres_virtual = 0x1000;
+ #endif
+-	savagefb_check_var(&info->var, info);
++	err = savagefb_check_var(&info->var, info);
++	if (err)
++		goto failed;
++
+ 	savagefb_set_fix(info);
+ 
+ 	/*
 
 
 
