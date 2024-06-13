@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB9A4906F93
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A21E907140
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:35:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 105ED1C20DFA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8185A283681
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497511442ED;
-	Thu, 13 Jun 2024 12:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2E21E485;
+	Thu, 13 Jun 2024 12:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q2fDbTmv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLaZpDmX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D4F56458;
-	Thu, 13 Jun 2024 12:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDF8161;
+	Thu, 13 Jun 2024 12:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281072; cv=none; b=ci2ilL7tz5RYL4WC9FDiW/vEKhreTkAV/ix8vsjmTL6RI4uMU4RET5ePm/dk+g4BaZVK2Z7p5OeSk84u9MURjqjahuNMGEnB26zl+lMUdFmYB1aoDfD7t6oVPgRQP97stk6mr9Y52PPDVmDwgF6Mv6Ec3A3P8GagaNRgvUUgy14=
+	t=1718282100; cv=none; b=CMMwLv8LAevc2W8Bd7fMpNJ7IbInwpGExHgh3ljEY6lHvFA+hH0Ha2wI2E9w6mIM/m0wDmHS1a2Xt3EkUvgd1+U4renlAuxT6S9qO5CWaQnNbg0iaYyg203UZPZzlvsTLubKOM5H7OlGvU355ywr8NkeDXoEACfd2Lh7HlPVGB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281072; c=relaxed/simple;
-	bh=xKohPR+XVEpBu+cP5bkEP5KNKifF23SpCiH8DchAFpY=;
+	s=arc-20240116; t=1718282100; c=relaxed/simple;
+	bh=emPVEi+7WQngeNktXQbKyPEGPWA9iiNMSu/ryfTC0k8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fo+nmFOs43ZM2RVa7q+cEiotYAG2eRLyb/Ul+oBdmWdoVe5LuCbRv5xFBWURIOdqmcV+vQ2Ra9vYVtBP369cH9jxYzfYa4fsfvM7pC9DbsyIdCb9f9EKGoxmRveE4mQGJlokEp+Xs/v2i3UI2mj5KwB1CAtBzWFhho5dbhQH5I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q2fDbTmv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF90C2BBFC;
-	Thu, 13 Jun 2024 12:17:51 +0000 (UTC)
+	 MIME-Version; b=lj6X4nPoYMNZJArUAbYisI2jeiJLOn/NYPgKgvoxXwl+jYkSu9LyZYRDATZrXm/Im/Ad/KZ/dD0Lo0jBjkmdsH7Z3hxugORo9evLVm8DBOZc6XPqIIVxQNCo593ctRZnFd5OyDKF8rzOIoD1zPoA9O///gtYKjfV9mOovMovoNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLaZpDmX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7064C2BBFC;
+	Thu, 13 Jun 2024 12:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281071;
-	bh=xKohPR+XVEpBu+cP5bkEP5KNKifF23SpCiH8DchAFpY=;
+	s=korg; t=1718282100;
+	bh=emPVEi+7WQngeNktXQbKyPEGPWA9iiNMSu/ryfTC0k8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q2fDbTmvS98n/SgwhRhDeaQKj0CXgkVKa3Jz6KYHjOYNOFW+c+1Af01PnYlo7gSD2
-	 xG8bXu7EmnWJZ4LpbcZEO0znL9uDNrx5887UEdzsTx+ZCSXdbzxNKYdO1jh9lIm2vM
-	 JwK3E6jX6MCKWH46KfGbKDQFUEXnBfJYb1FsB/Ws=
+	b=tLaZpDmXrci4wqXbZWnKTGc2yT4QVgbbk0EewVmQV/2ep8gFRyWsc8sVBSxUGtQGW
+	 i9yU0zxpTXUrN/74XtshXr5usOqFprfFapT7gYpn8nlkl8999Md2/pyCUDDiOdfevw
+	 DFGMsPhMm6t6bhS99jEiEj0yGWFOr6/L+Xm3TIYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Robert Foss <rfoss@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 101/317] drm: bridge: cdns-mhdp8546: Fix possible null pointer dereference
-Date: Thu, 13 Jun 2024 13:31:59 +0200
-Message-ID: <20240613113251.457797643@linuxfoundation.org>
+Subject: [PATCH 5.15 163/402] ext4: fix unit mismatch in ext4_mb_new_blocks_simple
+Date: Thu, 13 Jun 2024 13:32:00 +0200
+Message-ID: <20240613113308.493338194@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit 935a92a1c400285545198ca2800a4c6c519c650a ]
+[ Upstream commit 497885f72d930305d8e61b6b616b22b4da1adf90 ]
 
-In cdns_mhdp_atomic_enable(), the return value of drm_mode_duplicate() is
-assigned to mhdp_state->current_mode, and there is a dereference of it in
-drm_mode_set_name(), which will lead to a NULL pointer dereference on
-failure of drm_mode_duplicate().
+The "i" returned from mb_find_next_zero_bit is in cluster unit and we
+need offset "block" corresponding to "i" in block unit. Convert "i" to
+block unit to fix the unit mismatch.
 
-Fix this bug add a check of mhdp_state->current_mode.
-
-Fixes: fb43aa0acdfd ("drm: bridge: Add support for Cadence MHDP8546 DPI/DP bridge")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240408125810.21899-1-amishin@t-argos.ru
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230603150327.3596033-3-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 3f4830abd236 ("ext4: fix potential unnitialized variable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ext4/mballoc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-index f56ff97c98990..ae99d04f00456 100644
---- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-@@ -1978,6 +1978,9 @@ static void cdns_mhdp_atomic_enable(struct drm_bridge *bridge,
- 	mhdp_state = to_cdns_mhdp_bridge_state(new_state);
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index c2fcdee223317..383703e20ea36 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -5886,6 +5886,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+ {
+ 	struct buffer_head *bitmap_bh;
+ 	struct super_block *sb = ar->inode->i_sb;
++	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	ext4_group_t group;
+ 	ext4_grpblk_t blkoff;
+ 	ext4_grpblk_t max = EXT4_CLUSTERS_PER_GROUP(sb);
+@@ -5914,7 +5915,8 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+ 			if (i >= max)
+ 				break;
+ 			if (ext4_fc_replay_check_excluded(sb,
+-				ext4_group_first_block_no(sb, group) + i)) {
++				ext4_group_first_block_no(sb, group) +
++				EXT4_C2B(sbi, i))) {
+ 				blkoff = i + 1;
+ 			} else
+ 				break;
+@@ -5931,7 +5933,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+ 		return 0;
+ 	}
  
- 	mhdp_state->current_mode = drm_mode_duplicate(bridge->dev, mode);
-+	if (!mhdp_state->current_mode)
-+		return;
-+
- 	drm_mode_set_name(mhdp_state->current_mode);
+-	block = ext4_group_first_block_no(sb, group) + i;
++	block = ext4_group_first_block_no(sb, group) + EXT4_C2B(sbi, i);
+ 	ext4_mb_mark_bb(sb, block, 1, 1);
+ 	ar->len = 1;
  
- 	dev_dbg(mhdp->dev, "%s: Enabling mode %s\n", __func__, mode->name);
 -- 
 2.43.0
 
