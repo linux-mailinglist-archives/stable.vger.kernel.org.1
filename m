@@ -1,140 +1,139 @@
-Return-Path: <stable+bounces-52112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BF5D907DD9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 23:10:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE67907DFB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 23:19:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1F0D1C227A4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 21:10:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8E04B2375A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 21:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870DE14375B;
-	Thu, 13 Jun 2024 21:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D8A13E03E;
+	Thu, 13 Jun 2024 21:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="K8wN2Jgg"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="An8/2Fxf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEE1139CE2;
-	Thu, 13 Jun 2024 21:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FD113D243;
+	Thu, 13 Jun 2024 21:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718313025; cv=none; b=QroPcWfD2V7LOCsAClA0NWdZ8WrQ84bK6kRRkFd13hkgmB3Fk4qP47K3LPkflHMMDZIpNUlKzzOakOMsoq89+n03PAFnQph6rYaTsPpIpJUNCwkDncPQrQRrQzpeoLCaKZLIGzZZnGmiLLLBwabqCVY9/Nwmgwof7MPxE8SOaWg=
+	t=1718313540; cv=none; b=itgKkDDKAyCdh+9XeKyPnrJDJ60lA0Pun5Yat2q8e6Qm4UnMKn7X7Nx6Zd2PimZugbq9IShJaT8Ce9wZzn5e5qX3MgpohrXd3kqjsqZQOSTtDhNSMkZMB3Q9lFhRaidzsfCa5WxOL0BtL53DWrPpXTdwHc87mmQWPC3kWKxcBjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718313025; c=relaxed/simple;
-	bh=yI2pM6glGsJJWxvQAAeW+lCGZZ32jQj4MnUR25Blips=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MHw/O8iBZ3gjQm7MWDr32KkdbfSJjxuMoTLuTHfuap/aPQF1DP0z7sXrgqs6kmDvCQQew8pQbUrpAPR6JBpRkFxyVPDLeApo6xS0MnE6C3ss90rOvzgaSRohyaIFoZ2ulnTiQ3D0wYXR4exm01SepdfHEaJhde3kN98AmrONfaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=K8wN2Jgg; arc=none smtp.client-ip=99.78.197.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1718313024; x=1749849024;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=bFPHb1i9S0EjfPl1sZl0nOIw+Pf+rfxtOrLIDnf0FG8=;
-  b=K8wN2Jgg+miWwYsM8umXPqdwxUKg5eLNvpCFIcA7Hs2vIYm535NsWFZ7
-   pmG8FRoFF1/G9e6E4H7etRf9285n8BJOaVSbNK8mcGfTybT/ZOuM6a9ce
-   IizeI/P5gyD12XT4qCPDPtCCHEMgLpcO5JvwHibYDo8eevKb/zWXkxZUc
-   M=;
-X-IronPort-AV: E=Sophos;i="6.08,236,1712620800"; 
-   d="scan'208";a="302075455"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2024 21:10:24 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.7.35:3454]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.35.14:2525] with esmtp (Farcaster)
- id 50c18be9-c072-4499-aed4-f6d36ec1fcc8; Thu, 13 Jun 2024 21:10:23 +0000 (UTC)
-X-Farcaster-Flow-ID: 50c18be9-c072-4499-aed4-f6d36ec1fcc8
-Received: from EX19D030UWB002.ant.amazon.com (10.13.139.182) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Thu, 13 Jun 2024 21:10:23 +0000
-Received: from u1e958862c3245e.ant.amazon.com (10.119.132.17) by
- EX19D030UWB002.ant.amazon.com (10.13.139.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Thu, 13 Jun 2024 21:10:22 +0000
-From: Suraj Jitindar Singh <surajjs@amazon.com>
-To: <linux-acpi@vger.kernel.org>
-CC: <acpica-devel@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<surajjs@amazon.com>, <sjitindarsingh@gmail.com>, <robert.moore@intel.com>,
-	<rafael.j.wysocki@intel.com>, <lenb@kernel.org>, <okaya@kernel.org>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] acpi: Support CONFIG_ACPI without CONFIG_PCI
-Date: Thu, 13 Jun 2024 14:10:11 -0700
-Message-ID: <20240613211011.413120-1-surajjs@amazon.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1718313540; c=relaxed/simple;
+	bh=FiKVW0wZ+Y09epymmFWsZIe0hWkZ9SjWUvaN6eSdRJc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=l5WVemQXAplcSVBonyKopfNdLMxkSR3edOhIhmeXIaOPU+eocwA6S/3EDOKQ6LyZLMrhuar4HsYMruFS7kK1k8DWtOFFrEKJkpeSmUab7aREy7OT/rg6floDYYdM8G1STLNptce9DNraYyBQwMlyiXTm7VCZsaz3mc3TkGTVyV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=An8/2Fxf; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4W0Zz664Y2zlgMVV;
+	Thu, 13 Jun 2024 21:18:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:mime-version:references:in-reply-to
+	:x-mailer:message-id:date:date:subject:subject:from:from
+	:received:received; s=mr01; t=1718313534; x=1720905535; bh=hRjwi
+	sCRW+42XD56aJIGghuXRjkwKRzKpLBkptDCAso=; b=An8/2Fxf2tXy7IYpKFJmQ
+	RlOlddBbDGXJ/yRj7IJpXaIcTMlB1H+e7ZY4f2xkbwlE7IVM6ewLI7AcMEi3gb21
+	N/IeuQzXapnecCBK5Kni3DxTh7mqgePCrac27uDE8OBBvw9xI1vKNak+MkbrDX+J
+	F5krQV9CbHnIWboM9WUnZvGrNojGIXHC6VVrdvtXvB/L+1LBTfltxC/GB182+EJj
+	3WaotLaWxRVg8s4eKfYvb4TtLSzIsERBpdnyf2ZkPF6qjhw5jOEzJd9zmNr22u/l
+	9ras0dtpAnJhfHPcSLvnxr23QDp2LE9wj+MuIvDoXzeTWaoDkrRxeMf5bntCqkb6
+	Q==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id nVcG7BlvKVaz; Thu, 13 Jun 2024 21:18:54 +0000 (UTC)
+Received: from bvanassche.mtv.corp.google.com (unknown [104.132.0.90])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4W0Zz140S2zlgMVW;
+	Thu, 13 Jun 2024 21:18:53 +0000 (UTC)
+From: Bart Van Assche <bvanassche@acm.org>
+To: "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: Alan Stern <stern@rowland.harvard.edu>,
+	linux-scsi@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	Bart Van Assche <bvanassche@acm.org>,
+	Joao Machado <jocrismachado@gmail.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Christian Heusel <christian@heusel.eu>,
+	stable@vger.kernel.org,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Subject: [PATCH v3 1/2] scsi: core: Introduce the BLIST_SKIP_IO_HINTS flag
+Date: Thu, 13 Jun 2024 14:18:26 -0700
+Message-ID: <20240613211828.2077477-2-bvanassche@acm.org>
+X-Mailer: git-send-email 2.45.2.627.g7a2c4fd464-goog
+In-Reply-To: <20240613211828.2077477-1-bvanassche@acm.org>
+References: <20240613211828.2077477-1-bvanassche@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D041UWA003.ant.amazon.com (10.13.139.105) To
- EX19D030UWB002.ant.amazon.com (10.13.139.182)
+Content-Transfer-Encoding: quoted-printable
 
-Make is possible to use ACPI without having CONFIG_PCI set.
+Prepare for skipping the IO advice hints grouping mode page for USB stora=
+ge
+devices.
 
-When initialising ACPI the following call chain occurs:
-
-  acpi_init() ->
-    acpi_bus_init() ->
-      acpi_load_tables() ->
-        acpi_ev_install_region_handlers() ->
-
-acpi_ev_install_region_handlers() calls acpi_ev_install_space_handler() on
-each of the default address spaces defined as:
-
-  u8 acpi_gbl_default_address_spaces[ACPI_NUM_DEFAULT_SPACES] = {
-          ACPI_ADR_SPACE_SYSTEM_MEMORY,
-          ACPI_ADR_SPACE_SYSTEM_IO,
-          ACPI_ADR_SPACE_PCI_CONFIG,
-          ACPI_ADR_SPACE_DATA_TABLE
-  };
-
-However in acpi_ev_install_space_handler() the case statement for
-ACPI_ADR_SPACE_PCI_CONFIG is ifdef'd as:
-
-  #ifdef ACPI_PCI_CONFIGURED
-                  case ACPI_ADR_SPACE_PCI_CONFIG:
-
-                          handler = acpi_ex_pci_config_space_handler;
-                          setup = acpi_ev_pci_config_region_setup;
-                          break;
-  #endif
-
-ACPI_PCI_CONFIGURED is not defined if CONFIG_PCI is not enabled, thus the
-attempt to install the handler fails.
-
-Fix this by ifdef'ing ACPI_ADR_SPACE_PCI_CONFIG in the list of default
-address spaces.
-
-Fixes: bd23fac3eaaa ("ACPICA: Remove PCI bits from ACPICA when CONFIG_PCI is unset")
-CC: stable@vger.kernel.org # 5.0.x-
-Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Joao Machado <jocrismachado@gmail.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Christian Heusel <christian@heusel.eu>
+Cc: stable@vger.kernel.org
+Fixes: 4f53138fffc2 ("scsi: sd: Translate data lifetime information")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 ---
- drivers/acpi/acpica/evhandler.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/sd.c           | 4 ++++
+ include/scsi/scsi_devinfo.h | 4 +++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/evhandler.c b/drivers/acpi/acpica/evhandler.c
-index 1c8cb6d924df..371093acb362 100644
---- a/drivers/acpi/acpica/evhandler.c
-+++ b/drivers/acpi/acpica/evhandler.c
-@@ -26,7 +26,9 @@ acpi_ev_install_handler(acpi_handle obj_handle,
- u8 acpi_gbl_default_address_spaces[ACPI_NUM_DEFAULT_SPACES] = {
- 	ACPI_ADR_SPACE_SYSTEM_MEMORY,
- 	ACPI_ADR_SPACE_SYSTEM_IO,
-+#ifdef ACPI_PCI_CONFIGURED
- 	ACPI_ADR_SPACE_PCI_CONFIG,
-+#endif
- 	ACPI_ADR_SPACE_DATA_TABLE
- };
- 
--- 
-2.34.1
-
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index 3a43e2209751..fcf3d7730466 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -63,6 +63,7 @@
+ #include <scsi/scsi_cmnd.h>
+ #include <scsi/scsi_dbg.h>
+ #include <scsi/scsi_device.h>
++#include <scsi/scsi_devinfo.h>
+ #include <scsi/scsi_driver.h>
+ #include <scsi/scsi_eh.h>
+ #include <scsi/scsi_host.h>
+@@ -3117,6 +3118,9 @@ static void sd_read_io_hints(struct scsi_disk *sdkp=
+, unsigned char *buffer)
+ 	struct scsi_mode_data data;
+ 	int res;
+=20
++	if (sdp->sdev_bflags & BLIST_SKIP_IO_HINTS)
++		return;
++
+ 	res =3D scsi_mode_sense(sdp, /*dbd=3D*/0x8, /*modepage=3D*/0x0a,
+ 			      /*subpage=3D*/0x05, buffer, SD_BUF_SIZE, SD_TIMEOUT,
+ 			      sdkp->max_retries, &data, &sshdr);
+diff --git a/include/scsi/scsi_devinfo.h b/include/scsi/scsi_devinfo.h
+index 6b548dc2c496..5856b68a5180 100644
+--- a/include/scsi/scsi_devinfo.h
++++ b/include/scsi/scsi_devinfo.h
+@@ -69,8 +69,10 @@
+ #define BLIST_RETRY_ITF		((__force blist_flags_t)(1ULL << 32))
+ /* Always retry ABORTED_COMMAND with ASC 0xc1 */
+ #define BLIST_RETRY_ASC_C1	((__force blist_flags_t)(1ULL << 33))
++/* Do not query the IO advice hints grouping mode page */
++#define BLIST_SKIP_IO_HINTS	((__force blist_flags_t)(1ULL << 34))
+=20
+-#define __BLIST_LAST_USED BLIST_RETRY_ASC_C1
++#define __BLIST_LAST_USED BLIST_SKIP_IO_HINTS
+=20
+ #define __BLIST_HIGH_UNUSED (~(__BLIST_LAST_USED | \
+ 			       (__force blist_flags_t) \
 
