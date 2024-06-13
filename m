@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D5D907214
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBB60906E53
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A5DB1F244EE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87D6E1F21344
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17042142E86;
-	Thu, 13 Jun 2024 12:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCE31448C4;
+	Thu, 13 Jun 2024 12:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgAaimYE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoKay+ZW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F1D1420C6;
-	Thu, 13 Jun 2024 12:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06D9143759;
+	Thu, 13 Jun 2024 12:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282610; cv=none; b=GHzMNnHOCxhB4IMPxAF33CAjV7Nrjfj7O4Lg9xtdpZk1a9bvGBMtDU0B41hlsa1CdVsahbw19nXYTobOxdl5U/42u112Ybf3eB5dLEv14/Feaw9ZXjLm3TVBXtsdWMytOAfgPUbQ3djgd4hIG3VpwNb3rlOM4O4NOXmJoS/wcAI=
+	t=1718280300; cv=none; b=QkukzmYmnOQXLOocop/ezAz7fn+w3xVV3qg9aHbMR1SlaK3r1YYG9tPyQg1a7fiQyHDJd/6ajHDAc/qlD4EaRFthpK47n4al6vz/VSV/EergljwqSp29iK9fqPEmzWpUvupn4gmJ1wKulD5XHFi5eR4aV/EePbXpgTiH6ghz9mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282610; c=relaxed/simple;
-	bh=Xw7h0z+Qr7j60+U0uTJ7XkKm8wmrOExylemwVW8yV3E=;
+	s=arc-20240116; t=1718280300; c=relaxed/simple;
+	bh=nKw5HRci6a/pmEGokY+7nShtI4tXi8RJtB2tAePqmIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cPJ2xZhDyYxnG45ZbFGmV1ZWHan12xyk3vn+DVLrSJR70zJaRhQzpe1qaBDY7PvIuoKNN4aojWLfpKHTqJOIuO7mqjuy7InFTcfeefWhB2CSzLQByvLhNPaihNVwi8QTzXIr1+7W5mdSmvZiIRLaAPT09Rnd8z3iBRVxDVilb5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgAaimYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5048DC2BBFC;
-	Thu, 13 Jun 2024 12:43:30 +0000 (UTC)
+	 MIME-Version; b=k8fogZeTwcxBaFvtQV/gZg/3P3NdYmWeZ15wZDx0aOC5l63GCV8+kHdPCa+pfWkp+GveCJw90grt9Rv+Lg1AKYseD1JXpSMHTeIFSM8nMijQcWYyazJBQ6TyGhrSkQ1hZblaOeUcNvP3Ql4crmBUbkGlr3usXFH9m01V0CZxhl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoKay+ZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C16C2BBFC;
+	Thu, 13 Jun 2024 12:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282610;
-	bh=Xw7h0z+Qr7j60+U0uTJ7XkKm8wmrOExylemwVW8yV3E=;
+	s=korg; t=1718280299;
+	bh=nKw5HRci6a/pmEGokY+7nShtI4tXi8RJtB2tAePqmIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vgAaimYEnpSd4RZJEK4xZAu3KjBx4EUS4yodmqTJMi9d9H4LD+0VmKOMouedjIvHq
-	 yz18Or2B0xEWGLH1OEPQdnpVmXX5Kfgw4e2PS08IkucVg0q16vrBK8F6vCOKtheeVU
-	 mHLDpaPo0v9Cvt9BP8+U6Ro09qVhzmw0olFoZ30E=
+	b=CoKay+ZWycqe4ZftjhY3CESEFMW0TkpUnDzPS/7ZKGpYqO5+pQHG3PeuwZIL+yFO2
+	 IoWtS76tE0JLk4RHMCAhH5ltjGvg6/cqgtyGj2snPEcRcyAnxh0l/vgFIy3fytjtoW
+	 wZxuV/lGUWRpMxXh5oUlVQFWEbq3Lnf7XnHZKl8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.15 335/402] KVM: x86: Dont advertise guest.MAXPHYADDR as host.MAXPHYADDR in CPUID
+	Douglas Anderson <dianders@chromium.org>,
+	Justin Stitt <justinstitt@google.com>,
+	Daniel Thompson <daniel.thompson@linaro.org>
+Subject: [PATCH 5.4 194/202] kdb: Fix console handling when editing and tab-completing commands
 Date: Thu, 13 Jun 2024 13:34:52 +0200
-Message-ID: <20240613113315.203564801@linuxfoundation.org>
+Message-ID: <20240613113235.228126769@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerd Hoffmann <kraxel@redhat.com>
+From: Daniel Thompson <daniel.thompson@linaro.org>
 
-commit 6f5c9600621b4efb5c61b482d767432eb1ad3a9c upstream.
+commit db2f9c7dc29114f531df4a425d0867d01e1f1e28 upstream.
 
-Drop KVM's propagation of GuestPhysBits (CPUID leaf 80000008, EAX[23:16])
-to HostPhysBits (same leaf, EAX[7:0]) when advertising the address widths
-to userspace via KVM_GET_SUPPORTED_CPUID.
+Currently, if the cursor position is not at the end of the command buffer
+and the user uses the Tab-complete functions, then the console does not
+leave the cursor in the correct position.
 
-Per AMD, GuestPhysBits is intended for software use, and physical CPUs do
-not set that field.  I.e. GuestPhysBits will be non-zero if and only if
-KVM is running as a nested hypervisor, and in that case, GuestPhysBits is
-NOT guaranteed to capture the CPU's effective MAXPHYADDR when running with
-TDP enabled.
+For example consider the following buffer with the cursor positioned
+at the ^:
 
-E.g. KVM will soon use GuestPhysBits to communicate the CPU's maximum
-*addressable* guest physical address, which would result in KVM under-
-reporting PhysBits when running as an L1 on a CPU with MAXPHYADDR=52,
-but without 5-level paging.
+md kdb_pro 10
+          ^
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Pressing tab should result in:
+
+md kdb_prompt_str 10
+                 ^
+
+However this does not happen. Instead the cursor is placed at the end
+(after then 10) and further cursor movement redraws incorrectly. The
+same problem exists when we double-Tab but in a different part of the
+code.
+
+Fix this by sending a carriage return and then redisplaying the text to
+the left of the cursor.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20240313125844.912415-2-kraxel@redhat.com
-[sean: rewrite changelog with --verbose, Cc stable@]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-3-f236dbe9828d@linaro.org
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/cpuid.c |   21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ kernel/debug/kdb/kdb_io.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -934,9 +934,8 @@ static inline int __do_cpuid_func(struct
- 		entry->eax = entry->ebx = entry->ecx = 0;
- 		break;
- 	case 0x80000008: {
--		unsigned g_phys_as = (entry->eax >> 16) & 0xff;
--		unsigned virt_as = max((entry->eax >> 8) & 0xff, 48U);
--		unsigned phys_as = entry->eax & 0xff;
-+		unsigned int virt_as = max((entry->eax >> 8) & 0xff, 48U);
-+		unsigned int phys_as;
- 
- 		/*
- 		 * If TDP (NPT) is disabled use the adjusted host MAXPHYADDR as
-@@ -944,16 +943,16 @@ static inline int __do_cpuid_func(struct
- 		 * reductions in MAXPHYADDR for memory encryption affect shadow
- 		 * paging, too.
- 		 *
--		 * If TDP is enabled but an explicit guest MAXPHYADDR is not
--		 * provided, use the raw bare metal MAXPHYADDR as reductions to
--		 * the HPAs do not affect GPAs.
-+		 * If TDP is enabled, use the raw bare metal MAXPHYADDR as
-+		 * reductions to the HPAs do not affect GPAs.
- 		 */
--		if (!tdp_enabled)
--			g_phys_as = boot_cpu_data.x86_phys_bits;
--		else if (!g_phys_as)
--			g_phys_as = phys_as;
-+		if (!tdp_enabled) {
-+			phys_as = boot_cpu_data.x86_phys_bits;
-+		} else {
-+			phys_as = entry->eax & 0xff;
-+		}
- 
--		entry->eax = g_phys_as | (virt_as << 8);
-+		entry->eax = phys_as | (virt_as << 8);
- 		entry->ecx &= ~(GENMASK(31, 16) | GENMASK(11, 8));
- 		entry->edx = 0;
- 		cpuid_entry_override(entry, CPUID_8000_0008_EBX);
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -380,6 +380,8 @@ poll_again:
+ 			kdb_printf("\n");
+ 			kdb_printf(kdb_prompt_str);
+ 			kdb_printf("%s", buffer);
++			if (cp != lastchar)
++				kdb_position_cursor(kdb_prompt_str, buffer, cp);
+ 		} else if (tab != 2 && count > 0) {
+ 			/* How many new characters do we want from tmpbuffer? */
+ 			len_tmp = strlen(p_tmp) - len;
+@@ -393,6 +395,9 @@ poll_again:
+ 				kdb_printf("%s", cp);
+ 				cp += len_tmp;
+ 				lastchar += len_tmp;
++				if (cp != lastchar)
++					kdb_position_cursor(kdb_prompt_str,
++							    buffer, cp);
+ 			}
+ 		}
+ 		kdb_nextline = 1; /* reset output line number */
 
 
 
