@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-50922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DCDA906D70
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B04906B9D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EDB11C240E2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F112B240AF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C4E1487E9;
-	Thu, 13 Jun 2024 11:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82C7144D00;
+	Thu, 13 Jun 2024 11:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYHe/Bx3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRJSeeeo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D521487DA;
-	Thu, 13 Jun 2024 11:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D926143871;
+	Thu, 13 Jun 2024 11:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279782; cv=none; b=ENVQH2sxt/rsbmSvV4ftTH0l4z014KvtPihuuPZ4XNZ6ztWwXtlWMXWe0JVkl16LywW5f9Wb7ZMyPdwXGhx6vZUsTitwL2kMQMwb4KTffU3b92RYyKLmchut+8W0MZYedrYfWDrlt+YZQfb9H3npq1N/JMoRJfh1k9Hcwx9sHc8=
+	t=1718278923; cv=none; b=WEq1DvF2Qe/756J0HyQGawYdtRSt+zePf+8jbaS4meEjzOLL3Oh+32f82mKB5jrmVOEbDCqL+ccaofin0x4cxHqVCuC9GBYjh9FpyRrtXQ/a0icdeAfSSNsStC3KqmYJTxlsXezxXy0Vz2l/qN6B/WLC8bb6qGHfHU6cPZ+Dx+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279782; c=relaxed/simple;
-	bh=t+zEi3ByOOYhwS1tI69TEtqf+CC7DN/KKk4j5fgYSKo=;
+	s=arc-20240116; t=1718278923; c=relaxed/simple;
+	bh=U067fcDEO4Gxbwq2GnzfUnzP4f0HLDZE/TM/0I/CeAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnhNqXyl3oAgodgh4g2HBR+6hV4SVu5UHjQqwzNx6E8SCO8p1+ZKLBXzn1JedUKcuEp4BRIjnmL5jchQ+KEXEH5jy7D8fKQ5+jMe5IGj0kffCGMljFDx/Q61X90NpOSzKGTKL9aZ6eERqK3uos/JLHHkjoBu/MFyXQJAMB++5cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYHe/Bx3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB26C2BBFC;
-	Thu, 13 Jun 2024 11:56:21 +0000 (UTC)
+	 MIME-Version; b=N7hZq5FFrfDlEHZR7fStxjSPT982K1NX1K0CvZHnelkFI60qIR+zdm/fDGQPZxYoBBW0MLeHQn2CE9fXAE20djRHaim/ya792xkS7mH84kFr9q86LzTENB8Th0tCPRrVPLYYyR9e7/e78bE9HX9NfngxCtW0z30/azqZQQdVYXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRJSeeeo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3578C2BBFC;
+	Thu, 13 Jun 2024 11:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279782;
-	bh=t+zEi3ByOOYhwS1tI69TEtqf+CC7DN/KKk4j5fgYSKo=;
+	s=korg; t=1718278923;
+	bh=U067fcDEO4Gxbwq2GnzfUnzP4f0HLDZE/TM/0I/CeAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYHe/Bx3eH3YUt7YEfqgI5+GvWkxroC3wslxcX3Is1t4Xccfg8bmKcbbKhziMe/Yw
-	 bteAjRXXPDVulyJnFK/ZRoK5o8KQoeGOpSBxQe8qWp0cctJjIGZflXkab/FyP7STul
-	 0gFBDHt5kmBZ4c+VP0rU1nqTtQF7S45ISS9gGSRI=
+	b=KRJSeeeofgszIDs1xjH6ym76gRz5ArnfzCGzovpxg/yAI/yyCCaTHIaHwbFGZRu6v
+	 moK4RDuT9Yr414hWAPMiFxIBA/1pL0S99PTKpPPuBzq0/RIevCy/+U6b279+Dsoa3F
+	 IzY5XvK3eb/OjouZ3SDxz9mnDyS/6LdalcGBI/fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Valentin Schneider <valentin.schneider@arm.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	mingo@kernel.org,
+	vincent.guittot@linaro.org,
+	juri.lelli@redhat.com,
+	seto.hidetoshi@jp.fujitsu.com,
+	qperret@google.com,
+	Dietmar.Eggemann@arm.com,
+	morten.rasmussen@arm.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 035/202] ACPI: disable -Wstringop-truncation
+Subject: [PATCH 4.19 085/213] sched/topology: Dont set SD_BALANCE_WAKE on cpuset domain relax
 Date: Thu, 13 Jun 2024 13:32:13 +0200
-Message-ID: <20240613113229.129292233@linuxfoundation.org>
+Message-ID: <20240613113231.289434048@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +69,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Valentin Schneider <valentin.schneider@arm.com>
 
-[ Upstream commit a3403d304708f60565582d60af4316289d0316a0 ]
+[ Upstream commit 9ae7ab20b4835dbea0e5fc6a5c70171dc354a72e ]
 
-gcc -Wstringop-truncation warns about copying a string that results in a
-missing nul termination:
+As pointed out in commit
 
-drivers/acpi/acpica/tbfind.c: In function 'acpi_tb_find_table':
-drivers/acpi/acpica/tbfind.c:60:9: error: 'strncpy' specified bound 6 equals destination size [-Werror=stringop-truncation]
-   60 |         strncpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/acpi/acpica/tbfind.c:61:9: error: 'strncpy' specified bound 8 equals destination size [-Werror=stringop-truncation]
-   61 |         strncpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE_ID_SIZE);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  182a85f8a119 ("sched: Disable wakeup balancing")
 
-The code works as intended, and the warning could be addressed by using
-a memcpy(), but turning the warning off for this file works equally well
-and may be easier to merge.
+SD_BALANCE_WAKE is a tad too aggressive, and is usually left unset.
 
-Fixes: 47c08729bf1c ("ACPICA: Fix for LoadTable operator, input strings")
-Link: https://lore.kernel.org/lkml/CAJZ5v0hoUfv54KW7y4223Mn9E7D4xvR7whRFNLTBqCZMUxT50Q@mail.gmail.com/#t
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+However, it turns out cpuset domain relaxation will unconditionally set it
+on domains below the relaxation level. This made sense back when
+SD_BALANCE_WAKE was set unconditionally, but it no longer is the case.
+
+We can improve things slightly by noticing that set_domain_attribute() is
+always called after sd_init(), so rather than setting flags we can rely on
+whatever sd_init() is doing and only clear certain flags when above the
+relaxation level.
+
+While at it, slightly clean up the function and flip the relax level
+check to be more human readable.
+
+Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: mingo@kernel.org
+Cc: vincent.guittot@linaro.org
+Cc: juri.lelli@redhat.com
+Cc: seto.hidetoshi@jp.fujitsu.com
+Cc: qperret@google.com
+Cc: Dietmar.Eggemann@arm.com
+Cc: morten.rasmussen@arm.com
+Link: https://lkml.kernel.org/r/20191014164408.32596-1-valentin.schneider@arm.com
+Stable-dep-of: a1fd0b9d751f ("sched/fair: Allow disabling sched_balance_newidle with sched_relax_domain_level")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/topology.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/acpica/Makefile b/drivers/acpi/acpica/Makefile
-index f919811156b1f..b6cf9c9bd6396 100644
---- a/drivers/acpi/acpica/Makefile
-+++ b/drivers/acpi/acpica/Makefile
-@@ -5,6 +5,7 @@
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 02e85cd233d42..c171783bda0cf 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -965,16 +965,13 @@ static void set_domain_attribute(struct sched_domain *sd,
+ 	if (!attr || attr->relax_domain_level < 0) {
+ 		if (default_relax_domain_level < 0)
+ 			return;
+-		else
+-			request = default_relax_domain_level;
++		request = default_relax_domain_level;
+ 	} else
+ 		request = attr->relax_domain_level;
+-	if (request < sd->level) {
++
++	if (sd->level > request) {
+ 		/* Turn off idle balance on this domain: */
+ 		sd->flags &= ~(SD_BALANCE_WAKE|SD_BALANCE_NEWIDLE);
+-	} else {
+-		/* Turn on idle balance on this domain: */
+-		sd->flags |= (SD_BALANCE_WAKE|SD_BALANCE_NEWIDLE);
+ 	}
+ }
  
- ccflags-y			:= -D_LINUX -DBUILDING_ACPICA
- ccflags-$(CONFIG_ACPI_DEBUG)	+= -DACPI_DEBUG_OUTPUT
-+CFLAGS_tbfind.o 		+= $(call cc-disable-warning, stringop-truncation)
- 
- # use acpi.o to put all files here into acpi.o modparam namespace
- obj-y	+= acpi.o
 -- 
 2.43.0
 
