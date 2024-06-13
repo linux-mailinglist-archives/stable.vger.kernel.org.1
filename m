@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-51603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF399070AE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:29:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB5C907086
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C60C1C227CE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:29:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C31161C22CDF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062A013D635;
-	Thu, 13 Jun 2024 12:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F2D143892;
+	Thu, 13 Jun 2024 12:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTaactUQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/kPFgtx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38EA13CFA3;
-	Thu, 13 Jun 2024 12:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80AA81428F0;
+	Thu, 13 Jun 2024 12:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281780; cv=none; b=pRadcXj2sZHe8bTiaYWz69i1gx1kjU/mr3SXOoI2rlq0MFg7aTiQqI3md1I1LrrZNW0kwZzbHjPxnDcmZK8R6/uS3kgmtLa4iwsXK4UbnmQG+yK4TyK0n74O1YBbJ8ioGX7p1ZZ5jb/4z9EisCwxRdQZzOHqDoNJjKNXl7grKRI=
+	t=1718281689; cv=none; b=XDZPf0QssIgB2Lp5737R7cedUCgstJj0TpVCg+yHyNNCDNfhs442ItFEB3CPva01iBNliGcYrqvXZoy1jjStN+xVkofMDoLYw11bEMHbOBxttDYCSdddhCAjxjo+YOjWnpoA6RGcrol5JLQZahHMophxAlLyV1jhUROLvZR8m5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281780; c=relaxed/simple;
-	bh=zMtbZTbOYVvfqJ0ZkEZeWcST3U5iMnvIogsCviIcjM0=;
+	s=arc-20240116; t=1718281689; c=relaxed/simple;
+	bh=OijFAhR9zFOD/62x0jyuyQWTB3C/dUndg+PhQfPEsxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sXjd4t5XJghWDnXgpS/Q1uqzMEECJAduAZruQkzKt5oPmyLy9ChtDjC7uTCOcje2mRnAb8TmCfo2oaX1wn/39ifUsARIvPgkfzx6lEeF1d8m2HK9INKzNoiqyOook8iPidKiWLhCEDW/24X3OhswfiiMTA9yuhY43wVX5C5fuek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTaactUQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39572C32786;
-	Thu, 13 Jun 2024 12:29:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ISmKyG2hsPJSXUAg/cDbzZndJ9eetxX97oCL485tcSYnEBWOuF4TY7XXbpLpCTKV9Dpr2Xi/mFO+4us5JMbc20QzewTdOqq3ALN0qvXGYwfccQ5VkdwmpNqTVuBc2V2usaLaME/XQhpUxY2aBlP0IEkGyD3iGAA6vT0dtrSCmns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/kPFgtx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02659C2BBFC;
+	Thu, 13 Jun 2024 12:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281780;
-	bh=zMtbZTbOYVvfqJ0ZkEZeWcST3U5iMnvIogsCviIcjM0=;
+	s=korg; t=1718281689;
+	bh=OijFAhR9zFOD/62x0jyuyQWTB3C/dUndg+PhQfPEsxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GTaactUQHH1II6zZsczrvN2jhllL8xY2TVejf3pDqgWwoEgzVDqW/dD+Bp4+FEDNr
-	 zQVI0NAiERg/XAsfXVTu/Os+K4LVqa0YYS84IwvAXKogRt2u7QWAXdpv5uWMCkBna8
-	 U8aUSr3KKXZL9d4fTRACxJFNqcqtvJ2AG38ghsj0=
+	b=1/kPFgtxDjX3XgoqnzCW1L6w3M4Dqbu4SY0rB1vA9ve/1rpWfudE0CG465u/J24no
+	 oJ+RzV8xrMnaak90p6Sq24dJ6ic+y3t46vJhLOdkbAzePtcjXI3Tl6gw4VQCrkbq4E
+	 g3MCaExmPLJ3GN/PUNocjE/sdMjPWE5Qaw64CRhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Ashton <joshua@froggi.es>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 022/402] drm/amd/display: Set color_mgmt_changed to true on unsuspend
-Date: Thu, 13 Jun 2024 13:29:39 +0200
-Message-ID: <20240613113303.004529638@linuxfoundation.org>
+Subject: [PATCH 5.15 023/402] selftests: sud_test: return correct emulated syscall value on RISC-V
+Date: Thu, 13 Jun 2024 13:29:40 +0200
+Message-ID: <20240613113303.045474969@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
 References: <20240613113302.116811394@linuxfoundation.org>
@@ -61,41 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Ashton <joshua@froggi.es>
+From: Clément Léger <cleger@rivosinc.com>
 
-[ Upstream commit 2eb9dd497a698dc384c0dd3e0311d541eb2e13dd ]
+[ Upstream commit 17c67ed752d6a456602b3dbb25c5ae4d3de5deab ]
 
-Otherwise we can end up with a frame on unsuspend where color management
-is not applied when userspace has not committed themselves.
+Currently, the sud_test expects the emulated syscall to return the
+emulated syscall number. This assumption only works on architectures
+were the syscall calling convention use the same register for syscall
+number/syscall return value. This is not the case for RISC-V and thus
+the return value must be also emulated using the provided ucontext.
 
-Fixes re-applying color management on Steam Deck/Gamescope on S3 resume.
-
-Signed-off-by: Joshua Ashton <joshua@froggi.es>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Link: https://lore.kernel.org/r/20231206134438.473166-1-cleger@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../selftests/syscall_user_dispatch/sud_test.c     | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index b7b8a2d77da67..b821abb56ac3b 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2772,6 +2772,7 @@ static int dm_resume(void *handle)
- 			dc_stream_release(dm_new_crtc_state->stream);
- 			dm_new_crtc_state->stream = NULL;
- 		}
-+		dm_new_crtc_state->base.color_mgmt_changed = true;
- 	}
+diff --git a/tools/testing/selftests/syscall_user_dispatch/sud_test.c b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
+index b5d592d4099e8..d975a67673299 100644
+--- a/tools/testing/selftests/syscall_user_dispatch/sud_test.c
++++ b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
+@@ -158,6 +158,20 @@ static void handle_sigsys(int sig, siginfo_t *info, void *ucontext)
  
- 	for_each_new_plane_in_state(dm->cached_state, plane, new_plane_state, i) {
+ 	/* In preparation for sigreturn. */
+ 	SYSCALL_DISPATCH_OFF(glob_sel);
++
++	/*
++	 * The tests for argument handling assume that `syscall(x) == x`. This
++	 * is a NOP on x86 because the syscall number is passed in %rax, which
++	 * happens to also be the function ABI return register.  Other
++	 * architectures may need to swizzle the arguments around.
++	 */
++#if defined(__riscv)
++/* REG_A7 is not defined in libc headers */
++# define REG_A7 (REG_A0 + 7)
++
++	((ucontext_t *)ucontext)->uc_mcontext.__gregs[REG_A0] =
++			((ucontext_t *)ucontext)->uc_mcontext.__gregs[REG_A7];
++#endif
+ }
+ 
+ TEST(dispatch_and_return)
 -- 
 2.43.0
 
