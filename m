@@ -1,108 +1,137 @@
-Return-Path: <stable+bounces-52061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE60B9075AF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 16:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A2C9075CB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 16:54:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A68141C20D83
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:50:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E9341C22547
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998E31487E7;
-	Thu, 13 Jun 2024 14:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D8D146597;
+	Thu, 13 Jun 2024 14:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mbx5ouQL"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Atz33ow2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5216C1465BF;
-	Thu, 13 Jun 2024 14:48:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6452682C76
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 14:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718290139; cv=none; b=OIBmqsqvu1kCTOOmHzwe0Zywge2zQO6YkVr4sFtJ/FTyqpXs/sAkl1/mkFjEC+3SFwYjgie1j+nsmIMYOVu+vkVCk5Jt3MT/5lLLl6tPWgaQ1dHObJbR63h2azY3D+0v8DknW9p9P8QslIaspZ0wb1v5aYWTxJgYC1WzmkU8u9I=
+	t=1718290472; cv=none; b=shXGRPxIHzpXUkt6+bHkot1IDbrTL7KEpeB1hM99GArxYU89IqM2bNmok9sBI1ZU5Lp/3k8d0IO76uUFdo9OOd7NrV0qUQPfSDXUoGvajM24zAbVsq7R8pPmhkpYD9HNOZlaYUq/WQBIOcJDgPcdbqKcu4GZUBhqEBnIe12kOb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718290139; c=relaxed/simple;
-	bh=B+9gF8yl1K0CumjuNYOoyHlhsRpoDqgBX0KW/HKrKEY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dsup76Vfip4Op8I2yOlMvsghP+Yk4mD04mPwVkghI98GCbTP7HGmtI8LgrFMkr4/ZlOmYvCSclkIU83N4Kr+mj+mjFNkLkbF2qxv3aJQDzat3nxpEJvF+bVlZIX9E72BaNF4CwDPhoyCI4EPgpw+nwKv8obGwNFaWpatED7INiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mbx5ouQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99850C2BBFC;
-	Thu, 13 Jun 2024 14:48:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718290138;
-	bh=B+9gF8yl1K0CumjuNYOoyHlhsRpoDqgBX0KW/HKrKEY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mbx5ouQLUVHNkaKqAEuvCwiIAt592ly3ZPjrIsi1+0X5GZicw+QH4rn9GZwIAnNNT
-	 zYuRXP5YPXu7bmJshx/8e33TnL7TqVybDgGNPcJh5mFap1NYK7wSvf6AM6CQxdIjn/
-	 4Eop14ISSEAP0N7yGZtI4BKjzhZGAhWKafcPQfIRgv7Cl1GXcbNCQTueIl04IXdtNs
-	 Ue85YcZV2qqs+4iPDs/a7BHeULLWwdNElPa1SyVZOzTZ5YwM5AQ0YsvpSZ89lwlCJR
-	 S62d7/XYjrls6jgO3LcdgWDE+onRIUuAfy9k9NsnjuPAdoTLhbJIcjAueBx+f4Vuhq
-	 eC37JLIhxmNPg==
-Date: Thu, 13 Jun 2024 07:48:57 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 net] bnx2x: Fix multiple UBSAN
- array-index-out-of-bounds
-Message-ID: <20240613074857.66597de9@kernel.org>
-In-Reply-To: <20240612154449.173663-1-ghadi.rahme@canonical.com>
-References: <20240612154449.173663-1-ghadi.rahme@canonical.com>
+	s=arc-20240116; t=1718290472; c=relaxed/simple;
+	bh=+HZBDinZDCMT7Ez14OypUVVwLMkZvNTY8vfAf9qVU3o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bsZ+pRFD2l0+zf+uEdWxtG/FjcukhFVtJrVx2xkL7/mkN005moHvHye84b/dy4XFdlatyHG+gNMJVWp/CSCg7jBiY/8rp4cVKZ8OhAauuiS7LdlbUoXMRsXXjCfd+v00p+0o3I084odGbK071WM4Zy70w4IjSdM9Zv0uQVBg1Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Atz33ow2; arc=none smtp.client-ip=209.85.222.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-80d6cf96e13so318965241.0
+        for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:54:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718290469; x=1718895269; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z7g5SALnsdPJQWBZt0kVgnA0bB4kjPLGUDBHBwv4noI=;
+        b=Atz33ow2Y46i+1Uyb90M1hD1amAg8mvabA9p0oqITmZAh0CyHmffJodCTqn3JNo1lE
+         OEo9wEKfTNDSQhqxv6lg6TZwdPHXRRT7parrTc9/kHYlcpNLv9i2DGaImHR1x8Y5UMav
+         0jUeTr+9EFZx/wkQxSFTZjhEWTKJN8jQti8P+RNTp7D8CQ8OwW1acu6bxSpgyIGY/LHO
+         R8ACeZ8D6E0WyjukIkpkr07XXj98UaKObY2ppQi0Lk10oQ08u2UHYhbSTut85fow94bz
+         2X3Q5SOLZjrYnZvcDhA859iPOm2ctT10fDp3gpiKhK+eriNo7ULrh9SCnBLPJD6/HDB3
+         4o9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718290469; x=1718895269;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Z7g5SALnsdPJQWBZt0kVgnA0bB4kjPLGUDBHBwv4noI=;
+        b=dXooJgxJaN4HFiZhWKqqjtVPBwZyna27DHKyBLYokQOvslBdukKphcYUP50GSxAwc9
+         dANmR3mgn9aUdm8KxdTcdnxS7CYW+fwHX9nYUNmyFdgGNqFlapE0pUfehkLzpkUAHZ5g
+         s3yANO7zuexlYWFWPmRlW+rsMwTYvnqceuYX4yavTH5w9iOx2pVLBTtFhDIKubljoV25
+         HwQWPLr/R9ljpG7VxPbJebwDmxesEOoCGftIWXKJIaYGctqPnnYAaUL19FBsYlpFlDKd
+         +mZPyh+49X7lwky1K6d7y+eino/kPSnmx3kfolPMjHg0UIQuNUBYMRFkFTNznImSbV2x
+         DnWw==
+X-Gm-Message-State: AOJu0YytXvx91HNQCNEwdA3HhYYFy+vCrsV18yMPm5nvkOGtcgSJ3HA1
+	YXPk3UqlVUN2KcjlbsN2VzYlY4iI+hyjsS0nhfLEL9H11/hp6NmHZeyiF3w+HTGFhpPaZjs14bi
+	3TcgaHbgbTv/0gVShSWbeGyP2IYUbtScuiUmpxg==
+X-Google-Smtp-Source: AGHT+IEFJBIeVpnD+lw3dEtVlaKMEXn/UPaJkQ+jBNt3IL0NdXWuc6/aVyLKENNOoHl9TZ+IQBZ2xK7qOnH1FQoGYNM=
+X-Received: by 2002:a05:6122:20a1:b0:4ec:f27b:ee9c with SMTP id
+ 71dfb90a1353d-4ee3f1628c5mr73958e0c.5.1718290467801; Thu, 13 Jun 2024
+ 07:54:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 13 Jun 2024 20:24:16 +0530
+Message-ID: <CA+G9fYvS7u7seBUY36kGdJQJ4LS==ex=zzvBztYUE_X9AT5nYg@mail.gmail.com>
+Subject: Re: [PATCH 5.10 000/317] 5.10.219-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 12 Jun 2024 18:44:49 +0300 Ghadi Elie Rahme wrote:
-> Fix UBSAN warnings that occur when using a system with 32 physical
-> cpu cores or more, or when the user defines a number of Ethernet
-> queues greater than or equal to FP_SB_MAX_E1x using the num_queues
-> module parameter.
-> 
-> The value of the maximum number of Ethernet queues should be limited
-> to FP_SB_MAX_E1x in case FCOE is disabled or to [FP_SB_MAX_E1x-1] if
-> enabled to avoid out of bounds reads and writes.
+On Thu, 13 Jun 2024 at 17:43, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.10.219 release.
+> There are 317 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 15 Jun 2024 11:31:50 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.219-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-You're just describing what the code does, not providing extra
-context...
+The powerpc builds failed on stable-rc 5.10 branch with gcc-12 and clang.
 
-> Fixes: 7d0445d66a76 ("bnx2x: clamp num_queues to prevent passing a negative value")
+Powerpc:
+ - maple_defconfig
+ - ppc6xx_defconfig
+ - tinyconfig
 
-Sure this is not more recent, netif_get_num_default_rss_queues()
-used to always return 8.
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-> Signed-off-by: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
-> Cc: stable@vger.kernel.org
+Build log:
+---------
+from /builds/linux/arch/powerpc/kernel/asm-offsets.c:14:
+arch/powerpc/include/asm/uaccess.h: In function 'raw_copy_from_user':
+arch/powerpc/include/asm/uaccess.h:472:25: error: implicit declaration
+of function '__get_user_size'; did you mean '__get_user_bad'?
+[-Werror=implicit-function-declaration]
+  472 |                         __get_user_size(*(u8 *)to, from, 1, ret);
+      |                         ^~~~~~~~~~~~~~~
+      |                         __get_user_bad
+cc1: some warnings being treated as errors
 
->  drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
-> index a8e07e51418f..c895dd680cf8 100644
-> --- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
-> +++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
-> @@ -66,7 +66,12 @@ static int bnx2x_calc_num_queues(struct bnx2x *bp)
->  	if (is_kdump_kernel())
->  		nq = 1;
->  
-> -	nq = clamp(nq, 1, BNX2X_MAX_QUEUES(bp));
-> +	int max_nq = FP_SB_MAX_E1x - 1;
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10.218-318-g853b71b570fb/testrun/24321785/suite/build/test/gcc-12-maple_defconfig/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10.218-318-g853b71b570fb/testrun/24321785/suite/build/test/gcc-12-maple_defconfig/history/
 
-please don't mix declarations and code
-
-> +	if (NO_FCOE(bp))
-> +		max_nq = FP_SB_MAX_E1x;
-
-you really need to explain somewhere why you're hardcoding E1x
-constants while at a glance the driver also supports E2.
-Also why is BNX2X_MAX_QUEUES() higher than the number of queues?
-Isn't that the bug?
--- 
-pw-bot: cr
+--
+Linaro LKFT
+https://lkft.linaro.org
 
