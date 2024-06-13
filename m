@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D1C907125
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E72B5906F44
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71C3E1F21F14
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D176286655
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FCB1DFD9;
-	Thu, 13 Jun 2024 12:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC7C82C76;
+	Thu, 13 Jun 2024 12:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXp/eNJt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8093rr5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EA4384;
-	Thu, 13 Jun 2024 12:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700C03209;
+	Thu, 13 Jun 2024 12:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282035; cv=none; b=fba269qOooJsSTwQKHnB4vgdjdkT39JYYBu+WTM5gx3/uSnz6DDQWN9gnne7ezMsUn1mxCPbIZzpYgLAfZbxCowVSyd+l9n+5Qbk/wWiZ1DGb9Za8Y5R0V6tyoh1L1Ii1RPXZp/KpjxNVKtXsy2j4AhD/sfj5Cw+NwcEM5k531Q=
+	t=1718280921; cv=none; b=Gv3pj1i4QZwpDNmtpyUejj+zkky69PmUn2X6XuLc3iEwMH18dSjGh9IczRJ/nhOaQIp/6VWYRwQJtyTD3ncPwDkg3aNNWIjxDPiTWpzi0b7jN+m1yo0+q/yZMS1Wy+DJxViuLKG3AvgnXEKS+x6r6mfTDYSUEvHQSVz9tM40dH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282035; c=relaxed/simple;
-	bh=5HNA+wufl/VXthcEeMOHzVRdwtI7yJSSzGAbfO0jJ4o=;
+	s=arc-20240116; t=1718280921; c=relaxed/simple;
+	bh=zysZwLqa5aCUToIwWvZidHak+fpY+4ymn1nSPIooiDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPvaXLgD8AC6PsobPWZiu5fIt4UtSB0Nk9enqRe6wju8fDJOELbLfL9POUEu0DVxrgxJFmm0JnMlghE0/GzFq2vraJBSVXDNmrLz499shyD8CyAEWr3wWNJOrLrbCXrzLczonCOvyg8dxM/vSbC23f+pMYGE6P+X8vJudGgynT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXp/eNJt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62688C2BBFC;
-	Thu, 13 Jun 2024 12:33:55 +0000 (UTC)
+	 MIME-Version; b=GvYV3p26PY1GE+Nt5N4UCZ8hWFDA/rPhsGe79Dz2DjJI25loVrDZaxv531LOhtbE+G16C0eK6NcX2ETSw/mPVQ+GDaQYaIWbO5Eb7viOMq2X52GF/xSMltzpbaYUmjPDRcxcm2gzWcFPXiF04kHQp/HCBhsdXaAZI7oR+XbmbWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8093rr5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB5DC2BBFC;
+	Thu, 13 Jun 2024 12:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282035;
-	bh=5HNA+wufl/VXthcEeMOHzVRdwtI7yJSSzGAbfO0jJ4o=;
+	s=korg; t=1718280921;
+	bh=zysZwLqa5aCUToIwWvZidHak+fpY+4ymn1nSPIooiDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RXp/eNJtUE5cvjEw9xKbHptTAdd6W1gruehq6oXl2JTXB1c2lI7sLb2BAwyg4nBAx
-	 IzOMnxyFl8b6Uo/sO+SzuxLpGist9CBPDFvhPwNdsh/SSCj9jrGkBad7yelENnaorB
-	 563X59TTSjHZgTMdgWD54xqJQhHZtcBSaaMHd3CU=
+	b=e8093rr56fcVi2GRM0z+w0qIab2QqY3ZCMCtowQnM2j2Shlhi8Is3mzKR31qHWFmh
+	 A14M/umuHa/ytLPM8/mQiiPg9DNh5l54NX4F9EXi509HkjcvM9Hv5CUOBjBs0FG3l4
+	 aPWD/WSzFDwCtUu0zm6Nb9KkRwoszB5mOw6gcEQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Gao Xingwang <gaoxingwang1@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 140/402] media: atomisp: ssh_css: Fix a null-pointer dereference in load_video_binaries
-Date: Thu, 13 Jun 2024 13:31:37 +0200
-Message-ID: <20240613113307.597410955@linuxfoundation.org>
+Subject: [PATCH 5.10 080/317] net: ipv6: fix wrong start position when receive hop-by-hop fragment
+Date: Thu, 13 Jun 2024 13:31:38 +0200
+Message-ID: <20240613113250.644324034@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: gaoxingwang <gaoxingwang1@huawei.com>
 
-[ Upstream commit 3b621e9e9e148c0928ab109ac3d4b81487469acb ]
+[ Upstream commit 1cd354fe1e4864eeaff62f66ee513080ec946f20 ]
 
-The allocation failure of mycs->yuv_scaler_binary in load_video_binaries()
-is followed with a dereference of mycs->yuv_scaler_binary after the
-following call chain:
+In IPv6, ipv6_rcv_core will parse the hop-by-hop type extension header and increase skb->transport_header by one extension header length.
+But if there are more other extension headers like fragment header at this time, the skb->transport_header points to the second extension header,
+not the transport layer header or the first extension header.
 
-sh_css_pipe_load_binaries()
-  |-> load_video_binaries(mycs->yuv_scaler_binary == NULL)
-  |
-  |-> sh_css_pipe_unload_binaries()
-        |-> unload_video_binaries()
+This will result in the start and nexthdrp variable not pointing to the same position in ipv6frag_thdr_trunced,
+and ipv6_skip_exthdr returning incorrect offset and frag_off.Sometimes,the length of the last sharded packet is smaller than the calculated incorrect offset, resulting in packet loss.
+We can use network header to offset and calculate the correct position to solve this problem.
 
-In unload_video_binaries(), it calls to ia_css_binary_unload with argument
-&pipe->pipe_settings.video.yuv_scaler_binary[i], which refers to the
-same memory slot as mycs->yuv_scaler_binary. Thus, a null-pointer
-dereference is triggered.
-
-Link: https://lore.kernel.org/r/20240118151303.3828292-1-alexious@zju.edu.cn
-
-Fixes: a49d25364dfb ("staging/atomisp: Add support for the Intel IPU v2")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 9d9e937b1c8b (ipv6/netfilter: Discard first fragment not including all headers)
+Signed-off-by: Gao Xingwang <gaoxingwang1@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/atomisp/pci/sh_css.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv6/reassembly.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/media/atomisp/pci/sh_css.c b/drivers/staging/media/atomisp/pci/sh_css.c
-index ba25d0da8b811..feaec4cd96361 100644
---- a/drivers/staging/media/atomisp/pci/sh_css.c
-+++ b/drivers/staging/media/atomisp/pci/sh_css.c
-@@ -5322,6 +5322,7 @@ static int load_video_binaries(struct ia_css_pipe *pipe)
- 						  sizeof(struct ia_css_binary),
- 						  GFP_KERNEL);
- 		if (!mycs->yuv_scaler_binary) {
-+			mycs->num_yuv_scaler = 0;
- 			err = -ENOMEM;
- 			return err;
- 		}
+diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
+index 28e44782c94d1..6993675171556 100644
+--- a/net/ipv6/reassembly.c
++++ b/net/ipv6/reassembly.c
+@@ -363,7 +363,7 @@ static int ipv6_frag_rcv(struct sk_buff *skb)
+ 	 * the source of the fragment, with the Pointer field set to zero.
+ 	 */
+ 	nexthdr = hdr->nexthdr;
+-	if (ipv6frag_thdr_truncated(skb, skb_transport_offset(skb), &nexthdr)) {
++	if (ipv6frag_thdr_truncated(skb, skb_network_offset(skb) + sizeof(struct ipv6hdr), &nexthdr)) {
+ 		__IP6_INC_STATS(net, __in6_dev_get_safely(skb->dev),
+ 				IPSTATS_MIB_INHDRERRORS);
+ 		icmpv6_param_prob(skb, ICMPV6_HDR_INCOMP, 0);
 -- 
 2.43.0
 
