@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-50789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0391906CA8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:52:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D046906B94
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 804B6282575
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:52:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA97EB22768
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A018014600B;
-	Thu, 13 Jun 2024 11:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D01D1448D3;
+	Thu, 13 Jun 2024 11:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B99r9itF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqFI/Bcn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4F1143C67;
-	Thu, 13 Jun 2024 11:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A356143887;
+	Thu, 13 Jun 2024 11:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279390; cv=none; b=gqfdw0pbfjT2Neh4Ecer+u0TihDFbFFzO7hNDTtw53vSZ7OMjxbHWChoUIu7bfGU6N8tWq0xfNCASyaeSDQMerHHyc4OeDvjERShCyCJGI++Zt6EQDKZ1CmgZJ3/uYiAshnqxsZg2HHBaOOgQxmHFR1q/9QkLvE2nass74pTdGw=
+	t=1718278897; cv=none; b=YGQrh9wpI/QnHxpym3Epv4jt6hpNdkQT3dZ1aH+jw2+rjP+r9Wh3L0B63Z2k8dv0MS/pxqndL8rRXPFW3YiwFT+VVedQtfz5zqyM5W9DV9nwKrTXRuz+n0EqwkXofopNtUFzCsPaI5Zkubi74nBqWxK14SY8jRE/u/46b6WNtRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279390; c=relaxed/simple;
-	bh=DwnMQR+/Tfg2eW6lL7DVXZkglm9ELKsnbaeRDlsYnL0=;
+	s=arc-20240116; t=1718278897; c=relaxed/simple;
+	bh=9J7ZqDvtG+PkSLYvPpAjt9S2cjqWvOmYy9SJjWlO1N4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnHnU4NtXUOjMQ/tILkdV8IvkYQUs2YEk0m8o596Dt87YvELXUuVtcfxYbaGe5H4RH02+0uBpcd7SN189Bym/NdavMI+1dZ8zAb3BnFnliKY1Dv6UluKROqyGgRQDNDwmFeiAMRGXJObhBWB5/9Dw1LcjtXLZmtnByzp2UlmUqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B99r9itF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5BCC2BBFC;
-	Thu, 13 Jun 2024 11:49:49 +0000 (UTC)
+	 MIME-Version; b=cyyQFeQPsAafK+bpGovKTdTe+YDSl9o7UZ1z1QMSwN+fx7hPHdLR3NePGjtJ4pM3dULfn9e+ItBBROwZKT8Mwf21IFysuoWByCGngxdGx1/VvHBipE+dWT8Mj3PO5yX/Avpr4+VUbzJHV8QaYsOLGwoi+ZaWqyNAsfi8WsxUKd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqFI/Bcn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819E9C2BBFC;
+	Thu, 13 Jun 2024 11:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279390;
-	bh=DwnMQR+/Tfg2eW6lL7DVXZkglm9ELKsnbaeRDlsYnL0=;
+	s=korg; t=1718278896;
+	bh=9J7ZqDvtG+PkSLYvPpAjt9S2cjqWvOmYy9SJjWlO1N4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B99r9itFOHIUSBFlSgGu8JZQArF6NMW8Y/476yEhgm5pBq24kbq4SwrD0bGNLuQpw
-	 IprkjlMs27fwqkmRxt7rjXb1+9D2Ggu8R6/ruD5ZfoObjSYNTo4uKFeBvQMApeTY6t
-	 bJL3ytMthHfw3EKj6pkI+FbF5MOkFothvzHYAF1E=
+	b=vqFI/BcnVQ3Re/orAP5BMtaEdvye05WsxLhvbj5MgsrUFn08Vo9d74o5/r/rrZ+Ha
+	 VYAhvgiqE9WG6b3LsPWq4V86fdLy0cTUCN79fOm1CbOjTy/TafxyBIBWnhGxjVNPtG
+	 lWNBpsM0R30S1EOv8bxdBy/nSoNykqii+FeNJqDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.9 029/157] wifi: rtlwifi: rtl8192de: Fix low speed with WPA3-SAE
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Simon Horman <horms+renesas@verge.net.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 106/213] serial: sh-sci: Extract sci_dma_rx_chan_invalidate()
 Date: Thu, 13 Jun 2024 13:32:34 +0200
-Message-ID: <20240613113228.543639323@linuxfoundation.org>
+Message-ID: <20240613113232.092193210@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit a7c0f48410f546772ac94a0f7b7291a15c4fc173 upstream.
+[ Upstream commit 11b3770d54b28dcd905155a6d4aa551187ff00eb ]
 
-Some (all?) management frames are incorrectly reported to mac80211 as
-decrypted when actually the hardware did not decrypt them. This results
-in speeds 3-5 times lower than expected, 20-30 Mbps instead of 100
-Mbps.
+The cookies and channel pointer for the DMA receive channel are
+invalidated in two places, and one more is planned.
+Extract this functionality in a common helper.
 
-Fix this by checking the encryption type field of the RX descriptor.
-rtw88 does the same thing.
-
-This fix was tested only with rtl8192du, which will use the same code.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/4d600435-f0ea-46b0-bdb4-e60f173da8dd@gmail.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: aae20f6e34cd ("serial: sh-sci: protect invalidating RXDMA on shutdown")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c |    5 ++---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h |   14 ++++++++++++++
- 2 files changed, 16 insertions(+), 3 deletions(-)
+ drivers/tty/serial/sh-sci.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-@@ -413,7 +413,8 @@ bool rtl92de_rx_query_desc(struct ieee80
- 	stats->icv = (u16)get_rx_desc_icv(pdesc);
- 	stats->crc = (u16)get_rx_desc_crc32(pdesc);
- 	stats->hwerror = (stats->crc | stats->icv);
--	stats->decrypted = !get_rx_desc_swdec(pdesc);
-+	stats->decrypted = !get_rx_desc_swdec(pdesc) &&
-+			   get_rx_desc_enc_type(pdesc) != RX_DESC_ENC_NONE;
- 	stats->rate = (u8)get_rx_desc_rxmcs(pdesc);
- 	stats->shortpreamble = (u16)get_rx_desc_splcp(pdesc);
- 	stats->isampdu = (bool)(get_rx_desc_paggr(pdesc) == 1);
-@@ -426,8 +427,6 @@ bool rtl92de_rx_query_desc(struct ieee80
- 	rx_status->band = hw->conf.chandef.chan->band;
- 	if (get_rx_desc_crc32(pdesc))
- 		rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
--	if (!get_rx_desc_swdec(pdesc))
--		rx_status->flag |= RX_FLAG_DECRYPTED;
- 	if (get_rx_desc_bw(pdesc))
- 		rx_status->bw = RATE_INFO_BW_40;
- 	if (get_rx_desc_rxht(pdesc))
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-@@ -14,6 +14,15 @@
- #define USB_HWDESC_HEADER_LEN			32
- #define CRCLENGTH				4
- 
-+enum rtl92d_rx_desc_enc {
-+	RX_DESC_ENC_NONE	= 0,
-+	RX_DESC_ENC_WEP40	= 1,
-+	RX_DESC_ENC_TKIP_WO_MIC	= 2,
-+	RX_DESC_ENC_TKIP_MIC	= 3,
-+	RX_DESC_ENC_AES		= 4,
-+	RX_DESC_ENC_WEP104	= 5,
-+};
-+
- /* macros to read/write various fields in RX or TX descriptors */
- 
- static inline void set_tx_desc_pkt_size(__le32 *__pdesc, u32 __val)
-@@ -246,6 +255,11 @@ static inline u32 get_rx_desc_drv_info_s
- 	return le32_get_bits(*__pdesc, GENMASK(19, 16));
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index dfe9ac3b95af2..8a7592cd1aff9 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -1248,12 +1248,22 @@ static int sci_dma_rx_find_active(struct sci_port *s)
+ 	return -1;
  }
  
-+static inline u32 get_rx_desc_enc_type(__le32 *__pdesc)
++static void sci_dma_rx_chan_invalidate(struct sci_port *s)
 +{
-+	return le32_get_bits(*__pdesc, GENMASK(22, 20));
++	unsigned int i;
++
++	s->chan_rx = NULL;
++	for (i = 0; i < ARRAY_SIZE(s->cookie_rx); i++)
++		s->cookie_rx[i] = -EINVAL;
++	s->active_rx = 0;
 +}
 +
- static inline u32 get_rx_desc_shift(__le32 *__pdesc)
+ static void sci_rx_dma_release(struct sci_port *s)
  {
- 	return le32_get_bits(*__pdesc, GENMASK(25, 24));
+ 	struct dma_chan *chan = s->chan_rx_saved;
+ 
+-	s->chan_rx_saved = s->chan_rx = NULL;
+-	s->cookie_rx[0] = s->cookie_rx[1] = -EINVAL;
++	s->chan_rx_saved = NULL;
++	sci_dma_rx_chan_invalidate(s);
+ 	dmaengine_terminate_sync(chan);
+ 	dma_free_coherent(chan->device->dev, s->buf_len_rx * 2, s->rx_buf[0],
+ 			  sg_dma_address(&s->sg_rx[0]));
+@@ -1372,10 +1382,7 @@ static int sci_submit_rx(struct sci_port *s, bool port_lock_held)
+ 		spin_lock_irqsave(&port->lock, flags);
+ 	if (i)
+ 		dmaengine_terminate_async(chan);
+-	for (i = 0; i < 2; i++)
+-		s->cookie_rx[i] = -EINVAL;
+-	s->active_rx = 0;
+-	s->chan_rx = NULL;
++	sci_dma_rx_chan_invalidate(s);
+ 	sci_start_rx(port);
+ 	if (!port_lock_held)
+ 		spin_unlock_irqrestore(&port->lock, flags);
+-- 
+2.43.0
+
 
 
 
