@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-51983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CCBE907297
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A36B90723E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D7E61C204FC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEB7A281C1A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C50145358;
-	Thu, 13 Jun 2024 12:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E74143C52;
+	Thu, 13 Jun 2024 12:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvmGY1Vv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+Uv1vi5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E93144317;
-	Thu, 13 Jun 2024 12:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52A717FD;
+	Thu, 13 Jun 2024 12:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282890; cv=none; b=l1ZlSZxXD+3PRxghaTRt2eQ1DAVcPU74aH5id74NqD7CBbMPv0797bc6/rc1A1sTNgoAzD0SFGx7HWUHAbiw9JB2tvXwL3NJSj2rgEqYPQcN0Ayb0GrmQ604ZiS6Pl3vP/IxzQJXVGZLWPug0Pm/OlLoT5KayJkKY6ca0h3bUak=
+	t=1718282711; cv=none; b=CH+XtfXLGQqf/b/VxYpm+OzrOOgcH/ypEInroz9d7zKakWbpDJGgCH9QueQlOWKYFJzh86kfgSoIDKPBEZ46OwA2Ygy9zJ9Qm5BMes5GrDhuR1lZW3xhb1xou+G7mRRUsWMDXZcZ/NGoFhj1cu/R54pVtE2AoX5+tdEwunlB6s4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282890; c=relaxed/simple;
-	bh=pPUWSj+jRIxy9bM+6P2grkTOAghUiLbWBHlsyotA3hI=;
+	s=arc-20240116; t=1718282711; c=relaxed/simple;
+	bh=BkhWxGm2uRHWC2wCUbQLaCV/yz8z1wJPOBySUA5INbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R90m1MMB58J72f4t/qLnGxIuCGVeuKJSkukbdTyVklHdqHUFPugS9PUF59HBuRHuiS6rkQSLWmeOtu+gmXB3CIRDnzbSzlj1wCilxWVJAbA7zlRMwW682QGRzkfWgg+fnsuBS+xEgNJZLpiLpEJjOgQr7Lc5LnSQMPyh14SLVEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvmGY1Vv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFC2C32786;
-	Thu, 13 Jun 2024 12:48:09 +0000 (UTC)
+	 MIME-Version; b=bBpwyat5VEnt95eDY++3P/LsUmZGapNigDW9SmKxPCJugDk6Qx5Ye3MwZOcBqJmJmwvq4BQvlWPUOvcenczcVpS1SVyeMcQMD+xNi5wFMN4N8NmMlA1bAjKVnWii5sbtRoSJAoIdDK+2HZNuh9kk9v/WBu5fvQpeCaX6mVGpvi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+Uv1vi5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F63DC2BBFC;
+	Thu, 13 Jun 2024 12:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282890;
-	bh=pPUWSj+jRIxy9bM+6P2grkTOAghUiLbWBHlsyotA3hI=;
+	s=korg; t=1718282710;
+	bh=BkhWxGm2uRHWC2wCUbQLaCV/yz8z1wJPOBySUA5INbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SvmGY1Vv306EkBeLeIv9atzQJ1Xx4lNojzP4Tx/4mqrXvexPo1LHY5syEwPEGjQI4
-	 pXupYgtCeqoYhUiwLc5eKioIKsVpp29xGebAYqAoOvscI0PERDoBGYLR5KD3O4d7bp
-	 QWlRnUXoSe4WrJLDY6UKrX3PAF3fc3uPtq/SV4dc=
+	b=g+Uv1vi5H7FPXFKIk54o8sGXDfRWf9PrmGc19EwSADYgtfWn4aj0kProfq8vKTuUo
+	 8U9/I7BAzLgx/Bfm7JWrHP8OpSKHDUqcNRRQNBvUob1I+FRcw5zDr9Ru6jeQcJagi1
+	 /0zLeq7t8wLreJbX8UjZOkgZpdKIEKFuR773XNVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.1 28/85] wifi: rtw89: pci: correct TX resource checking for PCI DMA channel of firmware command
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 5.15 369/402] media: v4l2-core: hold videodev_lock until dev reg, finishes
 Date: Thu, 13 Jun 2024 13:35:26 +0200
-Message-ID: <20240613113215.229217874@linuxfoundation.org>
+Message-ID: <20240613113316.530196658@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit c6330b129786e267b14129335a08fa7c331c308d upstream.
+commit 1ed4477f2ea4743e7c5e1f9f3722152d14e6eeb1 upstream.
 
-The DMA channel of firmware command doesn't use TX WD (WiFi descriptor), so
-don't need to consider number of TX WD as factor of TX resource. Otherwise,
-during pause state (a transient state to switch to/from low power mode)
-firmware commands could be dropped and driver throws warnings suddenly:
+After the new V4L2 device node was registered, some additional
+initialization was done before the device node was marked as
+'registered'. During the time between creating the device node
+and marking it as 'registered' it was possible to open the
+device node, which would return -ENODEV since the 'registered'
+flag was not yet set.
 
-   rtw89_8852ce 0000:04:00.0: no tx fwcmd resource
-   rtw89_8852ce 0000:04:00.0: failed to send h2c
+Hold the videodev_lock mutex from just before the device node
+is registered until the 'registered' flag is set. Since v4l2_open
+will take the same lock, it will wait until this registration
+process is finished. This resolves this race condition.
 
-The case we met is that driver sends RSSI strength of firmware command at
-RX path that could be running concurrently with switching low power mode.
-The missing of this firmware command doesn't affect user experiences,
-because the RSSI strength will be updated again after a while.
-
-The DMA descriptors of normal packets has three layers like:
-
-  +-------+
-  | TX BD | (*n elements)
-  +-------+
-      |
-      |   +-------+
-      +-> | TX WD | (*m elements)
-          +-------+
-              |
-              |   +--------+
-              +-> |   SKB  |
-                  +--------+
-
-And, firmware command queue (TXCH 12) is a special queue that has only
-two layers:
-
-  +-------+
-  | TX BD | (*n elements)
-  +-------+
-      |
-      |   +------------------+
-      +-> | firmware command |
-          +------------------+
-
-Fixes: 4a29213cd775 ("wifi: rtw89: pci: correct TX resource checking in low power mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/20240410011316.9906-1-pkshih@realtek.com
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: <stable@vger.kernel.org>      # for vi4.18 and up
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw89/pci.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/v4l2-core/v4l2-dev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -948,7 +948,8 @@ u32 __rtw89_pci_check_and_reclaim_tx_res
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -1033,8 +1033,10 @@ int __video_register_device(struct video
+ 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
+ 	vdev->dev.parent = vdev->dev_parent;
+ 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
++	mutex_lock(&videodev_lock);
+ 	ret = device_register(&vdev->dev);
+ 	if (ret < 0) {
++		mutex_unlock(&videodev_lock);
+ 		pr_err("%s: device_register failed\n", __func__);
+ 		goto cleanup;
+ 	}
+@@ -1054,6 +1056,7 @@ int __video_register_device(struct video
  
- 	spin_lock_bh(&rtwpci->trx_lock);
- 	cnt = rtw89_pci_get_avail_txbd_num(tx_ring);
--	cnt = min(cnt, wd_ring->curr_num);
-+	if (txch != RTW89_TXCH_CH12)
-+		cnt = min(cnt, wd_ring->curr_num);
- 	spin_unlock_bh(&rtwpci->trx_lock);
+ 	/* Part 6: Activate this minor. The char device can now be used. */
+ 	set_bit(V4L2_FL_REGISTERED, &vdev->flags);
++	mutex_unlock(&videodev_lock);
  
- 	return cnt;
+ 	return 0;
+ 
 
 
 
