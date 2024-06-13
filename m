@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27759072E4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:53:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5CD907257
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:46:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73EF5B296C4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFFED1C226B2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D246D1428EF;
-	Thu, 13 Jun 2024 12:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0A0142658;
+	Thu, 13 Jun 2024 12:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQnkMbiq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NN4Ef5su"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D6C384;
-	Thu, 13 Jun 2024 12:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25DD2F55;
+	Thu, 13 Jun 2024 12:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282934; cv=none; b=d9evfWXvqlWcDE5WR1h4C3D5GMyC52g+Lp/ZzJil3MfTc1EmwkB04NUlHh0amdX9hw86oncWSXoB9MIadWAQb3ZGsOlNfTuB9BwPssZvcGiOtryAbyqC8IbNCo3PjwS0aR0dhDc6sse8bdPv4qFALKkIh1EN3Nn8ZWXrEJujD98=
+	t=1718282772; cv=none; b=Bm97YojbA1vjv2faPLyOOJ+GG2mfLToPb3kLQxXGvjvrqxzMnLJRTwU+1gvEB6D2jJDvLGbJ9zLJlg8Q9ncYBTjEZYFb78z62RYsYEUkHSQkLSAOcV8yaCOtJtQxUq5P3Iz4tLR9+CksX3sNiMT0/le7s7sILWVcEI/H1dWEQLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282934; c=relaxed/simple;
-	bh=XrFmFzFSzoMcb22mGpgbA60OeJnrgTpijarzmwixYTU=;
+	s=arc-20240116; t=1718282772; c=relaxed/simple;
+	bh=46FJehp5H7a7jl+FG0NiF9NEzI8F3ujSOA8qadkQHI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUrBX64AyS5BrkOmE4waNhSbawB5YdmGzvlLIXKABwjBRZygJoJd18Q9KjnrYi3Ph7JzLAEazwUGIFQv4F1IfwzA7dO4w0pbKqk1gG+6qO0vGBcBOOTG8FGcknSVbTCvORRiC46L9pH0whsRcrsOnthBL7v3kz3qfzxszHToilg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQnkMbiq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17FD2C2BBFC;
-	Thu, 13 Jun 2024 12:48:53 +0000 (UTC)
+	 MIME-Version; b=iO1MZL23GGiqAKP5z4zcROxJMqUl0Tu/52fXYhszlm1M+QenFeqluW1rbN1T5Ho6xC6Zr6GLKpBI0RwII8OJ+3R5dCb1Vc8qrhcpduqpQUJRQab503cq43kkAfKDEd4co6bufnfJrt/6bucft5tnBc0U+P1Y0wUtuCEuWCb5G6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NN4Ef5su; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ABE4C2BBFC;
+	Thu, 13 Jun 2024 12:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282934;
-	bh=XrFmFzFSzoMcb22mGpgbA60OeJnrgTpijarzmwixYTU=;
+	s=korg; t=1718282772;
+	bh=46FJehp5H7a7jl+FG0NiF9NEzI8F3ujSOA8qadkQHI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQnkMbiqDNPi/zMMYmlSj4/KsJXP/4HD+lWuFmuVuDLDFSEMc/wdRcTYbs1Jzl/AL
-	 xT58Nk04XUgdd0z39Nmx4gC9MDfYqPhQDfUXYnq6HiSGV7B6Ijbfrrqcq3peqYuyXg
-	 tkEbjrv1fhrB/VdYf7ulq9PJX24RSbkQcxoZLoX0=
+	b=NN4Ef5su6Jjd5UPR1f4iyX2QoZmVjAkR0sYi68bM+hr4JVPk3FC8EU/XWzX/F81hH
+	 XXsHPrQb+MFbKELoXMGVoQswKG5vreeZIM/NYhUwehAusTbFGAi+akSqDyEN6JVOxZ
+	 /BFbSzx5nO7CxDFkUKDYVV51R33RJNX9Xs33To4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 42/85] mmc: sdhci-acpi: Disable write protect detection on Toshiba WT10-A
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 5.15 383/402] intel_th: pci: Add Meteor Lake-S CPU support
 Date: Thu, 13 Jun 2024 13:35:40 +0200
-Message-ID: <20240613113215.769099365@linuxfoundation.org>
+Message-ID: <20240613113317.083757884@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-commit ef3eab75e17191e5665f52e64e85bc29d5705a7b upstream.
+commit a4f813c3ec9d1c32bc402becd1f011b3904dd699 upstream.
 
-On the Toshiba WT10-A the microSD slot always reports the card being
-write-protected, just like on the Toshiba WT8-B.
+Add support for the Trace Hub in Meteor Lake-S CPU.
 
-Add a DMI quirk to work around this.
-
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240410191639.526324-6-hdegoede@redhat.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20240429130119.1518073-15-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-acpi.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -779,6 +779,17 @@ static const struct dmi_system_id sdhci_
- 		},
- 		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -290,6 +290,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
  	},
-+	{
-+		/*
-+		 * The Toshiba WT10-A's microSD slot always reports the card being
-+		 * write-protected.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "TOSHIBA WT10-A"),
-+		},
-+		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
+ 	{
++		/* Meteor Lake-S CPU */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xae24),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
 +	},
- 	{} /* Terminating entry */
- };
- 
++	{
+ 		/* Raptor Lake-S */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x7a26),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
