@@ -1,107 +1,228 @@
-Return-Path: <stable+bounces-50406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0DB906557
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06178906560
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:40:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A27A11C22F6A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:39:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 119361C22A45
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC46413C3EB;
-	Thu, 13 Jun 2024 07:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C3013C3E2;
+	Thu, 13 Jun 2024 07:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q+XNb2Vq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWoHmlvN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD9E136997
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3742B1386D8
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718264359; cv=none; b=jCCshbVdLxEZ8CAlacz6m4O7M4xVbnjARdhQpp9ephMzSOUoNDU11+Xwexm0vAe2YnouXoZcTwvcMKQeQWToX5o0u5qOOxVfOnY2V45TY4Gtp+vufHcJ6le6ObWJgH5T/mPU0WrkTqCUIoBmQW5UObtRnJSJEKnqyWNf8gO88QA=
+	t=1718264421; cv=none; b=hsawunQz9uXjiBjG8xWT0olL7JibtzXXrTezk67LnV6ieXDre4PW8OusVSmmGx/qI9rADh0qwVMdGnY/9/6/+e+9VYn8eaMmFqQJ+QBxnG4F3p0uyGJXQFpLKGX6MXOCc9TnRjfts/dCtTXUaP0jWWmsI1Z1Us0Bw5PqcpbW+ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718264359; c=relaxed/simple;
-	bh=gvd3iJZhXkv3oS3HiOW3qGIdtOu46n2nNHFMDvtAZ4g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r4t0kK3Ha9DzXuHxs3yFVWnPD1++vBN/FTf0g2i7fwQY58ZCC0Th7HDNN7gUB1HYzzV8ekhIZsJF2+YqehHcXQT0e8MMDl4MSCr08AP8q4zFt9m1VcDYpdpepSWqgxxtqAxZThU4HYIo2l7sMf8ogLfF8HNS6DzW0ceD1xCGar4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q+XNb2Vq; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52bc121fb1eso1001377e87.1
-        for <stable@vger.kernel.org>; Thu, 13 Jun 2024 00:39:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718264356; x=1718869156; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oZ8kTSJ2fttE0Jg9Brzhxa9VkzxRO9QjtCb/V2tPU30=;
-        b=q+XNb2VqD/glMgMtdcGr7VlsQvaS6QtUDsiPGGXw6pBbsi1GWuOSFTR92gFRodlPdm
-         KnelBpeNVgOLXv6lvgwT86ICFh8BUXOQ+ZNRa3fcf8mGTeJuhwNq5/co6yoVrkHOArgR
-         SVKevhgENtkwS8upOOT6rLBL7y1l0EYWcGcnVkJXjZV1YzBzJDyrQ4DFrY4OSXKcCwVy
-         8xodQqMlsh2FTDxgpQe8Q3GECOy0Na/tpU38D3XYAFbUgixQ8U2YoWj3/EAbze3MJRSZ
-         EHu3y+nHJ3eckLT1GifAgn4nxM7yS7pQR/xmYoAHrHd84OhXpH03E2QaHQjeOJXy6XHz
-         Nhow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718264356; x=1718869156;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oZ8kTSJ2fttE0Jg9Brzhxa9VkzxRO9QjtCb/V2tPU30=;
-        b=lKLtN0OUE9LuIkOUqcypa7TP/dfCqHZS3Oa6ttoxVWG7UbrlihVEgNQhV1aZyT/7sg
-         o3eRcG5OxBv4AVRLeJVjIlwHlxHekNPKKtPtcVtjr1OdoJ7wgnRrP3ElrLkp/02h6FAa
-         j7YzeKtLU+UukNCBUWkZdZGS9jVe4No92qnD0kvi9nZzRYXMZKqThXxruW6LlsDbjeAf
-         chqzTzAwab9lN76c9ql+yTXvzIyfpWv4kUdHdCLOJeC6hwGKVSmQME2KYrjiRu4PlxGR
-         497Qao+7ufE+PUC192wrHGf4jLWVz2zo6U7jf9PjIrXLCtrqifFS6Qe08OZQN6uTPHZQ
-         id+w==
-X-Forwarded-Encrypted: i=1; AJvYcCVbxoq3SwAoSjBdS80m2BVKUN6vLy3WujvH9SHFx4FzPJT5SmSuPUG5No0WJNo3OP8Vv84tQkV/m/9vzjQKVAKLFcsM1YCn
-X-Gm-Message-State: AOJu0Yw6m0C9PRMP0Jx5pRli/pkWJNRg29/wOHDKBZJJe8UGMf1ts7a5
-	wMdDjCmMOn1qJ6On5alIQE3MGHIQ4I5y+R7RgUaFaVFaZIRxicYdm68fBdHR7hM=
-X-Google-Smtp-Source: AGHT+IGcPXEciBUgZAJMu6A19p7a0FAIiSQHe4SAYEBWGWog4rrglEIKAByhDs97NDz3T+Vmd3FT/Q==
-X-Received: by 2002:a05:6512:2353:b0:52c:1c56:a230 with SMTP id 2adb3069b0e04-52c9a3b99a2mr2873051e87.5.1718264355932;
-        Thu, 13 Jun 2024 00:39:15 -0700 (PDT)
-Received: from ?IPV6:2a00:f41:900a:a4b1:c71b:4253:8a9f:c478? ([2a00:f41:900a:a4b1:c71b:4253:8a9f:c478])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca282dd55sm117491e87.65.2024.06.13.00.39.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Jun 2024 00:39:15 -0700 (PDT)
-Message-ID: <43d4f973-2768-41f1-900f-a24afe280bc4@linaro.org>
-Date: Thu, 13 Jun 2024 09:39:13 +0200
+	s=arc-20240116; t=1718264421; c=relaxed/simple;
+	bh=XUS9m2u4h9m/9THzG9OzGqf/sb4r0g90n4Sy1quOcdE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WORIDrWoUGphj07Do7vxqYgDukaEDDuh0i1Y6d8ZfKnkwME0RL53kuM1nztAstU9XDJcWf1dzuuu1XBGhYd0JeumYTVyhMUAb0QhXL49SJd+WMp7kP/C/y8DLrpimGEiWsy2HC6ygJWsifSmiFX/Jgo8c7lJYn09LZRaLKInix4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWoHmlvN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CAFC2BBFC;
+	Thu, 13 Jun 2024 07:40:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718264420;
+	bh=XUS9m2u4h9m/9THzG9OzGqf/sb4r0g90n4Sy1quOcdE=;
+	h=Subject:To:Cc:From:Date:From;
+	b=HWoHmlvN0q/P5Gzrw2t/HlhJWxX62AfpEAJY+Aa+A6vPTgX/b5A+j2UEf/+gt0g6b
+	 lakMSbu7uX5I4rALXaAX+RgwfVxi0Klhbp674bFhr7XQTivTr1XwpUEU+XM0JPkS15
+	 6OM988hnFvBP7ivySLx2E5tMW9aDEO7vTJ5iwa38=
+Subject: FAILED: patch "[PATCH] i2c: acpi: Unbind mux adapters before delete" failed to apply to 6.1-stable tree
+To: hamish.martin@alliedtelesis.co.nz,andi.shyti@kernel.org,mika.westerberg@linux.intel.com,stable@vger.kernel.org,wsa+renesas@sang-engineering.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 13 Jun 2024 09:40:17 +0200
+Message-ID: <2024061317-avid-favoring-8698@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] firmware: qcom_scm: Mark get_wq_ctx() as atomic call
-To: quic_uchalich@quicinc.com, Bjorn Andersson <andersson@kernel.org>,
- Sibi Sankar <quic_sibis@quicinc.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel@quicinc.com, Murali Nalajala <quic_mnalajal@quicinc.com>,
- stable@vger.kernel.org
-References: <20240611-get_wq_ctx_atomic-v1-1-9189a0a7d1ba@quicinc.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20240611-get_wq_ctx_atomic-v1-1-9189a0a7d1ba@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On 6/11/24 20:27, Unnathi Chalicheemala via B4 Relay wrote:
-> From: Murali Nalajala <quic_mnalajal@quicinc.com>
-> 
-> Currently get_wq_ctx() is wrongly configured as a standard call.
-> Here get_wq_ctx() must be an atomic call and can't be a standard
-> SMC call because get_wq_ctx() should not sleep again. This
-> situation lead to a deadlock. Hence mark get_wq_ctx() as
-> atomic call.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-That's quite a word salad.. could you try to make it clearer what
-you're trying to achieve?
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 3f858bbf04dbac934ac279aaee05d49eb9910051
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061317-avid-favoring-8698@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-Konrad
+Possible dependencies:
+
+3f858bbf04db ("i2c: acpi: Unbind mux adapters before delete")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 3f858bbf04dbac934ac279aaee05d49eb9910051 Mon Sep 17 00:00:00 2001
+From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Date: Wed, 13 Mar 2024 11:16:32 +1300
+Subject: [PATCH] i2c: acpi: Unbind mux adapters before delete
+
+There is an issue with ACPI overlay table removal specifically related
+to I2C multiplexers.
+
+Consider an ACPI SSDT Overlay that defines a PCA9548 I2C mux on an
+existing I2C bus. When this table is loaded we see the creation of a
+device for the overall PCA9548 chip and 8 further devices - one
+i2c_adapter each for the mux channels. These are all bound to their
+ACPI equivalents via an eventual invocation of acpi_bind_one().
+
+When we unload the SSDT overlay we run into the problem. The ACPI
+devices are deleted as normal via acpi_device_del_work_fn() and the
+acpi_device_del_list.
+
+However, the following warning and stack trace is output as the
+deletion does not go smoothly:
+------------[ cut here ]------------
+kernfs: can not remove 'physical_node', no directory
+WARNING: CPU: 1 PID: 11 at fs/kernfs/dir.c:1674 kernfs_remove_by_name_ns+0xb9/0xc0
+Modules linked in:
+CPU: 1 PID: 11 Comm: kworker/u128:0 Not tainted 6.8.0-rc6+ #1
+Hardware name: congatec AG conga-B7E3/conga-B7E3, BIOS 5.13 05/16/2023
+Workqueue: kacpi_hotplug acpi_device_del_work_fn
+RIP: 0010:kernfs_remove_by_name_ns+0xb9/0xc0
+Code: e4 00 48 89 ef e8 07 71 db ff 5b b8 fe ff ff ff 5d 41 5c 41 5d e9 a7 55 e4 00 0f 0b eb a6 48 c7 c7 f0 38 0d 9d e8 97 0a d5 ff <0f> 0b eb dc 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffff9f864008fb28 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: ffff8ef90a8d4940 RCX: 0000000000000000
+RDX: ffff8f000e267d10 RSI: ffff8f000e25c780 RDI: ffff8f000e25c780
+RBP: ffff8ef9186f9870 R08: 0000000000013ffb R09: 00000000ffffbfff
+R10: 00000000ffffbfff R11: ffff8f000e0a0000 R12: ffff9f864008fb50
+R13: ffff8ef90c93dd60 R14: ffff8ef9010d0958 R15: ffff8ef9186f98c8
+FS:  0000000000000000(0000) GS:ffff8f000e240000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f48f5253a08 CR3: 00000003cb82e000 CR4: 00000000003506f0
+Call Trace:
+ <TASK>
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? __warn+0x7c/0x130
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? report_bug+0x171/0x1a0
+ ? handle_bug+0x3c/0x70
+ ? exc_invalid_op+0x17/0x70
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ acpi_unbind_one+0x108/0x180
+ device_del+0x18b/0x490
+ ? srso_return_thunk+0x5/0x5f
+ ? srso_return_thunk+0x5/0x5f
+ device_unregister+0xd/0x30
+ i2c_del_adapter.part.0+0x1bf/0x250
+ i2c_mux_del_adapters+0xa1/0xe0
+ i2c_device_remove+0x1e/0x80
+ device_release_driver_internal+0x19a/0x200
+ bus_remove_device+0xbf/0x100
+ device_del+0x157/0x490
+ ? __pfx_device_match_fwnode+0x10/0x10
+ ? srso_return_thunk+0x5/0x5f
+ device_unregister+0xd/0x30
+ i2c_acpi_notify+0x10f/0x140
+ notifier_call_chain+0x58/0xd0
+ blocking_notifier_call_chain+0x3a/0x60
+ acpi_device_del_work_fn+0x85/0x1d0
+ process_one_work+0x134/0x2f0
+ worker_thread+0x2f0/0x410
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xe3/0x110
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2f/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
+---[ end trace 0000000000000000 ]---
+...
+repeated 7 more times, 1 for each channel of the mux
+...
+
+The issue is that the binding of the ACPI devices to their peer I2C
+adapters is not correctly cleaned up. Digging deeper into the issue we
+see that the deletion order is such that the ACPI devices matching the
+mux channel i2c adapters are deleted first during the SSDT overlay
+removal. For each of the channels we see a call to i2c_acpi_notify()
+with ACPI_RECONFIG_DEVICE_REMOVE but, because these devices are not
+actually i2c_clients, nothing is done for them.
+
+Later on, after each of the mux channels has been dealt with, we come
+to delete the i2c_client representing the PCA9548 device. This is the
+call stack we see above, whereby the kernel cleans up the i2c_client
+including destruction of the mux and its channel adapters. At this
+point we do attempt to unbind from the ACPI peers but those peers no
+longer exist and so we hit the kernfs errors.
+
+The fix is to augment i2c_acpi_notify() to handle i2c_adapters. But,
+given that the life cycle of the adapters is linked to the i2c_client,
+instead of deleting the i2c_adapters during the i2c_acpi_notify(), we
+just trigger unbinding of the ACPI device from the adapter device, and
+allow the clean up of the adapter to continue in the way it always has.
+
+Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 525e6fabeae2 ("i2c / ACPI: add support for ACPI reconfigure notifications")
+Cc: <stable@vger.kernel.org> # v4.8+
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index d6037a328669..14ae0cfc325e 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -445,6 +445,11 @@ static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev)
+ 	return i2c_find_device_by_fwnode(acpi_fwnode_handle(adev));
+ }
+ 
++static struct i2c_adapter *i2c_acpi_find_adapter_by_adev(struct acpi_device *adev)
++{
++	return i2c_find_adapter_by_fwnode(acpi_fwnode_handle(adev));
++}
++
+ static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
+ 			   void *arg)
+ {
+@@ -471,11 +476,17 @@ static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
+ 			break;
+ 
+ 		client = i2c_acpi_find_client_by_adev(adev);
+-		if (!client)
+-			break;
++		if (client) {
++			i2c_unregister_device(client);
++			put_device(&client->dev);
++		}
++
++		adapter = i2c_acpi_find_adapter_by_adev(adev);
++		if (adapter) {
++			acpi_unbind_one(&adapter->dev);
++			put_device(&adapter->dev);
++		}
+ 
+-		i2c_unregister_device(client);
+-		put_device(&client->dev);
+ 		break;
+ 	}
+ 
+
 
