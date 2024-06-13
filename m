@@ -1,55 +1,66 @@
-Return-Path: <stable+bounces-51429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D08A906FD1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBAC90719D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:39:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 488311F2121E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26A6C1F274DE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F13146008;
-	Thu, 13 Jun 2024 12:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8116144317;
+	Thu, 13 Jun 2024 12:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkUH0m3E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LaNhEmzy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C41145B2B;
-	Thu, 13 Jun 2024 12:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658581EEE0;
+	Thu, 13 Jun 2024 12:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281272; cv=none; b=fs7zX3JnbIoWmP+/duTtRhUUTZ0bMELcJZ0xX3zHBEQuu1jQZ2liX3M7YNiWBWe5ZAiPmMjdSkbEoxIfNT6xqNinZ7J6vek9hTsoQnaTkiqCJP9PvGO6t8oWZVO/z94TRfND4c1GXLP2rdqjJaB+d3rNZq8TfdraHxG3zPVPU/o=
+	t=1718282301; cv=none; b=Gy3xo0ihLo8ozHSnie5EbYmLTYZnHGSJzv3reeCLrsGhLC+QkqivPKEbPObbMKGD08birXqALl28iyoomzD8skDV4Kn5oQ5ZxDh9nU9kHexV/H3kvQVnmQlVRhLOzJO8vybMQsmmUEK956AzEqzDPG73tl3Lj5oqtKfAr5wCF7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281272; c=relaxed/simple;
-	bh=ISW2vERWGcmxrPReJKLsfFQwjCbaGvxYobjE9/0KbgY=;
+	s=arc-20240116; t=1718282301; c=relaxed/simple;
+	bh=w8tu01ZpV+TY586ErRHk1IJ/gSDOqeuFJqcZla5KIxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSSCgiADYIAhwr4r7RBRdhddXL3gzHWs+hzXcMfx1lC3IaAwf+qpbECG+TWv/amQSH3niiKV8DsMTWzOFrlVkD0oZfGX+7v1VwvKVJjvPX6/noC8X5F9bwcF0JXb5AakIXiE1+Euy63LvPxj/3rywRzjfCAP1c9ORaXAOisTBSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkUH0m3E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F45C2BBFC;
-	Thu, 13 Jun 2024 12:21:11 +0000 (UTC)
+	 MIME-Version; b=JMviVqeYhMa58h4+3HNfeeI94Kqt3ci8+urY4PNwC48hQF01yLSPLC3t/zz7OzqxsaGpMpDZpHIWGDQgoqwlGRd7AaKHGEG+YJLTVOK1EfuxZ2QFuZOt7ECLaDnaxw/Ndldqt/s6OhVeh409gqlUzFlt6zvI+/G2L4osljGan2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LaNhEmzy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B337BC2BBFC;
+	Thu, 13 Jun 2024 12:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281272;
-	bh=ISW2vERWGcmxrPReJKLsfFQwjCbaGvxYobjE9/0KbgY=;
+	s=korg; t=1718282301;
+	bh=w8tu01ZpV+TY586ErRHk1IJ/gSDOqeuFJqcZla5KIxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mkUH0m3ElJBbpAyAduPVvvqtBTRc/t6/MEc2H/BREwg8YyDhVY8svR5vkcGiLEApd
-	 2cFyvvvdhbhL9Q42eLATpk6DM0wcGwPZvNly0dBkhDiAS3/fh/S7bAx9XeAD+O0r4e
-	 HwitbvCPitx6ciI1MBDCyHmwEHx5/LhXYfwn4IjQ=
+	b=LaNhEmzyWSMZRFeRE1sVkzU/k07uKNKojyPvpITtBSsnJ9TYKYNuZCfz2NyucyB2m
+	 SIVZYHM0zH88a0vFbt8O6zI43xg9xpTK0lnopfik/6ehkyjzP4cPXviobo4XyVPrVz
+	 XaQHQUGGji+aqPV+zSXNc56EhGawKqSy1khQZvrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Simek <michal.simek@amd.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Leo Yan <leo.yan@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 169/317] microblaze: Remove early printk call from cpuinfo-static.c
-Date: Thu, 13 Jun 2024 13:33:07 +0200
-Message-ID: <20240613113254.100238106@linuxfoundation.org>
+Subject: [PATCH 5.15 231/402] perf report: Avoid SEGV in report__setup_sample_type()
+Date: Thu, 13 Jun 2024 13:33:08 +0200
+Message-ID: <20240613113311.155836768@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +72,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Simek <michal.simek@amd.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 58d647506c92ccd3cfa0c453c68ddd14f40bf06f ]
+[ Upstream commit 45b4f402a6b782352c4bafcff682bfb01da9ca05 ]
 
-Early printk has been removed already that's why also remove calling it.
-Similar change has been done in cpuinfo-pvr-full.c by commit cfbd8d1979af
-("microblaze: Remove early printk setup").
+In some cases evsel->name is lazily initialized in evsel__name(). If not
+initialized passing NULL to strstr() leads to a SEGV.
 
-Fixes: 96f0e6fcc9ad ("microblaze: remove redundant early_printk support")
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Link: https://lore.kernel.org/r/2f10db506be8188fa07b6ec331caca01af1b10f8.1712824039.git.michal.simek@amd.com
+Fixes: ccb17caecfbd542f ("perf report: Set PERF_SAMPLE_DATA_SRC bit for Arm SPE event")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Leo Yan <leo.yan@linux.dev>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240508035301.1554434-4-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/microblaze/kernel/cpu/cpuinfo-static.c | 2 +-
+ tools/perf/builtin-report.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/microblaze/kernel/cpu/cpuinfo-static.c b/arch/microblaze/kernel/cpu/cpuinfo-static.c
-index 85dbda4a08a81..03da36dc6d9c9 100644
---- a/arch/microblaze/kernel/cpu/cpuinfo-static.c
-+++ b/arch/microblaze/kernel/cpu/cpuinfo-static.c
-@@ -18,7 +18,7 @@ static const char family_string[] = CONFIG_XILINX_MICROBLAZE0_FAMILY;
- static const char cpu_ver_string[] = CONFIG_XILINX_MICROBLAZE0_HW_VER;
- 
- #define err_printk(x) \
--	early_printk("ERROR: Microblaze " x "-different for kernel and DTS\n");
-+	pr_err("ERROR: Microblaze " x "-different for kernel and DTS\n");
- 
- void __init set_cpuinfo_static(struct cpuinfo *ci, struct device_node *cpu)
- {
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index 6583ad9cc7deb..35bf3b01d9cc7 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -410,7 +410,7 @@ static int report__setup_sample_type(struct report *rep)
+ 		 * compatibility, set the bit if it's an old perf data file.
+ 		 */
+ 		evlist__for_each_entry(session->evlist, evsel) {
+-			if (strstr(evsel->name, "arm_spe") &&
++			if (strstr(evsel__name(evsel), "arm_spe") &&
+ 				!(sample_type & PERF_SAMPLE_DATA_SRC)) {
+ 				evsel->core.attr.sample_type |= PERF_SAMPLE_DATA_SRC;
+ 				sample_type |= PERF_SAMPLE_DATA_SRC;
 -- 
 2.43.0
 
