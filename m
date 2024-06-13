@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA7D906DEF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB066906EA2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBDB41F220D8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6826E280D59
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E41F1474C5;
-	Thu, 13 Jun 2024 12:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8078D146582;
+	Thu, 13 Jun 2024 12:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LpvNkeWT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLfz496U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B43A1474B8;
-	Thu, 13 Jun 2024 12:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4F61448F2;
+	Thu, 13 Jun 2024 12:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280057; cv=none; b=A9XNNyj4TF2ujE9Vm97t9SklNKkyGOgNO9RdsPHcY6eThNVff3uaj+ezdx0g1LkS4x2q6cpuQWu+yXZCQ5ZlMLcIw8+Ur40t1Uf78rLLO22zk/9XI92HI6MLYp6PkxDWbLEeakj/CtvZsXRIB6Zu+daRedxxWiuuytNQfYBZ4SA=
+	t=1718280509; cv=none; b=bsCrGgcYg8ntrKzMUhB0KZFrHd8MdUwkOwUG/k8lY5lffta2ADvbmtKs0MSWj3MagJpjnEbhXDsOmWi1GXaiLitLxLJYlmBAU37916zgeiuohgLCuBR45gkBgZUGlaB7Ng+a4H1v3UKKOptrRf8nwWIFrYICihgbG0oJ9fivMpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280057; c=relaxed/simple;
-	bh=JTZ9cUSjDtFBhPDLJpTgRxAhXFuBEdQ9fbhogA9oLEI=;
+	s=arc-20240116; t=1718280509; c=relaxed/simple;
+	bh=gksvNOL2diwEGmiluUnj63efImVXv2OhUaZooHr90DY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fuK8+ItktsuH52ZViFJQrUYFAPD5KnB/jJS1RB8jevqN+Wf7788g0f0M75JiBTvQNoa+Qm2aVsBhh7mdIdTUNupN0YJewMR8k2KwTWL+xtHXHl2zQiDlpZ5+5swNJetwzzgEv2a1sCzTAHZSaYBW0K2YHeHtnHxVobPlW1jK7nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LpvNkeWT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6BAC2BBFC;
-	Thu, 13 Jun 2024 12:00:56 +0000 (UTC)
+	 MIME-Version; b=sTRgCY+YKCqcOnT5ZKEn7Kc3uoKTOev5ABlMBv/aQWeYVwycy96rGMedCixxciqmw9gBGGX+DB2O9lLoSii/8tKqbGynbAlf1XFSbeN2TZwoZBYvPtRc3B9eUxXlciTWE5O3clPKpV1zxPjLxiI6AkYSmumA4oYDddsvWNiSYQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLfz496U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F37C2BBFC;
+	Thu, 13 Jun 2024 12:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280056;
-	bh=JTZ9cUSjDtFBhPDLJpTgRxAhXFuBEdQ9fbhogA9oLEI=;
+	s=korg; t=1718280509;
+	bh=gksvNOL2diwEGmiluUnj63efImVXv2OhUaZooHr90DY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LpvNkeWTi7iqc0BJuJN09WTBjjxs3lxheAZ26NIpYoHF7hUKGuZh0/1ndVk/mza48
-	 o9wn9fIa48pjhF9DdJiorczDlqVvoyGnmPDTtAxHa/lXM9369dNL6OQ1P1ZEcCt1Jw
-	 XOK6teEXp4odIgjQRs9yynaPu9qNNhr+3s335HzY=
+	b=sLfz496UP8d+WkrbNuzgSl67v6C4kusQLptYUdlw6yhCnjnfL4r/BCKrcCcviaiqh
+	 3cXTQamDrA4PObcTkvING2wkI0UWntL0HeJfZs55LLLzt+whjDmgaPz5NQMi+eLTao
+	 0L2N2eR9PCXIZdNMZcHLjsQxV/0G/pya/e7LzSAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Richard Weinberger <richard@nod.at>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 128/202] um: Add winch to winch_handlers before registering winch IRQ
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 046/137] media: v4l: async: Fix notifier list entry init
 Date: Thu, 13 Jun 2024 13:33:46 +0200
-Message-ID: <20240613113232.702137212@linuxfoundation.org>
+Message-ID: <20240613113225.080666176@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit a0fbbd36c156b9f7b2276871d499c9943dfe5101 ]
+commit 6d8acd02c4c6a8f917eefac1de2e035521ca119d upstream.
 
-Registering a winch IRQ is racy, an interrupt may occur before the winch is
-added to the winch_handlers list.
+struct v4l2_async_notifier has several list_head members, but only
+waiting_list and done_list are initialized. notifier_entry was kept
+'zeroed' leading to an uninitialized list_head.
+This results in a NULL-pointer dereference if csi2_async_register() fails,
+e.g. node for remote endpoint is disabled, and returns -ENOTCONN.
+The following calls to v4l2_async_nf_unregister() results in a NULL
+pointer dereference.
+Add the missing list head initializer.
 
-If that happens, register_winch_irq() adds to that list a winch that is
-scheduled to be (or has already been) freed, causing a panic later in
-winch_cleanup().
-
-Avoid the race by adding the winch to the winch_handlers list before
-registering the IRQ, and rolling back if um_request_irq() fails.
-
-Fixes: 42a359e31a0e ("uml: SIGIO support cleanup")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b8ec754ae4c5 ("media: v4l: async: Set v4l2_device and subdev in async notifier init")
+Cc: <stable@vger.kernel.org> # for 6.6 and later
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/drivers/line.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/media/v4l2-core/v4l2-async.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/um/drivers/line.c b/arch/um/drivers/line.c
-index 4f2a4ac8a82bb..d6a78c3548a55 100644
---- a/arch/um/drivers/line.c
-+++ b/arch/um/drivers/line.c
-@@ -673,24 +673,26 @@ void register_winch_irq(int fd, int tty_fd, int pid, struct tty_port *port,
- 		goto cleanup;
- 	}
- 
--	*winch = ((struct winch) { .list  	= LIST_HEAD_INIT(winch->list),
--				   .fd  	= fd,
-+	*winch = ((struct winch) { .fd  	= fd,
- 				   .tty_fd 	= tty_fd,
- 				   .pid  	= pid,
- 				   .port 	= port,
- 				   .stack	= stack });
- 
-+	spin_lock(&winch_handler_lock);
-+	list_add(&winch->list, &winch_handlers);
-+	spin_unlock(&winch_handler_lock);
-+
- 	if (um_request_irq(WINCH_IRQ, fd, IRQ_READ, winch_interrupt,
- 			   IRQF_SHARED, "winch", winch) < 0) {
- 		printk(KERN_ERR "register_winch_irq - failed to register "
- 		       "IRQ\n");
-+		spin_lock(&winch_handler_lock);
-+		list_del(&winch->list);
-+		spin_unlock(&winch_handler_lock);
- 		goto out_free;
- 	}
- 
--	spin_lock(&winch_handler_lock);
--	list_add(&winch->list, &winch_handlers);
--	spin_unlock(&winch_handler_lock);
--
- 	return;
- 
-  out_free:
--- 
-2.43.0
-
+--- a/drivers/media/v4l2-core/v4l2-async.c
++++ b/drivers/media/v4l2-core/v4l2-async.c
+@@ -563,6 +563,7 @@ void v4l2_async_nf_init(struct v4l2_asyn
+ {
+ 	INIT_LIST_HEAD(&notifier->waiting_list);
+ 	INIT_LIST_HEAD(&notifier->done_list);
++	INIT_LIST_HEAD(&notifier->notifier_entry);
+ 	notifier->v4l2_dev = v4l2_dev;
+ }
+ EXPORT_SYMBOL(v4l2_async_nf_init);
+@@ -572,6 +573,7 @@ void v4l2_async_subdev_nf_init(struct v4
+ {
+ 	INIT_LIST_HEAD(&notifier->waiting_list);
+ 	INIT_LIST_HEAD(&notifier->done_list);
++	INIT_LIST_HEAD(&notifier->notifier_entry);
+ 	notifier->sd = sd;
+ }
+ EXPORT_SYMBOL_GPL(v4l2_async_subdev_nf_init);
 
 
 
