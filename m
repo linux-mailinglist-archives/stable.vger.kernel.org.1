@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-51989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50C69072EF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:55:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D45B907063
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96852B295EC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0605A284D58
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C9E137914;
-	Thu, 13 Jun 2024 12:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECA56AFAE;
+	Thu, 13 Jun 2024 12:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfMeQ5xr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VETKMF8a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A33144D36;
-	Thu, 13 Jun 2024 12:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA90D44C6F;
+	Thu, 13 Jun 2024 12:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282908; cv=none; b=jlHeX1Gggj0hwJLOvlE4QOT51VXZcO7sGZG5LBKFpd74wadoHi3RM88HXymtkk8PB94ZGMtPHbr7VMB6AT55C8vSEF5Fpl3y3p9EedK2K+CSgtQB4UkQd9qgDXfZD6vaJe23x5LfA3Ipcxb4+05g5r05WNecUCsZaTsSYSBdS0s=
+	t=1718281613; cv=none; b=AXF1KmdaJUy0k36MvF0kTMesLlX3VF0x7zyTqfLjLSc68flHOmqLVaac9aVshe1kcaRPhY4dZsOdztpvq1npLBkT/fRql+fwRmrU9zbJZUDj4BBmiEWiaTChtG2ghwFM7RxMcKOGK70ZmhLY/aPHhJB8R18wEGTw+RheYdUO8R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282908; c=relaxed/simple;
-	bh=WCu0uCE1zbmbG962tRnlDoDOxyiz90uLovaGAI+w9qc=;
+	s=arc-20240116; t=1718281613; c=relaxed/simple;
+	bh=VcKMX4QxLG1DCSuSm2QI03QSqNw0/N2UvzHnN0cYoms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HYUuLx+4hwmymvD3PvtiptPJW1cPqPUlypV4liySE0vHJMl/8/XX5MQoaWqZt9irOs/PmyLksZoC+pAe/Z+TLDeGXb/efOd9EaHxK1jbHjywXnO0a8y/T+gmYXEVlIoGb4ENS662swFl0WNmlXZPMZhTyZ/KFFVuXc9pzKQJvNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfMeQ5xr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E57C2BBFC;
-	Thu, 13 Jun 2024 12:48:27 +0000 (UTC)
+	 MIME-Version; b=i5EBzSlSu43CsdDR0MkXT7Rt1oM117Y0SWp10auag03EeMpvNuhs4WNbiPzSPSLjEQBdjcPNW7NH4jasH7NSgLuWJZUMGP/JtK3+XEVEyPHsIALmzwom+Jl32fFOiIk4+xlI9aJEfWCxPvCoVlAvvrR1EOTuD/YiQqPCPI8Lq/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VETKMF8a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A0FC2BBFC;
+	Thu, 13 Jun 2024 12:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282907;
-	bh=WCu0uCE1zbmbG962tRnlDoDOxyiz90uLovaGAI+w9qc=;
+	s=korg; t=1718281612;
+	bh=VcKMX4QxLG1DCSuSm2QI03QSqNw0/N2UvzHnN0cYoms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XfMeQ5xr26GyPm8+Z1+Tu1+C5eCJp/wHSHe5hm8hKzHluThrvhBhjNyA76vc26x5V
-	 TAzImjdKnEl7ZWB0TayCH5ZLoReT2zAqsCw/Fn0sgivvOnsPd0TMdLZpUYOBZm0uvG
-	 +sBy+bjgk5QxLPtdiSuXc57ID6wxtkikd+Yhi6ZI=
+	b=VETKMF8aFSDIMeFIIXLNNFVGTPZDLkVLU++KsEfFW9ViKyCPGDlyFy1d8DhmbSLNH
+	 AopxcxDiy+WAHzI4X4CEvCoy+iahBppvCqCXKP102xC0w95q+SnREFDyOrzDl5OntL
+	 xkMFbt7xIc0/GlVOwGi+F9wWwVEiK1h3NkiCLiq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.1 34/85] media: mc: Fix graph walk in media_pipeline_start
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Nitin Rawat <quic_nitirawa@quicinc.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 314/317] scsi: ufs: ufs-qcom: Clear qunipro_g4_sel for HW major version > 5
 Date: Thu, 13 Jun 2024 13:35:32 +0200
-Message-ID: <20240613113215.461789794@linuxfoundation.org>
+Message-ID: <20240613113259.700658775@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-commit 8a9d420149c477e7c97fbd6453704e4612bdd3fa upstream.
+commit c422fbd5cb58c9a078172ae1e9750971b738a197 upstream.
 
-The graph walk tries to follow all links, even if they are not between
-pads. This causes a crash with, e.g. a MEDIA_LNK_FL_ANCILLARY_LINK link.
+The qunipro_g4_sel clear is also needed for new platforms with major
+version > 5. Fix the version check to take this into account.
 
-Fix this by allowing the walk to proceed only for MEDIA_LNK_FL_DATA_LINK
-links.
-
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: stable@vger.kernel.org # for 6.1 and later
-Fixes: ae219872834a ("media: mc: entity: Rewrite media_pipeline_start()")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 9c02aa24bf40 ("scsi: ufs: ufs-qcom: Clear qunipro_g4_sel for HW version major 5")
+Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Nitin Rawat <quic_nitirawa@quicinc.com>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20230821-topic-sm8x50-upstream-ufs-major-5-plus-v2-1-f42a4b712e58@linaro.org
+Reviewed-by: "Bao D. Nguyen" <quic_nguyenb@quicinc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/mc/mc-entity.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/scsi/ufs/ufs-qcom.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/mc/mc-entity.c
-+++ b/drivers/media/mc/mc-entity.c
-@@ -593,6 +593,12 @@ static int media_pipeline_explore_next_l
- 	link = list_entry(entry->links, typeof(*link), list);
- 	last_link = media_pipeline_walk_pop(walk);
+--- a/drivers/scsi/ufs/ufs-qcom.c
++++ b/drivers/scsi/ufs/ufs-qcom.c
+@@ -243,7 +243,7 @@ static void ufs_qcom_select_unipro_mode(
+ 		   ufs_qcom_cap_qunipro(host) ? QUNIPRO_SEL : 0,
+ 		   REG_UFS_CFG1);
  
-+	if ((link->flags & MEDIA_LNK_FL_LINK_TYPE) != MEDIA_LNK_FL_DATA_LINK) {
-+		dev_dbg(walk->mdev->dev,
-+			"media pipeline: skipping link (not data-link)\n");
-+		return 0;
-+	}
-+
- 	dev_dbg(walk->mdev->dev,
- 		"media pipeline: exploring link '%s':%u -> '%s':%u\n",
- 		link->source->entity->name, link->source->index,
+-	if (host->hw_ver.major == 0x05)
++	if (host->hw_ver.major >= 0x05)
+ 		ufshcd_rmwl(host->hba, QUNIPRO_G4_SEL, 0, REG_UFS_CFG0);
+ }
+ 
 
 
 
