@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58873906E7E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FDAD906DF4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E87A9B25A59
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADBA6B27324
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D435143C62;
-	Thu, 13 Jun 2024 12:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DFE1474C6;
+	Thu, 13 Jun 2024 12:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/AgHD4Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ni9kUGY1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE37D143739;
-	Thu, 13 Jun 2024 12:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC50147C7D;
+	Thu, 13 Jun 2024 12:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280420; cv=none; b=FQ/TGOdRqnn73RriIFA8LHg42gc3BGYbKC2qPmD8dwUSnDgq6nb3nuajfMB2NhWQ2bYSc4e/G3+SheotCR/klFssArWATNnoawHqpaLVyqGEL88EFpdGNUeW8wdRqYVkWeZeRVW2s4aaU2oIPT6LSvEsUqYX1JTtUEWOzANBihw=
+	t=1718280065; cv=none; b=sZqVOMkQKEyLALhUviXw2dsKkeCaFT2gPhGCY9levLWYeo16Wl7s0aekQo4Orsedya7f3IJf7IS+5WRDKNepDCmNrgdiV1JCrgG++gPYqRmZZU5Tp/M9ydjDBcVPLeyYBw2+mfpEtiDqagA1w64F6TYrPgjba+g/tApUKwvVpYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280420; c=relaxed/simple;
-	bh=WN54EHga+QHkP7/GXt2NYO7vik889b/BeFR9ibliTzI=;
+	s=arc-20240116; t=1718280065; c=relaxed/simple;
+	bh=nepRRp8ub5GJVjPP4sRy/Ok+Gx75XhYDhi85pW4iNFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pk0dNKkafN+b/w7sAFZxk9gPOZOU/XJe28Sw3RplFvl5qEGHa1vhLbgjUoEzvhQ3J0ogWGqeCEXYiPznOOCWd4V8Ux+YHa3OXuuvOzp7jnTE0C9ydYxaW6iLh72QOT+JA5+h0jmHnWTVEnLhNRWNced7OGb9V6h2QeIHb3GQtxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/AgHD4Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F23C2BBFC;
-	Thu, 13 Jun 2024 12:07:00 +0000 (UTC)
+	 MIME-Version; b=eyMVrWUcwd/hqAs0EmkGlSq6S4xPU+bRXllNXlclezs+ootAPvr5EHB481V0rj0GyTzd8mE78as7hX6XC4F3V4DC5FkFwAUw13YgIVJgvCE0OZdC21Fsa9t7F16tX39WoQJR75jiD9ZNVBrF+6Gg4gzFQnR4hraEQKjmLS4rSuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ni9kUGY1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255BFC2BBFC;
+	Thu, 13 Jun 2024 12:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280420;
-	bh=WN54EHga+QHkP7/GXt2NYO7vik889b/BeFR9ibliTzI=;
+	s=korg; t=1718280065;
+	bh=nepRRp8ub5GJVjPP4sRy/Ok+Gx75XhYDhi85pW4iNFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/AgHD4ZDX2MtF5IAhF64ynWxtGcTMGKPvKnKPaaYiVvAexNoQjhLL72uNjgQ7iqe
-	 hSLENOB51zxPB/fPdS/rFsfW0ej7whMzkJpyXdhl8i6ImuuLUPTwVs7NmSrMgkxkRk
-	 BlEbxfWENTRxYwiSWhGVjTeuZHxxtdP1UITPQb3o=
+	b=Ni9kUGY1jjuIN5n1RjMO9CNd6DbXUKAaWk3lfGQw1+ytmu9puVNnO8gigsn8uFEXT
+	 NURuKJPZG7NSoU0fPs8vE8+lm1wMtZxJVHGu+i/mdBTUbiPBGldrrD9di51T9u9uv9
+	 Wt9coLQao88D85V4npT0g5VeViauW9+0f4+BZpkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 048/137] mmc: core: Add mmc_gpiod_set_cd_config() function
-Date: Thu, 13 Jun 2024 13:33:48 +0200
-Message-ID: <20240613113225.158046000@linuxfoundation.org>
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 131/202] powerpc/pseries: Add failure related checks for h_get_mpp and h_get_ppp
+Date: Thu, 13 Jun 2024 13:33:49 +0200
+Message-ID: <20240613113232.817794466@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-commit 63a7cd660246aa36af263b85c33ecc6601bf04be upstream.
+[ Upstream commit 6d4341638516bf97b9a34947e0bd95035a8230a5 ]
 
-Some mmc host drivers may need to fixup a card-detection GPIO's config
-to e.g. enable the GPIO controllers builtin pull-up resistor on devices
-where the firmware description of the GPIO is broken (e.g. GpioInt with
-PullNone instead of PullUp in ACPI DSDT).
+Couple of Minor fixes:
 
-Since this is the exception rather then the rule adding a config
-parameter to mmc_gpiod_request_cd() seems undesirable, so instead
-add a new mmc_gpiod_set_cd_config() function. This is simply a wrapper
-to call gpiod_set_config() on the card-detect GPIO acquired through
-mmc_gpiod_request_cd().
+- hcall return values are long. Fix that for h_get_mpp, h_get_ppp and
+parse_ppp_data
 
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240410191639.526324-2-hdegoede@redhat.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- If hcall fails, values set should be at-least zero. It shouldn't be
+uninitialized values. Fix that for h_get_mpp and h_get_ppp
+
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240412092047.455483-3-sshegde@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/slot-gpio.c  |   20 ++++++++++++++++++++
- include/linux/mmc/slot-gpio.h |    1 +
- 2 files changed, 21 insertions(+)
+ arch/powerpc/include/asm/hvcall.h        | 2 +-
+ arch/powerpc/platforms/pseries/lpar.c    | 6 +++---
+ arch/powerpc/platforms/pseries/lparcfg.c | 6 +++---
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/mmc/core/slot-gpio.c
-+++ b/drivers/mmc/core/slot-gpio.c
-@@ -221,6 +221,26 @@ int mmc_gpiod_request_cd(struct mmc_host
- }
- EXPORT_SYMBOL(mmc_gpiod_request_cd);
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index 11112023e327d..0826c4ed83770 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -444,7 +444,7 @@ struct hvcall_mpp_data {
+ 	unsigned long backing_mem;
+ };
  
-+/**
-+ * mmc_gpiod_set_cd_config - set config for card-detection GPIO
-+ * @host: mmc host
-+ * @config: Generic pinconf config (from pinconf_to_config_packed())
-+ *
-+ * This can be used by mmc host drivers to fixup a card-detection GPIO's config
-+ * (e.g. set PIN_CONFIG_BIAS_PULL_UP) after acquiring the GPIO descriptor
-+ * through mmc_gpiod_request_cd().
-+ *
-+ * Returns:
-+ * 0 on success, or a negative errno value on error.
-+ */
-+int mmc_gpiod_set_cd_config(struct mmc_host *host, unsigned long config)
-+{
-+	struct mmc_gpio *ctx = host->slot.handler_priv;
-+
-+	return gpiod_set_config(ctx->cd_gpio, config);
-+}
-+EXPORT_SYMBOL(mmc_gpiod_set_cd_config);
-+
- bool mmc_can_gpio_cd(struct mmc_host *host)
+-int h_get_mpp(struct hvcall_mpp_data *);
++long h_get_mpp(struct hvcall_mpp_data *mpp_data);
+ 
+ struct hvcall_mpp_x_data {
+ 	unsigned long coalesced_bytes;
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index 52e466d4a33ca..d5700ef27e36c 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -1871,10 +1871,10 @@ void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
+  * h_get_mpp
+  * H_GET_MPP hcall returns info in 7 parms
+  */
+-int h_get_mpp(struct hvcall_mpp_data *mpp_data)
++long h_get_mpp(struct hvcall_mpp_data *mpp_data)
  {
- 	struct mmc_gpio *ctx = host->slot.handler_priv;
---- a/include/linux/mmc/slot-gpio.h
-+++ b/include/linux/mmc/slot-gpio.h
-@@ -21,6 +21,7 @@ int mmc_gpiod_request_cd(struct mmc_host
- 			 unsigned int debounce);
- int mmc_gpiod_request_ro(struct mmc_host *host, const char *con_id,
- 			 unsigned int idx, unsigned int debounce);
-+int mmc_gpiod_set_cd_config(struct mmc_host *host, unsigned long config);
- void mmc_gpio_set_cd_isr(struct mmc_host *host,
- 			 irqreturn_t (*isr)(int irq, void *dev_id));
- int mmc_gpio_set_cd_wake(struct mmc_host *host, bool on);
+-	int rc;
+-	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
++	long rc;
+ 
+ 	rc = plpar_hcall9(H_GET_MPP, retbuf);
+ 
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index e12cf62357f29..676a60927dad9 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -112,8 +112,8 @@ struct hvcall_ppp_data {
+  */
+ static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
+ {
+-	unsigned long rc;
+-	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
++	long rc;
+ 
+ 	rc = plpar_hcall9(H_GET_PPP, retbuf);
+ 
+@@ -159,7 +159,7 @@ static void parse_ppp_data(struct seq_file *m)
+ 	struct hvcall_ppp_data ppp_data;
+ 	struct device_node *root;
+ 	const __be32 *perf_level;
+-	int rc;
++	long rc;
+ 
+ 	rc = h_get_ppp(&ppp_data);
+ 	if (rc)
+-- 
+2.43.0
+
 
 
 
