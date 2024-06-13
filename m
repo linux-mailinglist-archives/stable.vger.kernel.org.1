@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-51226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C509906EE4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD0F907284
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:48:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A3AC1C203E4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07E791F2455C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138B1145B15;
-	Thu, 13 Jun 2024 12:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1DF1292FF;
+	Thu, 13 Jun 2024 12:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5sFt3F+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJ9A3+Tz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67DD13D881;
-	Thu, 13 Jun 2024 12:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF34917FD;
+	Thu, 13 Jun 2024 12:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280676; cv=none; b=o/PIx6AHJpJf9ylErobIaME8jyNSdzLxSa+sfOXpN6+7EHyfneNpATr4cBniPA0wrJrUCAkUHF/KaVIntr23XiaGpFmU9JMgvSSn2JRYmwMJG6fmYFdBnyTSFbr4ShNjtiJAuK3J8iC0iwEUHhQQpz6XzRURI2CndWbsgjMHgto=
+	t=1718282855; cv=none; b=YPbEDqMMbrWwc4yte/Xzdqnduasm4g+35EUgiC5H+wu2B/GPgTOJfF/HRy6bBHQuAPFlA1jthiYV3ug8GwuSj9xxCDlabh8UHuJY0SBV1S7svVBTp9JBNL4Psqs4H1qfVTBv+yo4PTjR4Z21DFC5OxsPEQWENFi/IVna1Ej2P2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280676; c=relaxed/simple;
-	bh=kqNdxCCy/6NBCMm7jOBjSTrmZwVLcxmDu642YbhgBfQ=;
+	s=arc-20240116; t=1718282855; c=relaxed/simple;
+	bh=LHr1oZp9kStpWuLqntG0SbTpByR1oLGy4kv7rTIMo+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T5ZAV66ydGbhnsyt+YYqc98R1KwVxOAkYRdVe6tWaLmdT3MQbdP3BHKyqgEXoTtBnLIhKj7uL+nd4BzNrDb35DUJFxmvMoCa2/toNwLCFfCZeKLOx3FpEsc7gJ9nlC13eAIBtW3nb9DnEPS4+/53/99SpAnPY+7+P65YXYjPzKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5sFt3F+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED36C2BBFC;
-	Thu, 13 Jun 2024 12:11:16 +0000 (UTC)
+	 MIME-Version; b=EXChL67PftYUKIIKOQkoE7gh2EqQUfopd3uLcyEsHRkUQKZKxB7HR4rYxJ+CgfJap3VZKKIrxtPIdCzDr3PYSFPcToASn9LuPgIHEEn1sVEKkn8Xd0wxFY1W1qoSeenoHqDSUpdHiFvqEQjScFaE5u4uWc7f1lgIslNICpucsII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJ9A3+Tz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E548C32786;
+	Thu, 13 Jun 2024 12:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280676;
-	bh=kqNdxCCy/6NBCMm7jOBjSTrmZwVLcxmDu642YbhgBfQ=;
+	s=korg; t=1718282854;
+	bh=LHr1oZp9kStpWuLqntG0SbTpByR1oLGy4kv7rTIMo+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X5sFt3F+HV726Svvt8iV3tGpg1dg9kKRgz8EgnFrl6cwrtQiWm5VzU0mlEbwgiS35
-	 sD2TI6BSAdCrHVBtQRW01LSofxq37epynmkMtWwlxKWF/KwCE/E1ckLl9AzYncXIsH
-	 Uvg2e/JC3s3hRVNQUHLNTGRVcoMfS/O9Jf6R03pA=
+	b=IJ9A3+TzLHXWa3KVWc3puHtN1zY6qRRlfNAzYqcOz2Uf98NVxE0ZvXJE8rlRmPvY5
+	 d44NGY0INpzaHPtKo0zRzvwLSlhrNZEQEsscnnfwpRMKM4eZmWz3hUlZXjHuZSH/96
+	 lUkIrMsd4On6CaOIT0u+kGKBMGER3rB40fLbkFvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.6 134/137] powerpc/64/bpf: fix tail calls for PCREL addressing
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	syzbot+3694e283cf5c40df6d14@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 16/85] f2fs: fix to do sanity check on i_xattr_nid in sanity_check_inode()
 Date: Thu, 13 Jun 2024 13:35:14 +0200
-Message-ID: <20240613113228.500841625@linuxfoundation.org>
+Message-ID: <20240613113214.770712732@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Bathini <hbathini@linux.ibm.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 2ecfe59cd7de1f202e9af2516a61fbbf93d0bd4d upstream.
+commit 20faaf30e55522bba2b56d9c46689233205d7717 upstream.
 
-With PCREL addressing, there is no kernel TOC. So, it is not setup in
-prologue when PCREL addressing is used. But the number of instructions
-to skip on a tail call was not adjusted accordingly. That resulted in
-not so obvious failures while using tailcalls. 'tailcalls' selftest
-crashed the system with the below call trace:
+syzbot reports a kernel bug as below:
 
-  bpf_test_run+0xe8/0x3cc (unreliable)
-  bpf_prog_test_run_skb+0x348/0x778
-  __sys_bpf+0xb04/0x2b00
-  sys_bpf+0x28/0x38
-  system_call_exception+0x168/0x340
-  system_call_vectored_common+0x15c/0x2ec
+F2FS-fs (loop0): Mounted with checkpoint version = 48b305e4
+==================================================================
+BUG: KASAN: slab-out-of-bounds in f2fs_test_bit fs/f2fs/f2fs.h:2933 [inline]
+BUG: KASAN: slab-out-of-bounds in current_nat_addr fs/f2fs/node.h:213 [inline]
+BUG: KASAN: slab-out-of-bounds in f2fs_get_node_info+0xece/0x1200 fs/f2fs/node.c:600
+Read of size 1 at addr ffff88807a58c76c by task syz-executor280/5076
 
-Also, as bpf programs are always module addresses and a bpf helper in
-general is a core kernel text address, using PC relative addressing
-often fails with "out of range of pcrel address" error. Switch to
-using kernel base for relative addressing to handle this better.
+CPU: 1 PID: 5076 Comm: syz-executor280 Not tainted 6.9.0-rc5-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ f2fs_test_bit fs/f2fs/f2fs.h:2933 [inline]
+ current_nat_addr fs/f2fs/node.h:213 [inline]
+ f2fs_get_node_info+0xece/0x1200 fs/f2fs/node.c:600
+ f2fs_xattr_fiemap fs/f2fs/data.c:1848 [inline]
+ f2fs_fiemap+0x55d/0x1ee0 fs/f2fs/data.c:1925
+ ioctl_fiemap fs/ioctl.c:220 [inline]
+ do_vfs_ioctl+0x1c07/0x2e50 fs/ioctl.c:838
+ __do_sys_ioctl fs/ioctl.c:902 [inline]
+ __se_sys_ioctl+0x81/0x170 fs/ioctl.c:890
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 7e3a68be42e1 ("powerpc/64: vmlinux support building with PCREL addresing")
-Cc: stable@vger.kernel.org # v6.4+
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240502173205.142794-1-hbathini@linux.ibm.com
+The root cause is we missed to do sanity check on i_xattr_nid during
+f2fs_iget(), so that in fiemap() path, current_nat_addr() will access
+nat_bitmap w/ offset from invalid i_xattr_nid, result in triggering
+kasan bug report, fix it.
+
+Reported-and-tested-by: syzbot+3694e283cf5c40df6d14@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/00000000000094036c0616e72a1d@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/net/bpf_jit_comp64.c |   30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ fs/f2fs/inode.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -202,7 +202,8 @@ void bpf_jit_build_epilogue(u32 *image,
- 	EMIT(PPC_RAW_BLR());
- }
- 
--static int bpf_jit_emit_func_call_hlp(u32 *image, struct codegen_context *ctx, u64 func)
-+static int
-+bpf_jit_emit_func_call_hlp(u32 *image, u32 *fimage, struct codegen_context *ctx, u64 func)
- {
- 	unsigned long func_addr = func ? ppc_function_entry((void *)func) : 0;
- 	long reladdr;
-@@ -211,19 +212,20 @@ static int bpf_jit_emit_func_call_hlp(u3
- 		return -EINVAL;
- 
- 	if (IS_ENABLED(CONFIG_PPC_KERNEL_PCREL)) {
--		reladdr = func_addr - CTX_NIA(ctx);
-+		reladdr = func_addr - local_paca->kernelbase;
- 
- 		if (reladdr >= (long)SZ_8G || reladdr < -(long)SZ_8G) {
--			pr_err("eBPF: address of %ps out of range of pcrel address.\n",
--				(void *)func);
-+			pr_err("eBPF: address of %ps out of range of 34-bit relative address.\n",
-+			       (void *)func);
- 			return -ERANGE;
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -298,6 +298,12 @@ static bool sanity_check_inode(struct in
  		}
--		/* pla r12,addr */
--		EMIT(PPC_PREFIX_MLS | __PPC_PRFX_R(1) | IMM_H18(reladdr));
--		EMIT(PPC_INST_PADDI | ___PPC_RT(_R12) | IMM_L(reladdr));
--		EMIT(PPC_RAW_MTCTR(_R12));
--		EMIT(PPC_RAW_BCTR());
--
-+		EMIT(PPC_RAW_LD(_R12, _R13, offsetof(struct paca_struct, kernelbase)));
-+		/* Align for subsequent prefix instruction */
-+		if (!IS_ALIGNED((unsigned long)fimage + CTX_NIA(ctx), 8))
-+			EMIT(PPC_RAW_NOP());
-+		/* paddi r12,r12,addr */
-+		EMIT(PPC_PREFIX_MLS | __PPC_PRFX_R(0) | IMM_H18(reladdr));
-+		EMIT(PPC_INST_PADDI | ___PPC_RT(_R12) | ___PPC_RA(_R12) | IMM_L(reladdr));
- 	} else {
- 		reladdr = func_addr - kernel_toc_addr();
- 		if (reladdr > 0x7FFFFFFF || reladdr < -(0x80000000L)) {
-@@ -233,9 +235,9 @@ static int bpf_jit_emit_func_call_hlp(u3
- 
- 		EMIT(PPC_RAW_ADDIS(_R12, _R2, PPC_HA(reladdr)));
- 		EMIT(PPC_RAW_ADDI(_R12, _R12, PPC_LO(reladdr)));
--		EMIT(PPC_RAW_MTCTR(_R12));
--		EMIT(PPC_RAW_BCTRL());
  	}
-+	EMIT(PPC_RAW_MTCTR(_R12));
-+	EMIT(PPC_RAW_BCTRL());
  
- 	return 0;
++	if (fi->i_xattr_nid && f2fs_check_nid_range(sbi, fi->i_xattr_nid)) {
++		f2fs_warn(sbi, "%s: inode (ino=%lx) has corrupted i_xattr_nid: %u, run fsck to fix.",
++			  __func__, inode->i_ino, fi->i_xattr_nid);
++		return false;
++	}
++
+ 	return true;
  }
-@@ -285,7 +287,7 @@ static int bpf_jit_emit_tail_call(u32 *i
- 	int b2p_index = bpf_to_ppc(BPF_REG_3);
- 	int bpf_tailcall_prologue_size = 8;
- 
--	if (IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2))
-+	if (!IS_ENABLED(CONFIG_PPC_KERNEL_PCREL) && IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2))
- 		bpf_tailcall_prologue_size += 4; /* skip past the toc load */
- 
- 	/*
-@@ -993,7 +995,7 @@ emit_clear:
- 				return ret;
- 
- 			if (func_addr_fixed)
--				ret = bpf_jit_emit_func_call_hlp(image, ctx, func_addr);
-+				ret = bpf_jit_emit_func_call_hlp(image, fimage, ctx, func_addr);
- 			else
- 				ret = bpf_jit_emit_func_call_rel(image, ctx, func_addr);
  
 
 
