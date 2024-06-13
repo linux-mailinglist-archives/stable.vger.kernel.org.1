@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-51517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA9F4907046
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 033B0907237
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 921D91F2325F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BAF9B27EA7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D2F3209;
-	Thu, 13 Jun 2024 12:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D02143878;
+	Thu, 13 Jun 2024 12:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xuUsknM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9J6Lkjl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031D21448DC;
-	Thu, 13 Jun 2024 12:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3602E17FD;
+	Thu, 13 Jun 2024 12:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281528; cv=none; b=fZlbGHauRM2Q1LqXfO4yuqulGJTv4cOB13fSh6RKEumtoj2radhuAoiW1SF2a0A126VDik3acrNoY9jNtyURy2HpAmFEfjfgGfa5RMep9/Ue8LczVxDqklI0hvlXMGqBCLhaCNa0Lw2BkYb+IcaAL3gt3E6E7aEES0MfBZnd+DE=
+	t=1718282646; cv=none; b=sTfRz//wLQYK/AmEZ1EaHVfM+Rv/gm8T7vEMkd1YCXlY+Xp7inS7aM3v1ChSCKluuAnEtO7hnCXGR+8gDNkl+Stklzs16EqQTE1Sq1qu2lAXDJtnSWQJaSvPs/b3IXyyw9VPeC7K7qoA7oRFwL4l9aSgL88F8/maVZJc6xnjN2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281528; c=relaxed/simple;
-	bh=7OHne1pmk089DWDJdzzGcWWYRiqYDMz2/SrMMgSTDu4=;
+	s=arc-20240116; t=1718282646; c=relaxed/simple;
+	bh=+SyDDuJ6k7ILB9fKv4idXOw7i3ZOQ0XmUX7/CoiSB+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sV238WAonrG6AsTsjCD8wLQc61YWBx3h+zG4mkTGROvHLxd6JEGWHHD0XJr1Qt5tnSz1njBzSSsMgPS5UbpulKjz9+pb1GXZuuKda6o+AYtDeslKJgZJt06UOJtGnOYihP8YOyqKBZnuBiKKMdxZ6fPvkCT+YdgYlWvn46IoYPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xuUsknM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C37EC2BBFC;
-	Thu, 13 Jun 2024 12:25:27 +0000 (UTC)
+	 MIME-Version; b=bu5y2xfBhrkNlSPs5MP6n4j3Dxonx7WEtytR0B52q5gjmwTg0nY140n+ItW+FEIXG1xpWdbS7oOcqiJWuP5nIa/MTW9m9ryvWM7K7J+b3mx7YzDnmHdeWbNAW/g+uBTrf8gYPypL1/IXfafHc0hbhfIdeb/kEkMpCyLVQsLBEEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9J6Lkjl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D76C2BBFC;
+	Thu, 13 Jun 2024 12:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281527;
-	bh=7OHne1pmk089DWDJdzzGcWWYRiqYDMz2/SrMMgSTDu4=;
+	s=korg; t=1718282646;
+	bh=+SyDDuJ6k7ILB9fKv4idXOw7i3ZOQ0XmUX7/CoiSB+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0xuUsknMWLQHLkXTSbwgNbhAA/mLF4FiSwI0M6G7bnH/9lLDZgnBJbGr/D5elR5Bx
-	 MtiX24bK8rdTbjEdJ4MnatDxK7q8nJ4nhSBMqGFLZ3yOS039GYU7ezO7QsxjQh8lsx
-	 tHY668rJ6op88U9zpzWQeD0LwUpFbzvRvY0pjSkE=
+	b=q9J6LkjlYz7Xku6Qym8Ze4wIjU8rvAatECkgtagIk+zBA8TngTRjWx2xTnVJ3ViWu
+	 G9e8hI2k8T/A4i2jVB1UnY1D+S8zDokdqZKDws9Ptr17YU/GBec77PJM6EHBtLrYXL
+	 n90lLbo6yL1zRczndnNRtBCaEZyLbtJJZwlu1ouo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 5.10 285/317] wifi: rtlwifi: rtl8192de: Fix endianness issue in RX path
+	Barry Kauler <bkauler@gmail.com>,
+	Armin Wolf <W_Armin@gmx.de>
+Subject: [PATCH 5.15 346/402] Revert "drm/amdgpu: init iommu after amdkfd device init"
 Date: Thu, 13 Jun 2024 13:35:03 +0200
-Message-ID: <20240613113258.578008379@linuxfoundation.org>
+Message-ID: <20240613113315.629595843@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,176 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-commit 2f228d364da95ab58f63a3fedc00d5b2b7db16ab upstream.
+This reverts commit 56b522f4668167096a50c39446d6263c96219f5f.
 
-Structs rx_desc_92d and rx_fwinfo_92d will not work for big endian
-systems.
+A user reported that this commit breaks the integrated gpu of his
+notebook, causing a black screen. He was able to bisect the problematic
+commit and verified that by reverting it the notebook works again.
+He also confirmed that kernel 6.8.1 also works on his device, so the
+upstream commit itself seems to be ok.
 
-Delete rx_desc_92d because it's big and barely used, and instead use
-the get_rx_desc_rxmcs and get_rx_desc_rxht functions, which work on big
-endian systems too.
+An amdgpu developer (Alex Deucher) confirmed that this patch should
+have never been ported to 5.15 in the first place, so revert this
+commit from the 5.15 stable series.
 
-Fix rx_fwinfo_92d by duplicating four of its members in the correct
-order.
-
-Tested only with RTL8192DU, which will use the same code.
-Tested only on a little endian system.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/698463da-5ef1-40c7-b744-fa51ad847caf@gmail.com
+Reported-by: Barry Kauler <bkauler@gmail.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20240523173031.4212-1-W_Armin@gmx.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c |   16 ++--
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h |   65 ++-----------------
- 2 files changed, 15 insertions(+), 66 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-@@ -35,7 +35,7 @@ static long _rtl92de_translate_todbm(str
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -2487,6 +2487,10 @@ static int amdgpu_device_ip_init(struct
+ 	if (r)
+ 		goto init_failed;
  
- static void _rtl92de_query_rxphystatus(struct ieee80211_hw *hw,
- 				       struct rtl_stats *pstats,
--				       struct rx_desc_92d *pdesc,
-+				       __le32 *pdesc,
- 				       struct rx_fwinfo_92d *p_drvinfo,
- 				       bool packet_match_bssid,
- 				       bool packet_toself,
-@@ -49,8 +49,10 @@ static void _rtl92de_query_rxphystatus(s
- 	u8 i, max_spatial_stream;
- 	u32 rssi, total_rssi = 0;
- 	bool is_cck_rate;
-+	u8 rxmcs;
++	r = amdgpu_amdkfd_resume_iommu(adev);
++	if (r)
++		goto init_failed;
++
+ 	r = amdgpu_device_ip_hw_init_phase1(adev);
+ 	if (r)
+ 		goto init_failed;
+@@ -2525,10 +2529,6 @@ static int amdgpu_device_ip_init(struct
+ 	if (!adev->gmc.xgmi.pending_reset)
+ 		amdgpu_amdkfd_device_init(adev);
  
--	is_cck_rate = RX_HAL_IS_CCK_RATE(pdesc->rxmcs);
-+	rxmcs = get_rx_desc_rxmcs(pdesc);
-+	is_cck_rate = rxmcs <= DESC_RATE11M;
- 	pstats->packet_matchbssid = packet_match_bssid;
- 	pstats->packet_toself = packet_toself;
- 	pstats->packet_beacon = packet_beacon;
-@@ -158,8 +160,8 @@ static void _rtl92de_query_rxphystatus(s
- 		pstats->rx_pwdb_all = pwdb_all;
- 		pstats->rxpower = rx_pwr_all;
- 		pstats->recvsignalpower = rx_pwr_all;
--		if (pdesc->rxht && pdesc->rxmcs >= DESC_RATEMCS8 &&
--		    pdesc->rxmcs <= DESC_RATEMCS15)
-+		if (get_rx_desc_rxht(pdesc) && rxmcs >= DESC_RATEMCS8 &&
-+		    rxmcs <= DESC_RATEMCS15)
- 			max_spatial_stream = 2;
- 		else
- 			max_spatial_stream = 1;
-@@ -365,7 +367,7 @@ static void _rtl92de_process_phyinfo(str
- static void _rtl92de_translate_rx_signal_stuff(struct ieee80211_hw *hw,
- 					       struct sk_buff *skb,
- 					       struct rtl_stats *pstats,
--					       struct rx_desc_92d *pdesc,
-+					       __le32 *pdesc,
- 					       struct rx_fwinfo_92d *p_drvinfo)
- {
- 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
-@@ -441,9 +443,7 @@ bool rtl92de_rx_query_desc(struct ieee80
- 	if (phystatus) {
- 		p_drvinfo = (struct rx_fwinfo_92d *)(skb->data +
- 						     stats->rx_bufshift);
--		_rtl92de_translate_rx_signal_stuff(hw,
--						   skb, stats,
--						   (struct rx_desc_92d *)pdesc,
-+		_rtl92de_translate_rx_signal_stuff(hw, skb, stats, pdesc,
- 						   p_drvinfo);
- 	}
- 	/*rx_status->qual = stats->signal; */
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-@@ -394,10 +394,17 @@ struct rx_fwinfo_92d {
- 	u8 csi_target[2];
- 	u8 sigevm;
- 	u8 max_ex_pwr;
-+#ifdef __LITTLE_ENDIAN
- 	u8 ex_intf_flag:1;
- 	u8 sgi_en:1;
- 	u8 rxsc:2;
- 	u8 reserve:4;
-+#else
-+	u8 reserve:4;
-+	u8 rxsc:2;
-+	u8 sgi_en:1;
-+	u8 ex_intf_flag:1;
-+#endif
- } __packed;
+-	r = amdgpu_amdkfd_resume_iommu(adev);
+-	if (r)
+-		goto init_failed;
+-
+ 	amdgpu_fru_get_product_info(adev);
  
- struct tx_desc_92d {
-@@ -502,64 +509,6 @@ struct tx_desc_92d {
- 	u32 reserve_pass_pcie_mm_limit[4];
- } __packed;
- 
--struct rx_desc_92d {
--	u32 length:14;
--	u32 crc32:1;
--	u32 icverror:1;
--	u32 drv_infosize:4;
--	u32 security:3;
--	u32 qos:1;
--	u32 shift:2;
--	u32 phystatus:1;
--	u32 swdec:1;
--	u32 lastseg:1;
--	u32 firstseg:1;
--	u32 eor:1;
--	u32 own:1;
--
--	u32 macid:5;
--	u32 tid:4;
--	u32 hwrsvd:5;
--	u32 paggr:1;
--	u32 faggr:1;
--	u32 a1_fit:4;
--	u32 a2_fit:4;
--	u32 pam:1;
--	u32 pwr:1;
--	u32 moredata:1;
--	u32 morefrag:1;
--	u32 type:2;
--	u32 mc:1;
--	u32 bc:1;
--
--	u32 seq:12;
--	u32 frag:4;
--	u32 nextpktlen:14;
--	u32 nextind:1;
--	u32 rsvd:1;
--
--	u32 rxmcs:6;
--	u32 rxht:1;
--	u32 amsdu:1;
--	u32 splcp:1;
--	u32 bandwidth:1;
--	u32 htc:1;
--	u32 tcpchk_rpt:1;
--	u32 ipcchk_rpt:1;
--	u32 tcpchk_valid:1;
--	u32 hwpcerr:1;
--	u32 hwpcind:1;
--	u32 iv0:16;
--
--	u32 iv1;
--
--	u32 tsfl;
--
--	u32 bufferaddress;
--	u32 bufferaddress64;
--
--} __packed;
--
- void rtl92de_tx_fill_desc(struct ieee80211_hw *hw,
- 			  struct ieee80211_hdr *hdr, u8 *pdesc,
- 			  u8 *pbd_desc_tx, struct ieee80211_tx_info *info,
+ init_failed:
 
 
 
