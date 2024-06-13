@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-51978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088B9907292
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0CC906ED2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8B051F24A14
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E20F1C23C67
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A7B14431C;
-	Thu, 13 Jun 2024 12:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870D414533E;
+	Thu, 13 Jun 2024 12:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDMZ6erg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQBmb72k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8437520ED;
-	Thu, 13 Jun 2024 12:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460161448E0;
+	Thu, 13 Jun 2024 12:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282875; cv=none; b=JyHATG4oLgjDoWH7jMaLuewMV+otPe1n0uvic5VpkFlkxcm54FFYM7+2f5GPBZ334c7UGP4bS7dvqXdaYLraBIwIv5YeMokfQlkhKwj9qa3ZY+xmPdqQz3t91cLvf4Rrc/p/h3/pY0CZCGqfBjIT0WYgSF8kPqv38lVMWrfLKuo=
+	t=1718280650; cv=none; b=vCWhY/NmI3MkOr9l7ueDSpwQrJPj+Zm6GfmJmc4xXnEcJb4PQ3o6JVPn0SsFftWbh0hFF2vnvKl23+DEV5/mcbhvHROYfsacWYJu2V+qMPDBLX6lCqwhl2Ju+wBn2iEpvu+apcN0weE5NwYe1DQjCgXpGgqoBcuOEBPcwy/OgUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282875; c=relaxed/simple;
-	bh=gTwmoaF0M8EOs7nvL/+US534vPK7Qx/QK9196h5MJEU=;
+	s=arc-20240116; t=1718280650; c=relaxed/simple;
+	bh=H1xElcmmTfhAVHIiEWoHypkGTPoRdsjIOjd6G4JBrJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LaVjBfvS0CH9Rw0lgWNaDRYZa6fSBwYwJQOw7XS1BWh2w7gCtgerxXK8QZi+SGt2YEuGrKbHvfbOtZS3M9StiumTJmAEKpQxp9pO/m04Sbg1wsSzxAfqgOGx2m0szLr7MDoMD9o65rCFLdfygGHtlZgPbThpHS76Rp8rDRGFZqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDMZ6erg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B50C32786;
-	Thu, 13 Jun 2024 12:47:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JlrlJgOXcDFMJBCX6r9hA+HtheN/QM58mT+Fl4JtHxobWdf6P6H6PajuprJ/jiXBqi3Tqz5jBBRisEpno/a0lDrT53K0UC7+qee34E1Pad81tYGo1fK2//PYUinrXI/fDLxNPKnnZV4Mitvu+3xqUdau4Djf31xXotGVMZoodbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQBmb72k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C58C2BBFC;
+	Thu, 13 Jun 2024 12:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282875;
-	bh=gTwmoaF0M8EOs7nvL/+US534vPK7Qx/QK9196h5MJEU=;
+	s=korg; t=1718280650;
+	bh=H1xElcmmTfhAVHIiEWoHypkGTPoRdsjIOjd6G4JBrJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDMZ6ergdivQw02QCLs3Y9uCbAJ5Qt0fO3RPpbsnXu99e1HVHUT/j/a4qZ+2NBrGc
-	 Ure/DLUBPimUJWkM1Ljq84vuGKDI2ELDTWqfrXSvLXLKOIf3JUo7cqLPZZNpg0Hf39
-	 NWr17ubkGhXuQpOY3OuD8usRFwFf0/yXDzTaLU5U=
+	b=tQBmb72kjHbs18qEDByok7+VYMwCTpF528aNkdR/+3+DXxXkrr/dz4utR6jlS2hL9
+	 P7YHL1bKH3Cqn322xtPHMPlROAz35FykLdg3vJdGGh9w1dljTwtmk6tcIe0d5bSxIC
+	 6vqTiRoKsVPw+C+U95cCINVPbOVEtrD99IhCjWMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Henrik Sylvester <jan.henrik.sylvester@uni-hamburg.de>,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 07/85] afs: Dont cross .backup mountpoint from backup volume
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Subject: [PATCH 6.6 125/137] EDAC/igen6: Convert PCIBIOS_* return codes to errnos
 Date: Thu, 13 Jun 2024 13:35:05 +0200
-Message-ID: <20240613113214.421861673@linuxfoundation.org>
+Message-ID: <20240613113228.148570100@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Dionne <marc.dionne@auristor.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 29be9100aca2915fab54b5693309bc42956542e5 upstream.
+commit f8367a74aebf88dc8b58a0db6a6c90b4cb8fc9d3 upstream.
 
-Don't cross a mountpoint that explicitly specifies a backup volume
-(target is <vol>.backup) when starting from a backup volume.
+errcmd_enable_error_reporting() uses pci_{read,write}_config_word()
+that return PCIBIOS_* codes. The return code is then returned all the
+way into the probe function igen6_probe() that returns it as is. The
+probe functions, however, should return normal errnos.
 
-It it not uncommon to mount a volume's backup directly in the volume
-itself.  This can cause tools that are not paying attention to get
-into a loop mounting the volume onto itself as they attempt to
-traverse the tree, leading to a variety of problems.
+Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
+errno before returning it from errcmd_enable_error_reporting().
 
-This doesn't prevent the general case of loops in a sequence of
-mountpoints, but addresses a common special case in the same way
-as other afs clients.
-
-Reported-by: Jan Henrik Sylvester <jan.henrik.sylvester@uni-hamburg.de>
-Link: http://lists.infradead.org/pipermail/linux-afs/2024-May/008454.html
-Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
-Link: http://lists.infradead.org/pipermail/linux-afs/2024-February/008074.html
-Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/768760.1716567475@warthog.procyon.org.uk
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240527132236.13875-2-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/mntpt.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/edac/igen6_edac.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/afs/mntpt.c
-+++ b/fs/afs/mntpt.c
-@@ -140,6 +140,11 @@ static int afs_mntpt_set_params(struct f
- 		put_page(page);
- 		if (ret < 0)
- 			return ret;
-+
-+		/* Don't cross a backup volume mountpoint from a backup volume */
-+		if (src_as->volume && src_as->volume->type == AFSVL_BACKVOL &&
-+		    ctx->type == AFSVL_BACKVOL)
-+			return -ENODEV;
- 	}
+--- a/drivers/edac/igen6_edac.c
++++ b/drivers/edac/igen6_edac.c
+@@ -627,7 +627,7 @@ static int errcmd_enable_error_reporting
+ 
+ 	rc = pci_read_config_word(imc->pdev, ERRCMD_OFFSET, &errcmd);
+ 	if (rc)
+-		return rc;
++		return pcibios_err_to_errno(rc);
+ 
+ 	if (enable)
+ 		errcmd |= ERRCMD_CE | ERRSTS_UE;
+@@ -636,7 +636,7 @@ static int errcmd_enable_error_reporting
+ 
+ 	rc = pci_write_config_word(imc->pdev, ERRCMD_OFFSET, errcmd);
+ 	if (rc)
+-		return rc;
++		return pcibios_err_to_errno(rc);
  
  	return 0;
+ }
 
 
 
