@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D469070FD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C90906F7C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:20:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3134E284F06
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:32:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E123B291AD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12622CA6;
-	Thu, 13 Jun 2024 12:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E97143C6C;
+	Thu, 13 Jun 2024 12:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8XmFoD9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2DJwlGv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B27D161;
-	Thu, 13 Jun 2024 12:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0496413CFA4;
+	Thu, 13 Jun 2024 12:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281953; cv=none; b=dJ5lCDPHeZSZ+mVQWYR0ZgU40D90V3TGm+B3WLL/3hDMcL8iWDGIXYgk2svXNIQboGp55Cw0z2LKZ5ivvl0HFFAqekvRRaMyaN2MpFGCHGPo1VO9ZUznKdwSX6Qh99S/e6FctyQ/dLOriYJfIXKLPPMbmfGp0TTg8VK25TIusLM=
+	t=1718280839; cv=none; b=OFLCw1WRoYpfMxLkk06CRSNjo4LNtThMS2AbEE3ggLYnL9FKzdTGl3knX1GuoDErTeftDXPw20qlkqD3VqhMZTV4JWphPRZtqIWWsmUTL6DY+HLF3tMyp2jj5Ffs3HzqhESQB1uzdIxl3yO3wVNvP2PgxmwAiVC5sbKRQPbgAVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281953; c=relaxed/simple;
-	bh=nPlmVubFU/euLVS/MuP+P26xk9YgnUnq0AjCLvqFEv4=;
+	s=arc-20240116; t=1718280839; c=relaxed/simple;
+	bh=7v1g9KKA1i2Nm7xKjYMBXcYa0oRW2Fc26VhJ1OvRgwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aGuoe6x0+E7n59jSirWJcSJjtFkDHXMbpd7Q6iROG9/dEAyCPelltGBQZ0yrhq4za9FA2sgO0DqM74Spz6qxKuAK4a7MkGxlicq5CLyaNUGXpdLD6ER348AVXdMeQLHWqhaUoKvDoRD/xY4i+3R6uv5mQXNtP8ApPN0ynsGqaio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8XmFoD9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22010C2BBFC;
-	Thu, 13 Jun 2024 12:32:32 +0000 (UTC)
+	 MIME-Version; b=IM/2OzaPqlvAN4hrrbYYmAMtaS9TQ7vqvOuTPd87AIOvBhdxTqUhGlZRHRcno6diOWj5fUtJlHBwflmHge4JNq3wcSlfBlQwwOiNLzWviwEHjE+Z1Q8Ir/86TbtspqR9IlfFT2Vz+QlH1WYNmorU/fl27LW+LLUe12YVWwETmSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2DJwlGv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA32C32786;
+	Thu, 13 Jun 2024 12:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281953;
-	bh=nPlmVubFU/euLVS/MuP+P26xk9YgnUnq0AjCLvqFEv4=;
+	s=korg; t=1718280838;
+	bh=7v1g9KKA1i2Nm7xKjYMBXcYa0oRW2Fc26VhJ1OvRgwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z8XmFoD9KinKX1LswnzZEg4gimGQgyZtBXz7EubEy5s8jr4CY85U8PU8a+tcixsjt
-	 xuzTSu9aLn93NWydC1X3K3GofvpzVoMNUN86UbkujUIDMjySXvo0Uy7sjw5EuAEgWw
-	 guhdsDmShTH/f1qx7eNxSzLThYy5RiNSKXWNS4wo=
+	b=y2DJwlGv+kejoJDl5YfMnAK7ef7Ubg8z1LzULFmHZqz5AZdfP6Sl0Lnj3iQDkWXui
+	 9lOTNwUI62tV8Z45zru7NplCYVcMoHZ8ksmrcPYU8NbqKjkRvXAmeAjvgirUUSD6Iv
+	 fReFnucM0xntgKt0aKAxvuJlVEt1d6+in8iwHK+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 111/402] net: ethernet: cortina: Locking fixes
-Date: Thu, 13 Jun 2024 13:31:08 +0200
-Message-ID: <20240613113306.460944074@linuxfoundation.org>
+Subject: [PATCH 5.10 051/317] selftests/bpf: Fix umount cgroup2 error in test_sockmap
+Date: Thu, 13 Jun 2024 13:31:09 +0200
+Message-ID: <20240613113249.522986689@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit 812552808f7ff71133fc59768cdc253c5b8ca1bf ]
+[ Upstream commit d75142dbeb2bd1587b9cc19f841578f541275a64 ]
 
-This fixes a probably long standing problem in the Cortina
-Gemini ethernet driver: there are some paths in the code
-where the IRQ registers are written without taking the proper
-locks.
+This patch fixes the following "umount cgroup2" error in test_sockmap.c:
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240509-gemini-ethernet-locking-v1-1-afd00a528b95@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+ (cgroup_helpers.c:353: errno: Device or resource busy) umount cgroup2
+
+Cgroup fd cg_fd should be closed before cleanup_cgroup_environment().
+
+Fixes: 13a5f3ffd202 ("bpf: Selftests, sockmap test prog run without setting cgroup")
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/0399983bde729708773416b8488bac2cd5e022b8.1712639568.git.tanggeliang@kylinos.cn
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/test_sockmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 675c6dda45e24..0c8c92ff7704f 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1108,10 +1108,13 @@ static void gmac_tx_irq_enable(struct net_device *netdev,
- {
- 	struct gemini_ethernet_port *port = netdev_priv(netdev);
- 	struct gemini_ethernet *geth = port->geth;
-+	unsigned long flags;
- 	u32 val, mask;
- 
- 	netdev_dbg(netdev, "%s device %d\n", __func__, netdev->dev_id);
- 
-+	spin_lock_irqsave(&geth->irq_lock, flags);
-+
- 	mask = GMAC0_IRQ0_TXQ0_INTS << (6 * netdev->dev_id + txq);
- 
- 	if (en)
-@@ -1120,6 +1123,8 @@ static void gmac_tx_irq_enable(struct net_device *netdev,
- 	val = readl(geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
- 	val = en ? val | mask : val & ~mask;
- 	writel(val, geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
-+
-+	spin_unlock_irqrestore(&geth->irq_lock, flags);
+diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
+index 427ca00a32177..85d57633c8b65 100644
+--- a/tools/testing/selftests/bpf/test_sockmap.c
++++ b/tools/testing/selftests/bpf/test_sockmap.c
+@@ -2014,9 +2014,9 @@ int main(int argc, char **argv)
+ 		free(options.whitelist);
+ 	if (options.blacklist)
+ 		free(options.blacklist);
++	close(cg_fd);
+ 	if (cg_created)
+ 		cleanup_cgroup_environment();
+-	close(cg_fd);
+ 	return err;
  }
  
- static void gmac_tx_irq(struct net_device *netdev, unsigned int txq_num)
-@@ -1426,15 +1431,19 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	union gmac_rxdesc_3 word3;
- 	struct page *page = NULL;
- 	unsigned int page_offs;
-+	unsigned long flags;
- 	unsigned short r, w;
- 	union dma_rwptr rw;
- 	dma_addr_t mapping;
- 	int frag_nr = 0;
- 
-+	spin_lock_irqsave(&geth->irq_lock, flags);
- 	rw.bits32 = readl(ptr_reg);
- 	/* Reset interrupt as all packages until here are taken into account */
- 	writel(DEFAULT_Q0_INT_BIT << netdev->dev_id,
- 	       geth->base + GLOBAL_INTERRUPT_STATUS_1_REG);
-+	spin_unlock_irqrestore(&geth->irq_lock, flags);
-+
- 	r = rw.bits.rptr;
- 	w = rw.bits.wptr;
- 
-@@ -1737,10 +1746,9 @@ static irqreturn_t gmac_irq(int irq, void *data)
- 		gmac_update_hw_stats(netdev);
- 
- 	if (val & (GMAC0_RX_OVERRUN_INT_BIT << (netdev->dev_id * 8))) {
-+		spin_lock(&geth->irq_lock);
- 		writel(GMAC0_RXDERR_INT_BIT << (netdev->dev_id * 8),
- 		       geth->base + GLOBAL_INTERRUPT_STATUS_4_REG);
--
--		spin_lock(&geth->irq_lock);
- 		u64_stats_update_begin(&port->ir_stats_syncp);
- 		++port->stats.rx_fifo_errors;
- 		u64_stats_update_end(&port->ir_stats_syncp);
 -- 
 2.43.0
 
