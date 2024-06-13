@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-51003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D456C906DDE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 886EC906E5B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08C041C21867
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90F501C22C7E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4139145B27;
-	Thu, 13 Jun 2024 12:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439DB144D3F;
+	Thu, 13 Jun 2024 12:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ma3a6nwO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2/kNmiM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E4A144D16;
-	Thu, 13 Jun 2024 12:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FD8144D36;
+	Thu, 13 Jun 2024 12:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280020; cv=none; b=gCtvL1dPp671mpRKSzZIw/OkcSWfWQPtJl07tWwAE8GTsUtbKEAcMoYccasWamwxZpc2pkcvBNISpXfYowg+R4cUiLbvQ6pvjqcnD0sIJRZZrmMKSmXjRF2UnUdlfBvLltl3LUz0UuxAd9LEas6op1EWL14uxBKA9wqFcY/LEvU=
+	t=1718280321; cv=none; b=hnb/yfZGKr9PSbiDhyY2I5aEyZo80iaZ92Lm9RhIH2IIgWhT9vhuWn3O+8b21XJbTEiGX/tdd21Fv6wEiJpIadJOcSsMdEOeEhHEd/bTf30DpBXYKTAjE4ea9SWHZ0+gH5cpeYcN+PtvyP/acMP3OGDylRrGmJ/hyPTHMJ5XvI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280020; c=relaxed/simple;
-	bh=TAKpKGjeyVfnFrTpmPNsokaKQRADjdaLUUrJnk+/e9E=;
+	s=arc-20240116; t=1718280321; c=relaxed/simple;
+	bh=wxBraw0qe268jMxfb76bPqvNsYlUFQ1GJRj1nYOx8nI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fCYb0TNzg46mIdd19r0W/n3h58AVoh96fHR4NX35i4D5LVBAAMSHukfRHVo/p/PmEByZNFBL/AaPykX8sgWEaS2ZcZsn859deNKhSOakyKZwxdmFGBn8MQIfuFYQzLgWLw0qOXpXwVpuJlR2i+uoyp8lX9GQnMnVm9WYVV4fmKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ma3a6nwO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F00C2BBFC;
-	Thu, 13 Jun 2024 12:00:19 +0000 (UTC)
+	 MIME-Version; b=cRVVlUwTBTaKW4SH0z1wB0LsT5IP0aXdMb1HqJuidT0Sferlys7Pnqsh4XU/Y25qTmTEMDP6ZGjsKxkfkfKeHUieBrFpbe3a8DVLXPsbKsYSDmtAQz+96h7ePH4sITN4OIVgZTKfIk+0gjVgu43fYUdbJjQWXTn8Giqmb7l8WoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2/kNmiM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C31C32786;
+	Thu, 13 Jun 2024 12:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280020;
-	bh=TAKpKGjeyVfnFrTpmPNsokaKQRADjdaLUUrJnk+/e9E=;
+	s=korg; t=1718280320;
+	bh=wxBraw0qe268jMxfb76bPqvNsYlUFQ1GJRj1nYOx8nI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ma3a6nwOF02NUFq246IgbjeprVTcmDdiaXJRYGJ0sAAwTPpuSZvjySvvblPbvrBFv
-	 z9UJ0BJbfrRbpxk2rOthdBAGSDm/H/W+KVgKjsxYNfdnNC7Fwp5IRqVsNBEdnUir3W
-	 FeffOS+6xLCMXoV7XJa1OOLM0TIaQ9bkF5dfo4Tg=
+	b=r2/kNmiM2Sz2a1zZVUDW6G0kTSagesZQbUKn0Io4eG/+PqoQBJmOLFCsguiCfOeeg
+	 E9AK4HguAXjlbfsRtQNNDaNMgMXQ6dphIldbex8wIT3c4zxfLqyKZIci6V5vr/GmBk
+	 YU9C3sivmZjJqoxe8nGicvXQa+RNW05IQX/q3Gfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 088/202] RDMA/IPoIB: Fix format truncation compilation errors
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 006/137] mptcp: avoid some duplicate code in socket option handling
 Date: Thu, 13 Jun 2024 13:33:06 +0200
-Message-ID: <20240613113231.166142945@linuxfoundation.org>
+Message-ID: <20240613113223.530809723@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,71 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 49ca2b2ef3d003402584c68ae7b3055ba72e750a ]
+commit a74762675f700a5473ebe54a671a0788a5b23cc9 upstream.
 
-Truncate the device name to store IPoIB VLAN name.
+The mptcp_get_int_option() helper is needless open-coded in a
+couple of places, replace the duplicate code with the helper
+call.
 
-[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 allmodconfig
-[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 W=1 drivers/infiniband/ulp/ipoib/
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c: In function ‘ipoib_vlan_add’:
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:52: error: ‘%04x’
-directive output may be truncated writing 4 bytes into a region of size
-between 0 and 15 [-Werror=format-truncation=]
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |                                                    ^~~~
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:48: note: directive
-argument in the range [0, 65535]
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |                                                ^~~~~~~~~
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:9: note: ‘snprintf’ output
-between 6 and 21 bytes into a destination of size 16
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  188 |                  ppriv->dev->name, pkey);
-      |                  ~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:244: drivers/infiniband/ulp/ipoib/ipoib_vlan.o] Error 1
-make[6]: *** Waiting for unfinished jobs....
-
-Fixes: 9baa0b036410 ("IB/ipoib: Add rtnl_link_ops support")
-Link: https://lore.kernel.org/r/e9d3e1fef69df4c9beaf402cc3ac342bad680791.1715240029.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bd11dc4fb969 ("mptcp: fix full TCP keep-alive support")
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/ipoib/ipoib_vlan.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/mptcp/sockopt.c |   20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-index 58ca5e9c6079c..1c1cd10283acf 100644
---- a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-+++ b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-@@ -182,8 +182,12 @@ int ipoib_vlan_add(struct net_device *pdev, unsigned short pkey)
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -626,13 +626,11 @@ static int mptcp_setsockopt_sol_tcp_cork
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct sock *sk = (struct sock *)msk;
+-	int val;
++	int val, ret;
  
- 	ppriv = ipoib_priv(pdev);
+-	if (optlen < sizeof(int))
+-		return -EINVAL;
+-
+-	if (copy_from_sockptr(&val, optval, sizeof(val)))
+-		return -EFAULT;
++	ret = mptcp_get_int_option(msk, optval, optlen, &val);
++	if (ret)
++		return ret;
  
--	snprintf(intf_name, sizeof(intf_name), "%s.%04x",
--		 ppriv->dev->name, pkey);
-+	/* If you increase IFNAMSIZ, update snprintf below
-+	 * to allow longer names.
-+	 */
-+	BUILD_BUG_ON(IFNAMSIZ != 16);
-+	snprintf(intf_name, sizeof(intf_name), "%.10s.%04x", ppriv->dev->name,
-+		 pkey);
+ 	lock_sock(sk);
+ 	sockopt_seq_inc(msk);
+@@ -656,13 +654,11 @@ static int mptcp_setsockopt_sol_tcp_node
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct sock *sk = (struct sock *)msk;
+-	int val;
+-
+-	if (optlen < sizeof(int))
+-		return -EINVAL;
++	int val, ret;
  
- 	ndev = ipoib_intf_alloc(ppriv->ca, ppriv->port, intf_name);
- 	if (IS_ERR(ndev)) {
--- 
-2.43.0
-
+-	if (copy_from_sockptr(&val, optval, sizeof(val)))
+-		return -EFAULT;
++	ret = mptcp_get_int_option(msk, optval, optlen, &val);
++	if (ret)
++		return ret;
+ 
+ 	lock_sock(sk);
+ 	sockopt_seq_inc(msk);
 
 
 
