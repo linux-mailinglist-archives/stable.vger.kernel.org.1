@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-50658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2555C906BC2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53F7A906CBC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:53:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0799282DD0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D546C28300B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C190143C67;
-	Thu, 13 Jun 2024 11:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6713A1465A3;
+	Thu, 13 Jun 2024 11:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQzwPsPG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ta4iH1wa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE7714265E;
-	Thu, 13 Jun 2024 11:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267A0145B27;
+	Thu, 13 Jun 2024 11:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279008; cv=none; b=ri52WzhFudXLaoIicj6306ifDIfqxx52u6VRORY/bBnHZ0TYm6Ff6Son3aRiRijhkS0XKqsyO/wq1U27iCoQmCOx2kO4ZukGscXaWkg/Y3RWvXiq8MlK/NBymP5inccZLJSoXO9e28rETVjJCIwdOofuk4gEW7murkRjgMDddLo=
+	t=1718279408; cv=none; b=F/yWWJ0s5HBjt3Xi77Gl0zay4PIl2sKTHQIHr0KTVCWxZbYo13waZxTQlE5lWi5mwGG8w7nBXQoYOe+jXeJ+xVrlaHBTNhudljiV0HvXwRViPjuUNdKU5oAKGRCw8Pur8QnaAqYihItRXHpgedjQhfHzMP81EHV248qVa50+bgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279008; c=relaxed/simple;
-	bh=153jXKE9Yydfb7ioXSTK2Zfi94C6YUgXIuoYg8g+6BQ=;
+	s=arc-20240116; t=1718279408; c=relaxed/simple;
+	bh=Socy7SCSRZHgneyW5tizQOhggU7JJkyeuNkZzwNNfUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqehLIMcnmxCIZUKUclqbEamkkDeRazYrEZFxA1syfZONteMh65L/N9/dVSNidm9+lyQHeOl7a93UoYNIv8HqlQmbSZOw11E4CJRqPdOKKD8+8rIW9pj/q8E2FHrl4BIK4RO8EG22G7MMVgA0A6VagbEHHo7Kcg0iLhMUtza4T8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQzwPsPG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104CAC2BBFC;
-	Thu, 13 Jun 2024 11:43:27 +0000 (UTC)
+	 MIME-Version; b=nXl/yRBz7c+wuQzXQE9C/0U9pZz4xoJ+y5OWsA9ioe9sARJCCYEcgq96sgKRlF9o4jIgJxv4jyHZ+GGSuTaJtGkcuapHT209LuB80M8JHthfeRMPLokFOcsyPdYtn7KQIvyE3DhQyIUQBcw+dlcdO8UzjrYzYYDgblplEk7+9mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ta4iH1wa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECAFC2BBFC;
+	Thu, 13 Jun 2024 11:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279008;
-	bh=153jXKE9Yydfb7ioXSTK2Zfi94C6YUgXIuoYg8g+6BQ=;
+	s=korg; t=1718279407;
+	bh=Socy7SCSRZHgneyW5tizQOhggU7JJkyeuNkZzwNNfUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQzwPsPG5pr6HnjBnyh3j2njykNFk0vFwa4+NSNvMUcuGzn43+2kELeLy7KrXzaOf
-	 XiTUKDZJ2Jhz2bvE4Zp/Qg2XwBDL3DV3CrJIYJX+Te7bAIAxdDg9xk9rc2KjnyOkft
-	 T7BleT2PK+pKuQhm6NGTqDo5zYcb126S2/Lo4Vy8=
+	b=ta4iH1waS75oy96R4Be67uoJwdO+EAfRJevyn7VrUzFzTwAIpywPPoPASp6Qsk6XR
+	 molZZmgljZXgPJOUvq9Tt5gfSQ8kjuTbti7mSDZFkN3Ipn+V4ZX1paJFmlIu8bZRor
+	 J+RRLn0iF701ik1/UhcTwadFhBIY1EK17GnSvD5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+43120c2af6ca2938cc38@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4.19 143/213] ALSA: timer: Set lower bound of start tick time
+	Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.9 066/157] clk: bcm: rpi: Assign ->num before accessing ->hws
 Date: Thu, 13 Jun 2024 13:33:11 +0200
-Message-ID: <20240613113233.508453521@linuxfoundation.org>
+Message-ID: <20240613113229.975660219@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 4a63bd179fa8d3fcc44a0d9d71d941ddd62f0c4e upstream.
+commit 6dc445c1905096b2ed4db1a84570375b4e00cc0f upstream.
 
-Currently ALSA timer doesn't have the lower limit of the start tick
-time, and it allows a very small size, e.g. 1 tick with 1ns resolution
-for hrtimer.  Such a situation may lead to an unexpected RCU stall,
-where  the callback repeatedly queuing the expire update, as reported
-by fuzzer.
+Commit f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with
+__counted_by") annotated the hws member of 'struct clk_hw_onecell_data'
+with __counted_by, which informs the bounds sanitizer about the number
+of elements in hws, so that it can warn when hws is accessed out of
+bounds. As noted in that change, the __counted_by member must be
+initialized with the number of elements before the first array access
+happens, otherwise there will be a warning from each access prior to the
+initialization because the number of elements is zero. This occurs in
+raspberrypi_discover_clocks() due to ->num being assigned after ->hws
+has been accessed:
 
-This patch introduces a sanity check of the timer start tick time, so
-that the system returns an error when a too small start size is set.
-As of this patch, the lower limit is hard-coded to 100us, which is
-small enough but can still work somehow.
+  UBSAN: array-index-out-of-bounds in drivers/clk/bcm/clk-raspberrypi.c:374:4
+  index 3 is out of range for type 'struct clk_hw *[] __counted_by(num)' (aka 'struct clk_hw *[]')
 
-Reported-by: syzbot+43120c2af6ca2938cc38@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/000000000000fa00a1061740ab6d@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240514182745.4015-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ backport note: the error handling is changed, as the original commit
-  is based on the recent cleanup with guard() in commit beb45974dd49
-  -- tiwai ]
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Move the ->num initialization to before the first access of ->hws, which
+clears up the warning.
+
+Cc: stable@vger.kernel.org
+Fixes: f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with __counted_by")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20240425-cbl-bcm-assign-counted-by-val-before-access-v1-2-e2db3b82d5ef@kernel.org
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/timer.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/clk/bcm/clk-raspberrypi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/core/timer.c
-+++ b/sound/core/timer.c
-@@ -529,6 +529,16 @@ static int snd_timer_start1(struct snd_t
- 		goto unlock;
- 	}
+--- a/drivers/clk/bcm/clk-raspberrypi.c
++++ b/drivers/clk/bcm/clk-raspberrypi.c
+@@ -371,8 +371,8 @@ static int raspberrypi_discover_clocks(s
+ 			if (IS_ERR(hw))
+ 				return PTR_ERR(hw);
  
-+	/* check the actual time for the start tick;
-+	 * bail out as error if it's way too low (< 100us)
-+	 */
-+	if (start) {
-+		if ((u64)snd_timer_hw_resolution(timer) * ticks < 100000) {
-+			result = -EINVAL;
-+			goto unlock;
-+		}
-+	}
-+
- 	if (start)
- 		timeri->ticks = timeri->cticks = ticks;
- 	else if (!timeri->cticks)
+-			data->hws[clks->id] = hw;
+ 			data->num = clks->id + 1;
++			data->hws[clks->id] = hw;
+ 		}
+ 
+ 		clks++;
 
 
 
