@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D98D2906F0F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:16:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E04939070BC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 740EC28133A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:16:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3AD51C23ADB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187E01465A2;
-	Thu, 13 Jun 2024 12:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259A8818;
+	Thu, 13 Jun 2024 12:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aE573ZJS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOpCOvBv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8D4145B14;
-	Thu, 13 Jun 2024 12:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76F5195;
+	Thu, 13 Jun 2024 12:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280785; cv=none; b=AXDZLLwWeKdphWWNlsSNLmCQSpghWMYABewyNfHcUOuyHAPNx4O/glysIiMIc4CYOKYINhn/JpZOaYmVozIn7NBfcgewu5HEowgsIZ7Nb/DxURn9lDo2zlLt8ZPlAnwB9j0+ZKj7WqRSHfZLfte8M1ylLsxoED+l5tieA1RIKU0=
+	t=1718281821; cv=none; b=CXfY7hOfCL4+liZhfwoNpkanbx/YyAnEJ0bH2sF2VRZo43zsRqpOXolDvMKaO9q1+GX4P3mHPXPII8MzUKAsAMOI4h1Ox3Vogf/PwVDE9MCB/0DGI/iTA8CagXxhcf4L4AxmvgWf2kO6GYV0ZBFj1KDPjxQ/29x1MyCu2BcUNhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280785; c=relaxed/simple;
-	bh=ORZBahbxBNAWSKGz5vW+Kv0gFV24GKG2gmqXR+4H+aE=;
+	s=arc-20240116; t=1718281821; c=relaxed/simple;
+	bh=kFse8ijlhYJ+ODW4/c9WRy9jw0wAGeuJZeZYyallQSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CDQNYTiqPJjtMl3boIRsDA35fzwG2AhEQ89l9z2YjrQgXHWSGciYyD9EdBjWPUEpOBN0sGJNQT/usS3SvJsmanb6yD8hOAQd/pu1eZfZcRxEOyobWlRD+fr4ttSy50bwGghEuEPe2NEDVMKuD9Z46Onfeqs/8tN0EtARiW/tfI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aE573ZJS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CCAC2BBFC;
-	Thu, 13 Jun 2024 12:13:05 +0000 (UTC)
+	 MIME-Version; b=C33hjswYuIPVd0S5CLTM6P2x4cEcTUgcGlv4Fz4Q1vAKGL6bEUT8lPRu8ak5bjmkWGq3bgjtypY+uP6hkpFD1vEGTRqmDetO2IAGiBKT7mU36rRGU+icihTnvJeqrt3aGPkAqB936mUJdXBaeXANuGKnSEG4No49DjCwxL1Gau0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOpCOvBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E786C2BBFC;
+	Thu, 13 Jun 2024 12:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280785;
-	bh=ORZBahbxBNAWSKGz5vW+Kv0gFV24GKG2gmqXR+4H+aE=;
+	s=korg; t=1718281821;
+	bh=kFse8ijlhYJ+ODW4/c9WRy9jw0wAGeuJZeZYyallQSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aE573ZJS+gb7Vn9XECcUHv0IZjr3E19Cwi13aS8dg8DLJ1SJb5SvQmMFNJkdqGtdE
-	 kmbUoqwz4HQQiL9UyK6NbbSlmYcDEh0M/vvtHxO1OXjJwGiEBS9C/RCe86RcN7z/EM
-	 30RAWADnOxhbTgX1LNCUAUNHacInRhzQ/1C86RXc=
+	b=LOpCOvBv7/H7dX2gmpqQpzah8dqNt9tpJXcRI8XjRY2UHNUrlz0KJ9HvXnMb7QBIp
+	 Wfiui1o4adCnq4GBk/x3ZvwAp3vhPB4OTaHAwQnx6k4dZLStwYXTEWPvqpXN2mD+YD
+	 Rf6lXQ4HNXa0vUF/twej5KTonvq39EvFUBItozf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@toblux.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 006/317] net: smc91x: Fix m68k kernel compilation for ColdFire CPU
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 067/402] irqchip/loongson-pch-msi: Fix off-by-one on allocation error path
 Date: Thu, 13 Jun 2024 13:30:24 +0200
-Message-ID: <20240613113247.780793984@linuxfoundation.org>
+Message-ID: <20240613113304.749519852@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@toblux.com>
+From: Zenghui Yu <yuzenghui@huawei.com>
 
-commit 5eefb477d21a26183bc3499aeefa991198315a2d upstream.
+[ Upstream commit b327708798809328f21da8dc14cc8883d1e8a4b3 ]
 
-Compiling the m68k kernel with support for the ColdFire CPU family fails
-with the following error:
+When pch_msi_parent_domain_alloc() returns an error, there is an off-by-one
+in the number of interrupts to be freed.
 
-In file included from drivers/net/ethernet/smsc/smc91x.c:80:
-drivers/net/ethernet/smsc/smc91x.c: In function ‘smc_reset’:
-drivers/net/ethernet/smsc/smc91x.h:160:40: error: implicit declaration of function ‘_swapw’; did you mean ‘swap’? [-Werror=implicit-function-declaration]
-  160 | #define SMC_outw(lp, v, a, r)   writew(_swapw(v), (a) + (r))
-      |                                        ^~~~~~
-drivers/net/ethernet/smsc/smc91x.h:904:25: note: in expansion of macro ‘SMC_outw’
-  904 |                         SMC_outw(lp, x, ioaddr, BANK_SELECT);           \
-      |                         ^~~~~~~~
-drivers/net/ethernet/smsc/smc91x.c:250:9: note: in expansion of macro ‘SMC_SELECT_BANK’
-  250 |         SMC_SELECT_BANK(lp, 2);
-      |         ^~~~~~~~~~~~~~~
-cc1: some warnings being treated as errors
+Fix it by passing the number of successfully allocated interrupts, instead of the
+relative index of the last allocated one.
 
-The function _swapw() was removed in commit d97cf70af097 ("m68k: use
-asm-generic/io.h for non-MMU io access functions"), but is still used in
-drivers/net/ethernet/smsc/smc91x.h.
-
-Use ioread16be() and iowrite16be() to resolve the error.
-
-Cc: stable@vger.kernel.org
-Fixes: d97cf70af097 ("m68k: use asm-generic/io.h for non-MMU io access functions")
-Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240510113054.186648-2-thorsten.blum@toblux.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 632dcc2c75ef ("irqchip: Add Loongson PCH MSI controller")
+Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Link: https://lore.kernel.org/r/20240327142334.1098-1-yuzenghui@huawei.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/smsc/smc91x.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-loongson-pch-msi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/smsc/smc91x.h
-+++ b/drivers/net/ethernet/smsc/smc91x.h
-@@ -175,8 +175,8 @@ static inline void mcf_outsw(void *a, un
- 		writew(*wp++, a);
+diff --git a/drivers/irqchip/irq-loongson-pch-msi.c b/drivers/irqchip/irq-loongson-pch-msi.c
+index 32562b7e681b5..254a58fbb844a 100644
+--- a/drivers/irqchip/irq-loongson-pch-msi.c
++++ b/drivers/irqchip/irq-loongson-pch-msi.c
+@@ -132,7 +132,7 @@ static int pch_msi_middle_domain_alloc(struct irq_domain *domain,
+ 
+ err_hwirq:
+ 	pch_msi_free_hwirq(priv, hwirq, nr_irqs);
+-	irq_domain_free_irqs_parent(domain, virq, i - 1);
++	irq_domain_free_irqs_parent(domain, virq, i);
+ 
+ 	return err;
  }
- 
--#define SMC_inw(a, r)		_swapw(readw((a) + (r)))
--#define SMC_outw(lp, v, a, r)	writew(_swapw(v), (a) + (r))
-+#define SMC_inw(a, r)		ioread16be((a) + (r))
-+#define SMC_outw(lp, v, a, r)	iowrite16be(v, (a) + (r))
- #define SMC_insw(a, r, p, l)	mcf_insw(a + r, p, l)
- #define SMC_outsw(a, r, p, l)	mcf_outsw(a + r, p, l)
- 
+-- 
+2.43.0
+
 
 
 
