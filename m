@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-50937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84A71906D81
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7A4906C68
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C7F01F26886
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 087AC281185
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F9444C6F;
-	Thu, 13 Jun 2024 11:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5C11448D7;
+	Thu, 13 Jun 2024 11:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFDxXhqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcBerGOi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0913145A10;
-	Thu, 13 Jun 2024 11:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC711428E9;
+	Thu, 13 Jun 2024 11:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279826; cv=none; b=MlcXHzoWOOrsqbOr6uOAyAXdODk64yLr9DnLmZWv2ubvAMaOHUnxRMfi5xBgQht0+xHJ0XT5KjlR5OU5XYWG8+2hxaphAyPJqaEksXxdDXAGr5DSpMYgL6Nbr/vy5TvfEP9IGAFY/Sqz6u31UzcQ7BHLc51ORZf59Ihm0kkol4M=
+	t=1718279278; cv=none; b=eGMukPVNGAezFYhV218zJROYl961C2SJ5F47msyKtxKN346c2fi52wZ0KqvkrEW+sOkf9ovGRtgDjm4k3W1+2NnjIylb7K975KvyoYSkrrpkh5B3a1NFet1Mw0cmAuzdm79rxTUX+0L/HSS220rtaNH2fzoeH/ZYwhdnXEcxLFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279826; c=relaxed/simple;
-	bh=Zhy1eqe++HE2jo9pZrtWSWtbfaovtoEenTmuozM+tsU=;
+	s=arc-20240116; t=1718279278; c=relaxed/simple;
+	bh=VH5ZiWY8QJ7UAjyqVZ7zox3fXbyfTh8je01bOiaf6eE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WL7Q/ie1rjc1wD+uA9nj2NagBhT9fJjdZkR9FBCmj2XDSLbNBkPQT6zMmNnmTEFsUYCnc9oYgka9MfXsrLus0moVlLK4nv0ZnLWNz3dZKye7zI/XHP+KnNbSXJBTrQw1bgSkIyvRzr3bv73n9oO/kLRB+FABRHvMD2XhC6VVlfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFDxXhqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DFDC2BBFC;
-	Thu, 13 Jun 2024 11:57:05 +0000 (UTC)
+	 MIME-Version; b=cSs0e4HzSMbqs7g+Vag7II+VBk9lFShv8e64veeLnlsHDWQ7bKMAHzjffR4UaEcs+j1N+X8Y7jT80C6n4a11cHaTdRnzIZJRdm3XQXyOtux89pp9YfRVzqG7r3oUcZ96sX9aSY70E2ky7oIHNcvIidY42lKmDoWpmErtLC62SDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcBerGOi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7968C2BBFC;
+	Thu, 13 Jun 2024 11:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279826;
-	bh=Zhy1eqe++HE2jo9pZrtWSWtbfaovtoEenTmuozM+tsU=;
+	s=korg; t=1718279278;
+	bh=VH5ZiWY8QJ7UAjyqVZ7zox3fXbyfTh8je01bOiaf6eE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZFDxXhqyJT5HJ5tgHfe7MNzm87+HruWLP5f05yK2Fk+8N7CeVBML9FE56jbLitywt
-	 ++u3FcKi+hPiYbHu+VvVOmtYjWQDjMJ3lAHGOFeXn1ZHFEBw2j6i2ZEXgzlOclvFBE
-	 7FrFIKuxeoJMOSEFunlKxyMYoD1cePE5MTzQ1vkI=
+	b=WcBerGOi4//axGWodxmRUQgWp2wGYuixfGqsdEn0VLwdk5elRtlqlhUvfOfcL1FYR
+	 uWjiPXIw1+eAkBLNo5BWtrr7OJ597Xucrh6KGmjlmdbLSOQn7/+gqhA00baxfJfoCi
+	 0qR1QyzmwqtkZVmJMj1hsYcbxvd8j5b5Gj+Cgu5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 048/202] macintosh/via-macii: Fix "BUG: sleeping function called from invalid context"
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.9 021/157] ACPI: resource: Do IRQ override on TongFang GXxHRXx and GMxHGxx
 Date: Thu, 13 Jun 2024 13:32:26 +0200
-Message-ID: <20240613113229.627523925@linuxfoundation.org>
+Message-ID: <20240613113228.229779857@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-[ Upstream commit d301a71c76ee4c384b4e03cdc320a55f5cf1df05 ]
+commit c81bf14f9db68311c2e75428eea070d97d603975 upstream.
 
-The via-macii ADB driver calls request_irq() after disabling hard
-interrupts. But disabling interrupts isn't necessary here because the
-VIA shift register interrupt was masked during VIA1 initialization.
+Listed devices need the override for the keyboard to work.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/419fcc09d0e563b425c419053d02236b044d86b0.1710298421.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/macintosh/via-macii.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/acpi/resource.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/macintosh/via-macii.c b/drivers/macintosh/via-macii.c
-index 6aa903529570d..9344452deaa3c 100644
---- a/drivers/macintosh/via-macii.c
-+++ b/drivers/macintosh/via-macii.c
-@@ -135,24 +135,19 @@ static int macii_probe(void)
- /* Initialize the driver */
- int macii_init(void)
- {
--	unsigned long flags;
- 	int err;
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -630,6 +630,18 @@ static const struct dmi_system_id irq1_e
+ 			DMI_MATCH(DMI_BOARD_NAME, "X565"),
+ 		},
+ 	},
++	{
++		/* TongFang GXxHRXx/TUXEDO InfinityBook Pro Gen9 AMD */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GXxHRXx"),
++		},
++	},
++	{
++		/* TongFang GMxHGxx/TUXEDO Stellaris Slim Gen1 AMD */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
++		},
++	},
+ 	{ }
+ };
  
--	local_irq_save(flags);
--
- 	err = macii_init_via();
- 	if (err)
--		goto out;
-+		return err;
- 
- 	err = request_irq(IRQ_MAC_ADB, macii_interrupt, 0, "ADB",
- 			  macii_interrupt);
- 	if (err)
--		goto out;
-+		return err;
- 
- 	macii_state = idle;
--out:
--	local_irq_restore(flags);
--	return err;
-+	return 0;
- }
- 
- /* initialize the hardware */
--- 
-2.43.0
-
 
 
 
