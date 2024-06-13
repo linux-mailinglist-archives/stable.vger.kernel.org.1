@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-50822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C4B906CF9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:57:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C92C7906BB8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D064DB24097
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:57:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A3CDB24775
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6286281ABF;
-	Thu, 13 Jun 2024 11:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F043143866;
+	Thu, 13 Jun 2024 11:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqMzxRBk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fzy5ooOE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D96E1448EF;
-	Thu, 13 Jun 2024 11:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1D7DDB1;
+	Thu, 13 Jun 2024 11:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279487; cv=none; b=cxJC7q+LwaqZtbUwl40T/n+wadCobRgmbauk66+bSppxneSHadGtkFzBszp9fCTd2gb6xy2Me0YBXFSI4FGxwh604rl61SLTCcd3hPEF8lM3qqcKBAYhKKYloNhi6gAT67uz49J2nduz5vK4dMKGPszogcmGAhh6UzkilF7dHkk=
+	t=1718278991; cv=none; b=jUwOXY1ijv5A+/k195IQz0eulJInp75p0h3xPzQXrR72vFZkm2flqbV2RoVyJ3tvbY0yv3UlS00S5509V/0ZUX8gDd6NHPRMKZkP0kVwcNVfVp0ssEWm6kQONnFvtzN8cOvbKzHT7ahipFp5MBDOpcscudYQB20ZIDf3ax5qIX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279487; c=relaxed/simple;
-	bh=SHN3UgreeO5ujH32TTLhcw8KVlvfy1D0ZMCPkDbfulg=;
+	s=arc-20240116; t=1718278991; c=relaxed/simple;
+	bh=ao1WvIM8ZSh6HpOsGFmFpPbgLinQDLxVaCBtVEIa/10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jF1sUqJMX7MmCCUGlPd0oxWVRiiKGDZFQGFf62WftkVL07xudGoj5rMKuouO1iQGQTX2jh6tCbUnw6z2UQD01mGun38WHVL8SVq0BepLvj02CPkjc5AC8Nza19nKe2E9iUdaQeROFo++4HelBMHJkCtQ5UR3XEnoC+o9oLp1MpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqMzxRBk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902F4C2BBFC;
-	Thu, 13 Jun 2024 11:51:26 +0000 (UTC)
+	 MIME-Version; b=Q+axc+PCSnP2Uqwo4jT31UIwQQF9YeifNJWtgYGb7OjwLTG4LKPE8/UIWbIWovX4mPbzAccBaz/wJ5+uZ9/GPhvJL25sFnnWmweyQzb6kFUkxvU8PK8WwMl6XAJrVU4VOl6x3enwBE1UOe7ZfExHbqXgCVuJfS5AOIpBeX2vpZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fzy5ooOE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D08C2BBFC;
+	Thu, 13 Jun 2024 11:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279487;
-	bh=SHN3UgreeO5ujH32TTLhcw8KVlvfy1D0ZMCPkDbfulg=;
+	s=korg; t=1718278990;
+	bh=ao1WvIM8ZSh6HpOsGFmFpPbgLinQDLxVaCBtVEIa/10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BqMzxRBkq0AaKobUUnmLDOgv4e8rXAt3Ip+BCQ3DIKFTt4xXn0qWKOa8yrT+o//X8
-	 Oe3JIS3/UnvStkCJdZFiuWtk/0Y7k+RyE3NiCJ41hjeQ4rSmUHg2BffmQEmuV+n1UF
-	 b8XTJQdJoxgFr6nNUv3rSum9GDRxwLLdcjaG5QtI=
+	b=Fzy5ooOEfqlLfsMfAQZRY0D8BWsPzg1UwCin90ovNxjxujnH5Y3hs7wQ7c8vY6uJU
+	 l/w58xWg4PQ3V9ywkUwcJsV1gk6E1HB8z/HXNJBzabBM2hURYDXfX9Ek/p8BvcLX+y
+	 o9t9FHs9ps+jmlqNEtE/AXYIzo8sLMbi9m+CCzbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.9 061/157] LoongArch: Add all CPUs enabled by fdt to NUMA node 0
+	Andre Edich <andre.edich@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 138/213] smsc95xx: use usbnet->driver_priv
 Date: Thu, 13 Jun 2024 13:33:06 +0200
-Message-ID: <20240613113229.785098763@linuxfoundation.org>
+Message-ID: <20240613113233.319683235@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,251 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Andre Edich <andre.edich@microchip.com>
 
-commit 3de9c42d02a79a5e09bbee7a4421ddc00cfd5c6d upstream.
+[ Upstream commit ad90a73f0236c41f7a2dedc2e75c7b5a364eb93e ]
 
-NUMA enabled kernel on FDT based machine fails to boot because CPUs
-are all in NUMA_NO_NODE and mm subsystem won't accept that.
+Using `void *driver_priv` instead of `unsigned long data[]` is more
+straightforward way to recover the `struct smsc95xx_priv *` from the
+`struct net_device *`.
 
-Fix by adding them to default NUMA node at FDT parsing phase and move
-numa_add_cpu(0) to a later point.
-
-Cc: stable@vger.kernel.org
-Fixes: 88d4d957edc7 ("LoongArch: Add FDT booting support from efi system table")
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andre Edich <andre.edich@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 52a2f0608366 ("net: usb: smsc95xx: fix changing LED_SEL bit value updated from EEPROM")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/numa.h |    1 +
- arch/loongarch/kernel/smp.c       |    5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/usb/smsc95xx.c | 61 +++++++++++++++++---------------------
+ 1 file changed, 28 insertions(+), 33 deletions(-)
 
---- a/arch/loongarch/include/asm/numa.h
-+++ b/arch/loongarch/include/asm/numa.h
-@@ -56,6 +56,7 @@ extern int early_cpu_to_node(int cpu);
- static inline void early_numa_add_cpu(int cpuid, s16 node)	{ }
- static inline void numa_add_cpu(unsigned int cpu)		{ }
- static inline void numa_remove_cpu(unsigned int cpu)		{ }
-+static inline void set_cpuid_to_node(int cpuid, s16 node)	{ }
- 
- static inline int early_cpu_to_node(int cpu)
+diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
+index de45a6209c2e6..ec233d033f5cd 100644
+--- a/drivers/net/usb/smsc95xx.c
++++ b/drivers/net/usb/smsc95xx.c
+@@ -469,7 +469,7 @@ static unsigned int smsc95xx_hash(char addr[ETH_ALEN])
+ static void smsc95xx_set_multicast(struct net_device *netdev)
  {
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -262,7 +262,6 @@ static void __init fdt_smp_setup(void)
+ 	struct usbnet *dev = netdev_priv(netdev);
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	unsigned long flags;
+ 	int ret;
  
- 		if (cpuid == loongson_sysconf.boot_cpu_id) {
- 			cpu = 0;
--			numa_add_cpu(cpu);
- 		} else {
- 			cpu = cpumask_next_zero(-1, cpu_present_mask);
- 		}
-@@ -272,6 +271,9 @@ static void __init fdt_smp_setup(void)
- 		set_cpu_present(cpu, true);
- 		__cpu_number_map[cpuid] = cpu;
- 		__cpu_logical_map[cpu] = cpuid;
-+
-+		early_numa_add_cpu(cpu, 0);
-+		set_cpuid_to_node(cpuid, 0);
+@@ -564,7 +564,7 @@ static int smsc95xx_phy_update_flowcontrol(struct usbnet *dev, u8 duplex,
+ 
+ static int smsc95xx_link_reset(struct usbnet *dev)
+ {
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	struct mii_if_info *mii = &dev->mii;
+ 	struct ethtool_cmd ecmd = { .cmd = ETHTOOL_GSET };
+ 	unsigned long flags;
+@@ -634,7 +634,7 @@ static void smsc95xx_status(struct usbnet *dev, struct urb *urb)
+ 
+ static void set_carrier(struct usbnet *dev, bool link)
+ {
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 
+ 	if (pdata->link_ok == link)
+ 		return;
+@@ -763,7 +763,7 @@ static void smsc95xx_ethtool_get_wol(struct net_device *net,
+ 				     struct ethtool_wolinfo *wolinfo)
+ {
+ 	struct usbnet *dev = netdev_priv(net);
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 
+ 	wolinfo->supported = SUPPORTED_WAKE;
+ 	wolinfo->wolopts = pdata->wolopts;
+@@ -773,7 +773,7 @@ static int smsc95xx_ethtool_set_wol(struct net_device *net,
+ 				    struct ethtool_wolinfo *wolinfo)
+ {
+ 	struct usbnet *dev = netdev_priv(net);
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	int ret;
+ 
+ 	if (wolinfo->wolopts & ~SUPPORTED_WAKE)
+@@ -812,7 +812,7 @@ static int get_mdix_status(struct net_device *net)
+ static void set_mdix_status(struct net_device *net, __u8 mdix_ctrl)
+ {
+ 	struct usbnet *dev = netdev_priv(net);
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	int buf;
+ 
+ 	if ((pdata->chip_id == ID_REV_CHIP_ID_9500A_) ||
+@@ -861,7 +861,7 @@ static int smsc95xx_get_link_ksettings(struct net_device *net,
+ 				       struct ethtool_link_ksettings *cmd)
+ {
+ 	struct usbnet *dev = netdev_priv(net);
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	int retval;
+ 
+ 	retval = usbnet_get_link_ksettings(net, cmd);
+@@ -876,7 +876,7 @@ static int smsc95xx_set_link_ksettings(struct net_device *net,
+ 				       const struct ethtool_link_ksettings *cmd)
+ {
+ 	struct usbnet *dev = netdev_priv(net);
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	int retval;
+ 
+ 	if (pdata->mdix_ctrl != cmd->base.eth_tp_mdix_ctrl)
+@@ -958,7 +958,7 @@ static int smsc95xx_set_mac_address(struct usbnet *dev)
+ /* starts the TX path */
+ static int smsc95xx_start_tx_path(struct usbnet *dev)
+ {
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	unsigned long flags;
+ 	int ret;
+ 
+@@ -978,7 +978,7 @@ static int smsc95xx_start_tx_path(struct usbnet *dev)
+ /* Starts the Receive path */
+ static int smsc95xx_start_rx_path(struct usbnet *dev, int in_pm)
+ {
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&pdata->mac_cr_lock, flags);
+@@ -1035,7 +1035,7 @@ static int smsc95xx_phy_initialize(struct usbnet *dev)
+ 
+ static int smsc95xx_reset(struct usbnet *dev)
+ {
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	u32 read_buf, write_buf, burst_cap;
+ 	int ret = 0, timeout;
+ 
+@@ -1263,7 +1263,7 @@ static const struct net_device_ops smsc95xx_netdev_ops = {
+ 
+ static int smsc95xx_bind(struct usbnet *dev, struct usb_interface *intf)
+ {
+-	struct smsc95xx_priv *pdata = NULL;
++	struct smsc95xx_priv *pdata;
+ 	u32 val;
+ 	int ret;
+ 
+@@ -1275,13 +1275,12 @@ static int smsc95xx_bind(struct usbnet *dev, struct usb_interface *intf)
+ 		return ret;
  	}
  
- 	loongson_sysconf.nr_cpus = num_processors;
-@@ -456,6 +458,7 @@ void smp_prepare_boot_cpu(void)
- 	set_cpu_possible(0, true);
- 	set_cpu_online(0, true);
- 	set_my_cpu_offset(per_cpu_offset(0));
-+	numa_add_cpu(0);
+-	dev->data[0] = (unsigned long)kzalloc(sizeof(struct smsc95xx_priv),
+-					      GFP_KERNEL);
+-
+-	pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	pdata = kzalloc(sizeof(*pdata), GFP_KERNEL);
+ 	if (!pdata)
+ 		return -ENOMEM;
  
- 	rr_node = first_node(node_online_map);
- 	for_each_possible_cpu(cpu) {
++	dev->driver_priv = pdata;
++
+ 	spin_lock_init(&pdata->mac_cr_lock);
+ 
+ 	/* LAN95xx devices do not alter the computed checksum of 0 to 0xffff.
+@@ -1344,15 +1343,11 @@ static int smsc95xx_bind(struct usbnet *dev, struct usb_interface *intf)
+ 
+ static void smsc95xx_unbind(struct usbnet *dev, struct usb_interface *intf)
+ {
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
+-
+-	if (pdata) {
+-		cancel_delayed_work_sync(&pdata->carrier_check);
+-		netif_dbg(dev, ifdown, dev->net, "free pdata\n");
+-		kfree(pdata);
+-		pdata = NULL;
+-		dev->data[0] = 0;
+-	}
++	struct smsc95xx_priv *pdata = dev->driver_priv;
++
++	cancel_delayed_work_sync(&pdata->carrier_check);
++	netif_dbg(dev, ifdown, dev->net, "free pdata\n");
++	kfree(pdata);
+ }
+ 
+ static u32 smsc_crc(const u8 *buffer, size_t len, int filter)
+@@ -1402,7 +1397,7 @@ static int smsc95xx_link_ok_nopm(struct usbnet *dev)
+ 
+ static int smsc95xx_enter_suspend0(struct usbnet *dev)
+ {
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	u32 val;
+ 	int ret;
+ 
+@@ -1441,7 +1436,7 @@ static int smsc95xx_enter_suspend0(struct usbnet *dev)
+ 
+ static int smsc95xx_enter_suspend1(struct usbnet *dev)
+ {
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	u32 val;
+ 	int ret;
+ 
+@@ -1488,7 +1483,7 @@ static int smsc95xx_enter_suspend1(struct usbnet *dev)
+ 
+ static int smsc95xx_enter_suspend2(struct usbnet *dev)
+ {
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	u32 val;
+ 	int ret;
+ 
+@@ -1510,7 +1505,7 @@ static int smsc95xx_enter_suspend2(struct usbnet *dev)
+ 
+ static int smsc95xx_enter_suspend3(struct usbnet *dev)
+ {
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	u32 val;
+ 	int ret;
+ 
+@@ -1549,7 +1544,7 @@ static int smsc95xx_enter_suspend3(struct usbnet *dev)
+ 
+ static int smsc95xx_autosuspend(struct usbnet *dev, u32 link_up)
+ {
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	int ret;
+ 
+ 	if (!netif_running(dev->net)) {
+@@ -1597,7 +1592,7 @@ static int smsc95xx_autosuspend(struct usbnet *dev, u32 link_up)
+ static int smsc95xx_suspend(struct usb_interface *intf, pm_message_t message)
+ {
+ 	struct usbnet *dev = usb_get_intfdata(intf);
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 	u32 val, link_up;
+ 	int ret;
+ 
+@@ -1868,7 +1863,7 @@ static int smsc95xx_resume(struct usb_interface *intf)
+ 	u32 val;
+ 
+ 	BUG_ON(!dev);
+-	pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	pdata = dev->driver_priv;
+ 	suspend_flags = pdata->suspend_flags;
+ 
+ 	netdev_dbg(dev->net, "resume suspend_flags=0x%02x\n", suspend_flags);
+@@ -2079,7 +2074,7 @@ static struct sk_buff *smsc95xx_tx_fixup(struct usbnet *dev,
+ 
+ static int smsc95xx_manage_power(struct usbnet *dev, int on)
+ {
+-	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
++	struct smsc95xx_priv *pdata = dev->driver_priv;
+ 
+ 	dev->intf->needs_remote_wakeup = on;
+ 
+-- 
+2.43.0
+
 
 
 
