@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-51611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC599070B6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:30:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FDC9906EFC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 606B81F2146D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:30:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A93022827CA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC7C14265E;
-	Thu, 13 Jun 2024 12:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5010145335;
+	Thu, 13 Jun 2024 12:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S713vpwa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnPTVMtH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4AE13D630;
-	Thu, 13 Jun 2024 12:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7277B8614D;
+	Thu, 13 Jun 2024 12:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281804; cv=none; b=IKIdz4QuzMbwTMYsTu2tXXDSHrNvUYfGljh1baqDKx/6Rir4Z4gnvqoLZgzTgSdbmwFy5ybEwUAYqwclfH9pRI3p/zNlxwWBPA5pFO/LgoqclFch2OJsXfZcO0hm/v6nGBNK8xhUDdN3KwD95YcDvBfRxQ3+6AmLlqEeq7MMI6A=
+	t=1718280744; cv=none; b=Z3SIHi2SPXKRn++DBt4ZKtTjI/z6GejtB2EJDNNq1fHXOPOxYafpWM9ZOEr5STTa/gK0sBqBG6MPYR8yfqB6e/YJGdTbd5O5rkjXo82GGMpULwzNccxbY0Sj9UuuenZCQOl6fXnt7MLs5z52UfKGG0dpqgDaGuCgksB5f4r3YHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281804; c=relaxed/simple;
-	bh=JkVMpduFssHxq8WP0yNFOraYvwGpVJZyKDuwOOgkGA4=;
+	s=arc-20240116; t=1718280744; c=relaxed/simple;
+	bh=EvNhlQdlWuLsswg9nVgfVtrFcBW339jsqyf0mnswt94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E1S5zq7a26YLOAPql3vkilIUmn3Yt3bVznZ7kZJ/mDtWEjU5cJ+Ks9qIXxbD52Ztferp+r6W8UQvLVV3fEp2/eW2ZtQ35PqDUYmoXyiNV7A+YfpTnlsi1SLLLPVXhOpUy44vm8B3EC1WrTpUv0kXuQeJvf6TmBaj5U0IyuYFutU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S713vpwa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6936C2BBFC;
-	Thu, 13 Jun 2024 12:30:03 +0000 (UTC)
+	 MIME-Version; b=aA1WBWzy757CYwtMRBWugW8q0sSFVLKOn+W/d7eAQASbPN8UzhSKZmx+RVC3Hr14VCPzSjlJ1JLWzCq+OoG7FW8HZJdg1k4FWLhUZEltHT1W2Z2RwWldQZS8saQ4435bTklo1xrpKLPZ/POpiuncuYJIU9K3BsMzuak42Xvh4C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnPTVMtH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDEDC2BBFC;
+	Thu, 13 Jun 2024 12:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281804;
-	bh=JkVMpduFssHxq8WP0yNFOraYvwGpVJZyKDuwOOgkGA4=;
+	s=korg; t=1718280744;
+	bh=EvNhlQdlWuLsswg9nVgfVtrFcBW339jsqyf0mnswt94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S713vpwaLHAk7uG/gJI2aXExKBKt2fkAY7X93NBm2h6kTgUJb3PL8Kz+XC6Tr++Pd
-	 6mjP8KhwZZCc/CMUhyXgJCCAr6kh+SZSmF8iZTWSSRgHmfsD9rRkkJMIRbD3rAJQXq
-	 PYCyn4J8vHlMwWKtIqMD1O9xdK4plXGIRdB9LRXU=
+	b=WnPTVMtHFWxcSihBwpvhBiy/OeDE8ch4TCdSvNJFjIWo3yyrHG5Jy5lppzj6tAiQI
+	 vt8gU8Oharg3hRgwGu4ouuEUE5dN/agIvzk8Cjn45rBviR5H/e09HSrawWhOoE+thh
+	 iZ/LLJKf0B20on0JwKtF7XVIKYWXUjCD7IvIw3RE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Can Guo <quic_cang@quicinc.com>,
-	Andrew Halaney <ahalaney@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 062/402] scsi: ufs: qcom: Perform read back after writing CGC enable
-Date: Thu, 13 Jun 2024 13:30:19 +0200
-Message-ID: <20240613113304.554807495@linuxfoundation.org>
+	j51569436@gmail.com,
+	Daniel Starke <daniel.starke@siemens.com>
+Subject: [PATCH 5.10 002/317] tty: n_gsm: fix possible out-of-bounds in gsm0_receive()
+Date: Thu, 13 Jun 2024 13:30:20 +0200
+Message-ID: <20240613113247.624299168@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Halaney <ahalaney@redhat.com>
+From: Daniel Starke <daniel.starke@siemens.com>
 
-[ Upstream commit d9488511b3ac7eb48a91bc5eded7027525525e03 ]
+commit 47388e807f85948eefc403a8a5fdc5b406a65d5a upstream.
 
-Currently, the CGC enable bit is written and then an mb() is used to ensure
-that completes before continuing.
+Assuming the following:
+- side A configures the n_gsm in basic option mode
+- side B sends the header of a basic option mode frame with data length 1
+- side A switches to advanced option mode
+- side B sends 2 data bytes which exceeds gsm->len
+  Reason: gsm->len is not used in advanced option mode.
+- side A switches to basic option mode
+- side B keeps sending until gsm0_receive() writes past gsm->buf
+  Reason: Neither gsm->state nor gsm->len have been reset after
+  reconfiguration.
 
-mb() ensures that the write completes, but completion doesn't mean that it
-isn't stored in a buffer somewhere. The recommendation for ensuring this
-bit has taken effect on the device is to perform a read back to force it to
-make it all the way to the device. This is documented in device-io.rst and
-a talk by Will Deacon on this can be seen over here:
+Fix this by changing gsm->count to gsm->len comparison from equal to less
+than. Also add upper limit checks against the constant MAX_MRU in
+gsm0_receive() and gsm1_receive() to harden against memory corruption of
+gsm->len and gsm->mru.
 
-    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
+All other checks remain as we still need to limit the data according to the
+user configuration and actual payload size.
 
-Let's do that to ensure the bit hits the device. Because the mb()'s purpose
-wasn't to add extra ordering (on top of the ordering guaranteed by
-writel()/readl()), it can safely be removed.
-
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Can Guo <quic_cang@quicinc.com>
-Fixes: 81c0fc51b7a7 ("ufs-qcom: add support for Qualcomm Technologies Inc platforms")
-Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-5-181252004586@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: j51569436@gmail.com
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218708
+Tested-by: j51569436@gmail.com
+Fixes: e1eaea46bb40 ("tty: n_gsm line discipline")
+Cc: stable@vger.kernel.org
+Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
+Link: https://lore.kernel.org/r/20240424054842.7741-1-daniel.starke@siemens.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/ufs/ufs-qcom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/n_gsm.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/ufs/ufs-qcom.c b/drivers/scsi/ufs/ufs-qcom.c
-index ce45f3e8a35c3..361df2a2db5bf 100644
---- a/drivers/scsi/ufs/ufs-qcom.c
-+++ b/drivers/scsi/ufs/ufs-qcom.c
-@@ -353,7 +353,7 @@ static void ufs_qcom_enable_hw_clk_gating(struct ufs_hba *hba)
- 		REG_UFS_CFG2);
- 
- 	/* Ensure that HW clock gating is enabled before next operations */
--	mb();
-+	ufshcd_readl(hba, REG_UFS_CFG2);
- }
- 
- static int ufs_qcom_hce_enable_notify(struct ufs_hba *hba,
--- 
-2.43.0
-
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -2082,8 +2082,12 @@ static void gsm0_receive(struct gsm_mux
+ 		break;
+ 	case GSM_DATA:		/* Data */
+ 		gsm->buf[gsm->count++] = c;
+-		if (gsm->count == gsm->len)
++		if (gsm->count >= MAX_MRU) {
++			gsm->bad_size++;
++			gsm->state = GSM_SEARCH;
++		} else if (gsm->count >= gsm->len) {
+ 			gsm->state = GSM_FCS;
++		}
+ 		break;
+ 	case GSM_FCS:		/* FCS follows the packet */
+ 		gsm->received_fcs = c;
+@@ -2176,7 +2180,7 @@ static void gsm1_receive(struct gsm_mux
+ 		gsm->state = GSM_DATA;
+ 		break;
+ 	case GSM_DATA:		/* Data */
+-		if (gsm->count > gsm->mru) {	/* Allow one for the FCS */
++		if (gsm->count > gsm->mru || gsm->count > MAX_MRU) {	/* Allow one for the FCS */
+ 			gsm->state = GSM_OVERRUN;
+ 			gsm->bad_size++;
+ 		} else
 
 
 
