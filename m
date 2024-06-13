@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-52042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 397319072CB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:51:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C6490725D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:47:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4B671F215EE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:51:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5711B281795
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB2720ED;
-	Thu, 13 Jun 2024 12:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9911513E3F9;
+	Thu, 13 Jun 2024 12:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hl+S3g2u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhwwbEWy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9472F55;
-	Thu, 13 Jun 2024 12:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B7817FD;
+	Thu, 13 Jun 2024 12:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718283063; cv=none; b=fGJFK0SXc7tn9LQy/TGAb2wMuaJgHS30LC2V08nr+DY79hS8Rx0oh64vn3I1OShKIZukeTmoRX5epqU3nMGgunRQNblGfcfFxs6sztNOHM3Y8f25XFzVyUf75k5wlQehYBD+DHcJXxchTa9mZ4f9KdbubV4crkT1GTnTUH089Fg=
+	t=1718282793; cv=none; b=uHITCCoZysgVXbXutU4cirNMUSBm+5ywIKFgr4evazgRv92ngAXWmUGDVC+R1d74T9V/HzvwUDvntej+ecWOT5EdgNmbiFNiCazLvbNNSMGSZVPrY+PzRH/eQjy0c3KojBk8Piq+cve2esFCKxCYikKEF7MHxWN3cGjVfCLQCo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718283063; c=relaxed/simple;
-	bh=N21xf0syEnIPT3IpCUwiUpjGtqn45xN5O+ueHhoVWD4=;
+	s=arc-20240116; t=1718282793; c=relaxed/simple;
+	bh=Kl1ka0btppb6JppJVQRVw6zGbPKGyFj3HfrLgQcalzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TZuX+ssJSWYiU3Jy4+g9aM9XYsXJyls49Q0FzHHU6XsxCjckzlY1HnRn4X4m9WkwcbfuAw7OWNZjlK2gmuUImDVWKG1yoqWnRGSrzf0TW2ipx8yGQw8SjOsbnlrSKfBROvBLL4RlUD5j+hRvCY6G6QYP31pIqRnTrV+jRXmGbcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hl+S3g2u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DBA3C2BBFC;
-	Thu, 13 Jun 2024 12:51:03 +0000 (UTC)
+	 MIME-Version; b=ZAuTXrRM5NN2laf8U9K7fDItyzahSfrcPs0iXJuh8Rmd3v7GGAGYFMVvSHnWmifp5XBLCrUOl6Pj3q2cpor6d/rEUdcxKTjdZcY5DBdTzFOrhIvlPnOXoDyidVODcjBeIKWMx0ssPiStuoiTijrZ96P92CU8a94agVzN1dyZeTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhwwbEWy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90F7C2BBFC;
+	Thu, 13 Jun 2024 12:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718283063;
-	bh=N21xf0syEnIPT3IpCUwiUpjGtqn45xN5O+ueHhoVWD4=;
+	s=korg; t=1718282793;
+	bh=Kl1ka0btppb6JppJVQRVw6zGbPKGyFj3HfrLgQcalzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hl+S3g2ucenJTklzDDeWGBq4k2/SaUWURI5GtrQsXaUI7l+c2s8Wu++FQEYBUpgyy
-	 W5FvSCPvn9EyZ1wmzDL2Kl0UTsNQei1cntrPjSOss2gSDeUlUPNeVkZu+nydqINwcm
-	 9s/g94ydo7slgbYPUNhpJ8xYhFztIp3Dt7FqfVzY=
+	b=uhwwbEWyirP2altuluypFzNvJ1XZBtCdl2N/DkxzUfjVmtQkz77eOZK5k4fcWvQsi
+	 BNEs0rLY3JpNbOnuBRS2zsC73d1w+tACMNDoeQnpyTzMkghem3Cp9pn6mAwwKEnvaU
+	 wSIQtriPZ1bQFmnpN3/olUBq/lpkZSIsMIsOS9IQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fan Yu <fan.yu9@zte.com.cn>,
-	xu xin <xu.xin16@zte.com.cn>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 56/85] net/ipv6: Fix route deleting failure when metric equals 0
-Date: Thu, 13 Jun 2024 13:35:54 +0200
-Message-ID: <20240613113216.301222478@linuxfoundation.org>
+	Frank Li <Frank.Li@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 5.15 398/402] i3c: master: svc: fix invalidate IBI type and miss call client IBI handler
+Date: Thu, 13 Jun 2024 13:35:55 +0200
+Message-ID: <20240613113317.678010263@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xu xin <xu.xin16@zte.com.cn>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit bb487272380d120295e955ad8acfcbb281b57642 upstream.
+commit 38baed9b8600008e5d7bc8cb9ceccc1af3dd54b7 upstream.
 
-Problem
-=========
-After commit 67f695134703 ("ipv6: Move setting default metric for routes"),
-we noticed that the logic of assigning the default value of fc_metirc
-changed in the ioctl process. That is, when users use ioctl(fd, SIOCADDRT,
-rt) with a non-zero metric to add a route,  then they may fail to delete a
-route with passing in a metric value of 0 to the kernel by ioctl(fd,
-SIOCDELRT, rt). But iproute can succeed in deleting it.
+In an In-Band Interrupt (IBI) handle, the code logic is as follows:
 
-As a reference, when using iproute tools by netlink to delete routes with
-a metric parameter equals 0, like the command as follows:
+1: writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI | SVC_I3C_MCTRL_IBIRESP_AUTO,
+	  master->regs + SVC_I3C_MCTRL);
 
-	ip -6 route del fe80::/64 via fe81::5054:ff:fe11:3451 dev eth0 metric 0
+2: ret = readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
+                                    SVC_I3C_MSTATUS_IBIWON(val), 0, 1000);
+	...
+3: ibitype = SVC_I3C_MSTATUS_IBITYPE(status);
+   ibiaddr = SVC_I3C_MSTATUS_IBIADDR(status);
 
-the user can still succeed in deleting the route entry with the smallest
-metric.
+SVC_I3C_MSTATUS_IBIWON may be set before step 1. Thus, step 2 will return
+immediately, and the I3C controller has not sent out the 9th SCL yet.
+Consequently, ibitype and ibiaddr are 0, resulting in an unknown IBI type
+occurrence and missing call I3C client driver's IBI handler.
 
-Root Reason
-===========
-After commit 67f695134703 ("ipv6: Move setting default metric for routes"),
-When ioctl() pass in SIOCDELRT with a zero metric, rtmsg_to_fib6_config()
-will set a defalut value (1024) to cfg->fc_metric in kernel, and in
-ip6_route_del() and the line 4074 at net/ipv3/route.c, it will check by
+A typical case is that SVC_I3C_MSTATUS_IBIWON is set when an IBI occurs
+during the controller send start frame in svc_i3c_master_xfer().
 
-	if (cfg->fc_metric && cfg->fc_metric != rt->fib6_metric)
-		continue;
+Clear SVC_I3C_MSTATUS_IBIWON before issue SVC_I3C_MCTRL_REQUEST_AUTO_IBI
+to fix this issue.
 
-and the condition is true and skip the later procedure (deleting route)
-because cfg->fc_metric != rt->fib6_metric. But before that commit,
-cfg->fc_metric is still zero there, so the condition is false and it
-will do the following procedure (deleting).
-
-Solution
-========
-In order to keep a consistent behaviour across netlink() and ioctl(), we
-should allow to delete a route with a metric value of 0. So we only do
-the default setting of fc_metric in route adding.
-
-CC: stable@vger.kernel.org # 5.4+
-Fixes: 67f695134703 ("ipv6: Move setting default metric for routes")
-Co-developed-by: Fan Yu <fan.yu9@zte.com.cn>
-Signed-off-by: Fan Yu <fan.yu9@zte.com.cn>
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240514201102055dD2Ba45qKbLlUMxu_DTHP@zte.com.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 5e5e3c92e748 ("i3c: master: svc: fix wrong data return when IBI happen during start frame")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20240506164009.21375-3-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/i3c/master/svc-i3c-master.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -4435,7 +4435,7 @@ static void rtmsg_to_fib6_config(struct
- 		.fc_table = l3mdev_fib_table_by_index(net, rtmsg->rtmsg_ifindex) ?
- 			 : RT6_TABLE_MAIN,
- 		.fc_ifindex = rtmsg->rtmsg_ifindex,
--		.fc_metric = rtmsg->rtmsg_metric ? : IP6_RT_PRIO_USER,
-+		.fc_metric = rtmsg->rtmsg_metric,
- 		.fc_expires = rtmsg->rtmsg_info,
- 		.fc_dst_len = rtmsg->rtmsg_dst_len,
- 		.fc_src_len = rtmsg->rtmsg_src_len,
-@@ -4465,6 +4465,9 @@ int ipv6_route_ioctl(struct net *net, un
- 	rtnl_lock();
- 	switch (cmd) {
- 	case SIOCADDRT:
-+		/* Only do the default setting of fc_metric in route adding */
-+		if (cfg.fc_metric == 0)
-+			cfg.fc_metric = IP6_RT_PRIO_USER;
- 		err = ip6_route_add(&cfg, GFP_KERNEL, NULL);
- 		break;
- 	case SIOCDELRT:
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -356,6 +356,19 @@ static void svc_i3c_master_ibi_work(stru
+ 	int ret;
+ 
+ 	mutex_lock(&master->lock);
++	/*
++	 * IBIWON may be set before SVC_I3C_MCTRL_REQUEST_AUTO_IBI, causing
++	 * readl_relaxed_poll_timeout() to return immediately. Consequently,
++	 * ibitype will be 0 since it was last updated only after the 8th SCL
++	 * cycle, leading to missed client IBI handlers.
++	 *
++	 * A typical scenario is when IBIWON occurs and bus arbitration is lost
++	 * at svc_i3c_master_priv_xfers().
++	 *
++	 * Clear SVC_I3C_MINT_IBIWON before sending SVC_I3C_MCTRL_REQUEST_AUTO_IBI.
++	 */
++	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
++
+ 	/* Acknowledge the incoming interrupt with the AUTOIBI mechanism */
+ 	writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI |
+ 	       SVC_I3C_MCTRL_IBIRESP_AUTO,
+@@ -370,9 +383,6 @@ static void svc_i3c_master_ibi_work(stru
+ 		goto reenable_ibis;
+ 	}
+ 
+-	/* Clear the interrupt status */
+-	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
+-
+ 	status = readl(master->regs + SVC_I3C_MSTATUS);
+ 	ibitype = SVC_I3C_MSTATUS_IBITYPE(status);
+ 	ibiaddr = SVC_I3C_MSTATUS_IBIADDR(status);
 
 
 
