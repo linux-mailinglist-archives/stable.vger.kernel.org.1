@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C846906DF5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE36906FE2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 143651F212C7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF4941C22DC4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A7A147C96;
-	Thu, 13 Jun 2024 12:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F0213D601;
+	Thu, 13 Jun 2024 12:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/4a4LZM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFkUMH2r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7480D147C8B;
-	Thu, 13 Jun 2024 12:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960C813C660;
+	Thu, 13 Jun 2024 12:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280071; cv=none; b=Ex2M56UFZkHF4kEbV3wqq/3PPBj8po4RhvzSJC9Yn0moBUCtMjEshV8pTlzgGvs5cuKTcVYYxJg2whZhDuFTMs5Jw2+te/iH9LHcK5bn8kLyQ892wkL8qOimPwnxEtVEhfyZL/Pgtczp1M1s/p7e/Zd7yv5iRhPmwqMKX2WbXCk=
+	t=1718281313; cv=none; b=ElPWqYd0xtJck6OLbQcZ7PRQabjdXs9jTQVZ0F9tNKbweW1cfd+nfe+85L9nZYcpY0FCcsgk6hdi2VYsjcU79XwG/d8L54fkwnolXAWmCekpV6V0dxGIL/KCbnMZaUFYoNR6KwXO5SaskvaQqnvzbeHStUNZpZGAKvENWq2IW3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280071; c=relaxed/simple;
-	bh=Gk4W+LwGo1ju84k4dGjmZ1oise48bYYEDTAfOVyTPJA=;
+	s=arc-20240116; t=1718281313; c=relaxed/simple;
+	bh=0dg3FNVyKuI/50lvtbqxvt1qbqqEzkwo9a8RSUrL4Sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ladJrJCLAOYAiKJEChShQqcW1VaoeckbwkcQS7M71fDjVGWiCLBZcmll01cE3HUiVAKMuDw+ckiaJE+1go8Bdp6Ra2njq9kJh3Y1gGtDHtGS9nCdw0K2FtDYcNOhdWK4HlT/pEc4HqDVotYXyTpOwhZ0y6bbDDQaOqNOyikvggA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/4a4LZM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D0EC2BBFC;
-	Thu, 13 Jun 2024 12:01:10 +0000 (UTC)
+	 MIME-Version; b=lxIqeMiUdYkz3KGV8oNoNU1990F0E2sDJw/WW49FDvIGj/K0+hTALcfICgaarhEkHo45IIYvIacVvhVwmGbIc+u8KWOlYdK1bCoWuzLExL+jM8BKrXmvxutKIBw9LGr4jFXk0shi1j9LPhtfMPEQSTPdLy257Nyb+PsBu0PjQOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFkUMH2r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD69FC2BBFC;
+	Thu, 13 Jun 2024 12:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280071;
-	bh=Gk4W+LwGo1ju84k4dGjmZ1oise48bYYEDTAfOVyTPJA=;
+	s=korg; t=1718281313;
+	bh=0dg3FNVyKuI/50lvtbqxvt1qbqqEzkwo9a8RSUrL4Sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/4a4LZM9tzh8PyQmJdquC1ewMHHKkeDKW2kXoNO3xuLRAXIZiHLyM+hMffncHIZA
-	 MpUdBeNCVXk60C107rxyew/yFsAnpBLKu/Y94eMM0BXXx3kA3fq7SR6Dwzj/Z7xfhY
-	 cZvAYr5+7Lnip/wvFhm0TRzHdr9H/+YzWiJwXra8=
+	b=xFkUMH2r0PiGW8ls0jcSltz7ECyq5NAnkXC2yD+omN0OQelYjCzVxr5JHpN2pKR2x
+	 YZ+4m0bHPYOKultv0UP5RSgYYYRsWOEGzFVcH8h0IJDfOM8AqXZtzMMolQP0dqMpKp
+	 ee6XmazaC6Qfwit+HuRTDNLe+8IgTXPbFoJEoajw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	"Yang, Chenyuan" <cy54@illinois.edu>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
-Subject: [PATCH 5.4 133/202] media: cec: cec-adap: always cancel work in cec_transmit_msg_fh
+	patches@lists.linux.dev,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Richard Weinberger <richard@nod.at>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 213/317] um: Fix the -Wmissing-prototypes warning for __switch_mm
 Date: Thu, 13 Jun 2024 13:33:51 +0200
-Message-ID: <20240613113232.894526485@linuxfoundation.org>
+Message-ID: <20240613113255.795041662@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 9fe2816816a3c765dff3b88af5b5c3d9bbb911ce ]
+[ Upstream commit 2cbade17b18c0f0fd9963f26c9fc9b057eb1cb3a ]
 
-Do not check for !data->completed, just always call
-cancel_delayed_work_sync(). This fixes a small race condition.
+The __switch_mm function is defined in the user code, and is called
+by the kernel code. It should be declared in a shared header.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Yang, Chenyuan <cy54@illinois.edu>
-Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
-Fixes: 490d84f6d73c ("media: cec: forgot to cancel delayed work")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 4dc706c2f292 ("um: take um_mmu.h to asm/mmu.h, clean asm/mmu_context.h a bit")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/cec-adap.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/um/include/asm/mmu.h           | 2 --
+ arch/um/include/shared/skas/mm_id.h | 2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/cec/cec-adap.c b/drivers/media/cec/cec-adap.c
-index 4c1770b8128cb..94ddaca496c94 100644
---- a/drivers/media/cec/cec-adap.c
-+++ b/drivers/media/cec/cec-adap.c
-@@ -908,8 +908,7 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
- 	 */
- 	mutex_unlock(&adap->lock);
- 	wait_for_completion_killable(&data->c);
--	if (!data->completed)
--		cancel_delayed_work_sync(&data->work);
-+	cancel_delayed_work_sync(&data->work);
- 	mutex_lock(&adap->lock);
+diff --git a/arch/um/include/asm/mmu.h b/arch/um/include/asm/mmu.h
+index 5b072aba5b658..a7cb380c0b5c0 100644
+--- a/arch/um/include/asm/mmu.h
++++ b/arch/um/include/asm/mmu.h
+@@ -15,8 +15,6 @@ typedef struct mm_context {
+ 	struct page *stub_pages[2];
+ } mm_context_t;
  
- 	/* Cancel the transmit if it was interrupted */
+-extern void __switch_mm(struct mm_id * mm_idp);
+-
+ /* Avoid tangled inclusion with asm/ldt.h */
+ extern long init_new_ldt(struct mm_context *to_mm, struct mm_context *from_mm);
+ extern void free_ldt(struct mm_context *mm);
+diff --git a/arch/um/include/shared/skas/mm_id.h b/arch/um/include/shared/skas/mm_id.h
+index e82e203f5f419..92dbf727e3842 100644
+--- a/arch/um/include/shared/skas/mm_id.h
++++ b/arch/um/include/shared/skas/mm_id.h
+@@ -15,4 +15,6 @@ struct mm_id {
+ 	int kill;
+ };
+ 
++void __switch_mm(struct mm_id *mm_idp);
++
+ #endif
 -- 
 2.43.0
 
