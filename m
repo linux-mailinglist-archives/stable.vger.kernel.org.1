@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D28B9071CF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:41:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58873906E7E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DF5A283B32
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:41:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E87A9B25A59
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F570144D12;
-	Thu, 13 Jun 2024 12:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D435143C62;
+	Thu, 13 Jun 2024 12:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxCi+jEn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/AgHD4Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF81144D0B;
-	Thu, 13 Jun 2024 12:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE37D143739;
+	Thu, 13 Jun 2024 12:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282422; cv=none; b=QwaQcpfJ4+N2nIJsJUfRGZY+GwdWIAelw1z2iN9SOmU/J7aRf8z2CNWK7Dd/fsBoXR0eHrF9LTinFbpqiPEdDXyjBw54Z6RroRp3dm1CXzi/dAou1AWsIjAN9ZuT6MFpLtSbxlQNkskargizn7XqQUivqVXUxEv8BCHPAb51G7g=
+	t=1718280420; cv=none; b=FQ/TGOdRqnn73RriIFA8LHg42gc3BGYbKC2qPmD8dwUSnDgq6nb3nuajfMB2NhWQ2bYSc4e/G3+SheotCR/klFssArWATNnoawHqpaLVyqGEL88EFpdGNUeW8wdRqYVkWeZeRVW2s4aaU2oIPT6LSvEsUqYX1JTtUEWOzANBihw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282422; c=relaxed/simple;
-	bh=5Hz8K5i/BuyGuDg5bYi3upiYk9AjOUMyfB3XuTojTKk=;
+	s=arc-20240116; t=1718280420; c=relaxed/simple;
+	bh=WN54EHga+QHkP7/GXt2NYO7vik889b/BeFR9ibliTzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rF0XuRiv3EnHyfnlEuLNc6u8QneEphNKWmdYeHAVxoqGCVHPgUnVMwqDrlyjFY/kwsTeDPl7puuACFscj8P4Hq0RFpJNFKj7AcRGFDGXfh7umETdlBAjUy6tOS45voMPHCvupouQhJvQVktjWAL2MvUMB3jCcqbt8ysHk08+GxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxCi+jEn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD31C2BBFC;
-	Thu, 13 Jun 2024 12:40:21 +0000 (UTC)
+	 MIME-Version; b=Pk0dNKkafN+b/w7sAFZxk9gPOZOU/XJe28Sw3RplFvl5qEGHa1vhLbgjUoEzvhQ3J0ogWGqeCEXYiPznOOCWd4V8Ux+YHa3OXuuvOzp7jnTE0C9ydYxaW6iLh72QOT+JA5+h0jmHnWTVEnLhNRWNced7OGb9V6h2QeIHb3GQtxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/AgHD4Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F23C2BBFC;
+	Thu, 13 Jun 2024 12:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282421;
-	bh=5Hz8K5i/BuyGuDg5bYi3upiYk9AjOUMyfB3XuTojTKk=;
+	s=korg; t=1718280420;
+	bh=WN54EHga+QHkP7/GXt2NYO7vik889b/BeFR9ibliTzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SxCi+jEnOoXgE72XmMJ4OEimoWcv/DLSDeIHQ488aIL1SaYHZ+/i3H78f2huXF3Jt
-	 nSyGFeiIzHcsCU55FrnvBH5nSQH23Jznv0P8xoFCYkl0N1XXfvh3nflckpgeSi2E6J
-	 jp3Ygg7+5KHDwVkvpY74Khmbrw46QqRKXGblTA68=
+	b=Y/AgHD4ZDX2MtF5IAhF64ynWxtGcTMGKPvKnKPaaYiVvAexNoQjhLL72uNjgQ7iqe
+	 hSLENOB51zxPB/fPdS/rFsfW0ej7whMzkJpyXdhl8i6ImuuLUPTwVs7NmSrMgkxkRk
+	 BlEbxfWENTRxYwiSWhGVjTeuZHxxtdP1UITPQb3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	"Yang, Chenyuan" <cy54@illinois.edu>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
-Subject: [PATCH 5.15 271/402] media: cec: cec-adap: always cancel work in cec_transmit_msg_fh
+	patches@lists.linux.dev,
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 048/137] mmc: core: Add mmc_gpiod_set_cd_config() function
 Date: Thu, 13 Jun 2024 13:33:48 +0200
-Message-ID: <20240613113312.724995296@linuxfoundation.org>
+Message-ID: <20240613113225.158046000@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 9fe2816816a3c765dff3b88af5b5c3d9bbb911ce ]
+commit 63a7cd660246aa36af263b85c33ecc6601bf04be upstream.
 
-Do not check for !data->completed, just always call
-cancel_delayed_work_sync(). This fixes a small race condition.
+Some mmc host drivers may need to fixup a card-detection GPIO's config
+to e.g. enable the GPIO controllers builtin pull-up resistor on devices
+where the firmware description of the GPIO is broken (e.g. GpioInt with
+PullNone instead of PullUp in ACPI DSDT).
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Yang, Chenyuan <cy54@illinois.edu>
-Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
-Fixes: 490d84f6d73c ("media: cec: forgot to cancel delayed work")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since this is the exception rather then the rule adding a config
+parameter to mmc_gpiod_request_cd() seems undesirable, so instead
+add a new mmc_gpiod_set_cd_config() function. This is simply a wrapper
+to call gpiod_set_config() on the card-detect GPIO acquired through
+mmc_gpiod_request_cd().
+
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240410191639.526324-2-hdegoede@redhat.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/cec/core/cec-adap.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/mmc/core/slot-gpio.c  |   20 ++++++++++++++++++++
+ include/linux/mmc/slot-gpio.h |    1 +
+ 2 files changed, 21 insertions(+)
 
-diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
-index 01ff1329e01c5..1b72063f242e0 100644
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -914,8 +914,7 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
- 	 */
- 	mutex_unlock(&adap->lock);
- 	wait_for_completion_killable(&data->c);
--	if (!data->completed)
--		cancel_delayed_work_sync(&data->work);
-+	cancel_delayed_work_sync(&data->work);
- 	mutex_lock(&adap->lock);
+--- a/drivers/mmc/core/slot-gpio.c
++++ b/drivers/mmc/core/slot-gpio.c
+@@ -221,6 +221,26 @@ int mmc_gpiod_request_cd(struct mmc_host
+ }
+ EXPORT_SYMBOL(mmc_gpiod_request_cd);
  
- 	/* Cancel the transmit if it was interrupted */
--- 
-2.43.0
-
++/**
++ * mmc_gpiod_set_cd_config - set config for card-detection GPIO
++ * @host: mmc host
++ * @config: Generic pinconf config (from pinconf_to_config_packed())
++ *
++ * This can be used by mmc host drivers to fixup a card-detection GPIO's config
++ * (e.g. set PIN_CONFIG_BIAS_PULL_UP) after acquiring the GPIO descriptor
++ * through mmc_gpiod_request_cd().
++ *
++ * Returns:
++ * 0 on success, or a negative errno value on error.
++ */
++int mmc_gpiod_set_cd_config(struct mmc_host *host, unsigned long config)
++{
++	struct mmc_gpio *ctx = host->slot.handler_priv;
++
++	return gpiod_set_config(ctx->cd_gpio, config);
++}
++EXPORT_SYMBOL(mmc_gpiod_set_cd_config);
++
+ bool mmc_can_gpio_cd(struct mmc_host *host)
+ {
+ 	struct mmc_gpio *ctx = host->slot.handler_priv;
+--- a/include/linux/mmc/slot-gpio.h
++++ b/include/linux/mmc/slot-gpio.h
+@@ -21,6 +21,7 @@ int mmc_gpiod_request_cd(struct mmc_host
+ 			 unsigned int debounce);
+ int mmc_gpiod_request_ro(struct mmc_host *host, const char *con_id,
+ 			 unsigned int idx, unsigned int debounce);
++int mmc_gpiod_set_cd_config(struct mmc_host *host, unsigned long config);
+ void mmc_gpio_set_cd_isr(struct mmc_host *host,
+ 			 irqreturn_t (*isr)(int irq, void *dev_id));
+ int mmc_gpio_set_cd_wake(struct mmc_host *host, bool on);
 
 
 
