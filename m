@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-51260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9256906F08
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C8239070B8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:30:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB10F1C233D8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 330871C22F3B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C6B145FF5;
-	Thu, 13 Jun 2024 12:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647BCA59;
+	Thu, 13 Jun 2024 12:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IgB+Q1Lk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PS/Egfep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FAD81448F2;
-	Thu, 13 Jun 2024 12:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F96387;
+	Thu, 13 Jun 2024 12:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280777; cv=none; b=r+kb9QbTAy6R04xSx8HyQ8BqHHrt7ho5kdeZhNXj6gekOidLkoiqTDbjmNK4JQqK+jbC6mTte8rKd9Gj33geQ7Y01f+VlGB+BKaYta5AYZdzNjbS+SAZzpkCfZC9rTA+1/jZTksQym0zU2jZiUxSZI0dsqL8MuGOpeCiFGam5OY=
+	t=1718281810; cv=none; b=BKeNP4HCWITz/jq5S2AoQUma2dxGkm41INox+wqhjHe74wkVSrcX2CiPc/UM7IoLty+U2/VogWEu5gDjZWfPTaZZsRjDksWqrEOvMVBsM2omczy6S5WdEcVliXl7lp6krEPYFfkIWrEX8tJ/vYRf+3PVVHSLiRnXsjAGbGMwFwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280777; c=relaxed/simple;
-	bh=pf1StAYmHByNs1wKmWL1xso8VXRz37i1O+CK6YsCskk=;
+	s=arc-20240116; t=1718281810; c=relaxed/simple;
+	bh=OHYeKGHF5DkyET55PLb7whaUjOQPPS8EGLFzc+w9wms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BnCCgcELOzOFndeDnbJLQ2tdTe9tt5XHU4iMToWVExRcU7Nfi/zD8WDAl3fahAeskr/fu0grMxYgch//nzNlsJiKPgQUliIvHQ9fV8JWd9/stS8418jrpZ27SQJcQhtnhuw9IWpXTHFcgBc+qO0W7Ixk3QvydtiTmUSny/fiENk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IgB+Q1Lk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771E2C2BBFC;
-	Thu, 13 Jun 2024 12:12:56 +0000 (UTC)
+	 MIME-Version; b=Qhtg4COi8D9BmYd2hETjTAzpgAfpAxHjjXL6D305NNopNEwA48P/kg3E8E75Wg7bAPSdW+bdoWIF24/um6RbcF5O+evxVnOCD98VVkgz6FlF6aCt9nSELXNovcnZXh0vSEKB3a1r5F9I5mR2Fur2CrT2XP0yfijo281ykDaSEWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PS/Egfep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0BCC2BBFC;
+	Thu, 13 Jun 2024 12:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280776;
-	bh=pf1StAYmHByNs1wKmWL1xso8VXRz37i1O+CK6YsCskk=;
+	s=korg; t=1718281810;
+	bh=OHYeKGHF5DkyET55PLb7whaUjOQPPS8EGLFzc+w9wms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IgB+Q1LkE2XqUO96YX580Ey4IbyOFVInUeqCwVyLGd0NjaShPCIQEFhXCUcwUFCFd
-	 3Ax/HCykBWjtHX+wxr+znr35so7z/0JKz6qxbgVHyqHe0sMRpIyM9TUY0jvriPJc/U
-	 ld7jYZQyR0zRrsuyJa9Hq+HoP2RlvSCDHi/B+wHA=
+	b=PS/Egfep9SLFAbgFyqaBLgm7P2Ii1Qa5NXG/qBbXV9iXLxdEhd/n6Oc1NkmFBx/AX
+	 oUlBIRTtsaLG+7QhJjzkcGS9W9YHB2dLs4i4Xl3CbJFO+Rph1bN0fa92LTsIrvfunL
+	 MzErlczlVCJcbnybczF26VK6Q20SUmNQEf+mX560=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Samuel Thibault <samuel.thibault@ens-lyon.org>
-Subject: [PATCH 5.10 003/317] speakup: Fix sizeof() vs ARRAY_SIZE() bug
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 064/402] scsi: ufs: core: Perform read back after disabling interrupts
 Date: Thu, 13 Jun 2024 13:30:21 +0200
-Message-ID: <20240613113247.662755557@linuxfoundation.org>
+Message-ID: <20240613113304.634127017@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-commit 008ab3c53bc4f0b2f20013c8f6c204a3203d0b8b upstream.
+[ Upstream commit e4a628877119bd40164a651d20321247b6f94a8b ]
 
-The "buf" pointer is an array of u16 values.  This code should be
-using ARRAY_SIZE() (which is 256) instead of sizeof() (which is 512),
-otherwise it can the still got out of bounds.
+Currently, interrupts are cleared and disabled prior to registering the
+interrupt. An mb() is used to complete the clear/disable writes before the
+interrupt is registered.
 
-Fixes: c8d2f34ea96e ("speakup: Avoid crash on very long word")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
-Link: https://lore.kernel.org/r/d16f67d2-fd0a-4d45-adac-75ddd11001aa@moroto.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring these
+bits have taken effect on the device is to perform a read back to force it
+to make it all the way to the device. This is documented in device-io.rst
+and a talk by Will Deacon on this can be seen over here:
+
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
+
+Let's do that to ensure these bits hit the device. Because the mb()'s
+purpose wasn't to add extra ordering (on top of the ordering guaranteed by
+writel()/readl()), it can safely be removed.
+
+Fixes: 199ef13cac7d ("scsi: ufs: avoid spurious UFS host controller interrupts")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-8-181252004586@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accessibility/speakup/main.c |    2 +-
+ drivers/scsi/ufs/ufshcd.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/accessibility/speakup/main.c
-+++ b/drivers/accessibility/speakup/main.c
-@@ -576,7 +576,7 @@ static u_long get_word(struct vc_data *v
- 	}
- 	attr_ch = get_char(vc, (u_short *)tmp_pos, &spk_attr);
- 	buf[cnt++] = attr_ch;
--	while (tmpx < vc->vc_cols - 1 && cnt < sizeof(buf) - 1) {
-+	while (tmpx < vc->vc_cols - 1 && cnt < ARRAY_SIZE(buf) - 1) {
- 		tmp_pos += 2;
- 		tmpx++;
- 		ch = get_char(vc, (u_short *)tmp_pos, &temp);
+diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c
+index 03b33c34f7024..1b8fdeb053529 100644
+--- a/drivers/scsi/ufs/ufshcd.c
++++ b/drivers/scsi/ufs/ufshcd.c
+@@ -9500,7 +9500,7 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
+ 	 * Make sure that UFS interrupts are disabled and any pending interrupt
+ 	 * status is cleared before registering UFS interrupt handler.
+ 	 */
+-	mb();
++	ufshcd_readl(hba, REG_INTERRUPT_ENABLE);
+ 
+ 	/* IRQ registration */
+ 	err = devm_request_irq(dev, irq, ufshcd_intr, IRQF_SHARED, UFSHCD, hba);
+-- 
+2.43.0
+
 
 
 
