@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE03B9071C8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA7D906DEF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9FCE1C238B2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBDB41F220D8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DEE981ABE;
-	Thu, 13 Jun 2024 12:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E41F1474C5;
+	Thu, 13 Jun 2024 12:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLKpxAae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LpvNkeWT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4681877;
-	Thu, 13 Jun 2024 12:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B43A1474B8;
+	Thu, 13 Jun 2024 12:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282416; cv=none; b=kKmVxye5pWDobUheRLKICvEE6nC016yVXbpbgRyerkyAUBi/82XaKbAQSa2wZhw8qLHrPwB7ypjPHOIni5A+o+jp3LfJNu60lNsYvqnFcoP0oZm+e23/JA6/KAgv/obpbsmVPPBifowq/BUT5N4P7UUHre7N580v+86BkWnqhqw=
+	t=1718280057; cv=none; b=A9XNNyj4TF2ujE9Vm97t9SklNKkyGOgNO9RdsPHcY6eThNVff3uaj+ezdx0g1LkS4x2q6cpuQWu+yXZCQ5ZlMLcIw8+Ur40t1Uf78rLLO22zk/9XI92HI6MLYp6PkxDWbLEeakj/CtvZsXRIB6Zu+daRedxxWiuuytNQfYBZ4SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282416; c=relaxed/simple;
-	bh=xlGJFFyiGOUtUVbJ4QKzvYpWZpbhvIcALPrlIcKv5LY=;
+	s=arc-20240116; t=1718280057; c=relaxed/simple;
+	bh=JTZ9cUSjDtFBhPDLJpTgRxAhXFuBEdQ9fbhogA9oLEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cMlM67uXCb2PmLT8LNy7xvDWy3LPhDEPJEzbNSJK3Ohwe1OexQu9PWAtzC/d8ZOiFyf2YrtXRoVf96lUxF9KpDebt/1afh+4RpXHYW6l8B29OXgqnj54gSQdLJBn9GvLDS25ZaztAcLRL/LI5whuBAr4RbEeV5+q4lyQ+8gsWbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLKpxAae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7C1C2BBFC;
-	Thu, 13 Jun 2024 12:40:15 +0000 (UTC)
+	 MIME-Version; b=fuK8+ItktsuH52ZViFJQrUYFAPD5KnB/jJS1RB8jevqN+Wf7788g0f0M75JiBTvQNoa+Qm2aVsBhh7mdIdTUNupN0YJewMR8k2KwTWL+xtHXHl2zQiDlpZ5+5swNJetwzzgEv2a1sCzTAHZSaYBW0K2YHeHtnHxVobPlW1jK7nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LpvNkeWT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6BAC2BBFC;
+	Thu, 13 Jun 2024 12:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282415;
-	bh=xlGJFFyiGOUtUVbJ4QKzvYpWZpbhvIcALPrlIcKv5LY=;
+	s=korg; t=1718280056;
+	bh=JTZ9cUSjDtFBhPDLJpTgRxAhXFuBEdQ9fbhogA9oLEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NLKpxAaeD7pmYGx0dKzu2JL7wRYQAh8lG2FfSnKofsLQufk6PchF0C0plABIAEVfK
-	 Zoy8avpBhyGtvXm3OUE1hkz31mHq0Zugro7KtwsEwS0TtyTBkcYaZb+LCTKoJfiLlb
-	 x4yoXAVwKtwb1Yq+HNcI+KAmToGLNvK2i+f3Wrt8=
+	b=LpvNkeWTi7iqc0BJuJN09WTBjjxs3lxheAZ26NIpYoHF7hUKGuZh0/1ndVk/mza48
+	 o9wn9fIa48pjhF9DdJiorczDlqVvoyGnmPDTtAxHa/lXM9369dNL6OQ1P1ZEcCt1Jw
+	 XOK6teEXp4odIgjQRs9yynaPu9qNNhr+3s335HzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 269/402] powerpc/pseries: Add failure related checks for h_get_mpp and h_get_ppp
+Subject: [PATCH 5.4 128/202] um: Add winch to winch_handlers before registering winch IRQ
 Date: Thu, 13 Jun 2024 13:33:46 +0200
-Message-ID: <20240613113312.646458290@linuxfoundation.org>
+Message-ID: <20240613113232.702137212@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit 6d4341638516bf97b9a34947e0bd95035a8230a5 ]
+[ Upstream commit a0fbbd36c156b9f7b2276871d499c9943dfe5101 ]
 
-Couple of Minor fixes:
+Registering a winch IRQ is racy, an interrupt may occur before the winch is
+added to the winch_handlers list.
 
-- hcall return values are long. Fix that for h_get_mpp, h_get_ppp and
-parse_ppp_data
+If that happens, register_winch_irq() adds to that list a winch that is
+scheduled to be (or has already been) freed, causing a panic later in
+winch_cleanup().
 
-- If hcall fails, values set should be at-least zero. It shouldn't be
-uninitialized values. Fix that for h_get_mpp and h_get_ppp
+Avoid the race by adding the winch to the winch_handlers list before
+registering the IRQ, and rolling back if um_request_irq() fails.
 
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240412092047.455483-3-sshegde@linux.ibm.com
+Fixes: 42a359e31a0e ("uml: SIGIO support cleanup")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/hvcall.h        | 2 +-
- arch/powerpc/platforms/pseries/lpar.c    | 6 +++---
- arch/powerpc/platforms/pseries/lparcfg.c | 6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ arch/um/drivers/line.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index 9bcf345cb208b..c25f160bb9978 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -513,7 +513,7 @@ struct hvcall_mpp_data {
- 	unsigned long backing_mem;
- };
+diff --git a/arch/um/drivers/line.c b/arch/um/drivers/line.c
+index 4f2a4ac8a82bb..d6a78c3548a55 100644
+--- a/arch/um/drivers/line.c
++++ b/arch/um/drivers/line.c
+@@ -673,24 +673,26 @@ void register_winch_irq(int fd, int tty_fd, int pid, struct tty_port *port,
+ 		goto cleanup;
+ 	}
  
--int h_get_mpp(struct hvcall_mpp_data *);
-+long h_get_mpp(struct hvcall_mpp_data *mpp_data);
+-	*winch = ((struct winch) { .list  	= LIST_HEAD_INIT(winch->list),
+-				   .fd  	= fd,
++	*winch = ((struct winch) { .fd  	= fd,
+ 				   .tty_fd 	= tty_fd,
+ 				   .pid  	= pid,
+ 				   .port 	= port,
+ 				   .stack	= stack });
  
- struct hvcall_mpp_x_data {
- 	unsigned long coalesced_bytes;
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 6c196b9413553..c2fff9a339285 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -1886,10 +1886,10 @@ notrace void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
-  * h_get_mpp
-  * H_GET_MPP hcall returns info in 7 parms
-  */
--int h_get_mpp(struct hvcall_mpp_data *mpp_data)
-+long h_get_mpp(struct hvcall_mpp_data *mpp_data)
- {
--	int rc;
--	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
-+	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
-+	long rc;
++	spin_lock(&winch_handler_lock);
++	list_add(&winch->list, &winch_handlers);
++	spin_unlock(&winch_handler_lock);
++
+ 	if (um_request_irq(WINCH_IRQ, fd, IRQ_READ, winch_interrupt,
+ 			   IRQF_SHARED, "winch", winch) < 0) {
+ 		printk(KERN_ERR "register_winch_irq - failed to register "
+ 		       "IRQ\n");
++		spin_lock(&winch_handler_lock);
++		list_del(&winch->list);
++		spin_unlock(&winch_handler_lock);
+ 		goto out_free;
+ 	}
  
- 	rc = plpar_hcall9(H_GET_MPP, retbuf);
+-	spin_lock(&winch_handler_lock);
+-	list_add(&winch->list, &winch_handlers);
+-	spin_unlock(&winch_handler_lock);
+-
+ 	return;
  
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index a291b5a94d4da..fea4dfa54e3c2 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -112,8 +112,8 @@ struct hvcall_ppp_data {
-  */
- static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
- {
--	unsigned long rc;
--	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
-+	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
-+	long rc;
- 
- 	rc = plpar_hcall9(H_GET_PPP, retbuf);
- 
-@@ -192,7 +192,7 @@ static void parse_ppp_data(struct seq_file *m)
- 	struct hvcall_ppp_data ppp_data;
- 	struct device_node *root;
- 	const __be32 *perf_level;
--	int rc;
-+	long rc;
- 
- 	rc = h_get_ppp(&ppp_data);
- 	if (rc)
+  out_free:
 -- 
 2.43.0
 
