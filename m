@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-50799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59BD1906CC0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:53:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF99906BDE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D32E1F214D5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:53:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 135D41C212A2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6045142E9D;
-	Thu, 13 Jun 2024 11:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82DF143C51;
+	Thu, 13 Jun 2024 11:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oxr+V1zC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IkiQ050T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DA513541B;
-	Thu, 13 Jun 2024 11:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70221448EB;
+	Thu, 13 Jun 2024 11:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279419; cv=none; b=VLVP17CCS+i9htOY4eJB5LFTtQldmZNXa4VkREQJI+ZZp1ZpEKAaiOb9o5jf2RtYmnq6HEWdc9EWplBOazgyAfqnMjWBe6HN5pruM5Bi4UztQlrVfr9L8weVOkhAbu8Y2I5CZZEoi/OpK1syCOqsSZiJkDNYIZnb+oIPvOXlnHs=
+	t=1718279067; cv=none; b=G2/2ilIrQCJw4EYTtoRAgczuzMyR2Y3bUhUIKTZaZfxEMGBUhi4JJJF70YVs+qtcIGv4wwI/khVRMoFlY1BGr+t45u0a47Id6e8cC02LcXzk108JWmKfEkasjmKFAJmPVxX1w5k3JcefYqbG4unIee81ra14L02WQxEzFYcqP+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279419; c=relaxed/simple;
-	bh=b+bkL+Zc4yk7U3i3stLYAxdAb8xl2nee9+tGPFjEMbA=;
+	s=arc-20240116; t=1718279067; c=relaxed/simple;
+	bh=tcsj1cmlURostA04I+6AQUpy1JVfxr5QC/OYy9w+Prc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RgT30TvR5/QpHhQkrPr3mRgt7wqq9nID9gE6Qt1RY+pukTJhMC+HP3JY2K+6HnAYbTO+KNhEGb/cT8kWVSmP/N44n4nXspXTMjWiwSvl3bRPxW2Wezv+bL6Do+XKLPQ+h1kHEhClTcBSabjmrwuDtme7nEhrT1PU6MQJnYSpJOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oxr+V1zC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257BFC2BBFC;
-	Thu, 13 Jun 2024 11:50:18 +0000 (UTC)
+	 MIME-Version; b=jIf0z3UUv236R3w6nJsfGTyCoc+qH5q1XwCi5a06aZlkvXGSSXv1q29cnJKpmQb+eOQTQyvgLmtjwuBx8YKwBWiRwSNLQLGwCTj6iCLsUSMqCwpPJXgih8/Bmy5ZqTU9P7M91zHCijnuK32l/20SrPtjfNs+cCbPVcy5c8WpR6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IkiQ050T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFFFC4AF1C;
+	Thu, 13 Jun 2024 11:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279419;
-	bh=b+bkL+Zc4yk7U3i3stLYAxdAb8xl2nee9+tGPFjEMbA=;
+	s=korg; t=1718279067;
+	bh=tcsj1cmlURostA04I+6AQUpy1JVfxr5QC/OYy9w+Prc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oxr+V1zC5jGaVdJUM9cc+qmqG1APkz+D0ANFI1+TM+I6PSqAiFu5csuGKRNCcr4Am
-	 Z3TlnMlLQGHe8A1IydrtFcRh7XTwuu1gBLmGbOHrndcwcSMX1LR3jNPas/VXogdb9z
-	 d5QdT4wOmT+7KJOKIw+OrXcrfl2NxLo58zY3IT04=
+	b=IkiQ050TU8wL4HylOfpTxjptZoIQ1m5Ly1Qi9Rp6DLTZ8HHzfEF41mYPslv/XYV0e
+	 zmCbdVEPk06CUb30U22pss5xeRYBhpr5QhlDiC46Dn87Q51ef0ikhG4TYmUKIVLZiZ
+	 tP5KnDrI7aVEM/T52quiYCpu49EY29oBEtK9t3eI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Chikunov <vt@altlinux.org>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Paul Wolneykien <manowar@altlinux.org>
-Subject: [PATCH 6.9 070/157] crypto: ecrdsa - Fix module auto-load on add_key
+	Jorge Ramirez-Ortiz <jorge@foundries.io>,
+	Avri Altman <avri.altman@wdc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 4.19 147/213] mmc: core: Do not force a retune before RPMB switch
 Date: Thu, 13 Jun 2024 13:33:15 +0200
-Message-ID: <20240613113230.131420080@linuxfoundation.org>
+Message-ID: <20240613113233.661410900@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Chikunov <vt@altlinux.org>
+From: Jorge Ramirez-Ortiz <jorge@foundries.io>
 
-commit eb5739a1efbc9ff216271aeea0ebe1c92e5383e5 upstream.
+commit 67380251e8bbd3302c64fea07f95c31971b91c22 upstream.
 
-Add module alias with the algorithm cra_name similar to what we have for
-RSA-related and other algorithms.
+Requesting a retune before switching to the RPMB partition has been
+observed to cause CRC errors on the RPMB reads (-EILSEQ).
 
-The kernel attempts to modprobe asymmetric algorithms using the names
-"crypto-$cra_name" and "crypto-$cra_name-all." However, since these
-aliases are currently missing, the modules are not loaded. For instance,
-when using the `add_key` function, the hash algorithm is typically
-loaded automatically, but the asymmetric algorithm is not.
+Since RPMB reads can not be retried, the clients would be directly
+affected by the errors.
 
-Steps to test:
+This commit disables the retune request prior to switching to the RPMB
+partition: mmc_retune_pause() no longer triggers a retune before the
+pause period begins.
 
-1. Cert is generated usings ima-evm-utils test suite with
-   `gen-keys.sh`, example cert is provided below:
+This was verified with the sdhci-of-arasan driver (ZynqMP) configured
+for HS200 using two separate eMMC cards (DG4064 and 064GB2). In both
+cases, the error was easy to reproduce triggering every few tenths of
+reads.
 
-  $ base64 -d >test-gost2012_512-A.cer <<EOF
-  MIIB/DCCAWagAwIBAgIUK8+whWevr3FFkSdU9GLDAM7ure8wDAYIKoUDBwEBAwMFADARMQ8wDQYD
-  VQQDDAZDQSBLZXkwIBcNMjIwMjAxMjIwOTQxWhgPMjA4MjEyMDUyMjA5NDFaMBExDzANBgNVBAMM
-  BkNBIEtleTCBoDAXBggqhQMHAQEBAjALBgkqhQMHAQIBAgEDgYQABIGALXNrTJGgeErBUOov3Cfo
-  IrHF9fcj8UjzwGeKCkbCcINzVUbdPmCopeJRHDJEvQBX1CQUPtlwDv6ANjTTRoq5nCk9L5PPFP1H
-  z73JIXHT0eRBDVoWy0cWDRz1mmQlCnN2HThMtEloaQI81nTlKZOcEYDtDpi5WODmjEeRNQJMdqCj
-  UDBOMAwGA1UdEwQFMAMBAf8wHQYDVR0OBBYEFCwfOITMbE9VisW1i2TYeu1tAo5QMB8GA1UdIwQY
-  MBaAFCwfOITMbE9VisW1i2TYeu1tAo5QMAwGCCqFAwcBAQMDBQADgYEAmBfJCMTdC0/NSjz4BBiQ
-  qDIEjomO7FEHYlkX5NGulcF8FaJW2jeyyXXtbpnub1IQ8af1KFIpwoS2e93LaaofxpWlpQLlju6m
-  KYLOcO4xK3Whwa2hBAz9YbpUSFjvxnkS2/jpH2MsOSXuUEeCruG/RkHHB3ACef9umG6HCNQuAPY=
-  EOF
+With this commit, systems that were utilizing OP-TEE to access RPMB
+variables will experience an enhanced performance. Specifically, when
+OP-TEE is configured to employ RPMB as a secure storage solution, it not
+only writes the data but also the secure filesystem within the
+partition. As a result, retrieving any variable involves multiple RPMB
+reads, typically around five.
 
-2. Optionally, trace module requests with: trace-cmd stream -e module &
+For context, on ZynqMP, each retune request consumed approximately
+8ms. Consequently, reading any RPMB variable used to take at the very
+minimum 40ms.
 
-3. Trigger add_key call for the cert:
+After droping the need to retune before switching to the RPMB partition,
+this is no longer the case.
 
-  # keyctl padd asymmetric "" @u <test-gost2012_512-A.cer
-  939910969
-  # lsmod | head -3
-  Module                  Size  Used by
-  ecrdsa_generic         16384  0
-  streebog_generic       28672  0
-
-Repored-by: Paul Wolneykien <manowar@altlinux.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Vitaly Chikunov <vt@altlinux.org>
-Tested-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Jorge Ramirez-Ortiz <jorge@foundries.io>
+Acked-by: Avri Altman <avri.altman@wdc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240103112911.2954632-1-jorge@foundries.io
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/ecrdsa.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/core/host.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/crypto/ecrdsa.c
-+++ b/crypto/ecrdsa.c
-@@ -294,4 +294,5 @@ module_exit(ecrdsa_mod_fini);
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Vitaly Chikunov <vt@altlinux.org>");
- MODULE_DESCRIPTION("EC-RDSA generic algorithm");
-+MODULE_ALIAS_CRYPTO("ecrdsa");
- MODULE_ALIAS_CRYPTO("ecrdsa-generic");
+--- a/drivers/mmc/core/host.c
++++ b/drivers/mmc/core/host.c
+@@ -68,13 +68,12 @@ void mmc_retune_enable(struct mmc_host *
+ 
+ /*
+  * Pause re-tuning for a small set of operations.  The pause begins after the
+- * next command and after first doing re-tuning.
++ * next command.
+  */
+ void mmc_retune_pause(struct mmc_host *host)
+ {
+ 	if (!host->retune_paused) {
+ 		host->retune_paused = 1;
+-		mmc_retune_needed(host);
+ 		mmc_retune_hold(host);
+ 	}
+ }
 
 
 
