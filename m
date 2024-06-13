@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-51719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC950907148
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:35:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A37E906F4E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 304E228324B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:35:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1448E1F21D60
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B451143870;
-	Thu, 13 Jun 2024 12:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EB41459FA;
+	Thu, 13 Jun 2024 12:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BA0eLkM0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaL9p4vy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8EA14374F;
-	Thu, 13 Jun 2024 12:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5ADF144D11;
+	Thu, 13 Jun 2024 12:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282115; cv=none; b=cxI+db8N9QBKuuIsBmPKU1TOiZDIIZOg5Xs1y72jYUwxJoP872Jt/1WpIPxmQEaBCs4WiBl3EUIy+pbr/z0cSTWLRatuJfmJ8Py68iWIW7+BQ8n3N1oWhP3kJcFAqPqbdTr2OVrLppv5B6AfWf7A+zzHt4OC2XDBwF4npMa5+24=
+	t=1718280953; cv=none; b=BNEkQ7Cib/uzCfH2bZBV6ToQm2NY++WYaVOF8zKGCD1jxsCjysE3aWfG8M2lXb39DxT+mDtcuCL+g6COFJ9R4kHmkHQvbwCDf5vGJNugH2PEY1bIVCl409NN3wShL3TFW7Rpdp8x7NqB0OP9n/RNDcB33YV7aS9BUi8Ya5/EjZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282115; c=relaxed/simple;
-	bh=cru/ZOCuNRNj/tnQn/u9r38188JQaZEwH8G7+xJY21c=;
+	s=arc-20240116; t=1718280953; c=relaxed/simple;
+	bh=iiIWUC0vmuCKiF3PWLCMUsyhb9agqwGh4CKlzEypQyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sPB5EelLF8yu6k2JZ82SeasyjBOprkh8mpNKJ0bwKd1eOjcGsM3xR59pRMIWuJMuS0UUZKFIbql6xmZc0b9Xw1vkImV/VOMwKwm4kGGe/XqHQy5dsKLxkJ/5vGbz+3lON0i9s1wbkANX6BwuQsCEhYcGjMHYlqk65jgteNeFo9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BA0eLkM0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD1FC4AF4D;
-	Thu, 13 Jun 2024 12:35:14 +0000 (UTC)
+	 MIME-Version; b=ZX6XKv1kG+6j3ojce21ex0oI5g/vkIVQfaEyiCK7dtnFEGsdWvJ72f7sCMF+MPmPsT9SozayKPP0n0kt+WEgHNl5R7RWoCzRAjktbXg3rqWMzE9Ibd0VK4O8w6F5WTHsfCziUMSb88RfmEryTSnzZr3W6g/wYY3ZmXPlrBBVIwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZaL9p4vy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F559C2BBFC;
+	Thu, 13 Jun 2024 12:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282114;
-	bh=cru/ZOCuNRNj/tnQn/u9r38188JQaZEwH8G7+xJY21c=;
+	s=korg; t=1718280953;
+	bh=iiIWUC0vmuCKiF3PWLCMUsyhb9agqwGh4CKlzEypQyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BA0eLkM0+PO9V+aWRJX4nOQti5UuC5Zysj0/7jOB9QxeMxrDy+niV4uSDIHMJ2giM
-	 LdmVr6zurzpa3dwOM8pUBbUnROea1f9tqDzbwgOOW6UggICxxI+u6UBUUvIGBfEqLm
-	 9Ak8WrbqDSmJ+1hBbus9UPflYqYz3Yjs1KTPwy6A=
+	b=ZaL9p4vy6PLng4iv6uV/e3JBtdGavrHQPHluumWEDSJRGIzWW9fZ41WD96swhbma+
+	 JoEXbvFe36gRyNfuU80dszfoBpU81K62EUmtaiZNxadbZDo98CvWI4/bqF0D4kj+UW
+	 rLkGoVRxpMld2x8txPDabEN/92cXQDAuNMmgLtsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 150/402] RDMA/hns: Fix return value in hns_roce_map_mr_sg
-Date: Thu, 13 Jun 2024 13:31:47 +0200
-Message-ID: <20240613113307.987016297@linuxfoundation.org>
+Subject: [PATCH 5.10 090/317] drm/amd/display: Fix potential index out of bounds in color transformation function
+Date: Thu, 13 Jun 2024 13:31:48 +0200
+Message-ID: <20240613113251.033647477@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +69,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 203b70fda63425a4eb29f03f9074859afe821a39 ]
+[ Upstream commit 63ae548f1054a0b71678d0349c7dc9628ddd42ca ]
 
-As described in the ib_map_mr_sg function comment, it returns the number
-of sg elements that were mapped to the memory region. However,
-hns_roce_map_mr_sg returns the number of pages required for mapping the
-DMA area. Fix it.
+Fixes index out of bounds issue in the color transformation function.
+The issue could occur when the index 'i' exceeds the number of transfer
+function points (TRANSFER_FUNC_POINTS).
 
-Fixes: 9b2cf76c9f05 ("RDMA/hns: Optimize PBL buffer allocation process")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Link: https://lore.kernel.org/r/20240411033851.2884771-1-shaozhengchao@huawei.com
-Reviewed-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+The fix adds a check to ensure 'i' is within bounds before accessing the
+transfer function points. If 'i' is out of bounds, an error message is
+logged and the function returns false to indicate an error.
+
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:405 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:406 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:407 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
+
+Fixes: b629596072e5 ("drm/amd/display: Build unity lut for shaper")
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Charlene Liu <Charlene.Liu@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_mr.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
-index 12c482f4a1c48..7106e51d5fad1 100644
---- a/drivers/infiniband/hw/hns/hns_roce_mr.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
-@@ -444,18 +444,18 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
- 	struct ib_device *ibdev = &hr_dev->ib_dev;
- 	struct hns_roce_mr *mr = to_hr_mr(ibmr);
- 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
--	int ret = 0;
-+	int ret, sg_num = 0;
- 
- 	mr->npages = 0;
- 	mr->page_list = kvcalloc(mr->pbl_mtr.hem_cfg.buf_pg_count,
- 				 sizeof(dma_addr_t), GFP_KERNEL);
- 	if (!mr->page_list)
--		return ret;
-+		return sg_num;
- 
--	ret = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
--	if (ret < 1) {
-+	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
-+	if (sg_num < 1) {
- 		ibdev_err(ibdev, "failed to store sg pages %u %u, cnt = %d.\n",
--			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, ret);
-+			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, sg_num);
- 		goto err_page_list;
- 	}
- 
-@@ -466,17 +466,16 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
- 	ret = hns_roce_mtr_map(hr_dev, mtr, mr->page_list, mr->npages);
- 	if (ret) {
- 		ibdev_err(ibdev, "failed to map sg mtr, ret = %d.\n", ret);
--		ret = 0;
-+		sg_num = 0;
- 	} else {
- 		mr->pbl_mtr.hem_cfg.buf_pg_shift = (u32)ilog2(ibmr->page_size);
--		ret = mr->npages;
- 	}
- 
- err_page_list:
- 	kvfree(mr->page_list);
- 	mr->page_list = NULL;
- 
--	return ret;
-+	return sg_num;
- }
- 
- static void hns_roce_mw_free(struct hns_roce_dev *hr_dev,
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
+index 7a00fe525dfba..bd9bc51983fec 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
+@@ -379,6 +379,11 @@ bool cm_helper_translate_curve_to_hw_format(
+ 				i += increment) {
+ 			if (j == hw_points - 1)
+ 				break;
++			if (i >= TRANSFER_FUNC_POINTS) {
++				DC_LOG_ERROR("Index out of bounds: i=%d, TRANSFER_FUNC_POINTS=%d\n",
++					     i, TRANSFER_FUNC_POINTS);
++				return false;
++			}
+ 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
+ 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
+ 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
 -- 
 2.43.0
 
