@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-50684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF4A906BEB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:45:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2DB906D23
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73592281748
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:45:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8BE11F27D01
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48357143882;
-	Thu, 13 Jun 2024 11:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA63146598;
+	Thu, 13 Jun 2024 11:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+2ZEDXX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKOZs3CU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0189F142E99;
-	Thu, 13 Jun 2024 11:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3E61465AB;
+	Thu, 13 Jun 2024 11:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279086; cv=none; b=aqg8b3xuP7iS4M7AsHWbWK9Pig302TkoOU7oQF9bDFfcTaPc6PnZPd8Rn8YRKTxFT2645v0obBlivQtmeVdTx2GLA3Nv1CCFi2ep9uihi2d8wOWIePyXK2476sv7IM8IcAMtlg8QkanKhQ18EINLzpGMi5CI/fm6R2oOYo5fgpU=
+	t=1718279578; cv=none; b=KQiYWSaPIZU5L5U6l66H1Lp+XOaBgkaCVMAXkgbA87X1EpkFwsXTgiqxJ7rOBOqePcQL/GQS0v/uJv68OG8rNzmr8FmK2i7AHBvsTwQ3pfaVuHlj4Uh+E19nf3M/hXpMa0MTifY7O6vd0AB5YHuDG9EWLPvJ7iRqPejsEHlZwwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279086; c=relaxed/simple;
-	bh=71JH3lJy+Zw7ULsW/9wzSCRSQWDli1eO/HXb2eKNtps=;
+	s=arc-20240116; t=1718279578; c=relaxed/simple;
+	bh=w6M8TngNiy+RgsBxDfvQy0XR2zjAYv518RwZG8tBzrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fvoOfRUeM1khqRnU4VFWZqatYQKkw2KixlMLMHP1lmTlFDkoQ/U5Ey1kJBT1xMbUaFa/tdnzaQnwAa02iRh/BDVcmXn4Z32mM7ixEBL/HRSxdDRVrLz3S3GV/H5AARLLJ/5ZIT3XCJIAhxE9dyZu170fxB+qvwcWH5yWalHPjwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+2ZEDXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F982C32786;
-	Thu, 13 Jun 2024 11:44:45 +0000 (UTC)
+	 MIME-Version; b=tNc+Zy+vIXPJ1zMaeDDMAv58iUxnlRSP9c4BfOUc7TsNzu5cPTw6+lO837nArTjE1h0Rb8NKdZFuqr8BGUmYUOcs3Okjh0/HBXLuoEKgmCDBRc2A1NjUyJm2ldQ4zcrlGntCEO8vNssO7LS9NK32eJNSOvXRAThRvNDerLgSzT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKOZs3CU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8ECBC2BBFC;
+	Thu, 13 Jun 2024 11:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279085;
-	bh=71JH3lJy+Zw7ULsW/9wzSCRSQWDli1eO/HXb2eKNtps=;
+	s=korg; t=1718279578;
+	bh=w6M8TngNiy+RgsBxDfvQy0XR2zjAYv518RwZG8tBzrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z+2ZEDXXT2P3vkaNJY/LzgG33Kr+/ftK8X5L8B3bcud2MKNz3NYKhW7KgXpBvAoVp
-	 Yu6uZNUesHNiXXaJJfcDQHjATCryxR7QVf4YICNYLlJcG0zcX6xpNonFqZFZhx9y2x
-	 K7C405SLB700wBOicB66FwSowqQBLF5YvSiwpBr0=
+	b=fKOZs3CUlxIuFgR0YHQb0orJezTzCN4qgrUdufAMfvAjDavtxQ+evbLsDEPxx1n5Y
+	 J2ciPySIIa7L7p02tTnieM84nfGnugMcDzClHS9w01BFC+Eg2tdXXAnSrgopcDHokw
+	 /G8Bg3YcGHGpabh+FEAUw6mDpWRox7zKACGAF4Zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 170/213] netfilter: nf_tables: remove busy mark and gc batch API
+	Daniel Bristot de Oliveria <bristot@kernel.org>,
+	John Kacur <jkacur@redhat.com>
+Subject: [PATCH 6.9 093/157] rtla/timerlat: Fix histogram report when a cpu count is 0
 Date: Thu, 13 Jun 2024 13:33:38 +0200
-Message-ID: <20240613113234.541461448@linuxfoundation.org>
+Message-ID: <20240613113231.023320606@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,184 +61,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: John Kacur <jkacur@redhat.com>
 
-commit a2dd0233cbc4d8a0abb5f64487487ffc9265beb5 upstream.
+commit 01b05fc0e5f3aec443a9a8ffa0022cbca2fd3608 upstream.
 
-Ditch it, it has been replace it by the GC transaction API and it has no
-clients anymore.
+On short runs it is possible to get no samples on a cpu, like this:
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+  # rtla timerlat hist -u -T50
+
+  Index   IRQ-001   Thr-001   Usr-001   IRQ-002   Thr-002   Usr-002
+  2             1         0         0         0         0         0
+  33            0         1         0         0         0         0
+  36            0         0         1         0         0         0
+  49            0         0         0         1         0         0
+  52            0         0         0         0         1         0
+  over:         0         0         0         0         0         0
+  count:        1         1         1         1         1         0
+  min:          2        33        36        49        52 18446744073709551615
+  avg:          2        33        36        49        52         -
+  max:          2        33        36        49        52         0
+  rtla timerlat hit stop tracing
+    IRQ handler delay:		(exit from idle)	    48.21 us (91.09 %)
+    IRQ latency:						    49.11 us
+    Timerlat IRQ duration:				     2.17 us (4.09 %)
+    Blocking thread:					     1.01 us (1.90 %)
+  	               swapper/2:0        		     1.01 us
+  ------------------------------------------------------------------------
+    Thread latency:					    52.93 us (100%)
+
+  Max timerlat IRQ latency from idle: 49.11 us in cpu 2
+
+Note, the value 18446744073709551615 is the same as ~0.
+
+Fix this by reporting no results for the min, avg and max if the count
+is 0.
+
+Link: https://lkml.kernel.org/r/20240510190318.44295-1-jkacur@redhat.com
+
+Cc: stable@vger.kernel.org
+Fixes: 1eeb6328e8b3 ("rtla/timerlat: Add timerlat hist mode")
+Suggested-by: Daniel Bristot de Oliveria <bristot@kernel.org>
+Signed-off-by: John Kacur <jkacur@redhat.com>
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h |   97 +-------------------------------------
- net/netfilter/nf_tables_api.c     |   28 ----------
- 2 files changed, 5 insertions(+), 120 deletions(-)
+ tools/tracing/rtla/src/timerlat_hist.c |   68 ++++++++++++++++++++++-----------
+ 1 file changed, 46 insertions(+), 22 deletions(-)
 
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -652,62 +652,6 @@ void nft_set_elem_destroy(const struct n
- void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
- 				const struct nft_set *set, void *elem);
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -324,17 +324,29 @@ timerlat_print_summary(struct timerlat_h
+ 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
+ 			continue;
  
--/**
-- *	struct nft_set_gc_batch_head - nf_tables set garbage collection batch
-- *
-- *	@rcu: rcu head
-- *	@set: set the elements belong to
-- *	@cnt: count of elements
-- */
--struct nft_set_gc_batch_head {
--	struct rcu_head			rcu;
--	const struct nft_set		*set;
--	unsigned int			cnt;
--};
+-		if (!params->no_irq)
+-			trace_seq_printf(trace->seq, "%9llu ",
+-					data->hist[cpu].min_irq);
 -
--#define NFT_SET_GC_BATCH_SIZE	((PAGE_SIZE -				  \
--				  sizeof(struct nft_set_gc_batch_head)) / \
--				 sizeof(void *))
+-		if (!params->no_thread)
+-			trace_seq_printf(trace->seq, "%9llu ",
+-					data->hist[cpu].min_thread);
 -
--/**
-- *	struct nft_set_gc_batch - nf_tables set garbage collection batch
-- *
-- * 	@head: GC batch head
-- * 	@elems: garbage collection elements
-- */
--struct nft_set_gc_batch {
--	struct nft_set_gc_batch_head	head;
--	void				*elems[NFT_SET_GC_BATCH_SIZE];
--};
--
--struct nft_set_gc_batch *nft_set_gc_batch_alloc(const struct nft_set *set,
--						gfp_t gfp);
--void nft_set_gc_batch_release(struct rcu_head *rcu);
--
--static inline void nft_set_gc_batch_complete(struct nft_set_gc_batch *gcb)
--{
--	if (gcb != NULL)
--		call_rcu(&gcb->head.rcu, nft_set_gc_batch_release);
--}
--
--static inline struct nft_set_gc_batch *
--nft_set_gc_batch_check(const struct nft_set *set, struct nft_set_gc_batch *gcb,
--		       gfp_t gfp)
--{
--	if (gcb != NULL) {
--		if (gcb->head.cnt + 1 < ARRAY_SIZE(gcb->elems))
--			return gcb;
--		nft_set_gc_batch_complete(gcb);
--	}
--	return nft_set_gc_batch_alloc(set, gfp);
--}
--
--static inline void nft_set_gc_batch_add(struct nft_set_gc_batch *gcb,
--					void *elem)
--{
--	gcb->elems[gcb->head.cnt++] = elem;
--}
--
- struct nft_expr_ops;
- /**
-  *	struct nft_expr_type - nf_tables expression type
-@@ -1314,47 +1258,12 @@ static inline void nft_set_elem_change_a
- 	ext->genmask ^= nft_genmask_next(net);
- }
- 
--/*
-- * We use a free bit in the genmask field to indicate the element
-- * is busy, meaning it is currently being processed either by
-- * the netlink API or GC.
-- *
-- * Even though the genmask is only a single byte wide, this works
-- * because the extension structure if fully constant once initialized,
-- * so there are no non-atomic write accesses unless it is already
-- * marked busy.
-- */
--#define NFT_SET_ELEM_BUSY_MASK	(1 << 2)
--
--#if defined(__LITTLE_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_BUSY_BIT	2
--#elif defined(__BIG_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_BUSY_BIT	(BITS_PER_LONG - BITS_PER_BYTE + 2)
--#else
--#error
--#endif
--
--static inline int nft_set_elem_mark_busy(struct nft_set_ext *ext)
--{
--	unsigned long *word = (unsigned long *)ext;
--
--	BUILD_BUG_ON(offsetof(struct nft_set_ext, genmask) != 0);
--	return test_and_set_bit(NFT_SET_ELEM_BUSY_BIT, word);
--}
--
--static inline void nft_set_elem_clear_busy(struct nft_set_ext *ext)
--{
--	unsigned long *word = (unsigned long *)ext;
--
--	clear_bit(NFT_SET_ELEM_BUSY_BIT, word);
--}
--
--#define NFT_SET_ELEM_DEAD_MASK (1 << 3)
-+#define NFT_SET_ELEM_DEAD_MASK (1 << 2)
- 
- #if defined(__LITTLE_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_DEAD_BIT	3
-+#define NFT_SET_ELEM_DEAD_BIT	2
- #elif defined(__BIG_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_DEAD_BIT	(BITS_PER_LONG - BITS_PER_BYTE + 3)
-+#define NFT_SET_ELEM_DEAD_BIT	(BITS_PER_LONG - BITS_PER_BYTE + 2)
- #else
- #error
- #endif
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4766,7 +4766,8 @@ static int nft_add_set_elem(struct nft_c
- 	if (trans == NULL)
- 		goto err4;
- 
--	ext->genmask = nft_genmask_cur(ctx->net) | NFT_SET_ELEM_BUSY_MASK;
-+	ext->genmask = nft_genmask_cur(ctx->net);
+-		if (params->user_hist)
+-			trace_seq_printf(trace->seq, "%9llu ",
+-					data->hist[cpu].min_user);
++		if (!params->no_irq) {
++			if (data->hist[cpu].irq_count)
++				trace_seq_printf(trace->seq, "%9llu ",
++						data->hist[cpu].min_irq);
++			else
++				trace_seq_printf(trace->seq, "        - ");
++		}
 +
- 	err = set->ops->insert(ctx->net, set, &elem, &ext2);
- 	if (err) {
- 		if (err == -EEXIST) {
-@@ -5059,31 +5060,6 @@ static int nf_tables_delsetelem(struct n
- 	return err;
- }
++		if (!params->no_thread) {
++			if (data->hist[cpu].thread_count)
++				trace_seq_printf(trace->seq, "%9llu ",
++						data->hist[cpu].min_thread);
++			else
++				trace_seq_printf(trace->seq, "        - ");
++		}
++
++		if (params->user_hist) {
++			if (data->hist[cpu].user_count)
++				trace_seq_printf(trace->seq, "%9llu ",
++						data->hist[cpu].min_user);
++			else
++				trace_seq_printf(trace->seq, "        - ");
++		}
+ 	}
+ 	trace_seq_printf(trace->seq, "\n");
  
--void nft_set_gc_batch_release(struct rcu_head *rcu)
--{
--	struct nft_set_gc_batch *gcb;
--	unsigned int i;
+@@ -384,17 +396,29 @@ timerlat_print_summary(struct timerlat_h
+ 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
+ 			continue;
+ 
+-		if (!params->no_irq)
+-			trace_seq_printf(trace->seq, "%9llu ",
+-					data->hist[cpu].max_irq);
 -
--	gcb = container_of(rcu, struct nft_set_gc_batch, head.rcu);
--	for (i = 0; i < gcb->head.cnt; i++)
--		nft_set_elem_destroy(gcb->head.set, gcb->elems[i], true);
--	kfree(gcb);
--}
--EXPORT_SYMBOL_GPL(nft_set_gc_batch_release);
+-		if (!params->no_thread)
+-			trace_seq_printf(trace->seq, "%9llu ",
+-					data->hist[cpu].max_thread);
 -
--struct nft_set_gc_batch *nft_set_gc_batch_alloc(const struct nft_set *set,
--						gfp_t gfp)
--{
--	struct nft_set_gc_batch *gcb;
--
--	gcb = kzalloc(sizeof(*gcb), gfp);
--	if (gcb == NULL)
--		return gcb;
--	gcb->head.set = set;
--	return gcb;
--}
--EXPORT_SYMBOL_GPL(nft_set_gc_batch_alloc);
--
- /*
-  * Stateful objects
-  */
+-		if (params->user_hist)
+-			trace_seq_printf(trace->seq, "%9llu ",
+-					data->hist[cpu].max_user);
++		if (!params->no_irq) {
++			if (data->hist[cpu].irq_count)
++				trace_seq_printf(trace->seq, "%9llu ",
++						 data->hist[cpu].max_irq);
++			else
++				trace_seq_printf(trace->seq, "        - ");
++		}
++
++		if (!params->no_thread) {
++			if (data->hist[cpu].thread_count)
++				trace_seq_printf(trace->seq, "%9llu ",
++						data->hist[cpu].max_thread);
++			else
++				trace_seq_printf(trace->seq, "        - ");
++		}
++
++		if (params->user_hist) {
++			if (data->hist[cpu].user_count)
++				trace_seq_printf(trace->seq, "%9llu ",
++						data->hist[cpu].max_user);
++			else
++				trace_seq_printf(trace->seq, "        - ");
++		}
+ 	}
+ 	trace_seq_printf(trace->seq, "\n");
+ 	trace_seq_do_printf(trace->seq);
 
 
 
