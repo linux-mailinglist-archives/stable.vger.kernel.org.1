@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-51105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833F0906E5C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB9609071A5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:39:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93D611C22B49
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEADA1C238B2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C431459EE;
-	Thu, 13 Jun 2024 12:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311421448DC;
+	Thu, 13 Jun 2024 12:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yk3ZlLqf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VtU7e3V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3E714535D;
-	Thu, 13 Jun 2024 12:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35EF28FF;
+	Thu, 13 Jun 2024 12:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280324; cv=none; b=Tmvgon/7n6GQP1vdmW3pMwyEHS4sXtMhk+sSRNMQdg4k1hDhG/741ATyiBbyTnzlUQTbO+OHtN6RGCPz/FFccoYUsSdlp1iLYAB4rzzHW5V3TGEpjRptrPTSGdFPpvXWhDD1PtiTPF4N2S7xHHBhjwNreqwolj0A96vCZ53l6HM=
+	t=1718282325; cv=none; b=mw1uMU4CnTF0R+N3HR2EWW4NZ+CoCYUqfHL0janOZNo/+pgcNakeU9PXCxQrhO8wYQMQAUEzk0wyUErJNYVL3QBc6YZXzVwczzNEJ4lr84c310r1t9LiXaucoepVU2lHPAD05q6jkrJLuUENxoxy5Sl8GeYtrmhuzLcuK3Uhtyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280324; c=relaxed/simple;
-	bh=yVFNa82CaYGQx+RIGppVnlG/5+k7YSYHFyoM3KvVxew=;
+	s=arc-20240116; t=1718282325; c=relaxed/simple;
+	bh=qm+2BzEh2Fuaq5PdPTswzqERR2ZeplH2DHGMWT/V/8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YP2oB24Ir5/wgc+ZDpTT2mzzf438VuABaefZNa9WU8zLzWQVEaWU+VtbWy3diYeNdyykF4Fblc4xjb9DFxxOLPf2UBQGhOcte1b3dzOT4J1tTohv2zO383t4cQXI+Rs10MSKaVuL2H7tWiJjd6oAVsX90DUpDrc1Ef21uwYeYQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yk3ZlLqf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28473C2BBFC;
-	Thu, 13 Jun 2024 12:05:22 +0000 (UTC)
+	 MIME-Version; b=sVef7P5hBRp3ZxZt4onpxjLin1ZIceVgRXuYpisO5ogGq63I5hcJMmBCY2GXKoEiGn56W/zy/CgqSCH5RKCpjxnLBlwrzYGXAlMdF73pFkhaeka5/YVj8j0riyQgi84W2MGaJ9kVwIKolSLJftNS9eMVUnEGnpRzoa7xL3PGwfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VtU7e3V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35CE0C2BBFC;
+	Thu, 13 Jun 2024 12:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280323;
-	bh=yVFNa82CaYGQx+RIGppVnlG/5+k7YSYHFyoM3KvVxew=;
+	s=korg; t=1718282324;
+	bh=qm+2BzEh2Fuaq5PdPTswzqERR2ZeplH2DHGMWT/V/8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yk3ZlLqfwiNz6ezCJEGdPVqRNjnAa79lCbu4AODNUOz2ulk5Dw40NMp4X6WohkKvn
-	 6u1fVWdUoaw6bGwT5AFrBfV4cQnbDIfiUaXoh/g0+p5m/x1LISLjMlgGstsper23Gw
-	 yLXwYocLGYfmeVsyw7NxKMisoYY8cBs9s0Vebmbo=
+	b=1VtU7e3VI0jm/3kyB9bm9A5SbuWnVQLjhwjeeESUbLHhXMYUCS/LgUuQXZ+JaWmH8
+	 9Iq7YrREt/xM6UCUinPmzaVit7OcWiCNVr6pafrZLdKxSiNi/68IJDy+CQPguMGfa0
+	 S6GdAeYTqwAPmTwFTsto5Ou7r2jgs2gOqqYXy6QY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>
-Subject: [PATCH 6.6 015/137] drm/sun4i: hdmi: Convert encoder to atomic
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kaige Ye <ye@kaige.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 238/402] perf stat: Dont display metric header for non-leader uncore events
 Date: Thu, 13 Jun 2024 13:33:15 +0200
-Message-ID: <20240613113223.882041314@linuxfoundation.org>
+Message-ID: <20240613113311.427940556@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +73,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <mripard@kernel.org>
+From: Ian Rogers <irogers@google.com>
 
-commit cedb7dd193f659fcc63f3a3f31454c25a5baef07 upstream.
+[ Upstream commit 193a9e30207f54777ff42d0d8be8389edc522277 ]
 
-The sun4i_hdmi driver still uses the non-atomic variants of the encoder
-hooks, so let's convert to their atomic equivalents.
+On an Intel tigerlake laptop a metric like:
 
-Acked-by: Sui Jingfeng <sui.jingfeng@linux.dev>
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240222-kms-hdmi-connector-state-v7-32-8f4af575fce2@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    {
+        "BriefDescription": "Test",
+        "MetricExpr": "imc_free_running@data_read@ + imc_free_running@data_write@",
+        "MetricGroup": "Test",
+        "MetricName": "Test",
+        "ScaleUnit": "6.103515625e-5MiB"
+    },
+
+Will have 4 events:
+
+  uncore_imc_free_running_0/data_read/
+  uncore_imc_free_running_0/data_write/
+  uncore_imc_free_running_1/data_read/
+  uncore_imc_free_running_1/data_write/
+
+If aggregration is disabled with metric-only 2 column headers are
+needed:
+
+  $ perf stat -M test --metric-only -A -a sleep 1
+
+   Performance counter stats for 'system wide':
+
+                    MiB  Test            MiB  Test
+  CPU0                 1821.0               1820.5
+
+But when not, the counts aggregated in the metric leader and only 1
+column should be shown:
+
+  $ perf stat -M test --metric-only -a sleep 1
+   Performance counter stats for 'system wide':
+
+              MiB  Test
+                5909.4
+
+         1.001258915 seconds time elapsed
+
+Achieve this by skipping events that aren't metric leaders when
+printing column headers and aggregation isn't disabled.
+
+The bug is long standing, the fixes tag is set to a refactor as that
+is as far back as is reasonable to backport.
+
+Fixes: 088519f318be3a41 ("perf stat: Move the display functions to stat-display.c")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kaige Ye <ye@kaige.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20240510051309.2452468-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/sun4i/sun4i_hdmi_enc.c |   17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ tools/perf/util/stat-display.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/sun4i/sun4i_hdmi_enc.c
-+++ b/drivers/gpu/drm/sun4i/sun4i_hdmi_enc.c
-@@ -82,7 +82,8 @@ static int sun4i_hdmi_atomic_check(struc
- 	return 0;
- }
+diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
+index 5ed20e1e09aef..79384e8326c65 100644
+--- a/tools/perf/util/stat-display.c
++++ b/tools/perf/util/stat-display.c
+@@ -1000,6 +1000,9 @@ static void print_metric_headers(struct perf_stat_config *config,
  
--static void sun4i_hdmi_disable(struct drm_encoder *encoder)
-+static void sun4i_hdmi_disable(struct drm_encoder *encoder,
-+			       struct drm_atomic_state *state)
- {
- 	struct sun4i_hdmi *hdmi = drm_encoder_to_sun4i_hdmi(encoder);
- 	u32 val;
-@@ -96,7 +97,8 @@ static void sun4i_hdmi_disable(struct dr
- 	clk_disable_unprepare(hdmi->tmds_clk);
- }
- 
--static void sun4i_hdmi_enable(struct drm_encoder *encoder)
-+static void sun4i_hdmi_enable(struct drm_encoder *encoder,
-+			      struct drm_atomic_state *state)
- {
- 	struct drm_display_mode *mode = &encoder->crtc->state->adjusted_mode;
- 	struct sun4i_hdmi *hdmi = drm_encoder_to_sun4i_hdmi(encoder);
-@@ -120,9 +122,10 @@ static void sun4i_hdmi_enable(struct drm
- }
- 
- static void sun4i_hdmi_mode_set(struct drm_encoder *encoder,
--				struct drm_display_mode *mode,
--				struct drm_display_mode *adjusted_mode)
-+				struct drm_crtc_state *crtc_state,
-+				struct drm_connector_state *conn_state)
- {
-+	const struct drm_display_mode *mode = &crtc_state->mode;
- 	struct sun4i_hdmi *hdmi = drm_encoder_to_sun4i_hdmi(encoder);
- 	unsigned int x, y;
- 	u32 val;
-@@ -201,9 +204,9 @@ static enum drm_mode_status sun4i_hdmi_m
- 
- static const struct drm_encoder_helper_funcs sun4i_hdmi_helper_funcs = {
- 	.atomic_check	= sun4i_hdmi_atomic_check,
--	.disable	= sun4i_hdmi_disable,
--	.enable		= sun4i_hdmi_enable,
--	.mode_set	= sun4i_hdmi_mode_set,
-+	.atomic_disable	= sun4i_hdmi_disable,
-+	.atomic_enable	= sun4i_hdmi_enable,
-+	.atomic_mode_set	= sun4i_hdmi_mode_set,
- 	.mode_valid	= sun4i_hdmi_mode_valid,
- };
- 
+ 	/* Print metrics headers only */
+ 	evlist__for_each_entry(evlist, counter) {
++		if (config->aggr_mode != AGGR_NONE && counter->metric_leader != counter)
++			continue;
++
+ 		os.evsel = counter;
+ 		out.ctx = &os;
+ 		out.print_metric = print_metric_header;
+-- 
+2.43.0
+
 
 
 
