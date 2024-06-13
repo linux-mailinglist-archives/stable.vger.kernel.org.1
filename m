@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-50676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF510906BDA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:45:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80996906CF2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D41DF1C218FB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:45:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04D1A28459B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A99A144315;
-	Thu, 13 Jun 2024 11:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A403C145A19;
+	Thu, 13 Jun 2024 11:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDYCbVA0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RObv51fU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99246AFAE;
-	Thu, 13 Jun 2024 11:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D32143C7A;
+	Thu, 13 Jun 2024 11:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279062; cv=none; b=WyjLLqxk4jcQRH30b7N72rdg8XlCIOAFSFdVo9t+6AY4Bo/aW8j13YxGQ762GXT9cFnOq23vzuxH2W66kcmHLTD5zmDR8NxDckd8VGNmOg4bpV0wkE1+DZ1CYBwE0PEkxKNC08tDO+X+lzFr5yVwPa2yBf9l2tK6wAj9WbCifRc=
+	t=1718279472; cv=none; b=BKULhwgYn50jggLa2y9mEQZkx5+g+RGr8FyGVRt/McAwvi5dP6S8vzJLVC43m92ve9lWF+s7mTuqONvfGXRchVS7pJOWbMpI6MhBx/rB3ba1yCIMbkRMhxSY6uuJL4fV9iePKofilhCtcFZS7iApT1c/EvuoTV9LN+rcI3uuGRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279062; c=relaxed/simple;
-	bh=/UkPdgpfkdvOwIP0sy7KZN5od/70P2NWz7uth69vi6E=;
+	s=arc-20240116; t=1718279472; c=relaxed/simple;
+	bh=lKDJKF+mjPiKZ5y6BdCjR5mkQ3LhW8Y/E9V59uNcOtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kaeGV3OiQ0TZBQ9W/jAM0zWyLxBW4O3bG6KhC5g+LOstqOhttu7mMMDp5wups6SM/DrMfab6T5xmRI35uJyeZeUwkbo6wg314ilEpbwGnLia4FQ8VbX9xjtxnJtkMdJLU7CLmJK7mhJK1dNkSQvGeOdh0ykSUJndaqQ23hOJu8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDYCbVA0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E399C2BBFC;
-	Thu, 13 Jun 2024 11:44:21 +0000 (UTC)
+	 MIME-Version; b=V7Nk23gKX6zBJ6wOO9tC+4d/Xsudwj+2wp16cclPcvYC9Dmf+x2mUH7cVRqaDunUe7lRRppsdMUl/R3hiS6OwHzMXr9/2OqJmi+bObhPd6ba+4dwebsfGSR4W4XRvAUHxjzhWPjWYRaEpPrWb9O9Fz/tIbd0xaTIUECu+PEb7OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RObv51fU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF7CC2BBFC;
+	Thu, 13 Jun 2024 11:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279061;
-	bh=/UkPdgpfkdvOwIP0sy7KZN5od/70P2NWz7uth69vi6E=;
+	s=korg; t=1718279472;
+	bh=lKDJKF+mjPiKZ5y6BdCjR5mkQ3LhW8Y/E9V59uNcOtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDYCbVA0bZRE4fNJDLAMT9fmQoX2cMsL5hqQPkGUptFEnQXBVHlQQxdz3RIBS3mMF
-	 xtnlWqZoN5b8fmixnxMRIJByMyNGJ74d61J6IeVtDZteN47hhLCV2/x5i0Iv3L23Xd
-	 nKesiZLN9SOj1yz02QfD+TYSydyAVeZIH6IkdDK0=
+	b=RObv51fUXwpmZ582nBTBZWhxHh59szSMRD1AxY7KxFYpEw2nDcQgqcbCnj3nLp4s3
+	 4ni4RlRHvmDXQBk8mZsIbOdsMuqPMuly0XAYwo2SXNj46J1GefF+mK7+iA44Veu2fF
+	 O/LCKergyLFt4FFSnt6TFF5w79yf+SYwaYwzkqlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 163/213] netfilter: nft_set_rbtree: Add missing expired checks
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Petr Machata <petrm@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.9 086/157] selftests: net: lib: avoid error removing empty netns name
 Date: Thu, 13 Jun 2024 13:33:31 +0200
-Message-ID: <20240613113234.273495970@linuxfoundation.org>
+Message-ID: <20240613113230.754338145@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 340eaff651160234bdbce07ef34b92a8e45cd540 upstream.
+commit 79322174bcc780b99795cb89d237b26006a8b94b upstream.
 
-Expired intervals would still match and be dumped to user space until
-garbage collection wiped them out. Make sure they stop matching and
-disappear (from users' perspective) as soon as they expire.
+If there is an error to create the first netns with 'setup_ns()',
+'cleanup_ns()' will be called with an empty string as first parameter.
 
-Fixes: 8d8540c4f5e03 ("netfilter: nft_set_rbtree: add timeout support")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The consequences is that 'cleanup_ns()' will try to delete an invalid
+netns, and wait 20 seconds if the netns list is empty.
+
+Instead of just checking if the name is not empty, convert the string
+separated by spaces to an array. Manipulating the array is cleaner, and
+calling 'cleanup_ns()' with an empty array will be a no-op.
+
+Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
+Cc: stable@vger.kernel.org
+Acked-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20240605-upstream-net-20240605-selftests-net-lib-fixes-v1-2-b3afadd368c9@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_rbtree.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tools/testing/selftests/net/lib.sh |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -82,6 +82,10 @@ static bool __nft_rbtree_lookup(const st
- 				parent = rcu_dereference_raw(parent->rb_left);
- 				continue;
- 			}
-+
-+			if (nft_set_elem_expired(&rbe->ext))
-+				return false;
-+
- 			if (nft_rbtree_interval_end(rbe)) {
- 				if (nft_set_is_anonymous(set))
- 					return false;
-@@ -97,6 +101,7 @@ static bool __nft_rbtree_lookup(const st
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -10,7 +10,7 @@ BUSYWAIT_TIMEOUT=$((WAIT_TIMEOUT * 1000)
+ # Kselftest framework requirement - SKIP code is 4.
+ ksft_skip=4
+ # namespace list created by setup_ns
+-NS_LIST=""
++NS_LIST=()
  
- 	if (set->flags & NFT_SET_INTERVAL && interval != NULL &&
- 	    nft_set_elem_active(&interval->ext, genmask) &&
-+	    !nft_set_elem_expired(&interval->ext) &&
- 	    nft_rbtree_interval_start(interval)) {
- 		*ext = &interval->ext;
- 		return true;
-@@ -157,6 +162,9 @@ static bool __nft_rbtree_get(const struc
- 				continue;
- 			}
+ ##############################################################################
+ # Helpers
+@@ -133,6 +133,7 @@ cleanup_ns()
+ 	fi
  
-+			if (nft_set_elem_expired(&rbe->ext))
-+				return false;
-+
- 			if (!nft_set_ext_exists(&rbe->ext, NFT_SET_EXT_FLAGS) ||
- 			    (*nft_set_ext_flags(&rbe->ext) & NFT_SET_ELEM_INTERVAL_END) ==
- 			    (flags & NFT_SET_ELEM_INTERVAL_END)) {
-@@ -173,6 +181,7 @@ static bool __nft_rbtree_get(const struc
+ 	for ns in "$@"; do
++		[ -z "${ns}" ] && continue
+ 		ip netns delete "${ns}" &> /dev/null
+ 		if ! busywait $BUSYWAIT_TIMEOUT ip netns list \| grep -vq "^$ns$" &> /dev/null; then
+ 			echo "Warn: Failed to remove namespace $ns"
+@@ -146,7 +147,7 @@ cleanup_ns()
  
- 	if (set->flags & NFT_SET_INTERVAL && interval != NULL &&
- 	    nft_set_elem_active(&interval->ext, genmask) &&
-+	    !nft_set_elem_expired(&interval->ext) &&
- 	    ((!nft_rbtree_interval_end(interval) &&
- 	      !(flags & NFT_SET_ELEM_INTERVAL_END)) ||
- 	     (nft_rbtree_interval_end(interval) &&
-@@ -360,6 +369,8 @@ static void nft_rbtree_walk(const struct
+ cleanup_all_ns()
+ {
+-	cleanup_ns $NS_LIST
++	cleanup_ns "${NS_LIST[@]}"
+ }
  
- 		if (iter->count < iter->skip)
- 			goto cont;
-+		if (nft_set_elem_expired(&rbe->ext))
-+			goto cont;
- 		if (!nft_set_elem_active(&rbe->ext, iter->genmask))
- 			goto cont;
+ # setup netns with given names as prefix. e.g
+@@ -155,7 +156,7 @@ setup_ns()
+ {
+ 	local ns=""
+ 	local ns_name=""
+-	local ns_list=""
++	local ns_list=()
+ 	local ns_exist=
+ 	for ns_name in "$@"; do
+ 		# Some test may setup/remove same netns multi times
+@@ -171,13 +172,13 @@ setup_ns()
  
+ 		if ! ip netns add "$ns"; then
+ 			echo "Failed to create namespace $ns_name"
+-			cleanup_ns "$ns_list"
++			cleanup_ns "${ns_list[@]}"
+ 			return $ksft_skip
+ 		fi
+ 		ip -n "$ns" link set lo up
+-		! $ns_exist && ns_list="$ns_list $ns"
++		! $ns_exist && ns_list+=("$ns")
+ 	done
+-	NS_LIST="$NS_LIST $ns_list"
++	NS_LIST+=("${ns_list[@]}")
+ }
+ 
+ tc_rule_stats_get()
 
 
 
