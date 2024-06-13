@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A6E1906F50
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9E0D9070EE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:32:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C7FAB28E18
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:16:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44D5D28205A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235681474B2;
-	Thu, 13 Jun 2024 12:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1561F1DFD8;
+	Thu, 13 Jun 2024 12:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPVJwf7R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChEIxjXR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D697F1474A6;
-	Thu, 13 Jun 2024 12:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7EC0384;
+	Thu, 13 Jun 2024 12:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280803; cv=none; b=K8uillLz8Wg9nUNDJFrrWvfGISTbvvjEBG+Kjk0Kbx8Wl2oC9bw0GmZShVLjBnpC1sX78vzmu8hcYPfEFKuxmjOQanG38BBAhezhnG+O/yqzhBf2081TAP2obr9rXdaSw10KY5Qvy0D0d8o9LF5kstDCVvBJhPoNr9lOMwCqLIg=
+	t=1718281924; cv=none; b=OfRflujrvjiO4b1kt1y2olGlEAwdWzBSLNei4wzJR7BJ+IK+TQQrPoHXWR7xoUCcfFLHUp/VTf4Cw5jFkWeNRfIOsECPSBfp3WgNdNoClnIW3Speh9f1Pi3+4nH+r8BrP+c6//Op9ELcL6J4r893MZnLLHvI312Gl4ViloPTpI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280803; c=relaxed/simple;
-	bh=+meOkEcmERzAK7GPCmQDjFG2391zuaQKGbywlgZtKV4=;
+	s=arc-20240116; t=1718281924; c=relaxed/simple;
+	bh=otmjacSioPyNH/123b3Ktlak5OTHSjfYYV9Zy08J8sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cL5FiCCScVu0p/Tx2nafRkx7XrEicOxIcs4fm0Iytp7oBTU7bMiMfKDSikEE4T51HVb+B/8xRozrGsDmF0Mox8uBWjVf2UdRSih29o5fPbzhPvXwhjTVdfOLdBy5Ep2qhnGq6pnij9JYfBRInrdXj5pD/C/MX+3b1Gbwz/QgqK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPVJwf7R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269B1C32786;
-	Thu, 13 Jun 2024 12:13:22 +0000 (UTC)
+	 MIME-Version; b=hk5l4MEN2FsJ3lKa7qVpf6x0t88IVjWfyQZv5y13ymeDUI8aVI9tt1lH3zButawMuTQg7KdCvDDG7u9WhPTs/nkv2Hu0Bn7CiAKbbkN0ZuDYm6YCS0NgHNWhdoZkgtwtqDDz5fgY8OTVHrIgImJhpYeoyD9qkKQto+6zvn5108g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChEIxjXR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3F7C2BBFC;
+	Thu, 13 Jun 2024 12:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280803;
-	bh=+meOkEcmERzAK7GPCmQDjFG2391zuaQKGbywlgZtKV4=;
+	s=korg; t=1718281924;
+	bh=otmjacSioPyNH/123b3Ktlak5OTHSjfYYV9Zy08J8sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RPVJwf7RKs8ejzFGUFv3CyjE6fYpWFQCtuKphq/3IACo92FcoNtZUOa2i2MfYESDu
-	 N+dgm67prikLDOTFnV1TCrLiOILHghpo0Bm2cWWhFWx3BlXO0R941tefLsXZpgPtYv
-	 uWbgDM3YDfZPU9zM/wkQ/9Keg1Yc9xbtVm4+yoEE=
+	b=ChEIxjXRxFvabKHB8vKPH61bgCVh+q5PbVyQCkFvbV2Z83VRxVO33Pb8Nd/bb5xfe
+	 35ZgG+0dPSc1LSOf1bSAgbOiPQwUIXyGf68Wml0Sq2Qm+SX3itaFKtmDGmO2+aKYKK
+	 IZSUsixXOK4sZSL7DoruCdBphMN6YAIYmxZyJjAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Halaney <ahalaney@redhat.com>,
-	Asutosh Das <quic_asutoshd@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 040/317] scsi: ufs: ufs-qcom: Fix the Qcom register name for offset 0xD0
-Date: Thu, 13 Jun 2024 13:30:58 +0200
-Message-ID: <20240613113249.098391105@linuxfoundation.org>
+Subject: [PATCH 5.15 102/402] scsi: qedf: Ensure the copied buf is NUL terminated
+Date: Thu, 13 Jun 2024 13:30:59 +0200
+Message-ID: <20240613113306.113224929@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit 7959587f3284bf163e4f1baff3c6fa71fc6a55b1 ]
+[ Upstream commit d0184a375ee797eb657d74861ba0935b6e405c62 ]
 
-On newer UFS revisions, the register at offset 0xD0 is called,
-REG_UFS_PARAM0. Since the existing register, RETRY_TIMER_REG is not used
-anywhere, it is safe to use the new name.
+Currently, we allocate a count-sized kernel buffer and copy count from
+userspace to that buffer. Later, we use kstrtouint on this buffer but we
+don't ensure that the string is terminated inside the buffer, this can
+lead to OOB read when using kstrtouint. Fix this issue by using
+memdup_user_nul instead of memdup_user.
 
-Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
-Reviewed-by: Asutosh Das <quic_asutoshd@quicinc.com>
-Tested-by: Andrew Halaney <ahalaney@redhat.com> # Qdrive3/sa8540p-ride
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-4-f1f1b53a10f4@gmail.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 823150ecf04f ("scsi: ufs: qcom: Perform read back after writing unipro mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/ufs/ufs-qcom.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/qedf/qedf_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/ufs/ufs-qcom.h b/drivers/scsi/ufs/ufs-qcom.h
-index 478134ba80864..70bee1d1f1139 100644
---- a/drivers/scsi/ufs/ufs-qcom.h
-+++ b/drivers/scsi/ufs/ufs-qcom.h
-@@ -46,7 +46,8 @@ enum {
- 	REG_UFS_TX_SYMBOL_CLK_NS_US         = 0xC4,
- 	REG_UFS_LOCAL_PORT_ID_REG           = 0xC8,
- 	REG_UFS_PA_ERR_CODE                 = 0xCC,
--	REG_UFS_RETRY_TIMER_REG             = 0xD0,
-+	/* On older UFS revisions, this register is called "RETRY_TIMER_REG" */
-+	REG_UFS_PARAM0                      = 0xD0,
- 	REG_UFS_PA_LINK_STARTUP_TIMER       = 0xD8,
- 	REG_UFS_CFG1                        = 0xDC,
- 	REG_UFS_CFG2                        = 0xE0,
+diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
+index 451fd236bfd05..96174353e3898 100644
+--- a/drivers/scsi/qedf/qedf_debugfs.c
++++ b/drivers/scsi/qedf/qedf_debugfs.c
+@@ -170,7 +170,7 @@ qedf_dbg_debug_cmd_write(struct file *filp, const char __user *buffer,
+ 	if (!count || *ppos)
+ 		return 0;
+ 
+-	kern_buf = memdup_user(buffer, count);
++	kern_buf = memdup_user_nul(buffer, count);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
+ 
 -- 
 2.43.0
 
