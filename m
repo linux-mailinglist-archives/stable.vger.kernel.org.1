@@ -1,63 +1,53 @@
-Return-Path: <stable+bounces-51014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16184906DF0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5750906DFB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 732F1B272F4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C77611C21F7D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A341474CB;
-	Thu, 13 Jun 2024 12:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AABF148301;
+	Thu, 13 Jun 2024 12:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oz5toE5o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EirnrXXF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136DD1474C5;
-	Thu, 13 Jun 2024 12:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325A81482F5;
+	Thu, 13 Jun 2024 12:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280054; cv=none; b=YUm4BfohqBR/KojeXku87bGybolow0JlmUT6UeKj48vgVEB1+vljI8adoSGVX0A5BnZvdxBlOni6L4IpPZhUlrIijWiIuka+XtmxrXkuKfP6GQjlXSBoAp4u6WI2HBnB8JCFl/7u2VT1rhcKzpifM1UqlPsaMuW+vU3l/+h6Hs8=
+	t=1718280086; cv=none; b=Hgzv30/d4E034rY8yhMSPPPPpoGHppKbm89EyKDZ/i9TJ2PviDBRaX9qFRRIYNEUwGEtuGJBYMZvubeWTLYqCqa0bT6Z6m2i87pGXyYKXZQmq1bJPTTGxz7uZaXpsMJmMMdCD6Xz2/qlxQXaZWYxF6ICcEjWcb7BC5D74vSCKUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280054; c=relaxed/simple;
-	bh=4zAdV/GuLjMGw7QwUZkBc5SxBzNySq/0/5JtdGZgFk4=;
+	s=arc-20240116; t=1718280086; c=relaxed/simple;
+	bh=2kEd5YV+PzS2IsUcw+Vv5yK7igNy9PR4vRyXOt7zA8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jnte8j+3AiRY+6HyliJGP8Sm82SmADVUpMLaEfWU1j/6ksXsBB7Sp7dk2TSKNCzfVxaG3RQXMmaKbhSAQEW696AtDBxQIz4Inl5niWAubql9yDUoOqOkq4OJVkhsfzBwW7msMOvmOHpQxnq9+eUL7xZOsr0jT5CCH+SzMK9jYuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oz5toE5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C92BC2BBFC;
-	Thu, 13 Jun 2024 12:00:53 +0000 (UTC)
+	 MIME-Version; b=cb3Y1cten4gGg+F51GB3cg2xm+cx137ptopFBcqCgBhn5Sa9SkogeK9V7K7sVo6zL+eQiVVOSywwPe59nKp1goP7nOQElNGadrg38H3MsN1gTyBwPSxg3VlCH9Noq9ifaaLFbLmukCg/TpNUX9EF5pyh6rfErgxMEItItoXd24U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EirnrXXF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E8FC4AF1A;
+	Thu, 13 Jun 2024 12:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280053;
-	bh=4zAdV/GuLjMGw7QwUZkBc5SxBzNySq/0/5JtdGZgFk4=;
+	s=korg; t=1718280086;
+	bh=2kEd5YV+PzS2IsUcw+Vv5yK7igNy9PR4vRyXOt7zA8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oz5toE5oICZDuEHeqsQATHPUPygb2ojQ73wNkP8pTukQt5JwwKkpTOhPDlEZKfiSk
-	 9CwKOPMb0MKrOI52uldjvmIeiXYVwgVCyfXs6KaPQ6Jq0ilDYxmBF8XmLb+2IrBUeq
-	 Bg1llwo7Ls4YrmXOGgPD+Oq1IaPm91z1v+VhjUbc=
+	b=EirnrXXFMRhaAI+NauA8o1gYscqbvKgfokrf7+V+knhqIajExggwusEAX8mJzGUWG
+	 +0Vk8eZ19f/uyNgqS3TRMk2xSE00rSUarpkosoIdy8birMvzFT621BxiX8xKuWTqFQ
+	 ErpxoT0UgFCLkV7n5BycTAKev8V7RoclnWT64CTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Leo Yan <leo.yan@linux.dev>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 119/202] perf ui browser: Avoid SEGV on title
-Date: Thu, 13 Jun 2024 13:33:37 +0200
-Message-ID: <20240613113232.355002433@linuxfoundation.org>
+Subject: [PATCH 5.4 120/202] f2fs: fix to release node block count in error path of f2fs_new_node_page()
+Date: Thu, 13 Jun 2024 13:33:38 +0200
+Message-ID: <20240613113232.393343882@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
 References: <20240613113227.759341286@linuxfoundation.org>
@@ -76,44 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 90f01afb0dfafbc9b094bb61e61a4ac297d9d0d2 ]
+[ Upstream commit 0fa4e57c1db263effd72d2149d4e21da0055c316 ]
 
-If the title is NULL then it can lead to a SEGV.
+It missed to call dec_valid_node_count() to release node block count
+in error path, fix it.
 
-Fixes: 769e6a1e15bdbbaf ("perf ui browser: Don't save pointer to stack memory")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Leo Yan <leo.yan@linux.dev>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240508035301.1554434-2-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 141170b759e0 ("f2fs: fix to avoid use f2fs_bug_on() in f2fs_new_node_page()")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/ui/browser.c | 2 +-
+ fs/f2fs/node.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/ui/browser.c b/tools/perf/ui/browser.c
-index 6fa4f123d5ff7..b84b87b939573 100644
---- a/tools/perf/ui/browser.c
-+++ b/tools/perf/ui/browser.c
-@@ -203,7 +203,7 @@ void ui_browser__refresh_dimensions(struct ui_browser *browser)
- void ui_browser__handle_resize(struct ui_browser *browser)
- {
- 	ui__refresh_dimensions(false);
--	ui_browser__show(browser, browser->title, ui_helpline__current);
-+	ui_browser__show(browser, browser->title ?: "", ui_helpline__current);
- 	ui_browser__refresh(browser);
- }
- 
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 8256a2dedae8c..d629b3c6546c8 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1244,6 +1244,7 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 	}
+ 	if (unlikely(new_ni.blk_addr != NULL_ADDR)) {
+ 		err = -EFSCORRUPTED;
++		dec_valid_node_count(sbi, dn->inode, !ofs);
+ 		set_sbi_flag(sbi, SBI_NEED_FSCK);
+ 		goto fail;
+ 	}
+@@ -1269,7 +1270,6 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 	if (ofs == 0)
+ 		inc_valid_inode_count(sbi);
+ 	return page;
+-
+ fail:
+ 	clear_node_page_dirty(page);
+ 	f2fs_put_page(page, 1);
 -- 
 2.43.0
 
