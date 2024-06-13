@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-50757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5CE906C6D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C17906D72
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 247C42815C8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67C091F27A5A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2231448EA;
-	Thu, 13 Jun 2024 11:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB831487F9;
+	Thu, 13 Jun 2024 11:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3cEW5ip"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhIG7uOw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE971386DF;
-	Thu, 13 Jun 2024 11:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF611487DA;
+	Thu, 13 Jun 2024 11:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279295; cv=none; b=QH+dwYLEJvDuVOKea/PWcQB8i3ITJW4UMPpaH4NyN8f/z1DmFgnXX5PMwJ7/ztrQc7V0W4cY0KcTKAgAJCSEF1TfNQWll6rUVuQnQrk7Xz2K2kVr2YCT8ULWLhNt/+ue+CnabAieyuw8e7Im5Ye236ddsCR9Ay+AfCbzS4P+P9g=
+	t=1718279785; cv=none; b=I04ZO+EkKvwmNL5dCzFEAloNzECpCcKEhcYUGp1juxrYhZkT8Qa1MqaQt9fkn+c+OlnfZM4w0f/W/glNAP6eS+ulWcBkg4SJIv8J5sAoJsGvxobLmv1liTF1ZYGhSUfnIMxQON53A2LltcM88mizGPA6W4ne5LV13A6yXC6KZRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279295; c=relaxed/simple;
-	bh=dB36BTEh36BJmXU+LGExqPXY1E9lUYNNTpdGEf0p/nI=;
+	s=arc-20240116; t=1718279785; c=relaxed/simple;
+	bh=+hpr0YIpT+3bQgCykfTztJYiHZ42ViD/hVOkA2oYN1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AxEEWDSpyWZuu1ejIuPoUQQr1faP/W1iwpDlbhOAkI7ZZ4dMsAjPjY4eGIWOtG6s82fmeK5G9vTAYM8XanDjkSgWDi9ueS0Diu+WglN+xt270tyrk+j0PBLeCiglUtTdl+NO+8aRn/Scr0zptJsz4fadeRrr1NUhClLf1m4RSoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3cEW5ip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DF4C2BBFC;
-	Thu, 13 Jun 2024 11:48:15 +0000 (UTC)
+	 MIME-Version; b=Hwxtf0V5919bUL31ujn9TPlLA5aUNBVe+/dx6q3FUNzCqgAPPmVB9EZifyBnn3ObfQYN1AZ4wivtNzAgiX3PLSGiBw5tkqxVb+JA3CSlasp6b8hMtUwezuFXRuMx95S9keJpqQ05yRsVhxWgMkEbIzSR7IGDMUKXz4lJEGVi+qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhIG7uOw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BB7C2BBFC;
+	Thu, 13 Jun 2024 11:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279295;
-	bh=dB36BTEh36BJmXU+LGExqPXY1E9lUYNNTpdGEf0p/nI=;
+	s=korg; t=1718279785;
+	bh=+hpr0YIpT+3bQgCykfTztJYiHZ42ViD/hVOkA2oYN1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3cEW5ipNoYpka9O3vb8Y4+YraDdINSPEazFzDOHOepYIojexamxSm5mF9R9swzdp
-	 0CA/YsXduomcPR2bgqtHVx8bRj8gnGq4oBMeRtqMOaBjvRSJLLUtG2wimFjDbLA3ld
-	 AjNMnb7qN+ZwmvkPxqN6Kkv0Leu+dOPROPNT76sM=
+	b=JhIG7uOwnNxPPTqKacN/5vzTPcEKqzIDiZKEjUgXW77NXv1VtLNAXZqzG8tHLWeYc
+	 S6bVL/HuDyYGxjfp2J3iKvs2ogwjqJZPeM6NByxXmEkuFD+GwWRuYJQ8/QGqNKDvMF
+	 EyM+DeIGayn2NjCXJR9a4ORGDq6TtCYxIfrpIG8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheyu Ma <zheyuma97@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 6.9 008/157] media: lgdt3306a: Add a check against null-pointer-def
-Date: Thu, 13 Jun 2024 13:32:13 +0200
-Message-ID: <20240613113227.724450994@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 036/202] cpufreq: Reorganize checks in cpufreq_offline()
+Date: Thu, 13 Jun 2024 13:32:14 +0200
+Message-ID: <20240613113229.167268534@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheyu Ma <zheyuma97@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit c1115ddbda9c930fba0fdd062e7a8873ebaf898d upstream.
+[ Upstream commit e1e962c5b9edbc628a335bcdbd010331a12d3e5b ]
 
-The driver should check whether the client provides the platform_data.
+Notice that cpufreq_offline() only needs to check policy_is_inactive()
+once and rearrange the code in there to make that happen.
 
-The following log reveals it:
+No expected functional impact.
 
-[   29.610324] BUG: KASAN: null-ptr-deref in kmemdup+0x30/0x40
-[   29.610730] Read of size 40 at addr 0000000000000000 by task bash/414
-[   29.612820] Call Trace:
-[   29.613030]  <TASK>
-[   29.613201]  dump_stack_lvl+0x56/0x6f
-[   29.613496]  ? kmemdup+0x30/0x40
-[   29.613754]  print_report.cold+0x494/0x6b7
-[   29.614082]  ? kmemdup+0x30/0x40
-[   29.614340]  kasan_report+0x8a/0x190
-[   29.614628]  ? kmemdup+0x30/0x40
-[   29.614888]  kasan_check_range+0x14d/0x1d0
-[   29.615213]  memcpy+0x20/0x60
-[   29.615454]  kmemdup+0x30/0x40
-[   29.615700]  lgdt3306a_probe+0x52/0x310
-[   29.616339]  i2c_device_probe+0x951/0xa90
-
-Link: https://lore.kernel.org/linux-media/20220405095018.3993578-1-zheyuma97@gmail.com
-Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Stable-dep-of: b8f85833c057 ("cpufreq: exit() callback is optional")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/lgdt3306a.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/cpufreq/cpufreq.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/drivers/media/dvb-frontends/lgdt3306a.c
-+++ b/drivers/media/dvb-frontends/lgdt3306a.c
-@@ -2176,6 +2176,11 @@ static int lgdt3306a_probe(struct i2c_cl
- 	struct dvb_frontend *fe;
- 	int ret;
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 11b9edc713baa..09be815190124 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -1567,24 +1567,18 @@ static int cpufreq_offline(unsigned int cpu)
+ 	}
  
-+	if (!client->dev.platform_data) {
-+		dev_err(&client->dev, "platform data is mandatory\n");
-+		return -EINVAL;
-+	}
+ 	down_write(&policy->rwsem);
 +
- 	config = kmemdup(client->dev.platform_data,
- 			 sizeof(struct lgdt3306a_config), GFP_KERNEL);
- 	if (config == NULL) {
+ 	if (has_target())
+ 		cpufreq_stop_governor(policy);
+ 
+ 	cpumask_clear_cpu(cpu, policy->cpus);
+ 
+-	if (policy_is_inactive(policy)) {
+-		if (has_target())
+-			strncpy(policy->last_governor, policy->governor->name,
+-				CPUFREQ_NAME_LEN);
+-		else
+-			policy->last_policy = policy->policy;
+-	} else if (cpu == policy->cpu) {
+-		/* Nominate new CPU */
+-		policy->cpu = cpumask_any(policy->cpus);
+-	}
+-
+-	/* Start governor again for active policy */
+ 	if (!policy_is_inactive(policy)) {
++		/* Nominate a new CPU if necessary. */
++		if (cpu == policy->cpu)
++			policy->cpu = cpumask_any(policy->cpus);
++
++		/* Start the governor again for the active policy. */
+ 		if (has_target()) {
+ 			ret = cpufreq_start_governor(policy);
+ 			if (ret)
+@@ -1594,6 +1588,12 @@ static int cpufreq_offline(unsigned int cpu)
+ 		goto unlock;
+ 	}
+ 
++	if (has_target())
++		strncpy(policy->last_governor, policy->governor->name,
++			CPUFREQ_NAME_LEN);
++	else
++		policy->last_policy = policy->policy;
++
+ 	if (cpufreq_thermal_control_enabled(cpufreq_driver)) {
+ 		cpufreq_cooling_unregister(policy->cdev);
+ 		policy->cdev = NULL;
+-- 
+2.43.0
+
 
 
 
