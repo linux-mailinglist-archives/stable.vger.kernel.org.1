@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-51918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08D85907235
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C1C9072F1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:55:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D1E52813C9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0191B290E7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6930D1DDDB;
-	Thu, 13 Jun 2024 12:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CD91448CD;
+	Thu, 13 Jun 2024 12:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0HYed87x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5B044+z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271BE17FD;
-	Thu, 13 Jun 2024 12:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B18B14430D;
+	Thu, 13 Jun 2024 12:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282699; cv=none; b=fpmwfEU+NUXenfOrMnE8LBOGUTdN25IMH5oqzCb50WA4c6XrNTTPwAzO10OGlYeie34Q/1lfGVHuetdD30r3H/l032vEbNPdFO0Vf1fOAhYBkL4WYX5zsWdfNUGKIECLZXm7xblX1MxT2EPGKjv2pqQWMZ1KL6AQOLdwmSQzJfM=
+	t=1718282975; cv=none; b=CvudLYDv5CngIQKxkvK6S3pmqP17WZ2g1ELwcV1HxQKB/PUnnAAmRFfwgIduj0ywlVPTRbLCwagJF7cezXZAuL8YAJZ8hiYebSC5WkNwqSQ8wxwdnUambesYJ6Zd+PiI4HVmQEBJeuXpYHZnf7+0XUDSWqzysHfbmFP0Y74XqrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282699; c=relaxed/simple;
-	bh=RRp60HHoXUfWHmT1x/Hk/LSfiLFuo0iCco9y4qpAQPE=;
+	s=arc-20240116; t=1718282975; c=relaxed/simple;
+	bh=g8C7N523steWbU3MLr9OXSrVnsfKpNojiBdgEPM3AGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mQiOu8N2St+pGpHaNYl/dthiJ55v1Obah6PRZuvtk7teSc+p0M7I9XxpslsMt9SF9c2J5Bodm6ikWbMucDSa4+39qmv+A6VMdJpUxZ73IaQ+9y5ThBBw1egq3Q4bvkgaJ3UNnw7PZOtFWhjALtr+hJmWPyCLzXrK7VTjOmJGDnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0HYed87x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2379C2BBFC;
-	Thu, 13 Jun 2024 12:44:58 +0000 (UTC)
+	 MIME-Version; b=GMjghrXu89SbqKFXWY55wUzMhpALuYZvI+9zisGpxuWyZcDYVhW3kVDFYmC0JXJDDvv8syAxMeEtRTiyzG/11fCKGbAuEGFV3hpPtzecz6w8dMkXtNkaOF3D0X1pyv9Z7XOwH7Vefk5MYUbUhUT2tAPVP8WwOIdxS5d7XwuEdko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5B044+z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21881C2BBFC;
+	Thu, 13 Jun 2024 12:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282699;
-	bh=RRp60HHoXUfWHmT1x/Hk/LSfiLFuo0iCco9y4qpAQPE=;
+	s=korg; t=1718282975;
+	bh=g8C7N523steWbU3MLr9OXSrVnsfKpNojiBdgEPM3AGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0HYed87xqgU/4UD+py46QWP+WrTCv2ATkcgJbSNO+dl+GmA76Jc21PDo4lwxhDnXW
-	 2UlBEZd8fnOJJDmKrz7QjUu4UBhHXmwUN0YOgimUi/c5J9YyVbUFNCC4yf2fGyzCTK
-	 D5KnD2T29BxTZIvZ9WSHsnkYM1QauWhQ/nxSIxfg=
+	b=P5B044+zTo4KyTkVwyHwuqNKpQPKLCbPgtFwMtQdz0yZz8CAL3MJ+EbpI2aikP+Bw
+	 ZiZzg4CDkQTfKqLCgG1CMND7whclLT8vqBXSsTu42mZ9bQnkh1137aK7lolIRH6+cY
+	 TFkiauTe60I7nOBz2dqX5uF3PUSSEH5tHPgpLL68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Xiwen <forbidden405@outlook.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 5.15 366/402] arm64: dts: hi3798cv200: fix the size of GICR
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.1 25/85] arm64: tegra: Correct Tegra132 I2C alias
 Date: Thu, 13 Jun 2024 13:35:23 +0200
-Message-ID: <20240613113316.413022145@linuxfoundation.org>
+Message-ID: <20240613113215.112952544@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Xiwen <forbidden405@outlook.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 
-commit 428a575dc9038846ad259466d5ba109858c0a023 upstream.
+commit 2633c58e1354d7de2c8e7be8bdb6f68a0a01bad7 upstream.
 
-During boot, Linux kernel complains:
+There is no such device as "as3722@40", because its name is "pmic".  Use
+phandles for aliases to fix relying on full node path.  This corrects
+aliases for RTC devices and also fixes dtc W=1 warning:
 
-[    0.000000] GIC: GICv2 detected, but range too small and irqchip.gicv2_force_probe not set
+  tegra132-norrin.dts:12.3-36: Warning (alias_paths): /aliases:rtc0: aliases property is not a valid node (/i2c@7000d000/as3722@40)
 
-This SoC is using a regular GIC-400 and the GICR space size should be
-8KB rather than 256B.
-
-With this patch:
-
-[    0.000000] GIC: Using split EOI/Deactivate mode
-
-So this should be the correct fix.
-
-Fixes: 2f20182ed670 ("arm64: dts: hisilicon: add dts files for hi3798cv200-poplar board")
-Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
+Fixes: 0f279ebdf3ce ("arm64: tegra: Add NVIDIA Tegra132 Norrin support")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240219-cache-v3-1-a33c57534ae9@outlook.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/nvidia/tegra132-norrin.dts |    4 ++--
+ arch/arm64/boot/dts/nvidia/tegra132.dtsi       |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
-+++ b/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
-@@ -58,7 +58,7 @@
- 	gic: interrupt-controller@f1001000 {
- 		compatible = "arm,gic-400";
- 		reg = <0x0 0xf1001000 0x0 0x1000>,  /* GICD */
--		      <0x0 0xf1002000 0x0 0x100>;   /* GICC */
-+		      <0x0 0xf1002000 0x0 0x2000>;  /* GICC */
- 		#address-cells = <0>;
- 		#interrupt-cells = <3>;
- 		interrupt-controller;
+--- a/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
++++ b/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
+@@ -9,8 +9,8 @@
+ 	compatible = "nvidia,norrin", "nvidia,tegra132", "nvidia,tegra124";
+ 
+ 	aliases {
+-		rtc0 = "/i2c@7000d000/as3722@40";
+-		rtc1 = "/rtc@7000e000";
++		rtc0 = &as3722;
++		rtc1 = &tegra_rtc;
+ 		serial0 = &uarta;
+ 	};
+ 
+--- a/arch/arm64/boot/dts/nvidia/tegra132.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra132.dtsi
+@@ -579,7 +579,7 @@
+ 		status = "disabled";
+ 	};
+ 
+-	rtc@7000e000 {
++	tegra_rtc: rtc@7000e000 {
+ 		compatible = "nvidia,tegra124-rtc", "nvidia,tegra20-rtc";
+ 		reg = <0x0 0x7000e000 0x0 0x100>;
+ 		interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
 
 
 
