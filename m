@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-51547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C19907064
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2A12907246
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BF1E1F21723
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27A891C2138C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14ED413D635;
-	Thu, 13 Jun 2024 12:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062882CA6;
+	Thu, 13 Jun 2024 12:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iouHKXNo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFoMV4o/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C722756458;
-	Thu, 13 Jun 2024 12:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7ACD12C47D;
+	Thu, 13 Jun 2024 12:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281615; cv=none; b=ri4JJ8juxbTkf3/kz1OT5UhyncjiGrx/C+QXyNIUxbM7p13ONW9JMNT82gp77SRS8j6tRPlF0qW1ARJeIqD31WJ2YVzLSvZPxq1u7mgftX1J8FeadQVHZHmO9baeVEqRUuLFlgSlYNAlOTLjmHsm0iGBWns2TpANnjkVT+IGTxY=
+	t=1718282731; cv=none; b=aDLZAGFqVrkRNJxZ/s/DJsguWF12WvgpEnh8fZXuoWj/yOZNi3mEPxHSowm894rO3vX7OwuU4yj9r9YIQZL3X/I3IkYhfacA6xV2h5NQNeJbzkV3Z+HtsLoWbpio0qJv2Dxb7+4smN6tBvdwbTuIYiML9jWqKVZp0NX3V9uMDXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281615; c=relaxed/simple;
-	bh=9P1y8Bkt8VuIxHRPcFDzx3/tkc8cNKu+lKaxwabtXsE=;
+	s=arc-20240116; t=1718282731; c=relaxed/simple;
+	bh=5wNqid90rr7atYQZY9PakQnfLtSZPNTCRKIeM429Zqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tY/puMKJM4+rQchtC02HJuZgEwDq9GQI2yco+KQPnbXZFPnA4Zbs1dAaEu4gxHYDzsR7660V+StKLSzDrRNf6+U5LVLkfSPx71lMKjwwgqKul2UvcvTOPR6/lJ8QnhuuxS0J3VTab8Ol3a1WhQiAd3ycLwMcHcZjodDjZNY1BGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iouHKXNo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510C0C2BBFC;
-	Thu, 13 Jun 2024 12:26:55 +0000 (UTC)
+	 MIME-Version; b=sUbW1HfYoVrohP/EaEgz3qdGPnqQOoK1x2vNr7nXPfCKloYYjex93gFeXPApfDuesUxYnYSKHA74nLWsi/Wy0GKhisMXc1XX4NWWzlUDA2J5y4CSawVTFkiiPB44iqSqgliitklg2dvSWaIalTCHtbPAaqyBAffoVh0EQTT2O0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFoMV4o/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38581C2BBFC;
+	Thu, 13 Jun 2024 12:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281615;
-	bh=9P1y8Bkt8VuIxHRPcFDzx3/tkc8cNKu+lKaxwabtXsE=;
+	s=korg; t=1718282731;
+	bh=5wNqid90rr7atYQZY9PakQnfLtSZPNTCRKIeM429Zqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iouHKXNo79hOQs/WBlVFVA6XPUnPv4AwQS6XV6pqoO6+30bdEtrfLBqAdrbkdvpDO
-	 1QoySoYzwFVH1wxZI8Tv5wXbQFRz1ZSbqZ9/Cyzdv2Im/QFiKLUUFVQL5wUAkNmeHb
-	 g89anjWZ8xDNtx5CESzvnAEP7q4ymNRLO0BACM/A=
+	b=zFoMV4o/9c3+o7kPLQQDBGOBA8WAb2cr4uRq8SEFf1vX8mKSAVeXpvIx/2t/GafmL
+	 wqnW0QyPX6Wqr+U1/+Az45+RGtWum8sOHHGZasNniGL7sxzd5bJqeOn63fu+QZPW0M
+	 f6hiKfPv2MxRHAnxUarTkm1CvzZSmPfHHJlA8KaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <yuchao0@huawei.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 5.10 315/317] f2fs: compress: fix compression chksum
+	Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 5.15 376/402] KVM: arm64: Fix AArch32 register narrowing on userspace write
 Date: Thu, 13 Jun 2024 13:35:33 +0200
-Message-ID: <20240613113259.739346431@linuxfoundation.org>
+Message-ID: <20240613113316.811200647@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <yuchao0@huawei.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 75e91c888989cf2df5c78b251b07de1f5052e30e upstream.
+commit 947051e361d551e0590777080ffc4926190f62f2 upstream.
 
-This patch addresses minor issues in compression chksum.
+When userspace writes to one of the core registers, we make
+sure to narrow the corresponding GPRs if PSTATE indicates
+an AArch32 context.
 
-Fixes: b28f047b28c5 ("f2fs: compress: support chksum")
-Signed-off-by: Chao Yu <yuchao0@huawei.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+The code tries to check whether the context is EL0 or EL1 so
+that it narrows the correct registers. But it does so by checking
+the full PSTATE instead of PSTATE.M.
+
+As a consequence, and if we are restoring an AArch32 EL0 context
+in a 64bit guest, and that PSTATE has *any* bit set outside of
+PSTATE.M, we narrow *all* registers instead of only the first 15,
+destroying the 64bit state.
+
+Obviously, this is not something the guest is likely to enjoy.
+
+Correctly masking PSTATE to only evaluate PSTATE.M fixes it.
+
+Fixes: 90c1f934ed71 ("KVM: arm64: Get rid of the AArch32 register mapping code")
+Reported-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240524141956.1450304-2-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/compress.c | 3 +--
- fs/f2fs/compress.h | 0
- fs/f2fs/compress.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
- create mode 100644 fs/f2fs/compress.h
+ arch/arm64/kvm/guest.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -783,7 +783,7 @@ void f2fs_decompress_pages(struct bio *b
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -270,7 +270,7 @@ static int set_core_reg(struct kvm_vcpu
+ 	if (*vcpu_cpsr(vcpu) & PSR_MODE32_BIT) {
+ 		int i, nr_reg;
  
- 	ret = cops->decompress_pages(dic);
- 
--	if (!ret && fi->i_compress_flag & 1 << COMPRESS_CHKSUM) {
-+	if (!ret && (fi->i_compress_flag & 1 << COMPRESS_CHKSUM)) {
- 		u32 provided = le32_to_cpu(dic->cbuf->chksum);
- 		u32 calculated = f2fs_crc32(sbi, dic->cbuf->cdata, dic->clen);
- 
-@@ -796,7 +796,6 @@ void f2fs_decompress_pages(struct bio *b
- 					provided, calculated);
- 			}
- 			set_sbi_flag(sbi, SBI_NEED_FSCK);
--			WARN_ON_ONCE(1);
- 		}
- 	}
- 
+-		switch (*vcpu_cpsr(vcpu)) {
++		switch (*vcpu_cpsr(vcpu) & PSR_AA32_MODE_MASK) {
+ 		/*
+ 		 * Either we are dealing with user mode, and only the
+ 		 * first 15 registers (+ PC) must be narrowed to 32bit.
 
 
 
