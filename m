@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC9A1906EC6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4928906E34
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E43FDB267B4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF3CB1C20B7D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0730C146A7C;
-	Thu, 13 Jun 2024 12:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61EA5148FE1;
+	Thu, 13 Jun 2024 12:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ztm73l1b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKedoTts"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C3E137914;
-	Thu, 13 Jun 2024 12:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D273146597;
+	Thu, 13 Jun 2024 12:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280576; cv=none; b=VGrQ9cnKnqzQbEw1XECMkBsOn4SJ//2VBTrCtg5kRPXzNuPJX+TUwaU+/GMjZfL+UyUd7O/IboXSm8h0ADaew0UKaW6tJBcBck5Vf0JJHKZUV2P46wv9bGY8+tWagLATCsSZOlZZ9G/GAR0EDEemu+48hgOJ9UdhyH9Lp1FjHRc=
+	t=1718280222; cv=none; b=eofoNfuoAhjUCf2xOlPgjngOiF2gZkpuFtf/lv0LkWctkZx3XmuGFM/7M9F/TMnPBLKZs3KsBV83Q3rFDszILlXbh0SR43folF2HHyF/EzwSi8Js6uHNYwMlD87eeX2rvJBmp3qNILYUCzox0ytfoBoweEZcA7nB4KvvfigzFsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280576; c=relaxed/simple;
-	bh=rMCu1FWwErkPNxr35T0E7We6xxsZlAjr0v1BkHPnAdM=;
+	s=arc-20240116; t=1718280222; c=relaxed/simple;
+	bh=7XAZG00iBpOoGOeByFo3y8rzHBsVwaiSumkpJ7ZvI0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQanHkXroo2Vg047hW7GFv7z2pga0gi+bRW2hFRSaQVF/XU7LtfV2rPzIlGrsm45EL33CxAQ3RwK4VrJSghq7geQKLEE6vH4HfoQi3DKPn2EzlKHFTQvj7vYBe6GtNj4VBKMB9BIJjSX4/XMstV+EYP0fKlUZW5eCK133sxXPm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ztm73l1b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A2DC2BBFC;
-	Thu, 13 Jun 2024 12:09:36 +0000 (UTC)
+	 MIME-Version; b=aBrD8IYdJKA7XrZXzb9+zZwbIDtpO9pYrFUWhPtu5fkja8Pqc48rA6dK+5Xn/mVEB/lyWYloxU0v711ZtGztPjRQIivfkAEOqC66EDPWQk5of35WlXXl119omB4V0xWxUKil+VraWj8ODwq74ybM9+yjvetUjs3dnxDhGA2mV+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKedoTts; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9879BC2BBFC;
+	Thu, 13 Jun 2024 12:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280576;
-	bh=rMCu1FWwErkPNxr35T0E7We6xxsZlAjr0v1BkHPnAdM=;
+	s=korg; t=1718280222;
+	bh=7XAZG00iBpOoGOeByFo3y8rzHBsVwaiSumkpJ7ZvI0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ztm73l1b0mcN9SbDQvig9ydGmyDY9XFkHjZVWD+QSkgCfEEqeBK87L/DrlttJCL+p
-	 5ys8JrsIomEtBC/n3FA4FldK+ZUEJ4M0F32XZVNtLjMv1izJjsvWsxBoIdMF+sry1d
-	 Ey7ZAQC3+RRcm11ZjTPDueB0/QgynNMt6O+iUsNY=
+	b=uKedoTts3qC4zUN8X9MgxgWNt1d30Io3e96zilPL1YNLZ8RfZ0S20fntRkeL8Jq3x
+	 xGT4ss36XzCeWp1QF5zDesIkjcY0KYIFBuO6hr9Rud+mZ1p/vzuMYYoYTcq68ANizz
+	 kGNHr99rYO64u1vGJKjZ0f4X5m6NuJtZR8J4h1GY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Justin Stitt <justinstitt@google.com>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 6.6 100/137] kdb: Fix console handling when editing and tab-completing commands
+	Nathan Chancellor <nathan@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 5.4 182/202] media: mxl5xx: Move xpt structures off stack
 Date: Thu, 13 Jun 2024 13:34:40 +0200
-Message-ID: <20240613113227.178011038@linuxfoundation.org>
+Message-ID: <20240613113234.762007329@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit db2f9c7dc29114f531df4a425d0867d01e1f1e28 upstream.
+commit 526f4527545b2d4ce0733733929fac7b6da09ac6 upstream.
 
-Currently, if the cursor position is not at the end of the command buffer
-and the user uses the Tab-complete functions, then the console does not
-leave the cursor in the correct position.
+When building for LoongArch with clang 18.0.0, the stack usage of
+probe() is larger than the allowed 2048 bytes:
 
-For example consider the following buffer with the cursor positioned
-at the ^:
+  drivers/media/dvb-frontends/mxl5xx.c:1698:12: warning: stack frame size (2368) exceeds limit (2048) in 'probe' [-Wframe-larger-than]
+   1698 | static int probe(struct mxl *state, struct mxl5xx_cfg *cfg)
+        |            ^
+  1 warning generated.
 
-md kdb_pro 10
-          ^
+This is the result of the linked LLVM commit, which changes how the
+arrays of structures in config_ts() get handled with
+CONFIG_INIT_STACK_ZERO and CONFIG_INIT_STACK_PATTERN, which causes the
+above warning in combination with inlining, as config_ts() gets inlined
+into probe().
 
-Pressing tab should result in:
+This warning can be easily fixed by moving the array of structures off
+of the stackvia 'static const', which is a better location for these
+variables anyways because they are static data that is only ever read
+from, never modified, so allocating the stack space is wasteful.
 
-md kdb_prompt_str 10
-                 ^
+This drops the stack usage from 2368 bytes to 256 bytes with the same
+compiler and configuration.
 
-However this does not happen. Instead the cursor is placed at the end
-(after then 10) and further cursor movement redraws incorrectly. The
-same problem exists when we double-Tab but in a different part of the
-code.
-
-Fix this by sending a carriage return and then redisplaying the text to
-the left of the cursor.
-
+Link: https://lore.kernel.org/linux-media/20240111-dvb-mxl5xx-move-structs-off-stack-v1-1-ca4230e67c11@kernel.org
 Cc: stable@vger.kernel.org
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Justin Stitt <justinstitt@google.com>
-Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-3-f236dbe9828d@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1977
+Link: https://github.com/llvm/llvm-project/commit/afe8b93ffdfef5d8879e1894b9d7dda40dee2b8d
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/media/dvb-frontends/mxl5xx.c |   22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -383,6 +383,8 @@ poll_again:
- 			kdb_printf("\n");
- 			kdb_printf(kdb_prompt_str);
- 			kdb_printf("%s", buffer);
-+			if (cp != lastchar)
-+				kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		} else if (tab != 2 && count > 0) {
- 			/* How many new characters do we want from tmpbuffer? */
- 			len_tmp = strlen(p_tmp) - len;
-@@ -396,6 +398,9 @@ poll_again:
- 				kdb_printf("%s", cp);
- 				cp += len_tmp;
- 				lastchar += len_tmp;
-+				if (cp != lastchar)
-+					kdb_position_cursor(kdb_prompt_str,
-+							    buffer, cp);
- 			}
- 		}
- 		kdb_nextline = 1; /* reset output line number */
+--- a/drivers/media/dvb-frontends/mxl5xx.c
++++ b/drivers/media/dvb-frontends/mxl5xx.c
+@@ -1391,57 +1391,57 @@ static int config_ts(struct mxl *state,
+ 	u32 nco_count_min = 0;
+ 	u32 clk_type = 0;
+ 
+-	struct MXL_REG_FIELD_T xpt_sync_polarity[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_sync_polarity[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x90700010, 8, 1}, {0x90700010, 9, 1},
+ 		{0x90700010, 10, 1}, {0x90700010, 11, 1},
+ 		{0x90700010, 12, 1}, {0x90700010, 13, 1},
+ 		{0x90700010, 14, 1}, {0x90700010, 15, 1} };
+-	struct MXL_REG_FIELD_T xpt_clock_polarity[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_clock_polarity[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x90700010, 16, 1}, {0x90700010, 17, 1},
+ 		{0x90700010, 18, 1}, {0x90700010, 19, 1},
+ 		{0x90700010, 20, 1}, {0x90700010, 21, 1},
+ 		{0x90700010, 22, 1}, {0x90700010, 23, 1} };
+-	struct MXL_REG_FIELD_T xpt_valid_polarity[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_valid_polarity[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x90700014, 0, 1}, {0x90700014, 1, 1},
+ 		{0x90700014, 2, 1}, {0x90700014, 3, 1},
+ 		{0x90700014, 4, 1}, {0x90700014, 5, 1},
+ 		{0x90700014, 6, 1}, {0x90700014, 7, 1} };
+-	struct MXL_REG_FIELD_T xpt_ts_clock_phase[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_ts_clock_phase[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x90700018, 0, 3}, {0x90700018, 4, 3},
+ 		{0x90700018, 8, 3}, {0x90700018, 12, 3},
+ 		{0x90700018, 16, 3}, {0x90700018, 20, 3},
+ 		{0x90700018, 24, 3}, {0x90700018, 28, 3} };
+-	struct MXL_REG_FIELD_T xpt_lsb_first[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_lsb_first[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x9070000C, 16, 1}, {0x9070000C, 17, 1},
+ 		{0x9070000C, 18, 1}, {0x9070000C, 19, 1},
+ 		{0x9070000C, 20, 1}, {0x9070000C, 21, 1},
+ 		{0x9070000C, 22, 1}, {0x9070000C, 23, 1} };
+-	struct MXL_REG_FIELD_T xpt_sync_byte[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_sync_byte[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x90700010, 0, 1}, {0x90700010, 1, 1},
+ 		{0x90700010, 2, 1}, {0x90700010, 3, 1},
+ 		{0x90700010, 4, 1}, {0x90700010, 5, 1},
+ 		{0x90700010, 6, 1}, {0x90700010, 7, 1} };
+-	struct MXL_REG_FIELD_T xpt_enable_output[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_enable_output[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x9070000C, 0, 1}, {0x9070000C, 1, 1},
+ 		{0x9070000C, 2, 1}, {0x9070000C, 3, 1},
+ 		{0x9070000C, 4, 1}, {0x9070000C, 5, 1},
+ 		{0x9070000C, 6, 1}, {0x9070000C, 7, 1} };
+-	struct MXL_REG_FIELD_T xpt_err_replace_sync[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_err_replace_sync[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x9070000C, 24, 1}, {0x9070000C, 25, 1},
+ 		{0x9070000C, 26, 1}, {0x9070000C, 27, 1},
+ 		{0x9070000C, 28, 1}, {0x9070000C, 29, 1},
+ 		{0x9070000C, 30, 1}, {0x9070000C, 31, 1} };
+-	struct MXL_REG_FIELD_T xpt_err_replace_valid[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_err_replace_valid[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x90700014, 8, 1}, {0x90700014, 9, 1},
+ 		{0x90700014, 10, 1}, {0x90700014, 11, 1},
+ 		{0x90700014, 12, 1}, {0x90700014, 13, 1},
+ 		{0x90700014, 14, 1}, {0x90700014, 15, 1} };
+-	struct MXL_REG_FIELD_T xpt_continuous_clock[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_continuous_clock[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x907001D4, 0, 1}, {0x907001D4, 1, 1},
+ 		{0x907001D4, 2, 1}, {0x907001D4, 3, 1},
+ 		{0x907001D4, 4, 1}, {0x907001D4, 5, 1},
+ 		{0x907001D4, 6, 1}, {0x907001D4, 7, 1} };
+-	struct MXL_REG_FIELD_T xpt_nco_clock_rate[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_nco_clock_rate[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x90700044, 16, 80}, {0x90700044, 16, 81},
+ 		{0x90700044, 16, 82}, {0x90700044, 16, 83},
+ 		{0x90700044, 16, 84}, {0x90700044, 16, 85},
 
 
 
