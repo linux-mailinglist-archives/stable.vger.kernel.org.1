@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-51540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F9E90706C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 999B590723F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E73FB22A2B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2B9C1C21C19
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DF113C691;
-	Thu, 13 Jun 2024 12:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CAAA143C6B;
+	Thu, 13 Jun 2024 12:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zq5iW24k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dREiFUYW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72C0137914;
-	Thu, 13 Jun 2024 12:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADB317FD;
+	Thu, 13 Jun 2024 12:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281595; cv=none; b=s2EVzoUFCTvMd/ixr+8MxmEeeHvx8ztntV28b2GkLM8FYFFHOnzwYBjS9lM4Pk3i+/i1ssbHAPN3j1wo4ux87gtU/WmalSUf9APXv6iWNybMw99zhYGtVCk8xRDnnYJnp3jq2M1ddQgKgROO0M5yIQsgw40bCuWyuQIpRR2ApHw=
+	t=1718282714; cv=none; b=XNER4MCX57iVP2zxxLmW8c55smDlSKxm7TKbFOkX5jTjK3lP09V9+5IEWH3FLQA+fRrQ+f5CVjNH3H/IzYE0IXXs9dJ+U8p7xPtSTC0xcB2F2ATkW5gImSHbW7Y1ksKoHuGqgmGKSQ4k3Lb2qy9KLP5/iB6pqzXhD8PFDLYsjXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281595; c=relaxed/simple;
-	bh=3ereE59v79g7qO3fRUXUk+zC8R3OTrq6GynoURG87ao=;
+	s=arc-20240116; t=1718282714; c=relaxed/simple;
+	bh=lkNfRMhq9HYu6U8OIU2ji6NYsVg1z+EQCcPNLJV87cU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iwo9P4lKswUE9YpHV77AYQYfL/sX27303nVPU9AeK9DumZuP6eIFbr3BeS4bo6eOO0OD4WTqyQ3Ca4s8ytVugtA/OFUyJFH6yX6tHEKwfefjLDTmecVHxZSocG3aBkFPu3kgqA9Aa1W08hlkeV8FcFnTxM2v/cx4xIechyDZ88g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zq5iW24k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5EA3C2BBFC;
-	Thu, 13 Jun 2024 12:26:34 +0000 (UTC)
+	 MIME-Version; b=rzauB6ht+1B6Pne86YtyIzoOKWxbrpJ5wse02PrcLxXPGaGRbInoOmNz7qjNXbm/+YWGtuMWYv9GB1wJnnwNykSU1rCJ73nxl1Nw8DQwCxxC+QUDf7q85MyldU/tS2C1FW1XXjZt6EigboxY5/ou32/8r6aq/ffMxnukuE1nbJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dREiFUYW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E6EFC2BBFC;
+	Thu, 13 Jun 2024 12:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281595;
-	bh=3ereE59v79g7qO3fRUXUk+zC8R3OTrq6GynoURG87ao=;
+	s=korg; t=1718282713;
+	bh=lkNfRMhq9HYu6U8OIU2ji6NYsVg1z+EQCcPNLJV87cU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zq5iW24kvoAwPqLYA9PfObKS4xXwCQDmwRxxrHHLp3r+RB3FzluPKMW4M+tLVinDP
-	 xB0JpgOckIMCtf4DIS1+SYMtrtTGj5ViFp+ZcTuCqa/S4F8ZScG8GUGDPs2di2ndKl
-	 EbNJbPuT/QIpU3pbwOoV5IP6iF4othzSWDSC12yo=
+	b=dREiFUYWsCRxbI+QWOp7NT0ttZD/8NJw84uIip+42bC9eqVltyM4x/HNxdMkJnis1
+	 zKUJfbt7M80nKcCIpjDuWjAohMBRS3EK50tirajfwQqhsrx6IH/GkqGzzktC6M60o3
+	 ulugRzAtBNsByRq6rMIh9762Ej5CzFCdXZWnYMwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Gilbert <floppym@gentoo.org>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH 5.10 309/317] sparc: move struct termio to asm/termios.h
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 370/402] mmc: core: Add mmc_gpiod_set_cd_config() function
 Date: Thu, 13 Jun 2024 13:35:27 +0200
-Message-ID: <20240613113259.506997612@linuxfoundation.org>
+Message-ID: <20240613113316.569733119@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Gilbert <floppym@gentoo.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit c32d18e7942d7589b62e301eb426b32623366565 upstream.
+commit 63a7cd660246aa36af263b85c33ecc6601bf04be upstream.
 
-Every other arch declares struct termio in asm/termios.h, so make sparc
-match them.
+Some mmc host drivers may need to fixup a card-detection GPIO's config
+to e.g. enable the GPIO controllers builtin pull-up resistor on devices
+where the firmware description of the GPIO is broken (e.g. GpioInt with
+PullNone instead of PullUp in ACPI DSDT).
 
-Resolves a build failure in the PPP software package, which includes
-both bits/ioctl-types.h via sys/ioctl.h (glibc) and asm/termbits.h.
+Since this is the exception rather then the rule adding a config
+parameter to mmc_gpiod_request_cd() seems undesirable, so instead
+add a new mmc_gpiod_set_cd_config() function. This is simply a wrapper
+to call gpiod_set_config() on the card-detect GPIO acquired through
+mmc_gpiod_request_cd().
 
-Closes: https://bugs.gentoo.org/918992
-Signed-off-by: Mike Gilbert <floppym@gentoo.org>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Tested-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20240306171149.3843481-1-floppym@gentoo.org
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20240410191639.526324-2-hdegoede@redhat.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/include/uapi/asm/termbits.h |   10 ----------
- arch/sparc/include/uapi/asm/termios.h  |    9 +++++++++
- 2 files changed, 9 insertions(+), 10 deletions(-)
+ drivers/mmc/core/slot-gpio.c  |   20 ++++++++++++++++++++
+ include/linux/mmc/slot-gpio.h |    1 +
+ 2 files changed, 21 insertions(+)
 
---- a/arch/sparc/include/uapi/asm/termbits.h
-+++ b/arch/sparc/include/uapi/asm/termbits.h
-@@ -13,16 +13,6 @@ typedef unsigned int    tcflag_t;
- typedef unsigned long   tcflag_t;
- #endif
+--- a/drivers/mmc/core/slot-gpio.c
++++ b/drivers/mmc/core/slot-gpio.c
+@@ -202,6 +202,26 @@ int mmc_gpiod_request_cd(struct mmc_host
+ }
+ EXPORT_SYMBOL(mmc_gpiod_request_cd);
  
--#define NCC 8
--struct termio {
--	unsigned short c_iflag;		/* input mode flags */
--	unsigned short c_oflag;		/* output mode flags */
--	unsigned short c_cflag;		/* control mode flags */
--	unsigned short c_lflag;		/* local mode flags */
--	unsigned char c_line;		/* line discipline */
--	unsigned char c_cc[NCC];	/* control characters */
--};
--
- #define NCCS 17
- struct termios {
- 	tcflag_t c_iflag;		/* input mode flags */
---- a/arch/sparc/include/uapi/asm/termios.h
-+++ b/arch/sparc/include/uapi/asm/termios.h
-@@ -40,5 +40,14 @@ struct winsize {
- 	unsigned short ws_ypixel;
- };
- 
-+#define NCC 8
-+struct termio {
-+	unsigned short c_iflag;		/* input mode flags */
-+	unsigned short c_oflag;		/* output mode flags */
-+	unsigned short c_cflag;		/* control mode flags */
-+	unsigned short c_lflag;		/* local mode flags */
-+	unsigned char c_line;		/* line discipline */
-+	unsigned char c_cc[NCC];	/* control characters */
-+};
- 
- #endif /* _UAPI_SPARC_TERMIOS_H */
++/**
++ * mmc_gpiod_set_cd_config - set config for card-detection GPIO
++ * @host: mmc host
++ * @config: Generic pinconf config (from pinconf_to_config_packed())
++ *
++ * This can be used by mmc host drivers to fixup a card-detection GPIO's config
++ * (e.g. set PIN_CONFIG_BIAS_PULL_UP) after acquiring the GPIO descriptor
++ * through mmc_gpiod_request_cd().
++ *
++ * Returns:
++ * 0 on success, or a negative errno value on error.
++ */
++int mmc_gpiod_set_cd_config(struct mmc_host *host, unsigned long config)
++{
++	struct mmc_gpio *ctx = host->slot.handler_priv;
++
++	return gpiod_set_config(ctx->cd_gpio, config);
++}
++EXPORT_SYMBOL(mmc_gpiod_set_cd_config);
++
+ bool mmc_can_gpio_cd(struct mmc_host *host)
+ {
+ 	struct mmc_gpio *ctx = host->slot.handler_priv;
+--- a/include/linux/mmc/slot-gpio.h
++++ b/include/linux/mmc/slot-gpio.h
+@@ -20,6 +20,7 @@ int mmc_gpiod_request_cd(struct mmc_host
+ 			 unsigned int debounce);
+ int mmc_gpiod_request_ro(struct mmc_host *host, const char *con_id,
+ 			 unsigned int idx, unsigned int debounce);
++int mmc_gpiod_set_cd_config(struct mmc_host *host, unsigned long config);
+ void mmc_gpio_set_cd_isr(struct mmc_host *host,
+ 			 irqreturn_t (*isr)(int irq, void *dev_id));
+ int mmc_gpio_set_cd_wake(struct mmc_host *host, bool on);
 
 
 
