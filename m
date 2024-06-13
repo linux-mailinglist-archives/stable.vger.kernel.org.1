@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-51346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E89D8906F86
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:21:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C12D906F88
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DAB5288E73
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:21:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F2DE286BFA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BAA14885D;
-	Thu, 13 Jun 2024 12:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AF713CFA3;
+	Thu, 13 Jun 2024 12:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hi0eq/zL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzidGcJ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9D4148851;
-	Thu, 13 Jun 2024 12:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6358A81AA7;
+	Thu, 13 Jun 2024 12:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281027; cv=none; b=ckNuK9fjP/XOQ6gT30uth9vFfrQ4VvUkWAUbHeDoiT2k4wS7bWHECvqn2OcI34o+XW9T2WDLq1pKTT/sMPK+XIL2AuNstfDlxICLpqYXJkH4k0nkkrkmMi81cMWSRgNZW2bfl7Uyw3hkoJGCB0VohFrlxRI8gkZgq+nN60geZyQ=
+	t=1718281033; cv=none; b=qn2PmZrBdZyzrPDOQH+jHAO/rXm/L7YN7BmXQCTCuoieivWllLy/PipQZYUdpzOH/59PzcTIlNR+jY3fbo/7OAWCo2Jn74BLOSmRHjNe28zevtAyE99HLhOeboir5/Xji0QGA+68ui4UZ5QbVZ6Q7ZP0fyHVnRIk6/Xs3LyXCaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281027; c=relaxed/simple;
-	bh=QyusormFuD5vpeTs5+qpetVJ5BCmydERi0ZW+G1N1qY=;
+	s=arc-20240116; t=1718281033; c=relaxed/simple;
+	bh=MuwuugYTT0aYfewpIht73GKOlLDpCv6W8X8VfLsNt0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQCHiqj7zSAFy5X3oZMsxybGAXykQM9FVGk2lKrKkTU9VCicdZaqqEubVj/4+QnFGWpITcYkgptyU5uiEBa+Ki4VSD7b5bHKNP542uSorInfEjxb8fhISFKqJLpoB6iMSjzCXBHLuWRRVkHF9y4aMHB36mtnhK3MBzMYHbg66qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hi0eq/zL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32A1C32786;
-	Thu, 13 Jun 2024 12:17:06 +0000 (UTC)
+	 MIME-Version; b=VuE6REj0yQbYkJ6q0xh2maAEZ1BkMPXcmUvCloh6ngntnDq0t89okx7AmT5H0pTIXKB2nxREENkiCLpumnBcKCykyNMc4tkl2yNVusv4RYQHJW8tghn5N5U3rsY9HVoXXThE7MWVphxDaD8iCG0yV+fI1U4av0ivxFDbWYDVMyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzidGcJ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEEEC2BBFC;
+	Thu, 13 Jun 2024 12:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281027;
-	bh=QyusormFuD5vpeTs5+qpetVJ5BCmydERi0ZW+G1N1qY=;
+	s=korg; t=1718281033;
+	bh=MuwuugYTT0aYfewpIht73GKOlLDpCv6W8X8VfLsNt0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hi0eq/zLpHjjaorTkCTXtiY8WGv4WLOWTy2sR2a0/0ZzJ2gZ2MZc4TaKEYBcM5otP
-	 DUuchcI4pSPvVj2dVyKW+XQbgWCYwT6SnkayTZNL9emg7AbcPLu/5b1yC81eWjymnE
-	 wSb9zDJuOqINhrtPhDOZlzV+67BuGnAKpRV+hmmM=
+	b=BzidGcJ3NxnpwvXEZANHrxO1TiAC3dpABnQesg0O2bPuQoFEJC4zsZNwCfJ3N7wZ3
+	 DN2Kz3ejpvVn71SaEMsDlbMj+3JV8nrxMUm/75XYl5kcgnVfFAErl+oiv2S9WaLbtt
+	 yeIn4lQdSiUCMFVEfUOThuAn7oOFyC33DfJFRQIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Marc Gonzalez <mgonzalez@freebox.fr>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 116/317] RDMA/hns: Modify the print level of CQE error
-Date: Thu, 13 Jun 2024 13:32:14 +0200
-Message-ID: <20240613113252.038425196@linuxfoundation.org>
+Subject: [PATCH 5.10 117/317] clk: qcom: mmcc-msm8998: fix venus clock issue
+Date: Thu, 13 Jun 2024 13:32:15 +0200
+Message-ID: <20240613113252.078512193@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
 References: <20240613113247.525431100@linuxfoundation.org>
@@ -67,40 +68,112 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Marc Gonzalez <mgonzalez@freebox.fr>
 
-[ Upstream commit 349e859952285ab9689779fb46de163f13f18f43 ]
+[ Upstream commit e20ae5ae9f0c843aded4f06f3d1cab7384789e92 ]
 
-Too much print may lead to a panic in kernel. Change ibdev_err() to
-ibdev_err_ratelimited(), and change the printing level of cqe dump
-to debug level.
+Right now, msm8998 video decoder (venus) is non-functional:
 
-Fixes: 7c044adca272 ("RDMA/hns: Simplify the cqe code of poll cq")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240412091616.370789-11-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+$ time mpv --hwdec=v4l2m2m-copy --vd-lavc-software-fallback=no --vo=null --no-audio --untimed --length=30 --quiet demo-480.webm
+ (+) Video --vid=1 (*) (vp9 854x480 29.970fps)
+     Audio --aid=1 --alang=eng (*) (opus 2ch 48000Hz)
+[ffmpeg/video] vp9_v4l2m2m: output VIDIOC_REQBUFS failed: Connection timed out
+[ffmpeg/video] vp9_v4l2m2m: no v4l2 output context's buffers
+[ffmpeg/video] vp9_v4l2m2m: can't configure decoder
+Could not open codec.
+Software decoding fallback is disabled.
+Exiting... (Quit)
+
+Bryan O'Donoghue suggested the proper fix:
+- Set required register offsets in venus GDSC structs.
+- Set HW_CTRL flag.
+
+$ time mpv --hwdec=v4l2m2m-copy --vd-lavc-software-fallback=no --vo=null --no-audio --untimed --length=30 --quiet demo-480.webm
+ (+) Video --vid=1 (*) (vp9 854x480 29.970fps)
+     Audio --aid=1 --alang=eng (*) (opus 2ch 48000Hz)
+[ffmpeg/video] vp9_v4l2m2m: VIDIOC_G_FMT ioctl
+[ffmpeg/video] vp9_v4l2m2m: VIDIOC_G_FMT ioctl
+...
+Using hardware decoding (v4l2m2m-copy).
+VO: [null] 854x480 nv12
+Exiting... (End of file)
+real	0m3.315s
+user	0m1.277s
+sys	0m0.453s
+
+NOTES:
+
+GDSC = Globally Distributed Switch Controller
+
+Use same code as mmcc-msm8996 with:
+s/venus_gdsc/video_top_gdsc/
+s/venus_core0_gdsc/video_subcore0_gdsc/
+s/venus_core1_gdsc/video_subcore1_gdsc/
+
+https://git.codelinaro.org/clo/la/kernel/msm-4.4/-/blob/caf_migration/kernel.lnx.4.4.r38-rel/include/dt-bindings/clock/msm-clocks-hwio-8996.h
+https://git.codelinaro.org/clo/la/kernel/msm-4.4/-/blob/caf_migration/kernel.lnx.4.4.r38-rel/include/dt-bindings/clock/msm-clocks-hwio-8998.h
+
+0x1024 = MMSS_VIDEO GDSCR (undocumented)
+0x1028 = MMSS_VIDEO_CORE_CBCR
+0x1030 = MMSS_VIDEO_AHB_CBCR
+0x1034 = MMSS_VIDEO_AXI_CBCR
+0x1038 = MMSS_VIDEO_MAXI_CBCR
+0x1040 = MMSS_VIDEO_SUBCORE0 GDSCR (undocumented)
+0x1044 = MMSS_VIDEO_SUBCORE1 GDSCR (undocumented)
+0x1048 = MMSS_VIDEO_SUBCORE0_CBCR
+0x104c = MMSS_VIDEO_SUBCORE1_CBCR
+
+Fixes: d14b15b5931c2b ("clk: qcom: Add MSM8998 Multimedia Clock Controller (MMCC) driver")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Marc Gonzalez <mgonzalez@freebox.fr>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://lore.kernel.org/r/ff4e2e34-a677-4c39-8c29-83655c5512ae@freebox.fr
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/mmcc-msm8998.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 10ffad061f94a..13aa8dd42f7d6 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -3278,8 +3278,9 @@ static void get_cqe_status(struct hns_roce_dev *hr_dev, struct hns_roce_qp *qp,
- 		   wc->status == IB_WC_WR_FLUSH_ERR))
- 		return;
+diff --git a/drivers/clk/qcom/mmcc-msm8998.c b/drivers/clk/qcom/mmcc-msm8998.c
+index a68764cfb7930..5e2e60c1c2283 100644
+--- a/drivers/clk/qcom/mmcc-msm8998.c
++++ b/drivers/clk/qcom/mmcc-msm8998.c
+@@ -2587,6 +2587,8 @@ static struct clk_hw *mmcc_msm8998_hws[] = {
  
--	ibdev_err(&hr_dev->ib_dev, "error cqe status 0x%x:\n", cqe_status);
--	print_hex_dump(KERN_ERR, "", DUMP_PREFIX_NONE, 16, 4, cqe,
-+	ibdev_err_ratelimited(&hr_dev->ib_dev, "error cqe status 0x%x:\n",
-+			      cqe_status);
-+	print_hex_dump(KERN_DEBUG, "", DUMP_PREFIX_NONE, 16, 4, cqe,
- 		       cq->cqe_size, false);
+ static struct gdsc video_top_gdsc = {
+ 	.gdscr = 0x1024,
++	.cxcs = (unsigned int []){ 0x1028, 0x1034, 0x1038 },
++	.cxc_count = 3,
+ 	.pd = {
+ 		.name = "video_top",
+ 	},
+@@ -2595,20 +2597,26 @@ static struct gdsc video_top_gdsc = {
  
- 	/*
+ static struct gdsc video_subcore0_gdsc = {
+ 	.gdscr = 0x1040,
++	.cxcs = (unsigned int []){ 0x1048 },
++	.cxc_count = 1,
+ 	.pd = {
+ 		.name = "video_subcore0",
+ 	},
+ 	.parent = &video_top_gdsc.pd,
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.flags = HW_CTRL,
+ };
+ 
+ static struct gdsc video_subcore1_gdsc = {
+ 	.gdscr = 0x1044,
++	.cxcs = (unsigned int []){ 0x104c },
++	.cxc_count = 1,
+ 	.pd = {
+ 		.name = "video_subcore1",
+ 	},
+ 	.parent = &video_top_gdsc.pd,
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.flags = HW_CTRL,
+ };
+ 
+ static struct gdsc mdss_gdsc = {
 -- 
 2.43.0
 
