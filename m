@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-52005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6559E9072CD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:51:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A81907267
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 541D4B2342A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EB9C1F21611
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575F1143895;
-	Thu, 13 Jun 2024 12:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A9B143C55;
+	Thu, 13 Jun 2024 12:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOK8SY33"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWhtIkFU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162CE384;
-	Thu, 13 Jun 2024 12:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A2B441D;
+	Thu, 13 Jun 2024 12:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282955; cv=none; b=M6m/YVK8Y1nCJURPRroYVkQQZdCDqKwQKDL+PhEyTdOL2A5grH6peWMTIL9Sr8Nfs5bMZLhue5Ictma0K4Z+Sp1bTz3UQdqwZmdvQ4wZ9T/Oa4CoaboaW8n5Fbp1H09cYlAuc+5PSUBb4nKMm7LzLO2LiS7THXeu9Vjaf4zd2aE=
+	t=1718282822; cv=none; b=Ut+SkPpoOf7jV+LIfc/tL+EbtIHkz08/wA5cT35Upf5kVZlV6zHyHt/DubKTyCleE8d/OEBwSPXmFR9S7SAkskLUaWL+7XcPvNmsAdkY8+XH4fnE76H1CY/yYXWHNWL3k4chk72XuT0iO5I7RUGrRCPAAhUTop4qkCEnlkMkD4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282955; c=relaxed/simple;
-	bh=q01qvYuepLPiHFSCd8ZrmMv326HZ/8Fmvsp34phbeYw=;
+	s=arc-20240116; t=1718282822; c=relaxed/simple;
+	bh=zSkOEeoGjZhaZYpcmeFZ1jKH2yH5yrenmv4HyQM46wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6v83jxonzxFsi+ySlx53tcxqUZCxVQ45R8CjY0JhtsIBfOVCqyUNOocA5jOdxPnAfCsTyYFUt5/KtdD8fm/T9pH6nJl2ESUon1NKq2gfu38d/MCGjufFwFWxoTXsXOmVT93zqtqqGVboapzvO8cjDXv6egL7NoaotCwwFxNvR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOK8SY33; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F84AC2BBFC;
-	Thu, 13 Jun 2024 12:49:14 +0000 (UTC)
+	 MIME-Version; b=cbvuKwj26gh06GoRisA5Kw1QZjJ/JE8CyevOeJYgfJdAqd0wL5ZxhespcLOAyGzdttoqV5qHGC8EqXJqpu+ASC+zFgq/CswXy2/7RcrDQhZ3dqS0AWz+GE8hQnhzPRIonG+EvdkvzKqIN1fStCPAwE3rDxCdk4XiTYRE1yGWQMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWhtIkFU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19ABAC32786;
+	Thu, 13 Jun 2024 12:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282955;
-	bh=q01qvYuepLPiHFSCd8ZrmMv326HZ/8Fmvsp34phbeYw=;
+	s=korg; t=1718282822;
+	bh=zSkOEeoGjZhaZYpcmeFZ1jKH2yH5yrenmv4HyQM46wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mOK8SY330i9gTL+fxELiTLPnDnXr9yfuA415m0sbJNb2JbT2dkipYpILta+HLGONj
-	 A14jd2U2Gd7fpCg5qqypkHusx3wEBsEEf4iosP6MXp0ykMw78WOfAbTljooqGWkei0
-	 SCNEMM3dLIPd9pqWR6fCQsobh65Ftft+JR+75u/w=
+	b=bWhtIkFUyDYWUkWBn/r7isvQRoScpDonZFJrMwEAx+hVjy/hlcdqJaJqAwik3kqWC
+	 IVUqYjLxYU+NvKKtaBbew39yJjFH1hbGn3K4Xcuj1H/gM6LgwgQ1wmhox3UuPSaQBj
+	 wvJJGNze8GkKeITKQz3FXbatGOrIg20rKMArs6G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.1 48/85] KVM: arm64: Fix AArch32 register narrowing on userspace write
+	Douglas Anderson <dianders@chromium.org>,
+	Justin Stitt <justinstitt@google.com>,
+	Daniel Thompson <daniel.thompson@linaro.org>
+Subject: [PATCH 5.15 389/402] kdb: Merge identical case statements in kdb_read()
 Date: Thu, 13 Jun 2024 13:35:46 +0200
-Message-ID: <20240613113215.995625025@linuxfoundation.org>
+Message-ID: <20240613113317.319222702@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Daniel Thompson <daniel.thompson@linaro.org>
 
-commit 947051e361d551e0590777080ffc4926190f62f2 upstream.
+commit 6244917f377bf64719551b58592a02a0336a7439 upstream.
 
-When userspace writes to one of the core registers, we make
-sure to narrow the corresponding GPRs if PSTATE indicates
-an AArch32 context.
+The code that handles case 14 (down) and case 16 (up) has been copy and
+pasted despite being byte-for-byte identical. Combine them.
 
-The code tries to check whether the context is EL0 or EL1 so
-that it narrows the correct registers. But it does so by checking
-the full PSTATE instead of PSTATE.M.
-
-As a consequence, and if we are restoring an AArch32 EL0 context
-in a 64bit guest, and that PSTATE has *any* bit set outside of
-PSTATE.M, we narrow *all* registers instead of only the first 15,
-destroying the 64bit state.
-
-Obviously, this is not something the guest is likely to enjoy.
-
-Correctly masking PSTATE to only evaluate PSTATE.M fixes it.
-
-Fixes: 90c1f934ed71 ("KVM: arm64: Get rid of the AArch32 register mapping code")
-Reported-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Acked-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240524141956.1450304-2-maz@kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org # Not a bug fix but it is needed for later bug fixes
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-4-f236dbe9828d@linaro.org
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/guest.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/debug/kdb/kdb_io.c |   10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
---- a/arch/arm64/kvm/guest.c
-+++ b/arch/arm64/kvm/guest.c
-@@ -270,7 +270,7 @@ static int set_core_reg(struct kvm_vcpu
- 	if (*vcpu_cpsr(vcpu) & PSR_MODE32_BIT) {
- 		int i, nr_reg;
- 
--		switch (*vcpu_cpsr(vcpu)) {
-+		switch (*vcpu_cpsr(vcpu) & PSR_AA32_MODE_MASK) {
- 		/*
- 		 * Either we are dealing with user mode, and only the
- 		 * first 15 registers (+ PC) must be narrowed to 32bit.
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -304,6 +304,7 @@ poll_again:
+ 		}
+ 		break;
+ 	case 14: /* Down */
++	case 16: /* Up */
+ 		memset(tmpbuffer, ' ',
+ 		       strlen(kdb_prompt_str) + (lastchar-buffer));
+ 		*(tmpbuffer+strlen(kdb_prompt_str) +
+@@ -318,15 +319,6 @@ poll_again:
+ 			++cp;
+ 		}
+ 		break;
+-	case 16: /* Up */
+-		memset(tmpbuffer, ' ',
+-		       strlen(kdb_prompt_str) + (lastchar-buffer));
+-		*(tmpbuffer+strlen(kdb_prompt_str) +
+-		  (lastchar-buffer)) = '\0';
+-		kdb_printf("\r%s\r", tmpbuffer);
+-		*lastchar = (char)key;
+-		*(lastchar+1) = '\0';
+-		return lastchar;
+ 	case 9: /* Tab */
+ 		if (tab < 2)
+ 			++tab;
 
 
 
