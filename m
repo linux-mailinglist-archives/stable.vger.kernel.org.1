@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-52015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7691A9072EA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:54:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BAAA90706D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51B05B2456D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEFCD2832CE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A894D143C7A;
-	Thu, 13 Jun 2024 12:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C64143C75;
+	Thu, 13 Jun 2024 12:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROheeUfv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKXgPGEo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C884A0F;
-	Thu, 13 Jun 2024 12:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DF8144306;
+	Thu, 13 Jun 2024 12:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282984; cv=none; b=RGqX9k6QENaU+OBodDt+avh2MORkHQd+P/d0InXsA/RiHPL5OAfZTuraHtgBa4waV3u9Z87TJDrESmojKPJcSbURHqSq/Gd+0Ee7ts66SJ8uVTsKi0lJ5A4VDh3mEXmgjuOQ+LUMDwv7TQf1INtKjz+E3RuT/2v4RHFrBm0wGDc=
+	t=1718281627; cv=none; b=lzLUPQ/702GpkbkVpnw48ZcmvgKmABZP+HDapp59LCzsQdK+PZ6eskWlA5fJIdY8nO2HLWARrUk56Vh10tiqg7qgKthGgQQO7Gaswm1tlW+Il5ocm33692nY1vc9giD/JzQHCbegXgK6SXkT4qzus8emqUVxN4gDlGlbg6sZonQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282984; c=relaxed/simple;
-	bh=eBciTZj/AVV+jqs6YHsONCkWq8M45V0Ctkm72WkVfVU=;
+	s=arc-20240116; t=1718281627; c=relaxed/simple;
+	bh=gQvrFe9tQynBN1xDy//wb5iVmyf7Kc39FKE2PHDS7a0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uvSI8JmYZR1BNB/hl3YdMptwizmFzPcbGpxQz9gYDIeXRb8ZvNdGNqLki8Ffs89Xe5iJl/l8lg7kXJizvzo6nvO8f6pDzZXE91ABmZTPCbDK3Y+Ss/KbBBWizicHssfnEXUUvZSL4bRG4IRMZ4SufnKwQqYTNrX9LKwsKot6gqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROheeUfv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1258C2BBFC;
-	Thu, 13 Jun 2024 12:49:43 +0000 (UTC)
+	 MIME-Version; b=Ym26V2Y9qDWQ73e7+KkXj/eu3D7yPNXH/2duqRdFKmLzBu2PhoUxwMcKaxv15vpFUK7h2+re3oIYKeN4d0bp75Nq2OhgzRWUAw3sAYKS98aNdtW0WMBeb29GOBZLVWG3M3AbK1sZg0lDns6BdrbhUXiQAnB6GaNUFTq/eG0Vr10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKXgPGEo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2958C4AF1A;
+	Thu, 13 Jun 2024 12:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282984;
-	bh=eBciTZj/AVV+jqs6YHsONCkWq8M45V0Ctkm72WkVfVU=;
+	s=korg; t=1718281627;
+	bh=gQvrFe9tQynBN1xDy//wb5iVmyf7Kc39FKE2PHDS7a0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ROheeUfvBccVCpqNCPZWgvjmYY/TMw/qC7thzrM+AaHzlyddLtd9bWyJesrOTv3O6
-	 XqSFInidV9r2W+Xz4QWAFuiktLsmC/2XPxOFXI+SIuTzcR5gToKYSqko/Bb7BxELuL
-	 8sLKcIAbmxDl0umUpHFEiLyqgwv9bT2MLyek8KRc=
+	b=NKXgPGEoS+dF7J8b7BNXg0MN4G62VsXwSQ6IZYvT3QRGGnL+rSJoLZcOz/VyYFl7a
+	 d0VQfPAzuaE18xj/VXsrJjWeFPyrvKoJiYfpjBSUWriIqqqtHMc/mTsJynqsQ10fTN
+	 1yAM6+KJ17rTsepD1Aho36zeKUake+OzvL7L3Hwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bob Zhou <bob.zhou@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Le Ma <le.ma@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 18/85] drm/amdgpu: add error handle to avoid out-of-bounds
+	Fan Yu <fan.yu9@zte.com.cn>,
+	xu xin <xu.xin16@zte.com.cn>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 298/317] net/ipv6: Fix route deleting failure when metric equals 0
 Date: Thu, 13 Jun 2024 13:35:16 +0200
-Message-ID: <20240613113214.846338237@linuxfoundation.org>
+Message-ID: <20240613113259.077723060@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bob Zhou <bob.zhou@amd.com>
+From: xu xin <xu.xin16@zte.com.cn>
 
-commit 8b2faf1a4f3b6c748c0da36cda865a226534d520 upstream.
+commit bb487272380d120295e955ad8acfcbb281b57642 upstream.
 
-if the sdma_v4_0_irq_id_to_seq return -EINVAL, the process should
-be stop to avoid out-of-bounds read, so directly return -EINVAL.
+Problem
+=========
+After commit 67f695134703 ("ipv6: Move setting default metric for routes"),
+we noticed that the logic of assigning the default value of fc_metirc
+changed in the ioctl process. That is, when users use ioctl(fd, SIOCADDRT,
+rt) with a non-zero metric to add a route,  then they may fail to delete a
+route with passing in a metric value of 0 to the kernel by ioctl(fd,
+SIOCDELRT, rt). But iproute can succeed in deleting it.
 
-Signed-off-by: Bob Zhou <bob.zhou@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Le Ma <le.ma@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+As a reference, when using iproute tools by netlink to delete routes with
+a metric parameter equals 0, like the command as follows:
+
+	ip -6 route del fe80::/64 via fe81::5054:ff:fe11:3451 dev eth0 metric 0
+
+the user can still succeed in deleting the route entry with the smallest
+metric.
+
+Root Reason
+===========
+After commit 67f695134703 ("ipv6: Move setting default metric for routes"),
+When ioctl() pass in SIOCDELRT with a zero metric, rtmsg_to_fib6_config()
+will set a defalut value (1024) to cfg->fc_metric in kernel, and in
+ip6_route_del() and the line 4074 at net/ipv3/route.c, it will check by
+
+	if (cfg->fc_metric && cfg->fc_metric != rt->fib6_metric)
+		continue;
+
+and the condition is true and skip the later procedure (deleting route)
+because cfg->fc_metric != rt->fib6_metric. But before that commit,
+cfg->fc_metric is still zero there, so the condition is false and it
+will do the following procedure (deleting).
+
+Solution
+========
+In order to keep a consistent behaviour across netlink() and ioctl(), we
+should allow to delete a route with a metric value of 0. So we only do
+the default setting of fc_metric in route adding.
+
+CC: stable@vger.kernel.org # 5.4+
+Fixes: 67f695134703 ("ipv6: Move setting default metric for routes")
+Co-developed-by: Fan Yu <fan.yu9@zte.com.cn>
+Signed-off-by: Fan Yu <fan.yu9@zte.com.cn>
+Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240514201102055dD2Ba45qKbLlUMxu_DTHP@zte.com.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv6/route.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -2049,6 +2049,9 @@ static int sdma_v4_0_process_trap_irq(st
- 
- 	DRM_DEBUG("IH: SDMA trap\n");
- 	instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
-+	if (instance < 0)
-+		return instance;
-+
- 	switch (entry->ring_id) {
- 	case 0:
- 		amdgpu_fence_process(&adev->sdma.instance[instance].ring);
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -4345,7 +4345,7 @@ static void rtmsg_to_fib6_config(struct
+ 		.fc_table = l3mdev_fib_table_by_index(net, rtmsg->rtmsg_ifindex) ?
+ 			 : RT6_TABLE_MAIN,
+ 		.fc_ifindex = rtmsg->rtmsg_ifindex,
+-		.fc_metric = rtmsg->rtmsg_metric ? : IP6_RT_PRIO_USER,
++		.fc_metric = rtmsg->rtmsg_metric,
+ 		.fc_expires = rtmsg->rtmsg_info,
+ 		.fc_dst_len = rtmsg->rtmsg_dst_len,
+ 		.fc_src_len = rtmsg->rtmsg_src_len,
+@@ -4375,6 +4375,9 @@ int ipv6_route_ioctl(struct net *net, un
+ 	rtnl_lock();
+ 	switch (cmd) {
+ 	case SIOCADDRT:
++		/* Only do the default setting of fc_metric in route adding */
++		if (cfg.fc_metric == 0)
++			cfg.fc_metric = IP6_RT_PRIO_USER;
+ 		err = ip6_route_add(&cfg, GFP_KERNEL, NULL);
+ 		break;
+ 	case SIOCDELRT:
 
 
 
