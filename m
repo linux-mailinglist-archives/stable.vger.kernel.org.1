@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB8329071FA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65937906E29
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BCA1282825
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17D931F212E0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0467D143884;
-	Thu, 13 Jun 2024 12:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CB9148850;
+	Thu, 13 Jun 2024 12:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dK46Khdi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rgo9DhpN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B726D384;
-	Thu, 13 Jun 2024 12:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DDB14884B;
+	Thu, 13 Jun 2024 12:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282545; cv=none; b=u3/SJH9dGjUPd2zW7sCjVFMz+RlUdFDZhnOGYIsVgAJ7dH6hmb+dFloBE7OF6XVuOd1e7DEndR0/4QFgF0SWNhHeK5JwMAv0JRqo43rL+Lii04Tr71RDqfsD09Bh9dYR3GwY2FuEEt7gxjZwAXbjsMeEAn99tAPI9Ub+1cDdOQ8=
+	t=1718280189; cv=none; b=FwqZ03xN6gE2GYV/sto2eFAjABW+aBjDP2rBIMKfvc70FDEI61aFp8I6ur0gxyI8G5AgJB6F25w37UanGVfqsaY4K67sGaA/GM7HzLnrlCfLxJyyYxfQ+97/QWm0OrIfWoOcdJnV5cj9m0ji601q27/qJB70qKOCjBcZFSUCneU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282545; c=relaxed/simple;
-	bh=0SMy/mWNEkNCAIZZ691x+uHGi4S9XCyFgb/x0N/WfDY=;
+	s=arc-20240116; t=1718280189; c=relaxed/simple;
+	bh=km2h7ISQvK/5AMA0tE4l1sQ6tIUzJOnbWkIwqrHJ2aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbPRWr35blhKycC/YrA/hDJDZqsUTndJHQXNdpZWvhR1m8rnMPYtCtYWlQgGsRRn2g9+68bmDRcnAt5/9C2300ItF7K85fZ6YUAoecWMGMdvD41vwHaI/xv4c+hsjjJwYuO+YiG+yyNZgdqdCsshfJ+yq45S24hC7vkVExDmPXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dK46Khdi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDF7C2BBFC;
-	Thu, 13 Jun 2024 12:42:24 +0000 (UTC)
+	 MIME-Version; b=DyG71bkOUEYwXGHxdgiVjyFegfIg/FYx8N6TJhN9vhHs6V7GscifwGvLJ6B93I8Dt8kkHWz8eOYMoBM0RZtvLwZBtRmkGXQO7wxCUD7sjmeGxZ9RgK2IKeFG6G+375qP91ZYooMl3Ve4I0jFcbeFjbJbn+bhaYoBID6u/00XVnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rgo9DhpN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62ABC2BBFC;
+	Thu, 13 Jun 2024 12:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282545;
-	bh=0SMy/mWNEkNCAIZZ691x+uHGi4S9XCyFgb/x0N/WfDY=;
+	s=korg; t=1718280189;
+	bh=km2h7ISQvK/5AMA0tE4l1sQ6tIUzJOnbWkIwqrHJ2aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dK46KhdiFav37uE5qiUfYiOSv2CMppAIz6KL2KzLXVwXYFqGhCeMJ9CPToqnVeOf1
-	 BVTuZwO3CwoaJC9JT8nPelkqOl3yI2uVgHpmg/EmNjyWuSe4LfOMI+HF0yNxjaDbfo
-	 3TXo91Mdp/uO/hTLwz/PFKv2ULjUGamrefdSLKbk=
+	b=Rgo9DhpNZiICfV7obae4zin1pnoQSgCyfczMzbRz/gktHeYadBAsEtzCg3PjzgnZO
+	 jVtS78benoSfsp3cyMtQRRrgxOtxaOnk9IvImSJzkkaxJlNz+vWKuqnSNgUHBtCSrc
+	 tap22ufDc9AlMbXmo+ZWn+p9A3aTNf+oaOUPWcW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 312/402] net/mlx5e: Use rx_missed_errors instead of rx_dropped for reporting buffer exhaustion
-Date: Thu, 13 Jun 2024 13:34:29 +0200
-Message-ID: <20240613113314.312711499@linuxfoundation.org>
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	syzbot+3694e283cf5c40df6d14@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 172/202] f2fs: fix to do sanity check on i_xattr_nid in sanity_check_inode()
+Date: Thu, 13 Jun 2024 13:34:30 +0200
+Message-ID: <20240613113234.380788360@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 5c74195d5dd977e97556e6fa76909b831c241230 ]
+commit 20faaf30e55522bba2b56d9c46689233205d7717 upstream.
 
-Previously, the driver incorrectly used rx_dropped to report device
-buffer exhaustion.
+syzbot reports a kernel bug as below:
 
-According to the documentation, rx_dropped should not be used to count
-packets dropped due to buffer exhaustion, which is the purpose of
-rx_missed_errors.
+F2FS-fs (loop0): Mounted with checkpoint version = 48b305e4
+==================================================================
+BUG: KASAN: slab-out-of-bounds in f2fs_test_bit fs/f2fs/f2fs.h:2933 [inline]
+BUG: KASAN: slab-out-of-bounds in current_nat_addr fs/f2fs/node.h:213 [inline]
+BUG: KASAN: slab-out-of-bounds in f2fs_get_node_info+0xece/0x1200 fs/f2fs/node.c:600
+Read of size 1 at addr ffff88807a58c76c by task syz-executor280/5076
 
-Use rx_missed_errors as intended for counting packets dropped due to
-buffer exhaustion.
+CPU: 1 PID: 5076 Comm: syz-executor280 Not tainted 6.9.0-rc5-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ f2fs_test_bit fs/f2fs/f2fs.h:2933 [inline]
+ current_nat_addr fs/f2fs/node.h:213 [inline]
+ f2fs_get_node_info+0xece/0x1200 fs/f2fs/node.c:600
+ f2fs_xattr_fiemap fs/f2fs/data.c:1848 [inline]
+ f2fs_fiemap+0x55d/0x1ee0 fs/f2fs/data.c:1925
+ ioctl_fiemap fs/ioctl.c:220 [inline]
+ do_vfs_ioctl+0x1c07/0x2e50 fs/ioctl.c:838
+ __do_sys_ioctl fs/ioctl.c:902 [inline]
+ __se_sys_ioctl+0x81/0x170 fs/ioctl.c:890
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 269e6b3af3bf ("net/mlx5e: Report additional error statistics in get stats ndo")
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The root cause is we missed to do sanity check on i_xattr_nid during
+f2fs_iget(), so that in fiemap() path, current_nat_addr() will access
+nat_bitmap w/ offset from invalid i_xattr_nid, result in triggering
+kasan bug report, fix it.
+
+Reported-and-tested-by: syzbot+3694e283cf5c40df6d14@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/00000000000094036c0616e72a1d@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/inode.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 923be5fb7d216..79d687c663d54 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -3185,7 +3185,7 @@ mlx5e_get_stats(struct net_device *dev, struct rtnl_link_stats64 *stats)
- 		mlx5e_fold_sw_stats64(priv, stats);
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -286,6 +286,12 @@ static bool sanity_check_inode(struct in
+ 		return false;
  	}
  
--	stats->rx_dropped = priv->stats.qcnt.rx_out_of_buffer;
-+	stats->rx_missed_errors = priv->stats.qcnt.rx_out_of_buffer;
++	if (fi->i_xattr_nid && f2fs_check_nid_range(sbi, fi->i_xattr_nid)) {
++		f2fs_warn(sbi, "%s: inode (ino=%lx) has corrupted i_xattr_nid: %u, run fsck to fix.",
++			  __func__, inode->i_ino, fi->i_xattr_nid);
++		return false;
++	}
++
+ 	return true;
+ }
  
- 	stats->rx_length_errors =
- 		PPORT_802_3_GET(pstats, a_in_range_length_errors) +
--- 
-2.43.0
-
 
 
 
