@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-51474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38DA9907019
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7C0906E1C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7DB228960D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E1FD2815E2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0BA8145A05;
-	Thu, 13 Jun 2024 12:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF42B145B3C;
+	Thu, 13 Jun 2024 12:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJb3eAat"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBBWBqFG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7171C145B08;
-	Thu, 13 Jun 2024 12:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA43145B1E;
+	Thu, 13 Jun 2024 12:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281404; cv=none; b=O+wb1WkIwpQYgfxh33zQi9WcQ6VKgurA1OzC0niQBoF3yJh21WYT9FrZN8RxABYEpvzYYCwN3Wu20fw7OJm9Os+OiK//qUQhMeg/pPUozAxo4tTkbWNtz8A8v/A655qJ1S3s6vZjcB8kDOHp2k/+j0VoK+BzBp+ResWHKi5eopQ=
+	t=1718280162; cv=none; b=NKS/PaaY9AC+14baDBnk6rz2pYfwyqpXrCNbyUsEpQKnNIHLzi0DY6MeXV+qX1/vFCNYIrZmh8frOM0wRQuMoTfVYsVBa8aEdH6wt5EdV8q70e8TZqerCwzYgJSysDInbkO63tP7Htw4BciXTVERcOoX9yabtx2b5F3xqO3paSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281404; c=relaxed/simple;
-	bh=6lZ+9BDQRzGWVsa+b4COvKQMZJDoCqLArsq2geuGNbQ=;
+	s=arc-20240116; t=1718280162; c=relaxed/simple;
+	bh=BCXBKZXCu6xdr50PA/DYa2Lekf4Mdb09Zor1RG6tUDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q92xwWlXgomRytq4ml98hpSyIegCkt83jcO3LaLzhaAKDYt1vV8ItZSGK8TzHqj5WrhlnvtNRy1tSxckwxWzqpP0yAqZ0igdBWBlJFL85pIjglGrEEDW4yqmxC93QrQVVerdnPBu3Fc0RfIVkK+JQmCej2m5+J1oPK+kWJXJ5SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJb3eAat; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA50C2BBFC;
-	Thu, 13 Jun 2024 12:23:23 +0000 (UTC)
+	 MIME-Version; b=oe0MCYs5DByQhF/23R9F2iYOf+V5XX/wF1bU6lSJ2xvY2qRJKdBHQ9VNttwBAFiMRtbFHU4hnUwCxl9ViejL8baIHqJhvMN1DWqj/HctldZhej0DzfhbcNmptRWuOFIlCCvt36FYuJhacBOWV6lpuEtfgFVOUdadS2WKaYOXRGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBBWBqFG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AACDC2BBFC;
+	Thu, 13 Jun 2024 12:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281404;
-	bh=6lZ+9BDQRzGWVsa+b4COvKQMZJDoCqLArsq2geuGNbQ=;
+	s=korg; t=1718280162;
+	bh=BCXBKZXCu6xdr50PA/DYa2Lekf4Mdb09Zor1RG6tUDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJb3eAattRPcItMvaOd1yko+ruzNBfzPaX5ObPsgRrP1kJ0SzItGkviTIgxI9HnNE
-	 HDQqRsfvOIH2uvhKHPOaL7uHGKBaFRRqAWOXCpRUeecLpxlwbEfjw5uouewKwDKQc9
-	 T2sLVYnjNKajT4BGz6YusG/65kk38eSw1X8KE8Wo=
+	b=GBBWBqFGFTfYFSHf6Fx43E5ACRYL4T9ry4Nip2aP9gXHjHseZ2VRKxNKuhbM60or2
+	 HaLEP99I4vHv0sW5gT8zvE+XQzZ50CRSNrttm5il4kRkTIiaZFnLsd8ulHlt3MF8P6
+	 LhFmYoUtUXal37sFbJj3qfz2LELTgQj22+1bi41k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryosuke Yasuoka <ryasuoka@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 244/317] nfc: nci: Fix handling of zero-length payload packets in nci_rx_work()
+	Benjamin Coddington <bcodding@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.4 164/202] SUNRPC: Fix loop termination condition in gss_free_in_token_pages()
 Date: Thu, 13 Jun 2024 13:34:22 +0200
-Message-ID: <20240613113256.989312161@linuxfoundation.org>
+Message-ID: <20240613113234.077217645@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryosuke Yasuoka <ryasuoka@redhat.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 6671e352497ca4bb07a96c48e03907065ff77d8a ]
+commit 4a77c3dead97339478c7422eb07bf4bf63577008 upstream.
 
-When nci_rx_work() receives a zero-length payload packet, it should not
-discard the packet and exit the loop. Instead, it should continue
-processing subsequent packets.
+The in_token->pages[] array is not NULL terminated. This results in
+the following KASAN splat:
 
-Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
-Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240521153444.535399-1-ryasuoka@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  KASAN: maybe wild-memory-access in range [0x04a2013400000008-0x04a201340000000f]
+
+Fixes: bafa6b4d95d9 ("SUNRPC: Fix gss_free_in_token_pages()")
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/sunrpc/auth_gss/svcauth_gss.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index ada7f32d03e48..a7e6b8b272505 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1517,8 +1517,7 @@ static void nci_rx_work(struct work_struct *work)
+--- a/net/sunrpc/auth_gss/svcauth_gss.c
++++ b/net/sunrpc/auth_gss/svcauth_gss.c
+@@ -1104,7 +1104,7 @@ static int gss_read_proxy_verf(struct sv
+ 	}
  
- 		if (!nci_valid_size(skb)) {
- 			kfree_skb(skb);
--			kcov_remote_stop();
--			break;
-+			continue;
- 		}
- 
- 		/* Process frame */
--- 
-2.43.0
-
+ 	pages = DIV_ROUND_UP(inlen, PAGE_SIZE);
+-	in_token->pages = kcalloc(pages, sizeof(struct page *), GFP_KERNEL);
++	in_token->pages = kcalloc(pages + 1, sizeof(struct page *), GFP_KERNEL);
+ 	if (!in_token->pages) {
+ 		kfree(in_handle->data);
+ 		return SVC_DENIED;
 
 
 
