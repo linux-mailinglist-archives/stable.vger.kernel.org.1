@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-50662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53E35906BC6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E86B906D95
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF1631F21FC8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B479F2824D8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A3A1442E3;
-	Thu, 13 Jun 2024 11:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F787143883;
+	Thu, 13 Jun 2024 11:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+ZluFKN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYmIkF9D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823A2143C6F;
-	Thu, 13 Jun 2024 11:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD9B1448FA;
+	Thu, 13 Jun 2024 11:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279020; cv=none; b=N7ruC0+NpoGVHly85t+qaoV5KMx4s8o5hJ3i5n0V7VQ+h4dLfn0ba/Mf4POhBK/HI3z6GSGCCPeMrZhT4ZUT/zQoeNF4OFw1ySmNZMGSrKqcsulzLotQrgYYC9ut2pejnBeWWxyd/wQBaXbl2MjYSRub45o7qp1yGkBHR6ufaTk=
+	t=1718279880; cv=none; b=UoRUCj1ZV0ZNRdXSXDbf0GSoEkYb8vLiWb1gDI29xDV/qSgEVBxD5RUYBQ/7pgX4n9DD2wg6I9RGeMfgIaep5kc56yZZ7JVb/vw+AXsOQST+Uo1mEaYGSPlqz5mGoECw5O+gMAyCdYEKJn0qG46R06xZO16tGBBEfj9glZVdW7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279020; c=relaxed/simple;
-	bh=jhsfw6jl8E7JL8Kr/e0H/qqU9LDE6M9DnQ/Z/AoNdYA=;
+	s=arc-20240116; t=1718279880; c=relaxed/simple;
+	bh=a3bbkyBVVuO1CMvQD+dk/rKM5ZuoeiM7NEvE1ZC8WOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rcGQIQGlfwqnjV9zctJ2onFB/ErrWI/1MrSnQqgF+4k9cKIFXE7huFFwzY0JQr2ZcXUc3E6xmSzbQv2HBLtWjJwk93PHRktrr++w84kGxe9++Hdk5lMJb85uB3blpf0liPxyLeUY9xYbtHfMQYlIqLB2QvQLK5MHEbYUieBhTkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+ZluFKN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098D1C2BBFC;
-	Thu, 13 Jun 2024 11:43:39 +0000 (UTC)
+	 MIME-Version; b=nqxdDZ7baqWHzg5Y7Li49QSIMaBR5nxDc7rq/DU7ZZj+4qzjkJxv5EGWkRrJbAnRHpgMmPN5rwe35JIzC3SMEsWcEmUxDf0/j31TG6HVtJUXTlR9AZ6j0OEUGrCNwljN2uwCAbqGRr/NBhHGTGgLF6rd5KDX723R2HcjQq5qNFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYmIkF9D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2611CC2BBFC;
+	Thu, 13 Jun 2024 11:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279020;
-	bh=jhsfw6jl8E7JL8Kr/e0H/qqU9LDE6M9DnQ/Z/AoNdYA=;
+	s=korg; t=1718279879;
+	bh=a3bbkyBVVuO1CMvQD+dk/rKM5ZuoeiM7NEvE1ZC8WOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J+ZluFKNjeQIGdk72kvw7a/7oIaykNT39ol1p/BBPPPPeavcoFqd/Vjq+k/DDJlC/
-	 76E735jpXUIqqoZA1Ektj9WXdRI1AdWbQloZB9DHzlp2KW2eUhW355Omu2ZXTHOLwt
-	 uV0ikftU9u/5URe6APW2nq1q+6nuh6Y9IUX/Si/o=
+	b=lYmIkF9DeQ7hzihLt/6yGf9vFAyDDgqy3G9sYZi+bZEqSODjMMkurt6iqw3Qd2xcO
+	 w6Bjz3AaU/9xy/Z3e5T7VlajuOLW1oQ/xWxAHQSVgHnNL4KmnOYKF5JVfSGHox7Eq5
+	 38My1WvNWGyL3UVoo8Ht6n10BkGM8TLv+nAGWFjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	"Yang, Chenyuan" <cy54@illinois.edu>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
-Subject: [PATCH 4.19 118/213] media: cec: cec-api: add locking in cec_release()
+	patches@lists.linux.dev,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 068/202] drm/amd/display: Fix potential index out of bounds in color transformation function
 Date: Thu, 13 Jun 2024 13:32:46 +0200
-Message-ID: <20240613113232.551537106@linuxfoundation.org>
+Message-ID: <20240613113230.402643516@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +69,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 42bcaacae924bf18ae387c3f78c202df0b739292 ]
+[ Upstream commit 63ae548f1054a0b71678d0349c7dc9628ddd42ca ]
 
-When cec_release() uses fh->msgs it has to take fh->lock,
-otherwise the list can get corrupted.
+Fixes index out of bounds issue in the color transformation function.
+The issue could occur when the index 'i' exceeds the number of transfer
+function points (TRANSFER_FUNC_POINTS).
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Yang, Chenyuan <cy54@illinois.edu>
-Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
-Fixes: ca684386e6e2 ("[media] cec: add HDMI CEC framework (api)")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+The fix adds a check to ensure 'i' is within bounds before accessing the
+transfer function points. If 'i' is out of bounds, an error message is
+logged and the function returns false to indicate an error.
+
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:405 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:406 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:407 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
+
+Fixes: b629596072e5 ("drm/amd/display: Build unity lut for shaper")
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Charlene Liu <Charlene.Liu@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/cec-api.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/media/cec/cec-api.c b/drivers/media/cec/cec-api.c
-index b2b3f779592fd..d4c848c2f3764 100644
---- a/drivers/media/cec/cec-api.c
-+++ b/drivers/media/cec/cec-api.c
-@@ -660,6 +660,8 @@ static int cec_release(struct inode *inode, struct file *filp)
- 		list_del(&data->xfer_list);
- 	}
- 	mutex_unlock(&adap->lock);
-+
-+	mutex_lock(&fh->lock);
- 	while (!list_empty(&fh->msgs)) {
- 		struct cec_msg_entry *entry =
- 			list_first_entry(&fh->msgs, struct cec_msg_entry, list);
-@@ -677,6 +679,7 @@ static int cec_release(struct inode *inode, struct file *filp)
- 			kfree(entry);
- 		}
- 	}
-+	mutex_unlock(&fh->lock);
- 	kfree(fh);
- 
- 	cec_put_device(devnode);
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
+index bbd6e01b3eca4..f1b1bc8da175b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
+@@ -380,6 +380,11 @@ bool cm_helper_translate_curve_to_hw_format(
+ 				i += increment) {
+ 			if (j == hw_points - 1)
+ 				break;
++			if (i >= TRANSFER_FUNC_POINTS) {
++				DC_LOG_ERROR("Index out of bounds: i=%d, TRANSFER_FUNC_POINTS=%d\n",
++					     i, TRANSFER_FUNC_POINTS);
++				return false;
++			}
+ 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
+ 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
+ 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
 -- 
 2.43.0
 
