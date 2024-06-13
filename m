@@ -1,187 +1,136 @@
-Return-Path: <stable+bounces-52101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CDFE907CD1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 21:41:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21362907CE0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 21:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3116B1C23E5B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 19:41:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1C7EB28756
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 19:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A551509A2;
-	Thu, 13 Jun 2024 19:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3EF14C5A7;
+	Thu, 13 Jun 2024 19:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="acDwYpG3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HAz005uY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6610714D6FA;
-	Thu, 13 Jun 2024 19:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA5F12D203;
+	Thu, 13 Jun 2024 19:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718307663; cv=none; b=AcbThi9NECnS6z1L8FEua0UyDy6rfBo7TcYOHxloyDv3ClOYCCMeldZvRELuohyWhihOsSZVdoOkhLVOygzQ6ahUvMPhgbanl1AfLC79VNNBxuU+YB+HsBeKoXTc7danI26luWt61MTruhjgN+rjvFpH15F20E+zdGWFx4avhKk=
+	t=1718307883; cv=none; b=hmCXpLF3PtO8jRhUiKl0z1rqt6BhE1lkMh3Pp20XZeq56bKfLNmVJo0xz20eGOGhotXrPF+WtD6HUrnDHEEcD2A3uizSf83Nyf9fwf6+voP3AmDM9l99k+tv6qBYRbnAh20Y7HCfDHXeDWLe76pkUqk7WrmMParX3tWVUF4a490=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718307663; c=relaxed/simple;
-	bh=krDJ0efxWuTgHMl52r7hlgXIBjsj6i/SwlWapzZJpyE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T1tEEEsbuVSTdWYM2SYgm6X+j0OuigUvXJAi+5luWWwz/jazDNu6oDzVFEtUIaxflP0gLp/Dp0BxQC6ZtZ+iKjpA9zxzjnPnwWiO4ZrP3EJZUgA8yW0P0yV51zP6mM/rd12kTT9kUIMvWgzBLYZTnBIG6DxENepMuW5eNCSdwuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=acDwYpG3; arc=none smtp.client-ip=99.78.197.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1718307883; c=relaxed/simple;
+	bh=o0k56xni3HjDQhvMyd4bxJKEJ2zBYP72MK0RubwZrQM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mqrbDj3X+v8g9QNJLeaniq7S0p6NciUEq1EqVJqNRX7uiukUtUSkD+SI1uIRUSQ4NGzQypu6EUHl14B3dn76nM9w03GfW6yoyUKGb1CtTjUI9BtQTZNFADx67Hl7VdfVdvr68+j+79/SVE4YVKmQBAC+DgGwYDq6yvE8+6vO4QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HAz005uY; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-57ca578ce8dso1663541a12.2;
+        Thu, 13 Jun 2024 12:44:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1718307661; x=1749843661;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=NV7Lhmej4Lxe5+Y6UUlma1D1VKEYEqQOtLkFv+lMdpQ=;
-  b=acDwYpG3LKqOQUhSL3oxXSBYrCVJj3WhhiwtTlsbOAgCRFU5PjtLlxHw
-   sYidVwAUkX++te5PGcouj+qXpvyo4WPxG70SXdD4rL06WAugySum2o3FS
-   QDB/hH+kQVoJpqz//looDx8GzL8hyGHO+9iZOljuYQ2xe5iPrEibDsmx2
-   Q=;
-X-IronPort-AV: E=Sophos;i="6.08,236,1712620800"; 
-   d="scan'208";a="302057957"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2024 19:40:59 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:7470]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.37.96:2525] with esmtp (Farcaster)
- id a010f6d4-7be5-4303-9392-ad0c8cfe3f17; Thu, 13 Jun 2024 19:40:59 +0000 (UTC)
-X-Farcaster-Flow-ID: a010f6d4-7be5-4303-9392-ad0c8cfe3f17
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Thu, 13 Jun 2024 19:40:58 +0000
-Received: from 88665a182662.ant.amazon.com (10.106.100.23) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Thu, 13 Jun 2024 19:40:55 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <ignat@cloudflare.com>
-CC: <davem@davemloft.net>, <dsa@cumulusnetworks.com>, <dsahern@kernel.org>,
-	<edumazet@google.com>, <kernel-team@cloudflare.com>, <kraig@google.com>,
-	<kuba@kernel.org>, <kuniyu@amazon.com>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] net: do not leave dangling sk pointer in inet_create()/inet6_create()
-Date: Thu, 13 Jun 2024 12:40:47 -0700
-Message-ID: <20240613194047.36478-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <CALrw=nEVktSeq4HcLqM0VfTrdHCLHeqi71-fKD8+UcBjtoVaBA@mail.gmail.com>
-References: <CALrw=nEVktSeq4HcLqM0VfTrdHCLHeqi71-fKD8+UcBjtoVaBA@mail.gmail.com>
+        d=gmail.com; s=20230601; t=1718307880; x=1718912680; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o0k56xni3HjDQhvMyd4bxJKEJ2zBYP72MK0RubwZrQM=;
+        b=HAz005uYOYZa7o3m3ZWEg90rQunhkScI6ExTwsDYmgK8nHlayv8U4SuU9wqguHod9V
+         FBuOROWRVx5b2n8/efGrLomGNfiAvmU1XA80fji+KG5n9Gtcrt0zKftW65FvypUVzD6N
+         JeCGcrjK130zx/ZOC0A/GUdor+5jGWI/9LA4G1+ortueKA3t40Yy/kAqhRQQYEA4M0dx
+         NTlLZvTv+4wVYzyGvhiutKlkIoxCfBnWGaO9lxvmP7DyE+n+daJtqgss90G7Gpjni+SO
+         9Qo59bqA7c+c5PspxvG97pMbBh8g+bKjhzd6TVbiZkuIpT5EiBJnCf3LEOFu3GRmLF0d
+         SCRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718307880; x=1718912680;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=o0k56xni3HjDQhvMyd4bxJKEJ2zBYP72MK0RubwZrQM=;
+        b=RcNWgRaygPxFszX/Qz77czOMY44Ryzdz2IxPjds5jHkDPl/T7Bk/QtqwU0d+V1MNtf
+         hBL7daVqPw1YtyKjNRF6AK5S7BzOmFLcXEvZXLeGHg6NiH3EOHppp0Dz+sBOs5jykbpO
+         tXhmZclHSJJ5Szml2vuYFiixbn3E9dj/60yPUPlpSPhSeH3Xyl45okupb6iPEferv+HV
+         GCcyy9haWlMzhvMAHeAymM5f32n4b/92D2B0e78aHtvrhUuJaQDELtOU2xbPY4nvaQuN
+         JoMCREX7TylkRXOTTHBRj0gzh79Q4A4y1NC1NN+OW5KEyQl3iG75odSMyd62CNSgd1+G
+         otsg==
+X-Forwarded-Encrypted: i=1; AJvYcCVZTpL7KtrRb9UXNpo9v22DWMq6T/uHGu/6rzT7/dW/9NytzpaJ9rVjC8VKZRONeEts62dt9luLXffDhNu+63sXQt2zVzVO83AKA4c9Y14sKOxUapGxbjgwxS3I7g5FK2zzWsJt9l2SRgdnASDXelnjniFFysQkOW1nUNPhKA==
+X-Gm-Message-State: AOJu0YyBa+zvdhDdXJUDhwMpNBaXepCw/A/9OOkvvQhgBBa5SJm8BgJn
+	X86NAqDxVz3L9Dp8mlWML49smOyltIfnnTqRNLWG2kukx0bq8r/mdqUXpUfbAA8JH+PCpNYXh49
+	jyIUrqSIhrhDp3ebdEM6kyjLPe6c=
+X-Google-Smtp-Source: AGHT+IFkfjIYvIomJOHy/oyUucdP9vfmUYl+A+z1nkrwTNcXt7YAGybnuvgjDx59TFBK8xk6zkOSEbux8u61ozgHBKQ=
+X-Received: by 2002:a17:906:6848:b0:a6e:f3d7:4107 with SMTP id
+ a640c23a62f3a-a6f60de61cbmr45873266b.72.1718307880290; Thu, 13 Jun 2024
+ 12:44:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D045UWC003.ant.amazon.com (10.13.139.198) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+References: <20240612165249.2671204-1-bvanassche@acm.org> <20240612165249.2671204-3-bvanassche@acm.org>
+ <CAHp75VdT8hp+aSN_ZyGebkUykaP=p9ipq4Guk6+e_HJ2apu18g@mail.gmail.com> <f3a8f117-4534-4071-8084-4cc984f963e4@acm.org>
+In-Reply-To: <f3a8f117-4534-4071-8084-4cc984f963e4@acm.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Thu, 13 Jun 2024 21:44:03 +0200
+Message-ID: <CAHp75VfvuNCvPCMa_aUYVzL6+b=UE5stC8rTwYzXSassLnDqmA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] scsi: core: Do not query IO hints for USB devices
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>, Alan Stern <stern@rowland.harvard.edu>, 
+	linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org, 
+	Joao Machado <jocrismachado@gmail.com>, Christian Heusel <christian@heusel.eu>, stable@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ignat Korchagin <ignat@cloudflare.com>
-Date: Wed, 12 Jun 2024 14:22:36 -0400
-> > And curious if bpf_get_socket_cookie() can be called any socket
-> > family to trigger the splat.  e.g. ieee802154_create() seems to
-> > have the same bug.
-> 
-> Just judging from the code - yes, indeed.
-> 
-> > If so, how about clearing sock->sk in sk_common_release() ?
-> 
-> This was my first thought, but I was a bit put off by the fact that
-> sk_common_release() is called from many places and the sk object
-> itself is reference counted. So not every call to sk_common_release()
-> seems to actually free the sk object.
-
-sk_common_release() is called
-
-  1. when we fail to create a socket (socket() or accept() syscall)
-  2. when we release the last refcount of the socket's file descriptor
-     (basically close() syscall)
-
-The issue only happens at 1. because we clear sock->sk at 2. in
-__sock_release() after calling sock->ops->release().
-
-So, we need not take care of these callers of sk_common_release().
-
-  - inet_release
-    - ->close()
-      - udp_lib_close
-      - ping_close
-      - raw_close
-      - rawv6_close
-      - l2tp_ip_close
-      - l2tp_ip6_close
-      - sctp_close
-  - ieee802154_sock_release
-    - ->close()
-      - raw_close
-      - dgram_close
-  - mctp_release
-    - ->close()
-      - mctp_sk_close
-  - pn_socket_release
-    - ->close()
-      - pn_sock_close
-      - pep_sock_close
-
-Then, the rest of the callers are:
-
-  - __sock_create
-    - pf->create()
-      - inet_create
-      - inet6_create
-      - ieee802154_create
-      - smc_create
-        - __smc_create
-
-  - setsockopt(TCP_ULP)
-    - smc_ulp_init
-      - __smc_create
-
-  - sctp_accept
-    - sctp_v4_create_accept_sk
-    - sctp_v6_create_accept_sk
-
-we need not care about sctp_v[46]_create_accept_sk() because they don't set
-sock->sk for the socket; we don't pass sock to sock_init_data(NULL, newsk)
-before calling sk_common_release().
-
-__sock_create() path and SMC's ULP path have the same issue, and
-sk_common_release() releases the last refcount of struct sock there.
-
-So, I think we can set NULL to sock->sk in sk_common_release().
-
-
-> Secondly, I was put off by this
-> comment (which I don't fully understand TBH) [1]
-> 
-> On the other hand - in inet/inet6_create() we definitely know that the
-> object would be freed, because we just created that.
-> 
-> But if someone more familiar with the code confirms it is
-> better/possible to do in sk_common_release(), I'm happy to adjust and
-> it would be cleaner indeed.
-> 
-> > ---8<---
-> > diff --git a/net/core/sock.c b/net/core/sock.c
-> > index 8629f9aecf91..bbc94954d9bf 100644
-> > --- a/net/core/sock.c
-> > +++ b/net/core/sock.c
-> > @@ -3754,6 +3754,9 @@ void sk_common_release(struct sock *sk)
-> >          * until the last reference will be released.
-> >          */
+On Thu, Jun 13, 2024 at 8:10=E2=80=AFPM Bart Van Assche <bvanassche@acm.org=
+> wrote:
+> On 6/13/24 10:44 AM, Andy Shevchenko wrote:
+> > On Wed, Jun 12, 2024 at 6:53=E2=80=AFPM Bart Van Assche <bvanassche@acm=
+.org> wrote:
+> >>
+> >> Recently it was reported that the following USB storage devices are un=
+usable
+> >> with Linux kernel 6.9:
+> >> * Kingston DataTraveler G2
+> >> * Garmin FR35
+> >>
+> >> This is because attempting to read the IO hint VPD page causes these d=
+evices
+> >> to reset. Hence do not read the IO hint VPD page from USB storage devi=
+ces.
 > >
-> > +       if (sk->sk_socket)
-> > +               sk->sk_socket->sk = NULL;
-> > +
-> >         sock_orphan(sk);
+> >> Cc: Alan Stern <stern@rowland.harvard.edu>
+> >> Cc: linux-usb@vger.kernel.org
+> >> Cc: Joao Machado <jocrismachado@gmail.com>
 > >
-> >         xfrm_sk_free_policy(sk);
-> > ---8<---
-> 
-> [1]: https://elixir.bootlin.com/linux/v6.10-rc3/source/include/net/sock.h#L1985
+> >> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+> >> Cc: Christian Heusel <christian@heusel.eu>
+> >
+> > Besides no need to repeat these Cc's in case there are other tags for
+> > the same emails, can you move the rest of Cc's after the --- line
+> > below? For you it will be the same effect, for many others the Git
+> > history won't be polluted with this noise.
+>
+> I will leave out the redundant Cc's but I'm surprised by the request to m=
+ove
+> Cc tags after the --- line. There are many patches with Cc: tags in Linus=
+' tree.
 
+I know, and that's why I am asking for them to be moved away. It's
+just duplicate information and since we have lore.kernel.org, we may
+always get the real message with the same data, no need to repeat this
+in Git history.
+
+> I have never before seen anyone requesting to move Cc tags after the --- =
+line.
+
+
+
+--=20
+With Best Regards,
+Andy Shevchenko
 
