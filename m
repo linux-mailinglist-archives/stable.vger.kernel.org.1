@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-50721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E628906C2E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:48:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FFB906D50
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE3781F21670
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:48:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFE5AB268C0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7BBB13D512;
-	Thu, 13 Jun 2024 11:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F051459FE;
+	Thu, 13 Jun 2024 11:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7xKAZ1f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvJf4++o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83CB145B0F;
-	Thu, 13 Jun 2024 11:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D43144D16;
+	Thu, 13 Jun 2024 11:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279192; cv=none; b=ofUli+qM2FcSdZZwI8nGw0yUg87tZhEiyol8lDV0eKAOWDMprSKmv2g8zaUnqVPce1p+Sc2E4IJ6mKR1KCP/g76O2l0C8YUiV+T1i4WkdzyRyiv2iTfbLjO3V+y8dwDUUBtd7Cr/Qmj8CPHy3dpr9d3lNdIj8aG5eWbSwOWMFaE=
+	t=1718279687; cv=none; b=jWYPWHiN1ge+0qNoTF8c3l9nMyKBMxbI+MpTYoeMrVYjfEP3YB5I/Gj19KXoqq1qtSja+ePeHZCvtpOqAFZn3o6nX9EOfEMEx0a7Cp0RHwLAieGcA7KHz/zAAM+J+CBR5bthNR/lIdsbUVBKuH5Rh68xS0BvCjmrS6D9gMIC6fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279192; c=relaxed/simple;
-	bh=OdzRSiR+hikr9Oy36herJzEOjMydkAdRk5GWHLB7CyM=;
+	s=arc-20240116; t=1718279687; c=relaxed/simple;
+	bh=j9Q8nI18Jgwxz8PTFNR6QPTk6WxrYnm2RVVbqdl6gGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LLI79hVgpnch0SrOfEgUyhWNyu4jpsf8qlynrcHTqhmLWsP7kQpXysBPatOO4i4m44mk1DYjYMGGs2orZjPGZJvV+fMZfF59VOVF2B8FHFDmJ2KRxKVOre4GDxu/lrZYMZMP0KPcttYZoZCzBGSHh+Fu65DpnUXl9XK/EY4DCjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7xKAZ1f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B0DC2BBFC;
-	Thu, 13 Jun 2024 11:46:32 +0000 (UTC)
+	 MIME-Version; b=n98z4TMcJoiSxeEEtRXrB824qalg8RwaXg5JM3REGLz0DRrXkkdGXOr8WJNNc8gRxUxraHOAWcbODVoWci7AeqIVgtYzQBMsrjeSx+smTglAB/GWezQK727wfchfZM8cwYRH9LBEEZKwqJQ0BHNAJW/YXfHigNpsaVbGJFIACkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvJf4++o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C43AC2BBFC;
+	Thu, 13 Jun 2024 11:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279192;
-	bh=OdzRSiR+hikr9Oy36herJzEOjMydkAdRk5GWHLB7CyM=;
+	s=korg; t=1718279687;
+	bh=j9Q8nI18Jgwxz8PTFNR6QPTk6WxrYnm2RVVbqdl6gGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T7xKAZ1fG0sKxHkf2ld+RZXsd2iPpc93fT8e5HCVT8dNGKrBslNm06gpbAEEzZKyB
-	 hMdqDK2BT0nM53B39Vxd5HsjGz6rRhVEPfg7MQ0lcCBO9oCLLoY0quiZzsXFykonFB
-	 ycZKkgTnXNZWzUbrzr3YlHELyRVhjYo58HcMJacc=
+	b=wvJf4++oUhdXQlFg/UZxtLoeCaUH6SCKcPXU5l8aKO7X5wqwE6xr8yCq+Kd37PwM1
+	 dc1GPJqQS3CqN7sXYXA3IG6rbE5bhgyDOyJZemd6/7Xs6gFvzCatvyCx4Re4yg4VlZ
+	 mphdHJI7qba9tViCC8bzKxZFdgJdMtH64fV7wF2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Justin Stitt <justinstitt@google.com>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 4.19 206/213] kdb: Fix console handling when editing and tab-completing commands
+	Heiko Carstens <hca@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Juergen Christ <jchrist@linux.ibm.com>
+Subject: [PATCH 6.9 129/157] s390/cpacf: Make use of invalid opcode produce a link error
 Date: Thu, 13 Jun 2024 13:34:14 +0200
-Message-ID: <20240613113235.929854389@linuxfoundation.org>
+Message-ID: <20240613113232.400642203@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Harald Freudenberger <freude@linux.ibm.com>
 
-commit db2f9c7dc29114f531df4a425d0867d01e1f1e28 upstream.
+commit 32e8bd6423fc127d2b37bdcf804fd76af3bbec79 upstream.
 
-Currently, if the cursor position is not at the end of the command buffer
-and the user uses the Tab-complete functions, then the console does not
-leave the cursor in the correct position.
+Instead of calling BUG() at runtime introduce and use a prototype for a
+non-existing function to produce a link error during compile when a not
+supported opcode is used with the __cpacf_query() or __cpacf_check_opcode()
+inline functions.
 
-For example consider the following buffer with the cursor positioned
-at the ^:
-
-md kdb_pro 10
-          ^
-
-Pressing tab should result in:
-
-md kdb_prompt_str 10
-                 ^
-
-However this does not happen. Instead the cursor is placed at the end
-(after then 10) and further cursor movement redraws incorrectly. The
-same problem exists when we double-Tab but in a different part of the
-code.
-
-Fix this by sending a carriage return and then redisplaying the text to
-the left of the cursor.
-
+Suggested-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
+Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
+Reviewed-by: Juergen Christ <jchrist@linux.ibm.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Justin Stitt <justinstitt@google.com>
-Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-3-f236dbe9828d@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/s390/include/asm/cpacf.h |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -380,6 +380,8 @@ poll_again:
- 			kdb_printf("\n");
- 			kdb_printf(kdb_prompt_str);
- 			kdb_printf("%s", buffer);
-+			if (cp != lastchar)
-+				kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		} else if (tab != 2 && count > 0) {
- 			/* How many new characters do we want from tmpbuffer? */
- 			len_tmp = strlen(p_tmp) - len;
-@@ -393,6 +395,9 @@ poll_again:
- 				kdb_printf("%s", cp);
- 				cp += len_tmp;
- 				lastchar += len_tmp;
-+				if (cp != lastchar)
-+					kdb_position_cursor(kdb_prompt_str,
-+							    buffer, cp);
- 			}
- 		}
- 		kdb_nextline = 1; /* reset output line number */
+--- a/arch/s390/include/asm/cpacf.h
++++ b/arch/s390/include/asm/cpacf.h
+@@ -166,6 +166,13 @@
+ 
+ typedef struct { unsigned char bytes[16]; } cpacf_mask_t;
+ 
++/*
++ * Prototype for a not existing function to produce a link
++ * error if __cpacf_query() or __cpacf_check_opcode() is used
++ * with an invalid compile time const opcode.
++ */
++void __cpacf_bad_opcode(void);
++
+ static __always_inline void __cpacf_query_rre(u32 opc, u8 r1, u8 r2,
+ 					      cpacf_mask_t *mask)
+ {
+@@ -237,7 +244,7 @@ static __always_inline void __cpacf_quer
+ 		__cpacf_query_rre(CPACF_PRNO, 2, 4, mask);
+ 		break;
+ 	default:
+-		BUG();
++		__cpacf_bad_opcode();
+ 	}
+ }
+ 
+@@ -262,7 +269,8 @@ static __always_inline int __cpacf_check
+ 	case CPACF_KMA:
+ 		return test_facility(146);	/* check for MSA8 */
+ 	default:
+-		BUG();
++		__cpacf_bad_opcode();
++		return 0;
+ 	}
+ }
+ 
 
 
 
