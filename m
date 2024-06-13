@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-51705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D23907133
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98617906F2D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40B8E283E2D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E6641F234D9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DCD2CA6;
-	Thu, 13 Jun 2024 12:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085C0144D3F;
+	Thu, 13 Jun 2024 12:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+8rodAc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VGi3BoD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B532566;
-	Thu, 13 Jun 2024 12:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6E613CF9E;
+	Thu, 13 Jun 2024 12:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282074; cv=none; b=BMYeez9BkvJ3JAQV7lmjwjh0HBILrkLXT80ef7qmM/Abq+KjdkOW2cMsYzrPhxgcV2ie20aM3oE4K7Yimn73NBivy6C+5783iD+mrgaKamlNekuafjIDLVWa9tQ+8vvsGrwj8MTwY6WrDZj+NjtYOktrQg6Z1+FyAJ9wI74GF98=
+	t=1718280872; cv=none; b=rJGWGzYG+ZRgAjk0wmI2U5O47D1DQ3Q1MyKPK6qRotGGoGyN1vroKXvBLS1pVy/iGufaOlLOHLOP/aBiGKEgR+GTfzxysqfqRKR3xSaorzHjx88YaCmgR+GFaMR/ZIaex3n1Hm0IYJHXpqEA7k7hP/VWp2lNm9fSkcKEhfrJaiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282074; c=relaxed/simple;
-	bh=nYelEZ43DwjJW0dOyehzEFps4sOyCx/7oA5de+CO1bs=;
+	s=arc-20240116; t=1718280872; c=relaxed/simple;
+	bh=fTH2q7QqtJZmGrn9+JEdKGn9K3AeZadfLpjUbX58P7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rRziiRAuEH9zJo/v+QIFv1zWJeWrhaqAtcZWsSwBpJtpHdkRQ8y4O/qfOTr2TSQtaWeQhCOc0eh2vekIPjQMJEfWhAdzhoyQl+pbtOtu6cWyZ1MqtzIx9UiKkCdhuO98dwFWZYBqWuAlmQT5B+BupDozbcubgCD7QzZxmxODK9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+8rodAc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5B4C2BBFC;
-	Thu, 13 Jun 2024 12:34:33 +0000 (UTC)
+	 MIME-Version; b=PdBZITJpsS2trBJbHjZ9V98dasXVlttVpL7nHM4Sd0qxH9UwkIHbnHTweHw0UF3y0oPZTqxJaB1e9Iyk281q5cR6962dFNtU2qN+y+alWuzmijPt2DbuW8DGpHVpLQg5jPHiJjoslEjOvIX1hK1D4e3vL51961y0qcooavKxuC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VGi3BoD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D74D5C2BBFC;
+	Thu, 13 Jun 2024 12:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282073;
-	bh=nYelEZ43DwjJW0dOyehzEFps4sOyCx/7oA5de+CO1bs=;
+	s=korg; t=1718280871;
+	bh=fTH2q7QqtJZmGrn9+JEdKGn9K3AeZadfLpjUbX58P7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z+8rodAcnDv7tiZxJop47Ch1Q7rH7TbXHeIUfuiauFLTCu6Qm3Sx3fHEAbaoUIGnq
-	 aGwnCn5TQ8UtAL1S/9lGVHtjJ9ufc3gbmVKSFMFE3qLTwFLtMA3JVDFzhTtCb53aAR
-	 E4LpWoOX30MfRAsCb4+DpftlSiA4r88FIWKFpEpE=
+	b=1VGi3BoD6VmC98JAhMkTP/3HDN+ps1ee/viKSiW1z5gxfcYxeJ8s3cHQ1hS6nLgNU
+	 VM7XrGa8bt67VC0XETVMBijZc9tKgibYszB1TQ3j2Jf9kgsFwCGo2fsF3VKPFJivtQ
+	 /ZWY5sz8B/+4Sfikx22sKdx4Uh5berK9wK2LF4PU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Chris Down <chris@chrisdown.name>,
-	Petr Mladek <pmladek@suse.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Fangrui Song <maskray@google.com>,
+	Nick Desaulniers <ndesaulniers@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 122/402] dev_printk: Add and use dev_no_printk()
+Subject: [PATCH 5.10 061/317] x86/purgatory: Switch to the position-independent small code model
 Date: Thu, 13 Jun 2024 13:31:19 +0200
-Message-ID: <20240613113306.893956789@linuxfoundation.org>
+Message-ID: <20240613113249.910748703@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +65,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit c26ec799042a3888935d59b599f33e41efedf5f8 ]
+[ Upstream commit cba786af84a0f9716204e09f518ce3b7ada8555e ]
 
-When printk-indexing is enabled, each dev_printk() invocation emits a
-pi_entry structure.  This is even true when the dev_printk() is
-protected by an always-false check, as is typically the case for debug
-messages: while the actual code to print the message is optimized out by
-the compiler, the pi_entry structure is still emitted.
+On x86, the ordinary, position dependent small and kernel code models
+only support placement of the executable in 32-bit addressable memory,
+due to the use of 32-bit signed immediates to generate references to
+global variables. For the kernel, this implies that all global variables
+must reside in the top 2 GiB of the kernel virtual address space, where
+the implicit address bits 63:32 are equal to sign bit 31.
 
-Avoid emitting pi_entry structures for unavailable dev_printk() kernel
-messages by:
-  1. Introducing a dev_no_printk() helper, mimicked after the existing
-     no_printk() helper, which calls _dev_printk() instead of
-     dev_printk(),
-  2. Replacing all "if (0) dev_printk(...)" constructs by calls to the
-     new helper.
+This means the kernel code model is not suitable for other bare metal
+executables such as the kexec purgatory, which can be placed arbitrarily
+in the physical address space, where its address may no longer be
+representable as a sign extended 32-bit quantity. For this reason,
+commit
 
-This reduces the size of an arm64 defconfig kernel with
-CONFIG_PRINTK_INDEX=y by 957 KiB.
+  e16c2983fba0 ("x86/purgatory: Change compiler flags from -mcmodel=kernel to -mcmodel=large to fix kexec relocation errors")
 
-Fixes: ad7d61f159db7397 ("printk: index: Add indexing support to dev_printk")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Chris Down <chris@chrisdown.name>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/8583d54f1687c801c6cda8edddf2cf0344c6e883.1709127473.git.geert+renesas@glider.be
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+switched to the large code model, which uses 64-bit immediates for all
+symbol references, including function calls, in order to avoid relying
+on any assumptions regarding proximity of symbols in the final
+executable.
+
+The large code model is rarely used, clunky and the least likely to
+operate in a similar fashion when comparing GCC and Clang, so it is best
+avoided. This is especially true now that Clang 18 has started to emit
+executable code in two separate sections (.text and .ltext), which
+triggers an issue in the kexec loading code at runtime.
+
+The SUSE bugzilla fixes tag points to gcc 13 having issues with the
+large model too and that perhaps the large model should simply not be
+used at all.
+
+Instead, use the position independent small code model, which makes no
+assumptions about placement but only about proximity, where all
+referenced symbols must be within -/+ 2 GiB, i.e., in range for a
+RIP-relative reference. Use hidden visibility to suppress the use of a
+GOT, which carries absolute addresses that are not covered by static ELF
+relocations, and is therefore incompatible with the kexec loader's
+relocation logic.
+
+  [ bp: Massage commit message. ]
+
+Fixes: e16c2983fba0 ("x86/purgatory: Change compiler flags from -mcmodel=kernel to -mcmodel=large to fix kexec relocation errors")
+Fixes: https://bugzilla.suse.com/show_bug.cgi?id=1211853
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2016
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Fangrui Song <maskray@google.com>
+Acked-by: Nick Desaulniers <ndesaulniers@google.com>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/all/20240417-x86-fix-kexec-with-llvm-18-v1-0-5383121e8fb7@kernel.org/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dev_printk.h | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ arch/x86/purgatory/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/dev_printk.h b/include/linux/dev_printk.h
-index 8904063d4c9f0..65eec5be8ccb9 100644
---- a/include/linux/dev_printk.h
-+++ b/include/linux/dev_printk.h
-@@ -129,6 +129,16 @@ void _dev_info(const struct device *dev, const char *fmt, ...)
- 		_dev_printk(level, dev, fmt, ##__VA_ARGS__);		\
- 	})
+diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
+index dc0b91c1db04b..7c7bfdf0d0c0f 100644
+--- a/arch/x86/purgatory/Makefile
++++ b/arch/x86/purgatory/Makefile
+@@ -37,7 +37,8 @@ KCOV_INSTRUMENT := n
+ # make up the standalone purgatory.ro
  
-+/*
-+ * Dummy dev_printk for disabled debugging statements to use whilst maintaining
-+ * gcc's format checking.
-+ */
-+#define dev_no_printk(level, dev, fmt, ...)				\
-+	({								\
-+		if (0)							\
-+			_dev_printk(level, dev, fmt, ##__VA_ARGS__);	\
-+	})
-+
- /*
-  * #defines for all the dev_<level> macros to prefix with whatever
-  * possible use of #define dev_fmt(fmt) ...
-@@ -158,10 +168,7 @@ void _dev_info(const struct device *dev, const char *fmt, ...)
- 	dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
- #else
- #define dev_dbg(dev, fmt, ...)						\
--({									\
--	if (0)								\
--		dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__); \
--})
-+	dev_no_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
- #endif
+ PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel
+-PURGATORY_CFLAGS := -mcmodel=large -ffreestanding -fno-zero-initialized-in-bss -g0
++PURGATORY_CFLAGS := -mcmodel=small -ffreestanding -fno-zero-initialized-in-bss -g0
++PURGATORY_CFLAGS += -fpic -fvisibility=hidden
+ PURGATORY_CFLAGS += $(DISABLE_STACKLEAK_PLUGIN) -DDISABLE_BRANCH_PROFILING
+ PURGATORY_CFLAGS += -fno-stack-protector
  
- #ifdef CONFIG_PRINTK
-@@ -247,20 +254,14 @@ do {									\
- } while (0)
- #else
- #define dev_dbg_ratelimited(dev, fmt, ...)				\
--do {									\
--	if (0)								\
--		dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__); \
--} while (0)
-+	dev_no_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
- #endif
- 
- #ifdef VERBOSE_DEBUG
- #define dev_vdbg	dev_dbg
- #else
- #define dev_vdbg(dev, fmt, ...)						\
--({									\
--	if (0)								\
--		dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__); \
--})
-+	dev_no_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
- #endif
- 
- /*
 -- 
 2.43.0
 
