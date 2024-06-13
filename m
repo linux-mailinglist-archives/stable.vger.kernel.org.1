@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-50657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB80F906BC1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1D0906CBB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8A011C2085D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F4601F20F60
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40EF143739;
-	Thu, 13 Jun 2024 11:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396DF146D65;
+	Thu, 13 Jun 2024 11:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVarxklX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZdrw1rw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36D71448FF;
-	Thu, 13 Jun 2024 11:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA325146A81;
+	Thu, 13 Jun 2024 11:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279005; cv=none; b=kzaKv/0YAx58ZZlWL6k8dEtv+kMtU7OZk0ERrrXCgFQZggHCFDGGcYLLSlAMZ4XylefnWPNev06bFoggQt1y70C90NCSZtmzGhNXJw82UQpgz811f4It2gxNNENrqZcgFMrAjsKMaZJZ0+7LkX9rI4N3wLaEzYEMWh/n8HMeJjo=
+	t=1718279405; cv=none; b=bWA9UU5P2fk9F6Uc4W86xgY/+Qj71hXDKwJDAhbECuDNhTXK6oo0GICnFYgHeKxp6dBqLOcU2B04fH5CUmSUooQlxGSAAxre/EKyssdwhq4D2Wk0nYUNHp4pidU3Dfg+lQhGPu4/ACHFEjdbdcMFU2OmkzFeNzzBHO84jHo6/Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279005; c=relaxed/simple;
-	bh=gburv/64Ij8hkhjdBz9raQfSzFCf4zYaBAyfGVl6cz0=;
+	s=arc-20240116; t=1718279405; c=relaxed/simple;
+	bh=DGGhTHwDyQnBakmgcFkpxuJNGrMbw7s+bT2Oql1lraU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6VkbzJrZwZDENjvQMZJgbuiW2GB99fdTd6QJTwg0CRoydEgEdaD0goliBNjwOkbkLzmOsID3TaMXPLCTwi1I6dh4UbSjGtBC9atVfjKnYqSE2t+pKcZ4x5h3WJc3ntOebDG0PP2Bc+TWO4AO/uA5dRa0jTZFNtLSpo66UUF66Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVarxklX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C965C32786;
-	Thu, 13 Jun 2024 11:43:25 +0000 (UTC)
+	 MIME-Version; b=Xz5czSvw3Jh5nstE3rbjRxBVR/lDHFGWyT1ntpxKaHe3gAWm510rczuF5Ep/D5MoV+Jr5i7vyG+rVZQYS9p6Jmlb/GpvHtAy8ydoiTiQ4hlgOstYrPrE83QTPx3TIoXgM3ysuag5Ipdq1wVk4Jjfy3/BFEOdCUTVHtD6zDkDkmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZdrw1rw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD56C32786;
+	Thu, 13 Jun 2024 11:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279005;
-	bh=gburv/64Ij8hkhjdBz9raQfSzFCf4zYaBAyfGVl6cz0=;
+	s=korg; t=1718279404;
+	bh=DGGhTHwDyQnBakmgcFkpxuJNGrMbw7s+bT2Oql1lraU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YVarxklXB/GQ0U968LVZjururR5vJH9khdk9sex+J1zBYODzFtlHH7gg2MtsrG80Z
-	 8041rPhCV6dKXEOlggVOgywuSAoktWtouYNZprCCDiZP/DW5j6wLwkcJ2LQMFQTKfA
-	 JA3ISCdpewZggwbff5pTRnTcZHaZqjV8i1XO3h4I=
+	b=KZdrw1rw/2OUbPeUriwexj7N2uwmMbEp8tQ4V27/R2oMY3dmDFFkv/hKgygSXf6LM
+	 zfSkTMBgL/5d7Gl6gu9y3avVfS/VPTewveor3eBDAAa5DMGrJc9e1Z6Vb9s7NeG81s
+	 GHb462P06qX1x4cQ0YEFuRKv4l/5bFrZUeKr42VI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 142/213] ipvlan: Dont Use skb->sk in ipvlan_process_v{4,6}_outbound
+	Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.9 065/157] clk: bcm: dvp: Assign ->num before accessing ->hws
 Date: Thu, 13 Jun 2024 13:33:10 +0200
-Message-ID: <20240613113233.470676488@linuxfoundation.org>
+Message-ID: <20240613113229.937998165@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit b3dc6e8003b500861fa307e9a3400c52e78e4d3a ]
+commit 9368cdf90f52a68120d039887ccff74ff33b4444 upstream.
 
-Raw packet from PF_PACKET socket ontop of an IPv6-backed ipvlan device will
-hit WARN_ON_ONCE() in sk_mc_loop() through sch_direct_xmit() path.
+Commit f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with
+__counted_by") annotated the hws member of 'struct clk_hw_onecell_data'
+with __counted_by, which informs the bounds sanitizer about the number
+of elements in hws, so that it can warn when hws is accessed out of
+bounds. As noted in that change, the __counted_by member must be
+initialized with the number of elements before the first array access
+happens, otherwise there will be a warning from each access prior to the
+initialization because the number of elements is zero. This occurs in
+clk_dvp_probe() due to ->num being assigned after ->hws has been
+accessed:
 
-WARNING: CPU: 2 PID: 0 at net/core/sock.c:775 sk_mc_loop+0x2d/0x70
-Modules linked in: sch_netem ipvlan rfkill cirrus drm_shmem_helper sg drm_kms_helper
-CPU: 2 PID: 0 Comm: swapper/2 Kdump: loaded Not tainted 6.9.0+ #279
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:sk_mc_loop+0x2d/0x70
-Code: fa 0f 1f 44 00 00 65 0f b7 15 f7 96 a3 4f 31 c0 66 85 d2 75 26 48 85 ff 74 1c
-RSP: 0018:ffffa9584015cd78 EFLAGS: 00010212
-RAX: 0000000000000011 RBX: ffff91e585793e00 RCX: 0000000002c6a001
-RDX: 0000000000000000 RSI: 0000000000000040 RDI: ffff91e589c0f000
-RBP: ffff91e5855bd100 R08: 0000000000000000 R09: 3d00545216f43d00
-R10: ffff91e584fdcc50 R11: 00000060dd8616f4 R12: ffff91e58132d000
-R13: ffff91e584fdcc68 R14: ffff91e5869ce800 R15: ffff91e589c0f000
-FS:  0000000000000000(0000) GS:ffff91e898100000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f788f7c44c0 CR3: 0000000008e1a000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<IRQ>
- ? __warn (kernel/panic.c:693)
- ? sk_mc_loop (net/core/sock.c:760)
- ? report_bug (lib/bug.c:201 lib/bug.c:219)
- ? handle_bug (arch/x86/kernel/traps.c:239)
- ? exc_invalid_op (arch/x86/kernel/traps.c:260 (discriminator 1))
- ? asm_exc_invalid_op (./arch/x86/include/asm/idtentry.h:621)
- ? sk_mc_loop (net/core/sock.c:760)
- ip6_finish_output2 (net/ipv6/ip6_output.c:83 (discriminator 1))
- ? nf_hook_slow (net/netfilter/core.c:626)
- ip6_finish_output (net/ipv6/ip6_output.c:222)
- ? __pfx_ip6_finish_output (net/ipv6/ip6_output.c:215)
- ipvlan_xmit_mode_l3 (drivers/net/ipvlan/ipvlan_core.c:602) ipvlan
- ipvlan_start_xmit (drivers/net/ipvlan/ipvlan_main.c:226) ipvlan
- dev_hard_start_xmit (net/core/dev.c:3594)
- sch_direct_xmit (net/sched/sch_generic.c:343)
- __qdisc_run (net/sched/sch_generic.c:416)
- net_tx_action (net/core/dev.c:5286)
- handle_softirqs (kernel/softirq.c:555)
- __irq_exit_rcu (kernel/softirq.c:589)
- sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1043)
+  UBSAN: array-index-out-of-bounds in drivers/clk/bcm/clk-bcm2711-dvp.c:59:2
+  index 0 is out of range for type 'struct clk_hw *[] __counted_by(num)' (aka 'struct clk_hw *[]')
 
-The warning triggers as this:
-packet_sendmsg
-   packet_snd //skb->sk is packet sk
-      __dev_queue_xmit
-         __dev_xmit_skb //q->enqueue is not NULL
-             __qdisc_run
-               sch_direct_xmit
-                 dev_hard_start_xmit
-                   ipvlan_start_xmit
-                      ipvlan_xmit_mode_l3 //l3 mode
-                        ipvlan_process_outbound //vepa flag
-                          ipvlan_process_v6_outbound
-                            ip6_local_out
-                                __ip6_finish_output
-                                  ip6_finish_output2 //multicast packet
-                                    sk_mc_loop //sk->sk_family is AF_PACKET
+Move the ->num initialization to before the first access of ->hws, which
+clears up the warning.
 
-Call ip{6}_local_out() with NULL sk in ipvlan as other tunnels to fix this.
-
-Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240529095633.613103-1-yuehaibing@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with __counted_by")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20240425-cbl-bcm-assign-counted-by-val-before-access-v1-1-e2db3b82d5ef@kernel.org
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ipvlan/ipvlan_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/bcm/clk-bcm2711-dvp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index 34126abb28d8d..f08fdcc1bfb39 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -446,7 +446,7 @@ static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
+--- a/drivers/clk/bcm/clk-bcm2711-dvp.c
++++ b/drivers/clk/bcm/clk-bcm2711-dvp.c
+@@ -56,6 +56,8 @@ static int clk_dvp_probe(struct platform
+ 	if (ret)
+ 		return ret;
  
- 	memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
++	data->num = NR_CLOCKS;
++
+ 	data->hws[0] = clk_hw_register_gate_parent_data(&pdev->dev,
+ 							"hdmi0-108MHz",
+ 							&clk_dvp_parent, 0,
+@@ -76,7 +78,6 @@ static int clk_dvp_probe(struct platform
+ 		goto unregister_clk0;
+ 	}
  
--	err = ip_local_out(net, skb->sk, skb);
-+	err = ip_local_out(net, NULL, skb);
- 	if (unlikely(net_xmit_eval(err)))
- 		DEV_STATS_INC(dev, tx_errors);
- 	else
-@@ -501,7 +501,7 @@ static int ipvlan_process_v6_outbound(struct sk_buff *skb)
- 
- 	memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
- 
--	err = ip6_local_out(dev_net(dev), skb->sk, skb);
-+	err = ip6_local_out(dev_net(dev), NULL, skb);
- 	if (unlikely(net_xmit_eval(err)))
- 		DEV_STATS_INC(dev, tx_errors);
- 	else
--- 
-2.43.0
-
+-	data->num = NR_CLOCKS;
+ 	ret = of_clk_add_hw_provider(pdev->dev.of_node, of_clk_hw_onecell_get,
+ 				     data);
+ 	if (ret)
 
 
 
