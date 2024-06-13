@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-50734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F2D906C42
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:48:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9957906D14
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6607F1C22CED
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:48:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 832951F27AA2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9FB145335;
-	Thu, 13 Jun 2024 11:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B08A145FE8;
+	Thu, 13 Jun 2024 11:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SEEn2ha"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pDOBdIj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F08143870;
-	Thu, 13 Jun 2024 11:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099AB6AFAE;
+	Thu, 13 Jun 2024 11:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279231; cv=none; b=jTr8q/qJXXeI+rKNK8XrBpNzNPX1KoZG1oIkpFurQJgOKbNFjYMNzv0+gQFQIjJqkCWPsjMyIfpAHFReNsnfuTRBTNIfFq25U0VD8q5BeLOAmsqAmB84NGIOTG317VC3DFDH+UwV7Qm3CyLlGvlNM3sB826tSfJHk09rOdTsQ1g=
+	t=1718279546; cv=none; b=jRFOmuaphOo3TA45i063aXCPnQu0BFTPbeNy9wx1Wzu/O12sTupD5XxWeCTMfJzUyCb79kK/nRLyZYBf9rlyp+MCUz/M8+6kKZrzxhImh6GyyP6BmH01RMi2js0EjOwrVuuVkJypDMtUrE/zjpVVEq0CNhMhozuzeDrxKjXO7KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279231; c=relaxed/simple;
-	bh=lFCAKEuqpb11BDFcyqIcaPZ5wO2EnYH/YJAtRuurArU=;
+	s=arc-20240116; t=1718279546; c=relaxed/simple;
+	bh=quC5Kp709LzddE3yqcMwf+JRDm9QawVSRRt7IT4fS9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8u+vfvbO7CrGW4yAMAGGLa0NQr4iUAbv+v52dTHL+wlvusziHa3zjeLaikylboI7zZaq7TgYkwImmpHyT0qlup/u8LlKFMUh2x8TdeJB58hCSh0jYRhikMYVZzi4PlLTUn7Haumng0cGzYAxP5o6MGGUW1My4ePA5GrOWR9chE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SEEn2ha; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF93C2BBFC;
-	Thu, 13 Jun 2024 11:47:10 +0000 (UTC)
+	 MIME-Version; b=LYa+uSNWcjB49aHIFRAMtKm+CjhgrxS252NGnGOsz0nf91jKcXBmD/oqSctn+44eem3a5MLBcQwBfS73Ay/IhYqAEdlEMTvw3GOktJoDSzAsVAn3bnI1VyM8z8GaDxbauLXZrZx0jG6T/Lxp1oiMy/SrVSx4aj6TUqB9F9Gh4M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pDOBdIj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82EE8C2BBFC;
+	Thu, 13 Jun 2024 11:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279230;
-	bh=lFCAKEuqpb11BDFcyqIcaPZ5wO2EnYH/YJAtRuurArU=;
+	s=korg; t=1718279545;
+	bh=quC5Kp709LzddE3yqcMwf+JRDm9QawVSRRt7IT4fS9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2SEEn2haVrwAXWgnl3FlMmkdd9nQn57qizXJYn/Ldnj4QVX5SaEEZQ2ZS/v26Wofs
-	 ZDRydbkkadrYKvnmJaXF4vATCwnE/Pd5fDvKrCd8LTtkshVP8O96y9uTCeF8CtoCuf
-	 rBdUmHwpFuOh6DAZSlWQ6Vlh7mkSh9gi4mz+g9pQ=
+	b=0pDOBdIjECGGZxkghGYnGDRNfujBo6LOiXcOmZvF595Y1dU9bN2bRZJBgWB9KHWK2
+	 Pr1k6tZzXeDosAP5yPBjX+lzbxGwtG1XVlSXfuVYGLUYTz5zyVnVvFlFG/iqb4VcL5
+	 XrZN/HKoYH5hIr2MMwKOzXFeCo9/8oNSO+8VskGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 188/213] netfilter: nft_dynset: relax superfluous check on set updates
-Date: Thu, 13 Jun 2024 13:33:56 +0200
-Message-ID: <20240613113235.231585566@linuxfoundation.org>
+	Douglas Anderson <dianders@chromium.org>,
+	Justin Stitt <justinstitt@google.com>,
+	Daniel Thompson <daniel.thompson@linaro.org>
+Subject: [PATCH 6.9 112/157] kdb: Use format-specifiers rather than memset() for padding in kdb_read()
+Date: Thu, 13 Jun 2024 13:33:57 +0200
+Message-ID: <20240613113231.753658261@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Daniel Thompson <daniel.thompson@linaro.org>
 
-commit 7b1394892de8d95748d05e3ee41e85edb4abbfa1 upstream.
+commit c9b51ddb66b1d96e4d364c088da0f1dfb004c574 upstream.
 
-Relax this condition to make add and update commands idempotent for sets
-with no timeout. The eval function already checks if the set element
-timeout is available and updates it if the update command is used.
+Currently when the current line should be removed from the display
+kdb_read() uses memset() to fill a temporary buffer with spaces.
+The problem is not that this could be trivially implemented using a
+format string rather than open coding it. The real problem is that
+it is possible, on systems with a long kdb_prompt_str, to write past
+the end of the tmpbuffer.
 
-Fixes: 22fe54d5fefc ("netfilter: nf_tables: add support for dynamic set updates")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Happily, as mentioned above, this can be trivially implemented using a
+format string. Make it so!
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-5-f236dbe9828d@linaro.org
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_dynset.c |   10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ kernel/debug/kdb/kdb_io.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/net/netfilter/nft_dynset.c
-+++ b/net/netfilter/nft_dynset.c
-@@ -154,16 +154,8 @@ static int nft_dynset_init(const struct
- 		return -EBUSY;
- 
- 	priv->op = ntohl(nla_get_be32(tb[NFTA_DYNSET_OP]));
--	switch (priv->op) {
--	case NFT_DYNSET_OP_ADD:
--		break;
--	case NFT_DYNSET_OP_UPDATE:
--		if (!(set->flags & NFT_SET_TIMEOUT))
--			return -EOPNOTSUPP;
--		break;
--	default:
-+	if (priv->op > NFT_DYNSET_OP_UPDATE)
- 		return -EOPNOTSUPP;
--	}
- 
- 	timeout = 0;
- 	if (tb[NFTA_DYNSET_TIMEOUT] != NULL) {
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -318,11 +318,9 @@ poll_again:
+ 		break;
+ 	case 14: /* Down */
+ 	case 16: /* Up */
+-		memset(tmpbuffer, ' ',
+-		       strlen(kdb_prompt_str) + (lastchar-buffer));
+-		*(tmpbuffer+strlen(kdb_prompt_str) +
+-		  (lastchar-buffer)) = '\0';
+-		kdb_printf("\r%s\r", tmpbuffer);
++		kdb_printf("\r%*c\r",
++			   (int)(strlen(kdb_prompt_str) + (lastchar - buffer)),
++			   ' ');
+ 		*lastchar = (char)key;
+ 		*(lastchar+1) = '\0';
+ 		return lastchar;
 
 
 
