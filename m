@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-51250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0531D906EFD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8EDE9070DA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BFB11C20E17
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C66B81C242C7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82DF145346;
-	Thu, 13 Jun 2024 12:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D792566;
+	Thu, 13 Jun 2024 12:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vR1FaagU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tfzEvSkW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FED44C6F;
-	Thu, 13 Jun 2024 12:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FFE161;
+	Thu, 13 Jun 2024 12:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280747; cv=none; b=Fs/dq9wbYZURR0xfFVD0ZDtQMSInDeQG+qx3HSm6FERcyLk2vQfFWso4c50lEGItapq55Q1YXTCwktawyLI5Eh9jnpSz5d75I1ttwztQ/uvzHwD9lKeVtVnUthNz+p78FbJh8glFt3+/UX95v2IVHM++lBOFNZyvfGmIA5gI+zY=
+	t=1718281886; cv=none; b=rSECeAzEoq3L8j2vRBWCZXMinGQcYH95kjqBAFfP+m/A8HyzxY/Ns0CaoK/Cmfg0wiMyVonHYUQmTuu5zIOExdMpYe8GyyDXH+Z2/egMVy4hI0Hk4CgA2859fb2wyWMgf5x9g8fz0lFuHaSml4W9qY90AkIX50y8QpCCDZHrEKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280747; c=relaxed/simple;
-	bh=A7guBJC1IxNVbM0ytyzxX7ZVrf7M6EpuvxIeOp4ByLM=;
+	s=arc-20240116; t=1718281886; c=relaxed/simple;
+	bh=0BJewbPbRjUyYtZLjWTSvhbgGxHms5rQFgty7Of1moc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cigIt/e995nnz3y43872kR0ujV3+jMndBrNmGHub8xtCAZAxXm9HV+iEX9G+tFfi5vrYJLvCVcGaSwStufq3M0gATT0R3RjaRH0jGqQQnhzNJwZAB3/W6poPFKAb9LLyZ972pgIRhtC6YVvfBD/VMtPpHahE9IQIAVdYIoFBXXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vR1FaagU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92C4C2BBFC;
-	Thu, 13 Jun 2024 12:12:26 +0000 (UTC)
+	 MIME-Version; b=OJWTZNKLOUMYElOxcA+BhVVkNfRxHy7za056G1BmGa9soCVWp768tmI1ggAuECTLYhIkCkIlNmMudSG9Tvoo7U9l7qCkp8aRKbpdaWn+sB8rhfAuazpQT11d1rbhK5mCXSZeURBBal4gc6vgFvHr0jMBWmMSqWMOFa9nDMbo8B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tfzEvSkW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0495C2BBFC;
+	Thu, 13 Jun 2024 12:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280747;
-	bh=A7guBJC1IxNVbM0ytyzxX7ZVrf7M6EpuvxIeOp4ByLM=;
+	s=korg; t=1718281886;
+	bh=0BJewbPbRjUyYtZLjWTSvhbgGxHms5rQFgty7Of1moc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vR1FaagUZcJKQMo/NuvEsQFcGyKBf5nRQ+TPgay0qA+jLlnsVbKCT5UzPL7s3bjkK
-	 5yKkOJ/x7bEzhvDD/hglmY0GWM14KsBwKGIZl24tvuWoOloK4sIQ7vYQqkx93u8bfR
-	 LheptCDrYHiGjn30noDIraf/On4IUwtZVb1jUqwc=
+	b=tfzEvSkWiu81xZsoVbez0oM5016WU9ZKyjI+I71bZei6osec2nZ0ReWWUxcZ6eRVQ
+	 KLUFiqocbuWdoFM1I8Nul2Vyitugr0D0Z8zHHNydAR4vRUMEfxaXvOqbWwt5L40b6C
+	 EZHl7f8YKTUG66TA95gfrQ13kcFFNJ92xxjkej1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Fangrui Song <maskray@google.com>,
+	Nick Desaulniers <ndesaulniers@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 020/317] openpromfs: finish conversion to the new mount API
-Date: Thu, 13 Jun 2024 13:30:38 +0200
-Message-ID: <20240613113248.323771442@linuxfoundation.org>
+Subject: [PATCH 5.15 082/402] x86/purgatory: Switch to the position-independent small code model
+Date: Thu, 13 Jun 2024 13:30:39 +0200
+Message-ID: <20240613113305.334574423@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +65,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 8f27829974b025d4df2e78894105d75e3bf349f0 ]
+[ Upstream commit cba786af84a0f9716204e09f518ce3b7ada8555e ]
 
-The original mount API conversion inexplicably left out the change
-from ->remount_fs to ->reconfigure; do that now.
+On x86, the ordinary, position dependent small and kernel code models
+only support placement of the executable in 32-bit addressable memory,
+due to the use of 32-bit signed immediates to generate references to
+global variables. For the kernel, this implies that all global variables
+must reside in the top 2 GiB of the kernel virtual address space, where
+the implicit address bits 63:32 are equal to sign bit 31.
 
-Fixes: 7ab2fa7693c3 ("vfs: Convert openpromfs to use the new mount API")
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Link: https://lore.kernel.org/r/90b968aa-c979-420f-ba37-5acc3391b28f@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+This means the kernel code model is not suitable for other bare metal
+executables such as the kexec purgatory, which can be placed arbitrarily
+in the physical address space, where its address may no longer be
+representable as a sign extended 32-bit quantity. For this reason,
+commit
+
+  e16c2983fba0 ("x86/purgatory: Change compiler flags from -mcmodel=kernel to -mcmodel=large to fix kexec relocation errors")
+
+switched to the large code model, which uses 64-bit immediates for all
+symbol references, including function calls, in order to avoid relying
+on any assumptions regarding proximity of symbols in the final
+executable.
+
+The large code model is rarely used, clunky and the least likely to
+operate in a similar fashion when comparing GCC and Clang, so it is best
+avoided. This is especially true now that Clang 18 has started to emit
+executable code in two separate sections (.text and .ltext), which
+triggers an issue in the kexec loading code at runtime.
+
+The SUSE bugzilla fixes tag points to gcc 13 having issues with the
+large model too and that perhaps the large model should simply not be
+used at all.
+
+Instead, use the position independent small code model, which makes no
+assumptions about placement but only about proximity, where all
+referenced symbols must be within -/+ 2 GiB, i.e., in range for a
+RIP-relative reference. Use hidden visibility to suppress the use of a
+GOT, which carries absolute addresses that are not covered by static ELF
+relocations, and is therefore incompatible with the kexec loader's
+relocation logic.
+
+  [ bp: Massage commit message. ]
+
+Fixes: e16c2983fba0 ("x86/purgatory: Change compiler flags from -mcmodel=kernel to -mcmodel=large to fix kexec relocation errors")
+Fixes: https://bugzilla.suse.com/show_bug.cgi?id=1211853
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2016
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Fangrui Song <maskray@google.com>
+Acked-by: Nick Desaulniers <ndesaulniers@google.com>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/all/20240417-x86-fix-kexec-with-llvm-18-v1-0-5383121e8fb7@kernel.org/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/openpromfs/inode.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/purgatory/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/openpromfs/inode.c b/fs/openpromfs/inode.c
-index 40c8c2e32fa3e..1e22344be5e54 100644
---- a/fs/openpromfs/inode.c
-+++ b/fs/openpromfs/inode.c
-@@ -362,10 +362,10 @@ static struct inode *openprom_iget(struct super_block *sb, ino_t ino)
- 	return inode;
- }
+diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
+index 7a7701d1e18d0..59373a4abfb43 100644
+--- a/arch/x86/purgatory/Makefile
++++ b/arch/x86/purgatory/Makefile
+@@ -41,7 +41,8 @@ KCOV_INSTRUMENT := n
+ # make up the standalone purgatory.ro
  
--static int openprom_remount(struct super_block *sb, int *flags, char *data)
-+static int openpromfs_reconfigure(struct fs_context *fc)
- {
--	sync_filesystem(sb);
--	*flags |= SB_NOATIME;
-+	sync_filesystem(fc->root->d_sb);
-+	fc->sb_flags |= SB_NOATIME;
- 	return 0;
- }
+ PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel
+-PURGATORY_CFLAGS := -mcmodel=large -ffreestanding -fno-zero-initialized-in-bss -g0
++PURGATORY_CFLAGS := -mcmodel=small -ffreestanding -fno-zero-initialized-in-bss -g0
++PURGATORY_CFLAGS += -fpic -fvisibility=hidden
+ PURGATORY_CFLAGS += $(DISABLE_STACKLEAK_PLUGIN) -DDISABLE_BRANCH_PROFILING
+ PURGATORY_CFLAGS += -fno-stack-protector
  
-@@ -373,7 +373,6 @@ static const struct super_operations openprom_sops = {
- 	.alloc_inode	= openprom_alloc_inode,
- 	.free_inode	= openprom_free_inode,
- 	.statfs		= simple_statfs,
--	.remount_fs	= openprom_remount,
- };
- 
- static int openprom_fill_super(struct super_block *s, struct fs_context *fc)
-@@ -417,6 +416,7 @@ static int openpromfs_get_tree(struct fs_context *fc)
- 
- static const struct fs_context_operations openpromfs_context_ops = {
- 	.get_tree	= openpromfs_get_tree,
-+	.reconfigure	= openpromfs_reconfigure,
- };
- 
- static int openpromfs_init_fs_context(struct fs_context *fc)
 -- 
 2.43.0
 
