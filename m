@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-51215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F277F906ED0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA3D29072C6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5EB41F22520
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80084B29427
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD7F145331;
-	Thu, 13 Jun 2024 12:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D304B144303;
+	Thu, 13 Jun 2024 12:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0+e2H9e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ye4KXrut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE71144D36;
-	Thu, 13 Jun 2024 12:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EC620ED;
+	Thu, 13 Jun 2024 12:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280644; cv=none; b=YQlIYhXZH5NacWeGYmuMy6krHd1f+QezSb9IZdXSQplcYS9q0utKfEskljGBYOuQfJyEfg91OQrQsChrpxSRpq2PTVlEiaYNHr8emA2qzcGSgDcbY6th2qkwf8XbTEq8fR/cbR0+h7KWmOVJqmCew6YAG+FZ926DmwhqkGnaqeY=
+	t=1718282872; cv=none; b=FvQtZTgQ8+GBSReQCudETWScmVWX5qWS4RtXTeC4P8wu6XEXiplHyYSjsWrBtTErJYMDtVvp4m96fNS/ssOHXTuRwiDhXVwg5xJuYRrWj77OgXlnV9hlhncshtaJcdaIFUn102ST2HP2y+L1M67mzRJAZh4Futumc+RjkfhRSRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280644; c=relaxed/simple;
-	bh=owcb2T9D6YXa/1zzZezM2WJKWI04WT/N8u2mkQSLc/w=;
+	s=arc-20240116; t=1718282872; c=relaxed/simple;
+	bh=vtXWt5M9ldgovK6oLhPqaULarfr8DZbM+xMYpBW8/yA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nFdg7ZNARxLSt8n5Lcwm5su+jhmpqYAP5P6zJCpYHOiBAgqOUE205c7WBFxEjAMfXHEpnJ4MK+C4pHalIwaKQK1T2lRLrKDKcZ81RPnzl6sMtEf6EeIwm32crV2NlUKwI1q3tDqEmqXgM3fH3GhK2mLfAND70MWp0hxKFGrWO1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0+e2H9e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA55BC2BBFC;
-	Thu, 13 Jun 2024 12:10:43 +0000 (UTC)
+	 MIME-Version; b=hVG1DcRoXoe7n3U0FnTuCB8203UBeKrSmuq1YKTwYS52PJwTGYA+Im/lgFH4pSvJtbYhueL1Y8RIMmNn6uY99JzwN3T6I4/rb07JMc0ZTkWABdtBYUhR7yhaPnCJhFv0qfFsVK84v4Yng7eAP5cWE20sTxW6wjN8Qw0OgJ9hur0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ye4KXrut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12620C2BBFC;
+	Thu, 13 Jun 2024 12:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280644;
-	bh=owcb2T9D6YXa/1zzZezM2WJKWI04WT/N8u2mkQSLc/w=;
+	s=korg; t=1718282872;
+	bh=vtXWt5M9ldgovK6oLhPqaULarfr8DZbM+xMYpBW8/yA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L0+e2H9eJKf8iKUPSad+HU5sLIZe7LM21k9ej+OY6YQtCC+2FEv6a8JCFaEgtYRU4
-	 udRaUniYXMICZPlaMeBO4IowBepvG+8tlNaJsMwqNH4/5aM5HxkpbPhiwIw4fOd/f3
-	 kjUE/RscH4okT15xHdR91mrzICT5fgA9PEr1lCP4=
+	b=Ye4KXrutIhOhy7XRciUw3XGD+TqTIl4XTdpnZyNbc0KeoXbJF0tQDeSK+TB6P2vh+
+	 AzCuosRSd5QhzYy3QJ9CWvKmkBiRg/T3jsdCfEpfw1c7QfxjLCcPoKkdN+eiqHZZFJ
+	 UKhk/GVM3o7XexjpvpqEV0IvkUWFp9vZAZo+4Ki0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 124/137] EDAC/amd64: Convert PCIBIOS_* return codes to errnos
+	Jorge Ramirez-Ortiz <jorge@foundries.io>,
+	Avri Altman <avri.altman@wdc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 6.1 06/85] mmc: core: Do not force a retune before RPMB switch
 Date: Thu, 13 Jun 2024 13:35:04 +0200
-Message-ID: <20240613113228.110035601@linuxfoundation.org>
+Message-ID: <20240613113214.384714185@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,70 +62,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Jorge Ramirez-Ortiz <jorge@foundries.io>
 
-commit 3ec8ebd8a5b782d56347ae884de880af26f93996 upstream.
+commit 67380251e8bbd3302c64fea07f95c31971b91c22 upstream.
 
-gpu_get_node_map() uses pci_read_config_dword() that returns PCIBIOS_*
-codes. The return code is then returned all the way into the module
-init function amd64_edac_init() that returns it as is. The module init
-functions, however, should return normal errnos.
+Requesting a retune before switching to the RPMB partition has been
+observed to cause CRC errors on the RPMB reads (-EILSEQ).
 
-Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-errno before returning it from gpu_get_node_map().
+Since RPMB reads can not be retried, the clients would be directly
+affected by the errors.
 
-For consistency, convert also the other similar cases which return
-PCIBIOS_* codes even if they do not have any bugs at the moment.
+This commit disables the retune request prior to switching to the RPMB
+partition: mmc_retune_pause() no longer triggers a retune before the
+pause period begins.
 
-Fixes: 4251566ebc1c ("EDAC/amd64: Cache and use GPU node map")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240527132236.13875-1-ilpo.jarvinen@linux.intel.com
+This was verified with the sdhci-of-arasan driver (ZynqMP) configured
+for HS200 using two separate eMMC cards (DG4064 and 064GB2). In both
+cases, the error was easy to reproduce triggering every few tenths of
+reads.
+
+With this commit, systems that were utilizing OP-TEE to access RPMB
+variables will experience an enhanced performance. Specifically, when
+OP-TEE is configured to employ RPMB as a secure storage solution, it not
+only writes the data but also the secure filesystem within the
+partition. As a result, retrieving any variable involves multiple RPMB
+reads, typically around five.
+
+For context, on ZynqMP, each retune request consumed approximately
+8ms. Consequently, reading any RPMB variable used to take at the very
+minimum 40ms.
+
+After droping the need to retune before switching to the RPMB partition,
+this is no longer the case.
+
+Signed-off-by: Jorge Ramirez-Ortiz <jorge@foundries.io>
+Acked-by: Avri Altman <avri.altman@wdc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240103112911.2954632-1-jorge@foundries.io
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/amd64_edac.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/mmc/core/host.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/edac/amd64_edac.c
-+++ b/drivers/edac/amd64_edac.c
-@@ -80,7 +80,7 @@ int __amd64_read_pci_cfg_dword(struct pc
- 		amd64_warn("%s: error reading F%dx%03x.\n",
- 			   func, PCI_FUNC(pdev->devfn), offset);
- 
--	return err;
-+	return pcibios_err_to_errno(err);
- }
- 
- int __amd64_write_pci_cfg_dword(struct pci_dev *pdev, int offset,
-@@ -93,7 +93,7 @@ int __amd64_write_pci_cfg_dword(struct p
- 		amd64_warn("%s: error writing to F%dx%03x.\n",
- 			   func, PCI_FUNC(pdev->devfn), offset);
- 
--	return err;
-+	return pcibios_err_to_errno(err);
- }
+--- a/drivers/mmc/core/host.c
++++ b/drivers/mmc/core/host.c
+@@ -119,13 +119,12 @@ void mmc_retune_enable(struct mmc_host *
  
  /*
-@@ -1016,8 +1016,10 @@ static int gpu_get_node_map(void)
+  * Pause re-tuning for a small set of operations.  The pause begins after the
+- * next command and after first doing re-tuning.
++ * next command.
+  */
+ void mmc_retune_pause(struct mmc_host *host)
+ {
+ 	if (!host->retune_paused) {
+ 		host->retune_paused = 1;
+-		mmc_retune_needed(host);
+ 		mmc_retune_hold(host);
  	}
- 
- 	ret = pci_read_config_dword(pdev, REG_LOCAL_NODE_TYPE_MAP, &tmp);
--	if (ret)
-+	if (ret) {
-+		ret = pcibios_err_to_errno(ret);
- 		goto out;
-+	}
- 
- 	gpu_node_map.node_count = FIELD_GET(LNTM_NODE_COUNT, tmp);
- 	gpu_node_map.base_node_id = FIELD_GET(LNTM_BASE_NODE_ID, tmp);
+ }
 
 
 
