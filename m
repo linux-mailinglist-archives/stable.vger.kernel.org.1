@@ -1,53 +1,60 @@
-Return-Path: <stable+bounces-51775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1566A907190
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:38:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37212907160
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B22B1C2425B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:38:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD7BC282DBA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29B681ABE;
-	Thu, 13 Jun 2024 12:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF86314198E;
+	Thu, 13 Jun 2024 12:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQQWyWEp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4MkDEl7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B611DDDB;
-	Thu, 13 Jun 2024 12:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D389384;
+	Thu, 13 Jun 2024 12:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282276; cv=none; b=DgrP8hcopOx2SI1cLdrHPVMSF7CudV0tY9YKjL3pF5tPAVhSf3Sagqxb9Orbx6bDS2pgh62w751i5tfI2/Vb85SPui2Cy5lXP/w8MBqZrxz2I9AaHeiM/bgt78Uv2AT9ytELuMS6ceBF5eh5xkE4tydaclfA6f2V9o+V0u4bs3U=
+	t=1718282179; cv=none; b=XT99Nig7Uz3ZdzGklASJo+LL9qSJt8+QIVQ0fVp2c/tVEO0CLtViIyBGbmxJsLSu5euDmNEtXJOzfurb3Vscgfx+OCyhfmwj6pC0Iqs4PHYpgdt/WrxD/1IDHrxo32UkF/qTPXw5jmV4RWF1uE7ewnNciqq3nf4SUg41cKQm+Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282276; c=relaxed/simple;
-	bh=7DHCxhGErL14IxVwsSFkwrtFaoAICwW5hCazLEJT61U=;
+	s=arc-20240116; t=1718282179; c=relaxed/simple;
+	bh=r/jbONSJlvHoA1qM80YVVKuY/jEL5/6oAHivBnKpYEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GV1cuRXmQB1yPZZdd68ZvS/www2CB2GQRQS4MhEoJpgoQlakriRhzbgluO+/ox9eZfSBVnhPqMJJnUzGDiQ1t3qwAHk1tsJWVrfR8Ip2k21x0tXYea0acGCAeKcSVsz55oAGzQERGcYqu7EW2tbbs16B+/jz4AuiwDRKQm86+NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQQWyWEp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E16C2BBFC;
-	Thu, 13 Jun 2024 12:37:55 +0000 (UTC)
+	 MIME-Version; b=IntCwFoRd2ruNpXKgPn0NL5VFQDjnjgukIvcZxzpyjcFnxdvj73GNm2qFMNAMaY2R7LRSvlVI8SiENwp6GPlLL+/fHeUY7J8VLi3x9c2qYkYBAOqJL/xQxdwrnqIo3gUnJBTf6wDgkqFz32TX+aqHAHRIC5c3SaRanI8SOKJ++4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4MkDEl7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02ECFC2BBFC;
+	Thu, 13 Jun 2024 12:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282276;
-	bh=7DHCxhGErL14IxVwsSFkwrtFaoAICwW5hCazLEJT61U=;
+	s=korg; t=1718282179;
+	bh=r/jbONSJlvHoA1qM80YVVKuY/jEL5/6oAHivBnKpYEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQQWyWEpUbM9XCKVED8bAhHfYxplNL6XPpWF5ijLUpuM6O8UURN1IQ3Lm4CUad7Ss
-	 4Dxmr+Pm1X7ZvOlURtdIsCPUIvZmeULVe6F5PngHfSVyibDBH/iYdQ8o6/rH1s4Lzp
-	 pJ6z/qsK1cRetQcUUN0hCNCOexYXlMEq0lo4xzio=
+	b=s4MkDEl72SY7ASQlcg8FXa1hkrDguN9ePtgMZmyw4CtSaemRp+3YrR8v11D24sZEO
+	 TA5kXFaJrkjwYIFLoTWG4rmkhQCi1wpta85LoRGmzUoOURvMgJvmR+LY2PWpHdYTa8
+	 LqnhtIHe4LbvZxQaQQCk2QXsFjXKpE4at7peJ1u0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jin Yao <yao.jin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 181/402] f2fs: fix to wait on page writeback in __clone_blkaddrs()
-Date: Thu, 13 Jun 2024 13:32:18 +0200
-Message-ID: <20240613113309.210435896@linuxfoundation.org>
+Subject: [PATCH 5.15 182/402] perf annotate: Get rid of duplicate --group option item
+Date: Thu, 13 Jun 2024 13:32:19 +0200
+Message-ID: <20240613113309.249462661@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
 References: <20240613113302.116811394@linuxfoundation.org>
@@ -66,51 +73,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit d3876e34e7e789e2cbdd782360fef2a777391082 ]
+[ Upstream commit 374af9f1f06b5e991c810d2e4983d6f58df32136 ]
 
-In below race condition, dst page may become writeback status
-in __clone_blkaddrs(), it needs to wait writeback before update,
-fix it.
+The options array in cmd_annotate() has duplicate --group options.  It
+only needs one and let's get rid of the other.
 
-Thread A				GC Thread
-- f2fs_move_file_range
-  - filemap_write_and_wait_range(dst)
-					- gc_data_segment
-					 - f2fs_down_write(dst)
-					 - move_data_page
-					  - set_page_writeback(dst_page)
-					  - f2fs_submit_page_write
-					 - f2fs_up_write(dst)
-  - f2fs_down_write(dst)
-  - __exchange_data_block
-   - __clone_blkaddrs
-    - f2fs_get_new_data_page
-    - memcpy_page
+  $ perf annotate -h 2>&1 | grep group
+        --group           Show event group information together
+        --group           Show event group information together
 
-Fixes: 0a2aa8fbb969 ("f2fs: refactor __exchange_data_block for speed up")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 7ebaf4890f63eb90 ("perf annotate: Support '--group' option")
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240322224313.423181-1-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/builtin-annotate.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 9b7ecbb974258..3d811594d0d5c 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1276,6 +1276,9 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
- 				f2fs_put_page(psrc, 1);
- 				return PTR_ERR(pdst);
- 			}
-+
-+			f2fs_wait_on_page_writeback(pdst, DATA, true, true);
-+
- 			memcpy_page(pdst, 0, psrc, 0, PAGE_SIZE);
- 			set_page_dirty(pdst);
- 			set_page_private_gcing(pdst);
+diff --git a/tools/perf/builtin-annotate.c b/tools/perf/builtin-annotate.c
+index 05eb098cb0e3b..592d92092614e 100644
+--- a/tools/perf/builtin-annotate.c
++++ b/tools/perf/builtin-annotate.c
+@@ -541,8 +541,6 @@ int cmd_annotate(int argc, const char **argv)
+ 		    "Enable symbol demangling"),
+ 	OPT_BOOLEAN(0, "demangle-kernel", &symbol_conf.demangle_kernel,
+ 		    "Enable kernel symbol demangling"),
+-	OPT_BOOLEAN(0, "group", &symbol_conf.event_group,
+-		    "Show event group information together"),
+ 	OPT_BOOLEAN(0, "show-total-period", &symbol_conf.show_total_period,
+ 		    "Show a column with the sum of periods"),
+ 	OPT_BOOLEAN('n', "show-nr-samples", &symbol_conf.show_nr_samples,
 -- 
 2.43.0
 
