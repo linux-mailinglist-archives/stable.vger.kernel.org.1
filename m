@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-50656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C67F906BBF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C157906D91
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 517721C2153B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 451F71F27D66
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A90B1448E0;
-	Thu, 13 Jun 2024 11:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7BE144D0B;
+	Thu, 13 Jun 2024 11:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjRzl0Cj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qe05cbFb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD67A1448D8;
-	Thu, 13 Jun 2024 11:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3DB1448FA;
+	Thu, 13 Jun 2024 11:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279002; cv=none; b=tKNHQZegcSsiFdrQUlMoXTcSu6clLzqQvclTzL3zy0UOUS4nLKf2BoavAFgVpEuQRaMcBWwJpNrF4adioKQC2DdFTVgkuPsitDFpsEUqL435Cg2RKHoUR4cJ7zvsFpiATmpKRMACPZ6pp2fm5fb1r8SlGrXp4Zqe/oytn7CfumA=
+	t=1718279871; cv=none; b=LH/KhwTSD+GuBfCl0jAkW+HAD1bWcOotodw1YgUClg3a1OmbOg3iGOZWoIqz/edHqHNDY1i9KnyNoBbJ/4j32jfWFlPMTez5ibzIi81JU6aq0HLsqPHM4bMe68NKTVkNucRoYEQ2OC27Qcg5ZBlTPiFu5mJIFqoKvWmYzzWg/yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279002; c=relaxed/simple;
-	bh=V1LJmEt6eTXPdGZ7aUnuCGZ7N0GPU+sKlkUHJ3K7EtQ=;
+	s=arc-20240116; t=1718279871; c=relaxed/simple;
+	bh=AE9RzksKLEP7iV0X+emEmuESTpsYiCNFgcU2pot3Tcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MewAAKnIt8LdqC8wVpbSNoO+o1FFUCWd1/T/rRg3V3CDw4abjGWdk+fk/NkePyD1m3I2MK0EJCtrSeVPEG18sPbCvk7as76u/nPdhW9tHHmY50I/KJ05d7JE58JoLIqtLOoUS33Fx0LtKjS2zW3yDZo3GzbMmSosPDT6OcQz688=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjRzl0Cj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488EEC32786;
-	Thu, 13 Jun 2024 11:43:22 +0000 (UTC)
+	 MIME-Version; b=MDXnbk9BorzdaXJ+VXN/z1fZenAqkUbD+FQFWb9ZDY3FF1QUjWYXPzHE2bJlbZapgfKS4VmpS8PVCH9/kK8OJvzQdteet5osmCPEppgpvsWgUBLtkdpw0WmRamcE9c7aX5BVNQPMI/nt5GO3H7aj3QEApST6e9ta3HtZpHLRMcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qe05cbFb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960A0C2BBFC;
+	Thu, 13 Jun 2024 11:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279002;
-	bh=V1LJmEt6eTXPdGZ7aUnuCGZ7N0GPU+sKlkUHJ3K7EtQ=;
+	s=korg; t=1718279871;
+	bh=AE9RzksKLEP7iV0X+emEmuESTpsYiCNFgcU2pot3Tcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pjRzl0CjqDZIdK8QayI/sdnyh9oEv3FqCvpgwwXtJG3miSQlos4Pjwp2cssp7Jmpp
-	 Ro1JhmMLiw3svgagdspJ1uplnxz0ye6JcIGSQcU+gEN3zGZavdzAZaUl6a6HFm1URn
-	 QAgF/E6l4KBSS6a5jWXfv/yGq/FkoieQR1nRF0S8=
+	b=Qe05cbFbcZZVUAeOwCOUO4UOEtXd+s9t1KpmBwKjPhzyNRPrn9yaHDnRJl142RKiu
+	 c5P0lJ7hDfCH36uABfGDru4yjR847FBl7ygEI8nVZ2V8JErX8/Wmpm5UDM79OzT/yv
+	 UtY4ALwxHLOQKwZBMdn+dvOK6azjk90QPCHgnmn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 115/213] powerpc/pseries: Add failure related checks for h_get_mpp and h_get_ppp
+Subject: [PATCH 5.4 065/202] ipv6: sr: add missing seg6_local_exit
 Date: Thu, 13 Jun 2024 13:32:43 +0200
-Message-ID: <20240613113232.436795896@linuxfoundation.org>
+Message-ID: <20240613113230.287803586@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 6d4341638516bf97b9a34947e0bd95035a8230a5 ]
+[ Upstream commit 3321687e321307629c71b664225b861ebf3e5753 ]
 
-Couple of Minor fixes:
+Currently, we only call seg6_local_exit() in seg6_init() if
+seg6_local_init() failed. But forgot to call it in seg6_exit().
 
-- hcall return values are long. Fix that for h_get_mpp, h_get_ppp and
-parse_ppp_data
-
-- If hcall fails, values set should be at-least zero. It shouldn't be
-uninitialized values. Fix that for h_get_mpp and h_get_ppp
-
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240412092047.455483-3-sshegde@linux.ibm.com
+Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240509131812.1662197-2-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/hvcall.h        | 2 +-
- arch/powerpc/platforms/pseries/lpar.c    | 6 +++---
- arch/powerpc/platforms/pseries/lparcfg.c | 6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ net/ipv6/seg6.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index a0b17f9f1ea4e..2bbf6c01a13d7 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -424,7 +424,7 @@ struct hvcall_mpp_data {
- 	unsigned long backing_mem;
- };
- 
--int h_get_mpp(struct hvcall_mpp_data *);
-+long h_get_mpp(struct hvcall_mpp_data *mpp_data);
- 
- struct hvcall_mpp_x_data {
- 	unsigned long coalesced_bytes;
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index d660a90616cda..eebaf44e5508e 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -933,10 +933,10 @@ void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
-  * h_get_mpp
-  * H_GET_MPP hcall returns info in 7 parms
-  */
--int h_get_mpp(struct hvcall_mpp_data *mpp_data)
-+long h_get_mpp(struct hvcall_mpp_data *mpp_data)
- {
--	int rc;
--	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
-+	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
-+	long rc;
- 
- 	rc = plpar_hcall9(H_GET_MPP, retbuf);
- 
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index d1b338b7dbded..3b82cfe229012 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -114,8 +114,8 @@ struct hvcall_ppp_data {
-  */
- static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
- {
--	unsigned long rc;
--	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
-+	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
-+	long rc;
- 
- 	rc = plpar_hcall9(H_GET_PPP, retbuf);
- 
-@@ -161,7 +161,7 @@ static void parse_ppp_data(struct seq_file *m)
- 	struct hvcall_ppp_data ppp_data;
- 	struct device_node *root;
- 	const __be32 *perf_level;
--	int rc;
-+	long rc;
- 
- 	rc = h_get_ppp(&ppp_data);
- 	if (rc)
+diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+index 7094f8691ac68..7d8fbbc363ec0 100644
+--- a/net/ipv6/seg6.c
++++ b/net/ipv6/seg6.c
+@@ -493,6 +493,7 @@ void seg6_exit(void)
+ 	seg6_hmac_exit();
+ #endif
+ #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
++	seg6_local_exit();
+ 	seg6_iptunnel_exit();
+ #endif
+ 	unregister_pernet_subsys(&ip6_segments_ops);
 -- 
 2.43.0
 
