@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-50787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7173906CA6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:52:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16556906DAA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65E9028133A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:52:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C03C8283FB8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA463146002;
-	Thu, 13 Jun 2024 11:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028A1145FF5;
+	Thu, 13 Jun 2024 11:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTvwJ6AB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SExEijRc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67939145FFD;
-	Thu, 13 Jun 2024 11:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6350145FF0;
+	Thu, 13 Jun 2024 11:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279384; cv=none; b=jOQzDhoCLMtXBxk26Wjm8H9XlcaMolVOYRpUffPmDqEydgi6kDAHleyCwzgyQeOJxY1cEp0QFJl3XO4IMUSUGZeLZztitqtGAM2+lLTIcmyJDcfnTLhkf5/+IeiFc/vHt2FNDG09PJLuJDqEhCbWIhoRbAnYcNsIRRt6Wpz45fM=
+	t=1718279935; cv=none; b=U3pfXGevaz57A0NiS7iwszLvY2EQyuxPikfjeWEqf45T2ABOD5Z/4DrAD8jHUsh1CFPAzUnzSAaRRgAV5DI2nHnMDetrEmRc/Adr0ZfJykuCECOFu0u3E26AkVpD/fBl6JQMOxD3zVwCvnswu5GACHZp91E3YTETlZRgl/kGOXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279384; c=relaxed/simple;
-	bh=lh5GT9dKMoMqvURpncxA7wzhVA6LiX6IKOCbgcR1lRI=;
+	s=arc-20240116; t=1718279935; c=relaxed/simple;
+	bh=5A0ratWMdMbuX+xiPwTM2KLZg44/ncdpHt2JX2BSanc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FYSoRMZmGwTThaX7grCOA2N6malesCI32Hi3B5bMvt6sEXcx2BSmTMpGH9WnH3tolWTiFb5H6dC9RnPhXL9qALdWEyR6uDsg1DBqDwTlub1kTyhei028pdGiTrRUdpszoFXZ1cYYqNMVxfyGrzOjJLxLzq7MitYC2DtXT+5S1AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTvwJ6AB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E260EC2BBFC;
-	Thu, 13 Jun 2024 11:49:43 +0000 (UTC)
+	 MIME-Version; b=XsCn0t6SH2qkJ8jleLr+ZYikwxjEXgZyNdQZF/wV/J0ma4Uwdk9iwLB707rdzYES0jH0cO5F9YKDB7E0B3IkynaNEQQo5K3oF5H6TghdtwSwyW4WZ+rkysA9knrgtMgdPdCVCZrhSRv6sUXIDGRf9s0ZNPRXR2kkLh+NnIKXuOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SExEijRc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E49C2BBFC;
+	Thu, 13 Jun 2024 11:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279384;
-	bh=lh5GT9dKMoMqvURpncxA7wzhVA6LiX6IKOCbgcR1lRI=;
+	s=korg; t=1718279935;
+	bh=5A0ratWMdMbuX+xiPwTM2KLZg44/ncdpHt2JX2BSanc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aTvwJ6ABqvV4+ysPklZFk0CAoFlJuIPZdjqR95V1SQMNCsuZ9J9d48w9v1nkPu6ej
-	 O3x4HV9oaWo5NPyIU/y8Z2KX2uRfxP+XjT4J8OYOFyk0KOhltBovRdNc1PCJzewt3z
-	 jccTuD/5RyI/PTHMt4/1bBz/B7NM+uHRfXj45hTk=
+	b=SExEijRc5wRZTOAZHHCcuK5tf6Pj6axT8OkC28wUQQAyrReeBRDKFIjehZj4Ef/mi
+	 Ct6jDnWQ8fCKcyVzNXr6B5OVyCPGg+bhmwAyDvsL3Dy6dhg/G5CYXA9ICtJo5CFuea
+	 rCr/GRkJTMAw3ERf5ygD+rf1veYc/26Zq5T6wiZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Kaistra <martin.kaistra@linutronix.de>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.9 027/157] wifi: rtl8xxxu: enable MFP support with security flag of RX descriptor
-Date: Thu, 13 Jun 2024 13:32:32 +0200
-Message-ID: <20240613113228.466419749@linuxfoundation.org>
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 055/202] scsi: qedf: Ensure the copied buf is NUL terminated
+Date: Thu, 13 Jun 2024 13:32:33 +0200
+Message-ID: <20240613113229.902071818@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kaistra <martin.kaistra@linutronix.de>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-commit cbfbb4ddbc8503478e0a138f9a31f61686cc5f11 upstream.
+[ Upstream commit d0184a375ee797eb657d74861ba0935b6e405c62 ]
 
-In order to connect to networks which require 802.11w, add the
-MFP_CAPABLE flag and let mac80211 do the actual crypto in software.
+Currently, we allocate a count-sized kernel buffer and copy count from
+userspace to that buffer. Later, we use kstrtouint on this buffer but we
+don't ensure that the string is terminated inside the buffer, this can
+lead to OOB read when using kstrtouint. Fix this issue by using
+memdup_user_nul instead of memdup_user.
 
-When a robust management frame is received, rx_dec->swdec is not set,
-even though the HW did not decrypt it. Extend the check and don't set
-RX_FLAG_DECRYPTED for these frames in order to use SW decryption.
-
-Use the security flag in the RX descriptor for this purpose, like it is
-done in the rtw88 driver.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/20240418071813.1883174-3-martin.kaistra@linutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-4-f1f1b53a10f4@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      |    9 +++++++++
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c |    7 +++++--
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/scsi/qedf/qedf_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -122,6 +122,15 @@ enum rtl8xxxu_rx_type {
- 	RX_TYPE_ERROR = -1
- };
+diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
+index b0a28a6a9c64a..41e7fab99013c 100644
+--- a/drivers/scsi/qedf/qedf_debugfs.c
++++ b/drivers/scsi/qedf/qedf_debugfs.c
+@@ -172,7 +172,7 @@ qedf_dbg_debug_cmd_write(struct file *filp, const char __user *buffer,
+ 	if (!count || *ppos)
+ 		return 0;
  
-+enum rtl8xxxu_rx_desc_enc {
-+	RX_DESC_ENC_NONE	= 0,
-+	RX_DESC_ENC_WEP40	= 1,
-+	RX_DESC_ENC_TKIP_WO_MIC	= 2,
-+	RX_DESC_ENC_TKIP_MIC	= 3,
-+	RX_DESC_ENC_AES		= 4,
-+	RX_DESC_ENC_WEP104	= 5,
-+};
-+
- struct rtl8xxxu_rxdesc16 {
- #ifdef __LITTLE_ENDIAN
- 	u32 pktlen:14;
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -6468,7 +6468,8 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8x
- 			rx_status->mactime = rx_desc->tsfl;
- 			rx_status->flag |= RX_FLAG_MACTIME_START;
+-	kern_buf = memdup_user(buffer, count);
++	kern_buf = memdup_user_nul(buffer, count);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
  
--			if (!rx_desc->swdec)
-+			if (!rx_desc->swdec &&
-+			    rx_desc->security != RX_DESC_ENC_NONE)
- 				rx_status->flag |= RX_FLAG_DECRYPTED;
- 			if (rx_desc->crc32)
- 				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
-@@ -6573,7 +6574,8 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8x
- 			rx_status->mactime = rx_desc->tsfl;
- 			rx_status->flag |= RX_FLAG_MACTIME_START;
- 
--			if (!rx_desc->swdec)
-+			if (!rx_desc->swdec &&
-+			    rx_desc->security != RX_DESC_ENC_NONE)
- 				rx_status->flag |= RX_FLAG_DECRYPTED;
- 			if (rx_desc->crc32)
- 				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
-@@ -7993,6 +7995,7 @@ static int rtl8xxxu_probe(struct usb_int
- 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
- 	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
- 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
-+	ieee80211_hw_set(hw, MFP_CAPABLE);
- 
- 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
- 
+-- 
+2.43.0
+
 
 
 
