@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CDE4906EDB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D537390723A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31EB41C208E6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D903281C59
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB16146A93;
-	Thu, 13 Jun 2024 12:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A992566;
+	Thu, 13 Jun 2024 12:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFpIU6F6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P72fRtWB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28029145A07;
-	Thu, 13 Jun 2024 12:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4701C2913;
+	Thu, 13 Jun 2024 12:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280656; cv=none; b=qE4KuJF3y7yySE1NE0/o7CbhHJBBBk/bQMmMJBDQ7hqEAjdDDkKtZFhknYujtpkJBS6gpMMmLCX0hv3uBJqZP0vJFEDTGn1c8WOZqX5l2DdB/8bVzMqWx+GEQKHXGiwTGttRgWnGojNqo+ccfwzy8/kr0vZOG91bNUafpiEwLv8=
+	t=1718282705; cv=none; b=Gu+bMG7C9CFVVPgZhnthYKdsswYmFN++m5aBwyBg8MBCY3DFQu6b1u+iaZ2Dq19K46v12CvZKPfPL8dRzQgKNk6imOPprc7eLAurGQZ6pWa3magxMYIA4JPxCgi49rJBmvjdEIzO29gKLaNg6ws2ZtzkLZISqSzbh5h5znyiOWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280656; c=relaxed/simple;
-	bh=p07P1lOCplvjWiX8jYKUV6BcwZc4xzSbJYbrsmz4PC4=;
+	s=arc-20240116; t=1718282705; c=relaxed/simple;
+	bh=EBq/oktIFYdkztackG4aX44k0w4YEEmPxqYDOPabLjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnM/lCWzOIAfvtoPXpft7VDR26ZqLiOTfwQhf3dqddQWbBtrZpoY0n9QJogYDP6ZF8MzMKaAY4P9pPFhGMVLx0pqvaW5U98idUCV69DeTSDsUcPXx38lFq+Mj5xDmC3KZ6CSOT5shZL6XpSBHLG6W2XpBoUMAkzbLkcC0RxEkDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFpIU6F6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FE2C2BBFC;
-	Thu, 13 Jun 2024 12:10:55 +0000 (UTC)
+	 MIME-Version; b=KQAJhsCvESo9AKUUjkengwVsdNtFsoIShBysRW0HetM/v95gGhHzc7tdJzCNZXQbpu3DBiHhmLy5D1KB5MVpBIw8QiZp8Au8UMr14p8TJIj/0JyqLap5gUA7pVZyuh2QeZyW43+jHDNSdjf8mOQzh3lmAr4dadcFRe1G8XpyCJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P72fRtWB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FE0C2BBFC;
+	Thu, 13 Jun 2024 12:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280656;
-	bh=p07P1lOCplvjWiX8jYKUV6BcwZc4xzSbJYbrsmz4PC4=;
+	s=korg; t=1718282705;
+	bh=EBq/oktIFYdkztackG4aX44k0w4YEEmPxqYDOPabLjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MFpIU6F6ev6jHHkWBAkl3Uhp5451/LzHGaEhg9O2FgpQOBexbhZEdF8pd6JEzmy6g
-	 BdheuQiJedoPpLRAkOL9d4nQZcpQ0c5jmRV+6xAWHlwVB8sK7T1ujmsDPi8PUg1noP
-	 OZeGTNjCdOl0a3YYWaKewDF+p/ip78cIXcC+KtXc=
+	b=P72fRtWB+v+bTxZEmCmqHIaklBNyPLKucgWfrLahyEcRAULFyjhUiQRhApleEY+dm
+	 ed+Zygi38VZYh0vNWBLXdPHwPDuzwlY+Lk3WVsOCUYcgaB1ym8DBmm2sjdY4qCTuMv
+	 wo2BmMATNWD3b8nX1tatbM+IHSb4Pi5kHVLhn+ic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <kolga@netapp.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>
-Subject: [PATCH 6.6 127/137] NFS: Fix READ_PLUS when server doesnt support OP_READ_PLUS
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Simon Horman <simon.horman@corigine.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 350/402] net: dsa: tag_sja1105: always prefer source port information from INCL_SRCPT
 Date: Thu, 13 Jun 2024 13:35:07 +0200
-Message-ID: <20240613113228.225512396@linuxfoundation.org>
+Message-ID: <20240613113315.789863693@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anna Schumaker <Anna.Schumaker@Netapp.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit f06d1b10cb016d5aaecdb1804fefca025387bd10 upstream.
+commit c1ae02d876898b1b8ca1e12c6f84d7b406263800 upstream.
 
-Olga showed me a case where the client was sending multiple READ_PLUS
-calls to the server in parallel, and the server replied
-NFS4ERR_OPNOTSUPP to each. The client would fall back to READ for the
-first reply, but fail to retry the other calls.
+Currently the sja1105 tagging protocol prefers using the source port
+information from the VLAN header if that is available, falling back to
+the INCL_SRCPT option if it isn't. The VLAN header is available for all
+frames except for META frames initiated by the switch (containing RX
+timestamps), and thus, the "if (is_link_local)" branch is practically
+dead.
 
-I fix this by removing the test for NFS_CAP_READ_PLUS in
-nfs4_read_plus_not_supported(). This allows us to reschedule any
-READ_PLUS call that has a NFS4ERR_OPNOTSUPP return value, even after the
-capability has been cleared.
+The tag_8021q source port identification has become more loose
+("imprecise") and will report a plausible rather than exact bridge port,
+when under a bridge (be it VLAN-aware or VLAN-unaware). But link-local
+traffic always needs to know the precise source port. With incorrect
+source port reporting, for example PTP traffic over 2 bridged ports will
+all be seen on sockets opened on the first such port, which is incorrect.
 
-Reported-by: Olga Kornievskaia <kolga@netapp.com>
-Fixes: c567552612ec ("NFS: Add READ_PLUS data segment support")
-Cc: stable@vger.kernel.org # v5.10+
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Now that the tagging protocol has been changed to make link-local frames
+always contain source port information, we can reverse the order of the
+checks so that we always give precedence to that information (which is
+always precise) in lieu of the tag_8021q VID which is only precise for a
+standalone port.
+
+Fixes: d7f9787a763f ("net: dsa: tag_8021q: add support for imprecise RX based on the VBID")
+Fixes: 91495f21fcec ("net: dsa: tag_8021q: replace the SVL bridging with VLAN-unaware IVL bridging")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Replaced the 2 original Fixes: tags with the correct one.
+  Respun the change around the lack of a "vbid", corresponding to DSA
+  FDB isolation, which appeared only in v5.18. ]
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/dsa/tag_sja1105.c |   34 ++++++++++++++++++++++++++--------
+ 1 file changed, 26 insertions(+), 8 deletions(-)
 
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -5435,7 +5435,7 @@ static bool nfs4_read_plus_not_supported
- 	struct rpc_message *msg = &task->tk_msg;
+--- a/net/dsa/tag_sja1105.c
++++ b/net/dsa/tag_sja1105.c
+@@ -489,10 +489,7 @@ static struct sk_buff *sja1105_rcv(struc
+ 	is_link_local = sja1105_is_link_local(skb);
+ 	is_meta = sja1105_is_meta_frame(skb);
  
- 	if (msg->rpc_proc == &nfs4_procedures[NFSPROC4_CLNT_READ_PLUS] &&
--	    server->caps & NFS_CAP_READ_PLUS && task->tk_status == -ENOTSUPP) {
-+	    task->tk_status == -ENOTSUPP) {
- 		server->caps &= ~NFS_CAP_READ_PLUS;
- 		msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_READ];
- 		rpc_restart_call_prepare(task);
+-	if (sja1105_skb_has_tag_8021q(skb)) {
+-		/* Normal traffic path. */
+-		sja1105_vlan_rcv(skb, &source_port, &switch_id, &vid);
+-	} else if (is_link_local) {
++	if (is_link_local) {
+ 		/* Management traffic path. Switch embeds the switch ID and
+ 		 * port ID into bytes of the destination MAC, courtesy of
+ 		 * the incl_srcpt options.
+@@ -506,14 +503,35 @@ static struct sk_buff *sja1105_rcv(struc
+ 		sja1105_meta_unpack(skb, &meta);
+ 		source_port = meta.source_port;
+ 		switch_id = meta.switch_id;
+-	} else {
++	}
++
++	/* Normal data plane traffic and link-local frames are tagged with
++	 * a tag_8021q VLAN which we have to strip
++	 */
++	if (sja1105_skb_has_tag_8021q(skb)) {
++		int tmp_source_port = -1, tmp_switch_id = -1;
++
++		sja1105_vlan_rcv(skb, &tmp_source_port, &tmp_switch_id, &vid);
++		/* Preserve the source information from the INCL_SRCPT option,
++		 * if available. This allows us to not overwrite a valid source
++		 * port and switch ID with zeroes when receiving link-local
++		 * frames from a VLAN-aware bridged port (non-zero vid).
++		 */
++		if (source_port == -1)
++			source_port = tmp_source_port;
++		if (switch_id == -1)
++			switch_id = tmp_switch_id;
++	} else if (source_port == -1 && switch_id == -1) {
++		/* Packets with no source information have no chance of
++		 * getting accepted, drop them straight away.
++		 */
+ 		return NULL;
+ 	}
+ 
+-	if (source_port == -1 || switch_id == -1)
+-		skb->dev = dsa_find_designated_bridge_port_by_vid(netdev, vid);
+-	else
++	if (source_port != -1 && switch_id != -1)
+ 		skb->dev = dsa_master_find_slave(netdev, switch_id, source_port);
++	else
++		skb->dev = dsa_find_designated_bridge_port_by_vid(netdev, vid);
+ 	if (!skb->dev) {
+ 		netdev_warn(netdev, "Couldn't decode source port\n");
+ 		return NULL;
 
 
 
