@@ -1,114 +1,121 @@
-Return-Path: <stable+bounces-52089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D6B0907A5E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 19:56:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A600D907A9F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 20:10:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4214A1C24E48
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 17:56:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0DF2285DDF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 18:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D9314A093;
-	Thu, 13 Jun 2024 17:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177A314A623;
+	Thu, 13 Jun 2024 18:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="mfE5XQXZ"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="mhy4F+6H"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430C514A0B5
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 17:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0A814A4F0;
+	Thu, 13 Jun 2024 18:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718301382; cv=none; b=u1fT59YNo/ak4thzlCzbTx0BB+fIBMlStg7i1nrw4PDKGM6gIJ47LpXgE3/oEzKsdz15q1Z0O31HyDsdXjjxL6j4PmNsztI6DNnL2FwOfl5XFT0BKFX9LzSzodQ6jlDgCdvM4Y8iS90B1teOWD3xiAILlYGq9rfmVzsDvcHJuTE=
+	t=1718302222; cv=none; b=uQcto2FibOKMGYhdlMMN2R0nuJTvv2OTuQP2fAaoTjxNYlJW9Mqm3PejuUwWDam6zrbPSIsJ1fCMxMStjMTYJSPEHtSozS2OKauB2Fh9xzwgn//7M/wG0YPdkGXJlWcK/EODkMQtXMQtqn7qigGBWS1FUC6pzrry3AY9pzq2Xbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718301382; c=relaxed/simple;
-	bh=E7beql6PZ0QHFCiY6sxUPNYYViiurX0BbV/IRCAJHPE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=kwDAaPLTK85MD3WLSFV3OiQm3BScNyDo/iecafvfmNrNr8/dzOOptMYOU247NQacO0cqIhjE1rhNg4PPB37dL1jDLxSx0OU370HqQG818V3huVhGXS+uwTbfG0Z6bU2L15/k6tHdOmstyBjA+Q2dvLD7Obh3s9QBhyaCi1/iEQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=mfE5XQXZ; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from smtpclient.apple (d66-183-91-182.bchsia.telus.net [66.183.91.182])
-	by linux.microsoft.com (Postfix) with ESMTPSA id CD80F20B7001;
-	Thu, 13 Jun 2024 10:56:20 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CD80F20B7001
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1718301380;
-	bh=vVT4FVOu7dJJQlTZG+GRIiExAW5hC8kw2gMNGmlxg60=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=mfE5XQXZPJUZW/RPBiDZEvUlHewYr04Ia3w8CBVjL1LvUIX5UtiCV2/ylAB2fBMr7
-	 xUCkrNrFy//+W6a/ldl40uyxAa0ymuQCheJ+bhXZAVnxgZUreVa6ZerpL59+1rvmkt
-	 xc9Ja2w+LZRu18hbs4+O+tY7Dlo66baKMdK+frzk=
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1718302222; c=relaxed/simple;
+	bh=Fp26F/H6Z6H9jVklu8g8opBQaBFSgieOIZUNLhoUgqk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WOIIuwX0tXHYw7GezwZOq0KoBofVDBFPL4EMCpgp0FatoARqlfL0nF4jrb4+WGrOuPHoONBJnP9funaKX91sDmwuQuzl7BC+IDR7dayIA/bj1Yi39J8Wo/ISDt1SaRwysbbG6Eban0E4TYA90NSKuFBBBAlPcgx7kyhTegWmxUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=mhy4F+6H; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4W0VnL0L5Pz6Cnk9X;
+	Thu, 13 Jun 2024 18:10:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1718302209; x=1720894210; bh=Fp26F/H6Z6H9jVklu8g8opBQ
+	aBFSgieOIZUNLhoUgqk=; b=mhy4F+6HFbmKhLrFIa22imw/XaTKMzQzHtno0wzw
+	55+tXb3SpnJjE/KL0SRD4aaeLpclaKJHkTP+WQwqBO+llLq8WD5aQpVt0mV+a2WT
+	4kepPh6Nfd9m53HI86uwGDE644TWRrh9EpDQZJhfi4W6eYpXEuWPnUAtV8OB0SnD
+	HL1b2+EY57cgPE/StNO3pgejw2QkIuAXtfu+6wclQb4O6bVsxKOdphUCH/uCjVLC
+	WRwlB6EdJV9w1zOmj5R5PhBAXXYZns1ILn6/VsiaYBJnW1o8ZNH8anrEMXFaS14v
+	/EGbKd7NOar+BknjluHoUcskcAGo4nGy+35ShPQrwDwfew==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id 4EVbcNaD06ku; Thu, 13 Jun 2024 18:10:09 +0000 (UTC)
+Received: from [100.96.154.26] (unknown [104.132.0.90])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4W0VnF0xGmz6Cnk94;
+	Thu, 13 Jun 2024 18:10:08 +0000 (UTC)
+Message-ID: <f3a8f117-4534-4071-8084-4cc984f963e4@acm.org>
+Date: Thu, 13 Jun 2024 11:10:08 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: Regression Impact from Commit dceb683ab87c on Kubernetes Hairpin
- Tests
-From: Allen Pais <apais@linux.microsoft.com>
-In-Reply-To: <2024061212-reliance-cycling-66e4@gregkh>
-Date: Thu, 13 Jun 2024 10:56:10 -0700
-Cc: stable@vger.kernel.org
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] scsi: core: Do not query IO hints for USB devices
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+ Alan Stern <stern@rowland.harvard.edu>, linux-scsi@vger.kernel.org,
+ linux-usb@vger.kernel.org, Joao Machado <jocrismachado@gmail.com>,
+ Christian Heusel <christian@heusel.eu>, stable@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20240612165249.2671204-1-bvanassche@acm.org>
+ <20240612165249.2671204-3-bvanassche@acm.org>
+ <CAHp75VdT8hp+aSN_ZyGebkUykaP=p9ipq4Guk6+e_HJ2apu18g@mail.gmail.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <CAHp75VdT8hp+aSN_ZyGebkUykaP=p9ipq4Guk6+e_HJ2apu18g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <B304D01A-7DBC-4576-8B9A-A8F2CD418BB6@linux.microsoft.com>
-References: <AD9EB3AD-7A36-4E54-9BEC-02584A4DF11E@linux.microsoft.com>
- <2024061212-reliance-cycling-66e4@gregkh>
-To: Greg KH <gregkh@linuxfoundation.org>
-X-Mailer: Apple Mail (2.3774.600.62)
 
-
->> Hi Greg,
->>=20
->> I hope this message finds you well. I'm reaching out to report a =
-regression issue linked
->> to the commit dceb683ab87c(v5.15.158), which addresses the netfilter =
-subsystem by skipping
->> the conntrack input hook for promiscuous packets.=20
->>=20
->> [dceb683ab87c 2024-04-09 netfilter: br_netfilter: skip conntrack =
-input hook for promiscuous packets.]
->>=20
->> Unfortunately, this update appears to be breaking Kubernetes hairpin =
-tests, impacting the normal
->> functionality expected in Kubernetes environments.
->>=20
->> Additionally, it's worth noting that this specific commit is =
-associated with a security vulnerability,
->> as detailed in the NVD: CVE-2024-27018.=20
->>=20
->> We have bisected the issue to the specific commit dceb683ab87c. By =
-reverting this commit,
->> we confirmed that the Kubernetes hairpin test issues are resolved. =
-However, given that this commit=20
->> addresses the security vulnerability CVE-2024-27018, directly =
-reverting it is not a viable option. We=E2=80=99re=20
->> in a tricky position and would greatly appreciate your advice on how =
-we might approach this problem.
->>=20
->> Thank you for your attention to this matter. I look forward to your =
-guidance on how we might proceed.
+On 6/13/24 10:44 AM, Andy Shevchenko wrote:
+> On Wed, Jun 12, 2024 at 6:53=E2=80=AFPM Bart Van Assche <bvanassche@acm=
+.org> wrote:
+>>
+>> Recently it was reported that the following USB storage devices are un=
+usable
+>> with Linux kernel 6.9:
+>> * Kingston DataTraveler G2
+>> * Garmin FR35
+>>
+>> This is because attempting to read the IO hint VPD page causes these d=
+evices
+>> to reset. Hence do not read the IO hint VPD page from USB storage devi=
+ces.
 >=20
-> Is this issue also in newer kernel versions (like 6.1.y, 6.6.y, and
-> Linus's tree)?  If not, then we might have missed something.  If so,
-> then please work with the netfilter developers to work this out.
-
-I have not tested 6.1.y or 6.6.y yet. Will do that and if the issue =
-persists, will reach out to=20
-The netfilter folks.
-
-Thank you.
-
-Allen
-
-
+>> Cc: Alan Stern <stern@rowland.harvard.edu>
+>> Cc: linux-usb@vger.kernel.org
+>> Cc: Joao Machado <jocrismachado@gmail.com>
 >=20
-> thanks,
+>> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+>> Cc: Christian Heusel <christian@heusel.eu>
 >=20
-> greg k-h
+> Besides no need to repeat these Cc's in case there are other tags for
+> the same emails, can you move the rest of Cc's after the --- line
+> below? For you it will be the same effect, for many others the Git
+> history won't be polluted with this noise.
 
+I will leave out the redundant Cc's but I'm surprised by the request to m=
+ove
+Cc tags after the --- line. There are many patches with Cc: tags in Linus=
+' tree.
+I have never before seen anyone requesting to move Cc tags after the --- =
+line.
+
+Thanks,
+
+Bart.
 
