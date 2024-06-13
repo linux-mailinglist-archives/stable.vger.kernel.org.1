@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-50600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F663906B7F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7022906D6C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE75EB23118
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FEC31F27CC5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2878143C4C;
-	Thu, 13 Jun 2024 11:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D7214831D;
+	Thu, 13 Jun 2024 11:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fV42/+Dc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wN/6drVP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E035143C46;
-	Thu, 13 Jun 2024 11:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98442148315;
+	Thu, 13 Jun 2024 11:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278842; cv=none; b=bwPYbnO6w5lADUJLY3wdWNnIn+f8V4gFVBMQqEAn+N1m58cGI33RzG2eqHAO8HkmJRWDP6q7Gy+Fpucp3gzN2dKm+ki0CZqYFtpZsoWlBTiljkvSgbdmuLQ3f5yVmROc3BSAtuSn9Dw7/T0m0TGwfQXtP5ILwIytqi/nKbMQ3SU=
+	t=1718279767; cv=none; b=p7MlYDKyibtSe8Xkt4YAFjDEnsow4VYz4QyjqBBqbeW+IgktxGMmkpRppsCTf+RcooU6nUE2uGi3eAWNGmz1tTB/eKts8vcDO2RXbI+70iT2YEM+3R3rFVryc1JZgB4VY7OXDsisJsn+hvqSSytD5mWofXFgwDUGOIDUjZDHKok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278842; c=relaxed/simple;
-	bh=m9KtkS5xwloLGP5u6NA3FuF+Er3ItdbzQfm/mJh4NNM=;
+	s=arc-20240116; t=1718279767; c=relaxed/simple;
+	bh=tZxyahQHaxqXTWBc+/j6Y5pZHhROrQ3mBTXcQ9zwkNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QIfsopvIejW8rr9To/SZJ9DnCgt+X7NI13ldprHCQVCMX3UhspM9pFVRAnhTuAhHfR92Y6xqslmqQlTya79SLO85au2wSdkY/vn9dK8sffmd7Hca9BK/T6oiQon3D1bmmujdGo+y2o3PUyG6Zcg9Kf8iVNVu++teo9neGW76jCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fV42/+Dc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C75BCC2BBFC;
-	Thu, 13 Jun 2024 11:40:40 +0000 (UTC)
+	 MIME-Version; b=q8OB/qlJ1HbiB9HsccaPJF5x7usXHqbEK/6Z/9QPlF6ilSOe5MX0RjvWJRwmwhsmL/WWJThCwbfj9Pm0GdCDQt7pFoFjXWWHzeUeBVOwKmdUrCV3SaeE/zW19TRhe9Kl7CxKlXiYGGdHinZSJuj4RBlcBHb64vmrlh2p/0Ukr9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wN/6drVP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC1DC2BBFC;
+	Thu, 13 Jun 2024 11:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278841;
-	bh=m9KtkS5xwloLGP5u6NA3FuF+Er3ItdbzQfm/mJh4NNM=;
+	s=korg; t=1718279767;
+	bh=tZxyahQHaxqXTWBc+/j6Y5pZHhROrQ3mBTXcQ9zwkNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fV42/+DcqnOgIUrsOsThaXIB9s9UZGgIso8WywKnZEbSfWhL7+hzm4c7TQHG15Yk0
-	 O2OrRN4euiNYAjQJsqBc8b35e+NObruYGVlX+W6rKmcE7MeA/uHAyFCxJgKzEfVMwo
-	 8VojXpXkT5YbPeDy5bUoDHwXZ8UqAgj1iEOjPde8=
+	b=wN/6drVPl016M+rjm1go0ddwsCxGcOn25/xh2iLfEM2y0btDz9L6a+PegCAOaUByY
+	 HbPhl8YfnjXE6UI9bXLBuRkCI7nz/9476YlRU7lAWE3FieUaIZjyNEAGqFn8ARYQ4c
+	 PeTGUV1Y4bp/1QTSr3jaqPzNU9cQala2U1cjn9Rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautammenghani201@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 080/213] selftests/kcmp: Make the test output consistent and clear
+Subject: [PATCH 5.4 030/202] scsi: ufs: qcom: Perform read back after writing reset bit
 Date: Thu, 13 Jun 2024 13:32:08 +0200
-Message-ID: <20240613113231.096097811@linuxfoundation.org>
+Message-ID: <20240613113228.935243561@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam Menghani <gautammenghani201@gmail.com>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit ff682226a353d88ffa5db9c2a9b945066776311e ]
+[ Upstream commit c4d28e06b0c94636f6e35d003fa9ebac0a94e1ae ]
 
-Make the output format of this test consistent. Currently the output is
-as follows:
+Currently, the reset bit for the UFS provided reset controller (used by its
+phy) is written to, and then a mb() happens to try and ensure that hit the
+device. Immediately afterwards a usleep_range() occurs.
 
-+TAP version 13
-+1..1
-+# selftests: kcmp: kcmp_test
-+# pid1:  45814 pid2:  45815 FD:  1 FILES:  1 VM:  2 FS:  1 SIGHAND:  2
-+  IO:  0 SYSVSEM:  0 INV: -1
-+# PASS: 0 returned as expected
-+# PASS: 0 returned as expected
-+# PASS: 0 returned as expected
-+# # Planned tests != run tests (0 != 3)
-+# # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
-+# # Planned tests != run tests (0 != 3)
-+# # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
-+# # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-+ok 1 selftests: kcmp: kcmp_test
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring this
+bit has taken effect on the device is to perform a read back to force it to
+make it all the way to the device. This is documented in device-io.rst and
+a talk by Will Deacon on this can be seen over here:
 
-With this patch applied the output is as follows:
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
 
-+TAP version 13
-+1..1
-+# selftests: kcmp: kcmp_test
-+# TAP version 13
-+# 1..3
-+# pid1:  46330 pid2:  46331 FD:  1 FILES:  2 VM:  2 FS:  2 SIGHAND:  1
-+  IO:  0 SYSVSEM:  0 INV: -1
-+# PASS: 0 returned as expected
-+# PASS: 0 returned as expected
-+# PASS: 0 returned as expected
-+# # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
-+ok 1 selftests: kcmp: kcmp_test
+Let's do that to ensure the bit hits the device. By doing so and
+guaranteeing the ordering against the immediately following usleep_range(),
+the mb() can safely be removed.
 
-Signed-off-by: Gautam Menghani <gautammenghani201@gmail.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Stable-dep-of: eb59a5811371 ("selftests/kcmp: remove unused open mode")
+Fixes: 81c0fc51b7a7 ("ufs-qcom: add support for Qualcomm Technologies Inc platforms")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-1-181252004586@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kcmp/kcmp_test.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/scsi/ufs/ufs-qcom.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/kcmp/kcmp_test.c b/tools/testing/selftests/kcmp/kcmp_test.c
-index 6ea7b9f37a411..25110c7c0b3ed 100644
---- a/tools/testing/selftests/kcmp/kcmp_test.c
-+++ b/tools/testing/selftests/kcmp/kcmp_test.c
-@@ -88,6 +88,9 @@ int main(int argc, char **argv)
- 		int pid2 = getpid();
- 		int ret;
+diff --git a/drivers/scsi/ufs/ufs-qcom.h b/drivers/scsi/ufs/ufs-qcom.h
+index d401f174bb70b..3220345682a9b 100644
+--- a/drivers/scsi/ufs/ufs-qcom.h
++++ b/drivers/scsi/ufs/ufs-qcom.h
+@@ -155,10 +155,10 @@ static inline void ufs_qcom_assert_reset(struct ufs_hba *hba)
+ 			1 << OFFSET_UFS_PHY_SOFT_RESET, REG_UFS_CFG1);
  
-+		ksft_print_header();
-+		ksft_set_plan(3);
-+
- 		fd2 = open(kpath, O_RDWR, 0644);
- 		if (fd2 < 0) {
- 			perror("Can't open file");
-@@ -152,7 +155,6 @@ int main(int argc, char **argv)
- 			ksft_inc_pass_cnt();
- 		}
- 
--		ksft_print_cnts();
- 
- 		if (ret)
- 			ksft_exit_fail();
-@@ -162,5 +164,5 @@ int main(int argc, char **argv)
- 
- 	waitpid(pid2, &status, P_ALL);
- 
--	return ksft_exit_pass();
-+	return 0;
+ 	/*
+-	 * Make sure assertion of ufs phy reset is written to
+-	 * register before returning
++	 * Dummy read to ensure the write takes effect before doing any sort
++	 * of delay
+ 	 */
+-	mb();
++	ufshcd_readl(hba, REG_UFS_CFG1);
  }
+ 
+ static inline void ufs_qcom_deassert_reset(struct ufs_hba *hba)
+@@ -167,10 +167,10 @@ static inline void ufs_qcom_deassert_reset(struct ufs_hba *hba)
+ 			0 << OFFSET_UFS_PHY_SOFT_RESET, REG_UFS_CFG1);
+ 
+ 	/*
+-	 * Make sure de-assertion of ufs phy reset is written to
+-	 * register before returning
++	 * Dummy read to ensure the write takes effect before doing any sort
++	 * of delay
+ 	 */
+-	mb();
++	ufshcd_readl(hba, REG_UFS_CFG1);
+ }
+ 
+ struct ufs_qcom_bus_vote {
 -- 
 2.43.0
 
