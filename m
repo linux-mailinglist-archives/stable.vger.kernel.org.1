@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEEED906E14
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D69906FDC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64486281ABB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B6021C22B2B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449D8145345;
-	Thu, 13 Jun 2024 12:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40161146A69;
+	Thu, 13 Jun 2024 12:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1Um5hGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x617/TV9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F415082C76;
-	Thu, 13 Jun 2024 12:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F208E1465B0;
+	Thu, 13 Jun 2024 12:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280145; cv=none; b=ZSZ3+AdR7JT89q0e/DlWRodbXekFVYO/PIvwk3h+jmH1yrk5xNObodAWk3In0spfogfuHKRvGIXNzb1W2qoolqnv8HV8kNetlDFBo+NGXwr79FhOMVR9737h01AF5485GOQdCeFrBU5IxMIc8Sjw+08WghbnNr/qy4Wnj8TPEI8=
+	t=1718281299; cv=none; b=Y8a08yKC5Y15/a0blbvQ81v0x3kzlDRK4W0BOhPGIBC88WCCrFG+p966dV4ewwOTIS+bQIuGy5gwIX3ichzBTStPaDN9kXREEXIMJbJx39PhI4HW+A4Y1myNu+qJqMrEK5kJYI518Os/A0TQTayIhc4qcJ/e0dEGaiXjWRS230M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280145; c=relaxed/simple;
-	bh=wn0xuqeZgI7k7WLooMNNa+d/dUmuVjvucbDhtsgsoiQ=;
+	s=arc-20240116; t=1718281299; c=relaxed/simple;
+	bh=MT4BR5vp12KlnfJ3wPJa2USfwJM0UUevfvg3SIWr9wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4d+QlWWlP0kvSPVnsjp2vZ6bvtwrMk5hJ3vHFgpGrzuJwpopZq5J6xJLu1a4nf7jUJeIVhpW97UTQPuwAqPEdq+/go2pvb8zYbKOhqlfAt1RGs1q0XsDhcOm3VkVDvxKKY8wtEhNoLbV2ZDhfmwL90MM+N+k2utSxQ/782Myr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1Um5hGx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C04C4AF1A;
-	Thu, 13 Jun 2024 12:02:24 +0000 (UTC)
+	 MIME-Version; b=VIPaqI2vgk7HSNLPlr9HScjc9g42XY2nUGc1FB6jEiqUvm3/5yGxEuOV4lnSvgRvxlAIXpjrtTvbK6wcwrAw3fMaMiug3uhyF7Rz4kUv9jB5zyjq2mUZnQU4WMJw8lqff2fJcclIdVOnOO1oARUDoNnq/vq275YbqGad2pf5q+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x617/TV9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150C6C2BBFC;
+	Thu, 13 Jun 2024 12:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280144;
-	bh=wn0xuqeZgI7k7WLooMNNa+d/dUmuVjvucbDhtsgsoiQ=;
+	s=korg; t=1718281298;
+	bh=MT4BR5vp12KlnfJ3wPJa2USfwJM0UUevfvg3SIWr9wo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k1Um5hGxYGyHXNnTOlMQoPVYN+lur1gOTjsZeq6oqFht93LQATlcPrCftwTDZN2QQ
-	 2WwE7tdfTvjiTn4AAbOIICjA8PE80qgoBS6v6vy4Q+Z4NVoB7SfjKn39aym1QHoOVC
-	 DR3ttajqbpa0A9JGzACnZ4bg50TYxuokwMxJdk2g=
+	b=x617/TV91NIAcdtf5+4HKZMTtlrwm+M3WxQH4GPVgb13QjfLP0O7RxRx8EzfMMPkJ
+	 T0R1ZG0ZpY6XNjOguEIDxL5Qi0Pp+GG9NzfNx0b5THvMvyT77DPkjbP61AGQk1sYW8
+	 ECifhmhXBL1OxDQ6IitdLgkoAtwATAwykF4PzdSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Richard Weinberger <richard@nod.at>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 127/202] um: Fix return value in ubd_init()
-Date: Thu, 13 Jun 2024 13:33:45 +0200
-Message-ID: <20240613113232.664188601@linuxfoundation.org>
+Subject: [PATCH 5.10 208/317] media: stk1160: fix bounds checking in stk1160_copy_video()
+Date: Thu, 13 Jun 2024 13:33:46 +0200
+Message-ID: <20240613113255.599447092@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 31a5990ed253a66712d7ddc29c92d297a991fdf2 ]
+[ Upstream commit faa4364bef2ec0060de381ff028d1d836600a381 ]
 
-When kmalloc_array() fails to allocate memory, the ubd_init()
-should return -ENOMEM instead of -1. So, fix it.
+The subtract in this condition is reversed.  The ->length is the length
+of the buffer.  The ->bytesused is how many bytes we have copied thus
+far.  When the condition is reversed that means the result of the
+subtraction is always negative but since it's unsigned then the result
+is a very high positive value.  That means the overflow check is never
+true.
 
-Fixes: f88f0bdfc32f ("um: UBD Improvements")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Additionally, the ->bytesused doesn't actually work for this purpose
+because we're not writing to "buf->mem + buf->bytesused".  Instead, the
+math to calculate the destination where we are writing is a bit
+involved.  You calculate the number of full lines already written,
+multiply by two, skip a line if necessary so that we start on an odd
+numbered line, and add the offset into the line.
+
+To fix this buffer overflow, just take the actual destination where we
+are writing, if the offset is already out of bounds print an error and
+return.  Otherwise, write up to buf->length bytes.
+
+Fixes: 9cb2173e6ea8 ("[media] media: Add stk1160 new driver (easycap replacement)")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/ubd_kern.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/usb/stk1160/stk1160-video.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/arch/um/drivers/ubd_kern.c b/arch/um/drivers/ubd_kern.c
-index 4e59ab817d3e7..a4e531f0e3b96 100644
---- a/arch/um/drivers/ubd_kern.c
-+++ b/arch/um/drivers/ubd_kern.c
-@@ -1157,7 +1157,7 @@ static int __init ubd_init(void)
- 
- 	if (irq_req_buffer == NULL) {
- 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
--		return -1;
-+		return -ENOMEM;
+diff --git a/drivers/media/usb/stk1160/stk1160-video.c b/drivers/media/usb/stk1160/stk1160-video.c
+index 4cf540d1b2501..2a5a90311e0cc 100644
+--- a/drivers/media/usb/stk1160/stk1160-video.c
++++ b/drivers/media/usb/stk1160/stk1160-video.c
+@@ -99,7 +99,7 @@ void stk1160_buffer_done(struct stk1160 *dev)
+ static inline
+ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ {
+-	int linesdone, lineoff, lencopy;
++	int linesdone, lineoff, lencopy, offset;
+ 	int bytesperline = dev->width * 2;
+ 	struct stk1160_buffer *buf = dev->isoc_ctl.buf;
+ 	u8 *dst = buf->mem;
+@@ -139,8 +139,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 	 * Check if we have enough space left in the buffer.
+ 	 * In that case, we force loop exit after copy.
+ 	 */
+-	if (lencopy > buf->bytesused - buf->length) {
+-		lencopy = buf->bytesused - buf->length;
++	offset = dst - (u8 *)buf->mem;
++	if (offset > buf->length) {
++		dev_warn_ratelimited(dev->dev, "out of bounds offset\n");
++		return;
++	}
++	if (lencopy > buf->length - offset) {
++		lencopy = buf->length - offset;
+ 		remain = lencopy;
  	}
- 	io_req_buffer = kmalloc_array(UBD_REQ_BUFFER_SIZE,
- 				      sizeof(struct io_thread_req *),
-@@ -1168,7 +1168,7 @@ static int __init ubd_init(void)
  
- 	if (io_req_buffer == NULL) {
- 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
--		return -1;
-+		return -ENOMEM;
- 	}
- 	platform_driver_register(&ubd_driver);
- 	mutex_lock(&ubd_lock);
+@@ -182,8 +187,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 		 * Check if we have enough space left in the buffer.
+ 		 * In that case, we force loop exit after copy.
+ 		 */
+-		if (lencopy > buf->bytesused - buf->length) {
+-			lencopy = buf->bytesused - buf->length;
++		offset = dst - (u8 *)buf->mem;
++		if (offset > buf->length) {
++			dev_warn_ratelimited(dev->dev, "offset out of bounds\n");
++			return;
++		}
++		if (lencopy > buf->length - offset) {
++			lencopy = buf->length - offset;
+ 			remain = lencopy;
+ 		}
+ 
 -- 
 2.43.0
 
