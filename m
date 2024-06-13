@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-51152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A809906E8E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B02906E05
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3430D2817F2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5939C1F2199B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A48145335;
-	Thu, 13 Jun 2024 12:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9F0148820;
+	Thu, 13 Jun 2024 12:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7ATSxYP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYfgXKnt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00598144D21;
-	Thu, 13 Jun 2024 12:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C55B44C6F;
+	Thu, 13 Jun 2024 12:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280462; cv=none; b=U5suZj8yssuoQG1kjZyljn2nVweXF5IU9MgrFA1jkFsWxKP9Cmp9PfdLw2uhmspRYEo7kn5TUf7BjzTEURAGoFf1KoJ5R7jYYn1dN/L2s1EXgP0DzcfAtb7h0vDFGIgRmRHEVNSAGatpJPA+G5eupUrmUkXGlbr6WqpxLyw0wHM=
+	t=1718280103; cv=none; b=euVyMfKTGNT9hioW0RH+9CVN2QHUiQcUWTK0/aU04wqKIXZeQ9xVL821FJsRMSN6Ip4wkA389rNCyFUh4XNc1ZEA6S+7rzy9m5rTPwiJ/o7bcNK+krzaRPzSy8odaOTps1XlK2VZpoP3zvBaGst41zPm5BkSJANvfF3i2HBB2Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280462; c=relaxed/simple;
-	bh=sH0/jnnTXKMR58clrCqMbubBr2tB2CPAFlbmBBp8QBc=;
+	s=arc-20240116; t=1718280103; c=relaxed/simple;
+	bh=xn6xQjkWQ/HRxHFIKXjYH3Ep4GPTfMNKlmjYM9295oA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HpxLdUNl58Ye11Xti76ppMHGbpMQe+Z8xWafX1WddzrlNChYLJ8q5nPNrj2q/P7o4u2+/7hjrTj+BUuZiejUWVwDhB+Z1WM2+3UvnEf0o5+ktpQ9vORgEAxhmTWTNw1p6ANR9A/dMq1RHgtszBVF6bCdLt+3ebyISdYjQitet0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7ATSxYP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736FBC2BBFC;
-	Thu, 13 Jun 2024 12:07:41 +0000 (UTC)
+	 MIME-Version; b=lIrXWyRDASowC4VfQg4zBLz+btB1Wu1qW0my5gim2AhVSJl5kkMll5g8bpw2etS4f4lvoYqqewk3rvQpzqaXKmmeVPAlR7NjLTmy2jthjx4z14cWmbtUs0ZEWSFCgGjgpU98L49mVMzBRGK6ojkD6LH2dK/Sr9Efyao9fJ+tJcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYfgXKnt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F93C2BBFC;
+	Thu, 13 Jun 2024 12:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280461;
-	bh=sH0/jnnTXKMR58clrCqMbubBr2tB2CPAFlbmBBp8QBc=;
+	s=korg; t=1718280103;
+	bh=xn6xQjkWQ/HRxHFIKXjYH3Ep4GPTfMNKlmjYM9295oA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p7ATSxYPKIa5zihPpGmNgbEgfkNII5LZ/+6KK+IEyPPUONNlLiqhtR54H2edVv5TR
-	 U5B8zFkSbqKgqYt6ZiFz6nSvbV2nTPGa5wyCRRd9UA5qo5iBru9++C1RMm8RpgKS3g
-	 YDXQQg3a7TIJjZqtmqUj7zlvcHQ8tKZgF0tggDVc=
+	b=yYfgXKntG1QE3kLRqnnaVY/MDRXRZ4hA6b7GXDcueOF8S+KBYU+ZAlBDXy7+Kh1Wh
+	 yL0FjlHryYa4tVznPgDQ/Fwg61rh4a7kAC1mMTzCYLEbHgxuvTlqL6fVLFrQ6vuSg0
+	 3OC05tvjadxwkkpx44VdX9nXeq6QlTo51fYVSLdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.6 061/137] KVM: arm64: Fix AArch32 register narrowing on userspace write
+	Yuanbin Xie <xieyuanbin1@huawei.com>,
+	Jiangfeng Xiao <xiaojiangfeng@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 143/202] arm64: asm-bug: Add .align 2 to the end of __BUG_ENTRY
 Date: Thu, 13 Jun 2024 13:34:01 +0200
-Message-ID: <20240613113225.669379953@linuxfoundation.org>
+Message-ID: <20240613113233.278575154@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Jiangfeng Xiao <xiaojiangfeng@huawei.com>
 
-commit 947051e361d551e0590777080ffc4926190f62f2 upstream.
+[ Upstream commit ffbf4fb9b5c12ff878a10ea17997147ea4ebea6f ]
 
-When userspace writes to one of the core registers, we make
-sure to narrow the corresponding GPRs if PSTATE indicates
-an AArch32 context.
+When CONFIG_DEBUG_BUGVERBOSE=n, we fail to add necessary padding bytes
+to bug_table entries, and as a result the last entry in a bug table will
+be ignored, potentially leading to an unexpected panic(). All prior
+entries in the table will be handled correctly.
 
-The code tries to check whether the context is EL0 or EL1 so
-that it narrows the correct registers. But it does so by checking
-the full PSTATE instead of PSTATE.M.
+The arm64 ABI requires that struct fields of up to 8 bytes are
+naturally-aligned, with padding added within a struct such that struct
+are suitably aligned within arrays.
 
-As a consequence, and if we are restoring an AArch32 EL0 context
-in a 64bit guest, and that PSTATE has *any* bit set outside of
-PSTATE.M, we narrow *all* registers instead of only the first 15,
-destroying the 64bit state.
+When CONFIG_DEBUG_BUGVERPOSE=y, the layout of a bug_entry is:
 
-Obviously, this is not something the guest is likely to enjoy.
+	struct bug_entry {
+		signed int      bug_addr_disp;	// 4 bytes
+		signed int      file_disp;	// 4 bytes
+		unsigned short  line;		// 2 bytes
+		unsigned short  flags;		// 2 bytes
+	}
 
-Correctly masking PSTATE to only evaluate PSTATE.M fixes it.
+... with 12 bytes total, requiring 4-byte alignment.
 
-Fixes: 90c1f934ed71 ("KVM: arm64: Get rid of the AArch32 register mapping code")
-Reported-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Acked-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240524141956.1450304-2-maz@kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When CONFIG_DEBUG_BUGVERBOSE=n, the layout of a bug_entry is:
+
+	struct bug_entry {
+		signed int      bug_addr_disp;	// 4 bytes
+		unsigned short  flags;		// 2 bytes
+		< implicit padding >		// 2 bytes
+	}
+
+... with 8 bytes total, with 6 bytes of data and 2 bytes of trailing
+padding, requiring 4-byte alginment.
+
+When we create a bug_entry in assembly, we align the start of the entry
+to 4 bytes, which implicitly handles padding for any prior entries.
+However, we do not align the end of the entry, and so when
+CONFIG_DEBUG_BUGVERBOSE=n, the final entry lacks the trailing padding
+bytes.
+
+For the main kernel image this is not a problem as find_bug() doesn't
+depend on the trailing padding bytes when searching for entries:
+
+	for (bug = __start___bug_table; bug < __stop___bug_table; ++bug)
+		if (bugaddr == bug_addr(bug))
+			return bug;
+
+However for modules, module_bug_finalize() depends on the trailing
+bytes when calculating the number of entries:
+
+	mod->num_bugs = sechdrs[i].sh_size / sizeof(struct bug_entry);
+
+... and as the last bug_entry lacks the necessary padding bytes, this entry
+will not be counted, e.g. in the case of a single entry:
+
+	sechdrs[i].sh_size == 6
+	sizeof(struct bug_entry) == 8;
+
+	sechdrs[i].sh_size / sizeof(struct bug_entry) == 0;
+
+Consequently module_find_bug() will miss the last bug_entry when it does:
+
+	for (i = 0; i < mod->num_bugs; ++i, ++bug)
+		if (bugaddr == bug_addr(bug))
+			goto out;
+
+... which can lead to a kenrel panic due to an unhandled bug.
+
+This can be demonstrated with the following module:
+
+	static int __init buginit(void)
+	{
+		WARN(1, "hello\n");
+		return 0;
+	}
+
+	static void __exit bugexit(void)
+	{
+	}
+
+	module_init(buginit);
+	module_exit(bugexit);
+	MODULE_LICENSE("GPL");
+
+... which will trigger a kernel panic when loaded:
+
+	------------[ cut here ]------------
+	hello
+	Unexpected kernel BRK exception at EL1
+	Internal error: BRK handler: 00000000f2000800 [#1] PREEMPT SMP
+	Modules linked in: hello(O+)
+	CPU: 0 PID: 50 Comm: insmod Tainted: G           O       6.9.1 #8
+	Hardware name: linux,dummy-virt (DT)
+	pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+	pc : buginit+0x18/0x1000 [hello]
+	lr : buginit+0x18/0x1000 [hello]
+	sp : ffff800080533ae0
+	x29: ffff800080533ae0 x28: 0000000000000000 x27: 0000000000000000
+	x26: ffffaba8c4e70510 x25: ffff800080533c30 x24: ffffaba8c4a28a58
+	x23: 0000000000000000 x22: 0000000000000000 x21: ffff3947c0eab3c0
+	x20: ffffaba8c4e3f000 x19: ffffaba846464000 x18: 0000000000000006
+	x17: 0000000000000000 x16: ffffaba8c2492834 x15: 0720072007200720
+	x14: 0720072007200720 x13: ffffaba8c49b27c8 x12: 0000000000000312
+	x11: 0000000000000106 x10: ffffaba8c4a0a7c8 x9 : ffffaba8c49b27c8
+	x8 : 00000000ffffefff x7 : ffffaba8c4a0a7c8 x6 : 80000000fffff000
+	x5 : 0000000000000107 x4 : 0000000000000000 x3 : 0000000000000000
+	x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff3947c0eab3c0
+	Call trace:
+	 buginit+0x18/0x1000 [hello]
+	 do_one_initcall+0x80/0x1c8
+	 do_init_module+0x60/0x218
+	 load_module+0x1ba4/0x1d70
+	 __do_sys_init_module+0x198/0x1d0
+	 __arm64_sys_init_module+0x1c/0x28
+	 invoke_syscall+0x48/0x114
+	 el0_svc_common.constprop.0+0x40/0xe0
+	 do_el0_svc+0x1c/0x28
+	 el0_svc+0x34/0xd8
+	 el0t_64_sync_handler+0x120/0x12c
+	 el0t_64_sync+0x190/0x194
+	Code: d0ffffe0 910003fd 91000000 9400000b (d4210000)
+	---[ end trace 0000000000000000 ]---
+	Kernel panic - not syncing: BRK handler: Fatal exception
+
+Fix this by always aligning the end of a bug_entry to 4 bytes, which is
+correct regardless of CONFIG_DEBUG_BUGVERBOSE.
+
+Fixes: 9fb7410f955f ("arm64/BUG: Use BRK instruction for generic BUG traps")
+
+Signed-off-by: Yuanbin Xie <xieyuanbin1@huawei.com>
+Signed-off-by: Jiangfeng Xiao <xiaojiangfeng@huawei.com>
+Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/1716212077-43826-1-git-send-email-xiaojiangfeng@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/guest.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/asm-bug.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/kvm/guest.c
-+++ b/arch/arm64/kvm/guest.c
-@@ -276,7 +276,7 @@ static int set_core_reg(struct kvm_vcpu
- 	if (*vcpu_cpsr(vcpu) & PSR_MODE32_BIT) {
- 		int i, nr_reg;
- 
--		switch (*vcpu_cpsr(vcpu)) {
-+		switch (*vcpu_cpsr(vcpu) & PSR_AA32_MODE_MASK) {
- 		/*
- 		 * Either we are dealing with user mode, and only the
- 		 * first 15 registers (+ PC) must be narrowed to 32bit.
+diff --git a/arch/arm64/include/asm/asm-bug.h b/arch/arm64/include/asm/asm-bug.h
+index 03f52f84a4f3f..bc2dcc8a00009 100644
+--- a/arch/arm64/include/asm/asm-bug.h
++++ b/arch/arm64/include/asm/asm-bug.h
+@@ -28,6 +28,7 @@
+ 	14470:	.long 14471f - 14470b;			\
+ _BUGVERBOSE_LOCATION(__FILE__, __LINE__)		\
+ 		.short flags; 				\
++		.align 2;				\
+ 		.popsection;				\
+ 	14471:
+ #else
+-- 
+2.43.0
+
 
 
 
