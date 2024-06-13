@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A2F906EBC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F61E907056
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D7A61C22F65
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE54A284719
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25607146A77;
-	Thu, 13 Jun 2024 12:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C2214535B;
+	Thu, 13 Jun 2024 12:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILPNKn40"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSqe35HR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83DD13A411;
-	Thu, 13 Jun 2024 12:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF8F1411CD;
+	Thu, 13 Jun 2024 12:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280573; cv=none; b=DH9T6g/mufh7fwUDFC7XGrSvrPEih1kzPYDpPMmoDWE+0e6bjBnrtluQr9b+N4NsyjWpbNJq5tMdjYGrQBNWbHUHfLk4l2YT6uv+1F9Q9bEJ/iJEoKJ24ru0K2abNnh2gnKStOg4C9zPnOmbF7pYj2bGSHspuAhTTdAgrRwDeBs=
+	t=1718281574; cv=none; b=DgoYdEmBkLlxZ8sbYi7F/Qn+6aVW4IfPyKVX1ckpkJ8FrVAGhiOeA8c/zWuKZlFfwWjho8g4Vne4oe1zVlpCgm1fjGC+QgLCbuRfSoNGIZQqyT16BsSjawT4nahvb53IjUbNMI2fKeiK2Jc8WlXFnfB616cKnFFhuM2KE8QrRNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280573; c=relaxed/simple;
-	bh=ZZHZxumonsFbLD4OuUKpjziCBGUxpFT3GjxNC4Mpm08=;
+	s=arc-20240116; t=1718281574; c=relaxed/simple;
+	bh=YNDSvfOpe97n+xYoLvIasRIiwrgWnJvGqXQFHK8pIMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SDG8bBWC8H6Am9cgoITlw8ZhZylqgkGSkxz8fjn394FBh+Nn6lHXyRDQysazhCh5lmkJnOHtFIZDj6KGJhdKtRMYZRhPbh+ZjEx/RDJzPZRqz4o3f0vDm6UQGuiE2i9BaDsRxzNs1B6aafbu5PEyR08cce4AhgiqOzi2bJke+D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILPNKn40; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575B5C4AF1C;
-	Thu, 13 Jun 2024 12:09:33 +0000 (UTC)
+	 MIME-Version; b=eEP3IsgxBfV3jH9uAjkgt2v31DYYUMcACZx3psbn/oMusnWiAjkBDQsn+m5+Z0GKukA6LXdP+1AvWwmugfhaAmcPrQeBwZLxSk+MVUPY5I8j/FHllRhPGNZY0tFGCVYm3619CjyPs8Wb0CK9amIIGd9CYh9+2e3fPiJIvyp8uDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSqe35HR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD93C2BBFC;
+	Thu, 13 Jun 2024 12:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280573;
-	bh=ZZHZxumonsFbLD4OuUKpjziCBGUxpFT3GjxNC4Mpm08=;
+	s=korg; t=1718281574;
+	bh=YNDSvfOpe97n+xYoLvIasRIiwrgWnJvGqXQFHK8pIMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ILPNKn40CwY368mgyXb0P6Z6bGL66pI9P8YVHdmBtGuDxj6Q9QHnK20PAp+sFltSO
-	 4nQEyNKa8xal8oo/LJi7/zDXe5UpuqQe1ocFoV//YQnj8jZOXy5Ag5Jn3TVYIcoTQG
-	 xRls52jJTaTB/xJu2EQMGsFtPSTPUKzdcKwYaLk0=
+	b=xSqe35HRHliNp7LiXFSBODSxqJrwb+5q7gEa7/wWg3fqxrwELbNZqKv1YFFcH+3Ph
+	 qXEtAoISNGMkbhvjfHK8litikt4vfajEraQ709GhOv/XcTvGBnq5g9EaJHcmHZjv84
+	 wFrspVoTFSQKHzKcG3s8ZQpyCoTha4M1Pj4INaJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 6.6 099/137] kdb: Use format-strings rather than \0 injection in kdb_read()
+	Chris Ruehl <chris.ruehl@gtsys.com.hk>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 261/317] hwmon: (shtc1) Fix property misspelling
 Date: Thu, 13 Jun 2024 13:34:39 +0200
-Message-ID: <20240613113227.137107045@linuxfoundation.org>
+Message-ID: <20240613113257.643722701@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit 09b35989421dfd5573f0b4683c7700a7483c71f9 upstream.
+[ Upstream commit 52a2c70c3ec555e670a34dd1ab958986451d2dd2 ]
 
-Currently when kdb_read() needs to reposition the cursor it uses copy and
-paste code that works by injecting an '\0' at the cursor position before
-delivering a carriage-return and reprinting the line (which stops at the
-'\0').
+The property name is "sensirion,low-precision", not
+"sensicon,low-precision".
 
-Tidy up the code by hoisting the copy and paste code into an appropriately
-named function. Additionally let's replace the '\0' injection with a
-proper field width parameter so that the string will be abridged during
-formatting instead.
-
-Cc: stable@vger.kernel.org # Not a bug fix but it is needed for later bug fixes
-Tested-by: Justin Stitt <justinstitt@google.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-2-f236dbe9828d@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Chris Ruehl <chris.ruehl@gtsys.com.hk>
+Fixes: be7373b60df5 ("hwmon: shtc1: add support for device tree bindings")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/debug/kdb/kdb_io.c |   55 ++++++++++++++++++++++++++++------------------
- 1 file changed, 34 insertions(+), 21 deletions(-)
+ drivers/hwmon/shtc1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -184,6 +184,33 @@ char kdb_getchar(void)
- 	unreachable();
- }
+diff --git a/drivers/hwmon/shtc1.c b/drivers/hwmon/shtc1.c
+index 18546ebc8e9f7..0365643029aee 100644
+--- a/drivers/hwmon/shtc1.c
++++ b/drivers/hwmon/shtc1.c
+@@ -238,7 +238,7 @@ static int shtc1_probe(struct i2c_client *client)
  
-+/**
-+ * kdb_position_cursor() - Place cursor in the correct horizontal position
-+ * @prompt: Nil-terminated string containing the prompt string
-+ * @buffer: Nil-terminated string containing the entire command line
-+ * @cp: Cursor position, pointer the character in buffer where the cursor
-+ *      should be positioned.
-+ *
-+ * The cursor is positioned by sending a carriage-return and then printing
-+ * the content of the line until we reach the correct cursor position.
-+ *
-+ * There is some additional fine detail here.
-+ *
-+ * Firstly, even though kdb_printf() will correctly format zero-width fields
-+ * we want the second call to kdb_printf() to be conditional. That keeps things
-+ * a little cleaner when LOGGING=1.
-+ *
-+ * Secondly, we can't combine everything into one call to kdb_printf() since
-+ * that renders into a fixed length buffer and the combined print could result
-+ * in unwanted truncation.
-+ */
-+static void kdb_position_cursor(char *prompt, char *buffer, char *cp)
-+{
-+	kdb_printf("\r%s", kdb_prompt_str);
-+	if (cp > buffer)
-+		kdb_printf("%.*s", (int)(cp - buffer), buffer);
-+}
-+
- /*
-  * kdb_read
-  *
-@@ -212,7 +239,6 @@ static char *kdb_read(char *buffer, size
- 						 * and null byte */
- 	char *lastchar;
- 	char *p_tmp;
--	char tmp;
- 	static char tmpbuffer[CMD_BUFLEN];
- 	int len = strlen(buffer);
- 	int len_tmp;
-@@ -249,12 +275,8 @@ poll_again:
- 			}
- 			*(--lastchar) = '\0';
- 			--cp;
--			kdb_printf("\b%s \r", cp);
--			tmp = *cp;
--			*cp = '\0';
--			kdb_printf(kdb_prompt_str);
--			kdb_printf("%s", buffer);
--			*cp = tmp;
-+			kdb_printf("\b%s ", cp);
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 10: /* linefeed */
-@@ -272,19 +294,14 @@ poll_again:
- 			memcpy(tmpbuffer, cp+1, lastchar - cp - 1);
- 			memcpy(cp, tmpbuffer, lastchar - cp - 1);
- 			*(--lastchar) = '\0';
--			kdb_printf("%s \r", cp);
--			tmp = *cp;
--			*cp = '\0';
--			kdb_printf(kdb_prompt_str);
--			kdb_printf("%s", buffer);
--			*cp = tmp;
-+			kdb_printf("%s ", cp);
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 1: /* Home */
- 		if (cp > buffer) {
--			kdb_printf("\r");
--			kdb_printf(kdb_prompt_str);
- 			cp = buffer;
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 5: /* End */
-@@ -390,13 +407,9 @@ poll_again:
- 				memcpy(cp+1, tmpbuffer, lastchar - cp);
- 				*++lastchar = '\0';
- 				*cp = key;
--				kdb_printf("%s\r", cp);
-+				kdb_printf("%s", cp);
- 				++cp;
--				tmp = *cp;
--				*cp = '\0';
--				kdb_printf(kdb_prompt_str);
--				kdb_printf("%s", buffer);
--				*cp = tmp;
-+				kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 			} else {
- 				*++lastchar = '\0';
- 				*cp++ = key;
+ 	if (np) {
+ 		data->setup.blocking_io = of_property_read_bool(np, "sensirion,blocking-io");
+-		data->setup.high_precision = !of_property_read_bool(np, "sensicon,low-precision");
++		data->setup.high_precision = !of_property_read_bool(np, "sensirion,low-precision");
+ 	} else {
+ 		if (client->dev.platform_data)
+ 			data->setup = *(struct shtc1_platform_data *)dev->platform_data;
+-- 
+2.43.0
+
 
 
 
