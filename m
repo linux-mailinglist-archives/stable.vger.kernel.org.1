@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F25190721C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55AE1906ED5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1F701C219DE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4411AB28188
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134D9441D;
-	Thu, 13 Jun 2024 12:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3CB1448D4;
+	Thu, 13 Jun 2024 12:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQPPpxZB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sD18ctuc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C431817FD;
-	Thu, 13 Jun 2024 12:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7073126F32;
+	Thu, 13 Jun 2024 12:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282631; cv=none; b=UM/h8jeh5GBvoEjnrsJF95vwUAX+/5KuHnm1/IKVc4XszQVKni6Fy6Rzg8/+Xxo/ro9mPPtnCCISowUmPt428Ld9DsixxkL0E5TPcMuhX9qqlFRGDQ/1YjkUt8CiplJ43ILyQT5FZzA/ZedFQCN9N5Qsj/HO6EL+ECghs2Y+IsA=
+	t=1718280629; cv=none; b=DFcjwqsFdvO7SFfvCwHy2UxBnhyLo/tguk8w7Ukoj+nEFy/Hss5od1DBLJYrH3DAQGtIUbUhrSnwvOLBZNo/ttL15r7wgQcbdZpdyCvu3/DZkdYN+5Z0JWXH9+/VSxwjsZi8Xd3bQ7dBFoit8duzAaQyJeqXCR0urN1quTEY2gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282631; c=relaxed/simple;
-	bh=n8i3hfMjPBHvfV19RMk4aS7eYxYNqtupCvZiUAOstA0=;
+	s=arc-20240116; t=1718280629; c=relaxed/simple;
+	bh=7nAI4nHLCXSt2gNDRuzZaaRdfaRJmwDX86hm0LgaDTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7rv27/qi/tVsGyKIacVAt0iUIVII/TVSCXgJu9B25C4Vb+3b/sc5AZUNjVmh1zEJ4rstSpaQqoYVIDgd7LxWwYEZjheUirMCDprK4Jw040cK7TzOTtTDpLePrmeiYLQoM4ZxlH8xOmNnuAZJM938JnkCJc331GRhDUuHlte3pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQPPpxZB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04450C2BBFC;
-	Thu, 13 Jun 2024 12:43:50 +0000 (UTC)
+	 MIME-Version; b=uFrKOd8117FZkHhWI+HCgGpsBjHmCOn0fXvEj0nT3txxKaPUaaPe5mUKf1eFENpIOHTMKiIqCD7O/OVNzTJGC3ruyASNzxmG/cVuur64Bf0IjYf5sz/77tqmOptX4slD1K5KUe7QMqjHTe7SZ9+vdJdCqy48Yp+Ow+p5alqyqik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sD18ctuc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CD9C2BBFC;
+	Thu, 13 Jun 2024 12:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282631;
-	bh=n8i3hfMjPBHvfV19RMk4aS7eYxYNqtupCvZiUAOstA0=;
+	s=korg; t=1718280629;
+	bh=7nAI4nHLCXSt2gNDRuzZaaRdfaRJmwDX86hm0LgaDTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQPPpxZBOfTKVqgppsqhxOabjob/+BSAittmqj0TSvikuKcmVxpWLX4s0DEPZfsFO
-	 ITS1DDIBYgjcaFE4jzaxoHtxpSQOXKESgCpoI3gmoRiBfG7aKdsx7261N+dDoOOXQ5
-	 aGBv1nasfEZ1dnKWM2GG6qUUugt5ft1v86ljzG7s=
+	b=sD18ctucvXDsnpHZrY5tefnC1cY5DswB4rfhxAX6f2BC1jnY8y9hFfsLDKUxFTP8a
+	 HQL1iSCuVrvYLo83iHjx5pgIQ/935ojrr09ELAZx4nVGqbfJOHY3E9XFPgiShbtKo4
+	 +QSuPZ0OrNLRMszLPRpqb4DCKM3W4yj0Xkyy/MxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorge Ramirez-Ortiz <jorge@foundries.io>,
-	Avri Altman <avri.altman@wdc.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: [PATCH 5.15 342/402] mmc: core: Do not force a retune before RPMB switch
+	Frank Li <Frank.Li@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.6 119/137] i3c: master: svc: fix invalidate IBI type and miss call client IBI handler
 Date: Thu, 13 Jun 2024 13:34:59 +0200
-Message-ID: <20240613113315.472560441@linuxfoundation.org>
+Message-ID: <20240613113227.916808995@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Ramirez-Ortiz <jorge@foundries.io>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 67380251e8bbd3302c64fea07f95c31971b91c22 upstream.
+commit 38baed9b8600008e5d7bc8cb9ceccc1af3dd54b7 upstream.
 
-Requesting a retune before switching to the RPMB partition has been
-observed to cause CRC errors on the RPMB reads (-EILSEQ).
+In an In-Band Interrupt (IBI) handle, the code logic is as follows:
 
-Since RPMB reads can not be retried, the clients would be directly
-affected by the errors.
+1: writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI | SVC_I3C_MCTRL_IBIRESP_AUTO,
+	  master->regs + SVC_I3C_MCTRL);
 
-This commit disables the retune request prior to switching to the RPMB
-partition: mmc_retune_pause() no longer triggers a retune before the
-pause period begins.
+2: ret = readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
+                                    SVC_I3C_MSTATUS_IBIWON(val), 0, 1000);
+	...
+3: ibitype = SVC_I3C_MSTATUS_IBITYPE(status);
+   ibiaddr = SVC_I3C_MSTATUS_IBIADDR(status);
 
-This was verified with the sdhci-of-arasan driver (ZynqMP) configured
-for HS200 using two separate eMMC cards (DG4064 and 064GB2). In both
-cases, the error was easy to reproduce triggering every few tenths of
-reads.
+SVC_I3C_MSTATUS_IBIWON may be set before step 1. Thus, step 2 will return
+immediately, and the I3C controller has not sent out the 9th SCL yet.
+Consequently, ibitype and ibiaddr are 0, resulting in an unknown IBI type
+occurrence and missing call I3C client driver's IBI handler.
 
-With this commit, systems that were utilizing OP-TEE to access RPMB
-variables will experience an enhanced performance. Specifically, when
-OP-TEE is configured to employ RPMB as a secure storage solution, it not
-only writes the data but also the secure filesystem within the
-partition. As a result, retrieving any variable involves multiple RPMB
-reads, typically around five.
+A typical case is that SVC_I3C_MSTATUS_IBIWON is set when an IBI occurs
+during the controller send start frame in svc_i3c_master_xfer().
 
-For context, on ZynqMP, each retune request consumed approximately
-8ms. Consequently, reading any RPMB variable used to take at the very
-minimum 40ms.
+Clear SVC_I3C_MSTATUS_IBIWON before issue SVC_I3C_MCTRL_REQUEST_AUTO_IBI
+to fix this issue.
 
-After droping the need to retune before switching to the RPMB partition,
-this is no longer the case.
-
-Signed-off-by: Jorge Ramirez-Ortiz <jorge@foundries.io>
-Acked-by: Avri Altman <avri.altman@wdc.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240103112911.2954632-1-jorge@foundries.io
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: stable@vger.kernel.org
+Fixes: 5e5e3c92e748 ("i3c: master: svc: fix wrong data return when IBI happen during start frame")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20240506164009.21375-3-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/host.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/core/host.c
-+++ b/drivers/mmc/core/host.c
-@@ -119,13 +119,12 @@ void mmc_retune_enable(struct mmc_host *
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -405,6 +405,19 @@ static void svc_i3c_master_ibi_work(stru
+ 	int ret;
  
- /*
-  * Pause re-tuning for a small set of operations.  The pause begins after the
-- * next command and after first doing re-tuning.
-+ * next command.
-  */
- void mmc_retune_pause(struct mmc_host *host)
- {
- 	if (!host->retune_paused) {
- 		host->retune_paused = 1;
--		mmc_retune_needed(host);
- 		mmc_retune_hold(host);
+ 	mutex_lock(&master->lock);
++	/*
++	 * IBIWON may be set before SVC_I3C_MCTRL_REQUEST_AUTO_IBI, causing
++	 * readl_relaxed_poll_timeout() to return immediately. Consequently,
++	 * ibitype will be 0 since it was last updated only after the 8th SCL
++	 * cycle, leading to missed client IBI handlers.
++	 *
++	 * A typical scenario is when IBIWON occurs and bus arbitration is lost
++	 * at svc_i3c_master_priv_xfers().
++	 *
++	 * Clear SVC_I3C_MINT_IBIWON before sending SVC_I3C_MCTRL_REQUEST_AUTO_IBI.
++	 */
++	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
++
+ 	/* Acknowledge the incoming interrupt with the AUTOIBI mechanism */
+ 	writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI |
+ 	       SVC_I3C_MCTRL_IBIRESP_AUTO,
+@@ -419,9 +432,6 @@ static void svc_i3c_master_ibi_work(stru
+ 		goto reenable_ibis;
  	}
- }
+ 
+-	/* Clear the interrupt status */
+-	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
+-
+ 	status = readl(master->regs + SVC_I3C_MSTATUS);
+ 	ibitype = SVC_I3C_MSTATUS_IBITYPE(status);
+ 	ibiaddr = SVC_I3C_MSTATUS_IBIADDR(status);
 
 
 
