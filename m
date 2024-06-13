@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60CC907015
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C825C906E3D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB0231C20C97
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E8D21F2125E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF458145B04;
-	Thu, 13 Jun 2024 12:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15589148FFF;
+	Thu, 13 Jun 2024 12:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knSi6C91"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVvpsRXC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC4B145A05;
-	Thu, 13 Jun 2024 12:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D86148FEB;
+	Thu, 13 Jun 2024 12:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281392; cv=none; b=TOHPOWVgJ7OJfaA/qy/0BeR+yEa2nEn8K435esk1Avi9ZNeXXqyzkpZJkX1CdQjzJSblegK73PzFGASbK67ssBwIx1Gaehe2dsgdJV2AiTuT/qTut7PK42wrX9jypYz2ckIH9b9RPIwzUC6mz2/trhOovuYe+nP8JFuNriETtIs=
+	t=1718280245; cv=none; b=LiwtUwTS1SurfOcfbRptyptI2YskGOJvMHdjAAbaQQSKnHuEjNVDOhbUR6oN0/hd1DBJ3z9CBpMGQoBPFyi9/z9pIvPK9qNzK//OcZT/Q+66Yht7yFt9RQlziCvDCBwIRHtQo6TeOiFXXH3I8QLMKFB+D9ETW+o+5FzKmdvR+gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281392; c=relaxed/simple;
-	bh=TWD+YP8cK9P0+lb6VuQR20XmtZxiLvis3OIqlB4LOPs=;
+	s=arc-20240116; t=1718280245; c=relaxed/simple;
+	bh=GttNBXVhwFq9aq5g1wYGviZpLEcktvdQgTVVdGaGjno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ILn8mhrkPUcJpVoVcnlj0WWgmpytqt1sX8FVJ7FxKVEqRBDnWicdugz38ZP7foOfbeSYqc18lINQbINt6Cgtt+38mKpaCtMFnlkcICqT5gqOx5eyvzSk6flPo4jIVfLRzAFiWUoGTcmx0ecWILlzIBqPmb8Ii9pMhgVYMV6kIdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knSi6C91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384D4C2BBFC;
-	Thu, 13 Jun 2024 12:23:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UbFVCUQVtQ5u/RiKWzt32+W4q94GESszMzIGYPxD/w+iPdqrp3phHAvL9o8mXsWm+Wz2N/vNZd5W55Zb6cAoML6R4zZng8JXLMoL9IkJl6AieHVzYaaTli6z8dY+wv4pe/tpjdrGftLOxNyxWKdT4djfSHE2udsN3MQeMbWQJ+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVvpsRXC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC7BC2BBFC;
+	Thu, 13 Jun 2024 12:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281392;
-	bh=TWD+YP8cK9P0+lb6VuQR20XmtZxiLvis3OIqlB4LOPs=;
+	s=korg; t=1718280245;
+	bh=GttNBXVhwFq9aq5g1wYGviZpLEcktvdQgTVVdGaGjno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=knSi6C91eXMGnn4AGm+2FHy77VgdsZU45iAxOdJJA9TArK8Kh2jtx3fP/RJEqdUon
-	 jNp0UdMKn0R4zMfBRkSOXONjpJ3U6/zF3G5OnNK4Nawea6/wSHy3yjAtfbDeXDAWfF
-	 7HdSXlUq/v4XkZMoTH4TdpnQxSs9UXadIj2I6LKI=
+	b=OVvpsRXCYGSWPcVNu7uhFOw0viIa8Hpz8/WITbM9uer4cef1/XlunINVImWbfDL41
+	 T5pWasK/Clu5BHoyOhLrhSMSTvDJEijE8X6UZAyeCtxTe8Jzjs4vT88uYNZY2Rgmq9
+	 c3IwLqH64kTzp4H3evW09DqytSTwm3NFGaR8fJxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Bystrin <dev.mbstr@gmail.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 240/317] riscv: stacktrace: fixed walk_stackframe()
+Subject: [PATCH 5.4 160/202] spi: stm32: Dont warn about spurious interrupts
 Date: Thu, 13 Jun 2024 13:34:18 +0200
-Message-ID: <20240613113256.833234363@linuxfoundation.org>
+Message-ID: <20240613113233.922000020@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,136 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Bystrin <dev.mbstr@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit a2a4d4a6a0bf5eba66f8b0b32502cc20d82715a0 ]
+[ Upstream commit 95d7c452a26564ef0c427f2806761b857106d8c4 ]
 
-If the load access fault occures in a leaf function (with
-CONFIG_FRAME_POINTER=y), when wrong stack trace will be displayed:
+The dev_warn to notify about a spurious interrupt was introduced with
+the reasoning that these are unexpected. However spurious interrupts
+tend to trigger continously and the error message on the serial console
+prevents that the core's detection of spurious interrupts kicks in
+(which disables the irq) and just floods the console.
 
-[<ffffffff804853c2>] regmap_mmio_read32le+0xe/0x1c
----[ end trace 0000000000000000 ]---
-
-Registers dump:
-    ra     0xffffffff80485758 <regmap_mmio_read+36>
-    sp     0xffffffc80200b9a0
-    fp     0xffffffc80200b9b0
-    pc     0xffffffff804853ba <regmap_mmio_read32le+6>
-
-Stack dump:
-    0xffffffc80200b9a0:  0xffffffc80200b9e0  0xffffffc80200b9e0
-    0xffffffc80200b9b0:  0xffffffff8116d7e8  0x0000000000000100
-    0xffffffc80200b9c0:  0xffffffd8055b9400  0xffffffd8055b9400
-    0xffffffc80200b9d0:  0xffffffc80200b9f0  0xffffffff8047c526
-    0xffffffc80200b9e0:  0xffffffc80200ba30  0xffffffff8047fe9a
-
-The assembler dump of the function preambula:
-    add     sp,sp,-16
-    sd      s0,8(sp)
-    add     s0,sp,16
-
-In the fist stack frame, where ra is not stored on the stack we can
-observe:
-
-        0(sp)                  8(sp)
-        .---------------------------------------------.
-    sp->|       frame->fp      | frame->ra (saved fp) |
-        |---------------------------------------------|
-    fp->|         ....         |         ....         |
-        |---------------------------------------------|
-        |                      |                      |
-
-and in the code check is performed:
-	if (regs && (regs->epc == pc) && (frame->fp & 0x7))
-
-I see no reason to check frame->fp value at all, because it is can be
-uninitialized value on the stack. A better way is to check frame->ra to
-be an address on the stack. After the stacktrace shows as expect:
-
-[<ffffffff804853c2>] regmap_mmio_read32le+0xe/0x1c
-[<ffffffff80485758>] regmap_mmio_read+0x24/0x52
-[<ffffffff8047c526>] _regmap_bus_reg_read+0x1a/0x22
-[<ffffffff8047fe9a>] _regmap_read+0x5c/0xea
-[<ffffffff80480376>] _regmap_update_bits+0x76/0xc0
-...
----[ end trace 0000000000000000 ]---
-As pointed by Samuel Holland it is incorrect to remove check of the stackframe
-entirely.
-
-Changes since v2 [2]:
- - Add accidentally forgotten curly brace
-
-Changes since v1 [1]:
- - Instead of just dropping frame->fp check, replace it with validation of
-   frame->ra, which should be a stack address.
- - Move frame pointer validation into the separate function.
-
-[1] https://lore.kernel.org/linux-riscv/20240426072701.6463-1-dev.mbstr@gmail.com/
-[2] https://lore.kernel.org/linux-riscv/20240521131314.48895-1-dev.mbstr@gmail.com/
-
-Fixes: f766f77a74f5 ("riscv/stacktrace: Fix stack output without ra on the stack top")
-Signed-off-by: Matthew Bystrin <dev.mbstr@gmail.com>
-Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://lore.kernel.org/r/20240521191727.62012-1-dev.mbstr@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: c64e7efe46b7 ("spi: stm32: make spurious and overrun interrupts visible")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://msgid.link/r/20240521105241.62400-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/stacktrace.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/spi/spi-stm32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
-index ff877ee3fb942..c38b20caad7cc 100644
---- a/arch/riscv/kernel/stacktrace.c
-+++ b/arch/riscv/kernel/stacktrace.c
-@@ -20,6 +20,16 @@ register unsigned long sp_in_global __asm__("sp");
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index e843e9453c71c..759c502b094da 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -927,7 +927,7 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+ 		mask |= STM32H7_SPI_SR_TXP | STM32H7_SPI_SR_RXP;
  
- extern asmlinkage void ret_from_exception(void);
- 
-+static inline int fp_is_valid(unsigned long fp, unsigned long sp)
-+{
-+	unsigned long low, high;
-+
-+	low = sp + sizeof(struct stackframe);
-+	high = ALIGN(sp, THREAD_SIZE);
-+
-+	return !(fp < low || fp > high || fp & 0x07);
-+}
-+
- void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 			     bool (*fn)(unsigned long, void *), void *arg)
- {
-@@ -42,21 +52,19 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 	}
- 
- 	for (;;) {
--		unsigned long low, high;
- 		struct stackframe *frame;
- 
- 		if (unlikely(!__kernel_text_address(pc) || fn(pc, arg)))
- 			break;
- 
--		/* Validate frame pointer */
--		low = sp + sizeof(struct stackframe);
--		high = ALIGN(sp, THREAD_SIZE);
--		if (unlikely(fp < low || fp > high || fp & 0x7))
-+		if (unlikely(!fp_is_valid(fp, sp)))
- 			break;
-+
- 		/* Unwind stack frame */
- 		frame = (struct stackframe *)fp - 1;
- 		sp = fp;
--		if (regs && (regs->epc == pc) && (frame->fp & 0x7)) {
-+		if (regs && (regs->epc == pc) && fp_is_valid(frame->ra, sp)) {
-+			/* We hit function where ra is not saved on the stack */
- 			fp = frame->ra;
- 			pc = regs->ra;
- 		} else {
+ 	if (!(sr & mask)) {
+-		dev_warn(spi->dev, "spurious IT (sr=0x%08x, ier=0x%08x)\n",
++		dev_vdbg(spi->dev, "spurious IT (sr=0x%08x, ier=0x%08x)\n",
+ 			 sr, ier);
+ 		spin_unlock_irqrestore(&spi->lock, flags);
+ 		return IRQ_NONE;
 -- 
 2.43.0
 
