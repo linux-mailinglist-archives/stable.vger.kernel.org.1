@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-51720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8F2907149
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:35:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BD7906F5F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:19:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4215B1F23A46
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:35:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64A1A28728A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3528B14199C;
-	Thu, 13 Jun 2024 12:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B6D1411C5;
+	Thu, 13 Jun 2024 12:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p3bJRSda"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yELakhF3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF0517FD;
-	Thu, 13 Jun 2024 12:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4329142E84;
+	Thu, 13 Jun 2024 12:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282118; cv=none; b=KOTISHWSgpWoBa3tbdpp7Agn2jS7Uuld5HkrSOZF6IhqH8zt1TZY0JhpRdEpYEHkny7M1LC/gg2UDHyj5s/D2bOhi3ra4BKhWOhjz8oaI6GYpyQR9Ti6jnP84tGK4cAKAF0FEWojQ0LrHZ8jL1n0G2JNasei8Qcg6j9dK2Wle2Q=
+	t=1718281000; cv=none; b=ZitieM5DLa6Y8VABsu9fUls8usuoFY1S14KI4hlEwThSk0M1mZpEGuxJideLHSh/rgiSCDGUYlNmGSQ/YORfUqyD7oqB+HaamfeJhDfzKr3HbNhxWXHpkNjLsDbh/DB8A5leaNTbMqNyghzk70uGV208MeeLDwE5G0fdJhf9SUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282118; c=relaxed/simple;
-	bh=wjlcVS79MyuV8TtnulHV52XiQyBJKpchuc4DHp5YPSw=;
+	s=arc-20240116; t=1718281000; c=relaxed/simple;
+	bh=rO0Iec/KHqumFFcUf4HdBQ0B5NOehRC2wQzC/ovjo+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LoqCXamsKJT4/og8Ene3vxAExMgFjrl731p4twGQWBQxjwC8hxJifY6XFZKFZ28qHXp0HEo9xVP5kIA24L2+jH6/OhzzjT/6wOqdXeQgfd3dvG26EeV9Nwcdw6lVk0fpryBYjgm1neL1pSkDM0N2zS32uHvHrCSQ0B7jzejZTYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p3bJRSda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67781C2BBFC;
-	Thu, 13 Jun 2024 12:35:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Z+cKhi9Ih4sssA/Y8Xi0OvM28N5oDgrwueGxvYVI2FsN5HXkzngWAlD7hcaCRHi0N9vLI+AWtf0o2t8mtrG3EomeeXhbb/n48cQ4DjFVYagTQ8fBCnxhJnMCT6lyTV/FrGLD4XFhjcojVCZ0kwAclgRnwcAZwEkt5b4qJFYQasQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yELakhF3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF86C2BBFC;
+	Thu, 13 Jun 2024 12:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282117;
-	bh=wjlcVS79MyuV8TtnulHV52XiQyBJKpchuc4DHp5YPSw=;
+	s=korg; t=1718281000;
+	bh=rO0Iec/KHqumFFcUf4HdBQ0B5NOehRC2wQzC/ovjo+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p3bJRSdaKRy8L7lJPhzO340T4H1xxbhQ/8gvPyVvotL6EryJg5MZVugoMoQIdLkru
-	 uUHD1+vw/+cxQYpaKCRapfzDwwsQk3u+miiv4qfIkSxhR5ReK5ezOy5rF5XX+ep+TU
-	 EmnpTyDIHssswqlDSGC6xax8gvtaNJkPQqBOTIQw=
+	b=yELakhF3RLnEF1UBYsZtI3f+75h/ExMR6zCvfGGF67vDQQ+FWUzQE9i6Z9p3iB6dS
+	 voKRxh5Eru7nSq24jhV1SSoUQF1rT08kBYM01C7lMSUOylBCr5Zkyq0s2/9Xlju71P
+	 XXCg1DbOczcx35g0tKZSsVfPonzYyh4YqzVDJp/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautammenghani201@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 168/402] selftests/kcmp: Make the test output consistent and clear
+Subject: [PATCH 5.10 107/317] drm/bridge: lt9611: Dont log an error when DSI host cant be found
 Date: Thu, 13 Jun 2024 13:32:05 +0200
-Message-ID: <20240613113308.699154063@linuxfoundation.org>
+Message-ID: <20240613113251.690014804@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +63,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam Menghani <gautammenghani201@gmail.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit ff682226a353d88ffa5db9c2a9b945066776311e ]
+[ Upstream commit cd0a2c6a081ff67007323725b9ff07d9934b1ed8 ]
 
-Make the output format of this test consistent. Currently the output is
-as follows:
+Given that failing to find a DSI host causes the driver to defer probe,
+make use of dev_err_probe() to log the reason. This makes the defer
+probe reason available and avoids alerting userspace about something
+that is not necessarily an error.
 
-+TAP version 13
-+1..1
-+# selftests: kcmp: kcmp_test
-+# pid1:  45814 pid2:  45815 FD:  1 FILES:  1 VM:  2 FS:  1 SIGHAND:  2
-+  IO:  0 SYSVSEM:  0 INV: -1
-+# PASS: 0 returned as expected
-+# PASS: 0 returned as expected
-+# PASS: 0 returned as expected
-+# # Planned tests != run tests (0 != 3)
-+# # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
-+# # Planned tests != run tests (0 != 3)
-+# # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
-+# # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-+ok 1 selftests: kcmp: kcmp_test
-
-With this patch applied the output is as follows:
-
-+TAP version 13
-+1..1
-+# selftests: kcmp: kcmp_test
-+# TAP version 13
-+# 1..3
-+# pid1:  46330 pid2:  46331 FD:  1 FILES:  2 VM:  2 FS:  2 SIGHAND:  1
-+  IO:  0 SYSVSEM:  0 INV: -1
-+# PASS: 0 returned as expected
-+# PASS: 0 returned as expected
-+# PASS: 0 returned as expected
-+# # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
-+ok 1 selftests: kcmp: kcmp_test
-
-Signed-off-by: Gautam Menghani <gautammenghani201@gmail.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Stable-dep-of: eb59a5811371 ("selftests/kcmp: remove unused open mode")
+Fixes: 23278bf54afe ("drm/bridge: Introduce LT9611 DSI to HDMI bridge")
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-4-619a28148e5c@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kcmp/kcmp_test.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt9611.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/kcmp/kcmp_test.c b/tools/testing/selftests/kcmp/kcmp_test.c
-index 6ea7b9f37a411..25110c7c0b3ed 100644
---- a/tools/testing/selftests/kcmp/kcmp_test.c
-+++ b/tools/testing/selftests/kcmp/kcmp_test.c
-@@ -88,6 +88,9 @@ int main(int argc, char **argv)
- 		int pid2 = getpid();
- 		int ret;
+diff --git a/drivers/gpu/drm/bridge/lontium-lt9611.c b/drivers/gpu/drm/bridge/lontium-lt9611.c
+index 660e05fa4a704..7f58ceda5b08a 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt9611.c
++++ b/drivers/gpu/drm/bridge/lontium-lt9611.c
+@@ -766,10 +766,8 @@ static struct mipi_dsi_device *lt9611_attach_dsi(struct lt9611 *lt9611,
+ 	int ret;
  
-+		ksft_print_header();
-+		ksft_set_plan(3);
-+
- 		fd2 = open(kpath, O_RDWR, 0644);
- 		if (fd2 < 0) {
- 			perror("Can't open file");
-@@ -152,7 +155,6 @@ int main(int argc, char **argv)
- 			ksft_inc_pass_cnt();
- 		}
+ 	host = of_find_mipi_dsi_host_by_node(dsi_node);
+-	if (!host) {
+-		dev_err(lt9611->dev, "failed to find dsi host\n");
+-		return ERR_PTR(-EPROBE_DEFER);
+-	}
++	if (!host)
++		return ERR_PTR(dev_err_probe(lt9611->dev, -EPROBE_DEFER, "failed to find dsi host\n"));
  
--		ksft_print_cnts();
- 
- 		if (ret)
- 			ksft_exit_fail();
-@@ -162,5 +164,5 @@ int main(int argc, char **argv)
- 
- 	waitpid(pid2, &status, P_ALL);
- 
--	return ksft_exit_pass();
-+	return 0;
- }
+ 	dsi = mipi_dsi_device_register_full(host, &info);
+ 	if (IS_ERR(dsi)) {
 -- 
 2.43.0
 
