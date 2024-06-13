@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E0D5906F09
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7A79070BA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:30:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBDC528263E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E39CB1C232C1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33DFF145FEE;
-	Thu, 13 Jun 2024 12:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55220384;
+	Thu, 13 Jun 2024 12:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvlBqNpt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hols4l6W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CB3145B10;
-	Thu, 13 Jun 2024 12:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131FBEC4;
+	Thu, 13 Jun 2024 12:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280780; cv=none; b=As8LJeSi69Ng35IMqHy4U8cVRJ7wpCutNi4J3z6bVUU3XMA9Pe64y6c22e2UpdIBF0SXu0kPnSuon6nQxluqCmdnEqOGq9FEr5EWIf36hFKPWDTrffrfzDxku2m/TkSa6hJOkdYofqcCKd5u8MseZVsW+i+UxUBzUeBLRmFk5L0=
+	t=1718281816; cv=none; b=kIHb0Dzi0qjoU/uAke2g+kpVo9PQD/HLHZTTvGMRKFaB1+0fjeIbGuFE2MAztBZ/DPh882mY2Kn7bwaO0a5NBLWM79SbH3lGnZ1keyARLiWKOBh9mNsMylE4iIdg6/ALhEHmckC9IgEFBDdnSywkZ3y/wmEq9emm48HaWappxqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280780; c=relaxed/simple;
-	bh=O/2PyNTHBCEuzMcrmaLa62ZOvS93B5zCNFSAIvPMb0Y=;
+	s=arc-20240116; t=1718281816; c=relaxed/simple;
+	bh=jlMNHDP5DQ1bI2vdG4iqo/x7EIQkVYTBHe0rawOgnQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iTcUSgcfdjMj2trcJYUQ5Kr4QxVcWkLNNivemCZv+SkIsEg2rYlxKN9mZJAz++Hg9FbmbVjeh+9hJUJ0SA76IeDVh76ZXjxzrgEVmveBOMhrHwaD1sQrknKwS/oS6Ic4j+xAvT5Z9bLDS6RwlAp2A7/FZlecL+meAtNLqCheQaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvlBqNpt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED56C2BBFC;
-	Thu, 13 Jun 2024 12:12:59 +0000 (UTC)
+	 MIME-Version; b=uZirfC2DyCg1clxbAg8bdUds96xCkTR/xJiLFrQW6/wGevpYeQBFn0nIEiB4UuJBSudpkG1S6dMXUSuRY3sykwFNiN+eOBwVGJ8mB8tUR6K9sJ4yG6G0jYGg5A9vJlhQ7M+rZF7iihhhK86CGj9S0iXSEe5M5hccxgysp4BZZIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hols4l6W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87044C2BBFC;
+	Thu, 13 Jun 2024 12:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280779;
-	bh=O/2PyNTHBCEuzMcrmaLa62ZOvS93B5zCNFSAIvPMb0Y=;
+	s=korg; t=1718281815;
+	bh=jlMNHDP5DQ1bI2vdG4iqo/x7EIQkVYTBHe0rawOgnQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QvlBqNptPQ/6vdu4UddTKNvN6SyAcGyIjkQotD8QcBL9AIOtx462Y6+tzCu0hJaYf
-	 BjuSEC466MZj5qOa1vVcDC+9vSTssotfGzdmsKLfQ+wg9n7nUYKtR7C+RhtR+pffrm
-	 TMPadtbr9It5knNkyuA9KV6NV/oO9EjrdLRG0ASw=
+	b=Hols4l6W7PgzsU7/DUh3hW+BI7kPSRBDtPH1aUi6oow7CRQ+IFoeUB4Vp13yEZ7N4
+	 Hh52kxuxjLAUYLTw+4O3k5Y27yngJKTxAxIMbTkt6/z8UCCkoQrAJ9QmQZRC7nkGSZ
+	 mDAmzO6LwkYBwg6KdbzR6WXNOgN0rB18d1uQfpks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ken Milmore <ken.milmore@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 004/317] r8169: Fix possible ring buffer corruption on fragmented Tx packets.
-Date: Thu, 13 Jun 2024 13:30:22 +0200
-Message-ID: <20240613113247.702462647@linuxfoundation.org>
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 066/402] irqchip/alpine-msi: Fix off-by-one in allocation error path
+Date: Thu, 13 Jun 2024 13:30:23 +0200
+Message-ID: <20240613113304.711155822@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ken Milmore <ken.milmore@gmail.com>
+From: Zenghui Yu <yuzenghui@huawei.com>
 
-commit c71e3a5cffd5309d7f84444df03d5b72600cc417 upstream.
+[ Upstream commit ff3669a71afa06208de58d6bea1cc49d5e3fcbd1 ]
 
-An issue was found on the RTL8125b when transmitting small fragmented
-packets, whereby invalid entries were inserted into the transmit ring
-buffer, subsequently leading to calls to dma_unmap_single() with a null
-address.
+When alpine_msix_gic_domain_alloc() fails, there is an off-by-one in the
+number of interrupts to be freed.
 
-This was caused by rtl8169_start_xmit() not noticing changes to nr_frags
-which may occur when small packets are padded (to work around hardware
-quirks) in rtl8169_tso_csum_v2().
+Fix it by passing the number of successfully allocated interrupts, instead
+of the relative index of the last allocated one.
 
-To fix this, postpone inspecting nr_frags until after any padding has been
-applied.
-
-Fixes: 9020845fb5d6 ("r8169: improve rtl8169_start_xmit")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ken Milmore <ken.milmore@gmail.com>
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/27ead18b-c23d-4f49-a020-1fc482c5ac95@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3841245e8498 ("irqchip/alpine-msi: Fix freeing of interrupts on allocation error path")
+Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240327142305.1048-1-yuzenghui@huawei.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-alpine-msi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4279,11 +4279,11 @@ static void rtl8169_doorbell(struct rtl8
- static netdev_tx_t rtl8169_start_xmit(struct sk_buff *skb,
- 				      struct net_device *dev)
- {
--	unsigned int frags = skb_shinfo(skb)->nr_frags;
- 	struct rtl8169_private *tp = netdev_priv(dev);
- 	unsigned int entry = tp->cur_tx % NUM_TX_DESC;
- 	struct TxDesc *txd_first, *txd_last;
- 	bool stop_queue, door_bell;
-+	unsigned int frags;
- 	u32 opts[2];
+diff --git a/drivers/irqchip/irq-alpine-msi.c b/drivers/irqchip/irq-alpine-msi.c
+index fc1ef7de37973..c9ffd69dfc756 100644
+--- a/drivers/irqchip/irq-alpine-msi.c
++++ b/drivers/irqchip/irq-alpine-msi.c
+@@ -165,7 +165,7 @@ static int alpine_msix_middle_domain_alloc(struct irq_domain *domain,
+ 	return 0;
  
- 	txd_first = tp->TxDescArray + entry;
-@@ -4309,6 +4309,7 @@ static netdev_tx_t rtl8169_start_xmit(st
- 				    entry, false)))
- 		goto err_dma_0;
- 
-+	frags = skb_shinfo(skb)->nr_frags;
- 	if (frags) {
- 		if (rtl8169_xmit_frags(tp, skb, opts, entry))
- 			goto err_dma_1;
+ err_sgi:
+-	irq_domain_free_irqs_parent(domain, virq, i - 1);
++	irq_domain_free_irqs_parent(domain, virq, i);
+ 	alpine_msix_free_sgi(priv, sgi, nr_irqs);
+ 	return err;
+ }
+-- 
+2.43.0
+
 
 
 
