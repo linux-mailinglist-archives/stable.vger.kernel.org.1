@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B390907241
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E68E90705F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 839BD1C209F8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8C761F23055
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FD881AA7;
-	Thu, 13 Jun 2024 12:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65289137914;
+	Thu, 13 Jun 2024 12:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYl9srQf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDIpqsoj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6D817FD;
-	Thu, 13 Jun 2024 12:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228E16EB56;
+	Thu, 13 Jun 2024 12:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282720; cv=none; b=giwbugehYojaPwnWZgInZOoiAwC9EArjigTFDIC8GEO5aXdoqmk5nhPZqMxw+1eibvoR7nyL3M6Xe3JxV7OhlHhgEPuX+HslBsEmbQLaM4QDt8RDl1/omuvMRP/x+lAEt/CYnz6srPrboOY0lp3aYmPrEbgEV0y6nCJVlaC5tVE=
+	t=1718281601; cv=none; b=Qg0qhfYSaeRWNIZeM0WVFnVddy+BJu9YiwpWorIFOdjue1tnfkvIQoLTrj3V7S9NXCwR/4aJz/AN7NtMkezJGo2pYP3IFvBdYhxElyZOzNr7xjCD3qvduinBLEZ+aueKKCc4l2niQIIP1xjPPlRooBlng9rnLjZuRZ8aZynEiRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282720; c=relaxed/simple;
-	bh=UHUwgjpT5ffeSkUNAsxIAtk/BX8JEo1HaZV6b/GRgh8=;
+	s=arc-20240116; t=1718281601; c=relaxed/simple;
+	bh=KgL19/ggXeeAIZuVqpa14WDyZtMrwGKdscNsVsRy4so=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l6WJPh/pCWx/hX0UdVV7El+7Xn6lfKuucPiTh4WrUqdXfxh5b25tImhZyP7wS5udfO2S0DqQSoogPVx6kdNVuXW2Px55+upxI+mGFKk4aA3HgkovZUM2W/PYyg1rjXngIhFv6NiNm9N2qjwX8DY6NaliPWKMt2HIuNWWdMeMxrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYl9srQf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A9BC2BBFC;
-	Thu, 13 Jun 2024 12:45:19 +0000 (UTC)
+	 MIME-Version; b=uykCubFzkVz/fMbWMf7akL3z8Zf5ECr1SZhmsII4+Ap8G1dMBkVnnPZwHa36XYuco7zVjqbLbEb9OGr/QWjV6YVVfhBulubDTI/iGUkJ78Aa4LOjQFyt4ICs3zDIuBSDMIvNiLMTdIeEmZzryfdRfUfJ4xI6dZX3AlOaUrid3Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDIpqsoj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E090C2BBFC;
+	Thu, 13 Jun 2024 12:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282719;
-	bh=UHUwgjpT5ffeSkUNAsxIAtk/BX8JEo1HaZV6b/GRgh8=;
+	s=korg; t=1718281601;
+	bh=KgL19/ggXeeAIZuVqpa14WDyZtMrwGKdscNsVsRy4so=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cYl9srQfIC8L25FkSiyyOCmoAjpCP6NJFZ1SzIIHZN0lBHGUx8jdDIaqzKgTnPIUr
-	 hdYNCm5Z1r59Z70kXqZop/MOr9NDTTUTN9LSueIxsogOfngJpNT23tzl4RcJjVa41k
-	 4Hq/dIfrB/vzA8bqTUtHhuk8CJahjUqkllrXoo48=
+	b=ZDIpqsoj4jwp2pS9eluRgsHzd6UZug9o1sbM2FczpbgpnBvKZ1KxiQssvqywAYZlm
+	 HhqqecI9Q5w5zc3x6ZlxJI6NgZU6JPMmAG+1+4M6Kenbm6fgBeBWYFR3jnbv4UQzsb
+	 S8JbnXK3331FxwLhaa86rir84lSZlFtBVCR4T/LM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 372/402] mmc: sdhci-acpi: Fix Lenovo Yoga Tablet 2 Pro 1380 sdcard slot not working
+	Marc Hartmayer <mhartmay@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 5.10 311/317] s390/ap: Fix crash in AP internal function modify_bitmap()
 Date: Thu, 13 Jun 2024 13:35:29 +0200
-Message-ID: <20240613113316.647951088@linuxfoundation.org>
+Message-ID: <20240613113259.584574394@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Harald Freudenberger <freude@linux.ibm.com>
 
-commit f3521d7cbaefff19cc656325787ed797e5f6a955 upstream.
+commit d4f9d5a99a3fd1b1c691b7a1a6f8f3f25f4116c9 upstream.
 
-The Lenovo Yoga Tablet 2 Pro 1380 sdcard slot has an active high cd pin
-and a broken wp pin which always reports the card being write-protected.
+A system crash like this
 
-Add a DMI quirk to address both issues.
+  Failing address: 200000cb7df6f000 TEID: 200000cb7df6f403
+  Fault in home space mode while using kernel ASCE.
+  AS:00000002d71bc007 R3:00000003fe5b8007 S:000000011a446000 P:000000015660c13d
+  Oops: 0038 ilc:3 [#1] PREEMPT SMP
+  Modules linked in: mlx5_ib ...
+  CPU: 8 PID: 7556 Comm: bash Not tainted 6.9.0-rc7 #8
+  Hardware name: IBM 3931 A01 704 (LPAR)
+  Krnl PSW : 0704e00180000000 0000014b75e7b606 (ap_parse_bitmap_str+0x10e/0x1f8)
+  R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2 PM:0 RI:0 EA:3
+  Krnl GPRS: 0000000000000001 ffffffffffffffc0 0000000000000001 00000048f96b75d3
+  000000cb00000100 ffffffffffffffff ffffffffffffffff 000000cb7df6fce0
+  000000cb7df6fce0 00000000ffffffff 000000000000002b 00000048ffffffff
+  000003ff9b2dbc80 200000cb7df6fcd8 0000014bffffffc0 000000cb7df6fbc8
+  Krnl Code: 0000014b75e7b5fc: a7840047            brc     8,0000014b75e7b68a
+  0000014b75e7b600: 18b2                lr      %r11,%r2
+  #0000014b75e7b602: a7f4000a            brc     15,0000014b75e7b616
+  >0000014b75e7b606: eb22d00000e6        laog    %r2,%r2,0(%r13)
+  0000014b75e7b60c: a7680001            lhi     %r6,1
+  0000014b75e7b610: 187b                lr      %r7,%r11
+  0000014b75e7b612: 84960021            brxh    %r9,%r6,0000014b75e7b654
+  0000014b75e7b616: 18e9                lr      %r14,%r9
+  Call Trace:
+  [<0000014b75e7b606>] ap_parse_bitmap_str+0x10e/0x1f8
+  ([<0000014b75e7b5dc>] ap_parse_bitmap_str+0xe4/0x1f8)
+  [<0000014b75e7b758>] apmask_store+0x68/0x140
+  [<0000014b75679196>] kernfs_fop_write_iter+0x14e/0x1e8
+  [<0000014b75598524>] vfs_write+0x1b4/0x448
+  [<0000014b7559894c>] ksys_write+0x74/0x100
+  [<0000014b7618a440>] __do_syscall+0x268/0x328
+  [<0000014b761a3558>] system_call+0x70/0x98
+  INFO: lockdep is turned off.
+  Last Breaking-Event-Address:
+  [<0000014b75e7b636>] ap_parse_bitmap_str+0x13e/0x1f8
+  Kernel panic - not syncing: Fatal exception: panic_on_oops
 
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240410191639.526324-5-hdegoede@redhat.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+occured when /sys/bus/ap/a[pq]mask was updated with a relative mask value
+(like +0x10-0x12,+60,-90) with one of the numeric values exceeding INT_MAX.
+
+The fix is simple: use unsigned long values for the internal variables. The
+correct checks are already in place in the function but a simple int for
+the internal variables was used with the possibility to overflow.
+
+Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
+Tested-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-acpi.c |   24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/s390/crypto/ap_bus.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -82,6 +82,7 @@ struct sdhci_acpi_host {
- enum {
- 	DMI_QUIRK_RESET_SD_SIGNAL_VOLT_ON_SUSP			= BIT(0),
- 	DMI_QUIRK_SD_NO_WRITE_PROTECT				= BIT(1),
-+	DMI_QUIRK_SD_CD_ACTIVE_HIGH				= BIT(2),
- };
+--- a/drivers/s390/crypto/ap_bus.c
++++ b/drivers/s390/crypto/ap_bus.c
+@@ -859,7 +859,7 @@ static int hex2bitmap(const char *str, u
+  */
+ static int modify_bitmap(const char *str, unsigned long *bitmap, int bits)
+ {
+-	int a, i, z;
++	unsigned long a, i, z;
+ 	char *np, sign;
  
- static inline void *sdhci_acpi_priv(struct sdhci_acpi_host *c)
-@@ -825,6 +826,26 @@ static const struct dmi_system_id sdhci_
- 	},
- 	{
- 		/*
-+		 * Lenovo Yoga Tablet 2 Pro 1380F/L (13" Android version) this
-+		 * has broken WP reporting and an inverted CD signal.
-+		 * Note this has more or less the same BIOS as the Lenovo Yoga
-+		 * Tablet 2 830F/L or 1050F/L (8" and 10" Android), but unlike
-+		 * the 830 / 1050 models which share the same mainboard this
-+		 * model has a different mainboard and the inverted CD and
-+		 * broken WP are unique to this board.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corp."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "VALLEYVIEW C0 PLATFORM"),
-+			DMI_MATCH(DMI_BOARD_NAME, "BYT-T FFD8"),
-+			/* Full match so as to NOT match the 830/1050 BIOS */
-+			DMI_MATCH(DMI_BIOS_VERSION, "BLADE_21.X64.0005.R00.1504101516"),
-+		},
-+		.driver_data = (void *)(DMI_QUIRK_SD_NO_WRITE_PROTECT |
-+					DMI_QUIRK_SD_CD_ACTIVE_HIGH),
-+	},
-+	{
-+		/*
- 		 * The Toshiba WT8-B's microSD slot always reports the card being
- 		 * write-protected.
- 		 */
-@@ -948,6 +969,9 @@ static int sdhci_acpi_probe(struct platf
- 	if (sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD)) {
- 		bool v = sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD_OVERRIDE_LEVEL);
- 
-+		if (quirks & DMI_QUIRK_SD_CD_ACTIVE_HIGH)
-+			host->mmc->caps2 |= MMC_CAP2_CD_ACTIVE_HIGH;
-+
- 		err = mmc_gpiod_request_cd(host->mmc, NULL, 0, v, 0);
- 		if (err) {
- 			if (err == -EPROBE_DEFER)
+ 	/* bits needs to be a multiple of 8 */
 
 
 
