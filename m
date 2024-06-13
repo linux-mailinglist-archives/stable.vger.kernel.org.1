@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-50744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9764C906C61
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6557A906B81
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B1CD281DE5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7362D1C2162A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B118E144303;
-	Thu, 13 Jun 2024 11:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47670143739;
+	Thu, 13 Jun 2024 11:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="un+jljQL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iksX82/x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7060D1428E9;
-	Thu, 13 Jun 2024 11:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FDF142E8E;
+	Thu, 13 Jun 2024 11:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279257; cv=none; b=YqcHcYA5Anf+WiljQovuz2GIlzIDxccBc/kvGxFKw2KmeGrTtTC3/jhqN7K9kUeh7fWqh97/Xvexp34QVdPVLAKVWo46Yv36DZsD7to62iElUbVpq1yTfWxGVVFOLTP0PwsJuUvwWXXPufyzZ8S1nHjxEffjqRLhlOi7n7Ahja0=
+	t=1718278853; cv=none; b=mY9+BQ9zT3r3KodXuXkbRepOBWMMbnAzFdtmEUel7HelTI6oCIR6lxgTy0NJ5bjVTCKuxWeOLC+1LgSaytDqvNRnR+MvNA/TeHv5zTIEiM1s/Fr3tv1QwjdtrOgow30V1oye6o+66pgem/dvZ8cxA0aHhG6iIgJTZ+ULPpCSt7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279257; c=relaxed/simple;
-	bh=OW/eMcN77JmeOF3DtFGGxqZNH8QCdfLtJ9MWoL+mIfw=;
+	s=arc-20240116; t=1718278853; c=relaxed/simple;
+	bh=qxBOAhKZDcaiXuvFhgd+HBMo30x5HTK+jkoaXziy/jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQPm9JJgwpWQoCGKPzZv0KxXEnpXzcF6KlFl/WLGm9uNGbEa5pTgVkVwghmAa5hAyEZcnEcClutFRiI/oitrAPYZxr6f3HCN2xzqj8ci/fXgTeP68W2T/0VeNIoBGfRHMWM1qlTbqTg64am919Qdtltrk7v/IAUePr6cyCYEURc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=un+jljQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC373C2BBFC;
-	Thu, 13 Jun 2024 11:47:36 +0000 (UTC)
+	 MIME-Version; b=EE1kUdinbYm/XSGFR58WiHqNIKILcyiCyCEu78MeUIdRngMi2KModZGVazs5/k0HVJWpGSAU6f60C9SCWySU00BbkEWSQMuUUUKJv7fnhWYL+AcDC27tB50DdQUkNxAHsk3vn8sAnhXjTttIXEiP+gQFwZIM/ZYIVKFj04kFOLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iksX82/x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A3BC2BBFC;
+	Thu, 13 Jun 2024 11:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279257;
-	bh=OW/eMcN77JmeOF3DtFGGxqZNH8QCdfLtJ9MWoL+mIfw=;
+	s=korg; t=1718278852;
+	bh=qxBOAhKZDcaiXuvFhgd+HBMo30x5HTK+jkoaXziy/jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=un+jljQL8qcO2oGDO2oF6E9EeLvBKfh6hYel7tHG3XB5RW8LDhp+dHtyzKoVzVw3J
-	 6dz8C2OHPT1T59u3VVxouu/pfAZES7DaOLYGavUv98ivCsTTugGyXeN6+238N/zwLa
-	 MNC7BGesq5bViFrGXY0CIVYUjsXzxxU2ja6U00bY=
+	b=iksX82/xKYU+K7t1++qyzvXq++xTcdKYTT58+N92+Rjgjsd5EebspFCr+Pa2k90uI
+	 Pj5Rv+hyznd+jUFJelCcNg4tJy8d1peMA1jJwxz3z22Y86hADRzTjQB4JWzG1JxkWW
+	 l2u0JU+eAUu7509a9MZQI7htTey1KuRsWjR3fqfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Niklas Cassel <cassel@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.9 015/157] ata: pata_legacy: make legacy_exit() work again
+	Arnd Bergmann <arnd@arndb.de>,
+	Jean Delvare <jdelvare@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 092/213] firmware: dmi-id: add a release callback function
 Date: Thu, 13 Jun 2024 13:32:20 +0200
-Message-ID: <20240613113227.997413968@linuxfoundation.org>
+Message-ID: <20240613113231.557119178@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit d4a89339f17c87c4990070e9116462d16e75894f upstream.
+[ Upstream commit cf770af5645a41a753c55a053fa1237105b0964a ]
 
-Commit defc9cd826e4 ("pata_legacy: resychronize with upstream changes and
-resubmit") missed to update legacy_exit(), so that it now fails to do any
-cleanup -- the loop body there can never be entered.  Fix that and finally
-remove now useless nr_legacy_host variable...
+dmi_class uses kfree() as the .release function, but that now causes
+a warning with clang-16 as it violates control flow integrity (KCFI)
+rules:
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
+drivers/firmware/dmi-id.c:174:17: error: cast from 'void (*)(const void *)' to 'void (*)(struct device *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+  174 |         .dev_release = (void(*)(struct device *)) kfree,
 
-Fixes: defc9cd826e4 ("pata_legacy: resychronize with upstream changes and resubmit")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add an explicit function to call kfree() instead.
+
+Fixes: 4f5c791a850e ("DMI-based module autoloading")
+Link: https://lore.kernel.org/lkml/20240213100238.456912-1-arnd@kernel.org/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_legacy.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/firmware/dmi-id.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/pata_legacy.c
-+++ b/drivers/ata/pata_legacy.c
-@@ -173,8 +173,6 @@ static int legacy_port[NR_HOST] = { 0x1f
- static struct legacy_probe probe_list[NR_HOST];
- static struct legacy_data legacy_data[NR_HOST];
- static struct ata_host *legacy_host[NR_HOST];
--static int nr_legacy_host;
--
- 
- /**
-  *	legacy_probe_add	-	Add interface to probe list
-@@ -1276,9 +1274,11 @@ static __exit void legacy_exit(void)
- {
- 	int i;
- 
--	for (i = 0; i < nr_legacy_host; i++) {
-+	for (i = 0; i < NR_HOST; i++) {
- 		struct legacy_data *ld = &legacy_data[i];
--		ata_host_detach(legacy_host[i]);
-+
-+		if (legacy_host[i])
-+			ata_host_detach(legacy_host[i]);
- 		platform_device_unregister(ld->platform_dev);
- 	}
+diff --git a/drivers/firmware/dmi-id.c b/drivers/firmware/dmi-id.c
+index 624a11cb07e23..3ddff56fec995 100644
+--- a/drivers/firmware/dmi-id.c
++++ b/drivers/firmware/dmi-id.c
+@@ -161,9 +161,14 @@ static int dmi_dev_uevent(struct device *dev, struct kobj_uevent_env *env)
+ 	return 0;
  }
+ 
++static void dmi_dev_release(struct device *dev)
++{
++	kfree(dev);
++}
++
+ static struct class dmi_class = {
+ 	.name = "dmi",
+-	.dev_release = (void(*)(struct device *)) kfree,
++	.dev_release = dmi_dev_release,
+ 	.dev_uevent = dmi_dev_uevent,
+ };
+ 
+-- 
+2.43.0
+
 
 
 
