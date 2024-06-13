@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-50423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B559065C1
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6469065C0
 	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:55:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D128B22584
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:55:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE382281AD2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0EA13C9C0;
-	Thu, 13 Jun 2024 07:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A59C13C9D5;
+	Thu, 13 Jun 2024 07:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xg2n3tYX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOsHOnyT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9E913C8E8
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB2813C9CF
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718265315; cv=none; b=Jy5UleQKdNtF3ANkbKlbkwq/4jE4lCUz2mGzWSkNkTsLdMwQBoaX1Hbf+Bo5dZqcaTj9V9KINoa8sAxZ3F44oGy8aZgTMpU/yaiI9hQrZ4zrharwx+je1c/zIdyrqN9R90oi73fSm+N1NAbgZ8IR1NqH/byPEwdEY1EG5pB6HmA=
+	t=1718265317; cv=none; b=sOfGxCkQDjF7hDTZzMQSoCS/eko1YDzzGqQiNeke9xbsAv3fuqLSiMumPDjrRT4trYVD4hTSHJd77JB2cYnSOUzb9xjpt9cHLw62uheeoVPj4ff87PPh+ZGI+Wbf+Ez2PjlVZH2JqH4y2aIFy7EKnynzzADNWX6tNK6uaRLa9qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718265315; c=relaxed/simple;
-	bh=8/mb7D5nToRa4QAmPwyqq+lvIqlzoSTbx73TLoNYChI=;
+	s=arc-20240116; t=1718265317; c=relaxed/simple;
+	bh=bLUVu9gcYhniB1VsuuATrMZzxN1bm8nAlvwkmnZQ7qQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWiPUr3vt5tQ/gH75laVq64OUFR6iZQmH3e9wAL43qscnAuqc5H0nZ+NbKRorXARMjYO1+L5yhXPrp31mwEgV9tvJiiqa16fb2xs8qubp7nZahFQMS8N8538PFoW2YzhiSjq84tBsj6texvzufbtZu+wJmg7/VxgfzZslJ7J6MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xg2n3tYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F88BC3277B;
-	Thu, 13 Jun 2024 07:55:13 +0000 (UTC)
+	 MIME-Version; b=rGmYCCAZitFg6aak3Hy0ZB+Ga3k4BCw1ow06tL/mwHssdloy4Hzzj75s64B/nAKeTfzmietJIEzAS5uTNqTSd2x2dopVqn5pfZ2kmvP3zfHa0w5i+mwnv56AtfevN32mIt/YeXCOXLmyBV/sTHpKMAe1DME0w5YqCEMn8+Fhg9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOsHOnyT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CABC4AF1A;
+	Thu, 13 Jun 2024 07:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718265315;
-	bh=8/mb7D5nToRa4QAmPwyqq+lvIqlzoSTbx73TLoNYChI=;
+	s=k20201202; t=1718265317;
+	bh=bLUVu9gcYhniB1VsuuATrMZzxN1bm8nAlvwkmnZQ7qQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xg2n3tYX0vF3NJmBijITL2xScsJmSY/qAp6NQVwEJ6HFAK8bMK9gKsXc60X2nMQ5C
-	 T/rz80eHL2twdZ16yTDmzJHSpKgoTqfXiQnX95PK7AlBNFw2bHkqNfhdOeS4IyYU0U
-	 vcGo0m9blydtdkgRNCdmlci/c/Tu3bp2Lz9lHRopsgWkqQAU6BQ7s+PG8gvY52vwAH
-	 Mz2eusMiMmSoDYLj2GfUOjm+E+Bcms+DYD8SN4F9wF7yJIWuxTmBJFGBH2qwMDSWKI
-	 /XA0B3IaXxMh6VnWr5pzoJmT5hjq/XLn9ZBeWxEDTwJ6s2n6gj73Yw4hBGZw0uERfj
-	 kZn94URG0HcPw==
+	b=bOsHOnyTbnC1ACYN5BNnF0HULvF6XSi7DopmpxFit3twRYsodGxvGr/zGS6cjPJ5P
+	 TuV8Dq7AUJxZQcrRwGufnwTVgbvmEAS+QjWK2qfi5RbK6ixkDv+u8e3EyW4+/SdYiS
+	 IAlz92tzfDbBACJP61YB11uVpWcgvA3OmqJcSgJSHi+41rE5gcCzuxWyhJt8gkNvvp
+	 Zvqx82jw/cD3ZeBLR8K7IgRJ/R9pjkWYPgvvB9NjWMSfkI85o/rybRxggavSAQlZCS
+	 3Uq742FkT5FrlJ5/s79ujd/S38JtRIC5dGR1+0EkbE09DUXdp82QaLPZt9AUcTGwTF
+	 hl9SMpbRJKXhA==
 From: Lee Jones <lee@kernel.org>
 To: lee@kernel.org
 Cc: stable@vger.kernel.org,
@@ -49,9 +49,9 @@ Cc: stable@vger.kernel.org,
 	Tom Herbert <tom@herbertland.com>,
 	David Ahern <dsahern@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 1/1] net: fix __dst_negative_advice() race
-Date: Thu, 13 Jun 2024 08:54:39 +0100
-Message-ID: <20240613075444.2477127-5-lee@kernel.org>
+Subject: [PATCH 6.6 1/1] net: fix __dst_negative_advice() race
+Date: Thu, 13 Jun 2024 08:54:40 +0100
+Message-ID: <20240613075444.2477127-6-lee@kernel.org>
 X-Mailer: git-send-email 2.45.2.505.gda0bf45e8d-goog
 In-Reply-To: <20240613075444.2477127-1-lee@kernel.org>
 References: <20240613075444.2477127-1-lee@kernel.org>
@@ -106,23 +106,23 @@ Signed-off-by: Lee Jones <lee@kernel.org>
  5 files changed, 30 insertions(+), 47 deletions(-)
 
 diff --git a/include/net/dst_ops.h b/include/net/dst_ops.h
-index 632086b2f644..3ae2fda29507 100644
+index 6d1c8541183d..3a9001a042a5 100644
 --- a/include/net/dst_ops.h
 +++ b/include/net/dst_ops.h
 @@ -24,7 +24,7 @@ struct dst_ops {
  	void			(*destroy)(struct dst_entry *);
  	void			(*ifdown)(struct dst_entry *,
- 					  struct net_device *dev, int how);
+ 					  struct net_device *dev);
 -	struct dst_entry *	(*negative_advice)(struct dst_entry *);
 +	void			(*negative_advice)(struct sock *sk, struct dst_entry *);
  	void			(*link_failure)(struct sk_buff *);
  	void			(*update_pmtu)(struct dst_entry *dst, struct sock *sk,
  					       struct sk_buff *skb, u32 mtu,
 diff --git a/include/net/sock.h b/include/net/sock.h
-index 77298c74822a..9dab48207874 100644
+index 53b81e0a8981..5942b5ff4c78 100644
 --- a/include/net/sock.h
 +++ b/include/net/sock.h
-@@ -2212,17 +2212,10 @@ sk_dst_get(struct sock *sk)
+@@ -2183,17 +2183,10 @@ sk_dst_get(const struct sock *sk)
  
  static inline void __dst_negative_advice(struct sock *sk)
  {
@@ -144,7 +144,7 @@ index 77298c74822a..9dab48207874 100644
  
  static inline void dst_negative_advice(struct sock *sk)
 diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 6c0f1e347b85..fcbacd39febe 100644
+index 7c05cbcd39d3..40b9c579c917 100644
 --- a/net/ipv4/route.c
 +++ b/net/ipv4/route.c
 @@ -132,7 +132,8 @@ struct dst_entry	*ipv4_dst_check(struct dst_entry *dst, u32 cookie);
@@ -187,7 +187,7 @@ index 6c0f1e347b85..fcbacd39febe 100644
  
  /*
 diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 887599d351b8..2611f7897413 100644
+index 236a45557ba1..0c0a1a5e4022 100644
 --- a/net/ipv6/route.c
 +++ b/net/ipv6/route.c
 @@ -87,7 +87,8 @@ struct dst_entry	*ip6_dst_check(struct dst_entry *dst, u32 cookie);
@@ -199,8 +199,8 @@ index 887599d351b8..2611f7897413 100644
 +					    struct dst_entry *dst);
  static void		ip6_dst_destroy(struct dst_entry *);
  static void		ip6_dst_ifdown(struct dst_entry *,
- 				       struct net_device *dev, int how);
-@@ -2762,24 +2763,24 @@ INDIRECT_CALLABLE_SCOPE struct dst_entry *ip6_dst_check(struct dst_entry *dst,
+ 				       struct net_device *dev);
+@@ -2760,24 +2761,24 @@ INDIRECT_CALLABLE_SCOPE struct dst_entry *ip6_dst_check(struct dst_entry *dst,
  }
  EXPORT_INDIRECT_CALLABLE(ip6_dst_check);
  
@@ -239,10 +239,10 @@ index 887599d351b8..2611f7897413 100644
  
  static void ip6_link_failure(struct sk_buff *skb)
 diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index e47c670c7e2c..5fddde2d5bc4 100644
+index 97d69ec54ff9..0dde08e02887 100644
 --- a/net/xfrm/xfrm_policy.c
 +++ b/net/xfrm/xfrm_policy.c
-@@ -3772,15 +3772,10 @@ static void xfrm_link_failure(struct sk_buff *skb)
+@@ -3853,15 +3853,10 @@ static void xfrm_link_failure(struct sk_buff *skb)
  	/* Impossible. Such dst must be popped before reaches point of failure. */
  }
  
