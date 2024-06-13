@@ -1,148 +1,222 @@
-Return-Path: <stable+bounces-50515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7027A906AA6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:02:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 934E2906ACF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:15:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24A301F2248D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:02:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 829971C23349
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BDD1428F6;
-	Thu, 13 Jun 2024 11:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF049141987;
+	Thu, 13 Jun 2024 11:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygmBoYSd"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="fP9ojm/D";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TaMZADIa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout5-smtp.messagingengine.com (fout5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774D6DDB1
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 11:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C121813C9C0;
+	Thu, 13 Jun 2024 11:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718276550; cv=none; b=sJEpWMVJLehQRnbwM8kGd00qZqjHD2LRrOx1DDjKJj9LIlLH3RBoX6pGHX/XTYHK7fNxMN8XROt/KStRbO7e2UAIj1VK2ypGaGibDyDeapS/wrnOqd/uWlZic182d0m+SF+jNgZoMo7+V31WPycrSuwAklsHyqJX35dsVnUVfSk=
+	t=1718277334; cv=none; b=Ud2+dqIm1Yk6BInrYIgzsOtb0oc2874TtkxvBFpj+Azfa2ZfQzH7242P8BZJtJxFPUdHXXlXyawJ+zjVmQe0783YF7/TPb/GJe5SJFPljyNM5id7PnSw+zJUl5l3UOCChKH5KS4KH07B4JBFS55WtVmQbgMKS8nSnoVn8o+M3Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718276550; c=relaxed/simple;
-	bh=Y6Y9iLDa19mCqoZH5xnIDAz6Z9fmEdby8bzVQV7MC2Y=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UubjkTAvVqiSUgd+on9OBN+/cCQK3VuabRYN4OEqwB2ZSFNXHJO+Paj/gbq1Uqlg4x36aEvkRvmdpjLEwpQPmb27xOAgpYlTok4oq1utrkffDoMEXHi/dfpURo1Z2xpSGy4Ur7+HCqKtxq/DnaZK82DWI/5pHbd7iDXYHhoQ6yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygmBoYSd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9664C4AF1A;
-	Thu, 13 Jun 2024 11:02:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718276550;
-	bh=Y6Y9iLDa19mCqoZH5xnIDAz6Z9fmEdby8bzVQV7MC2Y=;
-	h=Subject:To:Cc:From:Date:From;
-	b=ygmBoYSdyLgdzaXAvbfbivOxVRlIg1aXhpQmOEgfgfqKpUrkwXboDQeDbQNPsDdP2
-	 w787IQTaGYncn85EaPjBQql2eaTGgfDCGcUIa5fVZpvawp9R6jc8naZXB1Ru4p1k4X
-	 hLlYIxKTe3hgstF4ZiYW21GAcN0Gp15QRZXWYzoY=
-Subject: FAILED: patch "[PATCH] cifs: fix creating sockets when using sfu mount options" failed to apply to 6.6-stable tree
-To: stfrench@microsoft.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Jun 2024 13:02:19 +0200
-Message-ID: <2024061319-machine-lanky-74ba@gregkh>
+	s=arc-20240116; t=1718277334; c=relaxed/simple;
+	bh=0rqa/fHwKGmnIoA1MtAA/yL/+W5i/RGmhNKvuI9ctHg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gp/DJ/wITRstiOfMtPvzu2Y/wD6AXw789KpWke3qXyovFRcdvKTOdRYzRQAsOL+qUvByQ8Em4BvegJpoEr3+U08Ieoz1zy3yIC5yoK4/jnID4V0HsbScZOs4PPTAnyWHj3yrHD165vIhMwv3usmchXP4NuMKZKlRIdRLGPK4ybY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=fP9ojm/D; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TaMZADIa; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.nyi.internal (Postfix) with ESMTP id EDD461380518;
+	Thu, 13 Jun 2024 07:15:30 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Thu, 13 Jun 2024 07:15:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1718277330; x=1718363730; bh=0Wxo1KWcaI
+	+Qb9/p5w1SxDBWK8h/US2u4Q60jeymu50=; b=fP9ojm/DwGMBXctq/uO9wegv76
+	RzY7j06fgUwARiysF8orJZGzEPSVmfNezQa5WHITvUG013du2Z0c+5H2y352QEzF
+	V1Jk5Ff7XwrKDLmdWrFppkJlZzy8Vmsqe9OFMvBrxCyBjMs4QKwqopTldilQ8ZEy
+	a8UsHXsm3Tj828Ma41C7tKxBLDnr66qBay/lv5Yu4YSknJn50CdkPQq0KPDT4kui
+	d+pimju3AbaAedbTdzBItePj7EazVPxwvspYtVAn9dtolMdJUXwcUa9fBnSqDKg1
+	6/2aPfSZWwtWuoEbFzin2GjEToxpbO6OO20C4ee8nWqOGFnH3riDTr276LxQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1718277330; x=1718363730; bh=0Wxo1KWcaI+Qb9/p5w1SxDBWK8h/
+	US2u4Q60jeymu50=; b=TaMZADIaDJzwTWJsRLoJfHNJkNC4PLbPjwEnEIb9HlUb
+	xUTLW+1n76zW1KG4xMgUk7BTP9BUHsQejV3iWxSQBEA67Qph7xw6BNnUaYcdELGM
+	Ag/mtIc+icHNmJQC3Ho0ZbdbBBD7Ix2TPNNTJ1dkpcYcdFb3JoFf7dPsSlmeQHDx
+	OOzBvSfhghNivYzFi6Meqiq5VOQdVAvM20KFcB1TLoq40O+d5HMwnrQ2ZHQ4Artm
+	u5yTOgJ5svDygC84KTnS+g4RU4IaN3UcDrL2blW3GkLA2aUuqNheH4sN0JJ4qFE+
+	BX/dEKNDQyX5lYTY/uZPQlyiu7R2KUOmcxvb0bZQQQ==
+X-ME-Sender: <xms:0tRqZm3HNRTpEm5nBwBgN1Ak0AqeSRZz0MG7icE9ipZ5lHMEkHB6kg>
+    <xme:0tRqZpHzg5Jf3c96O_GQ_Dr509vwIPH3wvr986hbLiBwhiTmu7lbfNW519DvYrb-t
+    QmtPAZIOjwA0A>
+X-ME-Received: <xmr:0tRqZu5SDy4zxNZj_EDOKXWr-fEyZj-BrbDbUGCrQK1JXYFwYIWYwII3IwI48sgNkovq8RayhDuMvppbAKsdTTeF05U9QwBiMLQkvQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedujedgfeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
+    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
+    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:0tRqZn2PU30OTVsKUWc_94Sg0FkdxCju0vnA1FkDjIVwGclLgHQl8w>
+    <xmx:0tRqZpEq_ljdRTUml0Ck-kpXYizKwKF4Ip-fj46KBqu-HQwxqoDVYw>
+    <xmx:0tRqZg8CCbvoYLYLQt9bmmoy6_owdQH8KYrMpSgfjFWI7ZB3Dp5zyQ>
+    <xmx:0tRqZunrIBXyEkw6wK1khvhZp-xeNYJ_PKWEBAaMOC2LFG9jI5_hUg>
+    <xmx:0tRqZsYqExcfM26dwx2qj05Bett4hOmuVv4o6Kz1b6TmzuoxngSMyu-C>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 13 Jun 2024 07:15:29 -0400 (EDT)
+Date: Thu, 13 Jun 2024 13:15:27 +0200
+From: Greg KH <greg@kroah.com>
+To: Bibek Kumar Patro <quic_bibekkum@quicinc.com>
+Cc: "Isaac J. Manjarres" <isaacmanjarres@google.com>,
+	stable@vger.kernel.org, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+	Tom Murphy <murphyt7@tcd.ie>,
+	Saravana Kannan <saravanak@google.com>,
+	Joerg Roedel <jroedel@suse.de>, kernel-team@android.com,
+	iommu@lists.linux-foundation.org, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5.15.y] iommu/dma: Trace bounce buffer usage when mapping
+ buffers
+Message-ID: <2024061311-washable-ranch-abc5@gregkh>
+References: <2024012226-unmanned-marshy-5819@gregkh>
+ <20240122203758.1435127-1-isaacmanjarres@google.com>
+ <ZmrKZYJ0+z3mRZXx@hu-bibekkum-hyd.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZmrKZYJ0+z3mRZXx@hu-bibekkum-hyd.qualcomm.com>
 
+On Thu, Jun 13, 2024 at 04:01:01PM +0530, Bibek Kumar Patro wrote:
+> On Mon, Jan 22, 2024 at 12:37:54PM -0800, Isaac J. Manjarres wrote:
+> > When commit 82612d66d51d ("iommu: Allow the dma-iommu api to
+> > use bounce buffers") was introduced, it did not add the logic
+> > for tracing the bounce buffer usage from iommu_dma_map_page().
+> > 
+> > All of the users of swiotlb_tbl_map_single() trace their bounce
+> > buffer usage, except iommu_dma_map_page(). This makes it difficult
+> > to track SWIOTLB usage from that function. Thus, trace bounce buffer
+> > usage from iommu_dma_map_page().
+> > 
+> > Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
+> > Cc: stable@vger.kernel.org # v5.15+
+> > Cc: Tom Murphy <murphyt7@tcd.ie>
+> > Cc: Lu Baolu <baolu.lu@linux.intel.com>
+> > Cc: Saravana Kannan <saravanak@google.com>
+> > Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+> > Link: https://lore.kernel.org/r/20231208234141.2356157-1-isaacmanjarres@google.com
+> > Signed-off-by: Joerg Roedel <jroedel@suse.de>
+> > (cherry picked from commit a63c357b9fd56ad5fe64616f5b22835252c6a76a)
+> > Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+> > ---
+> >  drivers/iommu/dma-iommu.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+> > index 48c6f7ff4aef..8cd63e6ccd2c 100644
+> > --- a/drivers/iommu/dma-iommu.c
+> > +++ b/drivers/iommu/dma-iommu.c
+> > @@ -25,6 +25,7 @@
+> >  #include <linux/vmalloc.h>
+> >  #include <linux/crash_dump.h>
+> >  #include <linux/dma-direct.h>
+> > +#include <trace/events/swiotlb.h>
+> >  
+> >  struct iommu_dma_msi_page {
+> >  	struct list_head	list;
+> > @@ -817,6 +818,8 @@ static dma_addr_t iommu_dma_map_page(struct device *dev, struct page *page,
+> >  		void *padding_start;
+> >  		size_t padding_size, aligned_size;
+> >  
+> > +		trace_swiotlb_bounced(dev, phys, size, swiotlb_force);
+> > +
+> 
+> Hi, this backported patch trying to access swiotlb_force variable is
+> causing a build conflict where CONFIG_SWIOTLB is not enabled.
+> 
+> In file included from kernel/drivers/iommu/dma-iommu.c:28:
+> kernel/include/trace/events/swiotlb.h:15:9: error: declaration of 'enum SWIOTLB_NO_FORCE' will not be visible outside of this function [-Werror,-Wvisibility]
+>                  enum swiotlb_force swiotlb_force),
+>                       ^
+> kernel/include/linux/swiotlb.h:143:23: note: expanded from macro 'swiotlb_force'
+> #define swiotlb_force SWIOTLB_NO_FORCE
+>                       ^
+> In file included from kernel/drivers/iommu/dma-iommu.c:28:
+> kernel/include/trace/events/swiotlb.h:15:9: error: declaration of 'enum SWIOTLB_NO_FORCE' will not be visible outside of this function [-Werror,-Wvisibility]
+> kernel/include/linux/swiotlb.h:143:23: note: expanded from macro 'swiotlb_force'
+> #define swiotlb_force SWIOTLB_NO_FORCE
+>                       ^
+> In file included from kernel/drivers/iommu/dma-iommu.c:28:
+> kernel/include/trace/events/swiotlb.h:15:9: error: declaration of 'enum SWIOTLB_NO_FORCE' will not be visible outside of this function [-Werror,-Wvisibility]
+> kernel/include/linux/swiotlb.h:143:23: note: expanded from macro 'swiotlb_force'
+> #define swiotlb_force SWIOTLB_NO_FORCE
+>                       ^
+> In file included from kernel/drivers/iommu/dma-iommu.c:28:
+> kernel/include/trace/events/swiotlb.h:15:9: error: declaration of 'enum SWIOTLB_NO_FORCE' will not be visible outside of this function [-Werror,-Wvisibility]
+> kernel/include/linux/swiotlb.h:143:23: note: expanded from macro 'swiotlb_force'
+> #define swiotlb_force SWIOTLB_NO_FORCE
+>                       ^
+> kernel/drivers/iommu/dma-iommu.c:865:42: error: argument type 'enum SWIOTLB_NO_FORCE' is incomplete
+>                                        trace_swiotlb_bounced(dev, phys, size, swiotlb_force);
+>                                                                               ^~~~~~~~~~~~~
+> kernel/include/linux/swiotlb.h:143:23: note: expanded from macro 'swiotlb_force'
+> #define swiotlb_force SWIOTLB_NO_FORCE
+>                       ^~~~~~~~~~~~~~~~
+> kernel/include/trace/events/swiotlb.h:15:9: note: forward declaration of 'enum SWIOTLB_NO_FORCE'
+> enum swiotlb_force swiotlb_force),
+>      ^
+> kernel/include/linux/swiotlb.h:143:23: note: expanded from macro 'swiotlb_force'
+> #define swiotlb_force SWIOTLB_NO_FORCE
+> 
+> --------------------------------------------------------------------------------------------------------------------------------------------------
+> 
+> I have a simple proposed fix which can resolve this compile time conflict when CONFIG_SWIOTLB is disabled.
+> 
+> --- a/include/trace/events/swiotlb.h
+> +++ b/include/trace/events/swiotlb.h
+> @@ -7,6 +7,7 @@
+> 
+>  #include <linux/tracepoint.h>
+> 
+> +#ifdef CONFIG_SWIOTLB
+>  TRACE_EVENT(swiotlb_bounced,
+> 
+>         TP_PROTO(struct device *dev,
+> @@ -43,6 +44,9 @@ TRACE_EVENT(swiotlb_bounced,
+>                         { SWIOTLB_FORCE,        "FORCE" },
+>                         { SWIOTLB_NO_FORCE,     "NO_FORCE" }))
+>  );
+> +#else
+> +#define trace_swiotlb_bounced(dev, phys, size, swiotlb_force)
+> +#endif /* CONFIG_SWIOTLB */
+> 
+>  #endif /*  _TRACE_SWIOTLB_H */
+> 
+> 
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Why not just take whatever change upstream fixes this instead of a
+one-off change?
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 518549c120e671c4906f77d1802b97e9b23f673a
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061319-machine-lanky-74ba@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-
-Possible dependencies:
-
-518549c120e6 ("cifs: fix creating sockets when using sfu mount options")
-c6ff459037b2 ("smb: client: instantiate when creating SFU files")
-b0348e459c83 ("smb: client: introduce cifs_sfu_make_node()")
-45e724022e27 ("smb: client: set correct file type from NFS reparse points")
-539aad7f14da ("smb: client: introduce ->parse_reparse_point()")
-ed3e0a149b58 ("smb: client: implement ->query_reparse_point() for SMB1")
-72bc63f5e23a ("smb3: fix creating FIFOs when mounting with "sfu" mount option")
-
-thanks,
+thanks
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 518549c120e671c4906f77d1802b97e9b23f673a Mon Sep 17 00:00:00 2001
-From: Steve French <stfrench@microsoft.com>
-Date: Wed, 29 May 2024 18:16:56 -0500
-Subject: [PATCH] cifs: fix creating sockets when using sfu mount options
-
-When running fstest generic/423 with sfu mount option, it
-was being skipped due to inability to create sockets:
-
-  generic/423  [not run] cifs does not support mknod/mkfifo
-
-which can also be easily reproduced with their af_unix tool:
-
-  ./src/af_unix /mnt1/socket-two bind: Operation not permitted
-
-Fix sfu mount option to allow creating and reporting sockets.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-
-diff --git a/fs/smb/client/cifspdu.h b/fs/smb/client/cifspdu.h
-index c46d418c1c0c..a2072ab9e586 100644
---- a/fs/smb/client/cifspdu.h
-+++ b/fs/smb/client/cifspdu.h
-@@ -2574,7 +2574,7 @@ typedef struct {
- 
- 
- struct win_dev {
--	unsigned char type[8]; /* IntxCHR or IntxBLK or LnxFIFO*/
-+	unsigned char type[8]; /* IntxCHR or IntxBLK or LnxFIFO or LnxSOCK */
- 	__le64 major;
- 	__le64 minor;
- } __attribute__((packed));
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index 262576573eb5..4a8aa1de9522 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -606,6 +606,10 @@ cifs_sfu_type(struct cifs_fattr *fattr, const char *path,
- 				mnr = le64_to_cpu(*(__le64 *)(pbuf+16));
- 				fattr->cf_rdev = MKDEV(mjr, mnr);
- 			}
-+		} else if (memcmp("LnxSOCK", pbuf, 8) == 0) {
-+			cifs_dbg(FYI, "Socket\n");
-+			fattr->cf_mode |= S_IFSOCK;
-+			fattr->cf_dtype = DT_SOCK;
- 		} else if (memcmp("IntxLNK", pbuf, 7) == 0) {
- 			cifs_dbg(FYI, "Symlink\n");
- 			fattr->cf_mode |= S_IFLNK;
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 4ce6c3121a7e..c8e536540895 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -4997,6 +4997,9 @@ static int __cifs_sfu_make_node(unsigned int xid, struct inode *inode,
- 		pdev.major = cpu_to_le64(MAJOR(dev));
- 		pdev.minor = cpu_to_le64(MINOR(dev));
- 		break;
-+	case S_IFSOCK:
-+		strscpy(pdev.type, "LnxSOCK");
-+		break;
- 	case S_IFIFO:
- 		strscpy(pdev.type, "LnxFIFO");
- 		break;
-
 
