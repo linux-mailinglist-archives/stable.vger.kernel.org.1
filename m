@@ -1,165 +1,128 @@
-Return-Path: <stable+bounces-50383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFCD90605A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 03:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CF29906062
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 03:25:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61CF51F221E1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 01:23:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D44B1F22407
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 01:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC91B646;
-	Thu, 13 Jun 2024 01:23:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HrTxscEG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C70B664;
+	Thu, 13 Jun 2024 01:25:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A2E8F68
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 01:22:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id A5D99B674
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 01:25:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.131.102.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718241781; cv=none; b=mO6/CM40hqS1TU5ACn4LO8Lmp4FR1Y3MLXGvGF7YhSSgHFTxmWd0Km5iCheavMncmCnC3wfUm03YKr4XkvjDFjv/zAzQpyc11zGidEN+4VZmGea6DQRU62fdbBQSv/PALA0VZIkFQMpXSIhKJuibqPIMfHct7gpxk/7s8hnRkhw=
+	t=1718241919; cv=none; b=Gq8jzaHfKJ2tizYYr9o3T8Wi1wd2ozNk6a1uB32BH+SqApT9aLMTZACv5lqlWDJfSkZFRU0NKUjaUERWXBkmgczXy+qH5tmVRdb7KG7DcKRpfKoAvvXwzvto7DIErzfx8HyAhIlt4r/eagIrJEZIvswHuOP1ipwIiBZGev766rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718241781; c=relaxed/simple;
-	bh=v+51Jinn7l1pZFyQrg4AsqZNKb168ON+pkaoI2MxRd0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tqvx6+jQX5THUTQEyQGqKuB181TBFk4XSyyR0OZk2mu+uSgQimESBYyaLZvCpRcWgQqXha5vFqXKgrWUaGW+89KYZgQymijqJvEXctfOJ3/Xazi9UMsWc0tC/4/b3aj8Hewgis80gpW+6TM+1tKWRP79OFJe+wZyT1FvbZeKEmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HrTxscEG; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-57c8353d8d0so336553a12.1
-        for <stable@vger.kernel.org>; Wed, 12 Jun 2024 18:22:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718241778; x=1718846578; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tYcAAZKj6LT7J/eNcGh35I1PJfriZS4K7Ys7byqs15I=;
-        b=HrTxscEG3Oq8a4xg32GRTCbMvOB5YQ/OYR/9rqOUhr3GCASGXJJNIpQMEbvy5rAPTZ
-         UbsuC8AzrBaPAyPLoGeLjqEZ8bdRXaW0+kZs/3mfE2arsuOSdEjo9DJaJrAbZ/CcmNOX
-         FHqQm3VImm2rMRB92E6adCo8g1mfo3sY2VuBFlIRKj9BEmIFvoY1zPK5/cnBYAc/CvLu
-         4f3FoZmYcHMnyKwNORGzbrino5A8Gq5aMjA5a6OPnHhimUHoMuWsiRjgP6XX9hpM2G68
-         eG2ETw1sDAje+6fO72Qty69Zh1zQlWzLcVgBtnD0P5mf0RObT1XvwjUNXf950T1M78p0
-         F8Tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718241778; x=1718846578;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tYcAAZKj6LT7J/eNcGh35I1PJfriZS4K7Ys7byqs15I=;
-        b=cHsOeUOAqFAFlRqAtrDVUlNgt6EVJxPUyGvRF2YJOSffRKPGY3MH9Ir9mpU5VDie1E
-         YOoJs9+AlN83Q0m6W2zfkokg33BJgGhDPrggIUrKyouGDHdcCi5UErbcb60GuBrAd41L
-         Gh1er/J/WOXv5T2qhFTvVdr5jJaDf967oCfoa9VCgG/TbmF+UFY5GrldGTjAr3YY/KTL
-         SJAepj82nBKbxLzRnlkXDQF4xqhv9OqEV1eesOIfXI5jq2gmA8xvQf/h0lCYvB83M2mv
-         Cc7rsHLiVevUphyzqAEnUmz36WQs9kY5QZFcjk1HEnGudIP51PilqMRWP6euNM14cbx4
-         /owQ==
-X-Gm-Message-State: AOJu0Yy6ovi0hGvu+8Udjf+IoVNgCTyO0u9QuCXxtbccPJF4AnWPnGWA
-	jM9PAs6rPLAbH/JuILgxFONyjf2eumTzAqtNLMx5WE+ILy/r6p3wooqocLKK4X3ekZ7uFVpM+YM
-	HVxa1MNydlkxlpMnxaVhD7V8rfY4=
-X-Google-Smtp-Source: AGHT+IFFaOV9WtYBeejojpW1zqDtrAGX5FsaLjpVqnMeQj71RUpCjHHFkSPGSjtXsb7j+CBD5ZQ461AxXV1x69gQQ+c=
-X-Received: by 2002:a50:aad6:0:b0:57c:80f7:6f5 with SMTP id
- 4fb4d7f45d1cf-57caaaf125fmr2210101a12.36.1718241778060; Wed, 12 Jun 2024
- 18:22:58 -0700 (PDT)
+	s=arc-20240116; t=1718241919; c=relaxed/simple;
+	bh=Dy43Ep+dfiP1wMhLybaOZNggtqTx58gNGri+jBBfQ1o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bJHFG2cwdvL4/By/gGM2CuvZJ25NQkA+8u53pnyjZkFrsxQIiXFksQ7cQ08obipLjz2KG6Hh0s2io4T4Ol8DhGhT3oYW0/6LH1OpdVF7FXLydQoHoI8KqAbKFekMXy7nN7gzbiewRGGaBp9RmfJPJpkpPbwrE47UMqKWF/PDV9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=netrider.rowland.org; arc=none smtp.client-ip=192.131.102.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
+Received: (qmail 244126 invoked by uid 1000); 12 Jun 2024 21:25:15 -0400
+Date: Wed, 12 Jun 2024 21:25:15 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+  linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
+  Joao Machado <jocrismachado@gmail.com>,
+  Andy Shevchenko <andy.shevchenko@gmail.com>,
+  Christian Heusel <christian@heusel.eu>, stable@vger.kernel.org,
+  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+  Oliver Neukum <oneukum@suse.com>
+Subject: Re: [PATCH v2 2/2] scsi: core: Do not query IO hints for USB devices
+Message-ID: <5c873978-47d7-4409-82fc-d4f3841b5069@rowland.harvard.edu>
+References: <20240612203735.4108690-1-bvanassche@acm.org>
+ <20240612203735.4108690-4-bvanassche@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240527195557.15351-1-jandryuk@gmail.com> <2024061236-amnesty-eloquence-16bb@gregkh>
-In-Reply-To: <2024061236-amnesty-eloquence-16bb@gregkh>
-From: Jason Andryuk <jandryuk@gmail.com>
-Date: Wed, 12 Jun 2024 21:22:46 -0400
-Message-ID: <CAKf6xps_0CFbMppgL4ViCpnJCWkb5va6Erksv9PckuuU+by57Q@mail.gmail.com>
-Subject: Re: [PATCH] Input: try trimming too long modalias strings
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Peter Hutterer <peter.hutterer@who-t.net>, Jason Andryuk <jason.andryuk@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240612203735.4108690-4-bvanassche@acm.org>
 
-On Wed, Jun 12, 2024 at 8:17=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Mon, May 27, 2024 at 03:55:57PM -0400, Jason Andryuk wrote:
-> > From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> >
-> > commit 0774d19038c496f0c3602fb505c43e1b2d8eed85 upstream.
-> >
-> > If an input device declares too many capability bits then modalias
-> > string for such device may become too long and not fit into uevent
-> > buffer, resulting in failure of sending said uevent. This, in turn,
-> > may prevent userspace from recognizing existence of such devices.
-> >
-> > This is typically not a concern for real hardware devices as they have
-> > limited number of keys, but happen with synthetic devices such as
-> > ones created by xen-kbdfront driver, which creates devices as being
-> > capable of delivering all possible keys, since it doesn't know what
-> > keys the backend may produce.
-> >
-> > To deal with such devices input core will attempt to trim key data,
-> > in the hope that the rest of modalias string will fit in the given
-> > buffer. When trimming key data it will indicate that it is not
-> > complete by placing "+," sign, resulting in conversions like this:
-> >
-> > old: k71,72,73,74,78,7A,7B,7C,7D,8E,9E,A4,AD,E0,E1,E4,F8,174,
-> > new: k71,72,73,74,78,7A,7B,7C,+,
-> >
-> > This should allow existing udev rules continue to work with existing
-> > devices, and will also allow writing more complex rules that would
-> > recognize trimmed modalias and check input device characteristics by
-> > other means (for example by parsing KEY=3D data in uevent or parsing
-> > input device sysfs attributes).
-> >
-> > Note that the driver core may try adding more uevent environment
-> > variables once input core is done adding its own, so when forming
-> > modalias we can not use the entire available buffer, so we reduce
-> > it by somewhat an arbitrary amount (96 bytes).
-> >
-> > Reported-by: Jason Andryuk <jandryuk@gmail.com>
-> > Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
-> > Tested-by: Jason Andryuk <jandryuk@gmail.com>
-> > Link: https://lore.kernel.org/r/ZjAWMQCJdrxZkvkB@google.com
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > [ Apply to linux-6.1.y ]
-> > Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-> > ---
-> > Patch did not automatically apply to 6.1.y because
-> > input_print_modalias_parts() does not have const on *id.
-> >
-> > Tested on 6.1.  Seems to also apply and build on 5.4 and 4.19.
->
-> How was this tested?
+On Wed, Jun 12, 2024 at 01:37:34PM -0700, Bart Van Assche wrote:
+> Recently it was reported that the following USB storage devices are unusable
+> with Linux kernel 6.9:
+> * Kingston DataTraveler G2
+> * Garmin FR35
+> 
+> This is because attempting to read the IO hint VPD page causes these devices
+> to reset. Hence do not read the IO hint VPD page from USB storage devices.
+> 
+> Cc: Alan Stern <stern@rowland.harvard.edu>
+> Cc: linux-usb@vger.kernel.org
+> Cc: Joao Machado <jocrismachado@gmail.com>
+> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Cc: Christian Heusel <christian@heusel.eu>
+> Cc: stable@vger.kernel.org
+> Fixes: 4f53138fffc2 ("scsi: sd: Translate data lifetime information")
+> Reported-by: Joao Machado <jocrismachado@gmail.com>
+> Closes: https://lore.kernel.org/linux-scsi/20240130214911.1863909-1-bvanassche@acm.org/T/#mf4e3410d8f210454d7e4c3d1fb5c0f41e651b85f
+> Tested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Bisected-by: Christian Heusel <christian@heusel.eu>
+> Reported-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Closes: https://lore.kernel.org/linux-scsi/CACLx9VdpUanftfPo2jVAqXdcWe8Y43MsDeZmMPooTzVaVJAh2w@mail.gmail.com/
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> ---
 
-I built a kernel for 6.1.92 + this patch and booted a VM with it.
-Inside, I used udevadm and looked at the sysfs entries for
-xen-kbdfront.ko.
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
 
-For 5.4 and 4.19, I just built the module with `make
-drivers/input/misc/xen-kbdfront.ko`.  I see now that misses building
-the actual change.  Sorry about that.
-
-> It blows up the build on all branches, 6.1 and older kernels with a ton
-> of errors like:
-> drivers/input/input.c: In function =E2=80=98input_print_modalias_parts=E2=
-=80=99:
-> drivers/input/input.c:1397:40: error: passing argument 4 of =E2=80=98inpu=
-t_print_modalias_bits=E2=80=99 discards =E2=80=98const=E2=80=99 qualifier f=
-rom pointer target type [-Werror=3Ddiscarded-qualifiers]
->  1397 |                                 'e', id->evbit, 0, EV_MAX);
->       |                                      ~~^~~~~~~
-
-Re-building, I see these as warnings.  I don't have -Werror, so they
-were non-fatal, and I missed when in the scroll of the full kernel
-build.
-
-Sorry about this.  I'm preparing new patches.
-
-Regards,
-Jason
+>  drivers/usb/storage/scsiglue.c | 6 ++++++
+>  drivers/usb/storage/uas.c      | 7 +++++++
+>  2 files changed, 13 insertions(+)
+> 
+> diff --git a/drivers/usb/storage/scsiglue.c b/drivers/usb/storage/scsiglue.c
+> index b31464740f6c..b4cf0349fd0d 100644
+> --- a/drivers/usb/storage/scsiglue.c
+> +++ b/drivers/usb/storage/scsiglue.c
+> @@ -79,6 +79,12 @@ static int slave_alloc (struct scsi_device *sdev)
+>  	if (us->protocol == USB_PR_BULK && us->max_lun > 0)
+>  		sdev->sdev_bflags |= BLIST_FORCELUN;
+>  
+> +	/*
+> +	 * Some USB storage devices reset if the IO hints VPD page is queried.
+> +	 * Hence skip that VPD page.
+> +	 */
+> +	sdev->sdev_bflags |= BLIST_SKIP_IO_HINTS;
+> +
+>  	return 0;
+>  }
+>  
+> diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
+> index a48870a87a29..77fdfb6a90c8 100644
+> --- a/drivers/usb/storage/uas.c
+> +++ b/drivers/usb/storage/uas.c
+> @@ -21,6 +21,7 @@
+>  #include <scsi/scsi.h>
+>  #include <scsi/scsi_eh.h>
+>  #include <scsi/scsi_dbg.h>
+> +#include <scsi/scsi_devinfo.h>
+>  #include <scsi/scsi_cmnd.h>
+>  #include <scsi/scsi_device.h>
+>  #include <scsi/scsi_host.h>
+> @@ -820,6 +821,12 @@ static int uas_slave_alloc(struct scsi_device *sdev)
+>  	struct uas_dev_info *devinfo =
+>  		(struct uas_dev_info *)sdev->host->hostdata;
+>  
+> +	/*
+> +	 * Some USB storage devices reset if the IO hints VPD page is queried.
+> +	 * Hence skip that VPD page.
+> +	 */
+> +	sdev->sdev_bflags |= BLIST_SKIP_IO_HINTS;
+> +
+>  	sdev->hostdata = devinfo;
+>  	return 0;
+>  }
 
