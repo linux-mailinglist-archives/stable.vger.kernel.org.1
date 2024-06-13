@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03BE5907178
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:37:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB81906FA2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEA781F25FF3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:37:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96A631C2318E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A457F13A406;
-	Thu, 13 Jun 2024 12:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A02D1420C6;
+	Thu, 13 Jun 2024 12:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NA3rIA48"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xa7Udz7s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1591E49B;
-	Thu, 13 Jun 2024 12:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094DE81ABF;
+	Thu, 13 Jun 2024 12:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282235; cv=none; b=A7QH0VAp/l2kwsvpDv5KPf0F0BKSTDkvdMBftnoXiXU+YtYl5rqtoJItuwinIJHXQoNg7IplDdb8WorHvr5bZ6VksM0bq9zGH3gUWj4cLbVN9spS1rvVN9gtcr0VJWL7KCzfHjV75wvnVhix1LL+QKmp9i+YjuXF6FJU964jqtM=
+	t=1718281122; cv=none; b=lc2BuRrxCZ+t8swW9v46ONgLftFRmsLmCBWgV+EjBCS88MXeGL/v6GsrinjquuK6Cd6gKYBdUBvClFJUZw6gI9olo6GM9aJ/8LsnGhW1xBn8u9Rv4ZsTV64PHUk8T/YDos5cExGaE4042fiiIokm5L29L3yoGsQUvZlsUwsn/cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282235; c=relaxed/simple;
-	bh=7BxvUsNiF9attcavSvdj/s8ghqvg6JDa//I3hlMLxu4=;
+	s=arc-20240116; t=1718281122; c=relaxed/simple;
+	bh=77Y3g/uyh8O0Ck3WmaIJ4UsrJdSG/74xMF4zxk2plG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pwu8WOpJ+j6UzKL1gLjsU3Hy7Wv5kpXN4p4mZi0g7SW5lZTKdWvg+HSguuEe5YMqoXGvpnHjMPh49zA6Z22QN2HUj0eKRa4EWUdZlmsR4PNeICo2geGl4g+VskLra48+UxMIveM/6hYAP1E6aSjquDk5zghFncaMfOuQuniqmbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NA3rIA48; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDCAC2BBFC;
-	Thu, 13 Jun 2024 12:37:14 +0000 (UTC)
+	 MIME-Version; b=tqqatwdn1AtHjqq0mP+RWeoIS7KPxPUg1ATJRTkjO4SnpuN1gqjqtNYME9WsQQomy91CrdQAqcx2ot1YZlo0f0+U1UZ2D0QfYwmPtMpgj5x9bW+fuxEdzzsUx46/XKJE1oOWrgHQ9HkIGSkm2p06rS22eEviim/l9kObkBswges=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xa7Udz7s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F80C2BBFC;
+	Thu, 13 Jun 2024 12:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282235;
-	bh=7BxvUsNiF9attcavSvdj/s8ghqvg6JDa//I3hlMLxu4=;
+	s=korg; t=1718281121;
+	bh=77Y3g/uyh8O0Ck3WmaIJ4UsrJdSG/74xMF4zxk2plG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NA3rIA48hF7cl1MOJuNH6kA4xCgUQCt2kfhHS78GnnrMnED7RYY0JTO84S9JXZaky
-	 3D9KdyjRmYA2CNYj+Bs1YqSxR4wMLY7X82jNY7AjIXeMM2GrgxJL2d2LYJMgF+uFlm
-	 WsXrS9ZDywjbHC/Srnn0YHOCTDazlmxCwAgO3Gzk=
+	b=xa7Udz7sVHNSIAQb2XCGRm6Ah7I4av1geCsOgtKfUskYpdkQNg+q+Ga9iV9ht1hsy
+	 uHMolowKEf9OXaPY9x5EomcBpqdk1lDA4ClpOLsekbdmsMtM+4rN6Jx8IoGTbXGQew
+	 JuUM32lKuEszrc2vUhC52Ws8buJNf0FsOQDuIvc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yabin Cui <yabinc@google.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 208/402] coresight: etm4x: Safe access for TRCQCLTR
-Date: Thu, 13 Jun 2024 13:32:45 +0200
-Message-ID: <20240613113310.261868636@linuxfoundation.org>
+Subject: [PATCH 5.10 148/317] greybus: arche-ctrl: move device table to its right location
+Date: Thu, 13 Jun 2024 13:32:46 +0200
+Message-ID: <20240613113253.293353382@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 46bf8d7cd8530eca607379033b9bc4ac5590a0cd ]
+[ Upstream commit 6a0b8c0da8d8d418cde6894a104cf74e6098ddfa ]
 
-ETM4x implements TRCQCLTR only when the Q elements are supported
-and the Q element filtering is supported (TRCIDR0.QFILT). Access
-to the register otherwise could be fatal. Fix this by tracking the
-availability, like the others.
+The arche-ctrl has two platform drivers and three of_device_id tables,
+but one table is only used for the the module loader, while the other
+two seem to be associated with their drivers.
 
-Fixes: f188b5e76aae ("coresight: etm4x: Save/restore state across CPU low power states")
-Reported-by: Yabin Cui <yabinc@google.com>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Tested-by: Yabin Cui <yabinc@google.com>
-Link: https://lore.kernel.org/r/20240412142702.2882478-4-suzuki.poulose@arm.com
+This leads to a W=1 warning when the driver is built-in:
+
+drivers/staging/greybus/arche-platform.c:623:34: error: 'arche_combined_id' defined but not used [-Werror=unused-const-variable=]
+  623 | static const struct of_device_id arche_combined_id[] = {
+
+Drop the extra table and register both tables that are actually
+used as the ones for the module loader instead.
+
+Fixes: 7b62b61c752a ("greybus: arche-ctrl: Don't expose driver internals to arche-platform driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240403080702.3509288-18-arnd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 8 ++++++--
- drivers/hwtracing/coresight/coresight-etm4x.h      | 3 +++
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/staging/greybus/arche-apb-ctrl.c | 1 +
+ drivers/staging/greybus/arche-platform.c | 9 +--------
+ 2 files changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index ed5b38013dc14..130e9030a8bef 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -1061,6 +1061,8 @@ static void etm4_init_arch_data(void *info)
- 	drvdata->nr_event = FIELD_GET(TRCIDR0_NUMEVENT_MASK, etmidr0);
- 	/* QSUPP, bits[16:15] Q element support field */
- 	drvdata->q_support = FIELD_GET(TRCIDR0_QSUPP_MASK, etmidr0);
-+	if (drvdata->q_support)
-+		drvdata->q_filt = !!(etmidr0 & TRCIDR0_QFILT);
- 	/* TSSIZE, bits[28:24] Global timestamp size field */
- 	drvdata->ts_size = FIELD_GET(TRCIDR0_TSSIZE_MASK, etmidr0);
+diff --git a/drivers/staging/greybus/arche-apb-ctrl.c b/drivers/staging/greybus/arche-apb-ctrl.c
+index bbf3ba744fc44..c7383c6c6094d 100644
+--- a/drivers/staging/greybus/arche-apb-ctrl.c
++++ b/drivers/staging/greybus/arche-apb-ctrl.c
+@@ -468,6 +468,7 @@ static const struct of_device_id arche_apb_ctrl_of_match[] = {
+ 	{ .compatible = "usbffff,2", },
+ 	{ },
+ };
++MODULE_DEVICE_TABLE(of, arche_apb_ctrl_of_match);
  
-@@ -1582,7 +1584,8 @@ static int etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 	state->trcccctlr = etm4x_read32(csa, TRCCCCTLR);
- 	state->trcbbctlr = etm4x_read32(csa, TRCBBCTLR);
- 	state->trctraceidr = etm4x_read32(csa, TRCTRACEIDR);
--	state->trcqctlr = etm4x_read32(csa, TRCQCTLR);
-+	if (drvdata->q_filt)
-+		state->trcqctlr = etm4x_read32(csa, TRCQCTLR);
+ static struct platform_driver arche_apb_ctrl_device_driver = {
+ 	.probe		= arche_apb_ctrl_probe,
+diff --git a/drivers/staging/greybus/arche-platform.c b/drivers/staging/greybus/arche-platform.c
+index eebf0deb39f50..02a700f720e6d 100644
+--- a/drivers/staging/greybus/arche-platform.c
++++ b/drivers/staging/greybus/arche-platform.c
+@@ -622,14 +622,7 @@ static const struct of_device_id arche_platform_of_match[] = {
+ 	{ .compatible = "google,arche-platform", },
+ 	{ },
+ };
+-
+-static const struct of_device_id arche_combined_id[] = {
+-	/* Use PID/VID of SVC device */
+-	{ .compatible = "google,arche-platform", },
+-	{ .compatible = "usbffff,2", },
+-	{ },
+-};
+-MODULE_DEVICE_TABLE(of, arche_combined_id);
++MODULE_DEVICE_TABLE(of, arche_platform_of_match);
  
- 	state->trcvictlr = etm4x_read32(csa, TRCVICTLR);
- 	state->trcviiectlr = etm4x_read32(csa, TRCVIIECTLR);
-@@ -1696,7 +1699,8 @@ static void etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- 	etm4x_relaxed_write32(csa, state->trcccctlr, TRCCCCTLR);
- 	etm4x_relaxed_write32(csa, state->trcbbctlr, TRCBBCTLR);
- 	etm4x_relaxed_write32(csa, state->trctraceidr, TRCTRACEIDR);
--	etm4x_relaxed_write32(csa, state->trcqctlr, TRCQCTLR);
-+	if (drvdata->q_filt)
-+		etm4x_relaxed_write32(csa, state->trcqctlr, TRCQCTLR);
- 
- 	etm4x_relaxed_write32(csa, state->trcvictlr, TRCVICTLR);
- 	etm4x_relaxed_write32(csa, state->trcviiectlr, TRCVIIECTLR);
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
-index c463dab350397..3ab528c6b91f1 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x.h
-+++ b/drivers/hwtracing/coresight/coresight-etm4x.h
-@@ -135,6 +135,7 @@
- #define TRCIDR0_TRCCCI				BIT(7)
- #define TRCIDR0_RETSTACK			BIT(9)
- #define TRCIDR0_NUMEVENT_MASK			GENMASK(11, 10)
-+#define TRCIDR0_QFILT				BIT(14)
- #define TRCIDR0_QSUPP_MASK			GENMASK(16, 15)
- #define TRCIDR0_TSSIZE_MASK			GENMASK(28, 24)
- 
-@@ -880,6 +881,7 @@ struct etmv4_save_state {
-  * @os_unlock:  True if access to management registers is allowed.
-  * @instrp0:	Tracing of load and store instructions
-  *		as P0 elements is supported.
-+ * @q_filt:	Q element filtering support, if Q elements are supported.
-  * @trcbb:	Indicates if the trace unit supports branch broadcast tracing.
-  * @trccond:	If the trace unit supports conditional
-  *		instruction tracing.
-@@ -938,6 +940,7 @@ struct etmv4_drvdata {
- 	bool				boot_enable;
- 	bool				os_unlock;
- 	bool				instrp0;
-+	bool				q_filt;
- 	bool				trcbb;
- 	bool				trccond;
- 	bool				retstack;
+ static struct platform_driver arche_platform_device_driver = {
+ 	.probe		= arche_platform_probe,
 -- 
 2.43.0
 
