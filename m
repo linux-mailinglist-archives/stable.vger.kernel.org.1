@@ -1,218 +1,213 @@
-Return-Path: <stable+bounces-50492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E279069C4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A6C0906A08
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 582811F268F1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:15:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 517D31C2082D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA101419AD;
-	Thu, 13 Jun 2024 10:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06E313E036;
+	Thu, 13 Jun 2024 10:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7K3FB2j"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="JPSz/nhC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0D51411FD
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:14:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44EA136663;
+	Thu, 13 Jun 2024 10:31:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718273698; cv=none; b=OG0C6RypMBM/B+4NZuLZ4yLmqGB4oHsKosrDe7JHzIioggBz/wfTwalsZh/lqaqChm2xElPQtvD6V+Uv1o0vwCKcCN462uVbjMC2VlJwCN82hJOTHBYuATCiZVASoEHb79g4yP1Vppi+7ZDVufml7DzH2a57wLRQ8jyez+Fmd6c=
+	t=1718274695; cv=none; b=kfCPQaIZ5QPuKUFoXIGwwvVXYjb/CxcVPFZazuuFQtULTwGzafcuU7XA1ExRoZRP4m5WUPD5SYG0SA8BA+5wWC276fo+P7z+TACq0eQl4dF5rssuPVD4gLbcG+7LfAcHxlX+hkAgHKRbDaLI3UlhIdj5F2QgPNcjoqXrgFy34eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718273698; c=relaxed/simple;
-	bh=8hG3QPIhP55wMjuFjGKM/QTw3p83PRqfHb1P5X0EUDE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=K81NDbwwihfftsT9HtZkbfREtQyb+VTFhybAKlqp+vwz2oCsgs69borXeTxqBlYPAIFVg5IGU2ZOX82pl/wK7JjmV56vOCglAKfltCV3L1jUsmulVPuZ0pk2UaTxaHvCdIfgj6dSzEOJ5/6itP+sxnPDlf9wyAluvZWwzlzS6EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7K3FB2j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82EEC2BBFC;
-	Thu, 13 Jun 2024 10:14:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718273698;
-	bh=8hG3QPIhP55wMjuFjGKM/QTw3p83PRqfHb1P5X0EUDE=;
-	h=Subject:To:Cc:From:Date:From;
-	b=b7K3FB2j/JiOHCSWNVTwp4vQMJwytooi1DWFDAUGAaj8soalRVWwyLEdLz3hn0TBl
-	 yJQmJ8RgeWyZg36AoA003jhKtenFea9GHU6HRpdG1dmcHbJ0BRvWeQPOLVvY0+Omev
-	 YQKNvryXS8Jyt27+svINbML/8NNg0gQfREiSbJME=
-Subject: FAILED: patch "[PATCH] ext4: fix slab-out-of-bounds in" failed to apply to 6.6-stable tree
-To: libaokun1@huawei.com,jack@suse.cz,ojaswin@linux.ibm.com,tytso@mit.edu
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Jun 2024 12:14:35 +0200
-Message-ID: <2024061335-payee-pamphlet-09d5@gregkh>
+	s=arc-20240116; t=1718274695; c=relaxed/simple;
+	bh=XchcFWCNPg1L9cSqAz/t3ciT2SWLAiYs7ywKgxYt7MA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sb/xjowO7R5m/CUxq/PA9DAAzHRWq6Bh51Ll3MuiIZaTrWZ2T8tf81f8NpDuhfXk5gO4Oc5EETaSSETlpfddiDMaxFiJ97h9GUIXP5EhZamEQd3SVXhA7GHLSqrNEQGQInd7oJSUVPyH6AUZrhfN0g1nguipBqDx0OTXJ4vvwCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=JPSz/nhC; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45D6X3XI001981;
+	Thu, 13 Jun 2024 10:31:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=EBJ2Q92ghG1HkKBLyMMx2+Er
+	jtsQbdw75uRcCN6zc5w=; b=JPSz/nhCuDf32knpFirPBeWxd/N5Wp9T36ZWj5Od
+	SsVPIV3aClF5D+mqG2f+NbH/pjrXcgnYLONcEFEEGnTtVe6+bvZrpaksPFXkTPmi
+	ibJRe5mg9Rs9GeH4WJN8wIHybuBZtCsM/Mns037qpbNuBGsabrozt8WtUFYdXHuD
+	OMW6JmXpMF79qmT8B0X1+YayqFPwe+Aji3KZZ41+OPkg1v79X8sh1AAgXnj9MX2I
+	njg2CtkR6Rid2/bKlDz0SNLYkSRvVh32kRGFMuLJcCO2aHlqcVQ5T+pzEnGNsq9C
+	PVVSYyGlwvCwFBEMjGjOhiu4C19q75AWdYh9U8mWgk/n7Q==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yqukc8k5h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Jun 2024 10:31:10 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45DAV9un025330
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Jun 2024 10:31:09 GMT
+Received: from hu-bibekkum-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 13 Jun 2024 03:31:05 -0700
+Date: Thu, 13 Jun 2024 16:01:01 +0530
+From: Bibek Kumar Patro <quic_bibekkum@quicinc.com>
+To: "Isaac J. Manjarres" <isaacmanjarres@google.com>
+CC: <stable@vger.kernel.org>, Joerg Roedel <joro@8bytes.org>,
+        Will Deacon
+	<will@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+        Tom Murphy
+	<murphyt7@tcd.ie>, Saravana Kannan <saravanak@google.com>,
+        Joerg Roedel
+	<jroedel@suse.de>, <kernel-team@android.com>,
+        <iommu@lists.linux-foundation.org>, <iommu@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 5.15.y] iommu/dma: Trace bounce buffer usage when mapping
+ buffers
+Message-ID: <ZmrKZYJ0+z3mRZXx@hu-bibekkum-hyd.qualcomm.com>
+References: <2024012226-unmanned-marshy-5819@gregkh>
+ <20240122203758.1435127-1-isaacmanjarres@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240122203758.1435127-1-isaacmanjarres@google.com>
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ApMcbWOuRM4yF9_N3X1to9QvETfBRKIG
+X-Proofpoint-ORIG-GUID: ApMcbWOuRM4yF9_N3X1to9QvETfBRKIG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-13_02,2024-06-13_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ bulkscore=0 phishscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0
+ spamscore=0 mlxscore=0 suspectscore=0 mlxlogscore=999 clxscore=1011
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406130075
+
+On Mon, Jan 22, 2024 at 12:37:54PM -0800, Isaac J. Manjarres wrote:
+> When commit 82612d66d51d ("iommu: Allow the dma-iommu api to
+> use bounce buffers") was introduced, it did not add the logic
+> for tracing the bounce buffer usage from iommu_dma_map_page().
+> 
+> All of the users of swiotlb_tbl_map_single() trace their bounce
+> buffer usage, except iommu_dma_map_page(). This makes it difficult
+> to track SWIOTLB usage from that function. Thus, trace bounce buffer
+> usage from iommu_dma_map_page().
+> 
+> Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
+> Cc: stable@vger.kernel.org # v5.15+
+> Cc: Tom Murphy <murphyt7@tcd.ie>
+> Cc: Lu Baolu <baolu.lu@linux.intel.com>
+> Cc: Saravana Kannan <saravanak@google.com>
+> Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+> Link: https://lore.kernel.org/r/20231208234141.2356157-1-isaacmanjarres@google.com
+> Signed-off-by: Joerg Roedel <jroedel@suse.de>
+> (cherry picked from commit a63c357b9fd56ad5fe64616f5b22835252c6a76a)
+> Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+> ---
+>  drivers/iommu/dma-iommu.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+> index 48c6f7ff4aef..8cd63e6ccd2c 100644
+> --- a/drivers/iommu/dma-iommu.c
+> +++ b/drivers/iommu/dma-iommu.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/vmalloc.h>
+>  #include <linux/crash_dump.h>
+>  #include <linux/dma-direct.h>
+> +#include <trace/events/swiotlb.h>
+>  
+>  struct iommu_dma_msi_page {
+>  	struct list_head	list;
+> @@ -817,6 +818,8 @@ static dma_addr_t iommu_dma_map_page(struct device *dev, struct page *page,
+>  		void *padding_start;
+>  		size_t padding_size, aligned_size;
+>  
+> +		trace_swiotlb_bounced(dev, phys, size, swiotlb_force);
+> +
+
+Hi, this backported patch trying to access swiotlb_force variable is
+causing a build conflict where CONFIG_SWIOTLB is not enabled.
+
+In file included from kernel/drivers/iommu/dma-iommu.c:28:
+kernel/include/trace/events/swiotlb.h:15:9: error: declaration of 'enum SWIOTLB_NO_FORCE' will not be visible outside of this function [-Werror,-Wvisibility]
+                 enum swiotlb_force swiotlb_force),
+                      ^
+kernel/include/linux/swiotlb.h:143:23: note: expanded from macro 'swiotlb_force'
+#define swiotlb_force SWIOTLB_NO_FORCE
+                      ^
+In file included from kernel/drivers/iommu/dma-iommu.c:28:
+kernel/include/trace/events/swiotlb.h:15:9: error: declaration of 'enum SWIOTLB_NO_FORCE' will not be visible outside of this function [-Werror,-Wvisibility]
+kernel/include/linux/swiotlb.h:143:23: note: expanded from macro 'swiotlb_force'
+#define swiotlb_force SWIOTLB_NO_FORCE
+                      ^
+In file included from kernel/drivers/iommu/dma-iommu.c:28:
+kernel/include/trace/events/swiotlb.h:15:9: error: declaration of 'enum SWIOTLB_NO_FORCE' will not be visible outside of this function [-Werror,-Wvisibility]
+kernel/include/linux/swiotlb.h:143:23: note: expanded from macro 'swiotlb_force'
+#define swiotlb_force SWIOTLB_NO_FORCE
+                      ^
+In file included from kernel/drivers/iommu/dma-iommu.c:28:
+kernel/include/trace/events/swiotlb.h:15:9: error: declaration of 'enum SWIOTLB_NO_FORCE' will not be visible outside of this function [-Werror,-Wvisibility]
+kernel/include/linux/swiotlb.h:143:23: note: expanded from macro 'swiotlb_force'
+#define swiotlb_force SWIOTLB_NO_FORCE
+                      ^
+kernel/drivers/iommu/dma-iommu.c:865:42: error: argument type 'enum SWIOTLB_NO_FORCE' is incomplete
+                                       trace_swiotlb_bounced(dev, phys, size, swiotlb_force);
+                                                                              ^~~~~~~~~~~~~
+kernel/include/linux/swiotlb.h:143:23: note: expanded from macro 'swiotlb_force'
+#define swiotlb_force SWIOTLB_NO_FORCE
+                      ^~~~~~~~~~~~~~~~
+kernel/include/trace/events/swiotlb.h:15:9: note: forward declaration of 'enum SWIOTLB_NO_FORCE'
+enum swiotlb_force swiotlb_force),
+     ^
+kernel/include/linux/swiotlb.h:143:23: note: expanded from macro 'swiotlb_force'
+#define swiotlb_force SWIOTLB_NO_FORCE
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+I have a simple proposed fix which can resolve this compile time conflict when CONFIG_SWIOTLB is disabled.
+
+--- a/include/trace/events/swiotlb.h
++++ b/include/trace/events/swiotlb.h
+@@ -7,6 +7,7 @@
+
+ #include <linux/tracepoint.h>
+
++#ifdef CONFIG_SWIOTLB
+ TRACE_EVENT(swiotlb_bounced,
+
+        TP_PROTO(struct device *dev,
+@@ -43,6 +44,9 @@ TRACE_EVENT(swiotlb_bounced,
+                        { SWIOTLB_FORCE,        "FORCE" },
+                        { SWIOTLB_NO_FORCE,     "NO_FORCE" }))
+ );
++#else
++#define trace_swiotlb_bounced(dev, phys, size, swiotlb_force)
++#endif /* CONFIG_SWIOTLB */
+
+ #endif /*  _TRACE_SWIOTLB_H */
 
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Thanks & regards,
+Bibek
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 13df4d44a3aaabe61cd01d277b6ee23ead2a5206
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061335-payee-pamphlet-09d5@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-
-Possible dependencies:
-
-13df4d44a3aa ("ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()")
-57341fe3179c ("ext4: refactor out ext4_generic_attr_show()")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 13df4d44a3aaabe61cd01d277b6ee23ead2a5206 Mon Sep 17 00:00:00 2001
-From: Baokun Li <libaokun1@huawei.com>
-Date: Tue, 19 Mar 2024 19:33:20 +0800
-Subject: [PATCH] ext4: fix slab-out-of-bounds in
- ext4_mb_find_good_group_avg_frag_lists()
-
-We can trigger a slab-out-of-bounds with the following commands:
-
-    mkfs.ext4 -F /dev/$disk 10G
-    mount /dev/$disk /tmp/test
-    echo 2147483647 > /sys/fs/ext4/$disk/mb_group_prealloc
-    echo test > /tmp/test/file && sync
-
-==================================================================
-BUG: KASAN: slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
-Read of size 8 at addr ffff888121b9d0f0 by task kworker/u2:0/11
-CPU: 0 PID: 11 Comm: kworker/u2:0 Tainted: GL 6.7.0-next-20240118 #521
-Call Trace:
- dump_stack_lvl+0x2c/0x50
- kasan_report+0xb6/0xf0
- ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
- ext4_mb_regular_allocator+0x19e9/0x2370 [ext4]
- ext4_mb_new_blocks+0x88a/0x1370 [ext4]
- ext4_ext_map_blocks+0x14f7/0x2390 [ext4]
- ext4_map_blocks+0x569/0xea0 [ext4]
- ext4_do_writepages+0x10f6/0x1bc0 [ext4]
-[...]
-==================================================================
-
-The flow of issue triggering is as follows:
-
-// Set s_mb_group_prealloc to 2147483647 via sysfs
-ext4_mb_new_blocks
-  ext4_mb_normalize_request
-    ext4_mb_normalize_group_request
-      ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc
-  ext4_mb_regular_allocator
-    ext4_mb_choose_next_group
-      ext4_mb_choose_next_group_best_avail
-        mb_avg_fragment_size_order
-          order = fls(len) - 2 = 29
-        ext4_mb_find_good_group_avg_frag_lists
-          frag_list = &sbi->s_mb_avg_fragment_size[order]
-          if (list_empty(frag_list)) // Trigger SOOB!
-
-At 4k block size, the length of the s_mb_avg_fragment_size list is 14,
-but an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds
-to be triggered by an attempt to access an element at index 29.
-
-Add a new attr_id attr_clusters_in_group with values in the range
-[0, sbi->s_clusters_per_group] and declare mb_group_prealloc as
-that type to fix the issue. In addition avoid returning an order
-from mb_avg_fragment_size_order() greater than MB_NUM_ORDERS(sb)
-and reduce some useless loops.
-
-Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
-CC: stable@vger.kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240319113325.3110393-5-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 12b3f196010b..dbf04f91516c 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
- 		return 0;
- 	if (order == MB_NUM_ORDERS(sb))
- 		order--;
-+	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
-+		order = MB_NUM_ORDERS(sb) - 1;
- 	return order;
- }
- 
-@@ -1008,6 +1010,8 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
- 	 * goal length.
- 	 */
- 	order = fls(ac->ac_g_ex.fe_len) - 1;
-+	if (WARN_ON_ONCE(order - 1 > MB_NUM_ORDERS(ac->ac_sb)))
-+		order = MB_NUM_ORDERS(ac->ac_sb);
- 	min_order = order - sbi->s_mb_best_avail_max_trim_order;
- 	if (min_order < 0)
- 		min_order = 0;
-diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
-index 7f455b5f22c0..ddd71673176c 100644
---- a/fs/ext4/sysfs.c
-+++ b/fs/ext4/sysfs.c
-@@ -29,6 +29,7 @@ typedef enum {
- 	attr_trigger_test_error,
- 	attr_first_error_time,
- 	attr_last_error_time,
-+	attr_clusters_in_group,
- 	attr_feature,
- 	attr_pointer_ui,
- 	attr_pointer_ul,
-@@ -207,13 +208,14 @@ EXT4_ATTR_FUNC(sra_exceeded_retry_limit, 0444);
- 
- EXT4_ATTR_OFFSET(inode_readahead_blks, 0644, inode_readahead,
- 		 ext4_sb_info, s_inode_readahead_blks);
-+EXT4_ATTR_OFFSET(mb_group_prealloc, 0644, clusters_in_group,
-+		 ext4_sb_info, s_mb_group_prealloc);
- EXT4_RW_ATTR_SBI_UI(inode_goal, s_inode_goal);
- EXT4_RW_ATTR_SBI_UI(mb_stats, s_mb_stats);
- EXT4_RW_ATTR_SBI_UI(mb_max_to_scan, s_mb_max_to_scan);
- EXT4_RW_ATTR_SBI_UI(mb_min_to_scan, s_mb_min_to_scan);
- EXT4_RW_ATTR_SBI_UI(mb_order2_req, s_mb_order2_reqs);
- EXT4_RW_ATTR_SBI_UI(mb_stream_req, s_mb_stream_request);
--EXT4_RW_ATTR_SBI_UI(mb_group_prealloc, s_mb_group_prealloc);
- EXT4_RW_ATTR_SBI_UI(mb_max_linear_groups, s_mb_max_linear_groups);
- EXT4_RW_ATTR_SBI_UI(extent_max_zeroout_kb, s_extent_max_zeroout_kb);
- EXT4_ATTR(trigger_fs_error, 0200, trigger_test_error);
-@@ -376,6 +378,7 @@ static ssize_t ext4_generic_attr_show(struct ext4_attr *a,
- 
- 	switch (a->attr_id) {
- 	case attr_inode_readahead:
-+	case attr_clusters_in_group:
- 	case attr_pointer_ui:
- 		if (a->attr_ptr == ptr_ext4_super_block_offset)
- 			return sysfs_emit(buf, "%u\n", le32_to_cpup(ptr));
-@@ -455,6 +458,14 @@ static ssize_t ext4_generic_attr_store(struct ext4_attr *a,
- 		else
- 			*((unsigned int *) ptr) = t;
- 		return len;
-+	case attr_clusters_in_group:
-+		ret = kstrtouint(skip_spaces(buf), 0, &t);
-+		if (ret)
-+			return ret;
-+		if (t > sbi->s_clusters_per_group)
-+			return -EINVAL;
-+		*((unsigned int *) ptr) = t;
-+		return len;
- 	case attr_pointer_ul:
- 		ret = kstrtoul(skip_spaces(buf), 0, &lt);
- 		if (ret)
-
+>  		aligned_size = iova_align(iovad, size);
+>  		phys = swiotlb_tbl_map_single(dev, phys, size, aligned_size,
+>  					      iova_mask(iovad), dir, attrs);
+> -- 
+> 2.43.0.429.g432eaa2c6b-goog
+> 
 
