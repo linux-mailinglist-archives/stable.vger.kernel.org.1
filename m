@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-50900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD939906D59
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4762D906B50
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:39:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FC4E1F27D32
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD05AB21F31
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68E0146D76;
-	Thu, 13 Jun 2024 11:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC824142E8E;
+	Thu, 13 Jun 2024 11:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHFLw938"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSeKLVFh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A505F143C5F;
-	Thu, 13 Jun 2024 11:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983B5DDB1;
+	Thu, 13 Jun 2024 11:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279717; cv=none; b=FzUrQJN8WdG+MEbiCsEpFMP0QDQ3ONlXY/TaLvOwXq/Q6ZpD0BU54DjvXzj96SIt37jbW0mwbgBrqT3u2U5fB4dQe0x9+1lGLhVGEgfsM5BIc7y6VpmfcP3gWrYaZ0uL8ubR1baNzH3iw7HP9zf/xdhHA/uz1Hru5Bbj2VRzX/4=
+	t=1718278766; cv=none; b=gkJDmTymjo7z6Y1wghFwg/wLW9CSvsxPrIrolBm5YtDKZ1rkeZFjEC+MlMKQiCSxvJiturKUZBB7N2P+h23I/5I0WQ2eHuM7/w40APgBo1vej7KjTOaw77PL6bX9X2TFGXDao2j3cdIyIgt19hg1dh+2jfDcVYBJx6pzBkzWKGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279717; c=relaxed/simple;
-	bh=Z0wx7cHZafc9InvVIAl8Tm+D2GAfbOqt5HtgSWT7xtM=;
+	s=arc-20240116; t=1718278766; c=relaxed/simple;
+	bh=7tYBgBWvmrIqyRZ457aUCme0zDPp+GyjWQ1e/Bf4ScI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rmrIDpp5HXmbUYBlrVfdgQAxdAZ/ZkNmhmTo4Q7/PGsFS7AnhRDFUlZBJ/kkap/VdMn0mlFXc3E+BcBHkMLgNYbzRef84yuHhu4GVPzgvyz5yUnKzi1+CP/EEtxrjtb3cEAGWigovHVI+1ZMYdmbPksuWZdRDaigBNWJ8Wo+cPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHFLw938; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20237C2BBFC;
-	Thu, 13 Jun 2024 11:55:16 +0000 (UTC)
+	 MIME-Version; b=RdgpWf1sbUYGbkz66nrOh7OSMi+E/57k1r1TkYRlFYxshoNeOdg3dWkcovLLXbv8VuZjUgz4BcD/h+fymw1nafGkcMH9Dxx8l443gOB5Dx8aRDfmQ2GPZKFZ4q+WGpGcSTFSq92WY8YWKA14x8c/meFcqWzMEZg5MAOGR5hZpNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSeKLVFh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1656CC2BBFC;
+	Thu, 13 Jun 2024 11:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279717;
-	bh=Z0wx7cHZafc9InvVIAl8Tm+D2GAfbOqt5HtgSWT7xtM=;
+	s=korg; t=1718278766;
+	bh=7tYBgBWvmrIqyRZ457aUCme0zDPp+GyjWQ1e/Bf4ScI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHFLw938vUgaEv7fjX93NNgpVLoNHnl83yk15rgGJZxY4JyvliviQysHmZ4rvko+U
-	 rSilvQsWO7UCHzFlwYBhFus5THWpNOkaHr7IivDvN5iG8yz+eOPqGEON1AMrazmcqD
-	 J339kpCe2K8cQ6qqJx7oEiUp3/js0GYt9eoqfBeU=
+	b=LSeKLVFh5Q0oYxZLn8RNmLBECGIFP3P+jjbzbWzar0UrgXqdqWaUNkw94KYD7DCNV
+	 D/Q7cObL88UyZ/DdX5n3HKAaKXOaE/NLPstk2AQQmuJCn7sXpnnUmnVZ6slMErLWUH
+	 wSneSc+hkBwniT61E76J2F4TDxV2bhtEjSkqtvzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 013/202] ASoC: da7219-aad: fix usage of device_get_named_child_node()
+Subject: [PATCH 4.19 063/213] ipv6: sr: fix incorrect unregister order
 Date: Thu, 13 Jun 2024 13:31:51 +0200
-Message-ID: <20240613113228.274589552@linuxfoundation.org>
+Message-ID: <20240613113230.441158003@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit e8a6a5ad73acbafd98e8fd3f0cbf6e379771bb76 ]
+[ Upstream commit 6e370a771d2985107e82d0f6174381c1acb49c20 ]
 
-The documentation for device_get_named_child_node() mentions this
-important point:
+Commit 5559cea2d5aa ("ipv6: sr: fix possible use-after-free and
+null-ptr-deref") changed the register order in seg6_init(). But the
+unregister order in seg6_exit() is not updated.
 
-"
-The caller is responsible for calling fwnode_handle_put() on the
-returned fwnode pointer.
-"
-
-Add fwnode_handle_put() to avoid a leaked reference.
-
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240426153033.38500-1-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 5559cea2d5aa ("ipv6: sr: fix possible use-after-free and null-ptr-deref")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240509131812.1662197-3-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/da7219-aad.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/ipv6/seg6.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
-index e4e314604c0a1..06caca22a55a0 100644
---- a/sound/soc/codecs/da7219-aad.c
-+++ b/sound/soc/codecs/da7219-aad.c
-@@ -630,8 +630,10 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct snd_soc_component
- 		return NULL;
- 
- 	aad_pdata = devm_kzalloc(dev, sizeof(*aad_pdata), GFP_KERNEL);
--	if (!aad_pdata)
-+	if (!aad_pdata) {
-+		fwnode_handle_put(aad_np);
- 		return NULL;
-+	}
- 
- 	aad_pdata->irq = i2c->irq;
- 
-@@ -706,6 +708,8 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct snd_soc_component
- 	else
- 		aad_pdata->adc_1bit_rpt = DA7219_AAD_ADC_1BIT_RPT_1;
- 
-+	fwnode_handle_put(aad_np);
-+
- 	return aad_pdata;
+diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+index 42ff4f421d42a..9810ce81dee81 100644
+--- a/net/ipv6/seg6.c
++++ b/net/ipv6/seg6.c
+@@ -500,6 +500,6 @@ void seg6_exit(void)
+ 	seg6_local_exit();
+ 	seg6_iptunnel_exit();
+ #endif
+-	unregister_pernet_subsys(&ip6_segments_ops);
+ 	genl_unregister_family(&seg6_genl_family);
++	unregister_pernet_subsys(&ip6_segments_ops);
  }
- 
 -- 
 2.43.0
 
