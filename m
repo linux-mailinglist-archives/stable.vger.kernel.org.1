@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-50703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536D7906C09
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:46:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D49906D16
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:58:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7AF1B20BA7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:46:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64641C23AC1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34F21448E6;
-	Thu, 13 Jun 2024 11:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2388D143C50;
+	Thu, 13 Jun 2024 11:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVsFm/X4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRvgLm/8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F852143739;
-	Thu, 13 Jun 2024 11:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51356AFAE;
+	Thu, 13 Jun 2024 11:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279142; cv=none; b=rufA+jbtNuZAzmE1fHrKg/SpJp5FGivbhoSnWxAVamYw2E22V1xGe0Bk8sx5dwnK9n4Yk32sxrt6jmldrBGAOFZzGIQ10fGeKNlwn71D8DY338VMiM5a26QE4K0FeXWKSNgw60VoQ+6hfkxQrnEdO4FwziC+BS0gB/8clr6/SMM=
+	t=1718279551; cv=none; b=itya5IxxRwXlCARfFZcOAp0b0/OUR9To/S+o90zye2LDYstFyxOeDsSGCFLMPkvr1YC8ZtDDo+SQDOafZeWFLHcPzRn3qOUCFsjqssKZ25vQZ45lFiXQDKH88z0/i0Gy9aGE1lWhTErtdhyFIGQGKlYnGWbb4rmEcG/NYzElzYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279142; c=relaxed/simple;
-	bh=esNmr7O7Ox5oK4COzcNwqQspADfbzlqiYy9Vo5Qenk4=;
+	s=arc-20240116; t=1718279551; c=relaxed/simple;
+	bh=3P9jF3iMC9JA7PW6KHRCNynfwt5A/4itvh9CiznOo3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxLYXCHBVifiLj5rmVawcjhpeJvSBQ0/J2BDKs7CRZfmuDMBi8sko3ANEQ+26WT67FasNAeReRw4TOLT+4v59JTEJW6g1I3y4z2ynZagJSMp24doaEhR7u3PfhEx2IQR5Y2uI8WDhHDeYIWctcL1y+b5iOYYK57P1tt/qXotWj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVsFm/X4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA75C2BBFC;
-	Thu, 13 Jun 2024 11:45:41 +0000 (UTC)
+	 MIME-Version; b=IKoJleUUEjB/9bRNBT5Awu3SYt+sYHZpGGvy10Qtg8m7Oim5zkctbxaP02ZQQpejcSpykGbu8WmGcrCidLON+PdSaDImONtZs6E2lrlU15S1eZiw6Qst428LQlbbhZBvRZelhmsFghz96M/7sOnXQ/EyYD9LSmnRp9kd936n6IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRvgLm/8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5777BC2BBFC;
+	Thu, 13 Jun 2024 11:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279142;
-	bh=esNmr7O7Ox5oK4COzcNwqQspADfbzlqiYy9Vo5Qenk4=;
+	s=korg; t=1718279551;
+	bh=3P9jF3iMC9JA7PW6KHRCNynfwt5A/4itvh9CiznOo3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YVsFm/X4FUJinMk7rCXvviDo6NYC80ywkvhWdCXiSYL6pTn/CTFbbh+Avm/q8hTwq
-	 bKmRfhs1rqK4MkFtneTZqOadDCD3y9j+OmXD1YACmhqLS7hXZ4ebMZcVgrvTm8NmSe
-	 THF7D54JFpfleA1gzxwRLAMFsAgmeDhdq48KPMNw=
+	b=gRvgLm/8JdVX56/IbnSAJM+oCa+AYimv4HhkDPiOK9WtHBsh6caCpi0SxIWTmercf
+	 6VkxoUdbNtgsPYN+bzWvj1a9h0lqA7IfSrx+USpU3k+HND16fPX/5QirXmfIUTmFTP
+	 fItODFEzivA0xSr9NyQDmLLHxb2dFh17X4YL595I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 190/213] netfilter: nf_tables: skip dead set elements in netlink dump
-Date: Thu, 13 Jun 2024 13:33:58 +0200
-Message-ID: <20240613113235.306182239@linuxfoundation.org>
+	Yuval El-Hanany <YuvalE@radware.com>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Daniel Borkmann <daniel@iogearbox.net>
+Subject: [PATCH 6.9 114/157] Revert "xsk: Document ability to redirect to any socket bound to the same umem"
+Date: Thu, 13 Jun 2024 13:33:59 +0200
+Message-ID: <20240613113231.828563152@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Magnus Karlsson <magnus.karlsson@intel.com>
 
-[ Upstream commit 6b1ca88e4bb63673dc9f9c7f23c899f22c3cb17a ]
+commit 03e38d315f3c5258270ad50f2ae784b6372e87c3 upstream.
 
-Delete from packet path relies on the garbage collector to purge
-elements with NFT_SET_ELEM_DEAD_BIT on.
+This reverts commit 968595a93669b6b4f6d1fcf80cf2d97956b6868f.
 
-Skip these dead elements from nf_tables_dump_setelem() path, I very
-rarely see tests/shell/testcases/maps/typeof_maps_add_delete reports
-[DUMP FAILED] showing a mismatch in the expected output with an element
-that should not be there.
-
-If the netlink dump happens before GC worker run, it might show dead
-elements in the ruleset listing.
-
-nft_rhash_get() already skips dead elements in nft_rhash_cmp(),
-therefore, it already does not show the element when getting a single
-element via netlink control plane.
-
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Yuval El-Hanany <YuvalE@radware.com>
+Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/xdp-newbies/8100DBDC-0B7C-49DB-9995-6027F6E63147@radware.com
+Link: https://lore.kernel.org/bpf/20240604122927.29080-3-magnus.karlsson@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/networking/af_xdp.rst | 31 ++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 18 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4200,7 +4200,7 @@ static int nf_tables_dump_setelem(const
- 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
- 	struct nft_set_dump_args *args;
+diff --git a/Documentation/networking/af_xdp.rst b/Documentation/networking/af_xdp.rst
+index 72da7057e4cf..dceeb0d763aa 100644
+--- a/Documentation/networking/af_xdp.rst
++++ b/Documentation/networking/af_xdp.rst
+@@ -329,24 +329,23 @@ XDP_SHARED_UMEM option and provide the initial socket's fd in the
+ sxdp_shared_umem_fd field as you registered the UMEM on that
+ socket. These two sockets will now share one and the same UMEM.
  
--	if (nft_set_elem_expired(ext))
-+	if (nft_set_elem_expired(ext) || nft_set_elem_is_dead(ext))
- 		return 0;
+-In this case, it is possible to use the NIC's packet steering
+-capabilities to steer the packets to the right queue. This is not
+-possible in the previous example as there is only one queue shared
+-among sockets, so the NIC cannot do this steering as it can only steer
+-between queues.
++There is no need to supply an XDP program like the one in the previous
++case where sockets were bound to the same queue id and
++device. Instead, use the NIC's packet steering capabilities to steer
++the packets to the right queue. In the previous example, there is only
++one queue shared among sockets, so the NIC cannot do this steering. It
++can only steer between queues.
  
- 	args = container_of(iter, struct nft_set_dump_args, iter);
+-In libxdp (or libbpf prior to version 1.0), you need to use the
+-xsk_socket__create_shared() API as it takes a reference to a FILL ring
+-and a COMPLETION ring that will be created for you and bound to the
+-shared UMEM. You can use this function for all the sockets you create,
+-or you can use it for the second and following ones and use
+-xsk_socket__create() for the first one. Both methods yield the same
+-result.
++In libbpf, you need to use the xsk_socket__create_shared() API as it
++takes a reference to a FILL ring and a COMPLETION ring that will be
++created for you and bound to the shared UMEM. You can use this
++function for all the sockets you create, or you can use it for the
++second and following ones and use xsk_socket__create() for the first
++one. Both methods yield the same result.
+ 
+ Note that a UMEM can be shared between sockets on the same queue id
+ and device, as well as between queues on the same device and between
+-devices at the same time. It is also possible to redirect to any
+-socket as long as it is bound to the same umem with XDP_SHARED_UMEM.
++devices at the same time.
+ 
+ XDP_USE_NEED_WAKEUP bind flag
+ -----------------------------
+@@ -823,10 +822,6 @@ A: The short answer is no, that is not supported at the moment. The
+    switch, or other distribution mechanism, in your NIC to direct
+    traffic to the correct queue id and socket.
+ 
+-   Note that if you are using the XDP_SHARED_UMEM option, it is
+-   possible to switch traffic between any socket bound to the same
+-   umem.
+-
+ Q: My packets are sometimes corrupted. What is wrong?
+ 
+ A: Care has to be taken not to feed the same buffer in the UMEM into
+-- 
+2.45.2
+
 
 
 
