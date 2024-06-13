@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-51916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6F4907232
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6729907073
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C3131F21727
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E7C41F22109
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5DA20ED;
-	Thu, 13 Jun 2024 12:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6315E1448C4;
+	Thu, 13 Jun 2024 12:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRTtC8jD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPgaOttT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9681A1C32;
-	Thu, 13 Jun 2024 12:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21630139CFE;
+	Thu, 13 Jun 2024 12:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282693; cv=none; b=hRU6m4IwM2L9VYuwQ68yrsxxJOs2/aSnC2sjWr4p/1r4yfOjXsU7BzeGXx6OKx0HOkGYvd03a5uwO8J+jVneTa1nr7aPM8AQilDjyCTN0Smth3Da614i4Z3Xb74H4LYqZ7b/k+84FF+iHESPb3MGQbOqloocUbMUaxoLjzM5Ngo=
+	t=1718281642; cv=none; b=dDCyj/4C1QJfD2srzTMJf7k1t0weH8dwIOzAUhH1Vq/jgk+w1Uq1XL8AEof+UzEYJlWpFMayuxbyKm0RDWZ3sOYO4/ZPOSEXXHM9eV1dVOh4LcJAPFM9ruDwCnPhK+j2FUDITdfXTp1Ln2I3+vOkdpOsQlxAVkz44ylxa2mEQOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282693; c=relaxed/simple;
-	bh=2Bfe2X06KL/Rjr5tQh7WOez8JXfcKuSy/sjTG6r5rXA=;
+	s=arc-20240116; t=1718281642; c=relaxed/simple;
+	bh=z9WctTdty11AgF1tCI+Nt0cHxLE4W/sORB0k5hh+ZHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AV9jUq52xYurgvA6/sumfxcQsyQu6oSDrT9dz+HLlBqfMFPHCwTf1Mintk6QCDcTwsvIWooxNTQJ3ccJxu2SIAcC2dyO7FukfRnNMM/ey3aV166m5L9xZA9/gtY8RahPYSz5MIyuMsvnjdqcQRWSAGBXZsKJWIqO40AB8DjFm/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRTtC8jD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04A7C4AF1A;
-	Thu, 13 Jun 2024 12:44:52 +0000 (UTC)
+	 MIME-Version; b=FGrH5wCYZxBG6r5rT1+h29vOxx5cgpKRRyFqv8FNeAjhaRjLs2mN9xK9Ga2pQOX9p+CcPHzRk7klhiKm6C+HeQ4RBlP2qzb0dq0qWkW/HFU4FRLvvppdqFnKZC/C4r8xZJY2OnjLuZWjHapJDS8KctLsT/3yc6j4wBnD/08KNcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPgaOttT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF9AC2BBFC;
+	Thu, 13 Jun 2024 12:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282693;
-	bh=2Bfe2X06KL/Rjr5tQh7WOez8JXfcKuSy/sjTG6r5rXA=;
+	s=korg; t=1718281642;
+	bh=z9WctTdty11AgF1tCI+Nt0cHxLE4W/sORB0k5hh+ZHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jRTtC8jDpN8NR7IkU1Ck3jE0tdNKF5ufaXLZSCFFyP6eA9Z+Jk31EjCrKi+rnZR0n
-	 WfDkilZl74NMH2kL2MHrAXX63a0raNB529+YObNBfbbdnzR73TTPP6tTKhMPYTCXjR
-	 kSI5hOrfbn3COJgvcF1Quv8Z/Vp1zuOabNXcSaks=
+	b=UPgaOttTpsuIflsxGRc2ELi5XtEQ4oreBYHMtIe3NGeI5DAmtfnpnhtNrVIjIt3Bi
+	 DsNguE5EFwnvLf18QX2z2Z726379WewrmM/+FCGaJLOHlbs5IuOlGep/6mzGDzzA6w
+	 xnDMykL4Gloc/7So0NmIxwJOfYXtaGc4HRBLYg1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 5.15 364/402] wifi: rtlwifi: rtl8192de: Fix low speed with WPA3-SAE
+	Justin Stitt <justinstitt@google.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>
+Subject: [PATCH 5.10 303/317] kdb: Fix buffer overflow during tab-complete
 Date: Thu, 13 Jun 2024 13:35:21 +0200
-Message-ID: <20240613113316.336606045@linuxfoundation.org>
+Message-ID: <20240613113259.272569995@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Daniel Thompson <daniel.thompson@linaro.org>
 
-commit a7c0f48410f546772ac94a0f7b7291a15c4fc173 upstream.
+commit e9730744bf3af04cda23799029342aa3cddbc454 upstream.
 
-Some (all?) management frames are incorrectly reported to mac80211 as
-decrypted when actually the hardware did not decrypt them. This results
-in speeds 3-5 times lower than expected, 20-30 Mbps instead of 100
-Mbps.
+Currently, when the user attempts symbol completion with the Tab key, kdb
+will use strncpy() to insert the completed symbol into the command buffer.
+Unfortunately it passes the size of the source buffer rather than the
+destination to strncpy() with predictably horrible results. Most obviously
+if the command buffer is already full but cp, the cursor position, is in
+the middle of the buffer, then we will write past the end of the supplied
+buffer.
 
-Fix this by checking the encryption type field of the RX descriptor.
-rtw88 does the same thing.
+Fix this by replacing the dubious strncpy() calls with memmove()/memcpy()
+calls plus explicit boundary checks to make sure we have enough space
+before we start moving characters around.
 
-This fix was tested only with rtl8192du, which will use the same code.
-
+Reported-by: Justin Stitt <justinstitt@google.com>
+Closes: https://lore.kernel.org/all/CAFhGd8qESuuifuHsNjFPR-Va3P80bxrw+LqvC8deA8GziUJLpw@mail.gmail.com/
 Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/4d600435-f0ea-46b0-bdb4-e60f173da8dd@gmail.com
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Tested-by: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-1-f236dbe9828d@linaro.org
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c |    5 ++---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h |   14 ++++++++++++++
- 2 files changed, 16 insertions(+), 3 deletions(-)
+ kernel/debug/kdb/kdb_io.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-@@ -414,7 +414,8 @@ bool rtl92de_rx_query_desc(struct ieee80
- 	stats->icv = (u16)get_rx_desc_icv(pdesc);
- 	stats->crc = (u16)get_rx_desc_crc32(pdesc);
- 	stats->hwerror = (stats->crc | stats->icv);
--	stats->decrypted = !get_rx_desc_swdec(pdesc);
-+	stats->decrypted = !get_rx_desc_swdec(pdesc) &&
-+			   get_rx_desc_enc_type(pdesc) != RX_DESC_ENC_NONE;
- 	stats->rate = (u8)get_rx_desc_rxmcs(pdesc);
- 	stats->shortpreamble = (u16)get_rx_desc_splcp(pdesc);
- 	stats->isampdu = (bool)(get_rx_desc_paggr(pdesc) == 1);
-@@ -427,8 +428,6 @@ bool rtl92de_rx_query_desc(struct ieee80
- 	rx_status->band = hw->conf.chandef.chan->band;
- 	if (get_rx_desc_crc32(pdesc))
- 		rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
--	if (!get_rx_desc_swdec(pdesc))
--		rx_status->flag |= RX_FLAG_DECRYPTED;
- 	if (get_rx_desc_bw(pdesc))
- 		rx_status->bw = RATE_INFO_BW_40;
- 	if (get_rx_desc_rxht(pdesc))
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-@@ -14,6 +14,15 @@
- #define USB_HWDESC_HEADER_LEN			32
- #define CRCLENGTH				4
- 
-+enum rtl92d_rx_desc_enc {
-+	RX_DESC_ENC_NONE	= 0,
-+	RX_DESC_ENC_WEP40	= 1,
-+	RX_DESC_ENC_TKIP_WO_MIC	= 2,
-+	RX_DESC_ENC_TKIP_MIC	= 3,
-+	RX_DESC_ENC_AES		= 4,
-+	RX_DESC_ENC_WEP104	= 5,
-+};
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -354,14 +354,19 @@ poll_again:
+ 			kdb_printf(kdb_prompt_str);
+ 			kdb_printf("%s", buffer);
+ 		} else if (tab != 2 && count > 0) {
+-			len_tmp = strlen(p_tmp);
+-			strncpy(p_tmp+len_tmp, cp, lastchar-cp+1);
+-			len_tmp = strlen(p_tmp);
+-			strncpy(cp, p_tmp+len, len_tmp-len + 1);
+-			len = len_tmp - len;
+-			kdb_printf("%s", cp);
+-			cp += len;
+-			lastchar += len;
++			/* How many new characters do we want from tmpbuffer? */
++			len_tmp = strlen(p_tmp) - len;
++			if (lastchar + len_tmp >= bufend)
++				len_tmp = bufend - lastchar;
 +
- /* macros to read/write various fields in RX or TX descriptors */
- 
- static inline void set_tx_desc_pkt_size(__le32 *__pdesc, u32 __val)
-@@ -246,6 +255,11 @@ static inline u32 get_rx_desc_drv_info_s
- 	return le32_get_bits(*__pdesc, GENMASK(19, 16));
- }
- 
-+static inline u32 get_rx_desc_enc_type(__le32 *__pdesc)
-+{
-+	return le32_get_bits(*__pdesc, GENMASK(22, 20));
-+}
-+
- static inline u32 get_rx_desc_shift(__le32 *__pdesc)
- {
- 	return le32_get_bits(*__pdesc, GENMASK(25, 24));
++			if (len_tmp) {
++				/* + 1 ensures the '\0' is memmove'd */
++				memmove(cp+len_tmp, cp, (lastchar-cp) + 1);
++				memcpy(cp, p_tmp+len, len_tmp);
++				kdb_printf("%s", cp);
++				cp += len_tmp;
++				lastchar += len_tmp;
++			}
+ 		}
+ 		kdb_nextline = 1; /* reset output line number */
+ 		break;
 
 
 
