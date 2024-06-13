@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6B4906FCB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB14E906E6C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B35628950C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86A48B247A8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AE5145FF1;
-	Thu, 13 Jun 2024 12:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF03146D55;
+	Thu, 13 Jun 2024 12:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tncSq6qx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3pwQc74"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8FD145B33;
-	Thu, 13 Jun 2024 12:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58641145A05;
+	Thu, 13 Jun 2024 12:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281251; cv=none; b=jcLNfx8fuvy5I9NGMqYvnJKkQ/0YlMB2VPRNQIns3NdniFQzz8ubEV/L4odq+lLDcIech7/JhADXURlcMARInHCFdgZFRxzAu54CScg6bHwFY0qRtyo5Ccngn6SKShZ1Ag8yV16CbXrP+l+MRzqGwCuuamBmwhfeyF7TuX9FoO0=
+	t=1718280368; cv=none; b=YN6xAkpj6sA+5bLiyNfjJvprwVpXJd4dT89Bk1YxNiTe1fRu2GKgLCh/txTI7P6/rM3qcBI9SXJbSZKDzXDVvA7dyNxP0uAHH93ULZT9opasvpRnCRCTClHZXL/s74v2k4cy967iWXXBI34bGyw/sCDA7VCVFLySRmsSqRtYiFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281251; c=relaxed/simple;
-	bh=n7UeesZY/GDJISOrgQaoLfevs6ilKEFckfcpbrLHvpM=;
+	s=arc-20240116; t=1718280368; c=relaxed/simple;
+	bh=3qu+soo85wZrOrMMHq0vzaBAe89xTCKEZniegFdnHBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AFn7V7G/99ZMqfRoiKS+FmHsCoROqHTsl1YcKtFCPh5yHqZeye1CSQtnpky39+y1/4P6biAg6aQvuDwRNOS67VJwQgdQrz4GHaNCiSEtmxOMG7+kM2GqhpAfY6J1nn1eoWROqXL8UKFJekpAjHWzR0pddiZ5DV04EdipEHkrG+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tncSq6qx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418DFC2BBFC;
-	Thu, 13 Jun 2024 12:20:51 +0000 (UTC)
+	 MIME-Version; b=L3CO6sIB8s9ACrXbtJjAp9DrxWA4wzznEDEUDgk1Z6R0JSXwYTPurPwiSUY9mKOkI7R2mLZ+YA8wtLbzuc+WAThUACaNtoAUwawssv4RuD1DIqWRiO9WzxwFAgx4FuFVWdBiMeBDk4OG8kdDMgiQfac6qjSflCeCI35WZKoL8n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3pwQc74; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F123C2BBFC;
+	Thu, 13 Jun 2024 12:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281251;
-	bh=n7UeesZY/GDJISOrgQaoLfevs6ilKEFckfcpbrLHvpM=;
+	s=korg; t=1718280367;
+	bh=3qu+soo85wZrOrMMHq0vzaBAe89xTCKEZniegFdnHBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tncSq6qxr1hTlOEgh66UyKsDVd+g3IrBm5UfXtpfNRRqE0mgWrdA+reoOPYCSyZSV
-	 tIVhNbj1yiHncBDFHdcgx9/dEh0DOGO5R3xU1Za2cPSPQkp/AYPGFHw9E/MfmA2alJ
-	 cVsoT7jio8jup2o5qsepzDvFz3EpesAmcVKghUXE=
+	b=E3pwQc74L3v1vhtEADakKMUMWz082o+mQoLQc0s5y4OphebpLEFXI6L6bXP6PaXTD
+	 6StEQ4DVZyGj8mJfUPr+xvGypL17GYZRaLW5GB4Y8pPj3Fjttv+V3WhtW9JiYq4Trm
+	 qRe/5EEOfXnY4BYMKjLhxW5I/MKr4YLLfxBSa+Dk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Egorenkov <egorenar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 191/317] s390/ipl: Fix incorrect initialization of len fields in nvme reipl block
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.6 029/137] arm64: tegra: Correct Tegra132 I2C alias
 Date: Thu, 13 Jun 2024 13:33:29 +0200
-Message-ID: <20240613113254.945702166@linuxfoundation.org>
+Message-ID: <20240613113224.418905264@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Egorenkov <egorenar@linux.ibm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 
-[ Upstream commit 9c922b73acaf39f867668d9cbe5dc69c23511f84 ]
+commit 2633c58e1354d7de2c8e7be8bdb6f68a0a01bad7 upstream.
 
-Use correct symbolic constants IPL_BP_NVME_LEN and IPL_BP0_NVME_LEN
-to initialize nvme reipl block when 'scp_data' sysfs attribute is
-being updated. This bug had not been detected before because
-the corresponding fcp and nvme symbolic constants are equal.
+There is no such device as "as3722@40", because its name is "pmic".  Use
+phandles for aliases to fix relying on full node path.  This corrects
+aliases for RTC devices and also fixes dtc W=1 warning:
 
-Fixes: 23a457b8d57d ("s390: nvme reipl")
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Egorenkov <egorenar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  tegra132-norrin.dts:12.3-36: Warning (alias_paths): /aliases:rtc0: aliases property is not a valid node (/i2c@7000d000/as3722@40)
+
+Fixes: 0f279ebdf3ce ("arm64: tegra: Add NVIDIA Tegra132 Norrin support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/ipl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/nvidia/tegra132-norrin.dts |    4 ++--
+ arch/arm64/boot/dts/nvidia/tegra132.dtsi       |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/s390/kernel/ipl.c b/arch/s390/kernel/ipl.c
-index c469e8848d659..ab23742088d05 100644
---- a/arch/s390/kernel/ipl.c
-+++ b/arch/s390/kernel/ipl.c
-@@ -832,8 +832,8 @@ static ssize_t reipl_nvme_scpdata_write(struct file *filp, struct kobject *kobj,
- 		scpdata_len += padding;
- 	}
+--- a/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
++++ b/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
+@@ -9,8 +9,8 @@
+ 	compatible = "nvidia,norrin", "nvidia,tegra132", "nvidia,tegra124";
  
--	reipl_block_nvme->hdr.len = IPL_BP_FCP_LEN + scpdata_len;
--	reipl_block_nvme->nvme.len = IPL_BP0_FCP_LEN + scpdata_len;
-+	reipl_block_nvme->hdr.len = IPL_BP_NVME_LEN + scpdata_len;
-+	reipl_block_nvme->nvme.len = IPL_BP0_NVME_LEN + scpdata_len;
- 	reipl_block_nvme->nvme.scp_data_len = scpdata_len;
+ 	aliases {
+-		rtc0 = "/i2c@7000d000/as3722@40";
+-		rtc1 = "/rtc@7000e000";
++		rtc0 = &as3722;
++		rtc1 = &tegra_rtc;
+ 		serial0 = &uarta;
+ 	};
  
- 	return count;
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/nvidia/tegra132.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra132.dtsi
+@@ -570,7 +570,7 @@
+ 		status = "disabled";
+ 	};
+ 
+-	rtc@7000e000 {
++	tegra_rtc: rtc@7000e000 {
+ 		compatible = "nvidia,tegra124-rtc", "nvidia,tegra20-rtc";
+ 		reg = <0x0 0x7000e000 0x0 0x100>;
+ 		interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
 
 
 
