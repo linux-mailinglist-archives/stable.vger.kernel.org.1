@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-50644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A83906BAD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B57CC906D90
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE1C1281325
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CD2C1F27D35
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F88143C60;
-	Thu, 13 Jun 2024 11:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED7A144D07;
+	Thu, 13 Jun 2024 11:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+dP2fCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egDZlDLr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A550B14265E;
-	Thu, 13 Jun 2024 11:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A879143C48;
+	Thu, 13 Jun 2024 11:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278970; cv=none; b=LR3CL2+599MY1IjyuWh3DAsFjtJUuxp2TQLmPXAFTffGQnpr2RsYVVplZn2bkLizMWbi1flEGasV1y9eK3TA2/JWAY35O+9fy+/FUt5nApPcplMmlQgSB04/tH8UpVJnFrOsiwRppVqBm9346Q0egP/Xh94Lubh2LBj5UC/A170=
+	t=1718279868; cv=none; b=cLpZNTBWlP1bWyEZPaNvkbKqJaGTsZeXY9Gotk12yQGIlbhILYo0m+EyvCLePKcnKEpHDL1JmJFWqSUg92JeYiwtx5eKT/3SvCaTHysHKJpZfRvLvzgv9oOFmg1K6J38NSyZqgpNuOxtQqJ+Le1/zQZd6eKyyITq5c0TYtw9jS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278970; c=relaxed/simple;
-	bh=dm/AiXYmNcZHTJEkx5e5Zu9ZBPF0+mffnP2aquopTVA=;
+	s=arc-20240116; t=1718279868; c=relaxed/simple;
+	bh=DdY5EOikZD00WwnCH+ldfOKKuwfWkVc6MbHyP43Hg50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LsywPf9XhtlLtXLp/u3Fk1Qkd7yh4cIx2WMP7Byicb3FOmH40pESXEvOxzJCc/upzQ3oIdzhWxYyNZByyitb0+nZ3FxjfFoK+NSe+0Jf9DLXUUiSOmEt/HOkIhzPEEGVgCVAFZz6sye7ruMH/izyilwgsR/h94R/VebgGRCOJHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+dP2fCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB49C2BBFC;
-	Thu, 13 Jun 2024 11:42:49 +0000 (UTC)
+	 MIME-Version; b=OLB+5TtDjcK8Y9LFeiUEtq99AHF6REH73g/p5QtSJyf7EVh3U1cWjjk9zVzV+YuYu6H33KIWAxs9e1T2c82jIP9zCTAIYudVDznsRsANiGAgV0WLkImHJtTgWWmW8eOsDnCLOjqVeOQk7JpprqMcRIZ7BKvLgFmKThaciXzDmK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egDZlDLr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3251C2BBFC;
+	Thu, 13 Jun 2024 11:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278970;
-	bh=dm/AiXYmNcZHTJEkx5e5Zu9ZBPF0+mffnP2aquopTVA=;
+	s=korg; t=1718279868;
+	bh=DdY5EOikZD00WwnCH+ldfOKKuwfWkVc6MbHyP43Hg50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c+dP2fCQt14DFYKGlHm8KL8tYw83MQ3jZguH/KxqRtHsVXXbRcp8OSUPqih8MzdUa
-	 p8mpqYgaKm/yVkU9v8uycIoUvQFTG8ps85FhJp/MIn5Jr3+gmQH4FNvxfESIFvbAXn
-	 mvT6OyQwgv4fgncAb+kDxCatFjtFZTUcZK5ffhCs=
+	b=egDZlDLrfQIoHGo62vlpz3K7ncNeEbkxUUlQP3cjRqEzWBCzRiAjvxhoZdur6m7Kx
+	 uzdzLxaT60RwoH9ZJyQ1ahZhW+HhCZPRPhPxJ4XGaHqQ8SiAW+iPcRhOKwK5h/atnG
+	 jmtJeQ5vd1FEPFG3YCIIngK8RoR8YGtLUfxxNHws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Antonin Bas <antonin.bas@broadcom.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 114/213] media: stk1160: fix bounds checking in stk1160_copy_video()
+Subject: [PATCH 5.4 064/202] net: openvswitch: fix overwriting ct original tuple for ICMPv6
 Date: Thu, 13 Jun 2024 13:32:42 +0200
-Message-ID: <20240613113232.398202069@linuxfoundation.org>
+Message-ID: <20240613113230.248825712@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +65,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit faa4364bef2ec0060de381ff028d1d836600a381 ]
+[ Upstream commit 7c988176b6c16c516474f6fceebe0f055af5eb56 ]
 
-The subtract in this condition is reversed.  The ->length is the length
-of the buffer.  The ->bytesused is how many bytes we have copied thus
-far.  When the condition is reversed that means the result of the
-subtraction is always negative but since it's unsigned then the result
-is a very high positive value.  That means the overflow check is never
-true.
+OVS_PACKET_CMD_EXECUTE has 3 main attributes:
+ - OVS_PACKET_ATTR_KEY - Packet metadata in a netlink format.
+ - OVS_PACKET_ATTR_PACKET - Binary packet content.
+ - OVS_PACKET_ATTR_ACTIONS - Actions to execute on the packet.
 
-Additionally, the ->bytesused doesn't actually work for this purpose
-because we're not writing to "buf->mem + buf->bytesused".  Instead, the
-math to calculate the destination where we are writing is a bit
-involved.  You calculate the number of full lines already written,
-multiply by two, skip a line if necessary so that we start on an odd
-numbered line, and add the offset into the line.
+OVS_PACKET_ATTR_KEY is parsed first to populate sw_flow_key structure
+with the metadata like conntrack state, input port, recirculation id,
+etc.  Then the packet itself gets parsed to populate the rest of the
+keys from the packet headers.
 
-To fix this buffer overflow, just take the actual destination where we
-are writing, if the offset is already out of bounds print an error and
-return.  Otherwise, write up to buf->length bytes.
+Whenever the packet parsing code starts parsing the ICMPv6 header, it
+first zeroes out fields in the key corresponding to Neighbor Discovery
+information even if it is not an ND packet.
 
-Fixes: 9cb2173e6ea8 ("[media] media: Add stk1160 new driver (easycap replacement)")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+It is an 'ipv6.nd' field.  However, the 'ipv6' is a union that shares
+the space between 'nd' and 'ct_orig' that holds the original tuple
+conntrack metadata parsed from the OVS_PACKET_ATTR_KEY.
+
+ND packets should not normally have conntrack state, so it's fine to
+share the space, but normal ICMPv6 Echo packets or maybe other types of
+ICMPv6 can have the state attached and it should not be overwritten.
+
+The issue results in all but the last 4 bytes of the destination
+address being wiped from the original conntrack tuple leading to
+incorrect packet matching and potentially executing wrong actions
+in case this packet recirculates within the datapath or goes back
+to userspace.
+
+ND fields should not be accessed in non-ND packets, so not clearing
+them should be fine.  Executing memset() only for actual ND packets to
+avoid the issue.
+
+Initializing the whole thing before parsing is needed because ND packet
+may not contain all the options.
+
+The issue only affects the OVS_PACKET_CMD_EXECUTE path and doesn't
+affect packets entering OVS datapath from network interfaces, because
+in this case CT metadata is populated from skb after the packet is
+already parsed.
+
+Fixes: 9dd7f8907c37 ("openvswitch: Add original direction conntrack tuple to sw_flow_key.")
+Reported-by: Antonin Bas <antonin.bas@broadcom.com>
+Closes: https://github.com/openvswitch/ovs-issues/issues/327
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Link: https://lore.kernel.org/r/20240509094228.1035477-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/stk1160/stk1160-video.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ net/openvswitch/flow.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/stk1160/stk1160-video.c b/drivers/media/usb/stk1160/stk1160-video.c
-index 0e98b450ae01b..687c7b6a0c303 100644
---- a/drivers/media/usb/stk1160/stk1160-video.c
-+++ b/drivers/media/usb/stk1160/stk1160-video.c
-@@ -109,7 +109,7 @@ void stk1160_buffer_done(struct stk1160 *dev)
- static inline
- void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
- {
--	int linesdone, lineoff, lencopy;
-+	int linesdone, lineoff, lencopy, offset;
- 	int bytesperline = dev->width * 2;
- 	struct stk1160_buffer *buf = dev->isoc_ctl.buf;
- 	u8 *dst = buf->mem;
-@@ -149,8 +149,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
- 	 * Check if we have enough space left in the buffer.
- 	 * In that case, we force loop exit after copy.
+diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
+index 989175ce81d4d..8e4a82b0dffc8 100644
+--- a/net/openvswitch/flow.c
++++ b/net/openvswitch/flow.c
+@@ -412,7 +412,6 @@ static int parse_icmpv6(struct sk_buff *skb, struct sw_flow_key *key,
  	 */
--	if (lencopy > buf->bytesused - buf->length) {
--		lencopy = buf->bytesused - buf->length;
-+	offset = dst - (u8 *)buf->mem;
-+	if (offset > buf->length) {
-+		dev_warn_ratelimited(dev->dev, "out of bounds offset\n");
-+		return;
-+	}
-+	if (lencopy > buf->length - offset) {
-+		lencopy = buf->length - offset;
- 		remain = lencopy;
- 	}
+ 	key->tp.src = htons(icmp->icmp6_type);
+ 	key->tp.dst = htons(icmp->icmp6_code);
+-	memset(&key->ipv6.nd, 0, sizeof(key->ipv6.nd));
  
-@@ -192,8 +197,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
- 		 * Check if we have enough space left in the buffer.
- 		 * In that case, we force loop exit after copy.
+ 	if (icmp->icmp6_code == 0 &&
+ 	    (icmp->icmp6_type == NDISC_NEIGHBOUR_SOLICITATION ||
+@@ -421,6 +420,8 @@ static int parse_icmpv6(struct sk_buff *skb, struct sw_flow_key *key,
+ 		struct nd_msg *nd;
+ 		int offset;
+ 
++		memset(&key->ipv6.nd, 0, sizeof(key->ipv6.nd));
++
+ 		/* In order to process neighbor discovery options, we need the
+ 		 * entire packet.
  		 */
--		if (lencopy > buf->bytesused - buf->length) {
--			lencopy = buf->bytesused - buf->length;
-+		offset = dst - (u8 *)buf->mem;
-+		if (offset > buf->length) {
-+			dev_warn_ratelimited(dev->dev, "offset out of bounds\n");
-+			return;
-+		}
-+		if (lencopy > buf->length - offset) {
-+			lencopy = buf->length - offset;
- 			remain = lencopy;
- 		}
- 
 -- 
 2.43.0
 
