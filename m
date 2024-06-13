@@ -1,228 +1,115 @@
-Return-Path: <stable+bounces-50411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A1BD906564
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:40:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 170B3906575
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:43:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24D4E1F23650
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:40:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 165341C234B9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D008B13C3F5;
-	Thu, 13 Jun 2024 07:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgVU1TwH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D13913CA81;
+	Thu, 13 Jun 2024 07:43:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCA313C3EE
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A3213C9D5;
+	Thu, 13 Jun 2024 07:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718264433; cv=none; b=GioVcIu+m8XqAdeJLOomedRphXpBImbStq03IH4I/1ID2xZOnlSzwK7GHHYeLvX/qS6mUuoYIc1AbNSYP0A+/ECvHJqLPtHnFUadZ+j7Ll6o+qBpeNA7BdHQBu5eDX22wjdzwqMGGDx7uNeXZHGOkVItMJDKmq6tywUPlM6x9rA=
+	t=1718264592; cv=none; b=mvYbzmnx5qwnW7iuGu6nUpeE93EhQ+4plKltEoU30fkhKNzBYpqkYqjh80QMvoJq6KReqJOlB9xZF/4f/G9emvedvip9nQqPGchFEjLEanIJTC2DUSqY1Sdn+lqlHONLZwhTcCh46rE8PfSoOGG4hxbKvwfoC2RTTxzEQ0RdDjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718264433; c=relaxed/simple;
-	bh=G6edfCxrXIKOftqYA5RQ5/5MbeHJlbZ04M6D9COrqK4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZiIolWSOWwwoHKK10lAaHWvq0W7zLhgMIX1fyMlqx9tnK8XzCyzoGoNYCqp9w/0QhZFBvuAtv4DnCgta1GbJmz3mGsa9gpMvyG4AFp+RuezbntdyCEbE3za7739g5twLStxz5C1aiF18xZdx7AeTQRwLkjJZVw4WbQRbbqMRJnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgVU1TwH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 153CDC2BBFC;
-	Thu, 13 Jun 2024 07:40:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718264433;
-	bh=G6edfCxrXIKOftqYA5RQ5/5MbeHJlbZ04M6D9COrqK4=;
-	h=Subject:To:Cc:From:Date:From;
-	b=cgVU1TwHkiWGqYK2Ng/YOSddcQMyPNOLY9ydVzsO6XUMzGCBoM5qDNY9Fy9sGunNu
-	 E2N2SNtksk6JCwGnMnwO+21Fx3DSO1dQj3gU2H8sngB7o3ytsdArr83Qsn6JLohhNH
-	 m+RvesjQwh7zqnhMMys33fGLihdkbWO70ZyOMda8=
-Subject: FAILED: patch "[PATCH] i2c: acpi: Unbind mux adapters before delete" failed to apply to 4.19-stable tree
-To: hamish.martin@alliedtelesis.co.nz,andi.shyti@kernel.org,mika.westerberg@linux.intel.com,stable@vger.kernel.org,wsa+renesas@sang-engineering.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Jun 2024 09:40:26 +0200
-Message-ID: <2024061326-catalyst-ridden-9b12@gregkh>
+	s=arc-20240116; t=1718264592; c=relaxed/simple;
+	bh=YehfgFC2fciO3pRMzakftx9BA51/qmvAe+pwvzKRskQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=guCLtaW+5LIKrn9ftAsFlv9qHCyU/+gUy1ExaY/8nZhFfX7Y0ymdZuUqqzRAKTiZIFX6JARp+rkMpVJ5pacWCmwoWIbg0ddKGKnJv7bUminZOEFa+hBSlMvcy7DCMOiZUdy3E0m8e8ekKk3gM814vW987dk8wqPFrEVDubCDPsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.180.133.93])
+	by gateway (Coremail) with SMTP id _____8Cxe+oLo2pmEW0GAA--.26167S3;
+	Thu, 13 Jun 2024 15:43:07 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.180.133.93])
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8DxusYKo2pmd2AeAA--.9308S2;
+	Thu, 13 Jun 2024 15:43:06 +0800 (CST)
+From: Hongchen Zhang <zhanghongchen@loongson.cn>
+To: Markus Elfring <Markus.Elfring@web.de>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Cc: Alex Belits <abelits@marvell.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Nitesh Narayan Lal <nitesh@redhat.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	Hongchen Zhang <zhanghongchen@loongson.cn>,
+	stable@vger.kernel.org,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH v3] PCI: pci_call_probe: call local_pci_probe() when selected cpu is offline
+Date: Thu, 13 Jun 2024 15:42:58 +0800
+Message-Id: <20240613074258.4124603-1-zhanghongchen@loongson.cn>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAf8DxusYKo2pmd2AeAA--.9308S2
+X-CM-SenderInfo: x2kd0w5krqwupkhqwqxorr0wxvrqhubq/1tbiAQAHB2ZqUJQEggACsN
+X-Coremail-Antispam: 1Uk129KBj93XoW7ZF1DKryktr1ktw1rJrWfXrc_yoW8Gr1fpF
+	ZrG34Skr4kJF4UG3Wqqay8uFyFganrJa429a1xCwnxZFZxAF10y3Z7ArW3Jr1UWrWkZr1a
+	v3WDAryUGFWUArbCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	AVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
+	AKI48JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
+	6r1j6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
+	xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xII
+	jxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw2
+	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x02
+	67AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8Dl1DUUUUU==
 
+Call work_on_cpu(cpu, fn, arg) in pci_call_probe() while the argument
+@cpu is a offline cpu would cause system stuck forever.
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This can be happen if a node is online while all its CPUs are
+offline (We can use "maxcpus=1" without "nr_cpus=1" to reproduce it).
 
-To reproduce the conflict and resubmit, you may use the following commands:
+So, in the above case, let pci_call_probe() call local_pci_probe()
+instead of work_on_cpu() when the best selected cpu is offline.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 3f858bbf04dbac934ac279aaee05d49eb9910051
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061326-catalyst-ridden-9b12@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+Fixes: 69a18b18699b ("PCI: Restrict probe functions to housekeeping CPUs")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+---
+v2 -> v3: Modify commit message according to Markus's suggestion
+v1 -> v2: Add a method to reproduce the problem
+---
+ drivers/pci/pci-driver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Possible dependencies:
-
-3f858bbf04db ("i2c: acpi: Unbind mux adapters before delete")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 3f858bbf04dbac934ac279aaee05d49eb9910051 Mon Sep 17 00:00:00 2001
-From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Date: Wed, 13 Mar 2024 11:16:32 +1300
-Subject: [PATCH] i2c: acpi: Unbind mux adapters before delete
-
-There is an issue with ACPI overlay table removal specifically related
-to I2C multiplexers.
-
-Consider an ACPI SSDT Overlay that defines a PCA9548 I2C mux on an
-existing I2C bus. When this table is loaded we see the creation of a
-device for the overall PCA9548 chip and 8 further devices - one
-i2c_adapter each for the mux channels. These are all bound to their
-ACPI equivalents via an eventual invocation of acpi_bind_one().
-
-When we unload the SSDT overlay we run into the problem. The ACPI
-devices are deleted as normal via acpi_device_del_work_fn() and the
-acpi_device_del_list.
-
-However, the following warning and stack trace is output as the
-deletion does not go smoothly:
-------------[ cut here ]------------
-kernfs: can not remove 'physical_node', no directory
-WARNING: CPU: 1 PID: 11 at fs/kernfs/dir.c:1674 kernfs_remove_by_name_ns+0xb9/0xc0
-Modules linked in:
-CPU: 1 PID: 11 Comm: kworker/u128:0 Not tainted 6.8.0-rc6+ #1
-Hardware name: congatec AG conga-B7E3/conga-B7E3, BIOS 5.13 05/16/2023
-Workqueue: kacpi_hotplug acpi_device_del_work_fn
-RIP: 0010:kernfs_remove_by_name_ns+0xb9/0xc0
-Code: e4 00 48 89 ef e8 07 71 db ff 5b b8 fe ff ff ff 5d 41 5c 41 5d e9 a7 55 e4 00 0f 0b eb a6 48 c7 c7 f0 38 0d 9d e8 97 0a d5 ff <0f> 0b eb dc 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
-RSP: 0018:ffff9f864008fb28 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: ffff8ef90a8d4940 RCX: 0000000000000000
-RDX: ffff8f000e267d10 RSI: ffff8f000e25c780 RDI: ffff8f000e25c780
-RBP: ffff8ef9186f9870 R08: 0000000000013ffb R09: 00000000ffffbfff
-R10: 00000000ffffbfff R11: ffff8f000e0a0000 R12: ffff9f864008fb50
-R13: ffff8ef90c93dd60 R14: ffff8ef9010d0958 R15: ffff8ef9186f98c8
-FS:  0000000000000000(0000) GS:ffff8f000e240000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f48f5253a08 CR3: 00000003cb82e000 CR4: 00000000003506f0
-Call Trace:
- <TASK>
- ? kernfs_remove_by_name_ns+0xb9/0xc0
- ? __warn+0x7c/0x130
- ? kernfs_remove_by_name_ns+0xb9/0xc0
- ? report_bug+0x171/0x1a0
- ? handle_bug+0x3c/0x70
- ? exc_invalid_op+0x17/0x70
- ? asm_exc_invalid_op+0x1a/0x20
- ? kernfs_remove_by_name_ns+0xb9/0xc0
- ? kernfs_remove_by_name_ns+0xb9/0xc0
- acpi_unbind_one+0x108/0x180
- device_del+0x18b/0x490
- ? srso_return_thunk+0x5/0x5f
- ? srso_return_thunk+0x5/0x5f
- device_unregister+0xd/0x30
- i2c_del_adapter.part.0+0x1bf/0x250
- i2c_mux_del_adapters+0xa1/0xe0
- i2c_device_remove+0x1e/0x80
- device_release_driver_internal+0x19a/0x200
- bus_remove_device+0xbf/0x100
- device_del+0x157/0x490
- ? __pfx_device_match_fwnode+0x10/0x10
- ? srso_return_thunk+0x5/0x5f
- device_unregister+0xd/0x30
- i2c_acpi_notify+0x10f/0x140
- notifier_call_chain+0x58/0xd0
- blocking_notifier_call_chain+0x3a/0x60
- acpi_device_del_work_fn+0x85/0x1d0
- process_one_work+0x134/0x2f0
- worker_thread+0x2f0/0x410
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xe3/0x110
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x2f/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
----[ end trace 0000000000000000 ]---
-...
-repeated 7 more times, 1 for each channel of the mux
-...
-
-The issue is that the binding of the ACPI devices to their peer I2C
-adapters is not correctly cleaned up. Digging deeper into the issue we
-see that the deletion order is such that the ACPI devices matching the
-mux channel i2c adapters are deleted first during the SSDT overlay
-removal. For each of the channels we see a call to i2c_acpi_notify()
-with ACPI_RECONFIG_DEVICE_REMOVE but, because these devices are not
-actually i2c_clients, nothing is done for them.
-
-Later on, after each of the mux channels has been dealt with, we come
-to delete the i2c_client representing the PCA9548 device. This is the
-call stack we see above, whereby the kernel cleans up the i2c_client
-including destruction of the mux and its channel adapters. At this
-point we do attempt to unbind from the ACPI peers but those peers no
-longer exist and so we hit the kernfs errors.
-
-The fix is to augment i2c_acpi_notify() to handle i2c_adapters. But,
-given that the life cycle of the adapters is linked to the i2c_client,
-instead of deleting the i2c_adapters during the i2c_acpi_notify(), we
-just trigger unbinding of the ACPI device from the adapter device, and
-allow the clean up of the adapter to continue in the way it always has.
-
-Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Fixes: 525e6fabeae2 ("i2c / ACPI: add support for ACPI reconfigure notifications")
-Cc: <stable@vger.kernel.org> # v4.8+
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index d6037a328669..14ae0cfc325e 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -445,6 +445,11 @@ static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev)
- 	return i2c_find_device_by_fwnode(acpi_fwnode_handle(adev));
- }
- 
-+static struct i2c_adapter *i2c_acpi_find_adapter_by_adev(struct acpi_device *adev)
-+{
-+	return i2c_find_adapter_by_fwnode(acpi_fwnode_handle(adev));
-+}
-+
- static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
- 			   void *arg)
- {
-@@ -471,11 +476,17 @@ static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
- 			break;
- 
- 		client = i2c_acpi_find_client_by_adev(adev);
--		if (!client)
--			break;
-+		if (client) {
-+			i2c_unregister_device(client);
-+			put_device(&client->dev);
-+		}
-+
-+		adapter = i2c_acpi_find_adapter_by_adev(adev);
-+		if (adapter) {
-+			acpi_unbind_one(&adapter->dev);
-+			put_device(&adapter->dev);
-+		}
- 
--		i2c_unregister_device(client);
--		put_device(&client->dev);
- 		break;
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index af2996d0d17f..32a99828e6a3 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -386,7 +386,7 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
+ 		free_cpumask_var(wq_domain_mask);
  	}
  
+-	if (cpu < nr_cpu_ids)
++	if ((cpu < nr_cpu_ids) && cpu_online(cpu))
+ 		error = work_on_cpu(cpu, local_pci_probe, &ddi);
+ 	else
+ 		error = local_pci_probe(&ddi);
+-- 
+2.33.0
 
 
