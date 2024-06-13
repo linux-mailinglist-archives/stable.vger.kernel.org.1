@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5AD9071AB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA6F6906E5F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 207861C244A9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D288F1C20AC6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC48A1428F0;
-	Thu, 13 Jun 2024 12:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EAD145A09;
+	Thu, 13 Jun 2024 12:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltgKCnXg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QaXrYrWI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9971F1E519;
-	Thu, 13 Jun 2024 12:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB70145359;
+	Thu, 13 Jun 2024 12:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282336; cv=none; b=G9ltw5DHAS95cWny5C8GC+Hk1jZZ3XuEQq8y23Ao9zo9bDP5vFDLM3DaScLmqMYbyYQ3FiKLC5FiKVO4VUobWGmcFpcX2B8MCeYK9lX6jnlkSL7lNNvuBHOlJYlXtA4dXxv7ctEyhOEOtg14QPOHqk5wKWYXOi5C6G6dVuCD580=
+	t=1718280335; cv=none; b=GcK0YauX4H8dZE446r/Siz/Tn53kgloelxUIiUoRd6TnnCb93oGkd0YM+U6lVquVetOK7LZYcK3UshKOYEk7dv9YJyvtZz5eDD7scHy5WUwivqO8Nt9T+vNSGizXPUQFE4mQBqY3gsH9YXXVb/wuFxh4Xs4wCPpK+yz0195wTGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282336; c=relaxed/simple;
-	bh=dh9HAISk6q3ousFpbbXn+EWjWMVClaDNqXpYIg4WxmY=;
+	s=arc-20240116; t=1718280335; c=relaxed/simple;
+	bh=dW1q/yuhHWOymMZkqqG431RPpeD1vNIcUMKGs8hLYN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVZaQZDnABph1plYapq+pB94BTIw5QLtUYWMHHX0Y5rdNSGA6EmjBWsUle4+MladU8nCRWHsJfbL4tnGn4mSIOkR0riTw8xQQaiKcEhimoVz8X6XvnGfTk2FvQ86wodX28dI1kYn51w83ZZYDxjLNJ7lcoUgX+rbMZVJzZ8Xo8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltgKCnXg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2ABC2BBFC;
-	Thu, 13 Jun 2024 12:38:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U+F+EPdAVZCmfHmivKW3XKrywWuZQ57EkwAtMF1BOrk2b7Po7cfld1MRyFf4oDZljgrnnY2UilYZdBHz/Jc/JoJ3dF7J3C/x0Ig7REH/sfAT3nWAvNgnlVI0tRp1uCMIEuhfCaTqiwz4CNg8gYJo5FzHlKByIzVgr9gprRqvOv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QaXrYrWI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F07C32786;
+	Thu, 13 Jun 2024 12:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282336;
-	bh=dh9HAISk6q3ousFpbbXn+EWjWMVClaDNqXpYIg4WxmY=;
+	s=korg; t=1718280335;
+	bh=dW1q/yuhHWOymMZkqqG431RPpeD1vNIcUMKGs8hLYN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ltgKCnXgmDuyYTXZ8Ct+MJHU1olzbK1+VNfqaWQlJYefpDiS0tzzr98tQcIFqRkjJ
-	 JVNV+TLnVTUc7jcYn820KQFSzrrWcA3R3OYsORePicLXg4c+JsyG8+ZES47IglQn/v
-	 hV63TsEPq3sU6mzhU6ap5YIfE254KV/oVcEhpG2o=
+	b=QaXrYrWIGeuHOB6ZZG4WlZ3EtrTV5oXGA+mo64wH6HKljMadZb0SpxndyqHaEsm42
+	 eDDgAx7Xx6wA4Zd9zfNTOwJUDspo9gjF359uEUWdiGnJn+lTak5K2N4BB824STVyDq
+	 gjD8QWoNql0j6NhDasisA4eAfIegeWJWb6cBbevA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Remus <jremus@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 242/402] s390/vdso: Use standard stack frame layout
+	Bob Zhou <bob.zhou@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Le Ma <le.ma@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 019/137] drm/amdgpu: add error handle to avoid out-of-bounds
 Date: Thu, 13 Jun 2024 13:33:19 +0200
-Message-ID: <20240613113311.588190637@linuxfoundation.org>
+Message-ID: <20240613113224.036090607@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Bob Zhou <bob.zhou@amd.com>
 
-[ Upstream commit 185445c7c137822ad856aae91a41e199370cb534 ]
+commit 8b2faf1a4f3b6c748c0da36cda865a226534d520 upstream.
 
-By default user space is compiled with standard stack frame layout and not
-with the packed stack layout. The vdso code however inherited the
--mpacked-stack compiler option from the kernel. Remove this option to make
-sure the vdso is compiled with standard stack frame layout.
+if the sdma_v4_0_irq_id_to_seq return -EINVAL, the process should
+be stop to avoid out-of-bounds read, so directly return -EINVAL.
 
-This makes sure that the stack frame backchain location for vdso generated
-stack frames is the same like for calling code (if compiled with default
-options). This allows to manually walk stack frames without DWARF
-information, like the kernel is doing it e.g. with arch_stack_walk_user().
-
-Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
-Reviewed-by: Jens Remus <jremus@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Bob Zhou <bob.zhou@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Le Ma <le.ma@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/vdso32/Makefile | 1 +
- arch/s390/kernel/vdso64/Makefile | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
-index 66f7b0c8e6117..6056f2ae02632 100644
---- a/arch/s390/kernel/vdso32/Makefile
-+++ b/arch/s390/kernel/vdso32/Makefile
-@@ -20,6 +20,7 @@ KBUILD_AFLAGS_32 := $(filter-out -m64,$(KBUILD_AFLAGS))
- KBUILD_AFLAGS_32 += -m31 -s
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
+@@ -2031,6 +2031,9 @@ static int sdma_v4_0_process_trap_irq(st
  
- KBUILD_CFLAGS_32 := $(filter-out -m64,$(KBUILD_CFLAGS))
-+KBUILD_CFLAGS_32 := $(filter-out -mpacked-stack,$(KBUILD_CFLAGS))
- KBUILD_CFLAGS_32 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_32))
- KBUILD_CFLAGS_32 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_32))
- KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin -fasynchronous-unwind-tables
-diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
-index e520c548d303e..498d56757c4dc 100644
---- a/arch/s390/kernel/vdso64/Makefile
-+++ b/arch/s390/kernel/vdso64/Makefile
-@@ -25,6 +25,7 @@ KBUILD_AFLAGS_64 := $(filter-out -m64,$(KBUILD_AFLAGS))
- KBUILD_AFLAGS_64 += -m64 -s
- 
- KBUILD_CFLAGS_64 := $(filter-out -m64,$(KBUILD_CFLAGS))
-+KBUILD_CFLAGS_64 := $(filter-out -mpacked-stack,$(KBUILD_CFLAGS_64))
- KBUILD_CFLAGS_64 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_64))
- KBUILD_CFLAGS_64 := $(filter-out -munaligned-symbols,$(KBUILD_CFLAGS_64))
- KBUILD_CFLAGS_64 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_64))
--- 
-2.43.0
-
+ 	DRM_DEBUG("IH: SDMA trap\n");
+ 	instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
++	if (instance < 0)
++		return instance;
++
+ 	switch (entry->ring_id) {
+ 	case 0:
+ 		amdgpu_fence_process(&adev->sdma.instance[instance].ring);
 
 
 
