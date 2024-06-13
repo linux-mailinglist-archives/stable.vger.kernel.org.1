@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-51970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 782F59072D6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:51:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 952B090724E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:46:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C00F7B292EA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:48:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 418441F21661
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D267143747;
-	Thu, 13 Jun 2024 12:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4619F1EB30;
+	Thu, 13 Jun 2024 12:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJP6KesI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQGzAhg/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2DA1292FF;
-	Thu, 13 Jun 2024 12:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0447917FD;
+	Thu, 13 Jun 2024 12:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282852; cv=none; b=TZZYyd4e0u+FkWMvlbvuXj5uDrWPeebo09SAXv9z3pR2w2XtfxeN0tDw264EPFT0LHemm0hzxJoCysRz9SsUNlkgiQYmTB/38/C3227+y+OiASB5oxJuOoPAFSh4PotgU5LdAgDBdKR6nZorjAmW6dKpzR0bOyDxbLaa65DFVCU=
+	t=1718282764; cv=none; b=jLOTgTVR8/D3duig1HXGWhzbjnGi0nyxRiwrj452hoXR7nJCJXndTEs+LxYG/ztHTOYtxhlVjfsC7G0hUGGJkxZIKn5jpfj9xHg0O73aOCLlnAvtM3xLxgCE6wyqH94gAxUhqSJ9zLJGuHbupRQVuFGgClHXiT4fHSIgC5fZQ+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282852; c=relaxed/simple;
-	bh=mTNYB+3nZMRegCKICBsJIWlgJHgWQrfjntuhRe6mE1E=;
+	s=arc-20240116; t=1718282764; c=relaxed/simple;
+	bh=OTrjdhBiTJrJUKlyoUL2OS689u3xAUX0qYbsde7CFRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XYTGKAEq1hoUmpE8dHYfewOF8t8VC1Wq3XWOgXNVPOFokF/6PMnSB0HT4ZzEmBckqPVw0IA+p4rRmooRuQKS0qAh3q5H0wj+mPp3wyS7ic5FadDeuY6Hvfbp5FjpKTet9XGdIR2j03cgb0nlwPCB+1umjPT3Z3Ck0fuE1rP4YdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJP6KesI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76668C32786;
-	Thu, 13 Jun 2024 12:47:31 +0000 (UTC)
+	 MIME-Version; b=rFNLc3WPaEWkjPGeGbWILaWUYUx1meSAq/Hb3OcOE37gieiCmYrmYr2XxINzrjOsLKPUQU1ZZJ7y8IxvhU+qZz1ROOJzkGuWOpa/mNKXkAtdIO83JhlV/D5n2rJIXLBULk1oC3LL/zk5cUj3yuo56zoezsytuKEVNrksGf+aiNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQGzAhg/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 814EBC2BBFC;
+	Thu, 13 Jun 2024 12:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282851;
-	bh=mTNYB+3nZMRegCKICBsJIWlgJHgWQrfjntuhRe6mE1E=;
+	s=korg; t=1718282763;
+	bh=OTrjdhBiTJrJUKlyoUL2OS689u3xAUX0qYbsde7CFRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJP6KesI1pJX9xQC88CRqYW7wvRdHjVg4xKnD7r54W3z1fUD0NV+ejFVnBAcjNCes
-	 08p8n/mwS41AN9tPrfLE9Os0VnMPQT6ZXX6su9LjNOFsyfrRUIrcMx9ez2OABB+KC1
-	 Kq7cO9lylbTfdFBMAjOZIIm1VDPk0MhAOpYackF4=
+	b=UQGzAhg/cIrEcFQqAwNCLGMICQYAxxu/wAwQ0boQgBBZSDXFgpFjrjcxtOYgQXL0O
+	 /L6sRAc89dneZbkXyNxJVPjet5N+Sly/spk4ucdYZWKzYvK7gBw8+lJpwHJVLSDmmN
+	 /QlSl859WOVogtg+CdLPJy7yWudOFZ8tS7sGv44o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Hao Ge <gehao@kylinos.cn>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 15/85] scripts/gdb: fix SB_* constants parsing
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Niklas Cassel <cassel@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 5.15 356/402] ata: pata_legacy: make legacy_exit() work again
 Date: Thu, 13 Jun 2024 13:35:13 +0200
-Message-ID: <20240613113214.732658990@linuxfoundation.org>
+Message-ID: <20240613113316.022809029@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,68 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-commit 6a59cb5158bff13b80f116305155fbe4967a5010 upstream.
+commit d4a89339f17c87c4990070e9116462d16e75894f upstream.
 
---0000000000009a0c9905fd9173ad
-Content-Transfer-Encoding: 8bit
+Commit defc9cd826e4 ("pata_legacy: resychronize with upstream changes and
+resubmit") missed to update legacy_exit(), so that it now fails to do any
+cleanup -- the loop body there can never be entered.  Fix that and finally
+remove now useless nr_legacy_host variable...
 
-After f15afbd34d8f ("fs: fix undefined behavior in bit shift for
-SB_NOUSER") the constants were changed from plain integers which
-LX_VALUE() can parse to constants using the BIT() macro which causes the
-following:
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
 
-Reading symbols from build/linux-custom/vmlinux...done.
-Traceback (most recent call last):
-  File "/home/fainelli/work/buildroot/output/arm64/build/linux-custom/vmlinux-gdb.py", line 25, in <module>
-    import linux.constants
-  File "/home/fainelli/work/buildroot/output/arm64/build/linux-custom/scripts/gdb/linux/constants.py", line 5
-    LX_SB_RDONLY = ((((1UL))) << (0))
-
-Use LX_GDBPARSED() which does not suffer from that issue.
-
-f15afbd34d8f ("fs: fix undefined behavior in bit shift for SB_NOUSER")
-Link: https://lkml.kernel.org/r/20230607221337.2781730-1-florian.fainelli@broadcom.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Acked-by: Christian Brauner <brauner@kernel.org>
-Cc: Hao Ge <gehao@kylinos.cn>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Pankaj Raghav <p.raghav@samsung.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: defc9cd826e4 ("pata_legacy: resychronize with upstream changes and resubmit")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/gdb/linux/constants.py.in |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/ata/pata_legacy.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/scripts/gdb/linux/constants.py.in
-+++ b/scripts/gdb/linux/constants.py.in
-@@ -46,12 +46,12 @@ if IS_BUILTIN(CONFIG_COMMON_CLK):
-     LX_GDBPARSED(CLK_GET_RATE_NOCACHE)
+--- a/drivers/ata/pata_legacy.c
++++ b/drivers/ata/pata_legacy.c
+@@ -173,8 +173,6 @@ static int legacy_port[NR_HOST] = { 0x1f
+ static struct legacy_probe probe_list[NR_HOST];
+ static struct legacy_data legacy_data[NR_HOST];
+ static struct ata_host *legacy_host[NR_HOST];
+-static int nr_legacy_host;
+-
  
- /* linux/fs.h */
--LX_VALUE(SB_RDONLY)
--LX_VALUE(SB_SYNCHRONOUS)
--LX_VALUE(SB_MANDLOCK)
--LX_VALUE(SB_DIRSYNC)
--LX_VALUE(SB_NOATIME)
--LX_VALUE(SB_NODIRATIME)
-+LX_GDBPARSED(SB_RDONLY)
-+LX_GDBPARSED(SB_SYNCHRONOUS)
-+LX_GDBPARSED(SB_MANDLOCK)
-+LX_GDBPARSED(SB_DIRSYNC)
-+LX_GDBPARSED(SB_NOATIME)
-+LX_GDBPARSED(SB_NODIRATIME)
+ /**
+  *	legacy_probe_add	-	Add interface to probe list
+@@ -1276,9 +1274,11 @@ static __exit void legacy_exit(void)
+ {
+ 	int i;
  
- /* linux/htimer.h */
- LX_GDBPARSED(hrtimer_resolution)
+-	for (i = 0; i < nr_legacy_host; i++) {
++	for (i = 0; i < NR_HOST; i++) {
+ 		struct legacy_data *ld = &legacy_data[i];
+-		ata_host_detach(legacy_host[i]);
++
++		if (legacy_host[i])
++			ata_host_detach(legacy_host[i]);
+ 		platform_device_unregister(ld->platform_dev);
+ 	}
+ }
 
 
 
