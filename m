@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-50809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB37906CCD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:54:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC5A906BCE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D29192830D3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:54:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1F991C2104D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919D956458;
-	Thu, 13 Jun 2024 11:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75839143895;
+	Thu, 13 Jun 2024 11:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdFfYaAq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkIg/eqC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1CD1448C6;
-	Thu, 13 Jun 2024 11:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3358014388E;
+	Thu, 13 Jun 2024 11:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279449; cv=none; b=IK3/6qOOtWpOtyz8lzliGeVrGjb0tqZR4KyVWxjcF+HMBAjufVzMUdEBe6sAIav/tfKtNNhrvbnzDHU1TxJ5MQMaWk6fj/vC94Rc3iO/jWMW8W8v/k8fa1tSQCih9CW2DiguEUOxRVmm/BxAIdEoQQ/+KD80ekrgb2EpBQ0DV5E=
+	t=1718279044; cv=none; b=R1+tCHPY9G6uZhBcFbm4IAvLD+6r0hBQLb1/x8IOKaoqEiSXH23Vm4dd6Q4kIs9IAK1h2jngyJbOmOnL6MGC/aaSWydbq4ymeoIKw1WCrjSe3fD8jLWHnaWp9qbEK4jlMmU7OYtZisSnxG4PsZfEs8G/kpEZ/br7Wj/6D0N+z+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279449; c=relaxed/simple;
-	bh=6xv+OtE+xEDmZjQV30EVHGT/zAyEe+XIy8R8499z/dg=;
+	s=arc-20240116; t=1718279044; c=relaxed/simple;
+	bh=znqvK343cvY5Nz29nSy5hRTHFTx2N9sQLan3xXo7qbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RZzriZY/ICu8HSAxTnFIkm7xjJ+lHS94h3JtLfva6HDDf5Y1Z7iwiJLalREYZeVU4KyaYjPl9afp6KtKwVS1fpxjkgqhI/wHScYAyzK/SZOKi6/79YVjnhigqGiPHEHe6HsOxUvPm9qC6ESPxEZ32Gb3TJvIOpmME0eOogpv6Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdFfYaAq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63231C32786;
-	Thu, 13 Jun 2024 11:50:48 +0000 (UTC)
+	 MIME-Version; b=VZhCBfs3dJaqS/V0WpombnkLTmkDtv8WEMkBJvo5JmFYlOEN5sG0Pd35KPNFl6rD6BXcYu3qeKEbtZsN7Uog8rkSwLaY3r6+UNLeT9lRbvkI/lk1Oi5u5cOtEp4mQxl13z8FEO0daAlFZ53/O20osEVIr+4+K3i33G4ntmQWM94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkIg/eqC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BF1C2BBFC;
+	Thu, 13 Jun 2024 11:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279448;
-	bh=6xv+OtE+xEDmZjQV30EVHGT/zAyEe+XIy8R8499z/dg=;
+	s=korg; t=1718279044;
+	bh=znqvK343cvY5Nz29nSy5hRTHFTx2N9sQLan3xXo7qbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FdFfYaAqSpqkTH8skD4GSGfN7r4dmioLc3wfwRzBAf6GsFvIIGijTH96+bNuAaxBV
-	 ufNJFVoB7MNgsXbCK1gBDTOHyT6BYQdclcySMLuTDp+f0Sd/WJGCdUOQlKIBy6zr7r
-	 im6q/LASDXWgLH8Pc4hG2EoMKWr5HT7806N6tCQQ=
+	b=mkIg/eqCCeAiLH3TRvkoe8MdWBPKNpYeDqmDpjL9EIqtUpj4ZPCl/MmlAlrSfCn9R
+	 fRH+iGHZ2tqL+VILjVuxG0B2+xkHG9dW8en59FanJh3W4sc+83gIouyNWa5RqdYKR0
+	 zhtqCR8qCbvyGElt+7b3cHLbJIyvI5FRY1DIMoZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 6.9 079/157] i2c: acpi: Unbind mux adapters before delete
-Date: Thu, 13 Jun 2024 13:33:24 +0200
-Message-ID: <20240613113230.479462324@linuxfoundation.org>
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 4.19 157/213] media: v4l2-core: hold videodev_lock until dev reg, finishes
+Date: Thu, 13 Jun 2024 13:33:25 +0200
+Message-ID: <20240613113234.043593182@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,157 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit 3f858bbf04dbac934ac279aaee05d49eb9910051 upstream.
+commit 1ed4477f2ea4743e7c5e1f9f3722152d14e6eeb1 upstream.
 
-There is an issue with ACPI overlay table removal specifically related
-to I2C multiplexers.
+After the new V4L2 device node was registered, some additional
+initialization was done before the device node was marked as
+'registered'. During the time between creating the device node
+and marking it as 'registered' it was possible to open the
+device node, which would return -ENODEV since the 'registered'
+flag was not yet set.
 
-Consider an ACPI SSDT Overlay that defines a PCA9548 I2C mux on an
-existing I2C bus. When this table is loaded we see the creation of a
-device for the overall PCA9548 chip and 8 further devices - one
-i2c_adapter each for the mux channels. These are all bound to their
-ACPI equivalents via an eventual invocation of acpi_bind_one().
+Hold the videodev_lock mutex from just before the device node
+is registered until the 'registered' flag is set. Since v4l2_open
+will take the same lock, it will wait until this registration
+process is finished. This resolves this race condition.
 
-When we unload the SSDT overlay we run into the problem. The ACPI
-devices are deleted as normal via acpi_device_del_work_fn() and the
-acpi_device_del_list.
-
-However, the following warning and stack trace is output as the
-deletion does not go smoothly:
-------------[ cut here ]------------
-kernfs: can not remove 'physical_node', no directory
-WARNING: CPU: 1 PID: 11 at fs/kernfs/dir.c:1674 kernfs_remove_by_name_ns+0xb9/0xc0
-Modules linked in:
-CPU: 1 PID: 11 Comm: kworker/u128:0 Not tainted 6.8.0-rc6+ #1
-Hardware name: congatec AG conga-B7E3/conga-B7E3, BIOS 5.13 05/16/2023
-Workqueue: kacpi_hotplug acpi_device_del_work_fn
-RIP: 0010:kernfs_remove_by_name_ns+0xb9/0xc0
-Code: e4 00 48 89 ef e8 07 71 db ff 5b b8 fe ff ff ff 5d 41 5c 41 5d e9 a7 55 e4 00 0f 0b eb a6 48 c7 c7 f0 38 0d 9d e8 97 0a d5 ff <0f> 0b eb dc 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
-RSP: 0018:ffff9f864008fb28 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: ffff8ef90a8d4940 RCX: 0000000000000000
-RDX: ffff8f000e267d10 RSI: ffff8f000e25c780 RDI: ffff8f000e25c780
-RBP: ffff8ef9186f9870 R08: 0000000000013ffb R09: 00000000ffffbfff
-R10: 00000000ffffbfff R11: ffff8f000e0a0000 R12: ffff9f864008fb50
-R13: ffff8ef90c93dd60 R14: ffff8ef9010d0958 R15: ffff8ef9186f98c8
-FS:  0000000000000000(0000) GS:ffff8f000e240000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f48f5253a08 CR3: 00000003cb82e000 CR4: 00000000003506f0
-Call Trace:
- <TASK>
- ? kernfs_remove_by_name_ns+0xb9/0xc0
- ? __warn+0x7c/0x130
- ? kernfs_remove_by_name_ns+0xb9/0xc0
- ? report_bug+0x171/0x1a0
- ? handle_bug+0x3c/0x70
- ? exc_invalid_op+0x17/0x70
- ? asm_exc_invalid_op+0x1a/0x20
- ? kernfs_remove_by_name_ns+0xb9/0xc0
- ? kernfs_remove_by_name_ns+0xb9/0xc0
- acpi_unbind_one+0x108/0x180
- device_del+0x18b/0x490
- ? srso_return_thunk+0x5/0x5f
- ? srso_return_thunk+0x5/0x5f
- device_unregister+0xd/0x30
- i2c_del_adapter.part.0+0x1bf/0x250
- i2c_mux_del_adapters+0xa1/0xe0
- i2c_device_remove+0x1e/0x80
- device_release_driver_internal+0x19a/0x200
- bus_remove_device+0xbf/0x100
- device_del+0x157/0x490
- ? __pfx_device_match_fwnode+0x10/0x10
- ? srso_return_thunk+0x5/0x5f
- device_unregister+0xd/0x30
- i2c_acpi_notify+0x10f/0x140
- notifier_call_chain+0x58/0xd0
- blocking_notifier_call_chain+0x3a/0x60
- acpi_device_del_work_fn+0x85/0x1d0
- process_one_work+0x134/0x2f0
- worker_thread+0x2f0/0x410
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xe3/0x110
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x2f/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
----[ end trace 0000000000000000 ]---
-...
-repeated 7 more times, 1 for each channel of the mux
-...
-
-The issue is that the binding of the ACPI devices to their peer I2C
-adapters is not correctly cleaned up. Digging deeper into the issue we
-see that the deletion order is such that the ACPI devices matching the
-mux channel i2c adapters are deleted first during the SSDT overlay
-removal. For each of the channels we see a call to i2c_acpi_notify()
-with ACPI_RECONFIG_DEVICE_REMOVE but, because these devices are not
-actually i2c_clients, nothing is done for them.
-
-Later on, after each of the mux channels has been dealt with, we come
-to delete the i2c_client representing the PCA9548 device. This is the
-call stack we see above, whereby the kernel cleans up the i2c_client
-including destruction of the mux and its channel adapters. At this
-point we do attempt to unbind from the ACPI peers but those peers no
-longer exist and so we hit the kernfs errors.
-
-The fix is to augment i2c_acpi_notify() to handle i2c_adapters. But,
-given that the life cycle of the adapters is linked to the i2c_client,
-instead of deleting the i2c_adapters during the i2c_acpi_notify(), we
-just trigger unbinding of the ACPI device from the adapter device, and
-allow the clean up of the adapter to continue in the way it always has.
-
-Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Fixes: 525e6fabeae2 ("i2c / ACPI: add support for ACPI reconfigure notifications")
-Cc: <stable@vger.kernel.org> # v4.8+
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: <stable@vger.kernel.org>      # for vi4.18 and up
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-core-acpi.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/media/v4l2-core/v4l2-dev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -445,6 +445,11 @@ static struct i2c_client *i2c_acpi_find_
- 	return i2c_find_device_by_fwnode(acpi_fwnode_handle(adev));
- }
- 
-+static struct i2c_adapter *i2c_acpi_find_adapter_by_adev(struct acpi_device *adev)
-+{
-+	return i2c_find_adapter_by_fwnode(acpi_fwnode_handle(adev));
-+}
-+
- static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
- 			   void *arg)
- {
-@@ -471,11 +476,17 @@ static int i2c_acpi_notify(struct notifi
- 			break;
- 
- 		client = i2c_acpi_find_client_by_adev(adev);
--		if (!client)
--			break;
-+		if (client) {
-+			i2c_unregister_device(client);
-+			put_device(&client->dev);
-+		}
-+
-+		adapter = i2c_acpi_find_adapter_by_adev(adev);
-+		if (adapter) {
-+			acpi_unbind_one(&adapter->dev);
-+			put_device(&adapter->dev);
-+		}
- 
--		i2c_unregister_device(client);
--		put_device(&client->dev);
- 		break;
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -980,8 +980,10 @@ int __video_register_device(struct video
+ 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
+ 	vdev->dev.parent = vdev->dev_parent;
+ 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
++	mutex_lock(&videodev_lock);
+ 	ret = device_register(&vdev->dev);
+ 	if (ret < 0) {
++		mutex_unlock(&videodev_lock);
+ 		pr_err("%s: device_register failed\n", __func__);
+ 		goto cleanup;
  	}
+@@ -1001,6 +1003,7 @@ int __video_register_device(struct video
+ 
+ 	/* Part 6: Activate this minor. The char device can now be used. */
+ 	set_bit(V4L2_FL_REGISTERED, &vdev->flags);
++	mutex_unlock(&videodev_lock);
+ 
+ 	return 0;
  
 
 
