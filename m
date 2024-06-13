@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-50569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629AE906B4A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:39:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C660C906D63
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D7391F21794
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:39:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D79171C2308F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366C6142911;
-	Thu, 13 Jun 2024 11:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329521474BA;
+	Thu, 13 Jun 2024 11:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/p8gbqw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzdEsd5l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E549714265E;
-	Thu, 13 Jun 2024 11:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90001474A5;
+	Thu, 13 Jun 2024 11:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278749; cv=none; b=SsS6aEiPQx7BShRrklYKz4Es7+F/q6Tpl5fgN5Qxtz5UPDHesY+HnKPXMkBa+E2Ug5AgZIHxEzwTraB51Vijp1GJ3SFdCj8zmfrVzdgWaRV+gBOC8MwWQAuY3mXv6QSxCzGcV263xSDPLxYjMx9DcoTh0QvLh34TLe1xD4RRwF0=
+	t=1718279746; cv=none; b=iNCXxqRWYkPejdvv+jnwZHzqk/PhQwi/8TIkMqyS6ARUZw/Lw81IhcDnTJ/rlDqavx9k/p5IFf44LIOt9meaewupnJwKvd+7bl34Za0AXo0KLJyhMzI5urWXUYSLhTfGBVx03pQVmP48lp83YE2cFbNRPW8bDOsqD8FL1ib/Ys4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278749; c=relaxed/simple;
-	bh=6lTXxPUFYp+dUBjETWq8auHgMH0IaCfMiA8OX4f0m2A=;
+	s=arc-20240116; t=1718279746; c=relaxed/simple;
+	bh=LM/32f94V0Uw8RGcGoFM1ByHSeloOykEf4H8ID0FZ2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pg63NCZhNiS4VJo7i2z60I+DH3PypDXLfSmExQPAonpRkoAJrCiTBa0Ws8VtSqUXZQFVnugSNZQkL7c6k//Gbsg25RjZJqaEYl87p+ur2TnCfHV3rnENlqwPiHMbHCs+LDbzRsbyNJYb2qTN/6XkeXO3Tj2gjgvmJI/XcOylvbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/p8gbqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B13EC32786;
-	Thu, 13 Jun 2024 11:39:08 +0000 (UTC)
+	 MIME-Version; b=KHpliLSOn4NI8u6j0QYiYuaeghTu0kZibXF7BEQEELXA5lvaTd/vx4QdNbQousW99VYwGSd1Sq+ixy2X97r+rVB8w7d8kf4Pz6B23073Y2kU6WOrUvB6lc+edgfaPAgS6wI2eUFYJH2fjBjxx/tWkqGdraj31ahD0FEcamk/SXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzdEsd5l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620B2C2BBFC;
+	Thu, 13 Jun 2024 11:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278748;
-	bh=6lTXxPUFYp+dUBjETWq8auHgMH0IaCfMiA8OX4f0m2A=;
+	s=korg; t=1718279746;
+	bh=LM/32f94V0Uw8RGcGoFM1ByHSeloOykEf4H8ID0FZ2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w/p8gbqwxejBWm5b7gjVcdIUTTtGC3Mvg3MCeG8Caj0K/9/1N+UwJkXFIGaYlYW69
-	 gcMd8dJ9V/Bu2nAWbwBmMcnH4HCFei6QTXkzCcmaZv0ne5pxrXhCvRfrxjA7drkn40
-	 txnw/JTszkzutuX6cJwJNS4WRcq/1FrDZrnZ1dYE=
+	b=wzdEsd5lAzfHUTiGQoZi2aMbtDybAagtg36ufBIGcq+iZfzii3ptpSpeOwN9ztW6u
+	 w0liauKXkUOLOKV1VViTT8KRI24o1iXJK35slp0iFuqD7N/kdk28TkQv4AuNq8GK8T
+	 xrKjy++sdztcS5/i8QsceZYn2p7f5B/8wFdd38i8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Stan Johnson <userm57@yahoo.com>
-Subject: [PATCH 4.19 057/213] m68k: mac: Fix reboot hang on Mac IIci
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+e3973c409251e136fdd0@syzkaller.appspotmail.com,
+	"Bai, Shuangpeng" <sjb7183@psu.edu>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 007/202] nilfs2: fix potential hang in nilfs_detach_log_writer()
 Date: Thu, 13 Jun 2024 13:31:45 +0200
-Message-ID: <20240613113230.209462060@linuxfoundation.org>
+Message-ID: <20240613113228.045649720@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 265a3b322df9a973ff1fc63da70af456ab6ae1d6 ]
+commit eb85dace897c5986bc2f36b3c783c6abb8a4292e upstream.
 
-Calling mac_reset() on a Mac IIci does reset the system, but what
-follows is a POST failure that requires a manual reset to resolve.
-Avoid that by using the 68030 asm implementation instead of the C
-implementation.
+Syzbot has reported a potential hang in nilfs_detach_log_writer() called
+during nilfs2 unmount.
 
-Apparently the SE/30 has a similar problem as it has used the asm
-implementation since before git. This patch extends that solution to
-other systems with a similar ROM.
+Analysis revealed that this is because nilfs_segctor_sync(), which
+synchronizes with the log writer thread, can be called after
+nilfs_segctor_destroy() terminates that thread, as shown in the call trace
+below:
 
-After this patch, the only systems still using the C implementation are
-68040 systems where adb_type is either MAC_ADB_IOP or MAC_ADB_II. This
-implies a 1 MiB Quadra ROM.
+nilfs_detach_log_writer
+  nilfs_segctor_destroy
+    nilfs_segctor_kill_thread  --> Shut down log writer thread
+    flush_work
+      nilfs_iput_work_func
+        nilfs_dispose_list
+          iput
+            nilfs_evict_inode
+              nilfs_transaction_commit
+                nilfs_construct_segment (if inode needs sync)
+                  nilfs_segctor_sync  --> Attempt to synchronize with
+                                          log writer thread
+                           *** DEADLOCK ***
 
-This now includes the Quadra 900/950, which previously fell through to
-the "should never get here" catch-all.
+Fix this issue by changing nilfs_segctor_sync() so that the log writer
+thread returns normally without synchronizing after it terminates, and by
+forcing tasks that are already waiting to complete once after the thread
+terminates.
 
-Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/480ebd1249d229c6dc1f3f1c6d599b8505483fd8.1714797072.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The skipped inode metadata flushout will then be processed together in the
+subsequent cleanup work in nilfs_segctor_destroy().
+
+Link: https://lkml.kernel.org/r/20240520132621.4054-4-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+e3973c409251e136fdd0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e3973c409251e136fdd0
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Cc: "Bai, Shuangpeng" <sjb7183@psu.edu>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/m68k/mac/misc.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ fs/nilfs2/segment.c |   21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/arch/m68k/mac/misc.c b/arch/m68k/mac/misc.c
-index 3848ff15c59f7..3d7b34504ab9c 100644
---- a/arch/m68k/mac/misc.c
-+++ b/arch/m68k/mac/misc.c
-@@ -462,30 +462,18 @@ void mac_poweroff(void)
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2229,6 +2229,14 @@ static int nilfs_segctor_sync(struct nil
+ 	for (;;) {
+ 		set_current_state(TASK_INTERRUPTIBLE);
  
- void mac_reset(void)
++		/*
++		 * Synchronize only while the log writer thread is alive.
++		 * Leave flushing out after the log writer thread exits to
++		 * the cleanup work in nilfs_segctor_destroy().
++		 */
++		if (!sci->sc_task)
++			break;
++
+ 		if (atomic_read(&wait_req.done)) {
+ 			err = wait_req.err;
+ 			break;
+@@ -2244,7 +2252,7 @@ static int nilfs_segctor_sync(struct nil
+ 	return err;
+ }
+ 
+-static void nilfs_segctor_wakeup(struct nilfs_sc_info *sci, int err)
++static void nilfs_segctor_wakeup(struct nilfs_sc_info *sci, int err, bool force)
  {
--	if (macintosh_config->adb_type == MAC_ADB_II &&
--	    macintosh_config->ident != MAC_MODEL_SE30) {
--		/* need ROMBASE in booter */
--		/* indeed, plus need to MAP THE ROM !! */
--
--		if (mac_bi_data.rombase == 0)
--			mac_bi_data.rombase = 0x40800000;
--
--		/* works on some */
--		rom_reset = (void *) (mac_bi_data.rombase + 0xa);
--
--		local_irq_disable();
--		rom_reset();
- #ifdef CONFIG_ADB_CUDA
--	} else if (macintosh_config->adb_type == MAC_ADB_EGRET ||
--	           macintosh_config->adb_type == MAC_ADB_CUDA) {
-+	if (macintosh_config->adb_type == MAC_ADB_EGRET ||
-+	    macintosh_config->adb_type == MAC_ADB_CUDA) {
- 		cuda_restart();
-+	} else
- #endif
- #ifdef CONFIG_ADB_PMU
--	} else if (macintosh_config->adb_type == MAC_ADB_PB2) {
-+	if (macintosh_config->adb_type == MAC_ADB_PB2) {
- 		pmu_restart();
-+	} else
- #endif
--	} else if (CPU_IS_030) {
--
-+	if (CPU_IS_030) {
- 		/* 030-specific reset routine.  The idea is general, but the
- 		 * specific registers to reset are '030-specific.  Until I
- 		 * have a non-030 machine, I can't test anything else.
-@@ -533,6 +521,18 @@ void mac_reset(void)
- 		    "jmp %/a0@\n\t" /* jump to the reset vector */
- 		    ".chip 68k"
- 		    : : "r" (offset), "a" (rombase) : "a0");
-+	} else {
-+		/* need ROMBASE in booter */
-+		/* indeed, plus need to MAP THE ROM !! */
-+
-+		if (mac_bi_data.rombase == 0)
-+			mac_bi_data.rombase = 0x40800000;
-+
-+		/* works on some */
-+		rom_reset = (void *)(mac_bi_data.rombase + 0xa);
-+
-+		local_irq_disable();
-+		rom_reset();
- 	}
+ 	struct nilfs_segctor_wait_request *wrq, *n;
+ 	unsigned long flags;
+@@ -2252,7 +2260,7 @@ static void nilfs_segctor_wakeup(struct
+ 	spin_lock_irqsave(&sci->sc_wait_request.lock, flags);
+ 	list_for_each_entry_safe(wrq, n, &sci->sc_wait_request.head, wq.entry) {
+ 		if (!atomic_read(&wrq->done) &&
+-		    nilfs_cnt32_ge(sci->sc_seq_done, wrq->seq)) {
++		    (force || nilfs_cnt32_ge(sci->sc_seq_done, wrq->seq))) {
+ 			wrq->err = err;
+ 			atomic_set(&wrq->done, 1);
+ 		}
+@@ -2392,7 +2400,7 @@ static void nilfs_segctor_notify(struct
+ 	if (mode == SC_LSEG_SR) {
+ 		sci->sc_state &= ~NILFS_SEGCTOR_COMMIT;
+ 		sci->sc_seq_done = sci->sc_seq_accepted;
+-		nilfs_segctor_wakeup(sci, err);
++		nilfs_segctor_wakeup(sci, err, false);
+ 		sci->sc_flush_request = 0;
+ 	} else {
+ 		if (mode == SC_FLUSH_FILE)
+@@ -2774,6 +2782,13 @@ static void nilfs_segctor_destroy(struct
+ 		|| sci->sc_seq_request != sci->sc_seq_done);
+ 	spin_unlock(&sci->sc_state_lock);
  
- 	/* should never get here */
--- 
-2.43.0
-
++	/*
++	 * Forcibly wake up tasks waiting in nilfs_segctor_sync(), which can
++	 * be called from delayed iput() via nilfs_evict_inode() and can race
++	 * with the above log writer thread termination.
++	 */
++	nilfs_segctor_wakeup(sci, 0, true);
++
+ 	if (flush_work(&sci->sc_iput_work))
+ 		flag = true;
+ 
 
 
 
