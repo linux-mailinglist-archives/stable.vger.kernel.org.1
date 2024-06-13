@@ -1,54 +1,61 @@
-Return-Path: <stable+bounces-50887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F03906D4C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2AB906C25
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:47:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E1C0284824
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 672231F210C5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83EB146A9A;
-	Thu, 13 Jun 2024 11:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F74614534C;
+	Thu, 13 Jun 2024 11:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bp8aCMJp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7t3iea8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6771E144D16;
-	Thu, 13 Jun 2024 11:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF1E145320;
+	Thu, 13 Jun 2024 11:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279678; cv=none; b=MUMoiaY4+dP/r3UmCp3XoBHmsiNNFgFF8OuOFPQCNk1v6F4NuL53BSi82r2Dlyjfmccq+K8BKJjJuuiSXEFxBfbTt3Lfx1Y8bwWrZFl1bMbQ9b69Cqpw8KELlV4J4vOKTav9sZtXjlaOQsA4MTpZ5w7PricaULwmPIlr1c1UozA=
+	t=1718279184; cv=none; b=O6IAE5w1jCZUu1SJhxtlBMdnrwk3e/9EqdfA5VN84WsqB9rwn7fJqre3cv5Mth0KW2kbsKjFEaMoalURrMaqw5hs8HSJUqrtCNpIe2jIeZCsmYtgASU7le5mmdQ8ZC86FNl4wVAzPkk1RBJuZGnvg0hEqmCzs1Q7cdKpnzNBVfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279678; c=relaxed/simple;
-	bh=bZTKvzvLumHBRv3eQaN1SAANr3NR0tmyy2UdIGhaS0U=;
+	s=arc-20240116; t=1718279184; c=relaxed/simple;
+	bh=4sxWBhny482towLy84YQ2oTG+jXlWOUJvCHXwRdTv2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5bOV9OwMFEkmlQlpokmekh2jN/orXzXYt/GdGVIcOdE0kYLYCjw0HqmGur8eSxV/+LYYL6Mw1vckSv0Kp4wgaLUcYD+AgoZR5RV4zZrD7jszl1HbLPcI+j4s8kWhgdKPlLkN4jHVe0p5wfBVga/RmeM2mUl4HFwNSgs4gXxqy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bp8aCMJp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DABC2BBFC;
-	Thu, 13 Jun 2024 11:54:37 +0000 (UTC)
+	 MIME-Version; b=KqIy5OH+m7GU0q8NxI7Hn2rfs3XEYrZ2rONn2rQIlKZKmFdsoCgTQnVGK1ez01kBPPuSqEZBn8vhCk8484cNIV1wCz1QTkFsPXJEmuF7YwiwdWXW3vloeESZ3VtQVdLpyuxdj5JgHJ21MHDyZFTL9hl68KGu+zgdVBE/H1IWYQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7t3iea8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B929C4AF49;
+	Thu, 13 Jun 2024 11:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279678;
-	bh=bZTKvzvLumHBRv3eQaN1SAANr3NR0tmyy2UdIGhaS0U=;
+	s=korg; t=1718279183;
+	bh=4sxWBhny482towLy84YQ2oTG+jXlWOUJvCHXwRdTv2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bp8aCMJpU/Cf9w7/b8eduUIm/tsTzV87GkpyIpftI3XAPdxH4ngOQCXG5zy9pCC2F
-	 ogJAOXMaqG4Nf/PMMGqExnnFreOSs/r2E+htOvX0h9F9lUXIKuI4iL2096dixPJqrA
-	 QkYTyqIWOw7KmoFSlwDyn1dxi7sgFFjeJK+DK7xI=
+	b=e7t3iea8rF3twk2y+rbnWfQpfDi8NHkIVY4sN8KO08cS8KXpAePc0PkUAPFgLVfYW
+	 7Id/L+MLG8pKxs4bzbLRz1Pf9sX7ECO1O/ESbhH3Kzs3r20RWpL5541MJVIa7BDmDR
+	 N1n5FDtL4BGPX7RnFA5m9sC9lOZ+Cm8o6J3a6/ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.9 126/157] parisc: Define sigset_t in parisc uapi header
+	Sam Ravnborg <sam@ravnborg.org>,
+	Nick Bowler <nbowler@draconx.ca>,
+	Andreas Larsson <andreas@gaisler.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Atish Patra <atish.patra@oracle.com>,
+	Bob Picco <bob.picco@oracle.com>,
+	Vijay Kumar <vijay.ac.kumar@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 4.19 203/213] sparc64: Fix number of online CPUs
 Date: Thu, 13 Jun 2024 13:34:11 +0200
-Message-ID: <20240613113232.284365583@linuxfoundation.org>
+Message-ID: <20240613113235.809290198@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +67,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Sam Ravnborg <sam@ravnborg.org>
 
-commit 487fa28fa8b60417642ac58e8beda6e2509d18f9 upstream.
+commit 98937707fea8375e8acea0aaa0b68a956dd52719 upstream.
 
-The util-linux debian package fails to build on parisc, because
-sigset_t isn't defined in asm/signal.h when included from userspace.
-Move the sigset_t type from internal header to the uapi header to fix the
-build.
+Nick Bowler reported:
+    When using newer kernels on my Ultra 60 with dual 450MHz UltraSPARC-II
+    CPUs, I noticed that only CPU 0 comes up, while older kernels (including
+    4.7) are working fine with both CPUs.
 
-Link: https://buildd.debian.org/status/fetch.php?pkg=util-linux&arch=hppa&ver=2.40-7&stamp=1714163443&raw=0
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v6.0+
+      I bisected the failure to this commit:
+
+      9b2f753ec23710aa32c0d837d2499db92fe9115b is the first bad commit
+      commit 9b2f753ec23710aa32c0d837d2499db92fe9115b
+      Author: Atish Patra <atish.patra@oracle.com>
+      Date:   Thu Sep 15 14:54:40 2016 -0600
+
+      sparc64: Fix cpu_possible_mask if nr_cpus is set
+
+    This is a small change that reverts very easily on top of 5.18: there is
+    just one trivial conflict.  Once reverted, both CPUs work again.
+
+    Maybe this is related to the fact that the CPUs on this system are
+    numbered CPU0 and CPU2 (there is no CPU1)?
+
+The current code that adjust cpu_possible based on nr_cpu_ids do not
+take into account that CPU's may not come one after each other.
+Move the chech to the function that setup the cpu_possible mask
+so there is no need to adjust it later.
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Fixes: 9b2f753ec237 ("sparc64: Fix cpu_possible_mask if nr_cpus is set")
+Reported-by: Nick Bowler <nbowler@draconx.ca>
+Tested-by: Nick Bowler <nbowler@draconx.ca>
+Link: https://lore.kernel.org/sparclinux/20201009161924.c8f031c079dd852941307870@gmx.de/
+Link: https://lore.kernel.org/all/CADyTPEwt=ZNams+1bpMB1F9w_vUdPsGCt92DBQxxq_VtaLoTdw@mail.gmail.com/
+Cc: stable@vger.kernel.org # v4.8+
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Atish Patra <atish.patra@oracle.com>
+Cc: Bob Picco <bob.picco@oracle.com>
+Cc: Vijay Kumar <vijay.ac.kumar@oracle.com>
+Cc: David S. Miller <davem@davemloft.net>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240330-sparc64-warnings-v1-9-37201023ee2f@ravnborg.org
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/include/asm/signal.h      |   12 ------------
- arch/parisc/include/uapi/asm/signal.h |   10 ++++++++++
- 2 files changed, 10 insertions(+), 12 deletions(-)
+ arch/sparc/include/asm/smp_64.h |    2 --
+ arch/sparc/kernel/prom_64.c     |    4 +++-
+ arch/sparc/kernel/setup_64.c    |    1 -
+ arch/sparc/kernel/smp_64.c      |   14 --------------
+ 4 files changed, 3 insertions(+), 18 deletions(-)
 
---- a/arch/parisc/include/asm/signal.h
-+++ b/arch/parisc/include/asm/signal.h
-@@ -4,23 +4,11 @@
+--- a/arch/sparc/include/asm/smp_64.h
++++ b/arch/sparc/include/asm/smp_64.h
+@@ -47,7 +47,6 @@ void arch_send_call_function_ipi_mask(co
+ int hard_smp_processor_id(void);
+ #define raw_smp_processor_id() (current_thread_info()->cpu)
  
- #include <uapi/asm/signal.h>
+-void smp_fill_in_cpu_possible_map(void);
+ void smp_fill_in_sib_core_maps(void);
+ void cpu_play_dead(void);
  
--#define _NSIG		64
--/* bits-per-word, where word apparently means 'long' not 'int' */
--#define _NSIG_BPW	BITS_PER_LONG
--#define _NSIG_WORDS	(_NSIG / _NSIG_BPW)
--
- # ifndef __ASSEMBLY__
+@@ -77,7 +76,6 @@ void __cpu_die(unsigned int cpu);
+ #define smp_fill_in_sib_core_maps() do { } while (0)
+ #define smp_fetch_global_regs() do { } while (0)
+ #define smp_fetch_global_pmu() do { } while (0)
+-#define smp_fill_in_cpu_possible_map() do { } while (0)
+ #define smp_init_cpu_poke() do { } while (0)
+ #define scheduler_poke() do { } while (0)
  
- /* Most things should be clean enough to redefine this at will, if care
-    is taken to make libc match.  */
- 
--typedef unsigned long old_sigset_t;		/* at least 32 bits */
--
--typedef struct {
--	/* next_signal() assumes this is a long - no choice */
--	unsigned long sig[_NSIG_WORDS];
--} sigset_t;
--
- #include <asm/sigcontext.h>
- 
- #endif /* !__ASSEMBLY */
---- a/arch/parisc/include/uapi/asm/signal.h
-+++ b/arch/parisc/include/uapi/asm/signal.h
-@@ -57,10 +57,20 @@
- 
- #include <asm-generic/signal-defs.h>
- 
-+#define _NSIG		64
-+#define _NSIG_BPW	(sizeof(unsigned long) * 8)
-+#define _NSIG_WORDS	(_NSIG / _NSIG_BPW)
+--- a/arch/sparc/kernel/prom_64.c
++++ b/arch/sparc/kernel/prom_64.c
+@@ -479,7 +479,9 @@ static void *record_one_cpu(struct devic
+ 	ncpus_probed++;
+ #ifdef CONFIG_SMP
+ 	set_cpu_present(cpuid, true);
+-	set_cpu_possible(cpuid, true);
 +
- # ifndef __ASSEMBLY__
++	if (num_possible_cpus() < nr_cpu_ids)
++		set_cpu_possible(cpuid, true);
+ #endif
+ 	return NULL;
+ }
+--- a/arch/sparc/kernel/setup_64.c
++++ b/arch/sparc/kernel/setup_64.c
+@@ -690,7 +690,6 @@ void __init setup_arch(char **cmdline_p)
  
- #  include <linux/types.h>
+ 	paging_init();
+ 	init_sparc64_elf_hwcap();
+-	smp_fill_in_cpu_possible_map();
+ 	/*
+ 	 * Once the OF device tree and MDESC have been setup and nr_cpus has
+ 	 * been parsed, we know the list of possible cpus.  Therefore we can
+--- a/arch/sparc/kernel/smp_64.c
++++ b/arch/sparc/kernel/smp_64.c
+@@ -1213,20 +1213,6 @@ void __init smp_setup_processor_id(void)
+ 		xcall_deliver_impl = hypervisor_xcall_deliver;
+ }
  
-+typedef unsigned long old_sigset_t;	/* at least 32 bits */
-+
-+typedef struct {
-+	unsigned long sig[_NSIG_WORDS];
-+} sigset_t;
-+
- /* Avoid too many header ordering problems.  */
- struct siginfo;
- 
+-void __init smp_fill_in_cpu_possible_map(void)
+-{
+-	int possible_cpus = num_possible_cpus();
+-	int i;
+-
+-	if (possible_cpus > nr_cpu_ids)
+-		possible_cpus = nr_cpu_ids;
+-
+-	for (i = 0; i < possible_cpus; i++)
+-		set_cpu_possible(i, true);
+-	for (; i < NR_CPUS; i++)
+-		set_cpu_possible(i, false);
+-}
+-
+ void smp_fill_in_sib_core_maps(void)
+ {
+ 	unsigned int i;
 
 
 
