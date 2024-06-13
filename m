@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-51849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8894D9071EA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E54906EB0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89C431C2410B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18FEE1C2304D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264FA142E86;
-	Thu, 13 Jun 2024 12:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1A31482E6;
+	Thu, 13 Jun 2024 12:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IdZpkscH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2Qa0vDB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0911849;
-	Thu, 13 Jun 2024 12:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5870E143C52;
+	Thu, 13 Jun 2024 12:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282495; cv=none; b=PIcEe8tgw1DdzXcjz//DqJb2moisOfv9LHlUrQDbvQQmLoIdTikAOWslpl5eGGmvO1Mj2DzV8C9PiJd88WNxZ0z0AgozKhshHdwZ/2pR8xqo9wrxJgsFonB7S7QeLnL2GdGdc3Z01zUqab68sjuz40rD14NlQ4kaHVz9lITJmAk=
+	t=1718280550; cv=none; b=BUE+DouD390a4nVOP5ht2P8ZHgqzpiXrH7J06Sb+6/Cq0cW9f7OvQFzpmtCAbeOn2Sw/oQKjE55PM0o9hhGP2RwBPJ/UUS8iAb/zrpDsDMOP738+SbBRh3kaSwbL6au0CAY62qs0RlpTNv5Iw0rnlbn9wx2aeAGYdyibchm7d08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282495; c=relaxed/simple;
-	bh=lwFEgXCHdI0X13JQIfzedF6Hj2UEWuFppZPUsiDtatA=;
+	s=arc-20240116; t=1718280550; c=relaxed/simple;
+	bh=U+KHdUEzNSsQiiZQibj2R+2daRv6eykYE7JMVrqA6Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sUW1z6lFGSnZX6ZVhvZcp8crRRhDIjQO6f1Ob1C0Mp9sMrX1lWxvbhTMjRlTn6xrNZuCkKvjooyfEv8fVcAmR9sH2u2dU/QJxpBlo8PABDBYoYTGDCgpRLsktyAicIXfHJclv5bfAC904HH0xvv5cikQ/gOTF8onZLKJOHcML8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IdZpkscH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06537C2BBFC;
-	Thu, 13 Jun 2024 12:41:34 +0000 (UTC)
+	 MIME-Version; b=H3sF786P/G7uS89RNVDmh4tFSdEYFcLAmlcj0OfT3dVchu/fq1N05JEQwvmrfuNlGwcK2ziYrEZRxQvFRKquH/Xs1g6Z9AVaxRUAz9h9hP4yWOJtjF6xGstLIoZcuNL5NfW8Tk9noL5OFsNld5JEJBqSgz9DWetsTzesRE1s3xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2Qa0vDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F42C2BBFC;
+	Thu, 13 Jun 2024 12:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282495;
-	bh=lwFEgXCHdI0X13JQIfzedF6Hj2UEWuFppZPUsiDtatA=;
+	s=korg; t=1718280550;
+	bh=U+KHdUEzNSsQiiZQibj2R+2daRv6eykYE7JMVrqA6Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IdZpkscHQSbc/t4Po1G76RUcy47y7vEfrEvwGw/82DFafJtS0lZhxISK+Ke368fs2
-	 hvdzM50Tis1o7ecEUOzVqXYdbdFUa021vj8wOhkehejJ9a6hwx9YUlGWV+pxWYnf53
-	 P4XwdpCvvSzQeAZLIbQRlfW8QpCNPqdjWU2boob8=
+	b=g2Qa0vDBwR8YK6GB8RAYSGAfGxyyNcRifayN4R4z1P+i1pXUXrJhtknH6WmuaXIRU
+	 +RxPO6rOfIPx4AarLdmbctEE1ueaaOxWvNybiKphs4OWqtVXQbsU6lgHsVYK2K+usm
+	 XLHgYfgpvGDNL1bZj3zfNPCpoTMCJwT1p5/1IDuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@linux.alibaba.com>,
-	Guo Ren <guoren@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 297/402] riscv: stacktrace: Make walk_stackframe cross pt_regs frame
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.6 074/137] filemap: add helper mapping_max_folio_size()
 Date: Thu, 13 Jun 2024 13:34:14 +0200
-Message-ID: <20240613113313.730874215@linuxfoundation.org>
+Message-ID: <20240613113226.167278409@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,131 +65,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guo Ren <guoren@linux.alibaba.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 7ecdadf7f8c659524f6b2aebf6be7bf619764d90 ]
+commit 79c137454815ba5554caa8eeb4ad5c94e96e45ce upstream.
 
-The current walk_stackframe with FRAME_POINTER would stop unwinding at
-ret_from_exception:
-  BUG: sleeping function called from invalid context at kernel/locking/rwsem.c:1518
-  in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 1, name: init
-  CPU: 0 PID: 1 Comm: init Not tainted 5.10.113-00021-g15c15974895c-dirty #192
-  Call Trace:
-  [<ffffffe0002038c8>] walk_stackframe+0x0/0xee
-  [<ffffffe000aecf48>] show_stack+0x32/0x4a
-  [<ffffffe000af1618>] dump_stack_lvl+0x72/0x8e
-  [<ffffffe000af1648>] dump_stack+0x14/0x1c
-  [<ffffffe000239ad2>] ___might_sleep+0x12e/0x138
-  [<ffffffe000239aec>] __might_sleep+0x10/0x18
-  [<ffffffe000afe3fe>] down_read+0x22/0xa4
-  [<ffffffe000207588>] do_page_fault+0xb0/0x2fe
-  [<ffffffe000201b80>] ret_from_exception+0x0/0xc
+Add mapping_max_folio_size() to get the maximum folio size for this
+pagecache mapping.
 
-The optimization would help walk_stackframe cross the pt_regs frame and
-get more backtrace of debug info:
-  BUG: sleeping function called from invalid context at kernel/locking/rwsem.c:1518
-  in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 1, name: init
-  CPU: 0 PID: 1 Comm: init Not tainted 5.10.113-00021-g15c15974895c-dirty #192
-  Call Trace:
-  [<ffffffe0002038c8>] walk_stackframe+0x0/0xee
-  [<ffffffe000aecf48>] show_stack+0x32/0x4a
-  [<ffffffe000af1618>] dump_stack_lvl+0x72/0x8e
-  [<ffffffe000af1648>] dump_stack+0x14/0x1c
-  [<ffffffe000239ad2>] ___might_sleep+0x12e/0x138
-  [<ffffffe000239aec>] __might_sleep+0x10/0x18
-  [<ffffffe000afe3fe>] down_read+0x22/0xa4
-  [<ffffffe000207588>] do_page_fault+0xb0/0x2fe
-  [<ffffffe000201b80>] ret_from_exception+0x0/0xc
-  [<ffffffe000613c06>] riscv_intc_irq+0x1a/0x72
-  [<ffffffe000201b80>] ret_from_exception+0x0/0xc
-  [<ffffffe00033f44a>] vma_link+0x54/0x160
-  [<ffffffe000341d7a>] mmap_region+0x2cc/0x4d0
-  [<ffffffe000342256>] do_mmap+0x2d8/0x3ac
-  [<ffffffe000326318>] vm_mmap_pgoff+0x70/0xb8
-  [<ffffffe00032638a>] vm_mmap+0x2a/0x36
-  [<ffffffe0003cfdde>] elf_map+0x72/0x84
-  [<ffffffe0003d05f8>] load_elf_binary+0x69a/0xec8
-  [<ffffffe000376240>] bprm_execve+0x246/0x53a
-  [<ffffffe00037786c>] kernel_execve+0xe8/0x124
-  [<ffffffe000aecdf2>] run_init_process+0xfa/0x10c
-  [<ffffffe000aece16>] try_to_run_init_process+0x12/0x3c
-  [<ffffffe000afa920>] kernel_init+0xb4/0xf8
-  [<ffffffe000201b80>] ret_from_exception+0x0/0xc
-
-Here is the error injection test code for the above output:
- drivers/irqchip/irq-riscv-intc.c:
- static asmlinkage void riscv_intc_irq(struct pt_regs *regs)
- {
-        unsigned long cause = regs->cause & ~CAUSE_IRQ_FLAG;
-+       u32 tmp; __get_user(tmp, (u32 *)0);
-
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
-Link: https://lore.kernel.org/r/20221109064937.3643993-3-guoren@kernel.org
-[Palmer: use SYM_CODE_*]
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Stable-dep-of: a2a4d4a6a0bf ("riscv: stacktrace: fixed walk_stackframe()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+Cc: stable@vger.kernel.org
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20240521114939.2541461-1-xu.yang_2@nxp.com
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/entry.S      | 3 ++-
- arch/riscv/kernel/stacktrace.c | 9 +++++++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ include/linux/pagemap.h |   34 +++++++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
 
-diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-index 5ca2860cc06cd..851c967c49ccd 100644
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -231,7 +231,7 @@ ret_from_syscall_rejected:
- 	andi t0, t0, _TIF_SYSCALL_WORK
- 	bnez t0, handle_syscall_trace_exit
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -327,6 +327,19 @@ static inline void mapping_set_gfp_mask(
+ 	m->gfp_mask = mask;
+ }
  
--ret_from_exception:
-+SYM_CODE_START_NOALIGN(ret_from_exception)
- 	REG_L s0, PT_STATUS(sp)
- 	csrc CSR_STATUS, SR_IE
- #ifdef CONFIG_TRACE_IRQFLAGS
-@@ -245,6 +245,7 @@ ret_from_exception:
- 	andi s0, s0, SR_SPP
- #endif
- 	bnez s0, resume_kernel
-+SYM_CODE_END(ret_from_exception)
- 
- resume_userspace:
- 	/* Interrupts must be disabled here so flags are checked atomically */
-diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
-index 894ae66421a76..26f3916eea47c 100644
---- a/arch/riscv/kernel/stacktrace.c
-+++ b/arch/riscv/kernel/stacktrace.c
-@@ -18,6 +18,8 @@ register unsigned long sp_in_global __asm__("sp");
- 
- #ifdef CONFIG_FRAME_POINTER
- 
-+extern asmlinkage void ret_from_exception(void);
++/*
++ * There are some parts of the kernel which assume that PMD entries
++ * are exactly HPAGE_PMD_ORDER.  Those should be fixed, but until then,
++ * limit the maximum allocation order to PMD size.  I'm not aware of any
++ * assumptions about maximum order if THP are disabled, but 8 seems like
++ * a good order (that's 1MB if you're using 4kB pages)
++ */
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++#define MAX_PAGECACHE_ORDER	HPAGE_PMD_ORDER
++#else
++#define MAX_PAGECACHE_ORDER	8
++#endif
 +
- void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 			     bool (*fn)(void *, unsigned long), void *arg)
+ /**
+  * mapping_set_large_folios() - Indicate the file supports large folios.
+  * @mapping: The file.
+@@ -353,6 +366,14 @@ static inline bool mapping_large_folio_s
+ 		test_bit(AS_LARGE_FOLIO_SUPPORT, &mapping->flags);
+ }
+ 
++/* Return the maximum folio size for this pagecache mapping, in bytes. */
++static inline size_t mapping_max_folio_size(struct address_space *mapping)
++{
++	if (mapping_large_folio_support(mapping))
++		return PAGE_SIZE << MAX_PAGECACHE_ORDER;
++	return PAGE_SIZE;
++}
++
+ static inline int filemap_nr_thps(struct address_space *mapping)
  {
-@@ -62,6 +64,13 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 			fp = frame->fp;
- 			pc = ftrace_graph_ret_addr(current, NULL, frame->ra,
- 						   &frame->ra);
-+			if (pc == (unsigned long)ret_from_exception) {
-+				if (unlikely(!__kernel_text_address(pc) || !fn(arg, pc)))
-+					break;
-+
-+				pc = ((struct pt_regs *)sp)->epc;
-+				fp = ((struct pt_regs *)sp)->s0;
-+			}
- 		}
+ #ifdef CONFIG_READ_ONLY_THP_FOR_FS
+@@ -511,19 +532,6 @@ static inline void *detach_page_private(
+ 	return folio_detach_private(page_folio(page));
+ }
  
- 	}
--- 
-2.43.0
-
+-/*
+- * There are some parts of the kernel which assume that PMD entries
+- * are exactly HPAGE_PMD_ORDER.  Those should be fixed, but until then,
+- * limit the maximum allocation order to PMD size.  I'm not aware of any
+- * assumptions about maximum order if THP are disabled, but 8 seems like
+- * a good order (that's 1MB if you're using 4kB pages)
+- */
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-#define MAX_PAGECACHE_ORDER	HPAGE_PMD_ORDER
+-#else
+-#define MAX_PAGECACHE_ORDER	8
+-#endif
+-
+ #ifdef CONFIG_NUMA
+ struct folio *filemap_alloc_folio(gfp_t gfp, unsigned int order);
+ #else
 
 
 
