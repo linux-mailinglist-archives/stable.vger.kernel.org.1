@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-50986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB8D4906DCB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:04:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B84C906BFD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DA99281F09
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:04:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDA54B24754
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3113114659E;
-	Thu, 13 Jun 2024 11:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2211448D4;
+	Thu, 13 Jun 2024 11:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8CxsXyB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxRetaS5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2581143884;
-	Thu, 13 Jun 2024 11:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363656AFAE;
+	Thu, 13 Jun 2024 11:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279971; cv=none; b=mVMZUTwm9dbGCLdIGawiiSeQybKZRXilRr/wlSYmR2w7EOrUmYnXXufgL0M8TZOVdnxUHJKlX5Io2mUMwhpqvEBUybZ1gsfyZhldYeoH8HXYr2srLCIK+bggrGw5qAj6Q0JPpNgegl+yuVyaut361e9s5asYRhCbgYu5l24x0rk=
+	t=1718279116; cv=none; b=p1np2LfKykOpYWxHHfZkow3FMK9ElayDzurYorv2nVONMlFdqpr6C68ulqIklCyDRToyIjfRKJQ5fJss2Scvkjhc8nEbTdCSFbP9a1oxfUDtEHkOI9VlH9imGNf7lSwagzwQv2xtsvflgmV6wiQ+Fsf6BZaKqoyBKgvXBAMmNww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279971; c=relaxed/simple;
-	bh=IIs9XRDvhV/ORB99K/sNCcFRN5ciba9cr30us46JC98=;
+	s=arc-20240116; t=1718279116; c=relaxed/simple;
+	bh=06ycz0gGcVUk47zDwzXarJnAqj5gzlv7S1qn+owZ82c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=daPXiKXvcQOeT4dgXDcRDpthWEl78E/vJ5ws3Ys0ijkq/Fyk8BsjyOfpJUXe8xWLkZvOXKlcOvejUilw/PMFAGucALgyok//AwNwARIHsNPd3n6B7jsVFs6oGwqeY43fH/jwIo/f9V3LB3eHNX/K5M7LWxA8iz8PkE8u4R6C9SU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8CxsXyB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68810C2BBFC;
-	Thu, 13 Jun 2024 11:59:30 +0000 (UTC)
+	 MIME-Version; b=sI+50bR8dQUBJruG8R7BuvDbEj99X6CSE1j3Ed6l+YOMUweofEp3Nf7K5uJ/6sdtGaY1Eeto5zlTMtYkF4HZLOYnPWqQeYLVZK97RxpubR4ZQ4wPXDfdVFc4FkU+VAbwRFvFxef3H+GCzsOM07CwmreXWM+MPH530peoVCK4vFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxRetaS5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08CCC2BBFC;
+	Thu, 13 Jun 2024 11:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279970;
-	bh=IIs9XRDvhV/ORB99K/sNCcFRN5ciba9cr30us46JC98=;
+	s=korg; t=1718279116;
+	bh=06ycz0gGcVUk47zDwzXarJnAqj5gzlv7S1qn+owZ82c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X8CxsXyBih269JHh+e3DkJccjqqEaFwrF8fivB2MD5/c/xKHhackV22Z30A6hM8s2
-	 G5oSM5xD2snqbFA413puqVJlhwQJagaSss92GR9gXPGlZcejKZqBMrxt95WIbRo5BG
-	 1mWO83vHYTCw4LOWXBJLmomxUR93nEzE35LSMZwE=
+	b=yxRetaS5eY3bY5GWLT8L0RHqxmaIRLkHLA5kHpgwAE32guXw23HpPZF47PfZc77jI
+	 OtiZFQawsYUUic4hDI67nFjYggZexVMIlDexC2FWlF2qc2X5QJOAqkBOhpUwKzR9YO
+	 1FBDtTrKn5xaPCtMnCARO/aXObpzx1pl/pJzAH4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 099/202] soundwire: cadence_master: improve PDI allocation
+	Daniel Borkmann <daniel@iogearbox.net>,
+	David Bauer <mail@david-bauer.net>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.19 149/213] vxlan: Fix regression when dropping packets due to invalid src addresses
 Date: Thu, 13 Jun 2024 13:33:17 +0200
-Message-ID: <20240613113231.585786612@linuxfoundation.org>
+Message-ID: <20240613113233.736940148@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 1b53385e7938d5a093e92044f9c89e4e76106f1b ]
+commit 1cd4bc987abb2823836cbb8f887026011ccddc8a upstream.
 
-PDI number should match dai->id, there is no need to track if a PDI is
-allocated or not.
+Commit f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
+has recently been added to vxlan mainly in the context of source
+address snooping/learning so that when it is enabled, an entry in the
+FDB is not being created for an invalid address for the corresponding
+tunnel endpoint.
 
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20190916192348.467-7-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 8ee1b439b154 ("soundwire: cadence: fix invalid PDI offset")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Before commit f58f45c1e5b9 vxlan was similarly behaving as geneve in
+that it passed through whichever macs were set in the L2 header. It
+turns out that this change in behavior breaks setups, for example,
+Cilium with netkit in L3 mode for Pods as well as tunnel mode has been
+passing before the change in f58f45c1e5b9 for both vxlan and geneve.
+After mentioned change it is only passing for geneve as in case of
+vxlan packets are dropped due to vxlan_set_mac() returning false as
+source and destination macs are zero which for E/W traffic via tunnel
+is totally fine.
+
+Fix it by only opting into the is_valid_ether_addr() check in
+vxlan_set_mac() when in fact source address snooping/learning is
+actually enabled in vxlan. This is done by moving the check into
+vxlan_snoop(). With this change, the Cilium connectivity test suite
+passes again for both tunnel flavors.
+
+Fixes: f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: David Bauer <mail@david-bauer.net>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: David Bauer <mail@david-bauer.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[ Backport note: vxlan snooping/learning not supported in 6.8 or older,
+  so commit is simply a revert. ]
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soundwire/cadence_master.c | 27 ++++++++++++++-------------
- drivers/soundwire/cadence_master.h |  4 +---
- drivers/soundwire/intel.c          |  5 ++---
- 3 files changed, 17 insertions(+), 19 deletions(-)
+ drivers/net/vxlan.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
-index 95dcdac008bb0..e589aa99e4292 100644
---- a/drivers/soundwire/cadence_master.c
-+++ b/drivers/soundwire/cadence_master.c
-@@ -845,7 +845,6 @@ static int cdns_allocate_pdi(struct sdw_cdns *cdns,
+--- a/drivers/net/vxlan.c
++++ b/drivers/net/vxlan.c
+@@ -1320,10 +1320,6 @@ static bool vxlan_set_mac(struct vxlan_d
+ 	if (ether_addr_equal(eth_hdr(skb)->h_source, vxlan->dev->dev_addr))
+ 		return false;
  
- 	for (i = 0; i < num; i++) {
- 		pdi[i].num = i + pdi_offset;
--		pdi[i].assigned = false;
- 	}
- 
- 	*stream = pdi;
-@@ -1198,21 +1197,20 @@ EXPORT_SYMBOL(cdns_set_sdw_stream);
-  * @num: Number of PDIs
-  * @pdi: PDI instances
-  *
-- * Find and return a free PDI for a given PDI array
-+ * Find a PDI for a given PDI array. The PDI num and dai_id are
-+ * expected to match, return NULL otherwise.
-  */
- static struct sdw_cdns_pdi *cdns_find_pdi(struct sdw_cdns *cdns,
- 					  unsigned int offset,
- 					  unsigned int num,
--					  struct sdw_cdns_pdi *pdi)
-+					  struct sdw_cdns_pdi *pdi,
-+					  int dai_id)
- {
- 	int i;
- 
--	for (i = offset; i < num; i++) {
--		if (pdi[i].assigned)
--			continue;
--		pdi[i].assigned = true;
--		return &pdi[i];
--	}
-+	for (i = offset; i < offset + num; i++)
-+		if (pdi[i].num == dai_id)
-+			return &pdi[i];
- 
- 	return NULL;
- }
-@@ -1252,18 +1250,21 @@ EXPORT_SYMBOL(sdw_cdns_config_stream);
-  */
- struct sdw_cdns_pdi *sdw_cdns_alloc_pdi(struct sdw_cdns *cdns,
- 					struct sdw_cdns_streams *stream,
--					u32 ch, u32 dir)
-+					u32 ch, u32 dir, int dai_id)
- {
- 	struct sdw_cdns_pdi *pdi = NULL;
- 
- 	if (dir == SDW_DATA_DIR_RX)
--		pdi = cdns_find_pdi(cdns, 0, stream->num_in, stream->in);
-+		pdi = cdns_find_pdi(cdns, 0, stream->num_in, stream->in,
-+				    dai_id);
- 	else
--		pdi = cdns_find_pdi(cdns, 0, stream->num_out, stream->out);
-+		pdi = cdns_find_pdi(cdns, 0, stream->num_out, stream->out,
-+				    dai_id);
- 
- 	/* check if we found a PDI, else find in bi-directional */
- 	if (!pdi)
--		pdi = cdns_find_pdi(cdns, 2, stream->num_bd, stream->bd);
-+		pdi = cdns_find_pdi(cdns, 2, stream->num_bd, stream->bd,
-+				    dai_id);
- 
- 	if (pdi) {
- 		pdi->l_ch_num = 0;
-diff --git a/drivers/soundwire/cadence_master.h b/drivers/soundwire/cadence_master.h
-index 3e963614a216b..6199e71edeab7 100644
---- a/drivers/soundwire/cadence_master.h
-+++ b/drivers/soundwire/cadence_master.h
-@@ -8,7 +8,6 @@
- /**
-  * struct sdw_cdns_pdi: PDI (Physical Data Interface) instance
-  *
-- * @assigned: pdi assigned
-  * @num: pdi number
-  * @intel_alh_id: link identifier
-  * @l_ch_num: low channel for PDI
-@@ -18,7 +17,6 @@
-  * @type: stream type, PDM or PCM
-  */
- struct sdw_cdns_pdi {
--	bool assigned;
- 	int num;
- 	int intel_alh_id;
- 	int l_ch_num;
-@@ -155,7 +153,7 @@ int sdw_cdns_get_stream(struct sdw_cdns *cdns,
- 			u32 ch, u32 dir);
- struct sdw_cdns_pdi *sdw_cdns_alloc_pdi(struct sdw_cdns *cdns,
- 					struct sdw_cdns_streams *stream,
--					u32 ch, u32 dir);
-+					u32 ch, u32 dir, int dai_id);
- void sdw_cdns_config_stream(struct sdw_cdns *cdns,
- 			    u32 ch, u32 dir, struct sdw_cdns_pdi *pdi);
- 
-diff --git a/drivers/soundwire/intel.c b/drivers/soundwire/intel.c
-index 9ac45e6dbe9df..7470adfaabf37 100644
---- a/drivers/soundwire/intel.c
-+++ b/drivers/soundwire/intel.c
-@@ -636,11 +636,10 @@ static int intel_hw_params(struct snd_pcm_substream *substream,
- 	if (dma->stream_type == SDW_STREAM_PDM)
- 		pcm = false;
- 
--	/* FIXME: We would need to get PDI info from topology */
- 	if (pcm)
--		pdi = sdw_cdns_alloc_pdi(cdns, &cdns->pcm, ch, dir);
-+		pdi = sdw_cdns_alloc_pdi(cdns, &cdns->pcm, ch, dir, dai->id);
- 	else
--		pdi = sdw_cdns_alloc_pdi(cdns, &cdns->pdm, ch, dir);
-+		pdi = sdw_cdns_alloc_pdi(cdns, &cdns->pdm, ch, dir, dai->id);
- 
- 	if (!pdi) {
- 		ret = -EINVAL;
--- 
-2.43.0
-
+-	/* Ignore packets from invalid src-address */
+-	if (!is_valid_ether_addr(eth_hdr(skb)->h_source))
+-		return false;
+-
+ 	/* Get address from the outer IP header */
+ 	if (vxlan_get_sk_family(vs) == AF_INET) {
+ 		saddr.sin.sin_addr.s_addr = ip_hdr(skb)->saddr;
 
 
 
