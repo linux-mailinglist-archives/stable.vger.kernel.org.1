@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-50851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4209906D21
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3349C906C1B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:47:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D6431F27CD1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C696A2828DB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43DD1465A5;
-	Thu, 13 Jun 2024 11:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F05143C52;
+	Thu, 13 Jun 2024 11:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I99oTxvs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWEqpvKV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836AB143C52;
-	Thu, 13 Jun 2024 11:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80664137914;
+	Thu, 13 Jun 2024 11:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279572; cv=none; b=JowYvBPn16ejuuC0mB2NJWmM6PwxCNSB4+xqh7P6mJdbvqmOi1CIlwsh1abdem0o0/ifWgySNrYNXwpblsR7M2tSK1XVT0V94DdF8N2ZwG6ukoX4TXoJN2qcqRMJJHWF66bjS4LW16uEV+hdftAZmabBYusk3TLO6Y08Cqe6BTY=
+	t=1718279163; cv=none; b=bPsAG01tCneDcU2vioRRBqqtHge0z1Ly+ItD2qKWNt9XtUqVWA2s1hVmzuv2hvWTVOphz3xd5oDAvgxoD8I018ouNu1vT6oid8/B6mganXhcryJPsKKJOuojAuyBkw7MQlsnF45Fcu5uau+k+QBEpRKEjTxheW19aFNHh/zamm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279572; c=relaxed/simple;
-	bh=BKE8B1a3pV8tx6GXcy5Rnw/5HESVP6zsUESDMq8iKz0=;
+	s=arc-20240116; t=1718279163; c=relaxed/simple;
+	bh=wACfqpwb9rS10aL8AxJikw772yO3B0E0A85ET+ZrZX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qEFrqXpDQMa7M5oSpfW8BYseCc+XYYPAWF7m8LQ4RHXfdcBQ8eGpktVmoYDglFthZb6RX7TDC+Op2l7VIIYAGjhouzEfX8n/u8ntLTEOxlUMcJm7JSU5QASKVt1pLPy4xfdfQagN33CoSqCAoCpfyoIm7xfJ6HZ8uY7NOoOcqWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I99oTxvs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C657C4AF1A;
-	Thu, 13 Jun 2024 11:52:51 +0000 (UTC)
+	 MIME-Version; b=rdvMt3BuXuCG0ejAen1CJflP4us1oO/+QqlQ131n7EwvrcAk4mFmBYVoVliT/hhmSw0KhrfGAv36q2gHWggVjnJgbOGRl4coHn6qv/tgYhiazwzCrag2tQBfbGN9xd6O7uC6J3EZUqGgA+Pf1ClDzXxzKvEieVd/0+76Cw8Wkj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWEqpvKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67A7C2BBFC;
+	Thu, 13 Jun 2024 11:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279572;
-	bh=BKE8B1a3pV8tx6GXcy5Rnw/5HESVP6zsUESDMq8iKz0=;
+	s=korg; t=1718279163;
+	bh=wACfqpwb9rS10aL8AxJikw772yO3B0E0A85ET+ZrZX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I99oTxvsJs4F+6rDlMmKnongTlGOWKoBxyFLjawxM7yETMce4aI3NXYa7RfYRMwVo
-	 MLrKfkGUkhBxIRkGBhyZsd+OzFG+n+7kiHGDiUdw/2blS9LuePeQi9bpXANbiV1i5j
-	 36IUW8ONkDVJWwatTftb+BRlJ3otL5JQvhyoEoB8=
+	b=tWEqpvKV6np/sBDJxtLBWCBUjewsLD67wvXLBKdIMkrQ5SsCcIRvFjv1q/Id7Qsnl
+	 oAZry54MJGmZdQ8zYYd+ov4u7GlK5hsCwgeunREU+y6IVLScrQxQU0AME8zs5Ejr8F
+	 Ik1Xh9c7Q4D4nHH2lLWdTNdJmXoXXkZDfZq+A9aY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+dd43bd0f7474512edc47@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.9 120/157] ext4: fix mb_cache_entrys e_refcnt leak in ext4_xattr_block_cache_find()
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 197/213] netfilter: nf_tables: reject new basechain after table flag update
 Date: Thu, 13 Jun 2024 13:34:05 +0200
-Message-ID: <20240613113232.057391676@linuxfoundation.org>
+Message-ID: <20240613113235.576836729@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 0c0b4a49d3e7f49690a6827a41faeffad5df7e21 upstream.
+commit 994209ddf4f430946f6247616b2e33d179243769 upstream.
 
-Syzbot reports a warning as follows:
+When dormant flag is toggled, hooks are disabled in the commit phase by
+iterating over current chains in table (existing and new).
 
-============================================
-WARNING: CPU: 0 PID: 5075 at fs/mbcache.c:419 mb_cache_destroy+0x224/0x290
-Modules linked in:
-CPU: 0 PID: 5075 Comm: syz-executor199 Not tainted 6.9.0-rc6-gb947cc5bf6d7
-RIP: 0010:mb_cache_destroy+0x224/0x290 fs/mbcache.c:419
-Call Trace:
- <TASK>
- ext4_put_super+0x6d4/0xcd0 fs/ext4/super.c:1375
- generic_shutdown_super+0x136/0x2d0 fs/super.c:641
- kill_block_super+0x44/0x90 fs/super.c:1675
- ext4_kill_sb+0x68/0xa0 fs/ext4/super.c:7327
+The following configuration allows for an inconsistent state:
+
+  add table x
+  add chain x y { type filter hook input priority 0; }
+  add table x { flags dormant; }
+  add chain x w { type filter hook input priority 1; }
+
+which triggers the following warning when trying to unregister chain w
+which is already unregistered.
+
+[  127.322252] WARNING: CPU: 7 PID: 1211 at net/netfilter/core.c:50                                                                     1 __nf_unregister_net_hook+0x21a/0x260
 [...]
-============================================
+[  127.322519] Call Trace:
+[  127.322521]  <TASK>
+[  127.322524]  ? __warn+0x9f/0x1a0
+[  127.322531]  ? __nf_unregister_net_hook+0x21a/0x260
+[  127.322537]  ? report_bug+0x1b1/0x1e0
+[  127.322545]  ? handle_bug+0x3c/0x70
+[  127.322552]  ? exc_invalid_op+0x17/0x40
+[  127.322556]  ? asm_exc_invalid_op+0x1a/0x20
+[  127.322563]  ? kasan_save_free_info+0x3b/0x60
+[  127.322570]  ? __nf_unregister_net_hook+0x6a/0x260
+[  127.322577]  ? __nf_unregister_net_hook+0x21a/0x260
+[  127.322583]  ? __nf_unregister_net_hook+0x6a/0x260
+[  127.322590]  ? __nf_tables_unregister_hook+0x8a/0xe0 [nf_tables]
+[  127.322655]  nft_table_disable+0x75/0xf0 [nf_tables]
+[  127.322717]  nf_tables_commit+0x2571/0x2620 [nf_tables]
 
-This is because when finding an entry in ext4_xattr_block_cache_find(), if
-ext4_sb_bread() returns -ENOMEM, the ce's e_refcnt, which has already grown
-in the __entry_find(), won't be put away, and eventually trigger the above
-issue in mb_cache_destroy() due to reference count leakage.
-
-So call mb_cache_entry_put() on the -ENOMEM error branch as a quick fix.
-
-Reported-by: syzbot+dd43bd0f7474512edc47@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=dd43bd0f7474512edc47
-Fixes: fb265c9cb49e ("ext4: add ext4_sb_bread() to disambiguate ENOMEM cases")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240504075526.2254349-2-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -3113,8 +3113,10 @@ ext4_xattr_block_cache_find(struct inode
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1750,6 +1750,9 @@ static int nf_tables_addchain(struct nft
+ 		struct nft_chain_hook hook;
+ 		struct nf_hook_ops *ops;
  
- 		bh = ext4_sb_bread(inode->i_sb, ce->e_value, REQ_PRIO);
- 		if (IS_ERR(bh)) {
--			if (PTR_ERR(bh) == -ENOMEM)
-+			if (PTR_ERR(bh) == -ENOMEM) {
-+				mb_cache_entry_put(ea_block_cache, ce);
- 				return NULL;
-+			}
- 			bh = NULL;
- 			EXT4_ERROR_INODE(inode, "block %lu read error",
- 					 (unsigned long)ce->e_value);
++		if (table->flags & __NFT_TABLE_F_UPDATE)
++			return -EINVAL;
++
+ 		err = nft_chain_parse_hook(net, nla, &hook, family, true);
+ 		if (err < 0)
+ 			return err;
 
 
 
