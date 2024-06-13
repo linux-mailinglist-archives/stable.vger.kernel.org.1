@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1179071E6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F494906E23
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C0A41C2466D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 945A01C22B49
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D851448DD;
-	Thu, 13 Jun 2024 12:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C46146008;
+	Thu, 13 Jun 2024 12:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UuRgH08t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGoijvGv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D2D143868;
-	Thu, 13 Jun 2024 12:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6352C145B3F;
+	Thu, 13 Jun 2024 12:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282487; cv=none; b=a4G+svkf43cp0LveyIhEPFdzQiBrixcIPmwU79x29L40NakQRK7a8Z3bb7/26T0rJNoJQ2HtBWF4srsR5elxqQW3MSzbtUvivK7az4pN+fl8ayAubiglRcByawo0LFgIFWqmbVxd8a8lKnWfGZVasiKDMnifSbgBDQgkSoOVTug=
+	t=1718280183; cv=none; b=YGOvXwqIe/suSoCjeI/Eybm3HoQeWtaD9D9CsDg0TfFhwkBUeGmRPJaj4ZXFyOjVIgaIBxJ5h3aF9cxg6TsHQLtfno9euRkKSM8B18unH39DFj0czaqhyfVmHIKhLy9Z4ajdRXl6G714PKuF1HL7rhLc68ojrDInY2Sbd3oL2z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282487; c=relaxed/simple;
-	bh=6tnJDvnvvp3OEdm/qJ/wYOLPNHKyjn4VGRcbOp9ULk4=;
+	s=arc-20240116; t=1718280183; c=relaxed/simple;
+	bh=u2PuHTIr2XH+znC+/FzKefyDLDgIjxsjN5EjplAS/fI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4kcq3y88JwxD1LKSdeSQ1yBaKsCvPJO5E8jtz3bHLnbAHBBHDi9H40bzfZKkeGmBy+yhm6SrmXllo8ML8aX1vT3ZpenWu7sgM0bKprhKcboW4qAbIdgvbnoJrkpAaglZ5A9+QaTPZe+Rd23YKkOBXlfGIsvJ3fgAydPYgmyJxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UuRgH08t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40991C2BBFC;
-	Thu, 13 Jun 2024 12:41:26 +0000 (UTC)
+	 MIME-Version; b=QDPTjAzRqWnjpyGoAyIPR9Qy80GnSbNf3jedO/ojPUgdLJDM9DOfcMCQD87u1W9lePYnZZcmZw7UE8TtX0lqr04CSrWAk6EV4jwKGOqQwubR8jUbVuPgEz5h7CyDdJFgi6MWqtakpsWUTm5m1nTZfeKfLlAoq+0eccZW5WSchm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGoijvGv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDD0C2BBFC;
+	Thu, 13 Jun 2024 12:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282486;
-	bh=6tnJDvnvvp3OEdm/qJ/wYOLPNHKyjn4VGRcbOp9ULk4=;
+	s=korg; t=1718280183;
+	bh=u2PuHTIr2XH+znC+/FzKefyDLDgIjxsjN5EjplAS/fI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UuRgH08tCyVFwNoAuVOOV6GI3QT5roU7O05ioCq2phtVrTk9ZZ5xquJGDCQ4JQytw
-	 a4W9Ns1FT7qSzJi1HpaOdvNejmJ9OVzWmkixjX042FrHfL+rL3x4M/MMOHWcpxLDua
-	 orzqCZU3ICCT8PQPXKzxl5jEqVNPUh808RBC5VkM=
+	b=GGoijvGv0ExWjHk8LRYLe2R0SIDjSi8HfIRLYUyroZSr0/kKVjFqMqXi3ZI5EIvk4
+	 5xxk9Oghy3rpqyvqILYeGwBqxS0kVLiR+C4dJdXfvAFoGUVjtzBgZ2E4C7ApteCuRD
+	 Xv+bUaEW1puR1ZJdWXyQexq9ubTsufWwOeDtQ5As=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaime Caamano <jcaamano@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
+	Roded Zats <rzats@paloaltonetworks.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 294/402] openvswitch: Set the skbuff pkt_type for proper pmtud support.
+Subject: [PATCH 5.4 153/202] enic: Validate length of nl attributes in enic_set_vf_port
 Date: Thu, 13 Jun 2024 13:34:11 +0200
-Message-ID: <20240613113313.617809534@linuxfoundation.org>
+Message-ID: <20240613113233.657828225@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Conole <aconole@redhat.com>
+From: Roded Zats <rzats@paloaltonetworks.com>
 
-[ Upstream commit 30a92c9e3d6b073932762bef2ac66f4ee784c657 ]
+[ Upstream commit e8021b94b0412c37bcc79027c2e382086b6ce449 ]
 
-Open vSwitch is originally intended to switch at layer 2, only dealing with
-Ethernet frames.  With the introduction of l3 tunnels support, it crossed
-into the realm of needing to care a bit about some routing details when
-making forwarding decisions.  If an oversized packet would need to be
-fragmented during this forwarding decision, there is a chance for pmtu
-to get involved and generate a routing exception.  This is gated by the
-skbuff->pkt_type field.
+enic_set_vf_port assumes that the nl attribute IFLA_PORT_PROFILE
+is of length PORT_PROFILE_MAX and that the nl attributes
+IFLA_PORT_INSTANCE_UUID, IFLA_PORT_HOST_UUID are of length PORT_UUID_MAX.
+These attributes are validated (in the function do_setlink in rtnetlink.c)
+using the nla_policy ifla_port_policy. The policy defines IFLA_PORT_PROFILE
+as NLA_STRING, IFLA_PORT_INSTANCE_UUID as NLA_BINARY and
+IFLA_PORT_HOST_UUID as NLA_STRING. That means that the length validation
+using the policy is for the max size of the attributes and not on exact
+size so the length of these attributes might be less than the sizes that
+enic_set_vf_port expects. This might cause an out of bands
+read access in the memcpys of the data of these
+attributes in enic_set_vf_port.
 
-When a flow is already loaded into the openvswitch module this field is
-set up and transitioned properly as a packet moves from one port to
-another.  In the case that a packet execute is invoked after a flow is
-newly installed this field is not properly initialized.  This causes the
-pmtud mechanism to omit sending the required exception messages across
-the tunnel boundary and a second attempt needs to be made to make sure
-that the routing exception is properly setup.  To fix this, we set the
-outgoing packet's pkt_type to PACKET_OUTGOING, since it can only get
-to the openvswitch module via a port device or packet command.
-
-Even for bridge ports as users, the pkt_type needs to be reset when
-doing the transmit as the packet is truly outgoing and routing needs
-to get involved post packet transformations, in the case of
-VXLAN/GENEVE/udp-tunnel packets.  In general, the pkt_type on output
-gets ignored, since we go straight to the driver, but in the case of
-tunnel ports they go through IP routing layer.
-
-This issue is periodically encountered in complex setups, such as large
-openshift deployments, where multiple sets of tunnel traversal occurs.
-A way to recreate this is with the ovn-heater project that can setup
-a networking environment which mimics such large deployments.  We need
-larger environments for this because we need to ensure that flow
-misses occur.  In these environment, without this patch, we can see:
-
-  ./ovn_cluster.sh start
-  podman exec ovn-chassis-1 ip r a 170.168.0.5/32 dev eth1 mtu 1200
-  podman exec ovn-chassis-1 ip netns exec sw01p1 ip r flush cache
-  podman exec ovn-chassis-1 ip netns exec sw01p1 \
-         ping 21.0.0.3 -M do -s 1300 -c2
-  PING 21.0.0.3 (21.0.0.3) 1300(1328) bytes of data.
-  From 21.0.0.3 icmp_seq=2 Frag needed and DF set (mtu = 1142)
-
-  --- 21.0.0.3 ping statistics ---
-  ...
-
-Using tcpdump, we can also see the expected ICMP FRAG_NEEDED message is not
-sent into the server.
-
-With this patch, setting the pkt_type, we see the following:
-
-  podman exec ovn-chassis-1 ip netns exec sw01p1 \
-         ping 21.0.0.3 -M do -s 1300 -c2
-  PING 21.0.0.3 (21.0.0.3) 1300(1328) bytes of data.
-  From 21.0.0.3 icmp_seq=1 Frag needed and DF set (mtu = 1222)
-  ping: local error: message too long, mtu=1222
-
-  --- 21.0.0.3 ping statistics ---
-  ...
-
-In this case, the first ping request receives the FRAG_NEEDED message and
-a local routing exception is created.
-
-Tested-by: Jaime Caamano <jcaamano@redhat.com>
-Reported-at: https://issues.redhat.com/browse/FDP-164
-Fixes: 58264848a5a7 ("openvswitch: Add vxlan tunneling support.")
-Signed-off-by: Aaron Conole <aconole@redhat.com>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Link: https://lore.kernel.org/r/20240516200941.16152-1-aconole@redhat.com
+Fixes: f8bd909183ac ("net: Add ndo_{set|get}_vf_port support for enic dynamic vnics")
+Signed-off-by: Roded Zats <rzats@paloaltonetworks.com>
+Link: https://lore.kernel.org/r/20240522073044.33519-1-rzats@paloaltonetworks.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/actions.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/cisco/enic/enic_main.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index aca6e2b599c86..85af0e9e0ac6d 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -924,6 +924,12 @@ static void do_output(struct datapath *dp, struct sk_buff *skb, int out_port,
- 				pskb_trim(skb, ovs_mac_header_len(key));
- 		}
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index 03c8af58050c9..892c4b5ff3036 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -1152,18 +1152,30 @@ static int enic_set_vf_port(struct net_device *netdev, int vf,
+ 	pp->request = nla_get_u8(port[IFLA_PORT_REQUEST]);
  
-+		/* Need to set the pkt_type to involve the routing layer.  The
-+		 * packet movement through the OVS datapath doesn't generally
-+		 * use routing, but this is needed for tunnel cases.
-+		 */
-+		skb->pkt_type = PACKET_OUTGOING;
-+
- 		if (likely(!mru ||
- 		           (skb->len <= mru + vport->dev->hard_header_len))) {
- 			ovs_vport_send(vport, skb, ovs_key_mac_proto(key));
+ 	if (port[IFLA_PORT_PROFILE]) {
++		if (nla_len(port[IFLA_PORT_PROFILE]) != PORT_PROFILE_MAX) {
++			memcpy(pp, &prev_pp, sizeof(*pp));
++			return -EINVAL;
++		}
+ 		pp->set |= ENIC_SET_NAME;
+ 		memcpy(pp->name, nla_data(port[IFLA_PORT_PROFILE]),
+ 			PORT_PROFILE_MAX);
+ 	}
+ 
+ 	if (port[IFLA_PORT_INSTANCE_UUID]) {
++		if (nla_len(port[IFLA_PORT_INSTANCE_UUID]) != PORT_UUID_MAX) {
++			memcpy(pp, &prev_pp, sizeof(*pp));
++			return -EINVAL;
++		}
+ 		pp->set |= ENIC_SET_INSTANCE;
+ 		memcpy(pp->instance_uuid,
+ 			nla_data(port[IFLA_PORT_INSTANCE_UUID]), PORT_UUID_MAX);
+ 	}
+ 
+ 	if (port[IFLA_PORT_HOST_UUID]) {
++		if (nla_len(port[IFLA_PORT_HOST_UUID]) != PORT_UUID_MAX) {
++			memcpy(pp, &prev_pp, sizeof(*pp));
++			return -EINVAL;
++		}
+ 		pp->set |= ENIC_SET_HOST;
+ 		memcpy(pp->host_uuid,
+ 			nla_data(port[IFLA_PORT_HOST_UUID]), PORT_UUID_MAX);
 -- 
 2.43.0
 
