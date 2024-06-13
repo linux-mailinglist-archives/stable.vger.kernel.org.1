@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-51249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FDC9906EFC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 194F99070B7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A93022827CA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B74D1C23D0A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5010145335;
-	Thu, 13 Jun 2024 12:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B53E817;
+	Thu, 13 Jun 2024 12:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnPTVMtH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6AbqFuB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7277B8614D;
-	Thu, 13 Jun 2024 12:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A768195;
+	Thu, 13 Jun 2024 12:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280744; cv=none; b=Z3SIHi2SPXKRn++DBt4ZKtTjI/z6GejtB2EJDNNq1fHXOPOxYafpWM9ZOEr5STTa/gK0sBqBG6MPYR8yfqB6e/YJGdTbd5O5rkjXo82GGMpULwzNccxbY0Sj9UuuenZCQOl6fXnt7MLs5z52UfKGG0dpqgDaGuCgksB5f4r3YHU=
+	t=1718281807; cv=none; b=al1ryHq5umo8zTz3GUTt05UUy3ck2RiGCssnVquyFAs0cdA8bDPSPrm56rpUJheJeFgn3D1xrRP5cDW2IrmsnVZThW264eusZRZ427qB9jgqJfK/84JFxX/Vq5VRN3Uf8x8730gCDIURpo3XkuIzJRTnVlF7I3DkLWo7O/m2RGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280744; c=relaxed/simple;
-	bh=EvNhlQdlWuLsswg9nVgfVtrFcBW339jsqyf0mnswt94=;
+	s=arc-20240116; t=1718281807; c=relaxed/simple;
+	bh=Sht7GassD0YWezh8oCMb4ge3ByxUwFESHICmUHQCBFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aA1WBWzy757CYwtMRBWugW8q0sSFVLKOn+W/d7eAQASbPN8UzhSKZmx+RVC3Hr14VCPzSjlJ1JLWzCq+OoG7FW8HZJdg1k4FWLhUZEltHT1W2Z2RwWldQZS8saQ4435bTklo1xrpKLPZ/POpiuncuYJIU9K3BsMzuak42Xvh4C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnPTVMtH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDEDC2BBFC;
-	Thu, 13 Jun 2024 12:12:23 +0000 (UTC)
+	 MIME-Version; b=oFxCFl6LtDMnN9TmH7kKPdhLEmZQ9F7O+L+GT4vIfXT0IA7vTZrdigiz1Q/wP7SuOfaaA9MU3Mjvsy98HLSzhJhocxm3wO0AkgtVVCdZRAKNbXO+vVsk+Rb+WREPPpmnRoroTxsBjY1tHuiEB52EYyVT0sN3k5QhCGew3NJMI2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6AbqFuB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA9FC2BBFC;
+	Thu, 13 Jun 2024 12:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280744;
-	bh=EvNhlQdlWuLsswg9nVgfVtrFcBW339jsqyf0mnswt94=;
+	s=korg; t=1718281807;
+	bh=Sht7GassD0YWezh8oCMb4ge3ByxUwFESHICmUHQCBFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WnPTVMtHFWxcSihBwpvhBiy/OeDE8ch4TCdSvNJFjIWo3yyrHG5Jy5lppzj6tAiQI
-	 vt8gU8Oharg3hRgwGu4ouuEUE5dN/agIvzk8Cjn45rBviR5H/e09HSrawWhOoE+thh
-	 iZ/LLJKf0B20on0JwKtF7XVIKYWXUjCD7IvIw3RE=
+	b=f6AbqFuB8YffzzPxVIo5LhARi2IRnYtxmSdImqlqBUQviVihIy3q5GXEsOTup8r8x
+	 WuuJYGD5WDDnnbBXSy44n+bMTEWHowWR73EOWQu2bL2yTtuzuGzpoY4CQpB9RS8f8W
+	 Xri1znvPidF45ia2vdk8UXlqjLKFT9qpic3eOFoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	j51569436@gmail.com,
-	Daniel Starke <daniel.starke@siemens.com>
-Subject: [PATCH 5.10 002/317] tty: n_gsm: fix possible out-of-bounds in gsm0_receive()
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 063/402] scsi: ufs: cdns-pltfrm: Perform read back after writing HCLKDIV
 Date: Thu, 13 Jun 2024 13:30:20 +0200
-Message-ID: <20240613113247.624299168@linuxfoundation.org>
+Message-ID: <20240613113304.594840494@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Starke <daniel.starke@siemens.com>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-commit 47388e807f85948eefc403a8a5fdc5b406a65d5a upstream.
+[ Upstream commit b715c55daf598aac8fa339048e4ca8a0916b332e ]
 
-Assuming the following:
-- side A configures the n_gsm in basic option mode
-- side B sends the header of a basic option mode frame with data length 1
-- side A switches to advanced option mode
-- side B sends 2 data bytes which exceeds gsm->len
-  Reason: gsm->len is not used in advanced option mode.
-- side A switches to basic option mode
-- side B keeps sending until gsm0_receive() writes past gsm->buf
-  Reason: Neither gsm->state nor gsm->len have been reset after
-  reconfiguration.
+Currently, HCLKDIV is written to and then completed with an mb().
 
-Fix this by changing gsm->count to gsm->len comparison from equal to less
-than. Also add upper limit checks against the constant MAX_MRU in
-gsm0_receive() and gsm1_receive() to harden against memory corruption of
-gsm->len and gsm->mru.
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring this
+bit has taken effect on the device is to perform a read back to force it to
+make it all the way to the device. This is documented in device-io.rst and
+a talk by Will Deacon on this can be seen over here:
 
-All other checks remain as we still need to limit the data according to the
-user configuration and actual payload size.
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
 
-Reported-by: j51569436@gmail.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218708
-Tested-by: j51569436@gmail.com
-Fixes: e1eaea46bb40 ("tty: n_gsm line discipline")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
-Link: https://lore.kernel.org/r/20240424054842.7741-1-daniel.starke@siemens.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's do that to ensure the bit hits the device. Because the mb()'s purpose
+wasn't to add extra ordering (on top of the ordering guaranteed by
+writel()/readl()), it can safely be removed.
+
+Fixes: d90996dae8e4 ("scsi: ufs: Add UFS platform driver for Cadence UFS")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-6-181252004586@redhat.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_gsm.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/scsi/ufs/cdns-pltfrm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -2082,8 +2082,12 @@ static void gsm0_receive(struct gsm_mux
- 		break;
- 	case GSM_DATA:		/* Data */
- 		gsm->buf[gsm->count++] = c;
--		if (gsm->count == gsm->len)
-+		if (gsm->count >= MAX_MRU) {
-+			gsm->bad_size++;
-+			gsm->state = GSM_SEARCH;
-+		} else if (gsm->count >= gsm->len) {
- 			gsm->state = GSM_FCS;
-+		}
- 		break;
- 	case GSM_FCS:		/* FCS follows the packet */
- 		gsm->received_fcs = c;
-@@ -2176,7 +2180,7 @@ static void gsm1_receive(struct gsm_mux
- 		gsm->state = GSM_DATA;
- 		break;
- 	case GSM_DATA:		/* Data */
--		if (gsm->count > gsm->mru) {	/* Allow one for the FCS */
-+		if (gsm->count > gsm->mru || gsm->count > MAX_MRU) {	/* Allow one for the FCS */
- 			gsm->state = GSM_OVERRUN;
- 			gsm->bad_size++;
- 		} else
+diff --git a/drivers/scsi/ufs/cdns-pltfrm.c b/drivers/scsi/ufs/cdns-pltfrm.c
+index 7da8be2f35c42..07a2580e4e56c 100644
+--- a/drivers/scsi/ufs/cdns-pltfrm.c
++++ b/drivers/scsi/ufs/cdns-pltfrm.c
+@@ -136,7 +136,7 @@ static int cdns_ufs_set_hclkdiv(struct ufs_hba *hba)
+ 	 * Make sure the register was updated,
+ 	 * UniPro layer will not work with an incorrect value.
+ 	 */
+-	mb();
++	ufshcd_readl(hba, CDNS_UFS_REG_HCLKDIV);
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
