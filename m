@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-50927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 166F4906D77
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6627E906C5F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B51A71F27CC5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0046BB24926
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7318514882F;
-	Thu, 13 Jun 2024 11:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7320143866;
+	Thu, 13 Jun 2024 11:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duQ7UJmP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Edbb54Ub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C851487DA;
-	Thu, 13 Jun 2024 11:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EF71428E9;
+	Thu, 13 Jun 2024 11:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279797; cv=none; b=kPdWS+6hNCdWCWYVicTa/GxOGoao3xvPMG29eFFXzXywVviMZnB+WtGXL+DWADXeNd2/+/QngeDAQYBa9msiKLmquINAErLZMJBeFkh3dsG8ftd+CIEvEdLm3fmM8X7UwxjwbhNYLs9NMx1nt2GVCyzDtI+a1MLpJBvQTY+Qaeg=
+	t=1718279248; cv=none; b=cPW2mqyq8iFqfJ78d7ItVpSffebTyCPuBBi7aP+L/am1ynXGarmqfK0HQhhNKvvSI/wJ7jq+6aOy/IFrqYmJ9eE/qIidiGegyJAbsIOKTz6Xb4+vIUM1hFXzcyaoVSwKmmnGepEKJ2IjanVq8eWLvYXL0i8oPw2Jw/ZLAjb6FKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279797; c=relaxed/simple;
-	bh=WA0PjgWwKx7kVApIphAj20DnD+Vmhm4KHCYjbZaK1RQ=;
+	s=arc-20240116; t=1718279248; c=relaxed/simple;
+	bh=kx2ULFD2210OodSo/vHDIRuieCwhKcL4TubCk56Jh34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pBk4cS8aXETebbTGZwYXlYNtfmsngizGuBIfryJ5P0I0YT89WBnRuSVeHuXjlcfvcgtvOoiuEcoP+tZl+euPDTBQumFd6pEFHTlqTrJJY9KnnRZCk/qXN7Row9s0pjN2SkHx6L1SMT8ILoeRoxqng0aZ23jDSNiL98k5p2gtPUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duQ7UJmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B158BC4AF1A;
-	Thu, 13 Jun 2024 11:56:36 +0000 (UTC)
+	 MIME-Version; b=EFyCTu3xFU1kuWFyKj0d93vTCc6Iz8XC+7EyVVDYlQ5l8MKlZCEVruCFF429WSl5UcWe2JeqgiQpjX1IclRWkueccPIl8poe5Yk6R2PjCHzs5XpSq8RjMAz6lWi90j/F3Wcy7MtnSBxhGoiOXhdUJXNLX/e6ZjnChZtrRl4RbPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Edbb54Ub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF5EC32786;
+	Thu, 13 Jun 2024 11:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279797;
-	bh=WA0PjgWwKx7kVApIphAj20DnD+Vmhm4KHCYjbZaK1RQ=;
+	s=korg; t=1718279248;
+	bh=kx2ULFD2210OodSo/vHDIRuieCwhKcL4TubCk56Jh34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=duQ7UJmPsB1DHG7ehJSKX01yEqDhCSSktWsR+OlxJ5vCxtyWSuthu5Qbom9Dj6wbW
-	 DWWrmnslNSEeNCl9VaJB6Mn3iGla5jPisgE9HOBxeVp610aDBrMp1+aNxyT6ETEQJ6
-	 mfJynLcmieJtlTJTQyfduUPpC+V7K76hLlmGt4oM=
+	b=Edbb54Ubom0QSgaR8A137DEx+zLTZr+pKRIALrFm0eF08PSkWJV2DzUYEVShGXmxo
+	 WotokpRQmDNTW6rcpZX8RC8REcZnjIanl7yNFykg3DSKhsw1Vuja1hWJnxyzzdB+lM
+	 DsDpQC38PJWNwqvnN+u2jE3Vna7rpvVHxv98AxkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lizhe <sensor1010@163.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 039/202] cpufreq: exit() callback is optional
+	Jia Jie Ho <jiajie.ho@starfivetech.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.9 012/157] crypto: starfive - Do not free stack buffer
 Date: Thu, 13 Jun 2024 13:32:17 +0200
-Message-ID: <20240613113229.281377839@linuxfoundation.org>
+Message-ID: <20240613113227.879431470@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Jia Jie Ho <jiajie.ho@starfivetech.com>
 
-[ Upstream commit b8f85833c05730d631576008daaa34096bc7f3ce ]
+commit d7f01649f4eaf1878472d3d3f480ae1e50d98f6c upstream.
 
-The exit() callback is optional and shouldn't be called without checking
-a valid pointer first.
+RSA text data uses variable length buffer allocated in software stack.
+Calling kfree on it causes undefined behaviour in subsequent operations.
 
-Also, we must clear freq_table pointer even if the exit() callback isn't
-present.
-
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Fixes: 91a12e91dc39 ("cpufreq: Allow light-weight tear down and bring up of CPUs")
-Fixes: f339f3541701 ("cpufreq: Rearrange locking in cpufreq_remove_dev()")
-Reported-by: Lizhe <sensor1010@163.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org> #6.7+
+Signed-off-by: Jia Jie Ho <jiajie.ho@starfivetech.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/crypto/starfive/jh7110-rsa.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index e727282f56963..c79bbd8cc125c 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -1600,10 +1600,13 @@ static void __cpufreq_offline(unsigned int cpu, struct cpufreq_policy *policy)
- 	 */
- 	if (cpufreq_driver->offline) {
- 		cpufreq_driver->offline(policy);
--	} else if (cpufreq_driver->exit) {
--		cpufreq_driver->exit(policy);
--		policy->freq_table = NULL;
-+		return;
- 	}
-+
-+	if (cpufreq_driver->exit)
-+		cpufreq_driver->exit(policy);
-+
-+	policy->freq_table = NULL;
+--- a/drivers/crypto/starfive/jh7110-rsa.c
++++ b/drivers/crypto/starfive/jh7110-rsa.c
+@@ -273,7 +273,6 @@ static int starfive_rsa_enc_core(struct
+ 
+ err_rsa_crypt:
+ 	writel(STARFIVE_RSA_RESET, cryp->base + STARFIVE_PKA_CACR_OFFSET);
+-	kfree(rctx->rsa_data);
+ 	return ret;
  }
  
- static int cpufreq_offline(unsigned int cpu)
-@@ -1653,7 +1656,7 @@ static void cpufreq_remove_dev(struct device *dev, struct subsys_interface *sif)
- 	}
- 
- 	/* We did light-weight exit earlier, do full tear down now */
--	if (cpufreq_driver->offline)
-+	if (cpufreq_driver->offline && cpufreq_driver->exit)
- 		cpufreq_driver->exit(policy);
- 
- 	up_write(&policy->rwsem);
--- 
-2.43.0
-
 
 
 
