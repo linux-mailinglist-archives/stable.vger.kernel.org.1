@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D0790726B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:47:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB5E49072AA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:50:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FBAD1F214F7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:47:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C91C2824B2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0618144313;
-	Thu, 13 Jun 2024 12:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36463143C46;
+	Thu, 13 Jun 2024 12:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGbQb/Pb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDejnGdb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F04E14430C;
-	Thu, 13 Jun 2024 12:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91C9384;
+	Thu, 13 Jun 2024 12:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282825; cv=none; b=Mfpz4MuHidqVaktzKR1Hb779vmuCpuWnxeHONA6JIs6KdaarGKD4Rkv+bk8y1yHuhphzDRZTa275Zt+EbNuzN9/CoXEQmlmPJFU53ips1N3OWFCDnk4cHbGRJQ5K+WukeR/8fW8me93+UyAFQpjUUYkllezuqxWTcxWVxELB/Fs=
+	t=1718282958; cv=none; b=IWKgOFQGtivhj52Vc52lf/MmWdYd+wT+vOHtIsMIwo/n+vbFeO4ALdikNZJQSro+il94zl7Or3KZR3V7/w0Y8cuXxT27INN4eQSYnvITDagXCB3Y3vwsbToWQkS9PReRsmnmZphXN/NsDxYiaSPLs8l0LbDiSqhpMd02goeKwiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282825; c=relaxed/simple;
-	bh=ODLnXwCU0nkvHOLtc6LNCVifuIee6RWXku7hveqAhhk=;
+	s=arc-20240116; t=1718282958; c=relaxed/simple;
+	bh=M9sN0tyLSHBU5Q+K+jqOO648NPHYAD8dPNERg0Qm++Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bwowjVuYqjuede7wC1Ue8g/f0xegRciujobZ+zKcFuO7YmxPKQLujFJzCoMFEHEnuJn3IUQSo/c1CXk9oMi6dGK53WHtMuzA5PmNeNHfeHQioygdIP4mWYWF/wjEyrn6FRwDfwHoUyzd8G4CljfK+OFymwLiSHZCW+CqZOi8VOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGbQb/Pb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158DAC32786;
-	Thu, 13 Jun 2024 12:47:04 +0000 (UTC)
+	 MIME-Version; b=iHJe6OEEmurZ8ZsqyxHQAxPjU0MibrG/mks6+txYJPsBNOCKxAF1F8MgNezo6O6SA04j/3YME0D6UFrsZRmSzM2NSRWk+03S6iiG3Av4Qdk/ykb0W7OPDyERFAYPnSIkYbncG54zKVseiDg5iVJoaxrfqdgq1DuZeVR+TC09j/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDejnGdb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726A1C2BBFC;
+	Thu, 13 Jun 2024 12:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282825;
-	bh=ODLnXwCU0nkvHOLtc6LNCVifuIee6RWXku7hveqAhhk=;
+	s=korg; t=1718282957;
+	bh=M9sN0tyLSHBU5Q+K+jqOO648NPHYAD8dPNERg0Qm++Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lGbQb/PbMZlq4yhuSkXjRBmoHyLIUPbBhpmsaaJdd972Ssm5vVmCGeoja7wwJMmKp
-	 KeYRFKhC3KUSd39BQwvf+8uSet++mcZwoRSiBR7/+AK2pzsS3M6pcGX/ItymWoTXHo
-	 Rict5wnaInHfhcoK2vHDicMiLbZdLUopxp6jOr8k=
+	b=TDejnGdbPuRwrNmwd07+7Vrrr0TpMuyaopTNW6msFFS31zRgfimhYxaiM6TJDQwK4
+	 Ol/Gf0ZFj2Fz7OajS+oCt/gT7aORhbtE5B4dGitTz+UZGgSnlkEUa6pBzki5+GNc/R
+	 h2AJzABDh1XyU5/dU7P2t7Z95jFQ+06ut590whV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Justin Stitt <justinstitt@google.com>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 5.15 390/402] kdb: Use format-specifiers rather than memset() for padding in kdb_read()
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.1 49/85] KVM: arm64: Allow AArch32 PSTATE.M to be restored as System mode
 Date: Thu, 13 Jun 2024 13:35:47 +0200
-Message-ID: <20240613113317.358696164@linuxfoundation.org>
+Message-ID: <20240613113216.032151307@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Marc Zyngier <maz@kernel.org>
 
-commit c9b51ddb66b1d96e4d364c088da0f1dfb004c574 upstream.
+commit dfe6d190f38fc5df5ff2614b463a5195a399c885 upstream.
 
-Currently when the current line should be removed from the display
-kdb_read() uses memset() to fill a temporary buffer with spaces.
-The problem is not that this could be trivially implemented using a
-format string rather than open coding it. The real problem is that
-it is possible, on systems with a long kdb_prompt_str, to write past
-the end of the tmpbuffer.
+It appears that we don't allow a vcpu to be restored in AArch32
+System mode, as we *never* included it in the list of valid modes.
 
-Happily, as mentioned above, this can be trivially implemented using a
-format string. Make it so!
+Just add it to the list of allowed modes.
 
+Fixes: 0d854a60b1d7 ("arm64: KVM: enable initialization of a 32bit vcpu")
 Cc: stable@vger.kernel.org
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Justin Stitt <justinstitt@google.com>
-Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-5-f236dbe9828d@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240524141956.1450304-3-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/arm64/kvm/guest.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -305,11 +305,9 @@ poll_again:
- 		break;
- 	case 14: /* Down */
- 	case 16: /* Up */
--		memset(tmpbuffer, ' ',
--		       strlen(kdb_prompt_str) + (lastchar-buffer));
--		*(tmpbuffer+strlen(kdb_prompt_str) +
--		  (lastchar-buffer)) = '\0';
--		kdb_printf("\r%s\r", tmpbuffer);
-+		kdb_printf("\r%*c\r",
-+			   (int)(strlen(kdb_prompt_str) + (lastchar - buffer)),
-+			   ' ');
- 		*lastchar = (char)key;
- 		*(lastchar+1) = '\0';
- 		return lastchar;
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -250,6 +250,7 @@ static int set_core_reg(struct kvm_vcpu
+ 		case PSR_AA32_MODE_SVC:
+ 		case PSR_AA32_MODE_ABT:
+ 		case PSR_AA32_MODE_UND:
++		case PSR_AA32_MODE_SYS:
+ 			if (!vcpu_el1_is_32bit(vcpu))
+ 				return -EINVAL;
+ 			break;
 
 
 
