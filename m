@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-50929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12475906D79
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B61BE906B80
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2B18286B13
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 593AB1F21508
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6A6148847;
-	Thu, 13 Jun 2024 11:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC79143870;
+	Thu, 13 Jun 2024 11:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKnXDRfp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylH/zTK9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0D614883B;
-	Thu, 13 Jun 2024 11:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5A5142911;
+	Thu, 13 Jun 2024 11:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279803; cv=none; b=ZQ2ydYOaZUgZ8iNDiKgqUz6Fr6jdOBE6q+g/HmxREpm2Jf5jcElQ23M4JOOTnxBSv/aCJeJimw3LawCA8run9D7jjbQZQOK9aSpO8ZzFyvyjye2wiLEJ5zSsHVfaLqWVao16BhFY/sFspsLbHqzcWyPptBAzBzUUnbpqOXodDOM=
+	t=1718278850; cv=none; b=QQ6rXz55LG650HK6oDU47m/LVHdQbvwsw/meV/bDqUsrytCPCAEHfvtbKObE8wnMWNVu75vxBznBxSnqd78xxxcHWg0QYt0xaAqRz5evmf0WMikJzTiUwj5AeHDih1j+5fiS6Dxba5Mn7WRxF/sysJn0noiY/awNwzsfYJopth8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279803; c=relaxed/simple;
-	bh=E/48ChbXLW5R0WjUwo4CqzFGQpwq0rD+5krmkNFGeGc=;
+	s=arc-20240116; t=1718278850; c=relaxed/simple;
+	bh=DlDaWGNVHEfYBOODj0tFaM4QzkwX9xzbdPzknbz99v8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nPSrkYCa9/UCeqc7E2m/AdzPisqjt6ab/AQgmzpmGnAz+97GzKBoCRUyTH7s9GDZW5AiaRkjpkjLPULQmaZPk3lZ+mtZkfEaCAL5PeoWgvbFrTaqE264uFYqouUoJPEMsR1Clg2p272mIZaWpOVCTiimFtWggH8bwTmZFVYxt60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rKnXDRfp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851C3C2BBFC;
-	Thu, 13 Jun 2024 11:56:42 +0000 (UTC)
+	 MIME-Version; b=IfwglowxUuDYvTKWIrqH+YUD7kRiqWqi2SMzaC75tOBdBincoWVDSpyIBVvUXzo9V4TdGuOMccsmVV7hi/LcHoJRSCyZXHHIotuI45fBqJ+ha7uiHXgXS6OvR1h9zoLNk243SVfyQe9R2b3hjJlrFLuQ56Xv1VJDq52qwPElzZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylH/zTK9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90EF7C2BBFC;
+	Thu, 13 Jun 2024 11:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279802;
-	bh=E/48ChbXLW5R0WjUwo4CqzFGQpwq0rD+5krmkNFGeGc=;
+	s=korg; t=1718278850;
+	bh=DlDaWGNVHEfYBOODj0tFaM4QzkwX9xzbdPzknbz99v8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rKnXDRfpWIhjXfMnozh/sw+xynScfLjKPq1C+TojQPEu6Ep/3lVGBqgdlCAPhrEc9
-	 mIM/tPB/zHoIEUgwvShzDcwl8FTkEcVDXGLaKMqwmTP9uJ1VrE8t5X3XbhpPT0SAtK
-	 77y+6ka1RaAsRffuqsi+k1Gk8alXT/3pJU1TYG30=
+	b=ylH/zTK9VI4h14zOOKzc/AO7wPa2Qf8opyEDI3KxpL7+4X9kz85999pw7sREXL30j
+	 GgF5nkzGf98E8Cq+cJH9AzUd76CBRsAfE5i6tZkeDrZq0feRXJL7DLQWX0qrIQ+qbh
+	 tS/ZHSmor3/UyC0aUgrGKzoXE0Djvq4vRxH4wOVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuri Karpov <YKarpov@ispras.ru>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 041/202] scsi: hpsa: Fix allocation size for Scsi_Host private data
+Subject: [PATCH 4.19 091/213] dmaengine: idma64: Add check for dma_set_max_seg_size
 Date: Thu, 13 Jun 2024 13:32:19 +0200
-Message-ID: <20240613113229.357180993@linuxfoundation.org>
+Message-ID: <20240613113231.520443626@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuri Karpov <YKarpov@ispras.ru>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 504e2bed5d50610c1836046c0c195b0a6dba9c72 ]
+[ Upstream commit 2b1c1cf08a0addb6df42f16b37133dc7a351de29 ]
 
-struct Scsi_Host private data contains pointer to struct ctlr_info.
+As the possible failure of the dma_set_max_seg_size(), it should be
+better to check the return value of the dma_set_max_seg_size().
 
-Restore allocation of only 8 bytes to store pointer in struct Scsi_Host
-private data area.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: bbbd25499100 ("scsi: hpsa: Fix allocation size for scsi_host_alloc()")
-Signed-off-by: Yuri Karpov <YKarpov@ispras.ru>
-Link: https://lore.kernel.org/r/20240312170447.743709-1-YKarpov@ispras.ru
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: e3fdb1894cfa ("dmaengine: idma64: set maximum allowed segment size for DMA")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240403024932.3342606-1-nichen@iscas.ac.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hpsa.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/idma64.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/hpsa.c b/drivers/scsi/hpsa.c
-index e670cce0cb6ef..b760477b57424 100644
---- a/drivers/scsi/hpsa.c
-+++ b/drivers/scsi/hpsa.c
-@@ -5810,7 +5810,7 @@ static int hpsa_scsi_host_alloc(struct ctlr_info *h)
- {
- 	struct Scsi_Host *sh;
+diff --git a/drivers/dma/idma64.c b/drivers/dma/idma64.c
+index 920e98dc7113e..b2fb42a4385c1 100644
+--- a/drivers/dma/idma64.c
++++ b/drivers/dma/idma64.c
+@@ -603,7 +603,9 @@ static int idma64_probe(struct idma64_chip *chip)
  
--	sh = scsi_host_alloc(&hpsa_driver_template, sizeof(struct ctlr_info));
-+	sh = scsi_host_alloc(&hpsa_driver_template, sizeof(struct ctlr_info *));
- 	if (sh == NULL) {
- 		dev_err(&h->pdev->dev, "scsi_host_alloc failed\n");
- 		return -ENOMEM;
+ 	idma64->dma.dev = chip->sysdev;
+ 
+-	dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
++	ret = dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
++	if (ret)
++		return ret;
+ 
+ 	ret = dma_async_device_register(&idma64->dma);
+ 	if (ret)
 -- 
 2.43.0
 
