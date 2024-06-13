@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B90A907061
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B15AC907245
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F2BA1C23F1A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA1721C222E9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44CCF6EB56;
-	Thu, 13 Jun 2024 12:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6AA23A0;
+	Thu, 13 Jun 2024 12:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIRj83zZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olHSxdPk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022786AFAE;
-	Thu, 13 Jun 2024 12:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFD82566;
+	Thu, 13 Jun 2024 12:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281607; cv=none; b=IJDlR13QCMADmT84AUgHCXxqM7Xze6PZrKyyG9aWC0ZCdJ+Fc0OtlaXPakzFIbAlbyJ4fX0cxNIzzmCpkO64J7fdVTT8y1rxGd5sKzqrEbZalOokT5GMYvTumiygFgbu3z4l0xhe+Re9hIbiyTxLZn5mRS23k+E+7TDZSnckajQ=
+	t=1718282729; cv=none; b=opuSVZzXcolszjLvynps08+23hkmo3mHAv3hvfb6tUyDeq62neDp7NMCg5QjE0AYnrEJ6m9vMRIJOI85DRh83OmuWck0oBLkU6qIgZzxZRV+Tp6kVeW78VKLoCDrCgnvIYDMsJzyeVANCG6QJqvmo3gajP1v/exE4VcfQ9juZbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281607; c=relaxed/simple;
-	bh=ILGnX9vduPip0RFNgUNeXdlRv3TpS5z4QZaowiMml3I=;
+	s=arc-20240116; t=1718282729; c=relaxed/simple;
+	bh=w/AlfZ2nMuNKtl0uy1qMSDX+Wq0XFIM5YAGKsmTip7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXLkKvTdbhbamQRMCXx7J5VFyRyJoDkakT8S5CizCyfbCQAw3GAR/XI3F/BrGkMR6aoUJxoI2Yvz4wmY/smlnYCbyb9GgXeKpTCIIsS1yYg74PI3md+b8zk/hlFv0gEnmhy3TTmrctzOmI+//BP9zXQF/4oo+aA+i7GA+Un580c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIRj83zZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76933C2BBFC;
-	Thu, 13 Jun 2024 12:26:46 +0000 (UTC)
+	 MIME-Version; b=joRVZfHakG7brvUNZdua7lDEq8cBBhdf/zubRJEvH97crsVx0673PnsTgwrFEZICb2AVeDTpOSXE26OcPpdRFJCitR9PiZVCHi7CRAMEgd4zN1DwUgEPqPc0LBEFstd+1p4CxhJYLRDWGGc3yX0kQwPkW8ROKbZHZHcNeMLFIsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olHSxdPk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471E6C2BBFC;
+	Thu, 13 Jun 2024 12:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281606;
-	bh=ILGnX9vduPip0RFNgUNeXdlRv3TpS5z4QZaowiMml3I=;
+	s=korg; t=1718282728;
+	bh=w/AlfZ2nMuNKtl0uy1qMSDX+Wq0XFIM5YAGKsmTip7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iIRj83zZ28lIMzy+7TWRT6IXaKCgcPhNogcdnozmfut+Ut/EFVN6GPReh1dIyxNnt
-	 q72hRQW8PJElJ4/Yt5GqkAvoJf9jzur0OOX+O9Gf6lGxzi4uoCjFzQJ9yMPwa9fZ2u
-	 vwmXrZgNBTdRoL6dpYJYAMr8dzuZS++Be5TYmA14=
+	b=olHSxdPk3qDVA14lG5CH4njVeMdq8UtfMuRCSocs+sImvoW4jzLbaDXDf/1fBObBj
+	 RXe+xkgYeY33ZOqFawt6WoMvnN5Yg3XmTevybt8grqWlc489AJwWvqt3SWP1bxPtng
+	 3rTw2iY+9xK9itcC3QKOUhdaScAWpRPM+inBlMPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <kolga@netapp.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>
-Subject: [PATCH 5.10 313/317] NFS: Fix READ_PLUS when server doesnt support OP_READ_PLUS
-Date: Thu, 13 Jun 2024 13:35:31 +0200
-Message-ID: <20240613113259.661332882@linuxfoundation.org>
+	Li Ma <li.ma@amd.com>,
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 375/402] drm/amdgpu/atomfirmware: add intergrated info v2.3 table
+Date: Thu, 13 Jun 2024 13:35:32 +0200
+Message-ID: <20240613113316.773303405@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anna Schumaker <Anna.Schumaker@Netapp.com>
+From: Li Ma <li.ma@amd.com>
 
-commit f06d1b10cb016d5aaecdb1804fefca025387bd10 upstream.
+commit e64e8f7c178e5228e0b2dbb504b9dc75953a319f upstream.
 
-Olga showed me a case where the client was sending multiple READ_PLUS
-calls to the server in parallel, and the server replied
-NFS4ERR_OPNOTSUPP to each. The client would fall back to READ for the
-first reply, but fail to retry the other calls.
+[Why]
+The vram width value is 0.
+Because the integratedsysteminfo table in VBIOS has updated to 2.3.
 
-I fix this by removing the test for NFS_CAP_READ_PLUS in
-nfs4_read_plus_not_supported(). This allows us to reschedule any
-READ_PLUS call that has a NFS4ERR_OPNOTSUPP return value, even after the
-capability has been cleared.
+[How]
+Driver needs a new intergrated info v2.3 table too.
+Then the vram width value will be correct.
 
-Reported-by: Olga Kornievskaia <kolga@netapp.com>
-Fixes: c567552612ec ("NFS: Add READ_PLUS data segment support")
-Cc: stable@vger.kernel.org # v5.10+
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Li Ma <li.ma@amd.com>
+Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c |   15 ++++++++
+ drivers/gpu/drm/amd/include/atomfirmware.h       |   43 +++++++++++++++++++++++
+ 2 files changed, 58 insertions(+)
 
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -5320,7 +5320,7 @@ static bool nfs4_read_plus_not_supported
- 	struct rpc_message *msg = &task->tk_msg;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c
+@@ -149,6 +149,7 @@ union igp_info {
+ 	struct atom_integrated_system_info_v1_11 v11;
+ 	struct atom_integrated_system_info_v1_12 v12;
+ 	struct atom_integrated_system_info_v2_1 v21;
++	struct atom_integrated_system_info_v2_3 v23;
+ };
  
- 	if (msg->rpc_proc == &nfs4_procedures[NFSPROC4_CLNT_READ_PLUS] &&
--	    server->caps & NFS_CAP_READ_PLUS && task->tk_status == -ENOTSUPP) {
-+	    task->tk_status == -ENOTSUPP) {
- 		server->caps &= ~NFS_CAP_READ_PLUS;
- 		msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_READ];
- 		rpc_restart_call_prepare(task);
+ union umc_info {
+@@ -283,6 +284,20 @@ amdgpu_atomfirmware_get_vram_info(struct
+ 					if (vram_type)
+ 						*vram_type = convert_atom_mem_type_to_vram_type(adev, mem_type);
+ 					break;
++				case 3:
++					mem_channel_number = igp_info->v23.umachannelnumber;
++					if (!mem_channel_number)
++						mem_channel_number = 1;
++					mem_type = igp_info->v23.memorytype;
++					if (mem_type == LpDdr5MemType)
++						mem_channel_width = 32;
++					else
++						mem_channel_width = 64;
++					if (vram_width)
++						*vram_width = mem_channel_number * mem_channel_width;
++					if (vram_type)
++						*vram_type = convert_atom_mem_type_to_vram_type(adev, mem_type);
++					break;
+ 				default:
+ 					return -EINVAL;
+ 				}
+--- a/drivers/gpu/drm/amd/include/atomfirmware.h
++++ b/drivers/gpu/drm/amd/include/atomfirmware.h
+@@ -1467,6 +1467,49 @@ struct atom_integrated_system_info_v2_2
+ 	uint32_t  reserved4[189];
+ };
+ 
++struct uma_carveout_option {
++  char       optionName[29];        //max length of string is 28chars + '\0'. Current design is for "minimum", "Medium", "High". This makes entire struct size 64bits
++  uint8_t    memoryCarvedGb;        //memory carved out with setting
++  uint8_t    memoryRemainingGb;     //memory remaining on system
++  union {
++    struct _flags {
++      uint8_t Auto     : 1;
++      uint8_t Custom   : 1;
++      uint8_t Reserved : 6;
++    } flags;
++    uint8_t all8;
++  } uma_carveout_option_flags;
++};
++
++struct atom_integrated_system_info_v2_3 {
++  struct  atom_common_table_header table_header;
++  uint32_t  vbios_misc; // enum of atom_system_vbiosmisc_def
++  uint32_t  gpucapinfo; // enum of atom_system_gpucapinf_def
++  uint32_t  system_config;
++  uint32_t  cpucapinfo;
++  uint16_t  gpuclk_ss_percentage; // unit of 0.001%,   1000 mean 1%
++  uint16_t  gpuclk_ss_type;
++  uint16_t  dpphy_override;  // bit vector, enum of atom_sysinfo_dpphy_override_def
++  uint8_t memorytype;       // enum of atom_dmi_t17_mem_type_def, APU memory type indication.
++  uint8_t umachannelnumber; // number of memory channels
++  uint8_t htc_hyst_limit;
++  uint8_t htc_tmp_limit;
++  uint8_t reserved1; // dp_ss_control
++  uint8_t gpu_package_id;
++  struct  edp_info_table  edp1_info;
++  struct  edp_info_table  edp2_info;
++  uint32_t  reserved2[8];
++  struct  atom_external_display_connection_info extdispconninfo;
++  uint8_t UMACarveoutVersion;
++  uint8_t UMACarveoutIndexMax;
++  uint8_t UMACarveoutTypeDefault;
++  uint8_t UMACarveoutIndexDefault;
++  uint8_t UMACarveoutType;           //Auto or Custom
++  uint8_t UMACarveoutIndex;
++  struct  uma_carveout_option UMASizeControlOption[20];
++  uint8_t reserved3[110];
++};
++
+ // system_config
+ enum atom_system_vbiosmisc_def{
+   INTEGRATED_SYSTEM_INFO__GET_EDID_CALLBACK_FUNC_SUPPORT = 0x01,
 
 
 
