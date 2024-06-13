@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-51075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 633B0906E38
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8894D9071EA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4401D1C20DFA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89C431C2410B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC9F148FF2;
-	Thu, 13 Jun 2024 12:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264FA142E86;
+	Thu, 13 Jun 2024 12:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tF61csxx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IdZpkscH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E3A148855;
-	Thu, 13 Jun 2024 12:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0911849;
+	Thu, 13 Jun 2024 12:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280234; cv=none; b=m1L/aJxx/A5gmKJTHRz6wd/RcotEDmq3Ku8zTCfmGt3t1IZrxJjW1Q86WfbMuY6CLzSIj775Qn2mRuhMTt+8PHPqC0CZgDbFhYrz4tTpxE2XqaILUP7QzgWUQjMGIx8kOa7DV1JAONBzrwO8r2gS0yrw0Kse+1Ccwr1f2QnkJKE=
+	t=1718282495; cv=none; b=PIcEe8tgw1DdzXcjz//DqJb2moisOfv9LHlUrQDbvQQmLoIdTikAOWslpl5eGGmvO1Mj2DzV8C9PiJd88WNxZ0z0AgozKhshHdwZ/2pR8xqo9wrxJgsFonB7S7QeLnL2GdGdc3Z01zUqab68sjuz40rD14NlQ4kaHVz9lITJmAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280234; c=relaxed/simple;
-	bh=uDxAlWZFgAxCuuiarw2+pYhxwBtZ0Fp5+LeDJoDK+cI=;
+	s=arc-20240116; t=1718282495; c=relaxed/simple;
+	bh=lwFEgXCHdI0X13JQIfzedF6Hj2UEWuFppZPUsiDtatA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7P3V4nRfD4TpzzLrLvuhdYVUi6fWO9nNaszI+atq2+D1tnn6+0VpRkYSeSBvxC47UHwLkwLSGDhD4ib+AmuMNTFOS8crMWr5Crojid3JODeC9XuSxVC4FoX0Rticq9iL+6xi+mtq8Gs3fMG53XfZeeynOZ0sSIrpkKYGeHLJq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tF61csxx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70636C2BBFC;
-	Thu, 13 Jun 2024 12:03:53 +0000 (UTC)
+	 MIME-Version; b=sUW1z6lFGSnZX6ZVhvZcp8crRRhDIjQO6f1Ob1C0Mp9sMrX1lWxvbhTMjRlTn6xrNZuCkKvjooyfEv8fVcAmR9sH2u2dU/QJxpBlo8PABDBYoYTGDCgpRLsktyAicIXfHJclv5bfAC904HH0xvv5cikQ/gOTF8onZLKJOHcML8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IdZpkscH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06537C2BBFC;
+	Thu, 13 Jun 2024 12:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280233;
-	bh=uDxAlWZFgAxCuuiarw2+pYhxwBtZ0Fp5+LeDJoDK+cI=;
+	s=korg; t=1718282495;
+	bh=lwFEgXCHdI0X13JQIfzedF6Hj2UEWuFppZPUsiDtatA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tF61csxx/UnN1hU4xWSKcj+GHl2Gm3EYFrTXH4ioEsoeYr2FMKY2nQx7MMMDEtBEb
-	 SgOztJU5l8jzdKK2AjXa7YFBSr7zReWD+YMB93tsKQS0Kaz0OMAc9ZDJtgpfJKTipp
-	 uXu0ttjDFRwvuVI4cXgFf3BAyBV8Xqb1Hk5qL/Ko=
+	b=IdZpkscHQSbc/t4Po1G76RUcy47y7vEfrEvwGw/82DFafJtS0lZhxISK+Ke368fs2
+	 hvdzM50Tis1o7ecEUOzVqXYdbdFUa021vj8wOhkehejJ9a6hwx9YUlGWV+pxWYnf53
+	 P4XwdpCvvSzQeAZLIbQRlfW8QpCNPqdjWU2boob8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
-	Simon Horman <horms@kernel.org>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Guo Ren <guoren@linux.alibaba.com>,
+	Guo Ren <guoren@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 156/202] net: usb: smsc95xx: fix changing LED_SEL bit value updated from EEPROM
+Subject: [PATCH 5.15 297/402] riscv: stacktrace: Make walk_stackframe cross pt_regs frame
 Date: Thu, 13 Jun 2024 13:34:14 +0200
-Message-ID: <20240613113233.770783517@linuxfoundation.org>
+Message-ID: <20240613113313.730874215@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +63,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
+From: Guo Ren <guoren@linux.alibaba.com>
 
-[ Upstream commit 52a2f0608366a629d43dacd3191039c95fef74ba ]
+[ Upstream commit 7ecdadf7f8c659524f6b2aebf6be7bf619764d90 ]
 
-LED Select (LED_SEL) bit in the LED General Purpose IO Configuration
-register is used to determine the functionality of external LED pins
-(Speed Indicator, Link and Activity Indicator, Full Duplex Link
-Indicator). The default value for this bit is 0 when no EEPROM is
-present. If a EEPROM is present, the default value is the value of the
-LED Select bit in the Configuration Flags of the EEPROM. A USB Reset or
-Lite Reset (LRST) will cause this bit to be restored to the image value
-last loaded from EEPROM, or to be set to 0 if no EEPROM is present.
+The current walk_stackframe with FRAME_POINTER would stop unwinding at
+ret_from_exception:
+  BUG: sleeping function called from invalid context at kernel/locking/rwsem.c:1518
+  in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 1, name: init
+  CPU: 0 PID: 1 Comm: init Not tainted 5.10.113-00021-g15c15974895c-dirty #192
+  Call Trace:
+  [<ffffffe0002038c8>] walk_stackframe+0x0/0xee
+  [<ffffffe000aecf48>] show_stack+0x32/0x4a
+  [<ffffffe000af1618>] dump_stack_lvl+0x72/0x8e
+  [<ffffffe000af1648>] dump_stack+0x14/0x1c
+  [<ffffffe000239ad2>] ___might_sleep+0x12e/0x138
+  [<ffffffe000239aec>] __might_sleep+0x10/0x18
+  [<ffffffe000afe3fe>] down_read+0x22/0xa4
+  [<ffffffe000207588>] do_page_fault+0xb0/0x2fe
+  [<ffffffe000201b80>] ret_from_exception+0x0/0xc
 
-While configuring the dual purpose GPIO/LED pins to LED outputs in the
-LED General Purpose IO Configuration register, the LED_SEL bit is changed
-as 0 and resulting the configured value from the EEPROM is cleared. The
-issue is fixed by using read-modify-write approach.
+The optimization would help walk_stackframe cross the pt_regs frame and
+get more backtrace of debug info:
+  BUG: sleeping function called from invalid context at kernel/locking/rwsem.c:1518
+  in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 1, name: init
+  CPU: 0 PID: 1 Comm: init Not tainted 5.10.113-00021-g15c15974895c-dirty #192
+  Call Trace:
+  [<ffffffe0002038c8>] walk_stackframe+0x0/0xee
+  [<ffffffe000aecf48>] show_stack+0x32/0x4a
+  [<ffffffe000af1618>] dump_stack_lvl+0x72/0x8e
+  [<ffffffe000af1648>] dump_stack+0x14/0x1c
+  [<ffffffe000239ad2>] ___might_sleep+0x12e/0x138
+  [<ffffffe000239aec>] __might_sleep+0x10/0x18
+  [<ffffffe000afe3fe>] down_read+0x22/0xa4
+  [<ffffffe000207588>] do_page_fault+0xb0/0x2fe
+  [<ffffffe000201b80>] ret_from_exception+0x0/0xc
+  [<ffffffe000613c06>] riscv_intc_irq+0x1a/0x72
+  [<ffffffe000201b80>] ret_from_exception+0x0/0xc
+  [<ffffffe00033f44a>] vma_link+0x54/0x160
+  [<ffffffe000341d7a>] mmap_region+0x2cc/0x4d0
+  [<ffffffe000342256>] do_mmap+0x2d8/0x3ac
+  [<ffffffe000326318>] vm_mmap_pgoff+0x70/0xb8
+  [<ffffffe00032638a>] vm_mmap+0x2a/0x36
+  [<ffffffe0003cfdde>] elf_map+0x72/0x84
+  [<ffffffe0003d05f8>] load_elf_binary+0x69a/0xec8
+  [<ffffffe000376240>] bprm_execve+0x246/0x53a
+  [<ffffffe00037786c>] kernel_execve+0xe8/0x124
+  [<ffffffe000aecdf2>] run_init_process+0xfa/0x10c
+  [<ffffffe000aece16>] try_to_run_init_process+0x12/0x3c
+  [<ffffffe000afa920>] kernel_init+0xb4/0xf8
+  [<ffffffe000201b80>] ret_from_exception+0x0/0xc
 
-Fixes: f293501c61c5 ("smsc95xx: configure LED outputs")
-Signed-off-by: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Woojung Huh <woojung.huh@microchip.com>
-Link: https://lore.kernel.org/r/20240523085314.167650-1-Parthiban.Veerasooran@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Here is the error injection test code for the above output:
+ drivers/irqchip/irq-riscv-intc.c:
+ static asmlinkage void riscv_intc_irq(struct pt_regs *regs)
+ {
+        unsigned long cause = regs->cause & ~CAUSE_IRQ_FLAG;
++       u32 tmp; __get_user(tmp, (u32 *)0);
+
+Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+Signed-off-by: Guo Ren <guoren@kernel.org>
+Link: https://lore.kernel.org/r/20221109064937.3643993-3-guoren@kernel.org
+[Palmer: use SYM_CODE_*]
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Stable-dep-of: a2a4d4a6a0bf ("riscv: stacktrace: fixed walk_stackframe()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/smsc95xx.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ arch/riscv/kernel/entry.S      | 3 ++-
+ arch/riscv/kernel/stacktrace.c | 9 +++++++++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
-index 7fe5673e256e6..2dd4c78f5465b 100644
---- a/drivers/net/usb/smsc95xx.c
-+++ b/drivers/net/usb/smsc95xx.c
-@@ -1022,7 +1022,7 @@ static int smsc95xx_phy_initialize(struct usbnet *dev)
- static int smsc95xx_reset(struct usbnet *dev)
+diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
+index 5ca2860cc06cd..851c967c49ccd 100644
+--- a/arch/riscv/kernel/entry.S
++++ b/arch/riscv/kernel/entry.S
+@@ -231,7 +231,7 @@ ret_from_syscall_rejected:
+ 	andi t0, t0, _TIF_SYSCALL_WORK
+ 	bnez t0, handle_syscall_trace_exit
+ 
+-ret_from_exception:
++SYM_CODE_START_NOALIGN(ret_from_exception)
+ 	REG_L s0, PT_STATUS(sp)
+ 	csrc CSR_STATUS, SR_IE
+ #ifdef CONFIG_TRACE_IRQFLAGS
+@@ -245,6 +245,7 @@ ret_from_exception:
+ 	andi s0, s0, SR_SPP
+ #endif
+ 	bnez s0, resume_kernel
++SYM_CODE_END(ret_from_exception)
+ 
+ resume_userspace:
+ 	/* Interrupts must be disabled here so flags are checked atomically */
+diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
+index 894ae66421a76..26f3916eea47c 100644
+--- a/arch/riscv/kernel/stacktrace.c
++++ b/arch/riscv/kernel/stacktrace.c
+@@ -18,6 +18,8 @@ register unsigned long sp_in_global __asm__("sp");
+ 
+ #ifdef CONFIG_FRAME_POINTER
+ 
++extern asmlinkage void ret_from_exception(void);
++
+ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
+ 			     bool (*fn)(void *, unsigned long), void *arg)
  {
- 	struct smsc95xx_priv *pdata = dev->driver_priv;
--	u32 read_buf, write_buf, burst_cap;
-+	u32 read_buf, burst_cap;
- 	int ret = 0, timeout;
+@@ -62,6 +64,13 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
+ 			fp = frame->fp;
+ 			pc = ftrace_graph_ret_addr(current, NULL, frame->ra,
+ 						   &frame->ra);
++			if (pc == (unsigned long)ret_from_exception) {
++				if (unlikely(!__kernel_text_address(pc) || !fn(arg, pc)))
++					break;
++
++				pc = ((struct pt_regs *)sp)->epc;
++				fp = ((struct pt_regs *)sp)->s0;
++			}
+ 		}
  
- 	netif_dbg(dev, ifup, dev->net, "entering smsc95xx_reset\n");
-@@ -1164,10 +1164,13 @@ static int smsc95xx_reset(struct usbnet *dev)
- 		return ret;
- 	netif_dbg(dev, ifup, dev->net, "ID_REV = 0x%08x\n", read_buf);
- 
-+	ret = smsc95xx_read_reg(dev, LED_GPIO_CFG, &read_buf);
-+	if (ret < 0)
-+		return ret;
- 	/* Configure GPIO pins as LED outputs */
--	write_buf = LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
--		LED_GPIO_CFG_FDX_LED;
--	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, write_buf);
-+	read_buf |= LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
-+		    LED_GPIO_CFG_FDX_LED;
-+	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, read_buf);
- 	if (ret < 0)
- 		return ret;
- 
+ 	}
 -- 
 2.43.0
 
