@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE36906FE2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D58D906E81
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF4941C22DC4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA445B25B30
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F0213D601;
-	Thu, 13 Jun 2024 12:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2551448DC;
+	Thu, 13 Jun 2024 12:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFkUMH2r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iW3sv12O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960C813C660;
-	Thu, 13 Jun 2024 12:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC491442EF;
+	Thu, 13 Jun 2024 12:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281313; cv=none; b=ElPWqYd0xtJck6OLbQcZ7PRQabjdXs9jTQVZ0F9tNKbweW1cfd+nfe+85L9nZYcpY0FCcsgk6hdi2VYsjcU79XwG/d8L54fkwnolXAWmCekpV6V0dxGIL/KCbnMZaUFYoNR6KwXO5SaskvaQqnvzbeHStUNZpZGAKvENWq2IW3U=
+	t=1718280430; cv=none; b=belKKoQ+nYEJl8/EkupXSggjUOYAHGrDky4XLUHb5F2H7EPFCb1ZCT8rwBqTxNxYVI3EiI0UdcHovaXNZXyrhAm4zPRXGpCV3LVbLrt5wrxldts59XEhZ3miN5BSay0hCB0rE82QYKkMjJgk0mneB9U9VfuXPzn/HKOM2WshMz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281313; c=relaxed/simple;
-	bh=0dg3FNVyKuI/50lvtbqxvt1qbqqEzkwo9a8RSUrL4Sc=;
+	s=arc-20240116; t=1718280430; c=relaxed/simple;
+	bh=OHUeDdaHThiLVj9JsqfAnMXc27lJIYS4RGNKRH+WlLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lxIqeMiUdYkz3KGV8oNoNU1990F0E2sDJw/WW49FDvIGj/K0+hTALcfICgaarhEkHo45IIYvIacVvhVwmGbIc+u8KWOlYdK1bCoWuzLExL+jM8BKrXmvxutKIBw9LGr4jFXk0shi1j9LPhtfMPEQSTPdLy257Nyb+PsBu0PjQOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFkUMH2r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD69FC2BBFC;
-	Thu, 13 Jun 2024 12:21:52 +0000 (UTC)
+	 MIME-Version; b=ZdZwDPcYxYeOHPTLeQh3K+TlQs6QqZYSd3NFPa6Ko/M4B6G+bqRH2OmVGUVuYtIrPsxbgsu1PfNyFcSBPYaVkpkPttEjZkcZzF5905rkcJuTabx7T2895upjXxv6kIjpwKHchNbyJwA2Bj9tBE0MzSh6POG8fF/OJgr/BhoqVMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iW3sv12O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D66C2BBFC;
+	Thu, 13 Jun 2024 12:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281313;
-	bh=0dg3FNVyKuI/50lvtbqxvt1qbqqEzkwo9a8RSUrL4Sc=;
+	s=korg; t=1718280429;
+	bh=OHUeDdaHThiLVj9JsqfAnMXc27lJIYS4RGNKRH+WlLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xFkUMH2r0PiGW8ls0jcSltz7ECyq5NAnkXC2yD+omN0OQelYjCzVxr5JHpN2pKR2x
-	 YZ+4m0bHPYOKultv0UP5RSgYYYRsWOEGzFVcH8h0IJDfOM8AqXZtzMMolQP0dqMpKp
-	 ee6XmazaC6Qfwit+HuRTDNLe+8IgTXPbFoJEoajw=
+	b=iW3sv12Ob10mfWk3d3k+08RcYw8DrXkReIS18haReb6r8dntwHiwaLYi6EVsuRCVm
+	 wzEMQorBnyVLBjCO85mjlP5SH79xreXWg8c0bZJukxx081H9A8+HmmFykq3cCGc2jV
+	 oDonau68ylefD2J3xtDf1QOZJ2ND5hRuKr/y2wSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Richard Weinberger <richard@nod.at>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 213/317] um: Fix the -Wmissing-prototypes warning for __switch_mm
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 051/137] mmc: sdhci-acpi: Fix Lenovo Yoga Tablet 2 Pro 1380 sdcard slot not working
 Date: Thu, 13 Jun 2024 13:33:51 +0200
-Message-ID: <20240613113255.795041662@linuxfoundation.org>
+Message-ID: <20240613113225.273456666@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 2cbade17b18c0f0fd9963f26c9fc9b057eb1cb3a ]
+commit f3521d7cbaefff19cc656325787ed797e5f6a955 upstream.
 
-The __switch_mm function is defined in the user code, and is called
-by the kernel code. It should be declared in a shared header.
+The Lenovo Yoga Tablet 2 Pro 1380 sdcard slot has an active high cd pin
+and a broken wp pin which always reports the card being write-protected.
 
-Fixes: 4dc706c2f292 ("um: take um_mmu.h to asm/mmu.h, clean asm/mmu_context.h a bit")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add a DMI quirk to address both issues.
+
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240410191639.526324-5-hdegoede@redhat.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/include/asm/mmu.h           | 2 --
- arch/um/include/shared/skas/mm_id.h | 2 ++
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-acpi.c |   24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/arch/um/include/asm/mmu.h b/arch/um/include/asm/mmu.h
-index 5b072aba5b658..a7cb380c0b5c0 100644
---- a/arch/um/include/asm/mmu.h
-+++ b/arch/um/include/asm/mmu.h
-@@ -15,8 +15,6 @@ typedef struct mm_context {
- 	struct page *stub_pages[2];
- } mm_context_t;
- 
--extern void __switch_mm(struct mm_id * mm_idp);
--
- /* Avoid tangled inclusion with asm/ldt.h */
- extern long init_new_ldt(struct mm_context *to_mm, struct mm_context *from_mm);
- extern void free_ldt(struct mm_context *mm);
-diff --git a/arch/um/include/shared/skas/mm_id.h b/arch/um/include/shared/skas/mm_id.h
-index e82e203f5f419..92dbf727e3842 100644
---- a/arch/um/include/shared/skas/mm_id.h
-+++ b/arch/um/include/shared/skas/mm_id.h
-@@ -15,4 +15,6 @@ struct mm_id {
- 	int kill;
+--- a/drivers/mmc/host/sdhci-acpi.c
++++ b/drivers/mmc/host/sdhci-acpi.c
+@@ -80,6 +80,7 @@ struct sdhci_acpi_host {
+ enum {
+ 	DMI_QUIRK_RESET_SD_SIGNAL_VOLT_ON_SUSP			= BIT(0),
+ 	DMI_QUIRK_SD_NO_WRITE_PROTECT				= BIT(1),
++	DMI_QUIRK_SD_CD_ACTIVE_HIGH				= BIT(2),
  };
  
-+void __switch_mm(struct mm_id *mm_idp);
+ static inline void *sdhci_acpi_priv(struct sdhci_acpi_host *c)
+@@ -749,6 +750,26 @@ static const struct dmi_system_id sdhci_
+ 	},
+ 	{
+ 		/*
++		 * Lenovo Yoga Tablet 2 Pro 1380F/L (13" Android version) this
++		 * has broken WP reporting and an inverted CD signal.
++		 * Note this has more or less the same BIOS as the Lenovo Yoga
++		 * Tablet 2 830F/L or 1050F/L (8" and 10" Android), but unlike
++		 * the 830 / 1050 models which share the same mainboard this
++		 * model has a different mainboard and the inverted CD and
++		 * broken WP are unique to this board.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corp."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "VALLEYVIEW C0 PLATFORM"),
++			DMI_MATCH(DMI_BOARD_NAME, "BYT-T FFD8"),
++			/* Full match so as to NOT match the 830/1050 BIOS */
++			DMI_MATCH(DMI_BIOS_VERSION, "BLADE_21.X64.0005.R00.1504101516"),
++		},
++		.driver_data = (void *)(DMI_QUIRK_SD_NO_WRITE_PROTECT |
++					DMI_QUIRK_SD_CD_ACTIVE_HIGH),
++	},
++	{
++		/*
+ 		 * The Toshiba WT8-B's microSD slot always reports the card being
+ 		 * write-protected.
+ 		 */
+@@ -867,6 +888,9 @@ static int sdhci_acpi_probe(struct platf
+ 	if (sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD)) {
+ 		bool v = sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD_OVERRIDE_LEVEL);
+ 
++		if (quirks & DMI_QUIRK_SD_CD_ACTIVE_HIGH)
++			host->mmc->caps2 |= MMC_CAP2_CD_ACTIVE_HIGH;
 +
- #endif
--- 
-2.43.0
-
+ 		err = mmc_gpiod_request_cd(host->mmc, NULL, 0, v, 0);
+ 		if (err) {
+ 			if (err == -EPROBE_DEFER)
 
 
 
