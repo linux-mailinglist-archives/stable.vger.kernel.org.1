@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-50977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A009F906DB1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2BAD906CAD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A3DC1C22815
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45E18B2498A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A0C148FED;
-	Thu, 13 Jun 2024 11:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B145314659B;
+	Thu, 13 Jun 2024 11:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0tiDpRw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vutj71pr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DF614600D;
-	Thu, 13 Jun 2024 11:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8E9146592;
+	Thu, 13 Jun 2024 11:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279944; cv=none; b=NQJZXkqGTrWt2ufQ7JxKviwD8f5aJOC+fnINNBvIq48RP/KoJwFvDHNg9pJzPMw2RdppwgC21W8hgS7RDFYJWInFeHEl4q14oKqltVxzzxRGe+medBuVuKjsJWi6J/Q+4hif91/ODniog6ElSt0EohRbnudsnAQB4fYkVEXA2Is=
+	t=1718279396; cv=none; b=j97kaNEsnEtihy3AqHhCUsq/T9o2Zx7hH7k7MEcq8bCFtxHKIVpuq2AYc/5/4xGNfJe8fRcDCgCURZcM6UNx/+ev8gOzAA94DRwi/SeYOG2Rd12c+NCvqrw2cTpg0FBg4RH3jsxRV8jRV+xNAPdvoDDPh+xvGLcamKHpCNcQ0zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279944; c=relaxed/simple;
-	bh=saqYJz0hyELiCrjLdIUmq1hpMqjaStEPkGHOgDafA7s=;
+	s=arc-20240116; t=1718279396; c=relaxed/simple;
+	bh=GBBjBpMWgI5FJg5/eP56rPrHrjCOxFISW+bcMzZyWFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CE7nct7gk7i8DPf8QOgwn+bau9Cj6K0omcQv3IztqNx+PcGc5wZPvFdOS5EUv7cJMaFZCka18ixT7wLONcTok16LIPlyM/oCYEBZNx3XHu+Xx4XQsK2tJJnnW50FgENS21Tjc1CdU+9Z4r/deoPcx/hwKmdFbCBnt2q77rwGfg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0tiDpRw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF526C4AF1A;
-	Thu, 13 Jun 2024 11:59:03 +0000 (UTC)
+	 MIME-Version; b=byp7QdDmWtf/O7jEP/RB8tzZtynRgJu88V2kE5TeClL3GCBFjdS61xHUwFgxExjP3LVoEdHKxm6Bkn3DH1kHJspnVp5rCMCXfPHKEIY++Vz+h1qWGvnwzx3lfMUMxABIzO2xf+AvbNvGq3oqDnXJGoCz10y7egi2DWSiIRkh9ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vutj71pr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4226C32786;
+	Thu, 13 Jun 2024 11:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279944;
-	bh=saqYJz0hyELiCrjLdIUmq1hpMqjaStEPkGHOgDafA7s=;
+	s=korg; t=1718279396;
+	bh=GBBjBpMWgI5FJg5/eP56rPrHrjCOxFISW+bcMzZyWFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L0tiDpRwPmP+HxKYqzpiq5a1ZPTWr/JMQXOHBD0Pc3NMXqZvG0MBBPrTPu/NtIir3
-	 KfazX7r324iewJlU1ON383lGbuDmmhrnQ4G+SAP/DZ8dSa13tZtsVskz6ySmeOJlAR
-	 dV9gfbuSk5ICa4u8+3ifnw6gzAxqQ+PPiaY7goGI=
+	b=Vutj71prfuJMGbh7y0Fhw0uQTi0fpgoM6SiP/9E+l7tRPpwk1TgqRFbNbJGuK2ZIs
+	 r2fZahiUz7hjwmnUF+vyC53PoAU/Qmpc9eC1AL+17nMUbfDZNAB5frTX1ftBdyWVPO
+	 IzHLqo2VagHYtWvmiiuCleM5LgAB0LmMaEEe8uJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 058/202] net: usb: sr9700: stop lying about skb->truesize
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.9 031/157] arm64: dts: qcom: sc8280xp: add missing PCIe minimum OPP
 Date: Thu, 13 Jun 2024 13:32:36 +0200
-Message-ID: <20240613113230.016134243@linuxfoundation.org>
+Message-ID: <20240613113228.621392035@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 05417aa9c0c038da2464a0c504b9d4f99814a23b ]
+commit 2b621971554a94094cf489314dc1c2b65401965c upstream.
 
-Some usb drivers set small skb->truesize and break
-core networking stacks.
+Add the missing PCIe CX performance level votes to avoid relying on
+other drivers (e.g. USB or UFS) to maintain the nominal performance
+level required for Gen3 speeds.
 
-In this patch, I removed one of the skb->truesize override.
-
-I also replaced one skb_clone() by an allocation of a fresh
-and small skb, to get minimally sized skbs, like we did
-in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
-in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
-stop lying about skb->truesize")
-
-Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240506143939.3673865-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 813e83157001 ("arm64: dts: qcom: sc8280xp/sa8540p: add PCIe2-4 nodes")
+Cc: stable@vger.kernel.org      # 6.2
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240306095651.4551-5-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/sr9700.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8280xp.dtsi |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
-index 811c8751308c6..3fac642bec772 100644
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -418,19 +418,15 @@ static int sr9700_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			skb_pull(skb, 3);
- 			skb->len = len;
- 			skb_set_tail_pointer(skb, len);
--			skb->truesize = len + sizeof(struct sk_buff);
- 			return 2;
- 		}
+--- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+@@ -1799,6 +1799,7 @@
+ 			assigned-clock-rates = <100000000>;
  
--		/* skb_clone is used for address align */
--		sr_skb = skb_clone(skb, GFP_ATOMIC);
-+		sr_skb = netdev_alloc_skb_ip_align(dev->net, len);
- 		if (!sr_skb)
- 			return 0;
+ 			power-domains = <&gcc PCIE_4_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
  
--		sr_skb->len = len;
--		sr_skb->data = skb->data + 3;
--		skb_set_tail_pointer(sr_skb, len);
--		sr_skb->truesize = len + sizeof(struct sk_buff);
-+		skb_put(sr_skb, len);
-+		memcpy(sr_skb->data, skb->data + 3, len);
- 		usbnet_skb_return(dev, sr_skb);
+ 			resets = <&gcc GCC_PCIE_4_PHY_BCR>;
+ 			reset-names = "phy";
+@@ -1898,6 +1899,7 @@
+ 			assigned-clock-rates = <100000000>;
  
- 		skb_pull(skb, len + SR_RX_OVERHEAD);
--- 
-2.43.0
-
+ 			power-domains = <&gcc PCIE_3B_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
+ 
+ 			resets = <&gcc GCC_PCIE_3B_PHY_BCR>;
+ 			reset-names = "phy";
+@@ -1998,6 +2000,7 @@
+ 			assigned-clock-rates = <100000000>;
+ 
+ 			power-domains = <&gcc PCIE_3A_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
+ 
+ 			resets = <&gcc GCC_PCIE_3A_PHY_BCR>;
+ 			reset-names = "phy";
+@@ -2099,6 +2102,7 @@
+ 			assigned-clock-rates = <100000000>;
+ 
+ 			power-domains = <&gcc PCIE_2B_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
+ 
+ 			resets = <&gcc GCC_PCIE_2B_PHY_BCR>;
+ 			reset-names = "phy";
+@@ -2199,6 +2203,7 @@
+ 			assigned-clock-rates = <100000000>;
+ 
+ 			power-domains = <&gcc PCIE_2A_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
+ 
+ 			resets = <&gcc GCC_PCIE_2A_PHY_BCR>;
+ 			reset-names = "phy";
 
 
 
