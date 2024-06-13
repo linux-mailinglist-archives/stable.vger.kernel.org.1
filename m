@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E68E90705F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9469A90729A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8C761F23055
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 473021F253A3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65289137914;
-	Thu, 13 Jun 2024 12:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CDE144D2B;
+	Thu, 13 Jun 2024 12:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDIpqsoj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzPsEq9s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228E16EB56;
-	Thu, 13 Jun 2024 12:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A55144D20;
+	Thu, 13 Jun 2024 12:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281601; cv=none; b=Qg0qhfYSaeRWNIZeM0WVFnVddy+BJu9YiwpWorIFOdjue1tnfkvIQoLTrj3V7S9NXCwR/4aJz/AN7NtMkezJGo2pYP3IFvBdYhxElyZOzNr7xjCD3qvduinBLEZ+aueKKCc4l2niQIIP1xjPPlRooBlng9rnLjZuRZ8aZynEiRI=
+	t=1718282899; cv=none; b=cp1ZsZKQ2DDpq9vMmNn0V8qoNEnTkp/UYfDVYui/4NsIRoIpF1CHax4D+M2HGqW5kaafQHHx9s5EikZoi1iWu2mg2BJXnJK51gEPsYUhDh/W1+V8Q/ckYscNM6FiHb51tF7bLi2UX2li9S3C2dxApK9EskM0MOjjUa8wCGCIKO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281601; c=relaxed/simple;
-	bh=KgL19/ggXeeAIZuVqpa14WDyZtMrwGKdscNsVsRy4so=;
+	s=arc-20240116; t=1718282899; c=relaxed/simple;
+	bh=nDyPw/T24F59/ld1DsKUNyx0ViqYxwneGVt4pTQvDb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uykCubFzkVz/fMbWMf7akL3z8Zf5ECr1SZhmsII4+Ap8G1dMBkVnnPZwHa36XYuco7zVjqbLbEb9OGr/QWjV6YVVfhBulubDTI/iGUkJ78Aa4LOjQFyt4ICs3zDIuBSDMIvNiLMTdIeEmZzryfdRfUfJ4xI6dZX3AlOaUrid3Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDIpqsoj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E090C2BBFC;
-	Thu, 13 Jun 2024 12:26:40 +0000 (UTC)
+	 MIME-Version; b=fpFBuYPtwRKsypUa56/8Tgdycb8AGx1sgKIqVA8bTgmMy4ouJJ/CcsqBTzOZyWeoY/4W4u+E7ONhGIWzweDJKi/y/egcB8RCo5R7gFZAzF3y+xUl+2mMrvetqrqCO7TIs7j7cKCwqbYoBOtuIZkQn3JTYn7uVj+KYuAcssF0A5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzPsEq9s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F6BC2BBFC;
+	Thu, 13 Jun 2024 12:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281601;
-	bh=KgL19/ggXeeAIZuVqpa14WDyZtMrwGKdscNsVsRy4so=;
+	s=korg; t=1718282899;
+	bh=nDyPw/T24F59/ld1DsKUNyx0ViqYxwneGVt4pTQvDb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZDIpqsoj4jwp2pS9eluRgsHzd6UZug9o1sbM2FczpbgpnBvKZ1KxiQssvqywAYZlm
-	 HhqqecI9Q5w5zc3x6ZlxJI6NgZU6JPMmAG+1+4M6Kenbm6fgBeBWYFR3jnbv4UQzsb
-	 S8JbnXK3331FxwLhaa86rir84lSZlFtBVCR4T/LM=
+	b=WzPsEq9s6uIrsj2DJ2HJLbyQE42unVSHj6Wyk6gi5uPVn3QorIJl3BzNFlToJPaIZ
+	 xB+nO688U5HPTbFN95wXr7IVPa0aMEdcY6kGKc7Ykzq9jUTM4sLkKfLOUygKK57ft5
+	 NXf9sl7DQZ9MakV28eOkRe1vBgMuVA8gxH2AHh/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Hartmayer <mhartmay@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 5.10 311/317] s390/ap: Fix crash in AP internal function modify_bitmap()
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.1 31/85] wifi: rtlwifi: rtl8192de: Fix low speed with WPA3-SAE
 Date: Thu, 13 Jun 2024 13:35:29 +0200
-Message-ID: <20240613113259.584574394@linuxfoundation.org>
+Message-ID: <20240613113215.348369435@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit d4f9d5a99a3fd1b1c691b7a1a6f8f3f25f4116c9 upstream.
+commit a7c0f48410f546772ac94a0f7b7291a15c4fc173 upstream.
 
-A system crash like this
+Some (all?) management frames are incorrectly reported to mac80211 as
+decrypted when actually the hardware did not decrypt them. This results
+in speeds 3-5 times lower than expected, 20-30 Mbps instead of 100
+Mbps.
 
-  Failing address: 200000cb7df6f000 TEID: 200000cb7df6f403
-  Fault in home space mode while using kernel ASCE.
-  AS:00000002d71bc007 R3:00000003fe5b8007 S:000000011a446000 P:000000015660c13d
-  Oops: 0038 ilc:3 [#1] PREEMPT SMP
-  Modules linked in: mlx5_ib ...
-  CPU: 8 PID: 7556 Comm: bash Not tainted 6.9.0-rc7 #8
-  Hardware name: IBM 3931 A01 704 (LPAR)
-  Krnl PSW : 0704e00180000000 0000014b75e7b606 (ap_parse_bitmap_str+0x10e/0x1f8)
-  R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2 PM:0 RI:0 EA:3
-  Krnl GPRS: 0000000000000001 ffffffffffffffc0 0000000000000001 00000048f96b75d3
-  000000cb00000100 ffffffffffffffff ffffffffffffffff 000000cb7df6fce0
-  000000cb7df6fce0 00000000ffffffff 000000000000002b 00000048ffffffff
-  000003ff9b2dbc80 200000cb7df6fcd8 0000014bffffffc0 000000cb7df6fbc8
-  Krnl Code: 0000014b75e7b5fc: a7840047            brc     8,0000014b75e7b68a
-  0000014b75e7b600: 18b2                lr      %r11,%r2
-  #0000014b75e7b602: a7f4000a            brc     15,0000014b75e7b616
-  >0000014b75e7b606: eb22d00000e6        laog    %r2,%r2,0(%r13)
-  0000014b75e7b60c: a7680001            lhi     %r6,1
-  0000014b75e7b610: 187b                lr      %r7,%r11
-  0000014b75e7b612: 84960021            brxh    %r9,%r6,0000014b75e7b654
-  0000014b75e7b616: 18e9                lr      %r14,%r9
-  Call Trace:
-  [<0000014b75e7b606>] ap_parse_bitmap_str+0x10e/0x1f8
-  ([<0000014b75e7b5dc>] ap_parse_bitmap_str+0xe4/0x1f8)
-  [<0000014b75e7b758>] apmask_store+0x68/0x140
-  [<0000014b75679196>] kernfs_fop_write_iter+0x14e/0x1e8
-  [<0000014b75598524>] vfs_write+0x1b4/0x448
-  [<0000014b7559894c>] ksys_write+0x74/0x100
-  [<0000014b7618a440>] __do_syscall+0x268/0x328
-  [<0000014b761a3558>] system_call+0x70/0x98
-  INFO: lockdep is turned off.
-  Last Breaking-Event-Address:
-  [<0000014b75e7b636>] ap_parse_bitmap_str+0x13e/0x1f8
-  Kernel panic - not syncing: Fatal exception: panic_on_oops
+Fix this by checking the encryption type field of the RX descriptor.
+rtw88 does the same thing.
 
-occured when /sys/bus/ap/a[pq]mask was updated with a relative mask value
-(like +0x10-0x12,+60,-90) with one of the numeric values exceeding INT_MAX.
+This fix was tested only with rtl8192du, which will use the same code.
 
-The fix is simple: use unsigned long values for the internal variables. The
-correct checks are already in place in the function but a simple int for
-the internal variables was used with the possibility to overflow.
-
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Tested-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://msgid.link/4d600435-f0ea-46b0-bdb4-e60f173da8dd@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/crypto/ap_bus.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c |    5 ++---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h |   14 ++++++++++++++
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
---- a/drivers/s390/crypto/ap_bus.c
-+++ b/drivers/s390/crypto/ap_bus.c
-@@ -859,7 +859,7 @@ static int hex2bitmap(const char *str, u
-  */
- static int modify_bitmap(const char *str, unsigned long *bitmap, int bits)
- {
--	int a, i, z;
-+	unsigned long a, i, z;
- 	char *np, sign;
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
+@@ -414,7 +414,8 @@ bool rtl92de_rx_query_desc(struct ieee80
+ 	stats->icv = (u16)get_rx_desc_icv(pdesc);
+ 	stats->crc = (u16)get_rx_desc_crc32(pdesc);
+ 	stats->hwerror = (stats->crc | stats->icv);
+-	stats->decrypted = !get_rx_desc_swdec(pdesc);
++	stats->decrypted = !get_rx_desc_swdec(pdesc) &&
++			   get_rx_desc_enc_type(pdesc) != RX_DESC_ENC_NONE;
+ 	stats->rate = (u8)get_rx_desc_rxmcs(pdesc);
+ 	stats->shortpreamble = (u16)get_rx_desc_splcp(pdesc);
+ 	stats->isampdu = (bool)(get_rx_desc_paggr(pdesc) == 1);
+@@ -427,8 +428,6 @@ bool rtl92de_rx_query_desc(struct ieee80
+ 	rx_status->band = hw->conf.chandef.chan->band;
+ 	if (get_rx_desc_crc32(pdesc))
+ 		rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
+-	if (!get_rx_desc_swdec(pdesc))
+-		rx_status->flag |= RX_FLAG_DECRYPTED;
+ 	if (get_rx_desc_bw(pdesc))
+ 		rx_status->bw = RATE_INFO_BW_40;
+ 	if (get_rx_desc_rxht(pdesc))
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
+@@ -14,6 +14,15 @@
+ #define USB_HWDESC_HEADER_LEN			32
+ #define CRCLENGTH				4
  
- 	/* bits needs to be a multiple of 8 */
++enum rtl92d_rx_desc_enc {
++	RX_DESC_ENC_NONE	= 0,
++	RX_DESC_ENC_WEP40	= 1,
++	RX_DESC_ENC_TKIP_WO_MIC	= 2,
++	RX_DESC_ENC_TKIP_MIC	= 3,
++	RX_DESC_ENC_AES		= 4,
++	RX_DESC_ENC_WEP104	= 5,
++};
++
+ /* macros to read/write various fields in RX or TX descriptors */
+ 
+ static inline void set_tx_desc_pkt_size(__le32 *__pdesc, u32 __val)
+@@ -246,6 +255,11 @@ static inline u32 get_rx_desc_drv_info_s
+ 	return le32_get_bits(*__pdesc, GENMASK(19, 16));
+ }
+ 
++static inline u32 get_rx_desc_enc_type(__le32 *__pdesc)
++{
++	return le32_get_bits(*__pdesc, GENMASK(22, 20));
++}
++
+ static inline u32 get_rx_desc_shift(__le32 *__pdesc)
+ {
+ 	return le32_get_bits(*__pdesc, GENMASK(25, 24));
 
 
 
