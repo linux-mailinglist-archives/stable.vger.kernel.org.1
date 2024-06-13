@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82CA906F46
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73D82907128
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EF2A2865D3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DC772837D7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9194F13CA9A;
-	Thu, 13 Jun 2024 12:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060D51292FF;
+	Thu, 13 Jun 2024 12:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMFxgg9z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1RrDtxU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508C83209;
-	Thu, 13 Jun 2024 12:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EE21EEF8;
+	Thu, 13 Jun 2024 12:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280927; cv=none; b=tiavP7rdP/A7ANXktlrjzzHVwzqNGNxl+0JZabI7ec4UwQueyPMaGJpBzd4n0dRJvVLsh6rBHEyOEW411rUaN9JDyG1QSU3qq+dFKdwIe8AdaDeoMyhWLA/culkJi64Xe96HrHqcNznUksLtTITk4vsK4CJlAVtfFvRucgmHEYQ=
+	t=1718282044; cv=none; b=T3Wm8/Okjslh7W65fcC+TiS78VqkgH+rpo6OBYmlw0VyD0jd6FprIM6AdVx0DiPjSP8WjKBiumVhhPmz0+MK85wsTJ9PEIIQbcNtMWaFkLqae60FjohvuX5A641iVd3ODJkg0yvSio4r/B8DHYma1WS7kXWs0n1fW8jpOIWFVs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280927; c=relaxed/simple;
-	bh=zIuC1EdHESffXf2dgZoQJc+hDvoJ6ouC4jq/IWm+pn4=;
+	s=arc-20240116; t=1718282044; c=relaxed/simple;
+	bh=KksKceKykC8BSjbFySXyD2hwBxHcBsFq/9IArbmx4rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gK/Hn9vpf++CYcGM8zEaIR9E1AUdBo6n8KQPD1w3f4IV/oF8rvJW4+4KElruVWhSg3/WkWw1LmTuRgL8A1IDTPTO1AJ+lfWhaFEZna4G7ttdRtFC7Z9BRZ6SJRIu8e7N7bu+OfoSm3CpLXCb2B3MPp39yfB19HIlMmN0xFvLZOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMFxgg9z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA14BC2BBFC;
-	Thu, 13 Jun 2024 12:15:26 +0000 (UTC)
+	 MIME-Version; b=VQIMHwLL8m094j20NewM6RnraR7w+ras42e/czQiKqRWaDq5Nory/r0RzRG96mIpJyRDSaiyBkXhQSMQqol1eWy+VjgbFKzTT+YfPL19hZtsRyfY2uM3WWeDpmcucXZ5b7it4TvCog9yepnaSaPhZ7/TW/do1WS95T1NEQv7Pg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1RrDtxU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36501C32786;
+	Thu, 13 Jun 2024 12:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280927;
-	bh=zIuC1EdHESffXf2dgZoQJc+hDvoJ6ouC4jq/IWm+pn4=;
+	s=korg; t=1718282044;
+	bh=KksKceKykC8BSjbFySXyD2hwBxHcBsFq/9IArbmx4rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LMFxgg9zKrsHtZL1Y1IcyydHN6e2lsgGc3qOXTBEFBu7c+Fq0aAtNs6KzGwI8UZy+
-	 qa/ButC7mVEUAwmfIGKLFLL+8VJo/RJzSpwnx7VZ1rFyhXlM+pSbrLfTUljF6ESUpo
-	 dyFipovwqnXDOQnhwvkbFzDIlIqWVM36zI6OQq3I=
+	b=P1RrDtxUn/4R6NBO3jzuARVIEWyEjG+Anpqgh09ECzcKFnrXAoWKDzV63NZzOXVQj
+	 YsekDuLXNd/diFNocoKHBExmtN41+IIKuk8m7dYnFVenfdECIbW4VAgdXnlFZM0+w/
+	 W2/w2qL+lJdTz1+xiIViJRQucoeX614cGrEAJ1Lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 082/317] net: ethernet: cortina: Locking fixes
+Subject: [PATCH 5.15 143/402] ASoC: tracing: Export SND_SOC_DAPM_DIR_OUT to its value
 Date: Thu, 13 Jun 2024 13:31:40 +0200
-Message-ID: <20240613113250.721296631@linuxfoundation.org>
+Message-ID: <20240613113307.713076239@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 812552808f7ff71133fc59768cdc253c5b8ca1bf ]
+[ Upstream commit 58300f8d6a48e58d1843199be743f819e2791ea3 ]
 
-This fixes a probably long standing problem in the Cortina
-Gemini ethernet driver: there are some paths in the code
-where the IRQ registers are written without taking the proper
-locks.
+The string SND_SOC_DAPM_DIR_OUT is printed in the snd_soc_dapm_path trace
+event instead of its value:
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240509-gemini-ethernet-locking-v1-1-afd00a528b95@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+   (((REC->path_dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
+
+User space cannot parse this, as it has no idea what SND_SOC_DAPM_DIR_OUT
+is. Use TRACE_DEFINE_ENUM() to convert it to its value:
+
+   (((REC->path_dir) == 1) ? "->" : "<-")
+
+So that user space tools, such as perf and trace-cmd, can parse it
+correctly.
+
+Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Fixes: 6e588a0d839b5 ("ASoC: dapm: Consolidate path trace events")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/r/20240416000303.04670cdf@rorschach.local.home
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ include/trace/events/asoc.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index c78587ddb32fd..fa46854fd697c 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1109,10 +1109,13 @@ static void gmac_tx_irq_enable(struct net_device *netdev,
- {
- 	struct gemini_ethernet_port *port = netdev_priv(netdev);
- 	struct gemini_ethernet *geth = port->geth;
-+	unsigned long flags;
- 	u32 val, mask;
+diff --git a/include/trace/events/asoc.h b/include/trace/events/asoc.h
+index 4d8ef71090af1..97a434d021356 100644
+--- a/include/trace/events/asoc.h
++++ b/include/trace/events/asoc.h
+@@ -12,6 +12,8 @@
+ #define DAPM_DIRECT "(direct)"
+ #define DAPM_ARROW(dir) (((dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
  
- 	netdev_dbg(netdev, "%s device %d\n", __func__, netdev->dev_id);
- 
-+	spin_lock_irqsave(&geth->irq_lock, flags);
++TRACE_DEFINE_ENUM(SND_SOC_DAPM_DIR_OUT);
 +
- 	mask = GMAC0_IRQ0_TXQ0_INTS << (6 * netdev->dev_id + txq);
- 
- 	if (en)
-@@ -1121,6 +1124,8 @@ static void gmac_tx_irq_enable(struct net_device *netdev,
- 	val = readl(geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
- 	val = en ? val | mask : val & ~mask;
- 	writel(val, geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
-+
-+	spin_unlock_irqrestore(&geth->irq_lock, flags);
- }
- 
- static void gmac_tx_irq(struct net_device *netdev, unsigned int txq_num)
-@@ -1427,15 +1432,19 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	union gmac_rxdesc_3 word3;
- 	struct page *page = NULL;
- 	unsigned int page_offs;
-+	unsigned long flags;
- 	unsigned short r, w;
- 	union dma_rwptr rw;
- 	dma_addr_t mapping;
- 	int frag_nr = 0;
- 
-+	spin_lock_irqsave(&geth->irq_lock, flags);
- 	rw.bits32 = readl(ptr_reg);
- 	/* Reset interrupt as all packages until here are taken into account */
- 	writel(DEFAULT_Q0_INT_BIT << netdev->dev_id,
- 	       geth->base + GLOBAL_INTERRUPT_STATUS_1_REG);
-+	spin_unlock_irqrestore(&geth->irq_lock, flags);
-+
- 	r = rw.bits.rptr;
- 	w = rw.bits.wptr;
- 
-@@ -1738,10 +1747,9 @@ static irqreturn_t gmac_irq(int irq, void *data)
- 		gmac_update_hw_stats(netdev);
- 
- 	if (val & (GMAC0_RX_OVERRUN_INT_BIT << (netdev->dev_id * 8))) {
-+		spin_lock(&geth->irq_lock);
- 		writel(GMAC0_RXDERR_INT_BIT << (netdev->dev_id * 8),
- 		       geth->base + GLOBAL_INTERRUPT_STATUS_4_REG);
--
--		spin_lock(&geth->irq_lock);
- 		u64_stats_update_begin(&port->ir_stats_syncp);
- 		++port->stats.rx_fifo_errors;
- 		u64_stats_update_end(&port->ir_stats_syncp);
+ struct snd_soc_jack;
+ struct snd_soc_card;
+ struct snd_soc_dapm_widget;
 -- 
 2.43.0
 
