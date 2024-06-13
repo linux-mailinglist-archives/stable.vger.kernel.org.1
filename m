@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-52048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B86BC9072D2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:51:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C81E3907269
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:47:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55C9E2822D7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:51:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6333FB288E7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4D61C32;
-	Thu, 13 Jun 2024 12:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7FD1E49B;
+	Thu, 13 Jun 2024 12:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WORLkgXZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4pkANm1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB812CA6;
-	Thu, 13 Jun 2024 12:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4E92CA6;
+	Thu, 13 Jun 2024 12:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718283081; cv=none; b=QJhdDx3FqwTcrkFAjMcuqOMXWCzN+kf6uYInOy6DGNnzjpfGF5937McyUMUdqe49Xmb0CjISmeY7i8YcB15W7ZQ9CpKwGiN8ZiwV7TRBijR/9xKmtTk9lIgQt5Lyjt/cGNYb3sw09hdBDozOKJiOYq1hQorTD3DbRW5NBQpIAlM=
+	t=1718282778; cv=none; b=rxNU+AkPFcBPics797Ct/TeJ+u+Se2lXTAcfcjcc5LKCg/ZHifzDNBnbHFSzeu2ONYQvccW/tEGsnUIL/joqpexYif9REsRha7dk9YPMJHIrMx/uJl1tWuSU5dS7zTbrjpmMYr6paq+tzNqaSNcEjO5EXWiSnae4TsclqBqynPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718283081; c=relaxed/simple;
-	bh=5PXnVvRU6VBNW56KWv7InP1S/Nw/vFR/TZdgo8ftC0U=;
+	s=arc-20240116; t=1718282778; c=relaxed/simple;
+	bh=YqGa2uy4kUyroeW751jq45xF2mpzbQQVVqxxlewzJBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfn5KhAbifm1WfxwdNzZULhKmxueew8bQ9mwKpBElK51F8hxnqmwXSF8j7puymioO4V4rG1esggPPz/HETBtAeBHqaG8/DLzk6i6a9lFSZgN0ry8u8rkK8DqzW1GPj8GEBKYAtqo58d84Hh0ds8gkcQeg4MxyESKefuc/MWvsnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WORLkgXZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5B8C2BBFC;
-	Thu, 13 Jun 2024 12:51:20 +0000 (UTC)
+	 MIME-Version; b=Ms4O3RCEWjF2hTUqYaSY61Gfmw2FuL+gJU9Oo3SK4hlOSxKIugJmmRlJCADioL/Wh7nDfM4MZX1Xx7hd9thIqwJZ/eF5cb8FJW8wnvU/F4+IV0cBqc6gsl5T2HlZPUnjjHHelJr6CuatMqoYrkFnW13tYhPD1boyjih1BZK/cLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4pkANm1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AA5C2BBFC;
+	Thu, 13 Jun 2024 12:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718283081;
-	bh=5PXnVvRU6VBNW56KWv7InP1S/Nw/vFR/TZdgo8ftC0U=;
+	s=korg; t=1718282778;
+	bh=YqGa2uy4kUyroeW751jq45xF2mpzbQQVVqxxlewzJBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WORLkgXZyVfGJCPvW1YcUNH1xdWIeBj5lBRyRCErQqKDPmAL8WicPAKhFpUTOR+Mz
-	 E4t3F+ioz7XPduu3n4KU74wPYrj460FCK/LjmIYRYiZ21ugo3xVqlbrrKCCgNb6x81
-	 hpMa7eHDN05n60t5lC2bVudmfnc0xoSpfrHwH45Y=
+	b=f4pkANm1nyF5up4ujFmQ2YgOGVJvOC0ujVXpE4L9sY2QjoEggDsa+KE9h+emXvo/Z
+	 gUoJ5SytiUR2kPHLmCR6pR3Yy4UlFKY4iU0vCHkYp5oX1Ga0DRaRkOq2XoSkj4YkcM
+	 P/3/mGPbkuGy41E/B9NUUlHA5pT3FQiQUGuWsE3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Chikunov <vt@altlinux.org>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Paul Wolneykien <manowar@altlinux.org>
-Subject: [PATCH 6.1 52/85] crypto: ecrdsa - Fix module auto-load on add_key
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 393/402] ext4: set type of ac_groups_linear_remaining to __u32 to avoid overflow
 Date: Thu, 13 Jun 2024 13:35:50 +0200
-Message-ID: <20240613113216.146510510@linuxfoundation.org>
+Message-ID: <20240613113317.484642988@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Chikunov <vt@altlinux.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit eb5739a1efbc9ff216271aeea0ebe1c92e5383e5 upstream.
+commit 9a9f3a9842927e4af7ca10c19c94dad83bebd713 upstream.
 
-Add module alias with the algorithm cra_name similar to what we have for
-RSA-related and other algorithms.
+Now ac_groups_linear_remaining is of type __u16 and s_mb_max_linear_groups
+is of type unsigned int, so an overflow occurs when setting a value above
+65535 through the mb_max_linear_groups sysfs interface. Therefore, the
+type of ac_groups_linear_remaining is set to __u32 to avoid overflow.
 
-The kernel attempts to modprobe asymmetric algorithms using the names
-"crypto-$cra_name" and "crypto-$cra_name-all." However, since these
-aliases are currently missing, the modules are not loaded. For instance,
-when using the `add_key` function, the hash algorithm is typically
-loaded automatically, but the asymmetric algorithm is not.
-
-Steps to test:
-
-1. Cert is generated usings ima-evm-utils test suite with
-   `gen-keys.sh`, example cert is provided below:
-
-  $ base64 -d >test-gost2012_512-A.cer <<EOF
-  MIIB/DCCAWagAwIBAgIUK8+whWevr3FFkSdU9GLDAM7ure8wDAYIKoUDBwEBAwMFADARMQ8wDQYD
-  VQQDDAZDQSBLZXkwIBcNMjIwMjAxMjIwOTQxWhgPMjA4MjEyMDUyMjA5NDFaMBExDzANBgNVBAMM
-  BkNBIEtleTCBoDAXBggqhQMHAQEBAjALBgkqhQMHAQIBAgEDgYQABIGALXNrTJGgeErBUOov3Cfo
-  IrHF9fcj8UjzwGeKCkbCcINzVUbdPmCopeJRHDJEvQBX1CQUPtlwDv6ANjTTRoq5nCk9L5PPFP1H
-  z73JIXHT0eRBDVoWy0cWDRz1mmQlCnN2HThMtEloaQI81nTlKZOcEYDtDpi5WODmjEeRNQJMdqCj
-  UDBOMAwGA1UdEwQFMAMBAf8wHQYDVR0OBBYEFCwfOITMbE9VisW1i2TYeu1tAo5QMB8GA1UdIwQY
-  MBaAFCwfOITMbE9VisW1i2TYeu1tAo5QMAwGCCqFAwcBAQMDBQADgYEAmBfJCMTdC0/NSjz4BBiQ
-  qDIEjomO7FEHYlkX5NGulcF8FaJW2jeyyXXtbpnub1IQ8af1KFIpwoS2e93LaaofxpWlpQLlju6m
-  KYLOcO4xK3Whwa2hBAz9YbpUSFjvxnkS2/jpH2MsOSXuUEeCruG/RkHHB3ACef9umG6HCNQuAPY=
-  EOF
-
-2. Optionally, trace module requests with: trace-cmd stream -e module &
-
-3. Trigger add_key call for the cert:
-
-  # keyctl padd asymmetric "" @u <test-gost2012_512-A.cer
-  939910969
-  # lsmod | head -3
-  Module                  Size  Used by
-  ecrdsa_generic         16384  0
-  streebog_generic       28672  0
-
-Repored-by: Paul Wolneykien <manowar@altlinux.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Vitaly Chikunov <vt@altlinux.org>
-Tested-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
+CC: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240319113325.3110393-8-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/ecrdsa.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/mballoc.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/crypto/ecrdsa.c
-+++ b/crypto/ecrdsa.c
-@@ -294,4 +294,5 @@ module_exit(ecrdsa_mod_fini);
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Vitaly Chikunov <vt@altlinux.org>");
- MODULE_DESCRIPTION("EC-RDSA generic algorithm");
-+MODULE_ALIAS_CRYPTO("ecrdsa");
- MODULE_ALIAS_CRYPTO("ecrdsa-generic");
+--- a/fs/ext4/mballoc.h
++++ b/fs/ext4/mballoc.h
+@@ -181,8 +181,8 @@ struct ext4_allocation_context {
+ 	ext4_group_t ac_last_optimal_group;
+ 	__u32 ac_groups_considered;
+ 	__u32 ac_flags;		/* allocation hints */
++	__u32 ac_groups_linear_remaining;
+ 	__u16 ac_groups_scanned;
+-	__u16 ac_groups_linear_remaining;
+ 	__u16 ac_found;
+ 	__u16 ac_tail;
+ 	__u16 ac_buddy;
 
 
 
