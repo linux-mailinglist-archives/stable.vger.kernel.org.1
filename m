@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-51902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 201B1907233
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D39906E2E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A4E2B27C72
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9CB51F21129
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D681EB30;
-	Thu, 13 Jun 2024 12:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A1B146A65;
+	Thu, 13 Jun 2024 12:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cF7WAfIW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G632rkXt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162482566;
-	Thu, 13 Jun 2024 12:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7121448DD;
+	Thu, 13 Jun 2024 12:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282652; cv=none; b=pTg1v9UgmRfQbcNbvTwfF3f0B4/zIV43s236ItLKe8GhJrHmlV7vcVdCQKtSncyPuqcJADVLO69Kzi9GntFUG6WfCR6zl9gVciyG8O3l/Gg3L3OH0XMyks5NEmG+gPgY/n6xU15HdMtv+KLYlAGEcI51gGsJmwb5IgPBMPj/mPg=
+	t=1718280207; cv=none; b=XmuS5Lc4CVKrj+diWdeGHnNlY9eyItyVdsMm6xcYKDyYXKRhtVobrLHO38NxmuI9fNxKOH4lRd86ogJwdrjZbqquSSiovKgkzfqoUr/TysP1OGyin0PHBlnoQXj5GugWjjByRSo2buC7XcRvzneYDhOrHh7XQrtnkBHJhW7N21U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282652; c=relaxed/simple;
-	bh=Q7oMi45LINcSbQSsZDUhcIFx0bkFDlU14o+EVIQuJOI=;
+	s=arc-20240116; t=1718280207; c=relaxed/simple;
+	bh=w/hE4omtAOnDbr69ZYBOfNDdG1w1bf5vwLt24R4hJXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CtpsIfvsA4SxGJzpdwZJBZC/48YlBQI/7Qo6Adk03YIvj0Jl2EaHZm6PGMGXcz6c6YQM54TDS7nL5KktvDuwHOVHiFRaV7HgzHysXjemEydSdXioIOUvAy0gkKSw2l5gYDiXbbB29jj7yOAzKck8TzmnFYCBln5FjAcvFxtxRf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cF7WAfIW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91782C2BBFC;
-	Thu, 13 Jun 2024 12:44:11 +0000 (UTC)
+	 MIME-Version; b=a+EG5VpvPqrnZNP1V3Rq4izu/0sp66mTcu5r27jMChtPvKzHgCAfNTxHpXYqk2vMfwHSkKNZ+uFLnvyAQiNi7ZPsiK02vU3BrQmBCFNvfyUeZRWm5+mgzg1nscwbkhcIdpmlTHmr6G1DTp5C8pTuR9e4pAbNu8bB5K0+GvZA4yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G632rkXt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9921CC32786;
+	Thu, 13 Jun 2024 12:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282652;
-	bh=Q7oMi45LINcSbQSsZDUhcIFx0bkFDlU14o+EVIQuJOI=;
+	s=korg; t=1718280207;
+	bh=w/hE4omtAOnDbr69ZYBOfNDdG1w1bf5vwLt24R4hJXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cF7WAfIWMPskr90nhxl32Ilt9Txn0zoo+9gjwUB6Nf2yrtALwzwTYZFEBn0ctfF7o
-	 le549WOIZLAnLM4C5JHG1dO9PLRqpKw78lRhgZRH0yqhu/bdXIF86n5atKcOHjDFL8
-	 cRL5FJoVEqQt83LWIA1zFNZNlHa//3pme4hLiO0g=
+	b=G632rkXt1+jVhaAPn7CFbw4R+lwKFzN1MWi/rlLVmvCZFzIrSF6n7FBsG7fFV26vo
+	 pg8kDKpLtzC3R++qUCbIwZdNbmAd5sWxmDCNa5rG+tmXjsveJDYOBWgXj2jRkWQLaK
+	 iTwYrm7NH3sT7+MvZJyuaQACwMtX5p/1eUBEKxEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 319/402] netfilter: nft_payload: move struct nft_payload_set definition where it belongs
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
+	Dan Moulding <dan@danm.net>,
+	Junxiao Bi <junxiao.bi@oracle.com>
+Subject: [PATCH 5.4 178/202] md/raid5: fix deadlock that raid5d() wait for itself to clear MD_SB_CHANGE_PENDING
 Date: Thu, 13 Jun 2024 13:34:36 +0200
-Message-ID: <20240613113314.582108257@linuxfoundation.org>
+Message-ID: <20240613113234.608372723@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit ac1f8c049319847b1b4c6b387fdb2e3f7fb84ffc ]
+commit 151f66bb618d1fd0eeb84acb61b4a9fa5d8bb0fa upstream.
 
-Not required to expose this header in nf_tables_core.h, move it to where
-it is used, ie. nft_payload.
+Xiao reported that lvm2 test lvconvert-raid-takeover.sh can hang with
+small possibility, the root cause is exactly the same as commit
+bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 33c563ebf8d3 ("netfilter: nft_payload: skbuff vlan metadata mangle support")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, Dan reported another hang after that, and junxiao investigated
+the problem and found out that this is caused by plugged bio can't issue
+from raid5d().
+
+Current implementation in raid5d() has a weird dependence:
+
+1) md_check_recovery() from raid5d() must hold 'reconfig_mutex' to clear
+   MD_SB_CHANGE_PENDING;
+2) raid5d() handles IO in a deadloop, until all IO are issued;
+3) IO from raid5d() must wait for MD_SB_CHANGE_PENDING to be cleared;
+
+This behaviour is introduce before v2.6, and for consequence, if other
+context hold 'reconfig_mutex', and md_check_recovery() can't update
+super_block, then raid5d() will waste one cpu 100% by the deadloop, until
+'reconfig_mutex' is released.
+
+Refer to the implementation from raid1 and raid10, fix this problem by
+skipping issue IO if MD_SB_CHANGE_PENDING is still set after
+md_check_recovery(), daemon thread will be woken up when 'reconfig_mutex'
+is released. Meanwhile, the hang problem will be fixed as well.
+
+Fixes: 5e2cf333b7bd ("md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d")
+Cc: stable@vger.kernel.org # v5.19+
+Reported-and-tested-by: Dan Moulding <dan@danm.net>
+Closes: https://lore.kernel.org/all/20240123005700.9302-1-dan@danm.net/
+Investigated-by: Junxiao Bi <junxiao.bi@oracle.com>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240322081005.1112401-1-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables_core.h | 10 ----------
- net/netfilter/nft_payload.c            | 10 ++++++++++
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/md/raid5.c |   15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables_core.h b/include/net/netfilter/nf_tables_core.h
-index 9dfa11d4224d2..315869fc3fcb8 100644
---- a/include/net/netfilter/nf_tables_core.h
-+++ b/include/net/netfilter/nf_tables_core.h
-@@ -74,16 +74,6 @@ struct nft_payload {
- 	u8			dreg;
- };
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -36,7 +36,6 @@
+  */
  
--struct nft_payload_set {
--	enum nft_payload_bases	base:8;
--	u8			offset;
--	u8			len;
--	u8			sreg;
--	u8			csum_type;
--	u8			csum_offset;
--	u8			csum_flags;
--};
--
- extern const struct nft_expr_ops nft_payload_fast_ops;
+ #include <linux/blkdev.h>
+-#include <linux/delay.h>
+ #include <linux/kthread.h>
+ #include <linux/raid/pq.h>
+ #include <linux/async_tx.h>
+@@ -6299,6 +6298,9 @@ static void raid5d(struct md_thread *thr
+ 		int batch_size, released;
+ 		unsigned int offset;
  
- extern const struct nft_expr_ops nft_bitwise_fast_ops;
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index 4192f0e366554..e5f0d33a27e61 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -629,6 +629,16 @@ static int nft_payload_csum_inet(struct sk_buff *skb, const u32 *src,
- 	return 0;
- }
- 
-+struct nft_payload_set {
-+	enum nft_payload_bases	base:8;
-+	u8			offset;
-+	u8			len;
-+	u8			sreg;
-+	u8			csum_type;
-+	u8			csum_offset;
-+	u8			csum_flags;
-+};
++		if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
++			break;
 +
- static void nft_payload_set_eval(const struct nft_expr *expr,
- 				 struct nft_regs *regs,
- 				 const struct nft_pktinfo *pkt)
--- 
-2.43.0
-
+ 		released = release_stripe_list(conf, conf->temp_inactive_list);
+ 		if (released)
+ 			clear_bit(R5_DID_ALLOC, &conf->cache_state);
+@@ -6335,18 +6337,7 @@ static void raid5d(struct md_thread *thr
+ 			spin_unlock_irq(&conf->device_lock);
+ 			md_check_recovery(mddev);
+ 			spin_lock_irq(&conf->device_lock);
+-
+-			/*
+-			 * Waiting on MD_SB_CHANGE_PENDING below may deadlock
+-			 * seeing md_check_recovery() is needed to clear
+-			 * the flag when using mdmon.
+-			 */
+-			continue;
+ 		}
+-
+-		wait_event_lock_irq(mddev->sb_wait,
+-			!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags),
+-			conf->device_lock);
+ 	}
+ 	pr_debug("%d stripes handled\n", handled);
+ 
 
 
 
