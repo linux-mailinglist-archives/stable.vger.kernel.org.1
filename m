@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-51984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA619072DD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:53:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4967390705E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E132B2958A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0C431F23215
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF9C144D1A;
-	Thu, 13 Jun 2024 12:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7723381AA7;
+	Thu, 13 Jun 2024 12:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRFOvtQ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWGdDDlP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0841144317;
-	Thu, 13 Jun 2024 12:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C306AFAE;
+	Thu, 13 Jun 2024 12:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282893; cv=none; b=P/H7HdsQQEqyeaeSXTW5mM+9yeQFwVpCj0UM+7zh1rDO5QFL7XfSX3OxxTMlSegNG+ob2XQxKKrwtpdAr4UJtz+p9VmCMIvH0CP7juQZ1gZc+bbwdaRd9Gu+oKnMqUBZFPi5Jfve1RERscvct7mz/MmNeQxjMGV5SJf+cpyVFf8=
+	t=1718281598; cv=none; b=s1HB7RktMP4Nd4PcwjZ6mt7I2tkfsYjokYO9xIj9G0RlUaz1H7t1Ogee8emIrCar4/nr5RSG+Ude8dLMPqPY4rQCnwgp3a/nXgVbsJ95O6pXJnIJ2f5fTTZqW9yOdp1apGXWhuRz23XAB7if7YwawPHBhFl2FskCkD1xDMsg1ZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282893; c=relaxed/simple;
-	bh=i5wLiiM/7Lno+N2VVIcFyYMciGRSH4NG/7mz1Wguydk=;
+	s=arc-20240116; t=1718281598; c=relaxed/simple;
+	bh=/E7P8KpFNwmuvKLA23e5qeBbLWBskA4pCtL6zm111xM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxXKOvA8cHy7t75OvZpqRS3nCcrnahTUa6P4Ib6o+zjfc8z6yYIdbDEIclBSO5v/Gc6MkmASLowYRicKxow5d3vUBd3aBMjwPYnpI3aEZfGrkVZopusX+1EI9l3hXzHjA1eVKMN/I0bhUFT3cQ0B1MMU1ihh3RJfF37X1/l+ZuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRFOvtQ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB4AC32786;
-	Thu, 13 Jun 2024 12:48:12 +0000 (UTC)
+	 MIME-Version; b=ugUPoCz3Qt/4MWerL5vE+965s5cyeMmv5AyH7koyXP59rCh7cs5v7Z+T0XLqJ9xqCJSRXvr63cO7doyFp+slSkjJkxL0KJe4CEVNWQ2k2/OxOesblwHR6HVM81wc3CqtIDzvIkW+hlSKt2HmFIFsPJIKzP4/G9L2AUGC1VLCjMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWGdDDlP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26BBC4AF1A;
+	Thu, 13 Jun 2024 12:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282893;
-	bh=i5wLiiM/7Lno+N2VVIcFyYMciGRSH4NG/7mz1Wguydk=;
+	s=korg; t=1718281598;
+	bh=/E7P8KpFNwmuvKLA23e5qeBbLWBskA4pCtL6zm111xM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KRFOvtQ/gZIFS+HvQBNV82E5bbppKoQj52YM+9GcdbgvvgP87LK9PPSB35vvd0ITS
-	 cq2KJ+44CPLSvX/tuA3Up3IdxdvtWK+TnPKppS1qvj+LAgl5WxJWjMvQGvF+Y5HK7I
-	 BHxZ0nZAvoSRX22PGpu1ABPUyKivZukgDFlpHBYQ=
+	b=bWGdDDlPwrEzFbdmfCy5IqQ7VyR16bmRZLVzq5U790/lvNNVZn7EbRjb9JwHsK+XL
+	 /P3fXO0dvhkOFLnCGNTDvAr6fxSF3EUPh9DPRBPCqk5V6gwsFmkM3fONaX6X50U/RB
+	 FC6HwGD1dUv9KYQmd3aeY54cSQhIPT8kR+9vYGvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.1 29/85] wifi: rtl8xxxu: Fix the TX power of RTL8192CU, RTL8723AU
-Date: Thu, 13 Jun 2024 13:35:27 +0200
-Message-ID: <20240613113215.271909765@linuxfoundation.org>
+	syzbot+dd43bd0f7474512edc47@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 310/317] ext4: fix mb_cache_entrys e_refcnt leak in ext4_xattr_block_cache_find()
+Date: Thu, 13 Jun 2024 13:35:28 +0200
+Message-ID: <20240613113259.545880547@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 08b5d052d17a89bb8706b2888277d0b682dc1610 upstream.
+commit 0c0b4a49d3e7f49690a6827a41faeffad5df7e21 upstream.
 
-Don't subtract 1 from the power index. This was added in commit
-2fc0b8e5a17d ("rtl8xxxu: Add TX power base values for gen1 parts")
-for unknown reasons. The vendor drivers don't do this.
+Syzbot reports a warning as follows:
 
-Also correct the calculations of values written to
-REG_OFDM0_X{C,D}_TX_IQ_IMBALANCE. According to the vendor driver,
-these are used for TX power training.
+============================================
+WARNING: CPU: 0 PID: 5075 at fs/mbcache.c:419 mb_cache_destroy+0x224/0x290
+Modules linked in:
+CPU: 0 PID: 5075 Comm: syz-executor199 Not tainted 6.9.0-rc6-gb947cc5bf6d7
+RIP: 0010:mb_cache_destroy+0x224/0x290 fs/mbcache.c:419
+Call Trace:
+ <TASK>
+ ext4_put_super+0x6d4/0xcd0 fs/ext4/super.c:1375
+ generic_shutdown_super+0x136/0x2d0 fs/super.c:641
+ kill_block_super+0x44/0x90 fs/super.c:1675
+ ext4_kill_sb+0x68/0xa0 fs/ext4/super.c:7327
+[...]
+============================================
 
-With these changes rtl8xxxu sets the TX power of RTL8192CU the same
-as the vendor driver.
+This is because when finding an entry in ext4_xattr_block_cache_find(), if
+ext4_sb_bread() returns -ENOMEM, the ce's e_refcnt, which has already grown
+in the __entry_find(), won't be put away, and eventually trigger the above
+issue in mb_cache_destroy() due to reference count leakage.
 
-None of this appears to have any effect on my RTL8192CU device.
+So call mb_cache_entry_put() on the -ENOMEM error branch as a quick fix.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/6ae5945b-644e-45e4-a78f-4c7d9c987910@gmail.com
+Reported-by: syzbot+dd43bd0f7474512edc47@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=dd43bd0f7474512edc47
+Fixes: fb265c9cb49e ("ext4: add ext4_sb_bread() to disambiguate ENOMEM cases")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240504075526.2254349-2-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c |   25 +++++++-----------
- 1 file changed, 10 insertions(+), 15 deletions(-)
+ fs/ext4/xattr.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -1389,13 +1389,13 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xx
- 	u8 cck[RTL8723A_MAX_RF_PATHS], ofdm[RTL8723A_MAX_RF_PATHS];
- 	u8 ofdmbase[RTL8723A_MAX_RF_PATHS], mcsbase[RTL8723A_MAX_RF_PATHS];
- 	u32 val32, ofdm_a, ofdm_b, mcs_a, mcs_b;
--	u8 val8;
-+	u8 val8, base;
- 	int group, i;
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -3065,8 +3065,10 @@ ext4_xattr_block_cache_find(struct inode
  
- 	group = rtl8xxxu_gen1_channel_to_group(channel);
- 
--	cck[0] = priv->cck_tx_power_index_A[group] - 1;
--	cck[1] = priv->cck_tx_power_index_B[group] - 1;
-+	cck[0] = priv->cck_tx_power_index_A[group];
-+	cck[1] = priv->cck_tx_power_index_B[group];
- 
- 	if (priv->hi_pa) {
- 		if (cck[0] > 0x20)
-@@ -1406,10 +1406,6 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xx
- 
- 	ofdm[0] = priv->ht40_1s_tx_power_index_A[group];
- 	ofdm[1] = priv->ht40_1s_tx_power_index_B[group];
--	if (ofdm[0])
--		ofdm[0] -= 1;
--	if (ofdm[1])
--		ofdm[1] -= 1;
- 
- 	ofdmbase[0] = ofdm[0] +	priv->ofdm_tx_power_index_diff[group].a;
- 	ofdmbase[1] = ofdm[1] +	priv->ofdm_tx_power_index_diff[group].b;
-@@ -1498,20 +1494,19 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xx
- 
- 	rtl8xxxu_write32(priv, REG_TX_AGC_A_MCS15_MCS12,
- 			 mcs_a + power_base->reg_0e1c);
-+	val8 = u32_get_bits(mcs_a + power_base->reg_0e1c, 0xff000000);
- 	for (i = 0; i < 3; i++) {
--		if (i != 2)
--			val8 = (mcsbase[0] > 8) ? (mcsbase[0] - 8) : 0;
--		else
--			val8 = (mcsbase[0] > 6) ? (mcsbase[0] - 6) : 0;
-+		base = i != 2 ? 8 : 6;
-+		val8 = max_t(int, val8 - base, 0);
- 		rtl8xxxu_write8(priv, REG_OFDM0_XC_TX_IQ_IMBALANCE + i, val8);
- 	}
-+
- 	rtl8xxxu_write32(priv, REG_TX_AGC_B_MCS15_MCS12,
- 			 mcs_b + power_base->reg_0868);
-+	val8 = u32_get_bits(mcs_b + power_base->reg_0868, 0xff000000);
- 	for (i = 0; i < 3; i++) {
--		if (i != 2)
--			val8 = (mcsbase[1] > 8) ? (mcsbase[1] - 8) : 0;
--		else
--			val8 = (mcsbase[1] > 6) ? (mcsbase[1] - 6) : 0;
-+		base = i != 2 ? 8 : 6;
-+		val8 = max_t(int, val8 - base, 0);
- 		rtl8xxxu_write8(priv, REG_OFDM0_XD_TX_IQ_IMBALANCE + i, val8);
- 	}
- }
+ 		bh = ext4_sb_bread(inode->i_sb, ce->e_value, REQ_PRIO);
+ 		if (IS_ERR(bh)) {
+-			if (PTR_ERR(bh) == -ENOMEM)
++			if (PTR_ERR(bh) == -ENOMEM) {
++				mb_cache_entry_put(ea_block_cache, ce);
+ 				return NULL;
++			}
+ 			bh = NULL;
+ 			EXT4_ERROR_INODE(inode, "block %lu read error",
+ 					 (unsigned long)ce->e_value);
 
 
 
