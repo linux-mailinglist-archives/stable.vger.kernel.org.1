@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9402906F3F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D1E907122
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D18541C21E13
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26C131C2308F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D58144D07;
-	Thu, 13 Jun 2024 12:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B2CEC4;
+	Thu, 13 Jun 2024 12:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UkiFKOWi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T97jMWZ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A80142903;
-	Thu, 13 Jun 2024 12:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156FB384;
+	Thu, 13 Jun 2024 12:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280906; cv=none; b=igxpMZ7tckg6DDvadRz9u6IqAJYVGzbAhyGoTEp5MdHOEn36sOQvXeP6EDOL4dMPpj3gCYd3WCK94J5UOqyZtuzRPR6pIt1sCSyqHF7ZpS16Jb+66iqy2BNyFVeh3/zZhwlLzkWeGgpzJ8U3jNFHTXG+XYTplyL8XDdGcMj6h/w=
+	t=1718282027; cv=none; b=K/Ez2ODX50Cyu7WCtC2B8O70mCytYuBvzYta5cIX5l+ldJY/PNHzlDvLdCeyc6mmBbk4fNaDEpPWfQjbQk7/vIg4Hv9j7vIL36JqyLxNeLRTfzcqpdsTuk3gDsihSe2BEJTGP8s59MhXxrP/Xy+lDSQIzVGo2RgWnuYNHv57sOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280906; c=relaxed/simple;
-	bh=4BcUyJcXxljmL5GQDf4hTxz8N7478euSbZibA/xHP8c=;
+	s=arc-20240116; t=1718282027; c=relaxed/simple;
+	bh=EvHPonryX9B5vKl2fC/Xj9uPuBQoHSoFOiFujO53JFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQJrFH64yWHCTScCXw3i1mi6IXMLiNOceoddvVzq30cK/C4/3MrBqG6IXcwSaXtyVvY8oLtjEAkIKR3ypaNZ4WXiNNeARQbrRQqNukTcGJbuZ4rlQjJN7W3i1fG+PwwUVWO+9ThmEdCZyNDDw2hhPHYD0SlprjPpaIW5GZ+Q9AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UkiFKOWi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA19C2BBFC;
-	Thu, 13 Jun 2024 12:15:06 +0000 (UTC)
+	 MIME-Version; b=g6abKz0/H+SagEP6rboOd1zCWWM407ADL/Erz0aTXPIsEZRGhUcNFQRdGoeKExFltfKPYnR2+xMztQKWV1NN83w2by5ymhJOGdgVF77cLkCmye0+Y6KbCPdQfSnHAHoJrdmqhNOJ1Yvx44+4cGiCOC7Z8B5S+oPQl9KBGfEozow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T97jMWZ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7F8C2BBFC;
+	Thu, 13 Jun 2024 12:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280906;
-	bh=4BcUyJcXxljmL5GQDf4hTxz8N7478euSbZibA/xHP8c=;
+	s=korg; t=1718282027;
+	bh=EvHPonryX9B5vKl2fC/Xj9uPuBQoHSoFOiFujO53JFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UkiFKOWiyYt+HqLJ34yBPQUxDUapEwYcSGnY8BsY8k2LGR1F9Z8lQ7V6tOUDv5+MY
-	 rMMOl+N2WeAMZnzvvn7d3JGXTzvgTO61kffD4Q4socrTiBakIXh8RNCUcVKoZ3d2J9
-	 +UEMWkeYeTyuHiRH7WE/CvR9MgYAj60/YhWhgnwE=
+	b=T97jMWZ9/QXA+yVDY6VJ9iZYSsJCh7TbRqo7+iGpWL4QB9UWqCSu5zfPj/cMazzJa
+	 acPd8K1dnGHjfJQv8JPVvx1tRl6/dgkokPVWu6UhPD/zga1gkVOzJ10TkADxO07zeI
+	 g/F4IN3DNlUs+IZQdy5/fK6iWbkAnkkhiDnowG4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Kalle Valo <kvalo@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 075/317] wifi: mwl8k: initialize cmd->addr[] properly
-Date: Thu, 13 Jun 2024 13:31:33 +0200
-Message-ID: <20240613113250.449353840@linuxfoundation.org>
+Subject: [PATCH 5.15 137/402] media: ipu3-cio2: Request IRQ earlier
+Date: Thu, 13 Jun 2024 13:31:34 +0200
+Message-ID: <20240613113307.480715330@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 1d60eabb82694e58543e2b6366dae3e7465892a5 ]
+[ Upstream commit a069f79bfa6ec1ea0744981ea8425c8a25322579 ]
 
-This loop is supposed to copy the mac address to cmd->addr but the
-i++ increment is missing so it copies everything to cmd->addr[0] and
-only the last address is recorded.
+Call devm_request_irq() before registering the async notifier, as otherwise
+it would be possible to use the device before the interrupts could be
+delivered to the driver.
 
-Fixes: 22bedad3ce11 ("net: convert multicast list to list_head")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/b788be9a-15f5-4cca-a3fe-79df4c8ce7b2@moroto.mountain
+Fixes: c2a6a07afe4a ("media: intel-ipu3: cio2: add new MIPI-CSI2 driver")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwl8k.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/pci/intel/ipu3/ipu3-cio2-main.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
-index dc91ac8cbd48b..dd72e9f8b4079 100644
---- a/drivers/net/wireless/marvell/mwl8k.c
-+++ b/drivers/net/wireless/marvell/mwl8k.c
-@@ -2714,7 +2714,7 @@ __mwl8k_cmd_mac_multicast_adr(struct ieee80211_hw *hw, int allmulti,
- 		cmd->action |= cpu_to_le16(MWL8K_ENABLE_RX_MULTICAST);
- 		cmd->numaddr = cpu_to_le16(mc_count);
- 		netdev_hw_addr_list_for_each(ha, mc_list) {
--			memcpy(cmd->addr[i], ha->addr, ETH_ALEN);
-+			memcpy(cmd->addr[i++], ha->addr, ETH_ALEN);
- 		}
+diff --git a/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c b/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c
+index 29c660fe1425b..dfb2be0b9625a 100644
+--- a/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c
++++ b/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c
+@@ -1803,11 +1803,6 @@ static int cio2_pci_probe(struct pci_dev *pci_dev,
+ 
+ 	v4l2_async_notifier_init(&cio2->notifier);
+ 
+-	/* Register notifier for subdevices we care */
+-	r = cio2_parse_firmware(cio2);
+-	if (r)
+-		goto fail_clean_notifier;
+-
+ 	r = devm_request_irq(dev, pci_dev->irq, cio2_irq, IRQF_SHARED,
+ 			     CIO2_NAME, cio2);
+ 	if (r) {
+@@ -1815,6 +1810,11 @@ static int cio2_pci_probe(struct pci_dev *pci_dev,
+ 		goto fail_clean_notifier;
  	}
+ 
++	/* Register notifier for subdevices we care */
++	r = cio2_parse_firmware(cio2);
++	if (r)
++		goto fail_clean_notifier;
++
+ 	pm_runtime_put_noidle(dev);
+ 	pm_runtime_allow(dev);
  
 -- 
 2.43.0
