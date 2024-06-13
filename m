@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709B190717F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:37:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C157E906F8D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:21:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0561C281F8E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:37:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 744BD1F212EF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575FC143C5F;
-	Thu, 13 Jun 2024 12:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CFCE143C63;
+	Thu, 13 Jun 2024 12:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6G4kdf4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qr+DYYN/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A1A12C47D;
-	Thu, 13 Jun 2024 12:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5D86EB56;
+	Thu, 13 Jun 2024 12:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282244; cv=none; b=eUzCqvVLlVXtVhRx8T4rlHwTe5s3ccdIHoCSFV1/O0retqrBE9n1hZ0WjJO2B4ENYd/z7SvQdAbDEitaA9bUS5oMa9Gx2IA+hpklbx5G0BQDZ2tdzmXUCPQOWOklP3RaRMK9TN0dyEhP6yv4HK7Dx1aSxIm/w+XjNUrx3COGtwQ=
+	t=1718281051; cv=none; b=k7iW+VqPcFM7x0fLntbOCwadbtvbl5qUih0+vfcG/Mz2OeOr/FOAXyTwp8sdp/Kif0DkXAPKfAeI/6YXphdFjY/qZys/9Ow/QQYp8HeJM0YG7aCUjp461qoc5qDyXcvUEg9ETRAOmgk0SIJFu5+gk6OyiHhS7nl0OhstNeHy4/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282244; c=relaxed/simple;
-	bh=91bgWSnv3qCUucN6FIIIIWcfu3shJ6QvvEl9gZ3q8ak=;
+	s=arc-20240116; t=1718281051; c=relaxed/simple;
+	bh=CY9+iCuVE1JlSds7/D/Y+Goh484XRD2tA1Mw7xMwF1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBfu4vrg15FgE2olvlYEEG2iSzO5t/kVVNwoi2uGvAR/kYNn9PYT/dQBv48AZxIx023gO4xEPZ6PqiLootoDjeUExH3VY49hO+fiVGGhbras4utvRibDutRdqyCQh8lYtbpyy2P5LFnH8mQn65VzFPCqCnL6QyRWS/yxQjARLm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6G4kdf4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC75C32786;
-	Thu, 13 Jun 2024 12:37:23 +0000 (UTC)
+	 MIME-Version; b=O5WUPh9YcuQWCVJplPuv2cOBTlvf8COcC4rPwpnoUb7cwF7SfLOsLv0mMQoI6HQmuDTYCPK60yS45XKtfqBe+Rfgwo1uNdUo6sA4mBkFd3fN4zfCLpjyhXKFBU6FIy22Ftgrv51BNAH6KGrYQUAe7vuTnmlDgYhmDvjPBm4SQHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qr+DYYN/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBA5C2BBFC;
+	Thu, 13 Jun 2024 12:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282243;
-	bh=91bgWSnv3qCUucN6FIIIIWcfu3shJ6QvvEl9gZ3q8ak=;
+	s=korg; t=1718281051;
+	bh=CY9+iCuVE1JlSds7/D/Y+Goh484XRD2tA1Mw7xMwF1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X6G4kdf4SN8ONCDlxzm7MjGH1aE/QsHoL34Fj10T4dbIA1gy8jAQL8HR+zBpJb31e
-	 IWu4eW3nhDIKt4j92qK3KgQaOtFJM4r4Cu7QHiA/v/MVsHVBs7LUmHa+AeONGngKaB
-	 z4SE3sp5cOAL5TXIWKQmVZohrYcE7/kSyYOL3rHs=
+	b=qr+DYYN/5tLS2SDrDfk04/R7IT197rS8YwaWCQgahtTOFlTLIZB20oR9TpneG7OsE
+	 IPtsBoehDrNf8Khk8ek7mJeBLdoGqES6xWCK9TpS2cfzA4RohmITF5Yt8eTZnlztKF
+	 9p5nHmg+TaU7qjQxtLk4aaSHcfYpr/p3RJUoaeXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 184/402] dmaengine: idma64: Add check for dma_set_max_seg_size
+Subject: [PATCH 5.10 123/317] ext4: try all groups in ext4_mb_new_blocks_simple
 Date: Thu, 13 Jun 2024 13:32:21 +0200
-Message-ID: <20240613113309.326818205@linuxfoundation.org>
+Message-ID: <20240613113252.308554818@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit 2b1c1cf08a0addb6df42f16b37133dc7a351de29 ]
+[ Upstream commit 19a043bb1fd1b5cb2652ca33536c55e6c0a70df0 ]
 
-As the possible failure of the dma_set_max_seg_size(), it should be
-better to check the return value of the dma_set_max_seg_size().
+ext4_mb_new_blocks_simple ignores the group before goal, so it will fail
+if free blocks reside in group before goal. Try all groups to avoid
+unexpected failure.
+Search finishes either if any free block is found or if no available
+blocks are found. Simpliy check "i >= max" to distinguish the above
+cases.
 
-Fixes: e3fdb1894cfa ("dmaengine: idma64: set maximum allowed segment size for DMA")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240403024932.3342606-1-nichen@iscas.ac.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Suggested-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230603150327.3596033-8-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 3f4830abd236 ("ext4: fix potential unnitialized variable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idma64.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ext4/mballoc.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/idma64.c b/drivers/dma/idma64.c
-index af8777a1ec2e3..89e4a3e1d5198 100644
---- a/drivers/dma/idma64.c
-+++ b/drivers/dma/idma64.c
-@@ -594,7 +594,9 @@ static int idma64_probe(struct idma64_chip *chip)
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index f54f23afd93d2..de69929495a5a 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -5350,7 +5350,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+ 	struct buffer_head *bitmap_bh;
+ 	struct super_block *sb = ar->inode->i_sb;
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	ext4_group_t group;
++	ext4_group_t group, nr;
+ 	ext4_grpblk_t blkoff;
+ 	ext4_grpblk_t max = EXT4_CLUSTERS_PER_GROUP(sb);
+ 	ext4_grpblk_t i = 0;
+@@ -5364,7 +5364,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
  
- 	idma64->dma.dev = chip->sysdev;
+ 	ar->len = 0;
+ 	ext4_get_group_no_and_offset(sb, goal, &group, &blkoff);
+-	for (; group < ext4_get_groups_count(sb); group++) {
++	for (nr = ext4_get_groups_count(sb); nr > 0; nr--) {
+ 		bitmap_bh = ext4_read_block_bitmap(sb, group);
+ 		if (IS_ERR(bitmap_bh)) {
+ 			*errp = PTR_ERR(bitmap_bh);
+@@ -5388,10 +5388,13 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+ 		if (i < max)
+ 			break;
  
--	dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
-+	ret = dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
-+	if (ret)
-+		return ret;
++		if (++group >= ext4_get_groups_count(sb))
++			group = 0;
++
+ 		blkoff = 0;
+ 	}
  
- 	ret = dma_async_device_register(&idma64->dma);
- 	if (ret)
+-	if (group >= ext4_get_groups_count(sb) || i >= max) {
++	if (i >= max) {
+ 		*errp = -ENOSPC;
+ 		return 0;
+ 	}
 -- 
 2.43.0
 
