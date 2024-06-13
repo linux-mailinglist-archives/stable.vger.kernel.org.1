@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-50726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98444906C37
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:48:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02763906D2F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AB03B2394C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:48:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1389D1C22D6F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926C5143735;
-	Thu, 13 Jun 2024 11:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF4B146A99;
+	Thu, 13 Jun 2024 11:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFwwi0UC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4kO0nww"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E9B143872;
-	Thu, 13 Jun 2024 11:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2B9143884;
+	Thu, 13 Jun 2024 11:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279207; cv=none; b=Gv2gumJzb2BfNCJhqXhauGuQXPTMX/Jf21m7o/3LxzCWV5eggMlutbfNf9MW8TPyd8q2SuyFleb7SUJv3gPiu4yiP69hZlr4RvvK9s+QyPN41eBvuKIeeArW44x0O/6BUcK0pF9GHe2O7bQAd9Z3FCwxikEXvKl2Gdmx/G3pwPU=
+	t=1718279608; cv=none; b=ZHGQRY1ZrWuSOXCcrnI5NMKkdVwADDp9/Y4aHx0gNqVobSibGrXSSjaPq2urmtW2JSYDVDSxzMLC17XjfM3SzAo/PsGjbEoqntqhynkEXia707/n2ul6sQy70HXfvFD3MhB+LYdEOAv8dayo1MhdnR+2ZdXU1iVOHprro2nao0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279207; c=relaxed/simple;
-	bh=Suxgchf+Pwdqfm/O/3H/lgyrF3fuMuXDmiMB1b6QXTE=;
+	s=arc-20240116; t=1718279608; c=relaxed/simple;
+	bh=vXN0LsKshKSzSYaldfXFtByiyGzPietc7pDJC04vdqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5XNUMQHbsPND56j1uFyW/9d7sM0pQeaf70Yvyclnz96sMqDPFU24v1k8McPqW75Pe+ZcWubyC96/OS9m8xtYoTF0TX43mMiUYrObUNQpPHQ40GNEk/va4WckgxWOslnSqaHbatN0F0lpsrzV3ppkj+X18PFIAv2OMyVzEkfFrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFwwi0UC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF23CC2BBFC;
-	Thu, 13 Jun 2024 11:46:46 +0000 (UTC)
+	 MIME-Version; b=TCZ+Pv1Cdd/LR/esQ7ySdQ+xO38HDQSN4KgKKjrWdni9R4dD8VqZGyhtOhNUvpldW0tO5+U+lJNMHpPH4hlA1PhYs6m3Gkcubeg5Rk1Jb3rEn63FLv6W0KRWv0kqRbrR0vPLGEuYLfixWAWgucxjxatLGNQM6muSzeVHm0NRoJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4kO0nww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75348C2BBFC;
+	Thu, 13 Jun 2024 11:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279207;
-	bh=Suxgchf+Pwdqfm/O/3H/lgyrF3fuMuXDmiMB1b6QXTE=;
+	s=korg; t=1718279607;
+	bh=vXN0LsKshKSzSYaldfXFtByiyGzPietc7pDJC04vdqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFwwi0UCbXGXMJiw0i5Cv7OMysL+L2JdEUH5pkor622l4drxmhWlG4UGfuX9/Rs28
-	 rGC9ZKCBbcyupopWh87t4Erhwod8hWN4xJDCtvdurXdOJZkmepU9ymjkUq8CWuFAkO
-	 lVfDJXmM7D6/prPh8RwpvmfzD4OcYCFO0jLrdKig=
+	b=t4kO0nwwjePw1A+WfjGx0lRvTNcSC4VT2eFNVATiXs1oUjDPioO94QBmUCVNguXnd
+	 OrnZS3qLGF9rtMk7kfNQwrn3tsfaOTmlSwBN09WXyIFIz2H9KGEZBzzh00jzhzusKN
+	 kkB3t3KfezzMWc2Eopzrfi0Uy19lqr288/iw9djw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Gilbert <floppym@gentoo.org>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH 4.19 210/213] sparc: move struct termio to asm/termios.h
-Date: Thu, 13 Jun 2024 13:34:18 +0200
-Message-ID: <20240613113236.084371828@linuxfoundation.org>
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.9 134/157] ASoC: SOF: ipc4-topology: Fix input format query of process modules without base extension
+Date: Thu, 13 Jun 2024 13:34:19 +0200
+Message-ID: <20240613113232.589706347@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Gilbert <floppym@gentoo.org>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-commit c32d18e7942d7589b62e301eb426b32623366565 upstream.
+commit ffa077b2f6ad124ec3d23fbddc5e4b0ff2647af8 upstream.
 
-Every other arch declares struct termio in asm/termios.h, so make sparc
-match them.
+If a process module does not have base config extension then the same
+format applies to all of it's inputs and the process->base_config_ext is
+NULL, causing NULL dereference when specifically crafted topology and
+sequences used.
 
-Resolves a build failure in the PPP software package, which includes
-both bits/ioctl-types.h via sys/ioctl.h (glibc) and asm/termbits.h.
-
-Closes: https://bugs.gentoo.org/918992
-Signed-off-by: Mike Gilbert <floppym@gentoo.org>
+Fixes: 648fea128476 ("ASoC: SOF: ipc4-topology: set copier output format for process module")
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Tested-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20240306171149.3843481-1-floppym@gentoo.org
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://msgid.link/r/20240529121201.14687-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/include/uapi/asm/termbits.h |   10 ----------
- arch/sparc/include/uapi/asm/termios.h  |    9 +++++++++
- 2 files changed, 9 insertions(+), 10 deletions(-)
+ sound/soc/sof/ipc4-topology.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/sparc/include/uapi/asm/termbits.h
-+++ b/arch/sparc/include/uapi/asm/termbits.h
-@@ -13,16 +13,6 @@ typedef unsigned int    tcflag_t;
- typedef unsigned long   tcflag_t;
- #endif
+--- a/sound/soc/sof/ipc4-topology.c
++++ b/sound/soc/sof/ipc4-topology.c
+@@ -217,6 +217,14 @@ sof_ipc4_get_input_pin_audio_fmt(struct
+ 	}
  
--#define NCC 8
--struct termio {
--	unsigned short c_iflag;		/* input mode flags */
--	unsigned short c_oflag;		/* output mode flags */
--	unsigned short c_cflag;		/* control mode flags */
--	unsigned short c_lflag;		/* local mode flags */
--	unsigned char c_line;		/* line discipline */
--	unsigned char c_cc[NCC];	/* control characters */
--};
--
- #define NCCS 17
- struct termios {
- 	tcflag_t c_iflag;		/* input mode flags */
---- a/arch/sparc/include/uapi/asm/termios.h
-+++ b/arch/sparc/include/uapi/asm/termios.h
-@@ -40,5 +40,14 @@ struct winsize {
- 	unsigned short ws_ypixel;
- };
+ 	process = swidget->private;
++
++	/*
++	 * For process modules without base config extension, base module config
++	 * format is used for all input pins
++	 */
++	if (process->init_config != SOF_IPC4_MODULE_INIT_CONFIG_TYPE_BASE_CFG_WITH_EXT)
++		return &process->base_config.audio_fmt;
++
+ 	base_cfg_ext = process->base_config_ext;
  
-+#define NCC 8
-+struct termio {
-+	unsigned short c_iflag;		/* input mode flags */
-+	unsigned short c_oflag;		/* output mode flags */
-+	unsigned short c_cflag;		/* control mode flags */
-+	unsigned short c_lflag;		/* local mode flags */
-+	unsigned char c_line;		/* line discipline */
-+	unsigned char c_cc[NCC];	/* control characters */
-+};
- 
- #endif /* _UAPI_SPARC_TERMIOS_H */
+ 	/*
 
 
 
