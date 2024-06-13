@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-50821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF27906CF5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:57:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B2F906BB5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7EED285E5E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:57:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E87A0B24806
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20611448E7;
-	Thu, 13 Jun 2024 11:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFF5143872;
+	Thu, 13 Jun 2024 11:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTqzqclZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBRXvLjK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BFE81ABF;
-	Thu, 13 Jun 2024 11:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF73DDB1;
+	Thu, 13 Jun 2024 11:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279484; cv=none; b=F1kxH3RPSLKek1ditlC3PlCPGAEcXKFgBgtyW9/pojP57v92Hk0RDXMgChynsblqI+rdMKn0MijXHLeHzC5s9QgETiuLhRspI1OJLcAyu18XFeKAYQC3buCjmQyV9zaDxGZQ5ORzN+FKBTvYOzON+cRIhGe71tFiCre24nw/eqo=
+	t=1718278988; cv=none; b=qmOPlh6ggd/9MN8QSLtrS+6a2iJjJv2nIYm6zRw+TldVyjprRk9cd2vYVFp3/cmbiAHE4q3Yyxv6lySTSmMzf3QKdfj7TCH/RqweV8ejZPJQQ+256TveAUQZROMAtOeeL8w+DN1tUr8EFQ75rvNKTzqHyxnD1eDCodQjC0Ceeoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279484; c=relaxed/simple;
-	bh=AB23m2GtAfWDuH44GBxg4JAvLquhgdZ2LjICZ5glgKM=;
+	s=arc-20240116; t=1718278988; c=relaxed/simple;
+	bh=eyRt73U/kgP56BnzxCwzSh3nhwqKB5ith5o6PHX+chQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=alAw1q2pwhd8L0IPy03jm+9jUP/A89jIQosK8dZ7W44Ovjc5ZF27M7RaqaVMfovc3qEmGkINTZy70XCm97jHjnVANQ5v1gu27JMo0zdOgh9ablV4s22YKP/cUIeqmjxsZOvlj0E7iWoEQC0FXOxOFPfKMAVvP0inSXxon6uE1Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTqzqclZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E494C4AF1A;
-	Thu, 13 Jun 2024 11:51:23 +0000 (UTC)
+	 MIME-Version; b=AhZCU9Y1D2IfzZyvSgHpCbNBtsJNHdp2z2T/KA2Ex7MyqhcMs5hof3prt411pc0ODCccT0hw7IPKpB/aNDgIKrHCSqBSSDBsRXmI5KUKWZASy01lhZTIxIjR8cX8DxjGJk+RxrGIGE8wS253aMnqQmqO20f8PDai8v+PAqje79w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBRXvLjK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1608C2BBFC;
+	Thu, 13 Jun 2024 11:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279484;
-	bh=AB23m2GtAfWDuH44GBxg4JAvLquhgdZ2LjICZ5glgKM=;
+	s=korg; t=1718278988;
+	bh=eyRt73U/kgP56BnzxCwzSh3nhwqKB5ith5o6PHX+chQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bTqzqclZeLwgd0LU8OX6X7B+ZX3h47bTmL/w6ZF7ZURL6+fF+OEUrEtq3OGi4Pipw
-	 ozNivZHjCoy1gTAJw2LGqRAlBUpBqPVv0fUr4RCHPdIOZq/Kkk9yZG/EW7FDcNs43C
-	 +QxEsCjFgrIOsdgWxnSZneSfn5oyydATwdG/udqk=
+	b=pBRXvLjKAqh08oyQ+yHU9dOQ4ua+24Ls4SzyulMXpHNII6X5ZFH2brft9Km+l19G0
+	 Bk0WKDqKPuTJ6iGq2TXW8SeciYB78ZcnPgHzX3lVVqK5Jj3vmrdb2VrXy8Y6L+2URW
+	 7vuGwwmogdC3+ML6ynk5gYTFBwjybglK0ccHYRbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.9 060/157] KVM: arm64: AArch32: Fix spurious trapping of conditional instructions
+	Andre Edich <andre.edich@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 137/213] smsc95xx: remove redundant function arguments
 Date: Thu, 13 Jun 2024 13:33:05 +0200
-Message-ID: <20240613113229.745936890@linuxfoundation.org>
+Message-ID: <20240613113233.280931788@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +62,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Andre Edich <andre.edich@microchip.com>
 
-commit c92e8b9eacebb4060634ebd9395bba1b29aadc68 upstream.
+[ Upstream commit 368be1ca28f66deba16627e2a02e78adedd023a6 ]
 
-We recently upgraded the view of ESR_EL2 to 64bit, in keeping with
-the requirements of the architecture.
+This patch removes arguments netdev and phy_id from the functions
+smsc95xx_mdio_read_nopm and smsc95xx_mdio_write_nopm.  Both removed
+arguments are recovered from a new argument `struct usbnet *dev`.
 
-However, the AArch32 emulation code was left unaudited, and the
-(already dodgy) code that triages whether a trap is spurious or not
-(because the condition code failed) broke in a subtle way:
-
-If ESR_EL2.ISS2 is ever non-zero (unlikely, but hey, this is the ARM
-architecture we're talking about), the hack that tests the top bits
-of ESR_EL2.EC will break in an interesting way.
-
-Instead, use kvm_vcpu_trap_get_class() to obtain the EC, and list
-all the possible ECs that can fail a condition code check.
-
-While we're at it, add SMC32 to the list, as it is explicitly listed
-as being allowed to trap despite failing a condition code check (as
-described in the HCR_EL2.TSC documentation).
-
-Fixes: 0b12620fddb8 ("KVM: arm64: Treat ESR_EL2 as a 64-bit register")
-Cc: stable@vger.kernel.org
-Acked-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240524141956.1450304-4-maz@kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andre Edich <andre.edich@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 52a2f0608366 ("net: usb: smsc95xx: fix changing LED_SEL bit value updated from EEPROM")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/hyp/aarch32.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/net/usb/smsc95xx.c | 35 +++++++++++++++++------------------
+ 1 file changed, 17 insertions(+), 18 deletions(-)
 
---- a/arch/arm64/kvm/hyp/aarch32.c
-+++ b/arch/arm64/kvm/hyp/aarch32.c
-@@ -50,9 +50,23 @@ bool kvm_condition_valid32(const struct
- 	u32 cpsr_cond;
- 	int cond;
+diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
+index be5543c71d069..de45a6209c2e6 100644
+--- a/drivers/net/usb/smsc95xx.c
++++ b/drivers/net/usb/smsc95xx.c
+@@ -273,16 +273,18 @@ static void __smsc95xx_mdio_write(struct net_device *netdev, int phy_id,
+ 	mutex_unlock(&dev->phy_mutex);
+ }
  
--	/* Top two bits non-zero?  Unconditional. */
--	if (kvm_vcpu_get_esr(vcpu) >> 30)
-+	/*
-+	 * These are the exception classes that could fire with a
-+	 * conditional instruction.
-+	 */
-+	switch (kvm_vcpu_trap_get_class(vcpu)) {
-+	case ESR_ELx_EC_CP15_32:
-+	case ESR_ELx_EC_CP15_64:
-+	case ESR_ELx_EC_CP14_MR:
-+	case ESR_ELx_EC_CP14_LS:
-+	case ESR_ELx_EC_FP_ASIMD:
-+	case ESR_ELx_EC_CP10_ID:
-+	case ESR_ELx_EC_CP14_64:
-+	case ESR_ELx_EC_SVC32:
-+		break;
-+	default:
- 		return true;
-+	}
+-static int smsc95xx_mdio_read_nopm(struct net_device *netdev, int phy_id,
+-				   int idx)
++static int smsc95xx_mdio_read_nopm(struct usbnet *dev, int idx)
+ {
+-	return __smsc95xx_mdio_read(netdev, phy_id, idx, 1);
++	struct mii_if_info *mii = &dev->mii;
++
++	return __smsc95xx_mdio_read(dev->net, mii->phy_id, idx, 1);
+ }
  
- 	/* Is condition field valid? */
- 	cond = kvm_vcpu_get_condition(vcpu);
+-static void smsc95xx_mdio_write_nopm(struct net_device *netdev, int phy_id,
+-				     int idx, int regval)
++static void smsc95xx_mdio_write_nopm(struct usbnet *dev, int idx, int regval)
+ {
+-	__smsc95xx_mdio_write(netdev, phy_id, idx, regval, 1);
++	struct mii_if_info *mii = &dev->mii;
++
++	__smsc95xx_mdio_write(dev->net, mii->phy_id, idx, regval, 1);
+ }
+ 
+ static int smsc95xx_mdio_read(struct net_device *netdev, int phy_id, int idx)
+@@ -1361,39 +1363,37 @@ static u32 smsc_crc(const u8 *buffer, size_t len, int filter)
+ 
+ static int smsc95xx_enable_phy_wakeup_interrupts(struct usbnet *dev, u16 mask)
+ {
+-	struct mii_if_info *mii = &dev->mii;
+ 	int ret;
+ 
+ 	netdev_dbg(dev->net, "enabling PHY wakeup interrupts\n");
+ 
+ 	/* read to clear */
+-	ret = smsc95xx_mdio_read_nopm(dev->net, mii->phy_id, PHY_INT_SRC);
++	ret = smsc95xx_mdio_read_nopm(dev, PHY_INT_SRC);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	/* enable interrupt source */
+-	ret = smsc95xx_mdio_read_nopm(dev->net, mii->phy_id, PHY_INT_MASK);
++	ret = smsc95xx_mdio_read_nopm(dev, PHY_INT_MASK);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	ret |= mask;
+ 
+-	smsc95xx_mdio_write_nopm(dev->net, mii->phy_id, PHY_INT_MASK, ret);
++	smsc95xx_mdio_write_nopm(dev, PHY_INT_MASK, ret);
+ 
+ 	return 0;
+ }
+ 
+ static int smsc95xx_link_ok_nopm(struct usbnet *dev)
+ {
+-	struct mii_if_info *mii = &dev->mii;
+ 	int ret;
+ 
+ 	/* first, a dummy read, needed to latch some MII phys */
+-	ret = smsc95xx_mdio_read_nopm(dev->net, mii->phy_id, MII_BMSR);
++	ret = smsc95xx_mdio_read_nopm(dev, MII_BMSR);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = smsc95xx_mdio_read_nopm(dev->net, mii->phy_id, MII_BMSR);
++	ret = smsc95xx_mdio_read_nopm(dev, MII_BMSR);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -1442,7 +1442,6 @@ static int smsc95xx_enter_suspend0(struct usbnet *dev)
+ static int smsc95xx_enter_suspend1(struct usbnet *dev)
+ {
+ 	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
+-	struct mii_if_info *mii = &dev->mii;
+ 	u32 val;
+ 	int ret;
+ 
+@@ -1450,17 +1449,17 @@ static int smsc95xx_enter_suspend1(struct usbnet *dev)
+ 	 * compatibility with non-standard link partners
+ 	 */
+ 	if (pdata->features & FEATURE_PHY_NLP_CROSSOVER)
+-		smsc95xx_mdio_write_nopm(dev->net, mii->phy_id,	PHY_EDPD_CONFIG,
+-			PHY_EDPD_CONFIG_DEFAULT);
++		smsc95xx_mdio_write_nopm(dev, PHY_EDPD_CONFIG,
++					 PHY_EDPD_CONFIG_DEFAULT);
+ 
+ 	/* enable energy detect power-down mode */
+-	ret = smsc95xx_mdio_read_nopm(dev->net, mii->phy_id, PHY_MODE_CTRL_STS);
++	ret = smsc95xx_mdio_read_nopm(dev, PHY_MODE_CTRL_STS);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	ret |= MODE_CTRL_STS_EDPWRDOWN_;
+ 
+-	smsc95xx_mdio_write_nopm(dev->net, mii->phy_id, PHY_MODE_CTRL_STS, ret);
++	smsc95xx_mdio_write_nopm(dev, PHY_MODE_CTRL_STS, ret);
+ 
+ 	/* enter SUSPEND1 mode */
+ 	ret = smsc95xx_read_reg_nopm(dev, PM_CTRL, &val);
+-- 
+2.43.0
+
 
 
 
