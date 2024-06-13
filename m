@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75742906E98
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B4C907007
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 276651F216D9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 642121C223EB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B80145B2E;
-	Thu, 13 Jun 2024 12:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6550E146D42;
+	Thu, 13 Jun 2024 12:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iffUO46O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bR7CyoiH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB91F145B25;
-	Thu, 13 Jun 2024 12:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25036143C46;
+	Thu, 13 Jun 2024 12:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280482; cv=none; b=NR8YZcSzg6/WmROa72msCzdbB24SBu66wPzOpL+AA0ZMrFTf8nvbMZJirLefciyGxgKDgtxKkclO4Jgm9L+CTvuJZquic8M4EhjL7+Iq8Ohwy3jJBHgp67HGTsTrYAfo0SNjgVrNvjU6A1eqDwgehLl39zDhFjDr0smlc3vug+4=
+	t=1718281375; cv=none; b=sM+yIAllfZHGeoxEOOuKA1f/swqeJ7FBbT0RhkY/OF9gSQAP1VdMboAZInht2N6fn6PsL9eAoM5/zwyoqG8+pa6kzMz1eBvE4avN46QCy+ht9TZ7S0Vez27PxvKSJDy1Hf9f9L12ITUHSaZ7iq361du6taf0gFdT0XrEkvCJSSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280482; c=relaxed/simple;
-	bh=WRWJQRLOPWQGN7r9B87a4pHmGiNF3CFay/4zJUq+9bc=;
+	s=arc-20240116; t=1718281375; c=relaxed/simple;
+	bh=47YV7xC5p8KLML9oIDMLbay1LeAzWdmLynj8kVpgcu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nXhEjOKWWw+PTt2KmjJmwnIybS7x2F0O/8kmgNO/6Wu6vGRKxT8NwTT3HuF0fQ+Mwu5rRF/epXpfQCklgw2nlZ1dvrSKn/RKaDWWCH0ZDCTJ0uP4bsIkgfJA0vU8mdrb3MihN23FqxfNMu12BCk+90tDY5+59/rO7WwwJW+CX9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iffUO46O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522BEC4AF1C;
-	Thu, 13 Jun 2024 12:08:02 +0000 (UTC)
+	 MIME-Version; b=K2gzH9vBIh2vA2eux5vWnFcz1/IKWJxiIn2EEsVk6+2V8S9LuNytlhk7DtvlXHuJhhZbH+hmxgD8AJ5+wEDdQ2QUrQi868G7nO8XxQ+FpJ/XCVOwcrzDdyiD7Gv8cj0DHDq6bF6wXqVbgYpOm27neGighZEjGI/ktIA5ZPz6nCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bR7CyoiH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D33EC2BBFC;
+	Thu, 13 Jun 2024 12:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280482;
-	bh=WRWJQRLOPWQGN7r9B87a4pHmGiNF3CFay/4zJUq+9bc=;
+	s=korg; t=1718281375;
+	bh=47YV7xC5p8KLML9oIDMLbay1LeAzWdmLynj8kVpgcu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iffUO46O4JvqoJsLQtBlXBrYjf+Bd3M56QtmWgk5TrLTxLk3nKHmpEKqMGOK4lwiU
-	 T58GAVLJGSZKlYjTYusHpLB43C1xtvLzdi2zgvXKFgRi8oxHMwExHLxalNfGXM65NA
-	 x4/3h7tNYq0i9fku0YR757mOGrs3kToNOd0ShPhc=
+	b=bR7CyoiH41kOyZzPAD1vHxxF49wrDlWACaM2EVPwpg2izGw+imZYx9ziG7jasc7cy
+	 FyrALaQFmiCZ418uFDwyqoEEY6OA36rVB4E7CkJAfDYx0MkMa0ehzPyl3p59JprLti
+	 ga44A/rNu0+OBDemMlCgwjZVXAohbtyuN0ptEsMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH 6.6 041/137] media: mc: mark the media devnode as registered from the, start
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 203/317] drm/msm/dpu: Always flush the slave INTF on the CTL
 Date: Thu, 13 Jun 2024 13:33:41 +0200
-Message-ID: <20240613113224.885130886@linuxfoundation.org>
+Message-ID: <20240613113255.408698188@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-commit 4bc60736154bc9e0e39d3b88918f5d3762ebe5e0 upstream.
+[ Upstream commit 2b938c3ab0a69ec6ea587bbf6fc2aec3db4a8736 ]
 
-First the media device node was created, and if successful it was
-marked as 'registered'. This leaves a small race condition where
-an application can open the device node and get an error back
-because the 'registered' flag was not yet set.
+As we can clearly see in a downstream kernel [1], flushing the slave INTF
+is skipped /only if/ the PPSPLIT topology is active.
 
-Change the order: first set the 'registered' flag, then actually
-register the media device node. If that fails, then clear the flag.
+However, when DPU was originally submitted to mainline PPSPLIT was no
+longer part of it (seems to have been ripped out before submission), but
+this clause was incorrectly ported from the original SDE driver.  Given
+that there is no support for PPSPLIT (currently), flushing the slave
+INTF should /never/ be skipped (as the `if (ppsplit && !master) goto
+skip;` clause downstream never becomes true).
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Fixes: cf4b9211b568 ("[media] media: Media device node support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1]: https://git.codelinaro.org/clo/la/platform/vendor/opensource/display-drivers/-/blob/display-kernel.lnx.5.4.r1-rel/msm/sde/sde_encoder_phys_cmd.c?ref_type=heads#L1131-1139
+
+Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/589901/
+Link: https://lore.kernel.org/r/20240417-drm-msm-initial-dualpipe-dsc-fixes-v1-3-78ae3ee9a697@somainline.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/mc/mc-devnode.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/media/mc/mc-devnode.c
-+++ b/drivers/media/mc/mc-devnode.c
-@@ -246,15 +246,14 @@ int __must_check media_devnode_register(
- 	kobject_set_name(&devnode->cdev.kobj, "media%d", devnode->minor);
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+index 8493d68ad8417..e1a97c10c0e41 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+@@ -448,9 +448,6 @@ static void dpu_encoder_phys_cmd_enable_helper(
  
- 	/* Part 3: Add the media and char device */
-+	set_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
- 	ret = cdev_device_add(&devnode->cdev, &devnode->dev);
- 	if (ret < 0) {
-+		clear_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
- 		pr_err("%s: cdev_device_add failed\n", __func__);
- 		goto cdev_add_error;
- 	}
+ 	_dpu_encoder_phys_cmd_pingpong_config(phys_enc);
  
--	/* Part 4: Activate this minor. The char device can now be used. */
--	set_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
+-	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
+-		return;
 -
- 	return 0;
- 
- cdev_add_error:
+ 	ctl = phys_enc->hw_ctl;
+ 	ctl->ops.get_bitmask_intf(ctl, &flush_mask, phys_enc->intf_idx);
+ 	ctl->ops.update_pending_flush(ctl, flush_mask);
+-- 
+2.43.0
+
 
 
 
