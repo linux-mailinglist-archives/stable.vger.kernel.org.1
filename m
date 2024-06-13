@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DBBE906F32
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5969070E4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B436A1C23122
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BE761F233D1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A23143883;
-	Thu, 13 Jun 2024 12:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3052D17FD;
+	Thu, 13 Jun 2024 12:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXVnQZ/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbY7ZSAn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808D7136E00;
-	Thu, 13 Jun 2024 12:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40E228FF;
+	Thu, 13 Jun 2024 12:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280889; cv=none; b=gSke4jWEDfm7g7jqTuKln2V+JzjOVG/lDBuJbjja7wXmiWiJ7CDG7lwLeh6gISBQxg1kgsi0A+0NfJFC/Rqn0nqacr9Z1J6TvLW/ioFjT3jKLgXtAqWrPWL+96SbqfhJOD9s6uHLyF1nYlNbpYXiY6stopzk+OXKiQ/ZKxv7m0U=
+	t=1718281913; cv=none; b=MwQxwQnMqaofG6XajBlNE9c3xN6epcJBKpp9d0q9Uej6qrq8sZEoA9qkja4PThQ9lKu+non0b91hDIHZ5dLGHduPG9I5WPEJ3m2XcCMAnYG13BroX34yjPw7PoS2Mao/Os8RYGY2zq7Aglu2dGQAnm8TnHPXeQeXTnRWNtH21M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280889; c=relaxed/simple;
-	bh=dwCppj40wsaMi3BUUyD7xF1w2mzJ/CEfMsnB65H+gds=;
+	s=arc-20240116; t=1718281913; c=relaxed/simple;
+	bh=dQ8aOJTTSsln2k2gAA++MD2yJXZoOPlILz8q56G2hZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ECWzZ6iqTViF5rUlekNQr35sedVV0mhXZ08QUbDi+2Tl+TqEI0CIH8LCjCAPAgoyxCVWSOs0MGs40gXFJC9Y8I65O65mqLxTFHylpQOhTblXUwPAxhOVyR+ST0TqAbWtbF6ObW4diDyQedUfGm2FohNF9k0DzGuOwj34aQtWNy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXVnQZ/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AB7C2BBFC;
-	Thu, 13 Jun 2024 12:14:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wg2+B/afqvts7pa57rgeI04xc/LIrww3yA2kOTKwi5lTWSBDMYlMDCb0VVxNvfbJxCDBa2dqDmKUbB8TUrlHFwqBo3tuXyekYEWCG7RztytsiCikaqHrWGeQE3xzsF84EkY01aJNKFX3a/KAegKXzd8428nCg/lkATn4++Z132s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbY7ZSAn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C431C2BBFC;
+	Thu, 13 Jun 2024 12:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280889;
-	bh=dwCppj40wsaMi3BUUyD7xF1w2mzJ/CEfMsnB65H+gds=;
+	s=korg; t=1718281912;
+	bh=dQ8aOJTTSsln2k2gAA++MD2yJXZoOPlILz8q56G2hZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yXVnQZ/CKTmIEprPfXCEH8wsss+cITGH93XZvYTGJb3tXn8AbG1BrCa0cYDKr3nbz
-	 gJ4WPQDPOSEzTmpUmQ4momdsV5tLcLObG9vK55XQalbR4shNtQ2CApEwENb+x3oJTE
-	 rUSFyk99jPZAreUDdR+IVzDa88ONgvJWbLC1DlcU=
+	b=qbY7ZSAnsGTYVMcXlysrxzBfvTBfsTDYE7uh6MO6Nd4wSCAfU0GNREt8ebsFmVnxh
+	 oEc1f4L6gaLmcW0GBe/yrc7hQYRoZFnhvPJ7hxBa0qiEZr3s1XOAETgQakOcSRW/vW
+	 Ayk2h07RR8zmai//+Usyac8NvDGVaINQEhUAWJT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avri Altman <avri.altman@wdc.com>,
-	Ziqi Chen <ziqichen@codeaurora.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 038/317] scsi: ufs-qcom: Fix ufs RST_n spec violation
+Subject: [PATCH 5.15 099/402] selftests/resctrl: fix clang build failure: use LOCAL_HDRS
 Date: Thu, 13 Jun 2024 13:30:56 +0200
-Message-ID: <20240613113249.021341250@linuxfoundation.org>
+Message-ID: <20240613113305.999546792@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziqi Chen <ziqichen@codeaurora.org>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit b61d0414136853fc38898829cde837ce5d691a9a ]
+[ Upstream commit d8171aa4ca72f1a67bf3c14c59441d63c1d2585f ]
 
-According to the spec (JESD220E chapter 7.2), while powering off/on the ufs
-device, RST_n signal should be between VSS(Ground) and VCCQ/VCCQ2.
+First of all, in order to build with clang at all, one must first apply
+Valentin Obst's build fix for LLVM [1]. Once that is done, then when
+building with clang, via:
 
-Link: https://lore.kernel.org/r/1610103385-45755-3-git-send-email-ziqichen@codeaurora.org
-Acked-by: Avri Altman <avri.altman@wdc.com>
-Signed-off-by: Ziqi Chen <ziqichen@codeaurora.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: a862fafa263a ("scsi: ufs: qcom: Perform read back after writing REG_UFS_SYS1CLK_1US")
+    make LLVM=1 -C tools/testing/selftests
+
+...the following error occurs:
+
+   clang: error: cannot specify -o when generating multiple output files
+
+This is because clang, unlike gcc, won't accept invocations of this
+form:
+
+    clang file1.c header2.h
+
+Fix this by using selftests/lib.mk facilities for tracking local header
+file dependencies: add them to LOCAL_HDRS, leaving only the .c files to
+be passed to the compiler.
+
+[1] https://lore.kernel.org/all/20240329-selftests-libmk-llvm-rfc-v1-1-2f9ed7d1c49f@valentinobst.de/
+
+Fixes: 8e289f454289 ("selftests/resctrl: Add resctrl.h into build deps")
+Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/ufs/ufs-qcom.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ tools/testing/selftests/resctrl/Makefile | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/ufs/ufs-qcom.c b/drivers/scsi/ufs/ufs-qcom.c
-index 08331ecbe91fb..a432c561c3df0 100644
---- a/drivers/scsi/ufs/ufs-qcom.c
-+++ b/drivers/scsi/ufs/ufs-qcom.c
-@@ -578,6 +578,17 @@ static int ufs_qcom_link_startup_notify(struct ufs_hba *hba,
- 	return err;
- }
+diff --git a/tools/testing/selftests/resctrl/Makefile b/tools/testing/selftests/resctrl/Makefile
+index 2deac2031de9e..021863f86053a 100644
+--- a/tools/testing/selftests/resctrl/Makefile
++++ b/tools/testing/selftests/resctrl/Makefile
+@@ -5,6 +5,8 @@ CFLAGS += $(KHDR_INCLUDES)
  
-+static void ufs_qcom_device_reset_ctrl(struct ufs_hba *hba, bool asserted)
-+{
-+	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
-+
-+	/* reset gpio is optional */
-+	if (!host->device_reset)
-+		return;
-+
-+	gpiod_set_value_cansleep(host->device_reset, asserted);
-+}
-+
- static int ufs_qcom_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
- {
- 	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
-@@ -592,6 +603,9 @@ static int ufs_qcom_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
- 		ufs_qcom_disable_lane_clks(host);
- 		phy_power_off(phy);
+ TEST_GEN_PROGS := resctrl_tests
  
-+		/* reset the connected UFS device during power down */
-+		ufs_qcom_device_reset_ctrl(hba, true);
++LOCAL_HDRS += $(wildcard *.h)
 +
- 	} else if (!ufs_qcom_is_link_active(hba)) {
- 		ufs_qcom_disable_lane_clks(host);
- 	}
-@@ -1441,10 +1455,10 @@ static int ufs_qcom_device_reset(struct ufs_hba *hba)
- 	 * The UFS device shall detect reset pulses of 1us, sleep for 10us to
- 	 * be on the safe side.
- 	 */
--	gpiod_set_value_cansleep(host->device_reset, 1);
-+	ufs_qcom_device_reset_ctrl(hba, true);
- 	usleep_range(10, 15);
+ include ../lib.mk
  
--	gpiod_set_value_cansleep(host->device_reset, 0);
-+	ufs_qcom_device_reset_ctrl(hba, false);
- 	usleep_range(10, 15);
- 
- 	return 0;
+-$(OUTPUT)/resctrl_tests: $(wildcard *.[ch])
++$(OUTPUT)/resctrl_tests: $(wildcard *.c)
 -- 
 2.43.0
 
