@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-51167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0856C906EA0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88853906E13
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F2F41C23080
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 327241F2184C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0EA614600E;
-	Thu, 13 Jun 2024 12:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58227145335;
+	Thu, 13 Jun 2024 12:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OU/ZHA8s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYQHTci9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E478145FEB;
-	Thu, 13 Jun 2024 12:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147E282C76;
+	Thu, 13 Jun 2024 12:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280503; cv=none; b=aNosSqKOOjaFX2n5t3ffSt9r0y0MyE1bQNEgyMtfgGU2N4yu6pG8XfT2muMwC2lyjULxoQfNl7GAKvmOUmBwoYC3HDA/sABRYnh9r3Mx4R6AKqTY+p6QJRociIlQeHrTxIA0fc2p5UUrr8f5g43rHbRL5hsj2xhDxJriu90/Ogs=
+	t=1718280142; cv=none; b=MhyqNswbDddOcmiodsZh4GQ3XwNVAGwpnpW6vcTFJmRQmGcivmEq8QfIDFiMb7gvDZN6jAOXBEcGLR9JiTvnOyQT6cPt7SRedCelnn8utZ+llBE+c+7jVp+tdNeTvMY3AADqZOB13uMjt/uHjamekJsuasi69vXlrGnZJFIEjnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280503; c=relaxed/simple;
-	bh=iZOm9kwKttk5EHyom4VbTHsYEvTb/I9qrVybHLecmqo=;
+	s=arc-20240116; t=1718280142; c=relaxed/simple;
+	bh=C4P3Vjjib4MhljAywFbL0c9dFmq2oXNN2xWTpoSasF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fj6K0lP4Pu9emc51ECiWLkrjnS5Msdjs7dRHEEwY219GubCEzujYsvZ28iZZwL0hOh3SPnI4fLF9/3EKSmRmu0wk/kl6unyfJYaZjTUwAQrDZJ58wq+OkugyuED940iw0y3Va0dz2JNKOlkSA/+gcCwXmMluMLkL9uzpEtnkglE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OU/ZHA8s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC80FC4AF1A;
-	Thu, 13 Jun 2024 12:08:22 +0000 (UTC)
+	 MIME-Version; b=qJIgtRuHacWXqCGGNRqaJ8IdZ0jna+FvrviG014N4R+wY4tdEn8flyNKPsc042WEES6G/kWt1ixY9OR1+c6+V/tLaA98BrItLt37uuZKzhxbQXq4d3RHZry7XDitJX3YQgY5xCo0BNK6jmWasChYA96l5jGB1RDiAyObOYPS1aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYQHTci9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876AAC2BBFC;
+	Thu, 13 Jun 2024 12:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280503;
-	bh=iZOm9kwKttk5EHyom4VbTHsYEvTb/I9qrVybHLecmqo=;
+	s=korg; t=1718280141;
+	bh=C4P3Vjjib4MhljAywFbL0c9dFmq2oXNN2xWTpoSasF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OU/ZHA8s5H+9fcAng4j5ChEZedizWn3AWWEFG0u5dFch9c1mvfwyePqVf9Zav9mJU
-	 kGkhqzEdF8nfG7T9ZqXvUjCoxv5S0H65hWHXYuC3VeUV8p5srEeNZ1DFAzU4e0Ib+W
-	 1rQW1+vmUHWC6qbpdbAoa/oR9Ej7uIBx4a0WzgfM=
+	b=MYQHTci9JhHeCGDB6eR1/kxmnz6dzdmevI5QUswqd0qqwujEIcXUdYev29ETZLzEC
+	 /b+u5b4L9vNapLqF++SAqYA+2fg1iWfZZ81WLPzWubB1Q0WwSEKic1q0XfI0Q7W8WE
+	 4O5IuJa/y0AR/mVW9I9YT3Wz9AqboDIVQDD3Wh7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 044/137] media: v4l: async: Properly re-initialise notifier entry in unregister
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 126/202] drm/msm/dpu: Always flush the slave INTF on the CTL
 Date: Thu, 13 Jun 2024 13:33:44 +0200
-Message-ID: <20240613113225.000291183@linuxfoundation.org>
+Message-ID: <20240613113232.625666883@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-commit 9537a8425a7a0222999d5839a0b394b1e8834b4a upstream.
+[ Upstream commit 2b938c3ab0a69ec6ea587bbf6fc2aec3db4a8736 ]
 
-The notifier_entry of a notifier is not re-initialised after unregistering
-the notifier. This leads to dangling pointers being left there so use
-list_del_init() to return the notifier_entry an empty list.
+As we can clearly see in a downstream kernel [1], flushing the slave INTF
+is skipped /only if/ the PPSPLIT topology is active.
 
-Fixes: b8ec754ae4c5 ("media: v4l: async: Set v4l2_device and subdev in async notifier init")
-Cc: <stable@vger.kernel.org> # for 6.6 and later
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, when DPU was originally submitted to mainline PPSPLIT was no
+longer part of it (seems to have been ripped out before submission), but
+this clause was incorrectly ported from the original SDE driver.  Given
+that there is no support for PPSPLIT (currently), flushing the slave
+INTF should /never/ be skipped (as the `if (ppsplit && !master) goto
+skip;` clause downstream never becomes true).
+
+[1]: https://git.codelinaro.org/clo/la/platform/vendor/opensource/display-drivers/-/blob/display-kernel.lnx.5.4.r1-rel/msm/sde/sde_encoder_phys_cmd.c?ref_type=heads#L1131-1139
+
+Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/589901/
+Link: https://lore.kernel.org/r/20240417-drm-msm-initial-dualpipe-dsc-fixes-v1-3-78ae3ee9a697@somainline.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-async.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-async.c
-+++ b/drivers/media/v4l2-core/v4l2-async.c
-@@ -639,7 +639,7 @@ __v4l2_async_nf_unregister(struct v4l2_a
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+index 2923b63d95fec..34b39a475e3e6 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+@@ -479,9 +479,6 @@ static void dpu_encoder_phys_cmd_enable_helper(
  
- 	v4l2_async_nf_unbind_all_subdevs(notifier);
+ 	_dpu_encoder_phys_cmd_pingpong_config(phys_enc);
  
--	list_del(&notifier->notifier_entry);
-+	list_del_init(&notifier->notifier_entry);
- }
- 
- void v4l2_async_nf_unregister(struct v4l2_async_notifier *notifier)
+-	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
+-		return;
+-
+ 	ctl = phys_enc->hw_ctl;
+ 	ctl->ops.get_bitmask_intf(ctl, &flush_mask, phys_enc->intf_idx);
+ 	ctl->ops.update_pending_flush(ctl, flush_mask);
+-- 
+2.43.0
+
 
 
 
