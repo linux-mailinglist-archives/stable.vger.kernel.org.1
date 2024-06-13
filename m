@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8C3906FC2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6647E906DD0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CB6F289524
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCB0EB25376
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E57CE145B20;
-	Thu, 13 Jun 2024 12:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9A4146D40;
+	Thu, 13 Jun 2024 11:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RadlT3F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYAWEtL0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26B713C69C;
-	Thu, 13 Jun 2024 12:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE848143867;
+	Thu, 13 Jun 2024 11:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281225; cv=none; b=D7WAZy+JTwdeUBc1OAWkoiim3snSv9xg2vlaFs2CfK2Iv9mIav7ruAp0+vibJit4+UY0FTmb3YAZEdVnWSbTigAnR9XWJL+4lDddXo13Fa2RGg6zD+HM/LkM+p0r03tuEtd+fNlH+KlHCYK+q8l3+k+rIIWDuAB2Di3lDwrVKzE=
+	t=1718279979; cv=none; b=G+/oqgmSVzj4ScIdCsUWXTYGACNa0Q1yDJgdNcctuDI5YWepgKrmNmd6mJon5GHBMGDZVgl1k2FV3b60bASnTpgRmLZkgl6ejt4yVUdKF+FtVeLkzhpbDSScRIdk0HDqPC48w78WI44xhh0Wdl04GMpOs0Lx1yAKYL/uVmlaR2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281225; c=relaxed/simple;
-	bh=6fA/kkFss0bTjjhG2xT4HrbojmLilmnX49EdUVrNsqU=;
+	s=arc-20240116; t=1718279979; c=relaxed/simple;
+	bh=gyaaCNKP7u3/FDYZJPeBpVt1w+mK6DIRf9v2Mxx1Es0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qFF8ISMdyzv9Ij3paWZja6UNhao1DqT+MXnR7ySEmWstHdCbigqpvYCrvhluL9WsdxD7vbbNM9bkylZJrW9jaAp4WwamlEfA7QXEzzJdpjZMPldjO1AHwrExSaEXCsgFnZTmqHmGjCIHXn79iFNUd8vKgDdABWFGOIg/HDhNCf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RadlT3F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1149C2BBFC;
-	Thu, 13 Jun 2024 12:20:24 +0000 (UTC)
+	 MIME-Version; b=XMxuCXNlXKmVWfDEQowncs4pvTTPMAqhW6ewvWKa+nR4BRHHfVvDLPELuau+BBztp4o8XLpxFf9WwNBGHT2b9KlqwgMvn2enoZYE4umjsrvr7Zbaw61Xs8VXRxaCdNcJqy2Gj5GBJojp1BeXuWOdn9JaYDStkUyr4UZ/hhmacVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYAWEtL0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E22AC2BBFC;
+	Thu, 13 Jun 2024 11:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281225;
-	bh=6fA/kkFss0bTjjhG2xT4HrbojmLilmnX49EdUVrNsqU=;
+	s=korg; t=1718279979;
+	bh=gyaaCNKP7u3/FDYZJPeBpVt1w+mK6DIRf9v2Mxx1Es0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2RadlT3F2TWlmUGV5Lbk3znI6bGYYVkpAFDWaKEavuDyoml2qUPw4IFxFrU0vgwcL
-	 FhxWo3MJc2YDMXAM/8fYyos8MqsbnVPZ29nk7WJTmu+5FiI8G81/BAG0/A4guLtcRf
-	 sBV0IuViH+vGL51zxbfGYRPXcaRQN409xTrwn8xE=
+	b=AYAWEtL0VGnotinhIOaGz/5US3WtKSDihJLKDOzFUt2cB7HPNSCavDLS8SCEY+RsR
+	 hkhj0nFPrmOpcqdso5az+52Oid/yAsDoFjLbC7Y2q0jVNXKziYtpB/c/AP2u6NtBjR
+	 GUlK8xA7At8n4M6rqlYwNVnsT1/dfxvHuGou9kmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com>
-Subject: [PATCH 5.10 182/317] PCI/EDR: Align EDR_PORT_LOCATE_DSM with PCI Firmware r3.3
+	Arnd Bergmann <arnd@arndb.de>,
+	Jean Delvare <jdelvare@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 102/202] firmware: dmi-id: add a release callback function
 Date: Thu, 13 Jun 2024 13:33:20 +0200
-Message-ID: <20240613113254.600401715@linuxfoundation.org>
+Message-ID: <20240613113231.701400846@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit e2e78a294a8a863898b781dbcf90e087eda3155d ]
+[ Upstream commit cf770af5645a41a753c55a053fa1237105b0964a ]
 
-The "Downstream Port Containment related Enhancements" ECN of Jan 28, 2019
-(document 12888 below), defined the EDR_PORT_LOCATE_DSM function with
-Revision ID 5 with a return value encoding (Bits 2:0 = Function, Bits 7:3 =
-Device, Bits 15:8 = Bus).  When the ECN was integrated into PCI Firmware
-r3.3, sec 4.6.13, Bit 31 was added to indicate success or failure.
+dmi_class uses kfree() as the .release function, but that now causes
+a warning with clang-16 as it violates control flow integrity (KCFI)
+rules:
 
-Check Bit 31 for failure in acpi_dpc_port_get().
+drivers/firmware/dmi-id.c:174:17: error: cast from 'void (*)(const void *)' to 'void (*)(struct device *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+  174 |         .dev_release = (void(*)(struct device *)) kfree,
 
-Link: https://lore.kernel.org/r/20240501022543.1626025-1-sathyanarayanan.kuppuswamy@linux.intel.com
-Link: https://members.pcisig.com/wg/PCI-SIG/document/12888
-Fixes: ac1c8e35a326 ("PCI/DPC: Add Error Disconnect Recover (EDR) support")
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-[bhelgaas: split into two patches, update commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com> # one platform
+Add an explicit function to call kfree() instead.
+
+Fixes: 4f5c791a850e ("DMI-based module autoloading")
+Link: https://lore.kernel.org/lkml/20240213100238.456912-1-arnd@kernel.org/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/edr.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/firmware/dmi-id.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
-index 5b5a502363c00..35210007602c5 100644
---- a/drivers/pci/pcie/edr.c
-+++ b/drivers/pci/pcie/edr.c
-@@ -80,8 +80,9 @@ static struct pci_dev *acpi_dpc_port_get(struct pci_dev *pdev)
- 	u16 port;
+diff --git a/drivers/firmware/dmi-id.c b/drivers/firmware/dmi-id.c
+index ff39f64f2aae3..1bb3370650cf5 100644
+--- a/drivers/firmware/dmi-id.c
++++ b/drivers/firmware/dmi-id.c
+@@ -160,9 +160,14 @@ static int dmi_dev_uevent(struct device *dev, struct kobj_uevent_env *env)
+ 	return 0;
+ }
  
- 	/*
--	 * Behavior when calling unsupported _DSM functions is undefined,
--	 * so check whether EDR_PORT_DPC_ENABLE_DSM is supported.
-+	 * If EDR_PORT_LOCATE_DSM is not implemented under the target of
-+	 * EDR, the target is the port that experienced the containment
-+	 * event (PCI Firmware r3.3, sec 4.6.13).
- 	 */
- 	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
- 			    1ULL << EDR_PORT_LOCATE_DSM))
-@@ -98,6 +99,16 @@ static struct pci_dev *acpi_dpc_port_get(struct pci_dev *pdev)
- 		return NULL;
- 	}
- 
-+	/*
-+	 * Bit 31 represents the success/failure of the operation. If bit
-+	 * 31 is set, the operation failed.
-+	 */
-+	if (obj->integer.value & BIT(31)) {
-+		ACPI_FREE(obj);
-+		pci_err(pdev, "Locate Port _DSM failed\n");
-+		return NULL;
-+	}
++static void dmi_dev_release(struct device *dev)
++{
++	kfree(dev);
++}
 +
- 	/*
- 	 * Firmware returns DPC port BDF details in following format:
- 	 *	15:8 = bus
+ static struct class dmi_class = {
+ 	.name = "dmi",
+-	.dev_release = (void(*)(struct device *)) kfree,
++	.dev_release = dmi_dev_release,
+ 	.dev_uevent = dmi_dev_uevent,
+ };
+ 
 -- 
 2.43.0
 
