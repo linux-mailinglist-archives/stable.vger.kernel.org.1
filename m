@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E8A907163
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7937906FAB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C41911F2544E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1A371C22B57
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF903C24;
-	Thu, 13 Jun 2024 12:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8502C145335;
+	Thu, 13 Jun 2024 12:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6ZYuory"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FC1XxB7y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4A1EC4;
-	Thu, 13 Jun 2024 12:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DD63209;
+	Thu, 13 Jun 2024 12:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282188; cv=none; b=uq8LKZ61nI47vFyGNgYvmN0cGbueCopI1JyDd7KO0d5APbfRNxCqVLiHDbqgh7KVuTrAh7bVDkLWqHfGqICuB0ZlH3dPsLDYRN/buwgIiry0ocs9IcUtKi1JdTn2jXNIQkyxcMMkHLfRGapvJclO0YeTVdj35YmD9UKJQ0om3NI=
+	t=1718281157; cv=none; b=PMm2PCDeJLFkbpsC5EahQ6qViCe8QvQkvu8u763f/08st9q27tmcDJ1RojYQf4IlP4J1iQk424Nx8dTX7qnNy/SwGU82eCxRkXaD0Z+IjlLBRaMLELvjQFMFvDfwhbbKu21l3lXbCqm0FftSBeqO1POK2iyqxRIbf90yeQrkQcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282188; c=relaxed/simple;
-	bh=9JfEQle6EIdJu7as1wNCwlZ5Fm8jSOGg4xSrfPLWLj8=;
+	s=arc-20240116; t=1718281157; c=relaxed/simple;
+	bh=Uf6USvYFmY3Q0cliI+oWuwgTDp4bkk1/HSbkGIZpZpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nvvwa/IOCASxIPEgRXQKxI9B+nllwvf3D1NQJO87Rr5DLQ10sybl/KKXWBQraIoTq+4a5bRa4ZdlI5lSqsC+fY/r/ETnSYmhQ4iXgsIeXsYOYRrX4eNRKHJXB0XwV9uOMgcmzs36oZ+9cUL6k9IA2+Dcp8u9yhn6UQI9TcQhhCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6ZYuory; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AAAC2BBFC;
-	Thu, 13 Jun 2024 12:36:27 +0000 (UTC)
+	 MIME-Version; b=trwmGkCwfDJ259qI/2FvVnLhCYBFHZSM3iwScSV85pVKiciCR6uazhTrTeVAGlNSHeya6sCfIVbJyepF9U5cxsTYhiL+xOA8c4ZX5D/JcZPFIMEXQ/sN/iY/z9sZiY8V1g+d3JNTbNnIOYPp0clSNpAD7ofLbcaC61TK+BMBvCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FC1XxB7y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DF8C2BBFC;
+	Thu, 13 Jun 2024 12:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282188;
-	bh=9JfEQle6EIdJu7as1wNCwlZ5Fm8jSOGg4xSrfPLWLj8=;
+	s=korg; t=1718281157;
+	bh=Uf6USvYFmY3Q0cliI+oWuwgTDp4bkk1/HSbkGIZpZpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6ZYuory86VTCHnwRPd5Bgm4LYEkmCVDL8adGZpbWU8le5zCKP7nWuygPdhqkALSz
-	 iEFulpo1eNz3L0+ScZOtmGrhp4FiYU7DAka022y2VrOL0V+IfpcZeiUakt5luJSa0N
-	 HHQHbp6sI0/7XqAouRXCmNzg/yrtcr+YxPhssZM8=
+	b=FC1XxB7yVW3l81kbnV94215zS6qovSGIBZfvrXtDPvYC3lkz/csLwDQeTj+cAkgMn
+	 0ovS0vjPdXSMQmaiLlFpxQE2tVusR7x83x4XEawaBtK7nYn40z4XpEmOaLrpRgXi9X
+	 lakc4q286oWefS/143QfeJvH45MLtsdUeAvKcuaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 193/402] dt-bindings: PCI: rcar-pci-host: Add missing IOMMU properties
+Subject: [PATCH 5.10 132/317] netrom: fix possible dead-lock in nr_rt_ioctl()
 Date: Thu, 13 Jun 2024 13:32:30 +0200
-Message-ID: <20240613113309.671997858@linuxfoundation.org>
+Message-ID: <20240613113252.663727584@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,196 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 78d212851f0e56b7d7083c4d5014aa7fa8b77e20 ]
+[ Upstream commit e03e7f20ebf7e1611d40d1fdc1bde900fd3335f6 ]
 
-make dtbs_check:
+syzbot loves netrom, and found a possible deadlock in nr_rt_ioctl [1]
 
-    arch/arm64/boot/dts/renesas/r8a77951-salvator-xs.dtb: pcie@fe000000: Unevaluated properties are not allowed ('iommu-map', 'iommu-map-mask' were unexpected)
-	    from schema $id: http://devicetree.org/schemas/pci/rcar-pci-host.yaml#
+Make sure we always acquire nr_node_list_lock before nr_node_lock(nr_node)
 
-Fix this by adding the missing IOMMU-related properties.
+[1]
+WARNING: possible circular locking dependency detected
+6.9.0-rc7-syzkaller-02147-g654de42f3fc6 #0 Not tainted
+------------------------------------------------------
+syz-executor350/5129 is trying to acquire lock:
+ ffff8880186e2070 (&nr_node->node_lock){+...}-{2:2}, at: spin_lock_bh include/linux/spinlock.h:356 [inline]
+ ffff8880186e2070 (&nr_node->node_lock){+...}-{2:2}, at: nr_node_lock include/net/netrom.h:152 [inline]
+ ffff8880186e2070 (&nr_node->node_lock){+...}-{2:2}, at: nr_dec_obs net/netrom/nr_route.c:464 [inline]
+ ffff8880186e2070 (&nr_node->node_lock){+...}-{2:2}, at: nr_rt_ioctl+0x1bb/0x1090 net/netrom/nr_route.c:697
 
-[kwilczynski: added missing Fixes: tag]
-Fixes: 0d69ce3c2c63 ("dt-bindings: PCI: rcar-pci-host: Convert bindings to json-schema")
-Link: https://lore.kernel.org/linux-pci/babc878a93cb6461a5d39331f8ecfa654dfda921.1706802597.git.geert+renesas@glider.be
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+but task is already holding lock:
+ ffffffff8f7053b8 (nr_node_list_lock){+...}-{2:2}, at: spin_lock_bh include/linux/spinlock.h:356 [inline]
+ ffffffff8f7053b8 (nr_node_list_lock){+...}-{2:2}, at: nr_dec_obs net/netrom/nr_route.c:462 [inline]
+ ffffffff8f7053b8 (nr_node_list_lock){+...}-{2:2}, at: nr_rt_ioctl+0x10a/0x1090 net/netrom/nr_route.c:697
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (nr_node_list_lock){+...}-{2:2}:
+        lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
+        __raw_spin_lock_bh include/linux/spinlock_api_smp.h:126 [inline]
+        _raw_spin_lock_bh+0x35/0x50 kernel/locking/spinlock.c:178
+        spin_lock_bh include/linux/spinlock.h:356 [inline]
+        nr_remove_node net/netrom/nr_route.c:299 [inline]
+        nr_del_node+0x4b4/0x820 net/netrom/nr_route.c:355
+        nr_rt_ioctl+0xa95/0x1090 net/netrom/nr_route.c:683
+        sock_do_ioctl+0x158/0x460 net/socket.c:1222
+        sock_ioctl+0x629/0x8e0 net/socket.c:1341
+        vfs_ioctl fs/ioctl.c:51 [inline]
+        __do_sys_ioctl fs/ioctl.c:904 [inline]
+        __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:890
+        do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+        do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #0 (&nr_node->node_lock){+...}-{2:2}:
+        check_prev_add kernel/locking/lockdep.c:3134 [inline]
+        check_prevs_add kernel/locking/lockdep.c:3253 [inline]
+        validate_chain+0x18cb/0x58e0 kernel/locking/lockdep.c:3869
+        __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
+        lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
+        __raw_spin_lock_bh include/linux/spinlock_api_smp.h:126 [inline]
+        _raw_spin_lock_bh+0x35/0x50 kernel/locking/spinlock.c:178
+        spin_lock_bh include/linux/spinlock.h:356 [inline]
+        nr_node_lock include/net/netrom.h:152 [inline]
+        nr_dec_obs net/netrom/nr_route.c:464 [inline]
+        nr_rt_ioctl+0x1bb/0x1090 net/netrom/nr_route.c:697
+        sock_do_ioctl+0x158/0x460 net/socket.c:1222
+        sock_ioctl+0x629/0x8e0 net/socket.c:1341
+        vfs_ioctl fs/ioctl.c:51 [inline]
+        __do_sys_ioctl fs/ioctl.c:904 [inline]
+        __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:890
+        do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+        do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(nr_node_list_lock);
+                               lock(&nr_node->node_lock);
+                               lock(nr_node_list_lock);
+  lock(&nr_node->node_lock);
+
+ *** DEADLOCK ***
+
+1 lock held by syz-executor350/5129:
+  #0: ffffffff8f7053b8 (nr_node_list_lock){+...}-{2:2}, at: spin_lock_bh include/linux/spinlock.h:356 [inline]
+  #0: ffffffff8f7053b8 (nr_node_list_lock){+...}-{2:2}, at: nr_dec_obs net/netrom/nr_route.c:462 [inline]
+  #0: ffffffff8f7053b8 (nr_node_list_lock){+...}-{2:2}, at: nr_rt_ioctl+0x10a/0x1090 net/netrom/nr_route.c:697
+
+stack backtrace:
+CPU: 0 PID: 5129 Comm: syz-executor350 Not tainted 6.9.0-rc7-syzkaller-02147-g654de42f3fc6 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+Call Trace:
+ <TASK>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+  check_noncircular+0x36a/0x4a0 kernel/locking/lockdep.c:2187
+  check_prev_add kernel/locking/lockdep.c:3134 [inline]
+  check_prevs_add kernel/locking/lockdep.c:3253 [inline]
+  validate_chain+0x18cb/0x58e0 kernel/locking/lockdep.c:3869
+  __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
+  lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
+  __raw_spin_lock_bh include/linux/spinlock_api_smp.h:126 [inline]
+  _raw_spin_lock_bh+0x35/0x50 kernel/locking/spinlock.c:178
+  spin_lock_bh include/linux/spinlock.h:356 [inline]
+  nr_node_lock include/net/netrom.h:152 [inline]
+  nr_dec_obs net/netrom/nr_route.c:464 [inline]
+  nr_rt_ioctl+0x1bb/0x1090 net/netrom/nr_route.c:697
+  sock_do_ioctl+0x158/0x460 net/socket.c:1222
+  sock_ioctl+0x629/0x8e0 net/socket.c:1341
+  vfs_ioctl fs/ioctl.c:51 [inline]
+  __do_sys_ioctl fs/ioctl.c:904 [inline]
+  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:890
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240515142934.3708038-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/pci/rcar-pci-host.yaml | 3 +++
- 1 file changed, 3 insertions(+)
+ net/netrom/nr_route.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml b/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml
-index b6a7cb32f61e5..835b6db00c279 100644
---- a/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml
-+++ b/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml
-@@ -77,6 +77,9 @@ properties:
-   vpcie12v-supply:
-     description: The 12v regulator to use for PCIe.
+diff --git a/net/netrom/nr_route.c b/net/netrom/nr_route.c
+index 895702337c92e..9269b5e69b9a5 100644
+--- a/net/netrom/nr_route.c
++++ b/net/netrom/nr_route.c
+@@ -284,22 +284,14 @@ static int __must_check nr_add_node(ax25_address *nr, const char *mnemonic,
+ 	return 0;
+ }
  
-+  iommu-map: true
-+  iommu-map-mask: true
+-static inline void __nr_remove_node(struct nr_node *nr_node)
++static void nr_remove_node_locked(struct nr_node *nr_node)
+ {
++	lockdep_assert_held(&nr_node_list_lock);
 +
- required:
-   - compatible
-   - reg
+ 	hlist_del_init(&nr_node->node_node);
+ 	nr_node_put(nr_node);
+ }
+ 
+-#define nr_remove_node_locked(__node) \
+-	__nr_remove_node(__node)
+-
+-static void nr_remove_node(struct nr_node *nr_node)
+-{
+-	spin_lock_bh(&nr_node_list_lock);
+-	__nr_remove_node(nr_node);
+-	spin_unlock_bh(&nr_node_list_lock);
+-}
+-
+ static inline void __nr_remove_neigh(struct nr_neigh *nr_neigh)
+ {
+ 	hlist_del_init(&nr_neigh->neigh_node);
+@@ -338,6 +330,7 @@ static int nr_del_node(ax25_address *callsign, ax25_address *neighbour, struct n
+ 		return -EINVAL;
+ 	}
+ 
++	spin_lock_bh(&nr_node_list_lock);
+ 	nr_node_lock(nr_node);
+ 	for (i = 0; i < nr_node->count; i++) {
+ 		if (nr_node->routes[i].neighbour == nr_neigh) {
+@@ -351,7 +344,7 @@ static int nr_del_node(ax25_address *callsign, ax25_address *neighbour, struct n
+ 			nr_node->count--;
+ 
+ 			if (nr_node->count == 0) {
+-				nr_remove_node(nr_node);
++				nr_remove_node_locked(nr_node);
+ 			} else {
+ 				switch (i) {
+ 				case 0:
+@@ -365,12 +358,14 @@ static int nr_del_node(ax25_address *callsign, ax25_address *neighbour, struct n
+ 				nr_node_put(nr_node);
+ 			}
+ 			nr_node_unlock(nr_node);
++			spin_unlock_bh(&nr_node_list_lock);
+ 
+ 			return 0;
+ 		}
+ 	}
+ 	nr_neigh_put(nr_neigh);
+ 	nr_node_unlock(nr_node);
++	spin_unlock_bh(&nr_node_list_lock);
+ 	nr_node_put(nr_node);
+ 
+ 	return -EINVAL;
 -- 
 2.43.0
 
