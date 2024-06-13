@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F836907238
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C409072B1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27C0F1F215FC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAB421C210C2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD5A143724;
-	Thu, 13 Jun 2024 12:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38B513D607;
+	Thu, 13 Jun 2024 12:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eVKY9vpS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyEUgNfj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29082142E73;
-	Thu, 13 Jun 2024 12:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729994A0F;
+	Thu, 13 Jun 2024 12:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282702; cv=none; b=AKe0t2F15H40xMnw0RU7lkMV8g4aTsyYiJXYzH4xi/oOX5g5C17aebfrOg/RVYCU99MgqBheDGUlHS292YcBHkNocok5KCksKI6aWS5p+PYheSuDMJoLyUCaoIwRudUcz7hTofEpx2mY8kSDPypA75D5Nix9T2+j6qyG/ytB2jA=
+	t=1718282981; cv=none; b=St0mn6k51nc9qHlyoFBFBdeOxcNp2WN8OYM12Jz2mDFruujdp24kxsyXztGZCvZUb2olMSq0wBCXqgUCiElLBkMg74Ugpacnfkk3ClVAhmt64XfuoRhAQUuLmT0sZuwlsk/kxK2Q2CNkUL2i98P2lztym3r/n6IuE+lR0H+jNSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282702; c=relaxed/simple;
-	bh=iezzJr9772thFPJOpNusdKpRpV+KgKGvylTtA428G2s=;
+	s=arc-20240116; t=1718282981; c=relaxed/simple;
+	bh=KRs+l+8wBi4LJOi+iibzAwNQSN4m4Qllt2hCKk3DWiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ps3oxBDsnZW5AD9q7MJbPoBGtPrs7tvwO8e+p3igPy4IiSrNfL3yMLSt6uPq5w5X4v38Kbv8dhpEWsA2rB0kHfXzEXOzj6HOXwzI/nxfxMsc6dXcq05GMaUuyicHPFO/kl+G+UoFc6MVHRZWkDXJbq2QzP4VKSv9l8WA8wfawTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVKY9vpS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96328C2BBFC;
-	Thu, 13 Jun 2024 12:45:01 +0000 (UTC)
+	 MIME-Version; b=iamDPazDBS3Mj9zltgvPR06gZD6N2T8G9apZaqd2y6bgI6ls5jXna1pT71hqCg0Kjd0+6iTQLhQDbzdM7u1LLY8mB1MbjGXJe5bFAYtZKh7Sw5nVTMvXAC5pd9kcOWjYkLCBLrXlIQixC8UBHVGzgL+JR/u4xx7TlBId7pzxAfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyEUgNfj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBEEC2BBFC;
+	Thu, 13 Jun 2024 12:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282702;
-	bh=iezzJr9772thFPJOpNusdKpRpV+KgKGvylTtA428G2s=;
+	s=korg; t=1718282981;
+	bh=KRs+l+8wBi4LJOi+iibzAwNQSN4m4Qllt2hCKk3DWiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eVKY9vpSsm2AMWv1ocKr9h+M84XVXzoZSE2D6trsOtSCOVJHvaKnVnQyTLhH3On/R
-	 zZzhnURqKtovMb37uuK4ekJoiF75C6t4l0mDLre8gztRJdS+GnijtToMPrma+sBVc4
-	 Htn1jrqpw4/ltDc0eVaNloMVsvHMQT4tdg8m9RHk=
+	b=YyEUgNfjOrBznsXzF9Vjpu9O8vvTriRDANkEHbRiu/NdXksnmN5wOv/mK/ZhhfwmX
+	 TkiAy5tOH3EAVPF3CPMb7Eb3SDdi97B+2P0elNJwvYM58+dYKI0fyxxszQTcpEIv67
+	 isZxNFOTg2kq0UXixbiSaBruYZrVxCOGRaRRf4Vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH 5.15 367/402] media: mc: mark the media devnode as registered from the, start
-Date: Thu, 13 Jun 2024 13:35:24 +0200
-Message-ID: <20240613113316.450917228@linuxfoundation.org>
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
+	Dan Moulding <dan@danm.net>,
+	Junxiao Bi <junxiao.bi@oracle.com>
+Subject: [PATCH 6.1 27/85] md/raid5: fix deadlock that raid5d() wait for itself to clear MD_SB_CHANGE_PENDING
+Date: Thu, 13 Jun 2024 13:35:25 +0200
+Message-ID: <20240613113215.190434938@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit 4bc60736154bc9e0e39d3b88918f5d3762ebe5e0 upstream.
+commit 151f66bb618d1fd0eeb84acb61b4a9fa5d8bb0fa upstream.
 
-First the media device node was created, and if successful it was
-marked as 'registered'. This leaves a small race condition where
-an application can open the device node and get an error back
-because the 'registered' flag was not yet set.
+Xiao reported that lvm2 test lvconvert-raid-takeover.sh can hang with
+small possibility, the root cause is exactly the same as commit
+bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
 
-Change the order: first set the 'registered' flag, then actually
-register the media device node. If that fails, then clear the flag.
+However, Dan reported another hang after that, and junxiao investigated
+the problem and found out that this is caused by plugged bio can't issue
+from raid5d().
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Fixes: cf4b9211b568 ("[media] media: Media device node support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Current implementation in raid5d() has a weird dependence:
+
+1) md_check_recovery() from raid5d() must hold 'reconfig_mutex' to clear
+   MD_SB_CHANGE_PENDING;
+2) raid5d() handles IO in a deadloop, until all IO are issued;
+3) IO from raid5d() must wait for MD_SB_CHANGE_PENDING to be cleared;
+
+This behaviour is introduce before v2.6, and for consequence, if other
+context hold 'reconfig_mutex', and md_check_recovery() can't update
+super_block, then raid5d() will waste one cpu 100% by the deadloop, until
+'reconfig_mutex' is released.
+
+Refer to the implementation from raid1 and raid10, fix this problem by
+skipping issue IO if MD_SB_CHANGE_PENDING is still set after
+md_check_recovery(), daemon thread will be woken up when 'reconfig_mutex'
+is released. Meanwhile, the hang problem will be fixed as well.
+
+Fixes: 5e2cf333b7bd ("md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d")
+Cc: stable@vger.kernel.org # v5.19+
+Reported-and-tested-by: Dan Moulding <dan@danm.net>
+Closes: https://lore.kernel.org/all/20240123005700.9302-1-dan@danm.net/
+Investigated-by: Junxiao Bi <junxiao.bi@oracle.com>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240322081005.1112401-1-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/mc/mc-devnode.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/md/raid5.c |   15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
---- a/drivers/media/mc/mc-devnode.c
-+++ b/drivers/media/mc/mc-devnode.c
-@@ -246,15 +246,14 @@ int __must_check media_devnode_register(
- 	kobject_set_name(&devnode->cdev.kobj, "media%d", devnode->minor);
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -36,7 +36,6 @@
+  */
  
- 	/* Part 3: Add the media and char device */
-+	set_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
- 	ret = cdev_device_add(&devnode->cdev, &devnode->dev);
- 	if (ret < 0) {
-+		clear_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
- 		pr_err("%s: cdev_device_add failed\n", __func__);
- 		goto cdev_add_error;
- 	}
+ #include <linux/blkdev.h>
+-#include <linux/delay.h>
+ #include <linux/kthread.h>
+ #include <linux/raid/pq.h>
+ #include <linux/async_tx.h>
+@@ -6797,6 +6796,9 @@ static void raid5d(struct md_thread *thr
+ 		int batch_size, released;
+ 		unsigned int offset;
  
--	/* Part 4: Activate this minor. The char device can now be used. */
--	set_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
++		if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
++			break;
++
+ 		released = release_stripe_list(conf, conf->temp_inactive_list);
+ 		if (released)
+ 			clear_bit(R5_DID_ALLOC, &conf->cache_state);
+@@ -6833,18 +6835,7 @@ static void raid5d(struct md_thread *thr
+ 			spin_unlock_irq(&conf->device_lock);
+ 			md_check_recovery(mddev);
+ 			spin_lock_irq(&conf->device_lock);
 -
- 	return 0;
+-			/*
+-			 * Waiting on MD_SB_CHANGE_PENDING below may deadlock
+-			 * seeing md_check_recovery() is needed to clear
+-			 * the flag when using mdmon.
+-			 */
+-			continue;
+ 		}
+-
+-		wait_event_lock_irq(mddev->sb_wait,
+-			!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags),
+-			conf->device_lock);
+ 	}
+ 	pr_debug("%d stripes handled\n", handled);
  
- cdev_add_error:
 
 
 
