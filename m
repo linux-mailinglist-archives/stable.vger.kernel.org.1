@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18996906E79
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 725DE906FBA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C8BB28165E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 700371C2365E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505EC1474D4;
-	Thu, 13 Jun 2024 12:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92BA145A1D;
+	Thu, 13 Jun 2024 12:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5Z9AXAR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9PNHlg5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1054C145359;
-	Thu, 13 Jun 2024 12:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6630D145A16;
+	Thu, 13 Jun 2024 12:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280409; cv=none; b=ttMsWfsTrC+5iS56iZ/SV+2930KKpovJOseXuTMgdDUs6pdYWp37vz+lCBZp5VfVmslgLQa0FOTdFVKlj1mTMgXZZJSbzEnXJl0KqcwphgjnbldOXTfnCEKaMJhKFVf0mOREaB/hA32vBtbqc9pa/8cnzFHKTVwb8d0Uhu+rjTo=
+	t=1718281201; cv=none; b=oH/pMMAiHcd7LD1jn20n++PuPtMLhgFV/6nn2WPNC46Klas7LZ1aauPDdLTH9unzUnGKTXZOfbzNYvLUoGPxTMPYDpXnD1Tr/ImbtXgRcOYzwr88BESVCOehOLTpGkTM44RC8rVpfao7TcwT0VIrIdzVrFHtNgIUmNgW/8kw5go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280409; c=relaxed/simple;
-	bh=zaVTKQ9HnU7I7WY4Wy5Bi25kYb8rf1XJMYl2x9NrafQ=;
+	s=arc-20240116; t=1718281201; c=relaxed/simple;
+	bh=/Ef6Zuzv+vgeEEVUGyq5fxGVRkPYymZBJB6rm/51nLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gx5xAJD16F2cGg4LpAavDa8VZfhxEXmjqmcL+qyEIFMg7Ja+2we+SmEHii4kJe+DFF4ZF+rG9YOCq+tWhY+LJzu2h0iP6Jcw3qeUhP7RX0sFHS6gO+ZbYnqYmAi5oArhOFWjsqGS4M6s499dGS4IVbofYwEZAp1YoxGrfra7GuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5Z9AXAR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFF2C2BBFC;
-	Thu, 13 Jun 2024 12:06:48 +0000 (UTC)
+	 MIME-Version; b=la3GI7o3EEqUJLaHuWYASaO+KpJEGPsXbg2jOdA9Qh+3lMTQQSHRqF0Fo1N7XHsS1mz1gyYkbxwRyCUXUCRapTU3Xnhh7cGD6R8dN2Amp8j0KyJ1eHeYzY6XcrAZh0lffZxPejcyqo6g0N6k5PhKlLlsFVPrw1i0IwfVIJEIpOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9PNHlg5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89D8C2BBFC;
+	Thu, 13 Jun 2024 12:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280408;
-	bh=zaVTKQ9HnU7I7WY4Wy5Bi25kYb8rf1XJMYl2x9NrafQ=;
+	s=korg; t=1718281201;
+	bh=/Ef6Zuzv+vgeEEVUGyq5fxGVRkPYymZBJB6rm/51nLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l5Z9AXARApmwQFJ3ai7sw7Jb3658ORjW+SzIzeYdCEYA89/vuq7a0sP1SAgfOoZ3w
-	 nbfsV+ARl7yX1kftbSPB6lrF2BsBm9dM2pp0rWLKeSXAUoktF8EUIDjBT9ftwnnbmk
-	 zGT9UPpyY5pvz4OzPVk3uW7sw7tczjClfHTFQ/lk=
+	b=f9PNHlg5frZ9h/wywYs+5/qaR7TCKGPn1XcEPSlOFm2s3uXSdqulSQLuGWAGQyZR0
+	 i07qQQ1KZm0gZkjZku4T4G6fuQ8xSPsGd8DyJ7SjEuR2wrTZI4V/+hfXMDDyhr21ye
+	 7EjxEU7+xaKg9Rx5JpfwRQ9yBDm7YyZhvxh8AFNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Po-Hsu Lin <po-hsu.lin@canonical.com>
-Subject: [PATCH 6.6 013/137] selftests: net: included needed helper in the install targets
+	Huai-Yuan Liu <qq810974084@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 175/317] ppdev: Add an error check in register_device
 Date: Thu, 13 Jun 2024 13:33:13 +0200
-Message-ID: <20240613113223.806048932@linuxfoundation.org>
+Message-ID: <20240613113254.328367654@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Po-Hsu Lin <po-hsu.lin@canonical.com>
+From: Huai-Yuan Liu <qq810974084@gmail.com>
 
-From: Paolo Abeni <pabeni@redhat.com>
+[ Upstream commit fbf740aeb86a4fe82ad158d26d711f2f3be79b3e ]
 
-commit f5173fe3e13b2cbd25d0d73f40acd923d75add55 upstream.
+In register_device, the return value of ida_simple_get is unchecked,
+in witch ida_simple_get will use an invalid index value.
 
-The blamed commit below introduce a dependency in some net self-tests
-towards a newly introduce helper script.
+To address this issue, index should be checked after ida_simple_get. When
+the index value is abnormal, a warning message should be printed, the port
+should be dropped, and the value should be recorded.
 
-Such script is currently not included into the TEST_PROGS_EXTENDED list
-and thus is not installed, causing failure for the relevant tests when
-executed from the install dir.
-
-Fix the issue updating the install targets.
-
-Fixes: 3bdd9fd29cb0 ("selftests/net: synchronize udpgro tests' tx and rx connection")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/076e8758e21ff2061cc9f81640e7858df775f0a9.1706131762.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[PHLin: ignore the non-existing lib.sh]
-Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
+Fixes: 9a69645dde11 ("ppdev: fix registering same device name")
+Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
+Link: https://lore.kernel.org/r/20240412083840.234085-1-qq810974084@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/char/ppdev.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -55,6 +55,7 @@ TEST_PROGS += rps_default_mask.sh
- TEST_PROGS += big_tcp.sh
- TEST_PROGS_EXTENDED := in_netns.sh setup_loopback.sh setup_veth.sh
- TEST_PROGS_EXTENDED += toeplitz_client.sh toeplitz.sh
-+TEST_PROGS_EXTENDED += net_helper.sh
- TEST_GEN_FILES =  socket nettest
- TEST_GEN_FILES += psock_fanout psock_tpacket msg_zerocopy reuseport_addr_any
- TEST_GEN_FILES += tcp_mmap tcp_inq psock_snd txring_overwrite
+diff --git a/drivers/char/ppdev.c b/drivers/char/ppdev.c
+index f6024d97fe70b..a97edbf7455a6 100644
+--- a/drivers/char/ppdev.c
++++ b/drivers/char/ppdev.c
+@@ -296,28 +296,35 @@ static int register_device(int minor, struct pp_struct *pp)
+ 	if (!port) {
+ 		pr_warn("%s: no associated port!\n", name);
+ 		rc = -ENXIO;
+-		goto err;
++		goto err_free_name;
+ 	}
+ 
+ 	index = ida_alloc(&ida_index, GFP_KERNEL);
++	if (index < 0) {
++		pr_warn("%s: failed to get index!\n", name);
++		rc = index;
++		goto err_put_port;
++	}
++
+ 	memset(&ppdev_cb, 0, sizeof(ppdev_cb));
+ 	ppdev_cb.irq_func = pp_irq;
+ 	ppdev_cb.flags = (pp->flags & PP_EXCL) ? PARPORT_FLAG_EXCL : 0;
+ 	ppdev_cb.private = pp;
+ 	pdev = parport_register_dev_model(port, name, &ppdev_cb, index);
+-	parport_put_port(port);
+ 
+ 	if (!pdev) {
+ 		pr_warn("%s: failed to register device!\n", name);
+ 		rc = -ENXIO;
+ 		ida_free(&ida_index, index);
+-		goto err;
++		goto err_put_port;
+ 	}
+ 
+ 	pp->pdev = pdev;
+ 	pp->index = index;
+ 	dev_dbg(&pdev->dev, "registered pardevice\n");
+-err:
++err_put_port:
++	parport_put_port(port);
++err_free_name:
+ 	kfree(name);
+ 	return rc;
+ }
+-- 
+2.43.0
+
 
 
 
