@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-50961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97080906D9D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 627B6906BA4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3272FB21D08
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF60828108F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB24145A1B;
-	Thu, 13 Jun 2024 11:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB62143867;
+	Thu, 13 Jun 2024 11:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0n870mXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+kQnLQS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DA1145A12;
-	Thu, 13 Jun 2024 11:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC97A142911;
+	Thu, 13 Jun 2024 11:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279897; cv=none; b=DTFS0W4tXHK6PYUq69UykmyiOyLpb3CwopZoay1SEQTtUIP43/F38+2iydzeEbpltamZ8BeEbqUFZRiO18IqJtlSFx84131Uelq/T89dkVjsE9sHqye7poPnvujBs1iIiD93QoD06LhQ+/pB5tutEGkLkHdjhj81BZVMkgx2UqI=
+	t=1718278944; cv=none; b=JGF0BgQYfxzZIQdesGVcfwdDAXfZ8P11F9Fd55i1ugW5dj1Qt90nQYlD0rNtkl2YQy4Ic2Qy9R6VnRXNPEybV01cc5hspI2p4l3qbIyAMpqrMbAHWRP/EbPfK+MR2r7Gu+kkua0ElD5mnf3EFnbwAPugdwn8ezsDyUMCKm94HKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279897; c=relaxed/simple;
-	bh=YAqVD3nE9dJXv/tex+zCxkKHnmCbc17VTErG8TNapQ0=;
+	s=arc-20240116; t=1718278944; c=relaxed/simple;
+	bh=rw/0ubg8VrJy+87zwIN3GiNcgoQSSZywSw3yNF+2Lyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gRUNMNHUm0cVzBbetPEvbZl4xmtmIO9+Ti3rNnbR4VuMNzaRMtoNeAop4acDcsilQdwK0pXD9QkfNFw7dywjwsVvT9051tFpN8FZigr2U5RPOFBstZbxZSJvKWgx1fBUAJUI6Eu9oUdQu6u5zP4ERBw5VoXRMVyqzsLopdWQKW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0n870mXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2EBDC2BBFC;
-	Thu, 13 Jun 2024 11:58:16 +0000 (UTC)
+	 MIME-Version; b=i7WZ04fXsGAFLncIPWmDE8VAnVsQxCtL/p9wToE9Ch0z/DYkRjpqm+x4z5slp8MBdSEDlWMYIG3l6TgnczL35I7hk2SpnAwYutAMIK6/gN3DY9AUq1eTyravK6xVTDlst+pwiSZyepMW7uWvHthfcGUcclY4zQoxAesjzIri50M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+kQnLQS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71EC8C2BBFC;
+	Thu, 13 Jun 2024 11:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279897;
-	bh=YAqVD3nE9dJXv/tex+zCxkKHnmCbc17VTErG8TNapQ0=;
+	s=korg; t=1718278943;
+	bh=rw/0ubg8VrJy+87zwIN3GiNcgoQSSZywSw3yNF+2Lyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0n870mXe+LdNDY1FAqsZYd/O+IE33oA58MhqU6yEx2fHOfaC8MwjrSWx01uTEji8O
-	 TOU7Fo6IKBndkPvP6U2xiejJ4Nna4UWwT9RXijLrKWI1AhptEWrdNz70mCAzz0HwGz
-	 UBvnExRP6RHJCQlHz9K3xZsXOguutYQBzJAeOSAU=
+	b=r+kQnLQSQzx79iwKpPtlzIRv5fYev5qnXGhgi6d9aBJ93Q6Vq80p7pMMmq1/7TmXo
+	 Mv7PIC86cT1gfN6ETigJFMftr8fzgv022OnHO0jPRMV8r6yChkQ9NY9hPkPwiLI4Bz
+	 vuid13xfLKTz2MNFV42MK7NRTJiUTtxwiP23ee28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Helge Deller <deller@gmx.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>,
+	Hannes Reinecke <hare@suse.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 073/202] fbdev: sisfb: hide unused variables
+Subject: [PATCH 4.19 123/213] params: lift param_set_uint_minmax to common code
 Date: Thu, 13 Jun 2024 13:32:51 +0200
-Message-ID: <20240613113230.592399876@linuxfoundation.org>
+Message-ID: <20240613113232.741933063@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit 688cf598665851b9e8cb5083ff1d208ce43d10ff ]
+[ Upstream commit 2a14c9ae15a38148484a128b84bff7e9ffd90d68 ]
 
-Building with W=1 shows that a couple of variables in this driver are only
-used in certain configurations:
+It is a useful helper hence move it to common code so others can enjoy
+it.
 
-drivers/video/fbdev/sis/init301.c:239:28: error: 'SiS_Part2CLVX_6' defined but not used [-Werror=unused-const-variable=]
-  239 | static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:230:28: error: 'SiS_Part2CLVX_5' defined but not used [-Werror=unused-const-variable=]
-  230 | static const unsigned char SiS_Part2CLVX_5[] = {   /* 750p */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:211:28: error: 'SiS_Part2CLVX_4' defined but not used [-Werror=unused-const-variable=]
-  211 | static const unsigned char SiS_Part2CLVX_4[] = {   /* PAL */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:192:28: error: 'SiS_Part2CLVX_3' defined but not used [-Werror=unused-const-variable=]
-  192 | static const unsigned char SiS_Part2CLVX_3[] = {  /* NTSC, 525i, 525p */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:184:28: error: 'SiS_Part2CLVX_2' defined but not used [-Werror=unused-const-variable=]
-  184 | static const unsigned char SiS_Part2CLVX_2[] = {
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:176:28: error: 'SiS_Part2CLVX_1' defined but not used [-Werror=unused-const-variable=]
-  176 | static const unsigned char SiS_Part2CLVX_1[] = {
-      |                            ^~~~~~~~~~~~~~~
-
-This started showing up after the definitions were moved into the
-source file from the header, which was not flagged by the compiler.
-Move the definition into the appropriate #ifdef block that already
-exists next to them.
-
-Fixes: 5908986ef348 ("video: fbdev: sis: avoid mismatched prototypes")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.com>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Stable-dep-of: 3ebc46ca8675 ("tcp: Fix shift-out-of-bounds in dctcp_update_alpha().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sis/init301.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/linux/moduleparam.h |  2 ++
+ kernel/params.c             | 18 ++++++++++++++++++
+ net/sunrpc/xprtsock.c       | 18 ------------------
+ 3 files changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/video/fbdev/sis/init301.c b/drivers/video/fbdev/sis/init301.c
-index a8fb41f1a2580..09329072004f4 100644
---- a/drivers/video/fbdev/sis/init301.c
-+++ b/drivers/video/fbdev/sis/init301.c
-@@ -172,7 +172,7 @@ static const unsigned char SiS_HiTVGroup3_2[] = {
- };
+diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
+index ba36506db4fb7..dee4c402c040e 100644
+--- a/include/linux/moduleparam.h
++++ b/include/linux/moduleparam.h
+@@ -361,6 +361,8 @@ extern int param_get_int(char *buffer, const struct kernel_param *kp);
+ extern const struct kernel_param_ops param_ops_uint;
+ extern int param_set_uint(const char *val, const struct kernel_param *kp);
+ extern int param_get_uint(char *buffer, const struct kernel_param *kp);
++int param_set_uint_minmax(const char *val, const struct kernel_param *kp,
++		unsigned int min, unsigned int max);
+ #define param_check_uint(name, p) __param_check(name, p, unsigned int)
  
- /* 301C / 302ELV extended Part2 TV registers (4 tap scaler) */
+ extern const struct kernel_param_ops param_ops_long;
+diff --git a/kernel/params.c b/kernel/params.c
+index ce89f757e6da0..8339cf40cdc72 100644
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -245,6 +245,24 @@ STANDARD_PARAM_DEF(long,	long,			"%li",  kstrtol);
+ STANDARD_PARAM_DEF(ulong,	unsigned long,		"%lu",  kstrtoul);
+ STANDARD_PARAM_DEF(ullong,	unsigned long long,	"%llu", kstrtoull);
+ 
++int param_set_uint_minmax(const char *val, const struct kernel_param *kp,
++		unsigned int min, unsigned int max)
++{
++	unsigned int num;
++	int ret;
++
++	if (!val)
++		return -EINVAL;
++	ret = kstrtouint(val, 0, &num);
++	if (ret)
++		return ret;
++	if (num < min || num > max)
++		return -EINVAL;
++	*((unsigned int *)kp->arg) = num;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(param_set_uint_minmax);
++
+ int param_set_charp(const char *val, const struct kernel_param *kp)
+ {
+ 	if (strlen(val) > 1024) {
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index a0a82d9a59008..938c649c5c9fa 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -3306,24 +3306,6 @@ void cleanup_socket_xprt(void)
+ 	xprt_unregister_transport(&xs_bc_tcp_transport);
+ }
+ 
+-static int param_set_uint_minmax(const char *val,
+-		const struct kernel_param *kp,
+-		unsigned int min, unsigned int max)
+-{
+-	unsigned int num;
+-	int ret;
 -
-+#ifdef CONFIG_FB_SIS_315
- static const unsigned char SiS_Part2CLVX_1[] = {
-     0x00,0x00,
-     0x00,0x20,0x00,0x00,0x7F,0x20,0x02,0x7F,0x7D,0x20,0x04,0x7F,0x7D,0x1F,0x06,0x7E,
-@@ -245,7 +245,6 @@ static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
-     0xFF,0xFF,
- };
- 
--#ifdef CONFIG_FB_SIS_315
- /* 661 et al LCD data structure (2.03.00) */
- static const unsigned char SiS_LCDStruct661[] = {
-     /* 1024x768 */
+-	if (!val)
+-		return -EINVAL;
+-	ret = kstrtouint(val, 0, &num);
+-	if (ret)
+-		return ret;
+-	if (num < min || num > max)
+-		return -EINVAL;
+-	*((unsigned int *)kp->arg) = num;
+-	return 0;
+-}
+-
+ static int param_set_portnr(const char *val, const struct kernel_param *kp)
+ {
+ 	return param_set_uint_minmax(val, kp,
 -- 
 2.43.0
 
