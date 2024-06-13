@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-50980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C91D9906DC1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:03:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86148906C9E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FC911F25A30
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:03:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AA60B21008
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82EB8149C62;
-	Thu, 13 Jun 2024 11:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FA7145B0B;
+	Thu, 13 Jun 2024 11:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBs1mwi1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="beHmHodp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381AA1494D5;
-	Thu, 13 Jun 2024 11:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D086AFAE;
+	Thu, 13 Jun 2024 11:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279953; cv=none; b=BQDbQ4O+nOz6MauqtcYMOmknzoP3T0NWbCg2DCoDiBTEmb+99HTrdaelcm8ZkckKGLqaJ5a8Svxx+QdqKMbczhiZjg3lWVCyrI6pCwPBbCSKdXfeLpqtFyCeUJW0J1qsPJYXjHXwA0yse2a45G7S4FhuJmkPGXmwuBWwvy1TvOA=
+	t=1718279369; cv=none; b=DkZaSNoAVPAyD8nHH/xBjaRJ7sYRO96dNunZ600YLsDpET03YbHdwUXewuqXlNanZmawXT4LT85PSysmljVfnpX3vBWfOU8FAc/QnK+qUGzfYTr0qtJ+Y4PVpA7aWUt6pElATUlIMxOOpzRhKS3gAulnfIuSxI4Vvuqh71B0BmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279953; c=relaxed/simple;
-	bh=KmbhwZEBbvkvMG9ALOMhRE92WgBBMCFGZv+F59wjbnE=;
+	s=arc-20240116; t=1718279369; c=relaxed/simple;
+	bh=0YLwQ6tB+P/pA0v9iRrxGy8elCH4RWzwpAfuWRe9Qfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rv8mxGHBI5RpLwsiIWx/9jtPmGrz12G64Im+U1XiAhOe5816/HdYIHCgKQfS65mQrfJeS/n/BvbmhNhPbJ/KZa1PPeP5eM58ZmLvTgpyg05a5lml+W0zVeBSsg7Y1EuVQSXKeXOT0sq9g/aPFRJ8fFrdJ/CDwTWaOxbyIB17PZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBs1mwi1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0218C4AF1D;
-	Thu, 13 Jun 2024 11:59:12 +0000 (UTC)
+	 MIME-Version; b=NmmA1inlYga2QoOi9IYhA5bstFGsZE35PBo+vd2HEvgmlzFAlq/Mtr3Mi1Inb/0jsXMWVWk3Ky5CmvmnP7BB+GgMTKVQKUU1CzcBuSnp6QqyQW49E2dm4aR3OyljuY5QTL7lqx8qpsh6xKn5X3c1xcrmtRHl8S5M/i5Ab3i+/CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=beHmHodp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B6BC2BBFC;
+	Thu, 13 Jun 2024 11:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279953;
-	bh=KmbhwZEBbvkvMG9ALOMhRE92WgBBMCFGZv+F59wjbnE=;
+	s=korg; t=1718279369;
+	bh=0YLwQ6tB+P/pA0v9iRrxGy8elCH4RWzwpAfuWRe9Qfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kBs1mwi1Gvmif80v63yHPheAQKCtdn0SO668BAq0yF0qnE5IO2NoEni2xqEjXYDLb
-	 z8ptkWUqNG4+XeFh6J7CF8LnH4TFi8ErlZM9EGFF2oTkQGge0U4j+xm+fBXErxoocA
-	 Fh0Qo7HN916QBCqEUAhUxMl9hn7pniiHOMyGIpHo=
+	b=beHmHodptVE2qjt6VwCHGzPO8cg5lVocEgSUlCYw2JNFo5HXHwg2osRToxtc3D8IX
+	 3gN35jn9G6CgKCvLQ0Wo/DRb8ObhCdREio+yrZztu3o5nD7zQ2qXFuNNZaS77RzO7V
+	 6TX3SONDu2GOyfP3Et56jiNPt0+GN8d1PbScD1sI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 051/202] sh: kprobes: Merge arch_copy_kprobe() into arch_prepare_kprobe()
-Date: Thu, 13 Jun 2024 13:32:29 +0200
-Message-ID: <20240613113229.744095472@linuxfoundation.org>
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.9 025/157] wifi: rtw89: pci: correct TX resource checking for PCI DMA channel of firmware command
+Date: Thu, 13 Jun 2024 13:32:30 +0200
+Message-ID: <20240613113228.386614271@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 1422ae080b66134fe192082d9b721ab7bd93fcc5 ]
+commit c6330b129786e267b14129335a08fa7c331c308d upstream.
 
-arch/sh/kernel/kprobes.c:52:16: warning: no previous prototype for 'arch_copy_kprobe' [-Wmissing-prototypes]
+The DMA channel of firmware command doesn't use TX WD (WiFi descriptor), so
+don't need to consider number of TX WD as factor of TX resource. Otherwise,
+during pause state (a transient state to switch to/from low power mode)
+firmware commands could be dropped and driver throws warnings suddenly:
 
-Although SH kprobes support was only merged in v2.6.28, it missed the
-earlier removal of the arch_copy_kprobe() callback in v2.6.15.
+   rtw89_8852ce 0000:04:00.0: no tx fwcmd resource
+   rtw89_8852ce 0000:04:00.0: failed to send h2c
 
-Based on the powerpc part of commit 49a2a1b83ba6fa40 ("[PATCH] kprobes:
-changed from using spinlock to mutex").
+The case we met is that driver sends RSSI strength of firmware command at
+RX path that could be running concurrently with switching low power mode.
+The missing of this firmware command doesn't affect user experiences,
+because the RSSI strength will be updated again after a while.
 
-Fixes: d39f5450146ff39f ("sh: Add kprobes support.")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/717d47a19689cc944fae6e981a1ad7cae1642c89.1709326528.git.geert+renesas@glider.be
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The DMA descriptors of normal packets has three layers like:
+
+  +-------+
+  | TX BD | (*n elements)
+  +-------+
+      |
+      |   +-------+
+      +-> | TX WD | (*m elements)
+          +-------+
+              |
+              |   +--------+
+              +-> |   SKB  |
+                  +--------+
+
+And, firmware command queue (TXCH 12) is a special queue that has only
+two layers:
+
+  +-------+
+  | TX BD | (*n elements)
+  +-------+
+      |
+      |   +------------------+
+      +-> | firmware command |
+          +------------------+
+
+Fixes: 4a29213cd775 ("wifi: rtw89: pci: correct TX resource checking in low power mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://msgid.link/20240410011316.9906-1-pkshih@realtek.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sh/kernel/kprobes.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/net/wireless/realtek/rtw89/pci.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sh/kernel/kprobes.c b/arch/sh/kernel/kprobes.c
-index 318296f48f1ac..75f51bc2d801e 100644
---- a/arch/sh/kernel/kprobes.c
-+++ b/arch/sh/kernel/kprobes.c
-@@ -44,17 +44,12 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
- 	if (OPCODE_RTE(opcode))
- 		return -EFAULT;	/* Bad breakpoint */
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -1089,7 +1089,8 @@ u32 __rtw89_pci_check_and_reclaim_tx_res
  
-+	memcpy(p->ainsn.insn, p->addr, MAX_INSN_SIZE * sizeof(kprobe_opcode_t));
- 	p->opcode = opcode;
+ 	spin_lock_bh(&rtwpci->trx_lock);
+ 	cnt = rtw89_pci_get_avail_txbd_num(tx_ring);
+-	cnt = min(cnt, wd_ring->curr_num);
++	if (txch != RTW89_TXCH_CH12)
++		cnt = min(cnt, wd_ring->curr_num);
+ 	spin_unlock_bh(&rtwpci->trx_lock);
  
- 	return 0;
- }
- 
--void __kprobes arch_copy_kprobe(struct kprobe *p)
--{
--	memcpy(p->ainsn.insn, p->addr, MAX_INSN_SIZE * sizeof(kprobe_opcode_t));
--	p->opcode = *p->addr;
--}
--
- void __kprobes arch_arm_kprobe(struct kprobe *p)
- {
- 	*p->addr = BREAKPOINT_INSTRUCTION;
--- 
-2.43.0
-
+ 	return cnt;
 
 
 
