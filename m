@@ -1,54 +1,61 @@
-Return-Path: <stable+bounces-51225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF22906EE3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 782F59072D6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50C691C21855
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C00F7B292EA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A643146583;
-	Thu, 13 Jun 2024 12:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D267143747;
+	Thu, 13 Jun 2024 12:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSudPLhj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJP6KesI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA4F13D881;
-	Thu, 13 Jun 2024 12:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2DA1292FF;
+	Thu, 13 Jun 2024 12:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280673; cv=none; b=u7MuXQSBN9129zA75KKPb6BrZ7Tf9YpoBqrbC/z+TWzgcFBX0qnN1Cd7LluzS/yVch/QguwLXH6UZpkTOMkAO1LqJXEaUbKL2RIDQTpWkkOeTNs631F5DjnBoVoOg9zLpqSyaaLiorgY6EFEzTnFdgXdGxbIcgIlcitvXXdrN84=
+	t=1718282852; cv=none; b=TZZYyd4e0u+FkWMvlbvuXj5uDrWPeebo09SAXv9z3pR2w2XtfxeN0tDw264EPFT0LHemm0hzxJoCysRz9SsUNlkgiQYmTB/38/C3227+y+OiASB5oxJuOoPAFSh4PotgU5LdAgDBdKR6nZorjAmW6dKpzR0bOyDxbLaa65DFVCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280673; c=relaxed/simple;
-	bh=io9KLWkJs92ZQL04O7fu1KgxnpppGGb1TiUyohlCh3E=;
+	s=arc-20240116; t=1718282852; c=relaxed/simple;
+	bh=mTNYB+3nZMRegCKICBsJIWlgJHgWQrfjntuhRe6mE1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RNsHuol95syLonwTynpXB8Mu3IF4vudyqixiae1R84wXQ/31K9WLTv8e2ZRi87RP97UP7kHhoVb1hjl5PKDrXN4MWZyxEWdUEqqyaI1Jj26tWVFjeOHmhpuJS3NmWUtSQiQCROdYGrPTVcLfMg82ftGUNw9utbLoz0gyybnnLbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSudPLhj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51DABC2BBFC;
-	Thu, 13 Jun 2024 12:11:13 +0000 (UTC)
+	 MIME-Version; b=XYTGKAEq1hoUmpE8dHYfewOF8t8VC1Wq3XWOgXNVPOFokF/6PMnSB0HT4ZzEmBckqPVw0IA+p4rRmooRuQKS0qAh3q5H0wj+mPp3wyS7ic5FadDeuY6Hvfbp5FjpKTet9XGdIR2j03cgb0nlwPCB+1umjPT3Z3Ck0fuE1rP4YdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJP6KesI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76668C32786;
+	Thu, 13 Jun 2024 12:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280673;
-	bh=io9KLWkJs92ZQL04O7fu1KgxnpppGGb1TiUyohlCh3E=;
+	s=korg; t=1718282851;
+	bh=mTNYB+3nZMRegCKICBsJIWlgJHgWQrfjntuhRe6mE1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SSudPLhjKSdKey9Ca1hFeOkAUHEdwJMyodR/5XjdsYyc/04DIcJiqNTvRX4oOJ2B0
-	 yolAg16rdU1EyKeYLZ8bUql3Ku5tXQ43NsqY7vXwxBw1mbuEC9CACWJA3t11yCjxGm
-	 U33PIOEuaxKIs3x7Lf4GKHdue8lBfeUu42pEeor4=
+	b=dJP6KesI1pJX9xQC88CRqYW7wvRdHjVg4xKnD7r54W3z1fUD0NV+ejFVnBAcjNCes
+	 08p8n/mwS41AN9tPrfLE9Os0VnMPQT6ZXX6su9LjNOFsyfrRUIrcMx9ez2OABB+KC1
+	 Kq7cO9lylbTfdFBMAjOZIIm1VDPk0MhAOpYackF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 133/137] ALSA: seq: Fix incorrect UMP type for system messages
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Hao Ge <gehao@kylinos.cn>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 15/85] scripts/gdb: fix SB_* constants parsing
 Date: Thu, 13 Jun 2024 13:35:13 +0200
-Message-ID: <20240613113228.461510302@linuxfoundation.org>
+Message-ID: <20240613113214.732658990@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +67,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-commit edb32776196afa393c074d6a2733e3a69e66b299 upstream.
+commit 6a59cb5158bff13b80f116305155fbe4967a5010 upstream.
 
-When converting a legacy system message to a UMP packet, it forgot to
-modify the UMP type field but keeping the default type (either type 2
-or 4).  Correct to the right type for system messages.
+--0000000000009a0c9905fd9173ad
+Content-Transfer-Encoding: 8bit
 
-Fixes: e9e02819a98a ("ALSA: seq: Automatic conversion of UMP events")
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240529083800.5742-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+After f15afbd34d8f ("fs: fix undefined behavior in bit shift for
+SB_NOUSER") the constants were changed from plain integers which
+LX_VALUE() can parse to constants using the BIT() macro which causes the
+following:
+
+Reading symbols from build/linux-custom/vmlinux...done.
+Traceback (most recent call last):
+  File "/home/fainelli/work/buildroot/output/arm64/build/linux-custom/vmlinux-gdb.py", line 25, in <module>
+    import linux.constants
+  File "/home/fainelli/work/buildroot/output/arm64/build/linux-custom/scripts/gdb/linux/constants.py", line 5
+    LX_SB_RDONLY = ((((1UL))) << (0))
+
+Use LX_GDBPARSED() which does not suffer from that issue.
+
+f15afbd34d8f ("fs: fix undefined behavior in bit shift for SB_NOUSER")
+Link: https://lkml.kernel.org/r/20230607221337.2781730-1-florian.fainelli@broadcom.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Acked-by: Christian Brauner <brauner@kernel.org>
+Cc: Hao Ge <gehao@kylinos.cn>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Pankaj Raghav <p.raghav@samsung.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/seq/seq_ump_convert.c |    2 ++
- 1 file changed, 2 insertions(+)
+ scripts/gdb/linux/constants.py.in |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/sound/core/seq/seq_ump_convert.c
-+++ b/sound/core/seq/seq_ump_convert.c
-@@ -740,6 +740,7 @@ static int system_1p_ev_to_ump_midi1(con
- 				     union snd_ump_midi1_msg *data,
- 				     unsigned char status)
- {
-+	data->system.type = UMP_MSG_TYPE_SYSTEM; // override
- 	data->system.status = status;
- 	data->system.parm1 = event->data.control.value & 0x7f;
- 	return 1;
-@@ -751,6 +752,7 @@ static int system_2p_ev_to_ump_midi1(con
- 				     union snd_ump_midi1_msg *data,
- 				     unsigned char status)
- {
-+	data->system.type = UMP_MSG_TYPE_SYSTEM; // override
- 	data->system.status = status;
- 	data->system.parm1 = event->data.control.value & 0x7f;
- 	data->system.parm2 = (event->data.control.value >> 7) & 0x7f;
+--- a/scripts/gdb/linux/constants.py.in
++++ b/scripts/gdb/linux/constants.py.in
+@@ -46,12 +46,12 @@ if IS_BUILTIN(CONFIG_COMMON_CLK):
+     LX_GDBPARSED(CLK_GET_RATE_NOCACHE)
+ 
+ /* linux/fs.h */
+-LX_VALUE(SB_RDONLY)
+-LX_VALUE(SB_SYNCHRONOUS)
+-LX_VALUE(SB_MANDLOCK)
+-LX_VALUE(SB_DIRSYNC)
+-LX_VALUE(SB_NOATIME)
+-LX_VALUE(SB_NODIRATIME)
++LX_GDBPARSED(SB_RDONLY)
++LX_GDBPARSED(SB_SYNCHRONOUS)
++LX_GDBPARSED(SB_MANDLOCK)
++LX_GDBPARSED(SB_DIRSYNC)
++LX_GDBPARSED(SB_NOATIME)
++LX_GDBPARSED(SB_NODIRATIME)
+ 
+ /* linux/htimer.h */
+ LX_GDBPARSED(hrtimer_resolution)
 
 
 
