@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-50613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95748906B8A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF57F906D83
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 128E21F22D61
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A2801F27D62
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1039143890;
-	Thu, 13 Jun 2024 11:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227D8148856;
+	Thu, 13 Jun 2024 11:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yq9YLGEk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knonleZt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F205143878;
-	Thu, 13 Jun 2024 11:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36CD148FE0;
+	Thu, 13 Jun 2024 11:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278879; cv=none; b=cQv/ppXtrMR64ndkJAB52agDx5lQcZF1KUIju4/kzkdfTFEgcnm6zd8L6UX1jNQ5s0s3sP5yT/5yuka3xul6cYYv7gVsICQAmGM6f2QLQo4pddD8HXRRTKeDkymYeEa527jXbDwdk/RLCahhNNl1I9O4dbv+w4WXO8lxWsR14GY=
+	t=1718279832; cv=none; b=kYX+7QXyJRzrInH7TC7HJ9dU3tTOia/pmwaKBEFelgEhS7t8Wykgj0JFGbRYjN0QLKgfRDShGbkZLerXqEVpnS90PaHS2FRWZ/XPX8chplV4qnhl+UvG6a4nxmAwhlCWOFtPcgurKSS3nLmDtUpm41PvsX/8YrYi3Jzr9J9kjns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278879; c=relaxed/simple;
-	bh=9Q9dj0K+2hLo1WZLoODXN5zcc4nbb3ZHV8LPJYrIrJ4=;
+	s=arc-20240116; t=1718279832; c=relaxed/simple;
+	bh=tqJqx3PVL2lr0dOQIety3qDl5GYqCc2EfFrKG5GlTu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MKJLiuwobI3YU3Hou34cfx8Rzi9mCoEfYSCJCKxC3us+E5fFkowhQm87420SixbQJEQMneghYpvkTrNKrC8wzR72P5cJjyjnCYG0CJAI8AcSj2xkpGALRPbSs2qKgVb9VALxsyVTWQamNTHo3laXTkD7a+q9yw7Y+F7WdfAFQoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yq9YLGEk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FB8C4AF1A;
-	Thu, 13 Jun 2024 11:41:18 +0000 (UTC)
+	 MIME-Version; b=P8PRJ9AqdcXKGVzviTPFwzKBvKJuUP0+KvmeoouRdIt/Ze1teI3SRGIZJRiiI4QBryxEvBZeUFFJ0mun4it18n8pKOluq9RoZidhzprjimVCbVP99mHUORa0a0IUcIlSaG8Kc6k3XyhesrhSijKQrw7BMqjM/XJRQ5I+U/nXYtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knonleZt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056C0C2BBFC;
+	Thu, 13 Jun 2024 11:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278879;
-	bh=9Q9dj0K+2hLo1WZLoODXN5zcc4nbb3ZHV8LPJYrIrJ4=;
+	s=korg; t=1718279832;
+	bh=tqJqx3PVL2lr0dOQIety3qDl5GYqCc2EfFrKG5GlTu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yq9YLGEkPrhF8rJOeifCic6/L6w8ziUQIiAyA/He0tPISd9OBkp0VATA274GAt8/4
-	 Ii7dEvbZj78ZFgViA0je1YNIvP2MxqKdr/ZEdVELaT8uw4LmK9FfPqZIYlJ4I1CZhS
-	 Ng/ATRR3IzMkODw8dfrupt87jFgv6hVNGxx7/6KQ=
+	b=knonleZtauSxo1dyKgHqy2bV/8Rijqd0ztHfbQd2gQbo0VLGmlx2ZIjyA7DrpZZ9V
+	 xxrjCgIsGMwqnSt+bKX/XHs6b7y/h4iTaTWtv9esh1XRhhgAqQA/w9d5FhX+XVs6CK
+	 W1Uwqp37U9UFuImXIY4I2xcXTrmiyjbfzQn2pueM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 100/213] stm class: Fix a double free in stm_register_device()
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 050/202] wifi: ar5523: enable proper endpoint verification
 Date: Thu, 13 Jun 2024 13:32:28 +0200
-Message-ID: <20240613113231.864558877@linuxfoundation.org>
+Message-ID: <20240613113229.705361686@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 3df463865ba42b8f88a590326f4c9ea17a1ce459 ]
+[ Upstream commit e120b6388d7d88635d67dcae6483f39c37111850 ]
 
-The put_device(&stm->dev) call will trigger stm_device_release() which
-frees "stm" so the vfree(stm) on the next line is a double free.
+Syzkaller reports [1] hitting a warning about an endpoint in use
+not having an expected type to it.
 
-Fixes: 389b6699a2aa ("stm class: Fix stm device initialization order")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Link: https://lore.kernel.org/r/20240429130119.1518073-2-alexander.shishkin@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the issue by checking for the existence of all proper
+endpoints with their according types intact.
+
+Sadly, this patch has not been tested on real hardware.
+
+[1] Syzkaller report:
+------------[ cut here ]------------
+usb 1-1: BOGUS urb xfer, pipe 3 != type 1
+WARNING: CPU: 0 PID: 3643 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+...
+Call Trace:
+ <TASK>
+ ar5523_cmd+0x41b/0x780 drivers/net/wireless/ath/ar5523/ar5523.c:275
+ ar5523_cmd_read drivers/net/wireless/ath/ar5523/ar5523.c:302 [inline]
+ ar5523_host_available drivers/net/wireless/ath/ar5523/ar5523.c:1376 [inline]
+ ar5523_probe+0x14b0/0x1d10 drivers/net/wireless/ath/ar5523/ar5523.c:1655
+ usb_probe_interface+0x30f/0x7f0 drivers/usb/core/driver.c:396
+ call_driver_probe drivers/base/dd.c:560 [inline]
+ really_probe+0x249/0xb90 drivers/base/dd.c:639
+ __driver_probe_device+0x1df/0x4d0 drivers/base/dd.c:778
+ driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:808
+ __device_attach_driver+0x1d4/0x2e0 drivers/base/dd.c:936
+ bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:427
+ __device_attach+0x1e4/0x530 drivers/base/dd.c:1008
+ bus_probe_device+0x1e8/0x2a0 drivers/base/bus.c:487
+ device_add+0xbd9/0x1e90 drivers/base/core.c:3517
+ usb_set_configuration+0x101d/0x1900 drivers/usb/core/message.c:2170
+ usb_generic_driver_probe+0xbe/0x100 drivers/usb/core/generic.c:238
+ usb_probe_device+0xd8/0x2c0 drivers/usb/core/driver.c:293
+ call_driver_probe drivers/base/dd.c:560 [inline]
+ really_probe+0x249/0xb90 drivers/base/dd.c:639
+ __driver_probe_device+0x1df/0x4d0 drivers/base/dd.c:778
+ driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:808
+ __device_attach_driver+0x1d4/0x2e0 drivers/base/dd.c:936
+ bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:427
+ __device_attach+0x1e4/0x530 drivers/base/dd.c:1008
+ bus_probe_device+0x1e8/0x2a0 drivers/base/bus.c:487
+ device_add+0xbd9/0x1e90 drivers/base/core.c:3517
+ usb_new_device.cold+0x685/0x10ad drivers/usb/core/hub.c:2573
+ hub_port_connect drivers/usb/core/hub.c:5353 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5497 [inline]
+ port_event drivers/usb/core/hub.c:5653 [inline]
+ hub_event+0x26cb/0x45d0 drivers/usb/core/hub.c:5735
+ process_one_work+0x9bf/0x1710 kernel/workqueue.c:2289
+ worker_thread+0x669/0x1090 kernel/workqueue.c:2436
+ kthread+0x2e8/0x3a0 kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:306
+ </TASK>
+
+Reported-and-tested-by: syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com
+Fixes: b7d572e1871d ("ar5523: Add new driver")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240408121425.29392-1-n.zhandarovich@fintech.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/stm/core.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ar5523/ar5523.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/hwtracing/stm/core.c b/drivers/hwtracing/stm/core.c
-index eeba421dc823d..9bb85d20934a0 100644
---- a/drivers/hwtracing/stm/core.c
-+++ b/drivers/hwtracing/stm/core.c
-@@ -701,8 +701,11 @@ int stm_register_device(struct device *parent, struct stm_data *stm_data,
- 		return -ENOMEM;
+diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
+index 5d3cf354f6cb5..5ffd6f2152920 100644
+--- a/drivers/net/wireless/ath/ar5523/ar5523.c
++++ b/drivers/net/wireless/ath/ar5523/ar5523.c
+@@ -1590,6 +1590,20 @@ static int ar5523_probe(struct usb_interface *intf,
+ 	struct ar5523 *ar;
+ 	int error = -ENOMEM;
  
- 	stm->major = register_chrdev(0, stm_data->name, &stm_fops);
--	if (stm->major < 0)
--		goto err_free;
-+	if (stm->major < 0) {
-+		err = stm->major;
-+		vfree(stm);
-+		return err;
++	static const u8 bulk_ep_addr[] = {
++		AR5523_CMD_TX_PIPE | USB_DIR_OUT,
++		AR5523_DATA_TX_PIPE | USB_DIR_OUT,
++		AR5523_CMD_RX_PIPE | USB_DIR_IN,
++		AR5523_DATA_RX_PIPE | USB_DIR_IN,
++		0};
++
++	if (!usb_check_bulk_endpoints(intf, bulk_ep_addr)) {
++		dev_err(&dev->dev,
++			"Could not find all expected endpoints\n");
++		error = -ENODEV;
++		goto out;
 +	}
- 
- 	device_initialize(&stm->dev);
- 	stm->dev.devt = MKDEV(stm->major, 0);
-@@ -746,10 +749,8 @@ int stm_register_device(struct device *parent, struct stm_data *stm_data,
- err_device:
- 	unregister_chrdev(stm->major, stm_data->name);
- 
--	/* matches device_initialize() above */
-+	/* calls stm_device_release() */
- 	put_device(&stm->dev);
--err_free:
--	vfree(stm);
- 
- 	return err;
- }
++
+ 	/*
+ 	 * Load firmware if the device requires it.  This will return
+ 	 * -ENXIO on success and we'll get called back afer the usb
 -- 
 2.43.0
 
