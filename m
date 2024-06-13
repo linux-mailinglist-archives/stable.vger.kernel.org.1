@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C88289070D9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FF509070B1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:29:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B7BE283848
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4A37283A4F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD80C1849;
-	Thu, 13 Jun 2024 12:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51E013A406;
+	Thu, 13 Jun 2024 12:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lmhQfZgf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhQgyCBB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D33384;
-	Thu, 13 Jun 2024 12:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8405B3209;
+	Thu, 13 Jun 2024 12:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281880; cv=none; b=pNDsaSTI1PuLOPkApiKxu95HXRhujOW5LCXZNsfts7kZR87g0amYyUEflvuE3l1kmTpTWze4udGrpqujnUsqYoKZIbv9eiqpcUX62UvNkDjgrPNiwsgtUF8dOT2QdLCHpv303iHwhONXE7ieM9MyXK3Q3XB5oYeCnwBRKkG5TMU=
+	t=1718281789; cv=none; b=lqrHAnE7FrI6hpkAUSxa7YwDXlktQBXciwyIivMPJydiJ2LHXT+nhY65ZkMg1daMG6m8AVGH85aoMOk5bD1WpMJvPddNi8IQsKf6/sYt4u2hF0JWyDeBZEJ3+oXkxNL0kTenE18j7C40hVt2XVQ4+vX0XS297OCUH5cbf30VigE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281880; c=relaxed/simple;
-	bh=ji5eDCLMyjRCobejVwLT9lr2OW/TX55vFvMqhTUlr6E=;
+	s=arc-20240116; t=1718281789; c=relaxed/simple;
+	bh=K/Fh+hssrjVqIvHiyMVME89OJzinzGZmvMRGgkilzn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SFMg0P/tztHif0SpKu4GLhljYEPSTQDAKijLtp+Bb8BO0lMIf46GDoXMwNNAFi+fLHZDPj2tWGb41NYBPjIT7wGChRL/2PGo8N+n/BdlSJCCaLdxyoWr48K+4ryh/luwM6Z4JVJzqZ2LaM6c50blZZYIt2TyJfsjHqk97nr1DyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lmhQfZgf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F862C2BBFC;
-	Thu, 13 Jun 2024 12:31:19 +0000 (UTC)
+	 MIME-Version; b=IC9hmmcZ56kgqNBKgPHVaN3jBGWMnjVDiliVGQYoNbecZUJ0m0Rp/P33aOtZBKnl0ZUCzIpa4idmfCPwpHXHuJIfUzEcLVEmjpOHH0clFqwKs6zfPNjFlA7G4+xO8iq1+xCeV69mfDcJyn0Bym1lSntuon0trazDersHL6eTlRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhQgyCBB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DCD3C2BBFC;
+	Thu, 13 Jun 2024 12:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281880;
-	bh=ji5eDCLMyjRCobejVwLT9lr2OW/TX55vFvMqhTUlr6E=;
+	s=korg; t=1718281789;
+	bh=K/Fh+hssrjVqIvHiyMVME89OJzinzGZmvMRGgkilzn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lmhQfZgfaQFa0wTzODxM52p55HaKlM8SGfekwL66gJmgSQ54ZyOQUTtGI3lcaB9yM
-	 oMDAV34n7udgZyM9AD2kZmttOQq3wpB8tmVeLNxVSr6cgx4ZkToothicXffwJfGpdi
-	 YE8CQ5Cwd8sVTsYHtaMndf7d/NF3JjsZxWugSRac=
+	b=WhQgyCBBzFY2ul18vNVoYKvuhNPf4EgGBQqr1R/cUVFUuHgM1b/yeKH1DBX6UUJSR
+	 L64muwXIeYKqBsFTXeFyU/UIYn1P/ehyiqnUgcFoK9UOVUKMcvsURGuq5u1BYG39Eo
+	 EjtAnI8e9LEFRgmfLv0XZ37G91clZob865w+08Qg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Anton Protopopov <aspsk@isovalent.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 056/402] bpf: Pack struct bpf_fib_lookup
-Date: Thu, 13 Jun 2024 13:30:13 +0200
-Message-ID: <20240613113304.321835540@linuxfoundation.org>
+Subject: [PATCH 5.15 057/402] scsi: ufs: qcom: Perform read back after writing reset bit
+Date: Thu, 13 Jun 2024 13:30:14 +0200
+Message-ID: <20240613113304.360767225@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
 References: <20240613113302.116811394@linuxfoundation.org>
@@ -69,72 +68,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anton Protopopov <aspsk@isovalent.com>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit f91717007217d975aa975ddabd91ae1a107b9bff ]
+[ Upstream commit c4d28e06b0c94636f6e35d003fa9ebac0a94e1ae ]
 
-The struct bpf_fib_lookup is supposed to be of size 64. A recent commit
-59b418c7063d ("bpf: Add a check for struct bpf_fib_lookup size") added
-a static assertion to check this property so that future changes to the
-structure will not accidentally break this assumption.
+Currently, the reset bit for the UFS provided reset controller (used by its
+phy) is written to, and then a mb() happens to try and ensure that hit the
+device. Immediately afterwards a usleep_range() occurs.
 
-As it immediately turned out, on some 32-bit arm systems, when AEABI=n,
-the total size of the structure was equal to 68, see [1]. This happened
-because the bpf_fib_lookup structure contains a union of two 16-bit
-fields:
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring this
+bit has taken effect on the device is to perform a read back to force it to
+make it all the way to the device. This is documented in device-io.rst and
+a talk by Will Deacon on this can be seen over here:
 
-    union {
-            __u16 tot_len;
-            __u16 mtu_result;
-    };
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
 
-which was supposed to compile to a 16-bit-aligned 16-bit field. On the
-aforementioned setups it was instead both aligned and padded to 32-bits.
+Let's do that to ensure the bit hits the device. By doing so and
+guaranteeing the ordering against the immediately following usleep_range(),
+the mb() can safely be removed.
 
-Declare this inner union as __attribute__((packed, aligned(2))) such
-that it always is of size 2 and is aligned to 16 bits.
-
-  [1] https://lore.kernel.org/all/CA+G9fYtsoP51f-oP_Sp5MOq-Ffv8La2RztNpwvE6+R1VtFiLrw@mail.gmail.com/#t
-
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Fixes: e1850ea9bd9e ("bpf: bpf_fib_lookup return MTU value as output when looked up")
-Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240403123303.1452184-1-aspsk@isovalent.com
+Fixes: 81c0fc51b7a7 ("ufs-qcom: add support for Qualcomm Technologies Inc platforms")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-1-181252004586@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/bpf.h       | 2 +-
- tools/include/uapi/linux/bpf.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/ufs/ufs-qcom.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index bdb5f2ba769d2..6bfb510656abe 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -6089,7 +6089,7 @@ struct bpf_fib_lookup {
+diff --git a/drivers/scsi/ufs/ufs-qcom.h b/drivers/scsi/ufs/ufs-qcom.h
+index 8208e3a3ef59d..a2f32aa1ce1b8 100644
+--- a/drivers/scsi/ufs/ufs-qcom.h
++++ b/drivers/scsi/ufs/ufs-qcom.h
+@@ -145,10 +145,10 @@ static inline void ufs_qcom_assert_reset(struct ufs_hba *hba)
+ 			1 << OFFSET_UFS_PHY_SOFT_RESET, REG_UFS_CFG1);
  
- 		/* output: MTU value */
- 		__u16	mtu_result;
--	};
-+	} __attribute__((packed, aligned(2)));
- 	/* input: L3 device index for lookup
- 	 * output: device index from FIB lookup
+ 	/*
+-	 * Make sure assertion of ufs phy reset is written to
+-	 * register before returning
++	 * Dummy read to ensure the write takes effect before doing any sort
++	 * of delay
  	 */
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 69d7f0d65b38b..54b8c899d21ce 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -6089,7 +6089,7 @@ struct bpf_fib_lookup {
+-	mb();
++	ufshcd_readl(hba, REG_UFS_CFG1);
+ }
  
- 		/* output: MTU value */
- 		__u16	mtu_result;
--	};
-+	} __attribute__((packed, aligned(2)));
- 	/* input: L3 device index for lookup
- 	 * output: device index from FIB lookup
+ static inline void ufs_qcom_deassert_reset(struct ufs_hba *hba)
+@@ -157,10 +157,10 @@ static inline void ufs_qcom_deassert_reset(struct ufs_hba *hba)
+ 			0 << OFFSET_UFS_PHY_SOFT_RESET, REG_UFS_CFG1);
+ 
+ 	/*
+-	 * Make sure de-assertion of ufs phy reset is written to
+-	 * register before returning
++	 * Dummy read to ensure the write takes effect before doing any sort
++	 * of delay
  	 */
+-	mb();
++	ufshcd_readl(hba, REG_UFS_CFG1);
+ }
+ 
+ /* Host controller hardware version: major.minor.step */
 -- 
 2.43.0
 
