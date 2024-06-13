@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-50974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16556906DAA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A08906B92
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C03C8283FB8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 804B71F22E1F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028A1145FF5;
-	Thu, 13 Jun 2024 11:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999211448DD;
+	Thu, 13 Jun 2024 11:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SExEijRc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VdkdAD9c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6350145FF0;
-	Thu, 13 Jun 2024 11:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F23144312;
+	Thu, 13 Jun 2024 11:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279935; cv=none; b=U3pfXGevaz57A0NiS7iwszLvY2EQyuxPikfjeWEqf45T2ABOD5Z/4DrAD8jHUsh1CFPAzUnzSAaRRgAV5DI2nHnMDetrEmRc/Adr0ZfJykuCECOFu0u3E26AkVpD/fBl6JQMOxD3zVwCvnswu5GACHZp91E3YTETlZRgl/kGOXg=
+	t=1718278894; cv=none; b=NgJC760fg2ZjYQDfDhwGq16IPt3aqkAbLqZv04sUiJuNtjZiHYJsJpKEHkvvuASPLpHnJKus0mIM/zKbN5WVYTXLFIRbaTESDhTV2irH2Muv93MChWnKfWSdzXIBpdRLjidOecLUuR9dqDiISTlmWnfzbes9gBEHsh3MUsJfDb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279935; c=relaxed/simple;
-	bh=5A0ratWMdMbuX+xiPwTM2KLZg44/ncdpHt2JX2BSanc=;
+	s=arc-20240116; t=1718278894; c=relaxed/simple;
+	bh=HLXXSP1EqwXk6QWvvalUoLzfRD++Pkxo0+36aD/lDuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XsCn0t6SH2qkJ8jleLr+ZYikwxjEXgZyNdQZF/wV/J0ma4Uwdk9iwLB707rdzYES0jH0cO5F9YKDB7E0B3IkynaNEQQo5K3oF5H6TghdtwSwyW4WZ+rkysA9knrgtMgdPdCVCZrhSRv6sUXIDGRf9s0ZNPRXR2kkLh+NnIKXuOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SExEijRc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E49C2BBFC;
-	Thu, 13 Jun 2024 11:58:55 +0000 (UTC)
+	 MIME-Version; b=jKwdOPQUC3SMlzAEZGjAAaw+/2VdLziHrdjKsoC9zi7DE3XS0OJ73AocbOxoRdJSZg50v3RAUJxlHQrow/8GqduA/T7bbMeqzDmaEUQFHkRy5J7Ejwlu7eMAV4LBtK/ycD1OxbXTi0DzfR7W3vPgj9UVrcBd9QIvmYQhmWoSlKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VdkdAD9c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87628C2BBFC;
+	Thu, 13 Jun 2024 11:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279935;
-	bh=5A0ratWMdMbuX+xiPwTM2KLZg44/ncdpHt2JX2BSanc=;
+	s=korg; t=1718278893;
+	bh=HLXXSP1EqwXk6QWvvalUoLzfRD++Pkxo0+36aD/lDuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SExEijRc5wRZTOAZHHCcuK5tf6Pj6axT8OkC28wUQQAyrReeBRDKFIjehZj4Ef/mi
-	 Ct6jDnWQ8fCKcyVzNXr6B5OVyCPGg+bhmwAyDvsL3Dy6dhg/G5CYXA9ICtJo5CFuea
-	 rCr/GRkJTMAw3ERf5ygD+rf1veYc/26Zq5T6wiZA=
+	b=VdkdAD9c6PJHcO9X+lAOLrv1FmotWFMrkPcCbCeQiA4xjlBQxnTIy+Xdk/P/qGX7D
+	 9UpJonHJSqkM9HhSpaFjA++TiDlZTBqXyB9fVw1sR1SJbrSyD7NVprvo0hvCPT4gYW
+	 aN2T5dpzRFd740usiGtw/AEcnRKVFYuXtsrxs2dk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 055/202] scsi: qedf: Ensure the copied buf is NUL terminated
+Subject: [PATCH 4.19 105/213] f2fs: fix to release node block count in error path of f2fs_new_node_page()
 Date: Thu, 13 Jun 2024 13:32:33 +0200
-Message-ID: <20240613113229.902071818@linuxfoundation.org>
+Message-ID: <20240613113232.054903502@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit d0184a375ee797eb657d74861ba0935b6e405c62 ]
+[ Upstream commit 0fa4e57c1db263effd72d2149d4e21da0055c316 ]
 
-Currently, we allocate a count-sized kernel buffer and copy count from
-userspace to that buffer. Later, we use kstrtouint on this buffer but we
-don't ensure that the string is terminated inside the buffer, this can
-lead to OOB read when using kstrtouint. Fix this issue by using
-memdup_user_nul instead of memdup_user.
+It missed to call dec_valid_node_count() to release node block count
+in error path, fix it.
 
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-4-f1f1b53a10f4@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 141170b759e0 ("f2fs: fix to avoid use f2fs_bug_on() in f2fs_new_node_page()")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_debugfs.c | 2 +-
+ fs/f2fs/node.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
-index b0a28a6a9c64a..41e7fab99013c 100644
---- a/drivers/scsi/qedf/qedf_debugfs.c
-+++ b/drivers/scsi/qedf/qedf_debugfs.c
-@@ -172,7 +172,7 @@ qedf_dbg_debug_cmd_write(struct file *filp, const char __user *buffer,
- 	if (!count || *ppos)
- 		return 0;
- 
--	kern_buf = memdup_user(buffer, count);
-+	kern_buf = memdup_user_nul(buffer, count);
- 	if (IS_ERR(kern_buf))
- 		return PTR_ERR(kern_buf);
- 
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 9911f780e0136..38a937bdcf8ba 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1236,6 +1236,7 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 	}
+ 	if (unlikely(new_ni.blk_addr != NULL_ADDR)) {
+ 		err = -EFSCORRUPTED;
++		dec_valid_node_count(sbi, dn->inode, !ofs);
+ 		set_sbi_flag(sbi, SBI_NEED_FSCK);
+ 		goto fail;
+ 	}
+@@ -1261,7 +1262,6 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 	if (ofs == 0)
+ 		inc_valid_inode_count(sbi);
+ 	return page;
+-
+ fail:
+ 	clear_node_page_dirty(page);
+ 	f2fs_put_page(page, 1);
 -- 
 2.43.0
 
