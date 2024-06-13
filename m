@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-50816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D5C3906CF1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:57:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B021A906BD8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:45:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3580285583
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:57:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C59428133A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADABE14884C;
-	Thu, 13 Jun 2024 11:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A851144303;
+	Thu, 13 Jun 2024 11:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPsiD9g5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtiswgsF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C567143C7E;
-	Thu, 13 Jun 2024 11:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83C4143C57;
+	Thu, 13 Jun 2024 11:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279469; cv=none; b=pna1Y3WyjNjZ+zwppq+daeargdmEZKldtq6HQ9x3KHmea5PflnMSi2nbCpOUP9+fB/3LinGGbW6ufSGHp0ErNtvKKtl5yrTagmNSCOBr54DisZ56O7Cbjy4ksfrxZR/TITk8542Cr8Wtf5qQNBa9acQSEJ5lvQ0uFZ9duHoZIec=
+	t=1718279059; cv=none; b=bD7jPFx/c6lZZ49121vZkzykYl9Zzs1jM827d4HrBOhZaUix5nRx8YcX+hqBe7JAhmo/T4jOKOI68aKv9ZinuXYlgYKsGhjjvek2Sc6VaCkjcas7Q+4+Hlw6+U/TgSvFHMY0P7bgcqikgzNVF2BMNyLOj7SRvDATddmw5EXJSgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279469; c=relaxed/simple;
-	bh=pG3UwjcctmKV5cBEqEeYFmkfyi3JXfl/h+l0PCrUhzc=;
+	s=arc-20240116; t=1718279059; c=relaxed/simple;
+	bh=s60ISix6Vsi7GCOGz3FVq7HUKg6z0F/gwrw8e07tYvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P8gY8OvcG/5P3CIKd5XIHVfekOa6Zf/xCNbDcXB9P9MQsxTpdZ2lMeipLks0w2t7QCvFRENjred0DLDnuKhxGBFToyQ/ALsKehVfrqSxB+28M+znFKo5P6NEXWZt8f/hnaproKqhGCJvWXz1HbPqn0AcOHoC54cwpRknl/H1LQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPsiD9g5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E920EC32786;
-	Thu, 13 Jun 2024 11:51:08 +0000 (UTC)
+	 MIME-Version; b=USAjY4mIFGhr3QU/d+TWclfpHMFd5v00DXIgVwYp4UAvlbgdgYxnhpvaSrJxlpjIj5/KGq3A7u/D8gi8Zr8VgnRP8Ii+n65qPVK6dm7opzp9sExfl8Ru+mikX7voz+J8UoemC6meBnAdKDU5FgHSBVJK2r3k08xwseCnVnD5YFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtiswgsF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A98AC2BBFC;
+	Thu, 13 Jun 2024 11:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279469;
-	bh=pG3UwjcctmKV5cBEqEeYFmkfyi3JXfl/h+l0PCrUhzc=;
+	s=korg; t=1718279058;
+	bh=s60ISix6Vsi7GCOGz3FVq7HUKg6z0F/gwrw8e07tYvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZPsiD9g54ypwBtQSWYKbZgaWCkouEFuuio/LCrFCsZniJCedhfoIV+0olES0BT4BZ
-	 HKsPhVr87hZ/+LGrT7SxBVw9QPY/dMZIxtPxPkPzaL1E8/fzzie9q89XNl/MLjXkFM
-	 aThkzwDl8AIBcgGpc84OSer4gpQCj8O0A2rpGVBc=
+	b=GtiswgsFUowo6A0qO3ghaFH1njREdAtp3aKCsPS0s+nWcrQjRpWix38alRgPdoeKM
+	 N12TDizQ06Ul3jVWEZjQ9vt4iqKYYjVHfCsb2sP0+CdznzafrahZvj6+k00sbLzUMd
+	 pi5jQcuTEDtaZHPy9qCOYkNJwurTQwvJ4TZO2YyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.9 085/157] selftests: net: lib: support errexit with busywait
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.19 162/213] netfilter: nft_set_rbtree: allow loose matching of closing element in interval
 Date: Thu, 13 Jun 2024 13:33:30 +0200
-Message-ID: <20240613113230.714557075@linuxfoundation.org>
+Message-ID: <20240613113234.235313330@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 41b02ea4c0adfcc6761fbfed42c3ce6b6412d881 upstream.
+commit 3b18d5eba491b2328b31efa4235724a2354af010 upstream.
 
-If errexit is enabled ('set -e'), loopy_wait -- or busywait and others
-using it -- will stop after the first failure.
+Allow to find closest matching for the right side of an interval (end
+flag set on) so we allow lookups in inner ranges, eg. 10-20 in 5-25.
 
-Note that if the returned status of loopy_wait is checked, and even if
-errexit is enabled, Bash will not stop at the first error.
-
-Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
-Cc: stable@vger.kernel.org
-Acked-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20240605-upstream-net-20240605-selftests-net-lib-fixes-v1-1-b3afadd368c9@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ba0e4d9917b4 ("netfilter: nf_tables: get set elements via netlink")
+Reported-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/lib.sh |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/netfilter/nft_set_rbtree.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/lib.sh
-+++ b/tools/testing/selftests/net/lib.sh
-@@ -63,9 +63,7 @@ loopy_wait()
- 	while true
- 	do
- 		local out
--		out=$("$@")
--		local ret=$?
--		if ((!ret)); then
-+		if out=$("$@"); then
- 			echo -n "$out"
- 			return 0
- 		fi
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -145,9 +145,12 @@ static bool __nft_rbtree_get(const struc
+ 		d = memcmp(this, key, set->klen);
+ 		if (d < 0) {
+ 			parent = rcu_dereference_raw(parent->rb_left);
+-			interval = rbe;
++			if (!(flags & NFT_SET_ELEM_INTERVAL_END))
++				interval = rbe;
+ 		} else if (d > 0) {
+ 			parent = rcu_dereference_raw(parent->rb_right);
++			if (flags & NFT_SET_ELEM_INTERVAL_END)
++				interval = rbe;
+ 		} else {
+ 			if (!nft_set_elem_active(&rbe->ext, genmask)) {
+ 				parent = rcu_dereference_raw(parent->rb_left);
+@@ -170,7 +173,10 @@ static bool __nft_rbtree_get(const struc
+ 
+ 	if (set->flags & NFT_SET_INTERVAL && interval != NULL &&
+ 	    nft_set_elem_active(&interval->ext, genmask) &&
+-	    !nft_rbtree_interval_end(interval)) {
++	    ((!nft_rbtree_interval_end(interval) &&
++	      !(flags & NFT_SET_ELEM_INTERVAL_END)) ||
++	     (nft_rbtree_interval_end(interval) &&
++	      (flags & NFT_SET_ELEM_INTERVAL_END)))) {
+ 		*elem = interval;
+ 		return true;
+ 	}
 
 
 
