@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-51415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B68890707E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4766E906DD5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC98FB2A07F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2B541F23B90
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45A4145B28;
-	Thu, 13 Jun 2024 12:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD951448EA;
+	Thu, 13 Jun 2024 11:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOnZIIQn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zw3loYN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC8213C69C;
-	Thu, 13 Jun 2024 12:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EEC143899;
+	Thu, 13 Jun 2024 11:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281231; cv=none; b=qGaYNRAGuAAVfbyoubyR9I6wLL7+zh8O4Ft5X6bQWD/IMNPqrsyaRGXSQFN3wu8YbJ+CVQsDXim1TP7sYKJr+6dkLlLtOXEywY/XFV+fBQviMVtFe0aBdHSdhEddt5Ogyvj7c8BK7AL7HfhbU0wPd4Ro8ZzQh0O+gOhWkRcW9Z4=
+	t=1718279991; cv=none; b=WeABU4kvXryP6f5mqVeNJi8B6tzEa3CcfDXWxLa9l3JUBqYrFRWza2KSxLOWwRZz8Hz4XsMIhv2in45AkXxoPj403BGzuRTSk9WmPdGJniGSR4ZWF/1c3DkN8dTnapdj0ERLaT/sWSjr5ZKpH1ZPhkFV/tkOw2rVXornN9TKo+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281231; c=relaxed/simple;
-	bh=DdyYPkQLnBcI8axQjFIsBX3HJS5GIvOWGkfv/kiE3KA=;
+	s=arc-20240116; t=1718279991; c=relaxed/simple;
+	bh=Xvh+jwq9/ZRKhUYek0UaS9X19zj1ngPxHNtp5R7ewyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZv8kzZ2lMDyiQx8sHK9YY1+G2rX8gpwuS4aMeDO6QGmJmwFOKqHBnIXXKIdtnMsExmqGZ/FZICWV+d0ajCzBC0Sw+Ckyox2BqNWWfmvZQIX3YUh0Lq/Rj7E1RgRwglmwB6J0TJglXln4S7g5oct1NJxJ4FqW4SzqaVPjidfnfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOnZIIQn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8D9C2BBFC;
-	Thu, 13 Jun 2024 12:20:30 +0000 (UTC)
+	 MIME-Version; b=kC+jLCrs7+YrVGsfAlrYFvQodpCPWhTk12jBBDbgJeqQ+DZQ4pyw2mHxRHBkXEv5KjfAHEKaMRzPTyTU5KWkuCSihO4YVqf6Ydi8DF0XKFElAE9a/mQX/Yq1fZTE/6T+NdgGl/rqgTZZs9oo056MQwKcfQnJAEaGmPIml/dIALQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zw3loYN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2946C2BBFC;
+	Thu, 13 Jun 2024 11:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281231;
-	bh=DdyYPkQLnBcI8axQjFIsBX3HJS5GIvOWGkfv/kiE3KA=;
+	s=korg; t=1718279991;
+	bh=Xvh+jwq9/ZRKhUYek0UaS9X19zj1ngPxHNtp5R7ewyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DOnZIIQnuITCcL8+7PQ/VmnXFpHXAVSUTg6BRxCxGLik4Nv9qM1Agoq+fEfC8mdW9
-	 Yr5Cyxr9clULnokUmwTQLpbYmogmIkJT1m4F/YskbSk1YhVPdCGx4+ikNo580XEg6Z
-	 8GYGx476R4wogbfFU4vvTj3QryjTaXecd1iVRx8U=
+	b=zw3loYN0JQvR2aslvnayowEAl9Gd0Hq3o1iamsRTWCbpqQf5zTBy5LD6KwssCw9oJ
+	 3BLQjeVBEaCLbstI8WeRUDEq4vTNxe67PvXzvIs0gtnUmSF+ocYaAHPy/1k0VTMGoh
+	 9qKwVJIYI6Lh9XE7SGldSQIrJcIkj+1GxFgo0aWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Leo Yan <leo.yan@linux.dev>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 184/317] perf report: Avoid SEGV in report__setup_sample_type()
-Date: Thu, 13 Jun 2024 13:33:22 +0200
-Message-ID: <20240613113254.677628090@linuxfoundation.org>
+Subject: [PATCH 5.4 105/202] serial: max3100: Fix bitwise types
+Date: Thu, 13 Jun 2024 13:33:23 +0200
+Message-ID: <20240613113231.815708949@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,49 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 45b4f402a6b782352c4bafcff682bfb01da9ca05 ]
+[ Upstream commit e60955dbecb97f080848a57524827e2db29c70fd ]
 
-In some cases evsel->name is lazily initialized in evsel__name(). If not
-initialized passing NULL to strstr() leads to a SEGV.
+Sparse is not happy about misuse of bitwise types:
 
-Fixes: ccb17caecfbd542f ("perf report: Set PERF_SAMPLE_DATA_SRC bit for Arm SPE event")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Leo Yan <leo.yan@linux.dev>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240508035301.1554434-4-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+  .../max3100.c:194:13: warning: incorrect type in assignment (different base types)
+  .../max3100.c:194:13:    expected unsigned short [addressable] [usertype] etx
+  .../max3100.c:194:13:    got restricted __be16 [usertype]
+  .../max3100.c:202:15: warning: cast to restricted __be16
+
+Fix this by choosing proper types for the respective variables.
+
+Fixes: 7831d56b0a35 ("tty: MAX3100")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240402195306.269276-4-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-report.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/max3100.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index b55ee073c2f72..6283c2d10d27d 100644
---- a/tools/perf/builtin-report.c
-+++ b/tools/perf/builtin-report.c
-@@ -401,7 +401,7 @@ static int report__setup_sample_type(struct report *rep)
- 		 * compatibility, set the bit if it's an old perf data file.
- 		 */
- 		evlist__for_each_entry(session->evlist, evsel) {
--			if (strstr(evsel->name, "arm_spe") &&
-+			if (strstr(evsel__name(evsel), "arm_spe") &&
- 				!(sample_type & PERF_SAMPLE_DATA_SRC)) {
- 				evsel->core.attr.sample_type |= PERF_SAMPLE_DATA_SRC;
- 				sample_type |= PERF_SAMPLE_DATA_SRC;
+diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
+index c1ee88f530334..17b6f4a872d6a 100644
+--- a/drivers/tty/serial/max3100.c
++++ b/drivers/tty/serial/max3100.c
+@@ -45,6 +45,9 @@
+ #include <linux/freezer.h>
+ #include <linux/tty.h>
+ #include <linux/tty_flip.h>
++#include <linux/types.h>
++
++#include <asm/unaligned.h>
+ 
+ #include <linux/serial_max3100.h>
+ 
+@@ -191,7 +194,7 @@ static void max3100_timeout(struct timer_list *t)
+ static int max3100_sr(struct max3100_port *s, u16 tx, u16 *rx)
+ {
+ 	struct spi_message message;
+-	u16 etx, erx;
++	__be16 etx, erx;
+ 	int status;
+ 	struct spi_transfer tran = {
+ 		.tx_buf = &etx,
 -- 
 2.43.0
 
