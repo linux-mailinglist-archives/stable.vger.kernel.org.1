@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-50846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93E5906D1E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD368906C11
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:46:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 399FBB260BE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72A9D1F212FC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D77D1422AB;
-	Thu, 13 Jun 2024 11:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB3E144D1A;
+	Thu, 13 Jun 2024 11:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgwWnBNm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9I1UwFY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B64D14659C;
-	Thu, 13 Jun 2024 11:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A41144D15;
+	Thu, 13 Jun 2024 11:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279558; cv=none; b=OnL1I1feeYWYb+Y/bY1bpFvcCD2UsArY7lqj1UmeQ6dVh+T+rbGq5iYG9i50xCyykpCYGe+mF2cR4/7lILkGFNrgBArg6oHG4MkkGXvp108GMPI/JZjNTRAJB4j7htTbeSKF1SC+66L3u6HtEcqQ13jJIHPMioXivm/03PYRkvc=
+	t=1718279154; cv=none; b=BKbzyOfjzPgcWhuIrVJgpgvL4Lz8fq8nCEDbrfa9xmXo22qq/95QVT/3IhWeDKge4J1PRTV+qVXV+3Gsbm5PZzyDprSiYdWGafEKMvmaNTBj0Je2ipy+eV7pp+KctilsL/pa9UiEx5h2FD5a8Bxe/ZTuZwNIm8nCmdPfKOHaCwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279558; c=relaxed/simple;
-	bh=jDmGaCiqOUTRTgQkbuGiA+hsuxJ3jlpB23JgJh+we/k=;
+	s=arc-20240116; t=1718279154; c=relaxed/simple;
+	bh=SOTq1H0pnax8JHNgBlWYNzE2ywT0sJJoYMy+gPdDmhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fk3R4LOkjsSlBoGgGqFR2SkiSRGlKpWWumaACtJMOObMPYzlGSQIHISeWgEeOdVKWMaUR35+9I+xD6PLBHlwfEwK1aZtMw781qwzDA5J/zXY0u3S+tWxXmGv0dyuSVWO3WZKO0N8L9n7P5Fe/w7PMIYu2pKlFMu5s9zwcyZEMCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgwWnBNm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B60C2BBFC;
-	Thu, 13 Jun 2024 11:52:37 +0000 (UTC)
+	 MIME-Version; b=KYlzmruMfziY+leQHrXBoFm6EzL5NfJpOZrLTYPUB4li1fKJMHTY0GxYDYJQ3wDlkRUPLboDp3WZWmz2eFne1L77whQqGvlFA17SjhcvCddl22Rjc7rH53UgkVsvdFJ1/Y6ah0pXg4c7vhtlzLscNQpwbeFWK/eiNIcoD4Q8elg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9I1UwFY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6082C2BBFC;
+	Thu, 13 Jun 2024 11:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279557;
-	bh=jDmGaCiqOUTRTgQkbuGiA+hsuxJ3jlpB23JgJh+we/k=;
+	s=korg; t=1718279154;
+	bh=SOTq1H0pnax8JHNgBlWYNzE2ywT0sJJoYMy+gPdDmhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgwWnBNmXDfb0lalMnfqNuPE3X2NOjmGuowZGEUIwszkhEvOfORYawojim9nLTipQ
-	 dKc055BEDFdhjU69w241sVMLskh95kVAD6bu9EVKh3/zoI8LSX0iV003tc7x5hzlau
-	 57RfxQM+oVVm3CBsqsaAPom6lcWS8fjMee86P1aw=
+	b=V9I1UwFYXgzp/4nLTXZFC2cQ3cn+51wtoGegaktTNgrRtKa2BpeNkVvYqA85mvN2Y
+	 fvQOG3dmnx+4sui9DP9G12ZWhHl/C0JzCzyWwjU2hAbFsCnSKSSk+43iU+Z4szYZPT
+	 HH/CBelYz+6lwXtqB4mnvtLUtQS9frByT6GlmzrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hui Wang <hui.wang@canonical.com>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Naama Meir <naamax.meir@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.9 116/157] e1000e: move force SMBUS near the end of enable_ulp function
-Date: Thu, 13 Jun 2024 13:34:01 +0200
-Message-ID: <20240613113231.904225717@linuxfoundation.org>
+	Jordan Griege <jgriege@cloudflare.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 194/213] netfilter: nf_tables: allow NFPROTO_INET in nft_(match/target)_validate()
+Date: Thu, 13 Jun 2024 13:34:02 +0200
+Message-ID: <20240613113235.461350744@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,124 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hui Wang <hui.wang@canonical.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-commit bfd546a552e140b0a4c8a21527c39d6d21addb28 upstream.
+[ Upstream commit 7e0f122c65912740327e4c54472acaa5f85868cb ]
 
-The commit 861e8086029e ("e1000e: move force SMBUS from enable ulp
-function to avoid PHY loss issue") introduces a regression on
-PCH_MTP_I219_LM18 (PCIID: 0x8086550A). Without the referred commit, the
-ethernet works well after suspend and resume, but after applying the
-commit, the ethernet couldn't work anymore after the resume and the
-dmesg shows that the NIC link changes to 10Mbps (1000Mbps originally):
+Commit d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family") added
+some validation of NFPROTO_* families in the nft_compat module, but it broke
+the ability to use legacy iptables modules in dual-stack nftables.
 
-    [   43.305084] e1000e 0000:00:1f.6 enp0s31f6: NIC Link is Up 10 Mbps Full Duplex, Flow Control: Rx/Tx
+While with legacy iptables one had to independently manage IPv4 and IPv6
+tables, with nftables it is possible to have dual-stack tables sharing the
+rules. Moreover, it was possible to use rules based on legacy iptables
+match/target modules in dual-stack nftables.
 
-Without the commit, the force SMBUS code will not be executed if
-"return 0" or "goto out" is executed in the enable_ulp(), and in my
-case, the "goto out" is executed since FWSM_FW_VALID is set. But after
-applying the commit, the force SMBUS code will be ran unconditionally.
+As an example, the program from [2] creates an INET dual-stack family table
+using an xt_bpf based rule, which looks like the following (the actual output
+was generated with a patched nft tool as the current nft tool does not parse
+dual stack tables with legacy match rules, so consider it for illustrative
+purposes only):
 
-Here move the force SMBUS code back to enable_ulp() and put it
-immediately ahead of hw->phy.ops.release(hw), this could allow the
-longest settling time as possible for interface in this function and
-doesn't change the original code logic.
+table inet testfw {
+  chain input {
+    type filter hook prerouting priority filter; policy accept;
+    bytecode counter packets 0 bytes 0 accept
+  }
+}
 
-The issue was found on a Lenovo laptop with the ethernet hw as below:
-00:1f.6 Ethernet controller [0200]: Intel Corporation Device [8086:550a]
-(rev 20).
+After d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family") we get
+EOPNOTSUPP for the above program.
 
-And this patch is verified (cable plug and unplug, system suspend
-and resume) on Lenovo laptops with ethernet hw: [8086:550a],
-[8086:550b], [8086:15bb], [8086:15be], [8086:1a1f], [8086:1a1c] and
-[8086:0dc7].
+Fix this by allowing NFPROTO_INET for nft_(match/target)_validate(), but also
+restrict the functions to classic iptables hooks.
 
-Fixes: 861e8086029e ("e1000e: move force SMBUS from enable ulp function to avoid PHY loss issue")
-Signed-off-by: Hui Wang <hui.wang@canonical.com>
-Acked-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Tested-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20240528-net-2024-05-28-intel-net-fixes-v1-1-dc8593d2bbc6@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Changes in v3:
+  * clarify that upstream nft will not display such configuration properly and
+    that the output was generated with a patched nft tool
+  * remove example program from commit description and link to it instead
+  * no code changes otherwise
+
+Changes in v2:
+  * restrict nft_(match/target)_validate() to classic iptables hooks
+  * rewrite example program to use unmodified libnftnl
+
+Fixes: d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family")
+Link: https://lore.kernel.org/all/Zc1PfoWN38UuFJRI@calendula/T/#mc947262582c90fec044c7a3398cc92fac7afea72 [1]
+Link: https://lore.kernel.org/all/20240220145509.53357-1-ignat@cloudflare.com/ [2]
+Reported-by: Jordan Griege <jgriege@cloudflare.com>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/e1000e/ich8lan.c |   22 ++++++++++++++++++++++
- drivers/net/ethernet/intel/e1000e/netdev.c  |   18 ------------------
- 2 files changed, 22 insertions(+), 18 deletions(-)
+ net/netfilter/nft_compat.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -1225,6 +1225,28 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000
- 	}
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -321,10 +321,20 @@ static int nft_target_validate(const str
  
- release:
-+	/* Switching PHY interface always returns MDI error
-+	 * so disable retry mechanism to avoid wasting time
-+	 */
-+	e1000e_disable_phy_retry(hw);
-+
-+	/* Force SMBus mode in PHY */
-+	ret_val = e1000_read_phy_reg_hv_locked(hw, CV_SMB_CTRL, &phy_reg);
-+	if (ret_val) {
-+		e1000e_enable_phy_retry(hw);
-+		hw->phy.ops.release(hw);
-+		goto out;
-+	}
-+	phy_reg |= CV_SMB_CTRL_FORCE_SMBUS;
-+	e1000_write_phy_reg_hv_locked(hw, CV_SMB_CTRL, phy_reg);
-+
-+	e1000e_enable_phy_retry(hw);
-+
-+	/* Force SMBus mode in MAC */
-+	mac_reg = er32(CTRL_EXT);
-+	mac_reg |= E1000_CTRL_EXT_FORCE_SMBUS;
-+	ew32(CTRL_EXT, mac_reg);
-+
- 	hw->phy.ops.release(hw);
- out:
- 	if (ret_val)
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -6623,7 +6623,6 @@ static int __e1000_shutdown(struct pci_d
- 	struct e1000_hw *hw = &adapter->hw;
- 	u32 ctrl, ctrl_ext, rctl, status, wufc;
- 	int retval = 0;
--	u16 smb_ctrl;
+ 	if (ctx->family != NFPROTO_IPV4 &&
+ 	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET &&
+ 	    ctx->family != NFPROTO_BRIDGE &&
+ 	    ctx->family != NFPROTO_ARP)
+ 		return -EOPNOTSUPP;
  
- 	/* Runtime suspend should only enable wakeup for link changes */
- 	if (runtime)
-@@ -6697,23 +6696,6 @@ static int __e1000_shutdown(struct pci_d
- 			if (retval)
- 				return retval;
- 		}
--
--		/* Force SMBUS to allow WOL */
--		/* Switching PHY interface always returns MDI error
--		 * so disable retry mechanism to avoid wasting time
--		 */
--		e1000e_disable_phy_retry(hw);
--
--		e1e_rphy(hw, CV_SMB_CTRL, &smb_ctrl);
--		smb_ctrl |= CV_SMB_CTRL_FORCE_SMBUS;
--		e1e_wphy(hw, CV_SMB_CTRL, smb_ctrl);
--
--		e1000e_enable_phy_retry(hw);
--
--		/* Force SMBus mode in MAC */
--		ctrl_ext = er32(CTRL_EXT);
--		ctrl_ext |= E1000_CTRL_EXT_FORCE_SMBUS;
--		ew32(CTRL_EXT, ctrl_ext);
- 	}
++	ret = nft_chain_validate_hooks(ctx->chain,
++				       (1 << NF_INET_PRE_ROUTING) |
++				       (1 << NF_INET_LOCAL_IN) |
++				       (1 << NF_INET_FORWARD) |
++				       (1 << NF_INET_LOCAL_OUT) |
++				       (1 << NF_INET_POST_ROUTING));
++	if (ret)
++		return ret;
++
+ 	if (nft_is_base_chain(ctx->chain)) {
+ 		const struct nft_base_chain *basechain =
+ 						nft_base_chain(ctx->chain);
+@@ -568,10 +578,20 @@ static int nft_match_validate(const stru
  
- 	/* Ensure that the appropriate bits are set in LPI_CTRL
+ 	if (ctx->family != NFPROTO_IPV4 &&
+ 	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET &&
+ 	    ctx->family != NFPROTO_BRIDGE &&
+ 	    ctx->family != NFPROTO_ARP)
+ 		return -EOPNOTSUPP;
+ 
++	ret = nft_chain_validate_hooks(ctx->chain,
++				       (1 << NF_INET_PRE_ROUTING) |
++				       (1 << NF_INET_LOCAL_IN) |
++				       (1 << NF_INET_FORWARD) |
++				       (1 << NF_INET_LOCAL_OUT) |
++				       (1 << NF_INET_POST_ROUTING));
++	if (ret)
++		return ret;
++
+ 	if (nft_is_base_chain(ctx->chain)) {
+ 		const struct nft_base_chain *basechain =
+ 						nft_base_chain(ctx->chain);
 
 
 
