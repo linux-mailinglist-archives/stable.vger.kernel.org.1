@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6276C9070E1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 772F3906F30
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AE2B1F231A0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12982284A15
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3595C441D;
-	Thu, 13 Jun 2024 12:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8806E145355;
+	Thu, 13 Jun 2024 12:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOKvFci8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huerAjB2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EF1817;
-	Thu, 13 Jun 2024 12:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BE8144D34;
+	Thu, 13 Jun 2024 12:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281904; cv=none; b=jU+1xcZBHwIW2yceqZuoVSBgPwnxvu00046PKxlLRUyKaMDNqEch4Pupa+YAAUJJNxP57A1cRsBZCBREx/8tHO8agZsK9ESbw4C9Rv6TqIdFTR/tw18Uq/G5unB7dsso3iY6Q9GvNbMgB4nRyiX8MHK7xLenllcSxYDwXtifo3Y=
+	t=1718280880; cv=none; b=fhbrXvcgbbqyCVfFhG7XSRuHsSzKEVQDi4K5OX2yK/xY+aX3esiql/r7kSLG5bi1A24kuRaOiBI//hfMlPlE5INNvJ2RPhX0JKk06F94D8mDRRkC+HrLkE+uR3E8uw/RE24SFbzYWlLAX+NHNsFbUC5H8hvjk4DgjvevweeWCZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281904; c=relaxed/simple;
-	bh=P/BtLmoyE9tP2ZFdA4qcAQX0JReo9fsJa9e2XhSRZKo=;
+	s=arc-20240116; t=1718280880; c=relaxed/simple;
+	bh=VJCpxQd7kfBtjpy90nuU3ecMEpsL6o+YDxjw3fgw98E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NwXoB16kM7PC46RUJXS1hxHQI4fbxTDXQh1podO7IVxwJKmPlTQHylyjV3apQ4m8lbbWdBHLay3LyUJQrgbscwriHtXIzdIomFVWhQpaxKUzXpXu5tttpeSx0+kMnzFdyB14ICJ9xNeEEO8rca/t4QMdx8E0DGZOM//arUWjGCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOKvFci8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 711A9C2BBFC;
-	Thu, 13 Jun 2024 12:31:43 +0000 (UTC)
+	 MIME-Version; b=Cne4Gep4U1dUMICUibYdyixFH/MgbHAlZNLy6ne1xH8Shdlxa5AvWAbyGIoQK2nyprI1jkVpE67XQHNyGstKsJ1EIb/RqWGekgZPKuGcnMwQK0OjrpnC1DEzHZjMXP/qqSw9ghtQkvi4fcRplD75wg9/BuUB9rPVCdwioP79uIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huerAjB2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02EEC2BBFC;
+	Thu, 13 Jun 2024 12:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281903;
-	bh=P/BtLmoyE9tP2ZFdA4qcAQX0JReo9fsJa9e2XhSRZKo=;
+	s=korg; t=1718280880;
+	bh=VJCpxQd7kfBtjpy90nuU3ecMEpsL6o+YDxjw3fgw98E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bOKvFci8HhXV29TXhyC/rc42d+Cj5iv7jfnsalJ64ZPupTg/ISTjv/57AKTuBMiqB
-	 gOi6b4K8yeXDMwBWoMsC95eEdUx3AoZD2+KtIDzoPtP2offLn4aPCn8U73N5ofG1TL
-	 28YH8HFL94ghmRN1hhSvi6DLNn9vIqUURK/bhfdE=
+	b=huerAjB2gt/Jk1d/rtXDnNsHFCtwVsuL5CX4D/dCNSoU351CI8BjLHANMSdCKlYuW
+	 tu22rdwMIUK50J+E26mIOMhL5HR4UfAl7UdbRuaKcmgZzVJgVx7HhsiZh2Bt9aWUM6
+	 OJtC67qDpF+Oes/BsAXAEJIkWyQL2Upd2ekzX/Bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Guixiong Wei <weiguixiong@bytedance.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 096/402] sh: kprobes: Merge arch_copy_kprobe() into arch_prepare_kprobe()
+Subject: [PATCH 5.10 035/317] x86/boot: Ignore relocations in .notes sections in walk_relocs() too
 Date: Thu, 13 Jun 2024 13:30:53 +0200
-Message-ID: <20240613113305.884272255@linuxfoundation.org>
+Message-ID: <20240613113248.901214976@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Guixiong Wei <weiguixiong@bytedance.com>
 
-[ Upstream commit 1422ae080b66134fe192082d9b721ab7bd93fcc5 ]
+[ Upstream commit 76e9762d66373354b45c33b60e9a53ef2a3c5ff2 ]
 
-arch/sh/kernel/kprobes.c:52:16: warning: no previous prototype for 'arch_copy_kprobe' [-Wmissing-prototypes]
+Commit:
 
-Although SH kprobes support was only merged in v2.6.28, it missed the
-earlier removal of the arch_copy_kprobe() callback in v2.6.15.
+  aaa8736370db ("x86, relocs: Ignore relocations in .notes section")
 
-Based on the powerpc part of commit 49a2a1b83ba6fa40 ("[PATCH] kprobes:
-changed from using spinlock to mutex").
+... only started ignoring the .notes sections in print_absolute_relocs(),
+but the same logic should also by applied in walk_relocs() to avoid
+such relocations.
 
-Fixes: d39f5450146ff39f ("sh: Add kprobes support.")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/717d47a19689cc944fae6e981a1ad7cae1642c89.1709326528.git.geert+renesas@glider.be
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+[ mingo: Fixed various typos in the changelog, removed extra curly braces from the code. ]
+
+Fixes: aaa8736370db ("x86, relocs: Ignore relocations in .notes section")
+Fixes: 5ead97c84fa7 ("xen: Core Xen implementation")
+Fixes: da1a679cde9b ("Add /sys/kernel/notes")
+Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20240317150547.24910-1-weiguixiong@bytedance.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/kernel/kprobes.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ arch/x86/tools/relocs.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/sh/kernel/kprobes.c b/arch/sh/kernel/kprobes.c
-index 1c7f358ef0be1..5db45517bb1e6 100644
---- a/arch/sh/kernel/kprobes.c
-+++ b/arch/sh/kernel/kprobes.c
-@@ -44,17 +44,12 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
- 	if (OPCODE_RTE(opcode))
- 		return -EFAULT;	/* Bad breakpoint */
- 
-+	memcpy(p->ainsn.insn, p->addr, MAX_INSN_SIZE * sizeof(kprobe_opcode_t));
- 	p->opcode = opcode;
- 
- 	return 0;
- }
- 
--void __kprobes arch_copy_kprobe(struct kprobe *p)
--{
--	memcpy(p->ainsn.insn, p->addr, MAX_INSN_SIZE * sizeof(kprobe_opcode_t));
--	p->opcode = *p->addr;
--}
--
- void __kprobes arch_arm_kprobe(struct kprobe *p)
- {
- 	*p->addr = BREAKPOINT_INSTRUCTION;
+diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
+index 0043fd374a62f..f9ec998b7e946 100644
+--- a/arch/x86/tools/relocs.c
++++ b/arch/x86/tools/relocs.c
+@@ -689,6 +689,15 @@ static void walk_relocs(int (*process)(struct section *sec, Elf_Rel *rel,
+ 		if (!(sec_applies->shdr.sh_flags & SHF_ALLOC)) {
+ 			continue;
+ 		}
++
++		/*
++		 * Do not perform relocations in .notes sections; any
++		 * values there are meant for pre-boot consumption (e.g.
++		 * startup_xen).
++		 */
++		if (sec_applies->shdr.sh_type == SHT_NOTE)
++			continue;
++
+ 		sh_symtab = sec_symtab->symtab;
+ 		sym_strtab = sec_symtab->link->strtab;
+ 		for (j = 0; j < sec->shdr.sh_size/sizeof(Elf_Rel); j++) {
 -- 
 2.43.0
 
