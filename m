@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-50909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C48906D62
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2F3906B49
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:39:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBF631C231C4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CBF81F2134A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FE81474B5;
-	Thu, 13 Jun 2024 11:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A694142E99;
+	Thu, 13 Jun 2024 11:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0uEL94M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5vyv0Tx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036F9145336;
-	Thu, 13 Jun 2024 11:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4DC13DDD8;
+	Thu, 13 Jun 2024 11:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279744; cv=none; b=PxdoLWZxe0D4Q87T/4doFwtsKmBeqEyAIvUes4wKO4MRS2IV+EBfEU3qM1cROCwSCWiGVLZJfXHG8XXVaZoSxk3uJ2hazkKXFv8+x17H5/ZVwz0h3mL/yO2aLRltG5tOzm5bQL+o25NOhvVa9giwfVKwmEwoXEA/NnsgMuyFNdU=
+	t=1718278746; cv=none; b=Wi2AOouUu3b87Wy4NFJwrXJQvVYA3lMwmsRnnKQTJz8GAg7PtbuknQBCPYRLG1fHSljqDx88J+Uo9m12QoKNwMRHeySFyu/c889rN5I1t70vg0NoC2oCwGxZWuOMFG4Ua0/ae8G6ro8aEtWXgcaAnJAoRvQcFnk9dPvrYrybzcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279744; c=relaxed/simple;
-	bh=YK4/BDmV5sBAMmJQVQmqtCCMIF1IbNJ8mcwm4SS4k3o=;
+	s=arc-20240116; t=1718278746; c=relaxed/simple;
+	bh=X1v/SMK/l9EYklRxXEUu6pzDRUOy8B8GoaXC6l5OEzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2k7wFPPykENpjLCp2LGcFwAXshujl8u96i1VEEGLgB/GTpB9I6OYBepOrN05aBrAzbYIautK6VodmlutZVvzqTKEXaeeECFcTv2wppyZSTlqchhOas7aDxy7Go1tRsUrRhKibTk+DdQinenjH2yNgxFTW6/TjHSea9dAhlpyKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0uEL94M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4A1C2BBFC;
-	Thu, 13 Jun 2024 11:55:43 +0000 (UTC)
+	 MIME-Version; b=nu/H5zcnFg8boyxDh9tFH2eAoSKdI2GtxZjYWIdNGu0JX60RcCNlYegBVOW9qBJ3Gu3XUG6bc221yDy2crSrVSbcXyljeAjXNhs2mhGa8+dHIh2VN7PvZOhGLLoUjWTZ8xc3sCvvGDi5+Ml6NwWJF7/nP8wC/lhYD8C1iB4lIe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5vyv0Tx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72EBFC4AF50;
+	Thu, 13 Jun 2024 11:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279743;
-	bh=YK4/BDmV5sBAMmJQVQmqtCCMIF1IbNJ8mcwm4SS4k3o=;
+	s=korg; t=1718278745;
+	bh=X1v/SMK/l9EYklRxXEUu6pzDRUOy8B8GoaXC6l5OEzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0uEL94MgEeFaWlE266lYDmgG1MZeokxuxrEm5C1MXPBrwYw7UWYVTHZXGUSUe1Um
-	 p8zXJSNMwKcVc52q8iYdGgDTGuvASioKn09kk14+QZV82QEHyDYOqe8qTUoWYTwS8k
-	 clZocWhFgQJ+Kc0FfyIeQJZJfPk6aPeU3wxj/o6M=
+	b=l5vyv0Txg1uKgIMB+W+vduWCsg1AqmoKImC+eor/anvVXPwrorvOGV6jD3ybtyTIY
+	 /wpV6PjsgP736TtZyF8QfpVWJa/YpWccw1mTXnBqPGcTqGEysXYlJoN/vUum47Cu4l
+	 LdATJ4FHi8YO+bMxdrT4GJzF8IcGwraQoycc76Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	"Bai, Shuangpeng" <sjb7183@psu.edu>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 006/202] nilfs2: fix unexpected freezing of nilfs_segctor_sync()
+	Stan Johnson <userm57@yahoo.com>,
+	Finn Thain <fthain@telegraphics.com.au>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 056/213] m68k/mac: Use 030 reset method on SE/30
 Date: Thu, 13 Jun 2024 13:31:44 +0200
-Message-ID: <20240613113228.006636494@linuxfoundation.org>
+Message-ID: <20240613113230.170120446@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Finn Thain <fthain@telegraphics.com.au>
 
-commit 936184eadd82906992ff1f5ab3aada70cce44cee upstream.
+[ Upstream commit 9c0e91f6b701dce6902408d50c4df9cebe4744f5 ]
 
-A potential and reproducible race issue has been identified where
-nilfs_segctor_sync() would block even after the log writer thread writes a
-checkpoint, unless there is an interrupt or other trigger to resume log
-writing.
+The comment says that calling the ROM routine doesn't work. But testing
+shows that the 68030 fall-back reset method does work, so just use that.
 
-This turned out to be because, depending on the execution timing of the
-log writer thread running in parallel, the log writer thread may skip
-responding to nilfs_segctor_sync(), which causes a call to schedule()
-waiting for completion within nilfs_segctor_sync() to lose the opportunity
-to wake up.
-
-The reason why waking up the task waiting in nilfs_segctor_sync() may be
-skipped is that updating the request generation issued using a shared
-sequence counter and adding an wait queue entry to the request wait queue
-to the log writer, are not done atomically.  There is a possibility that
-log writing and request completion notification by nilfs_segctor_wakeup()
-may occur between the two operations, and in that case, the wait queue
-entry is not yet visible to nilfs_segctor_wakeup() and the wake-up of
-nilfs_segctor_sync() will be carried over until the next request occurs.
-
-Fix this issue by performing these two operations simultaneously within
-the lock section of sc_state_lock.  Also, following the memory barrier
-guidelines for event waiting loops, move the call to set_current_state()
-in the same location into the event waiting loop to ensure that a memory
-barrier is inserted just before the event condition determination.
-
-Link: https://lkml.kernel.org/r/20240520132621.4054-3-konishi.ryusuke@gmail.com
-Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Cc: "Bai, Shuangpeng" <sjb7183@psu.edu>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Stan Johnson <userm57@yahoo.com>
+Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Stable-dep-of: 265a3b322df9 ("m68k: mac: Fix reboot hang on Mac IIci")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ arch/m68k/mac/misc.c | 18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -2207,19 +2207,28 @@ static int nilfs_segctor_sync(struct nil
- 	struct nilfs_segctor_wait_request wait_req;
- 	int err = 0;
+diff --git a/arch/m68k/mac/misc.c b/arch/m68k/mac/misc.c
+index 1b083c500b9a1..3848ff15c59f7 100644
+--- a/arch/m68k/mac/misc.c
++++ b/arch/m68k/mac/misc.c
+@@ -462,9 +462,8 @@ void mac_poweroff(void)
  
--	spin_lock(&sci->sc_state_lock);
- 	init_wait(&wait_req.wq);
- 	wait_req.err = 0;
- 	atomic_set(&wait_req.done, 0);
-+	init_waitqueue_entry(&wait_req.wq, current);
-+
-+	/*
-+	 * To prevent a race issue where completion notifications from the
-+	 * log writer thread are missed, increment the request sequence count
-+	 * "sc_seq_request" and insert a wait queue entry using the current
-+	 * sequence number into the "sc_wait_request" queue at the same time
-+	 * within the lock section of "sc_state_lock".
-+	 */
-+	spin_lock(&sci->sc_state_lock);
- 	wait_req.seq = ++sci->sc_seq_request;
-+	add_wait_queue(&sci->sc_wait_request, &wait_req.wq);
- 	spin_unlock(&sci->sc_state_lock);
+ void mac_reset(void)
+ {
+-	if (macintosh_config->adb_type == MAC_ADB_II) {
+-		unsigned long flags;
+-
++	if (macintosh_config->adb_type == MAC_ADB_II &&
++	    macintosh_config->ident != MAC_MODEL_SE30) {
+ 		/* need ROMBASE in booter */
+ 		/* indeed, plus need to MAP THE ROM !! */
  
--	init_waitqueue_entry(&wait_req.wq, current);
--	add_wait_queue(&sci->sc_wait_request, &wait_req.wq);
--	set_current_state(TASK_INTERRUPTIBLE);
- 	wake_up(&sci->sc_wait_daemon);
+@@ -474,17 +473,8 @@ void mac_reset(void)
+ 		/* works on some */
+ 		rom_reset = (void *) (mac_bi_data.rombase + 0xa);
  
- 	for (;;) {
-+		set_current_state(TASK_INTERRUPTIBLE);
-+
- 		if (atomic_read(&wait_req.done)) {
- 			err = wait_req.err;
- 			break;
+-		if (macintosh_config->ident == MAC_MODEL_SE30) {
+-			/*
+-			 * MSch: Machines known to crash on ROM reset ...
+-			 */
+-		} else {
+-			local_irq_save(flags);
+-
+-			rom_reset();
+-
+-			local_irq_restore(flags);
+-		}
++		local_irq_disable();
++		rom_reset();
+ #ifdef CONFIG_ADB_CUDA
+ 	} else if (macintosh_config->adb_type == MAC_ADB_EGRET ||
+ 	           macintosh_config->adb_type == MAC_ADB_CUDA) {
+-- 
+2.43.0
+
 
 
 
