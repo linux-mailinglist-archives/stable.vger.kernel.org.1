@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9319071ED
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4090D906E3A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 578241F28152
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E27EA1F2147A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AA9143C62;
-	Thu, 13 Jun 2024 12:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6791465AB;
+	Thu, 13 Jun 2024 12:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXjZSR4h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CD9EelDa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F7B1420C6;
-	Thu, 13 Jun 2024 12:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3885D146A6E;
+	Thu, 13 Jun 2024 12:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282504; cv=none; b=kgIbOd5BxLieRSQtIztLEDVZnXNGwvsvalkcPuvU5zzb1akI4KPTHTYmD6vxdG7hUzhP0RgmGYb1rhpceqHQbni0zVAfVdHcg9f+89Dz4HNPH3lhiJKLBwqvGqKMtMvLjj31MZ3HA74qLpLNaKlT0o3+3Ry/lWvNNFUMrpTH7+A=
+	t=1718280243; cv=none; b=iN8aFTJ3ylHUtdnqOXvgndnmwaOOJnGHTN6dAbJpzl0k35n8d/n8f5eZQKMH0UlPwpSGUuXqoCLeCZN/mJvIksPVmwB5tpcF/tiPpJi2M7ibzm+uAwB/MCIGaijN1Uiob+AX7K2rT8xxVCYdoEaKFf5WnWl9WodA/fqhwHEcxU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282504; c=relaxed/simple;
-	bh=Z+wtIxbZxVfZmeMQgBWVsqbnzPv76GeN+k0UKqFWmCA=;
+	s=arc-20240116; t=1718280243; c=relaxed/simple;
+	bh=phXDbTSIanyiJLqz2FHpuTkxgAfaRElPS3AOdSfpzoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6pv4vToVOaEBXkqWns/64INnXASyRkBp/QsL9IhQ2wPK/dgzWRp0ew+s5I0SU+713uO3Ot0rzligFmufBE+AA86MAlHdeqHPMmZYA2Ib5A2jkwWHTXIvnEmZq1eRrXruFx1S1gZanzJJRRiAcH8q9K+J7H7ACXhRpGdVKTd+NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXjZSR4h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA834C2BBFC;
-	Thu, 13 Jun 2024 12:41:43 +0000 (UTC)
+	 MIME-Version; b=cSqY+5gYIEUJlmglHLcgTDavIuyh4F/IPkCG34+WBRS3xlkYEkbMC55DIxNIZISmbTpn7FOkNo/GqLdarOsIIFiOcFgMQ3PMxj0YTAm0/sfSxkAL29fDVCLuMw+TLaeI5gukiGNvutlo/rRATgzPsuvOt1EtmsJeuS4BxheXr44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CD9EelDa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61382C2BBFC;
+	Thu, 13 Jun 2024 12:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282504;
-	bh=Z+wtIxbZxVfZmeMQgBWVsqbnzPv76GeN+k0UKqFWmCA=;
+	s=korg; t=1718280242;
+	bh=phXDbTSIanyiJLqz2FHpuTkxgAfaRElPS3AOdSfpzoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bXjZSR4hoRMCXfwQ5Rxawo/O76L9TBxyajeV4hnwAjFXDfMNCjfxFNV50tARnO1TF
-	 TCG2EUNJfhvuTOb7jXIJOxUMPK6nw3/aIdU7aKE+aAlWQkF1T1h5EkWytf6KhPwOFN
-	 2lM/sQ7gEe7tmh7gqJDMTxxs7E3e79WZYjrMejEM=
+	b=CD9EelDavC8MP9SMw3wGLPm5NvdK7Y5rN414X0jpAtotrFBd81CzxfgXv5H3X1T7e
+	 PZiuFhYF9AfU04CxdNqZHjfXndk7fUGqmj1VEpwf/isd0sKLWNOq0G71mBmJKl+agj
+	 28PgH6XgW6mYFTkQE1lWNV9KhQtRtCe5U8gH4fcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yewon Choi <woni9911@gmail.com>,
-	"Dae R. Jeong" <threeearcat@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 300/402] tls: fix missing memory barrier in tls_init
+Subject: [PATCH 5.4 159/202] kconfig: fix comparison to constant symbols, m, n
 Date: Thu, 13 Jun 2024 13:34:17 +0200
-Message-ID: <20240613113313.846446090@linuxfoundation.org>
+Message-ID: <20240613113233.883651210@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +61,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dae R. Jeong <threeearcat@gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 91e61dd7a0af660408e87372d8330ceb218be302 ]
+[ Upstream commit aabdc960a283ba78086b0bf66ee74326f49e218e ]
 
-In tls_init(), a write memory barrier is missing, and store-store
-reordering may cause NULL dereference in tls_{setsockopt,getsockopt}.
+Currently, comparisons to 'm' or 'n' result in incorrect output.
 
-CPU0                               CPU1
------                              -----
-// In tls_init()
-// In tls_ctx_create()
-ctx = kzalloc()
-ctx->sk_proto = READ_ONCE(sk->sk_prot) -(1)
+[Test Code]
 
-// In update_sk_prot()
-WRITE_ONCE(sk->sk_prot, tls_prots)     -(2)
+    config MODULES
+            def_bool y
+            modules
 
-                                   // In sock_common_setsockopt()
-                                   READ_ONCE(sk->sk_prot)->setsockopt()
+    config A
+            def_tristate m
 
-                                   // In tls_{setsockopt,getsockopt}()
-                                   ctx->sk_proto->setsockopt()    -(3)
+    config B
+            def_bool A > n
 
-In the above scenario, when (1) and (2) are reordered, (3) can observe
-the NULL value of ctx->sk_proto, causing NULL dereference.
+CONFIG_B is unset, while CONFIG_B=y is expected.
 
-To fix it, we rely on rcu_assign_pointer() which implies the release
-barrier semantic. By moving rcu_assign_pointer() after ctx->sk_proto is
-initialized, we can ensure that ctx->sk_proto are visible when
-changing sk->sk_prot.
+The reason for the issue is because Kconfig compares the tristate values
+as strings.
 
-Fixes: d5bee7374b68 ("net/tls: Annotate access to sk_prot with READ_ONCE/WRITE_ONCE")
-Signed-off-by: Yewon Choi <woni9911@gmail.com>
-Signed-off-by: Dae R. Jeong <threeearcat@gmail.com>
-Link: https://lore.kernel.org/netdev/ZU4OJG56g2V9z_H7@dragonet/T/
-Link: https://lore.kernel.org/r/Zkx4vjSFp0mfpjQ2@libra05
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Currently, the .type fields in the constant symbol definitions,
+symbol_{yes,mod,no} are unspecified, i.e., S_UNKNOWN.
+
+When expr_calc_value() evaluates 'A > n', it checks the types of 'A' and
+'n' to determine how to compare them.
+
+The left-hand side, 'A', is a tristate symbol with a value of 'm', which
+corresponds to a numeric value of 1. (Internally, 'y', 'm', and 'n' are
+represented as 2, 1, and 0, respectively.)
+
+The right-hand side, 'n', has an unknown type, so it is treated as the
+string "n" during the comparison.
+
+expr_calc_value() compares two values numerically only when both can
+have numeric values. Otherwise, they are compared as strings.
+
+    symbol    numeric value    ASCII code
+    -------------------------------------
+      y           2             0x79
+      m           1             0x6d
+      n           0             0x6e
+
+'m' is greater than 'n' if compared numerically (since 1 is greater
+than 0), but smaller than 'n' if compared as strings (since the ASCII
+code 0x6d is smaller than 0x6e).
+
+Specifying .type=S_TRISTATE for symbol_{yes,mod,no} fixes the above
+test code.
+
+Doing so, however, would cause a regression to the following test code.
+
+[Test Code 2]
+
+    config MODULES
+            def_bool n
+            modules
+
+    config A
+            def_tristate n
+
+    config B
+            def_bool A = m
+
+You would get CONFIG_B=y, while CONFIG_B should not be set.
+
+The reason is because sym_get_string_value() turns 'm' into 'n' when the
+module feature is disabled. Consequently, expr_calc_value() evaluates
+'A = n' instead of 'A = m'. This oddity has been hidden because the type
+of 'm' was previously S_UNKNOWN instead of S_TRISTATE.
+
+sym_get_string_value() should not tweak the string because the tristate
+value has already been correctly calculated. There is no reason to
+return the string "n" where its tristate value is mod.
+
+Fixes: 31847b67bec0 ("kconfig: allow use of relations other than (in)equality")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_main.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ scripts/kconfig/symbol.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
-index 79ea1ab34570f..4a3bf8528da7c 100644
---- a/net/tls/tls_main.c
-+++ b/net/tls/tls_main.c
-@@ -636,9 +636,17 @@ struct tls_context *tls_ctx_create(struct sock *sk)
- 		return NULL;
+diff --git a/scripts/kconfig/symbol.c b/scripts/kconfig/symbol.c
+index 342fefe5dba40..1e82838771003 100644
+--- a/scripts/kconfig/symbol.c
++++ b/scripts/kconfig/symbol.c
+@@ -13,14 +13,17 @@
  
- 	mutex_init(&ctx->tx_lock);
--	rcu_assign_pointer(icsk->icsk_ulp_data, ctx);
- 	ctx->sk_proto = READ_ONCE(sk->sk_prot);
- 	ctx->sk = sk;
-+	/* Release semantic of rcu_assign_pointer() ensures that
-+	 * ctx->sk_proto is visible before changing sk->sk_prot in
-+	 * update_sk_prot(), and prevents reading uninitialized value in
-+	 * tls_{getsockopt, setsockopt}. Note that we do not need a
-+	 * read barrier in tls_{getsockopt,setsockopt} as there is an
-+	 * address dependency between sk->sk_proto->{getsockopt,setsockopt}
-+	 * and ctx->sk_proto.
-+	 */
-+	rcu_assign_pointer(icsk->icsk_ulp_data, ctx);
- 	return ctx;
- }
- 
+ struct symbol symbol_yes = {
+ 	.name = "y",
++	.type = S_TRISTATE,
+ 	.curr = { "y", yes },
+ 	.flags = SYMBOL_CONST|SYMBOL_VALID,
+ }, symbol_mod = {
+ 	.name = "m",
++	.type = S_TRISTATE,
+ 	.curr = { "m", mod },
+ 	.flags = SYMBOL_CONST|SYMBOL_VALID,
+ }, symbol_no = {
+ 	.name = "n",
++	.type = S_TRISTATE,
+ 	.curr = { "n", no },
+ 	.flags = SYMBOL_CONST|SYMBOL_VALID,
+ }, symbol_empty = {
+@@ -771,8 +774,7 @@ const char *sym_get_string_value(struct symbol *sym)
+ 		case no:
+ 			return "n";
+ 		case mod:
+-			sym_calc_value(modules_sym);
+-			return (modules_sym->curr.tri == no) ? "n" : "m";
++			return "m";
+ 		case yes:
+ 			return "y";
+ 		}
 -- 
 2.43.0
 
