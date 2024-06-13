@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-51307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C72A7906F41
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9558E907123
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 701DE1F21157
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C459282C92
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8ED91442F6;
-	Thu, 13 Jun 2024 12:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63AB2F5A;
+	Thu, 13 Jun 2024 12:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DETFQekl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yl/EIN80"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51D81420C6;
-	Thu, 13 Jun 2024 12:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7484B384;
+	Thu, 13 Jun 2024 12:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280912; cv=none; b=tbgclepyQkosZpw4EKrZzpEdrrKqfIOaJr9BQWKPqjBUmM6oqGMeu+p+p77CeknCkpecWR7bqSeDI9Pxsu4mcZNQHsTp3gk3Yt2NZ/BOO+EmVYu1VpSKQcXFO/wBP8/4HRuLePlPa8vUtwYQqYSyd/jfe2rOFrfmJXdAL0QcrVQ=
+	t=1718282030; cv=none; b=WkmWzo7EBcXzz0MRCdXODFgQzMQHS+KmT4qr2AWyOn6bH4XU9lJ4u6xowR18o3APhlVFTuHGy7TzUlMgj3oncyaZDGibqfEYah0zemvpnMMw+mlX748AVYUGkfLyP0aZMv5Olii9nTDfpnQ1SOu/82iH+s3pzXkK4NJ6MXupE4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280912; c=relaxed/simple;
-	bh=UjjKx8PftQwDD+vaN8jKq/5vidBOjMYWwXhlL0ayTsg=;
+	s=arc-20240116; t=1718282030; c=relaxed/simple;
+	bh=0GE9WSamdGCHsfBpNMEeXEbDOPGYkyUcgnmtfr/tbbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EOtForAWtVNCYqAqx6Ldr3QRCm5nl07sj7PTr3T0PeZRVQ/hpLhrXREdVhFkL/gWPuL/tbx+ohncXOEBWoKYDcu7BupU10eFriU6GujfIV/wlTeHxSMgKzZY2uPtRDo2kYknEu4gq5DVeNdGAc4sO68IoQ5eIqLLaHprGHLnxUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DETFQekl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC5BC4AF1A;
-	Thu, 13 Jun 2024 12:15:12 +0000 (UTC)
+	 MIME-Version; b=NZ6zyjfFZ/HymREQ80oMjJRdmOouxEkNbf1RIF1fuFxXSvgApOx/uWPUyx2bA7ZbtqkvMpKSzO2Iz3c7WsTTUbK1q1tOuguLv1UDtosPJyfHrMgLRvTsaqUUdXwo4JGNnXsKydguyNTXPlii/7ue/mX+A2HbO98gF0oZk6QHUQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yl/EIN80; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FBAC2BBFC;
+	Thu, 13 Jun 2024 12:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280912;
-	bh=UjjKx8PftQwDD+vaN8jKq/5vidBOjMYWwXhlL0ayTsg=;
+	s=korg; t=1718282029;
+	bh=0GE9WSamdGCHsfBpNMEeXEbDOPGYkyUcgnmtfr/tbbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DETFQeklYCUYwTK3v8qOHXdwdDu9HsqbkFycTJBr75DDGVt49CaMTbFBnAufdjTcD
-	 42RfHY7p+LZS8VASwICKG3cXOvbvT2AYTrvNFL9NQhOhVm0dH8SBoxFCq2qgGI7CCs
-	 l1ctQmg/+FUhDxAdrLTbnOyVWVceJi0IPIIhLdyQ=
+	b=Yl/EIN80CK8Vpg1z/n1SkaC0yLeOgvInlZeYvmItTAnHrYA6wq/ObZHyjcNsW9MTJ
+	 vZ2WcJW0kV40QHJ+iQxeqLiz+Z+buyykkt0DJ1ZOJCmC4oEim9TSGPgSCvPTqXl8z4
+	 wWk1LEQo4PHN7SYBzTrYTLtou3xcd/jwBU7SkITs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Fabio Estevam <festevam@denx.de>,
+	Rob Herring <robh@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 077/317] net: usb: sr9700: stop lying about skb->truesize
+Subject: [PATCH 5.15 138/402] media: dt-bindings: ovti,ov2680: Fix the power supply names
 Date: Thu, 13 Jun 2024 13:31:35 +0200
-Message-ID: <20240613113250.528001736@linuxfoundation.org>
+Message-ID: <20240613113307.520369860@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 05417aa9c0c038da2464a0c504b9d4f99814a23b ]
+[ Upstream commit e2f6ea61b6f3e4ebbb7dff857eea6220c18cd17b ]
 
-Some usb drivers set small skb->truesize and break
-core networking stacks.
+The original .txt bindings had the OV2680 power supply names correct,
+but the transition from .txt to yaml spelled them incorrectly.
 
-In this patch, I removed one of the skb->truesize override.
+Fix the OV2680 power supply names as the original .txt bindings
+as these are the names used by the OV2680 driver and in devicetree.
 
-I also replaced one skb_clone() by an allocation of a fresh
-and small skb, to get minimally sized skbs, like we did
-in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
-in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
-stop lying about skb->truesize")
-
-Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240506143939.3673865-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 57226cd8c8bf ("media: dt-bindings: ov2680: convert bindings to yaml")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/sr9700.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ .../bindings/media/i2c/ovti,ov2680.yaml        | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
-index 811c8751308c6..3fac642bec772 100644
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -418,19 +418,15 @@ static int sr9700_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			skb_pull(skb, 3);
- 			skb->len = len;
- 			skb_set_tail_pointer(skb, len);
--			skb->truesize = len + sizeof(struct sk_buff);
- 			return 2;
- 		}
+diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
+index cf456f8d9ddcb..c87677f5e2a25 100644
+--- a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
+@@ -37,15 +37,15 @@ properties:
+       active low.
+     maxItems: 1
  
--		/* skb_clone is used for address align */
--		sr_skb = skb_clone(skb, GFP_ATOMIC);
-+		sr_skb = netdev_alloc_skb_ip_align(dev->net, len);
- 		if (!sr_skb)
- 			return 0;
+-  dovdd-supply:
++  DOVDD-supply:
+     description:
+       Definition of the regulator used as interface power supply.
  
--		sr_skb->len = len;
--		sr_skb->data = skb->data + 3;
--		skb_set_tail_pointer(sr_skb, len);
--		sr_skb->truesize = len + sizeof(struct sk_buff);
-+		skb_put(sr_skb, len);
-+		memcpy(sr_skb->data, skb->data + 3, len);
- 		usbnet_skb_return(dev, sr_skb);
+-  avdd-supply:
++  AVDD-supply:
+     description:
+       Definition of the regulator used as analog power supply.
  
- 		skb_pull(skb, len + SR_RX_OVERHEAD);
+-  dvdd-supply:
++  DVDD-supply:
+     description:
+       Definition of the regulator used as digital power supply.
+ 
+@@ -59,9 +59,9 @@ required:
+   - reg
+   - clocks
+   - clock-names
+-  - dovdd-supply
+-  - avdd-supply
+-  - dvdd-supply
++  - DOVDD-supply
++  - AVDD-supply
++  - DVDD-supply
+   - reset-gpios
+   - port
+ 
+@@ -82,9 +82,9 @@ examples:
+                 clock-names = "xvclk";
+                 reset-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
+ 
+-                dovdd-supply = <&sw2_reg>;
+-                dvdd-supply = <&sw2_reg>;
+-                avdd-supply = <&reg_peri_3p15v>;
++                DOVDD-supply = <&sw2_reg>;
++                DVDD-supply = <&sw2_reg>;
++                AVDD-supply = <&reg_peri_3p15v>;
+ 
+                 port {
+                         ov2680_to_mipi: endpoint {
 -- 
 2.43.0
 
