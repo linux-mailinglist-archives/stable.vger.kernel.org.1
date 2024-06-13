@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-51643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1490A9070DF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03330906F77
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:20:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29B651C23E78
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FA8FB293A2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CAB1E49B;
-	Thu, 13 Jun 2024 12:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB3F144D36;
+	Thu, 13 Jun 2024 12:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ls3sRJ0/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddWhUrJr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121F220ED;
-	Thu, 13 Jun 2024 12:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898CF1448C9;
+	Thu, 13 Jun 2024 12:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281898; cv=none; b=sK/7A5d6XioW4Y98DuZ62IQuKylsJWAC98rPxhtT+B3F2F88LG2vhWOSnyBHiZjb0oU2BeTjud3gOjuLetoSTE9crOhVA318GMHxqEdobOLYf7WAGYFvRoXgWqlY+uY7YBbhYUQ7duKfjSb5aVkbduIiRnEJfxJIH4pXYmMXcpM=
+	t=1718280865; cv=none; b=Q3E23uCnxfG+oYdHmgbzAzpnb9nywO3AN57uqt90Qiinj/v0GRM8IpBpLNWzseq926nOjw8QdrKZ6kWEPdW7CO4WMkI9DsGV+fh0+MxQR7I1ubffXfp3SVsgiYpd46dh04HJmXt19yBwyyklTpT9KD7lxKnlB6s2f7+4Cq5qOSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281898; c=relaxed/simple;
-	bh=91N6jZUmVdzMedaS5VKsEobmXo9cHnOD4bY2e0JLfzA=;
+	s=arc-20240116; t=1718280865; c=relaxed/simple;
+	bh=kmFtlFkOy+HIp89Z1rLtUu4Yhoj9LRepE6yAIwmImaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sOalD5EXGbKMGoC97Mv2nS+1elN41Bk49mbfbWbT56npli/r7T51iKmg498+5GsDgkEGKJ1VRFW1shkC2uBSVDB9T6BT9xeRqalQKEU7VjViOvA2fZwgVlhLm2Vl0Izstii6RwZ51SfSZPyxTPvdjzviT6FEB3AGzcpZbnN2Cro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ls3sRJ0/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900EDC2BBFC;
-	Thu, 13 Jun 2024 12:31:37 +0000 (UTC)
+	 MIME-Version; b=nKtpfGcynv08HQHa1G6lDyAh6XbkvbmAD6r8DhbHqRvKapMC/aJ+HBb5oTZMPReRk/DNfJxvWiG6RRbtTSbRv1jUy493XIoNaKX+9OoDWHmMlpVJ+Hl/Ig1xMtfuyKnZMM149EgTR61pROTnNjodRZ0beKTZeQkkkegbh4aHqWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddWhUrJr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C6CC2BBFC;
+	Thu, 13 Jun 2024 12:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281898;
-	bh=91N6jZUmVdzMedaS5VKsEobmXo9cHnOD4bY2e0JLfzA=;
+	s=korg; t=1718280865;
+	bh=kmFtlFkOy+HIp89Z1rLtUu4Yhoj9LRepE6yAIwmImaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ls3sRJ0/hty5W6ZJ86fhP86UyMbKVbRAC4RvYsgoXbszXbN3rN3PXLbL+LSBazLDY
-	 EUnRSLafHibKtrVVe50m2If6wQ8CoAMMxOvYxmEFRaLVcimaE9BOiz7Oy4KUjn4+4z
-	 ofBqf76R0f+/+kmAXDGruVMhI88q2z5mmGziweYc=
+	b=ddWhUrJrCIGXod/ujAGvVQI59ZTVmvCxnbre/bBsBiMtXgbcwXSCBVRh0mQxeWhq5
+	 rxa8Fxw/aEBW8FgKCn0+gEDe9ueI4c1fnkPHmvz+qCPAX0MOAnBvjppw33SecDdsuE
+	 FrIN0ax2YbIBtkjbDF9k9olZSnN4kK1yNUaKgCQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Christian Lamparter <chunkeey@gmail.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	syzbot+0ae4804973be759fa420@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 094/402] wifi: carl9170: add a proper sanity check for endpoints
+	Nigel Croxon <ncroxon@redhat.com>
+Subject: [PATCH 5.10 033/317] md: fix resync softlockup when bitmap size is less than array size
 Date: Thu, 13 Jun 2024 13:30:51 +0200
-Message-ID: <20240613113305.806014958@linuxfoundation.org>
+Message-ID: <20240613113248.823521324@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit b6dd09b3dac89b45d1ea3e3bd035a3859c0369a0 ]
+[ Upstream commit f0e729af2eb6bee9eb58c4df1087f14ebaefe26b ]
 
-Syzkaller reports [1] hitting a warning which is caused by presence
-of a wrong endpoint type at the URB sumbitting stage. While there
-was a check for a specific 4th endpoint, since it can switch types
-between bulk and interrupt, other endpoints are trusted implicitly.
-Similar warning is triggered in a couple of other syzbot issues [2].
+Is is reported that for dm-raid10, lvextend + lvchange --syncaction will
+trigger following softlockup:
 
-Fix the issue by doing a comprehensive check of all endpoints
-taking into account difference between high- and full-speed
-configuration.
-
-[1] Syzkaller report:
-...
-WARNING: CPU: 0 PID: 4721 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-...
+kernel:watchdog: BUG: soft lockup - CPU#3 stuck for 26s! [mdX_resync:6976]
+CPU: 7 PID: 3588 Comm: mdX_resync Kdump: loaded Not tainted 6.9.0-rc4-next-20240419 #1
+RIP: 0010:_raw_spin_unlock_irq+0x13/0x30
 Call Trace:
  <TASK>
- carl9170_usb_send_rx_irq_urb+0x273/0x340 drivers/net/wireless/ath/carl9170/usb.c:504
- carl9170_usb_init_device drivers/net/wireless/ath/carl9170/usb.c:939 [inline]
- carl9170_usb_firmware_finish drivers/net/wireless/ath/carl9170/usb.c:999 [inline]
- carl9170_usb_firmware_step2+0x175/0x240 drivers/net/wireless/ath/carl9170/usb.c:1028
- request_firmware_work_func+0x130/0x240 drivers/base/firmware_loader/main.c:1107
- process_one_work+0x9bf/0x1710 kernel/workqueue.c:2289
- worker_thread+0x669/0x1090 kernel/workqueue.c:2436
- kthread+0x2e8/0x3a0 kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
- </TASK>
+ md_bitmap_start_sync+0x6b/0xf0
+ raid10_sync_request+0x25c/0x1b40 [raid10]
+ md_do_sync+0x64b/0x1020
+ md_thread+0xa7/0x170
+ kthread+0xcf/0x100
+ ret_from_fork+0x30/0x50
+ ret_from_fork_asm+0x1a/0x30
 
-[2] Related syzkaller crashes:
-Link: https://syzkaller.appspot.com/bug?extid=e394db78ae0b0032cb4d
-Link: https://syzkaller.appspot.com/bug?extid=9468df99cb63a4a4c4e1
+And the detailed process is as follows:
 
-Reported-and-tested-by: syzbot+0ae4804973be759fa420@syzkaller.appspotmail.com
-Fixes: a84fab3cbfdc ("carl9170: 802.11 rx/tx processing and usb backend")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Acked-By: Christian Lamparter <chunkeey@gmail.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240422183355.3785-1-n.zhandarovich@fintech.ru
+md_do_sync
+ j = mddev->resync_min
+ while (j < max_sectors)
+  sectors = raid10_sync_request(mddev, j, &skipped)
+   if (!md_bitmap_start_sync(..., &sync_blocks))
+    // md_bitmap_start_sync set sync_blocks to 0
+    return sync_blocks + sectors_skippe;
+  // sectors = 0;
+  j += sectors;
+  // j never change
+
+Root cause is that commit 301867b1c168 ("md/raid10: check
+slab-out-of-bounds in md_bitmap_get_counter") return early from
+md_bitmap_get_counter(), without setting returned blocks.
+
+Fix this problem by always set returned blocks from
+md_bitmap_get_counter"(), as it used to be.
+
+Noted that this patch just fix the softlockup problem in kernel, the
+case that bitmap size doesn't match array size still need to be fixed.
+
+Fixes: 301867b1c168 ("md/raid10: check slab-out-of-bounds in md_bitmap_get_counter")
+Reported-and-tested-by: Nigel Croxon <ncroxon@redhat.com>
+Closes: https://lore.kernel.org/all/71ba5272-ab07-43ba-8232-d2da642acb4e@redhat.com/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240422065824.2516-1-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/carl9170/usb.c | 32 +++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ drivers/md/md-bitmap.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
-index e4eb666c6eea4..a5265997b5767 100644
---- a/drivers/net/wireless/ath/carl9170/usb.c
-+++ b/drivers/net/wireless/ath/carl9170/usb.c
-@@ -1069,6 +1069,38 @@ static int carl9170_usb_probe(struct usb_interface *intf,
- 			ar->usb_ep_cmd_is_bulk = true;
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index b28302836b2e9..91bc764a854c6 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -1355,7 +1355,7 @@ __acquires(bitmap->lock)
+ 	sector_t chunk = offset >> bitmap->chunkshift;
+ 	unsigned long page = chunk >> PAGE_COUNTER_SHIFT;
+ 	unsigned long pageoff = (chunk & PAGE_COUNTER_MASK) << COUNTER_BYTE_SHIFT;
+-	sector_t csize;
++	sector_t csize = ((sector_t)1) << bitmap->chunkshift;
+ 	int err;
+ 
+ 	if (page >= bitmap->pages) {
+@@ -1364,6 +1364,7 @@ __acquires(bitmap->lock)
+ 		 * End-of-device while looking for a whole page or
+ 		 * user set a huge number to sysfs bitmap_set_bits.
+ 		 */
++		*blocks = csize - (offset & (csize - 1));
+ 		return NULL;
  	}
- 
-+	/* Verify that all expected endpoints are present */
-+	if (ar->usb_ep_cmd_is_bulk) {
-+		u8 bulk_ep_addr[] = {
-+			AR9170_USB_EP_RX | USB_DIR_IN,
-+			AR9170_USB_EP_TX | USB_DIR_OUT,
-+			AR9170_USB_EP_CMD | USB_DIR_OUT,
-+			0};
-+		u8 int_ep_addr[] = {
-+			AR9170_USB_EP_IRQ | USB_DIR_IN,
-+			0};
-+		if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
-+		    !usb_check_int_endpoints(intf, int_ep_addr))
-+			err = -ENODEV;
-+	} else {
-+		u8 bulk_ep_addr[] = {
-+			AR9170_USB_EP_RX | USB_DIR_IN,
-+			AR9170_USB_EP_TX | USB_DIR_OUT,
-+			0};
-+		u8 int_ep_addr[] = {
-+			AR9170_USB_EP_IRQ | USB_DIR_IN,
-+			AR9170_USB_EP_CMD | USB_DIR_OUT,
-+			0};
-+		if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
-+		    !usb_check_int_endpoints(intf, int_ep_addr))
-+			err = -ENODEV;
-+	}
+ 	err = md_bitmap_checkpage(bitmap, page, create, 0);
+@@ -1372,8 +1373,7 @@ __acquires(bitmap->lock)
+ 	    bitmap->bp[page].map == NULL)
+ 		csize = ((sector_t)1) << (bitmap->chunkshift +
+ 					  PAGE_COUNTER_SHIFT);
+-	else
+-		csize = ((sector_t)1) << bitmap->chunkshift;
 +
-+	if (err) {
-+		carl9170_free(ar);
-+		return err;
-+	}
-+
- 	usb_set_intfdata(intf, ar);
- 	SET_IEEE80211_DEV(ar->hw, &intf->dev);
+ 	*blocks = csize - (offset & (csize - 1));
  
+ 	if (err < 0)
 -- 
 2.43.0
 
