@@ -1,103 +1,56 @@
-Return-Path: <stable+bounces-51408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C54906FBC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09ACF906E5D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B27781C22EB7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B42972810B6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E590145B04;
-	Thu, 13 Jun 2024 12:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2D01459E5;
+	Thu, 13 Jun 2024 12:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AX9JByt6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mluTJvwz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13D51459FA;
-	Thu, 13 Jun 2024 12:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08A456458;
+	Thu, 13 Jun 2024 12:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281211; cv=none; b=aaEs4mnjUYcSk8Ld+lxV4tYWijdUVbXYXxIIMAkXIOeDkU353N3UdPuveDv2X3JvxahC+ki2DHGL1uITujjbqv2jnmshfIuefzUO/RanSRxVyzi95GyHGlKvA1D9l2IQ4bF8Btb3ZeKZWe6fjD8a+9LtDb0iIHFV0YXSIBwEylg=
+	t=1718280327; cv=none; b=tPJEBQ1pBh8OhilEOzecYgBRS+cw+U6mcGd+dCR7V5hjJP+6yMUkbYIOEAFsuecEaIug1/bNQ+MtLPqnFernpA94gvCwFbC7h/5YyfzHt0GatFh4nhD84omgFWFHdSxVEwOPXf309OYpGqhHC1IYtMzNGxvp3Kj610m+DZq8vo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281211; c=relaxed/simple;
-	bh=Ka7E07mprJfErvaR4aceftEs2HqwNQvsPNdq/xbKPp0=;
+	s=arc-20240116; t=1718280327; c=relaxed/simple;
+	bh=eyWNVO3pDoEz7AFMcwacsF1DUwmdMcCWJwRgG9cBMAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lAHQTQMyiO9XI2RXjPb97ziOAWCiosvuzCZlnxcCkW3xYNhEN9uQJgla7ZFUr2AXtsJyPZYwz2wn6imdE8cpMdWvmtX066JGS9czR3eusZUUUOcxQWINIxiJI6POeIcjDdDzVfRoApSYBXVlGsZGDk6wvTdhhA+39KH0wHS+MMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AX9JByt6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2DAC32786;
-	Thu, 13 Jun 2024 12:20:09 +0000 (UTC)
+	 MIME-Version; b=et3zrTIh7QwJZ50/LGQ4lwN6p4LaS/BmTJEe1s8uHktzWgVcuCvgo244aPHBllRO3VeYE4Dq515DFdEayy3qE1DYVneD9eG/GeaLJJBx3/81idCEVwwZUx3yjCoKbOpYEko3Q5Gyh8SZb/bNRtpOv5H8B+tRvubUijYdJUsI5jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mluTJvwz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119ECC2BBFC;
+	Thu, 13 Jun 2024 12:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281210;
-	bh=Ka7E07mprJfErvaR4aceftEs2HqwNQvsPNdq/xbKPp0=;
+	s=korg; t=1718280326;
+	bh=eyWNVO3pDoEz7AFMcwacsF1DUwmdMcCWJwRgG9cBMAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AX9JByt64L+kwy6DiYu5MEArXW39NQ8+GXzo/j6dhf/dtosNosOTFqUT1eXSBOTPZ
-	 FFO1Ubrmf0/ZxPg2yg7OVT33NbIJp2GYs9HplxtPAqOfb8gRtRioQSkzs9ImVD0UHh
-	 VN9q1Gt2PsNqZ4X6s4xWo4vJlh+yTIbJJdGwVswQ=
+	b=mluTJvwz2aRQqq6LHKzLoE4w0AUAMsa+i13qRZnGr17OY7yoONozqxUOyahMdPk3L
+	 ldfvSNwLr1y9uWAtfqEIACHNh9ZrTTnhsiWnHwAP0uvoqJelKcsfLpPaSlYoki5kAm
+	 JfN7ew3g8Oo3+PbM8Fqv6gPQ4pij+UqB25MeaciQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Alexandre Truong <alexandre.truong@arm.com>,
-	Alexey Bayduraev <alexey.v.bayduraev@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Andres Freund <andres@anarazel.de>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
-	Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Colin Ian King <colin.king@intel.com>,
-	Dario Petrillo <dario.pk1@gmail.com>,
-	Darren Hart <dvhart@infradead.org>,
-	Dave Marchevsky <davemarchevsky@fb.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Fangrui Song <maskray@google.com>,
-	Hewenliang <hewenliang4@huawei.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jason Wang <wangborong@cdjrlc.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	Kim Phillips <kim.phillips@amd.com>,
-	Leo Yan <leo.yan@linaro.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	=?UTF-8?q?Martin=20Li=C5=A1ka?= <mliska@suse.cz>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Pavithra Gurushankar <gpavithrasha@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Quentin Monnet <quentin@isovalent.com>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Remi Bernon <rbernon@codeweavers.com>,
-	Riccardo Mancini <rickyman7@gmail.com>,
-	Song Liu <songliubraving@fb.com>,
-	Stephane Eranian <eranian@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Tom Rix <trix@redhat.com>,
-	Weiguo Li <liwg06@foxmail.com>,
-	Wenyu Liu <liuwenyu7@huawei.com>,
-	William Cohen <wcohen@redhat.com>,
-	Zechuan Chen <chenzechuan1@huawei.com>,
-	bpf@vger.kernel.org,
-	llvm@lists.linux.dev,
-	yaowenbin <yaowenbin1@huawei.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 178/317] perf ui: Update use of pthread mutex
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>
+Subject: [PATCH 6.6 016/137] drm/sun4i: hdmi: Move mode_set into enable
 Date: Thu, 13 Jun 2024 13:33:16 +0200
-Message-ID: <20240613113254.444133917@linuxfoundation.org>
+Message-ID: <20240613113223.920831380@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -107,387 +60,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Maxime Ripard <mripard@kernel.org>
 
-[ Upstream commit 82aff6cc070417f26f9b02b26e63c17ff43b4044 ]
+commit 9ca6bc2460359ed49b0ee87467fea784b1a42bf5 upstream.
 
-Switch to the use of mutex wrappers that provide better error checking.
+We're not doing anything special in atomic_mode_set so we can simply
+merge it into atomic_enable.
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Alexandre Truong <alexandre.truong@arm.com>
-Cc: Alexey Bayduraev <alexey.v.bayduraev@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Andres Freund <andres@anarazel.de>
-Cc: Andrii Nakryiko <andrii@kernel.org>
-Cc: André Almeida <andrealmeid@igalia.com>
-Cc: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Colin Ian King <colin.king@intel.com>
-Cc: Dario Petrillo <dario.pk1@gmail.com>
-Cc: Darren Hart <dvhart@infradead.org>
-Cc: Dave Marchevsky <davemarchevsky@fb.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Fangrui Song <maskray@google.com>
-Cc: Hewenliang <hewenliang4@huawei.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jason Wang <wangborong@cdjrlc.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Kim Phillips <kim.phillips@amd.com>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Martin Liška <mliska@suse.cz>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Pavithra Gurushankar <gpavithrasha@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Quentin Monnet <quentin@isovalent.com>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Remi Bernon <rbernon@codeweavers.com>
-Cc: Riccardo Mancini <rickyman7@gmail.com>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Thomas Richter <tmricht@linux.ibm.com>
-Cc: Tom Rix <trix@redhat.com>
-Cc: Weiguo Li <liwg06@foxmail.com>
-Cc: Wenyu Liu <liuwenyu7@huawei.com>
-Cc: William Cohen <wcohen@redhat.com>
-Cc: Zechuan Chen <chenzechuan1@huawei.com>
-Cc: bpf@vger.kernel.org
-Cc: llvm@lists.linux.dev
-Cc: yaowenbin <yaowenbin1@huawei.com>
-Link: https://lore.kernel.org/r/20220826164242.43412-10-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 769e6a1e15bd ("perf ui browser: Don't save pointer to stack memory")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240222-kms-hdmi-connector-state-v7-33-8f4af575fce2@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/ui/browser.c           | 20 ++++++++++----------
- tools/perf/ui/browsers/annotate.c |  2 +-
- tools/perf/ui/setup.c             |  5 +++--
- tools/perf/ui/tui/helpline.c      |  5 ++---
- tools/perf/ui/tui/progress.c      |  8 ++++----
- tools/perf/ui/tui/setup.c         |  8 ++++----
- tools/perf/ui/tui/util.c          | 18 +++++++++---------
- tools/perf/ui/ui.h                |  4 ++--
- 8 files changed, 35 insertions(+), 35 deletions(-)
+ drivers/gpu/drm/sun4i/sun4i_hdmi_enc.c |   38 ++++++++++++---------------------
+ 1 file changed, 14 insertions(+), 24 deletions(-)
 
-diff --git a/tools/perf/ui/browser.c b/tools/perf/ui/browser.c
-index 781afe42e90e0..9dc808020e824 100644
---- a/tools/perf/ui/browser.c
-+++ b/tools/perf/ui/browser.c
-@@ -268,9 +268,9 @@ void __ui_browser__show_title(struct ui_browser *browser, const char *title)
+--- a/drivers/gpu/drm/sun4i/sun4i_hdmi_enc.c
++++ b/drivers/gpu/drm/sun4i/sun4i_hdmi_enc.c
+@@ -103,33 +103,11 @@ static void sun4i_hdmi_enable(struct drm
+ 	struct drm_display_mode *mode = &encoder->crtc->state->adjusted_mode;
+ 	struct sun4i_hdmi *hdmi = drm_encoder_to_sun4i_hdmi(encoder);
+ 	struct drm_display_info *display = &hdmi->connector.display_info;
++	unsigned int x, y;
+ 	u32 val = 0;
  
- void ui_browser__show_title(struct ui_browser *browser, const char *title)
- {
--	pthread_mutex_lock(&ui__lock);
-+	mutex_lock(&ui__lock);
- 	__ui_browser__show_title(browser, title);
--	pthread_mutex_unlock(&ui__lock);
-+	mutex_unlock(&ui__lock);
+ 	DRM_DEBUG_DRIVER("Enabling the HDMI Output\n");
+ 
+-	clk_prepare_enable(hdmi->tmds_clk);
+-
+-	sun4i_hdmi_setup_avi_infoframes(hdmi, mode);
+-	val |= SUN4I_HDMI_PKT_CTRL_TYPE(0, SUN4I_HDMI_PKT_AVI);
+-	val |= SUN4I_HDMI_PKT_CTRL_TYPE(1, SUN4I_HDMI_PKT_END);
+-	writel(val, hdmi->base + SUN4I_HDMI_PKT_CTRL_REG(0));
+-
+-	val = SUN4I_HDMI_VID_CTRL_ENABLE;
+-	if (display->is_hdmi)
+-		val |= SUN4I_HDMI_VID_CTRL_HDMI_MODE;
+-
+-	writel(val, hdmi->base + SUN4I_HDMI_VID_CTRL_REG);
+-}
+-
+-static void sun4i_hdmi_mode_set(struct drm_encoder *encoder,
+-				struct drm_crtc_state *crtc_state,
+-				struct drm_connector_state *conn_state)
+-{
+-	const struct drm_display_mode *mode = &crtc_state->mode;
+-	struct sun4i_hdmi *hdmi = drm_encoder_to_sun4i_hdmi(encoder);
+-	unsigned int x, y;
+-	u32 val;
+-
+ 	clk_set_rate(hdmi->mod_clk, mode->crtc_clock * 1000);
+ 	clk_set_rate(hdmi->tmds_clk, mode->crtc_clock * 1000);
+ 
+@@ -181,6 +159,19 @@ static void sun4i_hdmi_mode_set(struct d
+ 		val |= SUN4I_HDMI_VID_TIMING_POL_VSYNC;
+ 
+ 	writel(val, hdmi->base + SUN4I_HDMI_VID_TIMING_POL_REG);
++
++	clk_prepare_enable(hdmi->tmds_clk);
++
++	sun4i_hdmi_setup_avi_infoframes(hdmi, mode);
++	val |= SUN4I_HDMI_PKT_CTRL_TYPE(0, SUN4I_HDMI_PKT_AVI);
++	val |= SUN4I_HDMI_PKT_CTRL_TYPE(1, SUN4I_HDMI_PKT_END);
++	writel(val, hdmi->base + SUN4I_HDMI_PKT_CTRL_REG(0));
++
++	val = SUN4I_HDMI_VID_CTRL_ENABLE;
++	if (display->is_hdmi)
++		val |= SUN4I_HDMI_VID_CTRL_HDMI_MODE;
++
++	writel(val, hdmi->base + SUN4I_HDMI_VID_CTRL_REG);
  }
  
- int ui_browser__show(struct ui_browser *browser, const char *title,
-@@ -284,7 +284,7 @@ int ui_browser__show(struct ui_browser *browser, const char *title,
+ static enum drm_mode_status sun4i_hdmi_mode_valid(struct drm_encoder *encoder,
+@@ -206,7 +197,6 @@ static const struct drm_encoder_helper_f
+ 	.atomic_check	= sun4i_hdmi_atomic_check,
+ 	.atomic_disable	= sun4i_hdmi_disable,
+ 	.atomic_enable	= sun4i_hdmi_enable,
+-	.atomic_mode_set	= sun4i_hdmi_mode_set,
+ 	.mode_valid	= sun4i_hdmi_mode_valid,
+ };
  
- 	browser->refresh_dimensions(browser);
- 
--	pthread_mutex_lock(&ui__lock);
-+	mutex_lock(&ui__lock);
- 	__ui_browser__show_title(browser, title);
- 
- 	browser->title = title;
-@@ -295,16 +295,16 @@ int ui_browser__show(struct ui_browser *browser, const char *title,
- 	va_end(ap);
- 	if (err > 0)
- 		ui_helpline__push(browser->helpline);
--	pthread_mutex_unlock(&ui__lock);
-+	mutex_unlock(&ui__lock);
- 	return err ? 0 : -1;
- }
- 
- void ui_browser__hide(struct ui_browser *browser)
- {
--	pthread_mutex_lock(&ui__lock);
-+	mutex_lock(&ui__lock);
- 	ui_helpline__pop();
- 	zfree(&browser->helpline);
--	pthread_mutex_unlock(&ui__lock);
-+	mutex_unlock(&ui__lock);
- }
- 
- static void ui_browser__scrollbar_set(struct ui_browser *browser)
-@@ -352,9 +352,9 @@ static int __ui_browser__refresh(struct ui_browser *browser)
- 
- int ui_browser__refresh(struct ui_browser *browser)
- {
--	pthread_mutex_lock(&ui__lock);
-+	mutex_lock(&ui__lock);
- 	__ui_browser__refresh(browser);
--	pthread_mutex_unlock(&ui__lock);
-+	mutex_unlock(&ui__lock);
- 
- 	return 0;
- }
-@@ -390,10 +390,10 @@ int ui_browser__run(struct ui_browser *browser, int delay_secs)
- 	while (1) {
- 		off_t offset;
- 
--		pthread_mutex_lock(&ui__lock);
-+		mutex_lock(&ui__lock);
- 		err = __ui_browser__refresh(browser);
- 		SLsmg_refresh();
--		pthread_mutex_unlock(&ui__lock);
-+		mutex_unlock(&ui__lock);
- 		if (err < 0)
- 			break;
- 
-diff --git a/tools/perf/ui/browsers/annotate.c b/tools/perf/ui/browsers/annotate.c
-index bd77825fd5a15..7083dbb9a0af9 100644
---- a/tools/perf/ui/browsers/annotate.c
-+++ b/tools/perf/ui/browsers/annotate.c
-@@ -8,11 +8,11 @@
- #include "../../util/hist.h"
- #include "../../util/sort.h"
- #include "../../util/map.h"
-+#include "../../util/mutex.h"
- #include "../../util/symbol.h"
- #include "../../util/evsel.h"
- #include "../../util/evlist.h"
- #include <inttypes.h>
--#include <pthread.h>
- #include <linux/kernel.h>
- #include <linux/string.h>
- #include <linux/zalloc.h>
-diff --git a/tools/perf/ui/setup.c b/tools/perf/ui/setup.c
-index 700335cde6180..25ded88801a3d 100644
---- a/tools/perf/ui/setup.c
-+++ b/tools/perf/ui/setup.c
-@@ -1,5 +1,4 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <pthread.h>
- #include <dlfcn.h>
- #include <unistd.h>
- 
-@@ -8,7 +7,7 @@
- #include "../util/hist.h"
- #include "ui.h"
- 
--pthread_mutex_t ui__lock = PTHREAD_MUTEX_INITIALIZER;
-+struct mutex ui__lock;
- void *perf_gtk_handle;
- int use_browser = -1;
- 
-@@ -76,6 +75,7 @@ int stdio__config_color(const struct option *opt __maybe_unused,
- 
- void setup_browser(bool fallback_to_pager)
- {
-+	mutex_init(&ui__lock);
- 	if (use_browser < 2 && (!isatty(1) || dump_trace))
- 		use_browser = 0;
- 
-@@ -118,4 +118,5 @@ void exit_browser(bool wait_for_ok)
- 	default:
- 		break;
- 	}
-+	mutex_destroy(&ui__lock);
- }
-diff --git a/tools/perf/ui/tui/helpline.c b/tools/perf/ui/tui/helpline.c
-index 298d6af82fddd..db4952f5990bd 100644
---- a/tools/perf/ui/tui/helpline.c
-+++ b/tools/perf/ui/tui/helpline.c
-@@ -2,7 +2,6 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
--#include <pthread.h>
- #include <linux/kernel.h>
- #include <linux/string.h>
- 
-@@ -33,7 +32,7 @@ static int tui_helpline__show(const char *format, va_list ap)
- 	int ret;
- 	static int backlog;
- 
--	pthread_mutex_lock(&ui__lock);
-+	mutex_lock(&ui__lock);
- 	ret = vscnprintf(ui_helpline__last_msg + backlog,
- 			sizeof(ui_helpline__last_msg) - backlog, format, ap);
- 	backlog += ret;
-@@ -45,7 +44,7 @@ static int tui_helpline__show(const char *format, va_list ap)
- 		SLsmg_refresh();
- 		backlog = 0;
- 	}
--	pthread_mutex_unlock(&ui__lock);
-+	mutex_unlock(&ui__lock);
- 
- 	return ret;
- }
-diff --git a/tools/perf/ui/tui/progress.c b/tools/perf/ui/tui/progress.c
-index 3d74af5a7ece6..71b6c8d9474fb 100644
---- a/tools/perf/ui/tui/progress.c
-+++ b/tools/perf/ui/tui/progress.c
-@@ -45,7 +45,7 @@ static void tui_progress__update(struct ui_progress *p)
- 	}
- 
- 	ui__refresh_dimensions(false);
--	pthread_mutex_lock(&ui__lock);
-+	mutex_lock(&ui__lock);
- 	y = SLtt_Screen_Rows / 2 - 2;
- 	SLsmg_set_color(0);
- 	SLsmg_draw_box(y, 0, 3, SLtt_Screen_Cols);
-@@ -56,7 +56,7 @@ static void tui_progress__update(struct ui_progress *p)
- 	bar = ((SLtt_Screen_Cols - 2) * p->curr) / p->total;
- 	SLsmg_fill_region(y, 1, 1, bar, ' ');
- 	SLsmg_refresh();
--	pthread_mutex_unlock(&ui__lock);
-+	mutex_unlock(&ui__lock);
- }
- 
- static void tui_progress__finish(void)
-@@ -67,12 +67,12 @@ static void tui_progress__finish(void)
- 		return;
- 
- 	ui__refresh_dimensions(false);
--	pthread_mutex_lock(&ui__lock);
-+	mutex_lock(&ui__lock);
- 	y = SLtt_Screen_Rows / 2 - 2;
- 	SLsmg_set_color(0);
- 	SLsmg_fill_region(y, 0, 3, SLtt_Screen_Cols, ' ');
- 	SLsmg_refresh();
--	pthread_mutex_unlock(&ui__lock);
-+	mutex_unlock(&ui__lock);
- }
- 
- static struct ui_progress_ops tui_progress__ops = {
-diff --git a/tools/perf/ui/tui/setup.c b/tools/perf/ui/tui/setup.c
-index b1be59b4e2a4f..a3b8c397c24d5 100644
---- a/tools/perf/ui/tui/setup.c
-+++ b/tools/perf/ui/tui/setup.c
-@@ -29,10 +29,10 @@ void ui__refresh_dimensions(bool force)
- {
- 	if (force || ui__need_resize) {
- 		ui__need_resize = 0;
--		pthread_mutex_lock(&ui__lock);
-+		mutex_lock(&ui__lock);
- 		SLtt_get_screen_size();
- 		SLsmg_reinit_smg();
--		pthread_mutex_unlock(&ui__lock);
-+		mutex_unlock(&ui__lock);
- 	}
- }
- 
-@@ -170,10 +170,10 @@ void ui__exit(bool wait_for_ok)
- 				    "Press any key...", 0);
- 
- 	SLtt_set_cursor_visibility(1);
--	if (!pthread_mutex_trylock(&ui__lock)) {
-+	if (mutex_trylock(&ui__lock)) {
- 		SLsmg_refresh();
- 		SLsmg_reset_smg();
--		pthread_mutex_unlock(&ui__lock);
-+		mutex_unlock(&ui__lock);
- 	}
- 	SLang_reset_tty();
- 	perf_error__unregister(&perf_tui_eops);
-diff --git a/tools/perf/ui/tui/util.c b/tools/perf/ui/tui/util.c
-index 0f562e2cb1e88..3c5174854ac8b 100644
---- a/tools/perf/ui/tui/util.c
-+++ b/tools/perf/ui/tui/util.c
-@@ -95,7 +95,7 @@ int ui_browser__input_window(const char *title, const char *text, char *input,
- 		t = sep + 1;
- 	}
- 
--	pthread_mutex_lock(&ui__lock);
-+	mutex_lock(&ui__lock);
- 
- 	max_len += 2;
- 	nr_lines += 8;
-@@ -125,17 +125,17 @@ int ui_browser__input_window(const char *title, const char *text, char *input,
- 	SLsmg_write_nstring((char *)exit_msg, max_len);
- 	SLsmg_refresh();
- 
--	pthread_mutex_unlock(&ui__lock);
-+	mutex_unlock(&ui__lock);
- 
- 	x += 2;
- 	len = 0;
- 	key = ui__getch(delay_secs);
- 	while (key != K_TIMER && key != K_ENTER && key != K_ESC) {
--		pthread_mutex_lock(&ui__lock);
-+		mutex_lock(&ui__lock);
- 
- 		if (key == K_BKSPC) {
- 			if (len == 0) {
--				pthread_mutex_unlock(&ui__lock);
-+				mutex_unlock(&ui__lock);
- 				goto next_key;
- 			}
- 			SLsmg_gotorc(y, x + --len);
-@@ -147,7 +147,7 @@ int ui_browser__input_window(const char *title, const char *text, char *input,
- 		}
- 		SLsmg_refresh();
- 
--		pthread_mutex_unlock(&ui__lock);
-+		mutex_unlock(&ui__lock);
- 
- 		/* XXX more graceful overflow handling needed */
- 		if (len == sizeof(buf) - 1) {
-@@ -215,19 +215,19 @@ void __ui__info_window(const char *title, const char *text, const char *exit_msg
- 
- void ui__info_window(const char *title, const char *text)
- {
--	pthread_mutex_lock(&ui__lock);
-+	mutex_lock(&ui__lock);
- 	__ui__info_window(title, text, NULL);
- 	SLsmg_refresh();
--	pthread_mutex_unlock(&ui__lock);
-+	mutex_unlock(&ui__lock);
- }
- 
- int ui__question_window(const char *title, const char *text,
- 			const char *exit_msg, int delay_secs)
- {
--	pthread_mutex_lock(&ui__lock);
-+	mutex_lock(&ui__lock);
- 	__ui__info_window(title, text, exit_msg);
- 	SLsmg_refresh();
--	pthread_mutex_unlock(&ui__lock);
-+	mutex_unlock(&ui__lock);
- 	return ui__getch(delay_secs);
- }
- 
-diff --git a/tools/perf/ui/ui.h b/tools/perf/ui/ui.h
-index 9b6fdf06e1d2f..99f8d2fe9bc55 100644
---- a/tools/perf/ui/ui.h
-+++ b/tools/perf/ui/ui.h
-@@ -2,11 +2,11 @@
- #ifndef _PERF_UI_H_
- #define _PERF_UI_H_ 1
- 
--#include <pthread.h>
-+#include "../util/mutex.h"
- #include <stdbool.h>
- #include <linux/compiler.h>
- 
--extern pthread_mutex_t ui__lock;
-+extern struct mutex ui__lock;
- extern void *perf_gtk_handle;
- 
- extern int use_browser;
--- 
-2.43.0
-
 
 
 
