@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB60906E53
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D3F90703A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87D6E1F21344
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADD171F232FE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCE31448C4;
-	Thu, 13 Jun 2024 12:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97FD14430E;
+	Thu, 13 Jun 2024 12:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoKay+ZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPwiRMpB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06D9143759;
-	Thu, 13 Jun 2024 12:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79301143878;
+	Thu, 13 Jun 2024 12:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280300; cv=none; b=QkukzmYmnOQXLOocop/ezAz7fn+w3xVV3qg9aHbMR1SlaK3r1YYG9tPyQg1a7fiQyHDJd/6ajHDAc/qlD4EaRFthpK47n4al6vz/VSV/EergljwqSp29iK9fqPEmzWpUvupn4gmJ1wKulD5XHFi5eR4aV/EePbXpgTiH6ghz9mM=
+	t=1718281492; cv=none; b=A5IKZezSHComnD1JVcEB9JSsvBIOOpenqSjOaWQbrFmBCVkX+XUuDYxJWl6xS+c0ocLN7461hBNIxzdNRN7gCYO0Kelp6X5g9MiYCBQnUplFo2MSXPyr07S/4M2I7sW/WulJeFYN8N7NLuG3diNPQ/azRj+U2fLa5696VwkdwEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280300; c=relaxed/simple;
-	bh=nKw5HRci6a/pmEGokY+7nShtI4tXi8RJtB2tAePqmIU=;
+	s=arc-20240116; t=1718281492; c=relaxed/simple;
+	bh=l41t01N4e6t1dN7Jghc0EceU6tSjQp1X/RCtidh73zM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8fogZeTwcxBaFvtQV/gZg/3P3NdYmWeZ15wZDx0aOC5l63GCV8+kHdPCa+pfWkp+GveCJw90grt9Rv+Lg1AKYseD1JXpSMHTeIFSM8nMijQcWYyazJBQ6TyGhrSkQ1hZblaOeUcNvP3Ql4crmBUbkGlr3usXFH9m01V0CZxhl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoKay+ZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C16C2BBFC;
-	Thu, 13 Jun 2024 12:04:59 +0000 (UTC)
+	 MIME-Version; b=B0OEEnNZs655Om4z5EY3tH8QM9cPEk1Hz7Hgcj1SInCbwOSHrWNdztrlB4OZSBEYFiN8zJDwEb6HuQHnzAWIRhBZGFNETQd8eQSAbWdY2FfmSH0zfRTuLL5eQ6u6bxblmMPl2sB3GIhNzxiPMX01/bSWhBlGbZpxwB9dTB5d71A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPwiRMpB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1CD1C2BBFC;
+	Thu, 13 Jun 2024 12:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280299;
-	bh=nKw5HRci6a/pmEGokY+7nShtI4tXi8RJtB2tAePqmIU=;
+	s=korg; t=1718281492;
+	bh=l41t01N4e6t1dN7Jghc0EceU6tSjQp1X/RCtidh73zM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CoKay+ZWycqe4ZftjhY3CESEFMW0TkpUnDzPS/7ZKGpYqO5+pQHG3PeuwZIL+yFO2
-	 IoWtS76tE0JLk4RHMCAhH5ltjGvg6/cqgtyGj2snPEcRcyAnxh0l/vgFIy3fytjtoW
-	 wZxuV/lGUWRpMxXh5oUlVQFWEbq3Lnf7XnHZKl8o=
+	b=tPwiRMpBL4mVpoFrFPvaR6ybEzUelksd3dxM8elYZWwx6lVlc0mgHBSWpmOoe2rMD
+	 8/ZxzFox5wnccEhOsU2IhY9ZdIUYKnqz+EAL1zHfTLvx/PPE5uZzF/vtnx5JBIE2bW
+	 43Admqo1nTkuwSUyAUuab1lyT49wyHpFcT+NK5gE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Justin Stitt <justinstitt@google.com>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 5.4 194/202] kdb: Fix console handling when editing and tab-completing commands
+	Ziyang Xuan <william.xuanziyang@huawei.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Kuntal Nayak <kuntal.nayak@broadcom.com>
+Subject: [PATCH 5.10 274/317] netfilter: nf_tables: Fix potential data-race in __nft_obj_type_get()
 Date: Thu, 13 Jun 2024 13:34:52 +0200
-Message-ID: <20240613113235.228126769@linuxfoundation.org>
+Message-ID: <20240613113258.151889766@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-commit db2f9c7dc29114f531df4a425d0867d01e1f1e28 upstream.
+commit d78d867dcea69c328db30df665be5be7d0148484 upstream.
 
-Currently, if the cursor position is not at the end of the command buffer
-and the user uses the Tab-complete functions, then the console does not
-leave the cursor in the correct position.
+nft_unregister_obj() can concurrent with __nft_obj_type_get(),
+and there is not any protection when iterate over nf_tables_objects
+list in __nft_obj_type_get(). Therefore, there is potential data-race
+of nf_tables_objects list entry.
 
-For example consider the following buffer with the cursor positioned
-at the ^:
+Use list_for_each_entry_rcu() to iterate over nf_tables_objects
+list in __nft_obj_type_get(), and use rcu_read_lock() in the caller
+nft_obj_type_get() to protect the entire type query process.
 
-md kdb_pro 10
-          ^
-
-Pressing tab should result in:
-
-md kdb_prompt_str 10
-                 ^
-
-However this does not happen. Instead the cursor is placed at the end
-(after then 10) and further cursor movement redraws incorrectly. The
-same problem exists when we double-Tab but in a different part of the
-code.
-
-Fix this by sending a carriage return and then redisplaying the text to
-the left of the cursor.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Justin Stitt <justinstitt@google.com>
-Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-3-f236dbe9828d@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Fixes: e50092404c1b ("netfilter: nf_tables: add stateful objects")
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Kuntal Nayak <kuntal.nayak@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/netfilter/nf_tables_api.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -380,6 +380,8 @@ poll_again:
- 			kdb_printf("\n");
- 			kdb_printf(kdb_prompt_str);
- 			kdb_printf("%s", buffer);
-+			if (cp != lastchar)
-+				kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		} else if (tab != 2 && count > 0) {
- 			/* How many new characters do we want from tmpbuffer? */
- 			len_tmp = strlen(p_tmp) - len;
-@@ -393,6 +395,9 @@ poll_again:
- 				kdb_printf("%s", cp);
- 				cp += len_tmp;
- 				lastchar += len_tmp;
-+				if (cp != lastchar)
-+					kdb_position_cursor(kdb_prompt_str,
-+							    buffer, cp);
- 			}
- 		}
- 		kdb_nextline = 1; /* reset output line number */
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -6238,7 +6238,7 @@ static const struct nft_object_type *__n
+ {
+ 	const struct nft_object_type *type;
+ 
+-	list_for_each_entry(type, &nf_tables_objects, list) {
++	list_for_each_entry_rcu(type, &nf_tables_objects, list) {
+ 		if (type->family != NFPROTO_UNSPEC &&
+ 		    type->family != family)
+ 			continue;
+@@ -6254,9 +6254,13 @@ nft_obj_type_get(struct net *net, u32 ob
+ {
+ 	const struct nft_object_type *type;
+ 
++	rcu_read_lock();
+ 	type = __nft_obj_type_get(objtype, family);
+-	if (type != NULL && try_module_get(type->owner))
++	if (type != NULL && try_module_get(type->owner)) {
++		rcu_read_unlock();
+ 		return type;
++	}
++	rcu_read_unlock();
+ 
+ 	lockdep_nfnl_nft_mutex_not_held();
+ #ifdef CONFIG_MODULES
 
 
 
