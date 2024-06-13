@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1213A906E94
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD301907216
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91E3FB20A38
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD39FB20B66
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32730143C67;
-	Thu, 13 Jun 2024 12:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF774A0F;
+	Thu, 13 Jun 2024 12:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5U2w0cI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jc0QdZm0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E387813D635;
-	Thu, 13 Jun 2024 12:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEC01448C4;
+	Thu, 13 Jun 2024 12:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280477; cv=none; b=EAQqkMr0P+fJQAPrE0gDTa0vqnsFuh2hYNZ/04s5xmH1uN/hlkJo6088MNzIMQlp3oA+jTqG7KB7Whe0Xqdh4wp0S+d/56CJvBrbxgwxGf3UsJhwv2Pojn2LslWDaTHKH2dHDBc3WsNjhA98DRXbOFX88Uav4VBSDr9ovGWm0i8=
+	t=1718282566; cv=none; b=uSNkr3SrFXDgszj2LFIlECUtqfhtPKIwUDveU4eqE7VVpX9fuJaTVKx/sHfr6RvmBJuPv27GRvrXDMmYqrRMuTerG7hYtTVnEeC8FYNbGolQnLowJQ4FZkvwS1h8IlGrVEeW8fVUdjNcc8w6XOcKM9nb7buEXFKI7SMLQjktpQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280477; c=relaxed/simple;
-	bh=TJHzAPgqcrGNGwhw+Vj055e/amSrvMA28H4qOmvWMp0=;
+	s=arc-20240116; t=1718282566; c=relaxed/simple;
+	bh=aotqF+maEpaCJHy7WSS2KISD65ubiMRO7Z6DFvMLNuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PuOg3AvkyAxeSHI47/NpPP5SK3xIe+R54y7pOZNMnTe63EcGWiVkggT87Yq57jDc4Jr8CntY16yObc8D7H3LMaYk3ymYvr9iYRqo8iSuflBSOrhs25YzpBVG4cnYekBWLqlbmduvrykTBs4LTrxVsd7ECaORW+BRCu8ny/Tlf5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5U2w0cI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A23EC32786;
-	Thu, 13 Jun 2024 12:07:56 +0000 (UTC)
+	 MIME-Version; b=si//pSovfwXRskFVzQZBeogcnqzWSjN35RWtYEMcpQXNOt4LfPpP8oex4QqFjmiQhiSQf7syQCYcqqOy3ydDgEBX9h2XcP9clgh9AFQUKQjWG6CBqwrWIWzVYvzOPGr1FhVNXPTfg8nVlXUzXkK7RjStRMIMyO3lR0MVcRVYhlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jc0QdZm0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8462DC4AF1A;
+	Thu, 13 Jun 2024 12:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280476;
-	bh=TJHzAPgqcrGNGwhw+Vj055e/amSrvMA28H4qOmvWMp0=;
+	s=korg; t=1718282565;
+	bh=aotqF+maEpaCJHy7WSS2KISD65ubiMRO7Z6DFvMLNuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y5U2w0cIG956OSiD7Z+8hxhD47TYnWzsfpq96yvMNZUGMxXOGapUGUHDUwXEXMWaj
-	 AATwM9Ojk8sIfl9rycDgz/6hesKiktpvG6EjW1CackE2XXCOTxoIqu6vTyMMzdPUA9
-	 rZ1ZoHSRFNB4AiktVMmDseoApiR5r+cZjGCuOmMY=
+	b=Jc0QdZm0boygo5ldfLnTOnl5hpUdTVJxhvOZTT2MD/7X5JhYBrv4p+OY7FmYRE/w3
+	 TdlwY5ZrPbhstKQxARvQ6+nb5EtU0KyrsxRGRnTcSF4wJX35iTVdCj92kJPG/laMby
+	 kgokMer5Dn/4S+C1izaCSXtHiM+8kCD1nUOA/3Ro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.6 066/137] clk: bcm: dvp: Assign ->num before accessing ->hws
+	Chuck Lever <chuck.lever@oracle.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Dan Aloni <dan.aloni@vastdata.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 289/402] sunrpc: fix NFSACL RPC retry on soft mount
 Date: Thu, 13 Jun 2024 13:34:06 +0200
-Message-ID: <20240613113225.860589554@linuxfoundation.org>
+Message-ID: <20240613113313.424196941@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Dan Aloni <dan.aloni@vastdata.com>
 
-commit 9368cdf90f52a68120d039887ccff74ff33b4444 upstream.
+[ Upstream commit 0dc9f430027b8bd9073fdafdfcdeb1a073ab5594 ]
 
-Commit f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with
-__counted_by") annotated the hws member of 'struct clk_hw_onecell_data'
-with __counted_by, which informs the bounds sanitizer about the number
-of elements in hws, so that it can warn when hws is accessed out of
-bounds. As noted in that change, the __counted_by member must be
-initialized with the number of elements before the first array access
-happens, otherwise there will be a warning from each access prior to the
-initialization because the number of elements is zero. This occurs in
-clk_dvp_probe() due to ->num being assigned after ->hws has been
-accessed:
+It used to be quite awhile ago since 1b63a75180c6 ('SUNRPC: Refactor
+rpc_clone_client()'), in 2012, that `cl_timeout` was copied in so that
+all mount parameters propagate to NFSACL clients. However since that
+change, if mount options as follows are given:
 
-  UBSAN: array-index-out-of-bounds in drivers/clk/bcm/clk-bcm2711-dvp.c:59:2
-  index 0 is out of range for type 'struct clk_hw *[] __counted_by(num)' (aka 'struct clk_hw *[]')
+    soft,timeo=50,retrans=16,vers=3
 
-Move the ->num initialization to before the first access of ->hws, which
-clears up the warning.
+The resultant NFSACL client receives:
 
-Cc: stable@vger.kernel.org
-Fixes: f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with __counted_by")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20240425-cbl-bcm-assign-counted-by-val-before-access-v1-1-e2db3b82d5ef@kernel.org
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    cl_softrtry: 1
+    cl_timeout: to_initval=60000, to_maxval=60000, to_increment=0, to_retries=2, to_exponential=0
+
+These values lead to NFSACL operations not being retried under the
+condition of transient network outages with soft mount. Instead, getacl
+call fails after 60 seconds with EIO.
+
+The simple fix is to pass the existing client's `cl_timeout` as the new
+client timeout.
+
+Cc: Chuck Lever <chuck.lever@oracle.com>
+Cc: Benjamin Coddington <bcodding@redhat.com>
+Link: https://lore.kernel.org/all/20231105154857.ryakhmgaptq3hb6b@gmail.com/T/
+Fixes: 1b63a75180c6 ('SUNRPC: Refactor rpc_clone_client()')
+Signed-off-by: Dan Aloni <dan.aloni@vastdata.com>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/bcm/clk-bcm2711-dvp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sunrpc/clnt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/bcm/clk-bcm2711-dvp.c b/drivers/clk/bcm/clk-bcm2711-dvp.c
-index e4fbbf3c40fe..3cb235df9d37 100644
---- a/drivers/clk/bcm/clk-bcm2711-dvp.c
-+++ b/drivers/clk/bcm/clk-bcm2711-dvp.c
-@@ -56,6 +56,8 @@ static int clk_dvp_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	data->num = NR_CLOCKS;
-+
- 	data->hws[0] = clk_hw_register_gate_parent_data(&pdev->dev,
- 							"hdmi0-108MHz",
- 							&clk_dvp_parent, 0,
-@@ -76,7 +78,6 @@ static int clk_dvp_probe(struct platform_device *pdev)
- 		goto unregister_clk0;
- 	}
- 
--	data->num = NR_CLOCKS;
- 	ret = of_clk_add_hw_provider(pdev->dev.of_node, of_clk_hw_onecell_get,
- 				     data);
- 	if (ret)
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index 59fd6dedbbed2..f73d4593625cd 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -982,6 +982,7 @@ struct rpc_clnt *rpc_bind_new_program(struct rpc_clnt *old,
+ 		.authflavor	= old->cl_auth->au_flavor,
+ 		.cred		= old->cl_cred,
+ 		.stats		= old->cl_stats,
++		.timeout	= old->cl_timeout,
+ 	};
+ 	struct rpc_clnt *clnt;
+ 	int err;
 -- 
-2.45.2
+2.43.0
 
 
 
