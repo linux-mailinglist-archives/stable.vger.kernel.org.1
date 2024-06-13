@@ -1,132 +1,82 @@
-Return-Path: <stable+bounces-52072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58DB79078A2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 18:49:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB279078A4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 18:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E7401F21F96
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 16:49:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EF2A1C20D4B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 16:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF4E130A46;
-	Thu, 13 Jun 2024 16:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800C6524D7;
+	Thu, 13 Jun 2024 16:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JDpjmoDc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bKp6yVhc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F7663A5;
-	Thu, 13 Jun 2024 16:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B62E63A5;
+	Thu, 13 Jun 2024 16:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718297335; cv=none; b=rrFuzyN3sr58D29m7+afhlhTneDAcLDOH66Dr9fqb342Y35PmRIVRhW/2WgN9Dyn0PpZ6F/THlcp2FL6msvckYK20WnLRY3juzmHrgv/e+Z9RPTCjiD9floW7qDOE1VD/SzjHKr9X1GQb0sg41QGj+okMRt7tx3GUGzZjxhtpbg=
+	t=1718297345; cv=none; b=GX3pWrejo1H8XdGhbuzJARDkMm8Mj0Sgq7/BIlKuelN78hdC96rR3N+Se1a3T9cOSz0jYKyCGzipThRnnjK9mQhNF9IQLopC+XvDxIkcj5ZdHC7NHZOpK5jkpOIGqW1WqBigRXqzEaUQb+UnXIvb02yR0C4RSnP3kLM/pYOJ5U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718297335; c=relaxed/simple;
-	bh=jGUmh0q+O6SqbqP06gP9IPUhfXRnEQrElPzOhbWDQXg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pRrTQqYDln1JcY0wHjvwJ6QYQLs1s/uwMjV4HAwHhM85ubw75oKqQ34qWs5o6LsN+vSsEhucqwTpiukX5gxyKD/vhUCUzeDsOlA5qLhoDximZmTbq1NzeN7QYPKw0wXpC5Or8t4lBCi2wJu3pxh0SmYuXUiO1sXPsdeDrQWOy8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JDpjmoDc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F894C2BBFC;
-	Thu, 13 Jun 2024 16:48:53 +0000 (UTC)
+	s=arc-20240116; t=1718297345; c=relaxed/simple;
+	bh=cXDfzoOwKRqGSzwNxg87SOL3BlAK0S91RSWtUV30amU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=VUkO2CSr1Ty7n38sVj9Vg0FAt+qKj6+jz5EdoCVN0uXF5cG6mTGkUWfd1ZbtLimy/3py4TTVOdSbU7MiYlZayLgfYqifTpvs+w+tfRhzNkz3ViKw9H0M5+fTLvKWyDU74fdd3jifyo6mzArt+9sP3PAb9QKpdcPT2ectrUsF5K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bKp6yVhc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 508F7C2BBFC;
+	Thu, 13 Jun 2024 16:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718297335;
-	bh=jGUmh0q+O6SqbqP06gP9IPUhfXRnEQrElPzOhbWDQXg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDpjmoDcHPTLMf3kH/tGvozc1smvMoObwiBot8JIY3wost135Mksl8N5t8ZOlacME
-	 9I975IBLmm+qV2RQj14K49M2sfUXUzMEdw9thNMO5ZUFKgS5m0XcYEabCy16T0Cb62
-	 tV+6n832rDilw2FuDnSKzaY6p7vDDBgeNg+/2hCrQkghQKMXXrOAob1yxMj4VWAOSi
-	 LG7xYHQEie/N4nBC7HSLkTI2jMA0jaPZ9j/ElN3MF+CYMeBHnf3L4euCVMl9O/BE0y
-	 ZopniMDHKDgvUzUwGllBzKHBbcUUd3k8tLEaPPrSvRP1BeJz1Xlqp5AIUcgO/o8Xpr
-	 63KjOHjQOBlCg==
-From: SeongJae Park <sj@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	broonie@kernel.org,
-	damon@lists.linux.dev
-Subject: Re: [PATCH 5.15 000/402] 5.15.161-rc1 review
-Date: Thu, 13 Jun 2024 09:48:50 -0700
-Message-Id: <20240613164850.84793-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: 
+	s=k20201202; t=1718297344;
+	bh=cXDfzoOwKRqGSzwNxg87SOL3BlAK0S91RSWtUV30amU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=bKp6yVhckJhq4Ixx080oPJijRcC/j0BChXP0FprCj5qiwAgUDBPbf35SaLm740cUX
+	 29hK0G44ZxDDma5/sWdka0cZDt4oCzapWj/G3juXA/03InqxZxc+epH0FlUHxhEByj
+	 UXvoHTLPpzkpwOzBj0BCWeYp8mXwrXfVBEi+OspBLrPHgsWaAibPpNINC5VCDd8wk8
+	 bt50cJm5mvs6y4Os3uHtcG4qs1Qb2lX9cbyXalyFb5vUo5D70ifSoq3QGeCvuYYwGe
+	 QzGpsZsAihbqPVrWPrzO6PvPhp5y8b6CDSyfJ+tk/2wXFs++sahyj95M6WRSs12six
+	 gI7eEnSietG1w==
+From: Lee Jones <lee@kernel.org>
+To: Pavel Machek <pavel@ucw.cz>, 
+ Jacek Anaszewski <jacek.anaszewski@gmail.com>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dustin Howett <dustin@howett.net>, stable@vger.kernel.org
+In-Reply-To: <20240613-led-trigger-flush-v2-1-f4f970799d77@weissschuh.net>
+References: <20240613-led-trigger-flush-v2-1-f4f970799d77@weissschuh.net>
+Subject: Re: (subset) [PATCH v2] leds: triggers: flush pending brightness
+ before activating trigger
+Message-Id: <171829734304.2712359.10662321406977554017.b4-ty@kernel.org>
+Date: Thu, 13 Jun 2024 17:49:03 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.13.0
 
-Hello,
-
-On Thu, 13 Jun 2024 13:29:17 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-
-> This is the start of the stable review cycle for the 5.15.161 release.
-> There are 402 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Thu, 13 Jun 2024 17:24:51 +0200, Thomas Weißschuh wrote:
+> The race fixed in timer_trig_activate() between a blocking
+> set_brightness() call and trigger->activate() can affect any trigger.
+> So move the call to flush_work() into led_trigger_set() where it can
+> avoid the race for all triggers.
 > 
-> Responses should be made by Sat, 15 Jun 2024 11:31:50 +0000.
-> Anything received after that time might be too late.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.161-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
+Applied, thanks!
 
-Tested-by: SeongJae Park <sj@kernel.org>
+[1/1] leds: triggers: flush pending brightness before activating trigger
+      commit: ad5851de0eb12e088a570092242e421cd00691c5
 
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] 892374ff1e8d ("Linux 5.15.161-rc1")
+--
+Lee Jones [李琼斯]
 
-Thanks,
-SJ
-
-[...]
-
----
-
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_arm64.sh
-ok 12 selftests: damon-tests: build_m68k.sh
-ok 13 selftests: damon-tests: build_i386_idle_flag.sh
-ok 14 selftests: damon-tests: build_i386_highpte.sh
-ok 15 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
 
