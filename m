@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-50949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75995906D8E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443B8906C80
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 043A42815CC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59B5E1C21D6F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5631448EE;
-	Thu, 13 Jun 2024 11:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B2B13A406;
+	Thu, 13 Jun 2024 11:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3fwsdsx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtMeIsoP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A15913A406;
-	Thu, 13 Jun 2024 11:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E1113C805;
+	Thu, 13 Jun 2024 11:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279862; cv=none; b=Mj+wzqhEOuMFF74lXXVjAqw8Oz9tp3vj8edCUvmE0YOao5pFMJ+DrsoCLNqdKT+5SaUqpifo6uVrXxcghSp4fnbwnWGeEWawhJBLVwEIRe9txBsPZwq7G2n/IEhfPQathVqOqUnWhcozX5QCjVZWb0x8KfiDg/jCSymeLFmPKos=
+	t=1718279316; cv=none; b=NVQUxZJxhe1/iI/VaLnCtkie6w5ldXep1hN6e8gvbCSIJ8aZEIi7G576stV0rLqP7JsEuJVlqbdMDXoHRFSYPy/dodRQ8wlctjLXNVoAxbUlqr4Qdswk1cJ9/3hUCotSCxCLhS8v2V2DDbdZIh/QvgNyCBUYaEfEazUGGlJ/7lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279862; c=relaxed/simple;
-	bh=gni2h85gFcSa79NVU42EfdwL5arNJHBhOO50JbfDnd8=;
+	s=arc-20240116; t=1718279316; c=relaxed/simple;
+	bh=a6VXqwB4ucFf30GQQzd9lom+CQ8mHCMamdiZy9lGOdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VqpAKJdXrQAAMBpiCAloLiFrK+o7P4rFe4Hoege6WNuKv6RtvVAKJqHYasmw+86H4bBKhGS9hf+YZ/rHNKzA/lPFvPwEVJWJa0Lwdc3h+2QOHWbaMLDig+yiNhIRA4+uTYAv/4VVzgfmOSWwUEbUW0ZXTVrArfnHpof6/1kD4Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3fwsdsx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87294C32786;
-	Thu, 13 Jun 2024 11:57:41 +0000 (UTC)
+	 MIME-Version; b=LrC/RfL1SP01yNVJuGtkPkjf6/5U2WSA6E5f8utQoRuUaZW6OARUfjoLUqbg5MPd9ZAVvRgHXb5AoZ8mEMu3Ycm9jlW1Cu1unLqaMOiwV/H0CU/pXcKNka39lc1eU9d/i5i9eftHcxDhJ0Mm6ARFmo9n59KS6sOsqrh26Cz97hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtMeIsoP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BCA2C2BBFC;
+	Thu, 13 Jun 2024 11:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279861;
-	bh=gni2h85gFcSa79NVU42EfdwL5arNJHBhOO50JbfDnd8=;
+	s=korg; t=1718279316;
+	bh=a6VXqwB4ucFf30GQQzd9lom+CQ8mHCMamdiZy9lGOdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U3fwsdsxDR7vS4huVFHGKkmiZRzEVH9N56KbQu0LhuWhE1dD+OUCEfLc7FapYG7wN
-	 Xm32awdMHF8DbplEVLJBEjP1ajZNjC1C/Hs9SekPox/F4aY9THop5rwJ7iRbW/lalS
-	 oqDOptzimpLi6e1jqL2mkvOS8OX4dYmts4Vl3ag4=
+	b=mtMeIsoPKupbRlu2RLwNISR+0NXUJFg3BjYZw5wE3AKnmghmrpLSEJ1tPZAWajto4
+	 qOQiC86l4lujzhK6KtFwLGoWi9+0UWngZnU9++nuv8gIid95IywuyhxRK+9mugnTkP
+	 oNCuxSjYx0Iqw1OZICIr2xKEwG4lBD/hmM9d90mU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 062/202] af_unix: Fix data races in unix_release_sock/unix_stream_sendmsg
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.9 035/157] media: mc: Fix graph walk in media_pipeline_start
 Date: Thu, 13 Jun 2024 13:32:40 +0200
-Message-ID: <20240613113230.170117906@linuxfoundation.org>
+Message-ID: <20240613113228.776079704@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 540bf24fba16b88c1b3b9353927204b4f1074e25 ]
+commit 8a9d420149c477e7c97fbd6453704e4612bdd3fa upstream.
 
-A data-race condition has been identified in af_unix. In one data path,
-the write function unix_release_sock() atomically writes to
-sk->sk_shutdown using WRITE_ONCE. However, on the reader side,
-unix_stream_sendmsg() does not read it atomically. Consequently, this
-issue is causing the following KCSAN splat to occur:
+The graph walk tries to follow all links, even if they are not between
+pads. This causes a crash with, e.g. a MEDIA_LNK_FL_ANCILLARY_LINK link.
 
-	BUG: KCSAN: data-race in unix_release_sock / unix_stream_sendmsg
+Fix this by allowing the walk to proceed only for MEDIA_LNK_FL_DATA_LINK
+links.
 
-	write (marked) to 0xffff88867256ddbb of 1 bytes by task 7270 on cpu 28:
-	unix_release_sock (net/unix/af_unix.c:640)
-	unix_release (net/unix/af_unix.c:1050)
-	sock_close (net/socket.c:659 net/socket.c:1421)
-	__fput (fs/file_table.c:422)
-	__fput_sync (fs/file_table.c:508)
-	__se_sys_close (fs/open.c:1559 fs/open.c:1541)
-	__x64_sys_close (fs/open.c:1541)
-	x64_sys_call (arch/x86/entry/syscall_64.c:33)
-	do_syscall_64 (arch/x86/entry/common.c:?)
-	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-	read to 0xffff88867256ddbb of 1 bytes by task 989 on cpu 14:
-	unix_stream_sendmsg (net/unix/af_unix.c:2273)
-	__sock_sendmsg (net/socket.c:730 net/socket.c:745)
-	____sys_sendmsg (net/socket.c:2584)
-	__sys_sendmmsg (net/socket.c:2638 net/socket.c:2724)
-	__x64_sys_sendmmsg (net/socket.c:2753 net/socket.c:2750 net/socket.c:2750)
-	x64_sys_call (arch/x86/entry/syscall_64.c:33)
-	do_syscall_64 (arch/x86/entry/common.c:?)
-	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-	value changed: 0x01 -> 0x03
-
-The line numbers are related to commit dd5a440a31fa ("Linux 6.9-rc7").
-
-Commit e1d09c2c2f57 ("af_unix: Fix data races around sk->sk_shutdown.")
-addressed a comparable issue in the past regarding sk->sk_shutdown.
-However, it overlooked resolving this particular data path.
-This patch only offending unix_stream_sendmsg() function, since the
-other reads seem to be protected by unix_state_lock() as discussed in
-Link: https://lore.kernel.org/all/20240508173324.53565-1-kuniyu@amazon.com/
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240509081459.2807828-1-leitao@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc: stable@vger.kernel.org # for 6.1 and later
+Fixes: ae219872834a ("media: mc: entity: Rewrite media_pipeline_start()")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/mc/mc-entity.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 53335989a6f0c..e8bad973285e4 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -1890,7 +1890,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
- 			goto out_err;
- 	}
+--- a/drivers/media/mc/mc-entity.c
++++ b/drivers/media/mc/mc-entity.c
+@@ -619,6 +619,12 @@ static int media_pipeline_explore_next_l
+ 	link = list_entry(entry->links, typeof(*link), list);
+ 	last_link = media_pipeline_walk_pop(walk);
  
--	if (sk->sk_shutdown & SEND_SHUTDOWN)
-+	if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
- 		goto pipe_err;
- 
- 	while (sent < len) {
--- 
-2.43.0
-
++	if ((link->flags & MEDIA_LNK_FL_LINK_TYPE) != MEDIA_LNK_FL_DATA_LINK) {
++		dev_dbg(walk->mdev->dev,
++			"media pipeline: skipping link (not data-link)\n");
++		return 0;
++	}
++
+ 	dev_dbg(walk->mdev->dev,
+ 		"media pipeline: exploring link '%s':%u -> '%s':%u\n",
+ 		link->source->entity->name, link->source->index,
 
 
 
