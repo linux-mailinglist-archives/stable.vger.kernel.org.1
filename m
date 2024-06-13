@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-50850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4941906D20
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31DB0906C19
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 607541F27D02
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 456DA1C21934
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D427B146587;
-	Thu, 13 Jun 2024 11:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E790143895;
+	Thu, 13 Jun 2024 11:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SrEfDTDC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+WszX7E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CBA143C52;
-	Thu, 13 Jun 2024 11:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494BA145336;
+	Thu, 13 Jun 2024 11:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279569; cv=none; b=HXrxwbabgq4knIiVb0Erbhitkfsgc9JacQjBZou9z8Am1VD+6rtlOoJoEDQ/mI8vH22Uqq05syJ1fU3kgDC17Fk4Tm41X8zKJX3gymJPZYWZ7Bub0pCWX0J1fLf7tOwmf/5VDwfMAvjydlv9fhPREcpYTTc9Ucnp2TF8zZzUznQ=
+	t=1718279160; cv=none; b=oHrpIHdHMs4NGxv1b0dNhwUYONpbUkPYoHfvnX4j1zjaXn8tIakubeFsxz6MmOFUSe8qh6HO2fiyCzUbCOtMJcyx6CDDMhxD1dH4dum0Wf4zKrSLKhuenysq+POKVBYraVDyF5zs1MLoz5CvuSTgL2Y7p1P/PIzQ7cOmn2Qumtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279569; c=relaxed/simple;
-	bh=MUC8cm+6BzVkHjj62zgf8NDR/6w0hQx5JTuoru9ocaI=;
+	s=arc-20240116; t=1718279160; c=relaxed/simple;
+	bh=lw49iaZ3UOjMrq7BeyboyZT+Lt+ky4bkGkCXg/wXgnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qtBCRFANKm3bbP9AxvYM4ltaYAwuHeZf7wt4Rz0Au0mJp8cA05DFjTm9XnpJwl+1kJ4AXr4dj9iKICwr5Tc7Cuc4gbMgNDx+O5LbMpo3wzFIvI6+kv/FMuVTJ/MSnzrcgA9SIXUX7LH4wUTDf1KX3DSY88FR+OSdEkZOaMSGaBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SrEfDTDC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA9BC2BBFC;
-	Thu, 13 Jun 2024 11:52:48 +0000 (UTC)
+	 MIME-Version; b=Tnj8ZTzOVfR39KkNlG74VjhIEJoy9H4MpOEZXYSC2tz2YV8ryflR9DxsKEtkSdMaGDWLwul90z+k2wl/9P00cHpoXxY2wtq8tgzM2YL4WkTDiTN6TYX5U+9z8m270bzyT9BmvVcFmlNcuma62aDY4GVEb/ABqAVtS8P2GXGmmuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+WszX7E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62F0C2BBFC;
+	Thu, 13 Jun 2024 11:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279569;
-	bh=MUC8cm+6BzVkHjj62zgf8NDR/6w0hQx5JTuoru9ocaI=;
+	s=korg; t=1718279160;
+	bh=lw49iaZ3UOjMrq7BeyboyZT+Lt+ky4bkGkCXg/wXgnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SrEfDTDCviY+JMdlIWcDeji5PwF70HMHHZqLw5aA5ERIlLAMWkWpKNpAuGADM1Ptf
-	 k3JQIzvJyF1jNTko//x29HDoYqNPog1lqfWJBq2deIsKm1qxJLSqZXgKV7O9SYvDyq
-	 yZE/btJWKpuvavu4Rqx3KghZYhgGV5fzt262XkPo=
+	b=T+WszX7ELg7XwvzVnjxuosarB+XdUi/nfNmqcvPqsobpc9Y7dFfLVulyNJlbhnULr
+	 DlmivN5hBIsCZjpTcnLRC3o/ohGeOHrxre+mKI+KGwxuBjcPRbqmWL7NdA1DhKcPre
+	 jIrs5WG2qnfeYVE1M45oh9kfsHY/v8JwGWHS68VM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.9 119/157] ext4: set type of ac_groups_linear_remaining to __u32 to avoid overflow
+	Mingi Cho <mgcho.minic@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.19 196/213] netfilter: nf_tables: mark set as dead when unbinding anonymous set with timeout
 Date: Thu, 13 Jun 2024 13:34:04 +0200
-Message-ID: <20240613113232.019150936@linuxfoundation.org>
+Message-ID: <20240613113235.537849113@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 9a9f3a9842927e4af7ca10c19c94dad83bebd713 upstream.
+commit 552705a3650bbf46a22b1adedc1b04181490fc36 upstream.
 
-Now ac_groups_linear_remaining is of type __u16 and s_mb_max_linear_groups
-is of type unsigned int, so an overflow occurs when setting a value above
-65535 through the mb_max_linear_groups sysfs interface. Therefore, the
-type of ac_groups_linear_remaining is set to __u32 to avoid overflow.
+While the rhashtable set gc runs asynchronously, a race allows it to
+collect elements from anonymous sets with timeouts while it is being
+released from the commit path.
 
-Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
-CC: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240319113325.3110393-8-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Mingi Cho originally reported this issue in a different path in 6.1.x
+with a pipapo set with low timeouts which is not possible upstream since
+7395dfacfff6 ("netfilter: nf_tables: use timestamp to check for set
+element timeout").
+
+Fix this by setting on the dead flag for anonymous sets to skip async gc
+in this case.
+
+According to 08e4c8c5919f ("netfilter: nf_tables: mark newset as dead on
+transaction abort"), Florian plans to accelerate abort path by releasing
+objects via workqueue, therefore, this sets on the dead flag for abort
+path too.
+
+Cc: stable@vger.kernel.org
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Reported-by: Mingi Cho <mgcho.minic@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/mballoc.h
-+++ b/fs/ext4/mballoc.h
-@@ -193,8 +193,8 @@ struct ext4_allocation_context {
- 	ext4_grpblk_t	ac_orig_goal_len;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3943,6 +3943,7 @@ void nf_tables_unbind_set(const struct n
  
- 	__u32 ac_flags;		/* allocation hints */
-+	__u32 ac_groups_linear_remaining;
- 	__u16 ac_groups_scanned;
--	__u16 ac_groups_linear_remaining;
- 	__u16 ac_found;
- 	__u16 ac_cX_found[EXT4_MB_NUM_CRS];
- 	__u16 ac_tail;
+ 	if (list_empty(&set->bindings) && nft_set_is_anonymous(set)) {
+ 		list_del_rcu(&set->list);
++		set->dead = 1;
+ 		if (event)
+ 			nf_tables_set_notify(ctx, set, NFT_MSG_DELSET,
+ 					     GFP_KERNEL);
 
 
 
