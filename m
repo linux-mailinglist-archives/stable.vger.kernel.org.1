@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-51993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C2390729F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7FB9072A9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 689C01C21615
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F19401C21B5E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329A714264C;
-	Thu, 13 Jun 2024 12:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64670143884;
+	Thu, 13 Jun 2024 12:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UiD7svLT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4Krc3Uh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA711C32;
-	Thu, 13 Jun 2024 12:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B59384;
+	Thu, 13 Jun 2024 12:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282920; cv=none; b=gMF3EHf4z0tW9wO7woRqh3c4H/TdaYeHyjPNTdRj7On0AcDOgNG8bKx5lwKjjAFGABdS0csg6s5YsKbRMeZyRK+A/PsLnLt8bCfP61MF88aEm40xR3YAfLzQ6NnvsRnbOFv8Lw+hbQy2fiNTWcPnXhA/JMHolzjjuQf6Fi2G7jg=
+	t=1718282952; cv=none; b=iW7siIs3CuJAOMe5RVpjDOVU2Q0E2G+hjg497d/fHF6VgbJLPGasJGlaL2+G4hJqF3d075+XyNerkPF9fQCcog8vT8Ro3gt/pms9bIf2Vj8+b7g19vjyq2cxB0FkTMEHesQN9iaGLD0uoYEw15fJbq63lVUrM4NximZPNbT9ED4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282920; c=relaxed/simple;
-	bh=kfnYECqkozsAQjHem5xSAkvFCb8hYjqrvjd8axuLc9o=;
+	s=arc-20240116; t=1718282952; c=relaxed/simple;
+	bh=M3jpvNVFQ8tO9wCo0KbHjYq37hH+CkOGhOtnqVnaRAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mjFU696Kke1L25fFXYRBnLuExbEWfif7T7BpiRLJtgpFQQY7ZrYED9PDKXHdRs6nDEIBlU7CAhGGxRIYjWdGvqhVUpbHNUd019T4c0LTOutWQ8VaWstIaD5zA6a9M1J3djxNDY4smyCbV1VLLKWASlOg504k8MQX9bTI+4w5UpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UiD7svLT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 647A9C2BBFC;
-	Thu, 13 Jun 2024 12:48:39 +0000 (UTC)
+	 MIME-Version; b=Zwn/qS4BjLqi7pN324W7uxhb3PCnhN63c/Wj1kPDAjZgydkRQxF6N5EYwgKzHMXDu2GvaPADNqyb4zChtcDnJttL2kNQl7VCD7lnyUFF3pHnCht07RpLzxf+tgNvOs8ElvzcjtY7bDTxYeGTOYpDGcqzi74m2PcsO0+qrlpBxhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4Krc3Uh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5D2C2BBFC;
+	Thu, 13 Jun 2024 12:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282919;
-	bh=kfnYECqkozsAQjHem5xSAkvFCb8hYjqrvjd8axuLc9o=;
+	s=korg; t=1718282952;
+	bh=M3jpvNVFQ8tO9wCo0KbHjYq37hH+CkOGhOtnqVnaRAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UiD7svLTxe2AxYOPqbi1qQTLwGs5u8c4M6AmI2KaIKJ4NeDKSdWq5G8f7+GLak2xS
-	 IMpmwYEZ8BQArbnK1thommNcs9Mg/CP3yowZDC9blfzViqK5TX12+QivDnIqxSa3/t
-	 Tp3NKTDxcZXFykTyANejA8kkWAAEyVQZug+hgwoA=
+	b=b4Krc3UhDnA0Qt3Themiv9OUCYxyeeCx3JziiDZTN4LeX31YvXj5V7Hlvw0g70AWQ
+	 C9vKrmHG3//x5pjbZCjVGFp9tXJrKqMAf3vUUOlY8IE2pq96zWOZaYu/GEmzD/gX5L
+	 fxwn0ky3a20tmb8cMj1HO9auyEd0beqSWyslcQwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.1 20/85] wifi: rtw89: correct aSIFSTime for 6GHz band
-Date: Thu, 13 Jun 2024 13:35:18 +0200
-Message-ID: <20240613113214.923003617@linuxfoundation.org>
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Niklas Cassel <cassel@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 6.1 21/85] ata: pata_legacy: make legacy_exit() work again
+Date: Thu, 13 Jun 2024 13:35:19 +0200
+Message-ID: <20240613113214.960362792@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
 References: <20240613113214.134806994@linuxfoundation.org>
@@ -64,32 +66,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-commit f506e3ee547669cd96842e03c8a772aa7df721fa upstream.
+commit d4a89339f17c87c4990070e9116462d16e75894f upstream.
 
-aSIFSTime is 10us for 2GHz band and 16us for 5GHz and 6GHz bands.
-Originally, it doesn't consider 6GHz band and use wrong value, so correct
-it accordingly.
+Commit defc9cd826e4 ("pata_legacy: resychronize with upstream changes and
+resubmit") missed to update legacy_exit(), so that it now fails to do any
+cleanup -- the loop body there can never be entered.  Fix that and finally
+remove now useless nr_legacy_host variable...
 
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
+
+Fixes: defc9cd826e4 ("pata_legacy: resychronize with upstream changes and resubmit")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/20240430020515.8399-1-pkshih@realtek.com
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw89/mac80211.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/pata_legacy.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -263,7 +263,7 @@ static u8 rtw89_aifsn_to_aifs(struct rtw
- 	u8 sifs;
+--- a/drivers/ata/pata_legacy.c
++++ b/drivers/ata/pata_legacy.c
+@@ -173,8 +173,6 @@ static int legacy_port[NR_HOST] = { 0x1f
+ static struct legacy_probe probe_list[NR_HOST];
+ static struct legacy_data legacy_data[NR_HOST];
+ static struct ata_host *legacy_host[NR_HOST];
+-static int nr_legacy_host;
+-
  
- 	slot_time = vif->bss_conf.use_short_slot ? 9 : 20;
--	sifs = chan->band_type == RTW89_BAND_5G ? 16 : 10;
-+	sifs = chan->band_type == RTW89_BAND_2G ? 10 : 16;
+ /**
+  *	legacy_probe_add	-	Add interface to probe list
+@@ -1276,9 +1274,11 @@ static __exit void legacy_exit(void)
+ {
+ 	int i;
  
- 	return aifsn * slot_time + sifs;
+-	for (i = 0; i < nr_legacy_host; i++) {
++	for (i = 0; i < NR_HOST; i++) {
+ 		struct legacy_data *ld = &legacy_data[i];
+-		ata_host_detach(legacy_host[i]);
++
++		if (legacy_host[i])
++			ata_host_detach(legacy_host[i]);
+ 		platform_device_unregister(ld->platform_dev);
+ 	}
  }
 
 
