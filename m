@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-51280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F9A906F24
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D469070FD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D726A1C233FF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3134E284F06
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DC2143759;
-	Thu, 13 Jun 2024 12:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12622CA6;
+	Thu, 13 Jun 2024 12:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRHvJsz9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8XmFoD9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E53143C63;
-	Thu, 13 Jun 2024 12:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B27D161;
+	Thu, 13 Jun 2024 12:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280836; cv=none; b=CQMw6SaQDg6+cwRstRnx/pGXV/aUiGHlU4a08WqGsJ23tXQ46XEhXLb6uWPa4XaXlWP62VATRoinHkZLX5O8yBzYJx52m4VCATiBBGTPwS+iyy1DAhKUXhu6MmsX/ezFKOjYKRgFbpIrsQrtUXk2/SjlUw63rDVqrcy80apv7aI=
+	t=1718281953; cv=none; b=dJ5lCDPHeZSZ+mVQWYR0ZgU40D90V3TGm+B3WLL/3hDMcL8iWDGIXYgk2svXNIQboGp55Cw0z2LKZ5ivvl0HFFAqekvRRaMyaN2MpFGCHGPo1VO9ZUznKdwSX6Qh99S/e6FctyQ/dLOriYJfIXKLPPMbmfGp0TTg8VK25TIusLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280836; c=relaxed/simple;
-	bh=4VMUUW+4pTmYWzduof5UIiA8R6v7s6ps3lQpAj4vDtM=;
+	s=arc-20240116; t=1718281953; c=relaxed/simple;
+	bh=nPlmVubFU/euLVS/MuP+P26xk9YgnUnq0AjCLvqFEv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aTQNlVtuAfBd4IjKdvOrR5arT/zR5wj5qQWMveXIL0ZfJoCEIzfsvXsh0g7rnhzkQajgtUalvp26tnsp5QNYlHzK+accELWd9tdZks7Xe7BVuNzXZ7chH8S8Lt6NubNsiMutNmmIKQxcv6XpUCTW7xbdXZJp0WaB9aJHnoyHikg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRHvJsz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F665C2BBFC;
-	Thu, 13 Jun 2024 12:13:55 +0000 (UTC)
+	 MIME-Version; b=aGuoe6x0+E7n59jSirWJcSJjtFkDHXMbpd7Q6iROG9/dEAyCPelltGBQZ0yrhq4za9FA2sgO0DqM74Spz6qxKuAK4a7MkGxlicq5CLyaNUGXpdLD6ER348AVXdMeQLHWqhaUoKvDoRD/xY4i+3R6uv5mQXNtP8ApPN0ynsGqaio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8XmFoD9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22010C2BBFC;
+	Thu, 13 Jun 2024 12:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280836;
-	bh=4VMUUW+4pTmYWzduof5UIiA8R6v7s6ps3lQpAj4vDtM=;
+	s=korg; t=1718281953;
+	bh=nPlmVubFU/euLVS/MuP+P26xk9YgnUnq0AjCLvqFEv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JRHvJsz9F8YgPop0IQBNhGHrKWi45U+sT/LtQSj3idn3U0RVgoRaUnkPZ7JcCTPUK
-	 4t7pGgnDQk60AUkWr6M+TchfxuD41OSca51MYmluDBeX4SLhqQMSqrvGinShjQGfig
-	 /lPsop5174Fq/nBF6Egtt2AT33llGJmnMEXI1zus=
+	b=Z8XmFoD9KinKX1LswnzZEg4gimGQgyZtBXz7EubEy5s8jr4CY85U8PU8a+tcixsjt
+	 xuzTSu9aLn93NWydC1X3K3GofvpzVoMNUN86UbkujUIDMjySXvo0Uy7sjw5EuAEgWw
+	 guhdsDmShTH/f1qx7eNxSzLThYy5RiNSKXWNS4wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 050/317] gfs2: Fix "ignore unlock failures after withdraw"
+Subject: [PATCH 5.15 111/402] net: ethernet: cortina: Locking fixes
 Date: Thu, 13 Jun 2024 13:31:08 +0200
-Message-ID: <20240613113249.484206023@linuxfoundation.org>
+Message-ID: <20240613113306.460944074@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 5d9231111966b6c5a65016d58dcbeab91055bc91 ]
+[ Upstream commit 812552808f7ff71133fc59768cdc253c5b8ca1bf ]
 
-Commit 3e11e53041502 tries to suppress dlm_lock() lock conversion errors
-that occur when the lockspace has already been released.
+This fixes a probably long standing problem in the Cortina
+Gemini ethernet driver: there are some paths in the code
+where the IRQ registers are written without taking the proper
+locks.
 
-It does that by setting and checking the SDF_SKIP_DLM_UNLOCK flag.  This
-conflicts with the intended meaning of the SDF_SKIP_DLM_UNLOCK flag, so
-check whether the lockspace is still allocated instead.
-
-(Given the current DLM API, checking for this kind of error after the
-fact seems easier that than to make sure that the lockspace is still
-allocated before calling dlm_lock().  Changing the DLM API so that users
-maintain the lockspace references themselves would be an option.)
-
-Fixes: 3e11e53041502 ("GFS2: ignore unlock failures after withdraw")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240509-gemini-ethernet-locking-v1-1-afd00a528b95@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c | 4 +++-
- fs/gfs2/util.c  | 1 -
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index dd052101e2266..b0f01a8e37766 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -691,11 +691,13 @@ __acquires(&gl->gl_lockref.lock)
- 	}
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index 675c6dda45e24..0c8c92ff7704f 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -1108,10 +1108,13 @@ static void gmac_tx_irq_enable(struct net_device *netdev,
+ {
+ 	struct gemini_ethernet_port *port = netdev_priv(netdev);
+ 	struct gemini_ethernet *geth = port->geth;
++	unsigned long flags;
+ 	u32 val, mask;
  
- 	if (sdp->sd_lockstruct.ls_ops->lm_lock)	{
-+		struct lm_lockstruct *ls = &sdp->sd_lockstruct;
+ 	netdev_dbg(netdev, "%s device %d\n", __func__, netdev->dev_id);
+ 
++	spin_lock_irqsave(&geth->irq_lock, flags);
 +
- 		/* lock_dlm */
- 		ret = sdp->sd_lockstruct.ls_ops->lm_lock(gl, target, lck_flags);
- 		if (ret == -EINVAL && gl->gl_target == LM_ST_UNLOCKED &&
- 		    target == LM_ST_UNLOCKED &&
--		    test_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags)) {
-+		    test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
- 			finish_xmote(gl, target);
- 			gfs2_glock_queue_work(gl, 0);
- 		} else if (ret) {
-diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
-index 3ece99e6490c2..d11152dedb803 100644
---- a/fs/gfs2/util.c
-+++ b/fs/gfs2/util.c
-@@ -348,7 +348,6 @@ int gfs2_withdraw(struct gfs2_sbd *sdp)
- 			fs_err(sdp, "telling LM to unmount\n");
- 			lm->lm_unmount(sdp);
- 		}
--		set_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags);
- 		fs_err(sdp, "File system withdrawn\n");
- 		dump_stack();
- 		clear_bit(SDF_WITHDRAW_IN_PROG, &sdp->sd_flags);
+ 	mask = GMAC0_IRQ0_TXQ0_INTS << (6 * netdev->dev_id + txq);
+ 
+ 	if (en)
+@@ -1120,6 +1123,8 @@ static void gmac_tx_irq_enable(struct net_device *netdev,
+ 	val = readl(geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
+ 	val = en ? val | mask : val & ~mask;
+ 	writel(val, geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
++
++	spin_unlock_irqrestore(&geth->irq_lock, flags);
+ }
+ 
+ static void gmac_tx_irq(struct net_device *netdev, unsigned int txq_num)
+@@ -1426,15 +1431,19 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 	union gmac_rxdesc_3 word3;
+ 	struct page *page = NULL;
+ 	unsigned int page_offs;
++	unsigned long flags;
+ 	unsigned short r, w;
+ 	union dma_rwptr rw;
+ 	dma_addr_t mapping;
+ 	int frag_nr = 0;
+ 
++	spin_lock_irqsave(&geth->irq_lock, flags);
+ 	rw.bits32 = readl(ptr_reg);
+ 	/* Reset interrupt as all packages until here are taken into account */
+ 	writel(DEFAULT_Q0_INT_BIT << netdev->dev_id,
+ 	       geth->base + GLOBAL_INTERRUPT_STATUS_1_REG);
++	spin_unlock_irqrestore(&geth->irq_lock, flags);
++
+ 	r = rw.bits.rptr;
+ 	w = rw.bits.wptr;
+ 
+@@ -1737,10 +1746,9 @@ static irqreturn_t gmac_irq(int irq, void *data)
+ 		gmac_update_hw_stats(netdev);
+ 
+ 	if (val & (GMAC0_RX_OVERRUN_INT_BIT << (netdev->dev_id * 8))) {
++		spin_lock(&geth->irq_lock);
+ 		writel(GMAC0_RXDERR_INT_BIT << (netdev->dev_id * 8),
+ 		       geth->base + GLOBAL_INTERRUPT_STATUS_4_REG);
+-
+-		spin_lock(&geth->irq_lock);
+ 		u64_stats_update_begin(&port->ir_stats_syncp);
+ 		++port->stats.rx_fifo_errors;
+ 		u64_stats_update_end(&port->ir_stats_syncp);
 -- 
 2.43.0
 
