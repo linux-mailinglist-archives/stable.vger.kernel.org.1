@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-50945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35AFC906D8C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D70D9906D6A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4C80B20BB8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 615F6281918
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6703143C7E;
-	Thu, 13 Jun 2024 11:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A3A148306;
+	Thu, 13 Jun 2024 11:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+yeWUNb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQsmkVnI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929E813A406;
-	Thu, 13 Jun 2024 11:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9C3148302;
+	Thu, 13 Jun 2024 11:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279850; cv=none; b=MXrySIluTqZ2uSs9+UGi6C/pAueC9NhSyUq8K3/IjXwljX8DwqlrQgTRvrDfPBK+kmi6ubvMqa/tb4Wxpst3+exMy+Rdsihmk3Ban/jb0Bf5JLnLONrxJd6MGZJs3hdkDDVS6iGAt4vp/ndJM8ttbLKLDXwVI+oP9ASuIwbMs9Q=
+	t=1718279761; cv=none; b=bB7jeVlQ2ShFBf8X2qycsxwUnqJHlj9tZfCr7klkJWcsIq545c3ttSYyE3zY53QdvcicotMOrr4JqVe0p6EtuTX7WfHRQKkGHY8U8q117D+RsEcp+VxPKTlB2bB9gqadeFjjGQ+Ohvo4ztdrf9wIm8i7ZPJ0+SSWCrc+Yus5Ubo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279850; c=relaxed/simple;
-	bh=sDdGHqIbzS5b/Na67+GAcLvawo/PFXzgVe0SIIFqbNE=;
+	s=arc-20240116; t=1718279761; c=relaxed/simple;
+	bh=PhvCct5YWuJme/wH3W8JbJzTd+D4bnqkRZ+Dp5ht3ys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mj/V3Fy6l6Opy3IXgkBYqnAhKUwI9TJIcjNOdKw9pg4MWvGMsG6kOTk/wXksJCeUIrFfZx/QCMY7OhZEcJ7/F7QWe1U8i2+9kKSwpplOBVC9sOzWsDrMMdf8gmbnl6+jo7sKctcO33qJFgHhlJgT+SEjw38i0wmx1iy+Q7UREbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+yeWUNb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6151C2BBFC;
-	Thu, 13 Jun 2024 11:57:29 +0000 (UTC)
+	 MIME-Version; b=N1kj5h1Q7CIdb03dK54d+llkLTccWRkprdYYxFwV6jVDFvix24/bVLvXRc8TlwkFtQq3uh+wUdiXFoeY5StruCAt+hDdOegcq72C7w7BS86puZoAnu/v8RfODtBntByHNWBNSdM9tPbURhuJLAPQxpIFKWrDE4n0UgrgWJ1yMeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQsmkVnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C630C4AF1C;
+	Thu, 13 Jun 2024 11:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279850;
-	bh=sDdGHqIbzS5b/Na67+GAcLvawo/PFXzgVe0SIIFqbNE=;
+	s=korg; t=1718279761;
+	bh=PhvCct5YWuJme/wH3W8JbJzTd+D4bnqkRZ+Dp5ht3ys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+yeWUNbs7ntz/MIyKcUY0/prhHCiegX7LXHv4d6vh6NCoqNQ8r5OFbzJPnzXZxT0
-	 xYMCBHu/jlcIRKPBZ2fOw8Mjen7sa9n8DsXLBhxjDzVbioKARo/mrRVJ2JxCv1axV6
-	 ZW8CH+7YYmg35kQeSiXcXwB40BzRf9jJFNUcRM18=
+	b=rQsmkVnIE3/0abXZdqH3Qxj9iimYn6CKMaG/VmAI9FWKaPvFnW5P6ub5qb6S01PWh
+	 w7hSwVpQ6AbZSOJCN4irXzY2mLgxNjTuDy2Kix8hhNWAbbdwE4PPRm6ItiDyQQoyQ2
+	 hHimTbL1pEIcP2e9GofdQKkgA+Gyoyl6scntYpVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Prestwood <prestwoj@gmail.com>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Guixiong Wei <weiguixiong@bytedance.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 027/202] wifi: ath10k: poll service ready message before failing
-Date: Thu, 13 Jun 2024 13:32:05 +0200
-Message-ID: <20240613113228.818862042@linuxfoundation.org>
+Subject: [PATCH 5.4 028/202] x86/boot: Ignore relocations in .notes sections in walk_relocs() too
+Date: Thu, 13 Jun 2024 13:32:06 +0200
+Message-ID: <20240613113228.858768282@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
 References: <20240613113227.759341286@linuxfoundation.org>
@@ -68,79 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Guixiong Wei <weiguixiong@bytedance.com>
 
-[ Upstream commit e57b7d62a1b2f496caf0beba81cec3c90fad80d5 ]
+[ Upstream commit 76e9762d66373354b45c33b60e9a53ef2a3c5ff2 ]
 
-Currently host relies on CE interrupts to get notified that
-the service ready message is ready. This results in timeout
-issue if the interrupt is not fired, due to some unknown
-reasons. See below logs:
+Commit:
 
-[76321.937866] ath10k_pci 0000:02:00.0: wmi service ready event not received
-...
-[76322.016738] ath10k_pci 0000:02:00.0: Could not init core: -110
+  aaa8736370db ("x86, relocs: Ignore relocations in .notes section")
 
-And finally it causes WLAN interface bring up failure.
+... only started ignoring the .notes sections in print_absolute_relocs(),
+but the same logic should also by applied in walk_relocs() to avoid
+such relocations.
 
-Change to give it one more chance here by polling CE rings,
-before failing directly.
+[ mingo: Fixed various typos in the changelog, removed extra curly braces from the code. ]
 
-Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
-
-Fixes: 5e3dd157d7e7 ("ath10k: mac80211 driver for Qualcomm Atheros 802.11ac CQA98xx devices")
-Reported-by: James Prestwood <prestwoj@gmail.com>
-Tested-By: James Prestwood <prestwoj@gmail.com> # on QCA6174 hw3.2
-Link: https://lore.kernel.org/linux-wireless/304ce305-fbe6-420e-ac2a-d61ae5e6ca1a@gmail.com/
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240227030409.89702-1-quic_bqiang@quicinc.com
+Fixes: aaa8736370db ("x86, relocs: Ignore relocations in .notes section")
+Fixes: 5ead97c84fa7 ("xen: Core Xen implementation")
+Fixes: da1a679cde9b ("Add /sys/kernel/notes")
+Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20240317150547.24910-1-weiguixiong@bytedance.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ arch/x86/tools/relocs.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index 4adbe3ab9c870..81689dbab7f49 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -1720,12 +1720,32 @@ void ath10k_wmi_put_wmi_channel(struct wmi_channel *ch,
- 
- int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
- {
--	unsigned long time_left;
-+	unsigned long time_left, i;
- 
- 	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
- 						WMI_SERVICE_READY_TIMEOUT_HZ);
--	if (!time_left)
--		return -ETIMEDOUT;
-+	if (!time_left) {
-+		/* Sometimes the PCI HIF doesn't receive interrupt
-+		 * for the service ready message even if the buffer
-+		 * was completed. PCIe sniffer shows that it's
-+		 * because the corresponding CE ring doesn't fires
-+		 * it. Workaround here by polling CE rings once.
+diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
+index 0043fd374a62f..f9ec998b7e946 100644
+--- a/arch/x86/tools/relocs.c
++++ b/arch/x86/tools/relocs.c
+@@ -689,6 +689,15 @@ static void walk_relocs(int (*process)(struct section *sec, Elf_Rel *rel,
+ 		if (!(sec_applies->shdr.sh_flags & SHF_ALLOC)) {
+ 			continue;
+ 		}
++
++		/*
++		 * Do not perform relocations in .notes sections; any
++		 * values there are meant for pre-boot consumption (e.g.
++		 * startup_xen).
 +		 */
-+		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
++		if (sec_applies->shdr.sh_type == SHT_NOTE)
++			continue;
 +
-+		for (i = 0; i < CE_COUNT; i++)
-+			ath10k_hif_send_complete_check(ar, i, 1);
-+
-+		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
-+							WMI_SERVICE_READY_TIMEOUT_HZ);
-+		if (!time_left) {
-+			ath10k_warn(ar, "polling timed out\n");
-+			return -ETIMEDOUT;
-+		}
-+
-+		ath10k_warn(ar, "service ready completion received, continuing normally\n");
-+	}
-+
- 	return 0;
- }
- 
+ 		sh_symtab = sec_symtab->symtab;
+ 		sym_strtab = sec_symtab->link->strtab;
+ 		for (j = 0; j < sec->shdr.sh_size/sizeof(Elf_Rel); j++) {
 -- 
 2.43.0
 
