@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F18E906EFB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B5A9070CE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FA7E1C22E20
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A2521C23EFE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CEC81ABF;
-	Thu, 13 Jun 2024 12:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612351DFF0;
+	Thu, 13 Jun 2024 12:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUC+meXK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tejz3kux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903731448FF;
-	Thu, 13 Jun 2024 12:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8DF20ED;
+	Thu, 13 Jun 2024 12:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280738; cv=none; b=iU87U8rl0jLvIOsZrtv5Jy1twmF6qGjbZsHZEe3a4JMM/AfXQShp1q91QmKSzOAi2SwqifcB84rIgz7YPYcngd0kCx06S6RpVs2zOB+IHjO2+n7ZBDwVD294aVYCd4FKcd9//0+jBslk9RvfQQhtebPtNzIFoTrBxF2mRzmCAAg=
+	t=1718281860; cv=none; b=jNDNcHMruFKjLsBp5yTY0xCeHh4N9eRQ7N+fK77mPIbuDEu0/+4rBkfdlp/veRgDzOuALE8XTJSiCJzMtUniRpT2BMhn+QVdwkjDSEBHDnATsBTFtKDx9z2Nz/oXFYTugO/p2/8BBP0vF6piY/eeGkL5MTdJmKngE6Kvz+mn5Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280738; c=relaxed/simple;
-	bh=/AwWj4fHZwaQSnyNEHLhscTc4JmIei0qDwSpAtQD8mU=;
+	s=arc-20240116; t=1718281860; c=relaxed/simple;
+	bh=GvX+ABvDPZcVzHGKLxU9vzo/jhR0JekS7PShJEyOsTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aSHYkerHKDCbUGq1htIMFjAP0Lv/Jx3byfDyPICnkB56XADCDGY6d1hnKYy+wut90myRkXLL/AmPjRjfitZa5P1gfKdbGYh0DcW09Agx3HNq24GJXUWWF1Y0/k73AB8WE6qaa3o3lTVrjDxZksN06axdUWusEmYPmzRfAdFz2fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUC+meXK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 154EEC2BBFC;
-	Thu, 13 Jun 2024 12:12:17 +0000 (UTC)
+	 MIME-Version; b=CJ80SCby++bU4P+TN3ek/O1ZQZECYs85vxOGqZEU07dsafudR2LwR6MikcS4tNpqXkDxmD+c3Yzh691qzsg9oEzmI1nebp2v46Lz7ex2YX4ziizsW1YR50xN249OSMkpVmxAdejF0CTyUtYWKOOJaEvFSKHINTObKjgmFsA3EpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tejz3kux; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9556FC32786;
+	Thu, 13 Jun 2024 12:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280738;
-	bh=/AwWj4fHZwaQSnyNEHLhscTc4JmIei0qDwSpAtQD8mU=;
+	s=korg; t=1718281860;
+	bh=GvX+ABvDPZcVzHGKLxU9vzo/jhR0JekS7PShJEyOsTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SUC+meXKLKXAzmPIu0pgvZh51yWZc+K/cWEwAoTg/0t9s5rtTNGtXIMqek9iYsOO0
-	 VthBNNa73hsjBmlgZac3d6mptK0CVuYAvbXAD4avzvMkeD7/Q96BgV3LGWDMb1d216
-	 eqROVufAcdwSw69szZc8iigZwbpLo+2I775L27lw=
+	b=tejz3kux84Rj4huWI0rpIKw317CCSuas/lXXG5na3VViGW6v0f1hUoyMzTbpg3cpY
+	 izv+2UEUieQKwziv0VMunzsZDW/KK353Qel/drQcNvnesewX31esCfiyAOWHKMi3FF
+	 gCop37khMsKKKThKM6Ax4koIUHLDijcl/4PNLpWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lancelot SIX <lancelot.six@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 018/317] drm/amdkfd: Flush the process wq before creating a kfd_process
+Subject: [PATCH 5.15 079/402] cppc_cpufreq: Fix possible null pointer dereference
 Date: Thu, 13 Jun 2024 13:30:36 +0200
-Message-ID: <20240613113248.246271480@linuxfoundation.org>
+Message-ID: <20240613113305.217901796@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lancelot SIX <lancelot.six@amd.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit f5b9053398e70a0c10aa9cb4dd5910ab6bc457c5 ]
+[ Upstream commit cf7de25878a1f4508c69dc9f6819c21ba177dbfe ]
 
-There is a race condition when re-creating a kfd_process for a process.
-This has been observed when a process under the debugger executes
-exec(3).  In this scenario:
-- The process executes exec.
- - This will eventually release the process's mm, which will cause the
-   kfd_process object associated with the process to be freed
-   (kfd_process_free_notifier decrements the reference count to the
-   kfd_process to 0).  This causes kfd_process_ref_release to enqueue
-   kfd_process_wq_release to the kfd_process_wq.
-- The debugger receives the PTRACE_EVENT_EXEC notification, and tries to
-  re-enable AMDGPU traps (KFD_IOC_DBG_TRAP_ENABLE).
- - When handling this request, KFD tries to re-create a kfd_process.
-   This eventually calls kfd_create_process and kobject_init_and_add.
+cppc_cpufreq_get_rate() and hisi_cppc_cpufreq_get_rate() can be called from
+different places with various parameters. So cpufreq_cpu_get() can return
+null as 'policy' in some circumstances.
+Fix this bug by adding null return check.
 
-At this point the call to kobject_init_and_add can fail because the
-old kfd_process.kobj has not been freed yet by kfd_process_wq_release.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-This patch proposes to avoid this race by making sure to drain
-kfd_process_wq before creating a new kfd_process object.  This way, we
-know that any cleanup task is done executing when we reach
-kobject_init_and_add.
-
-Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: a28b2bfc099c ("cppc_cpufreq: replace per-cpu data array with a list")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/cpufreq/cppc_cpufreq.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index d243e60c6eef7..534f2dec6356f 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -766,6 +766,14 @@ struct kfd_process *kfd_create_process(struct file *filep)
- 	if (process) {
- 		pr_debug("Process already found\n");
- 	} else {
-+		/* If the process just called exec(3), it is possible that the
-+		 * cleanup of the kfd_process (following the release of the mm
-+		 * of the old process image) is still in the cleanup work queue.
-+		 * Make sure to drain any job before trying to recreate any
-+		 * resource for this process.
-+		 */
-+		flush_workqueue(kfd_process_wq);
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index e0ff09d66c96b..17cfa2b92eeec 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -615,10 +615,15 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+ {
+ 	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+-	struct cppc_cpudata *cpu_data = policy->driver_data;
++	struct cppc_cpudata *cpu_data;
+ 	u64 delivered_perf;
+ 	int ret;
+ 
++	if (!policy)
++		return -ENODEV;
 +
- 		process = create_process(thread);
- 		if (IS_ERR(process))
- 			goto out;
++	cpu_data = policy->driver_data;
++
+ 	cpufreq_cpu_put(policy);
+ 
+ 	ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
+@@ -697,10 +702,15 @@ static struct cpufreq_driver cppc_cpufreq_driver = {
+ static unsigned int hisi_cppc_cpufreq_get_rate(unsigned int cpu)
+ {
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+-	struct cppc_cpudata *cpu_data = policy->driver_data;
++	struct cppc_cpudata *cpu_data;
+ 	u64 desired_perf;
+ 	int ret;
+ 
++	if (!policy)
++		return -ENODEV;
++
++	cpu_data = policy->driver_data;
++
+ 	cpufreq_cpu_put(policy);
+ 
+ 	ret = cppc_get_desired_perf(cpu, &desired_perf);
 -- 
 2.43.0
 
