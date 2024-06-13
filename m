@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-51292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98617906F2D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A8A907134
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E6641F234D9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3BC51F20F62
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085C0144D3F;
-	Thu, 13 Jun 2024 12:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4FA2566;
+	Thu, 13 Jun 2024 12:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VGi3BoD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tL/Krl7W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6E613CF9E;
-	Thu, 13 Jun 2024 12:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05124A07;
+	Thu, 13 Jun 2024 12:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280872; cv=none; b=rJGWGzYG+ZRgAjk0wmI2U5O47D1DQ3Q1MyKPK6qRotGGoGyN1vroKXvBLS1pVy/iGufaOlLOHLOP/aBiGKEgR+GTfzxysqfqRKR3xSaorzHjx88YaCmgR+GFaMR/ZIaex3n1Hm0IYJHXpqEA7k7hP/VWp2lNm9fSkcKEhfrJaiM=
+	t=1718282077; cv=none; b=SlLG20eQBtvh9rESfqjq/Btia9BPjdkpU+0nHySCdqh/Di7pD+/zEpb6tOJ7ifp9UcKNYIoTg6Uf69Zd3vPCJqrwdVpYC27svgngJr9Fkfrf5JIzFa5YRRgDC+HL3nWeCl7ny9cvyyvCgRFb0REbIgUCZYHebvXRVBZiA9rrTjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280872; c=relaxed/simple;
-	bh=fTH2q7QqtJZmGrn9+JEdKGn9K3AeZadfLpjUbX58P7k=;
+	s=arc-20240116; t=1718282077; c=relaxed/simple;
+	bh=82aztCju/V0q34RtN8rt4GVGsFnOpMnmxRZlAdr4Lfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PdBZITJpsS2trBJbHjZ9V98dasXVlttVpL7nHM4Sd0qxH9UwkIHbnHTweHw0UF3y0oPZTqxJaB1e9Iyk281q5cR6962dFNtU2qN+y+alWuzmijPt2DbuW8DGpHVpLQg5jPHiJjoslEjOvIX1hK1D4e3vL51961y0qcooavKxuC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VGi3BoD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D74D5C2BBFC;
-	Thu, 13 Jun 2024 12:14:30 +0000 (UTC)
+	 MIME-Version; b=TVNZd0xkAnd81yGF4VwIbemrdHz4kHdft0TEG5X+MvcT+Z9DV8XOeIl1cYDGFJptvt9bB4b0OfHrUjGtLBbaBCdldctmWPZbFlzF/2MdEDE8NTI8r+U94a/GNhJetfK95rL9V8ReLHOF0PiAABP+7yVMVMfqEEJ0HO6rf5dhBA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tL/Krl7W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DF7C2BBFC;
+	Thu, 13 Jun 2024 12:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280871;
-	bh=fTH2q7QqtJZmGrn9+JEdKGn9K3AeZadfLpjUbX58P7k=;
+	s=korg; t=1718282076;
+	bh=82aztCju/V0q34RtN8rt4GVGsFnOpMnmxRZlAdr4Lfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1VGi3BoD6VmC98JAhMkTP/3HDN+ps1ee/viKSiW1z5gxfcYxeJ8s3cHQ1hS6nLgNU
-	 VM7XrGa8bt67VC0XETVMBijZc9tKgibYszB1TQ3j2Jf9kgsFwCGo2fsF3VKPFJivtQ
-	 /ZWY5sz8B/+4Sfikx22sKdx4Uh5berK9wK2LF4PU=
+	b=tL/Krl7WmL9La1we1ZdcOmZElITkEvfyB60L3/4tVXWdeUniXz69YRsUV6U+e3Tm8
+	 a6ktTfdVlNWDMQ1VsCoyw9f8WOuFQzR77S9MrG9Ev5evz547FRm2tKtQ7Cl5RTmUQF
+	 pfiuIAYhPDbW69OMVZjYi6MiB4ua+4PsKqeHDBUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Fangrui Song <maskray@google.com>,
-	Nick Desaulniers <ndesaulniers@google.com>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 061/317] x86/purgatory: Switch to the position-independent small code model
-Date: Thu, 13 Jun 2024 13:31:19 +0200
-Message-ID: <20240613113249.910748703@linuxfoundation.org>
+Subject: [PATCH 5.15 123/402] drm/amd/display: Fix potential index out of bounds in color transformation function
+Date: Thu, 13 Jun 2024 13:31:20 +0200
+Message-ID: <20240613113306.938531756@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +69,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit cba786af84a0f9716204e09f518ce3b7ada8555e ]
+[ Upstream commit 63ae548f1054a0b71678d0349c7dc9628ddd42ca ]
 
-On x86, the ordinary, position dependent small and kernel code models
-only support placement of the executable in 32-bit addressable memory,
-due to the use of 32-bit signed immediates to generate references to
-global variables. For the kernel, this implies that all global variables
-must reside in the top 2 GiB of the kernel virtual address space, where
-the implicit address bits 63:32 are equal to sign bit 31.
+Fixes index out of bounds issue in the color transformation function.
+The issue could occur when the index 'i' exceeds the number of transfer
+function points (TRANSFER_FUNC_POINTS).
 
-This means the kernel code model is not suitable for other bare metal
-executables such as the kexec purgatory, which can be placed arbitrarily
-in the physical address space, where its address may no longer be
-representable as a sign extended 32-bit quantity. For this reason,
-commit
+The fix adds a check to ensure 'i' is within bounds before accessing the
+transfer function points. If 'i' is out of bounds, an error message is
+logged and the function returns false to indicate an error.
 
-  e16c2983fba0 ("x86/purgatory: Change compiler flags from -mcmodel=kernel to -mcmodel=large to fix kexec relocation errors")
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:405 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:406 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:407 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
 
-switched to the large code model, which uses 64-bit immediates for all
-symbol references, including function calls, in order to avoid relying
-on any assumptions regarding proximity of symbols in the final
-executable.
-
-The large code model is rarely used, clunky and the least likely to
-operate in a similar fashion when comparing GCC and Clang, so it is best
-avoided. This is especially true now that Clang 18 has started to emit
-executable code in two separate sections (.text and .ltext), which
-triggers an issue in the kexec loading code at runtime.
-
-The SUSE bugzilla fixes tag points to gcc 13 having issues with the
-large model too and that perhaps the large model should simply not be
-used at all.
-
-Instead, use the position independent small code model, which makes no
-assumptions about placement but only about proximity, where all
-referenced symbols must be within -/+ 2 GiB, i.e., in range for a
-RIP-relative reference. Use hidden visibility to suppress the use of a
-GOT, which carries absolute addresses that are not covered by static ELF
-relocations, and is therefore incompatible with the kexec loader's
-relocation logic.
-
-  [ bp: Massage commit message. ]
-
-Fixes: e16c2983fba0 ("x86/purgatory: Change compiler flags from -mcmodel=kernel to -mcmodel=large to fix kexec relocation errors")
-Fixes: https://bugzilla.suse.com/show_bug.cgi?id=1211853
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2016
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Fangrui Song <maskray@google.com>
-Acked-by: Nick Desaulniers <ndesaulniers@google.com>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/all/20240417-x86-fix-kexec-with-llvm-18-v1-0-5383121e8fb7@kernel.org/
+Fixes: b629596072e5 ("drm/amd/display: Build unity lut for shaper")
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Charlene Liu <Charlene.Liu@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/purgatory/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
-index dc0b91c1db04b..7c7bfdf0d0c0f 100644
---- a/arch/x86/purgatory/Makefile
-+++ b/arch/x86/purgatory/Makefile
-@@ -37,7 +37,8 @@ KCOV_INSTRUMENT := n
- # make up the standalone purgatory.ro
- 
- PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel
--PURGATORY_CFLAGS := -mcmodel=large -ffreestanding -fno-zero-initialized-in-bss -g0
-+PURGATORY_CFLAGS := -mcmodel=small -ffreestanding -fno-zero-initialized-in-bss -g0
-+PURGATORY_CFLAGS += -fpic -fvisibility=hidden
- PURGATORY_CFLAGS += $(DISABLE_STACKLEAK_PLUGIN) -DDISABLE_BRANCH_PROFILING
- PURGATORY_CFLAGS += -fno-stack-protector
- 
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
+index 7a00fe525dfba..bd9bc51983fec 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
+@@ -379,6 +379,11 @@ bool cm_helper_translate_curve_to_hw_format(
+ 				i += increment) {
+ 			if (j == hw_points - 1)
+ 				break;
++			if (i >= TRANSFER_FUNC_POINTS) {
++				DC_LOG_ERROR("Index out of bounds: i=%d, TRANSFER_FUNC_POINTS=%d\n",
++					     i, TRANSFER_FUNC_POINTS);
++				return false;
++			}
+ 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
+ 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
+ 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
 -- 
 2.43.0
 
