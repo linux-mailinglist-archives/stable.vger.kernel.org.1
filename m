@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD779071B0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53927906E65
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08A3F1F27AE7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D43A9B25391
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D763781AA7;
-	Thu, 13 Jun 2024 12:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F95F146D63;
+	Thu, 13 Jun 2024 12:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4SVuTdV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epDIyN/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9551717FD;
-	Thu, 13 Jun 2024 12:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D01A146D45;
+	Thu, 13 Jun 2024 12:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282348; cv=none; b=JHwkQE/0yIyHoJF+NRKn6x32txJDIDBsvJlj4zILNWCdcuipiV84SUy36pGNXcWozi3kBhq0PM7OiKVJZy+to7/9moWTgGrYVtzG0mPm/VQNWAUhpyD8k34Taf1apXwCvmHhXSXGbqNlc+RAYZ2VW8fkIF6UI3WWXY1DOWFFExU=
+	t=1718280344; cv=none; b=NvW67QE4+eoU7YmO1Exs3RUNPo3n1cay/7kjNMe0w2VXwoow39tznKTKo/sdtRuBB1qKFOL8t/N9p01ALoiQuOALvDzpY4NlmYzroLtC0cuTS9lkU2fCmAozX3tk6812esSH21UeaF2vi5XfXr8Vmiyw8bpeLvBUqu/bz9rc8EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282348; c=relaxed/simple;
-	bh=9hkmk500X620F1tZ+svAxHvDLFzPsHXB9hKNebVvoOY=;
+	s=arc-20240116; t=1718280344; c=relaxed/simple;
+	bh=dO/lprbgT35h7vCu/f9okB4r+Nz3UIToJMZ980dtxOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l92Cw9XXvNwqrlfB6E8DHjRNGP2RKK5GEKFsFN0IkbWWHcZxeew4PmX1PfaB8O20xTeB/nDS5QIO/HTN/lgVfiQJQVPC12Prvf7QY9sy2lUApuqZcUu+7Rx3Je/imgrfvRfTU3YuPX1lDQVwO58uXHMxpndpyrVM7BWSyu44Gn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4SVuTdV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF788C2BBFC;
-	Thu, 13 Jun 2024 12:39:07 +0000 (UTC)
+	 MIME-Version; b=fU2HW6ooumjmC4S/hveD97Mm2UBWeWjiowPygSnm76Rksht2agGJRlEd/yRLtIGqAafeItCgkLBy0fDwI+XPEhk/gEO8U71GkBdXq1L0b4K069sR5ZQssC4EmbkDBfpczZWp+syE1BTc4CME7jLE46AdqsD5GSs7KP1JkxaFfxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epDIyN/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E4CC2BBFC;
+	Thu, 13 Jun 2024 12:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282348;
-	bh=9hkmk500X620F1tZ+svAxHvDLFzPsHXB9hKNebVvoOY=;
+	s=korg; t=1718280344;
+	bh=dO/lprbgT35h7vCu/f9okB4r+Nz3UIToJMZ980dtxOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r4SVuTdVVQNGdE2JkUZpWk1t1VbfJBkyaC+ir3vPpNFSNKkSpnkDgxmsCr0B9ZFdr
-	 J4hMpw8uZoReY0qts2ggRHhDFBoTHDOBCJPm0xp0QHuQ2A2hMUWHjvwhVBqLgCo9KW
-	 5Qdyn+ZO/sBeOJeEZvUIcg4m0UnyFkEIrvZaiLiM=
+	b=epDIyN/AfZTX7s8T6HLmyxO5u6GKEuyLWLIfA+PV9vSufnKLV0c4MHq5a6QfIHlf4
+	 FeumyAqxEoRE9Ao1AsOMdEe1qrn9Ja99a+2iwsW8thGvGGzDpnhJ6kZabbcPgH+LZS
+	 OPt1UYmlOFsdS+OAUkMD0f5YMlRZBbT6/7SCsbvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 245/402] s390/boot: Remove alt_stfle_fac_list from decompressor
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Niklas Cassel <cassel@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 6.6 022/137] ata: pata_legacy: make legacy_exit() work again
 Date: Thu, 13 Jun 2024 13:33:22 +0200
-Message-ID: <20240613113311.706132375@linuxfoundation.org>
+Message-ID: <20240613113224.148774741@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit e7dec0b7926f3cd493c697c4c389df77e8e8a34c ]
+commit d4a89339f17c87c4990070e9116462d16e75894f upstream.
 
-It is nowhere used in the decompressor, therefore remove it.
+Commit defc9cd826e4 ("pata_legacy: resychronize with upstream changes and
+resubmit") missed to update legacy_exit(), so that it now fails to do any
+cleanup -- the loop body there can never be entered.  Fix that and finally
+remove now useless nr_legacy_host variable...
 
-Fixes: 17e89e1340a3 ("s390/facilities: move stfl information from lowcore to global data")
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
+
+Fixes: defc9cd826e4 ("pata_legacy: resychronize with upstream changes and resubmit")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/boot/startup.c | 1 -
- arch/s390/kernel/setup.c | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ drivers/ata/pata_legacy.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/s390/boot/startup.c b/arch/s390/boot/startup.c
-index 1aa11a8f57dd8..05fed61c5e3b7 100644
---- a/arch/s390/boot/startup.c
-+++ b/arch/s390/boot/startup.c
-@@ -27,7 +27,6 @@ int __bootdata(is_full_image) = 1;
- struct initrd_data __bootdata(initrd_data);
+--- a/drivers/ata/pata_legacy.c
++++ b/drivers/ata/pata_legacy.c
+@@ -173,8 +173,6 @@ static int legacy_port[NR_HOST] = { 0x1f
+ static struct legacy_probe probe_list[NR_HOST];
+ static struct legacy_data legacy_data[NR_HOST];
+ static struct ata_host *legacy_host[NR_HOST];
+-static int nr_legacy_host;
+-
  
- u64 __bootdata_preserved(stfle_fac_list[16]);
--u64 __bootdata_preserved(alt_stfle_fac_list[16]);
- struct oldmem_data __bootdata_preserved(oldmem_data);
+ /**
+  *	legacy_probe_add	-	Add interface to probe list
+@@ -1276,9 +1274,11 @@ static __exit void legacy_exit(void)
+ {
+ 	int i;
  
- void error(char *x)
-diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
-index b7ce6c7c84c6f..50cb4c3d3682a 100644
---- a/arch/s390/kernel/setup.c
-+++ b/arch/s390/kernel/setup.c
-@@ -154,7 +154,7 @@ unsigned int __bootdata_preserved(zlib_dfltcc_support);
- EXPORT_SYMBOL(zlib_dfltcc_support);
- u64 __bootdata_preserved(stfle_fac_list[16]);
- EXPORT_SYMBOL(stfle_fac_list);
--u64 __bootdata_preserved(alt_stfle_fac_list[16]);
-+u64 alt_stfle_fac_list[16];
- struct oldmem_data __bootdata_preserved(oldmem_data);
- 
- unsigned long VMALLOC_START;
--- 
-2.43.0
-
+-	for (i = 0; i < nr_legacy_host; i++) {
++	for (i = 0; i < NR_HOST; i++) {
+ 		struct legacy_data *ld = &legacy_data[i];
+-		ata_host_detach(legacy_host[i]);
++
++		if (legacy_host[i])
++			ata_host_detach(legacy_host[i]);
+ 		platform_device_unregister(ld->platform_dev);
+ 	}
+ }
 
 
 
