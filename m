@@ -1,137 +1,166 @@
-Return-Path: <stable+bounces-52104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A36D907D12
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 22:02:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 082BE907D1F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 22:06:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EB5F1C22B94
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 20:02:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A74431F26E3C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 20:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469CF12F592;
-	Thu, 13 Jun 2024 20:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21ECC12F592;
+	Thu, 13 Jun 2024 20:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZMxL5znc"
+	dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b="W+EP8Igu"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1B674420
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 20:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2460D57C8D;
+	Thu, 13 Jun 2024 20:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718308960; cv=none; b=md84vv/WSNQb+3yL/rPx1rkOiJstollhUStXa0H9h8R/uJISctApR1JM7FvXgYtfhxSGuOTCtHLfkFv513Pr7pYckcciR3WmAknxixB7d3Zea6t2aqhgxraVvMq/xyxivfzFfjGQD1HBq/u5s/ihSfmK+VDLlK4VIzpsAOM2f/k=
+	t=1718309181; cv=none; b=aNbPDhJ6aGsIrqmj2/IMKiyuKaPw6jDzlUsFicqZy8u5PPstCT/b/u8auASAlwiEUZf4WKCnO1k1JAK+yrgh76uYbSjucmQjIGqmpQFWpuIijsL015j4l7bin/Laf0G51aCP8DdTVLDLy+g0vev4ks1ZY/DO9zMu6EX4/Suhj20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718308960; c=relaxed/simple;
-	bh=nZHkn9CFpefrZY3eWeeEqqD5HAzw2mDE+4bndbTLj6A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=P4jOHI6TZ2N9pD6MIFYwcW5Mm8de2iEtZB9qJp7iazALgaQhD1x9rWKddDZ7+QfdTdA2LAACfuLQzFfX2xO2XdmpQLx6z6vmcdEBhV+6Uzu8ADHFNnjxEMq+HOzoyg3mLpg14Zc6wzvZNXAE+VZs6DDLCYfjweHNiCfvAakgrGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZMxL5znc; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718308957;
+	s=arc-20240116; t=1718309181; c=relaxed/simple;
+	bh=pmQLbnxNeix35LACGGgkQM5CANOhdFmQJHiAOTuOOTE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hoAk3UcYtrzBta4b69Mg9fOnyCndtxCYFkAhdg2KW0Oi0YT/RfkfJxoz/WMTQ5XbdXveLlBraSYjF+TeIC6sbpBz+z7kWR3mWFnHDBwvRd43TnD2fX4Le9gpl9i7DEIyMnqQnwmyubYvlsDRrM9OXmE4/u5dn5KsR2eMSeiYJtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de; spf=pass smtp.mailfrom=hauke-m.de; dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b=W+EP8Igu; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hauke-m.de
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4W0YM46yDBz9srt;
+	Thu, 13 Jun 2024 22:06:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
+	t=1718309169;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kVEaHilVHQqQUsCzFKQ9WozHv/uf627moCvVT7gZQEQ=;
-	b=ZMxL5zncSQ4KHNvpHUPpmiJKlu+xYdUYvYY+P25VGyBvuBlxkFTOWTtNnKeUGug6fr9xIQ
-	Au2Y9SZ/WGR15yEuX/2WPPZqMkobyNvlGYo9TXFIlW0jSCqZ2zh/ymG96gxJOZ5qla1t+n
-	UGWp0LVxyByZ3TFgixLECqp5b4ans/o=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-349-LNr-28ksPey-89cceves8A-1; Thu,
- 13 Jun 2024 16:02:33 -0400
-X-MC-Unique: LNr-28ksPey-89cceves8A-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1699E19560B1;
-	Thu, 13 Jun 2024 20:02:30 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.22.16.90])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 87B821956050;
-	Thu, 13 Jun 2024 20:02:26 +0000 (UTC)
-From: Joel Slebodnick <jslebodn@redhat.com>
-To: linux-scsi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	alim.akhtar@samsung.com,
-	avri.altman@wdc.com,
-	bvanassche@acm.org,
-	James.Bottomley@HansenPartnership.com,
-	martin.petersen@oracle.com,
-	peter.wang@mediatek.com,
-	manivannan.sadhasivam@linaro.org,
-	ahalaney@redhat.com,
-	beanhuo@micron.com,
-	Joel Slebodnick <jslebodn@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] scsi: ufs: core: Free memory allocated for model before reinit
-Date: Thu, 13 Jun 2024 16:02:02 -0400
-Message-Id: <20240613200202.2524194-1-jslebodn@redhat.com>
-In-Reply-To: <20240613182728.2521951-1-jslebodn@redhat.com>
-References: <20240613182728.2521951-1-jslebodn@redhat.com>
+	bh=tQmLUvtzAsNFE7xP7nFPT7DkdHv5DvPLP43079u0hVE=;
+	b=W+EP8Igug9ZLWc46767W4sbETegg3MhvHXuwepyH6slZV7xKe+g3TIlfmLg2q4g1p6RzNW
+	M8V0tWBBB35PS23nYbrZXjv1Sp+9jxcecfKtJxACiHV+Z5kz/lwmJx+lTusRv6ieoBexp0
+	PF3OOT07EuP1SRZLSpHgrH+9VgN1q6yMT1ERU+43crGVnOIlIL1Exw+XxMXjMkVn5b9hcu
+	3wKCESUpwv17G1b50vs200ZqXaStxgJrl0GGFztaMSyxldZjcBNIcorKnl4dsOWGikPk+0
+	B057iMFKLsjBPGpJaDDKEpB2xthM7G39y4+L44CNHBzhuQNNYN9pWui7YzD2Tw==
+Message-ID: <6e4eed26-0a15-4ab4-8f3f-7ed0e223db5e@hauke-m.de>
+Date: Thu, 13 Jun 2024 22:06:06 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH] MIPS: pci: lantiq: restore reset gpio polarity
+To: Martin Schiller <ms@dev.tdt.de>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: tsbogend@alpha.franken.de, rdunlap@infradead.org, robh@kernel.org,
+ bhelgaas@google.com, linux-mips@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240607090400.1816612-1-ms@dev.tdt.de>
+ <ZmnfQWFoIw5UCV-k@google.com> <7d34eb4017e809245daa342e3ccddf4f@dev.tdt.de>
+ <b6bea9239050ed39ce3a051a5985b86d@dev.tdt.de>
+Content-Language: en-US
+From: Hauke Mehrtens <hauke@hauke-m.de>
+In-Reply-To: <b6bea9239050ed39ce3a051a5985b86d@dev.tdt.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Under the conditions that a device is to be reinitialized within
-ufshcd_probe_hba, the device must first be fully reset.
+On 6/12/24 21:47, Martin Schiller wrote:
+> On 2024-06-12 20:39, Martin Schiller wrote:
+>> On 2024-06-12 19:47, Dmitry Torokhov wrote:
+>>> Hi Marton,
+>>
+>> Hi Dmitry,
+>>
+>>>
+>>> On Fri, Jun 07, 2024 at 11:04:00AM +0200, Martin Schiller wrote:
+>>>> Commit 90c2d2eb7ab5 ("MIPS: pci: lantiq: switch to using gpiod API") 
+>>>> not
+>>>> only switched to the gpiod API, but also inverted / changed the 
+>>>> polarity
+>>>> of the GPIO.
+>>>>
+>>>> According to the PCI specification, the RST# pin is an active-low
+>>>> signal. However, most of the device trees that have been widely used 
+>>>> for
+>>>> a long time (mainly in the openWrt project) define this GPIO as
+>>>> active-high and the old driver code inverted the signal internally.
+>>>>
+>>>> Apparently there are actually boards where the reset gpio must be
+>>>> operated inverted. For this reason, we cannot use the 
+>>>> GPIOD_OUT_LOW/HIGH
+>>>> flag for initialization. Instead, we must explicitly set the gpio to
+>>>> value 1 in order to take into account any "GPIO_ACTIVE_LOW" flag that
+>>>> may have been set.
+>>>
+>>> Do you have example of such boards? They could not have worked before
+>>> 90c2d2eb7ab5 because it was actively setting the reset line to physical
+>>> high, which should leave the device in reset state if there is an
+>>> inverter between the AP and the device.
+>>
+>> Oh, you're right. I totally missed that '__gpio_set_value' was used in
+>> the original code and that raw accesses took place without paying
+>> attention to the GPIO_ACTIVE_* flags.
+>>
+>> You can find the device trees I am talking about in [1].
+>>
+>> @Thomas Bogendoerfer:
+>> Would it be possible to stop the merging of this patch?
+>> I think We have to do do some further/other changes.
+>>
+>>>
+>>>>
+>>>> In order to remain compatible with all these existing device trees, we
+>>>> should therefore keep the logic as it was before the commit.
+>>>
+>>> With gpiod API operating with logical states there's still difference in
+>>> logic:
+>>>
+>>>     gpiod_set_value_cansleep(reset_gpio, 1);
+>>>
+>>> will leave GPIO at 1 if it is described as GPIO_ACTIVE_HIGH (which is
+>>> apparently what you want for boards with broken DTS) but for boards
+>>> that accurately describe GPIO as GPIO_ACTIVE_LOW it well drive GPIO to
+>>> 0, leaving the card in reset state.
+>>>
+>>> You should either use gpiod_set_raw_value_calsleep() or we can try and
+>>> quirk it in gpiolib (like we do for many other cases of incorrect GPIO
+>>> polarity descriptions and which is my preference).
+> 
+> So you mean we should add an entry for "lantiq,pci-xway" to the
+> of_gpio_try_fixup_polarity()?
+> Do you know any dts / device outside the openWrt universe which is using
+> this driver.
+> 
+> For the lantiq targets in openWrt, the devicetree blob is appended to
+> the kernel image and therefore also updated when doing a firmware
+> upgrade. So, maybe it would also be an option to fix the driver (using
+> GPIO_ACTIVE_* flag for the initial level and set it to 0 -> 1 -> 0) and
+> rework all the dts files to use GPIO_ACTIVE_LOW.
+> 
+> Then we won't need any quirks.
 
-Resetting the device should include freeing U8 model (member of
-dev_info)  but does not, and this causes a memory leak.
-ufs_put_device_desc is responsible for freeing model.
+I am not aware that anyone is using a recent kernel on the VRX200 
+outside of OpenWrt. I am also not aware that anyone is *not* appending 
+the DTB to the kernel. The SoC is pretty old now, the successor of this 
+SoC was released about 10 years ago.
 
-unreferenced object 0xffff3f63008bee60 (size 32):
-  comm "kworker/u33:1", pid 60, jiffies 4294892642
-  hex dump (first 32 bytes):
-    54 48 47 4a 46 47 54 30 54 32 35 42 41 5a 5a 41  THGJFGT0T25BAZZA
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc ed7ff1a9):
-    [<ffffb86705f1243c>] kmemleak_alloc+0x34/0x40
-    [<ffffb8670511cee4>] __kmalloc_noprof+0x1e4/0x2fc
-    [<ffffb86705c247fc>] ufshcd_read_string_desc+0x94/0x190
-    [<ffffb86705c26854>] ufshcd_device_init+0x480/0xdf8
-    [<ffffb86705c27b68>] ufshcd_probe_hba+0x3c/0x404
-    [<ffffb86705c29264>] ufshcd_async_scan+0x40/0x370
-    [<ffffb86704f43e9c>] async_run_entry_fn+0x34/0xe0
-    [<ffffb86704f34638>] process_one_work+0x154/0x298
-    [<ffffb86704f34a74>] worker_thread+0x2f8/0x408
-    [<ffffb86704f3cfa4>] kthread+0x114/0x118
-    [<ffffb86704e955a0>] ret_from_fork+0x10/0x20
+For me it would be fine if you fix the broken device device trees 
+shipped with the upstream kernel and with OpenWrt to make them work with 
+the PCI driver instead of investing too much time into handling old DTBs.
 
-Fixes: 96a7141da332 ("scsi: ufs: core: Add support for reinitializing the UFS device")
-Cc: <stable@vger.kernel.org>
+The PCI reset is inverted on some boards to handle a dying gasp. If the 
+power breaks down the reset should get triggered and the PCIe device can 
+send a dying gasp signal to the other side. This is done on the 
+reference designs of some Lantiq PCIe DSL card for the VRX318 and 
+probably also some other components.
 
-Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Joel Slebodnick <jslebodn@redhat.com>
----
- drivers/ufs/core/ufshcd.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 0cf07194bbe8..a0407b9213ca 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -8787,6 +8787,7 @@ static int ufshcd_probe_hba(struct ufs_hba *hba, bool init_dev_params)
- 	    (hba->quirks & UFSHCD_QUIRK_REINIT_AFTER_MAX_GEAR_SWITCH)) {
- 		/* Reset the device and controller before doing reinit */
- 		ufshcd_device_reset(hba);
-+		ufs_put_device_desc(hba);
- 		ufshcd_hba_stop(hba);
- 		ufshcd_vops_reinit_notify(hba);
- 		ret = ufshcd_hba_enable(hba);
--- 
-2.40.1
-
+Hauke
 
