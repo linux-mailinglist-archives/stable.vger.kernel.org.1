@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DCA907264
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:47:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C928A9072A8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BE651C2281B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:47:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 742301F23222
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE3414375C;
-	Thu, 13 Jun 2024 12:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775EC1E49B;
+	Thu, 13 Jun 2024 12:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfm1WQQC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xM4IMq7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC5920ED;
-	Thu, 13 Jun 2024 12:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370EF384;
+	Thu, 13 Jun 2024 12:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282819; cv=none; b=Kph/pWgAsK4/lscwFYpykQI6SBIRPYnlGBCi2Oyo9F38xOd6MEuPzDVS/CNJoa8FSwkTCkKJ43/+8+/YK9JkoFhH5efcon0gMLxnADqT7pDklfoU6V2rSg8ZVbSQ1D4tnnkCYp+O1X6gjt2nYkNwSqaWG1REVWfRaibtP1jCtRU=
+	t=1718282949; cv=none; b=sqj+TsTV66lZohxZqpY0zF3w94Z/cjSNPDuaacoDhmkX2Oou8NZZjo225u4ZJNs9MACoo2HWzaUfMVVe4YSLZA/MDu2X202KwUBEeNbMp7TJMj+29CYnzU2Hg7lW6bIDcoia7cdjOTqN0/FmSIEFPD4kzbcIURC7XHE/Ytmfp8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282819; c=relaxed/simple;
-	bh=EUsNexY4TESxNV4piZ9uPOFj24mjr0dbobWAbGoq+XI=;
+	s=arc-20240116; t=1718282949; c=relaxed/simple;
+	bh=GLlwhFQoflEAwqxUE3LhlsBj+lmhyuCl7DAXl2YAxs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mJMItuS3aQjRmcBfaJFlvCewWKJiaNdqwuULfiwwkiRUbshj5HJGNs3tHX8rXsf97uZE4Hzx/NeEaX+1vvsGUkCt5yqyCKUQ0afBM42KkoNS68B11q2o1YI8OHlBupOajSrma2X+BAgNYOX/dyYWQtKhUN4uYJmj8WcjlrUcp/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfm1WQQC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3164DC2BBFC;
-	Thu, 13 Jun 2024 12:46:59 +0000 (UTC)
+	 MIME-Version; b=l9M6lUvhzPrkbMJOaEy8cnq2bxy/1GyCPFagfkYCX7nLJjVoWi5VQLOTX874c70lTEM6yBMiLsRw2LsruUw+MqlrvNRAWnBlgfPxVw23AR3Rzl5ZadKtoU1F7Pfqumj5bKSNY6NKNE1M6JMl2y31Nfel7CAn102CI6e4gun4WBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xM4IMq7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4C0C2BBFC;
+	Thu, 13 Jun 2024 12:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282819;
-	bh=EUsNexY4TESxNV4piZ9uPOFj24mjr0dbobWAbGoq+XI=;
+	s=korg; t=1718282949;
+	bh=GLlwhFQoflEAwqxUE3LhlsBj+lmhyuCl7DAXl2YAxs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pfm1WQQCi36lhTlV0lDvr5NTp5sCgiINxfnwmuuEESTD8Mw0eMAJs5EnEWmqLCTVg
-	 h+JqA+OvkQO+o85VhJLenkcaKh2stOHGVuDHxWsYzYdzLz165RSNVa//XkmR/h5jH3
-	 ch1pU6zomztR/eMVL43Ph75Od7A77NkenS2oL4qg=
+	b=0xM4IMq7/QYWW085xKgy8qU6J8Grsl79bs8myQWeZqcdqhY4ixsy/299HvHRY79cJ
+	 7phHctwUbY+03ZkPxh5Yc1d/6uAvPXfxUlA7YT3f53GOyzOzqCqAP9E2aILOCLfsVa
+	 NNUHJgsemXXm04Xz8ki0Ln0WZCTNnmMEtdA6P+ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Justin Stitt <justinstitt@google.com>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 5.15 388/402] kdb: Fix console handling when editing and tab-completing commands
+	Tim Huang <Tim.Huang@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	lectrode <electrodexsnet@gmail.com>
+Subject: [PATCH 6.1 47/85] drm/amd: Fix shutdown (again) on some SMU v13.0.4/11 platforms
 Date: Thu, 13 Jun 2024 13:35:45 +0200
-Message-ID: <20240613113317.281155272@linuxfoundation.org>
+Message-ID: <20240613113215.957977931@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit db2f9c7dc29114f531df4a425d0867d01e1f1e28 upstream.
+commit 267cace556e8a53d703119f7435ab556209e5b6a upstream.
 
-Currently, if the cursor position is not at the end of the command buffer
-and the user uses the Tab-complete functions, then the console does not
-leave the cursor in the correct position.
+commit cd94d1b182d2 ("dm/amd/pm: Fix problems with reboot/shutdown for
+some SMU 13.0.4/13.0.11 users") attempted to fix shutdown issues
+that were reported since commit 31729e8c21ec ("drm/amd/pm: fixes a
+random hang in S4 for SMU v13.0.4/11") but caused issues for some
+people.
 
-For example consider the following buffer with the cursor positioned
-at the ^:
+Adjust the workaround flow to properly only apply in the S4 case:
+-> For shutdown go through SMU_MSG_PrepareMp1ForUnload
+-> For S4 go through SMU_MSG_GfxDeviceDriverReset and
+   SMU_MSG_PrepareMp1ForUnload
 
-md kdb_pro 10
-          ^
-
-Pressing tab should result in:
-
-md kdb_prompt_str 10
-                 ^
-
-However this does not happen. Instead the cursor is placed at the end
-(after then 10) and further cursor movement redraws incorrectly. The
-same problem exists when we double-Tab but in a different part of the
-code.
-
-Fix this by sending a carriage return and then redisplaying the text to
-the left of the cursor.
-
+Reported-and-tested-by: lectrode <electrodexsnet@gmail.com>
+Closes: https://github.com/void-linux/void-packages/issues/50417
 Cc: stable@vger.kernel.org
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Justin Stitt <justinstitt@google.com>
-Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-3-f236dbe9828d@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Fixes: cd94d1b182d2 ("dm/amd/pm: Fix problems with reboot/shutdown for some SMU 13.0.4/13.0.11 users")
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c |   20 ++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -370,6 +370,8 @@ poll_again:
- 			kdb_printf("\n");
- 			kdb_printf(kdb_prompt_str);
- 			kdb_printf("%s", buffer);
-+			if (cp != lastchar)
-+				kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		} else if (tab != 2 && count > 0) {
- 			/* How many new characters do we want from tmpbuffer? */
- 			len_tmp = strlen(p_tmp) - len;
-@@ -383,6 +385,9 @@ poll_again:
- 				kdb_printf("%s", cp);
- 				cp += len_tmp;
- 				lastchar += len_tmp;
-+				if (cp != lastchar)
-+					kdb_position_cursor(kdb_prompt_str,
-+							    buffer, cp);
- 			}
- 		}
- 		kdb_nextline = 1; /* reset output line number */
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
+@@ -222,15 +222,17 @@ static int smu_v13_0_4_system_features_c
+ 	struct amdgpu_device *adev = smu->adev;
+ 	int ret = 0;
+ 
+-	if (!en && adev->in_s4) {
+-		/* Adds a GFX reset as workaround just before sending the
+-		 * MP1_UNLOAD message to prevent GC/RLC/PMFW from entering
+-		 * an invalid state.
+-		 */
+-		ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_GfxDeviceDriverReset,
+-						      SMU_RESET_MODE_2, NULL);
+-		if (ret)
+-			return ret;
++	if (!en && !adev->in_s0ix) {
++		if (adev->in_s4) {
++			/* Adds a GFX reset as workaround just before sending the
++			 * MP1_UNLOAD message to prevent GC/RLC/PMFW from entering
++			 * an invalid state.
++			 */
++			ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_GfxDeviceDriverReset,
++							      SMU_RESET_MODE_2, NULL);
++			if (ret)
++				return ret;
++		}
+ 
+ 		ret = smu_cmn_send_smc_msg(smu, SMU_MSG_PrepareMp1ForUnload, NULL);
+ 	}
 
 
 
