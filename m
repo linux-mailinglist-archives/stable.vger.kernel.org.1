@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 953BC90710B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB56906F28
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FEB22841D8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:33:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C84D428439D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B777EC4;
-	Thu, 13 Jun 2024 12:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236BD144317;
+	Thu, 13 Jun 2024 12:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKCknBUL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESMX4BWK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EBE384;
-	Thu, 13 Jun 2024 12:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D481A56458;
+	Thu, 13 Jun 2024 12:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281983; cv=none; b=PbF9PLesBeriBGgV12C+ytmlKM4h9lcmcbiJ67iFh+9MXGPO58SV5JsCvjkvSZ1C9+qjTpaD7FjRINiIfXPhyAiYbhbcxu5g6CzpT9GUjuLfv9b0TxCgz6dsSo4eTzEq1sgavHwgNiT6R0OhX5B4e4yl02xXUt+vSCxO79BiTPs=
+	t=1718280847; cv=none; b=G49t9mJkdPtqEkeyPC8yy38LU3ZljqbzA2zfntovYkVua45o69jFqSX4n3IrszaQzdVERnGF7NMzBWaLJTwdXpdhY1x1ABCf8V0DCSy5A/YkVXwa8VakTkvPtIP1QvfNkGuGqFlMjGf8gojp3ULhVQg4tQJrvIqV4oJm4Rvxy0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281983; c=relaxed/simple;
-	bh=WKuTV4Y0lmpZEaVx+WbsP2M77t/pxJARSXqOij8JDJs=;
+	s=arc-20240116; t=1718280847; c=relaxed/simple;
+	bh=qit1koaAAxDVGXNqVe2yCh8kvCxxOhgF1fmpjwrh4Es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EFNBqQIBjoNatUcfCamkkdtnUmSFUjTBOiSuPNLo/cRC1fPV2dG90DMCWDAlrOHLiYw/UBmCu6U6ho/uh591WT67amE8gNhSF8QsQ1Ax8ATEaXIQ5X0IG9XcUcez2f1TrYIU2usIN2NAFslG0aGp0xH/L2xCUId6e44OhX7Tykw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKCknBUL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF6BC2BBFC;
-	Thu, 13 Jun 2024 12:33:02 +0000 (UTC)
+	 MIME-Version; b=TiIyd/lUHAbEz9y9nUyKGYjIklbHZRfr4E0PQJhmx9SIU+glMWJNDZcrhX/Kr9Am9Fy9rZYGdGkPcNAerq+Em3Vg4Iuj3DEzqdQ2t2jAk7C8LfVkfYb8HHXhDDLW0Vf5aiiNXqwwerVjT69ykQRbCvE2/m4rmOoVTJ2yifIA/Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESMX4BWK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D607C2BBFC;
+	Thu, 13 Jun 2024 12:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281982;
-	bh=WKuTV4Y0lmpZEaVx+WbsP2M77t/pxJARSXqOij8JDJs=;
+	s=korg; t=1718280847;
+	bh=qit1koaAAxDVGXNqVe2yCh8kvCxxOhgF1fmpjwrh4Es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TKCknBULWJdEEdkKgoJUVL/NX97z5Nw5tjd9dR+futAMMQ4t4Nu+ENCxrXmTozDG+
-	 K8vBrw24PPH7MnsIY4PlRnbvqZ5IPxNdNYpuN/zFdBZVazDcsayy7BzEN3Xz2umewi
-	 NeIaN6eu4JKoR5tkVbdAmTeGFag/XEaWNEWq8lM0=
+	b=ESMX4BWKsDeL1X8Xfeh0XATnN7ccDjeLNv2KDMUeCrwZBCNve35ujnt0MKwFg/6B9
+	 WI0ku4+4UC7DXHADlHQEaZyQ4Q6E5Umh0oqnwum9LrMyrATDVk2V0EEno5xvRXmP9l
+	 SCobd7Z9HR2vQRgvrjBcQnXuLMGeBSLbSIHW7GBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 115/402] ipv6: sr: add missing seg6_local_exit
+Subject: [PATCH 5.10 054/317] cpufreq: Rearrange locking in cpufreq_remove_dev()
 Date: Thu, 13 Jun 2024 13:31:12 +0200
-Message-ID: <20240613113306.618351884@linuxfoundation.org>
+Message-ID: <20240613113249.637350921@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 3321687e321307629c71b664225b861ebf3e5753 ]
+[ Upstream commit f339f3541701d824a0256ad4bf14c26ceb6d79c3 ]
 
-Currently, we only call seg6_local_exit() in seg6_init() if
-seg6_local_init() failed. But forgot to call it in seg6_exit().
+Currently, cpufreq_remove_dev() invokes the ->exit() driver callback
+without holding the policy rwsem which is inconsistent with what
+happens if ->exit() is invoked directly from cpufreq_offline().
 
-Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240509131812.1662197-2-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+It also manipulates the real_cpus mask and removes the CPU device
+symlink without holding the policy rwsem, but cpufreq_offline() holds
+the rwsem around the modifications thereof.
+
+For consistency, modify cpufreq_remove_dev() to hold the policy rwsem
+until the ->exit() callback has been called (or it has been determined
+that it is not necessary to call it).
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Stable-dep-of: b8f85833c057 ("cpufreq: exit() callback is optional")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpufreq/cpufreq.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index dc434e4ee6d66..d626e0767a069 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -559,6 +559,7 @@ void seg6_exit(void)
- 	seg6_hmac_exit();
- #endif
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
-+	seg6_local_exit();
- 	seg6_iptunnel_exit();
- #endif
- 	unregister_pernet_subsys(&ip6_segments_ops);
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index dd1acb55fe717..cbdea4fa600ab 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -1645,19 +1645,26 @@ static void cpufreq_remove_dev(struct device *dev, struct subsys_interface *sif)
+ 	if (!policy)
+ 		return;
+ 
++	down_write(&policy->rwsem);
++
+ 	if (cpu_online(cpu))
+-		cpufreq_offline(cpu);
++		__cpufreq_offline(cpu, policy);
+ 
+ 	cpumask_clear_cpu(cpu, policy->real_cpus);
+ 	remove_cpu_dev_symlink(policy, dev);
+ 
+-	if (cpumask_empty(policy->real_cpus)) {
+-		/* We did light-weight exit earlier, do full tear down now */
+-		if (cpufreq_driver->offline)
+-			cpufreq_driver->exit(policy);
+-
+-		cpufreq_policy_free(policy);
++	if (!cpumask_empty(policy->real_cpus)) {
++		up_write(&policy->rwsem);
++		return;
+ 	}
++
++	/* We did light-weight exit earlier, do full tear down now */
++	if (cpufreq_driver->offline)
++		cpufreq_driver->exit(policy);
++
++	up_write(&policy->rwsem);
++
++	cpufreq_policy_free(policy);
+ }
+ 
+ /**
 -- 
 2.43.0
 
