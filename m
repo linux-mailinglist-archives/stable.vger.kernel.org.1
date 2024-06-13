@@ -1,215 +1,264 @@
-Return-Path: <stable+bounces-50416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 187489065B3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:54:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 471969065BA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:55:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F0B81F266D8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:54:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D66322819AA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CE713C8FF;
-	Thu, 13 Jun 2024 07:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A878013C904;
+	Thu, 13 Jun 2024 07:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vi2zIFvb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o7LCp7bb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4EE13C8E8
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6996013C8E8
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718265238; cv=none; b=JeMA0QFUu1G5eF/XMOccRvtH2Z7ZL7rfDxxk0ViHBeMoANNsijQqSj1yTXDF9SQ7UoEKqBQTwh8eMIMTMsZO8LWGWu0/G9LDvZncrUOMdnoodLO/RHbVerOYFMgJYLNmzhWnuXbZewB8uYVP+pVLr2gpZJwzJjHtis6Cz5EqFw8=
+	t=1718265307; cv=none; b=aDLIaTGMCzZvqQuZa6tX8UOWgSi14Qoeluw0Fh42oe7Z2vloyDvoYrdYpyTj2bKJ2vsz1/VyELDqKnNrEV4rZ9KHgJ5Mb/yHcDEFvCVi877N8T5IjGD3SmIMZErb5p9EQ8PHXEQSZgaXyGPIjjVQJUaOSZ8aY2bHKEKZ5PGjX34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718265238; c=relaxed/simple;
-	bh=WVE/ND8zqIkscNi8sGUFgNHJy0tS0e/K1XZFwjAh2P0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mR2TudNm7Zg4MuyBJcp42a7Yyj8Y/eBie/jGAXqtMTY+MkETptFHmJkwkar3Tt7fFMt7/PsXxCP8Ia5buM3yz7uOh38geJGcz7qQ/YSRo2zHt4D9vT+ipW6clJZjyPMWJIn+Lfd5+C54JH+Y0t9t3RGIKAknkNxUlsdZe3Xlwj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vi2zIFvb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF446C2BBFC;
-	Thu, 13 Jun 2024 07:53:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718265238;
-	bh=WVE/ND8zqIkscNi8sGUFgNHJy0tS0e/K1XZFwjAh2P0=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Vi2zIFvbnf+oe+MjPFcvSwjexJ60tpfZa6izTEVKgCWsJwhJ069Wtdz433WnRVSus
-	 ForU28pchR9SE4zHRYYP9tMikSQkAN7NP3SeQQ/l4pLiI1TgpWr/fwimCDyKELVU9g
-	 L5liHb8ZBRLfSQHHwK50i+kfqU8v7xG7QJkWD8K4=
-Subject: FAILED: patch "[PATCH] rtla/timerlat: Fix histogram report when a cpu count is 0" failed to apply to 6.1-stable tree
-To: jkacur@redhat.com,bristot@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Jun 2024 09:53:55 +0200
-Message-ID: <2024061354-playtime-clumsy-d741@gregkh>
+	s=arc-20240116; t=1718265307; c=relaxed/simple;
+	bh=8/mb7D5nToRa4QAmPwyqq+lvIqlzoSTbx73TLoNYChI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R90PfPTSiREaSubV+sGLHwrz9XD25uFv6+8uchkccDBEbpoOLBCLFV1YLqPhS4u1CpBjadEY50RWjr6/tekdPB8T+eXN++TA1kELKTSY6LS5YKdYEzeziRQ7Vc1c2vtpaUZBVaVtEPvGbxhUBv0FwZ1IBJSOz+1zBehkDbdU4Ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o7LCp7bb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE924C2BBFC;
+	Thu, 13 Jun 2024 07:55:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718265307;
+	bh=8/mb7D5nToRa4QAmPwyqq+lvIqlzoSTbx73TLoNYChI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=o7LCp7bbHY6oFjJQVZ/Jn+QqViJIf+QkFGKg4zT8mepkqxXVAEFAasGYc4345l3B5
+	 4yODIvMCJfjJBwCZWn3sqJSWKc7MvrlCv+242pLsAJ2o5WkS3pP/w+xe3wW9x36Qqb
+	 fMftuYAUH9ipOvjzkkv3WGNR/CU2G0TXp+a/u4cKJZRl1tQT2uWQiu8GGJiq+lyaUW
+	 DsKcyBdgMjlBKEgmQ5fu+cEoKm+05RPWXJbYXKCLGvU47m6Ql+Jl1oRTrToXLRl6CV
+	 vNi40BUsaBUxLllKwjLTnDKdpU5nLWW/PTCp6ejCKfeCXdp3ReSJnQJjTtLcMp4XKz
+	 VBZn7zvYRDTQw==
+From: Lee Jones <lee@kernel.org>
+To: lee@kernel.org
+Cc: stable@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Clement Lecigne <clecigne@google.com>,
+	Tom Herbert <tom@herbertland.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 1/1] net: fix __dst_negative_advice() race
+Date: Thu, 13 Jun 2024 08:54:35 +0100
+Message-ID: <20240613075444.2477127-1-lee@kernel.org>
+X-Mailer: git-send-email 2.45.2.505.gda0bf45e8d-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+From: Eric Dumazet <edumazet@google.com>
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+__dst_negative_advice() does not enforce proper RCU rules when
+sk->dst_cache must be cleared, leading to possible UAF.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+RCU rules are that we must first clear sk->sk_dst_cache,
+then call dst_release(old_dst).
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 01b05fc0e5f3aec443a9a8ffa0022cbca2fd3608
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061354-playtime-clumsy-d741@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+Note that sk_dst_reset(sk) is implementing this protocol correctly,
+while __dst_negative_advice() uses the wrong order.
 
-Possible dependencies:
+Given that ip6_negative_advice() has special logic
+against RTF_CACHE, this means each of the three ->negative_advice()
+existing methods must perform the sk_dst_reset() themselves.
 
-01b05fc0e5f3 ("rtla/timerlat: Fix histogram report when a cpu count is 0")
-ed774f7481fa ("rtla/timerlat_hist: Add timerlat user-space support")
-2091336b9a8b ("rtla/timerlat_hist: Add auto-analysis support")
-272ced2556e6 ("rtla: Add --house-keeping option")
-a957cbc02531 ("rtla: Add -C cgroup support")
-9fa48a2477de ("rtla/timerlat: Add auto-analysis only option")
-1f428356c38d ("rtla: Add hwnoise tool")
-ce6cc6f70cad ("Documentation/rtla: Add timerlat-top auto-analysis options")
-5def33df84d2 ("rtla/timerlat: Add auto-analysis support to timerlat top")
+Note the check against NULL dst is centralized in
+__dst_negative_advice(), there is no need to duplicate
+it in various callbacks.
 
-thanks,
+Many thanks to Clement Lecigne for tracking this issue.
 
-greg k-h
+This old bug became visible after the blamed commit, using UDP sockets.
 
------------------- original commit in Linus's tree ------------------
+Fixes: a87cb3e48ee8 ("net: Facility to report route quality of connected sockets")
+Reported-by: Clement Lecigne <clecigne@google.com>
+Diagnosed-by: Clement Lecigne <clecigne@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Tom Herbert <tom@herbertland.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240528114353.1794151-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit 92f1655aa2b2294d0b49925f3b875a634bd3b59e)
+[Lee: Stable backport]
+Signed-off-by: Lee Jones <lee@kernel.org>
+---
+ include/net/dst_ops.h  |  2 +-
+ include/net/sock.h     | 13 +++----------
+ net/ipv4/route.c       | 22 ++++++++--------------
+ net/ipv6/route.c       | 29 +++++++++++++++--------------
+ net/xfrm/xfrm_policy.c | 11 +++--------
+ 5 files changed, 30 insertions(+), 47 deletions(-)
 
-From 01b05fc0e5f3aec443a9a8ffa0022cbca2fd3608 Mon Sep 17 00:00:00 2001
-From: John Kacur <jkacur@redhat.com>
-Date: Fri, 10 May 2024 15:03:18 -0400
-Subject: [PATCH] rtla/timerlat: Fix histogram report when a cpu count is 0
-
-On short runs it is possible to get no samples on a cpu, like this:
-
-  # rtla timerlat hist -u -T50
-
-  Index   IRQ-001   Thr-001   Usr-001   IRQ-002   Thr-002   Usr-002
-  2             1         0         0         0         0         0
-  33            0         1         0         0         0         0
-  36            0         0         1         0         0         0
-  49            0         0         0         1         0         0
-  52            0         0         0         0         1         0
-  over:         0         0         0         0         0         0
-  count:        1         1         1         1         1         0
-  min:          2        33        36        49        52 18446744073709551615
-  avg:          2        33        36        49        52         -
-  max:          2        33        36        49        52         0
-  rtla timerlat hit stop tracing
-    IRQ handler delay:		(exit from idle)	    48.21 us (91.09 %)
-    IRQ latency:						    49.11 us
-    Timerlat IRQ duration:				     2.17 us (4.09 %)
-    Blocking thread:					     1.01 us (1.90 %)
-  	               swapper/2:0        		     1.01 us
-  ------------------------------------------------------------------------
-    Thread latency:					    52.93 us (100%)
-
-  Max timerlat IRQ latency from idle: 49.11 us in cpu 2
-
-Note, the value 18446744073709551615 is the same as ~0.
-
-Fix this by reporting no results for the min, avg and max if the count
-is 0.
-
-Link: https://lkml.kernel.org/r/20240510190318.44295-1-jkacur@redhat.com
-
-Cc: stable@vger.kernel.org
-Fixes: 1eeb6328e8b3 ("rtla/timerlat: Add timerlat hist mode")
-Suggested-by: Daniel Bristot de Oliveria <bristot@kernel.org>
-Signed-off-by: John Kacur <jkacur@redhat.com>
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
-
-diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
-index d4bab86ca1b9..fbe2c6549bf9 100644
---- a/tools/tracing/rtla/src/timerlat_hist.c
-+++ b/tools/tracing/rtla/src/timerlat_hist.c
-@@ -327,17 +327,29 @@ timerlat_print_summary(struct timerlat_hist_params *params,
- 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
- 			continue;
+diff --git a/include/net/dst_ops.h b/include/net/dst_ops.h
+index 632086b2f644..3ae2fda29507 100644
+--- a/include/net/dst_ops.h
++++ b/include/net/dst_ops.h
+@@ -24,7 +24,7 @@ struct dst_ops {
+ 	void			(*destroy)(struct dst_entry *);
+ 	void			(*ifdown)(struct dst_entry *,
+ 					  struct net_device *dev, int how);
+-	struct dst_entry *	(*negative_advice)(struct dst_entry *);
++	void			(*negative_advice)(struct sock *sk, struct dst_entry *);
+ 	void			(*link_failure)(struct sk_buff *);
+ 	void			(*update_pmtu)(struct dst_entry *dst, struct sock *sk,
+ 					       struct sk_buff *skb, u32 mtu,
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 77298c74822a..9dab48207874 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2212,17 +2212,10 @@ sk_dst_get(struct sock *sk)
  
--		if (!params->no_irq)
--			trace_seq_printf(trace->seq, "%9llu ",
--					data->hist[cpu].min_irq);
-+		if (!params->no_irq) {
-+			if (data->hist[cpu].irq_count)
-+				trace_seq_printf(trace->seq, "%9llu ",
-+						data->hist[cpu].min_irq);
-+			else
-+				trace_seq_printf(trace->seq, "        - ");
-+		}
+ static inline void __dst_negative_advice(struct sock *sk)
+ {
+-	struct dst_entry *ndst, *dst = __sk_dst_get(sk);
++	struct dst_entry *dst = __sk_dst_get(sk);
  
--		if (!params->no_thread)
--			trace_seq_printf(trace->seq, "%9llu ",
--					data->hist[cpu].min_thread);
-+		if (!params->no_thread) {
-+			if (data->hist[cpu].thread_count)
-+				trace_seq_printf(trace->seq, "%9llu ",
-+						data->hist[cpu].min_thread);
-+			else
-+				trace_seq_printf(trace->seq, "        - ");
-+		}
+-	if (dst && dst->ops->negative_advice) {
+-		ndst = dst->ops->negative_advice(dst);
+-
+-		if (ndst != dst) {
+-			rcu_assign_pointer(sk->sk_dst_cache, ndst);
+-			sk_tx_queue_clear(sk);
+-			WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+-		}
+-	}
++	if (dst && dst->ops->negative_advice)
++		dst->ops->negative_advice(sk, dst);
+ }
  
--		if (params->user_hist)
--			trace_seq_printf(trace->seq, "%9llu ",
--					data->hist[cpu].min_user);
-+		if (params->user_hist) {
-+			if (data->hist[cpu].user_count)
-+				trace_seq_printf(trace->seq, "%9llu ",
-+						data->hist[cpu].min_user);
-+			else
-+				trace_seq_printf(trace->seq, "        - ");
-+		}
+ static inline void dst_negative_advice(struct sock *sk)
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 6c0f1e347b85..fcbacd39febe 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -132,7 +132,8 @@ struct dst_entry	*ipv4_dst_check(struct dst_entry *dst, u32 cookie);
+ static unsigned int	 ipv4_default_advmss(const struct dst_entry *dst);
+ INDIRECT_CALLABLE_SCOPE
+ unsigned int		ipv4_mtu(const struct dst_entry *dst);
+-static struct dst_entry *ipv4_negative_advice(struct dst_entry *dst);
++static void		ipv4_negative_advice(struct sock *sk,
++					     struct dst_entry *dst);
+ static void		 ipv4_link_failure(struct sk_buff *skb);
+ static void		 ip_rt_update_pmtu(struct dst_entry *dst, struct sock *sk,
+ 					   struct sk_buff *skb, u32 mtu,
+@@ -837,22 +838,15 @@ static void ip_do_redirect(struct dst_entry *dst, struct sock *sk, struct sk_buf
+ 	__ip_do_redirect(rt, skb, &fl4, true);
+ }
+ 
+-static struct dst_entry *ipv4_negative_advice(struct dst_entry *dst)
++static void ipv4_negative_advice(struct sock *sk,
++				 struct dst_entry *dst)
+ {
+ 	struct rtable *rt = (struct rtable *)dst;
+-	struct dst_entry *ret = dst;
+ 
+-	if (rt) {
+-		if (dst->obsolete > 0) {
+-			ip_rt_put(rt);
+-			ret = NULL;
+-		} else if ((rt->rt_flags & RTCF_REDIRECTED) ||
+-			   rt->dst.expires) {
+-			ip_rt_put(rt);
+-			ret = NULL;
+-		}
+-	}
+-	return ret;
++	if ((dst->obsolete > 0) ||
++	    (rt->rt_flags & RTCF_REDIRECTED) ||
++	    rt->dst.expires)
++		sk_dst_reset(sk);
+ }
+ 
+ /*
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 887599d351b8..2611f7897413 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -87,7 +87,8 @@ struct dst_entry	*ip6_dst_check(struct dst_entry *dst, u32 cookie);
+ static unsigned int	 ip6_default_advmss(const struct dst_entry *dst);
+ INDIRECT_CALLABLE_SCOPE
+ unsigned int		ip6_mtu(const struct dst_entry *dst);
+-static struct dst_entry *ip6_negative_advice(struct dst_entry *);
++static void		ip6_negative_advice(struct sock *sk,
++					    struct dst_entry *dst);
+ static void		ip6_dst_destroy(struct dst_entry *);
+ static void		ip6_dst_ifdown(struct dst_entry *,
+ 				       struct net_device *dev, int how);
+@@ -2762,24 +2763,24 @@ INDIRECT_CALLABLE_SCOPE struct dst_entry *ip6_dst_check(struct dst_entry *dst,
+ }
+ EXPORT_INDIRECT_CALLABLE(ip6_dst_check);
+ 
+-static struct dst_entry *ip6_negative_advice(struct dst_entry *dst)
++static void ip6_negative_advice(struct sock *sk,
++				struct dst_entry *dst)
+ {
+ 	struct rt6_info *rt = (struct rt6_info *) dst;
+ 
+-	if (rt) {
+-		if (rt->rt6i_flags & RTF_CACHE) {
+-			rcu_read_lock();
+-			if (rt6_check_expired(rt)) {
+-				rt6_remove_exception_rt(rt);
+-				dst = NULL;
+-			}
+-			rcu_read_unlock();
+-		} else {
+-			dst_release(dst);
+-			dst = NULL;
++	if (rt->rt6i_flags & RTF_CACHE) {
++		rcu_read_lock();
++		if (rt6_check_expired(rt)) {
++			/* counteract the dst_release() in sk_dst_reset() */
++			dst_hold(dst);
++			sk_dst_reset(sk);
++
++			rt6_remove_exception_rt(rt);
+ 		}
++		rcu_read_unlock();
++		return;
  	}
- 	trace_seq_printf(trace->seq, "\n");
+-	return dst;
++	sk_dst_reset(sk);
+ }
  
-@@ -387,17 +399,29 @@ timerlat_print_summary(struct timerlat_hist_params *params,
- 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
- 			continue;
+ static void ip6_link_failure(struct sk_buff *skb)
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index e47c670c7e2c..5fddde2d5bc4 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -3772,15 +3772,10 @@ static void xfrm_link_failure(struct sk_buff *skb)
+ 	/* Impossible. Such dst must be popped before reaches point of failure. */
+ }
  
--		if (!params->no_irq)
--			trace_seq_printf(trace->seq, "%9llu ",
--					data->hist[cpu].max_irq);
-+		if (!params->no_irq) {
-+			if (data->hist[cpu].irq_count)
-+				trace_seq_printf(trace->seq, "%9llu ",
-+						 data->hist[cpu].max_irq);
-+			else
-+				trace_seq_printf(trace->seq, "        - ");
-+		}
+-static struct dst_entry *xfrm_negative_advice(struct dst_entry *dst)
++static void xfrm_negative_advice(struct sock *sk, struct dst_entry *dst)
+ {
+-	if (dst) {
+-		if (dst->obsolete) {
+-			dst_release(dst);
+-			dst = NULL;
+-		}
+-	}
+-	return dst;
++	if (dst->obsolete)
++		sk_dst_reset(sk);
+ }
  
--		if (!params->no_thread)
--			trace_seq_printf(trace->seq, "%9llu ",
--					data->hist[cpu].max_thread);
-+		if (!params->no_thread) {
-+			if (data->hist[cpu].thread_count)
-+				trace_seq_printf(trace->seq, "%9llu ",
-+						data->hist[cpu].max_thread);
-+			else
-+				trace_seq_printf(trace->seq, "        - ");
-+		}
- 
--		if (params->user_hist)
--			trace_seq_printf(trace->seq, "%9llu ",
--					data->hist[cpu].max_user);
-+		if (params->user_hist) {
-+			if (data->hist[cpu].user_count)
-+				trace_seq_printf(trace->seq, "%9llu ",
-+						data->hist[cpu].max_user);
-+			else
-+				trace_seq_printf(trace->seq, "        - ");
-+		}
- 	}
- 	trace_seq_printf(trace->seq, "\n");
- 	trace_seq_do_printf(trace->seq);
+ static void xfrm_init_pmtu(struct xfrm_dst **bundle, int nr)
+-- 
+2.45.2.505.gda0bf45e8d-goog
 
 
