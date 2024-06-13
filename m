@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B02906E05
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A08B2906FEF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5939C1F2199B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30AE1289521
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9F0148820;
-	Thu, 13 Jun 2024 12:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB1613D285;
+	Thu, 13 Jun 2024 12:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYfgXKnt"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1yvf3XCE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C55B44C6F;
-	Thu, 13 Jun 2024 12:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D10F6EB56;
+	Thu, 13 Jun 2024 12:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280103; cv=none; b=euVyMfKTGNT9hioW0RH+9CVN2QHUiQcUWTK0/aU04wqKIXZeQ9xVL821FJsRMSN6Ip4wkA389rNCyFUh4XNc1ZEA6S+7rzy9m5rTPwiJ/o7bcNK+krzaRPzSy8odaOTps1XlK2VZpoP3zvBaGst41zPm5BkSJANvfF3i2HBB2Ac=
+	t=1718281345; cv=none; b=sABbnvmBrhpk1CPQFwip3CHsYIeuakJPdQY9ofiL6W5nGG+Ixa+hLDuaHGmoV8Hauv71olh054xRVzcr7rXIADtMQB1rJmfb33DrUgtCB8IeQJPz185mRkhA5OT6Lx2/VnBynsDSfi+qmQ7JAQulXYFevGUNcJbWwqmwtusMaWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280103; c=relaxed/simple;
-	bh=xn6xQjkWQ/HRxHFIKXjYH3Ep4GPTfMNKlmjYM9295oA=;
+	s=arc-20240116; t=1718281345; c=relaxed/simple;
+	bh=DG1htmPV+D5ZOrbyPPqqo5wmAhch44dHUoiQEJcc1ZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lIrXWyRDASowC4VfQg4zBLz+btB1Wu1qW0my5gim2AhVSJl5kkMll5g8bpw2etS4f4lvoYqqewk3rvQpzqaXKmmeVPAlR7NjLTmy2jthjx4z14cWmbtUs0ZEWSFCgGjgpU98L49mVMzBRGK6ojkD6LH2dK/Sr9Efyao9fJ+tJcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYfgXKnt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F93C2BBFC;
-	Thu, 13 Jun 2024 12:01:42 +0000 (UTC)
+	 MIME-Version; b=Tb8yiWQfRka0MuSnMrj4KivVx0xUUl5R+Fs9J2k2Wy8OT+onpFCW8eGBRKDuYxkCcU8y364tMXgoJD9eajDRXM3UZweJxsMrU0oBHNmSI5qfHgsfBlaTafY65PomcOLF8DLt9kHF6xoPDCkozEOt7N8Ycv4aX12/r2DM+etGxYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1yvf3XCE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A0CC2BBFC;
+	Thu, 13 Jun 2024 12:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280103;
-	bh=xn6xQjkWQ/HRxHFIKXjYH3Ep4GPTfMNKlmjYM9295oA=;
+	s=korg; t=1718281345;
+	bh=DG1htmPV+D5ZOrbyPPqqo5wmAhch44dHUoiQEJcc1ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yYfgXKntG1QE3kLRqnnaVY/MDRXRZ4hA6b7GXDcueOF8S+KBYU+ZAlBDXy7+Kh1Wh
-	 yL0FjlHryYa4tVznPgDQ/Fwg61rh4a7kAC1mMTzCYLEbHgxuvTlqL6fVLFrQ6vuSg0
-	 3OC05tvjadxwkkpx44VdX9nXeq6QlTo51fYVSLdw=
+	b=1yvf3XCEMUZPrZrG0Bjh5a900jOjcWVBGnkpdFCCwK9Stfdy77mwvERCwDHCv/5DD
+	 UBIXhEpmLI99EyLoSUXWK0F9M2KAVOEN+WZ+2ROseDG3OeWEnyoBORgzJq4QbG15S5
+	 QmA5OL/5u7Ww/YwIbn/O4AVNwGTzzKJqIJLYWPco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Yuanbin Xie <xieyuanbin1@huawei.com>,
-	Jiangfeng Xiao <xiaojiangfeng@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 143/202] arm64: asm-bug: Add .align 2 to the end of __BUG_ENTRY
+	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	"Yang, Chenyuan" <cy54@illinois.edu>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
+Subject: [PATCH 5.10 223/317] media: cec: core: avoid recursive cec_claim_log_addrs
 Date: Thu, 13 Jun 2024 13:34:01 +0200
-Message-ID: <20240613113233.278575154@linuxfoundation.org>
+Message-ID: <20240613113256.179659796@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,162 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiangfeng Xiao <xiaojiangfeng@huawei.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit ffbf4fb9b5c12ff878a10ea17997147ea4ebea6f ]
+[ Upstream commit 47c82aac10a6954d68f29f10d9758d016e8e5af1 ]
 
-When CONFIG_DEBUG_BUGVERBOSE=n, we fail to add necessary padding bytes
-to bug_table entries, and as a result the last entry in a bug table will
-be ignored, potentially leading to an unexpected panic(). All prior
-entries in the table will be handled correctly.
+Keep track if cec_claim_log_addrs() is running, and return -EBUSY
+if it is when calling CEC_ADAP_S_LOG_ADDRS.
 
-The arm64 ABI requires that struct fields of up to 8 bytes are
-naturally-aligned, with padding added within a struct such that struct
-are suitably aligned within arrays.
+This prevents a case where cec_claim_log_addrs() could be called
+while it was still in progress.
 
-When CONFIG_DEBUG_BUGVERPOSE=y, the layout of a bug_entry is:
-
-	struct bug_entry {
-		signed int      bug_addr_disp;	// 4 bytes
-		signed int      file_disp;	// 4 bytes
-		unsigned short  line;		// 2 bytes
-		unsigned short  flags;		// 2 bytes
-	}
-
-... with 12 bytes total, requiring 4-byte alignment.
-
-When CONFIG_DEBUG_BUGVERBOSE=n, the layout of a bug_entry is:
-
-	struct bug_entry {
-		signed int      bug_addr_disp;	// 4 bytes
-		unsigned short  flags;		// 2 bytes
-		< implicit padding >		// 2 bytes
-	}
-
-... with 8 bytes total, with 6 bytes of data and 2 bytes of trailing
-padding, requiring 4-byte alginment.
-
-When we create a bug_entry in assembly, we align the start of the entry
-to 4 bytes, which implicitly handles padding for any prior entries.
-However, we do not align the end of the entry, and so when
-CONFIG_DEBUG_BUGVERBOSE=n, the final entry lacks the trailing padding
-bytes.
-
-For the main kernel image this is not a problem as find_bug() doesn't
-depend on the trailing padding bytes when searching for entries:
-
-	for (bug = __start___bug_table; bug < __stop___bug_table; ++bug)
-		if (bugaddr == bug_addr(bug))
-			return bug;
-
-However for modules, module_bug_finalize() depends on the trailing
-bytes when calculating the number of entries:
-
-	mod->num_bugs = sechdrs[i].sh_size / sizeof(struct bug_entry);
-
-... and as the last bug_entry lacks the necessary padding bytes, this entry
-will not be counted, e.g. in the case of a single entry:
-
-	sechdrs[i].sh_size == 6
-	sizeof(struct bug_entry) == 8;
-
-	sechdrs[i].sh_size / sizeof(struct bug_entry) == 0;
-
-Consequently module_find_bug() will miss the last bug_entry when it does:
-
-	for (i = 0; i < mod->num_bugs; ++i, ++bug)
-		if (bugaddr == bug_addr(bug))
-			goto out;
-
-... which can lead to a kenrel panic due to an unhandled bug.
-
-This can be demonstrated with the following module:
-
-	static int __init buginit(void)
-	{
-		WARN(1, "hello\n");
-		return 0;
-	}
-
-	static void __exit bugexit(void)
-	{
-	}
-
-	module_init(buginit);
-	module_exit(bugexit);
-	MODULE_LICENSE("GPL");
-
-... which will trigger a kernel panic when loaded:
-
-	------------[ cut here ]------------
-	hello
-	Unexpected kernel BRK exception at EL1
-	Internal error: BRK handler: 00000000f2000800 [#1] PREEMPT SMP
-	Modules linked in: hello(O+)
-	CPU: 0 PID: 50 Comm: insmod Tainted: G           O       6.9.1 #8
-	Hardware name: linux,dummy-virt (DT)
-	pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-	pc : buginit+0x18/0x1000 [hello]
-	lr : buginit+0x18/0x1000 [hello]
-	sp : ffff800080533ae0
-	x29: ffff800080533ae0 x28: 0000000000000000 x27: 0000000000000000
-	x26: ffffaba8c4e70510 x25: ffff800080533c30 x24: ffffaba8c4a28a58
-	x23: 0000000000000000 x22: 0000000000000000 x21: ffff3947c0eab3c0
-	x20: ffffaba8c4e3f000 x19: ffffaba846464000 x18: 0000000000000006
-	x17: 0000000000000000 x16: ffffaba8c2492834 x15: 0720072007200720
-	x14: 0720072007200720 x13: ffffaba8c49b27c8 x12: 0000000000000312
-	x11: 0000000000000106 x10: ffffaba8c4a0a7c8 x9 : ffffaba8c49b27c8
-	x8 : 00000000ffffefff x7 : ffffaba8c4a0a7c8 x6 : 80000000fffff000
-	x5 : 0000000000000107 x4 : 0000000000000000 x3 : 0000000000000000
-	x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff3947c0eab3c0
-	Call trace:
-	 buginit+0x18/0x1000 [hello]
-	 do_one_initcall+0x80/0x1c8
-	 do_init_module+0x60/0x218
-	 load_module+0x1ba4/0x1d70
-	 __do_sys_init_module+0x198/0x1d0
-	 __arm64_sys_init_module+0x1c/0x28
-	 invoke_syscall+0x48/0x114
-	 el0_svc_common.constprop.0+0x40/0xe0
-	 do_el0_svc+0x1c/0x28
-	 el0_svc+0x34/0xd8
-	 el0t_64_sync_handler+0x120/0x12c
-	 el0t_64_sync+0x190/0x194
-	Code: d0ffffe0 910003fd 91000000 9400000b (d4210000)
-	---[ end trace 0000000000000000 ]---
-	Kernel panic - not syncing: BRK handler: Fatal exception
-
-Fix this by always aligning the end of a bug_entry to 4 bytes, which is
-correct regardless of CONFIG_DEBUG_BUGVERBOSE.
-
-Fixes: 9fb7410f955f ("arm64/BUG: Use BRK instruction for generic BUG traps")
-
-Signed-off-by: Yuanbin Xie <xieyuanbin1@huawei.com>
-Signed-off-by: Jiangfeng Xiao <xiaojiangfeng@huawei.com>
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/1716212077-43826-1-git-send-email-xiaojiangfeng@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Yang, Chenyuan <cy54@illinois.edu>
+Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
+Fixes: ca684386e6e2 ("[media] cec: add HDMI CEC framework (api)")
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/asm-bug.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/cec/core/cec-adap.c | 6 +++++-
+ drivers/media/cec/core/cec-api.c  | 2 +-
+ include/media/cec.h               | 1 +
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/asm-bug.h b/arch/arm64/include/asm/asm-bug.h
-index 03f52f84a4f3f..bc2dcc8a00009 100644
---- a/arch/arm64/include/asm/asm-bug.h
-+++ b/arch/arm64/include/asm/asm-bug.h
-@@ -28,6 +28,7 @@
- 	14470:	.long 14471f - 14470b;			\
- _BUGVERBOSE_LOCATION(__FILE__, __LINE__)		\
- 		.short flags; 				\
-+		.align 2;				\
- 		.popsection;				\
- 	14471:
- #else
+diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
+index 920c108b84aaf..42d66ae27b19f 100644
+--- a/drivers/media/cec/core/cec-adap.c
++++ b/drivers/media/cec/core/cec-adap.c
+@@ -1528,9 +1528,12 @@ static int cec_config_thread_func(void *arg)
+  */
+ static void cec_claim_log_addrs(struct cec_adapter *adap, bool block)
+ {
+-	if (WARN_ON(adap->is_configuring || adap->is_configured))
++	if (WARN_ON(adap->is_claiming_log_addrs ||
++		    adap->is_configuring || adap->is_configured))
+ 		return;
+ 
++	adap->is_claiming_log_addrs = true;
++
+ 	init_completion(&adap->config_completion);
+ 
+ 	/* Ready to kick off the thread */
+@@ -1545,6 +1548,7 @@ static void cec_claim_log_addrs(struct cec_adapter *adap, bool block)
+ 		wait_for_completion(&adap->config_completion);
+ 		mutex_lock(&adap->lock);
+ 	}
++	adap->is_claiming_log_addrs = false;
+ }
+ 
+ /*
+diff --git a/drivers/media/cec/core/cec-api.c b/drivers/media/cec/core/cec-api.c
+index feaf100a44c2d..8bdf58abdf965 100644
+--- a/drivers/media/cec/core/cec-api.c
++++ b/drivers/media/cec/core/cec-api.c
+@@ -178,7 +178,7 @@ static long cec_adap_s_log_addrs(struct cec_adapter *adap, struct cec_fh *fh,
+ 			   CEC_LOG_ADDRS_FL_ALLOW_RC_PASSTHRU |
+ 			   CEC_LOG_ADDRS_FL_CDC_ONLY;
+ 	mutex_lock(&adap->lock);
+-	if (!adap->is_configuring &&
++	if (!adap->is_claiming_log_addrs && !adap->is_configuring &&
+ 	    (!log_addrs.num_log_addrs || !adap->is_configured) &&
+ 	    !cec_is_busy(adap, fh)) {
+ 		err = __cec_s_log_addrs(adap, &log_addrs, block);
+diff --git a/include/media/cec.h b/include/media/cec.h
+index df3e8738d512b..23202bf439b47 100644
+--- a/include/media/cec.h
++++ b/include/media/cec.h
+@@ -239,6 +239,7 @@ struct cec_adapter {
+ 	u16 phys_addr;
+ 	bool needs_hpd;
+ 	bool is_enabled;
++	bool is_claiming_log_addrs;
+ 	bool is_configuring;
+ 	bool is_configured;
+ 	bool cec_pin_is_high;
 -- 
 2.43.0
 
