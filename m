@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-50606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E69906B83
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F327906C63
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DACA51C219CB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E04CF1F23DDB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672C4143C56;
-	Thu, 13 Jun 2024 11:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95A7142911;
+	Thu, 13 Jun 2024 11:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14KFPC2O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6M19rVV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C57143867;
-	Thu, 13 Jun 2024 11:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771751442F3;
+	Thu, 13 Jun 2024 11:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278859; cv=none; b=dhE8J/oostBx7LSzbziUtKSeIS9w/nlE++Hqj3BiGI/Ar9jPD2/oY9ZKrBr8FzNoggZsoE01oO9sxLBN2ZEwg24oP9F3wWPxF1xcd0TnzF07Y9zVtlGf+nul2wXCaf2PTJLS4KfzX3pi7YEZFNIAd+uDzNcjrgzXXZCF4U3vckk=
+	t=1718279263; cv=none; b=OMuOxKyKz+au3fLqPLG1JXBBNubN/UNZKN+Ao62azSRez6rr5E1/uYoJerP1NkSfRC6ZyM8H1j564N6oE8h7CPhXAJUpaKf3k+efuOJwuHQi2CrRmMkZK1mv0lYjkCZAHJkEaUpT57gWcfD04d8o3ZQfW3jlWqpkJJmqgfmo9Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278859; c=relaxed/simple;
-	bh=At9CZgrFdC6qjzsbYSUj9EFJduqbm29yCAv/QNyCew8=;
+	s=arc-20240116; t=1718279263; c=relaxed/simple;
+	bh=xxDtQyDVEnl5boDD1iAffrO2Qqgy/Pw2QFufzjchShY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k6ZKxfGWWGNDHV0N9rKW9AboI9ycG92KrvgFoRh4DSSvWW35AlLPyFiUsq4Ya7AeT7ZhMVPpsCuneb8f7Jr0s8Bl3ZhRK6HuifWmHMK2A3U2ipvQbxWrqNnEs56/84KqKDdbQO9ukgowSDvKTreLiaIpVr9tc2pjcWmtSKHNiLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14KFPC2O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA0DC2BBFC;
-	Thu, 13 Jun 2024 11:40:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DfQUQPeL6pGq7iG8Mg3Hx2RM/miDC+VAbRcphttqis+UBDdElwlUEdho/cRNoI5aP0GQFD4kehs8oy9RCIDPFH8NpOl/KthPoF+k+jlp9roq/LualMTs394OOVnqjDqy8bWayckag7mZ640yOxQXEg4I5FAOKpa5O3Ej6KhkC50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6M19rVV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37C1C2BBFC;
+	Thu, 13 Jun 2024 11:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278858;
-	bh=At9CZgrFdC6qjzsbYSUj9EFJduqbm29yCAv/QNyCew8=;
+	s=korg; t=1718279263;
+	bh=xxDtQyDVEnl5boDD1iAffrO2Qqgy/Pw2QFufzjchShY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=14KFPC2OjG5t5xueAASruZ1MMVO/DjbV3EVAeCA7JX3Sm4v23RhWU/vTet29srHpp
-	 FC5HzmijfNOSeAEjRibwR88kHCgbCuXRVnS7CFWGhaNMDvY5+WnrMEpILoXHuKcA8b
-	 0vDbxT5EnltCxuQm1GQKPTvFkReHmSdE7pAAPLpk=
+	b=J6M19rVVPHMyqhM69I9rGDYui/KoAXjbCyv0hpDMfT+Nn6x1lu+jU9pcva7+P3lXS
+	 vdvBGl2Nqo8TqlBxVTkATKk0X96gMSW/GEnXRrUowanMk5FhkfPmgqhBPjQ5W7jYM/
+	 Essh0EV6lprx4XtAIhzdZWkZpiUNk66aLdiDnzaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 094/213] serial: max3100: Update uart_driver_registered on driver removal
+	"Kevin Parsons (Microsoft)" <parsonskev@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jann Horn <jannh@google.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	Hardik Garg <hargar@linux.microsoft.com>,
+	Allen Pais <apais@linux.microsoft.com>,
+	"Tyler Hicks (Microsoft)" <code@tyhicks.com>
+Subject: [PATCH 6.9 017/157] proc: Move fdinfo PTRACE_MODE_READ check into the inode .permission operation
 Date: Thu, 13 Jun 2024 13:32:22 +0200
-Message-ID: <20240613113231.635955071@linuxfoundation.org>
+Message-ID: <20240613113228.072422967@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +68,163 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Tyler Hicks (Microsoft) <code@tyhicks.com>
 
-[ Upstream commit 712a1fcb38dc7cac6da63ee79a88708fbf9c45ec ]
+commit 0a960ba49869ebe8ff859d000351504dd6b93b68 upstream.
 
-The removal of the last MAX3100 device triggers the removal of
-the driver. However, code doesn't update the respective global
-variable and after insmod — rmmod — insmod cycle the kernel
-oopses:
+The following commits loosened the permissions of /proc/<PID>/fdinfo/
+directory, as well as the files within it, from 0500 to 0555 while also
+introducing a PTRACE_MODE_READ check between the current task and
+<PID>'s task:
 
-  max3100 spi-PRP0001:01: max3100_probe: adding port 0
-  BUG: kernel NULL pointer dereference, address: 0000000000000408
-  ...
-  RIP: 0010:serial_core_register_port+0xa0/0x840
-  ...
-   max3100_probe+0x1b6/0x280 [max3100]
-   spi_probe+0x8d/0xb0
+ - commit 7bc3fa0172a4 ("procfs: allow reading fdinfo with PTRACE_MODE_READ")
+ - commit 1927e498aee1 ("procfs: prevent unprivileged processes accessing fdinfo dir")
 
-Update the actual state so next time UART driver will be registered
-again.
+Before those changes, inode based system calls like inotify_add_watch(2)
+would fail when the current task didn't have sufficient read permissions:
 
-Hugo also noticed, that the error path in the probe also affected
-by having the variable set, and not cleared. Instead of clearing it
-move the assignment after the successfull uart_register_driver() call.
+ [...]
+ lstat("/proc/1/task/1/fdinfo", {st_mode=S_IFDIR|0500, st_size=0, ...}) = 0
+ inotify_add_watch(64, "/proc/1/task/1/fdinfo",
+		   IN_MODIFY|IN_ATTRIB|IN_MOVED_FROM|IN_MOVED_TO|IN_CREATE|IN_DELETE|
+		   IN_ONLYDIR|IN_DONT_FOLLOW|IN_EXCL_UNLINK) = -1 EACCES (Permission denied)
+ [...]
 
-Fixes: 7831d56b0a35 ("tty: MAX3100")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240402195306.269276-3-andriy.shevchenko@linux.intel.com
+This matches the documented behavior in the inotify_add_watch(2) man
+page:
+
+ ERRORS
+       EACCES Read access to the given file is not permitted.
+
+After those changes, inotify_add_watch(2) started succeeding despite the
+current task not having PTRACE_MODE_READ privileges on the target task:
+
+ [...]
+ lstat("/proc/1/task/1/fdinfo", {st_mode=S_IFDIR|0555, st_size=0, ...}) = 0
+ inotify_add_watch(64, "/proc/1/task/1/fdinfo",
+		   IN_MODIFY|IN_ATTRIB|IN_MOVED_FROM|IN_MOVED_TO|IN_CREATE|IN_DELETE|
+		   IN_ONLYDIR|IN_DONT_FOLLOW|IN_EXCL_UNLINK) = 1757
+ openat(AT_FDCWD, "/proc/1/task/1/fdinfo",
+	O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = -1 EACCES (Permission denied)
+ [...]
+
+This change in behavior broke .NET prior to v7. See the github link
+below for the v7 commit that inadvertently/quietly (?) fixed .NET after
+the kernel changes mentioned above.
+
+Return to the old behavior by moving the PTRACE_MODE_READ check out of
+the file .open operation and into the inode .permission operation:
+
+ [...]
+ lstat("/proc/1/task/1/fdinfo", {st_mode=S_IFDIR|0555, st_size=0, ...}) = 0
+ inotify_add_watch(64, "/proc/1/task/1/fdinfo",
+		   IN_MODIFY|IN_ATTRIB|IN_MOVED_FROM|IN_MOVED_TO|IN_CREATE|IN_DELETE|
+		   IN_ONLYDIR|IN_DONT_FOLLOW|IN_EXCL_UNLINK) = -1 EACCES (Permission denied)
+ [...]
+
+Reported-by: Kevin Parsons (Microsoft) <parsonskev@gmail.com>
+Link: https://github.com/dotnet/runtime/commit/89e5469ac591b82d38510fe7de98346cce74ad4f
+Link: https://stackoverflow.com/questions/75379065/start-self-contained-net6-build-exe-as-service-on-raspbian-system-unauthorizeda
+Fixes: 7bc3fa0172a4 ("procfs: allow reading fdinfo with PTRACE_MODE_READ")
+Cc: stable@vger.kernel.org
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Hardik Garg <hargar@linux.microsoft.com>
+Cc: Allen Pais <apais@linux.microsoft.com>
+Signed-off-by: Tyler Hicks (Microsoft) <code@tyhicks.com>
+Link: https://lore.kernel.org/r/20240501005646.745089-1-code@tyhicks.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max3100.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/proc/fd.c |   42 ++++++++++++++++++++----------------------
+ 1 file changed, 20 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
-index 915d7753eec2f..c1ee88f530334 100644
---- a/drivers/tty/serial/max3100.c
-+++ b/drivers/tty/serial/max3100.c
-@@ -754,13 +754,14 @@ static int max3100_probe(struct spi_device *spi)
- 	mutex_lock(&max3100s_lock);
- 
- 	if (!uart_driver_registered) {
--		uart_driver_registered = 1;
- 		retval = uart_register_driver(&max3100_uart_driver);
- 		if (retval) {
- 			printk(KERN_ERR "Couldn't register max3100 uart driver\n");
- 			mutex_unlock(&max3100s_lock);
- 			return retval;
- 		}
-+
-+		uart_driver_registered = 1;
- 	}
- 
- 	for (i = 0; i < MAX_MAX3100; i++)
-@@ -846,6 +847,7 @@ static int max3100_remove(struct spi_device *spi)
- 		}
- 	pr_debug("removing max3100 driver\n");
- 	uart_unregister_driver(&max3100_uart_driver);
-+	uart_driver_registered = 0;
- 
- 	mutex_unlock(&max3100s_lock);
+--- a/fs/proc/fd.c
++++ b/fs/proc/fd.c
+@@ -74,7 +74,18 @@ out:
  	return 0;
--- 
-2.43.0
-
+ }
+ 
+-static int proc_fdinfo_access_allowed(struct inode *inode)
++static int seq_fdinfo_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, seq_show, inode);
++}
++
++/**
++ * Shared /proc/pid/fdinfo and /proc/pid/fdinfo/fd permission helper to ensure
++ * that the current task has PTRACE_MODE_READ in addition to the normal
++ * POSIX-like checks.
++ */
++static int proc_fdinfo_permission(struct mnt_idmap *idmap, struct inode *inode,
++				  int mask)
+ {
+ 	bool allowed = false;
+ 	struct task_struct *task = get_proc_task(inode);
+@@ -88,18 +99,13 @@ static int proc_fdinfo_access_allowed(st
+ 	if (!allowed)
+ 		return -EACCES;
+ 
+-	return 0;
++	return generic_permission(idmap, inode, mask);
+ }
+ 
+-static int seq_fdinfo_open(struct inode *inode, struct file *file)
+-{
+-	int ret = proc_fdinfo_access_allowed(inode);
+-
+-	if (ret)
+-		return ret;
+-
+-	return single_open(file, seq_show, inode);
+-}
++static const struct inode_operations proc_fdinfo_file_inode_operations = {
++	.permission	= proc_fdinfo_permission,
++	.setattr	= proc_setattr,
++};
+ 
+ static const struct file_operations proc_fdinfo_file_operations = {
+ 	.open		= seq_fdinfo_open,
+@@ -388,6 +394,8 @@ static struct dentry *proc_fdinfo_instan
+ 	ei = PROC_I(inode);
+ 	ei->fd = data->fd;
+ 
++	inode->i_op = &proc_fdinfo_file_inode_operations;
++
+ 	inode->i_fop = &proc_fdinfo_file_operations;
+ 	tid_fd_update_inode(task, inode, 0);
+ 
+@@ -407,23 +415,13 @@ static int proc_readfdinfo(struct file *
+ 				  proc_fdinfo_instantiate);
+ }
+ 
+-static int proc_open_fdinfo(struct inode *inode, struct file *file)
+-{
+-	int ret = proc_fdinfo_access_allowed(inode);
+-
+-	if (ret)
+-		return ret;
+-
+-	return 0;
+-}
+-
+ const struct inode_operations proc_fdinfo_inode_operations = {
+ 	.lookup		= proc_lookupfdinfo,
++	.permission	= proc_fdinfo_permission,
+ 	.setattr	= proc_setattr,
+ };
+ 
+ const struct file_operations proc_fdinfo_operations = {
+-	.open		= proc_open_fdinfo,
+ 	.read		= generic_read_dir,
+ 	.iterate_shared	= proc_readfdinfo,
+ 	.llseek		= generic_file_llseek,
 
 
 
