@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-51099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EBB6906E55
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA8F9071B9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA69A28148C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B65BF1C23270
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BD61448C8;
-	Thu, 13 Jun 2024 12:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CE4144303;
+	Thu, 13 Jun 2024 12:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbWUweln"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9XB/gG2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAADE144312;
-	Thu, 13 Jun 2024 12:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E172E144306;
+	Thu, 13 Jun 2024 12:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280305; cv=none; b=Q2slAa6dBkdSu+1zPoB69WrUypovEldabkOXt+CzvwwwMHpX01II0LTv67AkwbAPFCGvH+P3ANPqS2/bcDGsmtDFaEr4IbxHUf45GK9t8CvCLun6R6pRliqkYZmj/AuSNkto18BEzBaTRu2fhE/dctlk6sAQ1V9QiOcQxOmy1F0=
+	t=1718282372; cv=none; b=r5Mt7fHP1s82N+73iYPa/9yK5aH+96jN1nEPArOp/0l1HRAlQTph25a+vICs5Uz9+YawsPUjYvQEU9nBHZ6f0RnJqGxr+LiwtDX+y0lHkGBub+1oYxvZma+TByl94ktVMp/A9f+lFUuLRRylAtrZEcB8PY//nwkYb6IgqbegjKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280305; c=relaxed/simple;
-	bh=39Ua1y/Ket/7QjlJD27FzBtV7zQCealDoXkfHoTjw+Q=;
+	s=arc-20240116; t=1718282372; c=relaxed/simple;
+	bh=qzr9MRxEq5Gnyy3tAbgeR5fKLjZ8b+Ocb1rWZhJJluE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WjK2oCaxXn1qPXDY6lBZyNodTD7lUYOzB3vJo51VMasn9VI8stABcHVklf1UBk/NCR+eyuQpiejn6h3hT5gEfPJGgYOQPJK7PLvUge/4aXplNUbyodtg8paBcyNcYmqez+taD7w9GuCIB+reC0WStdFU31bLnkGIK9fa4fKpduM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbWUweln; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42027C2BBFC;
-	Thu, 13 Jun 2024 12:05:05 +0000 (UTC)
+	 MIME-Version; b=eSmqQ3xxuLrEtODBh38KkRW9txOYKvP8Q5tbW46T+tJyiujvG8NHLkdmM5z1UCz8KKoAwV59VjE73s4SfA7Q+lGGMvGx4WXfkqRDV/DmxL4ztvBtRVKUCW+qerkAKnBYjq/V1GawWALNuIrii0KKUiJetUrltg4VBS5HjBS2Bi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9XB/gG2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C195C2BBFC;
+	Thu, 13 Jun 2024 12:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280305;
-	bh=39Ua1y/Ket/7QjlJD27FzBtV7zQCealDoXkfHoTjw+Q=;
+	s=korg; t=1718282371;
+	bh=qzr9MRxEq5Gnyy3tAbgeR5fKLjZ8b+Ocb1rWZhJJluE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pbWUweln6NCYeDJj6FO8fBOoevPNKiMs2hB5aB/Dy4+itoefyKCCztwSBh2j7Sj5u
-	 +dvJMM0Qx14j13s4jQZ3lmpP490/1nLe2thtyC4CnL+lkC0Z0+qA6BvX8VbLzVPEHr
-	 TepsIhs2Z1PTEWal3exy+7k3TvgqjFhJ+mMnyyjg=
+	b=q9XB/gG2UYuS+dJuNiFWvITDPfyfK8ew3vac31FdTQGRyDmIVHtwkCxWw/cfw5n2E
+	 hmuoshq2h5ZTWPJrUKyhfeX/gav7mU+cWNt5Eq2GKYMG9lWUG1+F6zyoxMF8zhI/M+
+	 GLulUBpb8h2zVcD5q1i8SqxaaTHuzTBptEZm+BzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>
-Subject: [PATCH 6.6 001/137] drm/i915/hwmon: Get rid of devm
+	Wenyu Liu <liuwenyu7@huawei.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	wuxu.wu@huawei.com,
+	Hewenliang <hewenliang4@huawei.com>,
+	yaowenbin <yaowenbin1@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 224/402] perf top: Fix TUI exit screen refresh race condition
 Date: Thu, 13 Jun 2024 13:33:01 +0200
-Message-ID: <20240613113223.340841303@linuxfoundation.org>
+Message-ID: <20240613113310.879886624@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +70,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+From: yaowenbin <yaowenbin1@huawei.com>
 
-commit 5bc9de065b8bb9b8dd8799ecb4592d0403b54281 upstream.
+[ Upstream commit 64f18d2d043015b3f835ce4c9f3beb97cfd19b6e ]
 
-When both hwmon and hwmon drvdata (on which hwmon depends) are device
-managed resources, the expectation, on device unbind, is that hwmon will be
-released before drvdata. However, in i915 there are two separate code
-paths, which both release either drvdata or hwmon and either can be
-released before the other. These code paths (for device unbind) are as
-follows (see also the bug referenced below):
+When the following command is executed several times, a coredump file is
+generated.
 
-Call Trace:
-release_nodes+0x11/0x70
-devres_release_group+0xb2/0x110
-component_unbind_all+0x8d/0xa0
-component_del+0xa5/0x140
-intel_pxp_tee_component_fini+0x29/0x40 [i915]
-intel_pxp_fini+0x33/0x80 [i915]
-i915_driver_remove+0x4c/0x120 [i915]
-i915_pci_remove+0x19/0x30 [i915]
-pci_device_remove+0x32/0xa0
-device_release_driver_internal+0x19c/0x200
-unbind_store+0x9c/0xb0
+	$ timeout -k 9 5 perf top -e task-clock
+	*******
+	*******
+	*******
+	0.01%  [kernel]                  [k] __do_softirq
+	0.01%  libpthread-2.28.so        [.] __pthread_mutex_lock
+	0.01%  [kernel]                  [k] __ll_sc_atomic64_sub_return
+	double free or corruption (!prev) perf top --sort comm,dso
+	timeout: the monitored command dumped core
 
-and
+When we terminate "perf top" using sending signal method,
+SLsmg_reset_smg() called. SLsmg_reset_smg() resets the SLsmg screen
+management routines by freeing all memory allocated while it was active.
 
-Call Trace:
-release_nodes+0x11/0x70
-devres_release_all+0x8a/0xc0
-device_unbind_cleanup+0x9/0x70
-device_release_driver_internal+0x1c1/0x200
-unbind_store+0x9c/0xb0
+However SLsmg_reinit_smg() maybe be called by another thread.
 
-This means that in i915, if use devm, we cannot gurantee that hwmon will
-always be released before drvdata. Which means that we have a uaf if hwmon
-sysfs is accessed when drvdata has been released but hwmon hasn't.
+SLsmg_reinit_smg() will free the same memory accessed by
+SLsmg_reset_smg(), thus it results in a double free.
 
-The only way out of this seems to be do get rid of devm_ and release/free
-everything explicitly during device unbind.
+SLsmg_reinit_smg() is called already protected by ui__lock, so we fix
+the problem by adding pthread_mutex_trylock of ui__lock when calling
+SLsmg_reset_smg().
 
-v2: Change commit message and other minor code changes
-v3: Cleanup from i915_hwmon_register on error (Armin Wolf)
-v4: Eliminate potential static analyzer warning (Rodrigo)
-    Eliminate fetch_and_zero (Jani)
-v5: Restore previous logic for ddat_gt->hwmon_dev error return (Andi)
-
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10366
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240417145646.793223-1-ashutosh.dixit@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wenyu Liu <liuwenyu7@huawei.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: wuxu.wu@huawei.com
+Link: http://lore.kernel.org/lkml/a91e3943-7ddc-f5c0-a7f5-360f073c20e6@huawei.com
+Signed-off-by: Hewenliang <hewenliang4@huawei.com>
+Signed-off-by: yaowenbin <yaowenbin1@huawei.com>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 769e6a1e15bd ("perf ui browser: Don't save pointer to stack memory")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_hwmon.c |   46 ++++++++++++++++++++++++++------------
- 1 file changed, 32 insertions(+), 14 deletions(-)
+ tools/perf/ui/tui/setup.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/i915/i915_hwmon.c
-+++ b/drivers/gpu/drm/i915/i915_hwmon.c
-@@ -793,7 +793,7 @@ void i915_hwmon_register(struct drm_i915
- 	if (!IS_DGFX(i915))
- 		return;
+diff --git a/tools/perf/ui/tui/setup.c b/tools/perf/ui/tui/setup.c
+index e9bfe856a5dee..b1be59b4e2a4f 100644
+--- a/tools/perf/ui/tui/setup.c
++++ b/tools/perf/ui/tui/setup.c
+@@ -170,9 +170,11 @@ void ui__exit(bool wait_for_ok)
+ 				    "Press any key...", 0);
  
--	hwmon = devm_kzalloc(dev, sizeof(*hwmon), GFP_KERNEL);
-+	hwmon = kzalloc(sizeof(*hwmon), GFP_KERNEL);
- 	if (!hwmon)
- 		return;
- 
-@@ -819,14 +819,12 @@ void i915_hwmon_register(struct drm_i915
- 	hwm_get_preregistration_info(i915);
- 
- 	/*  hwmon_dev points to device hwmon<i> */
--	hwmon_dev = devm_hwmon_device_register_with_info(dev, ddat->name,
--							 ddat,
--							 &hwm_chip_info,
--							 hwm_groups);
--	if (IS_ERR(hwmon_dev)) {
--		i915->hwmon = NULL;
--		return;
--	}
-+	hwmon_dev = hwmon_device_register_with_info(dev, ddat->name,
-+						    ddat,
-+						    &hwm_chip_info,
-+						    hwm_groups);
-+	if (IS_ERR(hwmon_dev))
-+		goto err;
- 
- 	ddat->hwmon_dev = hwmon_dev;
- 
-@@ -839,16 +837,36 @@ void i915_hwmon_register(struct drm_i915
- 		if (!hwm_gt_is_visible(ddat_gt, hwmon_energy, hwmon_energy_input, 0))
- 			continue;
- 
--		hwmon_dev = devm_hwmon_device_register_with_info(dev, ddat_gt->name,
--								 ddat_gt,
--								 &hwm_gt_chip_info,
--								 NULL);
-+		hwmon_dev = hwmon_device_register_with_info(dev, ddat_gt->name,
-+							    ddat_gt,
-+							    &hwm_gt_chip_info,
-+							    NULL);
- 		if (!IS_ERR(hwmon_dev))
- 			ddat_gt->hwmon_dev = hwmon_dev;
- 	}
-+	return;
-+err:
-+	i915_hwmon_unregister(i915);
+ 	SLtt_set_cursor_visibility(1);
+-	SLsmg_refresh();
+-	SLsmg_reset_smg();
++	if (!pthread_mutex_trylock(&ui__lock)) {
++		SLsmg_refresh();
++		SLsmg_reset_smg();
++		pthread_mutex_unlock(&ui__lock);
++	}
+ 	SLang_reset_tty();
+-
+ 	perf_error__unregister(&perf_tui_eops);
  }
- 
- void i915_hwmon_unregister(struct drm_i915_private *i915)
- {
--	fetch_and_zero(&i915->hwmon);
-+	struct i915_hwmon *hwmon = i915->hwmon;
-+	struct intel_gt *gt;
-+	int i;
-+
-+	if (!hwmon)
-+		return;
-+
-+	for_each_gt(gt, i915, i)
-+		if (hwmon->ddat_gt[i].hwmon_dev)
-+			hwmon_device_unregister(hwmon->ddat_gt[i].hwmon_dev);
-+
-+	if (hwmon->ddat.hwmon_dev)
-+		hwmon_device_unregister(hwmon->ddat.hwmon_dev);
-+
-+	mutex_destroy(&hwmon->hwmon_lock);
-+
-+	kfree(i915->hwmon);
-+	i915->hwmon = NULL;
- }
+-- 
+2.43.0
+
 
 
 
