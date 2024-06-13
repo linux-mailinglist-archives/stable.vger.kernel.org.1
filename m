@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B293E906FAC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2860E9071B6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68D561F23173
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9300B26604
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5A2145343;
-	Thu, 13 Jun 2024 12:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70148143C62;
+	Thu, 13 Jun 2024 12:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOx4s8Ie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uy4+/+ZZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1852D3209;
-	Thu, 13 Jun 2024 12:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F45E143C51;
+	Thu, 13 Jun 2024 12:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281163; cv=none; b=BiAEveHYElBwx2zMTi3xMmnGkwnlWPgo5PY5ZnVgWOG9qzlW/pE4Z8ce0f/tWa071+TLbFOCyP/xv1/IpTuhs9OtO4vhiiuh7XSMTJzYPmttFwc/ST/YDg86r1Dg+AhfaGmDhSX0dATgZCYAuqXmVSX/pOIrUUSlA/Cw0eMvR0s=
+	t=1718282363; cv=none; b=WNXfz81jpELRcZAQ6oeiKJNGw7He0FOA9Dt6dpOR+T61DEoB/6gFFL/FgO5xGt00O1BgDj1MPpl3lW1/nDJRjp6c76medxUn45ecIit4qwtmLxaQT0J96jIEPyj/HiRxP3RvVQQ4vEq2tjRRassY0e2+B4isGpk6KiGDkz7x0u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281163; c=relaxed/simple;
-	bh=TBZyJWC/XCXjUs8ocxWE1o4RaEbeUWv1kTfSXD5CTtM=;
+	s=arc-20240116; t=1718282363; c=relaxed/simple;
+	bh=hRW0z+sdiW3mvE8n9E3lHPvhaw4Q0Zs4/EBG8RapiMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iGb7nQ4BWSundXCtKgfutzSzH8ng8Cb+2UjWlovtvBq+P/Y0q0NMNHKdKEQwbkbruJmBeYD3AnzJ7ZxvthU21FW6g8jQxF0BkhLJkLZdjh9crFHlq51nJgbZ/1TKmZve/m9nou0Y7YleiiLsF0O8GSfFVEM4n0Iq1kQCCmhyGYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOx4s8Ie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927DFC2BBFC;
-	Thu, 13 Jun 2024 12:19:22 +0000 (UTC)
+	 MIME-Version; b=B/r6uFBdnT+fZcQFBCHGkJM0nW60Z6i50qcnUTtVfq/w/06Z2OZbjjCB5SXk8b8nj/MBmG/gnDVZyUu9XKjYe2vw11hEdHEfKxL4JeWp1Bo33sudUPrmRwU3z4KOUCxiMfKmFEOXvomBPjQVsNdY10grhA1EWPE9Y79CsDqshss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uy4+/+ZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75A6C2BBFC;
+	Thu, 13 Jun 2024 12:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281163;
-	bh=TBZyJWC/XCXjUs8ocxWE1o4RaEbeUWv1kTfSXD5CTtM=;
+	s=korg; t=1718282363;
+	bh=hRW0z+sdiW3mvE8n9E3lHPvhaw4Q0Zs4/EBG8RapiMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KOx4s8IeXheDdiiXwnZqwFJ1hdUMKN1WZDXK9VDG7uHeXZkYj5Aj7r35giXjLGna1
-	 nQp3CxxrRKHzUGzr4Xs3opUgpy2D9HfLAusA7+xVkTBPPGN5uiiU5dvMicSAiwZtr5
-	 TP1ZZfskhAj/4096y3Aaygn9N3bka2pcPlBuSFrQ=
+	b=Uy4+/+ZZKgEi8YA9jQuU/pwHxQljepTkPT+Z/s1FmQAXbkyNAnknP5cTOc4I7E9YQ
+	 XQsbBs9oiOrHjIk46soleHzY1Y/PhxrB6fr2kf9LruB2wH+VWy4EOR72RvVUOaKtdB
+	 ysM9MmJYyqp2ViXVcSwEAARYmkdxhf9WDJPnPAug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 160/317] f2fs: fix to relocate check condition in f2fs_fallocate()
+Subject: [PATCH 5.15 221/402] ppdev: Remove usage of the deprecated ida_simple_xx() API
 Date: Thu, 13 Jun 2024 13:32:58 +0200
-Message-ID: <20240613113253.755759837@linuxfoundation.org>
+Message-ID: <20240613113310.765548381@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 278a6253a673611dbc8ab72a3b34b151a8e75822 ]
+[ Upstream commit d8407f71ebeaeb6f50bd89791837873e44609708 ]
 
-compress and pinfile flag should be checked after inode lock held to
-avoid race condition, fix it.
+ida_alloc() and ida_free() should be preferred to the deprecated
+ida_simple_get() and ida_simple_remove().
 
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
-Fixes: 5fed0be8583f ("f2fs: do not allow partial truncation on pinned file")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+This is less verbose.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/ba9da12fdd5cdb2c28180b7160af5042447d803f.1702962092.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: fbf740aeb86a ("ppdev: Add an error check in register_device")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/char/ppdev.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 367b19f059f3c..9cf04b9d3ad8e 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1745,15 +1745,6 @@ static long f2fs_fallocate(struct file *file, int mode,
- 		(mode & (FALLOC_FL_COLLAPSE_RANGE | FALLOC_FL_INSERT_RANGE)))
- 		return -EOPNOTSUPP;
+diff --git a/drivers/char/ppdev.c b/drivers/char/ppdev.c
+index 38b46c7d17371..f6024d97fe70b 100644
+--- a/drivers/char/ppdev.c
++++ b/drivers/char/ppdev.c
+@@ -299,7 +299,7 @@ static int register_device(int minor, struct pp_struct *pp)
+ 		goto err;
+ 	}
  
--	/*
--	 * Pinned file should not support partial truncation since the block
--	 * can be used by applications.
--	 */
--	if ((f2fs_compressed_file(inode) || f2fs_is_pinned_file(inode)) &&
--		(mode & (FALLOC_FL_PUNCH_HOLE | FALLOC_FL_COLLAPSE_RANGE |
--			FALLOC_FL_ZERO_RANGE | FALLOC_FL_INSERT_RANGE)))
--		return -EOPNOTSUPP;
--
- 	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE |
- 			FALLOC_FL_COLLAPSE_RANGE | FALLOC_FL_ZERO_RANGE |
- 			FALLOC_FL_INSERT_RANGE))
-@@ -1761,6 +1752,17 @@ static long f2fs_fallocate(struct file *file, int mode,
+-	index = ida_simple_get(&ida_index, 0, 0, GFP_KERNEL);
++	index = ida_alloc(&ida_index, GFP_KERNEL);
+ 	memset(&ppdev_cb, 0, sizeof(ppdev_cb));
+ 	ppdev_cb.irq_func = pp_irq;
+ 	ppdev_cb.flags = (pp->flags & PP_EXCL) ? PARPORT_FLAG_EXCL : 0;
+@@ -310,7 +310,7 @@ static int register_device(int minor, struct pp_struct *pp)
+ 	if (!pdev) {
+ 		pr_warn("%s: failed to register device!\n", name);
+ 		rc = -ENXIO;
+-		ida_simple_remove(&ida_index, index);
++		ida_free(&ida_index, index);
+ 		goto err;
+ 	}
  
- 	inode_lock(inode);
+@@ -750,7 +750,7 @@ static int pp_release(struct inode *inode, struct file *file)
  
-+	/*
-+	 * Pinned file should not support partial truncation since the block
-+	 * can be used by applications.
-+	 */
-+	if ((f2fs_compressed_file(inode) || f2fs_is_pinned_file(inode)) &&
-+		(mode & (FALLOC_FL_PUNCH_HOLE | FALLOC_FL_COLLAPSE_RANGE |
-+			FALLOC_FL_ZERO_RANGE | FALLOC_FL_INSERT_RANGE))) {
-+		ret = -EOPNOTSUPP;
-+		goto out;
-+	}
-+
- 	ret = file_modified(file);
- 	if (ret)
- 		goto out;
+ 	if (pp->pdev) {
+ 		parport_unregister_device(pp->pdev);
+-		ida_simple_remove(&ida_index, pp->index);
++		ida_free(&ida_index, pp->index);
+ 		pp->pdev = NULL;
+ 		pr_debug(CHRDEV "%x: unregistered pardevice\n", minor);
+ 	}
 -- 
 2.43.0
 
