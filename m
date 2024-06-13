@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-51166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C829906E9F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F13BA906FDA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00CFDB21BF2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92BB8289335
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA131145FF8;
-	Thu, 13 Jun 2024 12:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008A71465B1;
+	Thu, 13 Jun 2024 12:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wh++jGw6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWTlg1tN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666D01448F2;
-	Thu, 13 Jun 2024 12:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42231465A7;
+	Thu, 13 Jun 2024 12:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280500; cv=none; b=BH6BBzvX9QPk1ZAqRiiQehSxT18IKnp6n/vyH52TFYKvOpAtfK05nCia3LxGAqJjHMrrXKMxfvrSmm5nJY50Mbc+tIMtpDQP7dEjV7m5qzf0CCBOAVavAJO2t9n/apqnebYSQUGoxNprbF5knpKP6gmy8BzC/zYFSUK+hRWgGPA=
+	t=1718281292; cv=none; b=IhUWljc42ua0/xVrRMW1zmT34nQvpk9yhhdiaj/wMO9q3lBU/bu13aRfSdWT1A4V8yxU7fkK6npji8ZGGq7oEnIPZC2uVBH3SFWznNwAz0sBai+bG2GZj/Bh9J29EPVBCngzRae45SN02/vM0KNwOmoAfdqeX9/JQcs6d4cWwWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280500; c=relaxed/simple;
-	bh=2EBqkgkJQNZ19KocOdWX47LjYHK+5CbpR8g6gwsAOk8=;
+	s=arc-20240116; t=1718281292; c=relaxed/simple;
+	bh=8CCw4wuwBPORvh9ZLQbmuKtceb8lIV4ZsXX/oc5KOOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZTITzxcSMjfK8q2N30Th2M7P92DmU/pHW6pnJn2aWJ+3FhwyVUihjm0oJIOwsso8Gw2kYO3EWp51qcG2BCn54YCDx+tWMBy34DHClEfVPld5Acb/LgNhUd9LBi+jeUrvtwK5HmvqxEuEJhq3Jj+CgK0DulXfXr9nPhBtiwnO3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wh++jGw6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2ECBC2BBFC;
-	Thu, 13 Jun 2024 12:08:19 +0000 (UTC)
+	 MIME-Version; b=EdxJBziY1PFQg2chFFSsMh/GmKWtv2TO2GC2UhGj2sd+cuoVxemG2hXfreqUr99Iz4TpkDQ0lR1PYFjBb61IIEeOMlijatnulOiuhLOih2ofixWJ95KJdOSOhrnCnA6V4vnYD3yHKeM7b16KNE1ttdtX8q/PPMeL9PTvuE7fHqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWTlg1tN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A5EC2BBFC;
+	Thu, 13 Jun 2024 12:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280500;
-	bh=2EBqkgkJQNZ19KocOdWX47LjYHK+5CbpR8g6gwsAOk8=;
+	s=korg; t=1718281292;
+	bh=8CCw4wuwBPORvh9ZLQbmuKtceb8lIV4ZsXX/oc5KOOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wh++jGw6YN14ujPSQMelbsua1dJVxLA7cO6273XpYkl7HzZTSeMQmBRZ47Y+owueY
-	 SRQujgcJwGQptatfJJc9gtzhown54iP7uofXiRK/1kDyOCsq5SfuXXYbhT7QrKKtzI
-	 VksAYFK2RIfK+idXyCtFHTc9dX30R1oT1xwjw0qo=
+	b=KWTlg1tNxRuNdsZICV8DyUaUPr2V7YkFIICMPE8TfkRbD9wzHErYpNSiGMEbpZyd7
+	 Qjq4sbdBNrXO8CiasojzYKneTxhd5TxriQwfk9oXDQEEj34OkQh7d2DYjnejB6J3WX
+	 aEf/cNqFVaxNDcWEKQUXv4kn7Pzf+SbOt/an79rM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH 6.6 043/137] media: v4l2-core: hold videodev_lock until dev reg, finishes
-Date: Thu, 13 Jun 2024 13:33:43 +0200
-Message-ID: <20240613113224.960321193@linuxfoundation.org>
+	Johannes Berg <johannes.berg@intel.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Richard Weinberger <richard@nod.at>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 206/317] um: vector: fix bpfflash parameter evaluation
+Date: Thu, 13 Jun 2024 13:33:44 +0200
+Message-ID: <20240613113255.523213500@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 1ed4477f2ea4743e7c5e1f9f3722152d14e6eeb1 upstream.
+[ Upstream commit 584ed2f76ff5fe360d87a04d17b6520c7999e06b ]
 
-After the new V4L2 device node was registered, some additional
-initialization was done before the device node was marked as
-'registered'. During the time between creating the device node
-and marking it as 'registered' it was possible to open the
-device node, which would return -ENODEV since the 'registered'
-flag was not yet set.
+With W=1 the build complains about a pointer compared to
+zero, clearly the result should've been compared.
 
-Hold the videodev_lock mutex from just before the device node
-is registered until the 'registered' flag is set. Since v4l2_open
-will take the same lock, it will wait until this registration
-process is finished. This resolves this race condition.
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: <stable@vger.kernel.org>      # for vi4.18 and up
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9807019a62dc ("um: Loadable BPF "Firmware" for vector drivers")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-dev.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/um/drivers/vector_kern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/v4l2-core/v4l2-dev.c
-+++ b/drivers/media/v4l2-core/v4l2-dev.c
-@@ -1034,8 +1034,10 @@ int __video_register_device(struct video
- 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
- 	vdev->dev.parent = vdev->dev_parent;
- 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
-+	mutex_lock(&videodev_lock);
- 	ret = device_register(&vdev->dev);
- 	if (ret < 0) {
-+		mutex_unlock(&videodev_lock);
- 		pr_err("%s: device_register failed\n", __func__);
- 		goto cleanup;
+diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
+index fc662f7cc2afb..c10432ef2d410 100644
+--- a/arch/um/drivers/vector_kern.c
++++ b/arch/um/drivers/vector_kern.c
+@@ -142,7 +142,7 @@ static bool get_bpf_flash(struct arglist *def)
+ 
+ 	if (allow != NULL) {
+ 		if (kstrtoul(allow, 10, &result) == 0)
+-			return (allow > 0);
++			return result > 0;
  	}
-@@ -1055,6 +1057,7 @@ int __video_register_device(struct video
- 
- 	/* Part 6: Activate this minor. The char device can now be used. */
- 	set_bit(V4L2_FL_REGISTERED, &vdev->flags);
-+	mutex_unlock(&videodev_lock);
- 
- 	return 0;
- 
+ 	return false;
+ }
+-- 
+2.43.0
+
 
 
 
