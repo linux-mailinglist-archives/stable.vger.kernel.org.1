@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-50993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4766E906DD5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C439071B1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2B541F23B90
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 851451C2450E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD951448EA;
-	Thu, 13 Jun 2024 11:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B20139CFE;
+	Thu, 13 Jun 2024 12:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zw3loYN0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTjrrsuE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EEC143899;
-	Thu, 13 Jun 2024 11:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857B617FD;
+	Thu, 13 Jun 2024 12:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279991; cv=none; b=WeABU4kvXryP6f5mqVeNJi8B6tzEa3CcfDXWxLa9l3JUBqYrFRWza2KSxLOWwRZz8Hz4XsMIhv2in45AkXxoPj403BGzuRTSk9WmPdGJniGSR4ZWF/1c3DkN8dTnapdj0ERLaT/sWSjr5ZKpH1ZPhkFV/tkOw2rVXornN9TKo+A=
+	t=1718282351; cv=none; b=l+ex5nltNls/ZY5igCwoVIHyZLum7e6DYGPpBiOyJFHsqLAs5LRD8KEc+wjC0kcKjqcxlDNI7mmcYHCM1bT0NGPhyHE2+Z3lwlRen4EbJgW857GaKHxYHlisk+yde/hMMPfXsFpU0phDbs6ZqJ63deA7E+aQEYTBZssKcR3XoYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279991; c=relaxed/simple;
-	bh=Xvh+jwq9/ZRKhUYek0UaS9X19zj1ngPxHNtp5R7ewyY=;
+	s=arc-20240116; t=1718282351; c=relaxed/simple;
+	bh=S3ts4YEHZlxX1UomXpuMncq6Y2TS4C1nnzYQwmJMM3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kC+jLCrs7+YrVGsfAlrYFvQodpCPWhTk12jBBDbgJeqQ+DZQ4pyw2mHxRHBkXEv5KjfAHEKaMRzPTyTU5KWkuCSihO4YVqf6Ydi8DF0XKFElAE9a/mQX/Yq1fZTE/6T+NdgGl/rqgTZZs9oo056MQwKcfQnJAEaGmPIml/dIALQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zw3loYN0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2946C2BBFC;
-	Thu, 13 Jun 2024 11:59:50 +0000 (UTC)
+	 MIME-Version; b=buY+kxVWCt5GB6mioc1MCbDr0YtinGvOxc0wjaokJ30F1B3Eu0PeBrE3GdTWjbESonhYxjNywn/h8OL2BtBD0Bs9Uj5sUBW7MYeHCnZz5KVaOZ1jp7zzXiG2gTGlE2J+4B8XEiHABqK3X+G9VhA9yhfDSmlXGNr7TzL6WOAQhvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTjrrsuE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B82C2BBFC;
+	Thu, 13 Jun 2024 12:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279991;
-	bh=Xvh+jwq9/ZRKhUYek0UaS9X19zj1ngPxHNtp5R7ewyY=;
+	s=korg; t=1718282351;
+	bh=S3ts4YEHZlxX1UomXpuMncq6Y2TS4C1nnzYQwmJMM3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zw3loYN0JQvR2aslvnayowEAl9Gd0Hq3o1iamsRTWCbpqQf5zTBy5LD6KwssCw9oJ
-	 3BLQjeVBEaCLbstI8WeRUDEq4vTNxe67PvXzvIs0gtnUmSF+ocYaAHPy/1k0VTMGoh
-	 9qKwVJIYI6Lh9XE7SGldSQIrJcIkj+1GxFgo0aWw=
+	b=zTjrrsuERDGrq7Y4xMSOGAtLy2+pSH1PxIlGu2llf59e+IPS/o4AS1awMCOmVi1Hg
+	 4IkI60dvbnqh6yIELnmMdt/emg/IQnf2aLAu54k7IcpZPL7aj3b6Exk5Iyl0Ad5bch
+	 V1Y95g/rTjgQGlTkdfby+cYlfoqLnihSPODU3j5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 105/202] serial: max3100: Fix bitwise types
+Subject: [PATCH 5.15 246/402] Input: ims-pcu - fix printf string overflow
 Date: Thu, 13 Jun 2024 13:33:23 +0200
-Message-ID: <20240613113231.815708949@linuxfoundation.org>
+Message-ID: <20240613113311.744844202@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit e60955dbecb97f080848a57524827e2db29c70fd ]
+[ Upstream commit bf32bceedd0453c70d9d022e2e29f98e446d7161 ]
 
-Sparse is not happy about misuse of bitwise types:
+clang warns about a string overflow in this driver
 
-  .../max3100.c:194:13: warning: incorrect type in assignment (different base types)
-  .../max3100.c:194:13:    expected unsigned short [addressable] [usertype] etx
-  .../max3100.c:194:13:    got restricted __be16 [usertype]
-  .../max3100.c:202:15: warning: cast to restricted __be16
+drivers/input/misc/ims-pcu.c:1802:2: error: 'snprintf' will always be truncated; specified size is 10, but format string expands to at least 12 [-Werror,-Wformat-truncation]
+drivers/input/misc/ims-pcu.c:1814:2: error: 'snprintf' will always be truncated; specified size is 10, but format string expands to at least 12 [-Werror,-Wformat-truncation]
 
-Fix this by choosing proper types for the respective variables.
+Make the buffer a little longer to ensure it always fits.
 
-Fixes: 7831d56b0a35 ("tty: MAX3100")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240402195306.269276-4-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240326223825.4084412-7-arnd@kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max3100.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/input/misc/ims-pcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
-index c1ee88f530334..17b6f4a872d6a 100644
---- a/drivers/tty/serial/max3100.c
-+++ b/drivers/tty/serial/max3100.c
-@@ -45,6 +45,9 @@
- #include <linux/freezer.h>
- #include <linux/tty.h>
- #include <linux/tty_flip.h>
-+#include <linux/types.h>
-+
-+#include <asm/unaligned.h>
+diff --git a/drivers/input/misc/ims-pcu.c b/drivers/input/misc/ims-pcu.c
+index 6f38aa23a1ff6..b3215c97ee02d 100644
+--- a/drivers/input/misc/ims-pcu.c
++++ b/drivers/input/misc/ims-pcu.c
+@@ -42,8 +42,8 @@ struct ims_pcu_backlight {
+ #define IMS_PCU_PART_NUMBER_LEN		15
+ #define IMS_PCU_SERIAL_NUMBER_LEN	8
+ #define IMS_PCU_DOM_LEN			8
+-#define IMS_PCU_FW_VERSION_LEN		(9 + 1)
+-#define IMS_PCU_BL_VERSION_LEN		(9 + 1)
++#define IMS_PCU_FW_VERSION_LEN		16
++#define IMS_PCU_BL_VERSION_LEN		16
+ #define IMS_PCU_BL_RESET_REASON_LEN	(2 + 1)
  
- #include <linux/serial_max3100.h>
- 
-@@ -191,7 +194,7 @@ static void max3100_timeout(struct timer_list *t)
- static int max3100_sr(struct max3100_port *s, u16 tx, u16 *rx)
- {
- 	struct spi_message message;
--	u16 etx, erx;
-+	__be16 etx, erx;
- 	int status;
- 	struct spi_transfer tran = {
- 		.tx_buf = &etx,
+ #define IMS_PCU_PCU_B_DEVICE_ID		5
 -- 
 2.43.0
 
