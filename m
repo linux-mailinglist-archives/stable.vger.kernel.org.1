@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F5D906EC4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE346906E1D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEAFD1C235DC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CB89B264AD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79903143C75;
-	Thu, 13 Jun 2024 12:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE3C1422B4;
+	Thu, 13 Jun 2024 12:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SA8OqJA6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jG/OJV+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB416EB56;
-	Thu, 13 Jun 2024 12:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A9F145B1E;
+	Thu, 13 Jun 2024 12:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280606; cv=none; b=C+Z+/nWQ1oB/3PWezxq0iXnVitIk5uQ64S+MDk9MLz7TCi+HTDQbl6iZRh6wRsubG8LfnYfRWlo88KA8hVJheQdTblTl6gH6c5KI5ISTx/cpjpfXh3pch6Don7WfjZfIQPlQA1Q+wzOdAgfgbWPbQ0OsN30Ca2bcAIswcwwI/nQ=
+	t=1718280159; cv=none; b=NGFHiEpxG3L65KMW87ZHrpt7vjwNBPlMzkOpBdmzqiuLKhU6Vd5O3ZnwELAG+FYOyZP3TExez62Iev6Utdw2XJVHq6KoyFe3Z20MRaQYC7NU2pp8rEjGGz1fiFQs+pmIcWHe+iTtB88PSYAvkGBmT2lIwMER2/9gs67FwJos2uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280606; c=relaxed/simple;
-	bh=2FsUa7YbQfZ8do7vIZM0eC3sO1hkKNNNUj0hUBiWWDI=;
+	s=arc-20240116; t=1718280159; c=relaxed/simple;
+	bh=DxNnnJ3Q63yUOMdU452SRUOqsjTbI/fyqR/HfwvZCOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQazX3lu/M99hC39X1y6h5A0PzllgFVJH+mDDjPPfue2V8g5lYDL7kim4BzcbI8wV+RuzSMGIiaCQ29g+9doqIQVAMzHpRQXZytFBbmq+U0oC/OaqWZMDnnBnjkkRnTiDslP5p1AG4vmkKb2+v7Sz8RlDT5Ud1InlvZG/K2jFHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SA8OqJA6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5FBC2BBFC;
-	Thu, 13 Jun 2024 12:10:05 +0000 (UTC)
+	 MIME-Version; b=ZYKpjNkadRgXFop7o8UgBIbmbIKzgMNMu/vQPLA3TGN4TXsqxSBOCrC1Qz9qp5de+1cT/xiJpJKM/ghmElvIjOtVW5/rg89QGlcLCE2ZzpGHHrD2Mbqz/G6dmXix664q4e+zYW2oBL3Ykm11ETU7YgnRM4E3KR0XNC1oaemY00k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jG/OJV+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA02C2BBFC;
+	Thu, 13 Jun 2024 12:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280606;
-	bh=2FsUa7YbQfZ8do7vIZM0eC3sO1hkKNNNUj0hUBiWWDI=;
+	s=korg; t=1718280159;
+	bh=DxNnnJ3Q63yUOMdU452SRUOqsjTbI/fyqR/HfwvZCOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SA8OqJA6qKtR3J6C6HlvKSAaZz7ZT/byI1a0Ca5HrrHdIO3RsvZ7Ad1D6u/P3Eia+
-	 OoIubJkXEnCUnLaoCSA3IGTAyEPTqeaO1CXm3ldFQ0ZULUrX2iigwcQXDVT6hhAFnL
-	 fvWVSGa8xUgUXr7ekXBvNVUIaEP0hcz9Gkcd+x+c=
+	b=0jG/OJV+BsLWFX7Ju6rrkcfQQyLpXNL5MBa3OHxeXE0L9mOj1SPRvwLqM33E5HTRK
+	 rkSD7sxBF+zyFkZSc4gtkgzWEe7hnjloMsJLUrEOU5MSwFAR2N2+8tG6QgiGbcbvLF
+	 axYQHMFhJvV0rbdn+zM7/BXERofMzuSdoJdSvCmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 080/137] net/9p: fix uninit-value in p9_client_rpc()
-Date: Thu, 13 Jun 2024 13:34:20 +0200
-Message-ID: <20240613113226.401051650@linuxfoundation.org>
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.4 163/202] genirq/cpuhotplug, x86/vector: Prevent vector leak during CPU offline
+Date: Thu, 13 Jun 2024 13:34:21 +0200
+Message-ID: <20240613113234.040006767@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +61,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-commit 25460d6f39024cc3b8241b14c7ccf0d6f11a736a upstream.
+commit a6c11c0a5235fb144a65e0cb2ffd360ddc1f6c32 upstream.
 
-Syzbot with the help of KMSAN reported the following error:
+The absence of IRQD_MOVE_PCNTXT prevents immediate effectiveness of
+interrupt affinity reconfiguration via procfs. Instead, the change is
+deferred until the next instance of the interrupt being triggered on the
+original CPU.
 
-BUG: KMSAN: uninit-value in trace_9p_client_res include/trace/events/9p.h:146 [inline]
-BUG: KMSAN: uninit-value in p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
- trace_9p_client_res include/trace/events/9p.h:146 [inline]
- p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
- p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
- v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
- v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
- legacy_get_tree+0x114/0x290 fs/fs_context.c:662
- vfs_get_tree+0xa7/0x570 fs/super.c:1797
- do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
- path_mount+0x742/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount+0x725/0x810 fs/namespace.c:3875
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
+When the interrupt next triggers on the original CPU, the new affinity is
+enforced within __irq_move_irq(). A vector is allocated from the new CPU,
+but the old vector on the original CPU remains and is not immediately
+reclaimed. Instead, apicd->move_in_progress is flagged, and the reclaiming
+process is delayed until the next trigger of the interrupt on the new CPU.
 
-Uninit was created at:
- __alloc_pages+0x9d6/0xe70 mm/page_alloc.c:4598
- __alloc_pages_node include/linux/gfp.h:238 [inline]
- alloc_pages_node include/linux/gfp.h:261 [inline]
- alloc_slab_page mm/slub.c:2175 [inline]
- allocate_slab mm/slub.c:2338 [inline]
- new_slab+0x2de/0x1400 mm/slub.c:2391
- ___slab_alloc+0x1184/0x33d0 mm/slub.c:3525
- __slab_alloc mm/slub.c:3610 [inline]
- __slab_alloc_node mm/slub.c:3663 [inline]
- slab_alloc_node mm/slub.c:3835 [inline]
- kmem_cache_alloc+0x6d3/0xbe0 mm/slub.c:3852
- p9_tag_alloc net/9p/client.c:278 [inline]
- p9_client_prepare_req+0x20a/0x1770 net/9p/client.c:641
- p9_client_rpc+0x27e/0x1340 net/9p/client.c:688
- p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
- v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
- v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
- legacy_get_tree+0x114/0x290 fs/fs_context.c:662
- vfs_get_tree+0xa7/0x570 fs/super.c:1797
- do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
- path_mount+0x742/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount+0x725/0x810 fs/namespace.c:3875
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
+Upon the subsequent triggering of the interrupt on the new CPU,
+irq_complete_move() adds a task to the old CPU's vector_cleanup list if it
+remains online. Subsequently, the timer on the old CPU iterates over its
+vector_cleanup list, reclaiming old vectors.
 
-If p9_check_errors() fails early in p9_client_rpc(), req->rc.tag
-will not be properly initialized. However, trace_9p_client_res()
-ends up trying to print it out anyway before p9_client_rpc()
-finishes.
+However, a rare scenario arises if the old CPU is outgoing before the
+interrupt triggers again on the new CPU.
 
-Fix this issue by assigning default values to p9_fcall fields
-such as 'tag' and (just in case KMSAN unearths something new) 'id'
-during the tag allocation stage.
+In that case irq_force_complete_move() is not invoked on the outgoing CPU
+to reclaim the old apicd->prev_vector because the interrupt isn't currently
+affine to the outgoing CPU, and irq_needs_fixup() returns false. Even
+though __vector_schedule_cleanup() is later called on the new CPU, it
+doesn't reclaim apicd->prev_vector; instead, it simply resets both
+apicd->move_in_progress and apicd->prev_vector to 0.
 
-Reported-and-tested-by: syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
-Fixes: 348b59012e5c ("net/9p: Convert net/9p protocol dumps to tracepoints")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+As a result, the vector remains unreclaimed in vector_matrix, leading to a
+CPU vector leak.
+
+To address this issue, move the invocation of irq_force_complete_move()
+before the irq_needs_fixup() call to reclaim apicd->prev_vector, if the
+interrupt is currently or used to be affine to the outgoing CPU.
+
+Additionally, reclaim the vector in __vector_schedule_cleanup() as well,
+following a warning message, although theoretically it should never see
+apicd->move_in_progress with apicd->prev_cpu pointing to an offline CPU.
+
+Fixes: f0383c24b485 ("genirq/cpuhotplug: Add support for cleaning up move in progress")
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Message-ID: <20240408141039.30428-1-n.zhandarovich@fintech.ru>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Link: https://lore.kernel.org/r/20240522220218.162423-1-dongli.zhang@oracle.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/9p/client.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/apic/vector.c |    9 ++++++---
+ kernel/irq/cpuhotplug.c       |   16 ++++++++--------
+ 2 files changed, 14 insertions(+), 11 deletions(-)
 
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -235,6 +235,8 @@ static int p9_fcall_init(struct p9_clien
- 	if (!fc->sdata)
- 		return -ENOMEM;
- 	fc->capacity = alloc_msize;
-+	fc->id = 0;
-+	fc->tag = P9_NOTAG;
- 	return 0;
+--- a/arch/x86/kernel/apic/vector.c
++++ b/arch/x86/kernel/apic/vector.c
+@@ -913,7 +913,8 @@ static void __send_cleanup_vector(struct
+ 		hlist_add_head(&apicd->clist, per_cpu_ptr(&cleanup_list, cpu));
+ 		apic->send_IPI(cpu, IRQ_MOVE_CLEANUP_VECTOR);
+ 	} else {
+-		apicd->prev_vector = 0;
++		pr_warn("IRQ %u schedule cleanup for offline CPU %u\n", apicd->irq, cpu);
++		free_moved_vector(apicd);
+ 	}
+ 	raw_spin_unlock(&vector_lock);
  }
+@@ -949,6 +950,7 @@ void irq_complete_move(struct irq_cfg *c
+  */
+ void irq_force_complete_move(struct irq_desc *desc)
+ {
++	unsigned int cpu = smp_processor_id();
+ 	struct apic_chip_data *apicd;
+ 	struct irq_data *irqd;
+ 	unsigned int vector;
+@@ -973,10 +975,11 @@ void irq_force_complete_move(struct irq_
+ 		goto unlock;
  
+ 	/*
+-	 * If prev_vector is empty, no action required.
++	 * If prev_vector is empty or the descriptor is neither currently
++	 * nor previously on the outgoing CPU no action required.
+ 	 */
+ 	vector = apicd->prev_vector;
+-	if (!vector)
++	if (!vector || (apicd->cpu != cpu && apicd->prev_cpu != cpu))
+ 		goto unlock;
+ 
+ 	/*
+--- a/kernel/irq/cpuhotplug.c
++++ b/kernel/irq/cpuhotplug.c
+@@ -69,6 +69,14 @@ static bool migrate_one_irq(struct irq_d
+ 	}
+ 
+ 	/*
++	 * Complete an eventually pending irq move cleanup. If this
++	 * interrupt was moved in hard irq context, then the vectors need
++	 * to be cleaned up. It can't wait until this interrupt actually
++	 * happens and this CPU was involved.
++	 */
++	irq_force_complete_move(desc);
++
++	/*
+ 	 * No move required, if:
+ 	 * - Interrupt is per cpu
+ 	 * - Interrupt is not started
+@@ -87,14 +95,6 @@ static bool migrate_one_irq(struct irq_d
+ 	}
+ 
+ 	/*
+-	 * Complete an eventually pending irq move cleanup. If this
+-	 * interrupt was moved in hard irq context, then the vectors need
+-	 * to be cleaned up. It can't wait until this interrupt actually
+-	 * happens and this CPU was involved.
+-	 */
+-	irq_force_complete_move(desc);
+-
+-	/*
+ 	 * If there is a setaffinity pending, then try to reuse the pending
+ 	 * mask, so the last change of the affinity does not get lost. If
+ 	 * there is no move pending or the pending mask does not contain
 
 
 
