@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-50825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24445906CFA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:57:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB80F906BC1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B87FE2818E7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:57:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8A011C2085D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC7B1448F1;
-	Thu, 13 Jun 2024 11:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40EF143739;
+	Thu, 13 Jun 2024 11:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atVELERW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVarxklX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE8D13CA99;
-	Thu, 13 Jun 2024 11:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36D71448FF;
+	Thu, 13 Jun 2024 11:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279496; cv=none; b=JWTVtwhCAMm64li1LBM7QRrvOW9m2nOmbKZ6tC2A8lK4HNQHLkP4mC7k6aqjcwVu6dQgmjgCgz9JYp9uBZwxrGbGjBDhVc55V7tjQA4+qlgc33X0MuRCsziAnc7ERZjjKImS9NzEa5BIp/gUjAhNW1yigxVN2ZxbVu2QDpvrRCo=
+	t=1718279005; cv=none; b=kzaKv/0YAx58ZZlWL6k8dEtv+kMtU7OZk0ERrrXCgFQZggHCFDGGcYLLSlAMZ4XylefnWPNev06bFoggQt1y70C90NCSZtmzGhNXJw82UQpgz811f4It2gxNNENrqZcgFMrAjsKMaZJZ0+7LkX9rI4N3wLaEzYEMWh/n8HMeJjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279496; c=relaxed/simple;
-	bh=cdK/exRxckjihbZo+0Mw9MWrfYjq6uE1HzNGJ0kNPvQ=;
+	s=arc-20240116; t=1718279005; c=relaxed/simple;
+	bh=gburv/64Ij8hkhjdBz9raQfSzFCf4zYaBAyfGVl6cz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfie/mzpoCrzbBZAd7Ro9ex2FAxlh3eCMouQheBDYAzcf06l6A1exsDkc7IuUbMHfGTFFoLqC6O96uH0jk/Usnv+a1Ldr4QygReDWv0d1uWi8zKa7oAluns0beTHrgQ+z0RJRNEf1MXvcyxKJ4t0VLMYVf7xR0TqSMj9qBd9ZTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atVELERW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F62C32786;
-	Thu, 13 Jun 2024 11:51:35 +0000 (UTC)
+	 MIME-Version; b=D6VkbzJrZwZDENjvQMZJgbuiW2GB99fdTd6QJTwg0CRoydEgEdaD0goliBNjwOkbkLzmOsID3TaMXPLCTwi1I6dh4UbSjGtBC9atVfjKnYqSE2t+pKcZ4x5h3WJc3ntOebDG0PP2Bc+TWO4AO/uA5dRa0jTZFNtLSpo66UUF66Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVarxklX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C965C32786;
+	Thu, 13 Jun 2024 11:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279495;
-	bh=cdK/exRxckjihbZo+0Mw9MWrfYjq6uE1HzNGJ0kNPvQ=;
+	s=korg; t=1718279005;
+	bh=gburv/64Ij8hkhjdBz9raQfSzFCf4zYaBAyfGVl6cz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=atVELERWYp9U05PNUin3j84N4jnlJwQt9Pq3eBSExX5uAHqq+qzBCU925F4B0ydyQ
-	 L+GSVK8QqbMk4atfPp13U/w+nYweZY4KQF03IS/fda6wyUSimFbEYr6SCJGb7gz3xu
-	 lbQwCJwWorwVXDrMdRMQBoSxQUQ1/Ty5Mg2ukiKU=
+	b=YVarxklXB/GQ0U968LVZjururR5vJH9khdk9sex+J1zBYODzFtlHH7gg2MtsrG80Z
+	 8041rPhCV6dKXEOlggVOgywuSAoktWtouYNZprCCDiZP/DW5j6wLwkcJ2LQMFQTKfA
+	 JA3ISCdpewZggwbff5pTRnTcZHaZqjV8i1XO3h4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.9 064/157] LoongArch: Fix entry point in kernel image header
-Date: Thu, 13 Jun 2024 13:33:09 +0200
-Message-ID: <20240613113229.900217341@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Yue Haibing <yuehaibing@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 142/213] ipvlan: Dont Use skb->sk in ipvlan_process_v{4,6}_outbound
+Date: Thu, 13 Jun 2024 13:33:10 +0200
+Message-ID: <20240613113233.470676488@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-commit beb2800074c15362cf9f6c7301120910046d6556 upstream.
+[ Upstream commit b3dc6e8003b500861fa307e9a3400c52e78e4d3a ]
 
-Currently kernel entry in head.S is in DMW address range, firmware is
-instructed to jump to this address after loading the kernel image.
+Raw packet from PF_PACKET socket ontop of an IPv6-backed ipvlan device will
+hit WARN_ON_ONCE() in sk_mc_loop() through sch_direct_xmit() path.
 
-However kernel should not make any assumption on firmware's DMW
-setting, thus the entry point should be a physical address falls into
-direct translation region.
+WARNING: CPU: 2 PID: 0 at net/core/sock.c:775 sk_mc_loop+0x2d/0x70
+Modules linked in: sch_netem ipvlan rfkill cirrus drm_shmem_helper sg drm_kms_helper
+CPU: 2 PID: 0 Comm: swapper/2 Kdump: loaded Not tainted 6.9.0+ #279
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:sk_mc_loop+0x2d/0x70
+Code: fa 0f 1f 44 00 00 65 0f b7 15 f7 96 a3 4f 31 c0 66 85 d2 75 26 48 85 ff 74 1c
+RSP: 0018:ffffa9584015cd78 EFLAGS: 00010212
+RAX: 0000000000000011 RBX: ffff91e585793e00 RCX: 0000000002c6a001
+RDX: 0000000000000000 RSI: 0000000000000040 RDI: ffff91e589c0f000
+RBP: ffff91e5855bd100 R08: 0000000000000000 R09: 3d00545216f43d00
+R10: ffff91e584fdcc50 R11: 00000060dd8616f4 R12: ffff91e58132d000
+R13: ffff91e584fdcc68 R14: ffff91e5869ce800 R15: ffff91e589c0f000
+FS:  0000000000000000(0000) GS:ffff91e898100000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f788f7c44c0 CR3: 0000000008e1a000 CR4: 00000000000006f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<IRQ>
+ ? __warn (kernel/panic.c:693)
+ ? sk_mc_loop (net/core/sock.c:760)
+ ? report_bug (lib/bug.c:201 lib/bug.c:219)
+ ? handle_bug (arch/x86/kernel/traps.c:239)
+ ? exc_invalid_op (arch/x86/kernel/traps.c:260 (discriminator 1))
+ ? asm_exc_invalid_op (./arch/x86/include/asm/idtentry.h:621)
+ ? sk_mc_loop (net/core/sock.c:760)
+ ip6_finish_output2 (net/ipv6/ip6_output.c:83 (discriminator 1))
+ ? nf_hook_slow (net/netfilter/core.c:626)
+ ip6_finish_output (net/ipv6/ip6_output.c:222)
+ ? __pfx_ip6_finish_output (net/ipv6/ip6_output.c:215)
+ ipvlan_xmit_mode_l3 (drivers/net/ipvlan/ipvlan_core.c:602) ipvlan
+ ipvlan_start_xmit (drivers/net/ipvlan/ipvlan_main.c:226) ipvlan
+ dev_hard_start_xmit (net/core/dev.c:3594)
+ sch_direct_xmit (net/sched/sch_generic.c:343)
+ __qdisc_run (net/sched/sch_generic.c:416)
+ net_tx_action (net/core/dev.c:5286)
+ handle_softirqs (kernel/softirq.c:555)
+ __irq_exit_rcu (kernel/softirq.c:589)
+ sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1043)
 
-Fix by converting entry address to physical and amend entry calculation
-logic in libstub accordingly.
+The warning triggers as this:
+packet_sendmsg
+   packet_snd //skb->sk is packet sk
+      __dev_queue_xmit
+         __dev_xmit_skb //q->enqueue is not NULL
+             __qdisc_run
+               sch_direct_xmit
+                 dev_hard_start_xmit
+                   ipvlan_start_xmit
+                      ipvlan_xmit_mode_l3 //l3 mode
+                        ipvlan_process_outbound //vepa flag
+                          ipvlan_process_v6_outbound
+                            ip6_local_out
+                                __ip6_finish_output
+                                  ip6_finish_output2 //multicast packet
+                                    sk_mc_loop //sk->sk_family is AF_PACKET
 
-BTW, use ABSOLUTE() to calculate variables to make Clang/LLVM happy.
+Call ip{6}_local_out() with NULL sk in ipvlan as other tunnels to fix this.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240529095633.613103-1-yuehaibing@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/head.S             |    2 +-
- arch/loongarch/kernel/vmlinux.lds.S      |   10 ++++++----
- drivers/firmware/efi/libstub/loongarch.c |    2 +-
- 3 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/net/ipvlan/ipvlan_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/kernel/head.S
-+++ b/arch/loongarch/kernel/head.S
-@@ -22,7 +22,7 @@
- _head:
- 	.word	MZ_MAGIC		/* "MZ", MS-DOS header */
- 	.org	0x8
--	.dword	kernel_entry		/* Kernel entry point */
-+	.dword	_kernel_entry		/* Kernel entry point (physical address) */
- 	.dword	_kernel_asize		/* Kernel image effective size */
- 	.quad	PHYS_LINK_KADDR		/* Kernel image load offset from start of RAM */
- 	.org	0x38			/* 0x20 ~ 0x37 reserved */
---- a/arch/loongarch/kernel/vmlinux.lds.S
-+++ b/arch/loongarch/kernel/vmlinux.lds.S
-@@ -6,6 +6,7 @@
+diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
+index 34126abb28d8d..f08fdcc1bfb39 100644
+--- a/drivers/net/ipvlan/ipvlan_core.c
++++ b/drivers/net/ipvlan/ipvlan_core.c
+@@ -446,7 +446,7 @@ static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
  
- #define PAGE_SIZE _PAGE_SIZE
- #define RO_EXCEPTION_TABLE_ALIGN	4
-+#define PHYSADDR_MASK			0xffffffffffff /* 48-bit */
+ 	memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
  
- /*
-  * Put .bss..swapper_pg_dir as the first thing in .bss. This will
-@@ -142,10 +143,11 @@ SECTIONS
+-	err = ip_local_out(net, skb->sk, skb);
++	err = ip_local_out(net, NULL, skb);
+ 	if (unlikely(net_xmit_eval(err)))
+ 		DEV_STATS_INC(dev, tx_errors);
+ 	else
+@@ -501,7 +501,7 @@ static int ipvlan_process_v6_outbound(struct sk_buff *skb)
  
- #ifdef CONFIG_EFI_STUB
- 	/* header symbols */
--	_kernel_asize = _end - _text;
--	_kernel_fsize = _edata - _text;
--	_kernel_vsize = _end - __initdata_begin;
--	_kernel_rsize = _edata - __initdata_begin;
-+	_kernel_entry = ABSOLUTE(kernel_entry & PHYSADDR_MASK);
-+	_kernel_asize = ABSOLUTE(_end - _text);
-+	_kernel_fsize = ABSOLUTE(_edata - _text);
-+	_kernel_vsize = ABSOLUTE(_end - __initdata_begin);
-+	_kernel_rsize = ABSOLUTE(_edata - __initdata_begin);
- #endif
+ 	memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
  
- 	.gptab.sdata : {
---- a/drivers/firmware/efi/libstub/loongarch.c
-+++ b/drivers/firmware/efi/libstub/loongarch.c
-@@ -41,7 +41,7 @@ static efi_status_t exit_boot_func(struc
- unsigned long __weak kernel_entry_address(unsigned long kernel_addr,
- 		efi_loaded_image_t *image)
- {
--	return *(unsigned long *)(kernel_addr + 8) - VMLINUX_LOAD_ADDRESS + kernel_addr;
-+	return *(unsigned long *)(kernel_addr + 8) - PHYSADDR(VMLINUX_LOAD_ADDRESS) + kernel_addr;
- }
- 
- efi_status_t efi_boot_kernel(void *handle, efi_loaded_image_t *image,
+-	err = ip6_local_out(dev_net(dev), skb->sk, skb);
++	err = ip6_local_out(dev_net(dev), NULL, skb);
+ 	if (unlikely(net_xmit_eval(err)))
+ 		DEV_STATS_INC(dev, tx_errors);
+ 	else
+-- 
+2.43.0
+
 
 
 
