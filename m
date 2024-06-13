@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-50663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D20A906BC7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 694C9906D97
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20B6E1C202F9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F3861F27AFB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1EEB1442ED;
-	Thu, 13 Jun 2024 11:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6143D145333;
+	Thu, 13 Jun 2024 11:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5oqJTl4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiofR0En"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802DB143C6F;
-	Thu, 13 Jun 2024 11:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED59144D31;
+	Thu, 13 Jun 2024 11:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279023; cv=none; b=iHs+8UF5D3owNcLf2Y3sC3azS4eRdCMsx6UOl1JQ1fX0DNHbofQZOTNxUG5g88q2sjjlOKHHBK/7Fl+95500en119pQ7cTVNdvN8teNQqEGw3W0xYGXmWef0UvqGmD6m+ACkW7o5IXa4Fje9k1LV401LoipauK88ep6DUWX5sZg=
+	t=1718279886; cv=none; b=mP7lPQix7uuPPBd+Radrgi9874dQE+uSi+Q/41W2FXkY18wYvjLtxmaHqBGHGtnKwWVpMB6LkNQ4Qd3IOIraqwAHX2dDuSLoGaTJuTZvskPs1VGPi4w52nxiTEJySun3PexPC5BlLWlr19kBK92OyVt+Mx0FSNtG5mwmwJ+63Hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279023; c=relaxed/simple;
-	bh=sIg4Th5rAHmTamL/WVUuZqE9W9CYeD3HLKbw5Xjqqtc=;
+	s=arc-20240116; t=1718279886; c=relaxed/simple;
+	bh=RkX/5V34/tVhYBo2VjysP0Zx/XT0Mx2CAqAOggcy2Yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JsabVXFqHFLdjmlgbbXVAiPpnVvZ2px42/R5Jl0ZGXN6Hj6ZpugVWwyVO4N/Ps4JEP6pw9GpOOc317hmbfPfSQ3zPJZPsVm/413sJAumWQhLjk/VCWBu5VLzxhiJkBUTRhSYzvqEoK1PUymmSFUopdQKKau1Pvvrfm62HE9X0BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5oqJTl4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F303AC2BBFC;
-	Thu, 13 Jun 2024 11:43:42 +0000 (UTC)
+	 MIME-Version; b=KzhmGntdWjBOnNYsPRtA5u+3d43i1kUB4flFC7Wwu28mVUwqHtUTObVuk8RYNwJYdxfvWK8gVZvC1n4028cUhj5L+dwpxh+xE9AlI4DgX/7QZNYS/owD+xm3h9rliQBQ/BpC0gW/gXJGYIqkGxO1hyoh80j3PlDVrBRF1BS/p2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiofR0En; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4103FC2BBFC;
+	Thu, 13 Jun 2024 11:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279023;
-	bh=sIg4Th5rAHmTamL/WVUuZqE9W9CYeD3HLKbw5Xjqqtc=;
+	s=korg; t=1718279885;
+	bh=RkX/5V34/tVhYBo2VjysP0Zx/XT0Mx2CAqAOggcy2Yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5oqJTl4lLwI0c3H1okBheXfnIx+WrIbWywLQS1i4cCgioEnh90W14PtGosAb70pr
-	 4I+/w8g08bErMxlEpcNRaJGoiG7U0pWwmBmdro00ajNZPQLswTTO/zfnPWdkZehkXG
-	 j0j7YrmDUaRDbhWGJfbuEZM8oYAKKeP/TpiCGym4=
+	b=QiofR0EnfDoAqcLl6XdvsdEfqdHnKGcDdMHj7MtLxbn/deTh9tPHJHhhUFFtIsy5L
+	 ZNP7u6m2uBxPlSC1YENAiHB5waNEgHUwNtggoReSd+ubTZBKlfIM6X3wMwYn+Blffz
+	 jRnYpgxTmYh8GTKJ7YxSdng8EVFZkvoXzxwwQ6Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 119/213] null_blk: Fix the WARNING: modpost: missing MODULE_DESCRIPTION()
-Date: Thu, 13 Jun 2024 13:32:47 +0200
-Message-ID: <20240613113232.589213650@linuxfoundation.org>
+Subject: [PATCH 5.4 070/202] fbdev: shmobile: fix snprintf truncation
+Date: Thu, 13 Jun 2024 13:32:48 +0200
+Message-ID: <20240613113230.479279515@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,36 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 9e6727f824edcdb8fdd3e6e8a0862eb49546e1cd ]
+[ Upstream commit 26c8cfb9d1e4b252336d23dd5127a8cbed414a32 ]
 
-No functional changes intended.
+The name of the overlay does not fit into the fixed-length field:
 
-Fixes: f2298c0403b0 ("null_blk: multi queue aware block test driver")
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Link: https://lore.kernel.org/r/20240506075538.6064-1-yanjun.zhu@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+drivers/video/fbdev/sh_mobile_lcdcfb.c:1577:2: error: 'snprintf' will always be truncated; specified size is 16, but format string expands to at least 25
+
+Make it short enough by changing the string.
+
+Fixes: c5deac3c9b22 ("fbdev: sh_mobile_lcdc: Implement overlays support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/video/fbdev/sh_mobile_lcdcfb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/null_blk_main.c b/drivers/block/null_blk_main.c
-index fb20ed1360f99..216c03913dd6d 100644
---- a/drivers/block/null_blk_main.c
-+++ b/drivers/block/null_blk_main.c
-@@ -1975,4 +1975,5 @@ module_init(null_init);
- module_exit(null_exit);
- 
- MODULE_AUTHOR("Jens Axboe <axboe@kernel.dk>");
-+MODULE_DESCRIPTION("multi queue aware block test driver");
- MODULE_LICENSE("GPL");
+diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+index c249763dbf0bf..85af63f32d5e4 100644
+--- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
++++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+@@ -1580,7 +1580,7 @@ sh_mobile_lcdc_overlay_fb_init(struct sh_mobile_lcdc_overlay *ovl)
+ 	 */
+ 	info->fix = sh_mobile_lcdc_overlay_fix;
+ 	snprintf(info->fix.id, sizeof(info->fix.id),
+-		 "SH Mobile LCDC Overlay %u", ovl->index);
++		 "SHMobile ovl %u", ovl->index);
+ 	info->fix.smem_start = ovl->dma_handle;
+ 	info->fix.smem_len = ovl->fb_size;
+ 	info->fix.line_length = ovl->pitch;
 -- 
 2.43.0
 
