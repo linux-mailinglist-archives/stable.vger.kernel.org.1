@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-50886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18FFA906D4B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F6E906D55
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BD861C2089B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C9B9B2692E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE28D1465A9;
-	Thu, 13 Jun 2024 11:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7D2146D57;
+	Thu, 13 Jun 2024 11:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4ymLJbF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQ97Y93D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB111459F7;
-	Thu, 13 Jun 2024 11:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC1C143C5F;
+	Thu, 13 Jun 2024 11:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279675; cv=none; b=GAvtkgQ87s65n6Qncz/qCcQqAyZFwsTFhedmBI9dAzrDKgTixw7l1QEtRIHZfNKUIofGmcgKt8IUWQSqme6Mq0nsvW/9ufpXDv9VPUJuI+FK7jQX7Kl6Ddro/MGkMSXQ0VwFkUlSPc9pZeVB1IdAMVHkEeDkYjLtYEsN9OA2rH0=
+	t=1718279703; cv=none; b=F4AOznqNmz3+bI9YVUJzRaZrdbqBgNA8zxJPgCCVNIexqjHFXCtVJakuUUu8EnMYEFSo7UvLyVXkNh0wj2/goMhCrbMN7C0H6gVNyY2BLo22rsYAR14rvFlWszF0mqro9SG1A4uljqCYlhlr2OCwFOeCc8KgpdS4thnhoY4IkiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279675; c=relaxed/simple;
-	bh=++1B+MJK3BE2L0Pe0QCb6bNHiw4ZF0o5PGdKsISOft8=;
+	s=arc-20240116; t=1718279703; c=relaxed/simple;
+	bh=DQcS/5g4i2U6PpzU3L+T5sWd1D67w9SNooxpj56vfxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lk1v4ueuJFUtiaHK5CTwYqpkc3nAdbA7iuMAXLHxN3P+2VqZrUz9wap1XWM1V/e81mCkiT9hszKhSjeHryI9BttiAGKF05PKK7tak+dXkh/fFuKb3tz8hwDDtWBe6Yqmc3enCg1meS5HH8j/H4j132BfDuX4vZE1IyGmmJKxqw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4ymLJbF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E73C2BBFC;
-	Thu, 13 Jun 2024 11:54:34 +0000 (UTC)
+	 MIME-Version; b=RK2wZtsE/IwVMYEElnsaCuzM6xCboY/aokMl4yukciRbB9RdI0DzEl8NMjN/Mf56RySXuHbAlWdM8+wFGdlmnUyDd14VBgIVQChhmsOfKDuUX3VzNA9fed/5+bnpni50pRRsSbKZLFoUjnaWBpgY7ClxORdStrw7RmvDjJZLq6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQ97Y93D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748EDC2BBFC;
+	Thu, 13 Jun 2024 11:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279675;
-	bh=++1B+MJK3BE2L0Pe0QCb6bNHiw4ZF0o5PGdKsISOft8=;
+	s=korg; t=1718279702;
+	bh=DQcS/5g4i2U6PpzU3L+T5sWd1D67w9SNooxpj56vfxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E4ymLJbFc9uHw7Wd2RIDAWkQkkuciwsaStGRyk2GFqks56Rj/kheF8Qlw9xBZ9q6C
-	 /HU8N57MUXqoWBrXb2Tflnqq3ij4aeUa+EzgY2rgDFvkNWqNT4bMhl+x1UqgGTpD3I
-	 FY6G6zNuDaes5C/74PrzP/1p1ZVUf7qV1dWsbKds=
+	b=VQ97Y93DIYlSUz+lhPT9wdbxJWmsl8yCU/JHk0aUv/CVlTRcQf0YbpBIapGY4cio6
+	 rumZYZ2VszT7Fn3WyYfJBRNGnEkFfaaxo1a8QC5W4etyNjm4oIr+p+kWKa8y+aTD33
+	 XBeUPTeRD976EnFZk6tnbWwZ2Y41Q6Lqcmcm5l/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 155/157] nilfs2: fix potential kernel bug due to lack of writeback flag waiting
-Date: Thu, 13 Jun 2024 13:34:40 +0200
-Message-ID: <20240613113233.405405041@linuxfoundation.org>
+Subject: [PATCH 6.9 156/157] nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors
+Date: Thu, 13 Jun 2024 13:34:41 +0200
+Message-ID: <20240613113233.443210804@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
 References: <20240613113227.389465891@linuxfoundation.org>
@@ -67,75 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit a4ca369ca221bb7e06c725792ac107f0e48e82e7 upstream.
+commit 7373a51e7998b508af7136530f3a997b286ce81c upstream.
 
-Destructive writes to a block device on which nilfs2 is mounted can cause
-a kernel bug in the folio/page writeback start routine or writeback end
-routine (__folio_start_writeback in the log below):
+The error handling in nilfs_empty_dir() when a directory folio/page read
+fails is incorrect, as in the old ext2 implementation, and if the
+folio/page cannot be read or nilfs_check_folio() fails, it will falsely
+determine the directory as empty and corrupt the file system.
 
- kernel BUG at mm/page-writeback.c:3070!
- Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
- ...
- RIP: 0010:__folio_start_writeback+0xbaa/0x10e0
- Code: 25 ff 0f 00 00 0f 84 18 01 00 00 e8 40 ca c6 ff e9 17 f6 ff ff
-  e8 36 ca c6 ff 4c 89 f7 48 c7 c6 80 c0 12 84 e8 e7 b3 0f 00 90 <0f>
-  0b e8 1f ca c6 ff 4c 89 f7 48 c7 c6 a0 c6 12 84 e8 d0 b3 0f 00
- ...
- Call Trace:
-  <TASK>
-  nilfs_segctor_do_construct+0x4654/0x69d0 [nilfs2]
-  nilfs_segctor_construct+0x181/0x6b0 [nilfs2]
-  nilfs_segctor_thread+0x548/0x11c0 [nilfs2]
-  kthread+0x2f0/0x390
-  ret_from_fork+0x4b/0x80
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
+In addition, since nilfs_empty_dir() does not immediately return on a
+failed folio/page read, but continues to loop, this can cause a long loop
+with I/O if i_size of the directory's inode is also corrupted, causing the
+log writer thread to wait and hang, as reported by syzbot.
 
-This is because when the log writer starts a writeback for segment summary
-blocks or a super root block that use the backing device's page cache, it
-does not wait for the ongoing folio/page writeback, resulting in an
-inconsistent writeback state.
+Fix these issues by making nilfs_empty_dir() immediately return a false
+value (0) if it fails to get a directory folio/page.
 
-Fix this issue by waiting for ongoing writebacks when putting
-folios/pages on the backing device into writeback state.
-
-Link: https://lkml.kernel.org/r/20240530141556.4411-1-konishi.ryusuke@gmail.com
-Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
+Link: https://lkml.kernel.org/r/20240604134255.7165-1-konishi.ryusuke@gmail.com
 Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c8166c541d3971bf6c87
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
 Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/segment.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/nilfs2/dir.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -1652,6 +1652,7 @@ static void nilfs_segctor_prepare_write(
- 			if (bh->b_folio != bd_folio) {
- 				if (bd_folio) {
- 					folio_lock(bd_folio);
-+					folio_wait_writeback(bd_folio);
- 					folio_clear_dirty_for_io(bd_folio);
- 					folio_start_writeback(bd_folio);
- 					folio_unlock(bd_folio);
-@@ -1665,6 +1666,7 @@ static void nilfs_segctor_prepare_write(
- 			if (bh == segbuf->sb_super_root) {
- 				if (bh->b_folio != bd_folio) {
- 					folio_lock(bd_folio);
-+					folio_wait_writeback(bd_folio);
- 					folio_clear_dirty_for_io(bd_folio);
- 					folio_start_writeback(bd_folio);
- 					folio_unlock(bd_folio);
-@@ -1681,6 +1683,7 @@ static void nilfs_segctor_prepare_write(
- 	}
- 	if (bd_folio) {
- 		folio_lock(bd_folio);
-+		folio_wait_writeback(bd_folio);
- 		folio_clear_dirty_for_io(bd_folio);
- 		folio_start_writeback(bd_folio);
- 		folio_unlock(bd_folio);
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -608,7 +608,7 @@ int nilfs_empty_dir(struct inode *inode)
+ 
+ 		kaddr = nilfs_get_folio(inode, i, &folio);
+ 		if (IS_ERR(kaddr))
+-			continue;
++			return 0;
+ 
+ 		de = (struct nilfs_dir_entry *)kaddr;
+ 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
 
 
 
