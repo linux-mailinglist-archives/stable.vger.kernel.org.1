@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159BD907049
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC45907293
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FEC4282638
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36D181C21615
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B32144D1E;
-	Thu, 13 Jun 2024 12:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA681448CD;
+	Thu, 13 Jun 2024 12:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zU1lcYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0aWA4YD7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940DC143861;
-	Thu, 13 Jun 2024 12:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE05144317;
+	Thu, 13 Jun 2024 12:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281536; cv=none; b=OKyafLlxpEtm4dPdGv2zhfBV5uy6S/RfxxHqlqjZq4YLkP0YRy9gyY+3RRy2OfuiRAomXFgw7/VTW1nWHw3Xe4sHR60rfpOCtYYWxqAwQwQHaJ8PX09q8zPEVnVGN0KIuYgJWeCjdlLSetohOxt4mFO86xhDQK7tsDbbX8HVIE0=
+	t=1718282878; cv=none; b=Dkqzzk+WavESVHHPoocR7rbMBwlGOOngOnXTN05RgFrxmyd9bIK7FAagWKlEHZKMuvuEsNJEETyWBTeYqih0xeH6tSMX4677Zix7kVAIxpWJgz2X2T4JEGwkqXiVJNbEFRWRB0QAooCuqvMbTlZYFSTISvQ1LDbgkFt4IKMJNb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281536; c=relaxed/simple;
-	bh=pCXaV2T0BohKK3hVRs+scbJlE4CFBdbfSfIdmheKptY=;
+	s=arc-20240116; t=1718282878; c=relaxed/simple;
+	bh=Gvq2R7aifBJsV9mZhzM8tSmja08iRFxYE7IAFb8lEF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nm7KPPe2SB06Qe6dMXHO1dgJaehXTA4di0JtPt4xlB6tGzyD84LZc+lq4CWAPrkDXW8dN95K0Wm1aFJNleZDn7G8NUJwmuQXG6px+ATmE7BEw5zNuRpOJMg5EsNVsY+fyzysWrISRLnL+Rozf3mB5p79/+4WBEmOYNRR2KE9Ejs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zU1lcYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3A6C2BBFC;
-	Thu, 13 Jun 2024 12:25:35 +0000 (UTC)
+	 MIME-Version; b=Aw9s2sF8qLiGWtM/k4iy4ipmnAugwQnOIqhMNjnI8SbEKE/VxVBK5bHtJjB481gVg9XkSo+s5xx7ZO3e4Y227X3oQlrCTMsCOgQn7yDbk1kE6x0emCybo0cZLz6Inxy81GkEye990M0TBzmJ411KDaYH5sq3/Nh8AK2Bu5oC+R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0aWA4YD7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED943C4AF1A;
+	Thu, 13 Jun 2024 12:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281536;
-	bh=pCXaV2T0BohKK3hVRs+scbJlE4CFBdbfSfIdmheKptY=;
+	s=korg; t=1718282878;
+	bh=Gvq2R7aifBJsV9mZhzM8tSmja08iRFxYE7IAFb8lEF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0zU1lcYZ7kQSPEpzkTXfL/cOCRzo7bOO4XHqModovYo3jhZ3nSgFS9OePEw+E2566
-	 TL76Txs7LlDotNV1PGAJr+TO1A8GsGNlce01+ZCC72OQmlOzNBXA32GiET6g49fbkY
-	 tEqLjjDwGyUxbT/fMunHXX2Nm/lENHqmkQKfL21w=
+	b=0aWA4YD79AYyuoUGZ4/2bnvCIp/7AMj60r0s6L3icH5geQkpoGd/yHasF8S2ivDHr
+	 mAszelHf2Ow38dGuPO6Q8Knh2E+slloeWh3gDXjjH2XhtDDYx8LgR1vBAlzdmzUMjf
+	 9+IkY+x+DMeMflDIpd6t0P0O3oCfrLjLwOWCEXfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 5.10 288/317] media: mxl5xx: Move xpt structures off stack
+	Haorong Lu <ancientmodern4@gmail.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Conor Dooley <conor@kernel.org>
+Subject: [PATCH 6.1 08/85] riscv: signal: handle syscall restart before get_signal
 Date: Thu, 13 Jun 2024 13:35:06 +0200
-Message-ID: <20240613113258.692600588@linuxfoundation.org>
+Message-ID: <20240613113214.460101693@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +62,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Haorong Lu <ancientmodern4@gmail.com>
 
-commit 526f4527545b2d4ce0733733929fac7b6da09ac6 upstream.
+commit ce4f78f1b53d3327fbd32764aa333bf05fb68818 upstream.
 
-When building for LoongArch with clang 18.0.0, the stack usage of
-probe() is larger than the allowed 2048 bytes:
+In the current riscv implementation, blocking syscalls like read() may
+not correctly restart after being interrupted by ptrace. This problem
+arises when the syscall restart process in arch_do_signal_or_restart()
+is bypassed due to changes to the regs->cause register, such as an
+ebreak instruction.
 
-  drivers/media/dvb-frontends/mxl5xx.c:1698:12: warning: stack frame size (2368) exceeds limit (2048) in 'probe' [-Wframe-larger-than]
-   1698 | static int probe(struct mxl *state, struct mxl5xx_cfg *cfg)
-        |            ^
-  1 warning generated.
+Steps to reproduce:
+1. Interrupt the tracee process with PTRACE_SEIZE & PTRACE_INTERRUPT.
+2. Backup original registers and instruction at new_pc.
+3. Change pc to new_pc, and inject an instruction (like ebreak) to this
+   address.
+4. Resume with PTRACE_CONT and wait for the process to stop again after
+   executing ebreak.
+5. Restore original registers and instructions, and detach from the
+   tracee process.
+6. Now the read() syscall in tracee will return -1 with errno set to
+   ERESTARTSYS.
 
-This is the result of the linked LLVM commit, which changes how the
-arrays of structures in config_ts() get handled with
-CONFIG_INIT_STACK_ZERO and CONFIG_INIT_STACK_PATTERN, which causes the
-above warning in combination with inlining, as config_ts() gets inlined
-into probe().
+Specifically, during an interrupt, the regs->cause changes from
+EXC_SYSCALL to EXC_BREAKPOINT due to the injected ebreak, which is
+inaccessible via ptrace so we cannot restore it. This alteration breaks
+the syscall restart condition and ends the read() syscall with an
+ERESTARTSYS error. According to include/linux/errno.h, it should never
+be seen by user programs. X86 can avoid this issue as it checks the
+syscall condition using a register (orig_ax) exposed to user space.
+Arm64 handles syscall restart before calling get_signal, where it could
+be paused and inspected by ptrace/debugger.
 
-This warning can be easily fixed by moving the array of structures off
-of the stackvia 'static const', which is a better location for these
-variables anyways because they are static data that is only ever read
-from, never modified, so allocating the stack space is wasteful.
+This patch adjusts the riscv implementation to arm64 style, which also
+checks syscall using a kernel register (syscallno). It ensures the
+syscall restart process is not bypassed when changes to the cause
+register occur, providing more consistent behavior across various
+architectures.
 
-This drops the stack usage from 2368 bytes to 256 bytes with the same
-compiler and configuration.
+For a simplified reproduction program, feel free to visit:
+https://github.com/ancientmodern/riscv-ptrace-bug-demo.
 
-Link: https://lore.kernel.org/linux-media/20240111-dvb-mxl5xx-move-structs-off-stack-v1-1-ca4230e67c11@kernel.org
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1977
-Link: https://github.com/llvm/llvm-project/commit/afe8b93ffdfef5d8879e1894b9d7dda40dee2b8d
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Haorong Lu <ancientmodern4@gmail.com>
+Link: https://lore.kernel.org/r/20230803224458.4156006-1-ancientmodern4@gmail.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Conor Dooley <conor@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-frontends/mxl5xx.c |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ arch/riscv/kernel/signal.c |   85 ++++++++++++++++++++++++---------------------
+ 1 file changed, 46 insertions(+), 39 deletions(-)
 
---- a/drivers/media/dvb-frontends/mxl5xx.c
-+++ b/drivers/media/dvb-frontends/mxl5xx.c
-@@ -1390,57 +1390,57 @@ static int config_ts(struct mxl *state,
- 	u32 nco_count_min = 0;
- 	u32 clk_type = 0;
+--- a/arch/riscv/kernel/signal.c
++++ b/arch/riscv/kernel/signal.c
+@@ -246,30 +246,6 @@ static void handle_signal(struct ksignal
+ 	sigset_t *oldset = sigmask_to_save();
+ 	int ret;
  
--	struct MXL_REG_FIELD_T xpt_sync_polarity[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_sync_polarity[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700010, 8, 1}, {0x90700010, 9, 1},
- 		{0x90700010, 10, 1}, {0x90700010, 11, 1},
- 		{0x90700010, 12, 1}, {0x90700010, 13, 1},
- 		{0x90700010, 14, 1}, {0x90700010, 15, 1} };
--	struct MXL_REG_FIELD_T xpt_clock_polarity[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_clock_polarity[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700010, 16, 1}, {0x90700010, 17, 1},
- 		{0x90700010, 18, 1}, {0x90700010, 19, 1},
- 		{0x90700010, 20, 1}, {0x90700010, 21, 1},
- 		{0x90700010, 22, 1}, {0x90700010, 23, 1} };
--	struct MXL_REG_FIELD_T xpt_valid_polarity[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_valid_polarity[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700014, 0, 1}, {0x90700014, 1, 1},
- 		{0x90700014, 2, 1}, {0x90700014, 3, 1},
- 		{0x90700014, 4, 1}, {0x90700014, 5, 1},
- 		{0x90700014, 6, 1}, {0x90700014, 7, 1} };
--	struct MXL_REG_FIELD_T xpt_ts_clock_phase[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_ts_clock_phase[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700018, 0, 3}, {0x90700018, 4, 3},
- 		{0x90700018, 8, 3}, {0x90700018, 12, 3},
- 		{0x90700018, 16, 3}, {0x90700018, 20, 3},
- 		{0x90700018, 24, 3}, {0x90700018, 28, 3} };
--	struct MXL_REG_FIELD_T xpt_lsb_first[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_lsb_first[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x9070000C, 16, 1}, {0x9070000C, 17, 1},
- 		{0x9070000C, 18, 1}, {0x9070000C, 19, 1},
- 		{0x9070000C, 20, 1}, {0x9070000C, 21, 1},
- 		{0x9070000C, 22, 1}, {0x9070000C, 23, 1} };
--	struct MXL_REG_FIELD_T xpt_sync_byte[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_sync_byte[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700010, 0, 1}, {0x90700010, 1, 1},
- 		{0x90700010, 2, 1}, {0x90700010, 3, 1},
- 		{0x90700010, 4, 1}, {0x90700010, 5, 1},
- 		{0x90700010, 6, 1}, {0x90700010, 7, 1} };
--	struct MXL_REG_FIELD_T xpt_enable_output[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_enable_output[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x9070000C, 0, 1}, {0x9070000C, 1, 1},
- 		{0x9070000C, 2, 1}, {0x9070000C, 3, 1},
- 		{0x9070000C, 4, 1}, {0x9070000C, 5, 1},
- 		{0x9070000C, 6, 1}, {0x9070000C, 7, 1} };
--	struct MXL_REG_FIELD_T xpt_err_replace_sync[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_err_replace_sync[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x9070000C, 24, 1}, {0x9070000C, 25, 1},
- 		{0x9070000C, 26, 1}, {0x9070000C, 27, 1},
- 		{0x9070000C, 28, 1}, {0x9070000C, 29, 1},
- 		{0x9070000C, 30, 1}, {0x9070000C, 31, 1} };
--	struct MXL_REG_FIELD_T xpt_err_replace_valid[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_err_replace_valid[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700014, 8, 1}, {0x90700014, 9, 1},
- 		{0x90700014, 10, 1}, {0x90700014, 11, 1},
- 		{0x90700014, 12, 1}, {0x90700014, 13, 1},
- 		{0x90700014, 14, 1}, {0x90700014, 15, 1} };
--	struct MXL_REG_FIELD_T xpt_continuous_clock[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_continuous_clock[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x907001D4, 0, 1}, {0x907001D4, 1, 1},
- 		{0x907001D4, 2, 1}, {0x907001D4, 3, 1},
- 		{0x907001D4, 4, 1}, {0x907001D4, 5, 1},
- 		{0x907001D4, 6, 1}, {0x907001D4, 7, 1} };
--	struct MXL_REG_FIELD_T xpt_nco_clock_rate[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_nco_clock_rate[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700044, 16, 80}, {0x90700044, 16, 81},
- 		{0x90700044, 16, 82}, {0x90700044, 16, 83},
- 		{0x90700044, 16, 84}, {0x90700044, 16, 85},
+-	/* Are we from a system call? */
+-	if (regs->cause == EXC_SYSCALL) {
+-		/* Avoid additional syscall restarting via ret_from_exception */
+-		regs->cause = -1UL;
+-		/* If so, check system call restarting.. */
+-		switch (regs->a0) {
+-		case -ERESTART_RESTARTBLOCK:
+-		case -ERESTARTNOHAND:
+-			regs->a0 = -EINTR;
+-			break;
+-
+-		case -ERESTARTSYS:
+-			if (!(ksig->ka.sa.sa_flags & SA_RESTART)) {
+-				regs->a0 = -EINTR;
+-				break;
+-			}
+-			fallthrough;
+-		case -ERESTARTNOINTR:
+-                        regs->a0 = regs->orig_a0;
+-			regs->epc -= 0x4;
+-			break;
+-		}
+-	}
+-
+ 	rseq_signal_deliver(ksig, regs);
+ 
+ 	/* Set up the stack frame */
+@@ -283,36 +259,67 @@ static void handle_signal(struct ksignal
+ 
+ static void do_signal(struct pt_regs *regs)
+ {
++	unsigned long continue_addr = 0, restart_addr = 0;
++	int retval = 0;
+ 	struct ksignal ksig;
++	bool syscall = (regs->cause == EXC_SYSCALL);
+ 
+-	if (get_signal(&ksig)) {
+-		/* Actually deliver the signal */
+-		handle_signal(&ksig, regs);
+-		return;
+-	}
++	/* If we were from a system call, check for system call restarting */
++	if (syscall) {
++		continue_addr = regs->epc;
++		restart_addr = continue_addr - 4;
++		retval = regs->a0;
+ 
+-	/* Did we come from a system call? */
+-	if (regs->cause == EXC_SYSCALL) {
+ 		/* Avoid additional syscall restarting via ret_from_exception */
+ 		regs->cause = -1UL;
+ 
+-		/* Restart the system call - no handlers present */
+-		switch (regs->a0) {
++		/*
++		 * Prepare for system call restart. We do this here so that a
++		 * debugger will see the already changed PC.
++		 */
++		switch (retval) {
+ 		case -ERESTARTNOHAND:
+ 		case -ERESTARTSYS:
+ 		case -ERESTARTNOINTR:
+-                        regs->a0 = regs->orig_a0;
+-			regs->epc -= 0x4;
+-			break;
+ 		case -ERESTART_RESTARTBLOCK:
+-                        regs->a0 = regs->orig_a0;
+-			regs->a7 = __NR_restart_syscall;
+-			regs->epc -= 0x4;
++			regs->a0 = regs->orig_a0;
++			regs->epc = restart_addr;
+ 			break;
+ 		}
+ 	}
+ 
+ 	/*
++	 * Get the signal to deliver. When running under ptrace, at this point
++	 * the debugger may change all of our registers.
++	 */
++	if (get_signal(&ksig)) {
++		/*
++		 * Depending on the signal settings, we may need to revert the
++		 * decision to restart the system call, but skip this if a
++		 * debugger has chosen to restart at a different PC.
++		 */
++		if (regs->epc == restart_addr &&
++		    (retval == -ERESTARTNOHAND ||
++		     retval == -ERESTART_RESTARTBLOCK ||
++		     (retval == -ERESTARTSYS &&
++		      !(ksig.ka.sa.sa_flags & SA_RESTART)))) {
++			regs->a0 = -EINTR;
++			regs->epc = continue_addr;
++		}
++
++		/* Actually deliver the signal */
++		handle_signal(&ksig, regs);
++		return;
++	}
++
++	/*
++	 * Handle restarting a different system call. As above, if a debugger
++	 * has chosen to restart at a different PC, ignore the restart.
++	 */
++	if (syscall && regs->epc == restart_addr && retval == -ERESTART_RESTARTBLOCK)
++		regs->a7 = __NR_restart_syscall;
++
++	/*
+ 	 * If there is no signal to deliver, we just put the saved
+ 	 * sigmask back.
+ 	 */
 
 
 
