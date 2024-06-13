@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6CAE90713E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:35:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9831D906F90
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AEF51C23A83
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:35:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E3CE289068
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90A0A59;
-	Thu, 13 Jun 2024 12:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3782F6EB56;
+	Thu, 13 Jun 2024 12:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOEVNUY8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgCbwIoP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6971B28FF;
-	Thu, 13 Jun 2024 12:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A3056458;
+	Thu, 13 Jun 2024 12:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282094; cv=none; b=NMMYGddmXzNj/Kd2r4Gr+jiDLFW5o/vyyYWDV/+5Lzym6iOYQI7rO1U7Yj7nUFAq5tE8E9qtlwP1pdcJTJGD5/Lv7vae3bImPiLpOtBpfH4Nw7PH6L9ikX4v3bxNLw1Nk/QameRXRW2A26yqvB4NDbPFwQLTMnvyEwSTkXKx9Tc=
+	t=1718281063; cv=none; b=F5mfsl1b1/2lh/j1aZuJaL4DnYAx0E858Ng+VOhshild9Km3DnQ8il+bJDB8GQbiKsfmHZ1xwqypjZmCMzt8jFJugbwYH8IwQLvzXCihsN1ZgXnNSAlGrhTn94JDOsiwGo9lwrAFUQdSRzGVe8Z9QpVnWTaofBn0ILpfdFdkUNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282094; c=relaxed/simple;
-	bh=j0ncoBzso884t9Cp+ixDbatGC/uqkYXqAcYQu6Dmejk=;
+	s=arc-20240116; t=1718281063; c=relaxed/simple;
+	bh=lCiDnOHvhuGJqkrFSAvLM+Zas2y8di/Ukys+UFV6IxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azqd17rvS4ksoRVLFuWjy7ncM7qsDylWUi+LaV7apocqxnky6Utl/nJ0T/PNmNR6uTsTr0WEhYxrgD6CrBJteu/Tm4CYI+NBrON7RJU1giuzRuxHUjb6lJLqbtvNKhFvD3itbq1hfuk6orukHVDqsdKnY5FmT8i2HNtC3dxIldc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOEVNUY8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60F2C2BBFC;
-	Thu, 13 Jun 2024 12:34:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Iz3j4cG8CpyX/bkJ8K+504pCToy/Wtl1W6OyrSslMw6G/KkHdRzvDIGnbt+HfKSX9sCxFz0+vH5eHZV26Fan3cJNqq7HsZHTJZv5iHlxKLFOoxlWyW2xdmCkzZwaSdmcwS+ygc0fPl0IxjlNBhwUWKEtQPH/ea8iRWBD0+4+Y5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgCbwIoP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C621C2BBFC;
+	Thu, 13 Jun 2024 12:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282094;
-	bh=j0ncoBzso884t9Cp+ixDbatGC/uqkYXqAcYQu6Dmejk=;
+	s=korg; t=1718281062;
+	bh=lCiDnOHvhuGJqkrFSAvLM+Zas2y8di/Ukys+UFV6IxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yOEVNUY8x/OnM0AXvNOrRYrAvh5W756PQI0nXKPGGLwUSrNbt16royGVazbq5ABhf
-	 yNGjmc6sI/nCEOsHwc+7UUwFez8HaI+/gthSNBrkCX7cyKeqk8oVrl680IRXwnZ+GI
-	 9q+ZcrvUBR86OpwUbebNku1nz3U3HvLmvBbkIbG4=
+	b=tgCbwIoPEthul/eQ3qE4hvHFAR5XL3dRmweNmXx7gP8vAUYoR5GLJ0BI1i+tdot+M
+	 a4ZsJO7aYXp8qUujtEiDpGrN4dCcvE9+yPpggFJ3As9Vqb69Hyp5LaM+Rj4+Oomm8u
+	 lmv2lPKQ/yl/zatBc9eDbvE3sTftvz4FfL/Im+lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Aprelkov <aaprelkov@usergate.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 161/402] sunrpc: removed redundant procp check
+Subject: [PATCH 5.10 100/317] media: radio-shark2: Avoid led_names truncations
 Date: Thu, 13 Jun 2024 13:31:58 +0200
-Message-ID: <20240613113308.414355750@linuxfoundation.org>
+Message-ID: <20240613113251.419865082@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Aprelkov <aaprelkov@usergate.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit a576f36971ab4097b6aa76433532aa1fb5ee2d3b ]
+[ Upstream commit 1820e16a3019b6258e6009d34432946a6ddd0a90 ]
 
-since vs_proc pointer is dereferenced before getting it's address there's
-no need to check for NULL.
+Increase the size of led_names so it can fit any valid v4l2 device name.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Fixes:
+drivers/media/radio/radio-shark2.c:197:17: warning: ‘%s’ directive output may be truncated writing up to 35 bytes into a region of size 32 [-Wformat-truncation=]
 
-Fixes: 8e5b67731d08 ("SUNRPC: Add a callback to initialise server requests")
-Signed-off-by: Aleksandr Aprelkov <aaprelkov@usergate.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/svc.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/media/radio/radio-shark2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index 9177b243a949d..8d5897ed2816f 100644
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -1238,8 +1238,6 @@ svc_generic_init_request(struct svc_rqst *rqstp,
- 	if (rqstp->rq_proc >= versp->vs_nproc)
- 		goto err_bad_proc;
- 	rqstp->rq_procinfo = procp = &versp->vs_proc[rqstp->rq_proc];
--	if (!procp)
--		goto err_bad_proc;
- 
- 	/* Initialize storage for argp and resp */
- 	memset(rqstp->rq_argp, 0, procp->pc_argzero);
+diff --git a/drivers/media/radio/radio-shark2.c b/drivers/media/radio/radio-shark2.c
+index f1c5c0a6a335c..e3e6aa87fe081 100644
+--- a/drivers/media/radio/radio-shark2.c
++++ b/drivers/media/radio/radio-shark2.c
+@@ -62,7 +62,7 @@ struct shark_device {
+ #ifdef SHARK_USE_LEDS
+ 	struct work_struct led_work;
+ 	struct led_classdev leds[NO_LEDS];
+-	char led_names[NO_LEDS][32];
++	char led_names[NO_LEDS][64];
+ 	atomic_t brightness[NO_LEDS];
+ 	unsigned long brightness_new;
+ #endif
 -- 
 2.43.0
 
