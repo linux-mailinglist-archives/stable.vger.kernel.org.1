@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-51834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 452B79071DB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:41:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8997A907206
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57A271C24578
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:41:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 356911F23FE8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B964A1428EA;
-	Thu, 13 Jun 2024 12:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E882143C5D;
+	Thu, 13 Jun 2024 12:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QY0JA2eP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OT/AnfV1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78111384;
-	Thu, 13 Jun 2024 12:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7A91E519;
+	Thu, 13 Jun 2024 12:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282451; cv=none; b=MoSkImgYyKX/JFHGnbACenWLoPsKa4i2+Hk0C8k9nxxjWslxwb+T4BiANKmvLHD53Ejt40iogmoyIPqJxTHVhRjDXI4Iwo+R5ugspaXFvDk4nPMeaIQYa6Q4rdeHH9VMLyzH/NCtnA3+QtAsFLqpRGwgxkmZt0vHoJEGCtgsa7c=
+	t=1718282572; cv=none; b=BfHop7+QM8zEJ08fsGtd6a7yOa3o8td4qAMBAnoZds1zIifT8WDRNxM492Ehc+FnR0Te4+oMBMy+N8nannIUpnZR2pIOGMJZGYXaGJVWcVaA6XnaNVDUcdMfqodIXcFrUAOlIcMUtYTSfQ1/ocAXEMWHyCKcIEnAwO2+lJO4A34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282451; c=relaxed/simple;
-	bh=KM8DyskE1/pHSx1GiwG/Zs/EsbMy9lVgQiBkYwIzAtk=;
+	s=arc-20240116; t=1718282572; c=relaxed/simple;
+	bh=W5ecsnAzMvWt3Bb2+F+C0g2A/WVlf2lLPWDSEGlYeJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5Ybyz+aDOXjz9SabFJ/J6CRtuMdTfH/vIzGuisaZzJFo996X98X8C8J7AKs/6o50qvHzA4RpEkfP2rUGbwMgKWWuCbd4NRddVR7ZLHdn9nwi5VmN0F8vS3OYQ82zPPUkakaklHFNT/g7R0H1x3szFVe1InNAi/6Af/499DpxHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QY0JA2eP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9AFAC2BBFC;
-	Thu, 13 Jun 2024 12:40:50 +0000 (UTC)
+	 MIME-Version; b=M/BYTKGM5IQmht7a3G34DUvAWCbcX37Y0RABV6blcDw1SBYYJvcDgMGKIPloghu6+IPcvtVzrbBin74DVCkaBnV53SSpXMWMkL20v/PvplssA4UlZuosBUNu88VyELEABaLD67Fm4NYiUP2r49meqDO2vuSCj2o0KqUffkoa2hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OT/AnfV1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772B6C2BBFC;
+	Thu, 13 Jun 2024 12:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282451;
-	bh=KM8DyskE1/pHSx1GiwG/Zs/EsbMy9lVgQiBkYwIzAtk=;
+	s=korg; t=1718282571;
+	bh=W5ecsnAzMvWt3Bb2+F+C0g2A/WVlf2lLPWDSEGlYeJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QY0JA2eP4Z3gW1YY36BRwG1NvZAtPzNfa7V/HM01v+haDJOPBdUtXa1bBBQ5+1T+e
-	 4D9LD4OyAVld4YrCwI4ueARA7Uqh27Kq7E7vgPnRf3CpClRw4XqPKegiqbEclsezdO
-	 N74yLOJ4OjuAaorntmDIXr9aU+tnSxr1UXj/QDt4=
+	b=OT/AnfV1/T0/U0gblGtoLKBQKZyvs62JP8kfQbg4gVeQc7lTurxPSXlThssIlZlAE
+	 c7jiA1uatW63PvRDMGehbXNR9ZA6EniEBKptG1TYwnXrLAfuiSQOSvZNTXsyCf7PSu
+	 4ZmR8E2Fg/o/ZrMOQp3ZVeIKMpCgQODSU/ouyHuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 280/402] null_blk: Fix the WARNING: modpost: missing MODULE_DESCRIPTION()
-Date: Thu, 13 Jun 2024 13:33:57 +0200
-Message-ID: <20240613113313.070843804@linuxfoundation.org>
+Subject: [PATCH 5.15 281/402] ASoC: mediatek: mt8192: fix register configuration for tdm
+Date: Thu, 13 Jun 2024 13:33:58 +0200
+Message-ID: <20240613113313.109102965@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
 References: <20240613113302.116811394@linuxfoundation.org>
@@ -67,32 +68,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit 9e6727f824edcdb8fdd3e6e8a0862eb49546e1cd ]
+[ Upstream commit a85ed162f0efcfdd664954414a05d1d560cc95dc ]
 
-No functional changes intended.
+For DSP_A, data is a BCK cycle behind LRCK trigger edge. For DSP_B, this
+delay doesn't exist. Fix the delay configuration to match the standard.
 
-Fixes: f2298c0403b0 ("null_blk: multi queue aware block test driver")
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Link: https://lore.kernel.org/r/20240506075538.6064-1-yanjun.zhu@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 52fcd65414abfc ("ASoC: mediatek: mt8192: support tdm in platform driver")
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20240509-8192-tdm-v1-1-530b54645763@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/mediatek/mt8192/mt8192-dai-tdm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index 1fe5d33a5798d..ec78d9ad3e9bc 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -2053,4 +2053,5 @@ module_init(null_init);
- module_exit(null_exit);
+diff --git a/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c b/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
+index f3bebed2428a7..360259e60de84 100644
+--- a/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
++++ b/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
+@@ -566,10 +566,10 @@ static int mtk_dai_tdm_hw_params(struct snd_pcm_substream *substream,
+ 		tdm_con |= 1 << DELAY_DATA_SFT;
+ 		tdm_con |= get_tdm_lrck_width(format) << LRCK_TDM_WIDTH_SFT;
+ 	} else if (tdm_priv->tdm_out_mode == TDM_OUT_DSP_A) {
+-		tdm_con |= 0 << DELAY_DATA_SFT;
++		tdm_con |= 1 << DELAY_DATA_SFT;
+ 		tdm_con |= 0 << LRCK_TDM_WIDTH_SFT;
+ 	} else if (tdm_priv->tdm_out_mode == TDM_OUT_DSP_B) {
+-		tdm_con |= 1 << DELAY_DATA_SFT;
++		tdm_con |= 0 << DELAY_DATA_SFT;
+ 		tdm_con |= 0 << LRCK_TDM_WIDTH_SFT;
+ 	}
  
- MODULE_AUTHOR("Jens Axboe <axboe@kernel.dk>");
-+MODULE_DESCRIPTION("multi queue aware block test driver");
- MODULE_LICENSE("GPL");
 -- 
 2.43.0
 
