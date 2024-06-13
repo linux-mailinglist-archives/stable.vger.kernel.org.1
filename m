@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-50766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D0F906C90
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A83906BAD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDD0EB22851
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE1C1281325
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B888B1448FD;
-	Thu, 13 Jun 2024 11:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F88143C60;
+	Thu, 13 Jun 2024 11:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AgtuHAdK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+dP2fCQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7645F143C7B;
-	Thu, 13 Jun 2024 11:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A550B14265E;
+	Thu, 13 Jun 2024 11:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279322; cv=none; b=fKXYZzx02eePaZRZuExf+FgnSDCe3lcdBXK7W8yNJf/j8b75+Z9xSRnbs3Y9wgYz7r0RW5hhXCd4unUJZ6iu7nOU6Ak1GlaEfbLVfF3yVCEVRc3zr/e2E3XNHfZCDdkURr2RPUoI44Th10TSDRAmFAGQCLw8R2Wh/zbIeIZ3aDY=
+	t=1718278970; cv=none; b=LR3CL2+599MY1IjyuWh3DAsFjtJUuxp2TQLmPXAFTffGQnpr2RsYVVplZn2bkLizMWbi1flEGasV1y9eK3TA2/JWAY35O+9fy+/FUt5nApPcplMmlQgSB04/tH8UpVJnFrOsiwRppVqBm9346Q0egP/Xh94Lubh2LBj5UC/A170=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279322; c=relaxed/simple;
-	bh=7UaEi5iiUJIEJFcvVPj+wLNaHb+MKmln0uiB88flQVo=;
+	s=arc-20240116; t=1718278970; c=relaxed/simple;
+	bh=dm/AiXYmNcZHTJEkx5e5Zu9ZBPF0+mffnP2aquopTVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u0TlwOBidzl3suz9oVxvCj0jGEC5A/26SoyRFupzsspkWkjHZBlC1PLqBCZLSwPH5OCtk2zEYNqlw6Jq9IbPAUNBb1Qyht1KteSXisZuU9//V0OhITzbmBjjy15nLsSbQCLJkTjsgej2Y1uIgFdYvDRvshz3yCVvIn8dFbhp0BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AgtuHAdK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EECC2BBFC;
-	Thu, 13 Jun 2024 11:48:41 +0000 (UTC)
+	 MIME-Version; b=LsywPf9XhtlLtXLp/u3Fk1Qkd7yh4cIx2WMP7Byicb3FOmH40pESXEvOxzJCc/upzQ3oIdzhWxYyNZByyitb0+nZ3FxjfFoK+NSe+0Jf9DLXUUiSOmEt/HOkIhzPEEGVgCVAFZz6sye7ruMH/izyilwgsR/h94R/VebgGRCOJHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+dP2fCQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB49C2BBFC;
+	Thu, 13 Jun 2024 11:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279322;
-	bh=7UaEi5iiUJIEJFcvVPj+wLNaHb+MKmln0uiB88flQVo=;
+	s=korg; t=1718278970;
+	bh=dm/AiXYmNcZHTJEkx5e5Zu9ZBPF0+mffnP2aquopTVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AgtuHAdKN0YeKv51upodQA+RruklUvWoHaYAc/REE26djzlLB8qYR88bvarHWMY/s
-	 3SwIdBUpbJ8EoqDSZ/KJXa65aGp4UycRuMX0d1/k8yWgvUNK0FHbEtBvBLB1KKgC3u
-	 3jItTzvMc+5U44H3ZzGYwu0NM9YRguyCML6ExypQ=
+	b=c+dP2fCQt14DFYKGlHm8KL8tYw83MQ3jZguH/KxqRtHsVXXbRcp8OSUPqih8MzdUa
+	 p8mpqYgaKm/yVkU9v8uycIoUvQFTG8ps85FhJp/MIn5Jr3+gmQH4FNvxfESIFvbAXn
+	 mvT6OyQwgv4fgncAb+kDxCatFjtFZTUcZK5ffhCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 6.9 037/157] media: mxl5xx: Move xpt structures off stack
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 114/213] media: stk1160: fix bounds checking in stk1160_copy_video()
 Date: Thu, 13 Jun 2024 13:32:42 +0200
-Message-ID: <20240613113228.855136187@linuxfoundation.org>
+Message-ID: <20240613113232.398202069@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 526f4527545b2d4ce0733733929fac7b6da09ac6 upstream.
+[ Upstream commit faa4364bef2ec0060de381ff028d1d836600a381 ]
 
-When building for LoongArch with clang 18.0.0, the stack usage of
-probe() is larger than the allowed 2048 bytes:
+The subtract in this condition is reversed.  The ->length is the length
+of the buffer.  The ->bytesused is how many bytes we have copied thus
+far.  When the condition is reversed that means the result of the
+subtraction is always negative but since it's unsigned then the result
+is a very high positive value.  That means the overflow check is never
+true.
 
-  drivers/media/dvb-frontends/mxl5xx.c:1698:12: warning: stack frame size (2368) exceeds limit (2048) in 'probe' [-Wframe-larger-than]
-   1698 | static int probe(struct mxl *state, struct mxl5xx_cfg *cfg)
-        |            ^
-  1 warning generated.
+Additionally, the ->bytesused doesn't actually work for this purpose
+because we're not writing to "buf->mem + buf->bytesused".  Instead, the
+math to calculate the destination where we are writing is a bit
+involved.  You calculate the number of full lines already written,
+multiply by two, skip a line if necessary so that we start on an odd
+numbered line, and add the offset into the line.
 
-This is the result of the linked LLVM commit, which changes how the
-arrays of structures in config_ts() get handled with
-CONFIG_INIT_STACK_ZERO and CONFIG_INIT_STACK_PATTERN, which causes the
-above warning in combination with inlining, as config_ts() gets inlined
-into probe().
+To fix this buffer overflow, just take the actual destination where we
+are writing, if the offset is already out of bounds print an error and
+return.  Otherwise, write up to buf->length bytes.
 
-This warning can be easily fixed by moving the array of structures off
-of the stackvia 'static const', which is a better location for these
-variables anyways because they are static data that is only ever read
-from, never modified, so allocating the stack space is wasteful.
-
-This drops the stack usage from 2368 bytes to 256 bytes with the same
-compiler and configuration.
-
-Link: https://lore.kernel.org/linux-media/20240111-dvb-mxl5xx-move-structs-off-stack-v1-1-ca4230e67c11@kernel.org
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1977
-Link: https://github.com/llvm/llvm-project/commit/afe8b93ffdfef5d8879e1894b9d7dda40dee2b8d
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9cb2173e6ea8 ("[media] media: Add stk1160 new driver (easycap replacement)")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/mxl5xx.c |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/media/usb/stk1160/stk1160-video.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/drivers/media/dvb-frontends/mxl5xx.c
-+++ b/drivers/media/dvb-frontends/mxl5xx.c
-@@ -1381,57 +1381,57 @@ static int config_ts(struct mxl *state,
- 	u32 nco_count_min = 0;
- 	u32 clk_type = 0;
+diff --git a/drivers/media/usb/stk1160/stk1160-video.c b/drivers/media/usb/stk1160/stk1160-video.c
+index 0e98b450ae01b..687c7b6a0c303 100644
+--- a/drivers/media/usb/stk1160/stk1160-video.c
++++ b/drivers/media/usb/stk1160/stk1160-video.c
+@@ -109,7 +109,7 @@ void stk1160_buffer_done(struct stk1160 *dev)
+ static inline
+ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ {
+-	int linesdone, lineoff, lencopy;
++	int linesdone, lineoff, lencopy, offset;
+ 	int bytesperline = dev->width * 2;
+ 	struct stk1160_buffer *buf = dev->isoc_ctl.buf;
+ 	u8 *dst = buf->mem;
+@@ -149,8 +149,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 	 * Check if we have enough space left in the buffer.
+ 	 * In that case, we force loop exit after copy.
+ 	 */
+-	if (lencopy > buf->bytesused - buf->length) {
+-		lencopy = buf->bytesused - buf->length;
++	offset = dst - (u8 *)buf->mem;
++	if (offset > buf->length) {
++		dev_warn_ratelimited(dev->dev, "out of bounds offset\n");
++		return;
++	}
++	if (lencopy > buf->length - offset) {
++		lencopy = buf->length - offset;
+ 		remain = lencopy;
+ 	}
  
--	struct MXL_REG_FIELD_T xpt_sync_polarity[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_sync_polarity[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700010, 8, 1}, {0x90700010, 9, 1},
- 		{0x90700010, 10, 1}, {0x90700010, 11, 1},
- 		{0x90700010, 12, 1}, {0x90700010, 13, 1},
- 		{0x90700010, 14, 1}, {0x90700010, 15, 1} };
--	struct MXL_REG_FIELD_T xpt_clock_polarity[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_clock_polarity[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700010, 16, 1}, {0x90700010, 17, 1},
- 		{0x90700010, 18, 1}, {0x90700010, 19, 1},
- 		{0x90700010, 20, 1}, {0x90700010, 21, 1},
- 		{0x90700010, 22, 1}, {0x90700010, 23, 1} };
--	struct MXL_REG_FIELD_T xpt_valid_polarity[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_valid_polarity[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700014, 0, 1}, {0x90700014, 1, 1},
- 		{0x90700014, 2, 1}, {0x90700014, 3, 1},
- 		{0x90700014, 4, 1}, {0x90700014, 5, 1},
- 		{0x90700014, 6, 1}, {0x90700014, 7, 1} };
--	struct MXL_REG_FIELD_T xpt_ts_clock_phase[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_ts_clock_phase[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700018, 0, 3}, {0x90700018, 4, 3},
- 		{0x90700018, 8, 3}, {0x90700018, 12, 3},
- 		{0x90700018, 16, 3}, {0x90700018, 20, 3},
- 		{0x90700018, 24, 3}, {0x90700018, 28, 3} };
--	struct MXL_REG_FIELD_T xpt_lsb_first[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_lsb_first[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x9070000C, 16, 1}, {0x9070000C, 17, 1},
- 		{0x9070000C, 18, 1}, {0x9070000C, 19, 1},
- 		{0x9070000C, 20, 1}, {0x9070000C, 21, 1},
- 		{0x9070000C, 22, 1}, {0x9070000C, 23, 1} };
--	struct MXL_REG_FIELD_T xpt_sync_byte[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_sync_byte[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700010, 0, 1}, {0x90700010, 1, 1},
- 		{0x90700010, 2, 1}, {0x90700010, 3, 1},
- 		{0x90700010, 4, 1}, {0x90700010, 5, 1},
- 		{0x90700010, 6, 1}, {0x90700010, 7, 1} };
--	struct MXL_REG_FIELD_T xpt_enable_output[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_enable_output[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x9070000C, 0, 1}, {0x9070000C, 1, 1},
- 		{0x9070000C, 2, 1}, {0x9070000C, 3, 1},
- 		{0x9070000C, 4, 1}, {0x9070000C, 5, 1},
- 		{0x9070000C, 6, 1}, {0x9070000C, 7, 1} };
--	struct MXL_REG_FIELD_T xpt_err_replace_sync[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_err_replace_sync[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x9070000C, 24, 1}, {0x9070000C, 25, 1},
- 		{0x9070000C, 26, 1}, {0x9070000C, 27, 1},
- 		{0x9070000C, 28, 1}, {0x9070000C, 29, 1},
- 		{0x9070000C, 30, 1}, {0x9070000C, 31, 1} };
--	struct MXL_REG_FIELD_T xpt_err_replace_valid[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_err_replace_valid[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700014, 8, 1}, {0x90700014, 9, 1},
- 		{0x90700014, 10, 1}, {0x90700014, 11, 1},
- 		{0x90700014, 12, 1}, {0x90700014, 13, 1},
- 		{0x90700014, 14, 1}, {0x90700014, 15, 1} };
--	struct MXL_REG_FIELD_T xpt_continuous_clock[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_continuous_clock[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x907001D4, 0, 1}, {0x907001D4, 1, 1},
- 		{0x907001D4, 2, 1}, {0x907001D4, 3, 1},
- 		{0x907001D4, 4, 1}, {0x907001D4, 5, 1},
- 		{0x907001D4, 6, 1}, {0x907001D4, 7, 1} };
--	struct MXL_REG_FIELD_T xpt_nco_clock_rate[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_nco_clock_rate[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700044, 16, 80}, {0x90700044, 16, 81},
- 		{0x90700044, 16, 82}, {0x90700044, 16, 83},
- 		{0x90700044, 16, 84}, {0x90700044, 16, 85},
+@@ -192,8 +197,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 		 * Check if we have enough space left in the buffer.
+ 		 * In that case, we force loop exit after copy.
+ 		 */
+-		if (lencopy > buf->bytesused - buf->length) {
+-			lencopy = buf->bytesused - buf->length;
++		offset = dst - (u8 *)buf->mem;
++		if (offset > buf->length) {
++			dev_warn_ratelimited(dev->dev, "offset out of bounds\n");
++			return;
++		}
++		if (lencopy > buf->length - offset) {
++			lencopy = buf->length - offset;
+ 			remain = lencopy;
+ 		}
+ 
+-- 
+2.43.0
+
 
 
 
