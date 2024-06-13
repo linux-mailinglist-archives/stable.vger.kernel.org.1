@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-51967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546B2907281
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:48:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E9E9906EED
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34F611C231CC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:48:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5ED9FB26DCF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D52A142658;
-	Thu, 13 Jun 2024 12:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2FF146D6F;
+	Thu, 13 Jun 2024 12:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/GTc3Tl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtY/LOz0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A613384;
-	Thu, 13 Jun 2024 12:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA78E145A02;
+	Thu, 13 Jun 2024 12:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282843; cv=none; b=QOi5XdZH9/1Dmq1txGV/7aps828Hqfp3J6XdGEX6mlCkg0W5pvvMIXRDTeDblbayxv3c5dBldCfAK3tp3QNLLhLZ4JMI0n4+Edm5S/xwBmfsp9KROo+CcwyrvfIjDsWLPQEeASwuchRRd0aQek68KpSvb889lnugWyjcq5lDalY=
+	t=1718280665; cv=none; b=N1k8B0dzMboH5UXHVMWMmzbTLtUyYFXwb1RGRwIUqN3ZkV/EnScb8si8OX+7KfVZYsD3bdzqizjhXdAY1n/xPvcOmJCKXW2cIfbmrgCr8cNYEQbNvKIQhd+WccZKjq2WWcaZM8QVRbQYJYB34xCedjj9SFDH+XM9p2CwTaOBwdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282843; c=relaxed/simple;
-	bh=IHgNvbGrug/nbvAGgFke6A5CyFAZsfyVN8PeAgDd83o=;
+	s=arc-20240116; t=1718280665; c=relaxed/simple;
+	bh=A1KHrnIrxxXmqlbNmtfihwimbFayT9pKwRTunOC4v2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nM9INLTeYdydtT38EI+c4oq8SpdFHhOHop5sGLscO+rv2xDsB/bvTj91iMxolr9CjJEQDhVFENV+afdso7/msoNHh1lP4JEkeD35Y7cdNxFHpOxub76wvX/TcTYbEMb8qpchkXQByUGoj6jramdy34zaC1Pov3nZUtptnuPT3Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/GTc3Tl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55CAC2BBFC;
-	Thu, 13 Jun 2024 12:47:22 +0000 (UTC)
+	 MIME-Version; b=IgcWjcIqSj9vidrpufGzNs/njnpemXDHPlNy15p3vJvN5AYwuV5UQtUuhNDh/e+5u9cf0SwJBRrFQI6W8AUtpA7gnad0E7OL0KzJyperLbG4MjKt1f4KvHA3kRaeDOqX7eNadmSQbuSWBhjgK0p3cY1r9Mnn64g0p/TDihFwFKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtY/LOz0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7636AC2BBFC;
+	Thu, 13 Jun 2024 12:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282843;
-	bh=IHgNvbGrug/nbvAGgFke6A5CyFAZsfyVN8PeAgDd83o=;
+	s=korg; t=1718280664;
+	bh=A1KHrnIrxxXmqlbNmtfihwimbFayT9pKwRTunOC4v2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/GTc3Tlc5c3opw5ZVgJu8OWFdyWJPBKzKchXs/B8kY6cDunzs8uHP0KaShSPTbdw
-	 y60q3Jv15qZyWYKUG5wFQSW69s8exSUrK/PhGNkqsJTx1GAY20QxxCt26F0GkGwh/q
-	 RhX50eIImK9uwSoHv/mnCo69UXclSFoLRp17fLgY=
+	b=mtY/LOz0LFYBz+JKb3+GVVPWPhfCnCINl95uuHMY5OpU8b66TZ3dRUyrYnvdHmNW6
+	 z1CB2+55S7SEGggLNqa313NRgQAsbpsPFtYYKr/Xsj75ybWnYXOuLk2xOec8UPIOjg
+	 JSnNe2+spsA1DF8tX8X1l0397acXWztRdu8n/qe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 12/85] mptcp: cleanup SOL_TCP handling
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 130/137] tracefs: Clear EVENT_INODE flag in tracefs_drop_inode()
 Date: Thu, 13 Jun 2024 13:35:10 +0200
-Message-ID: <20240613113214.615386427@linuxfoundation.org>
+Message-ID: <20240613113228.342390472@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +65,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 7f71a337b5152ea0e7bef408d1af53778a919316 upstream.
+commit 0bcfd9aa4dafa03b88d68bf66b694df2a3e76cf3 upstream.
 
-Most TCP-level socket options get an integer from user space, and
-set the corresponding field under the msk-level socket lock.
+When the inode is being dropped from the dentry, the TRACEFS_EVENT_INODE
+flag needs to be cleared to prevent a remount from calling
+eventfs_remount() on the tracefs_inode private data. There's a race
+between the inode is dropped (and the dentry freed) to where the inode is
+actually freed. If a remount happens between the two, the eventfs_inode
+could be accessed after it is freed (only the dentry keeps a ref count on
+it).
 
-Reduce the code duplication moving such operations in the common code.
+Currently the TRACEFS_EVENT_INODE flag is cleared from the dentry iput()
+function. But this is incorrect, as it is possible that the inode has
+another reference to it. The flag should only be cleared when the inode is
+really being dropped and has no more references. That happens in the
+drop_inode callback of the inode, as that gets called when the last
+reference of the inode is released.
 
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: bd11dc4fb969 ("mptcp: fix full TCP keep-alive support")
-[ Without TCP_NOTSENT_LOWAT support, as it is not in this version, see
-  commit 29b5e5ef8739 ("mptcp: implement TCP_NOTSENT_LOWAT support") ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Remove the tracefs_d_iput() function and move its logic to the more
+appropriate tracefs_drop_inode() callback function.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240523051539.908205106@goodmis.org
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: baa23a8d4360d ("tracefs: Reset permissions on remount if permissions are options")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/sockopt.c |   61 ++++++++++++++++++++++------------------------------
- 1 file changed, 26 insertions(+), 35 deletions(-)
+ fs/tracefs/inode.c |   33 +++++++++++++++++----------------
+ 1 file changed, 17 insertions(+), 16 deletions(-)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -616,18 +616,11 @@ static int mptcp_setsockopt_sol_tcp_cong
- 	return ret;
- }
- 
--static int mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, sockptr_t optval,
--					 unsigned int optlen)
-+static int __mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, int val)
- {
- 	struct mptcp_subflow_context *subflow;
- 	struct sock *sk = (struct sock *)msk;
--	int val, ret;
- 
--	ret = mptcp_get_int_option(msk, optval, optlen, &val);
--	if (ret)
--		return ret;
--
--	lock_sock(sk);
- 	sockopt_seq_inc(msk);
- 	msk->cork = !!val;
- 	mptcp_for_each_subflow(msk, subflow) {
-@@ -639,23 +632,15 @@ static int mptcp_setsockopt_sol_tcp_cork
- 	}
- 	if (!val)
- 		mptcp_check_and_set_pending(sk);
--	release_sock(sk);
- 
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -439,10 +439,26 @@ static int tracefs_show_options(struct s
  	return 0;
  }
  
--static int mptcp_setsockopt_sol_tcp_nodelay(struct mptcp_sock *msk, sockptr_t optval,
--					    unsigned int optlen)
-+static int __mptcp_setsockopt_sol_tcp_nodelay(struct mptcp_sock *msk, int val)
- {
- 	struct mptcp_subflow_context *subflow;
- 	struct sock *sk = (struct sock *)msk;
--	int val, ret;
--
--	ret = mptcp_get_int_option(msk, optval, optlen, &val);
--	if (ret)
--		return ret;
- 
--	lock_sock(sk);
- 	sockopt_seq_inc(msk);
- 	msk->nodelay = !!val;
- 	mptcp_for_each_subflow(msk, subflow) {
-@@ -667,8 +652,6 @@ static int mptcp_setsockopt_sol_tcp_node
- 	}
- 	if (val)
- 		mptcp_check_and_set_pending(sk);
--	release_sock(sk);
--
- 	return 0;
++static int tracefs_drop_inode(struct inode *inode)
++{
++	struct tracefs_inode *ti = get_tracefs(inode);
++
++	/*
++	 * This inode is being freed and cannot be used for
++	 * eventfs. Clear the flag so that it doesn't call into
++	 * eventfs during the remount flag updates. The eventfs_inode
++	 * gets freed after an RCU cycle, so the content will still
++	 * be safe if the iteration is going on now.
++	 */
++	ti->flags &= ~TRACEFS_EVENT_INODE;
++
++	return 1;
++}
++
+ static const struct super_operations tracefs_super_operations = {
+ 	.alloc_inode    = tracefs_alloc_inode,
+ 	.free_inode     = tracefs_free_inode,
+-	.drop_inode     = generic_delete_inode,
++	.drop_inode     = tracefs_drop_inode,
+ 	.statfs		= simple_statfs,
+ 	.remount_fs	= tracefs_remount,
+ 	.show_options	= tracefs_show_options,
+@@ -469,22 +485,7 @@ static int tracefs_d_revalidate(struct d
+ 	return !(ei && ei->is_freed);
  }
  
-@@ -793,25 +776,10 @@ static int mptcp_setsockopt_sol_tcp(stru
- 	int ret, val;
- 
- 	switch (optname) {
--	case TCP_INQ:
--		ret = mptcp_get_int_option(msk, optval, optlen, &val);
--		if (ret)
--			return ret;
--		if (val < 0 || val > 1)
--			return -EINVAL;
+-static void tracefs_d_iput(struct dentry *dentry, struct inode *inode)
+-{
+-	struct tracefs_inode *ti = get_tracefs(inode);
 -
--		lock_sock(sk);
--		msk->recvmsg_inq = !!val;
--		release_sock(sk);
--		return 0;
- 	case TCP_ULP:
- 		return -EOPNOTSUPP;
- 	case TCP_CONGESTION:
- 		return mptcp_setsockopt_sol_tcp_congestion(msk, optval, optlen);
--	case TCP_CORK:
--		return mptcp_setsockopt_sol_tcp_cork(msk, optval, optlen);
--	case TCP_NODELAY:
--		return mptcp_setsockopt_sol_tcp_nodelay(msk, optval, optlen);
- 	case TCP_DEFER_ACCEPT:
- 		return mptcp_setsockopt_sol_tcp_defer(msk, optval, optlen);
- 	case TCP_FASTOPEN_CONNECT:
-@@ -819,7 +787,30 @@ static int mptcp_setsockopt_sol_tcp(stru
- 						      optval, optlen);
- 	}
- 
--	return -EOPNOTSUPP;
-+	ret = mptcp_get_int_option(msk, optval, optlen, &val);
-+	if (ret)
-+		return ret;
-+
-+	lock_sock(sk);
-+	switch (optname) {
-+	case TCP_INQ:
-+		if (val < 0 || val > 1)
-+			ret = -EINVAL;
-+		else
-+			msk->recvmsg_inq = !!val;
-+		break;
-+	case TCP_CORK:
-+		ret = __mptcp_setsockopt_sol_tcp_cork(msk, val);
-+		break;
-+	case TCP_NODELAY:
-+		ret = __mptcp_setsockopt_sol_tcp_nodelay(msk, val);
-+		break;
-+	default:
-+		ret = -ENOPROTOOPT;
-+	}
-+
-+	release_sock(sk);
-+	return ret;
- }
- 
- int mptcp_setsockopt(struct sock *sk, int level, int optname,
+-	/*
+-	 * This inode is being freed and cannot be used for
+-	 * eventfs. Clear the flag so that it doesn't call into
+-	 * eventfs during the remount flag updates. The eventfs_inode
+-	 * gets freed after an RCU cycle, so the content will still
+-	 * be safe if the iteration is going on now.
+-	 */
+-	ti->flags &= ~TRACEFS_EVENT_INODE;
+-}
+-
+ static const struct dentry_operations tracefs_dentry_operations = {
+-	.d_iput = tracefs_d_iput,
+ 	.d_revalidate = tracefs_d_revalidate,
+ 	.d_release = tracefs_d_release,
+ };
 
 
 
