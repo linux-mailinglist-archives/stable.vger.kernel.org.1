@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-50640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6010F906BA9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F86D906C9D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75FC51C2261C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8451B22D3B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0173143C4C;
-	Thu, 13 Jun 2024 11:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E375314386B;
+	Thu, 13 Jun 2024 11:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRMd2x2v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZbwUK6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD276AFAE;
-	Thu, 13 Jun 2024 11:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A377D145347;
+	Thu, 13 Jun 2024 11:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278958; cv=none; b=RMSBEJlgcdHbXnVi/AvAl3qWeoK024O3FccEOz2C8OdaMQE86nllvUQP+k/E7mpxoQFRZpCIV3+jZeyYFXwVVPXH6YUyycLrOd+W6obxYA42OoVTuU4XHu6d9k85qjZwA6stmXzbzs8KW2cdDUEqFdU4FmzPgpk+85d7Gh9Q+Hk=
+	t=1718279366; cv=none; b=OecY34DyRfvrmrIHqoOjg5JT8+eRTyqt/qLrhrs3ZrYFGbgeHD4q0UpBXI7E/+zdD1e8CnaUp1/gwY5613hV451NxThpRGl6VKKzozg5voKJa2ib702FdJkjbl6Ls4kbQkXDsVJrBtnRSvzHjg2o9leCqRaZbod+A72PqnHH7rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278958; c=relaxed/simple;
-	bh=SbCuhSMWMdF/Ell35oR3yE+8nihUfDp6U9gR43H+hc0=;
+	s=arc-20240116; t=1718279366; c=relaxed/simple;
+	bh=8XQq7OxZHTCdkqHQmSo6/pGvrZJzPD1NPo9B02phUnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=toanR4jiS0RYwoM4Uj8oNKo7f9NsHZQdyamupMazrq7vPXpFHv+d0aVNf7mE+hwY9an+EX9hcyOTCqZxIxEnzIu4alyNdpL6Z624lq8VQD/E4sQjCxV9/gU/qhmxu2HaKcb9FnhW4zNthWghhX3marL7Twkk8LWxi9OFnKZeWdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRMd2x2v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207CAC2BBFC;
-	Thu, 13 Jun 2024 11:42:37 +0000 (UTC)
+	 MIME-Version; b=hz1ibY6HKhs4swlHn5cMoNQUIH727iOvSlZQXLYnPktccFwRL8S5q7tW0mlrMagEYF2U+TGZBXYnup3tsnowY4z4Z5S9CqP7dHasa/kDRngpEZUQDXHdW2xBPQ9/IBMgeXjhQivxS8ZP204uzAsDbAyJBHQsTaTf6Am+DM7tHGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZbwUK6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE90C2BBFC;
+	Thu, 13 Jun 2024 11:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278958;
-	bh=SbCuhSMWMdF/Ell35oR3yE+8nihUfDp6U9gR43H+hc0=;
+	s=korg; t=1718279366;
+	bh=8XQq7OxZHTCdkqHQmSo6/pGvrZJzPD1NPo9B02phUnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tRMd2x2vQ8lDUEW1BmndS224BJm4kM6HFZNIF2iyCqWYnIbeh05YDYZ+V8IEUgZzL
-	 uPsmBl9k/yaDH8S06lq0AnMR+oDKTbSZh61+OIg7jWV03sDHEcBtfTKqvAtO1zu9U+
-	 UI97ZHw6TIT4pVFADTEzraaIhSAxKcOl/DW1n9Jg=
+	b=bZbwUK6NGs3bvbRIJAv6UGE9jBaqB+92Fy2e+76WoURQwHoFGSvgtGXOf8/IuemE1
+	 +PaknrdlOrH16Z4zZrMtRPqiDqsiFOaSBCGJhFJCuRR3uWf7sZMqLf3wALyqedDL36
+	 sF6p9wSoL/pOT5A1XqgFtk8mUfpivxijleR/muZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 128/213] net: fec: avoid lock evasion when reading pps_enable
+	Cai Xinchen <caixinchen1@huawei.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.9 051/157] fbdev: savage: Handle err return when savagefb_check_var failed
 Date: Thu, 13 Jun 2024 13:32:56 +0200
-Message-ID: <20240613113232.935749175@linuxfoundation.org>
+Message-ID: <20240613113229.399601045@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Cai Xinchen <caixinchen1@huawei.com>
 
-[ Upstream commit 3b1c92f8e5371700fada307cc8fd2c51fa7bc8c1 ]
+commit 6ad959b6703e2c4c5d7af03b4cfd5ff608036339 upstream.
 
-The assignment of pps_enable is protected by tmreg_lock, but the read
-operation of pps_enable is not. So the Coverity tool reports a lock
-evasion warning which may cause data race to occur when running in a
-multithread environment. Although this issue is almost impossible to
-occur, we'd better fix it, at least it seems more logically reasonable,
-and it also prevents Coverity from continuing to issue warnings.
+The commit 04e5eac8f3ab("fbdev: savage: Error out if pixclock equals zero")
+checks the value of pixclock to avoid divide-by-zero error. However
+the function savagefb_probe doesn't handle the error return of
+savagefb_check_var. When pixclock is 0, it will cause divide-by-zero error.
 
-Fixes: 278d24047891 ("net: fec: ptp: Enable PPS output based on ptp clock")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Link: https://lore.kernel.org/r/20240521023800.17102-1-wei.fang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 04e5eac8f3ab ("fbdev: savage: Error out if pixclock equals zero")
+Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/video/fbdev/savage/savagefb_driver.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index eb11a8e7fcb7f..abf0b6cddf204 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -108,14 +108,13 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
- 		return -EINVAL;
- 	}
- 
--	if (fep->pps_enable == enable)
--		return 0;
--
--	fep->pps_channel = DEFAULT_PPS_CHANNEL;
--	fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
--
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
- 
-+	if (fep->pps_enable == enable) {
-+		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-+		return 0;
-+	}
+--- a/drivers/video/fbdev/savage/savagefb_driver.c
++++ b/drivers/video/fbdev/savage/savagefb_driver.c
+@@ -2276,7 +2276,10 @@ static int savagefb_probe(struct pci_dev
+ 	if (info->var.xres_virtual > 0x1000)
+ 		info->var.xres_virtual = 0x1000;
+ #endif
+-	savagefb_check_var(&info->var, info);
++	err = savagefb_check_var(&info->var, info);
++	if (err)
++		goto failed;
 +
- 	if (enable) {
- 		/* clear capture or output compare interrupt status if have.
- 		 */
-@@ -446,6 +445,9 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 	int ret = 0;
+ 	savagefb_set_fix(info);
  
- 	if (rq->type == PTP_CLK_REQ_PPS) {
-+		fep->pps_channel = DEFAULT_PPS_CHANNEL;
-+		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
-+
- 		ret = fec_ptp_enable_pps(fep, on);
- 
- 		return ret;
--- 
-2.43.0
-
+ 	/*
 
 
 
