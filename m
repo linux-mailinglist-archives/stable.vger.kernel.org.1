@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44A3907083
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2221E9071E0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4090AB2440C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE3BA1F28158
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25865146585;
-	Thu, 13 Jun 2024 12:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAF9139CFE;
+	Thu, 13 Jun 2024 12:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSzOCEs0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IK02f9mZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D732A13D607;
-	Thu, 13 Jun 2024 12:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7412CA6;
+	Thu, 13 Jun 2024 12:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281283; cv=none; b=LYQdO7KnDrnVT/cOdWYV+5NZQ6NPV8vwLTX1jCJYUbbqq0Us9DP31uqFiJnOiQk9tomGBXNv6mjomuYgeoTvoXOhBz5SQSrEI9CoJ56pWCtex6zmZuXs50ZWFp979jO5wsTnrheSLBw8yyM1VJp5iCEdp5kI+xM+T62B7t2Y/38=
+	t=1718282466; cv=none; b=pqhD0g51/4HQJpwyHniO0kjXxTwCfFgTAhL4jKTILlQMdpF4OHzvuGMfNlQzqUvhtUhPz4pFaWFIRb0QFetldTvLV5H5vLRJ49hb+ymQfuZvy2LOD8/E9/U7UmQ0jWSGLKG0LMVZQeNWnm4mkJ8npmQUtff9+bSz4sIJZh6IfFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281283; c=relaxed/simple;
-	bh=SIxYwKwmiVp7NENIemxOfDRZP+6/i5GY+bjLTKKBrcQ=;
+	s=arc-20240116; t=1718282466; c=relaxed/simple;
+	bh=LOKNI6IPH2UzGoXDqOzsVOINB8OW9GljcS660ElhYbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mo4oEM26r5zHbm3eKj8AnJ9Ubsc1Ksll5TT86O2Y4hMyAno1cvNSQm5jX3YqrMCyQwKyCPMcENGQyZRu083sqGHq6JXPZqHT1SxXbCJh0PMyx7RVj6EuZKdSriuHDj6XcqpABvMkqdYRx/EBemC618fSznqobOXVf7d82AeTl+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSzOCEs0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0B8C2BBFC;
-	Thu, 13 Jun 2024 12:21:23 +0000 (UTC)
+	 MIME-Version; b=hg+3irUCRPj1OOaEpQJEKlJHXFDfncOx9pHlwJ8y0LwnPOyXEqoRLTruhUPHDWNDmroWYWXOGpYHZ5rbLb9SrjN+9th5UkUrylWQJj3sr/1JWqO4V8tvim5XAjsUiOHk7AbvDUk2MGu+0Sihn9WWurCi9UCMoBuYHbQ/rQ6/xlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IK02f9mZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95CDBC2BBFC;
+	Thu, 13 Jun 2024 12:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281283;
-	bh=SIxYwKwmiVp7NENIemxOfDRZP+6/i5GY+bjLTKKBrcQ=;
+	s=korg; t=1718282466;
+	bh=LOKNI6IPH2UzGoXDqOzsVOINB8OW9GljcS660ElhYbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YSzOCEs0r0WnlTxZs01F/ylLv8c7Ig/hPnorOUtARjIlpEI9HQ9znjU4qJ+dOzuJv
-	 3izLiOKtGGd6C7soLd7GrkL6TVuCk3usJTlNq6swLW6mPB8SQ+AvV7ne/i9RIdwiCF
-	 gtE4J0BPAhFYQDPrDMOXiNsWng51j5UqVgsfXPC8=
+	b=IK02f9mZEGEg7ddDTXQA1EjpyziI055+w/v2GFNvE87mOUTmonpQ7kvDHT/vd4fWj
+	 E3wLP72DynYS47Robrw3rS2okmCN0aOMIL/Pcal81/YuH+N7QLIUv6oWl2oQF+YviB
+	 o5W54TsiRR6gYJGHkZGfXj+rlEq960W7uDScVClA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karel Balej <balejk@matfyz.cz>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 195/317] Input: ioc3kbd - add device table
+Subject: [PATCH 5.15 256/402] drm/msm/dsi: Print dual-DSI-adjusted pclk instead of original mode pclk
 Date: Thu, 13 Jun 2024 13:33:33 +0200
-Message-ID: <20240613113255.099158773@linuxfoundation.org>
+Message-ID: <20240613113312.133091501@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karel Balej <balejk@matfyz.cz>
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-[ Upstream commit d40e9edcf3eb925c259df9f9dd7319a4fcbc675b ]
+[ Upstream commit f12e0e12524a34bf145f7b80122e653ffe3d130a ]
 
-Without the device table the driver will not auto-load when compiled as
-a module.
+When dual-DSI (bonded DSI) was added in commit ed9976a09b48
+("drm/msm/dsi: adjust dsi timing for dual dsi mode") some DBG() prints
+were not updated, leading to print the original mode->clock rather
+than the adjusted (typically the mode clock divided by two, though more
+recently also adjusted for DSC compression) msm_host->pixel_clk_rate
+which is passed to clk_set_rate() just below.  Fix that by printing the
+actual pixel_clk_rate that is being set.
 
-Fixes: 273db8f03509 ("Input: add IOC3 serio driver")
-Signed-off-by: Karel Balej <balejk@matfyz.cz>
-Link: https://lore.kernel.org/r/20240313115832.8052-1-balejk@matfyz.cz
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: ed9976a09b48 ("drm/msm/dsi: adjust dsi timing for dual dsi mode")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/589896/
+Link: https://lore.kernel.org/r/20240417-drm-msm-initial-dualpipe-dsc-fixes-v1-1-78ae3ee9a697@somainline.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/ioc3kbd.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/input/serio/ioc3kbd.c b/drivers/input/serio/ioc3kbd.c
-index 50552dc7b4f5e..676b0bda3d720 100644
---- a/drivers/input/serio/ioc3kbd.c
-+++ b/drivers/input/serio/ioc3kbd.c
-@@ -200,9 +200,16 @@ static void ioc3kbd_remove(struct platform_device *pdev)
- 	serio_unregister_port(d->aux);
- }
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index 8d0612caf6c21..c563ecf6e7b94 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -501,8 +501,8 @@ int dsi_link_clk_set_rate_6g(struct msm_dsi_host *msm_host)
+ 	unsigned long byte_intf_rate;
+ 	int ret;
  
-+static const struct platform_device_id ioc3kbd_id_table[] = {
-+	{ "ioc3-kbd", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(platform, ioc3kbd_id_table);
-+
- static struct platform_driver ioc3kbd_driver = {
- 	.probe          = ioc3kbd_probe,
- 	.remove_new     = ioc3kbd_remove,
-+	.id_table	= ioc3kbd_id_table,
- 	.driver = {
- 		.name = "ioc3-kbd",
- 	},
+-	DBG("Set clk rates: pclk=%d, byteclk=%lu",
+-		msm_host->mode->clock, msm_host->byte_clk_rate);
++	DBG("Set clk rates: pclk=%lu, byteclk=%lu",
++	    msm_host->pixel_clk_rate, msm_host->byte_clk_rate);
+ 
+ 	ret = dev_pm_opp_set_rate(&msm_host->pdev->dev,
+ 				  msm_host->byte_clk_rate);
+@@ -583,9 +583,9 @@ int dsi_link_clk_set_rate_v2(struct msm_dsi_host *msm_host)
+ {
+ 	int ret;
+ 
+-	DBG("Set clk rates: pclk=%d, byteclk=%lu, esc_clk=%lu, dsi_src_clk=%lu",
+-		msm_host->mode->clock, msm_host->byte_clk_rate,
+-		msm_host->esc_clk_rate, msm_host->src_clk_rate);
++	DBG("Set clk rates: pclk=%lu, byteclk=%lu, esc_clk=%lu, dsi_src_clk=%lu",
++	    msm_host->pixel_clk_rate, msm_host->byte_clk_rate,
++	    msm_host->esc_clk_rate, msm_host->src_clk_rate);
+ 
+ 	ret = clk_set_rate(msm_host->byte_clk, msm_host->byte_clk_rate);
+ 	if (ret) {
 -- 
 2.43.0
 
