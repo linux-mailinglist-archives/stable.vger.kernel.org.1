@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C90906F7C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:20:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E09A9070FE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E123B291AD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56AE51F2341D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E97143C6C;
-	Thu, 13 Jun 2024 12:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D355C2F5A;
+	Thu, 13 Jun 2024 12:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2DJwlGv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNy27121"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0496413CFA4;
-	Thu, 13 Jun 2024 12:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917B1161;
+	Thu, 13 Jun 2024 12:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280839; cv=none; b=OFLCw1WRoYpfMxLkk06CRSNjo4LNtThMS2AbEE3ggLYnL9FKzdTGl3knX1GuoDErTeftDXPw20qlkqD3VqhMZTV4JWphPRZtqIWWsmUTL6DY+HLF3tMyp2jj5Ffs3HzqhESQB1uzdIxl3yO3wVNvP2PgxmwAiVC5sbKRQPbgAVU=
+	t=1718281956; cv=none; b=Bz/yWZI0OfInmayq6i764N6v0DNqTElffqDVpL3kNJGZ+GrOtsQW1vr+XVYgzp1IdcUXYkmNUDJ5TKO++pokfbqJb4CxW76qVMaMmsTAQz/VKy/gttFskYiS2itgs/1ipkR/HdAIPNWmD3bp6t+EChvPLRkkqQwt4EiDw37ucsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280839; c=relaxed/simple;
-	bh=7v1g9KKA1i2Nm7xKjYMBXcYa0oRW2Fc26VhJ1OvRgwQ=;
+	s=arc-20240116; t=1718281956; c=relaxed/simple;
+	bh=CpEvGxy9PzxSNm+6EX0gl9tiTPuKJxotpgVEyDAHo0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IM/2OzaPqlvAN4hrrbYYmAMtaS9TQ7vqvOuTPd87AIOvBhdxTqUhGlZRHRcno6diOWj5fUtJlHBwflmHge4JNq3wcSlfBlQwwOiNLzWviwEHjE+Z1Q8Ir/86TbtspqR9IlfFT2Vz+QlH1WYNmorU/fl27LW+LLUe12YVWwETmSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2DJwlGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA32C32786;
-	Thu, 13 Jun 2024 12:13:58 +0000 (UTC)
+	 MIME-Version; b=cY3TckDI0t2KmI5nTq0A38ufxCeydgl7tnG8u8/n39a9+Y3uIAHnof3OgEJ37T9YrGpl+orbvAERmmkh3V8g0VLk079PGFUfpBook2P8wHaYNG+oknKWV7pJa3dg/376z94GBD/qT4W7el+ejADJE/QuDz+VpNGJLYIGQxtFj/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNy27121; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18177C2BBFC;
+	Thu, 13 Jun 2024 12:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280838;
-	bh=7v1g9KKA1i2Nm7xKjYMBXcYa0oRW2Fc26VhJ1OvRgwQ=;
+	s=korg; t=1718281956;
+	bh=CpEvGxy9PzxSNm+6EX0gl9tiTPuKJxotpgVEyDAHo0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y2DJwlGv+kejoJDl5YfMnAK7ef7Ubg8z1LzULFmHZqz5AZdfP6Sl0Lnj3iQDkWXui
-	 9lOTNwUI62tV8Z45zru7NplCYVcMoHZ8ksmrcPYU8NbqKjkRvXAmeAjvgirUUSD6Iv
-	 fReFnucM0xntgKt0aKAxvuJlVEt1d6+in8iwHK+U=
+	b=mNy27121o0rrF4rbVqsTNXJL8S/Ye4DjS780oRK8ZA2Oq1ZQADEF8rmiqF7xjd/zO
+	 FmD9V4uL33GVSozdHi6DyvQa0r5WTf71Az18XDlXf27KG1gaNtZpA/ClkTOBhlOLb2
+	 6A6Mce+okL69tjM4HfXq0TuVTYUfaPXmaEuKBeZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 051/317] selftests/bpf: Fix umount cgroup2 error in test_sockmap
+Subject: [PATCH 5.15 112/402] af_unix: Fix data races in unix_release_sock/unix_stream_sendmsg
 Date: Thu, 13 Jun 2024 13:31:09 +0200
-Message-ID: <20240613113249.522986689@linuxfoundation.org>
+Message-ID: <20240613113306.499059935@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit d75142dbeb2bd1587b9cc19f841578f541275a64 ]
+[ Upstream commit 540bf24fba16b88c1b3b9353927204b4f1074e25 ]
 
-This patch fixes the following "umount cgroup2" error in test_sockmap.c:
+A data-race condition has been identified in af_unix. In one data path,
+the write function unix_release_sock() atomically writes to
+sk->sk_shutdown using WRITE_ONCE. However, on the reader side,
+unix_stream_sendmsg() does not read it atomically. Consequently, this
+issue is causing the following KCSAN splat to occur:
 
- (cgroup_helpers.c:353: errno: Device or resource busy) umount cgroup2
+	BUG: KCSAN: data-race in unix_release_sock / unix_stream_sendmsg
 
-Cgroup fd cg_fd should be closed before cleanup_cgroup_environment().
+	write (marked) to 0xffff88867256ddbb of 1 bytes by task 7270 on cpu 28:
+	unix_release_sock (net/unix/af_unix.c:640)
+	unix_release (net/unix/af_unix.c:1050)
+	sock_close (net/socket.c:659 net/socket.c:1421)
+	__fput (fs/file_table.c:422)
+	__fput_sync (fs/file_table.c:508)
+	__se_sys_close (fs/open.c:1559 fs/open.c:1541)
+	__x64_sys_close (fs/open.c:1541)
+	x64_sys_call (arch/x86/entry/syscall_64.c:33)
+	do_syscall_64 (arch/x86/entry/common.c:?)
+	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
 
-Fixes: 13a5f3ffd202 ("bpf: Selftests, sockmap test prog run without setting cgroup")
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/0399983bde729708773416b8488bac2cd5e022b8.1712639568.git.tanggeliang@kylinos.cn
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+	read to 0xffff88867256ddbb of 1 bytes by task 989 on cpu 14:
+	unix_stream_sendmsg (net/unix/af_unix.c:2273)
+	__sock_sendmsg (net/socket.c:730 net/socket.c:745)
+	____sys_sendmsg (net/socket.c:2584)
+	__sys_sendmmsg (net/socket.c:2638 net/socket.c:2724)
+	__x64_sys_sendmmsg (net/socket.c:2753 net/socket.c:2750 net/socket.c:2750)
+	x64_sys_call (arch/x86/entry/syscall_64.c:33)
+	do_syscall_64 (arch/x86/entry/common.c:?)
+	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+	value changed: 0x01 -> 0x03
+
+The line numbers are related to commit dd5a440a31fa ("Linux 6.9-rc7").
+
+Commit e1d09c2c2f57 ("af_unix: Fix data races around sk->sk_shutdown.")
+addressed a comparable issue in the past regarding sk->sk_shutdown.
+However, it overlooked resolving this particular data path.
+This patch only offending unix_stream_sendmsg() function, since the
+other reads seem to be protected by unix_state_lock() as discussed in
+Link: https://lore.kernel.org/all/20240508173324.53565-1-kuniyu@amazon.com/
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240509081459.2807828-1-leitao@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 2 +-
+ net/unix/af_unix.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index 427ca00a32177..85d57633c8b65 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -2014,9 +2014,9 @@ int main(int argc, char **argv)
- 		free(options.whitelist);
- 	if (options.blacklist)
- 		free(options.blacklist);
-+	close(cg_fd);
- 	if (cg_created)
- 		cleanup_cgroup_environment();
--	close(cg_fd);
- 	return err;
- }
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index f66f867049015..995a2a0b208a1 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2057,7 +2057,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 			goto out_err;
+ 	}
  
+-	if (sk->sk_shutdown & SEND_SHUTDOWN)
++	if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+ 		goto pipe_err;
+ 
+ 	while (sent < len) {
 -- 
 2.43.0
 
