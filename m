@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 975ED90722D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7691A9072EA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 436CA1F214E6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51B05B2456D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F029256458;
-	Thu, 13 Jun 2024 12:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A894D143C7A;
+	Thu, 13 Jun 2024 12:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z49EMn/q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROheeUfv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6D420ED;
-	Thu, 13 Jun 2024 12:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C884A0F;
+	Thu, 13 Jun 2024 12:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282678; cv=none; b=BzRLXik9icGTYkCct9hHq1wgMijfApCHq8xTd6VqcNTsk2bb8rJZRWX/DdWLcQ9z+uWI6sVu7NhwvpsLD7a8ytKO0mDu4p4elsZkX3xW6TWkNL1qShKGAedyu/7tkqBagFh0Y/PR0KZ+mGUwSvVY4ek4QmH3jT/i5xD6jxP0ByY=
+	t=1718282984; cv=none; b=RGqX9k6QENaU+OBodDt+avh2MORkHQd+P/d0InXsA/RiHPL5OAfZTuraHtgBa4waV3u9Z87TJDrESmojKPJcSbURHqSq/Gd+0Ee7ts66SJ8uVTsKi0lJ5A4VDh3mEXmgjuOQ+LUMDwv7TQf1INtKjz+E3RuT/2v4RHFrBm0wGDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282678; c=relaxed/simple;
-	bh=25QjV1/9B6sm26kfQospcgSc+ckRz41+Pbre0+cV5Nk=;
+	s=arc-20240116; t=1718282984; c=relaxed/simple;
+	bh=eBciTZj/AVV+jqs6YHsONCkWq8M45V0Ctkm72WkVfVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WZEFDDR54JSexvXqGN5UTQNuiqQCj61vTNf9j+nNh828HOIGHlHSTEOZAGMrvy+1dDO8syJRPcU5wxvujlo4AOCVzbc1kau06wJTDV2t4cDB2fdgOU2fA0fctXVCvllpD//LP+ao0gNWVz30kA6PN/vQi37qR8MAJKW+0Fbo3Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z49EMn/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022C9C2BBFC;
-	Thu, 13 Jun 2024 12:44:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uvSI8JmYZR1BNB/hl3YdMptwizmFzPcbGpxQz9gYDIeXRb8ZvNdGNqLki8Ffs89Xe5iJl/l8lg7kXJizvzo6nvO8f6pDzZXE91ABmZTPCbDK3Y+Ss/KbBBWizicHssfnEXUUvZSL4bRG4IRMZ4SufnKwQqYTNrX9LKwsKot6gqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROheeUfv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1258C2BBFC;
+	Thu, 13 Jun 2024 12:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282678;
-	bh=25QjV1/9B6sm26kfQospcgSc+ckRz41+Pbre0+cV5Nk=;
+	s=korg; t=1718282984;
+	bh=eBciTZj/AVV+jqs6YHsONCkWq8M45V0Ctkm72WkVfVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z49EMn/qBr1yA48MCXkh4e1JX592D0DBUWa1KPczwXJ6Hpz7lJisZUP38+5HTmkIn
-	 GvAxNnDLgPVcd2a63ViXvk+xKilcCycOrKCTW8pUodV6jXfQsGic5WQivaesuOCoFK
-	 B1UO0dHLXeYRUWa3xHKrtLKgza34jJxbOI3ojyw0=
+	b=ROheeUfvBccVCpqNCPZWgvjmYY/TMw/qC7thzrM+AaHzlyddLtd9bWyJesrOTv3O6
+	 XqSFInidV9r2W+Xz4QWAFuiktLsmC/2XPxOFXI+SIuTzcR5gToKYSqko/Bb7BxELuL
+	 8sLKcIAbmxDl0umUpHFEiLyqgwv9bT2MLyek8KRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 359/402] ACPI: resource: Do IRQ override on TongFang GXxHRXx and GMxHGxx
+	Bob Zhou <bob.zhou@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Le Ma <le.ma@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 18/85] drm/amdgpu: add error handle to avoid out-of-bounds
 Date: Thu, 13 Jun 2024 13:35:16 +0200
-Message-ID: <20240613113316.139914683@linuxfoundation.org>
+Message-ID: <20240613113214.846338237@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Bob Zhou <bob.zhou@amd.com>
 
-commit c81bf14f9db68311c2e75428eea070d97d603975 upstream.
+commit 8b2faf1a4f3b6c748c0da36cda865a226534d520 upstream.
 
-Listed devices need the override for the keyboard to work.
+if the sdma_v4_0_irq_id_to_seq return -EINVAL, the process should
+be stop to avoid out-of-bounds read, so directly return -EINVAL.
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Bob Zhou <bob.zhou@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Le Ma <le.ma@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -579,6 +579,18 @@ static const struct dmi_system_id lg_lap
- 			DMI_MATCH(DMI_BOARD_NAME, "X577"),
- 		},
- 	},
-+	{
-+		/* TongFang GXxHRXx/TUXEDO InfinityBook Pro Gen9 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GXxHRXx"),
-+		},
-+	},
-+	{
-+		/* TongFang GMxHGxx/TUXEDO Stellaris Slim Gen1 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
-+		},
-+	},
- 	{ }
- };
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
+@@ -2049,6 +2049,9 @@ static int sdma_v4_0_process_trap_irq(st
  
+ 	DRM_DEBUG("IH: SDMA trap\n");
+ 	instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
++	if (instance < 0)
++		return instance;
++
+ 	switch (entry->ring_id) {
+ 	case 0:
+ 		amdgpu_fence_process(&adev->sdma.instance[instance].ring);
 
 
 
