@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A9A2907226
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EBEB906EBB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7068F1C20B8B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E8E42817A4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440D81E519;
-	Thu, 13 Jun 2024 12:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314B0148305;
+	Thu, 13 Jun 2024 12:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeZZdJ38"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UefBE+4M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0245D2566;
-	Thu, 13 Jun 2024 12:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26571465B0;
+	Thu, 13 Jun 2024 12:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282658; cv=none; b=TY7/6lRoo9Huix8iGMKaU5keQi7AAeY7tPVd+BqLZJHMZgj3ZO/Ss3V7OxCwlGKitlxfZnJrD7c/MsKc91uwXpoLzgsp5bR01zXKKau36nixVO7YSH2fqi4d4Jhumyqevy3LlX7JniTjaFhivr7cUCnCJgxfTNjRyuczn17wevM=
+	t=1718280571; cv=none; b=QrTcEnqUJDpp+qVT8g0OWLBlW0zQ9Hw2oxLugSt2DJLrmnP3B17VGizGMzGjhxNICv3MhnPI2FzWsjGvILaAe95TiHJ1S8oiPED740x3vgqJgxRd/wrKcu/5tJ1SN5NdndHfdz3Pz2p8/qZ1nAuQehEgqOOw504nt24I3VW3WKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282658; c=relaxed/simple;
-	bh=wIN2EvmSoBnH/S0iHrtnsyIOpFW9ldybMBCLwEPPa3w=;
+	s=arc-20240116; t=1718280571; c=relaxed/simple;
+	bh=mkwivJ/enw2+MRUV0WjxaefW1i0uhDZOMtNl0MPxsK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWBJAV+cDx5taeB3+cSm51hz++uW2U5fsm2AjeMAOGOdFPtDpN+yYSXufv7xbYr4xdkyincbh2b5GWbJRsf1M/mMSPSNIfiuqNJzQsfFtc01ebeVHQCzSk2etBhcy1j7t/8g/mQHluqQ1438yDreu7VLa3Kfcx5KU22R9Bbh3JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeZZdJ38; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCF9C2BBFC;
-	Thu, 13 Jun 2024 12:44:17 +0000 (UTC)
+	 MIME-Version; b=Dp7MKb5NHhszDQ9vEoz/5FaiiWmyWbKcp0Gdb4zRp77QXdJEx3Ddl9CHcbgzzFKbBlreRNLSRR2Edl4RHRiPACIZAKqqFFlp0ZqllROmI7jDOO6SlFngS97gZZ2lJFTva/QlFsJQEhevtRrqvJJoQJz8TqANKuhanAhy+KLmaKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UefBE+4M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A277C2BBFC;
+	Thu, 13 Jun 2024 12:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282657;
-	bh=wIN2EvmSoBnH/S0iHrtnsyIOpFW9ldybMBCLwEPPa3w=;
+	s=korg; t=1718280570;
+	bh=mkwivJ/enw2+MRUV0WjxaefW1i0uhDZOMtNl0MPxsK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WeZZdJ38hXu/l0fLbjsgJJU0DfSW4Np4pPKyGeJqR3E+0r1MkQtMBYgSiy3idn7F3
-	 dmpQuSQhM+URzCmycPp+MuDREZAH8EPaAXs3P+g+WTBfoh/+NJLHEDcj7be4um2B5D
-	 PDvL0cDGfE2YDVOfvRICMX3gFakLyOupqX7ISH1o=
+	b=UefBE+4MMsLQsp7h6p71IoLLowkNmFleyNgYQZ5+le94W76ctP1jGjxGu215wnw8g
+	 q/xKkTkajblnEPnS2tHsGtdAJDFvLISUQgdH/oMV8ypuEu7e9FX70S0ERJ4rXatF4W
+	 BnG9dVlELhmW2TQi3sicdAk5h/ldCaZKdiEMu36I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ward <david.ward@ll.mit.edu>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 321/402] netfilter: nft_payload: rebuild vlan header on h_proto access
+	Justin Stitt <justinstitt@google.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>
+Subject: [PATCH 6.6 098/137] kdb: Fix buffer overflow during tab-complete
 Date: Thu, 13 Jun 2024 13:34:38 +0200
-Message-ID: <20240613113314.659604280@linuxfoundation.org>
+Message-ID: <20240613113227.098237970@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Daniel Thompson <daniel.thompson@linaro.org>
 
-[ Upstream commit af84f9e447a65b4b9f79e7e5d69e19039b431c56 ]
+commit e9730744bf3af04cda23799029342aa3cddbc454 upstream.
 
-nft can perform merging of adjacent payload requests.
-This means that:
+Currently, when the user attempts symbol completion with the Tab key, kdb
+will use strncpy() to insert the completed symbol into the command buffer.
+Unfortunately it passes the size of the source buffer rather than the
+destination to strncpy() with predictably horrible results. Most obviously
+if the command buffer is already full but cp, the cursor position, is in
+the middle of the buffer, then we will write past the end of the supplied
+buffer.
 
-ether saddr 00:11 ... ether type 8021ad ...
+Fix this by replacing the dubious strncpy() calls with memmove()/memcpy()
+calls plus explicit boundary checks to make sure we have enough space
+before we start moving characters around.
 
-is a single payload expression, for 8 bytes, starting at the
-ethernet source offset.
-
-Check that offset+length is fully within the source/destination mac
-addersses.
-
-This bug prevents 'ether type' from matching the correct h_proto in case
-vlan tag got stripped.
-
-Fixes: de6843be3082 ("netfilter: nft_payload: rebuild vlan header when needed")
-Reported-by: David Ward <david.ward@ll.mit.edu>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Stable-dep-of: 33c563ebf8d3 ("netfilter: nft_payload: skbuff vlan metadata mangle support")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Justin Stitt <justinstitt@google.com>
+Closes: https://lore.kernel.org/all/CAFhGd8qESuuifuHsNjFPR-Va3P80bxrw+LqvC8deA8GziUJLpw@mail.gmail.com/
+Cc: stable@vger.kernel.org
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Tested-by: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-1-f236dbe9828d@linaro.org
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_payload.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ kernel/debug/kdb/kdb_io.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index b1745304dbd22..697566e4ae759 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -110,6 +110,17 @@ static int nft_payload_inner_offset(const struct nft_pktinfo *pkt)
- 	return pkt->inneroff;
- }
- 
-+static bool nft_payload_need_vlan_copy(const struct nft_payload *priv)
-+{
-+	unsigned int len = priv->offset + priv->len;
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -367,14 +367,19 @@ poll_again:
+ 			kdb_printf(kdb_prompt_str);
+ 			kdb_printf("%s", buffer);
+ 		} else if (tab != 2 && count > 0) {
+-			len_tmp = strlen(p_tmp);
+-			strncpy(p_tmp+len_tmp, cp, lastchar-cp+1);
+-			len_tmp = strlen(p_tmp);
+-			strncpy(cp, p_tmp+len, len_tmp-len + 1);
+-			len = len_tmp - len;
+-			kdb_printf("%s", cp);
+-			cp += len;
+-			lastchar += len;
++			/* How many new characters do we want from tmpbuffer? */
++			len_tmp = strlen(p_tmp) - len;
++			if (lastchar + len_tmp >= bufend)
++				len_tmp = bufend - lastchar;
 +
-+	/* data past ether src/dst requested, copy needed */
-+	if (len > offsetof(struct ethhdr, h_proto))
-+		return true;
-+
-+	return false;
-+}
-+
- void nft_payload_eval(const struct nft_expr *expr,
- 		      struct nft_regs *regs,
- 		      const struct nft_pktinfo *pkt)
-@@ -128,7 +139,7 @@ void nft_payload_eval(const struct nft_expr *expr,
- 			goto err;
- 
- 		if (skb_vlan_tag_present(skb) &&
--		    priv->offset >= offsetof(struct ethhdr, h_proto)) {
-+		    nft_payload_need_vlan_copy(priv)) {
- 			if (!nft_payload_copy_vlan(dest, skb,
- 						   priv->offset, priv->len))
- 				goto err;
--- 
-2.43.0
-
++			if (len_tmp) {
++				/* + 1 ensures the '\0' is memmove'd */
++				memmove(cp+len_tmp, cp, (lastchar-cp) + 1);
++				memcpy(cp, p_tmp+len, len_tmp);
++				kdb_printf("%s", cp);
++				cp += len_tmp;
++				lastchar += len_tmp;
++			}
+ 		}
+ 		kdb_nextline = 1; /* reset output line number */
+ 		break;
 
 
 
