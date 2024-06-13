@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-51131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B96906E78
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0177590719F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:39:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33542B259B0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9553A28215C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51CE1459F8;
-	Thu, 13 Jun 2024 12:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8652C14265E;
+	Thu, 13 Jun 2024 12:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tNVmkj+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5og/RFJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C39143870;
-	Thu, 13 Jun 2024 12:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F6A1EEE0;
+	Thu, 13 Jun 2024 12:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280400; cv=none; b=G6OCnau5FN26J1AdxEkjc20AhL/uTMCPZtsgtO+6YcnNl031CekVS3ankRsR6pKVD4PCK1F4AlY5ehWimPP4nF8F1AHs6NLZnv5Ke1L9Zpou2hwm42h2QDfkijNBEo9DD9KAuiY4iBB5YvU/bRODaW7WxjaIballFxAhdtGyA5o=
+	t=1718282307; cv=none; b=igM2LNZiKiSy02lV3YlhZZa6I5CRqM0wkuS5VuUel0PDe7xOA8M7+k6fO+3rBskDwvRTa8YggiG5q2m4X6tnLCOXTfavsvL/SHGg736LGdMFfT0KqKNd/05iW0jF+IlZh/fsAZO0A04jz2XmUTTJcDF/NJwiMUzccV7zzsZRX8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280400; c=relaxed/simple;
-	bh=1yN2LBIEfMM7qKBIaMjL0T/XI+dICbYRGXQlP2JWkQ4=;
+	s=arc-20240116; t=1718282307; c=relaxed/simple;
+	bh=avFnPYkHbMQkItqg/BsckRiDPorwVNBg2FvR/Ie/K14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oNY1eHrZIfToR7WnjjFC/h6UToyjvbVwS42Rhqps6elNgyURKlrQ0/praX7oQXgFq7/KTY0rLNsdwJ87VwnrpBuzhInEIVrq1qSqMKdYx000BqhtxYORjQHMSXV/IQ+7CDxuC/B/Pwfe8f3D+0liM3aB/6AF/ClY4+EgRJIIh68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tNVmkj+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5357C2BBFC;
-	Thu, 13 Jun 2024 12:06:39 +0000 (UTC)
+	 MIME-Version; b=Fg0LkcdzKpCJY1wfAto6+3G8qqKn2RQsFoEHvz51YY5CniZvpwYVN4IDS/CpwYcfFOirUmrsqRcKbOT0OF6cFtqwo+vqF3kNKtGRwx/xh9plN3jBpQ179bFmu22kt9IE4iII8A+SP1RqHeFqb0EXFTAwcFrxv1c8ota3ukRNmuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5og/RFJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BF6C2BBFC;
+	Thu, 13 Jun 2024 12:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280400;
-	bh=1yN2LBIEfMM7qKBIaMjL0T/XI+dICbYRGXQlP2JWkQ4=;
+	s=korg; t=1718282307;
+	bh=avFnPYkHbMQkItqg/BsckRiDPorwVNBg2FvR/Ie/K14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0tNVmkj+/dvdiwhjyjQqDy55AHPxMiFvsFw2GQaHZbKxdPrb/+k2rG/QeSQO5dXb9
-	 6uIbzLzUFp9qI4rHx6JvNB093e9Ij6n/2QHDBJcNBn8+Mb7vp1emKGfYV+qI5Zf+yv
-	 z/Sc1X+nsPBf6ndOHbSc9ptW599G2FlKOOep+Lns=
+	b=J5og/RFJN/N+2OupkmMGwNp0VBYPNNoLNVhaVqnWn3w7BbwvvfMUN0PbhbzQ9mN74
+	 ogaeGTRKmmfLJn96pTd3LJebFG7H5BJrsRObXukqPJiSMaDYawjMZnkisyZn06+bXa
+	 TM6GkMM643tlfmukk5wNkUUj/8T1ExwB1PbS29XU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shakeel Butt <shakeelb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>
-Subject: [PATCH 6.6 010/137] mm: ratelimit stat flush from workingset shrinker
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 233/402] f2fs: fix to release node block count in error path of f2fs_new_node_page()
 Date: Thu, 13 Jun 2024 13:33:10 +0200
-Message-ID: <20240613113223.689615373@linuxfoundation.org>
+Message-ID: <20240613113311.232925663@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,51 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shakeel Butt <shakeelb@google.com>
+From: Chao Yu <chao@kernel.org>
 
-commit d4a5b369ad6d8aae552752ff438dddde653a72ec upstream.
+[ Upstream commit 0fa4e57c1db263effd72d2149d4e21da0055c316 ]
 
-One of our workloads (Postgres 14 + sysbench OLTP) regressed on newer
-upstream kernel and on further investigation, it seems like the cause is
-the always synchronous rstat flush in the count_shadow_nodes() added by
-the commit f82e6bf9bb9b ("mm: memcg: use rstat for non-hierarchical
-stats").  On further inspection it seems like we don't really need
-accurate stats in this function as it was already approximating the amount
-of appropriate shadow entries to keep for maintaining the refault
-information.  Since there is already 2 sec periodic rstat flush, we don't
-need exact stats here.  Let's ratelimit the rstat flush in this code path.
+It missed to call dec_valid_node_count() to release node block count
+in error path, fix it.
 
-Link: https://lkml.kernel.org/r/20231228073055.4046430-1-shakeelb@google.com
-Fixes: f82e6bf9bb9b ("mm: memcg: use rstat for non-hierarchical stats")
-Signed-off-by: Shakeel Butt <shakeelb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Yosry Ahmed <yosryahmed@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 141170b759e0 ("f2fs: fix to avoid use f2fs_bug_on() in f2fs_new_node_page()")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/workingset.c |    2 +-
+ fs/f2fs/node.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -664,7 +664,7 @@ static unsigned long count_shadow_nodes(
- 		struct lruvec *lruvec;
- 		int i;
- 
--		mem_cgroup_flush_stats();
-+		mem_cgroup_flush_stats_ratelimited();
- 		lruvec = mem_cgroup_lruvec(sc->memcg, NODE_DATA(sc->nid));
- 		for (pages = 0, i = 0; i < NR_LRU_LISTS; i++)
- 			pages += lruvec_page_state_local(lruvec,
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index dc85dd55314cc..b6758887540f2 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1300,6 +1300,7 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 	}
+ 	if (unlikely(new_ni.blk_addr != NULL_ADDR)) {
+ 		err = -EFSCORRUPTED;
++		dec_valid_node_count(sbi, dn->inode, !ofs);
+ 		set_sbi_flag(sbi, SBI_NEED_FSCK);
+ 		goto fail;
+ 	}
+@@ -1325,7 +1326,6 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 	if (ofs == 0)
+ 		inc_valid_inode_count(sbi);
+ 	return page;
+-
+ fail:
+ 	clear_node_page_dirty(page);
+ 	f2fs_put_page(page, 1);
+-- 
+2.43.0
+
 
 
 
