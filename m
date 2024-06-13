@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70E3907066
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AAC690729E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B4001F2290B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02AA31F22000
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B6414265A;
-	Thu, 13 Jun 2024 12:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A97144D39;
+	Thu, 13 Jun 2024 12:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUgY+pz8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMgnbQNZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CD11420C6;
-	Thu, 13 Jun 2024 12:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E662D2F55;
+	Thu, 13 Jun 2024 12:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281622; cv=none; b=aVPwukG1dXGzXl7pigV5EOB1cHwm5nuOxqAMNE4EdGAhVgHhQwXCeZOQeSj+TqAYnl2F2KB485D57v3PVlJ5+a5AfIYXn4k8CFQDEcKFPq7Ncch8+SPbDSf4d5vg23HrGTs2qa0buJzDujhZrEs0w2e1wTL2/mDLC/qceSJREK0=
+	t=1718282917; cv=none; b=jygQSHNyWjV8HCr6ova1i2ewpOTydWtF6GS6jhJb9fKj+fIQTAUo1EJzEiJkdQgTkoxBbk5IXbL+oVWCWbbnK+9v/vvZAJxuXwkYIixidKlK100/An44kYhm6cnRozRn+JKnklk02O2qs8dX+M6wiQ0BVhxrfcanqPqB5CiCxF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281622; c=relaxed/simple;
-	bh=jbPBdkPwVttwEXmtELnvsxONNLRvSPmImpooOE+EQFk=;
+	s=arc-20240116; t=1718282917; c=relaxed/simple;
+	bh=1u+JFDBejGDXKopOGhjun4MTCTlp2kbLlGZyNRQIKzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ast1UYY8gkhUKdIBOo2CoBW17dajsxYrhUFn1rMFeNPNo5Y/Tss+5F2pDZEQmSHK4jpT3RZW1toviumTcKy4F/nq0uQPX45KkW49Zp4KaY7OB8zPlVpVtifMpdAAAqj2MsTlWydYGqMN6snkMJd3+5Q61LX55vcCz1awOD/2AO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUgY+pz8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEE3C2BBFC;
-	Thu, 13 Jun 2024 12:27:00 +0000 (UTC)
+	 MIME-Version; b=hjS0F/CgPpp4phoZBNiNWXNkwFNzj3vKMu7mQRyXcJCYiF/NyxJBzaN45vr3BuDknpUmEjqDbJAp0cldL5/ioPGY9qsnjyx3PCq2qGZc11vItDagQ8ExmHuDLdzYBaGGxDqB0G+S3bcJFppHmUuXrZz2HsmOu6Eb5YoDES7Lp3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMgnbQNZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3A7C2BBFC;
+	Thu, 13 Jun 2024 12:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281621;
-	bh=jbPBdkPwVttwEXmtELnvsxONNLRvSPmImpooOE+EQFk=;
+	s=korg; t=1718282916;
+	bh=1u+JFDBejGDXKopOGhjun4MTCTlp2kbLlGZyNRQIKzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cUgY+pz8ULPIBB2vr2OcJ/j8o8iqo8/YmvCDoNJ/rzUNloU9lL5tMTmOkxzUrWe16
-	 MbYUvT4lwm0KIGo8yznH1P8oGLYig7G+hhdg6VmwrCP4LF2aSutkaEI62SjBtD6U/z
-	 hWZkp5nqPdSU64AUyGNDVnK0BWC/skVjWNokMf4A=
+	b=LMgnbQNZZAUvcb+VLEorZlpEtLC7XsJjUWMyloxcGHr8YB9YEa1g/C7WA/K8MsIQh
+	 0b+TnGMttopzDMlobxL0DFRfsvwztD8sVEGnTHCWvdGJ7NQJsWVhWZE53dkziDtkP3
+	 rKbeiqcohQnwpTXcTuDVqZFV+/ivfJmiIvZkw4nU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 5.10 317/317] RDMA/hns: Fix CQ and QP cache affinity
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 6.1 37/85] media: v4l2-core: hold videodev_lock until dev reg, finishes
 Date: Thu, 13 Jun 2024 13:35:35 +0200
-Message-ID: <20240613113259.815606243@linuxfoundation.org>
+Message-ID: <20240613113215.579559103@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit 9e03dbea2b0634b21a45946b4f8097e0dc86ebe1 upstream.
+commit 1ed4477f2ea4743e7c5e1f9f3722152d14e6eeb1 upstream.
 
-Currently, the affinity between QP cache and CQ cache is not
-considered when assigning QPN, it will affect the message rate of HW.
+After the new V4L2 device node was registered, some additional
+initialization was done before the device node was marked as
+'registered'. During the time between creating the device node
+and marking it as 'registered' it was possible to open the
+device node, which would return -ENODEV since the 'registered'
+flag was not yet set.
 
-Allocate QPN from QP cache with better CQ affinity to get better
-performance.
+Hold the videodev_lock mutex from just before the device node
+is registered until the 'registered' flag is set. Since v4l2_open
+will take the same lock, it will wait until this registration
+process is finished. This resolves this race condition.
 
-Fixes: 71586dd20010 ("RDMA/hns: Create QP with selected QPN for bank load balance")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20230804012711.808069-5-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: <stable@vger.kernel.org>      # for vi4.18 and up
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_device.h |    2 ++
- drivers/infiniband/hw/hns/hns_roce_qp.c     |   28 ++++++++++++++++++++++------
- 2 files changed, 24 insertions(+), 6 deletions(-)
+ drivers/media/v4l2-core/v4l2-dev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/infiniband/hw/hns/hns_roce_device.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_device.h
-@@ -122,6 +122,8 @@
-  */
- #define EQ_DEPTH_COEFF				2
- 
-+#define CQ_BANKID_MASK GENMASK(1, 0)
-+
- enum {
- 	SERV_TYPE_RC,
- 	SERV_TYPE_UC,
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -154,14 +154,29 @@ static void hns_roce_ib_qp_event(struct
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -1033,8 +1033,10 @@ int __video_register_device(struct video
+ 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
+ 	vdev->dev.parent = vdev->dev_parent;
+ 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
++	mutex_lock(&videodev_lock);
+ 	ret = device_register(&vdev->dev);
+ 	if (ret < 0) {
++		mutex_unlock(&videodev_lock);
+ 		pr_err("%s: device_register failed\n", __func__);
+ 		goto cleanup;
  	}
- }
+@@ -1054,6 +1056,7 @@ int __video_register_device(struct video
  
--static u8 get_least_load_bankid_for_qp(struct hns_roce_bank *bank)
-+static u8 get_affinity_cq_bank(u8 qp_bank)
- {
--	u32 least_load = bank[0].inuse;
-+	return (qp_bank >> 1) & CQ_BANKID_MASK;
-+}
-+
-+static u8 get_least_load_bankid_for_qp(struct ib_qp_init_attr *init_attr,
-+					struct hns_roce_bank *bank)
-+{
-+#define INVALID_LOAD_QPNUM 0xFFFFFFFF
-+	struct ib_cq *scq = init_attr->send_cq;
-+	u32 least_load = INVALID_LOAD_QPNUM;
-+	unsigned long cqn = 0;
- 	u8 bankid = 0;
- 	u32 bankcnt;
- 	u8 i;
- 
--	for (i = 1; i < HNS_ROCE_QP_BANK_NUM; i++) {
-+	if (scq)
-+		cqn = to_hr_cq(scq)->cqn;
-+
-+	for (i = 0; i < HNS_ROCE_QP_BANK_NUM; i++) {
-+		if (scq && (get_affinity_cq_bank(i) != (cqn & CQ_BANKID_MASK)))
-+			continue;
-+
- 		bankcnt = bank[i].inuse;
- 		if (bankcnt < least_load) {
- 			least_load = bankcnt;
-@@ -193,7 +208,8 @@ static int alloc_qpn_with_bankid(struct
+ 	/* Part 6: Activate this minor. The char device can now be used. */
+ 	set_bit(V4L2_FL_REGISTERED, &vdev->flags);
++	mutex_unlock(&videodev_lock);
  
  	return 0;
- }
--static int alloc_qpn(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp)
-+static int alloc_qpn(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp,
-+		     struct ib_qp_init_attr *init_attr)
- {
- 	struct hns_roce_qp_table *qp_table = &hr_dev->qp_table;
- 	unsigned long num = 0;
-@@ -211,7 +227,7 @@ static int alloc_qpn(struct hns_roce_dev
- 		hr_qp->doorbell_qpn = 1;
- 	} else {
- 		mutex_lock(&qp_table->bank_mutex);
--		bankid = get_least_load_bankid_for_qp(qp_table->bank);
-+		bankid = get_least_load_bankid_for_qp(init_attr, qp_table->bank);
  
- 		ret = alloc_qpn_with_bankid(&qp_table->bank[bankid], bankid,
- 					    &num);
-@@ -1005,7 +1021,7 @@ static int hns_roce_create_qp_common(str
- 		goto err_db;
- 	}
- 
--	ret = alloc_qpn(hr_dev, hr_qp);
-+	ret = alloc_qpn(hr_dev, hr_qp, init_attr);
- 	if (ret) {
- 		ibdev_err(ibdev, "failed to alloc QPN, ret = %d.\n", ret);
- 		goto err_buf;
 
 
 
