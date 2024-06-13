@@ -1,156 +1,140 @@
-Return-Path: <stable+bounces-50480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2B0E906879
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:23:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC059068FD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:36:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28502281532
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:23:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FDFB28774E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F0813DDB2;
-	Thu, 13 Jun 2024 09:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2AC14039A;
+	Thu, 13 Jun 2024 09:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SItlG2Ri"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hi1xPVIQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6993F13D8A6;
-	Thu, 13 Jun 2024 09:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40241140374
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 09:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718270622; cv=none; b=emBH0VgRLElteu2d0vZZE58Qb7sy2CvqXjr6Umht0PkepTn3LGs43y5fl8Cbbw1CQtNG4dp/nMV9QRiLo9KiYfDXgJfK6mvDb7+XynJ5xChR6SSjQg6azFWlPgZOj6NlarJdV9RFxRznZVjcnBVOWSmQK0hcNnwiWcCoITJ5iOQ=
+	t=1718271361; cv=none; b=QTLxgAkboYhDo5Fx5ANesAjO/cwGMhcgQYK6D1lVojLLk1eE7C8S8n2827su2wHMpCdfHWqMmnQXvMKoCJ9dyECZdLh1sg2IC6bm6pHOQ35VIZifgSzgP89Yrwz+9n97Uvqn32RHVCbQEGsKIz5XQr8CenNVmJhb0TQNwF0B33A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718270622; c=relaxed/simple;
-	bh=Gg+23UUXLD0QiiaYlgluUVs+RMApwPP3zSxNMn9RCpk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L0ociuFTLLGB2NWWjF0c1Q3VmJG43fkXP+FfcdCO8qsZoFkJGS1vwujGIMLuNYx1RkLloQAqOMnBIGY/MVfHrHABvVvMazjuTgRmrjU30FuuZm715SoSbN2z3xtlOu51QNizrXFVnOF5nuvs1ODps3p+G7sCoTD1jjpDbAA2DFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SItlG2Ri; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-52bc121fb1eso1123922e87.1;
-        Thu, 13 Jun 2024 02:23:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718270618; x=1718875418; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gg+23UUXLD0QiiaYlgluUVs+RMApwPP3zSxNMn9RCpk=;
-        b=SItlG2Rion/AxFw875b25LMO0i/gdr8x/fx/Jwm3dqISZ0H1V0h7gdO8CuGdSB7N3L
-         md4NPpaxY8ERJS4ZhP7NjkS/1CE6zz1y0KeYciEyhivEStt0wp6+D2uIll0JBCUtyuc3
-         AMoqcT0AEoQ4Dd0Tytbwf4xR6wrJtxd8xcz7MbPUVcQpWsEI1nVPMmJLohul+X5YiFTg
-         ET2I8rVBB4hDXLAdRin0K5fIDSr4XntYDtpKeVH9E1NxDzidCo1X93w9ebe5JhE9vrqe
-         0YXMi3aljVqzVaPjQTIsanfXIk9FeJeLCwLXTespLQRS6YROGtN9umbve/IpdsLxKg9D
-         tZ5g==
+	s=arc-20240116; t=1718271361; c=relaxed/simple;
+	bh=cu/dQGPr41MhghabD46aO3bX0XTBfgtje55I8QhFGqY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=mRcis7iL82MfkSApJBvIKRsNX5Eml+kqRCmq/G92jaymhOe12WUx+Ymf3v4IAMejOc6aMZ/7HYof0txraDePvgVysSGoq6p3B+SZ6S1aQAGhnlUpL22cDwRo9b0AdZ/2SNPvDmehkP3UTBleX29pOUNaTvWqVeFC2H8hvR4EwkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hi1xPVIQ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718271359;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+f9IRQAtoYreDkliCxhCyloA90D4/y0bQohgPwtZn1U=;
+	b=Hi1xPVIQBfQkDP53uD0M+auZud3r1UltqE0qnsAHCf3PRdfekzvhYm9ZS38uFoDSxiKp9Y
+	G3o2krpGh7hTsNW0Ico8KiiIqKO657l0m9KOdtBWvyKhJEedNOfXtJHW5s/WQwHyGzH+lr
+	K7DIrbdItP5xb7xoBEJruvUB+gQdc4g=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-217-Dz9YbvArPUWTZdvyFsxItQ-1; Thu, 13 Jun 2024 05:35:57 -0400
+X-MC-Unique: Dz9YbvArPUWTZdvyFsxItQ-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-35f18355552so422427f8f.3
+        for <stable@vger.kernel.org>; Thu, 13 Jun 2024 02:35:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718270618; x=1718875418;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Gg+23UUXLD0QiiaYlgluUVs+RMApwPP3zSxNMn9RCpk=;
-        b=JDLntu9+kzNFVw4RXge6eR5rK/u5EkSwZntS9marEev8XcRn6zWXf9RaBnm2GDhm5u
-         ZF6wfM8vhULcgY8Y0ttQza/6+9p2F+p2LPnr8TtXegJvbIrsv7sLFMpiY59LWACh4QpR
-         4XX82sCwu0wfFH3Of+gMAQTXHZcLkl+5lFkl66mPoL8S9d7ttiXs3JZSqU8xgrAaQVm1
-         jZBwG1IfQCXh95hRThERpIYv99kbRC0ovQtWHwzcAJuDLvTe+t7/rEpmaTHsyhX3jA/3
-         vBRmLecmS5lnYhmCJIuR0q7lwwbZrjsJinjR2FtqSyPIl3HLxam8UnH5QJY5JeV7kTx/
-         qsrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWKSr5GsCTF/RhSMJVtS7Jhj8YMkRCL3tdfwim7dvU+IofES+84MXgeDjiaIJ/9EMFYaL+khO1fPto2MrrF7E4XXYSdLrS6YdLEI/w3kdIeKRHjm6xR+d73y4hDWXfsGiDVw1pz
-X-Gm-Message-State: AOJu0YxBdy4nD4U7hFgQgYQ+j+F5d7cxRSEU4CcLFfzF5cnGXVNkcQyX
-	cpZJT9SZxv42CPknXmsabiuQ82z2b4qq2xbHXTC3IxF/X53VWOmF9VJRZYcHSPFnfDbxohBb0Iv
-	WWwnwHguyG58987527t7700RHzNg=
-X-Google-Smtp-Source: AGHT+IHNHTBRcHOOmC217Up4Ka0WkhyYvVN+oWQ2WndOVDn1z0YjAqT/Ba384DNdoh/dvoO13r92M/g7kfJ30eTfu7U=
-X-Received: by 2002:a19:ad09:0:b0:529:b79f:ab1d with SMTP id
- 2adb3069b0e04-52c9a3c6cefmr2451182e87.22.1718270618150; Thu, 13 Jun 2024
- 02:23:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1718271356; x=1718876156;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+f9IRQAtoYreDkliCxhCyloA90D4/y0bQohgPwtZn1U=;
+        b=IGeU7/JPwTgF1IWsTlVzYBkSs6aXsu/sBTDSZWmKrLIuKmYkYOsJL3Fy6+8PCtBkXD
+         xSDBW735jjiph8HqS3BI6bPDY8IuyAy9j1lnCKWMuPFxYtQrhmQ+Tcjg37hGTh6hHWp0
+         LDqFvcgM0rNi4lWPhvokCQDTLkNPCx3mzU5vNOZKv2GWOrcG+MGnIYnuQn5gOk+DQGjC
+         7keN+ccN3vQ0RR+hxvdP9ENzI9SerN4LV5NX59G4NJuqaQfCZsy7qEywAnYA1TE37ON9
+         ujY7fHLz/l1vINrc5Qsqn11JvoNW55ZAx5DYVuFJEzJr6eFwcaEtH5pD+mCIsahCkH8i
+         7tRA==
+X-Forwarded-Encrypted: i=1; AJvYcCVwdlwMohU7jL/C7IrR5CVIMRm5egMmHG6zPqD1a0Hfz4hEK828dFUAoydFIQN89vu/NIZJTX/NJBfU8oYh9C9ZyAwZ95hz
+X-Gm-Message-State: AOJu0YzZw/6r+dMoHTf3hIGHXWEyuGDkqXQsi+NT5ibh0RAF5I3FEteY
+	ErGWPdWdYaaw4/epbDHbHBtEdpZ3yYARr+S+d9iDOmgK1u7tXZ7khfKIe301QdwKDR6HYQNoqd8
+	TcPn8eLtOwqYqMwYhSLhY9U3miz2zvk+SIzBsWc7VuZxo7JNeTV5UbZUbDRQkXw==
+X-Received: by 2002:a5d:538d:0:b0:35f:488:6d3d with SMTP id ffacd0b85a97d-35fe89249f3mr2830856f8f.58.1718271355777;
+        Thu, 13 Jun 2024 02:35:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRnQzDeC6g5C2hUDcuOh2NdJWNisz5Zy3hTXEWOVLoVlyeXt4Lup8LxzxKnEmUNmLb1HoUyQ==
+X-Received: by 2002:a5d:538d:0:b0:35f:488:6d3d with SMTP id ffacd0b85a97d-35fe89249f3mr2830840f8f.58.1718271355247;
+        Thu, 13 Jun 2024 02:35:55 -0700 (PDT)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36075093615sm1159581f8f.6.2024.06.13.02.35.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Jun 2024 02:35:54 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de,
+ sam@ravnborg.org, hpa@zytor.com
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, Thomas
+ Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
+Subject: Re: [PATCH] fbdev: vesafb: Detect VGA compatibility from screen
+ info's VESA attributes
+In-Reply-To: <20240613090240.7107-1-tzimmermann@suse.de>
+References: <20240613090240.7107-1-tzimmermann@suse.de>
+Date: Thu, 13 Jun 2024 11:35:53 +0200
+Message-ID: <87zfrpqj5y.fsf@minerva.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240607023116.1720640-1-zhaoyang.huang@unisoc.com>
- <CAGWkznEODMbDngM3toQFo-bgkezEpmXf_qE=SpuYcqsjEJk1DQ@mail.gmail.com>
- <CAGWkznE-HcYBia2HDcHt6trM9oeJ2x6KdyFzR3Jd_-L5HyPxSA@mail.gmail.com>
- <ZmiUgPDjzI32Cqr9@pc636> <CAGWkznGnaV8Tz0XrgaVWEVG0ug7dp3w23ygKKmq8SPu_AMBhoA@mail.gmail.com>
- <ZmmGHhUDk5PqSHPB@pc636> <ZmqwvtZQwYLNYf+V@MiWiFi-R3L-srv> <20240613091106.sfgtmoto6u4tslq6@oppo.com>
-In-Reply-To: <20240613091106.sfgtmoto6u4tslq6@oppo.com>
-From: Zhaoyang Huang <huangzhaoyang@gmail.com>
-Date: Thu, 13 Jun 2024 17:23:26 +0800
-Message-ID: <CAGWkznEJgUZ6bsuhb0Q+3-Jny+AGxPpaBnSmJJqoWz-mgU43sQ@mail.gmail.com>
-Subject: Re: [Resend PATCHv4 1/1] mm: fix incorrect vbq reference in purge_fragmented_block
-To: hailong liu <hailong.liu@oppo.com>
-Cc: Baoquan He <bhe@redhat.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	"zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Hellwig <hch@infradead.org>, Lorenzo Stoakes <lstoakes@gmail.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, steve.kang@unisoc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Thu, Jun 13, 2024 at 5:11=E2=80=AFPM hailong liu <hailong.liu@oppo.com> =
-wrote:
+Thomas Zimmermann <tzimmermann@suse.de> writes:
+
+Hello Thomas,
+
+> Test the vesa_attributes field in struct screen_info for compatibility
+> with VGA hardware. Vesafb currently tests bit 1 in screen_info's
+> capabilities field, It sets the framebuffer address size and is
+> unrelated to VGA.
 >
-> On Thu, 13. Jun 16:41, Baoquan He wrote:
-> > On 06/12/24 at 01:27pm, Uladzislau Rezki wrote:
-> > > On Wed, Jun 12, 2024 at 10:00:14AM +0800, Zhaoyang Huang wrote:
-> > > > On Wed, Jun 12, 2024 at 2:16=E2=80=AFAM Uladzislau Rezki <urezki@gm=
-ail.com> wrote:
-> > > > >
-> > > > > >
-> > > > > > Sorry to bother you again. Are there any other comments or new =
-patch
-> > > > > > on this which block some test cases of ANDROID that only accept=
- ACKed
-> > > > > > one on its tree.
-> > > > > >
-> > > > > I have just returned from vacation. Give me some time to review y=
-our
-> > > > > patch. Meanwhile, do you have a reproducer? So i would like to se=
-e how
-> > > > > i can trigger an issue that is in question.
-> > > > This bug arises from an system wide android test which has been
-> > > > reported by many vendors. Keep mount/unmount an erofs partition is
-> > > > supposed to be a simple reproducer. IMO, the logic defect is obviou=
-s
-> > > > enough to be found by code review.
-> > > >
-> > > Baoquan, any objection about this v4?
-> > >
-> > > Your proposal about inserting a new vmap-block based on it belongs
-> > > to, i.e. not per-this-cpu, should fix an issue. The problem is that
-> > > such way does __not__ pre-load a current CPU what is not good.
-> >
-> > With my understand, when we start handling to insert vb to vbq->xa and
-> > vbq->free, the vmap_area allocation has been done, it doesn't impact th=
-e
-> > CPU preloading when adding it into which CPU's vbq->free, does it?
-> >
-> > Not sure if I miss anything about the CPU preloading.
-> >
-> >
+> Section 4.4 of the Vesa VBE 2.0 specifications defines that bit 5 in
+> the mode's attributes field signals VGA compatibility. The mode is
+> compatible with VGA hardware if the bit is clear. In that case, the
+> driver can access VGA state of the VBE's underlying hardware. The
+> vesafb driver uses this feature to program the color LUT in palette
+> modes. Without, colors might be incorrect.
 >
-> IIUC, if vb put by hashing funcation. and the following scenario may occu=
-r:
+> The problem got introduced in commit 89ec4c238e7a ("[PATCH] vesafb: Fix
+> incorrect logo colors in x86_64"). It incorrectly stores the mode
+> attributes in the screen_info's capabilities field and updates vesafb
+> accordingly. Later, commit 5e8ddcbe8692 ("Video mode probing support for
+> the new x86 setup code") fixed the screen_info, but did not update vesafb.
+> Color output still tends to work, because bit 1 in capabilities is
+> usually 0.
 >
-> A kthread limit on CPU_x and continuously calls vm_map_ram()
-> The 1 call vm_map_ram(): no vb in cpu_x->free, so
-> CPU_0->vb
-> CPU_1
-> ...
-> CPU_x
+
+How did you find this ?
+
+> Besides fixing the bug in vesafb, this commit introduces a helper that
+> reads the correct bit from screen_info.
 >
-> The 2 call vm_map_ram(): no vb in cpu_x->free, so
-> CPU_0->vb
-> CPU_1->vb
-> ...
-> CPU_x
-Yes, this could make the per_cpu vbq meaningless and the VMALLOC area
-be abnormally consumed(like 8KB in 4MB for each allocation)
->
-> --
-> help you, help me,
-> Hailong.
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: 5e8ddcbe8692 ("Video mode probing support for the new x86 setup code")
+> Cc: <stable@vger.kernel.org> # v2.6.23+
+> ---
+
+The patch looks correct to me after your explanation in the commit message
+and looking at the mentioned commits.
+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+
+-- 
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
+
 
