@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-50638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FCC906BA7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 568AA906D9E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A71F82817FD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05D56283479
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E69143C41;
-	Thu, 13 Jun 2024 11:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995BF145B00;
+	Thu, 13 Jun 2024 11:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1qh08ZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wx0Kvumc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D75142E8E;
-	Thu, 13 Jun 2024 11:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5844D145A12;
+	Thu, 13 Jun 2024 11:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278953; cv=none; b=EUD9L37QCnWW0t0YQ/4tWthVMCzzjhQ4ydo2qr9iHwApKqj+tOHl4eg5F+PiGHBaLB9laDyS7z6+RuNdcHUCLXdD703grLzuji1ayQvkV4rLE+yCYLo9V8UNrZLK63L7CG5YU9fJm9z5Lx24Dyk/Wxjm/mQD/GrC9oGcxiudumQ=
+	t=1718279906; cv=none; b=DsX3IaIp5+GHs2jnT/20tSLuzj4CDD0Zk6N0gpIU+FiZm+IjEnjpG7L2ZRHucg5bpvcmTgLvonMMXETZixOlXcBelEfNY88cQOhNnn9/Hgt3S+VjA0wz4+X1215A7rTmmagXYlMRPI4kOvqIUKbs0OI6pscKyAUjPaZ7OrqnH8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278953; c=relaxed/simple;
-	bh=Ag+8xhJLt0/cN9mtLPzQjdSCrMQ61Nkiw30jLVdUlBk=;
+	s=arc-20240116; t=1718279906; c=relaxed/simple;
+	bh=cGZKsdNgdviCV9yNBoUugDx2SuyyKWR+ZICm/wDIw8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSN00qnr0TAgx5YivRE+PS5lGCFgwI+/7SiQ6hW4uTzfchFG2VA4DSIS89JrDxRIITmXbAUog9yuYjlIK9PLUVx7nvyuNVA8MkLmtz6TWoI8ip8xuFglKbL5WI1tz6JZOq0Zk9569+6cH90b4DBN5/U1m2m1EymgVmWyKurrah8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1qh08ZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4FEC2BBFC;
-	Thu, 13 Jun 2024 11:42:32 +0000 (UTC)
+	 MIME-Version; b=QD0+IAvv/4nH1tpGMWxGE7n57hmQ4e2fl4TDfHxPVDFc26HW3Z2cHhkyIDELImHXBpXbhATNmLLkWxteKyg6Q99ts0J7a8J+fjezOCctE/YI84A2MRtKpnRa/tLOQvNIZfXe5IcYpSD2McooYjuSEWImxDyqAHj3/DVPL+jeSyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wx0Kvumc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4649C2BBFC;
+	Thu, 13 Jun 2024 11:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278952;
-	bh=Ag+8xhJLt0/cN9mtLPzQjdSCrMQ61Nkiw30jLVdUlBk=;
+	s=korg; t=1718279906;
+	bh=cGZKsdNgdviCV9yNBoUugDx2SuyyKWR+ZICm/wDIw8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y1qh08ZRn9A/7s6DQk5XURznJBk2+Epxtaw1WbuAP+1NnatLXepbQtxcwI0RvKI6B
-	 X8qph1u24HHbtOgR9KFUhlY7dehqaTyxZeqaa3WDMEKZ0FQbbLnQNh8r+FMfxE2gzf
-	 Hj0OyVgG2BcUvp4x9mnjXGG9P3L6pguJs/h8ZEGA=
+	b=Wx0KvumczyIn4oUHT3J1Lutsp//JMdXkgodJRWz9AP4uKdKS0E2kE6uxq0l+4d/VO
+	 eTyOAPETWxuI2p1DuS8i7wjdTh2DWg40tDtP9l0e0nstL2TtQYBryc04xsmormrhwj
+	 V9lJP9njaFfs2ByB0Rrfvfv9qlFwTVC1GVjjcvKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuanbin Xie <xieyuanbin1@huawei.com>,
-	Jiangfeng Xiao <xiaojiangfeng@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Hulk Robot <hulkci@huawei.com>,
+	YueHaibing <yuehaibing@huawei.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 126/213] arm64: asm-bug: Add .align 2 to the end of __BUG_ENTRY
+Subject: [PATCH 5.4 076/202] platform/x86: wmi: Make two functions static
 Date: Thu, 13 Jun 2024 13:32:54 +0200
-Message-ID: <20240613113232.858001733@linuxfoundation.org>
+Message-ID: <20240613113230.706885617@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,162 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiangfeng Xiao <xiaojiangfeng@huawei.com>
+From: YueHaibing <yuehaibing@huawei.com>
 
-[ Upstream commit ffbf4fb9b5c12ff878a10ea17997147ea4ebea6f ]
+[ Upstream commit 713df99a9ef0133c09ad05bac10cf7d0163cd272 ]
 
-When CONFIG_DEBUG_BUGVERBOSE=n, we fail to add necessary padding bytes
-to bug_table entries, and as a result the last entry in a bug table will
-be ignored, potentially leading to an unexpected panic(). All prior
-entries in the table will be handled correctly.
+Fix sparse warnings:
 
-The arm64 ABI requires that struct fields of up to 8 bytes are
-naturally-aligned, with padding added within a struct such that struct
-are suitably aligned within arrays.
+drivers/platform/x86/xiaomi-wmi.c:26:5: warning: symbol 'xiaomi_wmi_probe' was not declared. Should it be static?
+drivers/platform/x86/xiaomi-wmi.c:51:6: warning: symbol 'xiaomi_wmi_notify' was not declared. Should it be static?
 
-When CONFIG_DEBUG_BUGVERPOSE=y, the layout of a bug_entry is:
-
-	struct bug_entry {
-		signed int      bug_addr_disp;	// 4 bytes
-		signed int      file_disp;	// 4 bytes
-		unsigned short  line;		// 2 bytes
-		unsigned short  flags;		// 2 bytes
-	}
-
-... with 12 bytes total, requiring 4-byte alignment.
-
-When CONFIG_DEBUG_BUGVERBOSE=n, the layout of a bug_entry is:
-
-	struct bug_entry {
-		signed int      bug_addr_disp;	// 4 bytes
-		unsigned short  flags;		// 2 bytes
-		< implicit padding >		// 2 bytes
-	}
-
-... with 8 bytes total, with 6 bytes of data and 2 bytes of trailing
-padding, requiring 4-byte alginment.
-
-When we create a bug_entry in assembly, we align the start of the entry
-to 4 bytes, which implicitly handles padding for any prior entries.
-However, we do not align the end of the entry, and so when
-CONFIG_DEBUG_BUGVERBOSE=n, the final entry lacks the trailing padding
-bytes.
-
-For the main kernel image this is not a problem as find_bug() doesn't
-depend on the trailing padding bytes when searching for entries:
-
-	for (bug = __start___bug_table; bug < __stop___bug_table; ++bug)
-		if (bugaddr == bug_addr(bug))
-			return bug;
-
-However for modules, module_bug_finalize() depends on the trailing
-bytes when calculating the number of entries:
-
-	mod->num_bugs = sechdrs[i].sh_size / sizeof(struct bug_entry);
-
-... and as the last bug_entry lacks the necessary padding bytes, this entry
-will not be counted, e.g. in the case of a single entry:
-
-	sechdrs[i].sh_size == 6
-	sizeof(struct bug_entry) == 8;
-
-	sechdrs[i].sh_size / sizeof(struct bug_entry) == 0;
-
-Consequently module_find_bug() will miss the last bug_entry when it does:
-
-	for (i = 0; i < mod->num_bugs; ++i, ++bug)
-		if (bugaddr == bug_addr(bug))
-			goto out;
-
-... which can lead to a kenrel panic due to an unhandled bug.
-
-This can be demonstrated with the following module:
-
-	static int __init buginit(void)
-	{
-		WARN(1, "hello\n");
-		return 0;
-	}
-
-	static void __exit bugexit(void)
-	{
-	}
-
-	module_init(buginit);
-	module_exit(bugexit);
-	MODULE_LICENSE("GPL");
-
-... which will trigger a kernel panic when loaded:
-
-	------------[ cut here ]------------
-	hello
-	Unexpected kernel BRK exception at EL1
-	Internal error: BRK handler: 00000000f2000800 [#1] PREEMPT SMP
-	Modules linked in: hello(O+)
-	CPU: 0 PID: 50 Comm: insmod Tainted: G           O       6.9.1 #8
-	Hardware name: linux,dummy-virt (DT)
-	pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-	pc : buginit+0x18/0x1000 [hello]
-	lr : buginit+0x18/0x1000 [hello]
-	sp : ffff800080533ae0
-	x29: ffff800080533ae0 x28: 0000000000000000 x27: 0000000000000000
-	x26: ffffaba8c4e70510 x25: ffff800080533c30 x24: ffffaba8c4a28a58
-	x23: 0000000000000000 x22: 0000000000000000 x21: ffff3947c0eab3c0
-	x20: ffffaba8c4e3f000 x19: ffffaba846464000 x18: 0000000000000006
-	x17: 0000000000000000 x16: ffffaba8c2492834 x15: 0720072007200720
-	x14: 0720072007200720 x13: ffffaba8c49b27c8 x12: 0000000000000312
-	x11: 0000000000000106 x10: ffffaba8c4a0a7c8 x9 : ffffaba8c49b27c8
-	x8 : 00000000ffffefff x7 : ffffaba8c4a0a7c8 x6 : 80000000fffff000
-	x5 : 0000000000000107 x4 : 0000000000000000 x3 : 0000000000000000
-	x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff3947c0eab3c0
-	Call trace:
-	 buginit+0x18/0x1000 [hello]
-	 do_one_initcall+0x80/0x1c8
-	 do_init_module+0x60/0x218
-	 load_module+0x1ba4/0x1d70
-	 __do_sys_init_module+0x198/0x1d0
-	 __arm64_sys_init_module+0x1c/0x28
-	 invoke_syscall+0x48/0x114
-	 el0_svc_common.constprop.0+0x40/0xe0
-	 do_el0_svc+0x1c/0x28
-	 el0_svc+0x34/0xd8
-	 el0t_64_sync_handler+0x120/0x12c
-	 el0t_64_sync+0x190/0x194
-	Code: d0ffffe0 910003fd 91000000 9400000b (d4210000)
-	---[ end trace 0000000000000000 ]---
-	Kernel panic - not syncing: BRK handler: Fatal exception
-
-Fix this by always aligning the end of a bug_entry to 4 bytes, which is
-correct regardless of CONFIG_DEBUG_BUGVERBOSE.
-
-Fixes: 9fb7410f955f ("arm64/BUG: Use BRK instruction for generic BUG traps")
-
-Signed-off-by: Yuanbin Xie <xieyuanbin1@huawei.com>
-Signed-off-by: Jiangfeng Xiao <xiaojiangfeng@huawei.com>
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/1716212077-43826-1-git-send-email-xiaojiangfeng@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Stable-dep-of: 290680c2da80 ("platform/x86: xiaomi-wmi: Fix race condition when reporting key events")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/asm-bug.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/xiaomi-wmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/asm-bug.h b/arch/arm64/include/asm/asm-bug.h
-index b3552c4a405f2..04e5be18acb16 100644
---- a/arch/arm64/include/asm/asm-bug.h
-+++ b/arch/arm64/include/asm/asm-bug.h
-@@ -39,6 +39,7 @@
- 	14470:	.long 14471f - 14470b;			\
- _BUGVERBOSE_LOCATION(__FILE__, __LINE__)		\
- 		.short flags; 				\
-+		.align 2;				\
- 		.popsection;				\
- 	14471:
- #else
+diff --git a/drivers/platform/x86/xiaomi-wmi.c b/drivers/platform/x86/xiaomi-wmi.c
+index 601cbb282f543..54a2546bb93bf 100644
+--- a/drivers/platform/x86/xiaomi-wmi.c
++++ b/drivers/platform/x86/xiaomi-wmi.c
+@@ -23,7 +23,7 @@ struct xiaomi_wmi {
+ 	unsigned int key_code;
+ };
+ 
+-int xiaomi_wmi_probe(struct wmi_device *wdev, const void *context)
++static int xiaomi_wmi_probe(struct wmi_device *wdev, const void *context)
+ {
+ 	struct xiaomi_wmi *data;
+ 
+@@ -48,7 +48,7 @@ int xiaomi_wmi_probe(struct wmi_device *wdev, const void *context)
+ 	return input_register_device(data->input_dev);
+ }
+ 
+-void xiaomi_wmi_notify(struct wmi_device *wdev, union acpi_object *dummy)
++static void xiaomi_wmi_notify(struct wmi_device *wdev, union acpi_object *dummy)
+ {
+ 	struct xiaomi_wmi *data;
+ 
 -- 
 2.43.0
 
