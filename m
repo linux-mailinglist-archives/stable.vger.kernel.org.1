@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-50834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46ADD906D0C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:58:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C660906C32
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA843B25D43
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:58:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4311B23A8B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD22145B20;
-	Thu, 13 Jun 2024 11:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71181448DF;
+	Thu, 13 Jun 2024 11:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBPjeB1+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rm0nfgBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC01F145B19;
-	Thu, 13 Jun 2024 11:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7307C143872;
+	Thu, 13 Jun 2024 11:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279522; cv=none; b=TVMrKelzSVENaF6uMGb6PV8Qga9F8u2agP+YJ25yrzhSn2CNf2FZ0mcgXImTJsfL8QIaPaSMICAS3kEZaPwpsikCNuhEhIQZYh7qnIPl9i6KIzUuRa6+rXAmjVePcy/fA5R/Bk7gkyFuesDuWaiTK8SokvBPETlZYPCJkrRKCIk=
+	t=1718279201; cv=none; b=hhM1yktIKA/yJASXiVBC0iriywIzTGIoF9nQleZVittxB8vtGyPZH662e47I2QE8/f5QyniCh0IHx45v0yS4rOg89KzU1tnWtLYmRm54901vwK5nAfWkNkZHwcxq/rVfbVVPnkAa0fzIXXO6Kqo8svEwQMgc6X6wUHjyz5G+CGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279522; c=relaxed/simple;
-	bh=g0TyOnr/+GThwomu5KH1gVAavWrle+dDeNSAWLoXpkY=;
+	s=arc-20240116; t=1718279201; c=relaxed/simple;
+	bh=qg2Sf+omNu4q5hMqCDvhPtIGD3eEZz9u29VE8TCu6Lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmI+Ji/niJM+5ft79dyzLVWxnHkMX3o/bM23nIaEgKM/HwDXv7d3nviZEs4d8ejjbGGXNTSL7PTlEuYUYPxY/CJOeYHib6tkXrzPmeeikh5ln/QqGt3Q2lbdUEi+P4xc402wUuPpHNjQpDKB8hiQLs+535N/4vAF0oZrdkHIEq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBPjeB1+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A37C2BBFC;
-	Thu, 13 Jun 2024 11:52:02 +0000 (UTC)
+	 MIME-Version; b=qKx4r/vQL9awIjmCW97U5TgJOdwCUNx7cw7RpoZiH1u/VYrQq+J614GjBWitL8ecdhz0UlfY8j2AFWf+Y1DOhJPmX3agKlbBoYNywT7tFhiNAmlOpd4+5ncPuyh4dZaBHqz75uFphHBKom33oS6Jx7gYQb8fsP0MpW8ckZqQtfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rm0nfgBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE525C2BBFC;
+	Thu, 13 Jun 2024 11:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279522;
-	bh=g0TyOnr/+GThwomu5KH1gVAavWrle+dDeNSAWLoXpkY=;
+	s=korg; t=1718279201;
+	bh=qg2Sf+omNu4q5hMqCDvhPtIGD3eEZz9u29VE8TCu6Lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UBPjeB1+2+j40eyukBSg6nDial5gdlLGNTCuOArvDVhK5hFa37+P1p4Gkx+kttYQf
-	 eYECdoFP+r8QlEt9DGxCOYBq+TSylrli+YGaIpC5Nrv8kGwkG1dZv2a6NGXELyA2Ot
-	 7usFdFocIUJ9B2Op7HOPf/npxPXB/uHWYCtHxuLI=
+	b=Rm0nfgBi2SmTFMvftRao4W1Ht1rWQaXkhITDQ1EReYjG8vpxfcKLNAOd7CH1lXa9+
+	 x5/JwYZ2RGE3bDgh433McBBI39cWnZ+L74HabTaAtaFG/Drxs9Q3eTROsnOrmzvb/A
+	 MXlP1TlkT2QrsKbZa3CT+IWlBHPsW4i9N72I8nJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Battersby <tonyb@cybernetics.com>,
-	Simon Horman <horms@kernel.org>,
-	Jay Vosburgh <jay.vosburgh@canonical.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.9 105/157] bonding: fix oops during rmmod
+	syzbot+7ad5cd1615f2d89c6e7e@syzkaller.appspotmail.com,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.19 182/213] netfilter: nf_tables: fix table flag updates
 Date: Thu, 13 Jun 2024 13:33:50 +0200
-Message-ID: <20240613113231.482066497@linuxfoundation.org>
+Message-ID: <20240613113235.003285118@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +62,196 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Battersby <tonyb@cybernetics.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit a45835a0bb6ef7d5ddbc0714dd760de979cb6ece upstream.
+commit 179d9ba5559a756f4322583388b3213fe4e391b0 upstream.
 
-"rmmod bonding" causes an oops ever since commit cc317ea3d927 ("bonding:
-remove redundant NULL check in debugfs function").  Here are the relevant
-functions being called:
+The dormant flag need to be updated from the preparation phase,
+otherwise, two consecutive requests to dorm a table in the same batch
+might try to remove the same hooks twice, resulting in the following
+warning:
 
-bonding_exit()
-  bond_destroy_debugfs()
-    debugfs_remove_recursive(bonding_debug_root);
-    bonding_debug_root = NULL; <--------- SET TO NULL HERE
-  bond_netlink_fini()
-    rtnl_link_unregister()
-      __rtnl_link_unregister()
-        unregister_netdevice_many_notify()
-          bond_uninit()
-            bond_debug_unregister()
-              (commit removed check for bonding_debug_root == NULL)
-              debugfs_remove()
-              simple_recursive_removal()
-                down_write() -> OOPS
+ hook not found, pf 3 num 0
+ WARNING: CPU: 0 PID: 334 at net/netfilter/core.c:480 __nf_unregister_net_hook+0x1eb/0x610 net/netfilter/core.c:480
+ Modules linked in:
+ CPU: 0 PID: 334 Comm: kworker/u4:5 Not tainted 5.12.0-syzkaller #0
+ Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+ Workqueue: netns cleanup_net
+ RIP: 0010:__nf_unregister_net_hook+0x1eb/0x610 net/netfilter/core.c:480
 
-However, reverting the bad commit does not solve the problem completely
-because the original code contains a race that could cause the same
-oops, although it was much less likely to be triggered unintentionally:
+This patch is a partial revert of 0ce7cf4127f1 ("netfilter: nftables:
+update table flags from the commit phase") to restore the previous
+behaviour.
 
-CPU1
-  rmmod bonding
-    bonding_exit()
-      bond_destroy_debugfs()
-        debugfs_remove_recursive(bonding_debug_root);
+However, there is still another problem: A batch containing a series of
+dorm-wakeup-dorm table and vice-versa also trigger the warning above
+since hook unregistration happens from the preparation phase, while hook
+registration occurs from the commit phase.
 
-CPU2
-  echo -bond0 > /sys/class/net/bonding_masters
-    bond_uninit()
-      bond_debug_unregister()
-        if (!bonding_debug_root)
+To fix this problem, this patch adds two internal flags to annotate the
+original dormant flag status which are __NFT_TABLE_F_WAS_DORMANT and
+__NFT_TABLE_F_WAS_AWAKEN, to restore it from the abort path.
 
-CPU1
-        bonding_debug_root = NULL;
+The __NFT_TABLE_F_UPDATE bitmask allows to handle the dormant flag update
+with one single transaction.
 
-So do NOT revert the bad commit (since the removed checks were racy
-anyway), and instead change the order of actions taken during module
-removal.  The same oops can also happen if there is an error during
-module init, so apply the same fix there.
-
-Fixes: cc317ea3d927 ("bonding: remove redundant NULL check in debugfs function")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
-Link: https://lore.kernel.org/r/641f914f-3216-4eeb-87dd-91b78aa97773@cybernetics.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+7ad5cd1615f2d89c6e7e@syzkaller.appspotmail.com
+Fixes: 0ce7cf4127f1 ("netfilter: nftables: update table flags from the commit phase")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ include/net/netfilter/nf_tables.h        |    6 ---
+ include/uapi/linux/netfilter/nf_tables.h |    1 
+ net/netfilter/nf_tables_api.c            |   59 +++++++++++++++++++++----------
+ 3 files changed, 41 insertions(+), 25 deletions(-)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -6477,16 +6477,16 @@ static int __init bonding_init(void)
- 	if (res)
- 		goto out;
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -1347,16 +1347,10 @@ struct nft_trans_chain {
  
-+	bond_create_debugfs();
-+
- 	res = register_pernet_subsys(&bond_net_ops);
- 	if (res)
--		goto out;
-+		goto err_net_ops;
+ struct nft_trans_table {
+ 	bool				update;
+-	u8				state;
+-	u32				flags;
+ };
  
- 	res = bond_netlink_init();
- 	if (res)
- 		goto err_link;
+ #define nft_trans_table_update(trans)	\
+ 	(((struct nft_trans_table *)trans->data)->update)
+-#define nft_trans_table_state(trans)	\
+-	(((struct nft_trans_table *)trans->data)->state)
+-#define nft_trans_table_flags(trans)	\
+-	(((struct nft_trans_table *)trans->data)->flags)
  
--	bond_create_debugfs();
--
- 	for (i = 0; i < max_bonds; i++) {
- 		res = bond_create(&init_net, NULL);
- 		if (res)
-@@ -6501,10 +6501,11 @@ static int __init bonding_init(void)
- out:
- 	return res;
- err:
--	bond_destroy_debugfs();
- 	bond_netlink_fini();
- err_link:
- 	unregister_pernet_subsys(&bond_net_ops);
-+err_net_ops:
-+	bond_destroy_debugfs();
- 	goto out;
+ struct nft_trans_elem {
+ 	struct nft_set			*set;
+--- a/include/uapi/linux/netfilter/nf_tables.h
++++ b/include/uapi/linux/netfilter/nf_tables.h
+@@ -162,6 +162,7 @@ enum nft_hook_attributes {
+ enum nft_table_flags {
+ 	NFT_TABLE_F_DORMANT	= 0x1,
+ };
++#define NFT_TABLE_F_MASK       (NFT_TABLE_F_DORMANT)
  
- }
-@@ -6513,11 +6514,11 @@ static void __exit bonding_exit(void)
+ /**
+  * enum nft_table_attributes - nf_tables table netlink attributes
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -676,7 +676,8 @@ static int nf_tables_fill_table_info(str
+ 		goto nla_put_failure;
+ 
+ 	if (nla_put_string(skb, NFTA_TABLE_NAME, table->name) ||
+-	    nla_put_be32(skb, NFTA_TABLE_FLAGS, htonl(table->flags)) ||
++	    nla_put_be32(skb, NFTA_TABLE_FLAGS,
++			 htonl(table->flags & NFT_TABLE_F_MASK)) ||
+ 	    nla_put_be32(skb, NFTA_TABLE_USE, htonl(table->use)) ||
+ 	    nla_put_be64(skb, NFTA_TABLE_HANDLE, cpu_to_be64(table->handle),
+ 			 NFTA_TABLE_PAD))
+@@ -865,20 +866,22 @@ err:
+ 
+ static void nf_tables_table_disable(struct net *net, struct nft_table *table)
  {
- 	unregister_netdevice_notifier(&bond_netdev_notifier);
++	table->flags &= ~NFT_TABLE_F_DORMANT;
+ 	nft_table_disable(net, table, 0);
++	table->flags |= NFT_TABLE_F_DORMANT;
+ }
  
--	bond_destroy_debugfs();
--
- 	bond_netlink_fini();
- 	unregister_pernet_subsys(&bond_net_ops);
+-enum {
+-	NFT_TABLE_STATE_UNCHANGED	= 0,
+-	NFT_TABLE_STATE_DORMANT,
+-	NFT_TABLE_STATE_WAKEUP
+-};
++#define __NFT_TABLE_F_INTERNAL		(NFT_TABLE_F_MASK + 1)
++#define __NFT_TABLE_F_WAS_DORMANT	(__NFT_TABLE_F_INTERNAL << 0)
++#define __NFT_TABLE_F_WAS_AWAKEN	(__NFT_TABLE_F_INTERNAL << 1)
++#define __NFT_TABLE_F_UPDATE		(__NFT_TABLE_F_WAS_DORMANT | \
++					 __NFT_TABLE_F_WAS_AWAKEN)
  
-+	bond_destroy_debugfs();
+ static int nf_tables_updtable(struct nft_ctx *ctx)
+ {
+ 	struct nft_trans *trans;
+ 	u32 flags;
+-	int ret = 0;
++	int ret;
+ 
+ 	if (!ctx->nla[NFTA_TABLE_FLAGS])
+ 		return 0;
+@@ -897,21 +900,27 @@ static int nf_tables_updtable(struct nft
+ 
+ 	if ((flags & NFT_TABLE_F_DORMANT) &&
+ 	    !(ctx->table->flags & NFT_TABLE_F_DORMANT)) {
+-		nft_trans_table_state(trans) = NFT_TABLE_STATE_DORMANT;
++		ctx->table->flags |= NFT_TABLE_F_DORMANT;
++		if (!(ctx->table->flags & __NFT_TABLE_F_UPDATE))
++			ctx->table->flags |= __NFT_TABLE_F_WAS_AWAKEN;
+ 	} else if (!(flags & NFT_TABLE_F_DORMANT) &&
+ 		   ctx->table->flags & NFT_TABLE_F_DORMANT) {
+-		ret = nf_tables_table_enable(ctx->net, ctx->table);
+-		if (ret >= 0)
+-			nft_trans_table_state(trans) = NFT_TABLE_STATE_WAKEUP;
++		ctx->table->flags &= ~NFT_TABLE_F_DORMANT;
++		if (!(ctx->table->flags & __NFT_TABLE_F_UPDATE)) {
++			ret = nf_tables_table_enable(ctx->net, ctx->table);
++			if (ret < 0)
++				goto err_register_hooks;
 +
- #ifdef CONFIG_NET_POLL_CONTROLLER
- 	/* Make sure we don't have an imbalance on our netpoll blocking */
- 	WARN_ON(atomic_read(&netpoll_block_tx));
++			ctx->table->flags |= __NFT_TABLE_F_WAS_DORMANT;
++		}
+ 	}
+-	if (ret < 0)
+-		goto err;
+ 
+-	nft_trans_table_flags(trans) = flags;
+ 	nft_trans_table_update(trans) = true;
+ 	nft_trans_commit_list_add_tail(ctx->net, trans);
++
+ 	return 0;
+-err:
++
++err_register_hooks:
+ 	nft_trans_destroy(trans);
+ 	return ret;
+ }
+@@ -7013,10 +7022,14 @@ static int nf_tables_commit(struct net *
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWTABLE:
+ 			if (nft_trans_table_update(trans)) {
+-				if (nft_trans_table_state(trans) == NFT_TABLE_STATE_DORMANT)
++				if (!(trans->ctx.table->flags & __NFT_TABLE_F_UPDATE)) {
++					nft_trans_destroy(trans);
++					break;
++				}
++				if (trans->ctx.table->flags & NFT_TABLE_F_DORMANT)
+ 					nf_tables_table_disable(net, trans->ctx.table);
+ 
+-				trans->ctx.table->flags = nft_trans_table_flags(trans);
++				trans->ctx.table->flags &= ~__NFT_TABLE_F_UPDATE;
+ 			} else {
+ 				nft_clear(net, trans->ctx.table);
+ 			}
+@@ -7177,9 +7190,17 @@ static int __nf_tables_abort(struct net
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWTABLE:
+ 			if (nft_trans_table_update(trans)) {
+-				if (nft_trans_table_state(trans) == NFT_TABLE_STATE_WAKEUP)
++				if (!(trans->ctx.table->flags & __NFT_TABLE_F_UPDATE)) {
++					nft_trans_destroy(trans);
++					break;
++				}
++				if (trans->ctx.table->flags & __NFT_TABLE_F_WAS_DORMANT) {
+ 					nf_tables_table_disable(net, trans->ctx.table);
+-
++					trans->ctx.table->flags |= NFT_TABLE_F_DORMANT;
++				} else if (trans->ctx.table->flags & __NFT_TABLE_F_WAS_AWAKEN) {
++					trans->ctx.table->flags &= ~NFT_TABLE_F_DORMANT;
++				}
++				trans->ctx.table->flags &= ~__NFT_TABLE_F_UPDATE;
+ 				nft_trans_destroy(trans);
+ 			} else {
+ 				list_del_rcu(&trans->ctx.table->list);
 
 
 
