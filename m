@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15889070FC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:32:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B08906EFF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D700284E77
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:32:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA76F1F231F1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3290384;
-	Thu, 13 Jun 2024 12:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BC613CA9A;
+	Thu, 13 Jun 2024 12:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NH+9ktFO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tm5z7MGM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF962161;
-	Thu, 13 Jun 2024 12:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D31E44C6F;
+	Thu, 13 Jun 2024 12:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281950; cv=none; b=jAnSSEFVB+4C78QHcJi751bDPvtRRNupk1EYN+JBAthNwDBgnaPFqMJ3mOpnYc5oh5dTQvWXYjRkN4VogSmhY0ropVBfLoK3oERlTs+F5EfIILeIYdxypho4hFxArgotEhwusqsTCv2j3muVxdMd8D5dyJFqgnlH+Qh6GmqDlyw=
+	t=1718280756; cv=none; b=ptdZhTdF79aLHwQijfe1H9PSK9RmdSlWb5FzkTzh02WDM9pZY43RnXZ1zffI1HANPl6NVG1JLxdtV4tz0mu8d+FDYrCuwnaVh+/UA5bS4tE+9YoSI6Yc5CkxhEwjHpDvVwBiuBvCy5reooIOHCqYmWxjXnqZ8votbWgXIR8PldE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281950; c=relaxed/simple;
-	bh=h1Jy4myOTfm7Ry86Ustq9fth3e1GzJ1U/g+FD7oY0QM=;
+	s=arc-20240116; t=1718280756; c=relaxed/simple;
+	bh=UTx9+kmtZJ6vMlxj6ytEYvrhgVdMgOcKir/GsMfaAS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2NeJGzqgMw7aGLGmYplD7pZE4uJ8A1Z1J7diGOGqgGfJDFoFCW4u3BxcYpWrvsAzjmasb780zFajq+UEYGW0MlnpFJnAOoC/XJb/3treyunsUIgkErFtg8/ppYD5y3bYn5iBGhiaymK6i05+8ZXrhDK5gNOZOFOex96kMXuWPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NH+9ktFO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D47C2BBFC;
-	Thu, 13 Jun 2024 12:32:30 +0000 (UTC)
+	 MIME-Version; b=svRETvH12cc2LWozi9zrsoHsZQtw8FwCANrdyBF9aYAvgM7clMbTsYev0K+O26jQzuiN1XhdAQb8KfgKvXI/nKc5WyUoGILQxvSVs+U9j4/mGdFA76noe0lsK7XdJijqaqTzjVP3Ngk+8Qou4NuJ3jsRSmlOqZMMJlwPbCkwr0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tm5z7MGM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC14BC2BBFC;
+	Thu, 13 Jun 2024 12:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281950;
-	bh=h1Jy4myOTfm7Ry86Ustq9fth3e1GzJ1U/g+FD7oY0QM=;
+	s=korg; t=1718280756;
+	bh=UTx9+kmtZJ6vMlxj6ytEYvrhgVdMgOcKir/GsMfaAS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NH+9ktFOycsZRWmbbIUyJCOJtWgA7OkeVqA1G6qRqkMM8OFcRJVnGICwZNPpeiFXs
-	 3xOtZ4b63ra11JimHJy+PkWM+Wt27PsjfMlfHOrQu0K+ThgNTXkXkAK09WiOcdIAWv
-	 9PQmOZVJ2mZT74SXaIp2I1e15w8UTk+ZcisEy/Yg=
+	b=tm5z7MGMAIHzi6jXyqm7bHBt3zWXn35sWI2GnoNBHX/jsSJPnIonHJqkX+2B9ENNq
+	 y4X3rU+BnIRwzcIzMK3xE4ixl/2J0dxiLIV8Mf7p1RnK7FWYPcsidK7WC70p5/91/d
+	 rAh5ECY0GHiy2HMcypxQ/3PHRF6TBJAYjdZ8mOVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Brian Kubisiak <brian@kubisiak.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 084/402] wifi: ath10k: Fix an error code problem in ath10k_dbg_sta_write_peer_debug_trigger()
+Subject: [PATCH 5.10 023/317] ecryptfs: Fix buffer size for tag 66 packet
 Date: Thu, 13 Jun 2024 13:30:41 +0200
-Message-ID: <20240613113305.412593003@linuxfoundation.org>
+Message-ID: <20240613113248.437947646@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Brian Kubisiak <brian@kubisiak.com>
 
-[ Upstream commit c511a9c12674d246916bb16c479d496b76983193 ]
+[ Upstream commit 85a6a1aff08ec9f5b929d345d066e2830e8818e5 ]
 
-Clang Static Checker (scan-build) warns:
+The 'TAG 66 Packet Format' description is missing the cipher code and
+checksum fields that are packed into the message packet. As a result,
+the buffer allocated for the packet is 3 bytes too small and
+write_tag_66_packet() will write up to 3 bytes past the end of the
+buffer.
 
-drivers/net/wireless/ath/ath10k/debugfs_sta.c:line 429, column 3
-Value stored to 'ret' is never read.
+Fix this by increasing the size of the allocation so the whole packet
+will always fit in the buffer.
 
-Return 'ret' rather than 'count' when 'ret' stores an error code.
+This fixes the below kasan slab-out-of-bounds bug:
 
-Fixes: ee8b08a1be82 ("ath10k: add debugfs support to get per peer tids log via tracing")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240422034243.938962-1-suhui@nfschina.com
+  BUG: KASAN: slab-out-of-bounds in ecryptfs_generate_key_packet_set+0x7d6/0xde0
+  Write of size 1 at addr ffff88800afbb2a5 by task touch/181
+
+  CPU: 0 PID: 181 Comm: touch Not tainted 6.6.13-gnu #1 4c9534092be820851bb687b82d1f92a426598dc6
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2/GNU Guix 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x4c/0x70
+   print_report+0xc5/0x610
+   ? ecryptfs_generate_key_packet_set+0x7d6/0xde0
+   ? kasan_complete_mode_report_info+0x44/0x210
+   ? ecryptfs_generate_key_packet_set+0x7d6/0xde0
+   kasan_report+0xc2/0x110
+   ? ecryptfs_generate_key_packet_set+0x7d6/0xde0
+   __asan_store1+0x62/0x80
+   ecryptfs_generate_key_packet_set+0x7d6/0xde0
+   ? __pfx_ecryptfs_generate_key_packet_set+0x10/0x10
+   ? __alloc_pages+0x2e2/0x540
+   ? __pfx_ovl_open+0x10/0x10 [overlay 30837f11141636a8e1793533a02e6e2e885dad1d]
+   ? dentry_open+0x8f/0xd0
+   ecryptfs_write_metadata+0x30a/0x550
+   ? __pfx_ecryptfs_write_metadata+0x10/0x10
+   ? ecryptfs_get_lower_file+0x6b/0x190
+   ecryptfs_initialize_file+0x77/0x150
+   ecryptfs_create+0x1c2/0x2f0
+   path_openat+0x17cf/0x1ba0
+   ? __pfx_path_openat+0x10/0x10
+   do_filp_open+0x15e/0x290
+   ? __pfx_do_filp_open+0x10/0x10
+   ? __kasan_check_write+0x18/0x30
+   ? _raw_spin_lock+0x86/0xf0
+   ? __pfx__raw_spin_lock+0x10/0x10
+   ? __kasan_check_write+0x18/0x30
+   ? alloc_fd+0xf4/0x330
+   do_sys_openat2+0x122/0x160
+   ? __pfx_do_sys_openat2+0x10/0x10
+   __x64_sys_openat+0xef/0x170
+   ? __pfx___x64_sys_openat+0x10/0x10
+   do_syscall_64+0x60/0xd0
+   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+  RIP: 0033:0x7f00a703fd67
+  Code: 25 00 00 41 00 3d 00 00 41 00 74 37 64 8b 04 25 18 00 00 00 85 c0 75 5b 44 89 e2 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 85 00 00 00 48 83 c4 68 5d 41 5c c3 0f 1f
+  RSP: 002b:00007ffc088e30b0 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
+  RAX: ffffffffffffffda RBX: 00007ffc088e3368 RCX: 00007f00a703fd67
+  RDX: 0000000000000941 RSI: 00007ffc088e48d7 RDI: 00000000ffffff9c
+  RBP: 00007ffc088e48d7 R08: 0000000000000001 R09: 0000000000000000
+  R10: 00000000000001b6 R11: 0000000000000246 R12: 0000000000000941
+  R13: 0000000000000000 R14: 00007ffc088e48d7 R15: 00007f00a7180040
+   </TASK>
+
+  Allocated by task 181:
+   kasan_save_stack+0x2f/0x60
+   kasan_set_track+0x29/0x40
+   kasan_save_alloc_info+0x25/0x40
+   __kasan_kmalloc+0xc5/0xd0
+   __kmalloc+0x66/0x160
+   ecryptfs_generate_key_packet_set+0x6d2/0xde0
+   ecryptfs_write_metadata+0x30a/0x550
+   ecryptfs_initialize_file+0x77/0x150
+   ecryptfs_create+0x1c2/0x2f0
+   path_openat+0x17cf/0x1ba0
+   do_filp_open+0x15e/0x290
+   do_sys_openat2+0x122/0x160
+   __x64_sys_openat+0xef/0x170
+   do_syscall_64+0x60/0xd0
+   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Fixes: dddfa461fc89 ("[PATCH] eCryptfs: Public key; packet management")
+Signed-off-by: Brian Kubisiak <brian@kubisiak.com>
+Link: https://lore.kernel.org/r/5j2q56p6qkhezva6b2yuqfrsurmvrrqtxxzrnp3wqu7xrz22i7@hoecdztoplbl
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/debugfs_sta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ecryptfs/keystore.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/debugfs_sta.c b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-index 367539f2c3700..f7912c72cba34 100644
---- a/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-+++ b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-@@ -438,7 +438,7 @@ ath10k_dbg_sta_write_peer_debug_trigger(struct file *file,
- 	}
- out:
- 	mutex_unlock(&ar->conf_mutex);
--	return count;
-+	return ret ?: count;
- }
- 
- static const struct file_operations fops_peer_debug_trigger = {
+diff --git a/fs/ecryptfs/keystore.c b/fs/ecryptfs/keystore.c
+index f6a17d259db74..afe51b4be1e73 100644
+--- a/fs/ecryptfs/keystore.c
++++ b/fs/ecryptfs/keystore.c
+@@ -300,9 +300,11 @@ write_tag_66_packet(char *signature, u8 cipher_code,
+ 	 *         | Key Identifier Size      | 1 or 2 bytes |
+ 	 *         | Key Identifier           | arbitrary    |
+ 	 *         | File Encryption Key Size | 1 or 2 bytes |
++	 *         | Cipher Code              | 1 byte       |
+ 	 *         | File Encryption Key      | arbitrary    |
++	 *         | Checksum                 | 2 bytes      |
+ 	 */
+-	data_len = (5 + ECRYPTFS_SIG_SIZE_HEX + crypt_stat->key_size);
++	data_len = (8 + ECRYPTFS_SIG_SIZE_HEX + crypt_stat->key_size);
+ 	*packet = kmalloc(data_len, GFP_KERNEL);
+ 	message = *packet;
+ 	if (!message) {
 -- 
 2.43.0
 
