@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-50999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E7B0906DDA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A6B4906FCB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B57411C21160
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B35628950C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7821459F3;
-	Thu, 13 Jun 2024 12:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AE5145FF1;
+	Thu, 13 Jun 2024 12:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFXffDRV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tncSq6qx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8A31428F0;
-	Thu, 13 Jun 2024 12:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8FD145B33;
+	Thu, 13 Jun 2024 12:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280008; cv=none; b=B4vLT7yGQyrdfMKKTB5g6pYV3FR6vLYk/03pHl8XlrUfA6Yx5tHAiYJquODNZywlOF7Qhxv/jt/bx4XyivXbQwbZV6l9pxq15qHFHBWSRYUmHAOdOh9cUyZURIxxDTvLeb5IfacHWeqOlEGb+ORzUxgJM0tVozwJDLJr6Ay5KWk=
+	t=1718281251; cv=none; b=jcLNfx8fuvy5I9NGMqYvnJKkQ/0YlMB2VPRNQIns3NdniFQzz8ubEV/L4odq+lLDcIech7/JhADXURlcMARInHCFdgZFRxzAu54CScg6bHwFY0qRtyo5Ccngn6SKShZ1Ag8yV16CbXrP+l+MRzqGwCuuamBmwhfeyF7TuX9FoO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280008; c=relaxed/simple;
-	bh=sJGSwo/1On3tMuuR+Rg4kdWuwI7nhqsH2UvO/pZio+U=;
+	s=arc-20240116; t=1718281251; c=relaxed/simple;
+	bh=n7UeesZY/GDJISOrgQaoLfevs6ilKEFckfcpbrLHvpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WytPV7iBArhPQ1PUU05AkiinN6lLOpMmANumBlg2EoWpNam1RHrfQAOuKmiiBeSRerUsRUwnaEjQu++ETj/WDxSpVesPoyk3QQK8gExsQlVDFxAEC1dCEl67c4zm+YQE2NvPhzTC8umjCd51iL6Lx/7HieS2fZK+ykHdTl3EjzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFXffDRV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F23C2BBFC;
-	Thu, 13 Jun 2024 12:00:08 +0000 (UTC)
+	 MIME-Version; b=AFn7V7G/99ZMqfRoiKS+FmHsCoROqHTsl1YcKtFCPh5yHqZeye1CSQtnpky39+y1/4P6biAg6aQvuDwRNOS67VJwQgdQrz4GHaNCiSEtmxOMG7+kM2GqhpAfY6J1nn1eoWROqXL8UKFJekpAjHWzR0pddiZ5DV04EdipEHkrG+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tncSq6qx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418DFC2BBFC;
+	Thu, 13 Jun 2024 12:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280008;
-	bh=sJGSwo/1On3tMuuR+Rg4kdWuwI7nhqsH2UvO/pZio+U=;
+	s=korg; t=1718281251;
+	bh=n7UeesZY/GDJISOrgQaoLfevs6ilKEFckfcpbrLHvpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFXffDRV5hDCp01l8cb0ilGUHyK+gBO1siZCsmQcLYPT45PmI+tWztbGjjjYghLPU
-	 LgcVpWrmY4/AnxK0i6NpHJOtRJMYHK2Cd1aJGy0CjtIJQDSGZ3xh60MoiQUJV4CROp
-	 +I1V1ckgoJwOP6L+IB5KCHlS0mPPbCkUsXqKkgwc=
+	b=tncSq6qxr1hTlOEgh66UyKsDVd+g3IrBm5UfXtpfNRRqE0mgWrdA+reoOPYCSyZSV
+	 tIVhNbj1yiHncBDFHdcgx9/dEh0DOGO5R3xU1Za2cPSPQkp/AYPGFHw9E/MfmA2alJ
+	 cVsoT7jio8jup2o5qsepzDvFz3EpesAmcVKghUXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wulff <chris.wulff@biamp.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Egorenkov <egorenar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 111/202] usb: gadget: u_audio: Clear uac pointer when freed.
+Subject: [PATCH 5.10 191/317] s390/ipl: Fix incorrect initialization of len fields in nvme reipl block
 Date: Thu, 13 Jun 2024 13:33:29 +0200
-Message-ID: <20240613113232.045353658@linuxfoundation.org>
+Message-ID: <20240613113254.945702166@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Wulff <Chris.Wulff@biamp.com>
+From: Alexander Egorenkov <egorenar@linux.ibm.com>
 
-[ Upstream commit a2cf936ebef291ef7395172b9e2f624779fb6dc0 ]
+[ Upstream commit 9c922b73acaf39f867668d9cbe5dc69c23511f84 ]
 
-This prevents use of a stale pointer if functions are called after
-g_cleanup that shouldn't be. This doesn't fix any races, but converts
-a possibly silent kernel memory corruption into an obvious NULL pointer
-dereference report.
+Use correct symbolic constants IPL_BP_NVME_LEN and IPL_BP0_NVME_LEN
+to initialize nvme reipl block when 'scp_data' sysfs attribute is
+being updated. This bug had not been detected before because
+the corresponding fcp and nvme symbolic constants are equal.
 
-Fixes: eb9fecb9e69b ("usb: gadget: f_uac2: split out audio core")
-Signed-off-by: Chris Wulff <chris.wulff@biamp.com>
-Link: https://lore.kernel.org/stable/CO1PR17MB54194226DA08BFC9EBD8C163E1172%40CO1PR17MB5419.namprd17.prod.outlook.com
-Link: https://lore.kernel.org/r/CO1PR17MB54194226DA08BFC9EBD8C163E1172@CO1PR17MB5419.namprd17.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 23a457b8d57d ("s390: nvme reipl")
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_audio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/s390/kernel/ipl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/u_audio.c b/drivers/usb/gadget/function/u_audio.c
-index 53b30de16a896..994316d51a0e1 100644
---- a/drivers/usb/gadget/function/u_audio.c
-+++ b/drivers/usb/gadget/function/u_audio.c
-@@ -624,6 +624,8 @@ void g_audio_cleanup(struct g_audio *g_audio)
- 		return;
+diff --git a/arch/s390/kernel/ipl.c b/arch/s390/kernel/ipl.c
+index c469e8848d659..ab23742088d05 100644
+--- a/arch/s390/kernel/ipl.c
++++ b/arch/s390/kernel/ipl.c
+@@ -832,8 +832,8 @@ static ssize_t reipl_nvme_scpdata_write(struct file *filp, struct kobject *kobj,
+ 		scpdata_len += padding;
+ 	}
  
- 	uac = g_audio->uac;
-+	g_audio->uac = NULL;
-+
- 	card = uac->card;
- 	if (card)
- 		snd_card_free_when_closed(card);
+-	reipl_block_nvme->hdr.len = IPL_BP_FCP_LEN + scpdata_len;
+-	reipl_block_nvme->nvme.len = IPL_BP0_FCP_LEN + scpdata_len;
++	reipl_block_nvme->hdr.len = IPL_BP_NVME_LEN + scpdata_len;
++	reipl_block_nvme->nvme.len = IPL_BP0_NVME_LEN + scpdata_len;
+ 	reipl_block_nvme->nvme.scp_data_len = scpdata_len;
+ 
+ 	return count;
 -- 
 2.43.0
 
