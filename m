@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-50628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B04906B9D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5CE906C6D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F112B240AF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 247C42815C8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82C7144D00;
-	Thu, 13 Jun 2024 11:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2231448EA;
+	Thu, 13 Jun 2024 11:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRJSeeeo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3cEW5ip"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D926143871;
-	Thu, 13 Jun 2024 11:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE971386DF;
+	Thu, 13 Jun 2024 11:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278923; cv=none; b=WEq1DvF2Qe/756J0HyQGawYdtRSt+zePf+8jbaS4meEjzOLL3Oh+32f82mKB5jrmVOEbDCqL+ccaofin0x4cxHqVCuC9GBYjh9FpyRrtXQ/a0icdeAfSSNsStC3KqmYJTxlsXezxXy0Vz2l/qN6B/WLC8bb6qGHfHU6cPZ+Dx+I=
+	t=1718279295; cv=none; b=QH+dwYLEJvDuVOKea/PWcQB8i3ITJW4UMPpaH4NyN8f/z1DmFgnXX5PMwJ7/ztrQc7V0W4cY0KcTKAgAJCSEF1TfNQWll6rUVuQnQrk7Xz2K2kVr2YCT8ULWLhNt/+ue+CnabAieyuw8e7Im5Ye236ddsCR9Ay+AfCbzS4P+P9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278923; c=relaxed/simple;
-	bh=U067fcDEO4Gxbwq2GnzfUnzP4f0HLDZE/TM/0I/CeAA=;
+	s=arc-20240116; t=1718279295; c=relaxed/simple;
+	bh=dB36BTEh36BJmXU+LGExqPXY1E9lUYNNTpdGEf0p/nI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N7hZq5FFrfDlEHZR7fStxjSPT982K1NX1K0CvZHnelkFI60qIR+zdm/fDGQPZxYoBBW0MLeHQn2CE9fXAE20djRHaim/ya792xkS7mH84kFr9q86LzTENB8Th0tCPRrVPLYYyR9e7/e78bE9HX9NfngxCtW0z30/azqZQQdVYXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRJSeeeo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3578C2BBFC;
-	Thu, 13 Jun 2024 11:42:02 +0000 (UTC)
+	 MIME-Version; b=AxEEWDSpyWZuu1ejIuPoUQQr1faP/W1iwpDlbhOAkI7ZZ4dMsAjPjY4eGIWOtG6s82fmeK5G9vTAYM8XanDjkSgWDi9ueS0Diu+WglN+xt270tyrk+j0PBLeCiglUtTdl+NO+8aRn/Scr0zptJsz4fadeRrr1NUhClLf1m4RSoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3cEW5ip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DF4C2BBFC;
+	Thu, 13 Jun 2024 11:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278923;
-	bh=U067fcDEO4Gxbwq2GnzfUnzP4f0HLDZE/TM/0I/CeAA=;
+	s=korg; t=1718279295;
+	bh=dB36BTEh36BJmXU+LGExqPXY1E9lUYNNTpdGEf0p/nI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KRJSeeeofgszIDs1xjH6ym76gRz5ArnfzCGzovpxg/yAI/yyCCaTHIaHwbFGZRu6v
-	 moK4RDuT9Yr414hWAPMiFxIBA/1pL0S99PTKpPPuBzq0/RIevCy/+U6b279+Dsoa3F
-	 IzY5XvK3eb/OjouZ3SDxz9mnDyS/6LdalcGBI/fA=
+	b=B3cEW5ipNoYpka9O3vb8Y4+YraDdINSPEazFzDOHOepYIojexamxSm5mF9R9swzdp
+	 0CA/YsXduomcPR2bgqtHVx8bRj8gnGq4oBMeRtqMOaBjvRSJLLUtG2wimFjDbLA3ld
+	 AjNMnb7qN+ZwmvkPxqN6Kkv0Leu+dOPROPNT76sM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valentin Schneider <valentin.schneider@arm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	mingo@kernel.org,
-	vincent.guittot@linaro.org,
-	juri.lelli@redhat.com,
-	seto.hidetoshi@jp.fujitsu.com,
-	qperret@google.com,
-	Dietmar.Eggemann@arm.com,
-	morten.rasmussen@arm.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 085/213] sched/topology: Dont set SD_BALANCE_WAKE on cpuset domain relax
+	Zheyu Ma <zheyuma97@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 6.9 008/157] media: lgdt3306a: Add a check against null-pointer-def
 Date: Thu, 13 Jun 2024 13:32:13 +0200
-Message-ID: <20240613113231.289434048@linuxfoundation.org>
+Message-ID: <20240613113227.724450994@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,75 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valentin Schneider <valentin.schneider@arm.com>
+From: Zheyu Ma <zheyuma97@gmail.com>
 
-[ Upstream commit 9ae7ab20b4835dbea0e5fc6a5c70171dc354a72e ]
+commit c1115ddbda9c930fba0fdd062e7a8873ebaf898d upstream.
 
-As pointed out in commit
+The driver should check whether the client provides the platform_data.
 
-  182a85f8a119 ("sched: Disable wakeup balancing")
+The following log reveals it:
 
-SD_BALANCE_WAKE is a tad too aggressive, and is usually left unset.
+[   29.610324] BUG: KASAN: null-ptr-deref in kmemdup+0x30/0x40
+[   29.610730] Read of size 40 at addr 0000000000000000 by task bash/414
+[   29.612820] Call Trace:
+[   29.613030]  <TASK>
+[   29.613201]  dump_stack_lvl+0x56/0x6f
+[   29.613496]  ? kmemdup+0x30/0x40
+[   29.613754]  print_report.cold+0x494/0x6b7
+[   29.614082]  ? kmemdup+0x30/0x40
+[   29.614340]  kasan_report+0x8a/0x190
+[   29.614628]  ? kmemdup+0x30/0x40
+[   29.614888]  kasan_check_range+0x14d/0x1d0
+[   29.615213]  memcpy+0x20/0x60
+[   29.615454]  kmemdup+0x30/0x40
+[   29.615700]  lgdt3306a_probe+0x52/0x310
+[   29.616339]  i2c_device_probe+0x951/0xa90
 
-However, it turns out cpuset domain relaxation will unconditionally set it
-on domains below the relaxation level. This made sense back when
-SD_BALANCE_WAKE was set unconditionally, but it no longer is the case.
-
-We can improve things slightly by noticing that set_domain_attribute() is
-always called after sd_init(), so rather than setting flags we can rely on
-whatever sd_init() is doing and only clear certain flags when above the
-relaxation level.
-
-While at it, slightly clean up the function and flip the relax level
-check to be more human readable.
-
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: mingo@kernel.org
-Cc: vincent.guittot@linaro.org
-Cc: juri.lelli@redhat.com
-Cc: seto.hidetoshi@jp.fujitsu.com
-Cc: qperret@google.com
-Cc: Dietmar.Eggemann@arm.com
-Cc: morten.rasmussen@arm.com
-Link: https://lkml.kernel.org/r/20191014164408.32596-1-valentin.schneider@arm.com
-Stable-dep-of: a1fd0b9d751f ("sched/fair: Allow disabling sched_balance_newidle with sched_relax_domain_level")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-media/20220405095018.3993578-1-zheyuma97@gmail.com
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/topology.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/media/dvb-frontends/lgdt3306a.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 02e85cd233d42..c171783bda0cf 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -965,16 +965,13 @@ static void set_domain_attribute(struct sched_domain *sd,
- 	if (!attr || attr->relax_domain_level < 0) {
- 		if (default_relax_domain_level < 0)
- 			return;
--		else
--			request = default_relax_domain_level;
-+		request = default_relax_domain_level;
- 	} else
- 		request = attr->relax_domain_level;
--	if (request < sd->level) {
-+
-+	if (sd->level > request) {
- 		/* Turn off idle balance on this domain: */
- 		sd->flags &= ~(SD_BALANCE_WAKE|SD_BALANCE_NEWIDLE);
--	} else {
--		/* Turn on idle balance on this domain: */
--		sd->flags |= (SD_BALANCE_WAKE|SD_BALANCE_NEWIDLE);
- 	}
- }
+--- a/drivers/media/dvb-frontends/lgdt3306a.c
++++ b/drivers/media/dvb-frontends/lgdt3306a.c
+@@ -2176,6 +2176,11 @@ static int lgdt3306a_probe(struct i2c_cl
+ 	struct dvb_frontend *fe;
+ 	int ret;
  
--- 
-2.43.0
-
++	if (!client->dev.platform_data) {
++		dev_err(&client->dev, "platform data is mandatory\n");
++		return -EINVAL;
++	}
++
+ 	config = kmemdup(client->dev.platform_data,
+ 			 sizeof(struct lgdt3306a_config), GFP_KERNEL);
+ 	if (config == NULL) {
 
 
 
