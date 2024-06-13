@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-51101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B65906E57
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C39906DEE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DE401F21212
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F40C1C21DB8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1329C1448D4;
-	Thu, 13 Jun 2024 12:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6251474BC;
+	Thu, 13 Jun 2024 12:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asWEufGe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxNyg2GT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CC3144312;
-	Thu, 13 Jun 2024 12:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E551474B3;
+	Thu, 13 Jun 2024 12:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280311; cv=none; b=WUhGsc3QdLiJ/gknJ5i6s0G8OdwRuHUp4lvOWlm2B13bgQ9o34WN3FjwNnSs0AaL0+7UehUokMXtINWQoWczhLjzKGhtkXlY2ZlVlKgzCRDujQgQYC8jxgLLJQPKArGZGw02WxEsDPzaQBXE2YdkblLn7FkF2RYXkjDIe+tFpBo=
+	t=1718280051; cv=none; b=u3eWe0QgWDvfQjy6B452CoCoJLSu3uE7XKX8byEj9a2dm1rgykS1/cdLFaM2xAE/FyrPSVgI6KqsCGL4WLr0nlIqMPUipllN9ttZhppAFPl2AC/Vh5yZQagUWFqGxNQRQOHaVrwn08yauBQiGAhwBx7w8/CDvJ8FB0vHX9NoyK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280311; c=relaxed/simple;
-	bh=4ZEVny77icUi1UV/Efc68pqtDXWSOOdJUn3wrsnFGfk=;
+	s=arc-20240116; t=1718280051; c=relaxed/simple;
+	bh=0s/9zkknJwXEE08sHrR1Rn/8VKFU5oTPHSClTDT7P5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJ7YlWtuS3sHvan2/vf7C87Gne+TuP6x+m4MOqVFAdAq5F9qia7F2uU2lhPzL9XsAfJUsItSZ9XuuzfVImVRYxVC5Pxgd+XRG5UTLNPf4YoW/iHrh1P2Y4A3e5jeFO9S3KGjgCQyhrESZ4effFoAlmalk3nUl5oqpBKoZ2W1CKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asWEufGe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2024EC2BBFC;
-	Thu, 13 Jun 2024 12:05:10 +0000 (UTC)
+	 MIME-Version; b=orFS9Sbu+neA3I4/l+SmRYcuKJM/Wbiv6H1ZdFhqeJzQYkBn1jfvPJgdx38xc+HU5qn/A60cRTmeE73Ew1JvbLjG9v3VLwL9uiYcMW8LZ4PwrYVGLmtSoyZYYDqiZas9HdJIcZrad7MFgSaJJb8FF/RWjMVaMuqZqaqTKMSd+rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxNyg2GT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5057BC4AF1A;
+	Thu, 13 Jun 2024 12:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280311;
-	bh=4ZEVny77icUi1UV/Efc68pqtDXWSOOdJUn3wrsnFGfk=;
+	s=korg; t=1718280050;
+	bh=0s/9zkknJwXEE08sHrR1Rn/8VKFU5oTPHSClTDT7P5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=asWEufGetob3vXmeKTdeSRtUDcKfkGtUo/KTRwHCvgvSQ9zXX6yxqm3fgK2a1aEY4
-	 fGdN6rJethp9BpDL+rGs4DCpyAuqsSftetj1GAuAUsGtSjLoNVG210mphbPOhRZJ5F
-	 XUJ0tl07rNtRy72xPvsHsX+8TO6HhnQXzHRrqt90=
+	b=JxNyg2GT68ONHGr8Wv3XtTusFtikytBUMu20jil0ZrMQujftf+Q3ND9JPHGvMWGhk
+	 61S8DOia0kCAqaZQ8h8QeFQJm/SAlVFtSFZcCjZLvnzsoivA3iSpYEwtOLA72z25o7
+	 atPMhyLLi2kwVl02VVK6mYXzNdUZmUCN93PA90ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Henrik Sylvester <jan.henrik.sylvester@uni-hamburg.de>,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 003/137] afs: Dont cross .backup mountpoint from backup volume
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Trond Myklebust <trondmy@hammerspace.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 085/202] SUNRPC: Fix gss_free_in_token_pages()
 Date: Thu, 13 Jun 2024 13:33:03 +0200
-Message-ID: <20240613113223.416442580@linuxfoundation.org>
+Message-ID: <20240613113231.051917942@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,55 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Dionne <marc.dionne@auristor.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 29be9100aca2915fab54b5693309bc42956542e5 upstream.
+[ Upstream commit bafa6b4d95d97877baa61883ff90f7e374427fae ]
 
-Don't cross a mountpoint that explicitly specifies a backup volume
-(target is <vol>.backup) when starting from a backup volume.
+Dan Carpenter says:
+> Commit 5866efa8cbfb ("SUNRPC: Fix svcauth_gss_proxy_init()") from Oct
+> 24, 2019 (linux-next), leads to the following Smatch static checker
+> warning:
+>
+> 	net/sunrpc/auth_gss/svcauth_gss.c:1039 gss_free_in_token_pages()
+> 	warn: iterator 'i' not incremented
+>
+> net/sunrpc/auth_gss/svcauth_gss.c
+>     1034 static void gss_free_in_token_pages(struct gssp_in_token *in_token)
+>     1035 {
+>     1036         u32 inlen;
+>     1037         int i;
+>     1038
+> --> 1039         i = 0;
+>     1040         inlen = in_token->page_len;
+>     1041         while (inlen) {
+>     1042                 if (in_token->pages[i])
+>     1043                         put_page(in_token->pages[i]);
+>                                                          ^
+> This puts page zero over and over.
+>
+>     1044                 inlen -= inlen > PAGE_SIZE ? PAGE_SIZE : inlen;
+>     1045         }
+>     1046
+>     1047         kfree(in_token->pages);
+>     1048         in_token->pages = NULL;
+>     1049 }
 
-It it not uncommon to mount a volume's backup directly in the volume
-itself.  This can cause tools that are not paying attention to get
-into a loop mounting the volume onto itself as they attempt to
-traverse the tree, leading to a variety of problems.
+Based on the way that the ->pages[] array is constructed in
+gss_read_proxy_verf(), we know that once the loop encounters a NULL
+page pointer, the remaining array elements must also be NULL.
 
-This doesn't prevent the general case of loops in a sequence of
-mountpoints, but addresses a common special case in the same way
-as other afs clients.
-
-Reported-by: Jan Henrik Sylvester <jan.henrik.sylvester@uni-hamburg.de>
-Link: http://lists.infradead.org/pipermail/linux-afs/2024-May/008454.html
-Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
-Link: http://lists.infradead.org/pipermail/linux-afs/2024-February/008074.html
-Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/768760.1716567475@warthog.procyon.org.uk
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Suggested-by: Trond Myklebust <trondmy@hammerspace.com>
+Fixes: 5866efa8cbfb ("SUNRPC: Fix svcauth_gss_proxy_init()")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/mntpt.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/sunrpc/auth_gss/svcauth_gss.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
---- a/fs/afs/mntpt.c
-+++ b/fs/afs/mntpt.c
-@@ -140,6 +140,11 @@ static int afs_mntpt_set_params(struct f
- 		put_page(page);
- 		if (ret < 0)
- 			return ret;
-+
-+		/* Don't cross a backup volume mountpoint from a backup volume */
-+		if (src_as->volume && src_as->volume->type == AFSVL_BACKVOL &&
-+		    ctx->type == AFSVL_BACKVOL)
-+			return -ENODEV;
- 	}
+diff --git a/net/sunrpc/auth_gss/svcauth_gss.c b/net/sunrpc/auth_gss/svcauth_gss.c
+index 1a869a203d520..053c65da04bca 100644
+--- a/net/sunrpc/auth_gss/svcauth_gss.c
++++ b/net/sunrpc/auth_gss/svcauth_gss.c
+@@ -1074,17 +1074,11 @@ gss_read_verf(struct rpc_gss_wire_cred *gc,
  
- 	return 0;
+ static void gss_free_in_token_pages(struct gssp_in_token *in_token)
+ {
+-	u32 inlen;
+ 	int i;
+ 
+ 	i = 0;
+-	inlen = in_token->page_len;
+-	while (inlen) {
+-		if (in_token->pages[i])
+-			put_page(in_token->pages[i]);
+-		inlen -= inlen > PAGE_SIZE ? PAGE_SIZE : inlen;
+-	}
+-
++	while (in_token->pages[i])
++		put_page(in_token->pages[i++]);
+ 	kfree(in_token->pages);
+ 	in_token->pages = NULL;
+ }
+-- 
+2.43.0
+
 
 
 
