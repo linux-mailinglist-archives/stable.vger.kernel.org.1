@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-51421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0701D906FCA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFEE9071D8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:41:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D0231C23169
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AEFE1F280E7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155F4145FE5;
-	Thu, 13 Jun 2024 12:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D99913E3F9;
+	Thu, 13 Jun 2024 12:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/RI9KTm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnhIE9sf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C696F14534A;
-	Thu, 13 Jun 2024 12:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA7B1C32;
+	Thu, 13 Jun 2024 12:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281248; cv=none; b=EpNW5qpfryMDBGCR/TwjBF+ySGv4ob2aC3VsJapxyUGPLt0yB//t351i7P4Sht0pulzOnU3stU1KJdSAxQVd1NZ2miuS/3IVygDVlInxom+rN2xqHP/puMS2zKXqL3pcFrQ2YNUT6K9FoFLinF3AMeyc0T2LbjUTtCgxJtT/DT0=
+	t=1718282443; cv=none; b=olV9sRDsrsFel4CxYUv9TjWjmVGF0UtBjXsdnqRhnyg9vcTW8bivfOl+jatKx0U9Y/ACiqcqhnrqmKgPRdMByCnO+gLo3kTo0JiCvm/XGWi2886Nmwcj5/Vhd7/SFGYmrALD+5ev5/ph3K+xdn9dP8kzoXwLWtzJ7fKQgo00NZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281248; c=relaxed/simple;
-	bh=Ofq/dNmXcwIKaun8BIZ3ujAcd+NVVhE+0E9MSo2SjRs=;
+	s=arc-20240116; t=1718282443; c=relaxed/simple;
+	bh=ScdZ633rWNIGcpyubDibAOnuWzqTrmzTXmy33g7Z/Fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRYan+QAesh1Q9CqQXf2hGTfALh5sDaZHCT6u39AmeMXDxi9FoGVaJCAmbGnqln6ChCNVDVKUoSOVt4U/Q4qpjGRXPSrPJdVn1gY6k3BXem82hj5+sjS6uR0K45b1lVvandOMzAI9BIOoR+j+03Slea+rTBTapcLbX+/Mcp/Ko8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/RI9KTm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 229A2C2BBFC;
-	Thu, 13 Jun 2024 12:20:48 +0000 (UTC)
+	 MIME-Version; b=sgt1ObTK5Dx/g5MAc/cYbXwtJFIgQSk2Gx1WDbEqgm5r3TbRORYxn4aFR2u5By1Ir3wEPASZZ8eQgQ4ImNuonoQ3g/eT4peKN9F9bm7bWyxSYtqsSEsADn7Kv4yiXPyvGfyXHPKANGUKH1OGyE2xAUyGu86Jsq+ZMLQL6trWlgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnhIE9sf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A822C2BBFC;
+	Thu, 13 Jun 2024 12:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281248;
-	bh=Ofq/dNmXcwIKaun8BIZ3ujAcd+NVVhE+0E9MSo2SjRs=;
+	s=korg; t=1718282442;
+	bh=ScdZ633rWNIGcpyubDibAOnuWzqTrmzTXmy33g7Z/Fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/RI9KTmPixod/zzZBUEr19aFWqq8XM2i0tkuj9JCq3cPSslow2B1hj8vD/Zp30vK
-	 pGeWs2yAy74lK5Bcf8Ud2bfD9Z56TKwGBM9LBUwb7gLr+pNMEv5DR6Z7A3geixkLKL
-	 wLoCgeDLKoGk47e90QXwjkCL02QDiMgHzdMkFQhA=
+	b=ZnhIE9sffrqF29SsFNw0ydNW9n76TJGzKTSBdmZs5bm1qDcn1wvpd8vqTHWIZpkfe
+	 rs9So8Zs3r8xi0SVSiJybApVA6DqsP1893usbj3+Ao2fBQsZfWBn2TP1/+H+3XcFRp
+	 7A4GyITWJTIq8iF11ZUbFZUjuDFgHlzg6HbOAS7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kaige Ye <ye@kaige.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 190/317] perf stat: Dont display metric header for non-leader uncore events
+Subject: [PATCH 5.15 251/402] mmc: sdhci_am654: Drop lookup for deprecated ti,otap-del-sel
 Date: Thu, 13 Jun 2024 13:33:28 +0200
-Message-ID: <20240613113254.907414857@linuxfoundation.org>
+Message-ID: <20240613113311.939159870@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,92 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Vignesh Raghavendra <vigneshr@ti.com>
 
-[ Upstream commit 193a9e30207f54777ff42d0d8be8389edc522277 ]
+[ Upstream commit 5cb2f9286a31f33dc732c57540838ad9339393ab ]
 
-On an Intel tigerlake laptop a metric like:
+ti,otap-del-sel has been deprecated since v5.7 and there are no users of
+this property and no documentation in the DT bindings either.
+Drop the fallback code looking for this property, this makes
+sdhci_am654_get_otap_delay() much easier to read as all the TAP values
+can be handled via a single iterator loop.
 
-    {
-        "BriefDescription": "Test",
-        "MetricExpr": "imc_free_running@data_read@ + imc_free_running@data_write@",
-        "MetricGroup": "Test",
-        "MetricName": "Test",
-        "ScaleUnit": "6.103515625e-5MiB"
-    },
-
-Will have 4 events:
-
-  uncore_imc_free_running_0/data_read/
-  uncore_imc_free_running_0/data_write/
-  uncore_imc_free_running_1/data_read/
-  uncore_imc_free_running_1/data_write/
-
-If aggregration is disabled with metric-only 2 column headers are
-needed:
-
-  $ perf stat -M test --metric-only -A -a sleep 1
-
-   Performance counter stats for 'system wide':
-
-                    MiB  Test            MiB  Test
-  CPU0                 1821.0               1820.5
-
-But when not, the counts aggregated in the metric leader and only 1
-column should be shown:
-
-  $ perf stat -M test --metric-only -a sleep 1
-   Performance counter stats for 'system wide':
-
-              MiB  Test
-                5909.4
-
-         1.001258915 seconds time elapsed
-
-Achieve this by skipping events that aren't metric leaders when
-printing column headers and aggregation isn't disabled.
-
-The bug is long standing, the fixes tag is set to a refactor as that
-is as far back as is reasonable to backport.
-
-Fixes: 088519f318be3a41 ("perf stat: Move the display functions to stat-display.c")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kaige Ye <ye@kaige.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20240510051309.2452468-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20231122060215.2074799-1-vigneshr@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 387c1bf7dce0 ("mmc: sdhci_am654: Add OTAP/ITAP delay enable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/stat-display.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mmc/host/sdhci_am654.c | 37 ++++++----------------------------
+ 1 file changed, 6 insertions(+), 31 deletions(-)
 
-diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
-index 971fd77bd3e61..8c2da9a3f953c 100644
---- a/tools/perf/util/stat-display.c
-+++ b/tools/perf/util/stat-display.c
-@@ -939,6 +939,9 @@ static void print_metric_headers(struct perf_stat_config *config,
+diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+index e68fce4413c8a..8203fc15c507a 100644
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -140,7 +140,6 @@ static const struct timing_data td[] = {
  
- 	/* Print metrics headers only */
- 	evlist__for_each_entry(evlist, counter) {
-+		if (config->aggr_mode != AGGR_NONE && counter->metric_leader != counter)
-+			continue;
-+
- 		os.evsel = counter;
- 		out.ctx = &os;
- 		out.print_metric = print_metric_header;
+ struct sdhci_am654_data {
+ 	struct regmap *base;
+-	bool legacy_otapdly;
+ 	int otap_del_sel[ARRAY_SIZE(td)];
+ 	int itap_del_sel[ARRAY_SIZE(td)];
+ 	int clkbuf_sel;
+@@ -278,11 +277,7 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
+ 	sdhci_set_clock(host, clock);
+ 
+ 	/* Setup DLL Output TAP delay */
+-	if (sdhci_am654->legacy_otapdly)
+-		otap_del_sel = sdhci_am654->otap_del_sel[0];
+-	else
+-		otap_del_sel = sdhci_am654->otap_del_sel[timing];
+-
++	otap_del_sel = sdhci_am654->otap_del_sel[timing];
+ 	otap_del_ena = (timing > MMC_TIMING_UHS_SDR25) ? 1 : 0;
+ 
+ 	mask = OTAPDLYENA_MASK | OTAPDLYSEL_MASK;
+@@ -324,10 +319,7 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
+ 	u32 mask, val;
+ 
+ 	/* Setup DLL Output TAP delay */
+-	if (sdhci_am654->legacy_otapdly)
+-		otap_del_sel = sdhci_am654->otap_del_sel[0];
+-	else
+-		otap_del_sel = sdhci_am654->otap_del_sel[timing];
++	otap_del_sel = sdhci_am654->otap_del_sel[timing];
+ 
+ 	mask = OTAPDLYENA_MASK | OTAPDLYSEL_MASK;
+ 	val = (0x1 << OTAPDLYENA_SHIFT) |
+@@ -652,32 +644,15 @@ static int sdhci_am654_get_otap_delay(struct sdhci_host *host,
+ 	int i;
+ 	int ret;
+ 
+-	ret = device_property_read_u32(dev, td[MMC_TIMING_LEGACY].otap_binding,
+-				 &sdhci_am654->otap_del_sel[MMC_TIMING_LEGACY]);
+-	if (ret) {
+-		/*
+-		 * ti,otap-del-sel-legacy is mandatory, look for old binding
+-		 * if not found.
+-		 */
+-		ret = device_property_read_u32(dev, "ti,otap-del-sel",
+-					       &sdhci_am654->otap_del_sel[0]);
+-		if (ret) {
+-			dev_err(dev, "Couldn't find otap-del-sel\n");
+-
+-			return ret;
+-		}
+-
+-		dev_info(dev, "Using legacy binding ti,otap-del-sel\n");
+-		sdhci_am654->legacy_otapdly = true;
+-
+-		return 0;
+-	}
+-
+ 	for (i = MMC_TIMING_LEGACY; i <= MMC_TIMING_MMC_HS400; i++) {
+ 
+ 		ret = device_property_read_u32(dev, td[i].otap_binding,
+ 					       &sdhci_am654->otap_del_sel[i]);
+ 		if (ret) {
++			if (i == MMC_TIMING_LEGACY) {
++				dev_err(dev, "Couldn't find mandatory ti,otap-del-sel-legacy\n");
++				return ret;
++			}
+ 			dev_dbg(dev, "Couldn't find %s\n",
+ 				td[i].otap_binding);
+ 			/*
 -- 
 2.43.0
 
