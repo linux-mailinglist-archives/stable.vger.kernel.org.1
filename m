@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-51430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC8F906FD2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 170A2906E72
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F0CB289512
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A279A2810BF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90078146018;
-	Thu, 13 Jun 2024 12:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEEC71474BA;
+	Thu, 13 Jun 2024 12:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3QdbBWj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWsJYvuN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5CD14534A;
-	Thu, 13 Jun 2024 12:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2E814535F;
+	Thu, 13 Jun 2024 12:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281275; cv=none; b=KgFuZQNjXycVDWGhH0b7HY1DiLN7icATpd9BgRL+NBYQ8e18TJJgxFo2IC6njHbWHdqVErqgeHwyv2uBD7bMOl4wnOl1gaDpPq/c1yURWzmkxn5iHBt15SukTAuXi1vddyUvOIGzAwXywywvwBLX6RXinQkVi9zXGKJcxdtsmGA=
+	t=1718280385; cv=none; b=AscnT+V9a4G4kLV2bmfh178Kz4BCD6vmRRzchfVydLXjKx+WpQPhC/eWbpfEUgHLQjSNxIcCZ4C2/gZLDbdPPuqup7tNlhz22iekqvw3xhscq/tsRRKU62ntKLQPk6LKjV1q30Kyu5jfIBax4z03mEsSoJ/L1OD2+dJLnTH3FSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281275; c=relaxed/simple;
-	bh=Y8Hxa0GlKI7uHQNhZNvrUrvfsLx8b7M0jY+7SqZ5bTU=;
+	s=arc-20240116; t=1718280385; c=relaxed/simple;
+	bh=TnUwK72gmQaTNMyFM9XDyoam7nNcyIy/+1BbWxCDDmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pgvQc9evIADOm6IhYGrRdOEsIrduw1c5X5HarZzey+e+canSmd2/xjKtC1OHgEb3Ox/ONJju6E2/4nyCmYHo3lpkhumkeKdtvzvkkuxq9zU9SsqI51jaYWXEpBqYg/n8Nag4inHqU8MQ3OPuKvDRzAuniCijqWKCjLZxp2Nwa/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3QdbBWj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89169C2BBFC;
-	Thu, 13 Jun 2024 12:21:14 +0000 (UTC)
+	 MIME-Version; b=gU/ZcBh3drVsr4I5mTFU1TxcpXeSp/ZvJA2NPw9+xQHnLcrmiBXqr6U1YthdKR7CrQ4hGKxRtxLg4M+sAHk5NgjsnErUCWSWW4y2zdwmo+DyO+EDmAjQmkCMHrpCDnNI8F8UXS5ajTeWeIFcxjL9v63NrrXJP24qZCPC/lyBLo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWsJYvuN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132D5C2BBFC;
+	Thu, 13 Jun 2024 12:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281274;
-	bh=Y8Hxa0GlKI7uHQNhZNvrUrvfsLx8b7M0jY+7SqZ5bTU=;
+	s=korg; t=1718280385;
+	bh=TnUwK72gmQaTNMyFM9XDyoam7nNcyIy/+1BbWxCDDmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x3QdbBWjKAZYoDLf27zGbpJeXdEiD7Z6nmNY5rmvNhURYpKlcrEakuODb83R3a6fJ
-	 3AfFVOjScFzkRY9PXZNIoVLS34hM/2slPnl9cDfnQs5pqDoNDELcd1dwWhyX8an9r+
-	 xDZ1gL8ZSy0AweveFCzVg+DHSZ4KI3cjCVXG2GZo=
+	b=ZWsJYvuNOL9gVGB8qTmPfNPbjwVtvTnKI9EiQmRNTz+uGHNA/MDZoweQWbCB2nPow
+	 WzwFUhLTmI/OAtqX3XHdnMPPdXLZ3IP5pdC+MMAiAu/7WRts/Dsugnz4aptUQwWPHY
+	 ZP8ijnT8IZ282rPBlCJmg07AUyKvpI13iOGhySp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 170/317] perf intel-pt: Fix unassigned instruction op (discovered by MemorySanitizer)
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 008/137] mptcp: fix full TCP keep-alive support
 Date: Thu, 13 Jun 2024 13:33:08 +0200
-Message-ID: <20240613113254.137963159@linuxfoundation.org>
+Message-ID: <20240613113223.609866654@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +63,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit e101a05f79fd4ee3e89d2f3fb716493c33a33708 ]
+commit bd11dc4fb969ec148e50cd87f88a78246dbc4d0b upstream.
 
-MemorySanitizer discovered instances where the instruction op value was
-not assigned.:
+SO_KEEPALIVE support has been added a while ago, as part of a series
+"adding SOL_SOCKET" support. To have a full control of this keep-alive
+feature, it is important to also support TCP_KEEP* socket options at the
+SOL_TCP level.
 
-  WARNING: MemorySanitizer: use-of-uninitialized-value
-    #0 0x5581c00a76b3 in intel_pt_sample_flags tools/perf/util/intel-pt.c:1527:17
-  Uninitialized value was stored to memory at
-    #0 0x5581c005ddf8 in intel_pt_walk_insn tools/perf/util/intel-pt-decoder/intel-pt-decoder.c:1256:25
+Supporting them on the setsockopt() part is easy, it is just a matter of
+remembering each value in the MPTCP sock structure, and calling
+tcp_sock_set_keep*() helpers on each subflow. If the value is not
+modified (0), calling these helpers will not do anything. For the
+getsockopt() part, the corresponding value from the MPTCP sock structure
+or the default one is simply returned. All of this is very similar to
+other TCP_* socket options supported by MPTCP.
 
-The op value is used to set branch flags for branch instructions
-encountered when walking the code, so fix by setting op to
-INTEL_PT_OP_OTHER in other cases.
+It looks important for kernels supporting SO_KEEPALIVE, to also support
+TCP_KEEP* options as well: some apps seem to (wrongly) consider that if
+the former is supported, the latter ones will be supported as well. But
+also, not having this simple and isolated change is preventing MPTCP
+support in some apps, and libraries like GoLang [1]. This is why this
+patch is seen as a fix.
 
-Fixes: 4c761d805bb2d2ea ("perf intel-pt: Fix intel_pt_fup_event() assumptions about setting state type")
-Reported-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Closes: https://lore.kernel.org/linux-perf-users/20240320162619.1272015-1-irogers@google.com/
-Link: https://lore.kernel.org/r/20240326083223.10883-1-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/383
+Fixes: 1b3e7ede1365 ("mptcp: setsockopt: handle SO_KEEPALIVE and SO_PRIORITY")
+Link: https://github.com/golang/go/issues/56539 [1]
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20240514011335.176158-3-martineau@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ conflicts in the same context, because commit 29b5e5ef8739 ("mptcp:
+  implement TCP_NOTSENT_LOWAT support") is not in this version ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/intel-pt-decoder/intel-pt-decoder.c | 2 ++
- tools/perf/util/intel-pt.c                          | 2 ++
- 2 files changed, 4 insertions(+)
+ net/mptcp/protocol.h |    3 ++
+ net/mptcp/sockopt.c  |   58 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 61 insertions(+)
 
-diff --git a/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c b/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
-index 48fda1a19ab5b..6cbd4b4973042 100644
---- a/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
-+++ b/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
-@@ -1118,6 +1118,8 @@ static bool intel_pt_fup_event(struct intel_pt_decoder *decoder)
- 	bool ret = false;
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -303,6 +303,9 @@ struct mptcp_sock {
+ 			in_accept_queue:1,
+ 			free_first:1,
+ 			rcvspace_init:1;
++	int		keepalive_cnt;
++	int		keepalive_idle;
++	int		keepalive_intvl;
+ 	struct work_struct work;
+ 	struct sk_buff  *ooo_last_skb;
+ 	struct rb_root  out_of_order_queue;
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -621,6 +621,31 @@ static int mptcp_setsockopt_sol_tcp_cong
+ 	return ret;
+ }
  
- 	decoder->state.type &= ~INTEL_PT_BRANCH;
-+	decoder->state.insn_op = INTEL_PT_OP_OTHER;
-+	decoder->state.insn_len = 0;
++static int __mptcp_setsockopt_set_val(struct mptcp_sock *msk, int max,
++				      int (*set_val)(struct sock *, int),
++				      int *msk_val, int val)
++{
++	struct mptcp_subflow_context *subflow;
++	int err = 0;
++
++	mptcp_for_each_subflow(msk, subflow) {
++		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		int ret;
++
++		lock_sock(ssk);
++		ret = set_val(ssk, val);
++		err = err ? : ret;
++		release_sock(ssk);
++	}
++
++	if (!err) {
++		*msk_val = val;
++		sockopt_seq_inc(msk);
++	}
++
++	return err;
++}
++
+ static int __mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, int val)
+ {
+ 	struct mptcp_subflow_context *subflow;
+@@ -803,6 +828,22 @@ static int mptcp_setsockopt_sol_tcp(stru
+ 	case TCP_NODELAY:
+ 		ret = __mptcp_setsockopt_sol_tcp_nodelay(msk, val);
+ 		break;
++	case TCP_KEEPIDLE:
++		ret = __mptcp_setsockopt_set_val(msk, MAX_TCP_KEEPIDLE,
++						 &tcp_sock_set_keepidle_locked,
++						 &msk->keepalive_idle, val);
++		break;
++	case TCP_KEEPINTVL:
++		ret = __mptcp_setsockopt_set_val(msk, MAX_TCP_KEEPINTVL,
++						 &tcp_sock_set_keepintvl,
++						 &msk->keepalive_intvl, val);
++		break;
++	case TCP_KEEPCNT:
++		ret = __mptcp_setsockopt_set_val(msk, MAX_TCP_KEEPCNT,
++						 &tcp_sock_set_keepcnt,
++						 &msk->keepalive_cnt,
++						 val);
++		break;
+ 	default:
+ 		ret = -ENOPROTOOPT;
+ 	}
+@@ -1303,6 +1344,8 @@ static int mptcp_put_int_option(struct m
+ static int mptcp_getsockopt_sol_tcp(struct mptcp_sock *msk, int optname,
+ 				    char __user *optval, int __user *optlen)
+ {
++	struct sock *sk = (void *)msk;
++
+ 	switch (optname) {
+ 	case TCP_ULP:
+ 	case TCP_CONGESTION:
+@@ -1321,6 +1364,18 @@ static int mptcp_getsockopt_sol_tcp(stru
+ 		return mptcp_put_int_option(msk, optval, optlen, msk->cork);
+ 	case TCP_NODELAY:
+ 		return mptcp_put_int_option(msk, optval, optlen, msk->nodelay);
++	case TCP_KEEPIDLE:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    msk->keepalive_idle ? :
++					    READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_keepalive_time) / HZ);
++	case TCP_KEEPINTVL:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    msk->keepalive_intvl ? :
++					    READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_keepalive_intvl) / HZ);
++	case TCP_KEEPCNT:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    msk->keepalive_cnt ? :
++					    READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_keepalive_probes));
+ 	}
+ 	return -EOPNOTSUPP;
+ }
+@@ -1430,6 +1485,9 @@ static void sync_socket_options(struct m
+ 		tcp_set_congestion_control(ssk, msk->ca_name, false, true);
+ 	__tcp_sock_set_cork(ssk, !!msk->cork);
+ 	__tcp_sock_set_nodelay(ssk, !!msk->nodelay);
++	tcp_sock_set_keepidle_locked(ssk, msk->keepalive_idle);
++	tcp_sock_set_keepintvl(ssk, msk->keepalive_intvl);
++	tcp_sock_set_keepcnt(ssk, msk->keepalive_cnt);
  
- 	if (decoder->set_fup_tx_flags) {
- 		decoder->set_fup_tx_flags = false;
-diff --git a/tools/perf/util/intel-pt.c b/tools/perf/util/intel-pt.c
-index 453773ce6f455..32192b7ac79e8 100644
---- a/tools/perf/util/intel-pt.c
-+++ b/tools/perf/util/intel-pt.c
-@@ -574,6 +574,7 @@ static int intel_pt_walk_next_insn(struct intel_pt_insn *intel_pt_insn,
- 	bool one_map = true;
- 
- 	intel_pt_insn->length = 0;
-+	intel_pt_insn->op = INTEL_PT_OP_OTHER;
- 
- 	if (to_ip && *ip == to_ip)
- 		goto out_no_cache;
-@@ -649,6 +650,7 @@ static int intel_pt_walk_next_insn(struct intel_pt_insn *intel_pt_insn,
- 
- 			if (to_ip && *ip == to_ip) {
- 				intel_pt_insn->length = 0;
-+				intel_pt_insn->op = INTEL_PT_OP_OTHER;
- 				goto out_no_cache;
- 			}
- 
--- 
-2.43.0
-
+ 	inet_assign_bit(TRANSPARENT, ssk, inet_test_bit(TRANSPARENT, sk));
+ 	inet_assign_bit(FREEBIND, ssk, inet_test_bit(FREEBIND, sk));
 
 
 
