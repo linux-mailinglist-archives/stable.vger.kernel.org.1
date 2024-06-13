@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-50844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D49906D16
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:58:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CDA906C0A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64641C23AC1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:58:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E692283204
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2388D143C50;
-	Thu, 13 Jun 2024 11:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C081442EF;
+	Thu, 13 Jun 2024 11:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRvgLm/8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="paR5GgXM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51356AFAE;
-	Thu, 13 Jun 2024 11:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A986AFAE;
+	Thu, 13 Jun 2024 11:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279551; cv=none; b=itya5IxxRwXlCARfFZcOAp0b0/OUR9To/S+o90zye2LDYstFyxOeDsSGCFLMPkvr1YC8ZtDDo+SQDOafZeWFLHcPzRn3qOUCFsjqssKZ25vQZ45lFiXQDKH88z0/i0Gy9aGE1lWhTErtdhyFIGQGKlYnGWbb4rmEcG/NYzElzYU=
+	t=1718279145; cv=none; b=iN7MGFX6ECx1bju+LobV5Ye3LgMBLpgU5mNYxmYqzdsPZiDjPLU2PrMC3/4LxMqyCYf/jfyFogt1wKY/y6nDqasXll1xkAY6QRbpkLyGejyNOmE8Nmfa2cAhgLh030jMeVyISuf1seBsmmzA1V8GgoSql4nJy1NtF0BVYPUlYbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279551; c=relaxed/simple;
-	bh=3P9jF3iMC9JA7PW6KHRCNynfwt5A/4itvh9CiznOo3k=;
+	s=arc-20240116; t=1718279145; c=relaxed/simple;
+	bh=5BXeDsl+GZs+nLhawJu81Pn7rfzlBdUApm67O716qrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKoJleUUEjB/9bRNBT5Awu3SYt+sYHZpGGvy10Qtg8m7Oim5zkctbxaP02ZQQpejcSpykGbu8WmGcrCidLON+PdSaDImONtZs6E2lrlU15S1eZiw6Qst428LQlbbhZBvRZelhmsFghz96M/7sOnXQ/EyYD9LSmnRp9kd936n6IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRvgLm/8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5777BC2BBFC;
-	Thu, 13 Jun 2024 11:52:31 +0000 (UTC)
+	 MIME-Version; b=Ei4Gd1OptSQaWsbsLsgnBYB/rj8MMxV6xjO5vjg6m7ol0rujQnimXV4D1WbgNU3mwayk2/kLT9w/1VGL5DV7j4l71hBfQi83PGhEmxImVqfaWGeW3++UeUApbwi8CtPlRcOzLOKlLDO/NwBHJS82wN6uukJKvnJN6Byqmmo9NJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=paR5GgXM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5A1C32786;
+	Thu, 13 Jun 2024 11:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279551;
-	bh=3P9jF3iMC9JA7PW6KHRCNynfwt5A/4itvh9CiznOo3k=;
+	s=korg; t=1718279145;
+	bh=5BXeDsl+GZs+nLhawJu81Pn7rfzlBdUApm67O716qrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gRvgLm/8JdVX56/IbnSAJM+oCa+AYimv4HhkDPiOK9WtHBsh6caCpi0SxIWTmercf
-	 6VkxoUdbNtgsPYN+bzWvj1a9h0lqA7IfSrx+USpU3k+HND16fPX/5QirXmfIUTmFTP
-	 fItODFEzivA0xSr9NyQDmLLHxb2dFh17X4YL595I=
+	b=paR5GgXMRYPgl6sCbO4JKs9wa4ROjeUtGDEc/txAkuTE1fvd8vBd6urwiY73REsGn
+	 Smbp/DY8LTg2TkzIrYmh7cR4VrLtvpH1ZvXdLllqaqzq8zbngAZVkKKmgeqBEsdibP
+	 WKQVKLOUuLetd08Z7isLWSbjctnmKRuBor+r0tyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuval El-Hanany <YuvalE@radware.com>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 6.9 114/157] Revert "xsk: Document ability to redirect to any socket bound to the same umem"
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 191/213] netfilter: nf_tables: validate NFPROTO_* family
 Date: Thu, 13 Jun 2024 13:33:59 +0200
-Message-ID: <20240613113231.828563152@linuxfoundation.org>
+Message-ID: <20240613113235.344610498@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magnus Karlsson <magnus.karlsson@intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 03e38d315f3c5258270ad50f2ae784b6372e87c3 upstream.
+[ Upstream commit d0009effa8862c20a13af4cb7475d9771b905693 ]
 
-This reverts commit 968595a93669b6b4f6d1fcf80cf2d97956b6868f.
+Several expressions explicitly refer to NF_INET_* hook definitions
+from expr->ops->validate, however, family is not validated.
 
-Reported-by: Yuval El-Hanany <YuvalE@radware.com>
-Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/xdp-newbies/8100DBDC-0B7C-49DB-9995-6027F6E63147@radware.com
-Link: https://lore.kernel.org/bpf/20240604122927.29080-3-magnus.karlsson@gmail.com
+Bail out with EOPNOTSUPP in case they are used from unsupported
+families.
+
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Fixes: a3c90f7a2323 ("netfilter: nf_tables: flow offload expression")
+Fixes: 2fa841938c64 ("netfilter: nf_tables: introduce routing expression")
+Fixes: 554ced0a6e29 ("netfilter: nf_tables: add support for native socket matching")
+Fixes: ad49d86e07a4 ("netfilter: nf_tables: Add synproxy support")
+Fixes: 4ed8eb6570a4 ("netfilter: nf_tables: Add native tproxy support")
+Fixes: 6c47260250fc ("netfilter: nf_tables: add xfrm expression")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/networking/af_xdp.rst | 31 ++++++++++++-----------------
- 1 file changed, 13 insertions(+), 18 deletions(-)
+ net/netfilter/nft_compat.c       |   12 ++++++++++++
+ net/netfilter/nft_flow_offload.c |    5 +++++
+ net/netfilter/nft_nat.c          |    5 +++++
+ net/netfilter/nft_rt.c           |    5 +++++
+ net/netfilter/nft_socket.c       |    5 +++++
+ net/netfilter/nft_tproxy.c       |    5 +++++
+ 6 files changed, 37 insertions(+)
 
-diff --git a/Documentation/networking/af_xdp.rst b/Documentation/networking/af_xdp.rst
-index 72da7057e4cf..dceeb0d763aa 100644
---- a/Documentation/networking/af_xdp.rst
-+++ b/Documentation/networking/af_xdp.rst
-@@ -329,24 +329,23 @@ XDP_SHARED_UMEM option and provide the initial socket's fd in the
- sxdp_shared_umem_fd field as you registered the UMEM on that
- socket. These two sockets will now share one and the same UMEM.
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -319,6 +319,12 @@ static int nft_target_validate(const str
+ 	unsigned int hook_mask = 0;
+ 	int ret;
  
--In this case, it is possible to use the NIC's packet steering
--capabilities to steer the packets to the right queue. This is not
--possible in the previous example as there is only one queue shared
--among sockets, so the NIC cannot do this steering as it can only steer
--between queues.
-+There is no need to supply an XDP program like the one in the previous
-+case where sockets were bound to the same queue id and
-+device. Instead, use the NIC's packet steering capabilities to steer
-+the packets to the right queue. In the previous example, there is only
-+one queue shared among sockets, so the NIC cannot do this steering. It
-+can only steer between queues.
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_BRIDGE &&
++	    ctx->family != NFPROTO_ARP)
++		return -EOPNOTSUPP;
++
+ 	if (nft_is_base_chain(ctx->chain)) {
+ 		const struct nft_base_chain *basechain =
+ 						nft_base_chain(ctx->chain);
+@@ -560,6 +566,12 @@ static int nft_match_validate(const stru
+ 	unsigned int hook_mask = 0;
+ 	int ret;
  
--In libxdp (or libbpf prior to version 1.0), you need to use the
--xsk_socket__create_shared() API as it takes a reference to a FILL ring
--and a COMPLETION ring that will be created for you and bound to the
--shared UMEM. You can use this function for all the sockets you create,
--or you can use it for the second and following ones and use
--xsk_socket__create() for the first one. Both methods yield the same
--result.
-+In libbpf, you need to use the xsk_socket__create_shared() API as it
-+takes a reference to a FILL ring and a COMPLETION ring that will be
-+created for you and bound to the shared UMEM. You can use this
-+function for all the sockets you create, or you can use it for the
-+second and following ones and use xsk_socket__create() for the first
-+one. Both methods yield the same result.
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_BRIDGE &&
++	    ctx->family != NFPROTO_ARP)
++		return -EOPNOTSUPP;
++
+ 	if (nft_is_base_chain(ctx->chain)) {
+ 		const struct nft_base_chain *basechain =
+ 						nft_base_chain(ctx->chain);
+--- a/net/netfilter/nft_flow_offload.c
++++ b/net/netfilter/nft_flow_offload.c
+@@ -145,6 +145,11 @@ static int nft_flow_offload_validate(con
+ {
+ 	unsigned int hook_mask = (1 << NF_INET_FORWARD);
  
- Note that a UMEM can be shared between sockets on the same queue id
- and device, as well as between queues on the same device and between
--devices at the same time. It is also possible to redirect to any
--socket as long as it is bound to the same umem with XDP_SHARED_UMEM.
-+devices at the same time.
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET)
++		return -EOPNOTSUPP;
++
+ 	return nft_chain_validate_hooks(ctx->chain, hook_mask);
+ }
  
- XDP_USE_NEED_WAKEUP bind flag
- -----------------------------
-@@ -823,10 +822,6 @@ A: The short answer is no, that is not supported at the moment. The
-    switch, or other distribution mechanism, in your NIC to direct
-    traffic to the correct queue id and socket.
+--- a/net/netfilter/nft_nat.c
++++ b/net/netfilter/nft_nat.c
+@@ -94,6 +94,11 @@ static int nft_nat_validate(const struct
+ 	struct nft_nat *priv = nft_expr_priv(expr);
+ 	int err;
  
--   Note that if you are using the XDP_SHARED_UMEM option, it is
--   possible to switch traffic between any socket bound to the same
--   umem.
--
- Q: My packets are sometimes corrupted. What is wrong?
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET)
++		return -EOPNOTSUPP;
++
+ 	err = nft_chain_validate_dependency(ctx->chain, NFT_CHAIN_T_NAT);
+ 	if (err < 0)
+ 		return err;
+--- a/net/netfilter/nft_rt.c
++++ b/net/netfilter/nft_rt.c
+@@ -159,6 +159,11 @@ static int nft_rt_validate(const struct
+ 	const struct nft_rt *priv = nft_expr_priv(expr);
+ 	unsigned int hooks;
  
- A: Care has to be taken not to feed the same buffer in the UMEM into
--- 
-2.45.2
-
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET)
++		return -EOPNOTSUPP;
++
+ 	switch (priv->key) {
+ 	case NFT_RT_NEXTHOP4:
+ 	case NFT_RT_NEXTHOP6:
+--- a/net/netfilter/nft_socket.c
++++ b/net/netfilter/nft_socket.c
+@@ -139,6 +139,11 @@ static int nft_socket_validate(const str
+ 			       const struct nft_expr *expr,
+ 			       const struct nft_data **data)
+ {
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET)
++		return -EOPNOTSUPP;
++
+ 	return nft_chain_validate_hooks(ctx->chain,
+ 					(1 << NF_INET_PRE_ROUTING) |
+ 					(1 << NF_INET_LOCAL_IN) |
+--- a/net/netfilter/nft_tproxy.c
++++ b/net/netfilter/nft_tproxy.c
+@@ -293,6 +293,11 @@ static int nft_tproxy_validate(const str
+ 			       const struct nft_expr *expr,
+ 			       const struct nft_data **data)
+ {
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET)
++		return -EOPNOTSUPP;
++
+ 	return nft_chain_validate_hooks(ctx->chain, 1 << NF_INET_PRE_ROUTING);
+ }
+ 
 
 
 
