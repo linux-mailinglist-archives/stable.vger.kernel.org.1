@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26017907110
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06216906F54
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5B6B282DDC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:33:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 208241C2447A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210751EB26;
-	Thu, 13 Jun 2024 12:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE6E145A0E;
+	Thu, 13 Jun 2024 12:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OV3kpNIR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evzzuNSs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2888389;
-	Thu, 13 Jun 2024 12:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE98E142E84;
+	Thu, 13 Jun 2024 12:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281994; cv=none; b=udQTjqb64W0x+CbAsyFxUjb43CrxexYPKAl3RuWuXGuK9QDOfxkiAy2vaKIs8zWWfgcuHBdLqIRkt4tg2pK7poiQpHh1x3pQ5fBwkaSE3WMbCUx+I1vnp/Y0P7lLKY7xh+OUAay0vB+ay9fn/OtsJ/zR+nd4Jrs9HL/yZc8bves=
+	t=1718280962; cv=none; b=ZS17DhgpnWSe0+mYUtKi0OTswZ1VDZF/HiL9YBVs+YOU6zjMLHbu8NVMNnsFAtyzyWaqKXwuT/vDA4l7LfG5VtjNktIS9X2EGyh/gLgp/8rnTl9+OU+r+FGZDwXi9M1tp2DisNDyqJx77VeyaSQIsK+pBsaQhFA2HJCrp63MHp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281994; c=relaxed/simple;
-	bh=BxtpqioJOlbZn33XgJcltQk73t/pZSchRIebU9jqZ3Q=;
+	s=arc-20240116; t=1718280962; c=relaxed/simple;
+	bh=dAYX/IRrz2Qk8yqEra8XPBFbRWEKfcrgAY9PEazSWwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AbWVao++megxyghidxEjzjmlwErexZj3B4FBy4yp6hIR1i1R4EKIoZsW9mzRt0JZ2++Tc5e7rQJurBUG0A17CLMskAzMjXrRK1sqdcOyYUt5FUZK14Rc2Qr76y5VWwlk0MMTQlpokKZb2BBgpqJzrM/qRcvSqKh1X6J3Yzz3L2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OV3kpNIR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEF4C4AF1A;
-	Thu, 13 Jun 2024 12:33:14 +0000 (UTC)
+	 MIME-Version; b=n6Ur1aQc29Rr9kkL1wtddvFZeSJ/vx5mooaELdyOMJvWRB6n/ziBfKRqR/vSaDaVRCPPY8DJtbq7ndnpyMGlqF5rGVOv7ycoDNUQCOhbqBAIquFcsnp0VmWzSgcIcW8y4IwwU6+TRT+erv4Lq5P5+otYCxJ6PEi0oPvxnYExXjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evzzuNSs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56017C2BBFC;
+	Thu, 13 Jun 2024 12:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281994;
-	bh=BxtpqioJOlbZn33XgJcltQk73t/pZSchRIebU9jqZ3Q=;
+	s=korg; t=1718280962;
+	bh=dAYX/IRrz2Qk8yqEra8XPBFbRWEKfcrgAY9PEazSWwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OV3kpNIRck8CvkEwvEMtfxwfbSCXIAyYw5ETEEbkaHsGQET63JfY9lDC7WRkHF5FZ
-	 6Jl0RR9bUUH7nxhKPdaYbT46E/MU2wndQOliUTwe55SOUIP8J0lhOzn/m14WRhzFiH
-	 GdcEaGX3lWZD0Z97W6rydBouDKur+zRcb1TzYgKQ=
+	b=evzzuNSsIW9GWSpWwHQCnKdoqLeuVU/Ynpgym3RAZwekTDNwY/xAb8U0cAhgMqOxs
+	 pcIu7DNhibIC9wA+M0JYYL49bAxGxUJii+G5A94UtvW12w/t/T67L5PtoJ0ZXxgayu
+	 fWE9X/5nW4P725vO8BgNykL3knN4RK5UexsUxesU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Helge Deller <deller@gmx.de>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 127/402] fbdev: shmobile: fix snprintf truncation
+Subject: [PATCH 5.10 066/317] macintosh/via-macii: Fix "BUG: sleeping function called from invalid context"
 Date: Thu, 13 Jun 2024 13:31:24 +0200
-Message-ID: <20240613113307.094258687@linuxfoundation.org>
+Message-ID: <20240613113250.103174314@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 26c8cfb9d1e4b252336d23dd5127a8cbed414a32 ]
+[ Upstream commit d301a71c76ee4c384b4e03cdc320a55f5cf1df05 ]
 
-The name of the overlay does not fit into the fixed-length field:
+The via-macii ADB driver calls request_irq() after disabling hard
+interrupts. But disabling interrupts isn't necessary here because the
+VIA shift register interrupt was masked during VIA1 initialization.
 
-drivers/video/fbdev/sh_mobile_lcdcfb.c:1577:2: error: 'snprintf' will always be truncated; specified size is 16, but format string expands to at least 25
-
-Make it short enough by changing the string.
-
-Fixes: c5deac3c9b22 ("fbdev: sh_mobile_lcdc: Implement overlays support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/419fcc09d0e563b425c419053d02236b044d86b0.1710298421.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sh_mobile_lcdcfb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/macintosh/via-macii.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-index e33c016c5428c..74a013c398b14 100644
---- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
-+++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-@@ -1577,7 +1577,7 @@ sh_mobile_lcdc_overlay_fb_init(struct sh_mobile_lcdc_overlay *ovl)
- 	 */
- 	info->fix = sh_mobile_lcdc_overlay_fix;
- 	snprintf(info->fix.id, sizeof(info->fix.id),
--		 "SH Mobile LCDC Overlay %u", ovl->index);
-+		 "SHMobile ovl %u", ovl->index);
- 	info->fix.smem_start = ovl->dma_handle;
- 	info->fix.smem_len = ovl->fb_size;
- 	info->fix.line_length = ovl->pitch;
+diff --git a/drivers/macintosh/via-macii.c b/drivers/macintosh/via-macii.c
+index 060e03f2264bc..6adb34d1e381b 100644
+--- a/drivers/macintosh/via-macii.c
++++ b/drivers/macintosh/via-macii.c
+@@ -142,24 +142,19 @@ static int macii_probe(void)
+ /* Initialize the driver */
+ static int macii_init(void)
+ {
+-	unsigned long flags;
+ 	int err;
+ 
+-	local_irq_save(flags);
+-
+ 	err = macii_init_via();
+ 	if (err)
+-		goto out;
++		return err;
+ 
+ 	err = request_irq(IRQ_MAC_ADB, macii_interrupt, 0, "ADB",
+ 			  macii_interrupt);
+ 	if (err)
+-		goto out;
++		return err;
+ 
+ 	macii_state = idle;
+-out:
+-	local_irq_restore(flags);
+-	return err;
++	return 0;
+ }
+ 
+ /* initialize the hardware */
 -- 
 2.43.0
 
