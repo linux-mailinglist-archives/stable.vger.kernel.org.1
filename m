@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C439071B1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36858906FC5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 851451C2450E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E235B1F211AC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B20139CFE;
-	Thu, 13 Jun 2024 12:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648C1145B24;
+	Thu, 13 Jun 2024 12:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTjrrsuE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIukhjI9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857B617FD;
-	Thu, 13 Jun 2024 12:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EA71411CD;
+	Thu, 13 Jun 2024 12:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282351; cv=none; b=l+ex5nltNls/ZY5igCwoVIHyZLum7e6DYGPpBiOyJFHsqLAs5LRD8KEc+wjC0kcKjqcxlDNI7mmcYHCM1bT0NGPhyHE2+Z3lwlRen4EbJgW857GaKHxYHlisk+yde/hMMPfXsFpU0phDbs6ZqJ63deA7E+aQEYTBZssKcR3XoYE=
+	t=1718281234; cv=none; b=bhsmX9jQ0ya6EQiyYR455wS4rIdvSXqENaCFekVeNLnjuBWTvq+i6p8pU/7V/twxzz6XDuYhYd4ZkUCixV9rUNB44aGmJwLvZJLfQrqeSw9ZODN+BPUDJNYco5Gw2RB75IVSTfGtD1OhZ71EyB+F8zfKEiJh5d5AZ/ceWjNAaVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282351; c=relaxed/simple;
-	bh=S3ts4YEHZlxX1UomXpuMncq6Y2TS4C1nnzYQwmJMM3Y=;
+	s=arc-20240116; t=1718281234; c=relaxed/simple;
+	bh=CpLexJQZT5YoYdcmMzaB0rRsezE9zHe8dX0PtS7hheQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=buY+kxVWCt5GB6mioc1MCbDr0YtinGvOxc0wjaokJ30F1B3Eu0PeBrE3GdTWjbESonhYxjNywn/h8OL2BtBD0Bs9Uj5sUBW7MYeHCnZz5KVaOZ1jp7zzXiG2gTGlE2J+4B8XEiHABqK3X+G9VhA9yhfDSmlXGNr7TzL6WOAQhvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTjrrsuE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B82C2BBFC;
-	Thu, 13 Jun 2024 12:39:10 +0000 (UTC)
+	 MIME-Version; b=Bt8jciahTSJFaJ4Kd3AHmKHfKEqOTQcZmoiPsoab87HL21OEdxN0g0hbNUUn9awSQ0m6CmR1R8bLpeSqUhmfY+1hIMlbcNjdtNtCULSBMOAy7piZe+qQBvnjJrSciq9j/AD3v+M48tKYwBigoUs9xMYUF+4slh1I80nrs/fRMNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIukhjI9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E2BC2BBFC;
+	Thu, 13 Jun 2024 12:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282351;
-	bh=S3ts4YEHZlxX1UomXpuMncq6Y2TS4C1nnzYQwmJMM3Y=;
+	s=korg; t=1718281234;
+	bh=CpLexJQZT5YoYdcmMzaB0rRsezE9zHe8dX0PtS7hheQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zTjrrsuERDGrq7Y4xMSOGAtLy2+pSH1PxIlGu2llf59e+IPS/o4AS1awMCOmVi1Hg
-	 4IkI60dvbnqh6yIELnmMdt/emg/IQnf2aLAu54k7IcpZPL7aj3b6Exk5Iyl0Ad5bch
-	 V1Y95g/rTjgQGlTkdfby+cYlfoqLnihSPODU3j5M=
+	b=tIukhjI9I/6it+sLkgGd14j/1cCzBXFBTJ1dAJF7SOAj246DcvybfCXzwQN5wqFm8
+	 70L6vUeFiLiG18/pXd0ukPMmVbQ+918Kao0qpUcq8QbY03+PCP1cyZGtgrbzasEf7c
+	 6PHplNGW5d2vP1ftCz0lq43UbOgmDmPSn9AGn/zA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 246/402] Input: ims-pcu - fix printf string overflow
+Subject: [PATCH 5.10 185/317] f2fs: compress: fix to cover {reserve,release}_compress_blocks() w/ cp_rwsem lock
 Date: Thu, 13 Jun 2024 13:33:23 +0200
-Message-ID: <20240613113311.744844202@linuxfoundation.org>
+Message-ID: <20240613113254.716339417@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit bf32bceedd0453c70d9d022e2e29f98e446d7161 ]
+[ Upstream commit 0a4ed2d97cb6d044196cc3e726b6699222b41019 ]
 
-clang warns about a string overflow in this driver
+It needs to cover {reserve,release}_compress_blocks() w/ cp_rwsem lock
+to avoid racing with checkpoint, otherwise, filesystem metadata including
+blkaddr in dnode, inode fields and .total_valid_block_count may be
+corrupted after SPO case.
 
-drivers/input/misc/ims-pcu.c:1802:2: error: 'snprintf' will always be truncated; specified size is 10, but format string expands to at least 12 [-Werror,-Wformat-truncation]
-drivers/input/misc/ims-pcu.c:1814:2: error: 'snprintf' will always be truncated; specified size is 10, but format string expands to at least 12 [-Werror,-Wformat-truncation]
-
-Make the buffer a little longer to ensure it always fits.
-
-Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240326223825.4084412-7-arnd@kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: ef8d563f184e ("f2fs: introduce F2FS_IOC_RELEASE_COMPRESS_BLOCKS")
+Fixes: c75488fb4d82 ("f2fs: introduce F2FS_IOC_RESERVE_COMPRESS_BLOCKS")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/ims-pcu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/file.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/input/misc/ims-pcu.c b/drivers/input/misc/ims-pcu.c
-index 6f38aa23a1ff6..b3215c97ee02d 100644
---- a/drivers/input/misc/ims-pcu.c
-+++ b/drivers/input/misc/ims-pcu.c
-@@ -42,8 +42,8 @@ struct ims_pcu_backlight {
- #define IMS_PCU_PART_NUMBER_LEN		15
- #define IMS_PCU_SERIAL_NUMBER_LEN	8
- #define IMS_PCU_DOM_LEN			8
--#define IMS_PCU_FW_VERSION_LEN		(9 + 1)
--#define IMS_PCU_BL_VERSION_LEN		(9 + 1)
-+#define IMS_PCU_FW_VERSION_LEN		16
-+#define IMS_PCU_BL_VERSION_LEN		16
- #define IMS_PCU_BL_RESET_REASON_LEN	(2 + 1)
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index f66959ae01636..c858118a3927e 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -3596,9 +3596,12 @@ static int f2fs_release_compress_blocks(struct file *filp, unsigned long arg)
+ 		struct dnode_of_data dn;
+ 		pgoff_t end_offset, count;
  
- #define IMS_PCU_PCU_B_DEVICE_ID		5
++		f2fs_lock_op(sbi);
++
+ 		set_new_dnode(&dn, inode, NULL, NULL, 0);
+ 		ret = f2fs_get_dnode_of_data(&dn, page_idx, LOOKUP_NODE);
+ 		if (ret) {
++			f2fs_unlock_op(sbi);
+ 			if (ret == -ENOENT) {
+ 				page_idx = f2fs_get_next_page_offset(&dn,
+ 								page_idx);
+@@ -3616,6 +3619,8 @@ static int f2fs_release_compress_blocks(struct file *filp, unsigned long arg)
+ 
+ 		f2fs_put_dnode(&dn);
+ 
++		f2fs_unlock_op(sbi);
++
+ 		if (ret < 0)
+ 			break;
+ 
+@@ -3758,9 +3763,12 @@ static int f2fs_reserve_compress_blocks(struct file *filp, unsigned long arg)
+ 		struct dnode_of_data dn;
+ 		pgoff_t end_offset, count;
+ 
++		f2fs_lock_op(sbi);
++
+ 		set_new_dnode(&dn, inode, NULL, NULL, 0);
+ 		ret = f2fs_get_dnode_of_data(&dn, page_idx, LOOKUP_NODE);
+ 		if (ret) {
++			f2fs_unlock_op(sbi);
+ 			if (ret == -ENOENT) {
+ 				page_idx = f2fs_get_next_page_offset(&dn,
+ 								page_idx);
+@@ -3778,6 +3786,8 @@ static int f2fs_reserve_compress_blocks(struct file *filp, unsigned long arg)
+ 
+ 		f2fs_put_dnode(&dn);
+ 
++		f2fs_unlock_op(sbi);
++
+ 		if (ret < 0)
+ 			break;
+ 
 -- 
 2.43.0
 
