@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-50687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF2E3906BF1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:46:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA1F906D27
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B2CFB24357
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:46:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F8AC1C22ACD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F047A143C53;
-	Thu, 13 Jun 2024 11:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822EB143C4B;
+	Thu, 13 Jun 2024 11:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fk0dtEjS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bz1bE+X3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE02114265E;
-	Thu, 13 Jun 2024 11:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FD91465B0;
+	Thu, 13 Jun 2024 11:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279095; cv=none; b=dxeyP6cF+CW4oAwmZz6iWb02QuyWPS26G/R42SKr/Q1FqWOBDrI9aoV94Otlh48KCFeA5yeSzdxmk1b2qVxUjFs4uUZE5S8KAUnnbgH41A7Xjx1aXKnDswcSVoduJLchh2jRSkaB/4NAn3HHYH4+msihBCiGGn08U+5Vj6I3V3A=
+	t=1718279590; cv=none; b=IgCH+HiVzT6AnohrG/fZNOZq5MNLI79THZc5mk2Zqmtirhk6ztzW0uo0Dr8wxPYwTTuNyFdSKByw8JwLPhPKJ+8pB9ELQ94U+q4sujzXhqf5gfpCJXfeB1/hVIsnLL7ZbyO1PMasnKiWMMp7CJ7MlpYH4pKv3tuEwmXlpMkAXvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279095; c=relaxed/simple;
-	bh=qzlKT4fcHXVEBSswqCe1rkOpfAVYTIqPYfQkBN3Lu5k=;
+	s=arc-20240116; t=1718279590; c=relaxed/simple;
+	bh=y0txJ4wajv1n+qqdE31I87uq+m+QAqWOlJG7gh3kMNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZRoDt5iGDwiaopcJyY3RGdy3UUkkEPfOaQ0l3uhBZtJ6GaKqWGCazvFcBiBcyhGT1zBmQiKpyoajzj1ZaLDzJwFkT4f3zq1NW+mWBPV5Bbc4jsbMdXH8sVmPBjIpXU54zfVRMfTXhmAAgjMpXevsTrl6flkchI7RLM/Hr3XrkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fk0dtEjS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3867AC2BBFC;
-	Thu, 13 Jun 2024 11:44:55 +0000 (UTC)
+	 MIME-Version; b=bozfhUdSZcxiadcGZHg0flTGPFH6WDEXHIhUSGfUE7PCs9T0/TCwp5ZKQstsEdrUQw0xVotYyutNiPosv8zdnSCHspJ0b2WXPujehEAjW/BXlfzmndL3l7h01e6EcF4pvBzVij0Ae5bZgyguVlBrbRnolYXYODXKOE2IGv7nMqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bz1bE+X3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28C9C2BBFC;
+	Thu, 13 Jun 2024 11:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279095;
-	bh=qzlKT4fcHXVEBSswqCe1rkOpfAVYTIqPYfQkBN3Lu5k=;
+	s=korg; t=1718279590;
+	bh=y0txJ4wajv1n+qqdE31I87uq+m+QAqWOlJG7gh3kMNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fk0dtEjSCMKwy6pLV3HoKCOky+RuwfzO+riJtr061aVhid3DOAv96xdN9Sl79QvWD
-	 +9xAoAMskYjzuq5TxymR4A9bLuEblevgSt1kqEphb92TJ1PgBRpO+U0GL9noB4Xzay
-	 R9XUR8gEsEsDmCSl3khtUPhkYZi2oO1mZIawSgfQ=
+	b=Bz1bE+X3rXoNRug7Sm7Z8ABzo8BVXlt4Og6+oj8GLA4i1AzRJ9T+jiUYW420q33id
+	 dDs1NNx8VON/rh0FGO9Y8L46Up3GypG0j0hgCzEm4413FqFnZQ6g/juBaknwsSgq39
+	 hVaBXhfk8WXctyBaJssD31QwEjF0MxFZrTlXXiQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 173/213] netfilter: nf_tables: GC transaction race with abort path
-Date: Thu, 13 Jun 2024 13:33:41 +0200
-Message-ID: <20240613113234.657005933@linuxfoundation.org>
+	Frank van der Linden <fvdl@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	David Hildenbrand <david@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 097/157] mm/hugetlb: pass correct order_per_bit to cma_declare_contiguous_nid
+Date: Thu, 13 Jun 2024 13:33:42 +0200
+Message-ID: <20240613113231.175986049@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Frank van der Linden <fvdl@google.com>
 
-commit 720344340fb9be2765bbaab7b292ece0a4570eae upstream.
+commit 55d134a7b499c77e7cfd0ee41046f3c376e791e5 upstream.
 
-Abort path is missing a synchronization point with GC transactions. Add
-GC sequence number hence any GC transaction losing race will be
-discarded.
+The hugetlb_cma code passes 0 in the order_per_bit argument to
+cma_declare_contiguous_nid (the alignment, computed using the page order,
+is correctly passed in).
 
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+This causes a bit in the cma allocation bitmap to always represent a 4k
+page, making the bitmaps potentially very large, and slower.
+
+It would create bitmaps that would be pretty big.  E.g.  for a 4k page
+size on x86, hugetlb_cma=64G would mean a bitmap size of (64G / 4k) / 8
+== 2M.  With HUGETLB_PAGE_ORDER as order_per_bit, as intended, this
+would be (64G / 2M) / 8 == 4k.  So, that's quite a difference.
+
+Also, this restricted the hugetlb_cma area to ((PAGE_SIZE <<
+MAX_PAGE_ORDER) * 8) * PAGE_SIZE (e.g.  128G on x86) , since
+bitmap_alloc uses normal page allocation, and is thus restricted by
+MAX_PAGE_ORDER.  Specifying anything about that would fail the CMA
+initialization.
+
+So, correctly pass in the order instead.
+
+Link: https://lkml.kernel.org/r/20240404162515.527802-2-fvdl@google.com
+Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma")
+Signed-off-by: Frank van der Linden <fvdl@google.com>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ mm/hugetlb.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7263,7 +7263,12 @@ static int __nf_tables_abort(struct net
- static int nf_tables_abort(struct net *net, struct sk_buff *skb)
- {
- 	struct nftables_pernet *nft_net = net_generic(net, nf_tables_net_id);
--	int ret = __nf_tables_abort(net);
-+	unsigned int gc_seq;
-+	int ret;
-+
-+	gc_seq = nft_gc_seq_begin(nft_net);
-+	ret = __nf_tables_abort(net);
-+	nft_gc_seq_end(nft_net, gc_seq);
- 
- 	mutex_unlock(&nft_net->commit_mutex);
- 
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -7879,9 +7879,9 @@ void __init hugetlb_cma_reserve(int orde
+ 		 * huge page demotion.
+ 		 */
+ 		res = cma_declare_contiguous_nid(0, size, 0,
+-						PAGE_SIZE << HUGETLB_PAGE_ORDER,
+-						 0, false, name,
+-						 &hugetlb_cma[nid], nid);
++					PAGE_SIZE << HUGETLB_PAGE_ORDER,
++					HUGETLB_PAGE_ORDER, false, name,
++					&hugetlb_cma[nid], nid);
+ 		if (res) {
+ 			pr_warn("hugetlb_cma: reservation failed: err %d, node %d",
+ 				res, nid);
 
 
 
