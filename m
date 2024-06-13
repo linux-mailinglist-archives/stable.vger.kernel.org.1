@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-50951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B57CC906D90
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C67F906BBF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CD2C1F27D35
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 517721C2153B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED7A144D07;
-	Thu, 13 Jun 2024 11:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A90B1448E0;
+	Thu, 13 Jun 2024 11:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egDZlDLr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjRzl0Cj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A879143C48;
-	Thu, 13 Jun 2024 11:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD67A1448D8;
+	Thu, 13 Jun 2024 11:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279868; cv=none; b=cLpZNTBWlP1bWyEZPaNvkbKqJaGTsZeXY9Gotk12yQGIlbhILYo0m+EyvCLePKcnKEpHDL1JmJFWqSUg92JeYiwtx5eKT/3SvCaTHysHKJpZfRvLvzgv9oOFmg1K6J38NSyZqgpNuOxtQqJ+Le1/zQZd6eKyyITq5c0TYtw9jS8=
+	t=1718279002; cv=none; b=tKNHQZegcSsiFdrQUlMoXTcSu6clLzqQvclTzL3zy0UOUS4nLKf2BoavAFgVpEuQRaMcBWwJpNrF4adioKQC2DdFTVgkuPsitDFpsEUqL435Cg2RKHoUR4cJ7zvsFpiATmpKRMACPZ6pp2fm5fb1r8SlGrXp4Zqe/oytn7CfumA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279868; c=relaxed/simple;
-	bh=DdY5EOikZD00WwnCH+ldfOKKuwfWkVc6MbHyP43Hg50=;
+	s=arc-20240116; t=1718279002; c=relaxed/simple;
+	bh=V1LJmEt6eTXPdGZ7aUnuCGZ7N0GPU+sKlkUHJ3K7EtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLB+5TtDjcK8Y9LFeiUEtq99AHF6REH73g/p5QtSJyf7EVh3U1cWjjk9zVzV+YuYu6H33KIWAxs9e1T2c82jIP9zCTAIYudVDznsRsANiGAgV0WLkImHJtTgWWmW8eOsDnCLOjqVeOQk7JpprqMcRIZ7BKvLgFmKThaciXzDmK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egDZlDLr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3251C2BBFC;
-	Thu, 13 Jun 2024 11:57:47 +0000 (UTC)
+	 MIME-Version; b=MewAAKnIt8LdqC8wVpbSNoO+o1FFUCWd1/T/rRg3V3CDw4abjGWdk+fk/NkePyD1m3I2MK0EJCtrSeVPEG18sPbCvk7as76u/nPdhW9tHHmY50I/KJ05d7JE58JoLIqtLOoUS33Fx0LtKjS2zW3yDZo3GzbMmSosPDT6OcQz688=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjRzl0Cj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488EEC32786;
+	Thu, 13 Jun 2024 11:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279868;
-	bh=DdY5EOikZD00WwnCH+ldfOKKuwfWkVc6MbHyP43Hg50=;
+	s=korg; t=1718279002;
+	bh=V1LJmEt6eTXPdGZ7aUnuCGZ7N0GPU+sKlkUHJ3K7EtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=egDZlDLrfQIoHGo62vlpz3K7ncNeEbkxUUlQP3cjRqEzWBCzRiAjvxhoZdur6m7Kx
-	 uzdzLxaT60RwoH9ZJyQ1ahZhW+HhCZPRPhPxJ4XGaHqQ8SiAW+iPcRhOKwK5h/atnG
-	 jmtJeQ5vd1FEPFG3YCIIngK8RoR8YGtLUfxxNHws=
+	b=pjRzl0CjqDZIdK8QayI/sdnyh9oEv3FqCvpgwwXtJG3miSQlos4Pjwp2cssp7Jmpp
+	 Ro1JhmMLiw3svgagdspJ1uplnxz0ye6JcIGSQcU+gEN3zGZavdzAZaUl6a6HFm1URn
+	 QAgF/E6l4KBSS6a5jWXfv/yGq/FkoieQR1nRF0S8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonin Bas <antonin.bas@broadcom.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 064/202] net: openvswitch: fix overwriting ct original tuple for ICMPv6
-Date: Thu, 13 Jun 2024 13:32:42 +0200
-Message-ID: <20240613113230.248825712@linuxfoundation.org>
+Subject: [PATCH 4.19 115/213] powerpc/pseries: Add failure related checks for h_get_mpp and h_get_ppp
+Date: Thu, 13 Jun 2024 13:32:43 +0200
+Message-ID: <20240613113232.436795896@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-[ Upstream commit 7c988176b6c16c516474f6fceebe0f055af5eb56 ]
+[ Upstream commit 6d4341638516bf97b9a34947e0bd95035a8230a5 ]
 
-OVS_PACKET_CMD_EXECUTE has 3 main attributes:
- - OVS_PACKET_ATTR_KEY - Packet metadata in a netlink format.
- - OVS_PACKET_ATTR_PACKET - Binary packet content.
- - OVS_PACKET_ATTR_ACTIONS - Actions to execute on the packet.
+Couple of Minor fixes:
 
-OVS_PACKET_ATTR_KEY is parsed first to populate sw_flow_key structure
-with the metadata like conntrack state, input port, recirculation id,
-etc.  Then the packet itself gets parsed to populate the rest of the
-keys from the packet headers.
+- hcall return values are long. Fix that for h_get_mpp, h_get_ppp and
+parse_ppp_data
 
-Whenever the packet parsing code starts parsing the ICMPv6 header, it
-first zeroes out fields in the key corresponding to Neighbor Discovery
-information even if it is not an ND packet.
+- If hcall fails, values set should be at-least zero. It shouldn't be
+uninitialized values. Fix that for h_get_mpp and h_get_ppp
 
-It is an 'ipv6.nd' field.  However, the 'ipv6' is a union that shares
-the space between 'nd' and 'ct_orig' that holds the original tuple
-conntrack metadata parsed from the OVS_PACKET_ATTR_KEY.
-
-ND packets should not normally have conntrack state, so it's fine to
-share the space, but normal ICMPv6 Echo packets or maybe other types of
-ICMPv6 can have the state attached and it should not be overwritten.
-
-The issue results in all but the last 4 bytes of the destination
-address being wiped from the original conntrack tuple leading to
-incorrect packet matching and potentially executing wrong actions
-in case this packet recirculates within the datapath or goes back
-to userspace.
-
-ND fields should not be accessed in non-ND packets, so not clearing
-them should be fine.  Executing memset() only for actual ND packets to
-avoid the issue.
-
-Initializing the whole thing before parsing is needed because ND packet
-may not contain all the options.
-
-The issue only affects the OVS_PACKET_CMD_EXECUTE path and doesn't
-affect packets entering OVS datapath from network interfaces, because
-in this case CT metadata is populated from skb after the packet is
-already parsed.
-
-Fixes: 9dd7f8907c37 ("openvswitch: Add original direction conntrack tuple to sw_flow_key.")
-Reported-by: Antonin Bas <antonin.bas@broadcom.com>
-Closes: https://github.com/openvswitch/ovs-issues/issues/327
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Link: https://lore.kernel.org/r/20240509094228.1035477-1-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240412092047.455483-3-sshegde@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/flow.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/hvcall.h        | 2 +-
+ arch/powerpc/platforms/pseries/lpar.c    | 6 +++---
+ arch/powerpc/platforms/pseries/lparcfg.c | 6 +++---
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
-index 989175ce81d4d..8e4a82b0dffc8 100644
---- a/net/openvswitch/flow.c
-+++ b/net/openvswitch/flow.c
-@@ -412,7 +412,6 @@ static int parse_icmpv6(struct sk_buff *skb, struct sw_flow_key *key,
- 	 */
- 	key->tp.src = htons(icmp->icmp6_type);
- 	key->tp.dst = htons(icmp->icmp6_code);
--	memset(&key->ipv6.nd, 0, sizeof(key->ipv6.nd));
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index a0b17f9f1ea4e..2bbf6c01a13d7 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -424,7 +424,7 @@ struct hvcall_mpp_data {
+ 	unsigned long backing_mem;
+ };
  
- 	if (icmp->icmp6_code == 0 &&
- 	    (icmp->icmp6_type == NDISC_NEIGHBOUR_SOLICITATION ||
-@@ -421,6 +420,8 @@ static int parse_icmpv6(struct sk_buff *skb, struct sw_flow_key *key,
- 		struct nd_msg *nd;
- 		int offset;
+-int h_get_mpp(struct hvcall_mpp_data *);
++long h_get_mpp(struct hvcall_mpp_data *mpp_data);
  
-+		memset(&key->ipv6.nd, 0, sizeof(key->ipv6.nd));
-+
- 		/* In order to process neighbor discovery options, we need the
- 		 * entire packet.
- 		 */
+ struct hvcall_mpp_x_data {
+ 	unsigned long coalesced_bytes;
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index d660a90616cda..eebaf44e5508e 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -933,10 +933,10 @@ void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
+  * h_get_mpp
+  * H_GET_MPP hcall returns info in 7 parms
+  */
+-int h_get_mpp(struct hvcall_mpp_data *mpp_data)
++long h_get_mpp(struct hvcall_mpp_data *mpp_data)
+ {
+-	int rc;
+-	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
++	long rc;
+ 
+ 	rc = plpar_hcall9(H_GET_MPP, retbuf);
+ 
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index d1b338b7dbded..3b82cfe229012 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -114,8 +114,8 @@ struct hvcall_ppp_data {
+  */
+ static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
+ {
+-	unsigned long rc;
+-	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
++	long rc;
+ 
+ 	rc = plpar_hcall9(H_GET_PPP, retbuf);
+ 
+@@ -161,7 +161,7 @@ static void parse_ppp_data(struct seq_file *m)
+ 	struct hvcall_ppp_data ppp_data;
+ 	struct device_node *root;
+ 	const __be32 *perf_level;
+-	int rc;
++	long rc;
+ 
+ 	rc = h_get_ppp(&ppp_data);
+ 	if (rc)
 -- 
 2.43.0
 
