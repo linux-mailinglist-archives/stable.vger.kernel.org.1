@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-50954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E7AD906D94
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA94C906BC5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B89841F27D54
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B835282FCA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288EF144D12;
-	Thu, 13 Jun 2024 11:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8D6143C77;
+	Thu, 13 Jun 2024 11:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtoFXNeb"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fewH832i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F8A144D1D;
-	Thu, 13 Jun 2024 11:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5F114265E;
+	Thu, 13 Jun 2024 11:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279876; cv=none; b=HiobQ67O/5XT3l9pElAUxJk+3bt3mKazkpSJ27f1TTSA7bZ8cnZQnD3KXgW+lA1fjq2/yV2g0GYYFvR4i9SpaND4s/qsn5oQGwSqJGECG4Np1XZ8MJ25aiDFPewyGgy4eQl/SPitl8I7CFKzSzjuJ0cY2RjouGy305Z2t0vTfQk=
+	t=1718279017; cv=none; b=lPISZnGLEvqkt1nNGMwCjGOwhkezyToHj6r7V/5ptGwzdfPHoK/Eu4B4eZI10dYO4GA9OOZU6+iK/jXBxHt6M0HBbeG+YyIaARv6uolUdyvAhryU+0hCAoY5xFfdg+1BLXlOy/o/WdmJ+hJqLnNUiAKj8B3qxg4VgxGn7hVnBk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279876; c=relaxed/simple;
-	bh=JUnj/8BFeBQz3mX1NnfKoTrah9mBl4LBIHuv2XRcMo0=;
+	s=arc-20240116; t=1718279017; c=relaxed/simple;
+	bh=4LaZbl16NS/zdoIH0y7j1e8U1rw+RTSfs38AdULsJAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+oef+svqukiW382JufHRWhJu7Si38C4xbQf07qbc24wtu3Vq6mcd2qeUIX/LtDpygAW2igUncAEhGSoR+aAizOhCwbvEzCtMPCU1/cBiaWULZNCwpYhoDnrQv6AhZl3BYyZST5pQaJjZ+XaCkVjdVOpiTQdoDZim+XJAHXtKnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtoFXNeb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E7AC32786;
-	Thu, 13 Jun 2024 11:57:56 +0000 (UTC)
+	 MIME-Version; b=TIpRC75MF2a66w+PuwBXRp8kUExXqXQQKtLNG9YxtM97hL/zbruTz2o7MBkH0wrT9acj65I272mrIHMVn0GNt/NOctDjNu1P3Q0hsSxuO/yQJrhhymWKWws+LTOcBFNRWVoLZ/VZxOo4yqhmSU5xUXtriS5wTDcMdOOvJX+DPXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fewH832i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17751C2BBFC;
+	Thu, 13 Jun 2024 11:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279876;
-	bh=JUnj/8BFeBQz3mX1NnfKoTrah9mBl4LBIHuv2XRcMo0=;
+	s=korg; t=1718279017;
+	bh=4LaZbl16NS/zdoIH0y7j1e8U1rw+RTSfs38AdULsJAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VtoFXNeb4WDwnOWCCPEke3a5SRYl0tJ5ApFeB2rTrOx3c//C4D4egEqgHQR6Edq0X
-	 3IKVXgPvq01LtUKLqlj3qDmUbmrVyW/hEdVJyqEMMCa+tv2MN46d+XHne6nf6MUa27
-	 UDZpA7L5SWHSTGt9lpeByWvANkIGe1liftrsQCak=
+	b=fewH832imI+4puyBddl/UOBQ0AYCWj+Cho6HoZTiDaQvbke9FpB3F/UgSqs7yf1Zd
+	 gXhfajgwxb8/JxarIHKQjlKyWePVNPjZwKwxly+stljCidlRLGugquXTn52jOBwXhY
+	 7BRvMq5nTG4FX0AfPCqWacCKZwUzZlqm4skPa4rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 067/202] ipv6: sr: fix invalid unregister error path
+	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	"Yang, Chenyuan" <cy54@illinois.edu>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
+Subject: [PATCH 4.19 117/213] media: cec: cec-adap: always cancel work in cec_transmit_msg_fh
 Date: Thu, 13 Jun 2024 13:32:45 +0200
-Message-ID: <20240613113230.364473616@linuxfoundation.org>
+Message-ID: <20240613113232.512176594@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 160e9d2752181fcf18c662e74022d77d3164cd45 ]
+[ Upstream commit 9fe2816816a3c765dff3b88af5b5c3d9bbb911ce ]
 
-The error path of seg6_init() is wrong in case CONFIG_IPV6_SEG6_LWTUNNEL
-is not defined. In that case if seg6_hmac_init() fails, the
-genl_unregister_family() isn't called.
+Do not check for !data->completed, just always call
+cancel_delayed_work_sync(). This fixes a small race condition.
 
-This issue exist since commit 46738b1317e1 ("ipv6: sr: add option to control
-lwtunnel support"), and commit 5559cea2d5aa ("ipv6: sr: fix possible
-use-after-free and null-ptr-deref") replaced unregister_pernet_subsys()
-with genl_unregister_family() in this error path.
-
-Fixes: 46738b1317e1 ("ipv6: sr: add option to control lwtunnel support")
-Reported-by: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240509131812.1662197-4-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Yang, Chenyuan <cy54@illinois.edu>
+Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
+Fixes: 490d84f6d73c ("media: cec: forgot to cancel delayed work")
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/cec/cec-adap.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index 98ee76b33b622..8962816925438 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -480,6 +480,8 @@ int __init seg6_init(void)
- #endif
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
- out_unregister_genl:
-+#endif
-+#if IS_ENABLED(CONFIG_IPV6_SEG6_LWTUNNEL) || IS_ENABLED(CONFIG_IPV6_SEG6_HMAC)
- 	genl_unregister_family(&seg6_genl_family);
- #endif
- out_unregister_pernet:
+diff --git a/drivers/media/cec/cec-adap.c b/drivers/media/cec/cec-adap.c
+index 2f49c4db49b35..d73beb1246946 100644
+--- a/drivers/media/cec/cec-adap.c
++++ b/drivers/media/cec/cec-adap.c
+@@ -863,8 +863,7 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
+ 	 */
+ 	mutex_unlock(&adap->lock);
+ 	wait_for_completion_killable(&data->c);
+-	if (!data->completed)
+-		cancel_delayed_work_sync(&data->work);
++	cancel_delayed_work_sync(&data->work);
+ 	mutex_lock(&adap->lock);
+ 
+ 	/* Cancel the transmit if it was interrupted */
 -- 
 2.43.0
 
