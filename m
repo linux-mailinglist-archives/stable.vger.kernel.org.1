@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-51395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA82906FAD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A10907165
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05AF62893F0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D14521F2545E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3319514535F;
-	Thu, 13 Jun 2024 12:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527391F937;
+	Thu, 13 Jun 2024 12:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYlCOsNS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+qhdpUv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4947143747;
-	Thu, 13 Jun 2024 12:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0280D20ED;
+	Thu, 13 Jun 2024 12:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281172; cv=none; b=bA0fPxjXZi5jAl9L/s1Sl59tZSKngo7cE4nBOTX0TobSUjMlp99B2Scv8MA8T3mVXOjrogzgf5wPmmow4sBL2PC9TBb2q9dqhbiudglBDm8yqU0Ty0NVt3l14v/3t+RI3J1iAK5LjBqIPaztfhk+T1T31eJG5D1Hu2+xuFyNKz4=
+	t=1718282197; cv=none; b=AQjvcyvzOmZFGyMAJje/rMa9otF+f92dcxUPM0EaLfUgowpjw6NOL3HvnVl2RVBTyRWe+I6HHjn+C73AvAxNaUbCP05IUpSL8vZLMcckRyoPpBAiVl0zZgbqvQyou6QT2AMGcPSkn8gAW2z1ydvP5p9r3vM4brPPOwgLDdUIqYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281172; c=relaxed/simple;
-	bh=al0RZAlTLueBxvOtEhNcR6iZc40WT5F7ssN44/kE7TI=;
+	s=arc-20240116; t=1718282197; c=relaxed/simple;
+	bh=Gg9vOvCiGD40PfmkhSsw8ft3SSAx57/FlXMEeaaNgV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zl7B1jjCeh+oCfN3xB0ktyihgwSClk194iRW/ZckP9cfFiHEkATaSJhwRbzADUGXYBzSV9fJwcCwNin60IjGO/aSgeDAoYCxdgV6j0Pa1l3dEmjEC6MmwTKEAkx1pLass6ZzAJzpSvVz92Uw3FnqEMxB7SjSSlNIl1hbsDxF1Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYlCOsNS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC2DC2BBFC;
-	Thu, 13 Jun 2024 12:19:31 +0000 (UTC)
+	 MIME-Version; b=k1aqCf/+ej3SXqDKEh58dpo7nlF3MsB2a0nyE/J97HB/aQx6nwdGzfAows8c6RmoTezWbwJtOKWk9H5YwUqlqomuHpnCkYOu2YXNXu/m366zG/jcMi0/xFMwNijAHrb9+VR1McF6E5owHLRqt/l+0KfnLv4nDkhTvqdZXWAO0Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+qhdpUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80C4EC2BBFC;
+	Thu, 13 Jun 2024 12:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281171;
-	bh=al0RZAlTLueBxvOtEhNcR6iZc40WT5F7ssN44/kE7TI=;
+	s=korg; t=1718282196;
+	bh=Gg9vOvCiGD40PfmkhSsw8ft3SSAx57/FlXMEeaaNgV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYlCOsNSKmHHGmHhgQOS7snqGJoq0zww12XS+63OBjKlzvnFKmn5QJlIPLcduTm6d
-	 W9K2lHdgMYaeSqyJDoL2yp7SeqteE+Ue097BFcVqbXdZP0GwzPoI6RMk9IyF/FYOWQ
-	 Koa3lOhKdjoPk1CcfQB2IXy4WFYWIhR++S/dd3Hg=
+	b=O+qhdpUvP3ouWwVP3fWd4ZpoOKanaVywFXMp6p/xqOX5ArRVSaRcbo4pWa1oVLCcL
+	 CSuPP/u6wCNe8pBWVs6eW1liqOR/XDba0vlnL/6n6Y448PfHn2nj5Rife6llJmUxqE
+	 /s2+OdEYj42pIkyrQcPNJ2TCIdNWUYWi6oVuOE1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Bursov <vitaly@bursov.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Valentin Schneider <vschneid@redhat.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 134/317] sched/fair: Allow disabling sched_balance_newidle with sched_relax_domain_level
-Date: Thu, 13 Jun 2024 13:32:32 +0200
-Message-ID: <20240613113252.740645960@linuxfoundation.org>
+Subject: [PATCH 5.15 196/402] f2fs: compress: fix to relocate check condition in f2fs_ioc_{,de}compress_file()
+Date: Thu, 13 Jun 2024 13:32:33 +0200
+Message-ID: <20240613113309.786134522@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,64 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Bursov <vitaly@bursov.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit a1fd0b9d751f840df23ef0e75b691fc00cfd4743 ]
+[ Upstream commit bd9ae4ae9e585061acfd4a169f2321706f900246 ]
 
-Change relax_domain_level checks so that it would be possible
-to include or exclude all domains from newidle balancing.
+Compress flag should be checked after inode lock held to avoid
+racing w/ f2fs_setflags_common() , fix it.
 
-This matches the behavior described in the documentation:
-
-  -1   no request. use system default or follow request of others.
-   0   no search.
-   1   search siblings (hyperthreads in a core).
-
-"2" enables levels 0 and 1, level_max excludes the last (level_max)
-level, and level_max+1 includes all levels.
-
-Fixes: 1d3504fcf560 ("sched, cpuset: customize sched domains, core")
-Signed-off-by: Vitalii Bursov <vitaly@bursov.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Link: https://lore.kernel.org/r/bd6de28e80073c79466ec6401cdeae78f0d4423d.1714488502.git.vitaly@bursov.com
+Fixes: 5fdb322ff2c2 ("f2fs: add F2FS_IOC_DECOMPRESS_FILE and F2FS_IOC_COMPRESS_FILE")
+Reported-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Closes: https://lore.kernel.org/linux-f2fs-devel/CAHJ8P3LdZXLc2rqeYjvymgYHr2+YLuJ0sLG9DdsJZmwO7deuhw@mail.gmail.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c  | 2 +-
- kernel/sched/topology.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/file.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 195f9cccab20b..9f2a93c829a91 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -1901,7 +1901,7 @@ bool current_cpuset_is_being_rebound(void)
- static int update_relax_domain_level(struct cpuset *cs, s64 val)
- {
- #ifdef CONFIG_SMP
--	if (val < -1 || val >= sched_domain_level_max)
-+	if (val < -1 || val > sched_domain_level_max + 1)
- 		return -EINVAL;
- #endif
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 5c0c7b95259f3..da071ed11a3f6 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -4016,9 +4016,6 @@ static int f2fs_ioc_decompress_file(struct file *filp, unsigned long arg)
+ 	if (!(filp->f_mode & FMODE_WRITE))
+ 		return -EBADF;
  
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index ff2c6d3ba6c79..6eb0996ef859f 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1217,7 +1217,7 @@ static void set_domain_attribute(struct sched_domain *sd,
- 	} else
- 		request = attr->relax_domain_level;
+-	if (!f2fs_compressed_file(inode))
+-		return -EINVAL;
+-
+ 	f2fs_balance_fs(sbi, true);
  
--	if (sd->level > request) {
-+	if (sd->level >= request) {
- 		/* Turn off idle balance on this domain: */
- 		sd->flags &= ~(SD_BALANCE_WAKE|SD_BALANCE_NEWIDLE);
+ 	file_start_write(filp);
+@@ -4029,7 +4026,8 @@ static int f2fs_ioc_decompress_file(struct file *filp, unsigned long arg)
+ 		goto out;
+ 	}
+ 
+-	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
++	if (!f2fs_compressed_file(inode) ||
++		is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
+@@ -4088,9 +4086,6 @@ static int f2fs_ioc_compress_file(struct file *filp, unsigned long arg)
+ 	if (!(filp->f_mode & FMODE_WRITE))
+ 		return -EBADF;
+ 
+-	if (!f2fs_compressed_file(inode))
+-		return -EINVAL;
+-
+ 	f2fs_balance_fs(sbi, true);
+ 
+ 	file_start_write(filp);
+@@ -4101,7 +4096,8 @@ static int f2fs_ioc_compress_file(struct file *filp, unsigned long arg)
+ 		goto out;
+ 	}
+ 
+-	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
++	if (!f2fs_compressed_file(inode) ||
++		is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
+ 		ret = -EINVAL;
+ 		goto out;
  	}
 -- 
 2.43.0
