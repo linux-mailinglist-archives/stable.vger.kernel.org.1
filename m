@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-50713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28EEC906C20
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:47:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0D5906D51
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7A951F23D94
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:47:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 076271F27D5C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DA2144D34;
-	Thu, 13 Jun 2024 11:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326021459F7;
+	Thu, 13 Jun 2024 11:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e34opGk4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbevANBP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A3413CA99;
-	Thu, 13 Jun 2024 11:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56F91386DF;
+	Thu, 13 Jun 2024 11:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279172; cv=none; b=qxGNWoYFx7G8j1FU0AtpVzRPKJtPM239QB8LPN3OqZoQRfW36xXQxHkTSJqvVEKPI4XuLjolc5Fb/bYjSqVNxAAWmIw71FIlnsBQ+iMg3xND8s+gw+avb4/FO56uU/cOeAyakiHTZjsxeFNp4+shmghk8ncLG/I4qOoESVxirps=
+	t=1718279697; cv=none; b=jKeCTFNk0e+xUFwXudBNJoAOCd3t6qt8+kigwX7BGo2b3Gg9S2Odog+OfB8YHZDknhBzy/schix7S0RmPVb2OU7IO7yFRsfbtXpSGX3GlxlvIgXs+hFex6Hma0PiiGkoulCF0LZWw8w5zJYIXqeJz+0UaUGYZ9xQBpM8NtTrrkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279172; c=relaxed/simple;
-	bh=5SMrO+DqoQ8OSg5f/8SJ0lQ2/eG+6ifVSWAuC4lduh0=;
+	s=arc-20240116; t=1718279697; c=relaxed/simple;
+	bh=Sbj3MdrXO6SN6TYcm9pjoB5i/yR03U+3H1xjZRz8ZLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JLvPrBzS/gEm95vysbkDfOLU90BqMXw3CUrSKhOfHp4bWawCzyQPOOvD0qXAf623Xm1VhoGPuy7elZmE0MLkkSXq9Mb2W7qXmLzhSoeNJiWepNP5FXHTek1tMTGkcC9CIMUreWCMul5EesfdyNyLrgXcbo6XpU3TeIZMzo4uxgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e34opGk4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90330C32786;
-	Thu, 13 Jun 2024 11:46:11 +0000 (UTC)
+	 MIME-Version; b=bauGaBfzMTliAaQVnS8z68Z4GdsLwlwXGedeLujynRttwslINg/dHmMrnKDm+klPXb/wdKzMVDZmU1xpP3txtED5NeZ1DV9DJtCMsbak3pL1FJ81QvRPnSheO7ZzKQcLZzv+Vw7qtcJxWYhnl/JbGxNTylSY7GfG8ZQfw3dSVZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbevANBP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CABFC2BBFC;
+	Thu, 13 Jun 2024 11:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279171;
-	bh=5SMrO+DqoQ8OSg5f/8SJ0lQ2/eG+6ifVSWAuC4lduh0=;
+	s=korg; t=1718279696;
+	bh=Sbj3MdrXO6SN6TYcm9pjoB5i/yR03U+3H1xjZRz8ZLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e34opGk4+JPcBaNzF07ggDuHx/R8cCPQyzQCzn5rCvot+mUfEQcZqrx2I6KNEO55F
-	 soS/DDo0n9TfhVNu1TJM+9yXQcaotu/4QmsC0ttCvE95CJ0pN4+B4x/l9b/9z0LLMy
-	 n2WfrO3egyWzxVbX6aJCcbwcXqedvV5vnTft1JVk=
+	b=YbevANBPKRyyY3v8LpEBCu0RKFt9fG/F3TDO8+kPxvNS/ybR4YGlo14cpecxJcMoB
+	 36c0KuOWA1wtU9IERu3o2mvm3NOlqAXeNdLEoQmG6Xs/Pjkt9xJgC61ypPDFenat3M
+	 9rcvDrWLvbYKQDYLiPT8fXR/BPzUafT9kxfSp2Ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 4.19 199/213] KVM: arm64: Allow AArch32 PSTATE.M to be restored as System mode
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.9 122/157] ARM: dts: samsung: smdkv310: fix keypad no-autorepeat
 Date: Thu, 13 Jun 2024 13:34:07 +0200
-Message-ID: <20240613113235.654786459@linuxfoundation.org>
+Message-ID: <20240613113232.131884210@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit dfe6d190f38fc5df5ff2614b463a5195a399c885 upstream.
+commit 87d8e522d6f5a004f0aa06c0def302df65aff296 upstream.
 
-It appears that we don't allow a vcpu to be restored in AArch32
-System mode, as we *never* included it in the list of valid modes.
+Although the Samsung SoC keypad binding defined
+linux,keypad-no-autorepeat property, Linux driver never implemented it
+and always used linux,input-no-autorepeat.  Correct the DTS to use
+property actually implemented.
 
-Just add it to the list of allowed modes.
+This also fixes dtbs_check errors like:
 
-Fixes: 0d854a60b1d7 ("arm64: KVM: enable initialization of a 32bit vcpu")
-Cc: stable@vger.kernel.org
-Acked-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240524141956.1450304-3-maz@kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+  exynos4210-smdkv310.dtb: keypad@100a0000: 'linux,keypad-no-autorepeat' does not match any of the regexes: '^key-[0-9a-z]+$', 'pinctrl-[0-9]+'
+
+Cc: <stable@vger.kernel.org>
+Fixes: 0561ceabd0f1 ("ARM: dts: Add intial dts file for EXYNOS4210 SoC, SMDKV310 and ORIGEN")
+Link: https://lore.kernel.org/r/20240312183105.715735-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/guest.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/samsung/exynos4210-smdkv310.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/kvm/guest.c
-+++ b/arch/arm64/kvm/guest.c
-@@ -175,6 +175,7 @@ static int set_core_reg(struct kvm_vcpu
- 		case PSR_AA32_MODE_SVC:
- 		case PSR_AA32_MODE_ABT:
- 		case PSR_AA32_MODE_UND:
-+		case PSR_AA32_MODE_SYS:
- 			if (!vcpu_el1_is_32bit(vcpu))
- 				return -EINVAL;
- 			break;
+--- a/arch/arm/boot/dts/samsung/exynos4210-smdkv310.dts
++++ b/arch/arm/boot/dts/samsung/exynos4210-smdkv310.dts
+@@ -88,7 +88,7 @@
+ &keypad {
+ 	samsung,keypad-num-rows = <2>;
+ 	samsung,keypad-num-columns = <8>;
+-	linux,keypad-no-autorepeat;
++	linux,input-no-autorepeat;
+ 	wakeup-source;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&keypad_rows &keypad_cols>;
 
 
 
