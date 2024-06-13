@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-51554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3CF0907070
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6F7907230
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 214C81F220A6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:28:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50C7D281291
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82603144317;
-	Thu, 13 Jun 2024 12:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B19E21411DA;
+	Thu, 13 Jun 2024 12:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F++6Vv9l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+yXxNaY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400023209;
-	Thu, 13 Jun 2024 12:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F171142623;
+	Thu, 13 Jun 2024 12:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281636; cv=none; b=UcU8WqGjRvSAPO86BqSYHfS/SOF+pTG3lJUdxB72Ddd5+3cBfzUIf5vYxc6aK3SAQr+wZ/GgecpyAuGsgjXAdGkihymxqjsf1RLH1pcYQfHsxNHtVYaP5MIc+t/DIvNu8hqzc7Qb6kZHrf3mTiF5D87IMsAmWeGD+xjhNaYOR4M=
+	t=1718282687; cv=none; b=khVS9rs+QP4bdwsqkiAM0UPI9OnKzNNTBY2b+riLsfEfMniYkcExySzMTVQuvYbsxfozobBpin6Eg7RHeGTjWCfaprEnz2+OZxB8BGeb46NFOyBqPqUCbhLn8x6AvYzecBQ2Xbiydnny0dToR4gkd+LSHw4cmZiB85qPnzIgBqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281636; c=relaxed/simple;
-	bh=yZoPGFITFyjdDd9WjHRy/xFdnGd3fupnZghOq5Q+Spk=;
+	s=arc-20240116; t=1718282687; c=relaxed/simple;
+	bh=54hzL0eVlaHg4ui19Mn72VXAoRt2wTKmAYkwhtPA3Bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rmsUXqVRLxb6+WV46dA8g5WOr7pfCoT8U9sRSESM4rupsfYDyjE+Fsc4ge75DUS7r/RTLWclHthFDkEjj2VkU0x5efwMVh8wE8qh7YwJr+/DDY4eM7Cdy80xgCC7f79O/EeziHoP5KFZ8bc6ffQHvaXuURM9OVRk+skAj7IpBf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F++6Vv9l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF68C2BBFC;
-	Thu, 13 Jun 2024 12:27:15 +0000 (UTC)
+	 MIME-Version; b=osxDFErU9/bfCDV4fa+qVV0iOr6F57qF50m3lh25yEuqCqsPuX1R9TH8hzymWsASmADln3J4bzTl2QtGjXG8KOGi9urTScOOhcWEPfq2ISdGWquEGccPQBbY/WC9onOV6935Pp+yL5IT4RabY1x3BK/reqcadb+JTVK1dQatB7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+yXxNaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17D5C32786;
+	Thu, 13 Jun 2024 12:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281636;
-	bh=yZoPGFITFyjdDd9WjHRy/xFdnGd3fupnZghOq5Q+Spk=;
+	s=korg; t=1718282687;
+	bh=54hzL0eVlaHg4ui19Mn72VXAoRt2wTKmAYkwhtPA3Bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F++6Vv9lInMor0FlgeVcsYn1LgIqd1p2/uT9PuY2+ywHmbyY/0sru5O46DdbYfLS7
-	 6vyj4qd0Olq3kJGB69Q1yGhpGu7hqaW+pi4sO3F23qksnNd/Jxf3OERR8SQq7KU9Up
-	 /yHfVIP0SpZ42QmKIIVGBSM8qv9XE7UINfg1eEZM=
+	b=V+yXxNaYFJpGqk6Xa5WjtX/25dmU4sEswF9dSZIsV4+aaCXtk50rd1CTvYmkHT2Oh
+	 qX93WEBdt6t8keJsYv049BbeJs889mvM7JLGYT4Sh5WtavSrdPKjcz9KB6vXFbm0dT
+	 zcNgRsbb3Kt5H8M8ZlZJG1OJ5Tcn7pJT1mFmkJ6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Nick Bowler <nbowler@draconx.ca>,
-	Andreas Larsson <andreas@gaisler.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Atish Patra <atish.patra@oracle.com>,
-	Bob Picco <bob.picco@oracle.com>,
-	Vijay Kumar <vijay.ac.kumar@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5.10 301/317] sparc64: Fix number of online CPUs
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
+	Dan Moulding <dan@danm.net>,
+	Junxiao Bi <junxiao.bi@oracle.com>
+Subject: [PATCH 5.15 362/402] md/raid5: fix deadlock that raid5d() wait for itself to clear MD_SB_CHANGE_PENDING
 Date: Thu, 13 Jun 2024 13:35:19 +0200
-Message-ID: <20240613113259.195314721@linuxfoundation.org>
+Message-ID: <20240613113316.259339950@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,128 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Ravnborg <sam@ravnborg.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit 98937707fea8375e8acea0aaa0b68a956dd52719 upstream.
+commit 151f66bb618d1fd0eeb84acb61b4a9fa5d8bb0fa upstream.
 
-Nick Bowler reported:
-    When using newer kernels on my Ultra 60 with dual 450MHz UltraSPARC-II
-    CPUs, I noticed that only CPU 0 comes up, while older kernels (including
-    4.7) are working fine with both CPUs.
+Xiao reported that lvm2 test lvconvert-raid-takeover.sh can hang with
+small possibility, the root cause is exactly the same as commit
+bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
 
-      I bisected the failure to this commit:
+However, Dan reported another hang after that, and junxiao investigated
+the problem and found out that this is caused by plugged bio can't issue
+from raid5d().
 
-      9b2f753ec23710aa32c0d837d2499db92fe9115b is the first bad commit
-      commit 9b2f753ec23710aa32c0d837d2499db92fe9115b
-      Author: Atish Patra <atish.patra@oracle.com>
-      Date:   Thu Sep 15 14:54:40 2016 -0600
+Current implementation in raid5d() has a weird dependence:
 
-      sparc64: Fix cpu_possible_mask if nr_cpus is set
+1) md_check_recovery() from raid5d() must hold 'reconfig_mutex' to clear
+   MD_SB_CHANGE_PENDING;
+2) raid5d() handles IO in a deadloop, until all IO are issued;
+3) IO from raid5d() must wait for MD_SB_CHANGE_PENDING to be cleared;
 
-    This is a small change that reverts very easily on top of 5.18: there is
-    just one trivial conflict.  Once reverted, both CPUs work again.
+This behaviour is introduce before v2.6, and for consequence, if other
+context hold 'reconfig_mutex', and md_check_recovery() can't update
+super_block, then raid5d() will waste one cpu 100% by the deadloop, until
+'reconfig_mutex' is released.
 
-    Maybe this is related to the fact that the CPUs on this system are
-    numbered CPU0 and CPU2 (there is no CPU1)?
+Refer to the implementation from raid1 and raid10, fix this problem by
+skipping issue IO if MD_SB_CHANGE_PENDING is still set after
+md_check_recovery(), daemon thread will be woken up when 'reconfig_mutex'
+is released. Meanwhile, the hang problem will be fixed as well.
 
-The current code that adjust cpu_possible based on nr_cpu_ids do not
-take into account that CPU's may not come one after each other.
-Move the chech to the function that setup the cpu_possible mask
-so there is no need to adjust it later.
-
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Fixes: 9b2f753ec237 ("sparc64: Fix cpu_possible_mask if nr_cpus is set")
-Reported-by: Nick Bowler <nbowler@draconx.ca>
-Tested-by: Nick Bowler <nbowler@draconx.ca>
-Link: https://lore.kernel.org/sparclinux/20201009161924.c8f031c079dd852941307870@gmx.de/
-Link: https://lore.kernel.org/all/CADyTPEwt=ZNams+1bpMB1F9w_vUdPsGCt92DBQxxq_VtaLoTdw@mail.gmail.com/
-Cc: stable@vger.kernel.org # v4.8+
-Cc: Andreas Larsson <andreas@gaisler.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Atish Patra <atish.patra@oracle.com>
-Cc: Bob Picco <bob.picco@oracle.com>
-Cc: Vijay Kumar <vijay.ac.kumar@oracle.com>
-Cc: David S. Miller <davem@davemloft.net>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240330-sparc64-warnings-v1-9-37201023ee2f@ravnborg.org
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Fixes: 5e2cf333b7bd ("md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d")
+Cc: stable@vger.kernel.org # v5.19+
+Reported-and-tested-by: Dan Moulding <dan@danm.net>
+Closes: https://lore.kernel.org/all/20240123005700.9302-1-dan@danm.net/
+Investigated-by: Junxiao Bi <junxiao.bi@oracle.com>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240322081005.1112401-1-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/include/asm/smp_64.h |    2 --
- arch/sparc/kernel/prom_64.c     |    4 +++-
- arch/sparc/kernel/setup_64.c    |    1 -
- arch/sparc/kernel/smp_64.c      |   14 --------------
- 4 files changed, 3 insertions(+), 18 deletions(-)
+ drivers/md/raid5.c |   15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
---- a/arch/sparc/include/asm/smp_64.h
-+++ b/arch/sparc/include/asm/smp_64.h
-@@ -47,7 +47,6 @@ void arch_send_call_function_ipi_mask(co
- int hard_smp_processor_id(void);
- #define raw_smp_processor_id() (current_thread_info()->cpu)
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -36,7 +36,6 @@
+  */
  
--void smp_fill_in_cpu_possible_map(void);
- void smp_fill_in_sib_core_maps(void);
- void cpu_play_dead(void);
+ #include <linux/blkdev.h>
+-#include <linux/delay.h>
+ #include <linux/kthread.h>
+ #include <linux/raid/pq.h>
+ #include <linux/async_tx.h>
+@@ -6486,6 +6485,9 @@ static void raid5d(struct md_thread *thr
+ 		int batch_size, released;
+ 		unsigned int offset;
  
-@@ -77,7 +76,6 @@ void __cpu_die(unsigned int cpu);
- #define smp_fill_in_sib_core_maps() do { } while (0)
- #define smp_fetch_global_regs() do { } while (0)
- #define smp_fetch_global_pmu() do { } while (0)
--#define smp_fill_in_cpu_possible_map() do { } while (0)
- #define smp_init_cpu_poke() do { } while (0)
- #define scheduler_poke() do { } while (0)
- 
---- a/arch/sparc/kernel/prom_64.c
-+++ b/arch/sparc/kernel/prom_64.c
-@@ -483,7 +483,9 @@ static void *record_one_cpu(struct devic
- 	ncpus_probed++;
- #ifdef CONFIG_SMP
- 	set_cpu_present(cpuid, true);
--	set_cpu_possible(cpuid, true);
++		if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
++			break;
 +
-+	if (num_possible_cpus() < nr_cpu_ids)
-+		set_cpu_possible(cpuid, true);
- #endif
- 	return NULL;
- }
---- a/arch/sparc/kernel/setup_64.c
-+++ b/arch/sparc/kernel/setup_64.c
-@@ -688,7 +688,6 @@ void __init setup_arch(char **cmdline_p)
+ 		released = release_stripe_list(conf, conf->temp_inactive_list);
+ 		if (released)
+ 			clear_bit(R5_DID_ALLOC, &conf->cache_state);
+@@ -6522,18 +6524,7 @@ static void raid5d(struct md_thread *thr
+ 			spin_unlock_irq(&conf->device_lock);
+ 			md_check_recovery(mddev);
+ 			spin_lock_irq(&conf->device_lock);
+-
+-			/*
+-			 * Waiting on MD_SB_CHANGE_PENDING below may deadlock
+-			 * seeing md_check_recovery() is needed to clear
+-			 * the flag when using mdmon.
+-			 */
+-			continue;
+ 		}
+-
+-		wait_event_lock_irq(mddev->sb_wait,
+-			!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags),
+-			conf->device_lock);
+ 	}
+ 	pr_debug("%d stripes handled\n", handled);
  
- 	paging_init();
- 	init_sparc64_elf_hwcap();
--	smp_fill_in_cpu_possible_map();
- 	/*
- 	 * Once the OF device tree and MDESC have been setup and nr_cpus has
- 	 * been parsed, we know the list of possible cpus.  Therefore we can
---- a/arch/sparc/kernel/smp_64.c
-+++ b/arch/sparc/kernel/smp_64.c
-@@ -1210,20 +1210,6 @@ void __init smp_setup_processor_id(void)
- 		xcall_deliver_impl = hypervisor_xcall_deliver;
- }
- 
--void __init smp_fill_in_cpu_possible_map(void)
--{
--	int possible_cpus = num_possible_cpus();
--	int i;
--
--	if (possible_cpus > nr_cpu_ids)
--		possible_cpus = nr_cpu_ids;
--
--	for (i = 0; i < possible_cpus; i++)
--		set_cpu_possible(i, true);
--	for (; i < NR_CPUS; i++)
--		set_cpu_possible(i, false);
--}
--
- void smp_fill_in_sib_core_maps(void)
- {
- 	unsigned int i;
 
 
 
