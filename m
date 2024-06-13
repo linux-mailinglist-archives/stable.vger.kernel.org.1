@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-50398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF0289064A8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:13:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5C19064A9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:13:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA2E91C229D8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:13:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E13251F231B1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB91513792E;
-	Thu, 13 Jun 2024 07:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024A51384BE;
+	Thu, 13 Jun 2024 07:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Td5enapF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0SoOZgHh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0BE12CD9D
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62F512CD9D
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718262799; cv=none; b=LwhnSPPmJpEOThwrempzYHPQ9c71wNrxmX/Bmp3AA7Z6s/3o+OUD8hsyB4q5+oDXASUgKxSrI0/A+CvFsuez2+L831xz/127y6a4vAZvhanHcokteLKU1FYm+HRuPZjLXzdVAngBYiRvCrdu6wpmzUOJfWeXDPPtOYCED1ImQXM=
+	t=1718262803; cv=none; b=SYbd2eqDNKQ25yQnZeryp7iy4G6gdmJ8V6LbtT0IhdfN06Nrpp21OxxLW9gwio+++CHthZkOEuxobeXQExa7t5gBtPDO6QPBlE7lZvrVVIWkI8GTbcKalALLPA6onf6rBQDsgQhTELQ5qMMA4dH4D3b5vvVZ3OnXbFTUC8xM31E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718262799; c=relaxed/simple;
-	bh=+laqge5O0FirPzaZ/B4mTmYyJtxcGipg0GKVgk8sRwM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YJZIQhmb0FE852yXgC3+n4Zk+XzV3By96edDY742TPZrK1LnQL8cP0nfhUCs1+vigea+vsKqKRgsmFtifXffie2tMumt8o6wmRrMcSTZOG7hNZL+As3U1x8D6VnLMgfNWer8uIJjlv3Hl/cj2O8fZ9TZzYEBszko6vStYy9Fdv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Td5enapF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77F4C2BBFC;
-	Thu, 13 Jun 2024 07:13:18 +0000 (UTC)
+	s=arc-20240116; t=1718262803; c=relaxed/simple;
+	bh=myvYtVoWKZeblH4QachaaOO+1TdSUQm7WW4k0VEU5fE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=At1CIq7+z/+iLEWcrFP5/0mptRt/dHkx9dVdiLBekq/pA1bR1unRB7ntc5QvfkGe7/NsuISM7zDJtm0DExSdzLR2miUyVK0Q1zwD0VaG5ll5ENdpqC8X/zF21x/5gYN6W+wUlwuW9Ag/x4vIagKgcHRophn9ALbvFFYljHWk+rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0SoOZgHh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BCEC2BBFC;
+	Thu, 13 Jun 2024 07:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718262799;
-	bh=+laqge5O0FirPzaZ/B4mTmYyJtxcGipg0GKVgk8sRwM=;
+	s=korg; t=1718262803;
+	bh=myvYtVoWKZeblH4QachaaOO+1TdSUQm7WW4k0VEU5fE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Td5enapF82GMZsV53gEc71WCmArtKS9Sm0nYBJswELHetgAoKkuWrl30fsVvYE1P7
-	 YP0JjVAPoGgYz05OrQKcpYohFWwJ82nyRYmfdMJXQaBpQb7L/OFwj8pHZCUMm1VlKg
-	 fNT4eoaMXOQPiEO64Vq9Q1VHeQUNrxp7QjeKqhUU=
-Subject: FAILED: patch "[PATCH] mm: fix race between __split_huge_pmd_locked() and GUP-fast" failed to apply to 5.15-stable tree
+	b=0SoOZgHh6nA3JbDyDMwU19HKWVf60qtukL2NpHXNtAw3MdXczjsLbnqxV6/HzSzxf
+	 XuhzmU1DqIQUfAcSaAvKgcBts8rKwjrbPCpWDWc/GNLhYjuxZVVMj9FaPszkUoeH/c
+	 6U3Xgvyld/LmzPqXsT8KVSxhkqm3X/wyEb7b0Pic=
+Subject: FAILED: patch "[PATCH] mm: fix race between __split_huge_pmd_locked() and GUP-fast" failed to apply to 5.10-stable tree
 To: ryan.roberts@arm.com,akpm@linux-foundation.org,andreas@gaisler.com,aneesh.kumar@kernel.org,anshuman.khandual@arm.com,borntraeger@linux.ibm.com,bp@alien8.de,catalin.marinas@arm.com,christophe.leroy@csgroup.eu,corbet@lwn.net,dave.hansen@linux.intel.com,davem@davemloft.net,david@redhat.com,luto@kernel.org,mark.rutland@arm.com,mingo@redhat.com,naveen.n.rao@linux.ibm.com,npiggin@gmail.com,peterz@infradead.org,stable@vger.kernel.org,svens@linux.ibm.com,tglx@linutronix.de,will@kernel.org,ziy@nvidia.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Jun 2024 09:13:16 +0200
-Message-ID: <2024061316-brook-imaging-a202@gregkh>
+Date: Thu, 13 Jun 2024 09:13:17 +0200
+Message-ID: <2024061317-promoter-record-bc91@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3a5a8d343e1cf96eb9971b17cbd4b832ab19b8e7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061316-brook-imaging-a202@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061317-promoter-record-bc91@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,22 @@ Possible dependencies:
 4f83145721f3 ("mm: avoid unnecessary flush on change_huge_pmd()")
 c9fe66560bf2 ("mm/mprotect: do not flush when not required architecturally")
 4a18419f71cd ("mm/mprotect: use mmu_gather")
+e346e6688c4a ("mm: thp: skip make PMD PROT_NONE if THP migration is not supported")
+f0953a1bbaca ("mm: fix typos in comments")
+e2db1a9aa381 ("kasan, mm: optimize kmalloc poisoning")
+928501344fc6 ("kasan, mm: don't save alloc stacks twice")
+2b8305260fb3 ("kfence, kasan: make KFENCE compatible with KASAN")
+0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
+41139aa4c3a3 ("mm/filemap: add mapping_seek_hole_data")
+a1ba9da8f0f9 ("mm/hugetlb.c: fix unnecessary address expansion of pmd sharing")
+611806b4bf8d ("kasan: fix bug detection via ksize for HW_TAGS mode")
+027b37b552f3 ("kasan: move _RET_IP_ to inline wrappers")
+573a48092313 ("kasan: add match-all tag tests")
+f00748bfa024 ("kasan: prefix global functions with kasan_")
+dbf53f7597be ("mm/mprotect.c: optimize error detection in do_mprotect_pkey()")
+96667f8a4382 ("mm: Close race in generic_access_phys")
+97593cad003c ("kasan: sanitize objects when metadata doesn't fit")
+1ef3133bd3b8 ("kasan: simplify assign_tag and set_tag calls")
 
 thanks,
 
