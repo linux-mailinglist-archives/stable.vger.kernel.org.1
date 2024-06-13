@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-50565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C86C906B46
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:39:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3AF906B21
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E5E1B2269A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:39:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B68241F245F5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221F5142911;
-	Thu, 13 Jun 2024 11:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704E8143867;
+	Thu, 13 Jun 2024 11:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nffZW9qe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wragvhym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EB6DDB1;
-	Thu, 13 Jun 2024 11:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F01E142911;
+	Thu, 13 Jun 2024 11:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278736; cv=none; b=MMbggRoVwukqHEM+zIzuiNw8B+EuszkFrGdVMlu4AzZI40ZdGphkQlkXRyeOZo0Pvz7vttHA44DagyQsEDwKj53nvnSMztEiyaCFVPCdAuAqghVK9Ku1j+MgVy3h+KpxY0tpipmLwApW6J7yDBi6emdcwssLyn60UdM7cThDM08=
+	t=1718278642; cv=none; b=VNcXx2nj6QYGs4z0CKk3rZBl1gKuzXXOM1SmkroXQ6b28ypuko3nLiM1JWxo/gVpywl9Q1LlPpvmwR538PNK341Q6zOntT0hXS2jbQuYtIP+bFtCEpPmzHKUjJJhVRvvrGPOEUghZ/4AJSel0Gyje3ty2JACME2SzoBPbYPkVWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278736; c=relaxed/simple;
-	bh=8T35qAmhyxcvTEqVwU7eOi64rynfbpEElJw/1ffbjzQ=;
+	s=arc-20240116; t=1718278642; c=relaxed/simple;
+	bh=Z2/zGejb/dYNf5qPS1ou0M5ZBQttzYzIxjtEnDPckQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWgAyQz+HH9f7ToYVWgQGCNH20MSlAK0klIjporNsZYNrVcGzI1w9NE9zIylL3hU+7pzAWdFEy6MzBQjn/UVzReAn2w1Yf41bl6AZl12578EzcLniEDFMBK836W2VvB2P3NJkh92+CfTsIOHq8GiHpKxTvA49EAZKLvOxs7aSuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nffZW9qe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A80EC2BBFC;
-	Thu, 13 Jun 2024 11:38:56 +0000 (UTC)
+	 MIME-Version; b=JI7dw8L+b9OaUG3qcqw8zgpSXDV/pePWjDNM12HaReJzNv4xwsfYOqIyFtPaVfB4jYsBOZU03nHYoKZM2ZebbT4S2GYIUX8zflHgTcFL3yklQyDREJ2+dSpEl9eucPxX37SKC17HI7se2OqL+4HTQ4LoFIcH/Y7ifyowK44pG3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wragvhym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BCEC2BBFC;
+	Thu, 13 Jun 2024 11:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278736;
-	bh=8T35qAmhyxcvTEqVwU7eOi64rynfbpEElJw/1ffbjzQ=;
+	s=korg; t=1718278642;
+	bh=Z2/zGejb/dYNf5qPS1ou0M5ZBQttzYzIxjtEnDPckQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nffZW9qeH6nsT3wrk5c1g1GUL59xKj0h1xZr/9iR/ENTOPX7jf98NxsyGQee0dLxm
-	 8tfche7ITbH0Eet5gx4tsyqJMHA5jYPYVDoTR/PExTfobQfFAW8S4LCarbiEqYl7QP
-	 0cVg4a+gvKc+dfWGlRygd5ZY05GmxfFAOdrb95F0=
+	b=wragvhymUJ1QsWDYMjJxcCjakAHMT6U5Lz9MIgK0r+TJL4ks2N+8aqSFmOLq0DUBd
+	 DVq797xP5rDVFgLuHPCKgMJQj18nv508C0FwO8RoKcWyVnC8ilK+47K9kp/SILE7A/
+	 4qb6AwARXXDHvW20yZ2eTlHMQPHKZOjRwSQhuyaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Derek Fang <derek.fang@realtek.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 012/213] ASoC: dt-bindings: rt5645: add cbj sleeve gpio property
-Date: Thu, 13 Jun 2024 13:31:00 +0200
-Message-ID: <20240613113228.457773638@linuxfoundation.org>
+Subject: [PATCH 4.19 013/213] ASoC: da7219-aad: fix usage of device_get_named_child_node()
+Date: Thu, 13 Jun 2024 13:31:01 +0200
+Message-ID: <20240613113228.498079013@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
 References: <20240613113227.969123070@linuxfoundation.org>
@@ -66,46 +66,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Derek Fang <derek.fang@realtek.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 306b38e3fa727d22454a148a364123709e356600 ]
+[ Upstream commit e8a6a5ad73acbafd98e8fd3f0cbf6e379771bb76 ]
 
-Add an optional gpio property to control external CBJ circuits
-to avoid some electric noise caused by sleeve/ring2 contacts floating.
+The documentation for device_get_named_child_node() mentions this
+important point:
 
-Signed-off-by: Derek Fang <derek.fang@realtek.com>
+"
+The caller is responsible for calling fwnode_handle_put() on the
+returned fwnode pointer.
+"
 
-Link: https://msgid.link/r/20240408091057.14165-2-derek.fang@realtek.com
+Add fwnode_handle_put() to avoid a leaked reference.
+
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20240426153033.38500-1-pierre-louis.bossart@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/sound/rt5645.txt | 6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/soc/codecs/da7219-aad.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/sound/rt5645.txt b/Documentation/devicetree/bindings/sound/rt5645.txt
-index a03f9a872a716..bfb2217a9a658 100644
---- a/Documentation/devicetree/bindings/sound/rt5645.txt
-+++ b/Documentation/devicetree/bindings/sound/rt5645.txt
-@@ -16,6 +16,11 @@ Optional properties:
-   a GPIO spec for the external headphone detect pin. If jd-mode = 0,
-   we will get the JD status by getting the value of hp-detect-gpios.
+diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
+index e3515ac8b223f..c7c800f8133b6 100644
+--- a/sound/soc/codecs/da7219-aad.c
++++ b/sound/soc/codecs/da7219-aad.c
+@@ -634,8 +634,10 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct snd_soc_component
+ 		return NULL;
  
-+- cbj-sleeve-gpios:
-+  a GPIO spec to control the external combo jack circuit to tie the sleeve/ring2
-+  contacts to the ground or floating. It could avoid some electric noise from the
-+  active speaker jacks.
+ 	aad_pdata = devm_kzalloc(dev, sizeof(*aad_pdata), GFP_KERNEL);
+-	if (!aad_pdata)
++	if (!aad_pdata) {
++		fwnode_handle_put(aad_np);
+ 		return NULL;
++	}
+ 
+ 	aad_pdata->irq = i2c->irq;
+ 
+@@ -710,6 +712,8 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct snd_soc_component
+ 	else
+ 		aad_pdata->adc_1bit_rpt = DA7219_AAD_ADC_1BIT_RPT_1;
+ 
++	fwnode_handle_put(aad_np);
 +
- - realtek,in2-differential
-   Boolean. Indicate MIC2 input are differential, rather than single-ended.
+ 	return aad_pdata;
+ }
  
-@@ -64,6 +69,7 @@ codec: rt5650@1a {
- 	compatible = "realtek,rt5650";
- 	reg = <0x1a>;
- 	hp-detect-gpios = <&gpio 19 0>;
-+	cbj-sleeve-gpios = <&gpio 20 0>;
- 	interrupt-parent = <&gpio>;
- 	interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
- 	realtek,dmic-en = "true";
 -- 
 2.43.0
 
