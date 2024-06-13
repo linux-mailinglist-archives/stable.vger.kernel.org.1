@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A7F906FE4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16100906E85
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A93F1C22DCA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DA081C22CC2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C887913CF9E;
-	Thu, 13 Jun 2024 12:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC67E144D0F;
+	Thu, 13 Jun 2024 12:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHKuDvDS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlOyREu+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8698C6EB56;
-	Thu, 13 Jun 2024 12:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89019144D00;
+	Thu, 13 Jun 2024 12:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281322; cv=none; b=eZC8cIA00AhvZKfFqlvq+1eYnIHLv/Oqzevk7Oj6u+kcjWeT3PEtNb+lFHkyxzGuV9Ycv+jJw5kFwIR+mh4FZN7anNCSoh4fohMpug+pe3J1+iJk7xONvAmmTcPEhD3fopPTkRirQLOwSBtei/qVGpoWuF9mVCIMW9AwTpYGDZ0=
+	t=1718280435; cv=none; b=ScwBSNidvUDGW6thUsOim34LiJGRVvJF5pQLeNRv8QH6TLUHAmKSPq+IkqO4lP8A2j8kkNPeNReCADVwU7uJbwyIjWuN+WoQKo8wLqW0EtIuduGHlExGrBOphi5FKUorzqn2R2nK+crQC0Osi4dQZv4Njiu9qIr/6R3W1jTfL28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281322; c=relaxed/simple;
-	bh=AUT0glqgx0lYeHLJNyn+RNVQsBsD8yDXimjUWQ3C2P0=;
+	s=arc-20240116; t=1718280435; c=relaxed/simple;
+	bh=t6IggHhrPe/3Fqz+LWHTK4wA9UErx5bNgRUTKoV+FWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bCazZx/Sot47wsgq5DyKlHmKwE+5Sd6qZhFKGaq8imRzgsojzQl2LTVPzIhcBZyxnbJPKva3eHdopJ2C1lbTUbB7SSVgJLnPmSYkQBlOXO2IKAVFBjjl9HBFwtAOm5qrjuKxrFXxNR9GzjFPYpBv3aJ1fhE8XmUPcLt3yzBo4XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHKuDvDS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9216C2BBFC;
-	Thu, 13 Jun 2024 12:22:01 +0000 (UTC)
+	 MIME-Version; b=iAxnUgPUVcvJafv5GYS2J4/pbIBh6HgZTXKU2cTOlcNBtQgehURsQISCoac5cj+LKYC3wSN+umrt3C9i73zZ9W2joO98QoNK8ZOsI7wRoaTUiK2gnF93KLyZTCcF9m55d516cq8AMEY4AEeshysmOCGDE/aFXTiRXq4u5AozgbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlOyREu+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1ACC4AF1A;
+	Thu, 13 Jun 2024 12:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281322;
-	bh=AUT0glqgx0lYeHLJNyn+RNVQsBsD8yDXimjUWQ3C2P0=;
+	s=korg; t=1718280435;
+	bh=t6IggHhrPe/3Fqz+LWHTK4wA9UErx5bNgRUTKoV+FWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kHKuDvDSbPCSM+CbtElPyQBMYrsgw5QMU/8CnbJ4pXK0mDLdKy7Golg7kbOAxDwDU
-	 QMWk27VUnLM/rLwudoh6RNIW8beC2ue9YPNc3x+R1KyVQTOfAfaAp3PPsirTzYYJJZ
-	 8/I2ddFEFPby9kGgtw2W4Jq1lxBKOT+IghrArrcE=
+	b=SlOyREu+ZPpPWAe9FCa4VscYffjkU2uDprmzk6lDgAT96gYAUQc+V403xbyn9G5li
+	 u/a8oNnzD7NgkZhSQXFN+k9+HbX1MFPejnU3d0NOtMI7ArMqHYinaItJ7Le2gbkDkg
+	 XvkskK/FsSG0RESWZb5wYTpcRdOV7R8IBTWTz1w0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	"Yang, Chenyuan" <cy54@illinois.edu>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
-Subject: [PATCH 5.10 215/317] media: cec: cec-api: add locking in cec_release()
+	patches@lists.linux.dev,
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 053/137] mmc: sdhci-acpi: Add quirk to enable pull-up on the card-detect GPIO on Asus T100TA
 Date: Thu, 13 Jun 2024 13:33:53 +0200
-Message-ID: <20240613113255.871606920@linuxfoundation.org>
+Message-ID: <20240613113225.349823116@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 42bcaacae924bf18ae387c3f78c202df0b739292 ]
+commit 431946c0f640c93421439a6c928efb3152c035a4 upstream.
 
-When cec_release() uses fh->msgs it has to take fh->lock,
-otherwise the list can get corrupted.
+The card-detect GPIO for the microSD slot on Asus T100TA / T100TAM models
+stopped working under Linux after commit 6fd03f024828 ("gpiolib: acpi:
+support bias pull disable").
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Yang, Chenyuan <cy54@illinois.edu>
-Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
-Fixes: ca684386e6e2 ("[media] cec: add HDMI CEC framework (api)")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The GPIO in question is connected to a mechanical switch in the slot
+which shorts the pin to GND when a card is inserted.
+
+The GPIO pin correctly gets configured with a 20K pull-up by the BIOS,
+but there is a bug in the DSDT where the GpioInt for the card-detect is
+configured with a PullNone setting:
+
+    GpioInt (Edge, ActiveBoth, SharedAndWake, PullNone, 0x2710,
+        "\\_SB.GPO0", 0x00, ResourceConsumer, ,
+        )
+        {   // Pin list
+        0x0026
+        }
+
+Linux now actually honors the PullNone setting and disables the 20K pull-up
+configured by the BIOS.
+
+Add a new DMI_QUIRK_SD_CD_ENABLE_PULL_UP quirk which when set calls
+mmc_gpiod_set_cd_config() to re-enable the pull-up and set this for
+the Asus T100TA models to fix this.
+
+Fixes: 6fd03f024828 ("gpiolib: acpi: support bias pull disable")
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240410191639.526324-7-hdegoede@redhat.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/cec/core/cec-api.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mmc/host/sdhci-acpi.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/media/cec/core/cec-api.c b/drivers/media/cec/core/cec-api.c
-index f922a2196b2b7..893641ebc644b 100644
---- a/drivers/media/cec/core/cec-api.c
-+++ b/drivers/media/cec/core/cec-api.c
-@@ -672,6 +672,8 @@ static int cec_release(struct inode *inode, struct file *filp)
- 		list_del(&data->xfer_list);
- 	}
- 	mutex_unlock(&adap->lock);
-+
-+	mutex_lock(&fh->lock);
- 	while (!list_empty(&fh->msgs)) {
- 		struct cec_msg_entry *entry =
- 			list_first_entry(&fh->msgs, struct cec_msg_entry, list);
-@@ -689,6 +691,7 @@ static int cec_release(struct inode *inode, struct file *filp)
- 			kfree(entry);
- 		}
- 	}
-+	mutex_unlock(&fh->lock);
- 	kfree(fh);
+--- a/drivers/mmc/host/sdhci-acpi.c
++++ b/drivers/mmc/host/sdhci-acpi.c
+@@ -10,6 +10,7 @@
+ #include <linux/export.h>
+ #include <linux/module.h>
+ #include <linux/device.h>
++#include <linux/pinctrl/pinconf-generic.h>
+ #include <linux/platform_device.h>
+ #include <linux/ioport.h>
+ #include <linux/io.h>
+@@ -81,6 +82,7 @@ enum {
+ 	DMI_QUIRK_RESET_SD_SIGNAL_VOLT_ON_SUSP			= BIT(0),
+ 	DMI_QUIRK_SD_NO_WRITE_PROTECT				= BIT(1),
+ 	DMI_QUIRK_SD_CD_ACTIVE_HIGH				= BIT(2),
++	DMI_QUIRK_SD_CD_ENABLE_PULL_UP				= BIT(3),
+ };
  
- 	cec_put_device(devnode);
--- 
-2.43.0
-
+ static inline void *sdhci_acpi_priv(struct sdhci_acpi_host *c)
+@@ -735,6 +737,14 @@ static const struct dmi_system_id sdhci_
+ 		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
+ 	},
+ 	{
++		/* Asus T100TA, needs pull-up for cd but DSDT GpioInt has NoPull set */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "T100TA"),
++		},
++		.driver_data = (void *)DMI_QUIRK_SD_CD_ENABLE_PULL_UP,
++	},
++	{
+ 		/*
+ 		 * The Lenovo Miix 320-10ICR has a bug in the _PS0 method of
+ 		 * the SHC1 ACPI device, this bug causes it to reprogram the
+@@ -908,6 +918,9 @@ static int sdhci_acpi_probe(struct platf
+ 				goto err_free;
+ 			dev_warn(dev, "failed to setup card detect gpio\n");
+ 			c->use_runtime_pm = false;
++		} else if (quirks & DMI_QUIRK_SD_CD_ENABLE_PULL_UP) {
++			mmc_gpiod_set_cd_config(host->mmc,
++						PIN_CONF_PACKED(PIN_CONFIG_BIAS_PULL_UP, 20000));
+ 		}
+ 
+ 		if (quirks & DMI_QUIRK_RESET_SD_SIGNAL_VOLT_ON_SUSP)
 
 
 
