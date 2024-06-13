@@ -1,267 +1,186 @@
-Return-Path: <stable+bounces-50465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF8B906648
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:13:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E74F90664D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84E76B23AAE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 08:13:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD31E2830F3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 08:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9F113D252;
-	Thu, 13 Jun 2024 08:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A4113D273;
+	Thu, 13 Jun 2024 08:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qPjOUAfn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ct4HdCCY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E85413BC0D
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 08:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7524313BC0D
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 08:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718266394; cv=none; b=o18Akxv6x/HBx4bAUkW0EOjJmnC0VkVr8sG5eSjira2AyC/WqCobIKxHcjPyHLJwrorfiBuuc+D2tH94W6zSOYd4dbLMev05i+2NJ7uInEVdIz6faxAIuo9KLwiqqmT9Ucv5KeXtWN182O6Wc9pCSqhYxHq2Nzto04ZMaVjfFYo=
+	t=1718266473; cv=none; b=k3rGndNg6W0q6dUfLMp9Bk8v5nfbrRrgI60dL/0xX/cEB9dLA2FlOz8gJmPx0/bl3zKyoWFxIqgVGIkcEb0fNIcGHbi9bMEx5ArMFbTtcEoKWB66XwDrKfp5iwmFKTvsg4AkAwStYrBs8lbMvThZc6uwLPEjeA8IG9bQT1evrIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718266394; c=relaxed/simple;
-	bh=bLUVu9gcYhniB1VsuuATrMZzxN1bm8nAlvwkmnZQ7qQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTExgQeO9NRAnu8LPFQMOsUHlvi0G7Jxml5/hNAJBVBf/1/QemXcDMMo1UCL2eqOOT0JErOVLmQ2syb3/TE6mPUFWIHe6RUIOOKBmLr1BHOaFNn/ZPnLEXGPnCnleCeZH6l9YYfEjbdtR+ko4dZtsKkHau2vkpaNfO/DlRBtzls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qPjOUAfn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC98C4AF1A;
-	Thu, 13 Jun 2024 08:13:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718266394;
-	bh=bLUVu9gcYhniB1VsuuATrMZzxN1bm8nAlvwkmnZQ7qQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qPjOUAfnPku5HeWYktXGXMOhZS6/1n2TeaN32eCsZq/RgiBAlnGTfi5+KxD1SKeNR
-	 bei4spzTc+BBKKwFalisq9QRg95idD6SZj6lbe5sckTDzvhx7spXBr/q+pcl9gRW8W
-	 NRvEsAERANUVDSbeI4HBa7RyQf2O83F5At25hYZndK7fk8H5Jhbu7Fo+xIkHyeaDHB
-	 Q6TPhAz5Xw7pBzo5aH/+M7D0K9qxDSUbWoqccsWW9zkLRONXDLU5VD3BXuOdO6mP+Y
-	 7YqF88GP2UglNkTAnidVK7xW6pBrB66PDBt0J3UA0yjHUOf70LKj60E3OHXjylzcuB
-	 3mtAQNTGRoU7A==
-From: Lee Jones <lee@kernel.org>
-To: lee@kernel.org
-Cc: stable@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Clement Lecigne <clecigne@google.com>,
-	Tom Herbert <tom@herbertland.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH v2 6.6.y 1/1] net: fix __dst_negative_advice() race
-Date: Thu, 13 Jun 2024 09:12:49 +0100
-Message-ID: <20240613081254.2492021-6-lee@kernel.org>
-X-Mailer: git-send-email 2.45.2.505.gda0bf45e8d-goog
-In-Reply-To: <20240613081254.2492021-1-lee@kernel.org>
-References: <20240613081254.2492021-1-lee@kernel.org>
+	s=arc-20240116; t=1718266473; c=relaxed/simple;
+	bh=D+QvPlHH57FFlJclwcE2KRgskT5gmaKKKfah5R7cHiM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KRRyXCc5BkM3WiYLfbE/ZNExi5b6HAPm9aUYZ4m+i1k0vDqgj1VuFDjmJICKB86Z+HLGtemU0jXUdJp+sq4OvDoXPCLb+uxMVbz4dCI/XgA/AIAX8lEDClMQCu1vIMy+L0I3e1UdSQOMrNp8+6BOjWjDmTVwy5bOJm3JkBzJo14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ct4HdCCY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B034EC2BBFC;
+	Thu, 13 Jun 2024 08:14:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718266473;
+	bh=D+QvPlHH57FFlJclwcE2KRgskT5gmaKKKfah5R7cHiM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ct4HdCCYzx1Bt+w8AfgCaRtKCeo+mRkPIQJtBk2K3u5Csxzu0kxGpknRfKakcm1wG
+	 y0xB6x56IzFirtHSlj6RQvkTZYbQIm1Is1Qs1qJQNJPbU0jrNbRG5ZefBTyzqRjY6R
+	 DIF6AtLMBOGWTsmu02U20KDXpN2DLex1YMhBu/C4=
+Date: Thu, 13 Jun 2024 10:14:30 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: =?utf-8?B?VG9tw6HFoQ==?= Trnka <trnka@scm.com>
+Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"sashal@kernel.org" <sashal@kernel.org>,
+	"Yu, Lang" <Lang.Yu@amd.com>,
+	"Kuehling, Felix" <Felix.Kuehling@amd.com>
+Subject: Re: [PATCH] drm/amdkfd: handle duplicate BOs in
+ reserve_bo_and_cond_vms
+Message-ID: <2024061357-unseemly-nervy-7b25@gregkh>
+References: <20240531141807.3501061-1-alexander.deucher@amd.com>
+ <BL1PR12MB5144EA4E60894AEDF352D61FF7FF2@BL1PR12MB5144.namprd12.prod.outlook.com>
+ <2024061217-prodigal-navigate-557c@gregkh>
+ <26439120.1r3eYUQgxm@mintaka.ncbr.muni.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <26439120.1r3eYUQgxm@mintaka.ncbr.muni.cz>
 
-From: Eric Dumazet <edumazet@google.com>
+On Thu, Jun 13, 2024 at 10:04:51AM +0200, Tomáš Trnka wrote:
+> On Wednesday, June 12, 2024 2:06:37 PM CEST, Greg KH wrote:
+> > On Mon, Jun 03, 2024 at 02:31:27PM +0000, Deucher, Alexander wrote:
+> > > [Public]
+> > > 
+> > > > -----Original Message-----
+> > > > From: Greg KH <gregkh@linuxfoundation.org>
+> > > > Sent: Saturday, June 1, 2024 1:24 AM
+> > > > To: Deucher, Alexander <Alexander.Deucher@amd.com>
+> > > > Cc: stable@vger.kernel.org; sashal@kernel.org; Yu, Lang
+> > > > <Lang.Yu@amd.com>;
+> > > > Tomáš Trnka <trnka@scm.com>; Kuehling, Felix <Felix.Kuehling@amd.com>
+> > > > Subject: Re: [PATCH] drm/amdkfd: handle duplicate BOs in
+> > > > reserve_bo_and_cond_vms
+> > > > 
+> > > > On Fri, May 31, 2024 at 10:18:07AM -0400, Alex Deucher wrote:
+> > > > > From: Lang Yu <Lang.Yu@amd.com>
+> > > > > 
+> > > > > Observed on gfx8 ASIC where
+> > > > 
+> > > > KFD_IOC_ALLOC_MEM_FLAGS_AQL_QUEUE_MEM is used.
+> > > > 
+> > > > > Two attachments use the same VM, root PD would be locked twice.
+> > > > > 
+> > > > > [   57.910418] Call Trace:
+> > > > > [   57.793726]  ? reserve_bo_and_cond_vms+0x111/0x1c0 [amdgpu]
+> > > > > [   57.793820]
+> > > > 
+> > > > amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu+0x6c/0x1c0 [amdgpu]
+> > > > 
+> > > > > [   57.793923]  ? idr_get_next_ul+0xbe/0x100
+> > > > > [   57.793933]  kfd_process_device_free_bos+0x7e/0xf0 [amdgpu]
+> > > > > [   57.794041]  kfd_process_wq_release+0x2ae/0x3c0 [amdgpu]
+> > > > > [   57.794141]  ? process_scheduled_works+0x29c/0x580
+> > > > > [   57.794147]  process_scheduled_works+0x303/0x580
+> > > > > [   57.794157]  ? __pfx_worker_thread+0x10/0x10
+> > > > > [   57.794160]  worker_thread+0x1a2/0x370
+> > > > > [   57.794165]  ? __pfx_worker_thread+0x10/0x10
+> > > > > [   57.794167]  kthread+0x11b/0x150
+> > > > > [   57.794172]  ? __pfx_kthread+0x10/0x10
+> > > > > [   57.794177]  ret_from_fork+0x3d/0x60
+> > > > > [   57.794181]  ? __pfx_kthread+0x10/0x10
+> > > > > [   57.794184]  ret_from_fork_asm+0x1b/0x30
+> > > > > 
+> > > > > Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3007
+> > > > > Tested-by: Tomáš Trnka <trnka@scm.com>
+> > > > > Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+> > > > > Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+> > > > > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> > > > > Cc: stable@vger.kernel.org
+> > > > > (cherry picked from commit
+> > > > 
+> > > > 2a705f3e49d20b59cd9e5cc3061b2d92ebe1e5f0)
+> > > > 
+> > > > > ---
+> > > > > 
+> > > > >  drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 3 ++-
+> > > > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > > > 
+> > > > What kernel release(s) is this backport for?
+> > > 
+> > > 6.6.x and newer.
+> > 
+> > Does not apply to 6.6.y, sorry, how was this tested?  Can you submit a
+> > patch that does work?
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> Sorry about that. 6.6 does not have commit 
+> 05d249352f1ae909230c230767ca8f4e9fdf8e7b "drm/exec: Pass in initial # of 
+> objects" which adds the trailing 0 argument. Just removing that zero makes the 
+> patch apply and work. Such a modified version is attached below.
+> 
+> Tested on 6.6.32 (version below), 6.8.12 and 6.9.3 (version sent by Alex 
+> above).
+> 
+> 2T
+> 
+> From: Lang Yu <Lang.Yu@amd.com>
+> 
+> Observed on gfx8 ASIC where KFD_IOC_ALLOC_MEM_FLAGS_AQL_QUEUE_MEM is used.
+> Two attachments use the same VM, root PD would be locked twice.
+> 
+> [   57.910418] Call Trace:
+> [   57.793726]  ? reserve_bo_and_cond_vms+0x111/0x1c0 [amdgpu]
+> [   57.793820]  amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu+0x6c/0x1c0 [amdgpu]
+> [   57.793923]  ? idr_get_next_ul+0xbe/0x100
+> [   57.793933]  kfd_process_device_free_bos+0x7e/0xf0 [amdgpu]
+> [   57.794041]  kfd_process_wq_release+0x2ae/0x3c0 [amdgpu]
+> [   57.794141]  ? process_scheduled_works+0x29c/0x580
+> [   57.794147]  process_scheduled_works+0x303/0x580
+> [   57.794157]  ? __pfx_worker_thread+0x10/0x10
+> [   57.794160]  worker_thread+0x1a2/0x370
+> [   57.794165]  ? __pfx_worker_thread+0x10/0x10
+> [   57.794167]  kthread+0x11b/0x150
+> [   57.794172]  ? __pfx_kthread+0x10/0x10
+> [   57.794177]  ret_from_fork+0x3d/0x60
+> [   57.794181]  ? __pfx_kthread+0x10/0x10
+> [   57.794184]  ret_from_fork_asm+0x1b/0x30
+> 
+> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3007
+> Tested-by: Tomáš Trnka <trnka@scm.com>
+> Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+> Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> Cc: stable@vger.kernel.org
+> (cherry picked from commit 2a705f3e49d20b59cd9e5cc3061b2d92ebe1e5f0)
 
-__dst_negative_advice() does not enforce proper RCU rules when
-sk->dst_cache must be cleared, leading to possible UAF.
+As you are modifying, and passing on, a patch, you need to also sign off
+on this.
 
-RCU rules are that we must first clear sk->sk_dst_cache,
-then call dst_release(old_dst).
+Please submit this in a format that I can apply it in, not as something
+I need to hand-edit out of an email.
 
-Note that sk_dst_reset(sk) is implementing this protocol correctly,
-while __dst_negative_advice() uses the wrong order.
+thanks,
 
-Given that ip6_negative_advice() has special logic
-against RTF_CACHE, this means each of the three ->negative_advice()
-existing methods must perform the sk_dst_reset() themselves.
-
-Note the check against NULL dst is centralized in
-__dst_negative_advice(), there is no need to duplicate
-it in various callbacks.
-
-Many thanks to Clement Lecigne for tracking this issue.
-
-This old bug became visible after the blamed commit, using UDP sockets.
-
-Fixes: a87cb3e48ee8 ("net: Facility to report route quality of connected sockets")
-Reported-by: Clement Lecigne <clecigne@google.com>
-Diagnosed-by: Clement Lecigne <clecigne@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Tom Herbert <tom@herbertland.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240528114353.1794151-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit 92f1655aa2b2294d0b49925f3b875a634bd3b59e)
-[Lee: Stable backport]
-Signed-off-by: Lee Jones <lee@kernel.org>
----
- include/net/dst_ops.h  |  2 +-
- include/net/sock.h     | 13 +++----------
- net/ipv4/route.c       | 22 ++++++++--------------
- net/ipv6/route.c       | 29 +++++++++++++++--------------
- net/xfrm/xfrm_policy.c | 11 +++--------
- 5 files changed, 30 insertions(+), 47 deletions(-)
-
-diff --git a/include/net/dst_ops.h b/include/net/dst_ops.h
-index 6d1c8541183d..3a9001a042a5 100644
---- a/include/net/dst_ops.h
-+++ b/include/net/dst_ops.h
-@@ -24,7 +24,7 @@ struct dst_ops {
- 	void			(*destroy)(struct dst_entry *);
- 	void			(*ifdown)(struct dst_entry *,
- 					  struct net_device *dev);
--	struct dst_entry *	(*negative_advice)(struct dst_entry *);
-+	void			(*negative_advice)(struct sock *sk, struct dst_entry *);
- 	void			(*link_failure)(struct sk_buff *);
- 	void			(*update_pmtu)(struct dst_entry *dst, struct sock *sk,
- 					       struct sk_buff *skb, u32 mtu,
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 53b81e0a8981..5942b5ff4c78 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2183,17 +2183,10 @@ sk_dst_get(const struct sock *sk)
- 
- static inline void __dst_negative_advice(struct sock *sk)
- {
--	struct dst_entry *ndst, *dst = __sk_dst_get(sk);
-+	struct dst_entry *dst = __sk_dst_get(sk);
- 
--	if (dst && dst->ops->negative_advice) {
--		ndst = dst->ops->negative_advice(dst);
--
--		if (ndst != dst) {
--			rcu_assign_pointer(sk->sk_dst_cache, ndst);
--			sk_tx_queue_clear(sk);
--			WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
--		}
--	}
-+	if (dst && dst->ops->negative_advice)
-+		dst->ops->negative_advice(sk, dst);
- }
- 
- static inline void dst_negative_advice(struct sock *sk)
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 7c05cbcd39d3..40b9c579c917 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -132,7 +132,8 @@ struct dst_entry	*ipv4_dst_check(struct dst_entry *dst, u32 cookie);
- static unsigned int	 ipv4_default_advmss(const struct dst_entry *dst);
- INDIRECT_CALLABLE_SCOPE
- unsigned int		ipv4_mtu(const struct dst_entry *dst);
--static struct dst_entry *ipv4_negative_advice(struct dst_entry *dst);
-+static void		ipv4_negative_advice(struct sock *sk,
-+					     struct dst_entry *dst);
- static void		 ipv4_link_failure(struct sk_buff *skb);
- static void		 ip_rt_update_pmtu(struct dst_entry *dst, struct sock *sk,
- 					   struct sk_buff *skb, u32 mtu,
-@@ -837,22 +838,15 @@ static void ip_do_redirect(struct dst_entry *dst, struct sock *sk, struct sk_buf
- 	__ip_do_redirect(rt, skb, &fl4, true);
- }
- 
--static struct dst_entry *ipv4_negative_advice(struct dst_entry *dst)
-+static void ipv4_negative_advice(struct sock *sk,
-+				 struct dst_entry *dst)
- {
- 	struct rtable *rt = (struct rtable *)dst;
--	struct dst_entry *ret = dst;
- 
--	if (rt) {
--		if (dst->obsolete > 0) {
--			ip_rt_put(rt);
--			ret = NULL;
--		} else if ((rt->rt_flags & RTCF_REDIRECTED) ||
--			   rt->dst.expires) {
--			ip_rt_put(rt);
--			ret = NULL;
--		}
--	}
--	return ret;
-+	if ((dst->obsolete > 0) ||
-+	    (rt->rt_flags & RTCF_REDIRECTED) ||
-+	    rt->dst.expires)
-+		sk_dst_reset(sk);
- }
- 
- /*
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 236a45557ba1..0c0a1a5e4022 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -87,7 +87,8 @@ struct dst_entry	*ip6_dst_check(struct dst_entry *dst, u32 cookie);
- static unsigned int	 ip6_default_advmss(const struct dst_entry *dst);
- INDIRECT_CALLABLE_SCOPE
- unsigned int		ip6_mtu(const struct dst_entry *dst);
--static struct dst_entry *ip6_negative_advice(struct dst_entry *);
-+static void		ip6_negative_advice(struct sock *sk,
-+					    struct dst_entry *dst);
- static void		ip6_dst_destroy(struct dst_entry *);
- static void		ip6_dst_ifdown(struct dst_entry *,
- 				       struct net_device *dev);
-@@ -2760,24 +2761,24 @@ INDIRECT_CALLABLE_SCOPE struct dst_entry *ip6_dst_check(struct dst_entry *dst,
- }
- EXPORT_INDIRECT_CALLABLE(ip6_dst_check);
- 
--static struct dst_entry *ip6_negative_advice(struct dst_entry *dst)
-+static void ip6_negative_advice(struct sock *sk,
-+				struct dst_entry *dst)
- {
- 	struct rt6_info *rt = (struct rt6_info *) dst;
- 
--	if (rt) {
--		if (rt->rt6i_flags & RTF_CACHE) {
--			rcu_read_lock();
--			if (rt6_check_expired(rt)) {
--				rt6_remove_exception_rt(rt);
--				dst = NULL;
--			}
--			rcu_read_unlock();
--		} else {
--			dst_release(dst);
--			dst = NULL;
-+	if (rt->rt6i_flags & RTF_CACHE) {
-+		rcu_read_lock();
-+		if (rt6_check_expired(rt)) {
-+			/* counteract the dst_release() in sk_dst_reset() */
-+			dst_hold(dst);
-+			sk_dst_reset(sk);
-+
-+			rt6_remove_exception_rt(rt);
- 		}
-+		rcu_read_unlock();
-+		return;
- 	}
--	return dst;
-+	sk_dst_reset(sk);
- }
- 
- static void ip6_link_failure(struct sk_buff *skb)
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 97d69ec54ff9..0dde08e02887 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -3853,15 +3853,10 @@ static void xfrm_link_failure(struct sk_buff *skb)
- 	/* Impossible. Such dst must be popped before reaches point of failure. */
- }
- 
--static struct dst_entry *xfrm_negative_advice(struct dst_entry *dst)
-+static void xfrm_negative_advice(struct sock *sk, struct dst_entry *dst)
- {
--	if (dst) {
--		if (dst->obsolete) {
--			dst_release(dst);
--			dst = NULL;
--		}
--	}
--	return dst;
-+	if (dst->obsolete)
-+		sk_dst_reset(sk);
- }
- 
- static void xfrm_init_pmtu(struct xfrm_dst **bundle, int nr)
--- 
-2.45.2.505.gda0bf45e8d-goog
-
+greg k-h
 
