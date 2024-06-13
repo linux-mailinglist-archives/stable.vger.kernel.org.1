@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-51702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA597907130
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D6E906F57
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61B4A281FFD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2598B2935D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71A312C81F;
-	Thu, 13 Jun 2024 12:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63C71448EA;
+	Thu, 13 Jun 2024 12:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvp/0+Ua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRLtSA8+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F281E49B;
-	Thu, 13 Jun 2024 12:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A532B144313;
+	Thu, 13 Jun 2024 12:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282065; cv=none; b=bXHtAA693KQTQCVwkPX8KCroa/oAAhNBeyVlcB6kGRibJUXXcT9gMF25/evt5dBtIZm4KuIYLIr9uG+eh0FyXwdA1tk3VPXc5bPE07InU0yeJ6oYFkyenolaIeMsnO+Cof964Iu0ovBCBkEXHOeOh7G1JgSGSUpae3GlgT3jT9k=
+	t=1718280859; cv=none; b=fP8tAc6wPZR/NqPS4XvAPd+QbSjTh2Sx5ZH9bjIdmrupoBcXpuJ7aj3pjnHSBK6ZgOhiyyEShuJDn1mx2K4PzemCgloQGw4WkVzfD87NHKYgjB1Tr0qBS6Ovfk4NGqLnhtKWxy4v1lx5/blEESOeA2G3Ec1z4Db/9va04bfmnlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282065; c=relaxed/simple;
-	bh=njjMWEat7yG92JChIAFRV/SSBCLpcSSoDQLa0EXM8ik=;
+	s=arc-20240116; t=1718280859; c=relaxed/simple;
+	bh=NjIF/qyUNEbkIZwOnzTml5TPUp+S+bRDUwQP/PboUfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WE7nqDMxtlFamLrIzajfS+uBgQGCyU1NJew/R5HW+SwbIzVronxcjhU6J0IkEjWYjINb3dhv8RQItfrPuFk+ngfeN6urgWKQgtfIICpXrUDcg0/gpSIJNydv2cwfWcSkL0vk/ARulDwuKCGNunB4YjgXu4pysFFqH//l5FhVYV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvp/0+Ua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1BABC2BBFC;
-	Thu, 13 Jun 2024 12:34:24 +0000 (UTC)
+	 MIME-Version; b=P6RNdryMYgK0mY7O7JS/abEI2jL62Oq7EZkFoJANtffrDvlfDEof5gNq3KjnemTXHrOxEiSsh+OS07+O4SSnqVCbk0aXyt3m5rTgb+KtkbLy3lCNi/jHdQNu3c4Ie2qhw5ygNBp0CWJG+685xO9lFATHgdVsM7VmIlHAtso5tTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRLtSA8+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B42BC2BBFC;
+	Thu, 13 Jun 2024 12:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282065;
-	bh=njjMWEat7yG92JChIAFRV/SSBCLpcSSoDQLa0EXM8ik=;
+	s=korg; t=1718280859;
+	bh=NjIF/qyUNEbkIZwOnzTml5TPUp+S+bRDUwQP/PboUfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uvp/0+Ua+cugf+Gt0UqFa2P56/BwCBUI3JPO5WyENJEHidau9AaJ9L5GVwKSBXS/a
-	 aIuOyy0An5nl202PN03pl+dsKFVQpZaNPbwJqVQHvUWkqooS/o1TNihm99C21cS1wg
-	 li6yZJsKggl/8CH5K5ukCP97IUeyB1E6ust5vYv0=
+	b=HRLtSA8+sNjHF3LkjQXzQ/nGT+NzY8A8xj5CeQy0vMl77in8FAAJFn2mFQ2QuZvrS
+	 4PFZoR13wpD5pb3slAv76sz5nczCMr6f/aDfmTKpJHqiN8UMHho+cKrKo6Fo18gw7y
+	 C1CwBhfWQjU+53JidC34Fmi7y8/CEZVo1p9fYaZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay12@gmail.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Lorenz Bauer <lmb@isovalent.com>,
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 119/402] s390/bpf: Emit a barrier for BPF_FETCH instructions
+Subject: [PATCH 5.10 058/317] udp: Avoid call to compute_score on multiple sites
 Date: Thu, 13 Jun 2024 13:31:16 +0200
-Message-ID: <20240613113306.774369783@linuxfoundation.org>
+Message-ID: <20240613113249.792839964@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +65,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-[ Upstream commit 68378982f0b21de02ac3c6a11e2420badefcb4bc ]
+[ Upstream commit 50aee97d15113b95a68848db1f0cb2a6c09f753a ]
 
-BPF_ATOMIC_OP() macro documentation states that "BPF_ADD | BPF_FETCH"
-should be the same as atomic_fetch_add(), which is currently not the
-case on s390x: the serialization instruction "bcr 14,0" is missing.
-This applies to "and", "or" and "xor" variants too.
+We've observed a 7-12% performance regression in iperf3 UDP ipv4 and
+ipv6 tests with multiple sockets on Zen3 cpus, which we traced back to
+commit f0ea27e7bfe1 ("udp: re-score reuseport groups when connected
+sockets are present").  The failing tests were those that would spawn
+UDP sockets per-cpu on systems that have a high number of cpus.
 
-s390x is allowed to reorder stores with subsequent fetches from
-different addresses, so code relying on BPF_FETCH acting as a barrier,
-for example:
+Unsurprisingly, it is not caused by the extra re-scoring of the reused
+socket, but due to the compiler no longer inlining compute_score, once
+it has the extra call site in udp4_lib_lookup2.  This is augmented by
+the "Safe RET" mitigation for SRSO, needed in our Zen3 cpus.
 
-  stw [%r0], 1
-  afadd [%r1], %r2
-  ldxw %r3, [%r4]
+We could just explicitly inline it, but compute_score() is quite a large
+function, around 300b.  Inlining in two sites would almost double
+udp4_lib_lookup2, which is a silly thing to do just to workaround a
+mitigation.  Instead, this patch shuffles the code a bit to avoid the
+multiple calls to compute_score.  Since it is a static function used in
+one spot, the compiler can safely fold it in, as it did before, without
+increasing the text size.
 
-may be broken. Fix it by emitting "bcr 14,0".
+With this patch applied I ran my original iperf3 testcases.  The failing
+cases all looked like this (ipv4):
+	iperf3 -c 127.0.0.1 --udp -4 -f K -b $R -l 8920 -t 30 -i 5 -P 64 -O 2
 
-Note that a separate serialization instruction is not needed for
-BPF_XCHG and BPF_CMPXCHG, because COMPARE AND SWAP performs
-serialization itself.
+where $R is either 1G/10G/0 (max, unlimited).  I ran 3 times each.
+baseline is v6.9-rc3. harmean == harmonic mean; CV == coefficient of
+variation.
 
-Fixes: ba3b86b9cef0 ("s390/bpf: Implement new atomic ops")
-Reported-by: Puranjay Mohan <puranjay12@gmail.com>
-Closes: https://lore.kernel.org/bpf/mb61p34qvq3wf.fsf@kernel.org/
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
-Link: https://lore.kernel.org/r/20240507000557.12048-1-iii@linux.ibm.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+ipv4:
+                 1G                10G                  MAX
+	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
+baseline 1743852.66(0.0208) 1725933.02(0.0167) 1705203.78(0.0386)
+patched  1968727.61(0.0035) 1962283.22(0.0195) 1923853.50(0.0256)
+
+ipv6:
+                 1G                10G                  MAX
+	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
+baseline 1729020.03(0.0028) 1691704.49(0.0243) 1692251.34(0.0083)
+patched  1900422.19(0.0067) 1900968.01(0.0067) 1568532.72(0.1519)
+
+This restores the performance we had before the change above with this
+benchmark.  We obviously don't expect any real impact when mitigations
+are disabled, but just to be sure it also doesn't regresses:
+
+mitigations=off ipv4:
+                 1G                10G                  MAX
+	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
+baseline 3230279.97(0.0066) 3229320.91(0.0060) 2605693.19(0.0697)
+patched  3242802.36(0.0073) 3239310.71(0.0035) 2502427.19(0.0882)
+
+Cc: Lorenz Bauer <lmb@isovalent.com>
+Fixes: f0ea27e7bfe1 ("udp: re-score reuseport groups when connected sockets are present")
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/net/bpf_jit_comp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/ipv4/udp.c | 21 ++++++++++++++++-----
+ net/ipv6/udp.c | 20 ++++++++++++++++----
+ 2 files changed, 32 insertions(+), 9 deletions(-)
 
-diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index 1a374d021e256..88020b4ddbab6 100644
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -1229,8 +1229,12 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
- 	EMIT6_DISP_LH(0xeb000000, is32 ? (op32) : (op64),		\
- 		      (insn->imm & BPF_FETCH) ? src_reg : REG_W0,	\
- 		      src_reg, dst_reg, off);				\
--	if (is32 && (insn->imm & BPF_FETCH))				\
--		EMIT_ZERO(src_reg);					\
-+	if (insn->imm & BPF_FETCH) {					\
-+		/* bcr 14,0 - see atomic_fetch_{add,and,or,xor}() */	\
-+		_EMIT2(0x07e0);						\
-+		if (is32)                                               \
-+			EMIT_ZERO(src_reg);				\
-+	}								\
- } while (0)
- 		case BPF_ADD:
- 		case BPF_ADD | BPF_FETCH:
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 127aa7b5ce977..da9015efb45e4 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -420,15 +420,21 @@ static struct sock *udp4_lib_lookup2(struct net *net,
+ {
+ 	struct sock *sk, *result;
+ 	int score, badness;
++	bool need_rescore;
+ 
+ 	result = NULL;
+ 	badness = 0;
+ 	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
+-		score = compute_score(sk, net, saddr, sport,
+-				      daddr, hnum, dif, sdif);
++		need_rescore = false;
++rescore:
++		score = compute_score(need_rescore ? result : sk, net, saddr,
++				      sport, daddr, hnum, dif, sdif);
+ 		if (score > badness) {
+ 			badness = score;
+ 
++			if (need_rescore)
++				continue;
++
+ 			if (sk->sk_state == TCP_ESTABLISHED) {
+ 				result = sk;
+ 				continue;
+@@ -449,9 +455,14 @@ static struct sock *udp4_lib_lookup2(struct net *net,
+ 			if (IS_ERR(result))
+ 				continue;
+ 
+-			badness = compute_score(result, net, saddr, sport,
+-						daddr, hnum, dif, sdif);
+-
++			/* compute_score is too long of a function to be
++			 * inlined, and calling it again here yields
++			 * measureable overhead for some
++			 * workloads. Work around it by jumping
++			 * backwards to rescore 'result'.
++			 */
++			need_rescore = true;
++			goto rescore;
+ 		}
+ 	}
+ 	return result;
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 1632b940347c5..203a6d64d7e99 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -165,15 +165,21 @@ static struct sock *udp6_lib_lookup2(struct net *net,
+ {
+ 	struct sock *sk, *result;
+ 	int score, badness;
++	bool need_rescore;
+ 
+ 	result = NULL;
+ 	badness = -1;
+ 	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
+-		score = compute_score(sk, net, saddr, sport,
+-				      daddr, hnum, dif, sdif);
++		need_rescore = false;
++rescore:
++		score = compute_score(need_rescore ? result : sk, net, saddr,
++				      sport, daddr, hnum, dif, sdif);
+ 		if (score > badness) {
+ 			badness = score;
+ 
++			if (need_rescore)
++				continue;
++
+ 			if (sk->sk_state == TCP_ESTABLISHED) {
+ 				result = sk;
+ 				continue;
+@@ -194,8 +200,14 @@ static struct sock *udp6_lib_lookup2(struct net *net,
+ 			if (IS_ERR(result))
+ 				continue;
+ 
+-			badness = compute_score(sk, net, saddr, sport,
+-						daddr, hnum, dif, sdif);
++			/* compute_score is too long of a function to be
++			 * inlined, and calling it again here yields
++			 * measureable overhead for some
++			 * workloads. Work around it by jumping
++			 * backwards to rescore 'result'.
++			 */
++			need_rescore = true;
++			goto rescore;
+ 		}
+ 	}
+ 	return result;
 -- 
 2.43.0
 
