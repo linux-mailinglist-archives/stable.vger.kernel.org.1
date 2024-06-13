@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD8A907029
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB35906EB9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 777331F2173E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD47AB2616E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FA313D601;
-	Thu, 13 Jun 2024 12:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD37143878;
+	Thu, 13 Jun 2024 12:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwT4k7MD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gO6hFucW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409CE137914;
-	Thu, 13 Jun 2024 12:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3416143C46;
+	Thu, 13 Jun 2024 12:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281454; cv=none; b=o5nuEg9WZ44Eu/7vNgWuAmwfyIgqQSWcnrpLWIqrRQoTNXz+TCrkmvNkOh48LpdjbIYXhKHo+ABJTVyYm15LXL8vgEExBYf9P3XTmCw/yIQmLFN435qJO1EKK11D7KXanDZzkaF4zXXqzpZz23kz8OeeFuwiMLFpGOGMIda7Y5I=
+	t=1718280568; cv=none; b=W6Z8p+4CYuKRdBTLmXbcsKhkpV8/rae0XRuCaEo6zmZ+2OTbK0RMRbw67zaUN6SCCLxFiTDoBQGtcrxpNS/TilAw08d8h33gfH5uo0JmtHCE+k6mVUMWqm3b60ciALAVCobYBBvfFdZH9Z5jcONvdlEN1M2GYfiKfz1FqBglzbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281454; c=relaxed/simple;
-	bh=pAUqzFjVXTCAdF0lUJH7u+xntUfgScwjJA/Hfd00X8k=;
+	s=arc-20240116; t=1718280568; c=relaxed/simple;
+	bh=6a0t3fJmj+bQCE7uinrbt1w+JcGrZ/hFibxaqOwbt8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qZKxHyvqai249AR0M5ont+ONJ7/8LLXwcnvLyMlSersXrv08P0U+KU1lxxG8eIvX8jiY8tEaE6Fa25Wwrtmk2c4Bp56XURlbtLKyNS2bHqGT34n7t/avk6FX2WXBGH/jiHPoGZxmM6FksaEEK15TqJ35Y203NdjEngiTMZW68gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwT4k7MD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80EEC2BBFC;
-	Thu, 13 Jun 2024 12:24:13 +0000 (UTC)
+	 MIME-Version; b=CCZOIf3BTAVmAKwFTcp9Ndl3kKZCNSy+zmmJme81zAFGmP0oV0PLKwTDCjWN8Im87Uqn+gImT56WFyeSmloz+KfcyoOLTOFLF+4ZCXAuJMHpBHaisSW15oDoVhLimpeavnRRpAxqeMRdJ+L0uYxQ5PPPHQOOFNtsCRpAx7XKfSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gO6hFucW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E380C32786;
+	Thu, 13 Jun 2024 12:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281454;
-	bh=pAUqzFjVXTCAdF0lUJH7u+xntUfgScwjJA/Hfd00X8k=;
+	s=korg; t=1718280567;
+	bh=6a0t3fJmj+bQCE7uinrbt1w+JcGrZ/hFibxaqOwbt8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lwT4k7MDHCCXJD7s72iLrCZuQnqJ3O5tNaUW+UDh5/v6f07fxpX0GPkKKgTG9OnQN
-	 HKKaDu2akxad8q3+Xp6cLBZ4HRF2Ky1vXam4twSjdW68KOGLt7qeB/ssCF4VMA5wqH
-	 lUjjkmcczeluHhuDX/kCeb6aMrXxzMdUQJlUHdrA=
+	b=gO6hFucWs29CFFIkdnw1jCqpgZeBaD4G4oflIo7L02qkGw3ulaJnTqhPFxkfmpoIN
+	 KupxWSRiSZldm2fMMrnH9qNCyr3coG25MglLroY5SgPI9eIkMXafq9xLr55CYeF6jk
+	 rgAYzWfyBJ8SjNjLNErxKEn3Fy8tmkBN0oGOslJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 259/317] ipvlan: Dont Use skb->sk in ipvlan_process_v{4,6}_outbound
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 6.6 097/137] wifi: ath10k: fix QCOM_RPROC_COMMON dependency
 Date: Thu, 13 Jun 2024 13:34:37 +0200
-Message-ID: <20240613113257.567422529@linuxfoundation.org>
+Message-ID: <20240613113227.059682543@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit b3dc6e8003b500861fa307e9a3400c52e78e4d3a ]
+commit 21ae74e1bf18331ae5e279bd96304b3630828009 upstream.
 
-Raw packet from PF_PACKET socket ontop of an IPv6-backed ipvlan device will
-hit WARN_ON_ONCE() in sk_mc_loop() through sch_direct_xmit() path.
+If ath10k_snoc is built-in, while Qualcomm remoteprocs are built as
+modules, compilation fails with:
 
-WARNING: CPU: 2 PID: 0 at net/core/sock.c:775 sk_mc_loop+0x2d/0x70
-Modules linked in: sch_netem ipvlan rfkill cirrus drm_shmem_helper sg drm_kms_helper
-CPU: 2 PID: 0 Comm: swapper/2 Kdump: loaded Not tainted 6.9.0+ #279
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:sk_mc_loop+0x2d/0x70
-Code: fa 0f 1f 44 00 00 65 0f b7 15 f7 96 a3 4f 31 c0 66 85 d2 75 26 48 85 ff 74 1c
-RSP: 0018:ffffa9584015cd78 EFLAGS: 00010212
-RAX: 0000000000000011 RBX: ffff91e585793e00 RCX: 0000000002c6a001
-RDX: 0000000000000000 RSI: 0000000000000040 RDI: ffff91e589c0f000
-RBP: ffff91e5855bd100 R08: 0000000000000000 R09: 3d00545216f43d00
-R10: ffff91e584fdcc50 R11: 00000060dd8616f4 R12: ffff91e58132d000
-R13: ffff91e584fdcc68 R14: ffff91e5869ce800 R15: ffff91e589c0f000
-FS:  0000000000000000(0000) GS:ffff91e898100000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f788f7c44c0 CR3: 0000000008e1a000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<IRQ>
- ? __warn (kernel/panic.c:693)
- ? sk_mc_loop (net/core/sock.c:760)
- ? report_bug (lib/bug.c:201 lib/bug.c:219)
- ? handle_bug (arch/x86/kernel/traps.c:239)
- ? exc_invalid_op (arch/x86/kernel/traps.c:260 (discriminator 1))
- ? asm_exc_invalid_op (./arch/x86/include/asm/idtentry.h:621)
- ? sk_mc_loop (net/core/sock.c:760)
- ip6_finish_output2 (net/ipv6/ip6_output.c:83 (discriminator 1))
- ? nf_hook_slow (net/netfilter/core.c:626)
- ip6_finish_output (net/ipv6/ip6_output.c:222)
- ? __pfx_ip6_finish_output (net/ipv6/ip6_output.c:215)
- ipvlan_xmit_mode_l3 (drivers/net/ipvlan/ipvlan_core.c:602) ipvlan
- ipvlan_start_xmit (drivers/net/ipvlan/ipvlan_main.c:226) ipvlan
- dev_hard_start_xmit (net/core/dev.c:3594)
- sch_direct_xmit (net/sched/sch_generic.c:343)
- __qdisc_run (net/sched/sch_generic.c:416)
- net_tx_action (net/core/dev.c:5286)
- handle_softirqs (kernel/softirq.c:555)
- __irq_exit_rcu (kernel/softirq.c:589)
- sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1043)
+/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_init':
+drivers/net/wireless/ath/ath10k/snoc.c:1534: undefined reference to `qcom_register_ssr_notifier'
+/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_deinit':
+drivers/net/wireless/ath/ath10k/snoc.c:1551: undefined reference to `qcom_unregister_ssr_notifier'
 
-The warning triggers as this:
-packet_sendmsg
-   packet_snd //skb->sk is packet sk
-      __dev_queue_xmit
-         __dev_xmit_skb //q->enqueue is not NULL
-             __qdisc_run
-               sch_direct_xmit
-                 dev_hard_start_xmit
-                   ipvlan_start_xmit
-                      ipvlan_xmit_mode_l3 //l3 mode
-                        ipvlan_process_outbound //vepa flag
-                          ipvlan_process_v6_outbound
-                            ip6_local_out
-                                __ip6_finish_output
-                                  ip6_finish_output2 //multicast packet
-                                    sk_mc_loop //sk->sk_family is AF_PACKET
+Add corresponding dependency to ATH10K_SNOC Kconfig entry so that it's
+built as module if QCOM_RPROC_COMMON is built as module too.
 
-Call ip{6}_local_out() with NULL sk in ipvlan as other tunnels to fix this.
-
-Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240529095633.613103-1-yuehaibing@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 747ff7d3d742 ("ath10k: Don't always treat modem stop events as crashes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ipvlan/ipvlan_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath10k/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index bfea28bd45027..d04b1450875b6 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -440,7 +440,7 @@ static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
- 
- 	memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
- 
--	err = ip_local_out(net, skb->sk, skb);
-+	err = ip_local_out(net, NULL, skb);
- 	if (unlikely(net_xmit_eval(err)))
- 		DEV_STATS_INC(dev, tx_errors);
- 	else
-@@ -495,7 +495,7 @@ static int ipvlan_process_v6_outbound(struct sk_buff *skb)
- 
- 	memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
- 
--	err = ip6_local_out(dev_net(dev), skb->sk, skb);
-+	err = ip6_local_out(dev_net(dev), NULL, skb);
- 	if (unlikely(net_xmit_eval(err)))
- 		DEV_STATS_INC(dev, tx_errors);
- 	else
--- 
-2.43.0
-
+--- a/drivers/net/wireless/ath/ath10k/Kconfig
++++ b/drivers/net/wireless/ath/ath10k/Kconfig
+@@ -45,6 +45,7 @@ config ATH10K_SNOC
+ 	depends on ATH10K
+ 	depends on ARCH_QCOM || COMPILE_TEST
+ 	depends on QCOM_SMEM
++	depends on QCOM_RPROC_COMMON || QCOM_RPROC_COMMON=n
+ 	select QCOM_SCM
+ 	select QCOM_QMI_HELPERS
+ 	help
 
 
 
