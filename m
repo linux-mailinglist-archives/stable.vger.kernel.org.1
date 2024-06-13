@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-50574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 989C5906B4F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:39:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5311D906D57
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93B181C2173F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:39:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6503F1C22AD7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E238C14265E;
-	Thu, 13 Jun 2024 11:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE305145A03;
+	Thu, 13 Jun 2024 11:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LaRQLfz4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsiBVDHL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FBFBDDB1;
-	Thu, 13 Jun 2024 11:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC691143C5F;
+	Thu, 13 Jun 2024 11:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278763; cv=none; b=MxRU2lj8bewmAJx+kTkgSvnpmf6xIBjZpQ20E3kSzLRd/2glj0oXw49XFHostG5PP65L526JcYnRMS6LN/QdouktJhFgDvy2x9jxaO3TiG6YQ4s6ox+JYobVaDhDfAajw/1PcXDKEoiVVK4axh3TO6yKhdpqTmoGqYoSm6yECAw=
+	t=1718279714; cv=none; b=csD8e73pAAbVI/SMcou0f6KTI6UiXxrJsdP8o5/No8bl2Htzd4yl6ym7MV3ah/6nSXkcYeFUOEdJZ0FiV0rB8JDRamGDNjtBGtfpL9N5r1IB7JtlSL3vGdvDd2EOUQl7LsWA830QMEv1qan6uHsWDVv2dZeIvKSubhTNLY2aYjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278763; c=relaxed/simple;
-	bh=izJtpBk7IXnGxLUfEfodBVVreDmjuh12MUcDsIdX2UY=;
+	s=arc-20240116; t=1718279714; c=relaxed/simple;
+	bh=qKgM0QBobuI33JkkwSNsHAa6uBKaXI4mootDpCXpVKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J0s5kto+Aj68lPZ/eIt629STf6SsgwnKBJHXchqlchQHYk5kwbA/Du3Dr8L1Pve2HDsOJsCp+ZJs4JQEBDjluO+pXIqJydVNwx4VxfPpZUMO4uijron1ijPHfckZKWYQB4cwKGo53YBO+W33k8lnBUol1KY488kyVvyRnOq4r/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LaRQLfz4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CF1C2BBFC;
-	Thu, 13 Jun 2024 11:39:22 +0000 (UTC)
+	 MIME-Version; b=iP7SKoNRzAkXLaiKS0pmGVFmtBt/E1sDkXVXePqonjcD1RfBpiMHgdQyJ2hCafjbcbiPlSKoXeXN6eGO2ioJ8Y/UdBRTI/RqFpshaEB/rAi+dKorDq8a66h9G9NLjxdTQD6hbBkl7aWVRvDfmbmECdMEWmoI09Lkqg6lxlVtkzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsiBVDHL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36222C2BBFC;
+	Thu, 13 Jun 2024 11:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278763;
-	bh=izJtpBk7IXnGxLUfEfodBVVreDmjuh12MUcDsIdX2UY=;
+	s=korg; t=1718279714;
+	bh=qKgM0QBobuI33JkkwSNsHAa6uBKaXI4mootDpCXpVKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LaRQLfz492CY6RyUS4eSom6ZOkP6WTw5hGZeBe+Hz8e9hq5kkP9elrSLy7ag4Am1A
-	 AeKSwqTim1fII/vKahs/R+LqyOHW6QLFCCZX16YPfokZUpr5BDfB982F+mL+dLFtc1
-	 oqkLLq4ojOCkcm8lHV2llS08LlPNu2A+cICP1U6s=
+	b=XsiBVDHLhngt7+Q3BYO4JQYTuWkOBGZQbNymXG+m6y8GT7A3FRMMI+Tgtxj7QTDcA
+	 irZmMihcdhKfHH+MuOY2x+A8MtatQm7FX/Gyw6lwDFEFRJHq7mdSr44kkj3DZch9kA
+	 v2ISj+QOa4DcJYkM6J9/ZaIa3YqMEduNLidUqols=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Derek Fang <derek.fang@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 062/213] ipv6: sr: add missing seg6_local_exit
+Subject: [PATCH 5.4 012/202] ASoC: dt-bindings: rt5645: add cbj sleeve gpio property
 Date: Thu, 13 Jun 2024 13:31:50 +0200
-Message-ID: <20240613113230.402497377@linuxfoundation.org>
+Message-ID: <20240613113228.236758000@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Derek Fang <derek.fang@realtek.com>
 
-[ Upstream commit 3321687e321307629c71b664225b861ebf3e5753 ]
+[ Upstream commit 306b38e3fa727d22454a148a364123709e356600 ]
 
-Currently, we only call seg6_local_exit() in seg6_init() if
-seg6_local_init() failed. But forgot to call it in seg6_exit().
+Add an optional gpio property to control external CBJ circuits
+to avoid some electric noise caused by sleeve/ring2 contacts floating.
 
-Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240509131812.1662197-2-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Derek Fang <derek.fang@realtek.com>
+
+Link: https://msgid.link/r/20240408091057.14165-2-derek.fang@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/sound/rt5645.txt | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index 4bd601c964343..42ff4f421d42a 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -497,6 +497,7 @@ void seg6_exit(void)
- 	seg6_hmac_exit();
- #endif
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
-+	seg6_local_exit();
- 	seg6_iptunnel_exit();
- #endif
- 	unregister_pernet_subsys(&ip6_segments_ops);
+diff --git a/Documentation/devicetree/bindings/sound/rt5645.txt b/Documentation/devicetree/bindings/sound/rt5645.txt
+index a03f9a872a716..bfb2217a9a658 100644
+--- a/Documentation/devicetree/bindings/sound/rt5645.txt
++++ b/Documentation/devicetree/bindings/sound/rt5645.txt
+@@ -16,6 +16,11 @@ Optional properties:
+   a GPIO spec for the external headphone detect pin. If jd-mode = 0,
+   we will get the JD status by getting the value of hp-detect-gpios.
+ 
++- cbj-sleeve-gpios:
++  a GPIO spec to control the external combo jack circuit to tie the sleeve/ring2
++  contacts to the ground or floating. It could avoid some electric noise from the
++  active speaker jacks.
++
+ - realtek,in2-differential
+   Boolean. Indicate MIC2 input are differential, rather than single-ended.
+ 
+@@ -64,6 +69,7 @@ codec: rt5650@1a {
+ 	compatible = "realtek,rt5650";
+ 	reg = <0x1a>;
+ 	hp-detect-gpios = <&gpio 19 0>;
++	cbj-sleeve-gpios = <&gpio 20 0>;
+ 	interrupt-parent = <&gpio>;
+ 	interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
+ 	realtek,dmic-en = "true";
 -- 
 2.43.0
 
