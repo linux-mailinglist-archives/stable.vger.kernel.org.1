@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-50952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C157906D91
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE970906C8D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 451F71F27D66
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2226A1C21C0E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7BE144D0B;
-	Thu, 13 Jun 2024 11:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE00144D0C;
+	Thu, 13 Jun 2024 11:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qe05cbFb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKDVSkIC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3DB1448FA;
-	Thu, 13 Jun 2024 11:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE379143888;
+	Thu, 13 Jun 2024 11:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279871; cv=none; b=LH/KhwTSD+GuBfCl0jAkW+HAD1bWcOotodw1YgUClg3a1OmbOg3iGOZWoIqz/edHqHNDY1i9KnyNoBbJ/4j32jfWFlPMTez5ibzIi81JU6aq0HLsqPHM4bMe68NKTVkNucRoYEQ2OC27Qcg5ZBlTPiFu5mJIFqoKvWmYzzWg/yc=
+	t=1718279325; cv=none; b=t3Da/xeAfs2ZD10I5BPkq6luBg8UouiC6S39HDtBHXfQPqdC4iXC6BqNJlmzbfeKpBMbwIBbYVTeGiBQGSnaUdicKWSVV0mnf8J8MLjxbF+zJSijM+0VPDoc/lHEzFzrmKhNN71H+p94WFuNs/xsDUKFqfGuZh540+EyLOzqDx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279871; c=relaxed/simple;
-	bh=AE9RzksKLEP7iV0X+emEmuESTpsYiCNFgcU2pot3Tcc=;
+	s=arc-20240116; t=1718279325; c=relaxed/simple;
+	bh=XxncQ3CRJEGdAGtOS9IkR3Fa2ffRCnnpafE5gO6yjMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MDXnbk9BorzdaXJ+VXN/z1fZenAqkUbD+FQFWb9ZDY3FF1QUjWYXPzHE2bJlbZapgfKS4VmpS8PVCH9/kK8OJvzQdteet5osmCPEppgpvsWgUBLtkdpw0WmRamcE9c7aX5BVNQPMI/nt5GO3H7aj3QEApST6e9ta3HtZpHLRMcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qe05cbFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960A0C2BBFC;
-	Thu, 13 Jun 2024 11:57:50 +0000 (UTC)
+	 MIME-Version; b=pB1KRM8wQGNrZlxxV9YqvNOJArPVWfpqqqQZrGtjqXKNfXVNydBNE0hvNMMYpohwt+RrqM8hRgeFDMCsGuNUqekC9aEn5dccdBZbcdKWWurW0DMGntYaeJbkuENmYZFFkdKwvPtWwgMejqJxZnlY160BqvVggDiOEUHUIQBLWus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKDVSkIC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB601C2BBFC;
+	Thu, 13 Jun 2024 11:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279871;
-	bh=AE9RzksKLEP7iV0X+emEmuESTpsYiCNFgcU2pot3Tcc=;
+	s=korg; t=1718279325;
+	bh=XxncQ3CRJEGdAGtOS9IkR3Fa2ffRCnnpafE5gO6yjMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qe05cbFbcZZVUAeOwCOUO4UOEtXd+s9t1KpmBwKjPhzyNRPrn9yaHDnRJl142RKiu
-	 c5P0lJ7hDfCH36uABfGDru4yjR847FBl7ygEI8nVZ2V8JErX8/Wmpm5UDM79OzT/yv
-	 UtY4ALwxHLOQKwZBMdn+dvOK6azjk90QPCHgnmn0=
+	b=OKDVSkICjIthmRcRiIkQpZdCMeV0KEqziu1g9Mo9Vn4p3YP6eM4FirTRLzWJsqEy1
+	 2HSp0WjIflD6Tv9ws9Ylp6mwFIPoE2rO/bMzO1tohlLBAwghb9Db1X8COEKC9V2Ty+
+	 p/KwWZD5fwzXrdwS2+l0aw6ldIu5nPO/xhHmvUc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 065/202] ipv6: sr: add missing seg6_local_exit
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 6.9 038/157] media: v4l2-core: hold videodev_lock until dev reg, finishes
 Date: Thu, 13 Jun 2024 13:32:43 +0200
-Message-ID: <20240613113230.287803586@linuxfoundation.org>
+Message-ID: <20240613113228.893501385@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 3321687e321307629c71b664225b861ebf3e5753 ]
+commit 1ed4477f2ea4743e7c5e1f9f3722152d14e6eeb1 upstream.
 
-Currently, we only call seg6_local_exit() in seg6_init() if
-seg6_local_init() failed. But forgot to call it in seg6_exit().
+After the new V4L2 device node was registered, some additional
+initialization was done before the device node was marked as
+'registered'. During the time between creating the device node
+and marking it as 'registered' it was possible to open the
+device node, which would return -ENODEV since the 'registered'
+flag was not yet set.
 
-Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240509131812.1662197-2-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Hold the videodev_lock mutex from just before the device node
+is registered until the 'registered' flag is set. Since v4l2_open
+will take the same lock, it will wait until this registration
+process is finished. This resolves this race condition.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: <stable@vger.kernel.org>      # for vi4.18 and up
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/seg6.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/v4l2-core/v4l2-dev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index 7094f8691ac68..7d8fbbc363ec0 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -493,6 +493,7 @@ void seg6_exit(void)
- 	seg6_hmac_exit();
- #endif
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
-+	seg6_local_exit();
- 	seg6_iptunnel_exit();
- #endif
- 	unregister_pernet_subsys(&ip6_segments_ops);
--- 
-2.43.0
-
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -1036,8 +1036,10 @@ int __video_register_device(struct video
+ 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
+ 	vdev->dev.parent = vdev->dev_parent;
+ 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
++	mutex_lock(&videodev_lock);
+ 	ret = device_register(&vdev->dev);
+ 	if (ret < 0) {
++		mutex_unlock(&videodev_lock);
+ 		pr_err("%s: device_register failed\n", __func__);
+ 		goto cleanup;
+ 	}
+@@ -1057,6 +1059,7 @@ int __video_register_device(struct video
+ 
+ 	/* Part 6: Activate this minor. The char device can now be used. */
+ 	set_bit(V4L2_FL_REGISTERED, &vdev->flags);
++	mutex_unlock(&videodev_lock);
+ 
+ 	return 0;
+ 
 
 
 
