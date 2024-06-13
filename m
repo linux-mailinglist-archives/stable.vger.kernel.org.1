@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-50793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E000906CAE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:52:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DABED906DA8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 095231C2151F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:52:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90084283E27
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55514145FFD;
-	Thu, 13 Jun 2024 11:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21CDB1448E9;
+	Thu, 13 Jun 2024 11:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjBrqIJp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWpFEMKD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FA314601B;
-	Thu, 13 Jun 2024 11:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EE2145FE5;
+	Thu, 13 Jun 2024 11:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279402; cv=none; b=Um5BfK+oljgOkqeRmFHJO8hKCfvRaYM4yAGfCKD4WpEVkUYjii05kuUIRNckMmhIpdXK+C0kCdihCPnEHkh1rdnP8gx35kYyw9MNzD5YjFko9LeomcMhfPqJB8eDRC3l+78ARjC+RY2Gpqb8+al+C3fpLP7lhDomNo9AP8b99BU=
+	t=1718279929; cv=none; b=ibsgvh0IXKtAj0DN7itmQ13gbWr6MNE7aCvhkRxO8dJsRoJlkrM9JbkEFa/eRgkNl/7RPZo6EQrvMv+izGRpya3Hs/9lH8l2P/qWZFFRPwB1pYli/7biTHQ3fzWfQ9BCaFEaR44mkU9u9GdgGu4bUKkV5PTd7mxZ+WTgcROXQ0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279402; c=relaxed/simple;
-	bh=cK7W3bqE35uJxojP5Rb62D+YzmcBqbf81DSkB9QPccU=;
+	s=arc-20240116; t=1718279929; c=relaxed/simple;
+	bh=cH6gibQKvEcmB2/Cq6C2Ul+G9AuGlo3b9FnxE8K71Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USjOtsOIUNj9ugLihhu4ZYn0KXUNYNOIk8429mYNothzxWimnlxhx7LYDQQjTmF5DzLdvRVDBDBnxsic35CJZNJu5C56R0AKDgbA3nf6uEBI2qJsQ+GrvLKvcc9RD2oNF7VkKpIP0Th/hcBHU92wcRmD1xyEmsLJnXlYUYFyV68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjBrqIJp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6E1C2BBFC;
-	Thu, 13 Jun 2024 11:50:01 +0000 (UTC)
+	 MIME-Version; b=VQbsaHGH0eKybueM0qDBYvQrd65dhR6QUfVB5y2E4FJwLc6SPIvWEX2W4lj3XbLWF+VmDZEYmQ20BV5ABA8rA+OQlVL8zhG6ZAWXTG4RZPIu028tXTBLYJRbKslaIb++Lgib69C+MovZ8kOlMeXOzMHliCeYO/dKoocNAtsc3UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YWpFEMKD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C8CC2BBFC;
+	Thu, 13 Jun 2024 11:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279401;
-	bh=cK7W3bqE35uJxojP5Rb62D+YzmcBqbf81DSkB9QPccU=;
+	s=korg; t=1718279929;
+	bh=cH6gibQKvEcmB2/Cq6C2Ul+G9AuGlo3b9FnxE8K71Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DjBrqIJp9RLWkIDEpLyQOz8ZDk0rOqij4sLYzaNlzxiFW8GkAVM9cnHmqx6FsOEhY
-	 +An23ZcjFJRQousbjPTRtD6VU52z0GPR9/zaRCXGhgesEzHxt7CfJgmyfFWAEBkQ/B
-	 1kLhlilGFom6dgWHxh3kafNnk9JsezC8cJ/2wtvU=
+	b=YWpFEMKDVkxFkBghbjzHW/ONj/xK31FbVDBo3QY0orGev3zrR93iHtLExRJxSYntH
+	 osQ5DEt+hKKJiPaRKX0s5IdDS33v2b7N1rpC2Nwg9Bu734eto3c/RJtv4FE28s+RmM
+	 JeCaFihRcn+/JuH63oLP5LyjeO03hIlrJJtoSYdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feifei Xu <Feifei.Xu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Feifei Xu <feifei.xu@amd.com>
-Subject: [PATCH 6.9 056/157] Revert "drm/amdkfd: fix gfx_target_version for certain 11.0.3 devices"
+	Jan Kara <jack@suse.cz>,
+	Luis Henriques <lhenriques@suse.de>,
+	Disha Goel <disgoel@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 083/202] ext4: avoid excessive credit estimate in ext4_tmpfile()
 Date: Thu, 13 Jun 2024 13:33:01 +0200
-Message-ID: <20240613113229.594157372@linuxfoundation.org>
+Message-ID: <20240613113230.976035147@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Jan Kara <jack@suse.cz>
 
-commit dd2b75fd9a79bf418e088656822af06fc253dbe3 upstream.
+[ Upstream commit 35a1f12f0ca857fee1d7a04ef52cbd5f1f84de13 ]
 
-This reverts commit 28ebbb4981cb1fad12e0b1227dbecc88810b1ee8.
+A user with minimum journal size (1024 blocks these days) complained
+about the following error triggered by generic/697 test in
+ext4_tmpfile():
 
-Revert this commit as apparently the LLVM code to take advantage of
-this never landed.
+run fstests generic/697 at 2024-02-28 05:34:46
+JBD2: vfstest wants too many credits credits:260 rsv_credits:0 max:256
+EXT4-fs error (device loop0) in __ext4_new_inode:1083: error 28
 
-Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Feifei Xu <feifei.xu@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Indeed the credit estimate in ext4_tmpfile() is huge.
+EXT4_MAXQUOTAS_INIT_BLOCKS() is 219, then 10 credits from ext4_tmpfile()
+itself and then ext4_xattr_credits_for_new_inode() adds more credits
+needed for security attributes and ACLs. Now the
+EXT4_MAXQUOTAS_INIT_BLOCKS() is in fact unnecessary because we've
+already initialized quotas with dquot_init() shortly before and so
+EXT4_MAXQUOTAS_TRANS_BLOCKS() is enough (which boils down to 3 credits).
+
+Fixes: af51a2ac36d1 ("ext4: ->tmpfile() support")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Tested-by: Luis Henriques <lhenriques@suse.de>
+Tested-by: Disha Goel <disgoel@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240307115320.28949-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device.c |   11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ fs/ext4/namei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-@@ -408,15 +408,8 @@ struct kfd_dev *kgd2kfd_probe(struct amd
- 			f2g = &gfx_v11_kfd2kgd;
- 			break;
- 		case IP_VERSION(11, 0, 3):
--			if ((adev->pdev->device == 0x7460 &&
--			     adev->pdev->revision == 0x00) ||
--			    (adev->pdev->device == 0x7461 &&
--			     adev->pdev->revision == 0x00))
--				/* Note: Compiler version is 11.0.5 while HW version is 11.0.3 */
--				gfx_target_version = 110005;
--			else
--				/* Note: Compiler version is 11.0.1 while HW version is 11.0.3 */
--				gfx_target_version = 110001;
-+			/* Note: Compiler version is 11.0.1 while HW version is 11.0.3 */
-+			gfx_target_version = 110001;
- 			f2g = &gfx_v11_kfd2kgd;
- 			break;
- 		case IP_VERSION(11, 5, 0):
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index 87c6d619a564b..71e67ad3af02d 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -2723,7 +2723,7 @@ static int ext4_tmpfile(struct inode *dir, struct dentry *dentry, umode_t mode)
+ 	inode = ext4_new_inode_start_handle(dir, mode,
+ 					    NULL, 0, NULL,
+ 					    EXT4_HT_DIR,
+-			EXT4_MAXQUOTAS_INIT_BLOCKS(dir->i_sb) +
++			EXT4_MAXQUOTAS_TRANS_BLOCKS(dir->i_sb) +
+ 			  4 + EXT4_XATTR_TRANS_BLOCKS);
+ 	handle = ext4_journal_current_handle();
+ 	err = PTR_ERR(inode);
+-- 
+2.43.0
+
 
 
 
