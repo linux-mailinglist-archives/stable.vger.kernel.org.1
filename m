@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9821590704D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 546B2907281
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96D4D1C23E63
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34F611C231CC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32D1144D2F;
-	Thu, 13 Jun 2024 12:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D52A142658;
+	Thu, 13 Jun 2024 12:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncfLtyht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/GTc3Tl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611C5143861;
-	Thu, 13 Jun 2024 12:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A613384;
+	Thu, 13 Jun 2024 12:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281548; cv=none; b=lAwx27XQhOyhHWWbHJyfWtgwMFlxr0wxH/I7Rt8cMWguRPN4OcSWBPwEMBML8qVcZslFRqup9alZicEFmyt1QLwHKhgP5Ni90rKckF86pt/OCYFVJ6SSowhnSBnMN3VBJ76emGbt2U5a64/68QH1kx/4OMUsmqunuj46XChAv4g=
+	t=1718282843; cv=none; b=QOi5XdZH9/1Dmq1txGV/7aps828Hqfp3J6XdGEX6mlCkg0W5pvvMIXRDTeDblbayxv3c5dBldCfAK3tp3QNLLhLZ4JMI0n4+Edm5S/xwBmfsp9KROo+CcwyrvfIjDsWLPQEeASwuchRRd0aQek68KpSvb889lnugWyjcq5lDalY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281548; c=relaxed/simple;
-	bh=yj2R76RxeUNM3r4jGNr7BGUrcBSM5d2RETgLcpSMDVQ=;
+	s=arc-20240116; t=1718282843; c=relaxed/simple;
+	bh=IHgNvbGrug/nbvAGgFke6A5CyFAZsfyVN8PeAgDd83o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LH/ZNH5oZCQfZOdaMIRcZZw0qEWPriXddwEbkr8qoz5Ez2zGBRe2/5hGUwoVhvmlr+I08rdR2BxK4Z+dy90Ay7BQUuNjywA5uRp07ITmQ7W53/N2DLL5Q0udhxFzuT2vOY/glIcCQNPBHvCE9HukSNIwTVnIe7azOhU20VaPuaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncfLtyht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9AFEC2BBFC;
-	Thu, 13 Jun 2024 12:25:47 +0000 (UTC)
+	 MIME-Version; b=nM9INLTeYdydtT38EI+c4oq8SpdFHhOHop5sGLscO+rv2xDsB/bvTj91iMxolr9CjJEQDhVFENV+afdso7/msoNHh1lP4JEkeD35Y7cdNxFHpOxub76wvX/TcTYbEMb8qpchkXQByUGoj6jramdy34zaC1Pov3nZUtptnuPT3Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/GTc3Tl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55CAC2BBFC;
+	Thu, 13 Jun 2024 12:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281548;
-	bh=yj2R76RxeUNM3r4jGNr7BGUrcBSM5d2RETgLcpSMDVQ=;
+	s=korg; t=1718282843;
+	bh=IHgNvbGrug/nbvAGgFke6A5CyFAZsfyVN8PeAgDd83o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ncfLtyht3ki2bfLhfQai4Tvv3jMUvlDP7ZAUn3Ads+lRT47/RU4hs0NjWDkl8FNJZ
-	 cNjgLZYBWGcHxvqcBZIxLz8J00BSVd8Mhnizp105sqU8m5Rgu5GsFQ1YqbmOBc1Eb6
-	 6lP4MOhVK1bTjNVlI1+ImAgtPvTXkV7SZLmlV7pg=
+	b=L/GTc3Tlc5c3opw5ZVgJu8OWFdyWJPBKzKchXs/B8kY6cDunzs8uHP0KaShSPTbdw
+	 y60q3Jv15qZyWYKUG5wFQSW69s8exSUrK/PhGNkqsJTx1GAY20QxxCt26F0GkGwh/q
+	 RhX50eIImK9uwSoHv/mnCo69UXclSFoLRp17fLgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 291/317] mmc: sdhci-acpi: Sort DMI quirks alphabetically
-Date: Thu, 13 Jun 2024 13:35:09 +0200
-Message-ID: <20240613113258.809260975@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 12/85] mptcp: cleanup SOL_TCP handling
+Date: Thu, 13 Jun 2024 13:35:10 +0200
+Message-ID: <20240613113214.615386427@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit a92a73b1d9249d155412d8ac237142fa716803ea upstream.
+commit 7f71a337b5152ea0e7bef408d1af53778a919316 upstream.
 
-Sort the DMI quirks alphabetically.
+Most TCP-level socket options get an integer from user space, and
+set the corresponding field under the msk-level socket lock.
 
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240410191639.526324-4-hdegoede@redhat.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reduce the code duplication moving such operations in the common code.
+
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bd11dc4fb969 ("mptcp: fix full TCP keep-alive support")
+[ Without TCP_NOTSENT_LOWAT support, as it is not in this version, see
+  commit 29b5e5ef8739 ("mptcp: implement TCP_NOTSENT_LOWAT support") ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-acpi.c |   25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ net/mptcp/sockopt.c |   61 ++++++++++++++++++++++------------------------------
+ 1 file changed, 26 insertions(+), 35 deletions(-)
 
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -761,9 +761,22 @@ static const struct acpi_device_id sdhci
- };
- MODULE_DEVICE_TABLE(acpi, sdhci_acpi_ids);
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -616,18 +616,11 @@ static int mptcp_setsockopt_sol_tcp_cong
+ 	return ret;
+ }
  
-+/* Please keep this list sorted alphabetically */
- static const struct dmi_system_id sdhci_acpi_quirks[] = {
- 	{
- 		/*
-+		 * The Acer Aspire Switch 10 (SW5-012) microSD slot always
-+		 * reports the card being write-protected even though microSD
-+		 * cards do not have a write-protect switch at all.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW5-012"),
-+		},
-+		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
-+	},
-+	{
-+		/*
- 		 * The Lenovo Miix 320-10ICR has a bug in the _PS0 method of
- 		 * the SHC1 ACPI device, this bug causes it to reprogram the
- 		 * wrong LDO (DLDO3) to 1.8V if 1.8V modes are used and the
-@@ -778,18 +791,6 @@ static const struct dmi_system_id sdhci_
- 	},
- 	{
- 		/*
--		 * The Acer Aspire Switch 10 (SW5-012) microSD slot always
--		 * reports the card being write-protected even though microSD
--		 * cards do not have a write-protect switch at all.
--		 */
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW5-012"),
--		},
--		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
--	},
--	{
--		/*
- 		 * The Toshiba WT8-B's microSD slot always reports the card being
- 		 * write-protected.
- 		 */
+-static int mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, sockptr_t optval,
+-					 unsigned int optlen)
++static int __mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, int val)
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct sock *sk = (struct sock *)msk;
+-	int val, ret;
+ 
+-	ret = mptcp_get_int_option(msk, optval, optlen, &val);
+-	if (ret)
+-		return ret;
+-
+-	lock_sock(sk);
+ 	sockopt_seq_inc(msk);
+ 	msk->cork = !!val;
+ 	mptcp_for_each_subflow(msk, subflow) {
+@@ -639,23 +632,15 @@ static int mptcp_setsockopt_sol_tcp_cork
+ 	}
+ 	if (!val)
+ 		mptcp_check_and_set_pending(sk);
+-	release_sock(sk);
+ 
+ 	return 0;
+ }
+ 
+-static int mptcp_setsockopt_sol_tcp_nodelay(struct mptcp_sock *msk, sockptr_t optval,
+-					    unsigned int optlen)
++static int __mptcp_setsockopt_sol_tcp_nodelay(struct mptcp_sock *msk, int val)
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct sock *sk = (struct sock *)msk;
+-	int val, ret;
+-
+-	ret = mptcp_get_int_option(msk, optval, optlen, &val);
+-	if (ret)
+-		return ret;
+ 
+-	lock_sock(sk);
+ 	sockopt_seq_inc(msk);
+ 	msk->nodelay = !!val;
+ 	mptcp_for_each_subflow(msk, subflow) {
+@@ -667,8 +652,6 @@ static int mptcp_setsockopt_sol_tcp_node
+ 	}
+ 	if (val)
+ 		mptcp_check_and_set_pending(sk);
+-	release_sock(sk);
+-
+ 	return 0;
+ }
+ 
+@@ -793,25 +776,10 @@ static int mptcp_setsockopt_sol_tcp(stru
+ 	int ret, val;
+ 
+ 	switch (optname) {
+-	case TCP_INQ:
+-		ret = mptcp_get_int_option(msk, optval, optlen, &val);
+-		if (ret)
+-			return ret;
+-		if (val < 0 || val > 1)
+-			return -EINVAL;
+-
+-		lock_sock(sk);
+-		msk->recvmsg_inq = !!val;
+-		release_sock(sk);
+-		return 0;
+ 	case TCP_ULP:
+ 		return -EOPNOTSUPP;
+ 	case TCP_CONGESTION:
+ 		return mptcp_setsockopt_sol_tcp_congestion(msk, optval, optlen);
+-	case TCP_CORK:
+-		return mptcp_setsockopt_sol_tcp_cork(msk, optval, optlen);
+-	case TCP_NODELAY:
+-		return mptcp_setsockopt_sol_tcp_nodelay(msk, optval, optlen);
+ 	case TCP_DEFER_ACCEPT:
+ 		return mptcp_setsockopt_sol_tcp_defer(msk, optval, optlen);
+ 	case TCP_FASTOPEN_CONNECT:
+@@ -819,7 +787,30 @@ static int mptcp_setsockopt_sol_tcp(stru
+ 						      optval, optlen);
+ 	}
+ 
+-	return -EOPNOTSUPP;
++	ret = mptcp_get_int_option(msk, optval, optlen, &val);
++	if (ret)
++		return ret;
++
++	lock_sock(sk);
++	switch (optname) {
++	case TCP_INQ:
++		if (val < 0 || val > 1)
++			ret = -EINVAL;
++		else
++			msk->recvmsg_inq = !!val;
++		break;
++	case TCP_CORK:
++		ret = __mptcp_setsockopt_sol_tcp_cork(msk, val);
++		break;
++	case TCP_NODELAY:
++		ret = __mptcp_setsockopt_sol_tcp_nodelay(msk, val);
++		break;
++	default:
++		ret = -ENOPROTOOPT;
++	}
++
++	release_sock(sk);
++	return ret;
+ }
+ 
+ int mptcp_setsockopt(struct sock *sk, int level, int optname,
 
 
 
