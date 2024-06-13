@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8CA9070EC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DA5906EFE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7C7A1C22EBC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:32:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E6191C229A4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9EF1428EA;
-	Thu, 13 Jun 2024 12:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83E1145A12;
+	Thu, 13 Jun 2024 12:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFrclsqj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYqUc1mc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3DC1420C6;
-	Thu, 13 Jun 2024 12:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87ACC44C6F;
+	Thu, 13 Jun 2024 12:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281918; cv=none; b=TQda/NRmyMf8z1fn3Xk5nF27+JbFTFfmGM2DlTZVRMVf2wXwHaeBjAMyd+WloVJsC/f67HHGuXMS1UfMe/Tab0BtpYgy4lrlp57itYEijXW0xTqk/RJy7Vo668/VH+HEmg3kIn1xUw62gpXcaXJzPdkvz5VqXIb0tJ55XSxj3TU=
+	t=1718280753; cv=none; b=owpjhxhLa468Cidz/WH42uI3RjUYiby8yw7g0ssNu3LXzWA/iO406yYj+ifpLAteBRG7W5m3MBnCCUtd9vgquVaB2+CDYfN9snYYMx39LuXC80xWdbUZ3z0ANbkTwfy1t+Rt0fIVn3eUkDqte+9Bta4StgXDR+QQkpPzEykMRNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281918; c=relaxed/simple;
-	bh=Jd4GKJ6riX+nVRgCyLLeuOgcqJsIyhS0VKcEhxDGCB0=;
+	s=arc-20240116; t=1718280753; c=relaxed/simple;
+	bh=KHX6I/TlGbqVZjxJRet493P+UqawNo5mFAEvJdsCzi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atZ43RuNFxDxOBI7Te8DCTQsqIN5GEkjo7ETt9sqBrjjB1+aW84chQd2h/AJe75TWsYj2ozAezH2NbfgG4/IOQMb5n1SCr953Cm46W4IShfI5DH6ZpEd40nnJNGxXFjNKnUcKfu2Y6yJZR7v/Plk9l/aVrIu3OKM7FAj3gHrjps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFrclsqj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1399EC4AF1C;
-	Thu, 13 Jun 2024 12:31:57 +0000 (UTC)
+	 MIME-Version; b=ndu6S/uJfLhAq1BZcqZRw5CLZq7k+SBr0UzCETKJIHHeT72RQKX/+68dUu7OGktZ/kYRYyfL0OLddisVLe0iqIxgi/rhijL072uJGPB0uLowTKu7toi6ihfdr5qIw7mL2YG8fmV5g55p8C1cZueGr2AFGerLiGxCk6gkHF5ggHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYqUc1mc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B263EC4AF1C;
+	Thu, 13 Jun 2024 12:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281918;
-	bh=Jd4GKJ6riX+nVRgCyLLeuOgcqJsIyhS0VKcEhxDGCB0=;
+	s=korg; t=1718280753;
+	bh=KHX6I/TlGbqVZjxJRet493P+UqawNo5mFAEvJdsCzi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFrclsqjLhf9oN+vStFH2lfk5RKJOADjB7BLfnjpvKY+8eRh2L1oMDdwtRzrxV0x/
-	 aRZVpKUkBW5P/FRTReEeifGDjlVkB8L7m/ZXssqjP8xr8xHmP3myDprumHBw6dbSmY
-	 Yeyhx9jdscmoJFSSzH0QOu6HrDcsYblRvfNxqs3E=
+	b=dYqUc1mc3C+KDVp4VbLG9tOId1pj8eySWOkRjqXRmE/1q4+crC2mSLfiqaqYDyeNB
+	 CXpypG7YdZ1pjoNoPh5IhjQxDRAPLuIEHGoPWtpcj/uVAMxxeKdJ+8X5NTMfJdMoal
+	 TahZVqqRkys1xDbC6TTkGcbAcGfkyay5iAV01DqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	"Ivan T. Ivanov" <iivanov@suse.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 083/402] thermal/drivers/tsens: Fix null pointer dereference
+Subject: [PATCH 5.10 022/317] firmware: raspberrypi: Use correct device for DMA mappings
 Date: Thu, 13 Jun 2024 13:30:40 +0200
-Message-ID: <20240613113305.374649231@linuxfoundation.org>
+Message-ID: <20240613113248.400015825@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-[ Upstream commit d998ddc86a27c92140b9f7984ff41e3d1d07a48f ]
+[ Upstream commit df518a0ae1b982a4dcf2235464016c0c4576a34d ]
 
-compute_intercept_slope() is called from calibrate_8960() (in tsens-8960.c)
-as compute_intercept_slope(priv, p1, NULL, ONE_PT_CALIB) which lead to null
-pointer dereference (if DEBUG or DYNAMIC_DEBUG set).
-Fix this bug by adding null pointer check.
+The buffer used to transfer data over the mailbox interface is mapped
+using the client's device. This is incorrect, as the device performing
+the DMA transfer is the mailbox itself. Fix it by using the mailbox
+controller device instead.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This requires including the mailbox_controller.h header to dereference
+the mbox_chan and mbox_controller structures. The header is not meant to
+be included by clients. This could be fixed by extending the client API
+with a function to access the controller's device.
 
-Fixes: dfc1193d4dbd ("thermal/drivers/tsens: Replace custom 8960 apis with generic apis")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20240411114021.12203-1-amishin@t-argos.ru
+Fixes: 4e3d60656a72 ("ARM: bcm2835: Add the Raspberry Pi firmware driver")
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Tested-by: Ivan T. Ivanov <iivanov@suse.de>
+Link: https://lore.kernel.org/r/20240326195807.15163-3-laurent.pinchart@ideasonboard.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qcom/tsens.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/raspberrypi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/thermal/qcom/tsens.c b/drivers/thermal/qcom/tsens.c
-index 926cd8b41132c..2f31129cd5471 100644
---- a/drivers/thermal/qcom/tsens.c
-+++ b/drivers/thermal/qcom/tsens.c
-@@ -84,7 +84,7 @@ void compute_intercept_slope(struct tsens_priv *priv, u32 *p1,
- 	for (i = 0; i < priv->num_sensors; i++) {
- 		dev_dbg(priv->dev,
- 			"%s: sensor%d - data_point1:%#x data_point2:%#x\n",
--			__func__, i, p1[i], p2[i]);
-+			__func__, i, p1[i], p2 ? p2[i] : 0);
+diff --git a/drivers/firmware/raspberrypi.c b/drivers/firmware/raspberrypi.c
+index 45ff03da234a6..c8a292df6fea5 100644
+--- a/drivers/firmware/raspberrypi.c
++++ b/drivers/firmware/raspberrypi.c
+@@ -9,6 +9,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/kref.h>
+ #include <linux/mailbox_client.h>
++#include <linux/mailbox_controller.h>
+ #include <linux/module.h>
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+@@ -96,8 +97,8 @@ int rpi_firmware_property_list(struct rpi_firmware *fw,
+ 	if (size & 3)
+ 		return -EINVAL;
  
- 		if (!priv->sensor[i].slope)
- 			priv->sensor[i].slope = SLOPE_DEFAULT;
+-	buf = dma_alloc_coherent(fw->cl.dev, PAGE_ALIGN(size), &bus_addr,
+-				 GFP_ATOMIC);
++	buf = dma_alloc_coherent(fw->chan->mbox->dev, PAGE_ALIGN(size),
++				 &bus_addr, GFP_ATOMIC);
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
+@@ -125,7 +126,7 @@ int rpi_firmware_property_list(struct rpi_firmware *fw,
+ 		ret = -EINVAL;
+ 	}
+ 
+-	dma_free_coherent(fw->cl.dev, PAGE_ALIGN(size), buf, bus_addr);
++	dma_free_coherent(fw->chan->mbox->dev, PAGE_ALIGN(size), buf, bus_addr);
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
