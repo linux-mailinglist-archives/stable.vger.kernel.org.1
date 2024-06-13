@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-51874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A79907218
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A118906E0C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A911B27079
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB66B282FAD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404F71428F5;
-	Thu, 13 Jun 2024 12:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E72E143892;
+	Thu, 13 Jun 2024 12:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cse8p3ji"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fLbAdBFb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BEA1E519;
-	Thu, 13 Jun 2024 12:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD5C143895;
+	Thu, 13 Jun 2024 12:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282569; cv=none; b=ltS8ibQQeesb1doit+yCYGMNVkq7fn3/E7yzn2y8bL3er32b1xVsSz0uB3ynZz4qpu9DF6t9wVVu+6quAlJPzjmeGyOkel8dRvA2M2LEVbMKIukyNH/82tcQX8co3q0EoTBbNSdT9fsRaY+ijF97qyDV3UUZqBuoG2Ew0jDfQ34=
+	t=1718280124; cv=none; b=lrIJroc5G8AUDjxgo6c1eduUQUY8dxLghxi0k5oeCwXocVRQSgc+Xegf19vpbnOcEizVxVRVuIH4gR1kjTQ4L5g1cyp89iNTU393ywCc+qVSfBtPNgRH4UcdipRRnPOzZffNtK8sI7i0EPUvE5cHK3U9QF7vkXCLjvFU0WXRGpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282569; c=relaxed/simple;
-	bh=P2qcha44o+iyv+kaBynde0LW7gEV0Sbs5sEVxoXQTXM=;
+	s=arc-20240116; t=1718280124; c=relaxed/simple;
+	bh=iqez1KOF8wrCSpJmPmIYOCwF5V0Jfr76IANTi42csxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/ng52B+SD0Jh5Xa2L5eCU3gQzG4mqZ8bS29XYnogDooSZelRbsvGuzjjqOlfDoRQR3EhLCf9O7CitnDQJx/dg/GanuA/rRKxl8ZqG9BXGVibyhBG5JXXGbDDdNdurWt3amWvO57NyZOwPtF8n+rC0oJ8R0yeDyddh3jLBH39XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cse8p3ji; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABAFC2BBFC;
-	Thu, 13 Jun 2024 12:42:48 +0000 (UTC)
+	 MIME-Version; b=lNoUEy7IoPGxnQOFkmOJgxrrtNwnw8TS6U1/2tKPS1iimc4E5yuS/zn1ZlOPz2imDP1cJOgHOIZ01l0qY6Ufk03V63yXPwtQRSLwgZTTXKWy8olenZLey+/znXC5eLyB3auWWjWwpGAY+mHjDnLmMT44mW7ycReE8F5k05/l2d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fLbAdBFb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3B5C2BBFC;
+	Thu, 13 Jun 2024 12:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282568;
-	bh=P2qcha44o+iyv+kaBynde0LW7gEV0Sbs5sEVxoXQTXM=;
+	s=korg; t=1718280124;
+	bh=iqez1KOF8wrCSpJmPmIYOCwF5V0Jfr76IANTi42csxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cse8p3jiKTSPxjIRuTs5xGAQxbt07fUdnemWqpgZrS/mMskcQv15Hn2HcNaeZ144/
-	 wXZkORCiCp35fQ9iCbs+Moxz6lrIfjRDIrj1cFRT5Py8UNfNVaoeykd493bC4y6DMq
-	 aU/faVw+JEHSLZb6qf9URySaaYH5v9xrwpm3rdP4=
+	b=fLbAdBFbYrSWMWCbyHUyME1eU47BSAl1EbMGKtBbOe4R3+XhenWhlqab22yjPQmlt
+	 FaCQ+z7knxpKTo2QfhyByyOThXDkgQP+UDRx2vPTVRJc4lCDrTt1/bgIT1laM0LOZf
+	 ky2q13S0bNH9cLNNc+drhaFzSo5Imaz/YQIK9dA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi.grimberg@vastdata.com>,
-	Dan Aloni <dan.aloni@vastdata.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 290/402] rpcrdma: fix handling for RDMA_CM_EVENT_DEVICE_REMOVAL
+Subject: [PATCH 5.4 149/202] spi: Dont mark message DMA mapped when no transfer in it is
 Date: Thu, 13 Jun 2024 13:34:07 +0200
-Message-ID: <20240613113313.463445024@linuxfoundation.org>
+Message-ID: <20240613113233.504462028@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Aloni <dan.aloni@vastdata.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 4836da219781ec510c4c0303df901aa643507a7a ]
+[ Upstream commit 9f788ba457b45b0ce422943fcec9fa35c4587764 ]
 
-Under the scenario of IB device bonding, when bringing down one of the
-ports, or all ports, we saw xprtrdma entering a non-recoverable state
-where it is not even possible to complete the disconnect and shut it
-down the mount, requiring a reboot. Following debug, we saw that
-transport connect never ended after receiving the
-RDMA_CM_EVENT_DEVICE_REMOVAL callback.
+There is no need to set the DMA mapped flag of the message if it has
+no mapped transfers. Moreover, it may give the code a chance to take
+the wrong paths, i.e. to exercise DMA related APIs on unmapped data.
+Make __spi_map_msg() to bail earlier on the above mentioned cases.
 
-The DEVICE_REMOVAL callback is irrespective of whether the CM_ID is
-connected, and ESTABLISHED may not have happened. So need to work with
-each of these states accordingly.
-
-Fixes: 2acc5cae2923 ('xprtrdma: Prevent dereferencing r_xprt->rx_ep after it is freed')
-Cc: Sagi Grimberg <sagi.grimberg@vastdata.com>
-Signed-off-by: Dan Aloni <dan.aloni@vastdata.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 99adef310f68 ("spi: Provide core support for DMA mapping transfers")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://msgid.link/r/20240522171018.3362521-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/verbs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
-index 41095a278f798..34413d4ab0e52 100644
---- a/net/sunrpc/xprtrdma/verbs.c
-+++ b/net/sunrpc/xprtrdma/verbs.c
-@@ -258,7 +258,11 @@ rpcrdma_cm_event_handler(struct rdma_cm_id *id, struct rdma_cm_event *event)
- 	case RDMA_CM_EVENT_DEVICE_REMOVAL:
- 		pr_info("rpcrdma: removing device %s for %pISpc\n",
- 			ep->re_id->device->name, sap);
--		fallthrough;
-+		switch (xchg(&ep->re_connect_status, -ENODEV)) {
-+		case 0: goto wake_connect_worker;
-+		case 1: goto disconnected;
-+		}
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index b18ae50db1f52..0f9410ed48290 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -931,6 +931,7 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 	else
+ 		rx_dev = ctlr->dev.parent;
+ 
++	ret = -ENOMSG;
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		if (!ctlr->can_dma(ctlr, msg->spi, xfer))
+ 			continue;
+@@ -954,6 +955,9 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 			}
+ 		}
+ 	}
++	/* No transfer has been mapped, bail out with success */
++	if (ret)
 +		return 0;
- 	case RDMA_CM_EVENT_ADDR_CHANGE:
- 		ep->re_connect_status = -ENODEV;
- 		goto disconnected;
+ 
+ 	ctlr->cur_msg_mapped = true;
+ 
 -- 
 2.43.0
 
