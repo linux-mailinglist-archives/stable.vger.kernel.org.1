@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-50859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4362906D2A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA40906BE2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:45:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DF52B2611B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61F1D282285
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE17146A7C;
-	Thu, 13 Jun 2024 11:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B851448F4;
+	Thu, 13 Jun 2024 11:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9urhJUp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPzEzpOQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4A7144D13;
-	Thu, 13 Jun 2024 11:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FB3143C63;
+	Thu, 13 Jun 2024 11:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279596; cv=none; b=KjQah1HtwndYojIaHADX76mWLk4yO7qaUSvRv41tTBK981FS8XpRqfCbGJ1S/hf9a6OCOA+JpIK9wIvdRWoUEZUFwyDpFrMM9+5D4MTgjTuWDL5uBXE7Z+JcZBDJPU7uaACxuBOuji+nBgGyAyNxFdIFEGaYzbn6ZoMFammNfC8=
+	t=1718279073; cv=none; b=dRsXzUsdyZuZNbftMVfiJn+8ubAvzLz6618e6S5Y24HLwuFfpfNMaTafGzWfEPIeFSVJUVxPKOvfibVbcdmJPZhABtexEzYvVXncB0yOTGN819PKNEeci6ZAhhOqB17BmqiiCjHGT/IeaUGMNiz2nHunQtQbKk4ur6dkxRTQjRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279596; c=relaxed/simple;
-	bh=+tRkizIQ7IoUJCjZYMX38b1fgXWcRTkGPbH/mNOsa3k=;
+	s=arc-20240116; t=1718279073; c=relaxed/simple;
+	bh=2/XjpUpoLSVWfe0SOvRSXQyGAFBJJiNFDRFcPoKNWgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M7JvSMfiGygfuMTDz4Q8VMFJ6GSPF3xm0pB+sdFWqF1ycelWB3G+1VG1a5RsdIIuWDhfD9vxkrGm7BjzSvlLWzEGJg8HZuKmQwVPJIGZVZeuGsRxIn+HMwssJQNiYyws0Q5rJBzWYWcmDh0n/5YTHgBVaghZp64wek7iaC8saiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9urhJUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FA8C2BBFC;
-	Thu, 13 Jun 2024 11:53:15 +0000 (UTC)
+	 MIME-Version; b=rTTtuzlXANXZi5GcR79TlbT9j0fwddLDWWKUBwuEdZtIGAvlqpttt8dWQkLs/f9OZN3rU7aNNJOUX27Xc+YNUEnfSOP8NGb5vdQ/Gd7mmyv/AIL/7gHzrB6L7ypGWQRjgTgqWJ0TwVyPgxK1pv4i5DYLPrCljL79lSvSiATlSEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPzEzpOQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D772C2BBFC;
+	Thu, 13 Jun 2024 11:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279596;
-	bh=+tRkizIQ7IoUJCjZYMX38b1fgXWcRTkGPbH/mNOsa3k=;
+	s=korg; t=1718279073;
+	bh=2/XjpUpoLSVWfe0SOvRSXQyGAFBJJiNFDRFcPoKNWgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I9urhJUp3VjjsAZryVrrhL3TUFdBxkMX/+NsJMX69MSkoocqmyvOCeOiswVOzM63p
-	 E+GZDhLxSAci/RGjkjW2SArWap+s0HTF8N4f6FD6iWgGsX/ewyLyK6NgSEBFoaLtkB
-	 Ghs8jY3wyY6E88eniXwf2Qkuxi0tFQB3pH/so0vc=
+	b=lPzEzpOQ6wRXvZCzr7T7fzu2AMU7tqI0WOSRWKylwQS7miy/w9dFPbYyevAkzAsl3
+	 1vIq3C5yQ4SBxijC53hSXMVEKjWIAnZfLO+27XlkNKT/s+IdTeAjycdBQYvi37HA15
+	 lji3VVSWZRjjeJa368zEo3bKUHhLleW+FT6eGJYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 089/157] kmsan: do not wipe out origin when doing partial unpoisoning
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 166/213] netfilter: nft_set_rbtree: fix overlap expiration walk
 Date: Thu, 13 Jun 2024 13:33:34 +0200
-Message-ID: <20240613113230.869262393@linuxfoundation.org>
+Message-ID: <20240613113234.387916572@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Potapenko <glider@google.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 2ef3cec44c60ae171b287db7fc2aa341586d65ba upstream.
+commit f718863aca469a109895cb855e6b81fff4827d71 upstream.
 
-As noticed by Brian, KMSAN should not be zeroing the origin when
-unpoisoning parts of a four-byte uninitialized value, e.g.:
+The lazy gc on insert that should remove timed-out entries fails to release
+the other half of the interval, if any.
 
-    char a[4];
-    kmsan_unpoison_memory(a, 1);
+Can be reproduced with tests/shell/testcases/sets/0044interval_overlap_0
+in nftables.git and kmemleak enabled kernel.
 
-This led to false negatives, as certain poisoned values could receive zero
-origins, preventing those values from being reported.
+Second bug is the use of rbe_prev vs. prev pointer.
+If rbe_prev() returns NULL after at least one iteration, rbe_prev points
+to element that is not an end interval, hence it should not be removed.
 
-To fix the problem, check that kmsan_internal_set_shadow_origin() writes
-zero origins only to slots which have zero shadow.
+Lastly, check the genmask of the end interval if this is active in the
+current generation.
 
-Link: https://lkml.kernel.org/r/20240528104807.738758-1-glider@google.com
-Fixes: f80be4571b19 ("kmsan: add KMSAN runtime core")
-Signed-off-by: Alexander Potapenko <glider@google.com>
-Reported-by: Brian Johannesmeyer <bjohannesmeyer@gmail.com>
-  Link: https://lore.kernel.org/lkml/20240524232804.1984355-1-bjohannesmeyer@gmail.com/T/
-Reviewed-by: Marco Elver <elver@google.com>
-Tested-by: Brian Johannesmeyer <bjohannesmeyer@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kmsan/core.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ net/netfilter/nft_set_rbtree.c |   20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/mm/kmsan/core.c
-+++ b/mm/kmsan/core.c
-@@ -196,8 +196,7 @@ void kmsan_internal_set_shadow_origin(vo
- 				      u32 origin, bool checked)
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -219,29 +219,37 @@ static void *nft_rbtree_get(const struct
+ 
+ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 			      struct nft_rbtree *priv,
+-			      struct nft_rbtree_elem *rbe)
++			      struct nft_rbtree_elem *rbe,
++			      u8 genmask)
  {
- 	u64 address = (u64)addr;
--	void *shadow_start;
--	u32 *origin_start;
-+	u32 *shadow_start, *origin_start;
- 	size_t pad = 0;
+ 	struct nft_set *set = (struct nft_set *)__set;
+ 	struct rb_node *prev = rb_prev(&rbe->node);
+-	struct nft_rbtree_elem *rbe_prev = NULL;
++	struct nft_rbtree_elem *rbe_prev;
+ 	struct nft_set_gc_batch *gcb;
  
- 	KMSAN_WARN_ON(!kmsan_metadata_is_contiguous(addr, size));
-@@ -225,8 +224,16 @@ void kmsan_internal_set_shadow_origin(vo
- 	origin_start =
- 		(u32 *)kmsan_get_metadata((void *)address, KMSAN_META_ORIGIN);
+ 	gcb = nft_set_gc_batch_check(set, NULL, GFP_ATOMIC);
+ 	if (!gcb)
+ 		return -ENOMEM;
  
--	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++)
--		origin_start[i] = origin;
-+	/*
-+	 * If the new origin is non-zero, assume that the shadow byte is also non-zero,
-+	 * and unconditionally overwrite the old origin slot.
-+	 * If the new origin is zero, overwrite the old origin slot iff the
-+	 * corresponding shadow slot is zero.
+-	/* search for expired end interval coming before this element. */
++	/* search for end interval coming before this element.
++	 * end intervals don't carry a timeout extension, they
++	 * are coupled with the interval start element.
 +	 */
-+	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++) {
-+		if (origin || !shadow_start[i])
-+			origin_start[i] = origin;
-+	}
- }
+ 	while (prev) {
+ 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
+-		if (nft_rbtree_interval_end(rbe_prev))
++		if (nft_rbtree_interval_end(rbe_prev) &&
++		    nft_set_elem_active(&rbe_prev->ext, genmask))
+ 			break;
  
- struct page *kmsan_vmalloc_to_page_or_null(void *vaddr)
+ 		prev = rb_prev(prev);
+ 	}
+ 
+-	if (rbe_prev) {
++	if (prev) {
++		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
++
+ 		rb_erase(&rbe_prev->node, &priv->root);
+ 		atomic_dec(&set->nelems);
++		nft_set_gc_batch_add(gcb, rbe_prev);
+ 	}
+ 
+ 	rb_erase(&rbe->node, &priv->root);
+@@ -323,7 +331,7 @@ static int __nft_rbtree_insert(const str
+ 
+ 		/* perform garbage collection to avoid bogus overlap reports. */
+ 		if (nft_set_elem_expired(&rbe->ext)) {
+-			err = nft_rbtree_gc_elem(set, priv, rbe);
++			err = nft_rbtree_gc_elem(set, priv, rbe, genmask);
+ 			if (err < 0)
+ 				return err;
+ 
 
 
 
