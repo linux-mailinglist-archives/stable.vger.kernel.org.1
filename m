@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61BC2906E8D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF7F906FEE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14C4B1F218A2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3565F1F21545
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4918813C805;
-	Thu, 13 Jun 2024 12:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04889143C6D;
+	Thu, 13 Jun 2024 12:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1VHkz8p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2Lx3flA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06315144D3C;
-	Thu, 13 Jun 2024 12:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D3C6EB56;
+	Thu, 13 Jun 2024 12:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280459; cv=none; b=SA0V9rxVdnRcQHGGn7NW5mxKENtggqjhCPjnWLMutjosMH0f8JFCVZZirun0aZDbrdQdsJDLqR1fH4PVCe9kymuv0VUsNZ0VJ+kMdu0+Z3ISC4XhVFogGdB1fDupEQZNl9YdpGUngKkaIJjdesSckMBKx5LNfTXyeCMnwu4WDOE=
+	t=1718281342; cv=none; b=hvYpX+Byb0uXrvCcSQ24UWiCmc4vWbZXTIu1WU8WsxntB0V5HTyOr3kj9lR94pa4FrZBCs703/CjDQZynapI6RZxGUyns3qsgM62spH34N5z3SNDPzs5UPZnL6Q2BJiMW4iwDEfJnRvtJifQBaSHwbHq8nczB6orlLZu2xzCylQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280459; c=relaxed/simple;
-	bh=ojAj5Yv4nmqlmh83q5Kw1e/tiRcZYb8iJ+MEo0cqjK8=;
+	s=arc-20240116; t=1718281342; c=relaxed/simple;
+	bh=3/j9kSYy+mHvaZzjirfwqGkRJfUYJX7iYeGQQ202CXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=imd2nbg52TPFufIJhieHinp1kMSQAjUx/e6tpRw7rGu3huNqBy5W9oop4gBcr+OCSyOaU4jktGyMoFBTHvc5BnQLJWwBOigMxDwMVY4t9yR+UvculAbfkQ4IsFhgrVW9IJVmIB/UGASjbilmrpDbEhehCQuctaQdwlJaBBTciOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1VHkz8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803B3C2BBFC;
-	Thu, 13 Jun 2024 12:07:38 +0000 (UTC)
+	 MIME-Version; b=N+Rm82p+b2iPvc/vcblJ4AzKDjtVioJoL9jLGlra6l5SvA4k/41W0xFlIsHvnmYCCjsI52xChc+lfnlRxniSBQ91LhPXrFOpZmNhz6hG0IYgsvISkqDEEabikC/qU3Ev+b03CeE+H5QPbekJ3RmR5crnRbuQb247ImUQrtYEfkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2Lx3flA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B586C2BBFC;
+	Thu, 13 Jun 2024 12:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280458;
-	bh=ojAj5Yv4nmqlmh83q5Kw1e/tiRcZYb8iJ+MEo0cqjK8=;
+	s=korg; t=1718281342;
+	bh=3/j9kSYy+mHvaZzjirfwqGkRJfUYJX7iYeGQQ202CXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l1VHkz8pQhc1hxi7YLtGtqPUKYHhrui30OK2ycD5/VLBFOGgWk8K8XUN3LnShKqdT
-	 WhmttFpEoDe5TGjG5ors3IhGAXhQQrTBD0QOjGscfJxfeaSS+WYkvZ4uddFE2z3HWK
-	 NbsA9V1WElZBIMbw+6Q3bqvJEC8BKkHre/JiwLd8=
+	b=w2Lx3flA4JXa72U5DZSclqGavb8h4zr6HpjoWfagtMufJSanfYLiJTEs3x2QPFzeK
+	 sE7qfdsDAWJjNabtX+paMLiwenOeFdzPaRPnSgZrJpiVRFqXxu1QdpCCHFtNC1fq5y
+	 Dz6WoXz0562DsSJFYmA/Mm6T49pxyR1Cu1xy8pKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Santosh Shukla <Santosh.Shukla@amd.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 060/137] KVM: SVM: WARN on vNMI + NMI window iff NMIs are outright masked
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 222/317] media: cec-adap.c: drop activate_cnt, use state info instead
 Date: Thu, 13 Jun 2024 13:34:00 +0200
-Message-ID: <20240613113225.631292183@linuxfoundation.org>
+Message-ID: <20240613113256.141640685@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +62,319 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit b4bd556467477420ee3a91fbcba73c579669edc6 upstream.
+[ Upstream commit f9222f8ca18bcb1d55dd749b493b29fd8092fb82 ]
 
-When requesting an NMI window, WARN on vNMI support being enabled if and
-only if NMIs are actually masked, i.e. if the vCPU is already handling an
-NMI.  KVM's ABI for NMIs that arrive simultanesouly (from KVM's point of
-view) is to inject one NMI and pend the other.  When using vNMI, KVM pends
-the second NMI simply by setting V_NMI_PENDING, and lets the CPU do the
-rest (hardware automatically sets V_NMI_BLOCKING when an NMI is injected).
+Using an activation counter to decide when the enable or disable the
+cec adapter is not the best approach and can lead to race conditions.
 
-However, if KVM can't immediately inject an NMI, e.g. because the vCPU is
-in an STI shadow or is running with GIF=0, then KVM will request an NMI
-window and trigger the WARN (but still function correctly).
+Change this to determining the current status of the adapter, and
+enable or disable the adapter accordingly.
 
-Whether or not the GIF=0 case makes sense is debatable, as the intent of
-KVM's behavior is to provide functionality that is as close to real
-hardware as possible.  E.g. if two NMIs are sent in quick succession, the
-probability of both NMIs arriving in an STI shadow is infinitesimally low
-on real hardware, but significantly larger in a virtual environment, e.g.
-if the vCPU is preempted in the STI shadow.  For GIF=0, the argument isn't
-as clear cut, because the window where two NMIs can collide is much larger
-in bare metal (though still small).
+It now only needs to be called whenever there is a chance that the
+state changes, and it can handle enabling/disabling monitoring as
+well if needed.
 
-That said, KVM should not have divergent behavior for the GIF=0 case based
-on whether or not vNMI support is enabled.  And KVM has allowed
-simultaneous NMIs with GIF=0 for over a decade, since commit 7460fb4a3400
-("KVM: Fix simultaneous NMIs").  I.e. KVM's GIF=0 handling shouldn't be
-modified without a *really* good reason to do so, and if KVM's behavior
-were to be modified, it should be done irrespective of vNMI support.
+This simplifies the code and it should be a more robust approach as well.
 
-Fixes: fa4c027a7956 ("KVM: x86: Add support for SVM's Virtual NMI")
-Cc: stable@vger.kernel.org
-Cc: Santosh Shukla <Santosh.Shukla@amd.com>
-Cc: Maxim Levitsky <mlevitsk@redhat.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20240522021435.1684366-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Stable-dep-of: 47c82aac10a6 ("media: cec: core: avoid recursive cec_claim_log_addrs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/svm.c |   27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ drivers/media/cec/core/cec-adap.c | 152 ++++++++++++------------------
+ include/media/cec.h               |   4 +-
+ 2 files changed, 61 insertions(+), 95 deletions(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3856,16 +3856,27 @@ static void svm_enable_nmi_window(struct
- 	struct vcpu_svm *svm = to_svm(vcpu);
+diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
+index 07ff4b0c8461e..920c108b84aaf 100644
+--- a/drivers/media/cec/core/cec-adap.c
++++ b/drivers/media/cec/core/cec-adap.c
+@@ -1548,47 +1548,59 @@ static void cec_claim_log_addrs(struct cec_adapter *adap, bool block)
+ }
  
- 	/*
--	 * KVM should never request an NMI window when vNMI is enabled, as KVM
--	 * allows at most one to-be-injected NMI and one pending NMI, i.e. if
--	 * two NMIs arrive simultaneously, KVM will inject one and set
--	 * V_NMI_PENDING for the other.  WARN, but continue with the standard
--	 * single-step approach to try and salvage the pending NMI.
-+	 * If NMIs are outright masked, i.e. the vCPU is already handling an
-+	 * NMI, and KVM has not yet intercepted an IRET, then there is nothing
-+	 * more to do at this time as KVM has already enabled IRET intercepts.
-+	 * If KVM has already intercepted IRET, then single-step over the IRET,
-+	 * as NMIs aren't architecturally unmasked until the IRET completes.
-+	 *
-+	 * If vNMI is enabled, KVM should never request an NMI window if NMIs
-+	 * are masked, as KVM allows at most one to-be-injected NMI and one
-+	 * pending NMI.  If two NMIs arrive simultaneously, KVM will inject one
-+	 * NMI and set V_NMI_PENDING for the other, but if and only if NMIs are
-+	 * unmasked.  KVM _will_ request an NMI window in some situations, e.g.
-+	 * if the vCPU is in an STI shadow or if GIF=0, KVM can't immediately
-+	 * inject the NMI.  In those situations, KVM needs to single-step over
-+	 * the STI shadow or intercept STGI.
- 	 */
--	WARN_ON_ONCE(is_vnmi_enabled(svm));
-+	if (svm_get_nmi_mask(vcpu)) {
-+		WARN_ON_ONCE(is_vnmi_enabled(svm));
+ /*
+- * Helper functions to enable/disable the CEC adapter.
++ * Helper function to enable/disable the CEC adapter.
+  *
+- * These functions are called with adap->lock held.
++ * This function is called with adap->lock held.
+  */
+-static int cec_activate_cnt_inc(struct cec_adapter *adap)
++static int cec_adap_enable(struct cec_adapter *adap)
+ {
+-	int ret;
++	bool enable;
++	int ret = 0;
++
++	enable = adap->monitor_all_cnt || adap->monitor_pin_cnt ||
++		 adap->log_addrs.num_log_addrs;
++	if (adap->needs_hpd)
++		enable = enable && adap->phys_addr != CEC_PHYS_ADDR_INVALID;
  
--	if (svm_get_nmi_mask(vcpu) && !svm->awaiting_iret_completion)
--		return; /* IRET will cause a vm exit */
-+		if (!svm->awaiting_iret_completion)
-+			return; /* IRET will cause a vm exit */
+-	if (adap->activate_cnt++)
++	if (enable == adap->is_enabled)
+ 		return 0;
+ 
+ 	/* serialize adap_enable */
+ 	mutex_lock(&adap->devnode.lock);
+-	adap->last_initiator = 0xff;
+-	adap->transmit_in_progress = false;
+-	ret = call_op(adap, adap_enable, true);
+-	if (ret)
+-		adap->activate_cnt--;
++	if (enable) {
++		adap->last_initiator = 0xff;
++		adap->transmit_in_progress = false;
++		ret = adap->ops->adap_enable(adap, true);
++		if (!ret) {
++			/*
++			 * Enable monitor-all/pin modes if needed. We warn, but
++			 * continue if this fails as this is not a critical error.
++			 */
++			if (adap->monitor_all_cnt)
++				WARN_ON(call_op(adap, adap_monitor_all_enable, true));
++			if (adap->monitor_pin_cnt)
++				WARN_ON(call_op(adap, adap_monitor_pin_enable, true));
++		}
++	} else {
++		/* Disable monitor-all/pin modes if needed (needs_hpd == 1) */
++		if (adap->monitor_all_cnt)
++			WARN_ON(call_op(adap, adap_monitor_all_enable, false));
++		if (adap->monitor_pin_cnt)
++			WARN_ON(call_op(adap, adap_monitor_pin_enable, false));
++		WARN_ON(adap->ops->adap_enable(adap, false));
++		adap->last_initiator = 0xff;
++		adap->transmit_in_progress = false;
++		adap->transmit_in_progress_aborted = false;
++		if (adap->transmitting)
++			cec_data_cancel(adap->transmitting, CEC_TX_STATUS_ABORTED, 0);
 +	}
++	if (!ret)
++		adap->is_enabled = enable;
++	wake_up_interruptible(&adap->kthread_waitq);
+ 	mutex_unlock(&adap->devnode.lock);
+ 	return ret;
+ }
  
- 	/*
- 	 * SEV-ES guests are responsible for signaling when a vCPU is ready to
+-static void cec_activate_cnt_dec(struct cec_adapter *adap)
+-{
+-	if (WARN_ON(!adap->activate_cnt))
+-		return;
+-
+-	if (--adap->activate_cnt)
+-		return;
+-
+-	/* serialize adap_enable */
+-	mutex_lock(&adap->devnode.lock);
+-	WARN_ON(call_op(adap, adap_enable, false));
+-	adap->last_initiator = 0xff;
+-	adap->transmit_in_progress = false;
+-	adap->transmit_in_progress_aborted = false;
+-	if (adap->transmitting)
+-		cec_data_cancel(adap->transmitting, CEC_TX_STATUS_ABORTED, 0);
+-	mutex_unlock(&adap->devnode.lock);
+-}
+-
+ /* Set a new physical address and send an event notifying userspace of this.
+  *
+  * This function is called with adap->lock held.
+@@ -1609,33 +1621,16 @@ void __cec_s_phys_addr(struct cec_adapter *adap, u16 phys_addr, bool block)
+ 		adap->phys_addr = CEC_PHYS_ADDR_INVALID;
+ 		cec_post_state_event(adap);
+ 		cec_adap_unconfigure(adap);
+-		if (becomes_invalid && adap->needs_hpd) {
+-			/* Disable monitor-all/pin modes if needed */
+-			if (adap->monitor_all_cnt)
+-				WARN_ON(call_op(adap, adap_monitor_all_enable, false));
+-			if (adap->monitor_pin_cnt)
+-				WARN_ON(call_op(adap, adap_monitor_pin_enable, false));
+-			cec_activate_cnt_dec(adap);
+-			wake_up_interruptible(&adap->kthread_waitq);
+-		}
+-		if (becomes_invalid)
++		if (becomes_invalid) {
++			cec_adap_enable(adap);
+ 			return;
+-	}
+-
+-	if (is_invalid && adap->needs_hpd) {
+-		if (cec_activate_cnt_inc(adap))
+-			return;
+-		/*
+-		 * Re-enable monitor-all/pin modes if needed. We warn, but
+-		 * continue if this fails as this is not a critical error.
+-		 */
+-		if (adap->monitor_all_cnt)
+-			WARN_ON(call_op(adap, adap_monitor_all_enable, true));
+-		if (adap->monitor_pin_cnt)
+-			WARN_ON(call_op(adap, adap_monitor_pin_enable, true));
++		}
+ 	}
+ 
+ 	adap->phys_addr = phys_addr;
++	if (is_invalid)
++		cec_adap_enable(adap);
++
+ 	cec_post_state_event(adap);
+ 	if (adap->log_addrs.num_log_addrs)
+ 		cec_claim_log_addrs(adap, block);
+@@ -1692,6 +1687,7 @@ int __cec_s_log_addrs(struct cec_adapter *adap,
+ 		      struct cec_log_addrs *log_addrs, bool block)
+ {
+ 	u16 type_mask = 0;
++	int err;
+ 	int i;
+ 
+ 	if (adap->devnode.unregistered)
+@@ -1707,8 +1703,7 @@ int __cec_s_log_addrs(struct cec_adapter *adap,
+ 		adap->log_addrs.osd_name[0] = '\0';
+ 		adap->log_addrs.vendor_id = CEC_VENDOR_ID_NONE;
+ 		adap->log_addrs.cec_version = CEC_OP_CEC_VERSION_2_0;
+-		if (!adap->needs_hpd)
+-			cec_activate_cnt_dec(adap);
++		cec_adap_enable(adap);
+ 		return 0;
+ 	}
+ 
+@@ -1842,17 +1837,12 @@ int __cec_s_log_addrs(struct cec_adapter *adap,
+ 		       sizeof(log_addrs->features[i]));
+ 	}
+ 
+-	if (!adap->needs_hpd && !adap->is_configuring && !adap->is_configured) {
+-		int ret = cec_activate_cnt_inc(adap);
+-
+-		if (ret)
+-			return ret;
+-	}
+ 	log_addrs->log_addr_mask = adap->log_addrs.log_addr_mask;
+ 	adap->log_addrs = *log_addrs;
+-	if (adap->phys_addr != CEC_PHYS_ADDR_INVALID)
++	err = cec_adap_enable(adap);
++	if (!err && adap->phys_addr != CEC_PHYS_ADDR_INVALID)
+ 		cec_claim_log_addrs(adap, block);
+-	return 0;
++	return err;
+ }
+ 
+ int cec_s_log_addrs(struct cec_adapter *adap,
+@@ -2155,20 +2145,9 @@ int cec_monitor_all_cnt_inc(struct cec_adapter *adap)
+ 	if (adap->monitor_all_cnt++)
+ 		return 0;
+ 
+-	if (!adap->needs_hpd) {
+-		ret = cec_activate_cnt_inc(adap);
+-		if (ret) {
+-			adap->monitor_all_cnt--;
+-			return ret;
+-		}
+-	}
+-
+-	ret = call_op(adap, adap_monitor_all_enable, true);
+-	if (ret) {
++	ret = cec_adap_enable(adap);
++	if (ret)
+ 		adap->monitor_all_cnt--;
+-		if (!adap->needs_hpd)
+-			cec_activate_cnt_dec(adap);
+-	}
+ 	return ret;
+ }
+ 
+@@ -2179,8 +2158,7 @@ void cec_monitor_all_cnt_dec(struct cec_adapter *adap)
+ 	if (--adap->monitor_all_cnt)
+ 		return;
+ 	WARN_ON(call_op(adap, adap_monitor_all_enable, false));
+-	if (!adap->needs_hpd)
+-		cec_activate_cnt_dec(adap);
++	cec_adap_enable(adap);
+ }
+ 
+ /*
+@@ -2195,20 +2173,9 @@ int cec_monitor_pin_cnt_inc(struct cec_adapter *adap)
+ 	if (adap->monitor_pin_cnt++)
+ 		return 0;
+ 
+-	if (!adap->needs_hpd) {
+-		ret = cec_activate_cnt_inc(adap);
+-		if (ret) {
+-			adap->monitor_pin_cnt--;
+-			return ret;
+-		}
+-	}
+-
+-	ret = call_op(adap, adap_monitor_pin_enable, true);
+-	if (ret) {
++	ret = cec_adap_enable(adap);
++	if (ret)
+ 		adap->monitor_pin_cnt--;
+-		if (!adap->needs_hpd)
+-			cec_activate_cnt_dec(adap);
+-	}
+ 	return ret;
+ }
+ 
+@@ -2219,8 +2186,7 @@ void cec_monitor_pin_cnt_dec(struct cec_adapter *adap)
+ 	if (--adap->monitor_pin_cnt)
+ 		return;
+ 	WARN_ON(call_op(adap, adap_monitor_pin_enable, false));
+-	if (!adap->needs_hpd)
+-		cec_activate_cnt_dec(adap);
++	cec_adap_enable(adap);
+ }
+ 
+ #ifdef CONFIG_DEBUG_FS
+@@ -2234,7 +2200,7 @@ int cec_adap_status(struct seq_file *file, void *priv)
+ 	struct cec_data *data;
+ 
+ 	mutex_lock(&adap->lock);
+-	seq_printf(file, "activation count: %u\n", adap->activate_cnt);
++	seq_printf(file, "enabled: %d\n", adap->is_enabled);
+ 	seq_printf(file, "configured: %d\n", adap->is_configured);
+ 	seq_printf(file, "configuring: %d\n", adap->is_configuring);
+ 	seq_printf(file, "phys_addr: %x.%x.%x.%x\n",
+diff --git a/include/media/cec.h b/include/media/cec.h
+index 31d704f367074..df3e8738d512b 100644
+--- a/include/media/cec.h
++++ b/include/media/cec.h
+@@ -180,6 +180,7 @@ struct cec_adap_ops {
+  * @needs_hpd:		if true, then the HDMI HotPlug Detect pin must be high
+  *	in order to transmit or receive CEC messages. This is usually a HW
+  *	limitation.
++ * @is_enabled:		the CEC adapter is enabled
+  * @is_configuring:	the CEC adapter is configuring (i.e. claiming LAs)
+  * @is_configured:	the CEC adapter is configured (i.e. has claimed LAs)
+  * @cec_pin_is_high:	if true then the CEC pin is high. Only used with the
+@@ -190,7 +191,6 @@ struct cec_adap_ops {
+  *	Drivers that need this can set this field to true after the
+  *	cec_allocate_adapter() call.
+  * @last_initiator:	the initiator of the last transmitted message.
+- * @activate_cnt:	number of times that CEC is activated
+  * @monitor_all_cnt:	number of filehandles monitoring all msgs
+  * @monitor_pin_cnt:	number of filehandles monitoring pin changes
+  * @follower_cnt:	number of filehandles in follower mode
+@@ -238,12 +238,12 @@ struct cec_adapter {
+ 
+ 	u16 phys_addr;
+ 	bool needs_hpd;
++	bool is_enabled;
+ 	bool is_configuring;
+ 	bool is_configured;
+ 	bool cec_pin_is_high;
+ 	bool adap_controls_phys_addr;
+ 	u8 last_initiator;
+-	u32 activate_cnt;
+ 	u32 monitor_all_cnt;
+ 	u32 monitor_pin_cnt;
+ 	u32 follower_cnt;
+-- 
+2.43.0
+
 
 
 
