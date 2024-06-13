@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-51024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E1F906DF9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF6E906E88
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9107281151
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3B39B21CFE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76291474D9;
-	Thu, 13 Jun 2024 12:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13FE144D1F;
+	Thu, 13 Jun 2024 12:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xx5mAh40"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iG4WtraB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A2D14535F;
-	Thu, 13 Jun 2024 12:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676E71448DA;
+	Thu, 13 Jun 2024 12:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280083; cv=none; b=jn88PbCEyCdzVij+opr/DPF71P3MFwqHDiwWRv3wXePlol8wiUpaYja1bCn8w1oLLsXY51rOeu720sKHuPnHYhC7RF0iA/1FwTCSQXtRNVYZiOjRhpyMgD4Ty+Bd2igNNQLoXUNT3xLXanSd/rmtTBH8QaBtIGdAxd8MxRUUmQg=
+	t=1718280441; cv=none; b=W5pkTx4Fc0YV9dpXRT5JexsCFLYgIhMJo5vcg5UuiMvOT9RGaViTD87slSLrorON8ApXGv6tDc7wSP2DebXhaeT2HfywI38bXoV1BNl0ABPSHIGjvSryITC52RWc5JWjbou+OXwLdMlhC0nn2z0KDte81sc7OlalbRyQRLSgIEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280083; c=relaxed/simple;
-	bh=+HjjuLRPBBuO3VnHCZzxIOzgIRki9AKluQOAh9MRczw=;
+	s=arc-20240116; t=1718280441; c=relaxed/simple;
+	bh=WRjv5Qh2mLjHbxy4hrNzMOn/PIv9w/ROzHY4E5XI5Cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqVLjH/md2Z1nXcKcWJ9rZZP0JnQTQ8UfaQakmQ9COUzRY9UwgLfhnzzs8pF1KPCUSrO3J2Zr2chWJPT5wMpSZe3Wj2Hb7KweZSwXVb9c6sk0Y6Wft4VYrToxgvLqrnj5MneGCJbj7j3GSW65YPeb6lVqkeok+DpbWikkkNEgHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xx5mAh40; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE394C2BBFC;
-	Thu, 13 Jun 2024 12:01:22 +0000 (UTC)
+	 MIME-Version; b=fSM69MoEFZC6j2WdXMQQrZfX2I3jdBmKIXsI/Ltk/NhCXllAzJPBpGhZG+3M8xpbJu0WpY3eZZe6yC90d0EpRZ7R4NRubHjdoDL82dvBN4uNcI83H/M0Vo1ou5Iblm/WwhtAtVG29zJQY4hpkJ8YXol/EyJLV9kVCGPFIxqta3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iG4WtraB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B2FC2BBFC;
+	Thu, 13 Jun 2024 12:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280083;
-	bh=+HjjuLRPBBuO3VnHCZzxIOzgIRki9AKluQOAh9MRczw=;
+	s=korg; t=1718280441;
+	bh=WRjv5Qh2mLjHbxy4hrNzMOn/PIv9w/ROzHY4E5XI5Cg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xx5mAh40hADbZr7v9siuuKYhEoYQxVr2wzmtt4mZeTHSvU2nXD42yWAHB/+jdg8eb
-	 eL8UyQs6wDuOe3e2Yiz2sYmDC9aGxZkF+szWpVpMYVQj/5o1OG6uP4ELocoU25s/UR
-	 aF7mYIRdPnQw+p8V/Vt9YanpcMiRM9NDK54XTuAo=
+	b=iG4WtraBSaotBF809Dl+8neQBgO+iDtvosGfGOH0S64rznvOKjHIuzug8+uJ1MhEd
+	 eUBdtoeV+SE433B8Z5T8D8OCj1qDch+krTz9erxifrsG3ElJw2mJ8BXPqknQwl9Yc5
+	 y1pgjJgZB5q/oUc50PVcF0J0/oUlI+opJcvqdZ6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryosuke Yasuoka <ryasuoka@redhat.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+d7b4dc6cd50410152534@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 137/202] nfc: nci: Fix uninit-value in nci_rx_work
+	Cai Xinchen <caixinchen1@huawei.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 055/137] fbdev: savage: Handle err return when savagefb_check_var failed
 Date: Thu, 13 Jun 2024 13:33:55 +0200
-Message-ID: <20240613113233.047493915@linuxfoundation.org>
+Message-ID: <20240613113225.428233193@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryosuke Yasuoka <ryasuoka@redhat.com>
+From: Cai Xinchen <caixinchen1@huawei.com>
 
-[ Upstream commit e4a87abf588536d1cdfb128595e6e680af5cf3ed ]
+commit 6ad959b6703e2c4c5d7af03b4cfd5ff608036339 upstream.
 
-syzbot reported the following uninit-value access issue [1]
+The commit 04e5eac8f3ab("fbdev: savage: Error out if pixclock equals zero")
+checks the value of pixclock to avoid divide-by-zero error. However
+the function savagefb_probe doesn't handle the error return of
+savagefb_check_var. When pixclock is 0, it will cause divide-by-zero error.
 
-nci_rx_work() parses received packet from ndev->rx_q. It should be
-validated header size, payload size and total packet size before
-processing the packet. If an invalid packet is detected, it should be
-silently discarded.
-
-Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
-Reported-and-tested-by: syzbot+d7b4dc6cd50410152534@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d7b4dc6cd50410152534 [1]
-Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 04e5eac8f3ab ("fbdev: savage: Error out if pixclock equals zero")
+Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/core.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/savage/savagefb_driver.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 701c3752bda09..61b12281ec47c 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1449,6 +1449,19 @@ int nci_core_ntf_packet(struct nci_dev *ndev, __u16 opcode,
- 				 ndev->ops->n_core_ops);
- }
- 
-+static bool nci_valid_size(struct sk_buff *skb)
-+{
-+	BUILD_BUG_ON(NCI_CTRL_HDR_SIZE != NCI_DATA_HDR_SIZE);
-+	unsigned int hdr_size = NCI_CTRL_HDR_SIZE;
+--- a/drivers/video/fbdev/savage/savagefb_driver.c
++++ b/drivers/video/fbdev/savage/savagefb_driver.c
+@@ -2276,7 +2276,10 @@ static int savagefb_probe(struct pci_dev
+ 	if (info->var.xres_virtual > 0x1000)
+ 		info->var.xres_virtual = 0x1000;
+ #endif
+-	savagefb_check_var(&info->var, info);
++	err = savagefb_check_var(&info->var, info);
++	if (err)
++		goto failed;
 +
-+	if (skb->len < hdr_size ||
-+	    !nci_plen(skb->data) ||
-+	    skb->len < hdr_size + nci_plen(skb->data)) {
-+		return false;
-+	}
-+	return true;
-+}
-+
- /* ---- NCI TX Data worker thread ---- */
+ 	savagefb_set_fix(info);
  
- static void nci_tx_work(struct work_struct *work)
-@@ -1499,7 +1512,7 @@ static void nci_rx_work(struct work_struct *work)
- 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
- 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
- 
--		if (!nci_plen(skb->data)) {
-+		if (!nci_valid_size(skb)) {
- 			kfree_skb(skb);
- 			break;
- 		}
--- 
-2.43.0
-
+ 	/*
 
 
 
