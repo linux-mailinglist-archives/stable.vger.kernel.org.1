@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-50608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B90BE906B87
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E657906D7E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4297CB233CC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23D921C2300C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06500142911;
-	Thu, 13 Jun 2024 11:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2475E14884E;
+	Thu, 13 Jun 2024 11:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnmu6pmy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GISTYUFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E23143866;
-	Thu, 13 Jun 2024 11:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFB4143C55;
+	Thu, 13 Jun 2024 11:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278864; cv=none; b=gXyQRMaEX7CZ+84wsCoKGUDOjpvMHxtS0+8dsZE/T/TDeRQDL5jeT7Hm+cNBQQcnP6Wie9W9U6eHRXCUXyhwrSkc4pzxJCAVHmujECrfIkcO9sGL32BL2I5BKiJ/WL8NbUh1C0RnOfU6+l3U+RcDFPvLCW2VaMKI6TyuWg8Ic/M=
+	t=1718279817; cv=none; b=Tqjgeg2ZWkf50hz2XwFEy6DnnC7lLidqwWxZMCFXthVOINV7JGYiA1HrqeYCMUIpZBPd8Pg89v81oEoxfm7/WfbMuKDJbq3dNbQTrGCQXqI0eBR2tso25mNpcZS5vSoX50Ljhi2mV9wUaHV9i/V8J4AQNWTm0IEstQCIgDHM7Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278864; c=relaxed/simple;
-	bh=ky2X+m6DKXiBG9ioqkQ0RtrXf37WyBKk18ocIa9BkP8=;
+	s=arc-20240116; t=1718279817; c=relaxed/simple;
+	bh=1SJR4crF0L5xjC3dyr/6/nXFRSugH/kCkVexHIMoD1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kks8bdAkBI6UZezfmvu9r99sjn8TfWmj359N3uGnGyXIAMpNDC+0fDhNFDo2sbsYZmdzVbceEYklde+mowDrfCXBs2xUYBWIjbVVPQ3MPEKBxG6V6CO1GjJmPpb0HCxcUVlEHxP/Sjgd+UaDhxDCTYtv9qE8SXKaK4TBYK/HYgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnmu6pmy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4270DC2BBFC;
-	Thu, 13 Jun 2024 11:41:04 +0000 (UTC)
+	 MIME-Version; b=hPTS4raT/Z4v00jbD1P0xw7QgDWEYTO9ENRAL3o2fuNRUHQtCmKD/0kxyGw+SsFe+4PuUkL99BV+ftffbe2lilHfiv4byVCcC2/mjoJdzZ73uJnTOaAPSZdurQa588kb94/fw6tfQ2P0smY4/tnAgmISD8aIwrSQtRxzkWkaETw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GISTYUFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7FEC2BBFC;
+	Thu, 13 Jun 2024 11:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278864;
-	bh=ky2X+m6DKXiBG9ioqkQ0RtrXf37WyBKk18ocIa9BkP8=;
+	s=korg; t=1718279817;
+	bh=1SJR4crF0L5xjC3dyr/6/nXFRSugH/kCkVexHIMoD1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnmu6pmybVPWOHoDZHZvQyJG7eU2cP81/OvvlcW79VOJSf3rciD5csC6pcO94GjTs
-	 HZ+yErCSdVKanZoEWhEKxIzyDAWycP/vemRY56INZTDYbtTDkJ3YcPM+DhgC6ozZo/
-	 eX9+esJ2cyjByp2LeZGn4mAVtNTDctyO9w3IZPDw=
+	b=GISTYUFZFBZ3hhjtXCYgU27DsOGc1KNst4iKjw5v8pWxjl/3RMERbB+/RutV5oJ/c
+	 rIvFqTQP9BOFPrs+7Sy/mAt+hEUzwj+c+3AoST0bfTi1cppX9x/WX6duAO1qb0nNlZ
+	 5Z65g0wiKsKwoRneaCHf/QRSAimGw+opS35NgSuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
+	Lu Wei <luwei32@huawei.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 096/213] greybus: arche-ctrl: move device table to its right location
+Subject: [PATCH 5.4 046/202] tcp: fix a signed-integer-overflow bug in tcp_add_backlog()
 Date: Thu, 13 Jun 2024 13:32:24 +0200
-Message-ID: <20240613113231.712632320@linuxfoundation.org>
+Message-ID: <20240613113229.549428726@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Lu Wei <luwei32@huawei.com>
 
-[ Upstream commit 6a0b8c0da8d8d418cde6894a104cf74e6098ddfa ]
+[ Upstream commit ec791d8149ff60c40ad2074af3b92a39c916a03f ]
 
-The arche-ctrl has two platform drivers and three of_device_id tables,
-but one table is only used for the the module loader, while the other
-two seem to be associated with their drivers.
+The type of sk_rcvbuf and sk_sndbuf in struct sock is int, and
+in tcp_add_backlog(), the variable limit is caculated by adding
+sk_rcvbuf, sk_sndbuf and 64 * 1024, it may exceed the max value
+of int and overflow. This patch reduces the limit budget by
+halving the sndbuf to solve this issue since ACK packets are much
+smaller than the payload.
 
-This leads to a W=1 warning when the driver is built-in:
-
-drivers/staging/greybus/arche-platform.c:623:34: error: 'arche_combined_id' defined but not used [-Werror=unused-const-variable=]
-  623 | static const struct of_device_id arche_combined_id[] = {
-
-Drop the extra table and register both tables that are actually
-used as the ones for the module loader instead.
-
-Fixes: 7b62b61c752a ("greybus: arche-ctrl: Don't expose driver internals to arche-platform driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240403080702.3509288-18-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c9c3321257e1 ("tcp: add tcp_add_backlog()")
+Signed-off-by: Lu Wei <luwei32@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: ec00ed472bdb ("tcp: avoid premature drops in tcp_add_backlog()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/greybus/arche-apb-ctrl.c | 1 +
- drivers/staging/greybus/arche-platform.c | 9 +--------
- 2 files changed, 2 insertions(+), 8 deletions(-)
+ net/ipv4/tcp_ipv4.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/staging/greybus/arche-apb-ctrl.c b/drivers/staging/greybus/arche-apb-ctrl.c
-index cc8d6fc831b41..94740142c4e25 100644
---- a/drivers/staging/greybus/arche-apb-ctrl.c
-+++ b/drivers/staging/greybus/arche-apb-ctrl.c
-@@ -499,6 +499,7 @@ static const struct of_device_id arche_apb_ctrl_of_match[] = {
- 	{ .compatible = "usbffff,2", },
- 	{ },
- };
-+MODULE_DEVICE_TABLE(of, arche_apb_ctrl_of_match);
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 1567072071633..d29d4b8192643 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -1781,11 +1781,13 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
+ 	__skb_push(skb, hdrlen);
  
- static struct platform_driver arche_apb_ctrl_device_driver = {
- 	.probe		= arche_apb_ctrl_probe,
-diff --git a/drivers/staging/greybus/arche-platform.c b/drivers/staging/greybus/arche-platform.c
-index 4c36e88766e75..0320121dd9d25 100644
---- a/drivers/staging/greybus/arche-platform.c
-+++ b/drivers/staging/greybus/arche-platform.c
-@@ -664,14 +664,7 @@ static const struct of_device_id arche_platform_of_match[] = {
- 	{ .compatible = "google,arche-platform", },
- 	{ },
- };
--
--static const struct of_device_id arche_combined_id[] = {
--	/* Use PID/VID of SVC device */
--	{ .compatible = "google,arche-platform", },
--	{ .compatible = "usbffff,2", },
--	{ },
--};
--MODULE_DEVICE_TABLE(of, arche_combined_id);
-+MODULE_DEVICE_TABLE(of, arche_platform_of_match);
+ no_coalesce:
++	limit = (u32)READ_ONCE(sk->sk_rcvbuf) + (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
++
+ 	/* Only socket owner can try to collapse/prune rx queues
+ 	 * to reduce memory overhead, so add a little headroom here.
+ 	 * Few sockets backlog are possibly concurrently non empty.
+ 	 */
+-	limit = READ_ONCE(sk->sk_rcvbuf) + READ_ONCE(sk->sk_sndbuf) + 64*1024;
++	limit += 64 * 1024;
  
- static struct platform_driver arche_platform_device_driver = {
- 	.probe		= arche_platform_probe,
+ 	if (unlikely(sk_add_backlog(sk, skb, limit))) {
+ 		bh_unlock_sock(sk);
 -- 
 2.43.0
 
