@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-50583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE148906B58
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:39:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9164C906D74
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA4F91C21B3A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:39:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 991E71C23203
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D03B1428FC;
-	Thu, 13 Jun 2024 11:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3AA14882A;
+	Thu, 13 Jun 2024 11:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxZngO+C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FyBqlpb+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B97FDDB1;
-	Thu, 13 Jun 2024 11:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58ADC148820;
+	Thu, 13 Jun 2024 11:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278790; cv=none; b=ZkdvHV2Aq9Dwj+Qd4BzRQxU6HNhLwwqxshBZxYIDCafKHkTWcxfyvAj77dN1Vz7ftek/njQbFUBWLp8CrDguw3C/V7+LC97YVYamGH+1WUfjJB8wub7f2C3WTZ1jUvPCksCrHmDTnmPOaMZ+wKsF60FGsTgDJOVL9XhsJ12B24U=
+	t=1718279791; cv=none; b=hOsAb7mtK0VPYHNuPfRXmQlx1To8K94zzCZpPX962VKtqPYD1ypWBDGWiWo8m76dpYtl4pc0ZYDQ2qAS+s4ibner68rgEuH2zXlqcUFESK/CTNRI+Tvbw6onIBQnOJh0pgFFggvSmwhSw/wPQrDj96W4kTKN7Vup0dDMDy+wRmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278790; c=relaxed/simple;
-	bh=X91+RqB18JsgYr4msawyz5PEWnXA5Hi/Ad1WxTkat3c=;
+	s=arc-20240116; t=1718279791; c=relaxed/simple;
+	bh=HtOIAMBA/LKwohZQ5FQtbfYoWZhj2w8dfe9O/lxhsVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s9RVDp3n4sJQ+7fPDh3PukCLplis4DUOmD1fTs20qSFUQY8mu7z1kg/NqTKKyzKx1q3jjpPb07MRbrc8FQnZIW0LjV013feR9vDE3WCqfoCaY1SaS29gPRpxANhRdrItzZsaJ/5hMr58IVcNskZwo4+DgWU1godGXun5RQem6nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxZngO+C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959CCC2BBFC;
-	Thu, 13 Jun 2024 11:39:49 +0000 (UTC)
+	 MIME-Version; b=GfrWEzwPF4+NOIgjVYmnwRoLiN7Ovu9fhoWeR/8UeGJfEkiibnkckr2VmaaLCir/BzpY0LTDwrswgb3bsw+n5TlAhrxLk5k4xpHpPP2My5oujCds+NnJXQdGJb6BO0qGmOoOmXugL/aAhSSm5jLRjieiJRaspnzP1HmySs7IwmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FyBqlpb+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C1AC2BBFC;
+	Thu, 13 Jun 2024 11:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278790;
-	bh=X91+RqB18JsgYr4msawyz5PEWnXA5Hi/Ad1WxTkat3c=;
+	s=korg; t=1718279791;
+	bh=HtOIAMBA/LKwohZQ5FQtbfYoWZhj2w8dfe9O/lxhsVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxZngO+CluSG+I69ePFMgLTEvqLYyMTyIOSY31wpVy8M4BbECS7uCBaXEwMlb9fTL
-	 Ek8C6C7idhMYjoBkcEopG9eFPMupGTa6+WzhYjE9DF+XI+3OR1HXAG2wirRaSb2LZ+
-	 NbAd0RsZTsRRBy/KidkOIzUpaodLN9UrlRgZqEhg=
+	b=FyBqlpb+aZD6g/pgoYdCPUqdScVIm8nEQp2V+y7JsqIwMbi/+YLVoxVVDX1LaXE2y
+	 LmgIpJ3Cat9EzDKWQ+JhykLRk2oh8qMk8A1PptPybXNrC1iJVQ1/seaJlTwJd8QMPu
+	 AfWOvD8WaB07xq/j7A0RqGnKTHjbyvCp/7OP9AGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Arnd Bergmann <arnd@arndb.de>,
-	Helge Deller <deller@gmx.de>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 070/213] fbdev: sisfb: hide unused variables
+Subject: [PATCH 5.4 020/202] nilfs2: fix out-of-range warning
 Date: Thu, 13 Jun 2024 13:31:58 +0200
-Message-ID: <20240613113230.707604912@linuxfoundation.org>
+Message-ID: <20240613113228.546732792@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 688cf598665851b9e8cb5083ff1d208ce43d10ff ]
+[ Upstream commit c473bcdd80d4ab2ae79a7a509a6712818366e32a ]
 
-Building with W=1 shows that a couple of variables in this driver are only
-used in certain configurations:
+clang-14 points out that v_size is always smaller than a 64KB
+page size if that is configured by the CPU architecture:
 
-drivers/video/fbdev/sis/init301.c:239:28: error: 'SiS_Part2CLVX_6' defined but not used [-Werror=unused-const-variable=]
-  239 | static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:230:28: error: 'SiS_Part2CLVX_5' defined but not used [-Werror=unused-const-variable=]
-  230 | static const unsigned char SiS_Part2CLVX_5[] = {   /* 750p */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:211:28: error: 'SiS_Part2CLVX_4' defined but not used [-Werror=unused-const-variable=]
-  211 | static const unsigned char SiS_Part2CLVX_4[] = {   /* PAL */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:192:28: error: 'SiS_Part2CLVX_3' defined but not used [-Werror=unused-const-variable=]
-  192 | static const unsigned char SiS_Part2CLVX_3[] = {  /* NTSC, 525i, 525p */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:184:28: error: 'SiS_Part2CLVX_2' defined but not used [-Werror=unused-const-variable=]
-  184 | static const unsigned char SiS_Part2CLVX_2[] = {
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:176:28: error: 'SiS_Part2CLVX_1' defined but not used [-Werror=unused-const-variable=]
-  176 | static const unsigned char SiS_Part2CLVX_1[] = {
-      |                            ^~~~~~~~~~~~~~~
+fs/nilfs2/ioctl.c:63:19: error: result of comparison of constant 65536 with expression of type '__u16' (aka 'unsigned short') is always false [-Werror,-Wtautological-constant-out-of-range-compare]
+        if (argv->v_size > PAGE_SIZE)
+            ~~~~~~~~~~~~ ^ ~~~~~~~~~
 
-This started showing up after the definitions were moved into the
-source file from the header, which was not flagged by the compiler.
-Move the definition into the appropriate #ifdef block that already
-exists next to them.
+This is ok, so just shut up that warning with a cast.
 
-Fixes: 5908986ef348 ("video: fbdev: sis: avoid mismatched prototypes")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Link: https://lore.kernel.org/r/20240328143051.1069575-7-arnd@kernel.org
+Fixes: 3358b4aaa84f ("nilfs2: fix problems of memory allocation in ioctl")
+Acked-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sis/init301.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/nilfs2/ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/sis/init301.c b/drivers/video/fbdev/sis/init301.c
-index a8fb41f1a2580..09329072004f4 100644
---- a/drivers/video/fbdev/sis/init301.c
-+++ b/drivers/video/fbdev/sis/init301.c
-@@ -172,7 +172,7 @@ static const unsigned char SiS_HiTVGroup3_2[] = {
- };
+diff --git a/fs/nilfs2/ioctl.c b/fs/nilfs2/ioctl.c
+index 1a266a10d4cf3..424436cb501ea 100644
+--- a/fs/nilfs2/ioctl.c
++++ b/fs/nilfs2/ioctl.c
+@@ -59,7 +59,7 @@ static int nilfs_ioctl_wrap_copy(struct the_nilfs *nilfs,
+ 	if (argv->v_nmembs == 0)
+ 		return 0;
  
- /* 301C / 302ELV extended Part2 TV registers (4 tap scaler) */
--
-+#ifdef CONFIG_FB_SIS_315
- static const unsigned char SiS_Part2CLVX_1[] = {
-     0x00,0x00,
-     0x00,0x20,0x00,0x00,0x7F,0x20,0x02,0x7F,0x7D,0x20,0x04,0x7F,0x7D,0x1F,0x06,0x7E,
-@@ -245,7 +245,6 @@ static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
-     0xFF,0xFF,
- };
+-	if (argv->v_size > PAGE_SIZE)
++	if ((size_t)argv->v_size > PAGE_SIZE)
+ 		return -EINVAL;
  
--#ifdef CONFIG_FB_SIS_315
- /* 661 et al LCD data structure (2.03.00) */
- static const unsigned char SiS_LCDStruct661[] = {
-     /* 1024x768 */
+ 	/*
 -- 
 2.43.0
 
