@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B88906FD6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C829906E9F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB5BE1C21DB0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00CFDB21BF2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1519014658F;
-	Thu, 13 Jun 2024 12:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA131145FF8;
+	Thu, 13 Jun 2024 12:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9mli5VH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wh++jGw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C736A145FEE;
-	Thu, 13 Jun 2024 12:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666D01448F2;
+	Thu, 13 Jun 2024 12:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281289; cv=none; b=P72t/gldbaDuHtdFw2Gx1NdnEzxtmNu7DPvp5LD5a4Kdb3sIE6aj4trm4opmsQiWpm2S0mUyj1YNQnjFTdRHITVe6xxV4CXd1MDgrb6OdUV1bwHA40QM7ycIV98MnHPDqQzVf9jVGr/UekeK50w9ehj4Cnisli5vxBP1qahzjOg=
+	t=1718280500; cv=none; b=BH6BBzvX9QPk1ZAqRiiQehSxT18IKnp6n/vyH52TFYKvOpAtfK05nCia3LxGAqJjHMrrXKMxfvrSmm5nJY50Mbc+tIMtpDQP7dEjV7m5qzf0CCBOAVavAJO2t9n/apqnebYSQUGoxNprbF5knpKP6gmy8BzC/zYFSUK+hRWgGPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281289; c=relaxed/simple;
-	bh=hid7PkOsxemXRjRs15ifH97B86hGp7rxuKdJNh9uzGA=;
+	s=arc-20240116; t=1718280500; c=relaxed/simple;
+	bh=2EBqkgkJQNZ19KocOdWX47LjYHK+5CbpR8g6gwsAOk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TWaTfN4GHq4f5fTm46kJMUSP5eXTzzDS1qupHMNPBWPUuFqBMcZ5u6Fv4T7Dgd0ucROLv/NdwCBzF3zHBW6Eon84v0GvW5Fd1pEKCMqB8FhOZKHdcYt/Fm+snUYD9duKuYnZq5jsz2v8bpaFRgNZkOrvjv0MmNcuUaVa1zSQrs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9mli5VH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2BBC32786;
-	Thu, 13 Jun 2024 12:21:29 +0000 (UTC)
+	 MIME-Version; b=VZTITzxcSMjfK8q2N30Th2M7P92DmU/pHW6pnJn2aWJ+3FhwyVUihjm0oJIOwsso8Gw2kYO3EWp51qcG2BCn54YCDx+tWMBy34DHClEfVPld5Acb/LgNhUd9LBi+jeUrvtwK5HmvqxEuEJhq3Jj+CgK0DulXfXr9nPhBtiwnO3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wh++jGw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2ECBC2BBFC;
+	Thu, 13 Jun 2024 12:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281289;
-	bh=hid7PkOsxemXRjRs15ifH97B86hGp7rxuKdJNh9uzGA=;
+	s=korg; t=1718280500;
+	bh=2EBqkgkJQNZ19KocOdWX47LjYHK+5CbpR8g6gwsAOk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t9mli5VHXyewOgPEWwgoLpq35vhguG8cgevZFb7dEihF9z4gNj3Nkh30YVJUmOy3Z
-	 YL//Qi0zEDBZLbRNat9xcCHELj98NmfyW5342a+4IZi5gpToQYiIqSQZM0G1FYYsAM
-	 P/VmsAXJtnF35oz+HxpQNBs5Yt51Koa50Qob9SvA=
+	b=Wh++jGw6YN14ujPSQMelbsua1dJVxLA7cO6273XpYkl7HzZTSeMQmBRZ47Y+owueY
+	 SRQujgcJwGQptatfJJc9gtzhown54iP7uofXiRK/1kDyOCsq5SfuXXYbhT7QrKKtzI
+	 VksAYFK2RIfK+idXyCtFHTc9dX30R1oT1xwjw0qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Richard Weinberger <richard@nod.at>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 205/317] um: Add winch to winch_handlers before registering winch IRQ
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 6.6 043/137] media: v4l2-core: hold videodev_lock until dev reg, finishes
 Date: Thu, 13 Jun 2024 13:33:43 +0200
-Message-ID: <20240613113255.485125849@linuxfoundation.org>
+Message-ID: <20240613113224.960321193@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit a0fbbd36c156b9f7b2276871d499c9943dfe5101 ]
+commit 1ed4477f2ea4743e7c5e1f9f3722152d14e6eeb1 upstream.
 
-Registering a winch IRQ is racy, an interrupt may occur before the winch is
-added to the winch_handlers list.
+After the new V4L2 device node was registered, some additional
+initialization was done before the device node was marked as
+'registered'. During the time between creating the device node
+and marking it as 'registered' it was possible to open the
+device node, which would return -ENODEV since the 'registered'
+flag was not yet set.
 
-If that happens, register_winch_irq() adds to that list a winch that is
-scheduled to be (or has already been) freed, causing a panic later in
-winch_cleanup().
+Hold the videodev_lock mutex from just before the device node
+is registered until the 'registered' flag is set. Since v4l2_open
+will take the same lock, it will wait until this registration
+process is finished. This resolves this race condition.
 
-Avoid the race by adding the winch to the winch_handlers list before
-registering the IRQ, and rolling back if um_request_irq() fails.
-
-Fixes: 42a359e31a0e ("uml: SIGIO support cleanup")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: <stable@vger.kernel.org>      # for vi4.18 and up
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/drivers/line.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/media/v4l2-core/v4l2-dev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/um/drivers/line.c b/arch/um/drivers/line.c
-index 14ad9f495fe69..37e96ba0f5fb1 100644
---- a/arch/um/drivers/line.c
-+++ b/arch/um/drivers/line.c
-@@ -668,24 +668,26 @@ void register_winch_irq(int fd, int tty_fd, int pid, struct tty_port *port,
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -1034,8 +1034,10 @@ int __video_register_device(struct video
+ 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
+ 	vdev->dev.parent = vdev->dev_parent;
+ 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
++	mutex_lock(&videodev_lock);
+ 	ret = device_register(&vdev->dev);
+ 	if (ret < 0) {
++		mutex_unlock(&videodev_lock);
+ 		pr_err("%s: device_register failed\n", __func__);
  		goto cleanup;
  	}
+@@ -1055,6 +1057,7 @@ int __video_register_device(struct video
  
--	*winch = ((struct winch) { .list  	= LIST_HEAD_INIT(winch->list),
--				   .fd  	= fd,
-+	*winch = ((struct winch) { .fd  	= fd,
- 				   .tty_fd 	= tty_fd,
- 				   .pid  	= pid,
- 				   .port 	= port,
- 				   .stack	= stack });
+ 	/* Part 6: Activate this minor. The char device can now be used. */
+ 	set_bit(V4L2_FL_REGISTERED, &vdev->flags);
++	mutex_unlock(&videodev_lock);
  
-+	spin_lock(&winch_handler_lock);
-+	list_add(&winch->list, &winch_handlers);
-+	spin_unlock(&winch_handler_lock);
-+
- 	if (um_request_irq(WINCH_IRQ, fd, IRQ_READ, winch_interrupt,
- 			   IRQF_SHARED, "winch", winch) < 0) {
- 		printk(KERN_ERR "register_winch_irq - failed to register "
- 		       "IRQ\n");
-+		spin_lock(&winch_handler_lock);
-+		list_del(&winch->list);
-+		spin_unlock(&winch_handler_lock);
- 		goto out_free;
- 	}
+ 	return 0;
  
--	spin_lock(&winch_handler_lock);
--	list_add(&winch->list, &winch_handlers);
--	spin_unlock(&winch_handler_lock);
--
- 	return;
- 
-  out_free:
--- 
-2.43.0
-
 
 
 
