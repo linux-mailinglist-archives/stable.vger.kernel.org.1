@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-51561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13283907078
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE4C9070B0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:29:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6E0A284DCB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:28:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C570DB2078D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D58A13C69C;
-	Thu, 13 Jun 2024 12:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C392137914;
+	Thu, 13 Jun 2024 12:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DM3dPNgW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FM3XX20n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA5A13C660;
-	Thu, 13 Jun 2024 12:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3826EB56;
+	Thu, 13 Jun 2024 12:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281657; cv=none; b=alRr63Z6oK0nDpWqtachcuAWgbFs7QN5ADfL5GKhkYW3TBE6PUsF/IYN0HPlz+d3L48kuiGURQRLuaguBeJbtxcErBdE0AL/kddaoIH3sv8eRxAC+yC4MSsjxf3tJABudJ4SHfUGNxhS0XSHACmfgCw/wiZOpwZsne+VIhWXWl0=
+	t=1718281784; cv=none; b=nZWscdHAF7XJQIORb2C9kDIVPEFSytzOmBQE9QVjlhjHCo8q7jbpQXluzSx3Rhdb0aHBN8xPMja4ZSW2SaDJWCP+blTGCosw4PFyzfWhWNCiwmEf4Ht2AYMta64Jsy732tnzp9NjCW6gW2so3+T2F6KrOZNc2AxpTYm0nq6Xvrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281657; c=relaxed/simple;
-	bh=H+Zsr3Iu9s3X3aP38Hs4lgEb0IsTQXC31dVAB11dAks=;
+	s=arc-20240116; t=1718281784; c=relaxed/simple;
+	bh=qev2aEd5sfKvuCoTa2I+xdkSfVyHsF0H8nGJUpw/QUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eOCLoycZsdKgFywdcnZ6gIGPC0v9vTaSUHP6S4LK3icWSxiAePzZgZwkVoh/g5WNZQIgE+hP2M4dELXFcvcuhpN6OB6SeMuGqsTce2GRehL/eyPu5YqvSoeJf7W44A7uWbDsxqyG14GdAiJBgyEvvD2F9tZHm8lARGQ0KTb+1HM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DM3dPNgW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C09BC2BBFC;
-	Thu, 13 Jun 2024 12:27:36 +0000 (UTC)
+	 MIME-Version; b=VQxStCdng4dYpQ/yZKF/SQ5NyNt8QcsMq+LdyXpcfZ6AqLhfbAovqWPzjp959wbUcTQVsL/eB3BzF4Enj+U5CN0JgaWWYAMDUhqjeEoA31r4QvfO13OKBoMt+xp/bhiQk0WvCi1to3kiyh2YNY5fjjPACmWaJfF+xdZtTppbNgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FM3XX20n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B85EC32786;
+	Thu, 13 Jun 2024 12:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281656;
-	bh=H+Zsr3Iu9s3X3aP38Hs4lgEb0IsTQXC31dVAB11dAks=;
+	s=korg; t=1718281783;
+	bh=qev2aEd5sfKvuCoTa2I+xdkSfVyHsF0H8nGJUpw/QUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DM3dPNgW9ZaBc7F8I1nUX1OD1xkJCgcY+RTJHQCOjd++dqs7q1BqloZADPZ8QEodZ
-	 LNCEdx2ObqbneN58uq09RS5x+JDVmZjZunghKhODMxlxyqJrTwVH1hulmvOXsjsZHS
-	 f0MfW1RU5/zGTee+HjhHh76BuM6pcZ18Nju/84i4=
+	b=FM3XX20nL4wgqs5+UCsdmXdKZWFDNPpNByIHCmpdSDSMXchmwoSryksEsN59E9Z57
+	 4mNJ5bX4xxTu03eHFiKthJF62VuOR6EDM4Clyx+xpfVN0FiKCzSa2L05r+GpukbLj9
+	 o3rPN8VuctAmZ0cHV0fpmNMevjnJksNMQc/eqZpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+e3973c409251e136fdd0@syzkaller.appspotmail.com,
-	"Bai, Shuangpeng" <sjb7183@psu.edu>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 012/402] nilfs2: fix potential hang in nilfs_detach_log_writer()
-Date: Thu, 13 Jun 2024 13:29:29 +0200
-Message-ID: <20240613113302.616201449@linuxfoundation.org>
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 5.15 013/402] fs/ntfs3: Remove max link count info display during driver init
+Date: Thu, 13 Jun 2024 13:29:30 +0200
+Message-ID: <20240613113302.655167464@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
 References: <20240613113302.116811394@linuxfoundation.org>
@@ -67,111 +64,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit eb85dace897c5986bc2f36b3c783c6abb8a4292e upstream.
+commit a8948b5450e7c65a3a34ebf4ccfcebc19335d4fb upstream.
 
-Syzbot has reported a potential hang in nilfs_detach_log_writer() called
-during nilfs2 unmount.
+Removes the output of this purely informational message from the
+kernel buffer:
 
-Analysis revealed that this is because nilfs_segctor_sync(), which
-synchronizes with the log writer thread, can be called after
-nilfs_segctor_destroy() terminates that thread, as shown in the call trace
-below:
+	"ntfs3: Max link count 4000"
 
-nilfs_detach_log_writer
-  nilfs_segctor_destroy
-    nilfs_segctor_kill_thread  --> Shut down log writer thread
-    flush_work
-      nilfs_iput_work_func
-        nilfs_dispose_list
-          iput
-            nilfs_evict_inode
-              nilfs_transaction_commit
-                nilfs_construct_segment (if inode needs sync)
-                  nilfs_segctor_sync  --> Attempt to synchronize with
-                                          log writer thread
-                           *** DEADLOCK ***
-
-Fix this issue by changing nilfs_segctor_sync() so that the log writer
-thread returns normally without synchronizing after it terminates, and by
-forcing tasks that are already waiting to complete once after the thread
-terminates.
-
-The skipped inode metadata flushout will then be processed together in the
-subsequent cleanup work in nilfs_segctor_destroy().
-
-Link: https://lkml.kernel.org/r/20240520132621.4054-4-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+e3973c409251e136fdd0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e3973c409251e136fdd0
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Cc: "Bai, Shuangpeng" <sjb7183@psu.edu>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/segment.c |   21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ fs/ntfs3/super.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -2229,6 +2229,14 @@ static int nilfs_segctor_sync(struct nil
- 	for (;;) {
- 		set_current_state(TASK_INTERRUPTIBLE);
- 
-+		/*
-+		 * Synchronize only while the log writer thread is alive.
-+		 * Leave flushing out after the log writer thread exits to
-+		 * the cleanup work in nilfs_segctor_destroy().
-+		 */
-+		if (!sci->sc_task)
-+			break;
-+
- 		if (atomic_read(&wait_req.done)) {
- 			err = wait_req.err;
- 			break;
-@@ -2244,7 +2252,7 @@ static int nilfs_segctor_sync(struct nil
- 	return err;
- }
- 
--static void nilfs_segctor_wakeup(struct nilfs_sc_info *sci, int err)
-+static void nilfs_segctor_wakeup(struct nilfs_sc_info *sci, int err, bool force)
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -1448,8 +1448,6 @@ static int __init init_ntfs_fs(void)
  {
- 	struct nilfs_segctor_wait_request *wrq, *n;
- 	unsigned long flags;
-@@ -2252,7 +2260,7 @@ static void nilfs_segctor_wakeup(struct
- 	spin_lock_irqsave(&sci->sc_wait_request.lock, flags);
- 	list_for_each_entry_safe(wrq, n, &sci->sc_wait_request.head, wq.entry) {
- 		if (!atomic_read(&wrq->done) &&
--		    nilfs_cnt32_ge(sci->sc_seq_done, wrq->seq)) {
-+		    (force || nilfs_cnt32_ge(sci->sc_seq_done, wrq->seq))) {
- 			wrq->err = err;
- 			atomic_set(&wrq->done, 1);
- 		}
-@@ -2392,7 +2400,7 @@ static void nilfs_segctor_notify(struct
- 	if (mode == SC_LSEG_SR) {
- 		sci->sc_state &= ~NILFS_SEGCTOR_COMMIT;
- 		sci->sc_seq_done = sci->sc_seq_accepted;
--		nilfs_segctor_wakeup(sci, err);
-+		nilfs_segctor_wakeup(sci, err, false);
- 		sci->sc_flush_request = 0;
- 	} else {
- 		if (mode == SC_FLUSH_FILE)
-@@ -2774,6 +2782,13 @@ static void nilfs_segctor_destroy(struct
- 		|| sci->sc_seq_request != sci->sc_seq_done);
- 	spin_unlock(&sci->sc_state_lock);
+ 	int err;
  
-+	/*
-+	 * Forcibly wake up tasks waiting in nilfs_segctor_sync(), which can
-+	 * be called from delayed iput() via nilfs_evict_inode() and can race
-+	 * with the above log writer thread termination.
-+	 */
-+	nilfs_segctor_wakeup(sci, 0, true);
-+
- 	if (flush_work(&sci->sc_iput_work))
- 		flag = true;
- 
+-	pr_info("ntfs3: Max link count %u\n", NTFS_LINK_MAX);
+-
+ 	if (IS_ENABLED(CONFIG_NTFS3_FS_POSIX_ACL))
+ 		pr_info("ntfs3: Enabled Linux POSIX ACLs support\n");
+ 	if (IS_ENABLED(CONFIG_NTFS3_64BIT_CLUSTER))
 
 
 
