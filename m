@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-50521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D5D906B14
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:36:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2406906B18
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:37:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB7761F24340
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:36:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B3DEB2244F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8E41428FC;
-	Thu, 13 Jun 2024 11:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4CD1428FC;
+	Thu, 13 Jun 2024 11:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNDWEL3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqQo6juH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB691422B5;
-	Thu, 13 Jun 2024 11:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB8FDDB1;
+	Thu, 13 Jun 2024 11:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278607; cv=none; b=GeodBaH6r223T5DVE6cY6AKnFm9mkZtJstD1SM8UXi4KuDPfgRePXjpr2vziwjxHLM6a0YCwHBfNTsQ1Kv+118aeblGhVGs79zpNTuBll8G320FDR6+fkyOe69U7m/F91el0+JsPJxrCaPYLxAWlnXAf+ML+mCCmuNBIqrKtKdc=
+	t=1718278615; cv=none; b=ClCbiZMHPWUQHXztXOO0MOlaX/dCPH40NbTghmzGdKYnE2Iw2+Hlzkt4Fq2efcwdCHqLzl39sggXFb6x2jc5U4zk4kipMoMmTPNjDAjlKaPsQM5K1/ayJOIAZsXXRvsJ6jA97/m1DLu99ohBACrFZBMVHUmIrI0v/hhjZGBpoTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278607; c=relaxed/simple;
-	bh=UVWuq60GG6IGWLqEGuZpUU7KKqcmvGtERTv8AmvXPf4=;
+	s=arc-20240116; t=1718278615; c=relaxed/simple;
+	bh=I4SQRDGVqZCVAf1cwVEVTPZhJ4g2NpVHEBCiccAQQf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PmpuDDjtYfu/ZAOHQ9Jv2k5UmklZTI9/Ue7CQcQQmb+HGpnuqF1ZiP2jmaVOw9LKz9GhRy1z1DQtg/QICefCliF9AKLllYSxY2DH9LTs404p2yLmCbE2Jb13ltS79hL3eZk1c9QI8WIJ2mpLmrOLMDTc9GzG03KEy7EKlofovPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNDWEL3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13BF4C2BBFC;
-	Thu, 13 Jun 2024 11:36:45 +0000 (UTC)
+	 MIME-Version; b=O8jmsjK5DoKc/W4h6iEkzvhzoYvkLrVjkNX8CuGsFNg6AncMjSAejBL26DtDDz4TXOxy2KNlY2e8mpaBRzJxSMK1do2ZyI/1UVTd/YgUzz09K146lXqCJ867ozvzzuHW8ZIMMAPpZZZ/gf5f/2jXGlNv2PoOIgOazv5NEqPhgp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqQo6juH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2789C2BBFC;
+	Thu, 13 Jun 2024 11:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278606;
-	bh=UVWuq60GG6IGWLqEGuZpUU7KKqcmvGtERTv8AmvXPf4=;
+	s=korg; t=1718278615;
+	bh=I4SQRDGVqZCVAf1cwVEVTPZhJ4g2NpVHEBCiccAQQf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wNDWEL3rkbHZEWRTn+MbnXw+twvssCaj1f840pvm+pG84dk7yqsPwgowHmfa5zsV6
-	 vmRiaKy3lYsbOhjZRYIpDLgN1A18yr/7P3DOJfoXQ8Yk71A4djF+65dFhfD6SmTDv2
-	 kn9/mb9GXKDR5HpZZ8N7mKF4W2m2uyrWML6++8L0=
+	b=iqQo6juHuNF1+jAUHUUVjMrv7r+sI9jqx3aBy/rrHFUpUV6m8emvear4/nE5Dc0iY
+	 yyRxLm+a3puwUQQXOxPIgaeRlBnPimdCkExc2BjPDXBRzvhJbTZz/Kd3+sVenS4sEq
+	 rtep5MS1n654AxkRmtdRKyu+1lgJWhBONHU64cps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel J Blueman <daniel@quora.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Steffen Persvold <sp@numascale.com>,
-	James Cleverdon <james.cleverdon.external@eviden.com>,
-	Dimitri Sivanich <sivanich@hpe.com>,
-	Prarit Bhargava <prarit@redhat.com>
-Subject: [PATCH 4.19 001/213] x86/tsc: Trust initial offset in architectural TSC-adjust MSRs
-Date: Thu, 13 Jun 2024 13:30:49 +0200
-Message-ID: <20240613113228.028138089@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Samuel Thibault <samuel.thibault@ens-lyon.org>
+Subject: [PATCH 4.19 002/213] speakup: Fix sizeof() vs ARRAY_SIZE() bug
+Date: Thu, 13 Jun 2024 13:30:50 +0200
+Message-ID: <20240613113228.067029714@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
 References: <20240613113227.969123070@linuxfoundation.org>
@@ -69,47 +65,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel J Blueman <daniel@quora.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 455f9075f14484f358b3c1d6845b4a438de198a7 upstream.
+commit 008ab3c53bc4f0b2f20013c8f6c204a3203d0b8b upstream.
 
-When the BIOS configures the architectural TSC-adjust MSRs on secondary
-sockets to correct a constant inter-chassis offset, after Linux brings the
-cores online, the TSC sync check later resets the core-local MSR to 0,
-triggering HPET fallback and leading to performance loss.
+The "buf" pointer is an array of u16 values.  This code should be
+using ARRAY_SIZE() (which is 256) instead of sizeof() (which is 512),
+otherwise it can the still got out of bounds.
 
-Fix this by unconditionally using the initial adjust values read from the
-MSRs. Trusting the initial offsets in this architectural mechanism is a
-better approach than special-casing workarounds for specific platforms.
-
-Signed-off-by: Daniel J Blueman <daniel@quora.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Steffen Persvold <sp@numascale.com>
-Reviewed-by: James Cleverdon <james.cleverdon.external@eviden.com>
-Reviewed-by: Dimitri Sivanich <sivanich@hpe.com>
-Reviewed-by: Prarit Bhargava <prarit@redhat.com>
-Link: https://lore.kernel.org/r/20240419085146.175665-1-daniel@quora.org
+Fixes: c8d2f34ea96e ("speakup: Avoid crash on very long word")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
+Link: https://lore.kernel.org/r/d16f67d2-fd0a-4d45-adac-75ddd11001aa@moroto.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/tsc_sync.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/staging/speakup/main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/tsc_sync.c
-+++ b/arch/x86/kernel/tsc_sync.c
-@@ -151,11 +151,9 @@ bool tsc_store_and_check_tsc_adjust(bool
- 	cur->warned = false;
- 
- 	/*
--	 * If a non-zero TSC value for socket 0 may be valid then the default
--	 * adjusted value cannot assumed to be zero either.
-+	 * The default adjust value cannot be assumed to be zero on any socket.
- 	 */
--	if (tsc_async_resets)
--		cur->adjusted = bootval;
-+	cur->adjusted = bootval;
- 
- 	/*
- 	 * Check whether this CPU is the first in a package to come up. In
+--- a/drivers/staging/speakup/main.c
++++ b/drivers/staging/speakup/main.c
+@@ -577,7 +577,7 @@ static u_long get_word(struct vc_data *v
+ 	}
+ 	attr_ch = get_char(vc, (u_short *)tmp_pos, &spk_attr);
+ 	buf[cnt++] = attr_ch;
+-	while (tmpx < vc->vc_cols - 1 && cnt < sizeof(buf) - 1) {
++	while (tmpx < vc->vc_cols - 1 && cnt < ARRAY_SIZE(buf) - 1) {
+ 		tmp_pos += 2;
+ 		tmpx++;
+ 		ch = get_char(vc, (u_short *)tmp_pos, &temp);
 
 
 
