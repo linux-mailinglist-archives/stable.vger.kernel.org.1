@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53B4906E99
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D129071E8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F9491F21D5D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37B47B26E49
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BCF5145B34;
-	Thu, 13 Jun 2024 12:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECB11448CD;
+	Thu, 13 Jun 2024 12:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCntVYuI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJfuwGSy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA301448F2;
-	Thu, 13 Jun 2024 12:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF021143868;
+	Thu, 13 Jun 2024 12:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280485; cv=none; b=j+cZJK9TTAMwCgur9/OFlgNt+lL+Dl7qYq6nRNimw7oELkryFf0bH32lc40T2JJ+x7dz5yi6TjDs4gtPNwd+QeFGLGyqXopBDiZZLWd110Knpb2eSsXNff1YBKCa3pNrk26TnFaT1HX3dz0zPF4RrscFXOY1/HtPmiS4m93PHos=
+	t=1718282478; cv=none; b=tJJx0KqiiokFtSFgs1K/5yu40iLaAb9bcGvB8kPdfWASteYZMCoNchRYU9NeMaNLlddkmICY2bVT2YdwUklSlyAKbDivGXHalyAWSns5kNzki961FzT69bUDRHpBR0lcbntJwn7n3D8mPYVBcaXxy5PnpbQ5x3E7MzssZ0+FR6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280485; c=relaxed/simple;
-	bh=cy8tHtazjNtqC7bgbsr8zwtWZmigX+c7pcTpf20XTeE=;
+	s=arc-20240116; t=1718282478; c=relaxed/simple;
+	bh=r7XqkLx2tKURDwmW+Mby8e5y1nP0Gjb1gRVwv1AwAak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R9XUe/UcZMiRzd03G4pOHMkudJVI4nnwM0MiRHDpKfke44tUbZAhGe7M9jzlLRYFvG4MW+w3+tAzGaKtj0kAyYhkUNop4ZRXi/3PgpEl8Hs3+3IDyoPG/s+yr/y4GXAdL+QjKhX0O6OmK7bBzLmeR4wQ/g6A0uu4fNdsAPZqyAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCntVYuI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45295C4AF1D;
-	Thu, 13 Jun 2024 12:08:05 +0000 (UTC)
+	 MIME-Version; b=XSq8GokqzRP5twjimTpzOjk1BsG611UBXwshUvVfNtSoCrieTn4DblwtQCi92nlgb5pAyQWvdkp8dsAy0AdXIcgIVEQxOG9lIK3LjT96mHUTeCMK6ZmFC1RsuRuXxmOUHHzBpNJJgPKTCQkGGEUFYA3MsH9DspoSWzZmYwCUj6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJfuwGSy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FFCC2BBFC;
+	Thu, 13 Jun 2024 12:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280485;
-	bh=cy8tHtazjNtqC7bgbsr8zwtWZmigX+c7pcTpf20XTeE=;
+	s=korg; t=1718282477;
+	bh=r7XqkLx2tKURDwmW+Mby8e5y1nP0Gjb1gRVwv1AwAak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DCntVYuIDCXJxRvnkJ+uMU4XOWDwDqvB+Ajud/ivONquQdovC61FhAc0eCSqzzWhe
-	 uTDoAvqFHZ4EipBLKdhi4zHZ3EFSU+GhaFUER6orWdHw72//AKB9ixMGOROSs232Bw
-	 k5RsEDa2nUJd9K5mVQvDikPf3oULV614+3aVHz/s=
+	b=cJfuwGSy/UUh1wy0sMFj9VcyKdL/sLFXKP3AbvcfTfQQrhlMCEJA/nCIfwlJVe00K
+	 jnKPoAgP8oyfh64ID6FiuhW9V+fefN5mwBfvSv1Zgiy0TsJefXKScICD8aUlD8RNgo
+	 fMSXEmESAN9ETFE9XTJjrgPhfs9La9x2NILGxaXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 068/137] clk: qcom: clk-alpha-pll: fix rate setting for Stromer PLLs
+	Billy Jheng Bing-Jhong <billy@starlabs.sg>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 291/402] af_unix: Update unix_sk(sk)->oob_skb under sk_receive_queue lock.
 Date: Thu, 13 Jun 2024 13:34:08 +0200
-Message-ID: <20240613113225.935946081@linuxfoundation.org>
+Message-ID: <20240613113313.501833434@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 3c5b3e17b8fd1f1add5a9477306c355fab126977 upstream.
+[ Upstream commit 9841991a446c87f90f66f4b9fee6fe934c1336a2 ]
 
-The clk_alpha_pll_stromer_set_rate() function writes inproper
-values into the ALPHA_VAL{,_U} registers which results in wrong
-clock rates when the alpha value is used.
+Billy Jheng Bing-Jhong reported a race between __unix_gc() and
+queue_oob().
 
-The broken behaviour can be seen on IPQ5018 for example, when
-dynamic scaling sets the CPU frequency to 800000 KHz. In this
-case the CPU cores are running only at 792031 KHz:
+__unix_gc() tries to garbage-collect close()d inflight sockets,
+and then if the socket has MSG_OOB in unix_sk(sk)->oob_skb, GC
+will drop the reference and set NULL to it locklessly.
 
-  # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
-  800000
-  # cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
-  792031
+However, the peer socket still can send MSG_OOB message and
+queue_oob() can update unix_sk(sk)->oob_skb concurrently, leading
+NULL pointer dereference. [0]
 
-This happens because the function ignores the fact that the alpha
-value calculated by the alpha_pll_round_rate() function is only
-32 bits wide which must be extended to 40 bits if it is used on
-a hardware which supports 40 bits wide values.
+To fix the issue, let's update unix_sk(sk)->oob_skb under the
+sk_receive_queue's lock and take it everywhere we touch oob_skb.
 
-Extend the clk_alpha_pll_stromer_set_rate() function to convert
-the alpha value to 40 bits before wrinting that into the registers
-in order to ensure that the hardware really uses the requested rate.
+Note that we defer kfree_skb() in manage_oob() to silence lockdep
+false-positive (See [1]).
 
-After the change the CPU frequency is correct:
+[0]:
+BUG: kernel NULL pointer dereference, address: 0000000000000008
+ PF: supervisor write access in kernel mode
+ PF: error_code(0x0002) - not-present page
+PGD 8000000009f5e067 P4D 8000000009f5e067 PUD 9f5d067 PMD 0
+Oops: 0002 [#1] PREEMPT SMP PTI
+CPU: 3 PID: 50 Comm: kworker/3:1 Not tainted 6.9.0-rc5-00191-gd091e579b864 #110
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+Workqueue: events delayed_fput
+RIP: 0010:skb_dequeue (./include/linux/skbuff.h:2386 ./include/linux/skbuff.h:2402 net/core/skbuff.c:3847)
+Code: 39 e3 74 3e 8b 43 10 48 89 ef 83 e8 01 89 43 10 49 8b 44 24 08 49 c7 44 24 08 00 00 00 00 49 8b 14 24 49 c7 04 24 00 00 00 00 <48> 89 42 08 48 89 10 e8 e7 c5 42 00 4c 89 e0 5b 5d 41 5c c3 cc cc
+RSP: 0018:ffffc900001bfd48 EFLAGS: 00000002
+RAX: 0000000000000000 RBX: ffff8880088f5ae8 RCX: 00000000361289f9
+RDX: 0000000000000000 RSI: 0000000000000206 RDI: ffff8880088f5b00
+RBP: ffff8880088f5b00 R08: 0000000000080000 R09: 0000000000000001
+R10: 0000000000000003 R11: 0000000000000001 R12: ffff8880056b6a00
+R13: ffff8880088f5280 R14: 0000000000000001 R15: ffff8880088f5a80
+FS:  0000000000000000(0000) GS:ffff88807dd80000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000008 CR3: 0000000006314000 CR4: 00000000007506f0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ unix_release_sock (net/unix/af_unix.c:654)
+ unix_release (net/unix/af_unix.c:1050)
+ __sock_release (net/socket.c:660)
+ sock_close (net/socket.c:1423)
+ __fput (fs/file_table.c:423)
+ delayed_fput (fs/file_table.c:444 (discriminator 3))
+ process_one_work (kernel/workqueue.c:3259)
+ worker_thread (kernel/workqueue.c:3329 kernel/workqueue.c:3416)
+ kthread (kernel/kthread.c:388)
+ ret_from_fork (arch/x86/kernel/process.c:153)
+ ret_from_fork_asm (arch/x86/entry/entry_64.S:257)
+ </TASK>
+Modules linked in:
+CR2: 0000000000000008
 
-  # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
-  800000
-  # cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
-  800000
-
-Cc: stable@vger.kernel.org
-Fixes: e47a4f55f240 ("clk: qcom: clk-alpha-pll: Add support for Stromer PLLs")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/r/20240328-alpha-pll-fix-stromer-set-rate-v3-1-1b79714c78bc@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/netdev/a00d3993-c461-43f2-be6d-07259c98509a@rbox.co/ [1]
+Fixes: 1279f9d9dec2 ("af_unix: Call kfree_skb() for dead unix_(sk)->oob_skb in GC.")
+Reported-by: Billy Jheng Bing-Jhong <billy@starlabs.sg>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240516134835.8332-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/unix/af_unix.c | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -2444,6 +2444,8 @@ static int clk_alpha_pll_stromer_set_rat
- 	rate = alpha_pll_round_rate(rate, prate, &l, &a, ALPHA_REG_BITWIDTH);
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 995a2a0b208a1..80f91b5ab4012 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2005,13 +2005,15 @@ static int queue_oob(struct socket *sock, struct msghdr *msg, struct sock *other
+ 	maybe_add_creds(skb, sock, other);
+ 	skb_get(skb);
  
- 	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
++	scm_stat_add(other, skb);
 +
-+	a <<= ALPHA_REG_BITWIDTH - ALPHA_BITWIDTH;
- 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
- 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
- 		     a >> ALPHA_BITWIDTH);
++	spin_lock(&other->sk_receive_queue.lock);
+ 	if (ousk->oob_skb)
+ 		consume_skb(ousk->oob_skb);
+-
+ 	WRITE_ONCE(ousk->oob_skb, skb);
++	__skb_queue_tail(&other->sk_receive_queue, skb);
++	spin_unlock(&other->sk_receive_queue.lock);
+ 
+-	scm_stat_add(other, skb);
+-	skb_queue_tail(&other->sk_receive_queue, skb);
+ 	sk_send_sigurg(other);
+ 	unix_state_unlock(other);
+ 	other->sk_data_ready(other);
+@@ -2516,8 +2518,10 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
+ 
+ 	mutex_lock(&u->iolock);
+ 	unix_state_lock(sk);
++	spin_lock(&sk->sk_receive_queue.lock);
+ 
+ 	if (sock_flag(sk, SOCK_URGINLINE) || !u->oob_skb) {
++		spin_unlock(&sk->sk_receive_queue.lock);
+ 		unix_state_unlock(sk);
+ 		mutex_unlock(&u->iolock);
+ 		return -EINVAL;
+@@ -2529,6 +2533,8 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
+ 		WRITE_ONCE(u->oob_skb, NULL);
+ 	else
+ 		skb_get(oob_skb);
++
++	spin_unlock(&sk->sk_receive_queue.lock);
+ 	unix_state_unlock(sk);
+ 
+ 	chunk = state->recv_actor(oob_skb, 0, chunk, state);
+@@ -2557,6 +2563,10 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+ 		consume_skb(skb);
+ 		skb = NULL;
+ 	} else {
++		struct sk_buff *unlinked_skb = NULL;
++
++		spin_lock(&sk->sk_receive_queue.lock);
++
+ 		if (skb == u->oob_skb) {
+ 			if (copied) {
+ 				skb = NULL;
+@@ -2568,13 +2578,19 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+ 			} else if (flags & MSG_PEEK) {
+ 				skb = NULL;
+ 			} else {
+-				skb_unlink(skb, &sk->sk_receive_queue);
++				__skb_unlink(skb, &sk->sk_receive_queue);
+ 				WRITE_ONCE(u->oob_skb, NULL);
+-				if (!WARN_ON_ONCE(skb_unref(skb)))
+-					kfree_skb(skb);
++				unlinked_skb = skb;
+ 				skb = skb_peek(&sk->sk_receive_queue);
+ 			}
+ 		}
++
++		spin_unlock(&sk->sk_receive_queue.lock);
++
++		if (unlinked_skb) {
++			WARN_ON_ONCE(skb_unref(unlinked_skb));
++			kfree_skb(unlinked_skb);
++		}
+ 	}
+ 	return skb;
+ }
+-- 
+2.43.0
+
 
 
 
