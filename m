@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B473906E5E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F893906FD3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 472301C22C32
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0A41B26359
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B94381459FD;
-	Thu, 13 Jun 2024 12:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BE1145B0F;
+	Thu, 13 Jun 2024 12:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZ+AUG1W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zbqn+Sz5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BCC145359;
-	Thu, 13 Jun 2024 12:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1953145B10;
+	Thu, 13 Jun 2024 12:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280329; cv=none; b=Y80UjDXMu3myU5HbvUtZFBafZU/YpTdXmKjHpiw077Fo4VdQYgoz0jLUzPLmk15/K4LjE1q+ZmLpSXQ1DXxsbvQgF/hC+9zMXmEkEOYQu3uwCzg8Htr5lhSlrBb5ptEQZAX4yYdob0CQNkdPPcqG9T3VxhdJJX/fr1I6SlvkEEY=
+	t=1718281217; cv=none; b=g6OXVqEcnXITpQlJSNKjGqzaMXo6cPjUMivK3Bq77MiSzBTyoyu5z3cjwtpOQ/KPN00gxKvQdwtakIBmPv62qIoYUzXgRjYqbOVN7Ac82FpVtsrMWFm1RT0sECd5oXDgizUBsjJnrSBU6rt6c3uyFOtPTaeAFawxGmH7AkKr2Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280329; c=relaxed/simple;
-	bh=LIRuiCLE60n0FY3jWAILyiFyjeswZfE7d+ArU7tAWpY=;
+	s=arc-20240116; t=1718281217; c=relaxed/simple;
+	bh=nqiXJ7BoNTSKZWE4Y5zeCftIbl7w7y+BDquE+eNxAas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FMa57+tL3tCSVH+KbPoMSnmynnAwQIyeh0IA7z+jU27PqWDD06/HVD1wFxt9ANs9uApwPNgrLK68Pe0vqbSLCD86lzRJgjyi6jMrVTdfy+UKT2/TOMYrcD9AfDWQipAy+CXEvAI83jAKePWoh6DHKYB9rA4wKuJ+n6jprTUqqKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZ+AUG1W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F22C2BBFC;
-	Thu, 13 Jun 2024 12:05:28 +0000 (UTC)
+	 MIME-Version; b=eVM7l3H9o5LhBZk6VfVMO102NVZUz1GevaE5B3UEBUqetbOef6Rlen3qvLxbuRI0k5QxxjD1ALL603eTTJAeFcmM4YIIS0vXntVZloRNVvJZfqrhlTBTQ4YyZx5+C2is0ESWKcBbShXwsnN9iTIIMpBRLmDtb4nvpOe6mvTHUSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zbqn+Sz5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC34C2BBFC;
+	Thu, 13 Jun 2024 12:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280329;
-	bh=LIRuiCLE60n0FY3jWAILyiFyjeswZfE7d+ArU7tAWpY=;
+	s=korg; t=1718281216;
+	bh=nqiXJ7BoNTSKZWE4Y5zeCftIbl7w7y+BDquE+eNxAas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lZ+AUG1W5PVuXd1C8BiCqV0nt7dDIyQC/3XGEnM6tufGiW3meuHQZD35aGcRPStLT
-	 4OHoACtSyeQtLYC61d+zQNioOuvrYzSbeMuREKIZLo1QSSitNobhmUt6Q7tU2tZi0p
-	 zQBFYAPGQr4rHRKEMlcxa71TiFxHu1NnQFr1rPiE=
+	b=Zbqn+Sz5Nl4FCOVUcznY5KTbh0wrJwrkQMGFQZdcouDhKCz117lrimgsRJTdcDTA6
+	 l+L4xvW3CRyfQO2G7pFhHugTIK2fTyY5XlyjgoOKIWn70xDkmO3AEexkNGxzgPuqh3
+	 vkH2Ea9EWKPVOYtpqHgivV3XCnq+sdjakVnodmHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	syzbot+3694e283cf5c40df6d14@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 017/137] f2fs: fix to do sanity check on i_xattr_nid in sanity_check_inode()
-Date: Thu, 13 Jun 2024 13:33:17 +0200
-Message-ID: <20240613113223.959264270@linuxfoundation.org>
+	Randy Dunlap <rdunlap@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 180/317] extcon: max8997: select IRQ_DOMAIN instead of depending on it
+Date: Thu, 13 Jun 2024 13:33:18 +0200
+Message-ID: <20240613113254.522224167@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 20faaf30e55522bba2b56d9c46689233205d7717 upstream.
+[ Upstream commit b1781d0a1458070d40134e4f3412ec9d70099bec ]
 
-syzbot reports a kernel bug as below:
+IRQ_DOMAIN is a hidden (not user visible) symbol. Users cannot set
+it directly thru "make *config", so drivers should select it instead
+of depending on it if they need it.
+Relying on it being set for a dependency is risky.
 
-F2FS-fs (loop0): Mounted with checkpoint version = 48b305e4
-==================================================================
-BUG: KASAN: slab-out-of-bounds in f2fs_test_bit fs/f2fs/f2fs.h:2933 [inline]
-BUG: KASAN: slab-out-of-bounds in current_nat_addr fs/f2fs/node.h:213 [inline]
-BUG: KASAN: slab-out-of-bounds in f2fs_get_node_info+0xece/0x1200 fs/f2fs/node.c:600
-Read of size 1 at addr ffff88807a58c76c by task syz-executor280/5076
+Consistently using "select" or "depends on" can also help reduce
+Kconfig circular dependency issues.
 
-CPU: 1 PID: 5076 Comm: syz-executor280 Not tainted 6.9.0-rc5-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- f2fs_test_bit fs/f2fs/f2fs.h:2933 [inline]
- current_nat_addr fs/f2fs/node.h:213 [inline]
- f2fs_get_node_info+0xece/0x1200 fs/f2fs/node.c:600
- f2fs_xattr_fiemap fs/f2fs/data.c:1848 [inline]
- f2fs_fiemap+0x55d/0x1ee0 fs/f2fs/data.c:1925
- ioctl_fiemap fs/ioctl.c:220 [inline]
- do_vfs_ioctl+0x1c07/0x2e50 fs/ioctl.c:838
- __do_sys_ioctl fs/ioctl.c:902 [inline]
- __se_sys_ioctl+0x81/0x170 fs/ioctl.c:890
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Therefore, change EXTCON_MAX8997's use of "depends on" for
+IRQ_DOMAIN to "select".
 
-The root cause is we missed to do sanity check on i_xattr_nid during
-f2fs_iget(), so that in fiemap() path, current_nat_addr() will access
-nat_bitmap w/ offset from invalid i_xattr_nid, result in triggering
-kasan bug report, fix it.
-
-Reported-and-tested-by: syzbot+3694e283cf5c40df6d14@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/00000000000094036c0616e72a1d@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/lkml/20240213060028.9744-1-rdunlap@infradead.org/
+Fixes: dca1a71e4108 ("extcon: Add support irq domain for MAX8997 muic")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/inode.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/extcon/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -361,6 +361,12 @@ static bool sanity_check_inode(struct in
- 		return false;
- 	}
+diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
+index aac507bff135c..09485803280ef 100644
+--- a/drivers/extcon/Kconfig
++++ b/drivers/extcon/Kconfig
+@@ -121,7 +121,8 @@ config EXTCON_MAX77843
  
-+	if (fi->i_xattr_nid && f2fs_check_nid_range(sbi, fi->i_xattr_nid)) {
-+		f2fs_warn(sbi, "%s: inode (ino=%lx) has corrupted i_xattr_nid: %u, run fsck to fix.",
-+			  __func__, inode->i_ino, fi->i_xattr_nid);
-+		return false;
-+	}
-+
- 	return true;
- }
- 
+ config EXTCON_MAX8997
+ 	tristate "Maxim MAX8997 EXTCON Support"
+-	depends on MFD_MAX8997 && IRQ_DOMAIN
++	depends on MFD_MAX8997
++	select IRQ_DOMAIN
+ 	help
+ 	  If you say yes here you get support for the MUIC device of
+ 	  Maxim MAX8997 PMIC. The MAX8997 MUIC is a USB port accessory
+-- 
+2.43.0
+
 
 
 
