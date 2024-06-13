@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-50617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F15E906B91
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7173906CA6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:52:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 744CB1C21CC5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65E9028133A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF3C1448C6;
-	Thu, 13 Jun 2024 11:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA463146002;
+	Thu, 13 Jun 2024 11:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6K8PB4j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTvwJ6AB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB37143887;
-	Thu, 13 Jun 2024 11:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67939145FFD;
+	Thu, 13 Jun 2024 11:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278891; cv=none; b=Ki+hk9SKduwQXxzCq+KBLb4MhYh69yf0HXEQl7c7yqhVimjAhehJ8U8ssohNCYGUzT/iDvhX9tqs3o1Kxdi6T+QhEcAf9qDfFeLnoW6Ha4W0CSHZvaltkrdjO/9Bf8ZfjWr8g8toZKYfwQKEVx1qAaZnJuR020W6fmciSdscEkc=
+	t=1718279384; cv=none; b=jOQzDhoCLMtXBxk26Wjm8H9XlcaMolVOYRpUffPmDqEydgi6kDAHleyCwzgyQeOJxY1cEp0QFJl3XO4IMUSUGZeLZztitqtGAM2+lLTIcmyJDcfnTLhkf5/+IeiFc/vHt2FNDG09PJLuJDqEhCbWIhoRbAnYcNsIRRt6Wpz45fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278891; c=relaxed/simple;
-	bh=xW7XNGJGMRXhINOAzTvcRARWvUE+8nH5/oHeWebnPP8=;
+	s=arc-20240116; t=1718279384; c=relaxed/simple;
+	bh=lh5GT9dKMoMqvURpncxA7wzhVA6LiX6IKOCbgcR1lRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5W3Or8n7gll+Ha/iw3R57yFcO5DcluqO30VNL0euvMrBtZuVqrt4m9n9o62HdjKCdIhaefeDiae4c5o+bU4usN3+i/2QVrdOcDAGPneCSykGGM8iFifppQJzxW3OqGJA6vSooRpkVW8KGP8amELjwiiWmPVmj+X6T5zBkK8O1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6K8PB4j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98932C2BBFC;
-	Thu, 13 Jun 2024 11:41:30 +0000 (UTC)
+	 MIME-Version; b=FYSoRMZmGwTThaX7grCOA2N6malesCI32Hi3B5bMvt6sEXcx2BSmTMpGH9WnH3tolWTiFb5H6dC9RnPhXL9qALdWEyR6uDsg1DBqDwTlub1kTyhei028pdGiTrRUdpszoFXZ1cYYqNMVxfyGrzOjJLxLzq7MitYC2DtXT+5S1AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTvwJ6AB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E260EC2BBFC;
+	Thu, 13 Jun 2024 11:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278891;
-	bh=xW7XNGJGMRXhINOAzTvcRARWvUE+8nH5/oHeWebnPP8=;
+	s=korg; t=1718279384;
+	bh=lh5GT9dKMoMqvURpncxA7wzhVA6LiX6IKOCbgcR1lRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w6K8PB4jMLdFMMrJpvivZydNNMhVQFr40af5GclPsnPHgHy4jdbVkD1llGAzlzEj5
-	 zOtHnKxNqKbNSZqKJ3zpRkXRPk0V4Bb2YD9BhEsCEt0rtUY9d6+GNLsvHNxzA0r40N
-	 l2BeA1EJqatqWCAHizZYkSqlNfAesdzECZXgKRVo=
+	b=aTvwJ6ABqvV4+ysPklZFk0CAoFlJuIPZdjqR95V1SQMNCsuZ9J9d48w9v1nkPu6ej
+	 O3x4HV9oaWo5NPyIU/y8Z2KX2uRfxP+XjT4J8OYOFyk0KOhltBovRdNc1PCJzewt3z
+	 jccTuD/5RyI/PTHMt4/1bBz/B7NM+uHRfXj45hTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sahitya Tummala <stummala@codeaurora.org>,
-	Chao Yu <yuchao0@huawei.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 104/213] f2fs: add error prints for debugging mount failure
+	Martin Kaistra <martin.kaistra@linutronix.de>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.9 027/157] wifi: rtl8xxxu: enable MFP support with security flag of RX descriptor
 Date: Thu, 13 Jun 2024 13:32:32 +0200
-Message-ID: <20240613113232.016467344@linuxfoundation.org>
+Message-ID: <20240613113228.466419749@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sahitya Tummala <stummala@codeaurora.org>
+From: Martin Kaistra <martin.kaistra@linutronix.de>
 
-[ Upstream commit 9227d5227b8db354d386f592f159eaa44db1c0b8 ]
+commit cbfbb4ddbc8503478e0a138f9a31f61686cc5f11 upstream.
 
-Add error prints to get more details on the mount failure.
+In order to connect to networks which require 802.11w, add the
+MFP_CAPABLE flag and let mac80211 do the actual crypto in software.
 
-Signed-off-by: Sahitya Tummala <stummala@codeaurora.org>
-Reviewed-by: Chao Yu <yuchao0@huawei.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 0fa4e57c1db2 ("f2fs: fix to release node block count in error path of f2fs_new_node_page()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When a robust management frame is received, rx_dec->swdec is not set,
+even though the HW did not decrypt it. Extend the check and don't set
+RX_FLAG_DECRYPTED for these frames in order to use SW decryption.
+
+Use the security flag in the RX descriptor for this purpose, like it is
+done in the rtw88 driver.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://msgid.link/20240418071813.1883174-3-martin.kaistra@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/segment.c | 6 +++++-
- fs/f2fs/super.c   | 4 ++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      |    9 +++++++++
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c |    7 +++++--
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 7596fce92bef1..34090edc8ce25 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -3409,8 +3409,12 @@ static int restore_curseg_summaries(struct f2fs_sb_info *sbi)
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -122,6 +122,15 @@ enum rtl8xxxu_rx_type {
+ 	RX_TYPE_ERROR = -1
+ };
  
- 	/* sanity check for summary blocks */
- 	if (nats_in_cursum(nat_j) > NAT_JOURNAL_ENTRIES ||
--			sits_in_cursum(sit_j) > SIT_JOURNAL_ENTRIES)
-+			sits_in_cursum(sit_j) > SIT_JOURNAL_ENTRIES) {
-+		f2fs_msg(sbi->sb, KERN_ERR,
-+			"invalid journal entries nats %u sits %u\n",
-+			nats_in_cursum(nat_j), sits_in_cursum(sit_j));
- 		return -EINVAL;
-+	}
++enum rtl8xxxu_rx_desc_enc {
++	RX_DESC_ENC_NONE	= 0,
++	RX_DESC_ENC_WEP40	= 1,
++	RX_DESC_ENC_TKIP_WO_MIC	= 2,
++	RX_DESC_ENC_TKIP_MIC	= 3,
++	RX_DESC_ENC_AES		= 4,
++	RX_DESC_ENC_WEP104	= 5,
++};
++
+ struct rtl8xxxu_rxdesc16 {
+ #ifdef __LITTLE_ENDIAN
+ 	u32 pktlen:14;
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -6468,7 +6468,8 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8x
+ 			rx_status->mactime = rx_desc->tsfl;
+ 			rx_status->flag |= RX_FLAG_MACTIME_START;
  
- 	return 0;
- }
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 89fc8a4ce1497..b075ba3e62dcd 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -3016,13 +3016,13 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
- 	err = f2fs_build_segment_manager(sbi);
- 	if (err) {
- 		f2fs_msg(sb, KERN_ERR,
--			"Failed to initialize F2FS segment manager");
-+			"Failed to initialize F2FS segment manager (%d)", err);
- 		goto free_sm;
- 	}
- 	err = f2fs_build_node_manager(sbi);
- 	if (err) {
- 		f2fs_msg(sb, KERN_ERR,
--			"Failed to initialize F2FS node manager");
-+			"Failed to initialize F2FS node manager (%d)", err);
- 		goto free_nm;
- 	}
+-			if (!rx_desc->swdec)
++			if (!rx_desc->swdec &&
++			    rx_desc->security != RX_DESC_ENC_NONE)
+ 				rx_status->flag |= RX_FLAG_DECRYPTED;
+ 			if (rx_desc->crc32)
+ 				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
+@@ -6573,7 +6574,8 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8x
+ 			rx_status->mactime = rx_desc->tsfl;
+ 			rx_status->flag |= RX_FLAG_MACTIME_START;
  
--- 
-2.43.0
-
+-			if (!rx_desc->swdec)
++			if (!rx_desc->swdec &&
++			    rx_desc->security != RX_DESC_ENC_NONE)
+ 				rx_status->flag |= RX_FLAG_DECRYPTED;
+ 			if (rx_desc->crc32)
+ 				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
+@@ -7993,6 +7995,7 @@ static int rtl8xxxu_probe(struct usb_int
+ 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
+ 	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
+ 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
++	ieee80211_hw_set(hw, MFP_CAPABLE);
+ 
+ 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
+ 
 
 
 
