@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-50444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491F39065F7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:59:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 180E09065F9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:59:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAE252837F7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:59:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7334DB247A8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D385F13C9D2;
-	Thu, 13 Jun 2024 07:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2810113CA80;
+	Thu, 13 Jun 2024 07:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elBOIf9o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+hzzjDT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A7E13D241
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96DF13C9D8
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718265428; cv=none; b=tTzA3RBV9N0qm2L0oUOFbb8dhDCIipPU99J9xjgnyzakEmIbHlLuiuUzTwraPMAiEG6rNtj/7Z3M8ffC1IpJ/4bPgR2VzM+PTC8Nvwv/iCW4mbXvCdnlih9lZKy70jdK4N53rYcFdJ2wQ+JSy/UEuBKZtobU9IjMhXTy9Q8Zuyg=
+	t=1718265437; cv=none; b=VGt9ZQLaqoFdddJuD/rzfcn9TjUQLCFKMzKgdIJ3pbl3Ceog4ULlDGNjqeO2ujeGztqbJdBmH8teasDNl2fip+k75C9k/LTdpgWNjJ6HwKFKAKBE/TDVDS4C6wd78ifzK2oS6I7s4wlT/8JbSdP0fWC5yFkda5SEzmSoz53bXN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718265428; c=relaxed/simple;
-	bh=ezyCEwCB2oEghfppIKuPR0cs0iufsYUH8yjEQtvBL8U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rFGMpkM4F96vgKjjvYoXUyWToKLFuwF640wcc0ajq16e0Lg3OjK9b43jgSzDhuIShdYtMdaIakazQ00hRiKbA/6LsHMoaWniaqTMnWoTY1OYoj2NOpenU6ekL7256UkGpuSvv04vx5klMzgVrIrSjImC36gy4VHMdeAvf2Z7MQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elBOIf9o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175F7C2BBFC;
-	Thu, 13 Jun 2024 07:57:07 +0000 (UTC)
+	s=arc-20240116; t=1718265437; c=relaxed/simple;
+	bh=O8yt9XBhCbhiCyds4/FQHb9pn8RTurUDRvkdg9ceqrs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=D4Adz4M2mJnTni0TdY+n+bq/FB/83xy0/Yj9yVvxZ5waW6eR2c1pv2kuS96+E9Esr4cWln39/Xhy9q9yej+Xah4Y9PFuK4gLK2P14pPPs96wjbQzpK27RxKEcNSXlE1skNHF2nKIKmS1MHiNMBWSmBuTRqpNedJleqVOgdeaFF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+hzzjDT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148B2C2BBFC;
+	Thu, 13 Jun 2024 07:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718265428;
-	bh=ezyCEwCB2oEghfppIKuPR0cs0iufsYUH8yjEQtvBL8U=;
+	s=korg; t=1718265437;
+	bh=O8yt9XBhCbhiCyds4/FQHb9pn8RTurUDRvkdg9ceqrs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=elBOIf9ok53asdduj6cWioHJdPGrgwDTt9AmbT8ICJDdxVGtqpv2hH3QRPpTU21yi
-	 InY2X1ZktTRK3997in0TznnhWdGi4GMACowfPsdetLVWXBr6vPa726G71sJSOCeEr5
-	 cMoYNGCm6ctzEFjy1Jj60sIBnojAhnpKB6vGb9xE=
-Subject: FAILED: patch "[PATCH] selftests/mm: compaction_test: fix bogus test success and" failed to apply to 4.19-stable tree
+	b=j+hzzjDTIfcOIN8GGIAk23Os4mxsyh3K2LKOKmYU95FCC3L2a0SWHeE/dMkJkD/yv
+	 m7uCcbJhopy4q2S2bUgFNJ6g3XzQtmzOPaqkh8MWqfk7+kPtkKNmNq6hDUY+gmSV51
+	 ExgH6LvxOLjRK13SEtSVti2a+V5miLt7siep5ba8=
+Subject: FAILED: patch "[PATCH] selftests/mm: compaction_test: fix bogus test success on" failed to apply to 6.6-stable tree
 To: dev.jain@arm.com,akpm@linux-foundation.org,anshuman.khandual@arm.com,shuah@kernel.org,sjayaram@akamai.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Jun 2024 09:56:55 +0200
-Message-ID: <2024061355-send-backwash-9965@gregkh>
+Date: Thu, 13 Jun 2024 09:57:14 +0200
+Message-ID: <2024061314-unlit-filled-c396@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,38 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x fb9293b6b0156fbf6ab97a1625d99a29c36d9f0c
+git cherry-pick -x d4202e66a4b1fe6968f17f9f09bbc30d08f028a1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061355-send-backwash-9965@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061314-unlit-filled-c396@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-fb9293b6b015 ("selftests/mm: compaction_test: fix bogus test success and reduce probability of OOM-killer invocation")
-9ad665ef55ea ("selftests/mm: compaction_test: fix incorrect write of zero to nr_hugepages")
 d4202e66a4b1 ("selftests/mm: compaction_test: fix bogus test success on Aarch64")
-69e545edbe8b ("selftests/mm: ksft_exit functions do not return")
 f3b7568c4942 ("selftests/mm: log a consistent test name for check_compaction")
-9c1490d911f8 ("selftests/mm: log skipped compaction test as a skip")
-8c9eea721a98 ("selftests/mm: skip test if application doesn't has root privileges")
 9a21701edc41 ("selftests/mm: conform test to TAP format output")
-cb6e7cae1886 ("selftests/mm: gup_test: conform test to TAP format output")
-019b277b680f ("selftests: mm: skip whole test instead of failure")
-46fd75d4a3c9 ("selftests: mm: add pagemap ioctl tests")
-05f1edac8009 ("selftests/mm: run all tests from run_vmtests.sh")
-000303329752 ("selftests/mm: make migration test robust to failure")
-f6dd4e223d87 ("selftests/mm: skip soft-dirty tests on arm64")
-ba91e7e5d15a ("selftests/mm: add tests for HWPOISON hugetlbfs read")
-63773d2b593d ("Merge mm-hotfixes-stable into mm-stable to pick up depended-upon changes.")
 
 thanks,
 
@@ -92,177 +79,105 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fb9293b6b0156fbf6ab97a1625d99a29c36d9f0c Mon Sep 17 00:00:00 2001
+From d4202e66a4b1fe6968f17f9f09bbc30d08f028a1 Mon Sep 17 00:00:00 2001
 From: Dev Jain <dev.jain@arm.com>
-Date: Tue, 21 May 2024 13:13:58 +0530
-Subject: [PATCH] selftests/mm: compaction_test: fix bogus test success and
- reduce probability of OOM-killer invocation
+Date: Tue, 21 May 2024 13:13:56 +0530
+Subject: [PATCH] selftests/mm: compaction_test: fix bogus test success on
+ Aarch64
 
-Reset nr_hugepages to zero before the start of the test.
+Patch series "Fixes for compaction_test", v2.
 
-If a non-zero number of hugepages is already set before the start of the
-test, the following problems arise:
+The compaction_test memory selftest introduces fragmentation in memory
+and then tries to allocate as many hugepages as possible. This series
+addresses some problems.
 
- - The probability of the test getting OOM-killed increases.  Proof:
-   The test wants to run on 80% of available memory to prevent OOM-killing
-   (see original code comments).  Let the value of mem_free at the start
-   of the test, when nr_hugepages = 0, be x.  In the other case, when
-   nr_hugepages > 0, let the memory consumed by hugepages be y.  In the
-   former case, the test operates on 0.8 * x of memory.  In the latter,
-   the test operates on 0.8 * (x - y) of memory, with y already filled,
-   hence, memory consumed is y + 0.8 * (x - y) = 0.8 * x + 0.2 * y > 0.8 *
-   x.  Q.E.D
+On Aarch64, if nr_hugepages == 0, then the test trivially succeeds since
+compaction_index becomes 0, which is less than 3, due to no division by
+zero exception being raised. We fix that by checking for division by
+zero.
 
- - The probability of a bogus test success increases.  Proof: Let the
-   memory consumed by hugepages be greater than 25% of x, with x and y
-   defined as above.  The definition of compaction_index is c_index = (x -
-   y)/z where z is the memory consumed by hugepages after trying to
-   increase them again.  In check_compaction(), we set the number of
-   hugepages to zero, and then increase them back; the probability that
-   they will be set back to consume at least y amount of memory again is
-   very high (since there is not much delay between the two attempts of
-   changing nr_hugepages).  Hence, z >= y > (x/4) (by the 25% assumption).
-   Therefore, c_index = (x - y)/z <= (x - y)/y = x/y - 1 < 4 - 1 = 3
-   hence, c_index can always be forced to be less than 3, thereby the test
-   succeeding always.  Q.E.D
+Secondly, correctly set the number of hugepages to zero before trying
+to set a large number of them.
 
-Link: https://lkml.kernel.org/r/20240521074358.675031-4-dev.jain@arm.com
+Now, consider a situation in which, at the start of the test, a non-zero
+number of hugepages have been already set (while running the entire
+selftests/mm suite, or manually by the admin). The test operates on 80%
+of memory to avoid OOM-killer invocation, and because some memory is
+already blocked by hugepages, it would increase the chance of OOM-killing.
+Also, since mem_free used in check_compaction() is the value before we
+set nr_hugepages to zero, the chance that the compaction_index will
+be small is very high if the preset nr_hugepages was high, leading to a
+bogus test success.
+
+
+This patch (of 3):
+
+Currently, if at runtime we are not able to allocate a huge page, the test
+will trivially pass on Aarch64 due to no exception being raised on
+division by zero while computing compaction_index.  Fix that by checking
+for nr_hugepages == 0.  Anyways, in general, avoid a division by zero by
+exiting the program beforehand.  While at it, fix a typo, and handle the
+case where the number of hugepages may overflow an integer.
+
+Link: https://lkml.kernel.org/r/20240521074358.675031-1-dev.jain@arm.com
+Link: https://lkml.kernel.org/r/20240521074358.675031-2-dev.jain@arm.com
 Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
 Signed-off-by: Dev Jain <dev.jain@arm.com>
-Cc: <stable@vger.kernel.org>
 Cc: Anshuman Khandual <anshuman.khandual@arm.com>
 Cc: Shuah Khan <shuah@kernel.org>
 Cc: Sri Jayaramappa <sjayaram@akamai.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
 diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
-index 5e9bd1da9370..e140558e6f53 100644
+index 4f42eb7d7636..0b249a06a60b 100644
 --- a/tools/testing/selftests/mm/compaction_test.c
 +++ b/tools/testing/selftests/mm/compaction_test.c
-@@ -82,13 +82,16 @@ int prereq(void)
+@@ -82,12 +82,13 @@ int prereq(void)
  	return -1;
  }
  
--int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
-+int check_compaction(unsigned long mem_free, unsigned long hugepage_size,
-+		     unsigned long initial_nr_hugepages)
+-int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
++int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
  {
- 	unsigned long nr_hugepages_ul;
++	unsigned long nr_hugepages_ul;
  	int fd, ret = -1;
  	int compaction_index = 0;
--	char initial_nr_hugepages[20] = {0};
- 	char nr_hugepages[20] = {0};
-+	char init_nr_hugepages[20] = {0};
-+
-+	sprintf(init_nr_hugepages, "%lu", initial_nr_hugepages);
+-	char initial_nr_hugepages[10] = {0};
+-	char nr_hugepages[10] = {0};
++	char initial_nr_hugepages[20] = {0};
++	char nr_hugepages[20] = {0};
  
  	/* We want to test with 80% of available memory. Else, OOM killer comes
  	   in to play */
-@@ -102,23 +105,6 @@ int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
- 		goto out;
- 	}
+@@ -134,7 +135,12 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
  
--	if (read(fd, initial_nr_hugepages, sizeof(initial_nr_hugepages)) <= 0) {
--		ksft_print_msg("Failed to read from /proc/sys/vm/nr_hugepages: %s\n",
--			       strerror(errno));
--		goto close_fd;
--	}
--
--	lseek(fd, 0, SEEK_SET);
--
--	/* Start with the initial condition of 0 huge pages*/
--	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
--		ksft_print_msg("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
--			       strerror(errno));
--		goto close_fd;
--	}
--
--	lseek(fd, 0, SEEK_SET);
--
- 	/* Request a large number of huge pages. The Kernel will allocate
- 	   as much as it can */
- 	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
-@@ -146,8 +132,8 @@ int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
+ 	/* We should have been able to request at least 1/3 rd of the memory in
+ 	   huge pages */
+-	compaction_index = mem_free/(atoi(nr_hugepages) * hugepage_size);
++	nr_hugepages_ul = strtoul(nr_hugepages, NULL, 10);
++	if (!nr_hugepages_ul) {
++		ksft_print_msg("ERROR: No memory is available as huge pages\n");
++		goto close_fd;
++	}
++	compaction_index = mem_free/(nr_hugepages_ul * hugepage_size);
  
  	lseek(fd, 0, SEEK_SET);
  
--	if (write(fd, initial_nr_hugepages, strlen(initial_nr_hugepages))
--	    != strlen(initial_nr_hugepages)) {
-+	if (write(fd, init_nr_hugepages, strlen(init_nr_hugepages))
-+	    != strlen(init_nr_hugepages)) {
- 		ksft_print_msg("Failed to write value to /proc/sys/vm/nr_hugepages: %s\n",
- 			       strerror(errno));
+@@ -145,11 +151,11 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
  		goto close_fd;
-@@ -171,6 +157,41 @@ int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
- 	return ret;
- }
- 
-+int set_zero_hugepages(unsigned long *initial_nr_hugepages)
-+{
-+	int fd, ret = -1;
-+	char nr_hugepages[20] = {0};
-+
-+	fd = open("/proc/sys/vm/nr_hugepages", O_RDWR | O_NONBLOCK);
-+	if (fd < 0) {
-+		ksft_print_msg("Failed to open /proc/sys/vm/nr_hugepages: %s\n",
-+			       strerror(errno));
-+		goto out;
-+	}
-+	if (read(fd, nr_hugepages, sizeof(nr_hugepages)) <= 0) {
-+		ksft_print_msg("Failed to read from /proc/sys/vm/nr_hugepages: %s\n",
-+			       strerror(errno));
-+		goto close_fd;
-+	}
-+
-+	lseek(fd, 0, SEEK_SET);
-+
-+	/* Start with the initial condition of 0 huge pages */
-+	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
-+		ksft_print_msg("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
-+			       strerror(errno));
-+		goto close_fd;
-+	}
-+
-+	*initial_nr_hugepages = strtoul(nr_hugepages, NULL, 10);
-+	ret = 0;
-+
-+ close_fd:
-+	close(fd);
-+
-+ out:
-+	return ret;
-+}
- 
- int main(int argc, char **argv)
- {
-@@ -181,6 +202,7 @@ int main(int argc, char **argv)
- 	unsigned long mem_free = 0;
- 	unsigned long hugepage_size = 0;
- 	long mem_fragmentable_MB = 0;
-+	unsigned long initial_nr_hugepages;
- 
- 	ksft_print_header();
- 
-@@ -189,6 +211,10 @@ int main(int argc, char **argv)
- 
- 	ksft_set_plan(1);
- 
-+	/* Start the test without hugepages reducing mem_free */
-+	if (set_zero_hugepages(&initial_nr_hugepages))
-+		ksft_exit_fail();
-+
- 	lim.rlim_cur = RLIM_INFINITY;
- 	lim.rlim_max = RLIM_INFINITY;
- 	if (setrlimit(RLIMIT_MEMLOCK, &lim))
-@@ -232,7 +258,8 @@ int main(int argc, char **argv)
- 		entry = entry->next;
  	}
  
--	if (check_compaction(mem_free, hugepage_size) == 0)
-+	if (check_compaction(mem_free, hugepage_size,
-+			     initial_nr_hugepages) == 0)
- 		ksft_exit_pass();
+-	ksft_print_msg("Number of huge pages allocated = %d\n",
+-		       atoi(nr_hugepages));
++	ksft_print_msg("Number of huge pages allocated = %lu\n",
++		       nr_hugepages_ul);
  
- 	ksft_exit_fail();
+ 	if (compaction_index > 3) {
+-		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
++		ksft_print_msg("ERROR: Less than 1/%d of memory is available\n"
+ 			       "as huge pages\n", compaction_index);
+ 		goto close_fd;
+ 	}
 
 
