@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-51102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C74906E58
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 066EF906DD3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A948280DB1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 960C8284028
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B678144312;
-	Thu, 13 Jun 2024 12:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6CD1448C9;
+	Thu, 13 Jun 2024 11:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tU8iJhzZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hz9MDGWP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACF356458;
-	Thu, 13 Jun 2024 12:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69094143899;
+	Thu, 13 Jun 2024 11:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280315; cv=none; b=LzsFVqL9EO/hx3xDquRHBIypVI8pQsyKmv5lOKyQo7WTSXGuBeBCDRTFvUovVftQp7arMwCt/QafNK+RGjaOmrukp4pDQaeShfduhweVM7sCCzpEGBibw8Tzw+TCCAzu0R3ykOmtrNvHLZkRgryESm/YSAOsdsaCWL1+xP2WzsQ=
+	t=1718279988; cv=none; b=A8cjYgv/FxBGDjhoWtImwvoEx1//GxI8FXeUf38TiGpJRLq4DGGPpKpzD/x2ZfE8RcfAChuGJTsZZMK7+o5PJZKjfZpD1xkr0xp6kmUKC1/PvElmxGs4X9DK9b62WsH6QV08LVNAKxVmnNwoulFw/zEIa6HLArdXR2CPleUxYoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280315; c=relaxed/simple;
-	bh=236x9JkAn1HN7bkLaa30orKevFlfREOWkYYQ5rhfERU=;
+	s=arc-20240116; t=1718279988; c=relaxed/simple;
+	bh=cAzDE7qyEok6twZT7drnt84XAQxLAIq4bgKwLzxRqBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WbiKJf2ovPzY5S2zwuA0tDaZOxwusMEzFzN/aKyw50OCrLcu+lWhTG7fmoUaJFDArHAxUErc+pniL/HPTzN1q796jo256NLloc8mOlZzWJ/qUAoWEDIuJzW74haDmdnYI+OSRlsVeiBOD5XW/4nha6nSyK/ryBTi5jSP9oCHgAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tU8iJhzZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A2DC2BBFC;
-	Thu, 13 Jun 2024 12:05:14 +0000 (UTC)
+	 MIME-Version; b=MPNx3UCx8DM8evNoGH7pIlCHQZqsViUxoYNjcXJAzAXg741i0LEWrbSfkzgfwELB2S/yg5LIs8PFJj1Qythob82WUwnonApQMPjw0kpE0esHDpyaVq9PgOx7wUQi1ZjBZePr7+FGXYCj2j2G7VgTqNqF8WRygRxbzT2679kbl/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hz9MDGWP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7451C4AF50;
+	Thu, 13 Jun 2024 11:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280314;
-	bh=236x9JkAn1HN7bkLaa30orKevFlfREOWkYYQ5rhfERU=;
+	s=korg; t=1718279988;
+	bh=cAzDE7qyEok6twZT7drnt84XAQxLAIq4bgKwLzxRqBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tU8iJhzZ7/YOe3IAYDD6fE3Qo3aPArsZMehE5T3JNPTH0HzJvHCvt8+XG8NF4kcHo
-	 v6a5XgexkwtHvW9S5wPa2QE4vm94CeWuLmzWDRJbyDKCLr+8fAuvh0vNZg/6X+5baH
-	 Onu1chMXxrRo422zNB1Yho3Dh2brJWg9c7mQlGpI=
+	b=hz9MDGWPgp2NGglMogZdNb/h1/fmd00bEs2S9UHFdh3iZR4T1H8nblaSwQ2nuwJcP
+	 6VNkMlAB3y++w8E0yD2AmtrcVMukMslz0kvlAOxTA9sY+LZ22HZhQz9FgCqNr7klXx
+	 KMPOqD/sLyR81wJhI7n+Ktv/vOXTNUpuEsN/Zi+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Daniel Golle <daniel@makrotopia.org>
-Subject: [PATCH 6.6 004/137] net: sfp-bus: fix SFP mode detect from bitrate
-Date: Thu, 13 Jun 2024 13:33:04 +0200
-Message-ID: <20240613113223.454096893@linuxfoundation.org>
+	Edward Liaw <edliaw@google.com>,
+	Cyrill Gorcunov <gorcunov@gmail.com>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 087/202] selftests/kcmp: remove unused open mode
+Date: Thu, 13 Jun 2024 13:33:05 +0200
+Message-ID: <20240613113231.128273853@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Edward Liaw <edliaw@google.com>
 
-commit 97eb5d51b4a584a60e5d096bdb6b33edc9f50d8d upstream.
+[ Upstream commit eb59a58113717df04b8a8229befd8ab1e5dbf86e ]
 
-The referenced commit moved the setting of the Autoneg and pause bits
-early in sfp_parse_support(). However, we check whether the modes are
-empty before using the bitrate to set some modes. Setting these bits
-so early causes that test to always be false, preventing this working,
-and thus some modules that used to work no longer do.
+Android bionic warns that open modes are ignored if O_CREAT or O_TMPFILE
+aren't specified.  The permissions for the file are set above:
 
-Move them just before the call to the quirk.
+	fd1 = open(kpath, O_RDWR | O_CREAT | O_TRUNC, 0644);
 
-Fixes: 8110633db49d ("net: sfp-bus: allow SFP quirks to override Autoneg and pause bits")
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://lore.kernel.org/r/E1rPMJW-001Ahf-L0@rmk-PC.armlinux.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Cc: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20240429234610.191144-1-edliaw@google.com
+Fixes: d97b46a64674 ("syscalls, x86: add __NR_kcmp syscall")
+Signed-off-by: Edward Liaw <edliaw@google.com>
+Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/sfp-bus.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/testing/selftests/kcmp/kcmp_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/phy/sfp-bus.c
-+++ b/drivers/net/phy/sfp-bus.c
-@@ -151,10 +151,6 @@ void sfp_parse_support(struct sfp_bus *b
- 	unsigned int br_min, br_nom, br_max;
- 	__ETHTOOL_DECLARE_LINK_MODE_MASK(modes) = { 0, };
+diff --git a/tools/testing/selftests/kcmp/kcmp_test.c b/tools/testing/selftests/kcmp/kcmp_test.c
+index 25110c7c0b3ed..d7a8e321bb16b 100644
+--- a/tools/testing/selftests/kcmp/kcmp_test.c
++++ b/tools/testing/selftests/kcmp/kcmp_test.c
+@@ -91,7 +91,7 @@ int main(int argc, char **argv)
+ 		ksft_print_header();
+ 		ksft_set_plan(3);
  
--	phylink_set(modes, Autoneg);
--	phylink_set(modes, Pause);
--	phylink_set(modes, Asym_Pause);
--
- 	/* Decode the bitrate information to MBd */
- 	br_min = br_nom = br_max = 0;
- 	if (id->base.br_nominal) {
-@@ -339,6 +335,10 @@ void sfp_parse_support(struct sfp_bus *b
- 		}
- 	}
- 
-+	phylink_set(modes, Autoneg);
-+	phylink_set(modes, Pause);
-+	phylink_set(modes, Asym_Pause);
-+
- 	if (bus->sfp_quirk && bus->sfp_quirk->modes)
- 		bus->sfp_quirk->modes(id, modes, interfaces);
- 
+-		fd2 = open(kpath, O_RDWR, 0644);
++		fd2 = open(kpath, O_RDWR);
+ 		if (fd2 < 0) {
+ 			perror("Can't open file");
+ 			ksft_exit_fail();
+-- 
+2.43.0
+
 
 
 
