@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-50957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 694C9906D97
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC84906C96
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F3861F27AFB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25AD0B22143
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6143D145333;
-	Thu, 13 Jun 2024 11:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413E9144D3C;
+	Thu, 13 Jun 2024 11:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiofR0En"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4v0kdGS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED59144D31;
-	Thu, 13 Jun 2024 11:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F107A144D11;
+	Thu, 13 Jun 2024 11:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279886; cv=none; b=mP7lPQix7uuPPBd+Radrgi9874dQE+uSi+Q/41W2FXkY18wYvjLtxmaHqBGHGtnKwWVpMB6LkNQ4Qd3IOIraqwAHX2dDuSLoGaTJuTZvskPs1VGPi4w52nxiTEJySun3PexPC5BlLWlr19kBK92OyVt+Mx0FSNtG5mwmwJ+63Hs=
+	t=1718279343; cv=none; b=k+CwDRGiVGDNZcPUwlL/UxebaXwMBa5f50mtZ8Y/ZcWZCkA9L4CSsmD4xgWwQ9sBtROhgEh7WwcvVf5q9IX35sEOLI/Z0KIdwJD6SxjKe+gXOPLB4CyaSDeYLQAPj3s/7Oz6Lj90VjOw85VDap5d+jWJ2xYm5sSNEaf55SLdu8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279886; c=relaxed/simple;
-	bh=RkX/5V34/tVhYBo2VjysP0Zx/XT0Mx2CAqAOggcy2Yk=;
+	s=arc-20240116; t=1718279343; c=relaxed/simple;
+	bh=D89kVTW0nzvAU4Po5j0RyJdjO7VnC+u0mYXDA0aUNmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KzhmGntdWjBOnNYsPRtA5u+3d43i1kUB4flFC7Wwu28mVUwqHtUTObVuk8RYNwJYdxfvWK8gVZvC1n4028cUhj5L+dwpxh+xE9AlI4DgX/7QZNYS/owD+xm3h9rliQBQ/BpC0gW/gXJGYIqkGxO1hyoh80j3PlDVrBRF1BS/p2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiofR0En; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4103FC2BBFC;
-	Thu, 13 Jun 2024 11:58:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ebEAJ95QgCD13czrZy6hrI5F0Hht8uKicUw/V7e/shJLSNpxzK+JKQOS/2qSv2FNJ+q8PX8fgA1gBdPhOLGXTzJXoUhCXk59dojWklq5olnNNXpRRaVHCwh0t7akhWd27zLLsPr+AQuX0zBMaYMgAsD9FdT7aaRMqZmbUsSmbkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4v0kdGS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F132C2BBFC;
+	Thu, 13 Jun 2024 11:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279885;
-	bh=RkX/5V34/tVhYBo2VjysP0Zx/XT0Mx2CAqAOggcy2Yk=;
+	s=korg; t=1718279342;
+	bh=D89kVTW0nzvAU4Po5j0RyJdjO7VnC+u0mYXDA0aUNmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QiofR0EnfDoAqcLl6XdvsdEfqdHnKGcDdMHj7MtLxbn/deTh9tPHJHhhUFFtIsy5L
-	 ZNP7u6m2uBxPlSC1YENAiHB5waNEgHUwNtggoReSd+ubTZBKlfIM6X3wMwYn+Blffz
-	 jRnYpgxTmYh8GTKJ7YxSdng8EVFZkvoXzxwwQ6Zs=
+	b=D4v0kdGSFU3+FkoxaytBd9cVyDluV5QiRJQB8Sd98BGcvjy0EfOBjQmfQzvEk9qaf
+	 Rs/3JJ6IciTB5CDjP8Y3CHUGCbdbQ0EOESjVHaUKNvDWg//U5HEWJwVH0dzAZC5aJo
+	 P8jycD5WcIDhmHw9Gy/MIimTO4Zk8rWdSUYS25SY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 070/202] fbdev: shmobile: fix snprintf truncation
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.9 043/157] mmc: davinci: Dont strip remove function when driver is builtin
 Date: Thu, 13 Jun 2024 13:32:48 +0200
-Message-ID: <20240613113230.479279515@linuxfoundation.org>
+Message-ID: <20240613113229.093228337@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +59,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 26c8cfb9d1e4b252336d23dd5127a8cbed414a32 ]
+commit 55c421b364482b61c4c45313a535e61ed5ae4ea3 upstream.
 
-The name of the overlay does not fit into the fixed-length field:
+Using __exit for the remove function results in the remove callback being
+discarded with CONFIG_MMC_DAVINCI=y. When such a device gets unbound (e.g.
+using sysfs or hotplug), the driver is just removed without the cleanup
+being performed. This results in resource leaks. Fix it by compiling in the
+remove callback unconditionally.
 
-drivers/video/fbdev/sh_mobile_lcdcfb.c:1577:2: error: 'snprintf' will always be truncated; specified size is 16, but format string expands to at least 25
+This also fixes a W=1 modpost warning:
 
-Make it short enough by changing the string.
+WARNING: modpost: drivers/mmc/host/davinci_mmc: section mismatch in
+reference: davinci_mmcsd_driver+0x10 (section: .data) ->
+davinci_mmcsd_remove (section: .exit.text)
 
-Fixes: c5deac3c9b22 ("fbdev: sh_mobile_lcdc: Implement overlays support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b4cff4549b7a ("DaVinci: MMC: MMC/SD controller driver for DaVinci family")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240324114017.231936-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/sh_mobile_lcdcfb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/davinci_mmc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-index c249763dbf0bf..85af63f32d5e4 100644
---- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
-+++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-@@ -1580,7 +1580,7 @@ sh_mobile_lcdc_overlay_fb_init(struct sh_mobile_lcdc_overlay *ovl)
- 	 */
- 	info->fix = sh_mobile_lcdc_overlay_fix;
- 	snprintf(info->fix.id, sizeof(info->fix.id),
--		 "SH Mobile LCDC Overlay %u", ovl->index);
-+		 "SHMobile ovl %u", ovl->index);
- 	info->fix.smem_start = ovl->dma_handle;
- 	info->fix.smem_len = ovl->fb_size;
- 	info->fix.line_length = ovl->pitch;
--- 
-2.43.0
-
+--- a/drivers/mmc/host/davinci_mmc.c
++++ b/drivers/mmc/host/davinci_mmc.c
+@@ -1337,7 +1337,7 @@ ioremap_fail:
+ 	return ret;
+ }
+ 
+-static void __exit davinci_mmcsd_remove(struct platform_device *pdev)
++static void davinci_mmcsd_remove(struct platform_device *pdev)
+ {
+ 	struct mmc_davinci_host *host = platform_get_drvdata(pdev);
+ 
+@@ -1392,7 +1392,7 @@ static struct platform_driver davinci_mm
+ 		.of_match_table = davinci_mmc_dt_ids,
+ 	},
+ 	.probe		= davinci_mmcsd_probe,
+-	.remove_new	= __exit_p(davinci_mmcsd_remove),
++	.remove_new	= davinci_mmcsd_remove,
+ 	.id_table	= davinci_mmc_devtype,
+ };
+ 
 
 
 
