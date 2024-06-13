@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-50839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84560906D12
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:58:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C68906C3E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:48:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2054B284514
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:58:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 267611C22DAC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:48:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7205145FEA;
-	Thu, 13 Jun 2024 11:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770D5144D1F;
+	Thu, 13 Jun 2024 11:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POTlPZ2G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iatiC6z7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637B61422AB;
-	Thu, 13 Jun 2024 11:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255B36AFAE;
+	Thu, 13 Jun 2024 11:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279537; cv=none; b=rGOmYBIMqt0NTr2bz4WNqp9GGAaDCRvJYVhyfZUmdslxHHBKBeVAlwRmxaHcIDG3QO8NBiqw2ZvRGu/DZsJWpOvdWzzfWeGycDfX5LX5ny/CZN4XpgZJBMx3FXnD5JSSf3WlSY2mWTHVOMbZdR/hFdV9w48Ppmbe7UQd04X5Ozw=
+	t=1718279225; cv=none; b=ruiQ5O9F1zO9gK0vy6sSdJXH6HTQmCgF0y5YThWRui0XKDmlH12Rn2QTNeETI+KVUrveqDjb+elBSY/nBoq2TSQ9P1K8LErGNppuku2QHQCOGHxj6MRBZpLF3zDX8ERqG9Zl303a8aJs5g3L2IcWAE2R8HwvvDgORvKrto9eipw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279537; c=relaxed/simple;
-	bh=yj3gZRKYDHZvanm0uc1a59qZwyX4f/ZWauocnXP1yQw=;
+	s=arc-20240116; t=1718279225; c=relaxed/simple;
+	bh=gBZWNMJZXwvMyPUusqLil7RFQyzWEHflhjRsXeRWfYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0t0QRH70xcnm96MlRYmfpV1lqQXmZqdlovXFdYjNTme77Sxn0kriXtQRp2z9JpVYXFvuUU3x8Pa2SM+xmkTnkfDz8wQTNwp86KtWl4Unw8gR0BeqWcC+hNR2y45VuL50O0gAVVz7PpYpXrVZZvvWI6en8inhOQaf6nLl66nx2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POTlPZ2G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D642AC32786;
-	Thu, 13 Jun 2024 11:52:16 +0000 (UTC)
+	 MIME-Version; b=s0ZW/GnPObS6Ea/vxfOxYq09EDuoC+q9+7qTETyZ/KdzPNG4zDPFWswwh9/SXkJvqpFRm4ciDdUCtr4zFyEe8XWst5B0STmp1pd359N2WFXSSJCkIhfq3fFL245gsr73OnvyXMSU/oTXpi0ieZwGzZnte4fUq+bUI/s3iX/nxYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iatiC6z7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D310C2BBFC;
+	Thu, 13 Jun 2024 11:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279537;
-	bh=yj3gZRKYDHZvanm0uc1a59qZwyX4f/ZWauocnXP1yQw=;
+	s=korg; t=1718279225;
+	bh=gBZWNMJZXwvMyPUusqLil7RFQyzWEHflhjRsXeRWfYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=POTlPZ2GXlRlXPiCFowGEgsskPN4G0mApDVusxuW2uc64RUIjKeHdjBimxmLzIQF0
-	 OIhgYy2lWNroEes9v0QEBBMHjpkLLSLFyEufV9WTEmFm51n8Sg++I3795NQNOoTNJw
-	 L/24IwtCXXJAJUSpxnd512F5bSVOuZDcXAevVa/4=
+	b=iatiC6z7Nv7qwPBp+WnH/wOWz7yk2gqe2DGue087E61TzcZszowzvI7cMhLCnwRgw
+	 pBwEYk/voGOUaZF5zn/9NkWvLSIUapuqt+xpoHMcWTLoKFJWflY2ShGwEImHAE8It+
+	 GHDvtolQzyNm2iX/Mu3lC3ndH5j2in65XqABoDWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 6.9 109/157] kdb: Use format-strings rather than \0 injection in kdb_read()
+	Florian Westphal <fw@strlen.de>
+Subject: [PATCH 4.19 186/213] netfilter: nftables: exthdr: fix 4-byte stack OOB write
 Date: Thu, 13 Jun 2024 13:33:54 +0200
-Message-ID: <20240613113231.633283349@linuxfoundation.org>
+Message-ID: <20240613113235.156045419@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Florian Westphal <fw@strlen.de>
 
-commit 09b35989421dfd5573f0b4683c7700a7483c71f9 upstream.
+commit fd94d9dadee58e09b49075240fe83423eb1dcd36 upstream.
 
-Currently when kdb_read() needs to reposition the cursor it uses copy and
-paste code that works by injecting an '\0' at the cursor position before
-delivering a carriage-return and reprinting the line (which stops at the
-'\0').
+If priv->len is a multiple of 4, then dst[len / 4] can write past
+the destination array which leads to stack corruption.
 
-Tidy up the code by hoisting the copy and paste code into an appropriately
-named function. Additionally let's replace the '\0' injection with a
-proper field width parameter so that the string will be abridged during
-formatting instead.
+This construct is necessary to clean the remainder of the register
+in case ->len is NOT a multiple of the register size, so make it
+conditional just like nft_payload.c does.
 
-Cc: stable@vger.kernel.org # Not a bug fix but it is needed for later bug fixes
-Tested-by: Justin Stitt <justinstitt@google.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-2-f236dbe9828d@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+The bug was added in 4.1 cycle and then copied/inherited when
+tcp/sctp and ip option support was added.
+
+Bug reported by Zero Day Initiative project (ZDI-CAN-21950,
+ZDI-CAN-21951, ZDI-CAN-21961).
+
+Fixes: 49499c3e6e18 ("netfilter: nf_tables: switch registers to 32 bit addressing")
+Fixes: 935b7f643018 ("netfilter: nft_exthdr: add TCP option matching")
+Fixes: 133dc203d77d ("netfilter: nft_exthdr: Support SCTP chunks")
+Fixes: dbb5281a1f84 ("netfilter: nf_tables: add support for matching IPv4 options")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c |   55 ++++++++++++++++++++++++++++------------------
- 1 file changed, 34 insertions(+), 21 deletions(-)
+ net/netfilter/nft_exthdr.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -184,6 +184,33 @@ char kdb_getchar(void)
- 	unreachable();
+--- a/net/netfilter/nft_exthdr.c
++++ b/net/netfilter/nft_exthdr.c
+@@ -36,6 +36,14 @@ static unsigned int optlen(const u8 *opt
+ 		return opt[offset + 1];
  }
  
-+/**
-+ * kdb_position_cursor() - Place cursor in the correct horizontal position
-+ * @prompt: Nil-terminated string containing the prompt string
-+ * @buffer: Nil-terminated string containing the entire command line
-+ * @cp: Cursor position, pointer the character in buffer where the cursor
-+ *      should be positioned.
-+ *
-+ * The cursor is positioned by sending a carriage-return and then printing
-+ * the content of the line until we reach the correct cursor position.
-+ *
-+ * There is some additional fine detail here.
-+ *
-+ * Firstly, even though kdb_printf() will correctly format zero-width fields
-+ * we want the second call to kdb_printf() to be conditional. That keeps things
-+ * a little cleaner when LOGGING=1.
-+ *
-+ * Secondly, we can't combine everything into one call to kdb_printf() since
-+ * that renders into a fixed length buffer and the combined print could result
-+ * in unwanted truncation.
-+ */
-+static void kdb_position_cursor(char *prompt, char *buffer, char *cp)
++static int nft_skb_copy_to_reg(const struct sk_buff *skb, int offset, u32 *dest, unsigned int len)
 +{
-+	kdb_printf("\r%s", kdb_prompt_str);
-+	if (cp > buffer)
-+		kdb_printf("%.*s", (int)(cp - buffer), buffer);
++	if (len % NFT_REG32_SIZE)
++		dest[len / NFT_REG32_SIZE] = 0;
++
++	return skb_copy_bits(skb, offset, dest, len);
 +}
 +
- /*
-  * kdb_read
-  *
-@@ -212,7 +239,6 @@ static char *kdb_read(char *buffer, size
- 						 * and null byte */
- 	char *lastchar;
- 	char *p_tmp;
--	char tmp;
- 	static char tmpbuffer[CMD_BUFLEN];
- 	int len = strlen(buffer);
- 	int len_tmp;
-@@ -249,12 +275,8 @@ poll_again:
- 			}
- 			*(--lastchar) = '\0';
- 			--cp;
--			kdb_printf("\b%s \r", cp);
--			tmp = *cp;
--			*cp = '\0';
--			kdb_printf(kdb_prompt_str);
--			kdb_printf("%s", buffer);
--			*cp = tmp;
-+			kdb_printf("\b%s ", cp);
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
+ static void nft_exthdr_ipv6_eval(const struct nft_expr *expr,
+ 				 struct nft_regs *regs,
+ 				 const struct nft_pktinfo *pkt)
+@@ -57,8 +65,7 @@ static void nft_exthdr_ipv6_eval(const s
+ 	}
+ 	offset += priv->offset;
+ 
+-	dest[priv->len / NFT_REG32_SIZE] = 0;
+-	if (skb_copy_bits(pkt->skb, offset, dest, priv->len) < 0)
++	if (nft_skb_copy_to_reg(pkt->skb, offset, dest, priv->len) < 0)
+ 		goto err;
+ 	return;
+ err:
+@@ -114,7 +121,8 @@ static void nft_exthdr_tcp_eval(const st
+ 		if (priv->flags & NFT_EXTHDR_F_PRESENT) {
+ 			*dest = 1;
+ 		} else {
+-			dest[priv->len / NFT_REG32_SIZE] = 0;
++			if (priv->len % NFT_REG32_SIZE)
++				dest[priv->len / NFT_REG32_SIZE] = 0;
+ 			memcpy(dest, opt + offset, priv->len);
  		}
- 		break;
- 	case 10: /* linefeed */
-@@ -272,19 +294,14 @@ poll_again:
- 			memcpy(tmpbuffer, cp+1, lastchar - cp - 1);
- 			memcpy(cp, tmpbuffer, lastchar - cp - 1);
- 			*(--lastchar) = '\0';
--			kdb_printf("%s \r", cp);
--			tmp = *cp;
--			*cp = '\0';
--			kdb_printf(kdb_prompt_str);
--			kdb_printf("%s", buffer);
--			*cp = tmp;
-+			kdb_printf("%s ", cp);
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 1: /* Home */
- 		if (cp > buffer) {
--			kdb_printf("\r");
--			kdb_printf(kdb_prompt_str);
- 			cp = buffer;
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 5: /* End */
-@@ -390,13 +407,9 @@ poll_again:
- 				memcpy(cp+1, tmpbuffer, lastchar - cp);
- 				*++lastchar = '\0';
- 				*cp = key;
--				kdb_printf("%s\r", cp);
-+				kdb_printf("%s", cp);
- 				++cp;
--				tmp = *cp;
--				*cp = '\0';
--				kdb_printf(kdb_prompt_str);
--				kdb_printf("%s", buffer);
--				*cp = tmp;
-+				kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 			} else {
- 				*++lastchar = '\0';
- 				*cp++ = key;
+ 
 
 
 
