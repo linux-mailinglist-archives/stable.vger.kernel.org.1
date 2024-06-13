@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-51936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A34590724B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:46:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C2D39072D4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:51:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7FDC1F2149B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:46:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA4BAB28FEA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BAF1292FF;
-	Thu, 13 Jun 2024 12:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE0A1428EC;
+	Thu, 13 Jun 2024 12:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjUw57tj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KygRqIOt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8921DDDB;
-	Thu, 13 Jun 2024 12:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFC5384;
+	Thu, 13 Jun 2024 12:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282752; cv=none; b=acPIBf/nm2qPNpnH4qC1UjM6lbpaQIneTX7CoI7+ZTP0p/HLW5WHibyW7NyzBMEmf5PmF87wiUxp1kOkPTNQ9gwQb+h1VJwm3M9QssgVIuvZZRfz4bdWh09R3/NePHQ1QcY85xUhso2AJTLPqsCE9ZVgbElR4aGEqY8Bhgmg2sg=
+	t=1718282840; cv=none; b=Q7DuRwDMe3dVq/luE7PjxE386CbVcKm/pmgZIB/4eLJJzbjrYXm01uqO2TCBW4ScfgbqCuGOb5uOQWJFdp4QcMF+GdTDMM29E8ZdYLSUDIAg8MieFhdStKwN3g+ktp2FxvV96dmRml+usovNZyzH6IDJTPbm7C1zDW0yqh6AGrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282752; c=relaxed/simple;
-	bh=EVICGdvthQ/neTQ8nUvq/YuIxxxgqOgM1bgltMTa3NU=;
+	s=arc-20240116; t=1718282840; c=relaxed/simple;
+	bh=kfjM9SuUpcjv7ejWD2Rwa2m+R9BFI6ysxqR1ENx6jqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WyMz8EQGs+IRuA3mibKWx8trUWUA2H8BfTOFsuFxTtNUFZeut71/9clTqpIgUc/VlHHWjQIABxgVXxlE5pSqUsbM4JUK59dK8CnNr2kNzEG5crqUUl+2QL1SEIYRRU3QI+IUsBdCmr5MZjxzXm9KEX7fHAziSfF8pENEOxCikas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjUw57tj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81F8C2BBFC;
-	Thu, 13 Jun 2024 12:45:51 +0000 (UTC)
+	 MIME-Version; b=WWq6YrILy3noFwdzqb/5+BvhBM6m3TWk6TpFpL/z4o4+v72z5SLV1VA8YxTQCliekfqraELh5hNd/9EeoOuTBJ2/zrntbjA+VHTz08wP7iVKo2cwC5U0MIuIVI859TJwQEyNmxbwD9DXe8nC9KSJyjTKr5NYjnLQdcDzci8J6BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KygRqIOt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A00C2BBFC;
+	Thu, 13 Jun 2024 12:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282752;
-	bh=EVICGdvthQ/neTQ8nUvq/YuIxxxgqOgM1bgltMTa3NU=;
+	s=korg; t=1718282840;
+	bh=kfjM9SuUpcjv7ejWD2Rwa2m+R9BFI6ysxqR1ENx6jqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UjUw57tjQkErnVW6dSW6MfMZRqt5EjRAZvzJ7VQy3U5jR1X3uhrBM+Wdbn1zalkvj
-	 Evo4FeMYRzTGWmIVCedews/rTt08QUDabxO+tRCVqO7AoGOMOr44hwmzv6xMksuj5P
-	 kxKcNRdVc/bKI8DJ1LZqlNWzsaes31+hznBZ2lvw=
+	b=KygRqIOtLloVY1V0uQkMD/f1t0+BuVYFW0tRtFcVgrSdpMBnbVHAKk2wRdDZfYUHM
+	 6wBNE2vPUDz1ngihddqdm4SrqKwgeylNheLQUq8JS8B1MDNYCa7CIowgg/XzszxXXO
+	 clCbWAjiDc1HBwgVUzXvJwTt/bHRILLb3k5iTGH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	NeilBrown <neilb@suse.de>
-Subject: [PATCH 5.15 352/402] sunrpc: exclude from freezer when waiting for requests:
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 11/85] mptcp: avoid some duplicate code in socket option handling
 Date: Thu, 13 Jun 2024 13:35:09 +0200
-Message-ID: <20240613113315.866006865@linuxfoundation.org>
+Message-ID: <20240613113214.575635027@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Paolo Abeni <pabeni@redhat.com>
 
-Prior to v6.1, the freezer will only wake a kernel thread from an
-uninterruptible sleep.  Since we changed svc_get_next_xprt() to use and
-IDLE sleep the freezer cannot wake it.  We need to tell the freezer to
-ignore it instead.
+commit a74762675f700a5473ebe54a671a0788a5b23cc9 upstream.
 
-To make this work with only upstream commits, 5.15.y would need
-commit f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
-which allows non-interruptible sleeps to be woken by the freezer.
+The mptcp_get_int_option() helper is needless open-coded in a
+couple of places, replace the duplicate code with the helper
+call.
 
-Fixes: 9b8a8e5e8129 ("nfsd: don't allow nfsd threads to be signalled.")
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bd11dc4fb969 ("mptcp: fix full TCP keep-alive support")
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/callback.c     |    2 +-
- fs/nfsd/nfs4proc.c    |    3 ++-
- net/sunrpc/svc_xprt.c |    4 ++--
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ net/mptcp/sockopt.c |   20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
---- a/fs/nfs/callback.c
-+++ b/fs/nfs/callback.c
-@@ -124,7 +124,7 @@ nfs41_callback_svc(void *vrqstp)
- 		} else {
- 			spin_unlock_bh(&serv->sv_cb_lock);
- 			if (!kthread_should_stop())
--				schedule();
-+				freezable_schedule();
- 			finish_wait(&serv->sv_cb_waitq, &wq);
- 		}
- 	}
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -38,6 +38,7 @@
- #include <linux/slab.h>
- #include <linux/kthread.h>
- #include <linux/namei.h>
-+#include <linux/freezer.h>
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -621,13 +621,11 @@ static int mptcp_setsockopt_sol_tcp_cork
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct sock *sk = (struct sock *)msk;
+-	int val;
++	int val, ret;
  
- #include <linux/sunrpc/addr.h>
- #include <linux/nfs_ssc.h>
-@@ -1322,7 +1323,7 @@ try_again:
+-	if (optlen < sizeof(int))
+-		return -EINVAL;
+-
+-	if (copy_from_sockptr(&val, optval, sizeof(val)))
+-		return -EFAULT;
++	ret = mptcp_get_int_option(msk, optval, optlen, &val);
++	if (ret)
++		return ret;
  
- 			/* allow 20secs for mount/unmount for now - revisit */
- 			if (kthread_should_stop() ||
--					(schedule_timeout(20*HZ) == 0)) {
-+					(freezable_schedule_timeout(20*HZ) == 0)) {
- 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
- 				kfree(work);
- 				return nfserr_eagain;
---- a/net/sunrpc/svc_xprt.c
-+++ b/net/sunrpc/svc_xprt.c
-@@ -705,7 +705,7 @@ static int svc_alloc_arg(struct svc_rqst
- 			set_current_state(TASK_RUNNING);
- 			return -EINTR;
- 		}
--		schedule_timeout(msecs_to_jiffies(500));
-+		freezable_schedule_timeout(msecs_to_jiffies(500));
- 	}
- 	rqstp->rq_page_end = &rqstp->rq_pages[pages];
- 	rqstp->rq_pages[pages] = NULL; /* this might be seen in nfsd_splice_actor() */
-@@ -765,7 +765,7 @@ static struct svc_xprt *svc_get_next_xpr
- 	smp_mb__after_atomic();
+ 	lock_sock(sk);
+ 	sockopt_seq_inc(msk);
+@@ -651,13 +649,11 @@ static int mptcp_setsockopt_sol_tcp_node
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct sock *sk = (struct sock *)msk;
+-	int val;
+-
+-	if (optlen < sizeof(int))
+-		return -EINVAL;
++	int val, ret;
  
- 	if (likely(rqst_should_sleep(rqstp)))
--		time_left = schedule_timeout(timeout);
-+		time_left = freezable_schedule_timeout(timeout);
- 	else
- 		__set_current_state(TASK_RUNNING);
+-	if (copy_from_sockptr(&val, optval, sizeof(val)))
+-		return -EFAULT;
++	ret = mptcp_get_int_option(msk, optval, optlen, &val);
++	if (ret)
++		return ret;
  
+ 	lock_sock(sk);
+ 	sockopt_seq_inc(msk);
 
 
 
