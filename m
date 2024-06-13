@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-51785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0177590719F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:39:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D914906DE8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9553A28215C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:39:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA6141F218A4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8652C14265E;
-	Thu, 13 Jun 2024 12:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C14146A97;
+	Thu, 13 Jun 2024 12:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5og/RFJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjvZN3M8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F6A1EEE0;
-	Thu, 13 Jun 2024 12:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1289B12C530;
+	Thu, 13 Jun 2024 12:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282307; cv=none; b=igM2LNZiKiSy02lV3YlhZZa6I5CRqM0wkuS5VuUel0PDe7xOA8M7+k6fO+3rBskDwvRTa8YggiG5q2m4X6tnLCOXTfavsvL/SHGg736LGdMFfT0KqKNd/05iW0jF+IlZh/fsAZO0A04jz2XmUTTJcDF/NJwiMUzccV7zzsZRX8A=
+	t=1718280042; cv=none; b=fJDy8BDAM35Ai5AL4ZDVtQWBr1MstyCzirvsTOSIei8oIxlc5H1DAWfFt4/TDgfr4y/FQmzZOIGU9hAJTkC5FJm+ePVKetXvU6KTejWMTyXhol4jGCcyfnM3lS4j0QQKqo9H5z88aYmz62lWaY7krtiQrDqLkYNfC0su8xW+0RU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282307; c=relaxed/simple;
-	bh=avFnPYkHbMQkItqg/BsckRiDPorwVNBg2FvR/Ie/K14=;
+	s=arc-20240116; t=1718280042; c=relaxed/simple;
+	bh=BTYITVFDaH10HGNJ2+7SFwQh/yHBBLFXSziJvUvd4wU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fg0LkcdzKpCJY1wfAto6+3G8qqKn2RQsFoEHvz51YY5CniZvpwYVN4IDS/CpwYcfFOirUmrsqRcKbOT0OF6cFtqwo+vqF3kNKtGRwx/xh9plN3jBpQ179bFmu22kt9IE4iII8A+SP1RqHeFqb0EXFTAwcFrxv1c8ota3ukRNmuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5og/RFJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BF6C2BBFC;
-	Thu, 13 Jun 2024 12:38:26 +0000 (UTC)
+	 MIME-Version; b=Clo5sTlqQ2QkVjO/xQefSL4TcjPH/gDwbLL0Aybs9Ss6N37l1hDhhz8oVZKNAbjZj5Jnl3vuL5kDL5lVbNEGyI5Jroq1gWg2pDIlWzG3C/1g0HCk6FcYZn/w0C2/EaW9+00Oir7EL1yc2Zh0gS1UhZNgoGZrC1xm4Uonk6nmDNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjvZN3M8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5B9C2BBFC;
+	Thu, 13 Jun 2024 12:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282307;
-	bh=avFnPYkHbMQkItqg/BsckRiDPorwVNBg2FvR/Ie/K14=;
+	s=korg; t=1718280042;
+	bh=BTYITVFDaH10HGNJ2+7SFwQh/yHBBLFXSziJvUvd4wU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J5og/RFJN/N+2OupkmMGwNp0VBYPNNoLNVhaVqnWn3w7BbwvvfMUN0PbhbzQ9mN74
-	 ogaeGTRKmmfLJn96pTd3LJebFG7H5BJrsRObXukqPJiSMaDYawjMZnkisyZn06+bXa
-	 TM6GkMM643tlfmukk5wNkUUj/8T1ExwB1PbS29XU=
+	b=fjvZN3M8dZu2xAWXjRQpI8I8EeUBxpjzWsP5oUaTQ/20A3wcs5YYkcXACXSVX/jH7
+	 F/kvJgSkaxwk7X40F0Fh5qqMbYOJeE05FFe4eWNvqWIfmzXUfCn2y9obl9t8imWySO
+	 PCQ7wGVWr6CwInlX+Zw0G5IiUIhQxY553jdcVNZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Vitalii Bursov <vitaly@bursov.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Valentin Schneider <vschneid@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 233/402] f2fs: fix to release node block count in error path of f2fs_new_node_page()
+Subject: [PATCH 5.4 092/202] sched/fair: Allow disabling sched_balance_newidle with sched_relax_domain_level
 Date: Thu, 13 Jun 2024 13:33:10 +0200
-Message-ID: <20240613113311.232925663@linuxfoundation.org>
+Message-ID: <20240613113231.319263254@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Vitalii Bursov <vitaly@bursov.com>
 
-[ Upstream commit 0fa4e57c1db263effd72d2149d4e21da0055c316 ]
+[ Upstream commit a1fd0b9d751f840df23ef0e75b691fc00cfd4743 ]
 
-It missed to call dec_valid_node_count() to release node block count
-in error path, fix it.
+Change relax_domain_level checks so that it would be possible
+to include or exclude all domains from newidle balancing.
 
-Fixes: 141170b759e0 ("f2fs: fix to avoid use f2fs_bug_on() in f2fs_new_node_page()")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+This matches the behavior described in the documentation:
+
+  -1   no request. use system default or follow request of others.
+   0   no search.
+   1   search siblings (hyperthreads in a core).
+
+"2" enables levels 0 and 1, level_max excludes the last (level_max)
+level, and level_max+1 includes all levels.
+
+Fixes: 1d3504fcf560 ("sched, cpuset: customize sched domains, core")
+Signed-off-by: Vitalii Bursov <vitaly@bursov.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Reviewed-by: Valentin Schneider <vschneid@redhat.com>
+Link: https://lore.kernel.org/r/bd6de28e80073c79466ec6401cdeae78f0d4423d.1714488502.git.vitaly@bursov.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/cgroup/cpuset.c  | 2 +-
+ kernel/sched/topology.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index dc85dd55314cc..b6758887540f2 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1300,6 +1300,7 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 5d50ac2f26525..6ec74b9120b75 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -1868,7 +1868,7 @@ bool current_cpuset_is_being_rebound(void)
+ static int update_relax_domain_level(struct cpuset *cs, s64 val)
+ {
+ #ifdef CONFIG_SMP
+-	if (val < -1 || val >= sched_domain_level_max)
++	if (val < -1 || val > sched_domain_level_max + 1)
+ 		return -EINVAL;
+ #endif
+ 
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 844dc30fc5593..fc0dcc812a07b 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1205,7 +1205,7 @@ static void set_domain_attribute(struct sched_domain *sd,
+ 	} else
+ 		request = attr->relax_domain_level;
+ 
+-	if (sd->level > request) {
++	if (sd->level >= request) {
+ 		/* Turn off idle balance on this domain: */
+ 		sd->flags &= ~(SD_BALANCE_WAKE|SD_BALANCE_NEWIDLE);
  	}
- 	if (unlikely(new_ni.blk_addr != NULL_ADDR)) {
- 		err = -EFSCORRUPTED;
-+		dec_valid_node_count(sbi, dn->inode, !ofs);
- 		set_sbi_flag(sbi, SBI_NEED_FSCK);
- 		goto fail;
- 	}
-@@ -1325,7 +1326,6 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
- 	if (ofs == 0)
- 		inc_valid_inode_count(sbi);
- 	return page;
--
- fail:
- 	clear_node_page_dirty(page);
- 	f2fs_put_page(page, 1);
 -- 
 2.43.0
 
