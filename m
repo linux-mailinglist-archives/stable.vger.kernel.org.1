@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-50813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FBD8906CE5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:55:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E6B906BD7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E899B24FDD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:55:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DAFCB20F2B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6AD0149016;
-	Thu, 13 Jun 2024 11:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33861442F3;
+	Thu, 13 Jun 2024 11:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcpmii9X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6Pf0HW2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4D5149006;
-	Thu, 13 Jun 2024 11:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F3D143C57;
+	Thu, 13 Jun 2024 11:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279460; cv=none; b=G/SS2QQS/t9C8i/ZuLGxYz8f8f5UFTN8iGumvauR4w02wySkE27tXu8hncF1CtTlf1N/A49c+Eb+6kSYVs7lxugYVO/cWG3Ys+DbFKVtiXVKxAUb8hD803My7M5xqP9D6GOcWgW9CiFEXu7EFcQZrKv/jfD78jXE0PgYyGzilOY=
+	t=1718279056; cv=none; b=KqQjT5kzYWKvUnq0dyoCxn1qbvi1FuIu/NxkrPvu6C7RNdZq9pRfvoNnXeKTgxs6WMzVsPZ0+3RDzDksT7ErtYpfF32ptOM5kapiA2VkVnXRfgJreeKzVPkRMs29fx8SLkexldU5VAfdCM8g+agITN7I+juvoDHWPvIyMTjfCRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279460; c=relaxed/simple;
-	bh=6ZmXHqjAragdgYxy11F2WZ1Zf5djUWVWCcIJEK9RdGc=;
+	s=arc-20240116; t=1718279056; c=relaxed/simple;
+	bh=H3TzP8yyu6QAs6Wp4mevAi06xjsV6VwGCBz+qg88Azg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6jil7cWpM2w4kDXKfjTfchbtYGnyqkbuGXYfrjZi9stVz/BUrnjjbL1b2scjLflyAtkkmA+5BB6Bo8E8l1YCMAUcErDEZ25Ag6o4nUdWWE4HLANFfERGxZ1GNnzI5he3Kb3XUotgDTKyM5MKe8A8Ve0m407ZOiivINoPulcv1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcpmii9X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179ACC32786;
-	Thu, 13 Jun 2024 11:50:59 +0000 (UTC)
+	 MIME-Version; b=VYeDwCRAcnWdbAo0PhIsX0luRDBjeEEP1LDcpwkVo0yjv1AKSq2lycjnT5nBQqXZbvfuSdSpRPHzAg4u5fUfXU0LneW+K6sV5QtuD9HB4DtjUebT9EorOo6Si1SvrNzcS8UdUA8MXX71PppaUCdPGoIPbjXQHhla6fPuqQwy9nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6Pf0HW2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74221C2BBFC;
+	Thu, 13 Jun 2024 11:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279460;
-	bh=6ZmXHqjAragdgYxy11F2WZ1Zf5djUWVWCcIJEK9RdGc=;
+	s=korg; t=1718279055;
+	bh=H3TzP8yyu6QAs6Wp4mevAi06xjsV6VwGCBz+qg88Azg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dcpmii9XBXCpFw8SML79ZbVWkDQft7bPPYHWUh/c8/gL2mPfDULESTZJ07kkpOVth
-	 gp5XmUhcvn4lEfN3hWleZruKql0i3eaVOrMl2oVmZWAKzRDRx1MI6IDtbgch1H0qm3
-	 kRGm/fD6FgWYRgxEN2B6V3+u56aCPPe3V8r16GqE=
+	b=O6Pf0HW2cLNREKvMwCu/u/8Pyibili5Vs5nupdJ5V4KtRCF5w+KV2AWjQBskVa/Zp
+	 73QzmEGoPUEHjXdMaQ79A2oWR7q6ot4dreGW21yNxLwELjJvP9F+kEE1QrjjfoBjlx
+	 OSZPYZhg91f9udLBuylVJAvl8SL28STfg7KMgN4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
-Subject: [PATCH 6.9 083/157] net/9p: fix uninit-value in p9_client_rpc()
-Date: Thu, 13 Jun 2024 13:33:28 +0200
-Message-ID: <20240613113230.636015710@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.19 161/213] netfilter: nf_tables: drop map element references from preparation phase
+Date: Thu, 13 Jun 2024 13:33:29 +0200
+Message-ID: <20240613113234.197297337@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +61,328 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 25460d6f39024cc3b8241b14c7ccf0d6f11a736a upstream.
+[ Upstream commit 628bd3e49cba1c066228e23d71a852c23e26da73 ]
 
-Syzbot with the help of KMSAN reported the following error:
+set .destroy callback releases the references to other objects in maps.
+This is very late and it results in spurious EBUSY errors. Drop refcount
+from the preparation phase instead, update set backend not to drop
+reference counter from set .destroy path.
 
-BUG: KMSAN: uninit-value in trace_9p_client_res include/trace/events/9p.h:146 [inline]
-BUG: KMSAN: uninit-value in p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
- trace_9p_client_res include/trace/events/9p.h:146 [inline]
- p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
- p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
- v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
- v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
- legacy_get_tree+0x114/0x290 fs/fs_context.c:662
- vfs_get_tree+0xa7/0x570 fs/super.c:1797
- do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
- path_mount+0x742/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount+0x725/0x810 fs/namespace.c:3875
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
+Exceptions: NFT_TRANS_PREPARE_ERROR does not require to drop the
+reference counter because the transaction abort path releases the map
+references for each element since the set is unbound. The abort path
+also deals with releasing reference counter for new elements added to
+unbound sets.
 
-Uninit was created at:
- __alloc_pages+0x9d6/0xe70 mm/page_alloc.c:4598
- __alloc_pages_node include/linux/gfp.h:238 [inline]
- alloc_pages_node include/linux/gfp.h:261 [inline]
- alloc_slab_page mm/slub.c:2175 [inline]
- allocate_slab mm/slub.c:2338 [inline]
- new_slab+0x2de/0x1400 mm/slub.c:2391
- ___slab_alloc+0x1184/0x33d0 mm/slub.c:3525
- __slab_alloc mm/slub.c:3610 [inline]
- __slab_alloc_node mm/slub.c:3663 [inline]
- slab_alloc_node mm/slub.c:3835 [inline]
- kmem_cache_alloc+0x6d3/0xbe0 mm/slub.c:3852
- p9_tag_alloc net/9p/client.c:278 [inline]
- p9_client_prepare_req+0x20a/0x1770 net/9p/client.c:641
- p9_client_rpc+0x27e/0x1340 net/9p/client.c:688
- p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
- v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
- v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
- legacy_get_tree+0x114/0x290 fs/fs_context.c:662
- vfs_get_tree+0xa7/0x570 fs/super.c:1797
- do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
- path_mount+0x742/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount+0x725/0x810 fs/namespace.c:3875
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-If p9_check_errors() fails early in p9_client_rpc(), req->rc.tag
-will not be properly initialized. However, trace_9p_client_res()
-ends up trying to print it out anyway before p9_client_rpc()
-finishes.
-
-Fix this issue by assigning default values to p9_fcall fields
-such as 'tag' and (just in case KMSAN unearths something new) 'id'
-during the tag allocation stage.
-
-Reported-and-tested-by: syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
-Fixes: 348b59012e5c ("net/9p: Convert net/9p protocol dumps to tracepoints")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: stable@vger.kernel.org
-Message-ID: <20240408141039.30428-1-n.zhandarovich@fintech.ru>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Fixes: 591054469b3e ("netfilter: nf_tables: revisit chain/object refcounting from elements")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/9p/client.c |    2 ++
- 1 file changed, 2 insertions(+)
+ include/net/netfilter/nf_tables.h |    5 +-
+ net/netfilter/nf_tables_api.c     |   89 ++++++++++++++++++++++++++++++++++----
+ net/netfilter/nft_set_bitmap.c    |    5 +-
+ net/netfilter/nft_set_hash.c      |   23 +++++++--
+ net/netfilter/nft_set_rbtree.c    |    5 +-
+ 5 files changed, 108 insertions(+), 19 deletions(-)
 
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -235,6 +235,8 @@ static int p9_fcall_init(struct p9_clien
- 	if (!fc->sdata)
- 		return -ENOMEM;
- 	fc->capacity = alloc_msize;
-+	fc->id = 0;
-+	fc->tag = P9_NOTAG;
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -349,7 +349,8 @@ struct nft_set_ops {
+ 	int				(*init)(const struct nft_set *set,
+ 						const struct nft_set_desc *desc,
+ 						const struct nlattr * const nla[]);
+-	void				(*destroy)(const struct nft_set *set);
++	void				(*destroy)(const struct nft_ctx *ctx,
++						   const struct nft_set *set);
+ 	void				(*gc_init)(const struct nft_set *set);
+ 
+ 	unsigned int			elemsize;
+@@ -645,6 +646,8 @@ void *nft_set_elem_init(const struct nft
+ 			u64 timeout, gfp_t gfp);
+ void nft_set_elem_destroy(const struct nft_set *set, void *elem,
+ 			  bool destroy_expr);
++void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
++				const struct nft_set *set, void *elem);
+ 
+ /**
+  *	struct nft_set_gc_batch_head - nf_tables set garbage collection batch
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -388,6 +388,31 @@ static int nft_trans_set_add(const struc
  	return 0;
+ }
+ 
++static void nft_setelem_data_deactivate(const struct net *net,
++					const struct nft_set *set,
++					struct nft_set_elem *elem);
++
++static int nft_mapelem_deactivate(const struct nft_ctx *ctx,
++				  struct nft_set *set,
++				  const struct nft_set_iter *iter,
++				  struct nft_set_elem *elem)
++{
++	nft_setelem_data_deactivate(ctx->net, set, elem);
++
++	return 0;
++}
++
++static void nft_map_deactivate(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	struct nft_set_iter iter = {
++		.genmask	= nft_genmask_next(ctx->net),
++		.fn		= nft_mapelem_deactivate,
++	};
++
++	set->ops->walk(ctx, set, &iter);
++	WARN_ON_ONCE(iter.err);
++}
++
+ static int nft_delset(const struct nft_ctx *ctx, struct nft_set *set)
+ {
+ 	int err;
+@@ -396,6 +421,9 @@ static int nft_delset(const struct nft_c
+ 	if (err < 0)
+ 		return err;
+ 
++	if (set->flags & (NFT_SET_MAP | NFT_SET_OBJECT))
++		nft_map_deactivate(ctx, set);
++
+ 	nft_deactivate_next(ctx->net, set);
+ 	nft_use_dec(&ctx->table->use);
+ 
+@@ -3741,7 +3769,7 @@ static int nf_tables_newset(struct net *
+ 	return 0;
+ 
+ err4:
+-	ops->destroy(set);
++	ops->destroy(&ctx, set);
+ err3:
+ 	kfree(set->name);
+ err2:
+@@ -3758,7 +3786,7 @@ static void nft_set_destroy(const struct
+ 	if (WARN_ON(set->use > 0))
+ 		return;
+ 
+-	set->ops->destroy(set);
++	set->ops->destroy(ctx, set);
+ 	module_put(to_set_type(set->ops)->owner);
+ 	kfree(set->name);
+ 	kvfree(set);
+@@ -3883,10 +3911,39 @@ void nf_tables_unbind_set(const struct n
+ }
+ EXPORT_SYMBOL_GPL(nf_tables_unbind_set);
+ 
++static void nft_setelem_data_activate(const struct net *net,
++				      const struct nft_set *set,
++				      struct nft_set_elem *elem);
++
++static int nft_mapelem_activate(const struct nft_ctx *ctx,
++				struct nft_set *set,
++				const struct nft_set_iter *iter,
++				struct nft_set_elem *elem)
++{
++	nft_setelem_data_activate(ctx->net, set, elem);
++
++	return 0;
++}
++
++static void nft_map_activate(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	struct nft_set_iter iter = {
++		.genmask	= nft_genmask_next(ctx->net),
++		.fn		= nft_mapelem_activate,
++	};
++
++	set->ops->walk(ctx, set, &iter);
++	WARN_ON_ONCE(iter.err);
++}
++
+ void nf_tables_activate_set(const struct nft_ctx *ctx, struct nft_set *set)
+ {
+-	if (nft_set_is_anonymous(set))
++	if (nft_set_is_anonymous(set)) {
++		if (set->flags & (NFT_SET_MAP | NFT_SET_OBJECT))
++			nft_map_activate(ctx, set);
++
+ 		nft_clear(ctx->net, set);
++	}
+ 
+ 	nft_use_inc_restore(&set->use);
+ }
+@@ -3907,13 +3964,20 @@ void nf_tables_deactivate_set(const stru
+ 		nft_use_dec(&set->use);
+ 		break;
+ 	case NFT_TRANS_PREPARE:
+-		if (nft_set_is_anonymous(set))
+-			nft_deactivate_next(ctx->net, set);
++		if (nft_set_is_anonymous(set)) {
++			if (set->flags & (NFT_SET_MAP | NFT_SET_OBJECT))
++				nft_map_deactivate(ctx, set);
+ 
++			nft_deactivate_next(ctx->net, set);
++		}
+ 		nft_use_dec(&set->use);
+ 		return;
+ 	case NFT_TRANS_ABORT:
+ 	case NFT_TRANS_RELEASE:
++		if (nft_set_is_anonymous(set) &&
++		    set->flags & (NFT_SET_MAP | NFT_SET_OBJECT))
++			nft_map_deactivate(ctx, set);
++
+ 		nft_use_dec(&set->use);
+ 		/* fall through */
+ 	default:
+@@ -4473,6 +4537,7 @@ void *nft_set_elem_init(const struct nft
+ 	return elem;
+ }
+ 
++/* Drop references and destroy. Called from gc, dynset and abort path. */
+ void nft_set_elem_destroy(const struct nft_set *set, void *elem,
+ 			  bool destroy_expr)
+ {
+@@ -4501,11 +4566,11 @@ void nft_set_elem_destroy(const struct n
+ }
+ EXPORT_SYMBOL_GPL(nft_set_elem_destroy);
+ 
+-/* Only called from commit path, nft_setelem_data_deactivate() already deals
+- * with the refcounting from the preparation phase.
++/* Destroy element. References have been already dropped in the preparation
++ * path via nft_setelem_data_deactivate().
+  */
+-static void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
+-				       const struct nft_set *set, void *elem)
++void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
++				const struct nft_set *set, void *elem)
+ {
+ 	struct nft_set_ext *ext = nft_set_elem_ext(set, elem);
+ 
+@@ -4513,6 +4578,7 @@ static void nf_tables_set_elem_destroy(c
+ 		nf_tables_expr_destroy(ctx, nft_set_ext_expr(ext));
+ 	kfree(elem);
+ }
++EXPORT_SYMBOL_GPL(nf_tables_set_elem_destroy);
+ 
+ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 			    const struct nlattr *attr, u32 nlmsg_flags)
+@@ -6940,6 +7006,8 @@ static int __nf_tables_abort(struct net
+ 		case NFT_MSG_DELSET:
+ 			nft_use_inc_restore(&trans->ctx.table->use);
+ 			nft_clear(trans->ctx.net, nft_trans_set(trans));
++			if (nft_trans_set(trans)->flags & (NFT_SET_MAP | NFT_SET_OBJECT))
++				nft_map_activate(&trans->ctx, nft_trans_set(trans));
+ 			nft_trans_destroy(trans);
+ 			break;
+ 		case NFT_MSG_NEWSETELEM:
+@@ -7604,6 +7672,9 @@ static void __nft_release_table(struct n
+ 	list_for_each_entry_safe(set, ns, &table->sets, list) {
+ 		list_del(&set->list);
+ 		nft_use_dec(&table->use);
++		if (set->flags & (NFT_SET_MAP | NFT_SET_OBJECT))
++			nft_map_deactivate(&ctx, set);
++
+ 		nft_set_destroy(&ctx, set);
+ 	}
+ 	list_for_each_entry_safe(obj, ne, &table->objects, list) {
+--- a/net/netfilter/nft_set_bitmap.c
++++ b/net/netfilter/nft_set_bitmap.c
+@@ -273,13 +273,14 @@ static int nft_bitmap_init(const struct
+ 	return 0;
+ }
+ 
+-static void nft_bitmap_destroy(const struct nft_set *set)
++static void nft_bitmap_destroy(const struct nft_ctx *ctx,
++			       const struct nft_set *set)
+ {
+ 	struct nft_bitmap *priv = nft_set_priv(set);
+ 	struct nft_bitmap_elem *be, *n;
+ 
+ 	list_for_each_entry_safe(be, n, &priv->list, head)
+-		nft_set_elem_destroy(set, be, true);
++		nf_tables_set_elem_destroy(ctx, set, be);
+ }
+ 
+ static bool nft_bitmap_estimate(const struct nft_set_desc *desc, u32 features,
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -379,19 +379,31 @@ static int nft_rhash_init(const struct n
+ 	return 0;
+ }
+ 
++struct nft_rhash_ctx {
++	const struct nft_ctx	ctx;
++	const struct nft_set	*set;
++};
++
+ static void nft_rhash_elem_destroy(void *ptr, void *arg)
+ {
+-	nft_set_elem_destroy(arg, ptr, true);
++	struct nft_rhash_ctx *rhash_ctx = arg;
++
++	nf_tables_set_elem_destroy(&rhash_ctx->ctx, rhash_ctx->set, ptr);
+ }
+ 
+-static void nft_rhash_destroy(const struct nft_set *set)
++static void nft_rhash_destroy(const struct nft_ctx *ctx,
++			      const struct nft_set *set)
+ {
+ 	struct nft_rhash *priv = nft_set_priv(set);
++	struct nft_rhash_ctx rhash_ctx = {
++		.ctx	= *ctx,
++		.set	= set,
++	};
+ 
+ 	cancel_delayed_work_sync(&priv->gc_work);
+ 	rcu_barrier();
+ 	rhashtable_free_and_destroy(&priv->ht, nft_rhash_elem_destroy,
+-				    (void *)set);
++				    (void *)&rhash_ctx);
+ }
+ 
+ /* Number of buckets is stored in u32, so cap our result to 1U<<31 */
+@@ -629,7 +641,8 @@ static int nft_hash_init(const struct nf
+ 	return 0;
+ }
+ 
+-static void nft_hash_destroy(const struct nft_set *set)
++static void nft_hash_destroy(const struct nft_ctx *ctx,
++			     const struct nft_set *set)
+ {
+ 	struct nft_hash *priv = nft_set_priv(set);
+ 	struct nft_hash_elem *he;
+@@ -639,7 +652,7 @@ static void nft_hash_destroy(const struc
+ 	for (i = 0; i < priv->buckets; i++) {
+ 		hlist_for_each_entry_safe(he, next, &priv->table[i], node) {
+ 			hlist_del_rcu(&he->node);
+-			nft_set_elem_destroy(set, he, true);
++			nf_tables_set_elem_destroy(ctx, set, he);
+ 		}
+ 	}
+ }
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -466,7 +466,8 @@ static int nft_rbtree_init(const struct
+ 	return 0;
+ }
+ 
+-static void nft_rbtree_destroy(const struct nft_set *set)
++static void nft_rbtree_destroy(const struct nft_ctx *ctx,
++			       const struct nft_set *set)
+ {
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	struct nft_rbtree_elem *rbe;
+@@ -477,7 +478,7 @@ static void nft_rbtree_destroy(const str
+ 	while ((node = priv->root.rb_node) != NULL) {
+ 		rb_erase(node, &priv->root);
+ 		rbe = rb_entry(node, struct nft_rbtree_elem, node);
+-		nft_set_elem_destroy(set, rbe, true);
++		nf_tables_set_elem_destroy(ctx, set, rbe);
+ 	}
  }
  
 
