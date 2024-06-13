@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-51768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9335E907189
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:38:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB18A90701F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32069B25B0E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:38:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DABDEB29DFE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6E0144D1A;
-	Thu, 13 Jun 2024 12:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F75144D18;
+	Thu, 13 Jun 2024 12:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7gn1iYC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEQTcRk0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A23C144D0B;
-	Thu, 13 Jun 2024 12:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9684181ABF;
+	Thu, 13 Jun 2024 12:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282256; cv=none; b=H/WroBlkdXR9d5Keekuqu9Db27FHzfjS/xVn02EnwYimXniF5IACt6XusWIidR/FAjQc2vOQB0vOiaGO8PwyykTL/DkF8+dTHSzzIjjM2cAXhVxfEr5zimrEbaJvBagcmVwHxkHn9WAZTaVgWDmBCb7YdaWa8wMSej8/dBCkpnA=
+	t=1718281139; cv=none; b=aWuXCo0T+rLmGt7LOVimGx7AfK+zO/Z/KEzY8VXDQfRd5mIxZEgMrFwtSnV00UEg08CSnUz74Lfjs11jhbucQmAHs51eaFjPm4kPse//itRgQjgly/uF+Hpm0f/D2tEnw81uE+6Ml+7mRC/GY1Ag9HWHRFDd9X+EGlYFq6I7Qc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282256; c=relaxed/simple;
-	bh=2YGhwGGMmnkD/ru9J4BKN6ORPeC7sWZi6yQteSjboak=;
+	s=arc-20240116; t=1718281139; c=relaxed/simple;
+	bh=QF1+vh0D1aZCmKpLUrGi9Am+VtwD/qWhooosGN89QKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hwlU1DN1lI5c5x8I87HeDwUDuDRA2fljPAXhx2+XO7HMurnLProIidykdo8vX+o2kuqFrOOUqKULsOxljeHxCv8Lf59UHWtG7HR2pSvsW7g9GLB+IVqy25B/PGtk/0Ku+YAQ7u5wQYL6pBFyPrtXvfxy2n6t5qY43BDiF6OQRyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7gn1iYC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719FAC4AF51;
-	Thu, 13 Jun 2024 12:37:35 +0000 (UTC)
+	 MIME-Version; b=ZroXuUBEQptg1a65I4FyAs3dp0h/vayza7tm7NfFG+VCtJckfijbnFqmwye8Yucyk/O73h1RQx08t9WaMOtRWfcuT7MCytryhZHfgGU1WpNe8Q0XRBgHwLedYi3hNppv19auepfi+8bsGSFaIoGVhOVqZjdU1snvCQfcH4KpP+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEQTcRk0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC06C2BBFC;
+	Thu, 13 Jun 2024 12:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282255;
-	bh=2YGhwGGMmnkD/ru9J4BKN6ORPeC7sWZi6yQteSjboak=;
+	s=korg; t=1718281139;
+	bh=QF1+vh0D1aZCmKpLUrGi9Am+VtwD/qWhooosGN89QKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U7gn1iYCgX+QeV2qCe6uEk7rd5ZZZjMUFBCZBDr166j2Llduh+8/8rsV4PTw4l0b4
-	 iaTv+JKIFw8jTB1lF1RArnjeLMu+iJfcwaIX+jVCHrqA0xtTylNzTLiJsLjl1QelnH
-	 voTuWkmqqHqt5A7VVS0yZxFRMOCeXbNsGmj0VZIU=
+	b=wEQTcRk0+H5lt/wYWPAKXQlTbXaXfWk8p2/F/IrqI3PMwCuQ2da0lNDGfO9tDE4wA
+	 NFBiV25YfBS15srVYfyxoXyL+JZ6GNYc1k4MhotsPMEG6H/yaWeUek8jvVidodYaFe
+	 c+2yoznQSXUCDFxo2vAKi2vAnrtTZ/xgk5tDTbRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Chao Yu <yuchao0@huawei.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 214/402] perf intel-pt: Fix unassigned instruction op (discovered by MemorySanitizer)
+Subject: [PATCH 5.10 153/317] f2fs: compress: remove unneeded preallocation
 Date: Thu, 13 Jun 2024 13:32:51 +0200
-Message-ID: <20240613113310.497334696@linuxfoundation.org>
+Message-ID: <20240613113253.482912794@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Chao Yu <yuchao0@huawei.com>
 
-[ Upstream commit e101a05f79fd4ee3e89d2f3fb716493c33a33708 ]
+[ Upstream commit 8f1d49832636d514e949b29ce64370ebebf6d6d2 ]
 
-MemorySanitizer discovered instances where the instruction op value was
-not assigned.:
+We will reserve iblocks for compression saved, so during compressed
+cluster overwrite, we don't need to preallocate blocks for later
+write.
 
-  WARNING: MemorySanitizer: use-of-uninitialized-value
-    #0 0x5581c00a76b3 in intel_pt_sample_flags tools/perf/util/intel-pt.c:1527:17
-  Uninitialized value was stored to memory at
-    #0 0x5581c005ddf8 in intel_pt_walk_insn tools/perf/util/intel-pt-decoder/intel-pt-decoder.c:1256:25
+In addition, it adds a bug_on to detect wrong reserved iblock number
+in __f2fs_cluster_blocks().
 
-The op value is used to set branch flags for branch instructions
-encountered when walking the code, so fix by setting op to
-INTEL_PT_OP_OTHER in other cases.
+Bug fix in the original patch by Jaegeuk:
+If we released compressed blocks having an immutable bit, we can see less
+number of compressed block addresses. Let's fix wrong BUG_ON.
 
-Fixes: 4c761d805bb2d2ea ("perf intel-pt: Fix intel_pt_fup_event() assumptions about setting state type")
-Reported-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Closes: https://lore.kernel.org/linux-perf-users/20240320162619.1272015-1-irogers@google.com/
-Link: https://lore.kernel.org/r/20240326083223.10883-1-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Chao Yu <yuchao0@huawei.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 7c5dffb3d90c ("f2fs: compress: fix to relocate check condition in f2fs_{release,reserve}_compress_blocks()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/intel-pt-decoder/intel-pt-decoder.c | 2 ++
- tools/perf/util/intel-pt.c                          | 2 ++
- 2 files changed, 4 insertions(+)
+ fs/f2fs/compress.c | 27 +++------------------------
+ fs/f2fs/file.c     |  4 ----
+ 2 files changed, 3 insertions(+), 28 deletions(-)
 
-diff --git a/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c b/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
-index b9f94f198a3eb..3530551b82819 100644
---- a/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
-+++ b/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
-@@ -1215,6 +1215,8 @@ static bool intel_pt_fup_event(struct intel_pt_decoder *decoder)
- 	bool ret = false;
- 
- 	decoder->state.type &= ~INTEL_PT_BRANCH;
-+	decoder->state.insn_op = INTEL_PT_OP_OTHER;
-+	decoder->state.insn_len = 0;
- 
- 	if (decoder->set_fup_tx_flags) {
- 		decoder->set_fup_tx_flags = false;
-diff --git a/tools/perf/util/intel-pt.c b/tools/perf/util/intel-pt.c
-index 805bad9364e94..b00776c65c186 100644
---- a/tools/perf/util/intel-pt.c
-+++ b/tools/perf/util/intel-pt.c
-@@ -721,6 +721,7 @@ static int intel_pt_walk_next_insn(struct intel_pt_insn *intel_pt_insn,
- 	bool nr;
- 
- 	intel_pt_insn->length = 0;
-+	intel_pt_insn->op = INTEL_PT_OP_OTHER;
- 
- 	if (to_ip && *ip == to_ip)
- 		goto out_no_cache;
-@@ -816,6 +817,7 @@ static int intel_pt_walk_next_insn(struct intel_pt_insn *intel_pt_insn,
- 
- 			if (to_ip && *ip == to_ip) {
- 				intel_pt_insn->length = 0;
-+				intel_pt_insn->op = INTEL_PT_OP_OTHER;
- 				goto out_no_cache;
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index 04b6de1a58744..388ed7052d9b6 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -900,6 +900,9 @@ static int __f2fs_cluster_blocks(struct inode *inode,
+ 					ret++;
  			}
+ 		}
++
++		f2fs_bug_on(F2FS_I_SB(inode),
++			!compr && ret != cluster_size && !IS_IMMUTABLE(inode));
+ 	}
+ fail:
+ 	f2fs_put_dnode(&dn);
+@@ -960,21 +963,16 @@ static int prepare_compress_overwrite(struct compress_ctx *cc,
+ 	struct f2fs_sb_info *sbi = F2FS_I_SB(cc->inode);
+ 	struct address_space *mapping = cc->inode->i_mapping;
+ 	struct page *page;
+-	struct dnode_of_data dn;
+ 	sector_t last_block_in_bio;
+ 	unsigned fgp_flag = FGP_LOCK | FGP_WRITE | FGP_CREAT;
+ 	pgoff_t start_idx = start_idx_of_cluster(cc);
+ 	int i, ret;
+-	bool prealloc;
  
+ retry:
+ 	ret = f2fs_is_compressed_cluster(cc->inode, start_idx);
+ 	if (ret <= 0)
+ 		return ret;
+ 
+-	/* compressed case */
+-	prealloc = (ret < cc->cluster_size);
+-
+ 	ret = f2fs_init_compress_ctx(cc);
+ 	if (ret)
+ 		return ret;
+@@ -1032,25 +1030,6 @@ static int prepare_compress_overwrite(struct compress_ctx *cc,
+ 		}
+ 	}
+ 
+-	if (prealloc) {
+-		f2fs_do_map_lock(sbi, F2FS_GET_BLOCK_PRE_AIO, true);
+-
+-		set_new_dnode(&dn, cc->inode, NULL, NULL, 0);
+-
+-		for (i = cc->cluster_size - 1; i > 0; i--) {
+-			ret = f2fs_get_block(&dn, start_idx + i);
+-			if (ret) {
+-				i = cc->cluster_size;
+-				break;
+-			}
+-
+-			if (dn.data_blkaddr != NEW_ADDR)
+-				break;
+-		}
+-
+-		f2fs_do_map_lock(sbi, F2FS_GET_BLOCK_PRE_AIO, false);
+-	}
+-
+ 	if (likely(!ret)) {
+ 		*fsdata = cc->rpages;
+ 		*pagep = cc->rpages[offset_in_cluster(cc, index)];
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 678d72a870259..8b136f2dc2d22 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -81,10 +81,6 @@ static vm_fault_t f2fs_vm_page_mkwrite(struct vm_fault *vmf)
+ 			err = ret;
+ 			goto err;
+ 		} else if (ret) {
+-			if (ret < F2FS_I(inode)->i_cluster_size) {
+-				err = -EAGAIN;
+-				goto err;
+-			}
+ 			need_alloc = false;
+ 		}
+ 	}
 -- 
 2.43.0
 
