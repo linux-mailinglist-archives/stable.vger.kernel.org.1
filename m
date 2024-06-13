@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-50664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5757906BC9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A237906C95
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64313B22EA2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23545281F3F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BDB143C6F;
-	Thu, 13 Jun 2024 11:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32AFA144D24;
+	Thu, 13 Jun 2024 11:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTou2NNU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0fIChAW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68216143870;
-	Thu, 13 Jun 2024 11:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E655B14386B;
+	Thu, 13 Jun 2024 11:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279026; cv=none; b=J4Mc/rro/gW4a77CKaduo8NYDgtefwDZoJC8NyMAjK+J9r1VuW0AzNKBu+XKwaR4v3xyrLs3AoExnI7QQwz21ODBcBISgtYV6klYmqspC4dNM2qYYGTHP832aPhqAlCL71upOYZYS8WWzX1i9NK8VVDY4xnogRoPzEUWxQVUpqg=
+	t=1718279346; cv=none; b=juOiy3+QgB4K6z4vPHEawsJ4kKGU5pm/PpFt4yfzVCi51JTiMsQzO8EfJrXDlMMZFrLv5UB/p7xGc59N72Cvot5mlsMlPjLzY/j4Bba3iRqr1j1SpgOATLXveDqRan+13kCo/DsHI6I5siic9ZtWXybnJyWRZP2xmxrNVWTLbKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279026; c=relaxed/simple;
-	bh=B0XxeoU2YrDrUVIh63hK7FuPSunOVqIcM9l5E0MbyRQ=;
+	s=arc-20240116; t=1718279346; c=relaxed/simple;
+	bh=6/L9qMaaEvyi3JvLAxJqu3Z2qauXRrtz4D7ltyPhRi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ltt3XyIIBLdw4L4/9K4pge4a1ltesbsBgi+x8J1muhNV8nlq4q5dSr0MuEkxJsQsUQ6AUjrPA1niac4YLcOUleTFM1jd0xpOHgzZ37xFeR1N9ZsTvKROvk23jwKjTPWoTgZ1ENEcaKcYTzX67Wz7cLZdVVgNB1OJAW90423qWXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTou2NNU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A31C2BBFC;
-	Thu, 13 Jun 2024 11:43:45 +0000 (UTC)
+	 MIME-Version; b=Dnvk4zHUNe0NtB1QVh47l6BLY6Fb9Glq9X5r816ByFIW2vznXej5uxB4b661YapdDJe0ljUdwA/HwW/qFBbR/vdInUhMslpbR2qNv+ozeK7P4A/mE9AaGO93DuTa6DKGHJokrZ6QRk0yUwl986nlmw6j9DbeZWBTvY8CYl9/QFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0fIChAW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6470CC2BBFC;
+	Thu, 13 Jun 2024 11:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279026;
-	bh=B0XxeoU2YrDrUVIh63hK7FuPSunOVqIcM9l5E0MbyRQ=;
+	s=korg; t=1718279345;
+	bh=6/L9qMaaEvyi3JvLAxJqu3Z2qauXRrtz4D7ltyPhRi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTou2NNUJ6mvKjT2njkWNHRew5BVSqWwlWhkxsintqbOHm1lonS3aXN99VbAxAv7k
-	 GmRyKoBVZnHKvqB6af0wfzY7onauvXYv8M/nTemqqHjvX55UM8EwNaeS10aaqfmOYS
-	 /8ImG+zuqw71dvdDYaI5Uup2p9i8aSTxhXONhoOU=
+	b=p0fIChAWQ4iTwR/DTTrjITFJWpOlWcv2HOSFQ+ZGzQO4JfgfSmOqB5OSb6T5XGlhG
+	 pQvCxliRrBfrZ0TyuBi41iBwf5fiyjfuMP1TIJ/SHQ20nDievWtUcwY4dnKw26hSMy
+	 8SuqHpnJEhahhST9yK5V+J6Y1beQcdi0rModHyFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 120/213] x86/kconfig: Select ARCH_WANT_FRAME_POINTERS again when UNWINDER_FRAME_POINTER=y
-Date: Thu, 13 Jun 2024 13:32:48 +0200
-Message-ID: <20240613113232.627142143@linuxfoundation.org>
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.9 044/157] mmc: core: Add mmc_gpiod_set_cd_config() function
+Date: Thu, 13 Jun 2024 13:32:49 +0200
+Message-ID: <20240613113229.131871446@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 66ee3636eddcc82ab82b539d08b85fb5ac1dff9b ]
+commit 63a7cd660246aa36af263b85c33ecc6601bf04be upstream.
 
-It took me some time to understand the purpose of the tricky code at
-the end of arch/x86/Kconfig.debug.
+Some mmc host drivers may need to fixup a card-detection GPIO's config
+to e.g. enable the GPIO controllers builtin pull-up resistor on devices
+where the firmware description of the GPIO is broken (e.g. GpioInt with
+PullNone instead of PullUp in ACPI DSDT).
 
-Without it, the following would be shown:
+Since this is the exception rather then the rule adding a config
+parameter to mmc_gpiod_request_cd() seems undesirable, so instead
+add a new mmc_gpiod_set_cd_config() function. This is simply a wrapper
+to call gpiod_set_config() on the card-detect GPIO acquired through
+mmc_gpiod_request_cd().
 
-  WARNING: unmet direct dependencies detected for FRAME_POINTER
-
-because
-
-  81d387190039 ("x86/kconfig: Consolidate unwinders into multiple choice selection")
-
-removed 'select ARCH_WANT_FRAME_POINTERS'.
-
-The correct and more straightforward approach should have been to move
-it where 'select FRAME_POINTER' is located.
-
-Several architectures properly handle the conditional selection of
-ARCH_WANT_FRAME_POINTERS. For example, 'config UNWINDER_FRAME_POINTER'
-in arch/arm/Kconfig.debug.
-
-Fixes: 81d387190039 ("x86/kconfig: Consolidate unwinders into multiple choice selection")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20240204122003.53795-1-masahiroy@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240410191639.526324-2-hdegoede@redhat.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/Kconfig.debug | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/mmc/core/slot-gpio.c  |   20 ++++++++++++++++++++
+ include/linux/mmc/slot-gpio.h |    1 +
+ 2 files changed, 21 insertions(+)
 
-diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
-index 687cd1a213d50..82170d6257b1c 100644
---- a/arch/x86/Kconfig.debug
-+++ b/arch/x86/Kconfig.debug
-@@ -376,6 +376,7 @@ config UNWINDER_ORC
+--- a/drivers/mmc/core/slot-gpio.c
++++ b/drivers/mmc/core/slot-gpio.c
+@@ -221,6 +221,26 @@ int mmc_gpiod_request_cd(struct mmc_host
+ }
+ EXPORT_SYMBOL(mmc_gpiod_request_cd);
  
- config UNWINDER_FRAME_POINTER
- 	bool "Frame pointer unwinder"
-+	select ARCH_WANT_FRAME_POINTERS
- 	select FRAME_POINTER
- 	---help---
- 	  This option enables the frame pointer unwinder for unwinding kernel
-@@ -403,7 +404,3 @@ config UNWINDER_GUESS
- 	  overhead.
- 
- endchoice
--
--config FRAME_POINTER
--	depends on !UNWINDER_ORC && !UNWINDER_GUESS
--	bool
--- 
-2.43.0
-
++/**
++ * mmc_gpiod_set_cd_config - set config for card-detection GPIO
++ * @host: mmc host
++ * @config: Generic pinconf config (from pinconf_to_config_packed())
++ *
++ * This can be used by mmc host drivers to fixup a card-detection GPIO's config
++ * (e.g. set PIN_CONFIG_BIAS_PULL_UP) after acquiring the GPIO descriptor
++ * through mmc_gpiod_request_cd().
++ *
++ * Returns:
++ * 0 on success, or a negative errno value on error.
++ */
++int mmc_gpiod_set_cd_config(struct mmc_host *host, unsigned long config)
++{
++	struct mmc_gpio *ctx = host->slot.handler_priv;
++
++	return gpiod_set_config(ctx->cd_gpio, config);
++}
++EXPORT_SYMBOL(mmc_gpiod_set_cd_config);
++
+ bool mmc_can_gpio_cd(struct mmc_host *host)
+ {
+ 	struct mmc_gpio *ctx = host->slot.handler_priv;
+--- a/include/linux/mmc/slot-gpio.h
++++ b/include/linux/mmc/slot-gpio.h
+@@ -21,6 +21,7 @@ int mmc_gpiod_request_cd(struct mmc_host
+ 			 unsigned int debounce);
+ int mmc_gpiod_request_ro(struct mmc_host *host, const char *con_id,
+ 			 unsigned int idx, unsigned int debounce);
++int mmc_gpiod_set_cd_config(struct mmc_host *host, unsigned long config);
+ void mmc_gpio_set_cd_isr(struct mmc_host *host,
+ 			 irqreturn_t (*isr)(int irq, void *dev_id));
+ int mmc_gpio_set_cd_wake(struct mmc_host *host, bool on);
 
 
 
