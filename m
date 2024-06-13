@@ -1,56 +1,68 @@
-Return-Path: <stable+bounces-51370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C115906F9E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B22390716E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:37:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A570C1C231F8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C554281E8B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC371448F1;
-	Thu, 13 Jun 2024 12:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FA6441D;
+	Thu, 13 Jun 2024 12:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TtQqoOD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/CcFr7R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A497F143892;
-	Thu, 13 Jun 2024 12:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BA9161;
+	Thu, 13 Jun 2024 12:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281098; cv=none; b=pSKgTgjTilD2GhoRjQdhbhizzRny02ouMPEUlMihlaKpS/h6zMD7g5LG93eTLeWjr0km8L5rSbamhpACPTzDrAr6yHljk7rVsZuyYhhOBxfSZyzqXCfGUqGV85Fjlm2Br4Id0CVxFByQ2/9uu53k13u5+IRhSt4K1JKuORJzyJ0=
+	t=1718282215; cv=none; b=ehCVCdNIjzJxydp9bzYVgGpgKjxksN7mgyC2eqa7f13ykXKqWeWUBlfwJjGgW5ulerr0QZOoWTL0z7zj+vq1BjGRmGiuOEyXdWDbUghNMagmKtnWIuBryUOFiGhKE+ATYDq4kzu9KdFq0M7Lx7KYb+Ej8RIl5SICDorLwaYkAi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281098; c=relaxed/simple;
-	bh=XMUUCXhHPJvpQY/0nAaMSW9ffPTcCqnNfu5ClF/7cCw=;
+	s=arc-20240116; t=1718282215; c=relaxed/simple;
+	bh=Lmm6tXZTC3jIXcaeCEEA6/VnvpVEp8ej1EHFZPnras8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PD3o54TwtXSpemrQWU7s0nPpqPO2JmFMMqSbVbF9btASAGRL0qfr2B2ki++thCqoArHK0MYqHwEMj4+ISNUuWc7+QA+0xitlt9OWnaO6lRA+N3tp7D69pHPc+0mWoVgg1vKdtJb/2gRVyc64OoXsUZKfTjyYg1kB2ps8KF2h3hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TtQqoOD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F56C2BBFC;
-	Thu, 13 Jun 2024 12:18:17 +0000 (UTC)
+	 MIME-Version; b=s29GCX9WeIuv1x8k7F/cXyoPTELVD2QH1tIGgM4iA5FSHPo3xCTL010BzZ9EfdqVNjraajjAvpWsLMSt3rQAJHXj378//DMTGakQNufWOl+qhKYhQPv+lpWG5MtxppNSRVzEixDI6qU6TWN3xRJwQ3T8ni08iu45vtLvQT1k+QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/CcFr7R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0997C2BBFC;
+	Thu, 13 Jun 2024 12:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281098;
-	bh=XMUUCXhHPJvpQY/0nAaMSW9ffPTcCqnNfu5ClF/7cCw=;
+	s=korg; t=1718282214;
+	bh=Lmm6tXZTC3jIXcaeCEEA6/VnvpVEp8ej1EHFZPnras8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1TtQqoODMqKT+/z5KBFzEeS5wCr9NX6IxIJSzcpoRW42TxZlcgvV+/gAnFUSExDDO
-	 6Mzcvh0+ZmXhk5nuMtsz7VxnXlFeC01J3IRMzf/YwcVMGPQRoZ0wA/b7q8ZU4kd8qe
-	 Tr0DY7jasg+uCyQTKpcs1LK6zj/lFIYQO1eJwkOE=
+	b=u/CcFr7RwuSDJy+zhhOm7Q8n2xy5ztaLRtei9DJSLtLt4wv3dO4EIV8OVflFUTDfb
+	 z1AaDGsF9YaBEP5a1sgqjKC75vZvl6FqvMNwdE9JLRWTv0q5r+g7uM0cuSoPWfH0sT
+	 noqGzhKf4d+nRaRIG+v8QVzqjOMNwsWFLuBQqOms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20Li=C5=A1ka?= <mliska@suse.cz>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@arm.com>,
+	Leo Yan <leo.yan@linaro.org>,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	coresight@lists.linaro.org,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 140/317] perf annotate: Add --demangle and --demangle-kernel
+Subject: [PATCH 5.15 201/402] coresight: etm4x: Fix unbalanced pm_runtime_enable()
 Date: Thu, 13 Jun 2024 13:32:38 +0200
-Message-ID: <20240613113252.983097401@linuxfoundation.org>
+Message-ID: <20240613113309.983930117@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +72,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Liška <mliska@suse.cz>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-[ Upstream commit 3406ac5347dbf64ab9f7b137ed25a18493f5ea2d ]
+[ Upstream commit caa41c47dab7e1054f587e592ab21296e3a6781c ]
 
-'perf annotate' supports --symbol but it's impossible to filter a C++
-symbol. With --no-demangle one can filter easily by mangled function
-name.
+There is an unbalanced pm_runtime_enable() in etm4_probe_platform_dev()
+when etm4_probe() fails. This problem can be observed via the coresight
+etm4 module's (load -> unload -> load) sequence when etm4_probe() fails
+in etm4_probe_platform_dev().
 
-Signed-off-by: Martin Liška <mliska@suse.cz>
-Link: http://lore.kernel.org/lkml/c3c7e959-9f7f-18e2-e795-f604275cbac3@suse.cz
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 374af9f1f06b ("perf annotate: Get rid of duplicate --group option item")
+[   63.379943] coresight-etm4x 7040000.etm: Unbalanced pm_runtime_enable!
+[   63.393630] coresight-etm4x 7140000.etm: Unbalanced pm_runtime_enable!
+[   63.407455] coresight-etm4x 7240000.etm: Unbalanced pm_runtime_enable!
+[   63.420983] coresight-etm4x 7340000.etm: Unbalanced pm_runtime_enable!
+[   63.420999] coresight-etm4x 7440000.etm: Unbalanced pm_runtime_enable!
+[   63.441209] coresight-etm4x 7540000.etm: Unbalanced pm_runtime_enable!
+[   63.454689] coresight-etm4x 7640000.etm: Unbalanced pm_runtime_enable!
+[   63.474982] coresight-etm4x 7740000.etm: Unbalanced pm_runtime_enable!
+
+This fixes the above problem - with an explicit pm_runtime_disable() call
+when etm4_probe() fails during etm4_probe_platform_dev().
+
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Hanjun Guo <guohanjun@huawei.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: James Clark <james.clark@arm.com>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: coresight@lists.linaro.org
+Fixes: 5214b563588e ("coresight: etm4x: Add support for sysreg only devices")
+Reviewed-by: James Clark <james.clark@arm.com>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20240314055843.2625883-2-anshuman.khandual@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/Documentation/perf-annotate.txt | 7 +++++++
- tools/perf/builtin-annotate.c              | 4 ++++
- 2 files changed, 11 insertions(+)
+ drivers/hwtracing/coresight/coresight-etm4x-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/perf/Documentation/perf-annotate.txt b/tools/perf/Documentation/perf-annotate.txt
-index 1b5042f134a86..80c1be5d566cb 100644
---- a/tools/perf/Documentation/perf-annotate.txt
-+++ b/tools/perf/Documentation/perf-annotate.txt
-@@ -124,6 +124,13 @@ OPTIONS
- --group::
- 	Show event group information together
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index 26d0d4485ae99..3f5e9400222e7 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -2022,6 +2022,9 @@ static int etm4_probe_platform_dev(struct platform_device *pdev)
+ 	ret = etm4_probe(&pdev->dev, NULL, 0);
  
-+--demangle::
-+	Demangle symbol names to human readable form. It's enabled by default,
-+	disable with --no-demangle.
+ 	pm_runtime_put(&pdev->dev);
++	if (ret)
++		pm_runtime_disable(&pdev->dev);
 +
-+--demangle-kernel::
-+	Demangle kernel symbol names to human readable form (for C++ kernels).
-+
- --percent-type::
- 	Set annotation percent type from following choices:
- 	  global-period, local-period, global-hits, local-hits
-diff --git a/tools/perf/builtin-annotate.c b/tools/perf/builtin-annotate.c
-index 4940d10074c3e..8059cf12cce86 100644
---- a/tools/perf/builtin-annotate.c
-+++ b/tools/perf/builtin-annotate.c
-@@ -538,6 +538,10 @@ int cmd_annotate(int argc, const char **argv)
- 		    "Strip first N entries of source file path name in programs (with --prefix)"),
- 	OPT_STRING(0, "objdump", &annotate.opts.objdump_path, "path",
- 		   "objdump binary to use for disassembly and annotations"),
-+	OPT_BOOLEAN(0, "demangle", &symbol_conf.demangle,
-+		    "Enable symbol demangling"),
-+	OPT_BOOLEAN(0, "demangle-kernel", &symbol_conf.demangle_kernel,
-+		    "Enable kernel symbol demangling"),
- 	OPT_BOOLEAN(0, "group", &symbol_conf.event_group,
- 		    "Show event group information together"),
- 	OPT_BOOLEAN(0, "show-total-period", &symbol_conf.show_total_period,
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
