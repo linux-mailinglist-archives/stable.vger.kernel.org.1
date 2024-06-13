@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-51221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4E0906EE0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9821590704D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18D241F23057
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96D4D1C23E63
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54BC4146D6B;
-	Thu, 13 Jun 2024 12:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32D1144D2F;
+	Thu, 13 Jun 2024 12:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yENkU5Zb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncfLtyht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105A2145A02;
-	Thu, 13 Jun 2024 12:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611C5143861;
+	Thu, 13 Jun 2024 12:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280662; cv=none; b=YEhhfyRMQNy7G5CMZl2iyTRfnd1DzP/UL9q7futcb96mv/D3xjOqaaSJxlkCcMXso00SxUKvjOc6fC1Nf7XDwG0NKsKbzN2C1OpyYxhoCXWbcbVgGsPrKsaGN58NUwYRYtmnYwqq33LAjwEcLo13kltEjJaFMC3yY/wDL7zBOUY=
+	t=1718281548; cv=none; b=lAwx27XQhOyhHWWbHJyfWtgwMFlxr0wxH/I7Rt8cMWguRPN4OcSWBPwEMBML8qVcZslFRqup9alZicEFmyt1QLwHKhgP5Ni90rKckF86pt/OCYFVJ6SSowhnSBnMN3VBJ76emGbt2U5a64/68QH1kx/4OMUsmqunuj46XChAv4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280662; c=relaxed/simple;
-	bh=zm5n1jLxSEqflkepeZouz7EV6lre6TESAkf6Lt+uGyA=;
+	s=arc-20240116; t=1718281548; c=relaxed/simple;
+	bh=yj2R76RxeUNM3r4jGNr7BGUrcBSM5d2RETgLcpSMDVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clhPlYYJdHxfJuKpxm2kY9gzDigvHUZXc18sOgiAFQnnphc5KVUZUFDPCOFXERPLLBkCuy6z7+wTDCoumaIoHzF2NZmjEziZWjez5Wu86syDfOeU/DybzS+iQWiLy6B8N1y3wz/G43IB+Hldit9Xy362ilj0OUy2Uhe0zCbas0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yENkU5Zb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD75C2BBFC;
-	Thu, 13 Jun 2024 12:11:01 +0000 (UTC)
+	 MIME-Version; b=LH/ZNH5oZCQfZOdaMIRcZZw0qEWPriXddwEbkr8qoz5Ez2zGBRe2/5hGUwoVhvmlr+I08rdR2BxK4Z+dy90Ay7BQUuNjywA5uRp07ITmQ7W53/N2DLL5Q0udhxFzuT2vOY/glIcCQNPBHvCE9HukSNIwTVnIe7azOhU20VaPuaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncfLtyht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9AFEC2BBFC;
+	Thu, 13 Jun 2024 12:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280661;
-	bh=zm5n1jLxSEqflkepeZouz7EV6lre6TESAkf6Lt+uGyA=;
+	s=korg; t=1718281548;
+	bh=yj2R76RxeUNM3r4jGNr7BGUrcBSM5d2RETgLcpSMDVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yENkU5ZbO6tFmlrQWC2UrW3Eqda9AnHIQzW0keJDdbabw0byqy3Pz+kNiaW1voz2x
-	 2D/TY848qlKFr/BEokRGoJ4O+y6vkitMmC4W0ikzYFmY5KErnzAr6LA16rTRMrS9uI
-	 GV/Bl0afi1kATVQRrnaWXpVLHloTqRcjucJHq2wM=
+	b=ncfLtyht3ki2bfLhfQai4Tvv3jMUvlDP7ZAUn3Ads+lRT47/RU4hs0NjWDkl8FNJZ
+	 cNjgLZYBWGcHxvqcBZIxLz8J00BSVd8Mhnizp105sqU8m5Rgu5GsFQ1YqbmOBc1Eb6
+	 6lP4MOhVK1bTjNVlI1+ImAgtPvTXkV7SZLmlV7pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 129/137] eventfs: Keep the directories from having the same inode number as files
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 291/317] mmc: sdhci-acpi: Sort DMI quirks alphabetically
 Date: Thu, 13 Jun 2024 13:35:09 +0200
-Message-ID: <20240613113228.304192422@linuxfoundation.org>
+Message-ID: <20240613113258.809260975@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 8898e7f288c47d450a3cf1511c791a03550c0789 upstream.
+commit a92a73b1d9249d155412d8ac237142fa716803ea upstream.
 
-The directories require unique inode numbers but all the eventfs files
-have the same inode number. Prevent the directories from having the same
-inode numbers as the files as that can confuse some tooling.
+Sort the DMI quirks alphabetically.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240523051539.428826685@goodmis.org
-
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Fixes: 834bf76add3e6 ("eventfs: Save directory inodes in the eventfs_inode structure")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/r/20240410191639.526324-4-hdegoede@redhat.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-acpi.c |   25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -50,8 +50,12 @@ static struct eventfs_root_inode *get_ro
- /* Just try to make something consistent and unique */
- static int eventfs_dir_ino(struct eventfs_inode *ei)
- {
--	if (!ei->ino)
-+	if (!ei->ino) {
- 		ei->ino = get_next_ino();
-+		/* Must not have the file inode number */
-+		if (ei->ino == EVENTFS_FILE_INODE_INO)
-+			ei->ino = get_next_ino();
-+	}
+--- a/drivers/mmc/host/sdhci-acpi.c
++++ b/drivers/mmc/host/sdhci-acpi.c
+@@ -761,9 +761,22 @@ static const struct acpi_device_id sdhci
+ };
+ MODULE_DEVICE_TABLE(acpi, sdhci_acpi_ids);
  
- 	return ei->ino;
- }
++/* Please keep this list sorted alphabetically */
+ static const struct dmi_system_id sdhci_acpi_quirks[] = {
+ 	{
+ 		/*
++		 * The Acer Aspire Switch 10 (SW5-012) microSD slot always
++		 * reports the card being write-protected even though microSD
++		 * cards do not have a write-protect switch at all.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW5-012"),
++		},
++		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
++	},
++	{
++		/*
+ 		 * The Lenovo Miix 320-10ICR has a bug in the _PS0 method of
+ 		 * the SHC1 ACPI device, this bug causes it to reprogram the
+ 		 * wrong LDO (DLDO3) to 1.8V if 1.8V modes are used and the
+@@ -778,18 +791,6 @@ static const struct dmi_system_id sdhci_
+ 	},
+ 	{
+ 		/*
+-		 * The Acer Aspire Switch 10 (SW5-012) microSD slot always
+-		 * reports the card being write-protected even though microSD
+-		 * cards do not have a write-protect switch at all.
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW5-012"),
+-		},
+-		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
+-	},
+-	{
+-		/*
+ 		 * The Toshiba WT8-B's microSD slot always reports the card being
+ 		 * write-protected.
+ 		 */
 
 
 
