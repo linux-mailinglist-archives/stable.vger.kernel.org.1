@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-50943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98622906D86
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF4DC906B5F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:40:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD2831C2266B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E27EE1C21B13
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2DD51448D9;
-	Thu, 13 Jun 2024 11:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF321428FC;
+	Thu, 13 Jun 2024 11:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ArWpcPU9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8juyOyH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E23143C7E;
-	Thu, 13 Jun 2024 11:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0683DDB1;
+	Thu, 13 Jun 2024 11:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279844; cv=none; b=TJVuUD8PNTlphN/2eVe/pRLF7fc1RidJYdnuBJZ+XmXne8PpoFz/6iN+k9Ks37NlM5Uy/n3JM4s3Z1NpZPio+y6IvjNCBuiIfq/9LIjPqfD8BfjpK12kVgTYon4tQ6oyq1M4gpOZ5BWjZ0D1x8mAfF2MCiJ8ph9by/9nkaVkTfo=
+	t=1718278807; cv=none; b=WARjXVe15D/VL0/njwpqpqpACJHE+2dEhMZMgwUGOOLHtGpX7BSSk41AMKBs65H/5zZDsU3fKF0FEKXFxvmCBduNJXNT5nDpkYNjZ1u2yQOv+VUvqoUMcJeLEyiZxSdjvuV0HPVT0aBuzWrE8iizSnaM3ChV1w40hYoGPFuDHqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279844; c=relaxed/simple;
-	bh=1wDhBlEWu0vIEJQZELIayosyshRi8lViiKWpQmkEPeA=;
+	s=arc-20240116; t=1718278807; c=relaxed/simple;
+	bh=KnwASqUhzH81PnG/meUE6Zm66rWZp3IbGx6p5r8OtEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mSEvCIimTena0dkNTucoLEXvDPDGePjrAt994UGDPqLb6bNrCI5ptlk1l0SxAB86uutPlLrIPBeDVK1Acnf9u/Rjs9frH1PJWtfp/XamMtcrB7W3oFXFjHHb1hlKcdwtOXukDOVXYsxX8lr+ZipcYbvvfG4R3ybVJH8Mmfk7b/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ArWpcPU9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDFEC2BBFC;
-	Thu, 13 Jun 2024 11:57:23 +0000 (UTC)
+	 MIME-Version; b=o+qMZ+lDPc5+CEpEHjbpI7nmMonDX9fXPnVw5t7C45zhab4wnRDYop01fkI+1VYTeSdZVMUApSY2gIZ0RB6+xjxV7c9ufKZVy5GhCNhqXt9+KQhqmQynOgr+mAdcu6ITsawDwGszQDzprfmMXH0XbXNKoeFSvtGAYwu6kdBXPLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8juyOyH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46744C2BBFC;
+	Thu, 13 Jun 2024 11:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279844;
-	bh=1wDhBlEWu0vIEJQZELIayosyshRi8lViiKWpQmkEPeA=;
+	s=korg; t=1718278807;
+	bh=KnwASqUhzH81PnG/meUE6Zm66rWZp3IbGx6p5r8OtEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ArWpcPU99hNqxrFhwa7vn5yi3tEPfPDgG3vPQhsywygQAykMy31wfYo+zmF8DWt9q
-	 f6hCDrIJgAcirqQmQ2Yp6p99blB4gMAqhQw74aLPD98SpmnyDt8okcyC8RJf6ME6a/
-	 ahse0v8FcHr0jte5lsbAk93GcL2Osolb/ryAOPCk=
+	b=G8juyOyH7ixnfK6X9eIhvmN+V7waOyhKakcIdHBnB/41a7NsdNpaqGIrzXL2Z5ZFi
+	 aFCVGaPpH4gtybGdmOJvYLNJHmIVikzKmH2KYiww+AVbBgOVeAoLlQ6gTVr3d2SvwZ
+	 mzw1wvexsGoQ+5VncnEbMEBsZCCg8WV7CWRWnjgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jens Axboe <axboe@kernel.dk>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 025/202] null_blk: Fix missing mutex_destroy() at module removal
+Subject: [PATCH 4.19 075/213] ASoC: tracing: Export SND_SOC_DAPM_DIR_OUT to its value
 Date: Thu, 13 Jun 2024 13:32:03 +0200
-Message-ID: <20240613113228.740926303@linuxfoundation.org>
+Message-ID: <20240613113230.901782223@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 07d1b99825f40f9c0d93e6b99d79a08d0717bac1 ]
+[ Upstream commit 58300f8d6a48e58d1843199be743f819e2791ea3 ]
 
-When a mutex lock is not used any more, the function mutex_destroy
-should be called to mark the mutex lock uninitialized.
+The string SND_SOC_DAPM_DIR_OUT is printed in the snd_soc_dapm_path trace
+event instead of its value:
 
-Fixes: f2298c0403b0 ("null_blk: multi queue aware block test driver")
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://lore.kernel.org/r/20240425171635.4227-1-yanjun.zhu@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+   (((REC->path_dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
+
+User space cannot parse this, as it has no idea what SND_SOC_DAPM_DIR_OUT
+is. Use TRACE_DEFINE_ENUM() to convert it to its value:
+
+   (((REC->path_dir) == 1) ? "->" : "<-")
+
+So that user space tools, such as perf and trace-cmd, can parse it
+correctly.
+
+Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Fixes: 6e588a0d839b5 ("ASoC: dapm: Consolidate path trace events")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/r/20240416000303.04670cdf@rorschach.local.home
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk_main.c | 2 ++
+ include/trace/events/asoc.h | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/block/null_blk_main.c b/drivers/block/null_blk_main.c
-index 6cbdd8a691d2b..b6210bf0724d5 100644
---- a/drivers/block/null_blk_main.c
-+++ b/drivers/block/null_blk_main.c
-@@ -1868,6 +1868,8 @@ static void __exit null_exit(void)
+diff --git a/include/trace/events/asoc.h b/include/trace/events/asoc.h
+index 40c300fe704da..f62d5b7024261 100644
+--- a/include/trace/events/asoc.h
++++ b/include/trace/events/asoc.h
+@@ -11,6 +11,8 @@
+ #define DAPM_DIRECT "(direct)"
+ #define DAPM_ARROW(dir) (((dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
  
- 	if (g_queue_mode == NULL_Q_MQ && shared_tags)
- 		blk_mq_free_tag_set(&tag_set);
++TRACE_DEFINE_ENUM(SND_SOC_DAPM_DIR_OUT);
 +
-+	mutex_destroy(&lock);
- }
- 
- module_init(null_init);
+ struct snd_soc_jack;
+ struct snd_soc_card;
+ struct snd_soc_dapm_widget;
 -- 
 2.43.0
 
