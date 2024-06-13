@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-50636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B486906BA5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D670906C9A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DD402813E5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC416B2136C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A902143889;
-	Thu, 13 Jun 2024 11:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC8F144D27;
+	Thu, 13 Jun 2024 11:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ec+oLYEU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXUbOkWo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9491142E8E;
-	Thu, 13 Jun 2024 11:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E75145338;
+	Thu, 13 Jun 2024 11:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278946; cv=none; b=Ln3RLWiar+7UXjsMTw9Zv/zSFEMDkFbGdPzU2tt7UtdncWutRr4/c3LRyQysV64U7/pl6quNi1C7Yiuy6qTbiQx4PUKAOCcsqJi5y8y3TuqWTgpWeztErdoAVL3QfJQXSRADPc/7QF5III5K3eaFguFjxoRVe3oACzJVQ5edm78=
+	t=1718279355; cv=none; b=Vu9wzvZpeLyTsv+4B3ZCKCEXNMSYuOrjnxqdvT8GcA+DuuwSmpvuvhOl41eFl7rePA67zCA6Qd82CRtCNTbT4Mn7TpAjPIi4HHXimU5+Y+IquhJhUo2zx+/5CgapWK5RTvFlTC59MTuyUe/6xNRoMgZ5asemGJozQIsJREYhTIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278946; c=relaxed/simple;
-	bh=7AwNBofxuxeDfCxGNLFvc7ohgb/DZD2bUP+unX77//o=;
+	s=arc-20240116; t=1718279355; c=relaxed/simple;
+	bh=IC8TmWHf7MFcl3cxkc3ETWVGKbyZRCZJNi0EY7GOgYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GuH69ghYmB35Ft5Vmmyfz0+RMUf/jLHnqMs2XwSjme9Xnp8cSqth2MBc16FtDvhtcBXxXnE//1ElMQOYcwXt8CqYgxWBQfBxaDcZCBLq1FvqdN+F4phqR3bMTIXvLl9cRVe3B1To/2zkG1tscVy48mxgkxNHh97Z1LapHgEd0DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ec+oLYEU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AE1C2BBFC;
-	Thu, 13 Jun 2024 11:42:26 +0000 (UTC)
+	 MIME-Version; b=FVcbnffK4cSbBYm5jP13le4gcxXla36yvfjMTbsbpfZC2naOfP2LgHI4yKa1tRZUDnf15R5krE8rMogKJAXG6Z7Uj2cJdBIDKY82Xr/bHEhoFgGiBMK0Iy7Rl2T74vhWsmc81RyMO4Z9C4NCpcYq15zleprnmnPfXYOD56R67aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXUbOkWo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC12C2BBFC;
+	Thu, 13 Jun 2024 11:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278946;
-	bh=7AwNBofxuxeDfCxGNLFvc7ohgb/DZD2bUP+unX77//o=;
+	s=korg; t=1718279354;
+	bh=IC8TmWHf7MFcl3cxkc3ETWVGKbyZRCZJNi0EY7GOgYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ec+oLYEUSrShYb7SpqIcgbanXlJ3VXk2lE5VkQPsPoP5cyxM7flnxKWu2kXUn8Qa7
-	 uV2QCjKmXkhGWrym/WwUrW7SLLxT0C/Lr78AW91Xwt/s5Ca8rbWiM8cOGEbFcbPNSi
-	 iN4ufJoA+tT4vlMHjhlYHgmOe1qz3ib69RSs+iXw=
+	b=YXUbOkWoZMcPaBQoV8HMRlz8cYUxUtvojDE9vBJU446G/1XsALWoMbiOftqI2zCB5
+	 WRKgYJ5lEhUZEdAgiKbt9M3JLJEBjfCiloBjwnmjAQAiYe4o6ymPgUwR3ops5JpfTQ
+	 d097P53eYPUiTxgf9oSEe4MZyh2gEargyOCvMxaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Yue Sun <samsun1006219@gmail.com>,
-	xingwei lee <xrivendell7@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 124/213] tcp: Fix shift-out-of-bounds in dctcp_update_alpha().
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.9 047/157] mmc: sdhci-acpi: Fix Lenovo Yoga Tablet 2 Pro 1380 sdcard slot not working
 Date: Thu, 13 Jun 2024 13:32:52 +0200
-Message-ID: <20240613113232.781109396@linuxfoundation.org>
+Message-ID: <20240613113229.246050208@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,130 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 3ebc46ca8675de6378e3f8f40768e180bb8afa66 ]
+commit f3521d7cbaefff19cc656325787ed797e5f6a955 upstream.
 
-In dctcp_update_alpha(), we use a module parameter dctcp_shift_g
-as follows:
+The Lenovo Yoga Tablet 2 Pro 1380 sdcard slot has an active high cd pin
+and a broken wp pin which always reports the card being write-protected.
 
-  alpha -= min_not_zero(alpha, alpha >> dctcp_shift_g);
-  ...
-  delivered_ce <<= (10 - dctcp_shift_g);
+Add a DMI quirk to address both issues.
 
-It seems syzkaller started fuzzing module parameters and triggered
-shift-out-of-bounds [0] by setting 100 to dctcp_shift_g:
-
-  memcpy((void*)0x20000080,
-         "/sys/module/tcp_dctcp/parameters/dctcp_shift_g\000", 47);
-  res = syscall(__NR_openat, /*fd=*/0xffffffffffffff9cul, /*file=*/0x20000080ul,
-                /*flags=*/2ul, /*mode=*/0ul);
-  memcpy((void*)0x20000000, "100\000", 4);
-  syscall(__NR_write, /*fd=*/r[0], /*val=*/0x20000000ul, /*len=*/4ul);
-
-Let's limit the max value of dctcp_shift_g by param_set_uint_minmax().
-
-With this patch:
-
-  # echo 10 > /sys/module/tcp_dctcp/parameters/dctcp_shift_g
-  # cat /sys/module/tcp_dctcp/parameters/dctcp_shift_g
-  10
-  # echo 11 > /sys/module/tcp_dctcp/parameters/dctcp_shift_g
-  -bash: echo: write error: Invalid argument
-
-[0]:
-UBSAN: shift-out-of-bounds in net/ipv4/tcp_dctcp.c:143:12
-shift exponent 100 is too large for 32-bit type 'u32' (aka 'unsigned int')
-CPU: 0 PID: 8083 Comm: syz-executor345 Not tainted 6.9.0-05151-g1b294a1f3561 #2
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-1.13.0-1ubuntu1.1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x201/0x300 lib/dump_stack.c:114
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_shift_out_of_bounds+0x346/0x3a0 lib/ubsan.c:468
- dctcp_update_alpha+0x540/0x570 net/ipv4/tcp_dctcp.c:143
- tcp_in_ack_event net/ipv4/tcp_input.c:3802 [inline]
- tcp_ack+0x17b1/0x3bc0 net/ipv4/tcp_input.c:3948
- tcp_rcv_state_process+0x57a/0x2290 net/ipv4/tcp_input.c:6711
- tcp_v4_do_rcv+0x764/0xc40 net/ipv4/tcp_ipv4.c:1937
- sk_backlog_rcv include/net/sock.h:1106 [inline]
- __release_sock+0x20f/0x350 net/core/sock.c:2983
- release_sock+0x61/0x1f0 net/core/sock.c:3549
- mptcp_subflow_shutdown+0x3d0/0x620 net/mptcp/protocol.c:2907
- mptcp_check_send_data_fin+0x225/0x410 net/mptcp/protocol.c:2976
- __mptcp_close+0x238/0xad0 net/mptcp/protocol.c:3072
- mptcp_close+0x2a/0x1a0 net/mptcp/protocol.c:3127
- inet_release+0x190/0x1f0 net/ipv4/af_inet.c:437
- __sock_release net/socket.c:659 [inline]
- sock_close+0xc0/0x240 net/socket.c:1421
- __fput+0x41b/0x890 fs/file_table.c:422
- task_work_run+0x23b/0x300 kernel/task_work.c:180
- exit_task_work include/linux/task_work.h:38 [inline]
- do_exit+0x9c8/0x2540 kernel/exit.c:878
- do_group_exit+0x201/0x2b0 kernel/exit.c:1027
- __do_sys_exit_group kernel/exit.c:1038 [inline]
- __se_sys_exit_group kernel/exit.c:1036 [inline]
- __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1036
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xe4/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x67/0x6f
-RIP: 0033:0x7f6c2b5005b6
-Code: Unable to access opcode bytes at 0x7f6c2b50058c.
-RSP: 002b:00007ffe883eb948 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-RAX: ffffffffffffffda RBX: 00007f6c2b5862f0 RCX: 00007f6c2b5005b6
-RDX: 0000000000000001 RSI: 000000000000003c RDI: 0000000000000001
-RBP: 0000000000000001 R08: 00000000000000e7 R09: ffffffffffffffc0
-R10: 0000000000000006 R11: 0000000000000246 R12: 00007f6c2b5862f0
-R13: 0000000000000001 R14: 0000000000000000 R15: 0000000000000001
- </TASK>
-
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Reported-by: Yue Sun <samsun1006219@gmail.com>
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAEkJfYNJM=cw-8x7_Vmj1J6uYVCWMbbvD=EFmDPVBGpTsqOxEA@mail.gmail.com/
-Fixes: e3118e8359bb ("net: tcp: add DCTCP congestion control algorithm")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240517091626.32772-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240410191639.526324-5-hdegoede@redhat.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_dctcp.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-acpi.c |   24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/net/ipv4/tcp_dctcp.c b/net/ipv4/tcp_dctcp.c
-index 5205c5a5d8d55..0cf7bfda2d6d2 100644
---- a/net/ipv4/tcp_dctcp.c
-+++ b/net/ipv4/tcp_dctcp.c
-@@ -59,7 +59,18 @@ struct dctcp {
+--- a/drivers/mmc/host/sdhci-acpi.c
++++ b/drivers/mmc/host/sdhci-acpi.c
+@@ -80,6 +80,7 @@ struct sdhci_acpi_host {
+ enum {
+ 	DMI_QUIRK_RESET_SD_SIGNAL_VOLT_ON_SUSP			= BIT(0),
+ 	DMI_QUIRK_SD_NO_WRITE_PROTECT				= BIT(1),
++	DMI_QUIRK_SD_CD_ACTIVE_HIGH				= BIT(2),
  };
  
- static unsigned int dctcp_shift_g __read_mostly = 4; /* g = 1/2^4 */
--module_param(dctcp_shift_g, uint, 0644);
-+
-+static int dctcp_shift_g_set(const char *val, const struct kernel_param *kp)
-+{
-+	return param_set_uint_minmax(val, kp, 0, 10);
-+}
-+
-+static const struct kernel_param_ops dctcp_shift_g_ops = {
-+	.set = dctcp_shift_g_set,
-+	.get = param_get_uint,
-+};
-+
-+module_param_cb(dctcp_shift_g, &dctcp_shift_g_ops, &dctcp_shift_g, 0644);
- MODULE_PARM_DESC(dctcp_shift_g, "parameter g for updating dctcp_alpha");
+ static inline void *sdhci_acpi_priv(struct sdhci_acpi_host *c)
+@@ -749,6 +750,26 @@ static const struct dmi_system_id sdhci_
+ 	},
+ 	{
+ 		/*
++		 * Lenovo Yoga Tablet 2 Pro 1380F/L (13" Android version) this
++		 * has broken WP reporting and an inverted CD signal.
++		 * Note this has more or less the same BIOS as the Lenovo Yoga
++		 * Tablet 2 830F/L or 1050F/L (8" and 10" Android), but unlike
++		 * the 830 / 1050 models which share the same mainboard this
++		 * model has a different mainboard and the inverted CD and
++		 * broken WP are unique to this board.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corp."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "VALLEYVIEW C0 PLATFORM"),
++			DMI_MATCH(DMI_BOARD_NAME, "BYT-T FFD8"),
++			/* Full match so as to NOT match the 830/1050 BIOS */
++			DMI_MATCH(DMI_BIOS_VERSION, "BLADE_21.X64.0005.R00.1504101516"),
++		},
++		.driver_data = (void *)(DMI_QUIRK_SD_NO_WRITE_PROTECT |
++					DMI_QUIRK_SD_CD_ACTIVE_HIGH),
++	},
++	{
++		/*
+ 		 * The Toshiba WT8-B's microSD slot always reports the card being
+ 		 * write-protected.
+ 		 */
+@@ -867,6 +888,9 @@ static int sdhci_acpi_probe(struct platf
+ 	if (sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD)) {
+ 		bool v = sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD_OVERRIDE_LEVEL);
  
- static unsigned int dctcp_alpha_on_init __read_mostly = DCTCP_MAX_ALPHA;
--- 
-2.43.0
-
++		if (quirks & DMI_QUIRK_SD_CD_ACTIVE_HIGH)
++			host->mmc->caps2 |= MMC_CAP2_CD_ACTIVE_HIGH;
++
+ 		err = mmc_gpiod_request_cd(host->mmc, NULL, 0, v, 0);
+ 		if (err) {
+ 			if (err == -EPROBE_DEFER)
 
 
 
