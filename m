@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D79690724A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:46:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6276C9072A4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B2912818BB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:46:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6434280DDF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEE256458;
-	Thu, 13 Jun 2024 12:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E166F1428EA;
+	Thu, 13 Jun 2024 12:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="queYmYCO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWjiiTh8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18D84A0F;
-	Thu, 13 Jun 2024 12:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11552566;
+	Thu, 13 Jun 2024 12:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282749; cv=none; b=mR29QVL2O2t6EUaKUgwMZhMR3QY6WtuxyVo+FDt/JfsXfwObLCrDGigdffC/TWYnQ+6q/t5TsVv2oSYv+PO1L0SRNUmM/91OtuV7jRPtxqnrPDNuWpgf9jRRiDzw2Hqbew4V1EvRYR915wxVsXvwbdsx8jYAzrUZbTHZkYVus3c=
+	t=1718282931; cv=none; b=UCttnvzo62dm3z9d3o4eEB8oWyRqm0ED9Itke9G1Rbu9CP8xeSySOUt+HkMeOYnsREygPG2f+tT+MVCGT0DgwA/oQhC1ASPNGlVj2Ed9+J1ifkUXv6bFE5ZdZN7j7MAQeRdAF8baUrPRBDV6otMkmeo/md64D0f+SDxeiZYcA3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282749; c=relaxed/simple;
-	bh=Z+LvWwHiBCx2cmtGG4H1KLzqso3eT1FF0vdSZ1njee4=;
+	s=arc-20240116; t=1718282931; c=relaxed/simple;
+	bh=mdrmBLfPAn0inyZY8mbwCq4pbd61w8g2/HXxs0WYmTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jjrz3cxAzZMqA9DZ9m8mAH9rb1fNBjINmpf0e2NXga3fbZSm5UR5s+3lDCiEFqsMtgwxOpV8FC06/Gf5XnzrzB8BSNYCnat/wj/ZIlw6ni2Rbp42tNN8aU8sm7DicwlQJcekqYfk3nCCrIsXFXNoESDAAI/oprWS8T9I0yZV45c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=queYmYCO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12FAC2BBFC;
-	Thu, 13 Jun 2024 12:45:48 +0000 (UTC)
+	 MIME-Version; b=t5UvvodAILKmLb15ebe39nrwLONIFu//J6fmGau9xnCq+rhnZP8FtKlX1B7P3RcO/x/XdV+jDa1Hkda1DtA5HaBIAwZWsqUbVSXHdlh4v7v7p43E/P5+DKU46Kk/TwxuuZh4MFj556Wkbyh/YL+dRKQKxZVCitaaNDKcDDnTV5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWjiiTh8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26964C2BBFC;
+	Thu, 13 Jun 2024 12:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282749;
-	bh=Z+LvWwHiBCx2cmtGG4H1KLzqso3eT1FF0vdSZ1njee4=;
+	s=korg; t=1718282931;
+	bh=mdrmBLfPAn0inyZY8mbwCq4pbd61w8g2/HXxs0WYmTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=queYmYCONviwdN0jeqAmJI7RUxW0i8eGq8dElqrJSUsG/okUQZZHZSN1Qm0eV2ajq
-	 zzw5FYL5WSqCSWz/IEkNQZOSgike/a+W060ZkbUGpuqWJnnKPMt9pbVXob02+fL5Gz
-	 BTOg1QDRzeRFhtGUl7yx1TidBCpBMqNBFSzqox74=
+	b=tWjiiTh89RSqven3kxIDC70H+VLmDRMwcFVIkCtfKarsUqXyHKw5oy+HUulGVH997
+	 Td7jcx1IJ37B9YKsrEHpB2c9ttlc5Ge+JLslPx8TTzkvAvijNwrYbvx/OtGhpR+WOr
+	 EEXE5E1Gji5g4fJ+KM3zwe8u5DRRuEpiFi4LZ3xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fan Yu <fan.yu9@zte.com.cn>,
-	xu xin <xu.xin16@zte.com.cn>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 381/402] net/ipv6: Fix route deleting failure when metric equals 0
-Date: Thu, 13 Jun 2024 13:35:38 +0200
-Message-ID: <20240613113317.004270834@linuxfoundation.org>
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 41/85] mmc: sdhci-acpi: Fix Lenovo Yoga Tablet 2 Pro 1380 sdcard slot not working
+Date: Thu, 13 Jun 2024 13:35:39 +0200
+Message-ID: <20240613113215.730839955@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xu xin <xu.xin16@zte.com.cn>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit bb487272380d120295e955ad8acfcbb281b57642 upstream.
+commit f3521d7cbaefff19cc656325787ed797e5f6a955 upstream.
 
-Problem
-=========
-After commit 67f695134703 ("ipv6: Move setting default metric for routes"),
-we noticed that the logic of assigning the default value of fc_metirc
-changed in the ioctl process. That is, when users use ioctl(fd, SIOCADDRT,
-rt) with a non-zero metric to add a route,  then they may fail to delete a
-route with passing in a metric value of 0 to the kernel by ioctl(fd,
-SIOCDELRT, rt). But iproute can succeed in deleting it.
+The Lenovo Yoga Tablet 2 Pro 1380 sdcard slot has an active high cd pin
+and a broken wp pin which always reports the card being write-protected.
 
-As a reference, when using iproute tools by netlink to delete routes with
-a metric parameter equals 0, like the command as follows:
+Add a DMI quirk to address both issues.
 
-	ip -6 route del fe80::/64 via fe81::5054:ff:fe11:3451 dev eth0 metric 0
-
-the user can still succeed in deleting the route entry with the smallest
-metric.
-
-Root Reason
-===========
-After commit 67f695134703 ("ipv6: Move setting default metric for routes"),
-When ioctl() pass in SIOCDELRT with a zero metric, rtmsg_to_fib6_config()
-will set a defalut value (1024) to cfg->fc_metric in kernel, and in
-ip6_route_del() and the line 4074 at net/ipv3/route.c, it will check by
-
-	if (cfg->fc_metric && cfg->fc_metric != rt->fib6_metric)
-		continue;
-
-and the condition is true and skip the later procedure (deleting route)
-because cfg->fc_metric != rt->fib6_metric. But before that commit,
-cfg->fc_metric is still zero there, so the condition is false and it
-will do the following procedure (deleting).
-
-Solution
-========
-In order to keep a consistent behaviour across netlink() and ioctl(), we
-should allow to delete a route with a metric value of 0. So we only do
-the default setting of fc_metric in route adding.
-
-CC: stable@vger.kernel.org # 5.4+
-Fixes: 67f695134703 ("ipv6: Move setting default metric for routes")
-Co-developed-by: Fan Yu <fan.yu9@zte.com.cn>
-Signed-off-by: Fan Yu <fan.yu9@zte.com.cn>
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240514201102055dD2Ba45qKbLlUMxu_DTHP@zte.com.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240410191639.526324-5-hdegoede@redhat.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-acpi.c |   24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -4456,7 +4456,7 @@ static void rtmsg_to_fib6_config(struct
- 		.fc_table = l3mdev_fib_table_by_index(net, rtmsg->rtmsg_ifindex) ?
- 			 : RT6_TABLE_MAIN,
- 		.fc_ifindex = rtmsg->rtmsg_ifindex,
--		.fc_metric = rtmsg->rtmsg_metric ? : IP6_RT_PRIO_USER,
-+		.fc_metric = rtmsg->rtmsg_metric,
- 		.fc_expires = rtmsg->rtmsg_info,
- 		.fc_dst_len = rtmsg->rtmsg_dst_len,
- 		.fc_src_len = rtmsg->rtmsg_src_len,
-@@ -4486,6 +4486,9 @@ int ipv6_route_ioctl(struct net *net, un
- 	rtnl_lock();
- 	switch (cmd) {
- 	case SIOCADDRT:
-+		/* Only do the default setting of fc_metric in route adding */
-+		if (cfg.fc_metric == 0)
-+			cfg.fc_metric = IP6_RT_PRIO_USER;
- 		err = ip6_route_add(&cfg, GFP_KERNEL, NULL);
- 		break;
- 	case SIOCDELRT:
+--- a/drivers/mmc/host/sdhci-acpi.c
++++ b/drivers/mmc/host/sdhci-acpi.c
+@@ -80,6 +80,7 @@ struct sdhci_acpi_host {
+ enum {
+ 	DMI_QUIRK_RESET_SD_SIGNAL_VOLT_ON_SUSP			= BIT(0),
+ 	DMI_QUIRK_SD_NO_WRITE_PROTECT				= BIT(1),
++	DMI_QUIRK_SD_CD_ACTIVE_HIGH				= BIT(2),
+ };
+ 
+ static inline void *sdhci_acpi_priv(struct sdhci_acpi_host *c)
+@@ -749,6 +750,26 @@ static const struct dmi_system_id sdhci_
+ 	},
+ 	{
+ 		/*
++		 * Lenovo Yoga Tablet 2 Pro 1380F/L (13" Android version) this
++		 * has broken WP reporting and an inverted CD signal.
++		 * Note this has more or less the same BIOS as the Lenovo Yoga
++		 * Tablet 2 830F/L or 1050F/L (8" and 10" Android), but unlike
++		 * the 830 / 1050 models which share the same mainboard this
++		 * model has a different mainboard and the inverted CD and
++		 * broken WP are unique to this board.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corp."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "VALLEYVIEW C0 PLATFORM"),
++			DMI_MATCH(DMI_BOARD_NAME, "BYT-T FFD8"),
++			/* Full match so as to NOT match the 830/1050 BIOS */
++			DMI_MATCH(DMI_BIOS_VERSION, "BLADE_21.X64.0005.R00.1504101516"),
++		},
++		.driver_data = (void *)(DMI_QUIRK_SD_NO_WRITE_PROTECT |
++					DMI_QUIRK_SD_CD_ACTIVE_HIGH),
++	},
++	{
++		/*
+ 		 * The Toshiba WT8-B's microSD slot always reports the card being
+ 		 * write-protected.
+ 		 */
+@@ -867,6 +888,9 @@ static int sdhci_acpi_probe(struct platf
+ 	if (sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD)) {
+ 		bool v = sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD_OVERRIDE_LEVEL);
+ 
++		if (quirks & DMI_QUIRK_SD_CD_ACTIVE_HIGH)
++			host->mmc->caps2 |= MMC_CAP2_CD_ACTIVE_HIGH;
++
+ 		err = mmc_gpiod_request_cd(host->mmc, NULL, 0, v, 0);
+ 		if (err) {
+ 			if (err == -EPROBE_DEFER)
 
 
 
