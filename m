@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 960BE907198
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D456C906DDE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A848F1C24300
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:39:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08C041C21867
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910DF143C51;
-	Thu, 13 Jun 2024 12:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4139145B27;
+	Thu, 13 Jun 2024 12:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNbCmqwi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ma3a6nwO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA8912C81F;
-	Thu, 13 Jun 2024 12:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E4A144D16;
+	Thu, 13 Jun 2024 12:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282295; cv=none; b=k1CCMXYwjvwY8JmXdajjIXoUHJ3JGu0HSA3CO4gRm+x/w+evBhhRyjAQwjBhUEXW9mh3sDzuykHMb5mwE9CJVBgQAAx9kcFsoAFJzhpctyrLBsyZToqauffImls7L9En/CGHZkWLnsV3Owvth83APmkIEK4yB2bkyXDrBIC4xjY=
+	t=1718280020; cv=none; b=gCtvL1dPp671mpRKSzZIw/OkcSWfWQPtJl07tWwAE8GTsUtbKEAcMoYccasWamwxZpc2pkcvBNISpXfYowg+R4cUiLbvQ6pvjqcnD0sIJRZZrmMKSmXjRF2UnUdlfBvLltl3LUz0UuxAd9LEas6op1EWL14uxBKA9wqFcY/LEvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282295; c=relaxed/simple;
-	bh=Qf4BbfDtLG2Cbnw+ILZ5UEeyOAdkaBcmxMFgAxOTpmI=;
+	s=arc-20240116; t=1718280020; c=relaxed/simple;
+	bh=TAKpKGjeyVfnFrTpmPNsokaKQRADjdaLUUrJnk+/e9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UqCkW058FMZUZxt2AVIsey35HTgi4ZldshFjf8rjn05w4ysCqdmjoue1Yry+rtu1Q8IDMXyS/YN0KIREIOIIOlAOZ2M4ZUEw1x1weVVr8stRW08M7pLe4vkq7QBHl/bXO1uYl4wS+MYYIsc/NxUQdIquIci8bqKYx+8UwjxyS0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNbCmqwi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E3FC2BBFC;
-	Thu, 13 Jun 2024 12:38:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fCYb0TNzg46mIdd19r0W/n3h58AVoh96fHR4NX35i4D5LVBAAMSHukfRHVo/p/PmEByZNFBL/AaPykX8sgWEaS2ZcZsn859deNKhSOakyKZwxdmFGBn8MQIfuFYQzLgWLw0qOXpXwVpuJlR2i+uoyp8lX9GQnMnVm9WYVV4fmKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ma3a6nwO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F00C2BBFC;
+	Thu, 13 Jun 2024 12:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282295;
-	bh=Qf4BbfDtLG2Cbnw+ILZ5UEeyOAdkaBcmxMFgAxOTpmI=;
+	s=korg; t=1718280020;
+	bh=TAKpKGjeyVfnFrTpmPNsokaKQRADjdaLUUrJnk+/e9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tNbCmqwiqRd8xFWY+FqX6Zpt9/atLxW30pqIHT4hluobYMuMZ/fKuIJ62u0CnmrSt
-	 tLnT2Ull3k9Z5nTXcMZKiTOoxXqVyMAy/eh/5NzkM/hrJPNjo3hYLt6TQvnHL2h4pQ
-	 sdFT87C8WaQuXh//XLLIPmfJ0Q1lbhljlXSxToYQ=
+	b=ma3a6nwOF02NUFq246IgbjeprVTcmDdiaXJRYGJ0sAAwTPpuSZvjySvvblPbvrBFv
+	 z9UJ0BJbfrRbpxk2rOthdBAGSDm/H/W+KVgKjsxYNfdnNC7Fwp5IRqVsNBEdnUir3W
+	 FeffOS+6xLCMXoV7XJa1OOLM0TIaQ9bkF5dfo4Tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com>
-Subject: [PATCH 5.15 229/402] PCI/EDR: Align EDR_PORT_LOCATE_DSM with PCI Firmware r3.3
+	Leon Romanovsky <leonro@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 088/202] RDMA/IPoIB: Fix format truncation compilation errors
 Date: Thu, 13 Jun 2024 13:33:06 +0200
-Message-ID: <20240613113311.076950323@linuxfoundation.org>
+Message-ID: <20240613113231.166142945@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +59,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit e2e78a294a8a863898b781dbcf90e087eda3155d ]
+[ Upstream commit 49ca2b2ef3d003402584c68ae7b3055ba72e750a ]
 
-The "Downstream Port Containment related Enhancements" ECN of Jan 28, 2019
-(document 12888 below), defined the EDR_PORT_LOCATE_DSM function with
-Revision ID 5 with a return value encoding (Bits 2:0 = Function, Bits 7:3 =
-Device, Bits 15:8 = Bus).  When the ECN was integrated into PCI Firmware
-r3.3, sec 4.6.13, Bit 31 was added to indicate success or failure.
+Truncate the device name to store IPoIB VLAN name.
 
-Check Bit 31 for failure in acpi_dpc_port_get().
+[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 allmodconfig
+[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 W=1 drivers/infiniband/ulp/ipoib/
+drivers/infiniband/ulp/ipoib/ipoib_vlan.c: In function ‘ipoib_vlan_add’:
+drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:52: error: ‘%04x’
+directive output may be truncated writing 4 bytes into a region of size
+between 0 and 15 [-Werror=format-truncation=]
+  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
+      |                                                    ^~~~
+drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:48: note: directive
+argument in the range [0, 65535]
+  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
+      |                                                ^~~~~~~~~
+drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:9: note: ‘snprintf’ output
+between 6 and 21 bytes into a destination of size 16
+  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  188 |                  ppriv->dev->name, pkey);
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make[6]: *** [scripts/Makefile.build:244: drivers/infiniband/ulp/ipoib/ipoib_vlan.o] Error 1
+make[6]: *** Waiting for unfinished jobs....
 
-Link: https://lore.kernel.org/r/20240501022543.1626025-1-sathyanarayanan.kuppuswamy@linux.intel.com
-Link: https://members.pcisig.com/wg/PCI-SIG/document/12888
-Fixes: ac1c8e35a326 ("PCI/DPC: Add Error Disconnect Recover (EDR) support")
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-[bhelgaas: split into two patches, update commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com> # one platform
+Fixes: 9baa0b036410 ("IB/ipoib: Add rtnl_link_ops support")
+Link: https://lore.kernel.org/r/e9d3e1fef69df4c9beaf402cc3ac342bad680791.1715240029.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/edr.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/infiniband/ulp/ipoib/ipoib_vlan.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
-index 5b5a502363c00..35210007602c5 100644
---- a/drivers/pci/pcie/edr.c
-+++ b/drivers/pci/pcie/edr.c
-@@ -80,8 +80,9 @@ static struct pci_dev *acpi_dpc_port_get(struct pci_dev *pdev)
- 	u16 port;
+diff --git a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
+index 58ca5e9c6079c..1c1cd10283acf 100644
+--- a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
++++ b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
+@@ -182,8 +182,12 @@ int ipoib_vlan_add(struct net_device *pdev, unsigned short pkey)
  
- 	/*
--	 * Behavior when calling unsupported _DSM functions is undefined,
--	 * so check whether EDR_PORT_DPC_ENABLE_DSM is supported.
-+	 * If EDR_PORT_LOCATE_DSM is not implemented under the target of
-+	 * EDR, the target is the port that experienced the containment
-+	 * event (PCI Firmware r3.3, sec 4.6.13).
- 	 */
- 	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
- 			    1ULL << EDR_PORT_LOCATE_DSM))
-@@ -98,6 +99,16 @@ static struct pci_dev *acpi_dpc_port_get(struct pci_dev *pdev)
- 		return NULL;
- 	}
+ 	ppriv = ipoib_priv(pdev);
  
-+	/*
-+	 * Bit 31 represents the success/failure of the operation. If bit
-+	 * 31 is set, the operation failed.
+-	snprintf(intf_name, sizeof(intf_name), "%s.%04x",
+-		 ppriv->dev->name, pkey);
++	/* If you increase IFNAMSIZ, update snprintf below
++	 * to allow longer names.
 +	 */
-+	if (obj->integer.value & BIT(31)) {
-+		ACPI_FREE(obj);
-+		pci_err(pdev, "Locate Port _DSM failed\n");
-+		return NULL;
-+	}
-+
- 	/*
- 	 * Firmware returns DPC port BDF details in following format:
- 	 *	15:8 = bus
++	BUILD_BUG_ON(IFNAMSIZ != 16);
++	snprintf(intf_name, sizeof(intf_name), "%.10s.%04x", ppriv->dev->name,
++		 pkey);
+ 
+ 	ndev = ipoib_intf_alloc(ppriv->ca, ppriv->port, intf_name);
+ 	if (IS_ERR(ndev)) {
 -- 
 2.43.0
 
