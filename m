@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-51848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461239071E9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12FF490702F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6D0A1F2812F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1997E1C22FEF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90581448E8;
-	Thu, 13 Jun 2024 12:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2127013A406;
+	Thu, 13 Jun 2024 12:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOnlHtak"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDRkQWWf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F15142E86;
-	Thu, 13 Jun 2024 12:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CEB56458;
+	Thu, 13 Jun 2024 12:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282492; cv=none; b=g9x4aO97fMB+ZC4d4CGdODzS2baUW++940c4YKwCgoxpASalULw9D6TEOUhNDLqjve7bPPd8hxCbqBGgwSPbrzAD3jIFhXfNWE+BIu60aTS5Qu4Qcvr9pnasY8EaRG56n50rcOYA4HSiyqubDLrDf/xhrgeaaE8Uueac7ygVSLs=
+	t=1718281471; cv=none; b=MrElf8eAoh+QeRuPLYfL5U+N4M0McTT3/xchyFdmeimEB9TXgUkpevvki+tUEKsCqcb1SeQGrbgI1MRd4rO8Rw+76ySfCecc7WBg5lKYgb8AlyIHVGWM674KVmX4mcVJJyCBsm+I9nuumHgN9eEZGpW03MKe4Z1wywpUHcdlhqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282492; c=relaxed/simple;
-	bh=pNgc1c5+bmtbIGbFllM8YLjIVTdroIKIrfxLaFsRXaI=;
+	s=arc-20240116; t=1718281471; c=relaxed/simple;
+	bh=KvK8GrrDAcYnXosg7n+O23xzZTre1nVmuY8UITX+pgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HmN81i7El2/JL2aRoRejnB3Ma3L9jojCjkuAgnkrGFe2GU1CJ9GsSpBL7lyZabmTkzkZUS5LI7NMBIIfdfzzoKNCHJom4G+Xfusg0urVZCv9NPoePlQcmzw9f6sP7tEuawqsMYBoSNBRrT2EjYpUCe43VwO2OTepWJ0iszgHYFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOnlHtak; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FB3C2BBFC;
-	Thu, 13 Jun 2024 12:41:31 +0000 (UTC)
+	 MIME-Version; b=E4ia8M5rDfGeIcbFlTAeMDA4bjd96GWlHa0pDf8YWN4Fz0WpzOzSrBD36Q7eFei3X+SfUbA/xeuZ9LNONWsp4MyEpJEmW/PLpkJ7lUGs7gGQFI0Fl5YwPA2tLdzGG7/9YWUrpOlCsx60OR/shyRwOeLZFo4vpVnFxRz0X3TQGtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDRkQWWf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB93C2BBFC;
+	Thu, 13 Jun 2024 12:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282492;
-	bh=pNgc1c5+bmtbIGbFllM8YLjIVTdroIKIrfxLaFsRXaI=;
+	s=korg; t=1718281471;
+	bh=KvK8GrrDAcYnXosg7n+O23xzZTre1nVmuY8UITX+pgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOnlHtakgeZlJB/c17ihV2wP220Xy/NNjGjb4yy8UiB2dXFCs7G0rUMoljO+ypH+i
-	 6jBzaT2SQ65UWEo6iO9vRiYEkwwbUobxh/63ReYK1gk0jfjY610G2XjuJgDodcPWPp
-	 cCEQUnZdochJCqgvAMnd+mR71dDK7KUqM64xvRB4=
+	b=IDRkQWWfRZtiJl80vRVC9ZqW6EKvvk6rVvV5vJUxwXqUrJwbNdBF2AI6UlnKsGzY4
+	 xRH2oOxmYANTPleQ6MGHr6U//BUaIbo/pQXN+KZzYKSGuXtdyRf+b1RXOOO/5dK37d
+	 +DeZOMUYoL5SS3I1iYhaXNqz1VmzCAY8ymTwJ/z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@nvidia.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jaime Caamano <jcaamano@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 296/402] virtio: delete vq in vp_find_vqs_msix() when request_irq() fails
+Subject: [PATCH 5.10 235/317] openvswitch: Set the skbuff pkt_type for proper pmtud support.
 Date: Thu, 13 Jun 2024 13:34:13 +0200
-Message-ID: <20240613113313.693120722@linuxfoundation.org>
+Message-ID: <20240613113256.640956969@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Pirko <jiri@nvidia.com>
+From: Aaron Conole <aconole@redhat.com>
 
-[ Upstream commit 89875151fccdd024d571aa884ea97a0128b968b6 ]
+[ Upstream commit 30a92c9e3d6b073932762bef2ac66f4ee784c657 ]
 
-When request_irq() fails, error path calls vp_del_vqs(). There, as vq is
-present in the list, free_irq() is called for the same vector. That
-causes following splat:
+Open vSwitch is originally intended to switch at layer 2, only dealing with
+Ethernet frames.  With the introduction of l3 tunnels support, it crossed
+into the realm of needing to care a bit about some routing details when
+making forwarding decisions.  If an oversized packet would need to be
+fragmented during this forwarding decision, there is a chance for pmtu
+to get involved and generate a routing exception.  This is gated by the
+skbuff->pkt_type field.
 
-[    0.414355] Trying to free already-free IRQ 27
-[    0.414403] WARNING: CPU: 1 PID: 1 at kernel/irq/manage.c:1899 free_irq+0x1a1/0x2d0
-[    0.414510] Modules linked in:
-[    0.414540] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.9.0-rc4+ #27
-[    0.414540] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-1.fc39 04/01/2014
-[    0.414540] RIP: 0010:free_irq+0x1a1/0x2d0
-[    0.414540] Code: 1e 00 48 83 c4 08 48 89 e8 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc 90 8b 74 24 04 48 c7 c7 98 80 6c b1 e8 00 c9 f7 ff 90 <0f> 0b 90 90 48 89 ee 4c 89 ef e8 e0 20 b8 00 49 8b 47 40 48 8b 40
-[    0.414540] RSP: 0000:ffffb71480013ae0 EFLAGS: 00010086
-[    0.414540] RAX: 0000000000000000 RBX: ffffa099c2722000 RCX: 0000000000000000
-[    0.414540] RDX: 0000000000000000 RSI: ffffb71480013998 RDI: 0000000000000001
-[    0.414540] RBP: 0000000000000246 R08: 00000000ffffdfff R09: 0000000000000001
-[    0.414540] R10: 00000000ffffdfff R11: ffffffffb18729c0 R12: ffffa099c1c91760
-[    0.414540] R13: ffffa099c1c916a4 R14: ffffa099c1d2f200 R15: ffffa099c1c91600
-[    0.414540] FS:  0000000000000000(0000) GS:ffffa099fec40000(0000) knlGS:0000000000000000
-[    0.414540] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    0.414540] CR2: 0000000000000000 CR3: 0000000008e3e001 CR4: 0000000000370ef0
-[    0.414540] Call Trace:
-[    0.414540]  <TASK>
-[    0.414540]  ? __warn+0x80/0x120
-[    0.414540]  ? free_irq+0x1a1/0x2d0
-[    0.414540]  ? report_bug+0x164/0x190
-[    0.414540]  ? handle_bug+0x3b/0x70
-[    0.414540]  ? exc_invalid_op+0x17/0x70
-[    0.414540]  ? asm_exc_invalid_op+0x1a/0x20
-[    0.414540]  ? free_irq+0x1a1/0x2d0
-[    0.414540]  vp_del_vqs+0xc1/0x220
-[    0.414540]  vp_find_vqs_msix+0x305/0x470
-[    0.414540]  vp_find_vqs+0x3e/0x1a0
-[    0.414540]  vp_modern_find_vqs+0x1b/0x70
-[    0.414540]  init_vqs+0x387/0x600
-[    0.414540]  virtnet_probe+0x50a/0xc80
-[    0.414540]  virtio_dev_probe+0x1e0/0x2b0
-[    0.414540]  really_probe+0xc0/0x2c0
-[    0.414540]  ? __pfx___driver_attach+0x10/0x10
-[    0.414540]  __driver_probe_device+0x73/0x120
-[    0.414540]  driver_probe_device+0x1f/0xe0
-[    0.414540]  __driver_attach+0x88/0x180
-[    0.414540]  bus_for_each_dev+0x85/0xd0
-[    0.414540]  bus_add_driver+0xec/0x1f0
-[    0.414540]  driver_register+0x59/0x100
-[    0.414540]  ? __pfx_virtio_net_driver_init+0x10/0x10
-[    0.414540]  virtio_net_driver_init+0x90/0xb0
-[    0.414540]  do_one_initcall+0x58/0x230
-[    0.414540]  kernel_init_freeable+0x1a3/0x2d0
-[    0.414540]  ? __pfx_kernel_init+0x10/0x10
-[    0.414540]  kernel_init+0x1a/0x1c0
-[    0.414540]  ret_from_fork+0x31/0x50
-[    0.414540]  ? __pfx_kernel_init+0x10/0x10
-[    0.414540]  ret_from_fork_asm+0x1a/0x30
-[    0.414540]  </TASK>
+When a flow is already loaded into the openvswitch module this field is
+set up and transitioned properly as a packet moves from one port to
+another.  In the case that a packet execute is invoked after a flow is
+newly installed this field is not properly initialized.  This causes the
+pmtud mechanism to omit sending the required exception messages across
+the tunnel boundary and a second attempt needs to be made to make sure
+that the routing exception is properly setup.  To fix this, we set the
+outgoing packet's pkt_type to PACKET_OUTGOING, since it can only get
+to the openvswitch module via a port device or packet command.
 
-Fix this by calling deleting the current vq when request_irq() fails.
+Even for bridge ports as users, the pkt_type needs to be reset when
+doing the transmit as the packet is truly outgoing and routing needs
+to get involved post packet transformations, in the case of
+VXLAN/GENEVE/udp-tunnel packets.  In general, the pkt_type on output
+gets ignored, since we go straight to the driver, but in the case of
+tunnel ports they go through IP routing layer.
 
-Fixes: 0b0f9dc52ed0 ("Revert "virtio_pci: use shared interrupts for virtqueues"")
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Message-Id: <20240426150845.3999481-1-jiri@resnulli.us>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+This issue is periodically encountered in complex setups, such as large
+openshift deployments, where multiple sets of tunnel traversal occurs.
+A way to recreate this is with the ovn-heater project that can setup
+a networking environment which mimics such large deployments.  We need
+larger environments for this because we need to ensure that flow
+misses occur.  In these environment, without this patch, we can see:
+
+  ./ovn_cluster.sh start
+  podman exec ovn-chassis-1 ip r a 170.168.0.5/32 dev eth1 mtu 1200
+  podman exec ovn-chassis-1 ip netns exec sw01p1 ip r flush cache
+  podman exec ovn-chassis-1 ip netns exec sw01p1 \
+         ping 21.0.0.3 -M do -s 1300 -c2
+  PING 21.0.0.3 (21.0.0.3) 1300(1328) bytes of data.
+  From 21.0.0.3 icmp_seq=2 Frag needed and DF set (mtu = 1142)
+
+  --- 21.0.0.3 ping statistics ---
+  ...
+
+Using tcpdump, we can also see the expected ICMP FRAG_NEEDED message is not
+sent into the server.
+
+With this patch, setting the pkt_type, we see the following:
+
+  podman exec ovn-chassis-1 ip netns exec sw01p1 \
+         ping 21.0.0.3 -M do -s 1300 -c2
+  PING 21.0.0.3 (21.0.0.3) 1300(1328) bytes of data.
+  From 21.0.0.3 icmp_seq=1 Frag needed and DF set (mtu = 1222)
+  ping: local error: message too long, mtu=1222
+
+  --- 21.0.0.3 ping statistics ---
+  ...
+
+In this case, the first ping request receives the FRAG_NEEDED message and
+a local routing exception is created.
+
+Tested-by: Jaime Caamano <jcaamano@redhat.com>
+Reported-at: https://issues.redhat.com/browse/FDP-164
+Fixes: 58264848a5a7 ("openvswitch: Add vxlan tunneling support.")
+Signed-off-by: Aaron Conole <aconole@redhat.com>
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Link: https://lore.kernel.org/r/20240516200941.16152-1-aconole@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio_pci_common.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/openvswitch/actions.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/virtio/virtio_pci_common.c b/drivers/virtio/virtio_pci_common.c
-index 1e890ef176873..a6f375417fd54 100644
---- a/drivers/virtio/virtio_pci_common.c
-+++ b/drivers/virtio/virtio_pci_common.c
-@@ -339,8 +339,10 @@ static int vp_find_vqs_msix(struct virtio_device *vdev, unsigned nvqs,
- 				  vring_interrupt, 0,
- 				  vp_dev->msix_names[msix_vec],
- 				  vqs[i]);
--		if (err)
-+		if (err) {
-+			vp_del_vq(vqs[i]);
- 			goto error_find;
-+		}
- 	}
- 	return 0;
+diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+index 80fee9d118eec..4095456f413df 100644
+--- a/net/openvswitch/actions.c
++++ b/net/openvswitch/actions.c
+@@ -923,6 +923,12 @@ static void do_output(struct datapath *dp, struct sk_buff *skb, int out_port,
+ 				pskb_trim(skb, ovs_mac_header_len(key));
+ 		}
  
++		/* Need to set the pkt_type to involve the routing layer.  The
++		 * packet movement through the OVS datapath doesn't generally
++		 * use routing, but this is needed for tunnel cases.
++		 */
++		skb->pkt_type = PACKET_OUTGOING;
++
+ 		if (likely(!mru ||
+ 		           (skb->len <= mru + vport->dev->hard_header_len))) {
+ 			ovs_vport_send(vport, skb, ovs_key_mac_proto(key));
 -- 
 2.43.0
 
