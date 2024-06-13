@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-51496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CC6890702E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94162906E31
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0976289625
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 955491C20A28
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313EC7F47B;
-	Thu, 13 Jun 2024 12:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF17146598;
+	Thu, 13 Jun 2024 12:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJl2BB66"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzifSjLF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E2156458;
-	Thu, 13 Jun 2024 12:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CE1148855;
+	Thu, 13 Jun 2024 12:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281469; cv=none; b=HOqEPXGdZhsF5shkstB3xv3nmDxs/Ezp0PxYEIieXqM+UZznDEig+IKzx5scewcvuFqRiqZjtDqrqTVWRYSjC3RZXlC4//NJM1r6kPnuwW9ZFXWd3QPgyCFHow6DuLCO1zCQCot/6fmVnkJGbNSBJZ3J61qGwyYBC74rjf+UCeg=
+	t=1718280216; cv=none; b=R1XcAcGcVZoAZSNQIEedb3yxQkCffMG1xAmoqfjVc7MVE6x2qFuUGD3rikqqtZgOiZMq4YJNAyNc9/UkQq+FtC/PToLWYI1rU46JmksnrlsPzmEtHXzyEqRf3QNMGYvF+kdmsKczaQ50vGbhYJE2XNwzsB/aFpcK67Vjqxwi3GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281469; c=relaxed/simple;
-	bh=baAauXiOD1GS0GZpVHelceiHiZwcQ9XrY0VtMaERxIg=;
+	s=arc-20240116; t=1718280216; c=relaxed/simple;
+	bh=aqYHuUVx0cZJ6QKkv5usuQNNifuWL+k/8k+FzFQmQJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JvO5wCSlzNf0hK1WDv6gsUpBZkGUnojy8KabTa7vqHTtBTZp1GzCvRqAMqe25QMF3d6JCAgTkpw3BEuELNzJaPjpf9fL3DJG3NSv0JdE5kmJV6ohSZTdzTV76KiFCMfOiZo287XLoyWU+2+YY3nxJMUKKyFcOayviDEaogbv+XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJl2BB66; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADF0C2BBFC;
-	Thu, 13 Jun 2024 12:24:28 +0000 (UTC)
+	 MIME-Version; b=Hr5u82f5fVqyKJ0vovezYVv4O70HEseixW0PaJkjN6vsVgSgc4DidZ9+nHDM84NAiFJ5yHu9S1wd5MR1OMGVdgPfZN1UFOpOJ51QSjCF9YFp3QmLgcxnZjEHBBq3D/6rlBOyOOH+8O+RtDHWsq5kg3XJahOPsFU//upxPLdbXHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzifSjLF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9555BC2BBFC;
+	Thu, 13 Jun 2024 12:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281468;
-	bh=baAauXiOD1GS0GZpVHelceiHiZwcQ9XrY0VtMaERxIg=;
+	s=korg; t=1718280216;
+	bh=aqYHuUVx0cZJ6QKkv5usuQNNifuWL+k/8k+FzFQmQJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IJl2BB66b318w8WBIamd5Kv1yLlsSkHinXV05XXJOfBIjsEakJTXV5el8tODxXI6a
-	 eMu1NXPIgpjPkZmjwDYng07naHU7yKHXOHi6Sw9bQEP2lqUdjIbk5sG00yHAGRDE1j
-	 E7551Hr1jsqBZEYRFF3e58SGXwUjkFOdOrUc6ShE=
+	b=dzifSjLF6Ub0WzDewHEi+4UEVnKHGKLN4GYdPrkJy7rsMmtoh+ymIcXrsz7onnTq9
+	 MV0v1y654Z79DDQU2U1vcxZsYgiUXHnS54CoSHqUst4wCGXZJOfhJBuf6c9mbmMzSb
+	 qCgyclpXk5hzXbcPPaKUrYZditls2s5W6uCJhCUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Yue Sun <samsun1006219@gmail.com>,
-	xingwei lee <xrivendell7@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andre Edich <andre.edich@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 234/317] tcp: Fix shift-out-of-bounds in dctcp_update_alpha().
+Subject: [PATCH 5.4 154/202] smsc95xx: remove redundant function arguments
 Date: Thu, 13 Jun 2024 13:34:12 +0200
-Message-ID: <20240613113256.602180563@linuxfoundation.org>
+Message-ID: <20240613113233.694593766@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,127 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Andre Edich <andre.edich@microchip.com>
 
-[ Upstream commit 3ebc46ca8675de6378e3f8f40768e180bb8afa66 ]
+[ Upstream commit 368be1ca28f66deba16627e2a02e78adedd023a6 ]
 
-In dctcp_update_alpha(), we use a module parameter dctcp_shift_g
-as follows:
+This patch removes arguments netdev and phy_id from the functions
+smsc95xx_mdio_read_nopm and smsc95xx_mdio_write_nopm.  Both removed
+arguments are recovered from a new argument `struct usbnet *dev`.
 
-  alpha -= min_not_zero(alpha, alpha >> dctcp_shift_g);
-  ...
-  delivered_ce <<= (10 - dctcp_shift_g);
-
-It seems syzkaller started fuzzing module parameters and triggered
-shift-out-of-bounds [0] by setting 100 to dctcp_shift_g:
-
-  memcpy((void*)0x20000080,
-         "/sys/module/tcp_dctcp/parameters/dctcp_shift_g\000", 47);
-  res = syscall(__NR_openat, /*fd=*/0xffffffffffffff9cul, /*file=*/0x20000080ul,
-                /*flags=*/2ul, /*mode=*/0ul);
-  memcpy((void*)0x20000000, "100\000", 4);
-  syscall(__NR_write, /*fd=*/r[0], /*val=*/0x20000000ul, /*len=*/4ul);
-
-Let's limit the max value of dctcp_shift_g by param_set_uint_minmax().
-
-With this patch:
-
-  # echo 10 > /sys/module/tcp_dctcp/parameters/dctcp_shift_g
-  # cat /sys/module/tcp_dctcp/parameters/dctcp_shift_g
-  10
-  # echo 11 > /sys/module/tcp_dctcp/parameters/dctcp_shift_g
-  -bash: echo: write error: Invalid argument
-
-[0]:
-UBSAN: shift-out-of-bounds in net/ipv4/tcp_dctcp.c:143:12
-shift exponent 100 is too large for 32-bit type 'u32' (aka 'unsigned int')
-CPU: 0 PID: 8083 Comm: syz-executor345 Not tainted 6.9.0-05151-g1b294a1f3561 #2
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-1.13.0-1ubuntu1.1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x201/0x300 lib/dump_stack.c:114
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_shift_out_of_bounds+0x346/0x3a0 lib/ubsan.c:468
- dctcp_update_alpha+0x540/0x570 net/ipv4/tcp_dctcp.c:143
- tcp_in_ack_event net/ipv4/tcp_input.c:3802 [inline]
- tcp_ack+0x17b1/0x3bc0 net/ipv4/tcp_input.c:3948
- tcp_rcv_state_process+0x57a/0x2290 net/ipv4/tcp_input.c:6711
- tcp_v4_do_rcv+0x764/0xc40 net/ipv4/tcp_ipv4.c:1937
- sk_backlog_rcv include/net/sock.h:1106 [inline]
- __release_sock+0x20f/0x350 net/core/sock.c:2983
- release_sock+0x61/0x1f0 net/core/sock.c:3549
- mptcp_subflow_shutdown+0x3d0/0x620 net/mptcp/protocol.c:2907
- mptcp_check_send_data_fin+0x225/0x410 net/mptcp/protocol.c:2976
- __mptcp_close+0x238/0xad0 net/mptcp/protocol.c:3072
- mptcp_close+0x2a/0x1a0 net/mptcp/protocol.c:3127
- inet_release+0x190/0x1f0 net/ipv4/af_inet.c:437
- __sock_release net/socket.c:659 [inline]
- sock_close+0xc0/0x240 net/socket.c:1421
- __fput+0x41b/0x890 fs/file_table.c:422
- task_work_run+0x23b/0x300 kernel/task_work.c:180
- exit_task_work include/linux/task_work.h:38 [inline]
- do_exit+0x9c8/0x2540 kernel/exit.c:878
- do_group_exit+0x201/0x2b0 kernel/exit.c:1027
- __do_sys_exit_group kernel/exit.c:1038 [inline]
- __se_sys_exit_group kernel/exit.c:1036 [inline]
- __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1036
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xe4/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x67/0x6f
-RIP: 0033:0x7f6c2b5005b6
-Code: Unable to access opcode bytes at 0x7f6c2b50058c.
-RSP: 002b:00007ffe883eb948 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-RAX: ffffffffffffffda RBX: 00007f6c2b5862f0 RCX: 00007f6c2b5005b6
-RDX: 0000000000000001 RSI: 000000000000003c RDI: 0000000000000001
-RBP: 0000000000000001 R08: 00000000000000e7 R09: ffffffffffffffc0
-R10: 0000000000000006 R11: 0000000000000246 R12: 00007f6c2b5862f0
-R13: 0000000000000001 R14: 0000000000000000 R15: 0000000000000001
- </TASK>
-
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Reported-by: Yue Sun <samsun1006219@gmail.com>
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAEkJfYNJM=cw-8x7_Vmj1J6uYVCWMbbvD=EFmDPVBGpTsqOxEA@mail.gmail.com/
-Fixes: e3118e8359bb ("net: tcp: add DCTCP congestion control algorithm")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240517091626.32772-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Andre Edich <andre.edich@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 52a2f0608366 ("net: usb: smsc95xx: fix changing LED_SEL bit value updated from EEPROM")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_dctcp.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/usb/smsc95xx.c | 35 +++++++++++++++++------------------
+ 1 file changed, 17 insertions(+), 18 deletions(-)
 
-diff --git a/net/ipv4/tcp_dctcp.c b/net/ipv4/tcp_dctcp.c
-index 79f705450c162..be2c97e907ae2 100644
---- a/net/ipv4/tcp_dctcp.c
-+++ b/net/ipv4/tcp_dctcp.c
-@@ -55,7 +55,18 @@ struct dctcp {
- };
+diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
+index 1aa99727d40c7..6fe6edc59623d 100644
+--- a/drivers/net/usb/smsc95xx.c
++++ b/drivers/net/usb/smsc95xx.c
+@@ -261,16 +261,18 @@ static void __smsc95xx_mdio_write(struct net_device *netdev, int phy_id,
+ 	mutex_unlock(&dev->phy_mutex);
+ }
  
- static unsigned int dctcp_shift_g __read_mostly = 4; /* g = 1/2^4 */
--module_param(dctcp_shift_g, uint, 0644);
+-static int smsc95xx_mdio_read_nopm(struct net_device *netdev, int phy_id,
+-				   int idx)
++static int smsc95xx_mdio_read_nopm(struct usbnet *dev, int idx)
+ {
+-	return __smsc95xx_mdio_read(netdev, phy_id, idx, 1);
++	struct mii_if_info *mii = &dev->mii;
 +
-+static int dctcp_shift_g_set(const char *val, const struct kernel_param *kp)
-+{
-+	return param_set_uint_minmax(val, kp, 0, 10);
-+}
-+
-+static const struct kernel_param_ops dctcp_shift_g_ops = {
-+	.set = dctcp_shift_g_set,
-+	.get = param_get_uint,
-+};
-+
-+module_param_cb(dctcp_shift_g, &dctcp_shift_g_ops, &dctcp_shift_g, 0644);
- MODULE_PARM_DESC(dctcp_shift_g, "parameter g for updating dctcp_alpha");
++	return __smsc95xx_mdio_read(dev->net, mii->phy_id, idx, 1);
+ }
  
- static unsigned int dctcp_alpha_on_init __read_mostly = DCTCP_MAX_ALPHA;
+-static void smsc95xx_mdio_write_nopm(struct net_device *netdev, int phy_id,
+-				     int idx, int regval)
++static void smsc95xx_mdio_write_nopm(struct usbnet *dev, int idx, int regval)
+ {
+-	__smsc95xx_mdio_write(netdev, phy_id, idx, regval, 1);
++	struct mii_if_info *mii = &dev->mii;
++
++	__smsc95xx_mdio_write(dev->net, mii->phy_id, idx, regval, 1);
+ }
+ 
+ static int smsc95xx_mdio_read(struct net_device *netdev, int phy_id, int idx)
+@@ -1347,39 +1349,37 @@ static u32 smsc_crc(const u8 *buffer, size_t len, int filter)
+ 
+ static int smsc95xx_enable_phy_wakeup_interrupts(struct usbnet *dev, u16 mask)
+ {
+-	struct mii_if_info *mii = &dev->mii;
+ 	int ret;
+ 
+ 	netdev_dbg(dev->net, "enabling PHY wakeup interrupts\n");
+ 
+ 	/* read to clear */
+-	ret = smsc95xx_mdio_read_nopm(dev->net, mii->phy_id, PHY_INT_SRC);
++	ret = smsc95xx_mdio_read_nopm(dev, PHY_INT_SRC);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	/* enable interrupt source */
+-	ret = smsc95xx_mdio_read_nopm(dev->net, mii->phy_id, PHY_INT_MASK);
++	ret = smsc95xx_mdio_read_nopm(dev, PHY_INT_MASK);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	ret |= mask;
+ 
+-	smsc95xx_mdio_write_nopm(dev->net, mii->phy_id, PHY_INT_MASK, ret);
++	smsc95xx_mdio_write_nopm(dev, PHY_INT_MASK, ret);
+ 
+ 	return 0;
+ }
+ 
+ static int smsc95xx_link_ok_nopm(struct usbnet *dev)
+ {
+-	struct mii_if_info *mii = &dev->mii;
+ 	int ret;
+ 
+ 	/* first, a dummy read, needed to latch some MII phys */
+-	ret = smsc95xx_mdio_read_nopm(dev->net, mii->phy_id, MII_BMSR);
++	ret = smsc95xx_mdio_read_nopm(dev, MII_BMSR);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = smsc95xx_mdio_read_nopm(dev->net, mii->phy_id, MII_BMSR);
++	ret = smsc95xx_mdio_read_nopm(dev, MII_BMSR);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -1428,7 +1428,6 @@ static int smsc95xx_enter_suspend0(struct usbnet *dev)
+ static int smsc95xx_enter_suspend1(struct usbnet *dev)
+ {
+ 	struct smsc95xx_priv *pdata = (struct smsc95xx_priv *)(dev->data[0]);
+-	struct mii_if_info *mii = &dev->mii;
+ 	u32 val;
+ 	int ret;
+ 
+@@ -1436,17 +1435,17 @@ static int smsc95xx_enter_suspend1(struct usbnet *dev)
+ 	 * compatibility with non-standard link partners
+ 	 */
+ 	if (pdata->features & FEATURE_PHY_NLP_CROSSOVER)
+-		smsc95xx_mdio_write_nopm(dev->net, mii->phy_id,	PHY_EDPD_CONFIG,
+-			PHY_EDPD_CONFIG_DEFAULT);
++		smsc95xx_mdio_write_nopm(dev, PHY_EDPD_CONFIG,
++					 PHY_EDPD_CONFIG_DEFAULT);
+ 
+ 	/* enable energy detect power-down mode */
+-	ret = smsc95xx_mdio_read_nopm(dev->net, mii->phy_id, PHY_MODE_CTRL_STS);
++	ret = smsc95xx_mdio_read_nopm(dev, PHY_MODE_CTRL_STS);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	ret |= MODE_CTRL_STS_EDPWRDOWN_;
+ 
+-	smsc95xx_mdio_write_nopm(dev->net, mii->phy_id, PHY_MODE_CTRL_STS, ret);
++	smsc95xx_mdio_write_nopm(dev, PHY_MODE_CTRL_STS, ret);
+ 
+ 	/* enter SUSPEND1 mode */
+ 	ret = smsc95xx_read_reg_nopm(dev, PM_CTRL, &val);
 -- 
 2.43.0
 
