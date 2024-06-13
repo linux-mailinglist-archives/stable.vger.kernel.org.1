@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF5C9070FF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 423D7907135
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78CA41F23515
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:33:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEBD61F21498
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3601DFD8;
-	Thu, 13 Jun 2024 12:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286231DFD9;
+	Thu, 13 Jun 2024 12:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTZa/gsz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X22ALma0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D045161;
-	Thu, 13 Jun 2024 12:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3974A0F;
+	Thu, 13 Jun 2024 12:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281959; cv=none; b=mXyAroK4Bha/pVwqi/TAegXPF4YHSoiJ8Pb2pJMxcnnmF3LwUm/OKeHGq1k/I9HWbLhy0CBTEggEIuSvV9kVtnfU5NXjSmlB7oa7JyKH3swxcu6vJS0+lfF1hqX4ozdiLUZyddzD5XlXcLiH8p/1gd1k3eniM8k+rdATedbWQ88=
+	t=1718282079; cv=none; b=UykwodqWNWFr7i4DW6iLDaiwChg4WiQSYce9u2gZO5HPjvQ3tx6p0/rtgWbge3kYzjStY396wjhoozKs4rQ9sFWmtWMZpUf1xOVw5G+MPWrIWr1y6XB4OnAuKOT3hcdXS5j2gi6wBThka0n2y3ZSBSWbJNq6eWnW1BV34QWq2sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281959; c=relaxed/simple;
-	bh=2m64ye5IGMeAy8rdBK9h3I0N87Cu2Se99ZYRbo1hIms=;
+	s=arc-20240116; t=1718282079; c=relaxed/simple;
+	bh=Lq0LyCKpO2p4HWgLOf7fTaO1Dzcphg9bsiFsB13mync=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xm7SceQg4IFaaoXxyc3zKAJz9PwxaALmR4IvOaklUxiILbFAsDJDxxE+Dn9zj8tr2nSedgS7TKXcOT+BT2ac2Xf/p7C9o3r4Vy1hd7u9P8P82FcNCkN9bz5qJOpAvkJbWsBUKDyNBxXWMbHMT/c2QFk/UmUFP9zOqpb+tBMwLKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTZa/gsz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14249C2BBFC;
-	Thu, 13 Jun 2024 12:32:38 +0000 (UTC)
+	 MIME-Version; b=U0xT3S0pNaoeDigbcSM+mF597oo52Zf85Soa4ZNykv0J+2W//rN56GdYEtLbwoVrBf6ZeJpB4bC7s8TY4OS6XNmfXXE73tyYpeMNsRAJNaqv1OxMUu799R4cq+M774chbmsZXAIfrkjtzxi6AbHGCic8qdkYEKUERA0w+QAsqks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X22ALma0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B809C2BBFC;
+	Thu, 13 Jun 2024 12:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281959;
-	bh=2m64ye5IGMeAy8rdBK9h3I0N87Cu2Se99ZYRbo1hIms=;
+	s=korg; t=1718282079;
+	bh=Lq0LyCKpO2p4HWgLOf7fTaO1Dzcphg9bsiFsB13mync=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RTZa/gsze8rI3+KWlbO4HvID5sQB8dpiElOFQmxZy3pd+h1Oo7ADa5x2SAV/bT3ga
-	 DD6qKZQAoqay1NigPGJoSn8QEagh1Gp5Mam+VOUU3rpNnZxxr/8CstUzMgsAlk5R25
-	 pyPoYmBNaWPZ1/KIcOc3nSi/0eh+Ls1reiWzKwf0=
+	b=X22ALma0KMdKfUH32iLHixXO4XTksC7vlP98SvDLzIhqYb1JQ7rXTG4NN9PEuqjlF
+	 X9c4LkTXjGoXuuwIj4uRmx1K91EnmC4au5PrD9ny0cB39qojBysouGlkq2nFpTuaUW
+	 LoBk46x1KZd/v1H+hvlMi/HfqZVPMN4egvIVhnyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Steve Glendinning <steve.glendinning@shawell.net>,
-	UNGLinuxDriver@microchip.com,
-	Simon Horman <horms@kernel.org>,
+	Antonin Bas <antonin.bas@broadcom.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 113/402] net: usb: smsc95xx: stop lying about skb->truesize
-Date: Thu, 13 Jun 2024 13:31:10 +0200
-Message-ID: <20240613113306.541276017@linuxfoundation.org>
+Subject: [PATCH 5.15 114/402] net: openvswitch: fix overwriting ct original tuple for ICMPv6
+Date: Thu, 13 Jun 2024 13:31:11 +0200
+Message-ID: <20240613113306.580365261@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
 References: <20240613113302.116811394@linuxfoundation.org>
@@ -69,85 +69,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit d50729f1d60bca822ef6d9c1a5fb28d486bd7593 ]
+[ Upstream commit 7c988176b6c16c516474f6fceebe0f055af5eb56 ]
 
-Some usb drivers try to set small skb->truesize and break
-core networking stacks.
+OVS_PACKET_CMD_EXECUTE has 3 main attributes:
+ - OVS_PACKET_ATTR_KEY - Packet metadata in a netlink format.
+ - OVS_PACKET_ATTR_PACKET - Binary packet content.
+ - OVS_PACKET_ATTR_ACTIONS - Actions to execute on the packet.
 
-In this patch, I removed one of the skb->truesize override.
+OVS_PACKET_ATTR_KEY is parsed first to populate sw_flow_key structure
+with the metadata like conntrack state, input port, recirculation id,
+etc.  Then the packet itself gets parsed to populate the rest of the
+keys from the packet headers.
 
-I also replaced one skb_clone() by an allocation of a fresh
-and small skb, to get minimally sized skbs, like we did
-in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
-in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
-stop lying about skb->truesize")
+Whenever the packet parsing code starts parsing the ICMPv6 header, it
+first zeroes out fields in the key corresponding to Neighbor Discovery
+information even if it is not an ND packet.
 
-v3: also fix a sparse error ( https://lore.kernel.org/oe-kbuild-all/202405091310.KvncIecx-lkp@intel.com/ )
-v2: leave the skb_trim() game because smsc95xx_rx_csum_offload()
-    needs the csum part. (Jakub)
-    While we are it, use get_unaligned() in smsc95xx_rx_csum_offload().
+It is an 'ipv6.nd' field.  However, the 'ipv6' is a union that shares
+the space between 'nd' and 'ct_orig' that holds the original tuple
+conntrack metadata parsed from the OVS_PACKET_ATTR_KEY.
 
-Fixes: 2f7ca802bdae ("net: Add SMSC LAN9500 USB2.0 10/100 ethernet adapter driver")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Steve Glendinning <steve.glendinning@shawell.net>
-Cc: UNGLinuxDriver@microchip.com
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240509083313.2113832-1-edumazet@google.com
+ND packets should not normally have conntrack state, so it's fine to
+share the space, but normal ICMPv6 Echo packets or maybe other types of
+ICMPv6 can have the state attached and it should not be overwritten.
+
+The issue results in all but the last 4 bytes of the destination
+address being wiped from the original conntrack tuple leading to
+incorrect packet matching and potentially executing wrong actions
+in case this packet recirculates within the datapath or goes back
+to userspace.
+
+ND fields should not be accessed in non-ND packets, so not clearing
+them should be fine.  Executing memset() only for actual ND packets to
+avoid the issue.
+
+Initializing the whole thing before parsing is needed because ND packet
+may not contain all the options.
+
+The issue only affects the OVS_PACKET_CMD_EXECUTE path and doesn't
+affect packets entering OVS datapath from network interfaces, because
+in this case CT metadata is populated from skb after the packet is
+already parsed.
+
+Fixes: 9dd7f8907c37 ("openvswitch: Add original direction conntrack tuple to sw_flow_key.")
+Reported-by: Antonin Bas <antonin.bas@broadcom.com>
+Closes: https://github.com/openvswitch/ovs-issues/issues/327
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Link: https://lore.kernel.org/r/20240509094228.1035477-1-i.maximets@ovn.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/smsc95xx.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ net/openvswitch/flow.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
-index 5f962f58ff496..10fae3989fbdb 100644
---- a/drivers/net/usb/smsc95xx.c
-+++ b/drivers/net/usb/smsc95xx.c
-@@ -1785,9 +1785,11 @@ static int smsc95xx_reset_resume(struct usb_interface *intf)
+diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
+index 1b81d71bac3cf..209b42cf5aeaf 100644
+--- a/net/openvswitch/flow.c
++++ b/net/openvswitch/flow.c
+@@ -417,7 +417,6 @@ static int parse_icmpv6(struct sk_buff *skb, struct sw_flow_key *key,
+ 	 */
+ 	key->tp.src = htons(icmp->icmp6_type);
+ 	key->tp.dst = htons(icmp->icmp6_code);
+-	memset(&key->ipv6.nd, 0, sizeof(key->ipv6.nd));
  
- static void smsc95xx_rx_csum_offload(struct sk_buff *skb)
- {
--	skb->csum = *(u16 *)(skb_tail_pointer(skb) - 2);
-+	u16 *csum_ptr = (u16 *)(skb_tail_pointer(skb) - 2);
+ 	if (icmp->icmp6_code == 0 &&
+ 	    (icmp->icmp6_type == NDISC_NEIGHBOUR_SOLICITATION ||
+@@ -426,6 +425,8 @@ static int parse_icmpv6(struct sk_buff *skb, struct sw_flow_key *key,
+ 		struct nd_msg *nd;
+ 		int offset;
+ 
++		memset(&key->ipv6.nd, 0, sizeof(key->ipv6.nd));
 +
-+	skb->csum = (__force __wsum)get_unaligned(csum_ptr);
- 	skb->ip_summed = CHECKSUM_COMPLETE;
--	skb_trim(skb, skb->len - 2);
-+	skb_trim(skb, skb->len - 2); /* remove csum */
- }
- 
- static int smsc95xx_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
-@@ -1845,25 +1847,22 @@ static int smsc95xx_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 				if (dev->net->features & NETIF_F_RXCSUM)
- 					smsc95xx_rx_csum_offload(skb);
- 				skb_trim(skb, skb->len - 4); /* remove fcs */
--				skb->truesize = size + sizeof(struct sk_buff);
- 
- 				return 1;
- 			}
- 
--			ax_skb = skb_clone(skb, GFP_ATOMIC);
-+			ax_skb = netdev_alloc_skb_ip_align(dev->net, size);
- 			if (unlikely(!ax_skb)) {
- 				netdev_warn(dev->net, "Error allocating skb\n");
- 				return 0;
- 			}
- 
--			ax_skb->len = size;
--			ax_skb->data = packet;
--			skb_set_tail_pointer(ax_skb, size);
-+			skb_put(ax_skb, size);
-+			memcpy(ax_skb->data, packet, size);
- 
- 			if (dev->net->features & NETIF_F_RXCSUM)
- 				smsc95xx_rx_csum_offload(ax_skb);
- 			skb_trim(ax_skb, ax_skb->len - 4); /* remove fcs */
--			ax_skb->truesize = size + sizeof(struct sk_buff);
- 
- 			usbnet_skb_return(dev, ax_skb);
- 		}
+ 		/* In order to process neighbor discovery options, we need the
+ 		 * entire packet.
+ 		 */
 -- 
 2.43.0
 
