@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-50718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C143906C26
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:47:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B529C906D4D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C88552811BE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:47:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B974A1C20357
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582AE14430D;
-	Thu, 13 Jun 2024 11:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88504145FFA;
+	Thu, 13 Jun 2024 11:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOpKfOgd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNvrXcow"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D3313D624;
-	Thu, 13 Jun 2024 11:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478DF144D16;
+	Thu, 13 Jun 2024 11:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279187; cv=none; b=Fo/SnM5qRNakyGilRyyz13ahk4s6k8brJgYUadRW7kukSMTuXf6v7Bu7qLJj2p9Kgnlmjy3z2ZOrSyN3UZv0Wo2TbDO20Mvhie1Ck5z6tt/ZMB0wKb7DsYIcFXy1U3gR1h0knwLskqLQrBlcowBmFumAP7tp7i47l+l8MmBMyL0=
+	t=1718279681; cv=none; b=EEyZLjygy32o2jyqLSPJBRxDt2i1H02qXs1shM1Mn291tNdOCn6jZzhZCweT2ZN2qUf8zfCTABl8UPEEh3w6YJraQkVXjKZe56XAk9aTb4DOZYpGVTjWEjdM/bZVTQctqLUgFyOUw43dBSuNT2ZgFQtyE0bL0p19UK9vIIrc7K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279187; c=relaxed/simple;
-	bh=grA2bFU2SgNvC3gKiFwmJ+woFPy6It7bQY1bz16F64A=;
+	s=arc-20240116; t=1718279681; c=relaxed/simple;
+	bh=wd1jThhg6zrs3TroaGExRRyl6xtMgrh9iJjcA+oa7bM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rF8QnYrAjeNmLzBXxZwSugijSxVBvzG9VxR9H15KnCm5MFHYEBQD6brVFWBc3YxYxSmXlshkieQAxeTd0fLHQZiBJMb3RxmGfdo2Df02ZG1o5b9ImE9yNk5V0/hzK0LZza2VlDBn1kw6cc3Kr0UpWVzJubZwLgUsYs93lhcX/80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOpKfOgd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52CB7C2BBFC;
-	Thu, 13 Jun 2024 11:46:26 +0000 (UTC)
+	 MIME-Version; b=YDl8pvdA/jQOIcmsrSlw9T6TPMeizRfVnyUZOWqj2wlTrIrAzhz5IhqeRExF7n18OZHDX40inJfGZWO39EIH0F6b7jB3W1BbOK2J9TzgjlLHNd1lHhRJ1jDxNIK9y3MDdlNhVD3wI50MISTikTLCIKq5qkoynK0lhS7HRoICWvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNvrXcow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89FEC2BBFC;
+	Thu, 13 Jun 2024 11:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279186;
-	bh=grA2bFU2SgNvC3gKiFwmJ+woFPy6It7bQY1bz16F64A=;
+	s=korg; t=1718279681;
+	bh=wd1jThhg6zrs3TroaGExRRyl6xtMgrh9iJjcA+oa7bM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bOpKfOgdKkA1swy7FZtTT6N0g4EbYiN3GLBph+0mB8GJ+1N8mMYmffJax51Q5kwfy
-	 s8KDyae31FmO1xLWZPOUm3K6TiF18VSLshFq9rOXuf0n3mtlhWXDCIGjgd6f/8pnbX
-	 SRFu76KmBGEEmcFkL6EE00Pj1mX9ujKlgXyuIs94=
+	b=CNvrXcowr+1dRc4jfZHxW+uhm+Bzl4Wk64rIEqmkxy2BtJyNjXxSGlW8Ax47lRR+3
+	 CruzobD8sM4fibSe67TBbH0hOkPevbNGYgAifz075XtK7qzPykWMa42rFuEVuNH6Hk
+	 mYd8jypFLkkNXOCxFd0ASOERb2gdLjuWYoMNdTzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 4.19 204/213] kdb: Fix buffer overflow during tab-complete
+	Marc Hartmayer <mhartmay@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.9 127/157] s390/ap: Fix crash in AP internal function modify_bitmap()
 Date: Thu, 13 Jun 2024 13:34:12 +0200
-Message-ID: <20240613113235.849526175@linuxfoundation.org>
+Message-ID: <20240613113232.323671705@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Harald Freudenberger <freude@linux.ibm.com>
 
-commit e9730744bf3af04cda23799029342aa3cddbc454 upstream.
+commit d4f9d5a99a3fd1b1c691b7a1a6f8f3f25f4116c9 upstream.
 
-Currently, when the user attempts symbol completion with the Tab key, kdb
-will use strncpy() to insert the completed symbol into the command buffer.
-Unfortunately it passes the size of the source buffer rather than the
-destination to strncpy() with predictably horrible results. Most obviously
-if the command buffer is already full but cp, the cursor position, is in
-the middle of the buffer, then we will write past the end of the supplied
-buffer.
+A system crash like this
 
-Fix this by replacing the dubious strncpy() calls with memmove()/memcpy()
-calls plus explicit boundary checks to make sure we have enough space
-before we start moving characters around.
+  Failing address: 200000cb7df6f000 TEID: 200000cb7df6f403
+  Fault in home space mode while using kernel ASCE.
+  AS:00000002d71bc007 R3:00000003fe5b8007 S:000000011a446000 P:000000015660c13d
+  Oops: 0038 ilc:3 [#1] PREEMPT SMP
+  Modules linked in: mlx5_ib ...
+  CPU: 8 PID: 7556 Comm: bash Not tainted 6.9.0-rc7 #8
+  Hardware name: IBM 3931 A01 704 (LPAR)
+  Krnl PSW : 0704e00180000000 0000014b75e7b606 (ap_parse_bitmap_str+0x10e/0x1f8)
+  R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2 PM:0 RI:0 EA:3
+  Krnl GPRS: 0000000000000001 ffffffffffffffc0 0000000000000001 00000048f96b75d3
+  000000cb00000100 ffffffffffffffff ffffffffffffffff 000000cb7df6fce0
+  000000cb7df6fce0 00000000ffffffff 000000000000002b 00000048ffffffff
+  000003ff9b2dbc80 200000cb7df6fcd8 0000014bffffffc0 000000cb7df6fbc8
+  Krnl Code: 0000014b75e7b5fc: a7840047            brc     8,0000014b75e7b68a
+  0000014b75e7b600: 18b2                lr      %r11,%r2
+  #0000014b75e7b602: a7f4000a            brc     15,0000014b75e7b616
+  >0000014b75e7b606: eb22d00000e6        laog    %r2,%r2,0(%r13)
+  0000014b75e7b60c: a7680001            lhi     %r6,1
+  0000014b75e7b610: 187b                lr      %r7,%r11
+  0000014b75e7b612: 84960021            brxh    %r9,%r6,0000014b75e7b654
+  0000014b75e7b616: 18e9                lr      %r14,%r9
+  Call Trace:
+  [<0000014b75e7b606>] ap_parse_bitmap_str+0x10e/0x1f8
+  ([<0000014b75e7b5dc>] ap_parse_bitmap_str+0xe4/0x1f8)
+  [<0000014b75e7b758>] apmask_store+0x68/0x140
+  [<0000014b75679196>] kernfs_fop_write_iter+0x14e/0x1e8
+  [<0000014b75598524>] vfs_write+0x1b4/0x448
+  [<0000014b7559894c>] ksys_write+0x74/0x100
+  [<0000014b7618a440>] __do_syscall+0x268/0x328
+  [<0000014b761a3558>] system_call+0x70/0x98
+  INFO: lockdep is turned off.
+  Last Breaking-Event-Address:
+  [<0000014b75e7b636>] ap_parse_bitmap_str+0x13e/0x1f8
+  Kernel panic - not syncing: Fatal exception: panic_on_oops
 
-Reported-by: Justin Stitt <justinstitt@google.com>
-Closes: https://lore.kernel.org/all/CAFhGd8qESuuifuHsNjFPR-Va3P80bxrw+LqvC8deA8GziUJLpw@mail.gmail.com/
-Cc: stable@vger.kernel.org
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Tested-by: Justin Stitt <justinstitt@google.com>
-Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-1-f236dbe9828d@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+occured when /sys/bus/ap/a[pq]mask was updated with a relative mask value
+(like +0x10-0x12,+60,-90) with one of the numeric values exceeding INT_MAX.
+
+The fix is simple: use unsigned long values for the internal variables. The
+correct checks are already in place in the function but a simple int for
+the internal variables was used with the possibility to overflow.
+
+Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
+Tested-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ drivers/s390/crypto/ap_bus.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -364,14 +364,19 @@ poll_again:
- 			kdb_printf(kdb_prompt_str);
- 			kdb_printf("%s", buffer);
- 		} else if (tab != 2 && count > 0) {
--			len_tmp = strlen(p_tmp);
--			strncpy(p_tmp+len_tmp, cp, lastchar-cp+1);
--			len_tmp = strlen(p_tmp);
--			strncpy(cp, p_tmp+len, len_tmp-len + 1);
--			len = len_tmp - len;
--			kdb_printf("%s", cp);
--			cp += len;
--			lastchar += len;
-+			/* How many new characters do we want from tmpbuffer? */
-+			len_tmp = strlen(p_tmp) - len;
-+			if (lastchar + len_tmp >= bufend)
-+				len_tmp = bufend - lastchar;
-+
-+			if (len_tmp) {
-+				/* + 1 ensures the '\0' is memmove'd */
-+				memmove(cp+len_tmp, cp, (lastchar-cp) + 1);
-+				memcpy(cp, p_tmp+len, len_tmp);
-+				kdb_printf("%s", cp);
-+				cp += len_tmp;
-+				lastchar += len_tmp;
-+			}
- 		}
- 		kdb_nextline = 1; /* reset output line number */
- 		break;
+--- a/drivers/s390/crypto/ap_bus.c
++++ b/drivers/s390/crypto/ap_bus.c
+@@ -1129,7 +1129,7 @@ static int hex2bitmap(const char *str, u
+  */
+ static int modify_bitmap(const char *str, unsigned long *bitmap, int bits)
+ {
+-	int a, i, z;
++	unsigned long a, i, z;
+ 	char *np, sign;
+ 
+ 	/* bits needs to be a multiple of 8 */
 
 
 
