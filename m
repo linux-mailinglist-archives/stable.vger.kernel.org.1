@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6873C907173
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:37:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B15C906F9F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BED71F25B22
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:37:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A05F1C22186
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B09A4A07;
-	Thu, 13 Jun 2024 12:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A12144D07;
+	Thu, 13 Jun 2024 12:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+arEH4L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fx1t1k1h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFAE1EEF8;
-	Thu, 13 Jun 2024 12:37:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B341448E8;
+	Thu, 13 Jun 2024 12:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282221; cv=none; b=XKQPaUkV7WRewJmsiW1BtCf4WMOK9htjzWqhYN1GVWoW/JT2E+V/wx0hVa1D5+Yi1c+EXTEmQFgiXFGuN+nZfweZAgsgHUqDfrVe8dI3x8VfuLoD7Pipyn3pVvKLTwHZ6DMypbpSjJH9s4OkBpLsZTeOTpYrlRlYyYvuvIrqdUk=
+	t=1718281107; cv=none; b=Qw9jKhqP/8gVuco0SUcj8dI/Xh2zWNxoClwQq6aVaJ+RfYko0DnfPhlX9yRAolzBTPhAdMbOhv9b19eQOhefxkppGQ1+SZoL0bhrsZ6amcLGJ7I2e0A1h3RWRoAaC7u/LXrsOAVk4btM5tUCZ0MOJy9AlxoiQWuHsNpWWr1nQbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282221; c=relaxed/simple;
-	bh=4aDKwESArYrT+rzHDXYtRCWjfwdKNl7re+KuaVxHu9c=;
+	s=arc-20240116; t=1718281107; c=relaxed/simple;
+	bh=PNtJAblXpweOU7H6/G4sGK+5QMEI3WoukRMwJeq3Y8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TjKMHuXO1UdxllhhrtsaANMPVgGyyYSxtg2mR5EzSPrTQK9RGQm+bFzJFyIZ4HtRLpsi0VWbY+PeD5Acf2VdHU34LQKuwVkJkYGthg4O3hsn5B3Ty9KCttmKaeQdoSZM+29VK6TDY2CJge1kXKTnQBAZ8IPiOcWBySdXpsMPU00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+arEH4L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3D7C2BBFC;
-	Thu, 13 Jun 2024 12:36:59 +0000 (UTC)
+	 MIME-Version; b=VteRVI6tjamQ67jqtdGikJYC7J0Uq6bY0RDvxei1SdqWEKS8k9LEwN2njMC4C+UmgQa/CDPKawrk7emO2ea337WZ0NzSM3FdGXoXKzG/YCK2VPxEYfzl4HJ+UFEEsi8qLxPkKb6zmStJOOnUMY40hEPDtEhixaoe7QHMnSV1twA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fx1t1k1h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30D8C2BBFC;
+	Thu, 13 Jun 2024 12:18:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282220;
-	bh=4aDKwESArYrT+rzHDXYtRCWjfwdKNl7re+KuaVxHu9c=;
+	s=korg; t=1718281107;
+	bh=PNtJAblXpweOU7H6/G4sGK+5QMEI3WoukRMwJeq3Y8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+arEH4L+uxA1C/qNnAly0yqvV4e3ac0O+awKZvWFZk8Bj/lJZqlhfQMP26D+ZPKp
-	 c9CoeFGXiql3UBUHl3KRrbw44cN/X6WZ+0RxLlCZzUqrtbUrpuNJ896w+fLEpgpQbB
-	 2LAZ+ZyfwZiEZoSFWTeyQeqJEBKEW/AOY9cGfIlQ=
+	b=Fx1t1k1hWFsyo3vTLX3nakhirX0tmEVpMgIl846sH5CrSzmHi/+9RCCJ4JuC/C8AS
+	 bHZz+VfWEnPlxvYSQaOKfgRL0ISPy51AHHOXgSrWDKkEIZDxhsGQJ+Y2s/TVR1jjnv
+	 /lWFPvjm6VnHWa0njMgOKCf1n8jRyMXCsKUfMKac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 203/402] iio: pressure: dps310: support negative temperature values
-Date: Thu, 13 Jun 2024 13:32:40 +0200
-Message-ID: <20240613113310.066606754@linuxfoundation.org>
+Subject: [PATCH 5.10 143/317] dmaengine: idma64: Add check for dma_set_max_seg_size
+Date: Thu, 13 Jun 2024 13:32:41 +0200
+Message-ID: <20240613113253.100034216@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 9dd6b32e76ff714308964cd9ec91466a343dcb8b ]
+[ Upstream commit 2b1c1cf08a0addb6df42f16b37133dc7a351de29 ]
 
-The current implementation interprets negative values returned from
-`dps310_calculate_temp` as error codes.
-This has a side effect that when negative temperature values are
-calculated, they are interpreted as error.
+As the possible failure of the dma_set_max_seg_size(), it should be
+better to check the return value of the dma_set_max_seg_size().
 
-Fix this by using the return value only for error handling and passing a
-pointer for the value.
-
-Fixes: ba6ec48e76bc ("iio: Add driver for Infineon DPS310")
-Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
-Link: https://lore.kernel.org/r/20240415105030.1161770-2-thomas.haemmerle@leica-geosystems.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: e3fdb1894cfa ("dmaengine: idma64: set maximum allowed segment size for DMA")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240403024932.3342606-1-nichen@iscas.ac.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/dps310.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/dma/idma64.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
-index 1b6b9530f1662..7fdc7a0147f0e 100644
---- a/drivers/iio/pressure/dps310.c
-+++ b/drivers/iio/pressure/dps310.c
-@@ -730,7 +730,7 @@ static int dps310_read_pressure(struct dps310_data *data, int *val, int *val2,
- 	}
- }
+diff --git a/drivers/dma/idma64.c b/drivers/dma/idma64.c
+index db506e1f7ef4e..0f065ba844c00 100644
+--- a/drivers/dma/idma64.c
++++ b/drivers/dma/idma64.c
+@@ -594,7 +594,9 @@ static int idma64_probe(struct idma64_chip *chip)
  
--static int dps310_calculate_temp(struct dps310_data *data)
-+static int dps310_calculate_temp(struct dps310_data *data, int *val)
- {
- 	s64 c0;
- 	s64 t;
-@@ -746,7 +746,9 @@ static int dps310_calculate_temp(struct dps310_data *data)
- 	t = c0 + ((s64)data->temp_raw * (s64)data->c1);
+ 	idma64->dma.dev = chip->sysdev;
  
- 	/* Convert to milliCelsius and scale the temperature */
--	return (int)div_s64(t * 1000LL, kt);
-+	*val = (int)div_s64(t * 1000LL, kt);
-+
-+	return 0;
- }
+-	dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
++	ret = dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
++	if (ret)
++		return ret;
  
- static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
-@@ -768,11 +770,10 @@ static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
- 		if (rc)
- 			return rc;
- 
--		rc = dps310_calculate_temp(data);
--		if (rc < 0)
-+		rc = dps310_calculate_temp(data, val);
-+		if (rc)
- 			return rc;
- 
--		*val = rc;
- 		return IIO_VAL_INT;
- 
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+ 	ret = dma_async_device_register(&idma64->dma);
+ 	if (ret)
 -- 
 2.43.0
 
