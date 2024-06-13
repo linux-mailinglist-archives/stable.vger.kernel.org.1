@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-51550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C80F90706A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70217906EE9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62AD11C21CA5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 245B31F23057
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4B7143C5F;
-	Thu, 13 Jun 2024 12:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA6414430C;
+	Thu, 13 Jun 2024 12:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGfnL4UR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWVwyHYS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD03E143C50;
-	Thu, 13 Jun 2024 12:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E202143739;
+	Thu, 13 Jun 2024 12:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281624; cv=none; b=YLIUD9OtppI4siutudda8pDzqLmM7VLmbu0Bl77a7VB9XyyoXYp0HQjHZHskZiVYd7SCWpZ6LF/sksw8rE+BqI5ZTvUzdYRzfsjXMubAGYd/Wn0HuitVIfk3pqLb5msZ/2nDZwCQcU6xm5SxGitOr0+vfUKD1UNswZvXPSVE1I4=
+	t=1718280685; cv=none; b=Phy5WFjX/T76PBIXBseoY6LAcK8IpH/smrOxYhf14uzV5Sj8uSguWVZBOJyX+Q5ek7H/9pZsz22mqFu893b6mufj6jSbvMQxoSMs1AYqY/tBMR2xzOuTKEuX39ZyXKOeN376r2YtkeDAIkDd14DCgOZtKPXTnN+Khty3QGgTfUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281624; c=relaxed/simple;
-	bh=gTE74ge7D7FN5xFms6wgEWi5fbIwbxIjwp3Dza5OuKk=;
+	s=arc-20240116; t=1718280685; c=relaxed/simple;
+	bh=nfefBatcsV3O9vtZvH6J+ay/qWBaMIXEhy33wdgQHAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CfCfkfZQ8/7tKdUODl+e1yxwQUqp4axVfg8jaMgCn7a/zKJyyxlFhlgsueexozFIYYtz99FaIWb0gnHqMBSlZC5X0qvmcGXih6bnLZ9D3QNynKlyQ/k+v72Yv274+fZ8hypVL+NDTvZrZLONEIiGr1+gjIirY1662muozS21ELg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGfnL4UR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01979C2BBFC;
-	Thu, 13 Jun 2024 12:27:03 +0000 (UTC)
+	 MIME-Version; b=t5ihkgZuY0yH/LOdHpUuKgdqXVas/IvV1EceAYaYIxTZQmioDURwCpUkcLcLbRaTLhwODRxnSsdTm8AhJevKW3lBwbPgqEw7al4RY3DKyXBTwToU6zD8Ys+A05hIsRuqTe7G6dGHM9SV2U/efaIliP751QrMhARvLG4MEk3fjaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWVwyHYS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22545C2BBFC;
+	Thu, 13 Jun 2024 12:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281624;
-	bh=gTE74ge7D7FN5xFms6wgEWi5fbIwbxIjwp3Dza5OuKk=;
+	s=korg; t=1718280685;
+	bh=nfefBatcsV3O9vtZvH6J+ay/qWBaMIXEhy33wdgQHAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cGfnL4UR5l2jrggtFBdIwZQ5mCSUOzaADCi6iMV9D+tn0hRJboOTJHbDJBFKLigk4
-	 0hDq7aVbd/xMXz+H1ez/H6GFweF066vT+v4v3v8my26IOCzy4x3NG8tAgKh4X/ykIG
-	 XHih9oQFwunZHRNHAQfyFj6f9XfUVKyanRf1BSAk=
+	b=DWVwyHYS8FG1iCmVkl44iI/FG7Bv1BLrWXYeQlcJ86Ta8bHLLAkgv6JPACKP75Sdz
+	 cGe+kP/vgosZW9AdCcEUhM8MqTm7F+7KMeqFyB8VhHcwHznofYDfThcpyA9XDobr8A
+	 KooE45T0uwp37ezQbCqoR8o5x+kWPJXX2j0FqbQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Subject: [PATCH 5.10 297/317] crypto: qat - Fix ADF_DEV_RESET_SYNC memory leak
-Date: Thu, 13 Jun 2024 13:35:15 +0200
-Message-ID: <20240613113259.038571597@linuxfoundation.org>
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 136/137] smb: client: fix deadlock in smb2_find_smb_tcon()
+Date: Thu, 13 Jun 2024 13:35:16 +0200
+Message-ID: <20240613113228.581695696@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Enzo Matsumiya <ematsumiya@suse.de>
 
-commit d3b17c6d9dddc2db3670bc9be628b122416a3d26 upstream.
+commit 02c418774f76a0a36a6195c9dbf8971eb4130a15 upstream.
 
-Using completion_done to determine whether the caller has gone
-away only works after a complete call.  Furthermore it's still
-possible that the caller has not yet called wait_for_completion,
-resulting in another potential UAF.
+Unlock cifs_tcp_ses_lock before calling cifs_put_smb_ses() to avoid such
+deadlock.
 
-Fix this by making the caller use cancel_work_sync and then freeing
-the memory safely.
-
-Fixes: 7d42e097607c ("crypto: qat - resolve race condition during AER recovery")
-Cc: <stable@vger.kernel.org> #6.8+
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: stable@vger.kernel.org
+Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/qat/qat_common/adf_aer.c |   19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ fs/smb/client/smb2transport.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/qat/qat_common/adf_aer.c
-+++ b/drivers/crypto/qat/qat_common/adf_aer.c
-@@ -95,8 +95,7 @@ static void adf_device_reset_worker(stru
- 	if (adf_dev_init(accel_dev) || adf_dev_start(accel_dev)) {
- 		/* The device hanged and we can't restart it so stop here */
- 		dev_err(&GET_DEV(accel_dev), "Restart device failed\n");
--		if (reset_data->mode == ADF_DEV_RESET_ASYNC ||
--		    completion_done(&reset_data->compl))
-+		if (reset_data->mode == ADF_DEV_RESET_ASYNC)
- 			kfree(reset_data);
- 		WARN(1, "QAT: device restart failed. Device is unusable\n");
- 		return;
-@@ -104,16 +103,8 @@ static void adf_device_reset_worker(stru
- 	adf_dev_restarted_notify(accel_dev);
- 	clear_bit(ADF_STATUS_RESTARTING, &accel_dev->status);
- 
--	/*
--	 * The dev is back alive. Notify the caller if in sync mode
--	 *
--	 * If device restart will take a more time than expected,
--	 * the schedule_reset() function can timeout and exit. This can be
--	 * detected by calling the completion_done() function. In this case
--	 * the reset_data structure needs to be freed here.
--	 */
--	if (reset_data->mode == ADF_DEV_RESET_ASYNC ||
--	    completion_done(&reset_data->compl))
-+	/* The dev is back alive. Notify the caller if in sync mode */
-+	if (reset_data->mode == ADF_DEV_RESET_ASYNC)
- 		kfree(reset_data);
- 	else
- 		complete(&reset_data->compl);
-@@ -148,10 +139,10 @@ static int adf_dev_aer_schedule_reset(st
- 		if (!timeout) {
- 			dev_err(&GET_DEV(accel_dev),
- 				"Reset device timeout expired\n");
-+			cancel_work_sync(&reset_data->reset_work);
- 			ret = -EFAULT;
--		} else {
--			kfree(reset_data);
- 		}
-+		kfree(reset_data);
- 		return ret;
+--- a/fs/smb/client/smb2transport.c
++++ b/fs/smb/client/smb2transport.c
+@@ -216,8 +216,8 @@ smb2_find_smb_tcon(struct TCP_Server_Inf
  	}
- 	return 0;
+ 	tcon = smb2_find_smb_sess_tcon_unlocked(ses, tid);
+ 	if (!tcon) {
+-		cifs_put_smb_ses(ses);
+ 		spin_unlock(&cifs_tcp_ses_lock);
++		cifs_put_smb_ses(ses);
+ 		return NULL;
+ 	}
+ 	spin_unlock(&cifs_tcp_ses_lock);
 
 
 
