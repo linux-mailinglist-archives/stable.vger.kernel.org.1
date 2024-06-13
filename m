@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF48E906E64
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5CE906FC6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 697D61F20FCE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4636B1C2274F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B80146D6C;
-	Thu, 13 Jun 2024 12:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C13145B3C;
+	Thu, 13 Jun 2024 12:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMBZVcME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buOxKwE+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175C5146D68;
-	Thu, 13 Jun 2024 12:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7096114534A;
+	Thu, 13 Jun 2024 12:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280347; cv=none; b=BEfzFFqU3YIs4sdjs9OYIDpXiwYjgelRa5eTbjk5Ka9aZwYdOOpIeIR9oDH9TU/wrho/StsriWNz6DkGd4cI2kKkPPAlO3s4hmxDLGtHrrOYa34kAOK8L6fTiPSfHXAU1tlvDPfD1xXBb2ZKHy+0ePYVp03HK3qcTYw3NWJmCw4=
+	t=1718281237; cv=none; b=hg6oXpSAZpYafNFXw2iATkf0z/AGlJE8G9YIb38KX6WNRHzNEjyD5S5sX0meVOskCMQCupkyrb9VovYMFtzlbsDHtsaR6pXkbpgD6wOb0FyAFS7pmNxScia8Kb2HcxfDRwOtZZsw5cgvrfDm5x/nb+pgKVeRQcleaiUlpC3PlJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280347; c=relaxed/simple;
-	bh=rL7ZoQKSaJyvtQF6WTJQmZg3F9J3/5PQuISYk4cMTOo=;
+	s=arc-20240116; t=1718281237; c=relaxed/simple;
+	bh=2Jm6dmX6Sk0ekd6vPDtH/ipJ2R35RFC7FzEt2VQFaqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMhezt41Equ/T1jY6nZtQPBYADiQBseT3Akw4DWOo732PSBRYEsdg+UPwNYg6U8gwQ/HjCRgLKc1CNme342yK6a/Fcn5cUtmEOaqJkLEl6ESu1odCzX8IgNx9x1Q9WCo3C5gTzgO8ClEIMn1zegUjwLt3UlQqiCLPFeXiyZW3/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMBZVcME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95481C2BBFC;
-	Thu, 13 Jun 2024 12:05:46 +0000 (UTC)
+	 MIME-Version; b=KkPWtP0r+uJltEj5EEWZVwvhYkw7NhyrszlXucVPfY5fuNdgP2nlfOO093hRemwVvACThFBZI5xNwcioqiUgUC6aB/4aV3fZAkEs5eyutlyU2Xehmb/6qb9Mm9WxLf/p3srfiR+oxfFDwcZUzk4wXjUoocJRRdiMr6wpVjxYnsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buOxKwE+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834A0C2BBFC;
+	Thu, 13 Jun 2024 12:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280347;
-	bh=rL7ZoQKSaJyvtQF6WTJQmZg3F9J3/5PQuISYk4cMTOo=;
+	s=korg; t=1718281236;
+	bh=2Jm6dmX6Sk0ekd6vPDtH/ipJ2R35RFC7FzEt2VQFaqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UMBZVcME1aVmWQi1J/NJriLBl6bh6UJD489eHEU6EusQyV5LYPQSEkSgsYSz+T+ga
-	 hiuJeN4crSnqWiYLE7iR3zdyqquPQj1PgToyC/4eMGE3d6RTJU8NEYXGnAofGWLjC5
-	 VsXmCw52c8aDMIKLnzQ2ekPhBDVanlE149gylYRc=
+	b=buOxKwE+ZsKEg4Ns87ZvGRvuxFufmzP8uZN+I6AjFs8thRWMfaWKHDjsrAs7bni34
+	 JJhd3FtcFN4VOTDHDBbefkVKHq7sCp/eIbVFUkL02mTX+HAWPABefQHdlotl8wRrcm
+	 yckv94Vl/wpHdINNMSsYZlKRt2LWL/lWsoSTJPOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Joel Granados <j.granados@samsung.com>,
-	Eric Biggers <ebiggers@google.com>
-Subject: [PATCH 6.6 023/137] fsverity: use register_sysctl_init() to avoid kmemleak warning
-Date: Thu, 13 Jun 2024 13:33:23 +0200
-Message-ID: <20240613113224.187156461@linuxfoundation.org>
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 186/317] f2fs: fix to release node block count in error path of f2fs_new_node_page()
+Date: Thu, 13 Jun 2024 13:33:24 +0200
+Message-ID: <20240613113254.754116679@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Chao Yu <chao@kernel.org>
 
-commit ee5814dddefbaa181cb247a75676dd5103775db1 upstream.
+[ Upstream commit 0fa4e57c1db263effd72d2149d4e21da0055c316 ]
 
-Since the fsverity sysctl registration runs as a builtin initcall, there
-is no corresponding sysctl deregistration and the resulting struct
-ctl_table_header is not used.  This can cause a kmemleak warning just
-after the system boots up.  (A pointer to the ctl_table_header is stored
-in the fsverity_sysctl_header static variable, which kmemleak should
-detect; however, the compiler can optimize out that variable.)  Avoid
-the kmemleak warning by using register_sysctl_init() which is intended
-for use by builtin initcalls and uses kmemleak_not_leak().
+It missed to call dec_valid_node_count() to release node block count
+in error path, fix it.
 
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Closes: https://lore.kernel.org/r/CAHj4cs8DTSvR698UE040rs_pX1k-WVe7aR6N2OoXXuhXJPDC-w@mail.gmail.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Joel Granados <j.granados@samsung.com>
-Link: https://lore.kernel.org/r/20240501025331.594183-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 141170b759e0 ("f2fs: fix to avoid use f2fs_bug_on() in f2fs_new_node_page()")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/verity/init.c |    7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ fs/f2fs/node.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/verity/init.c
-+++ b/fs/verity/init.c
-@@ -10,8 +10,6 @@
- #include <linux/ratelimit.h>
- 
- #ifdef CONFIG_SYSCTL
--static struct ctl_table_header *fsverity_sysctl_header;
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 02cb1c806c3ed..348ad1d6199ff 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1242,6 +1242,7 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 	}
+ 	if (unlikely(new_ni.blk_addr != NULL_ADDR)) {
+ 		err = -EFSCORRUPTED;
++		dec_valid_node_count(sbi, dn->inode, !ofs);
+ 		set_sbi_flag(sbi, SBI_NEED_FSCK);
+ 		goto fail;
+ 	}
+@@ -1267,7 +1268,6 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 	if (ofs == 0)
+ 		inc_valid_inode_count(sbi);
+ 	return page;
 -
- static struct ctl_table fsverity_sysctl_table[] = {
- #ifdef CONFIG_FS_VERITY_BUILTIN_SIGNATURES
- 	{
-@@ -29,10 +27,7 @@ static struct ctl_table fsverity_sysctl_
- 
- static void __init fsverity_init_sysctl(void)
- {
--	fsverity_sysctl_header = register_sysctl("fs/verity",
--						 fsverity_sysctl_table);
--	if (!fsverity_sysctl_header)
--		panic("fsverity sysctl registration failed");
-+	register_sysctl_init("fs/verity", fsverity_sysctl_table);
- }
- #else /* CONFIG_SYSCTL */
- static inline void fsverity_init_sysctl(void)
+ fail:
+ 	clear_node_page_dirty(page);
+ 	f2fs_put_page(page, 1);
+-- 
+2.43.0
+
 
 
 
