@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65937906E29
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0C39071FB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17D931F212E0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB9111C24529
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CB9148850;
-	Thu, 13 Jun 2024 12:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D481143868;
+	Thu, 13 Jun 2024 12:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rgo9DhpN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOI35RTd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DDB14884B;
-	Thu, 13 Jun 2024 12:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC60384;
+	Thu, 13 Jun 2024 12:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280189; cv=none; b=FwqZ03xN6gE2GYV/sto2eFAjABW+aBjDP2rBIMKfvc70FDEI61aFp8I6ur0gxyI8G5AgJB6F25w37UanGVfqsaY4K67sGaA/GM7HzLnrlCfLxJyyYxfQ+97/QWm0OrIfWoOcdJnV5cj9m0ji601q27/qJB70qKOCjBcZFSUCneU=
+	t=1718282548; cv=none; b=aiBTXCDQYmuQTEOLS+YNboHuoIkpfS658wmvxhALLbMCMdJihj+T+bclM/gtNMbMbDj+RSVvfEKJavcaNLL7Hzq/RpnPQEqrasmHbh7LxTpu72d/jcK7EKyH/iKDO9bfeRPJ8Gub2brFNM7KjjflHTePUsHeBpnTEyObfW/nLrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280189; c=relaxed/simple;
-	bh=km2h7ISQvK/5AMA0tE4l1sQ6tIUzJOnbWkIwqrHJ2aE=;
+	s=arc-20240116; t=1718282548; c=relaxed/simple;
+	bh=BoqyVun0o6Z06ylw6GWFWEh8pnVGXRswUT9ONoVzb2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DyG71bkOUEYwXGHxdgiVjyFegfIg/FYx8N6TJhN9vhHs6V7GscifwGvLJ6B93I8Dt8kkHWz8eOYMoBM0RZtvLwZBtRmkGXQO7wxCUD7sjmeGxZ9RgK2IKeFG6G+375qP91ZYooMl3Ve4I0jFcbeFjbJbn+bhaYoBID6u/00XVnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rgo9DhpN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62ABC2BBFC;
-	Thu, 13 Jun 2024 12:03:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Z8j0Cx5paT5+AxsF08xQImcQS3MNpCU6xPmjZ2LZspeow5KblhASNU4i4iXH4n8lKYaJ5t70lAp7ejez5y9L9Huxp43vhrASVR366RSahOTr8lk2PBVXeRdt9E+g76k5Dq2IpM61xI3AO9TgDT5YJvJmVgRuHFacxh4a6oOcK+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOI35RTd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CBFC2BBFC;
+	Thu, 13 Jun 2024 12:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280189;
-	bh=km2h7ISQvK/5AMA0tE4l1sQ6tIUzJOnbWkIwqrHJ2aE=;
+	s=korg; t=1718282548;
+	bh=BoqyVun0o6Z06ylw6GWFWEh8pnVGXRswUT9ONoVzb2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rgo9DhpNZiICfV7obae4zin1pnoQSgCyfczMzbRz/gktHeYadBAsEtzCg3PjzgnZO
-	 jVtS78benoSfsp3cyMtQRRrgxOtxaOnk9IvImSJzkkaxJlNz+vWKuqnSNgUHBtCSrc
-	 tap22ufDc9AlMbXmo+ZWn+p9A3aTNf+oaOUPWcW0=
+	b=jOI35RTdIzeFIH8cACVPxnvrzytoQBgGsjzYC8Yh2cPw+dyXdk8oT5KwqS2Kk57o9
+	 Vxowpa3vFBaBYCx3Y6wEvOv1TxGgQChF7UmnaYsEUYOn6Sz6nK8HBh69qqOXrtp2KQ
+	 Qn6Hu15Yk3TM8IGOrNIJy+E16MKMOB6hE/SOzcK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	syzbot+3694e283cf5c40df6d14@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 172/202] f2fs: fix to do sanity check on i_xattr_nid in sanity_check_inode()
+	syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 313/402] dma-buf/sw-sync: dont enable IRQ from sync_print_obj()
 Date: Thu, 13 Jun 2024 13:34:30 +0200
-Message-ID: <20240613113234.380788360@linuxfoundation.org>
+Message-ID: <20240613113314.350980309@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 20faaf30e55522bba2b56d9c46689233205d7717 upstream.
+[ Upstream commit b794918961516f667b0c745aebdfebbb8a98df39 ]
 
-syzbot reports a kernel bug as below:
+Since commit a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from
+known context") by error replaced spin_unlock_irqrestore() with
+spin_unlock_irq() for both sync_debugfs_show() and sync_print_obj() despite
+sync_print_obj() is called from sync_debugfs_show(), lockdep complains
+inconsistent lock state warning.
 
-F2FS-fs (loop0): Mounted with checkpoint version = 48b305e4
-==================================================================
-BUG: KASAN: slab-out-of-bounds in f2fs_test_bit fs/f2fs/f2fs.h:2933 [inline]
-BUG: KASAN: slab-out-of-bounds in current_nat_addr fs/f2fs/node.h:213 [inline]
-BUG: KASAN: slab-out-of-bounds in f2fs_get_node_info+0xece/0x1200 fs/f2fs/node.c:600
-Read of size 1 at addr ffff88807a58c76c by task syz-executor280/5076
+Use plain spin_{lock,unlock}() for sync_print_obj(), for
+sync_debugfs_show() is already using spin_{lock,unlock}_irq().
 
-CPU: 1 PID: 5076 Comm: syz-executor280 Not tainted 6.9.0-rc5-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- f2fs_test_bit fs/f2fs/f2fs.h:2933 [inline]
- current_nat_addr fs/f2fs/node.h:213 [inline]
- f2fs_get_node_info+0xece/0x1200 fs/f2fs/node.c:600
- f2fs_xattr_fiemap fs/f2fs/data.c:1848 [inline]
- f2fs_fiemap+0x55d/0x1ee0 fs/f2fs/data.c:1925
- ioctl_fiemap fs/ioctl.c:220 [inline]
- do_vfs_ioctl+0x1c07/0x2e50 fs/ioctl.c:838
- __do_sys_ioctl fs/ioctl.c:902 [inline]
- __se_sys_ioctl+0x81/0x170 fs/ioctl.c:890
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The root cause is we missed to do sanity check on i_xattr_nid during
-f2fs_iget(), so that in fiemap() path, current_nat_addr() will access
-nat_bitmap w/ offset from invalid i_xattr_nid, result in triggering
-kasan bug report, fix it.
-
-Reported-and-tested-by: syzbot+3694e283cf5c40df6d14@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/00000000000094036c0616e72a1d@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=a225ee3df7e7f9372dbe
+Fixes: a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from known context")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/c2e46020-aaa6-4e06-bf73-f05823f913f0@I-love.SAKURA.ne.jp
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/inode.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/dma-buf/sync_debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -286,6 +286,12 @@ static bool sanity_check_inode(struct in
- 		return false;
- 	}
+diff --git a/drivers/dma-buf/sync_debug.c b/drivers/dma-buf/sync_debug.c
+index 101394f16930f..237bce21d1e72 100644
+--- a/drivers/dma-buf/sync_debug.c
++++ b/drivers/dma-buf/sync_debug.c
+@@ -110,12 +110,12 @@ static void sync_print_obj(struct seq_file *s, struct sync_timeline *obj)
  
-+	if (fi->i_xattr_nid && f2fs_check_nid_range(sbi, fi->i_xattr_nid)) {
-+		f2fs_warn(sbi, "%s: inode (ino=%lx) has corrupted i_xattr_nid: %u, run fsck to fix.",
-+			  __func__, inode->i_ino, fi->i_xattr_nid);
-+		return false;
-+	}
-+
- 	return true;
+ 	seq_printf(s, "%s: %d\n", obj->name, obj->value);
+ 
+-	spin_lock_irq(&obj->lock);
++	spin_lock(&obj->lock); /* Caller already disabled IRQ. */
+ 	list_for_each(pos, &obj->pt_list) {
+ 		struct sync_pt *pt = container_of(pos, struct sync_pt, link);
+ 		sync_print_fence(s, &pt->base, false);
+ 	}
+-	spin_unlock_irq(&obj->lock);
++	spin_unlock(&obj->lock);
  }
  
+ static void sync_print_sync_file(struct seq_file *s,
+-- 
+2.43.0
+
 
 
 
