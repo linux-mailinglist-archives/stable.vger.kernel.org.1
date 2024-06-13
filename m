@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-51743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F51907162
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CC7906FAF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B5CC1F252E0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 261B6B28DA1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC5A17FD;
-	Thu, 13 Jun 2024 12:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5539A143870;
+	Thu, 13 Jun 2024 12:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywUbiv2Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpjAD2FP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E63441D;
-	Thu, 13 Jun 2024 12:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1285544C6F;
+	Thu, 13 Jun 2024 12:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282185; cv=none; b=g5J/TnDFeRaJ+J1YDhaU477ZW3bpFV8XJI6qzXNGFFe95Sf3zdoMJs2yIdm4s5hpg136A9wOY6gGULZXDJoVfvNo2oUtAOS/o5/9kiODcbXsRb9E7bzrG+kirYm39VBR20Lg0tdo0rv2d2JQ2frOq0lX4fezZB1IhPZ+c/qVMxw=
+	t=1718281125; cv=none; b=gXquVcgbtLkHR1Z6MpjL0r0G33i0oGatFMoiUx6iRsi1bxcJ+eMIMssrFZehdpDPezsQ2iDDbqi0gM17hRJolS2HXiXnnXEiJ5jJ2XYXwMm221tiMCQCYMXhTTHC0d4kBxRMxyMpiMHaTg7nvABqEdjpU8nWuDYb/0k3Q8wk7VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282185; c=relaxed/simple;
-	bh=KRXI8/6S66S6mI+zK4kKDnC6bjUyERE/hgeYzCcTZ8w=;
+	s=arc-20240116; t=1718281125; c=relaxed/simple;
+	bh=z3v50TiIDM28UM8DQBHaGs/yJspDOLimtk/QzfMdWsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wkchg+XnEiDYfNCRsM0s/tk9ucVmG+VPXdGK3tTcV3QYcUHO5PuEOpuXKuIzzfKdWThTok5AeL78Ec/CEODFIQbvYQcfiyDU7L0MMbgKA79lOb5/FQe4KS1L99hyo4JonYSqPNJOw/IjCoWm6mUa6nEd/cSM6PMvmaRQIKN4eoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywUbiv2Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC55C2BBFC;
-	Thu, 13 Jun 2024 12:36:24 +0000 (UTC)
+	 MIME-Version; b=kckwCe0Yxsa+8Uqt9ixphaSrGqK6Vs0Gg1FGTTUOjbOX+2GtUT27yPwahNvkpHnYz0Iuuu/Khm8xDnco3suxpg5PuDIyNOpXegyNKKEa6QEaUsMNZfIBRgFOHutbJ6MIGdqpDczc+EMFg6Ognf9kTTfvMwtGqWs7Q0HmcYskPuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpjAD2FP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D70C2BBFC;
+	Thu, 13 Jun 2024 12:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282185;
-	bh=KRXI8/6S66S6mI+zK4kKDnC6bjUyERE/hgeYzCcTZ8w=;
+	s=korg; t=1718281124;
+	bh=z3v50TiIDM28UM8DQBHaGs/yJspDOLimtk/QzfMdWsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ywUbiv2ZIBMoYgu2iEZo6vJBkbrTsHGqSSxN3njek7yH0YHptHny25L/zKr15cWVH
-	 AObsRcDtTsKEzLZ1rICTuvaPaXgmh2WzSrGJ2+TxU0naw0IMrPWSTdxob4yLnrRefD
-	 IyUPPc3lvuV6wVSnXSHEQu3tekHx5mtFs34P2pJE=
+	b=zpjAD2FPgaxir2bjgKOKTPqNxUxWPDiExnrQCbY65KW33rpcdZYTtGloCcEl5uWOL
+	 7hdGUsl8rDVAXbk2eFeN3V/VLlVKghiwQN7pvo23D3Tuwt4BkHPr3EoaYPm0S/QBa3
+	 Y6ANgmVXHex1nCGA1BHgArelP4NapitvtQRMcZ/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Chris Lew <quic_clew@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 192/402] dt-bindings: PCI: rcar-pci-host: Add optional regulators
+Subject: [PATCH 5.10 131/317] net: qrtr: ns: Fix module refcnt
 Date: Thu, 13 Jun 2024 13:32:29 +0200
-Message-ID: <20240613113309.633587389@linuxfoundation.org>
+Message-ID: <20240613113252.625412083@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Chris Lew <quic_clew@quicinc.com>
 
-[ Upstream commit b952f96a57e6fb4528c1d6be19e941c3322f9905 ]
+[ Upstream commit fd76e5ccc48f9f54eb44909dd7c0b924005f1582 ]
 
-Support regulators found on the KingFisher board for miniPCIe (1.5 and
-3.3v). For completeness, describe a 12v regulator while we are here.
+The qrtr protocol core logic and the qrtr nameservice are combined into
+a single module. Neither the core logic or nameservice provide much
+functionality by themselves; combining the two into a single module also
+prevents any possible issues that may stem from client modules loading
+inbetween qrtr and the ns.
 
-Link: https://lore.kernel.org/linux-pci/20231105092908.3792-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Stable-dep-of: 78d212851f0e ("dt-bindings: PCI: rcar-pci-host: Add missing IOMMU properties")
+Creating a socket takes two references to the module that owns the
+socket protocol. Since the ns needs to create the control socket, this
+creates a scenario where there are always two references to the qrtr
+module. This prevents the execution of 'rmmod' for qrtr.
+
+To resolve this, forcefully put the module refcount for the socket
+opened by the nameservice.
+
+Fixes: a365023a76f2 ("net: qrtr: combine nameservice into main module")
+Reported-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Tested-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Chris Lew <quic_clew@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/pci/rcar-pci-host.yaml        | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/qrtr/ns.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml b/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml
-index 8fdfbc763d704..b6a7cb32f61e5 100644
---- a/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml
-+++ b/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml
-@@ -68,6 +68,15 @@ properties:
-   phy-names:
-     const: pcie
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index 3376a656da39f..1da34d54092be 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -815,6 +815,24 @@ int qrtr_ns_init(void)
+ 	if (ret < 0)
+ 		goto err_wq;
  
-+  vpcie1v5-supply:
-+    description: The 1.5v regulator to use for PCIe.
++	/* As the qrtr ns socket owner and creator is the same module, we have
++	 * to decrease the qrtr module reference count to guarantee that it
++	 * remains zero after the ns socket is created, otherwise, executing
++	 * "rmmod" command is unable to make the qrtr module deleted after the
++	 *  qrtr module is inserted successfully.
++	 *
++	 * However, the reference count is increased twice in
++	 * sock_create_kern(): one is to increase the reference count of owner
++	 * of qrtr socket's proto_ops struct; another is to increment the
++	 * reference count of owner of qrtr proto struct. Therefore, we must
++	 * decrement the module reference count twice to ensure that it keeps
++	 * zero after server's listening socket is created. Of course, we
++	 * must bump the module reference count twice as well before the socket
++	 * is closed.
++	 */
++	module_put(qrtr_ns.sock->ops->owner);
++	module_put(qrtr_ns.sock->sk->sk_prot_creator->owner);
 +
-+  vpcie3v3-supply:
-+    description: The 3.3v regulator to use for PCIe.
+ 	return 0;
+ 
+ err_wq:
+@@ -829,6 +847,15 @@ void qrtr_ns_remove(void)
+ {
+ 	cancel_work_sync(&qrtr_ns.work);
+ 	destroy_workqueue(qrtr_ns.workqueue);
 +
-+  vpcie12v-supply:
-+    description: The 12v regulator to use for PCIe.
-+
- required:
-   - compatible
-   - reg
-@@ -121,5 +130,7 @@ examples:
-              clock-names = "pcie", "pcie_bus";
-              power-domains = <&sysc R8A7791_PD_ALWAYS_ON>;
-              resets = <&cpg 319>;
-+             vpcie3v3-supply = <&pcie_3v3>;
-+             vpcie12v-supply = <&pcie_12v>;
-          };
-     };
++	/* sock_release() expects the two references that were put during
++	 * qrtr_ns_init(). This function is only called during module remove,
++	 * so try_stop_module() has already set the refcnt to 0. Use
++	 * __module_get() instead of try_module_get() to successfully take two
++	 * references.
++	 */
++	__module_get(qrtr_ns.sock->ops->owner);
++	__module_get(qrtr_ns.sock->sk->sk_prot_creator->owner);
+ 	sock_release(qrtr_ns.sock);
+ }
+ EXPORT_SYMBOL_GPL(qrtr_ns_remove);
 -- 
 2.43.0
 
