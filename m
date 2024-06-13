@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-51699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C5A90712D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5B4906F49
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A24BE1C21592
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF2F71F21B59
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8E51428EF;
-	Thu, 13 Jun 2024 12:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C79144D1F;
+	Thu, 13 Jun 2024 12:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rE9NgiSu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rh7a9LtO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798D0441D;
-	Thu, 13 Jun 2024 12:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FED91448FF;
+	Thu, 13 Jun 2024 12:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282056; cv=none; b=sikp4jJIgD4CQ6NWDmp+1VcY8lf2ikf/unVpGCyjMBSqG3/MJv5ii971WKjYjpwieKL4lE3XXbH084cJxMEEyi7Y/WI0CJHURvuj8wvdCimGax6vR4mM1XfKuZDQDgaZ1Elbe9Ank5cQ/+F8NlQ21N9vE+4QdKEbJeJbAXFX3fI=
+	t=1718280939; cv=none; b=HCGUVQNf+dLHjwUiiiNGQ5syj9u8PLWpkCLpTwsjxNn3NoRieUm0c0sE2QNyVQZLX54MIwpzmchenIDFi3391zvCHISLCnAVHSVp95pdpaebZ6XdxJtSKG34dKV0u00iQ9jiE4ha5yBdiGSiRSY2WjnIKG6roy3+iUZ5oYQJsR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282056; c=relaxed/simple;
-	bh=HC4MPUGm88hZZyvlAvTaZSxACy8EX4KLGXPaJbCnNgM=;
+	s=arc-20240116; t=1718280939; c=relaxed/simple;
+	bh=u8hJb23aQaDAB2KjWmvvXCkGm/N6hp8Oe6x5nU2TlsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QhTqAuzMXOYKYTKE5fm4YK+7GXDKlTxhbuYaKrs7mWqB9JebapEgNAhXaM8zakukhIKGX+NGh8vuheE10mRJohlIFl8HSTzwcbPKzDVGeD3NNKeF/Np4vyEo93oljtNbMNeITlvPHTEoHa8PFCA8ZxWA5N0toqU6w3cNGjGEFwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rE9NgiSu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2BE7C2BBFC;
-	Thu, 13 Jun 2024 12:34:15 +0000 (UTC)
+	 MIME-Version; b=unEtf56vo67DysGDzphu0utjS87hz8+7bT2wlarmxRdOwp6U0+bKVAS76u4drCyDCvCMOvy9CfDNQvDrk9joXAOSBhoaxDSCeqnACNB8tEJ1kFm0oDnli0A+bdGZ1MyiUGCZR8YnLkmfbW1IWtFoModdSKT+0rJgg4MfhSnHo9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rh7a9LtO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9454FC2BBFC;
+	Thu, 13 Jun 2024 12:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282056;
-	bh=HC4MPUGm88hZZyvlAvTaZSxACy8EX4KLGXPaJbCnNgM=;
+	s=korg; t=1718280939;
+	bh=u8hJb23aQaDAB2KjWmvvXCkGm/N6hp8Oe6x5nU2TlsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rE9NgiSuw/fTHRKOQ7zTnkV8dbHdDET0HCWabaCXA1dQkvxQ9tm2/QV3bagRZTZnT
-	 QYxJ9hEiBGsbXQMHqWuG4CoRPdnM68/7iQ6qohdJgMzWaAdjYPALqrMXgqC1dDg6iB
-	 nd4Eikc8CqkpokRe7skfb1EEtPgKhXDWNJFNU/vQ=
+	b=Rh7a9LtOdcGwX39yCfDerNPsMZStik1+c6uQysvbbt8r+U+DCeSKc4OJGf7wpL8Fm
+	 6+su/r1tev2BX48dmyWzgm6NcJ8zLnAIVYE6Zqm8/fOLZSXW/IYcEpwQR7ghIUKsSF
+	 d9nt/A14ds8Dw1KwvFP256FvybKCSIzgwTY0AR5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Antonin Bas <antonin.bas@broadcom.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 146/402] drm/bridge: tc358775: Dont log an error when DSI host cant be found
+Subject: [PATCH 5.10 085/317] net: openvswitch: fix overwriting ct original tuple for ICMPv6
 Date: Thu, 13 Jun 2024 13:31:43 +0200
-Message-ID: <20240613113307.830810179@linuxfoundation.org>
+Message-ID: <20240613113250.837833639@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit 272377aa0e3dddeec3f568c8bb9d12c7a79d8ef5 ]
+[ Upstream commit 7c988176b6c16c516474f6fceebe0f055af5eb56 ]
 
-Given that failing to find a DSI host causes the driver to defer probe,
-make use of dev_err_probe() to log the reason. This makes the defer
-probe reason available and avoids alerting userspace about something
-that is not necessarily an error.
+OVS_PACKET_CMD_EXECUTE has 3 main attributes:
+ - OVS_PACKET_ATTR_KEY - Packet metadata in a netlink format.
+ - OVS_PACKET_ATTR_PACKET - Binary packet content.
+ - OVS_PACKET_ATTR_ACTIONS - Actions to execute on the packet.
 
-Fixes: b26975593b17 ("display/drm/bridge: TC358775 DSI/LVDS driver")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-6-619a28148e5c@collabora.com
+OVS_PACKET_ATTR_KEY is parsed first to populate sw_flow_key structure
+with the metadata like conntrack state, input port, recirculation id,
+etc.  Then the packet itself gets parsed to populate the rest of the
+keys from the packet headers.
+
+Whenever the packet parsing code starts parsing the ICMPv6 header, it
+first zeroes out fields in the key corresponding to Neighbor Discovery
+information even if it is not an ND packet.
+
+It is an 'ipv6.nd' field.  However, the 'ipv6' is a union that shares
+the space between 'nd' and 'ct_orig' that holds the original tuple
+conntrack metadata parsed from the OVS_PACKET_ATTR_KEY.
+
+ND packets should not normally have conntrack state, so it's fine to
+share the space, but normal ICMPv6 Echo packets or maybe other types of
+ICMPv6 can have the state attached and it should not be overwritten.
+
+The issue results in all but the last 4 bytes of the destination
+address being wiped from the original conntrack tuple leading to
+incorrect packet matching and potentially executing wrong actions
+in case this packet recirculates within the datapath or goes back
+to userspace.
+
+ND fields should not be accessed in non-ND packets, so not clearing
+them should be fine.  Executing memset() only for actual ND packets to
+avoid the issue.
+
+Initializing the whole thing before parsing is needed because ND packet
+may not contain all the options.
+
+The issue only affects the OVS_PACKET_CMD_EXECUTE path and doesn't
+affect packets entering OVS datapath from network interfaces, because
+in this case CT metadata is populated from skb after the packet is
+already parsed.
+
+Fixes: 9dd7f8907c37 ("openvswitch: Add original direction conntrack tuple to sw_flow_key.")
+Reported-by: Antonin Bas <antonin.bas@broadcom.com>
+Closes: https://github.com/openvswitch/ovs-issues/issues/327
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Link: https://lore.kernel.org/r/20240509094228.1035477-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358775.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/openvswitch/flow.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358775.c b/drivers/gpu/drm/bridge/tc358775.c
-index 2272adcc5b4ad..55697fa4d7c8b 100644
---- a/drivers/gpu/drm/bridge/tc358775.c
-+++ b/drivers/gpu/drm/bridge/tc358775.c
-@@ -605,10 +605,8 @@ static int tc_bridge_attach(struct drm_bridge *bridge,
- 						};
+diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
+index c9ba61413c98b..9bad601c7fe82 100644
+--- a/net/openvswitch/flow.c
++++ b/net/openvswitch/flow.c
+@@ -412,7 +412,6 @@ static int parse_icmpv6(struct sk_buff *skb, struct sw_flow_key *key,
+ 	 */
+ 	key->tp.src = htons(icmp->icmp6_type);
+ 	key->tp.dst = htons(icmp->icmp6_code);
+-	memset(&key->ipv6.nd, 0, sizeof(key->ipv6.nd));
  
- 	host = of_find_mipi_dsi_host_by_node(tc->host_node);
--	if (!host) {
--		dev_err(dev, "failed to find dsi host\n");
--		return -EPROBE_DEFER;
--	}
-+	if (!host)
-+		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
+ 	if (icmp->icmp6_code == 0 &&
+ 	    (icmp->icmp6_type == NDISC_NEIGHBOUR_SOLICITATION ||
+@@ -421,6 +420,8 @@ static int parse_icmpv6(struct sk_buff *skb, struct sw_flow_key *key,
+ 		struct nd_msg *nd;
+ 		int offset;
  
- 	dsi = mipi_dsi_device_register_full(host, &info);
- 	if (IS_ERR(dsi)) {
++		memset(&key->ipv6.nd, 0, sizeof(key->ipv6.nd));
++
+ 		/* In order to process neighbor discovery options, we need the
+ 		 * entire packet.
+ 		 */
 -- 
 2.43.0
 
