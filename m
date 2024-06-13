@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0327906E9D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443329071C3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE3121C22FF9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2D171F2811D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7D86AFAE;
-	Thu, 13 Jun 2024 12:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9051E1448D4;
+	Thu, 13 Jun 2024 12:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Snl1qEQw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMS7rO03"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78823145FE5;
-	Thu, 13 Jun 2024 12:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC001292FF;
+	Thu, 13 Jun 2024 12:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280497; cv=none; b=puPAxB4FuZ4JnYnAE/ISjV7AHPbfHB+wV4gi6egNIcr8YAA4UACYXUoBrp+Wgxv3DiAu2wUfdxIohhA8h2rRMF6ek9E2tjb4LpdW/4cmvsH/Sd0p6uElq2KwvLP9NMYyV4ipRvNBilbZzeGUJkchv2zF7od85ofpSnsrapcNklI=
+	t=1718282401; cv=none; b=KyCLYPXn8NUDUL/r6AasS+aPyj7NUc1Fazu9Y1oj8m4WNG1cowuwo9zm19I8ZZ5/O05tcMAIZjQeCKkUG852JMwtBKcwBw+J1s6gpp/0VfRE5k+N/zKNpCXokr66tef3tmZJO7mj6HNuzOTK0zQj08Bfjqi4aX/UGTV1vnlSbBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280497; c=relaxed/simple;
-	bh=jGCfjt5cQyXwgF5L08j74DzIcbGGe0McQb9E8hi8vmY=;
+	s=arc-20240116; t=1718282401; c=relaxed/simple;
+	bh=zUg6w2eqiiQRixl8QKvoQk188tX3Ge7V87oqO1+pHhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZhpwtlKAtYbzed7cX/D32Ex6EjwhpTAViDAU6lgUbfZfWaf816RT3n9M6YIYVPinjrSjucUXORGjg+Ouq/HZ3ctxTeWat5uwFsoYaBBGLBHLByIu74SCJ4BLTBdX9S2stDSD/6AtLt0VaCJ1LaTqHBbCp7yA2VyeuTY+CwxE0KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Snl1qEQw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01ECFC4AF1A;
-	Thu, 13 Jun 2024 12:08:16 +0000 (UTC)
+	 MIME-Version; b=Fva1D6Tev4imVEZBYTpOEZm8n0EPRJ2TuoZX1WEKo7u0CgBLL2LuiRb4k14j2v0exKcq1MuSfJqy7//f5k75AuHc1h8KFi2DZU/bIPWcRzwJew9tiZbg78aArsHmeNW3ASi9cTxGT0zMYteZ069tmQwN7M+Q1npSBl1IBxOsFeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMS7rO03; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7955C2BBFC;
+	Thu, 13 Jun 2024 12:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280497;
-	bh=jGCfjt5cQyXwgF5L08j74DzIcbGGe0McQb9E8hi8vmY=;
+	s=korg; t=1718282401;
+	bh=zUg6w2eqiiQRixl8QKvoQk188tX3Ge7V87oqO1+pHhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Snl1qEQwVAzDXJv2WtS+ONQpjVKjr0tII95jNRVfPpjDJm99ANdZ4VIyg0ylw/4kl
-	 9SEHeDvB+nl0F4GMvl0b2xcOoqoilOW8FFnD8ary+d1WMjvY0ouaO0ReAxGmtE0QqL
-	 oWwX7w0VBKC6jPE4GKEw3pvHCesDJ7UjZh9F8nw4=
+	b=zMS7rO03NM5yiLCZGkwjO0KqeeK9czWmQ6AsKZpeAHQkDxdKuXzGozoiScHDaaLI7
+	 fuq/cEDkbTEyQVwj+kXUqSBWjXbgJQFIeGGHpe5FqpFzPYFFklRwD6ozAq25p5JdsU
+	 ThI/blHDRi80KYxMa5DtspHTIRB9iswiKukB1Qb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 6.6 042/137] media: mxl5xx: Move xpt structures off stack
+	Azeem Shaikh <azeemshaikh38@gmail.com>,
+	Kees Cook <keescook@chromium.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 265/402] scsi: qla2xxx: Replace all non-returning strlcpy() with strscpy()
 Date: Thu, 13 Jun 2024 13:33:42 +0200
-Message-ID: <20240613113224.922986778@linuxfoundation.org>
+Message-ID: <20240613113312.487573651@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +63,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Azeem Shaikh <azeemshaikh38@gmail.com>
 
-commit 526f4527545b2d4ce0733733929fac7b6da09ac6 upstream.
+[ Upstream commit 37f1663c91934f664fb850306708094a324c227c ]
 
-When building for LoongArch with clang 18.0.0, the stack usage of
-probe() is larger than the allowed 2048 bytes:
+strlcpy() reads the entire source buffer first.  This read may exceed the
+destination size limit.  This is both inefficient and can lead to linear
+read overflows if a source string is not NUL-terminated [1].  In an effort
+to remove strlcpy() completely [2], replace strlcpy() here with strscpy().
+No return values were used, so direct replacement is safe.
 
-  drivers/media/dvb-frontends/mxl5xx.c:1698:12: warning: stack frame size (2368) exceeds limit (2048) in 'probe' [-Wframe-larger-than]
-   1698 | static int probe(struct mxl *state, struct mxl5xx_cfg *cfg)
-        |            ^
-  1 warning generated.
+[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
+[2] https://github.com/KSPP/linux/issues/89
 
-This is the result of the linked LLVM commit, which changes how the
-arrays of structures in config_ts() get handled with
-CONFIG_INIT_STACK_ZERO and CONFIG_INIT_STACK_PATTERN, which causes the
-above warning in combination with inlining, as config_ts() gets inlined
-into probe().
-
-This warning can be easily fixed by moving the array of structures off
-of the stackvia 'static const', which is a better location for these
-variables anyways because they are static data that is only ever read
-from, never modified, so allocating the stack space is wasteful.
-
-This drops the stack usage from 2368 bytes to 256 bytes with the same
-compiler and configuration.
-
-Link: https://lore.kernel.org/linux-media/20240111-dvb-mxl5xx-move-structs-off-stack-v1-1-ca4230e67c11@kernel.org
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1977
-Link: https://github.com/llvm/llvm-project/commit/afe8b93ffdfef5d8879e1894b9d7dda40dee2b8d
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+Link: https://lore.kernel.org/r/20230516025404.2843867-1-azeemshaikh38@gmail.com
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: c3408c4ae041 ("scsi: qla2xxx: Avoid possible run-time warning with long model_num")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/mxl5xx.c |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/scsi/qla2xxx/qla_init.c |  8 ++++----
+ drivers/scsi/qla2xxx/qla_mr.c   | 20 ++++++++++----------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
---- a/drivers/media/dvb-frontends/mxl5xx.c
-+++ b/drivers/media/dvb-frontends/mxl5xx.c
-@@ -1381,57 +1381,57 @@ static int config_ts(struct mxl *state,
- 	u32 nco_count_min = 0;
- 	u32 clk_type = 0;
+diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
+index 585df40e95bb0..531e0ea87202e 100644
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -5145,7 +5145,7 @@ qla2x00_set_model_info(scsi_qla_host_t *vha, uint8_t *model, size_t len,
+ 		if (use_tbl &&
+ 		    ha->pdev->subsystem_vendor == PCI_VENDOR_ID_QLOGIC &&
+ 		    index < QLA_MODEL_NAMES)
+-			strlcpy(ha->model_desc,
++			strscpy(ha->model_desc,
+ 			    qla2x00_model_name[index * 2 + 1],
+ 			    sizeof(ha->model_desc));
+ 	} else {
+@@ -5153,14 +5153,14 @@ qla2x00_set_model_info(scsi_qla_host_t *vha, uint8_t *model, size_t len,
+ 		if (use_tbl &&
+ 		    ha->pdev->subsystem_vendor == PCI_VENDOR_ID_QLOGIC &&
+ 		    index < QLA_MODEL_NAMES) {
+-			strlcpy(ha->model_number,
++			strscpy(ha->model_number,
+ 				qla2x00_model_name[index * 2],
+ 				sizeof(ha->model_number));
+-			strlcpy(ha->model_desc,
++			strscpy(ha->model_desc,
+ 			    qla2x00_model_name[index * 2 + 1],
+ 			    sizeof(ha->model_desc));
+ 		} else {
+-			strlcpy(ha->model_number, def,
++			strscpy(ha->model_number, def,
+ 				sizeof(ha->model_number));
+ 		}
+ 	}
+diff --git a/drivers/scsi/qla2xxx/qla_mr.c b/drivers/scsi/qla2xxx/qla_mr.c
+index f726eb8449c5e..083f94e43fba0 100644
+--- a/drivers/scsi/qla2xxx/qla_mr.c
++++ b/drivers/scsi/qla2xxx/qla_mr.c
+@@ -691,7 +691,7 @@ qlafx00_pci_info_str(struct scsi_qla_host *vha, char *str, size_t str_len)
+ 	struct qla_hw_data *ha = vha->hw;
  
--	struct MXL_REG_FIELD_T xpt_sync_polarity[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_sync_polarity[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700010, 8, 1}, {0x90700010, 9, 1},
- 		{0x90700010, 10, 1}, {0x90700010, 11, 1},
- 		{0x90700010, 12, 1}, {0x90700010, 13, 1},
- 		{0x90700010, 14, 1}, {0x90700010, 15, 1} };
--	struct MXL_REG_FIELD_T xpt_clock_polarity[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_clock_polarity[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700010, 16, 1}, {0x90700010, 17, 1},
- 		{0x90700010, 18, 1}, {0x90700010, 19, 1},
- 		{0x90700010, 20, 1}, {0x90700010, 21, 1},
- 		{0x90700010, 22, 1}, {0x90700010, 23, 1} };
--	struct MXL_REG_FIELD_T xpt_valid_polarity[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_valid_polarity[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700014, 0, 1}, {0x90700014, 1, 1},
- 		{0x90700014, 2, 1}, {0x90700014, 3, 1},
- 		{0x90700014, 4, 1}, {0x90700014, 5, 1},
- 		{0x90700014, 6, 1}, {0x90700014, 7, 1} };
--	struct MXL_REG_FIELD_T xpt_ts_clock_phase[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_ts_clock_phase[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700018, 0, 3}, {0x90700018, 4, 3},
- 		{0x90700018, 8, 3}, {0x90700018, 12, 3},
- 		{0x90700018, 16, 3}, {0x90700018, 20, 3},
- 		{0x90700018, 24, 3}, {0x90700018, 28, 3} };
--	struct MXL_REG_FIELD_T xpt_lsb_first[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_lsb_first[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x9070000C, 16, 1}, {0x9070000C, 17, 1},
- 		{0x9070000C, 18, 1}, {0x9070000C, 19, 1},
- 		{0x9070000C, 20, 1}, {0x9070000C, 21, 1},
- 		{0x9070000C, 22, 1}, {0x9070000C, 23, 1} };
--	struct MXL_REG_FIELD_T xpt_sync_byte[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_sync_byte[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700010, 0, 1}, {0x90700010, 1, 1},
- 		{0x90700010, 2, 1}, {0x90700010, 3, 1},
- 		{0x90700010, 4, 1}, {0x90700010, 5, 1},
- 		{0x90700010, 6, 1}, {0x90700010, 7, 1} };
--	struct MXL_REG_FIELD_T xpt_enable_output[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_enable_output[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x9070000C, 0, 1}, {0x9070000C, 1, 1},
- 		{0x9070000C, 2, 1}, {0x9070000C, 3, 1},
- 		{0x9070000C, 4, 1}, {0x9070000C, 5, 1},
- 		{0x9070000C, 6, 1}, {0x9070000C, 7, 1} };
--	struct MXL_REG_FIELD_T xpt_err_replace_sync[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_err_replace_sync[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x9070000C, 24, 1}, {0x9070000C, 25, 1},
- 		{0x9070000C, 26, 1}, {0x9070000C, 27, 1},
- 		{0x9070000C, 28, 1}, {0x9070000C, 29, 1},
- 		{0x9070000C, 30, 1}, {0x9070000C, 31, 1} };
--	struct MXL_REG_FIELD_T xpt_err_replace_valid[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_err_replace_valid[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700014, 8, 1}, {0x90700014, 9, 1},
- 		{0x90700014, 10, 1}, {0x90700014, 11, 1},
- 		{0x90700014, 12, 1}, {0x90700014, 13, 1},
- 		{0x90700014, 14, 1}, {0x90700014, 15, 1} };
--	struct MXL_REG_FIELD_T xpt_continuous_clock[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_continuous_clock[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x907001D4, 0, 1}, {0x907001D4, 1, 1},
- 		{0x907001D4, 2, 1}, {0x907001D4, 3, 1},
- 		{0x907001D4, 4, 1}, {0x907001D4, 5, 1},
- 		{0x907001D4, 6, 1}, {0x907001D4, 7, 1} };
--	struct MXL_REG_FIELD_T xpt_nco_clock_rate[MXL_HYDRA_DEMOD_MAX] = {
-+	static const struct MXL_REG_FIELD_T xpt_nco_clock_rate[MXL_HYDRA_DEMOD_MAX] = {
- 		{0x90700044, 16, 80}, {0x90700044, 16, 81},
- 		{0x90700044, 16, 82}, {0x90700044, 16, 83},
- 		{0x90700044, 16, 84}, {0x90700044, 16, 85},
+ 	if (pci_is_pcie(ha->pdev))
+-		strlcpy(str, "PCIe iSA", str_len);
++		strscpy(str, "PCIe iSA", str_len);
+ 	return str;
+ }
+ 
+@@ -1850,21 +1850,21 @@ qlafx00_fx_disc(scsi_qla_host_t *vha, fc_port_t *fcport, uint16_t fx_type)
+ 			phost_info = &preg_hsi->hsi;
+ 			memset(preg_hsi, 0, sizeof(struct register_host_info));
+ 			phost_info->os_type = OS_TYPE_LINUX;
+-			strlcpy(phost_info->sysname, p_sysid->sysname,
++			strscpy(phost_info->sysname, p_sysid->sysname,
+ 				sizeof(phost_info->sysname));
+-			strlcpy(phost_info->nodename, p_sysid->nodename,
++			strscpy(phost_info->nodename, p_sysid->nodename,
+ 				sizeof(phost_info->nodename));
+ 			if (!strcmp(phost_info->nodename, "(none)"))
+ 				ha->mr.host_info_resend = true;
+-			strlcpy(phost_info->release, p_sysid->release,
++			strscpy(phost_info->release, p_sysid->release,
+ 				sizeof(phost_info->release));
+-			strlcpy(phost_info->version, p_sysid->version,
++			strscpy(phost_info->version, p_sysid->version,
+ 				sizeof(phost_info->version));
+-			strlcpy(phost_info->machine, p_sysid->machine,
++			strscpy(phost_info->machine, p_sysid->machine,
+ 				sizeof(phost_info->machine));
+-			strlcpy(phost_info->domainname, p_sysid->domainname,
++			strscpy(phost_info->domainname, p_sysid->domainname,
+ 				sizeof(phost_info->domainname));
+-			strlcpy(phost_info->hostdriver, QLA2XXX_VERSION,
++			strscpy(phost_info->hostdriver, QLA2XXX_VERSION,
+ 				sizeof(phost_info->hostdriver));
+ 			preg_hsi->utc = (uint64_t)ktime_get_real_seconds();
+ 			ql_dbg(ql_dbg_init, vha, 0x0149,
+@@ -1909,9 +1909,9 @@ qlafx00_fx_disc(scsi_qla_host_t *vha, fc_port_t *fcport, uint16_t fx_type)
+ 	if (fx_type == FXDISC_GET_CONFIG_INFO) {
+ 		struct config_info_data *pinfo =
+ 		    (struct config_info_data *) fdisc->u.fxiocb.rsp_addr;
+-		strlcpy(vha->hw->model_number, pinfo->model_num,
++		strscpy(vha->hw->model_number, pinfo->model_num,
+ 			ARRAY_SIZE(vha->hw->model_number));
+-		strlcpy(vha->hw->model_desc, pinfo->model_description,
++		strscpy(vha->hw->model_desc, pinfo->model_description,
+ 			ARRAY_SIZE(vha->hw->model_desc));
+ 		memcpy(&vha->hw->mr.symbolic_name, pinfo->symbolic_name,
+ 		    sizeof(vha->hw->mr.symbolic_name));
+-- 
+2.43.0
+
 
 
 
