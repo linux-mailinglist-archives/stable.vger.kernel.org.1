@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B95F907025
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A938906EB4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC18D289558
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E62251F2300C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CECA4145FEA;
-	Thu, 13 Jun 2024 12:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6941482F0;
+	Thu, 13 Jun 2024 12:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgRX6b5t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+u5wBW8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C67913D607;
-	Thu, 13 Jun 2024 12:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288EF1465AC;
+	Thu, 13 Jun 2024 12:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281442; cv=none; b=lWoYzuUFd7MSJOW2X81Mp+w8kdoCn9kMcnFT4STOvBi/qtuI8uVIYZBM/QglyDNgIxbkevVV6zX32MnnGoxs4Y/2Q5/eSqYFDDqk/VnpAi2wdgzaz8ZKtOrJxi8Hcia8B6HM9SlX7cZxU7EFevJKxpcFP40//Kr3QeP2/XL6KnY=
+	t=1718280559; cv=none; b=Qk9q+e5hCqvz7ofiVwk8Cy5Ccr7pwN4PMDtoSkrquR3nQs2tAb3tdu59DBWRPEiRSmmJP+8u+6FWZJKfUMBaclGO+w1+N4qHr8L6GLlyl7KsMgzng55rf8qTONoWMuTx7oOaAeKOYyRcyvWNO+/5PU3vGwHNtiY1iPuEL/v0g8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281442; c=relaxed/simple;
-	bh=3Mf8Ge05Hd9QcXTa/H1OM11PL5LpVfLLjcN1tENhtEU=;
+	s=arc-20240116; t=1718280559; c=relaxed/simple;
+	bh=rc6vLa8Yzsw6iUOsPnZlbVsNL3ErUYs8mdVixnTfGTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W+/Mp6Dg4ZTLqy8gL3dRo2yJ7Nbymb7nQYuOVUxfPt8tz1u5FXGGUNpg+Lr66yZZhdHnKJvZm8Zj3eVhPE7xLM/7vT5+6gmfD6jvsJHe4G9vmhhpgrwZmfDQix4Ang7kLmDdEmCyumcyvDz39YAPFDC6nPHmAAVaB/BhfS8ID7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgRX6b5t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18674C2BBFC;
-	Thu, 13 Jun 2024 12:24:01 +0000 (UTC)
+	 MIME-Version; b=eZOedncNgqAGknpJ/D/Sh4Y/8n19BO0fRaYPkxYvG0g/AEVY6+wJivVja7oqD7zEpYFrpr2VbmD6OlPRq1jFRifsxUQ0fDKwWW8JPzOBmfVDIO1poH1eJWCk4ZtGdU25ZtLb3jrQOPxhbo702hNEJVno+YL1eEcZR7gITlDae9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+u5wBW8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63F5C2BBFC;
+	Thu, 13 Jun 2024 12:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281442;
-	bh=3Mf8Ge05Hd9QcXTa/H1OM11PL5LpVfLLjcN1tENhtEU=;
+	s=korg; t=1718280559;
+	bh=rc6vLa8Yzsw6iUOsPnZlbVsNL3ErUYs8mdVixnTfGTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jgRX6b5t9YjCFWkY9SCFrmnziyp3LPBt+ZDsgQhCu/0godosCyRCOBPBSNqvNKr1e
-	 1CUznOlZm2KCkIOeqzGj+JKaxTKamdS5QyXKaec249huJVaU7AZKCIWATPr3Lt0EME
-	 HH7G5AYXfYvoPLZ8xWR9i/agToK05XFQu9dOeqfY=
+	b=S+u5wBW81HPQd7K/p2Sb0fmltDS/CGFJOLeCdc22xhsRM5Zw/18ZwA8tmgi2QmJBP
+	 x20GxjthOeB1ZKrbL/oV6qCjjsH1NbJtjbGU5BGyh+FAfgHr77uXn9E/xlQUP7KqKp
+	 TA15+F6992FmLEe0JqlN9UrtJ1V71kGuonfXSyrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+b94a6818504ea90d7661@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 256/317] netfilter: tproxy: bail out if IP has been disabled on the device
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 094/137] selftests/mm: fix build warnings on ppc64
 Date: Thu, 13 Jun 2024 13:34:34 +0200
-Message-ID: <20240613113257.451916826@linuxfoundation.org>
+Message-ID: <20240613113226.943309493@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 21a673bddc8fd4873c370caf9ae70ffc6d47e8d3 ]
+commit 1901472fa880e5706f90926cd85a268d2d16bf84 upstream.
 
-syzbot reports:
-general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
-[..]
-RIP: 0010:nf_tproxy_laddr4+0xb7/0x340 net/ipv4/netfilter/nf_tproxy_ipv4.c:62
-Call Trace:
- nft_tproxy_eval_v4 net/netfilter/nft_tproxy.c:56 [inline]
- nft_tproxy_eval+0xa9a/0x1a00 net/netfilter/nft_tproxy.c:168
+Fix warnings like:
 
-__in_dev_get_rcu() can return NULL, so check for this.
+  In file included from uffd-unit-tests.c:8:
+  uffd-unit-tests.c: In function `uffd_poison_handle_fault':
+  uffd-common.h:45:33: warning: format `%llu' expects argument of type
+  `long long unsigned int', but argument 3 has type `__u64' {aka `long
+  unsigned int'} [-Wformat=]
 
-Reported-and-tested-by: syzbot+b94a6818504ea90d7661@syzkaller.appspotmail.com
-Fixes: cc6eb4338569 ("tproxy: use the interface primary IP address as a default value for --on-ip")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+By switching to unsigned long long for u64 for ppc64 builds.
+
+Link: https://lkml.kernel.org/r/20240521030219.57439-1-mpe@ellerman.id.au
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/netfilter/nf_tproxy_ipv4.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/mm/gup_test.c    |    1 +
+ tools/testing/selftests/mm/uffd-common.h |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/net/ipv4/netfilter/nf_tproxy_ipv4.c b/net/ipv4/netfilter/nf_tproxy_ipv4.c
-index 61cb2341f50fe..7c1a0cd9f4359 100644
---- a/net/ipv4/netfilter/nf_tproxy_ipv4.c
-+++ b/net/ipv4/netfilter/nf_tproxy_ipv4.c
-@@ -58,6 +58,8 @@ __be32 nf_tproxy_laddr4(struct sk_buff *skb, __be32 user_laddr, __be32 daddr)
+--- a/tools/testing/selftests/mm/gup_test.c
++++ b/tools/testing/selftests/mm/gup_test.c
+@@ -1,3 +1,4 @@
++#define __SANE_USERSPACE_TYPES__ // Use ll64
+ #include <fcntl.h>
+ #include <errno.h>
+ #include <stdio.h>
+--- a/tools/testing/selftests/mm/uffd-common.h
++++ b/tools/testing/selftests/mm/uffd-common.h
+@@ -8,6 +8,7 @@
+ #define __UFFD_COMMON_H__
  
- 	laddr = 0;
- 	indev = __in_dev_get_rcu(skb->dev);
-+	if (!indev)
-+		return daddr;
- 
- 	in_dev_for_each_ifa_rcu(ifa, indev) {
- 		if (ifa->ifa_flags & IFA_F_SECONDARY)
--- 
-2.43.0
-
+ #define _GNU_SOURCE
++#define __SANE_USERSPACE_TYPES__ // Use ll64
+ #include <stdio.h>
+ #include <errno.h>
+ #include <unistd.h>
 
 
 
