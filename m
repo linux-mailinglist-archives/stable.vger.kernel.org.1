@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-50774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A237906C95
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E7C9906D99
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23545281F3F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2450B1C22B57
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32AFA144D24;
-	Thu, 13 Jun 2024 11:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B75145338;
+	Thu, 13 Jun 2024 11:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0fIChAW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3ilpfOG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E655B14386B;
-	Thu, 13 Jun 2024 11:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993391448DA;
+	Thu, 13 Jun 2024 11:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279346; cv=none; b=juOiy3+QgB4K6z4vPHEawsJ4kKGU5pm/PpFt4yfzVCi51JTiMsQzO8EfJrXDlMMZFrLv5UB/p7xGc59N72Cvot5mlsMlPjLzY/j4Bba3iRqr1j1SpgOATLXveDqRan+13kCo/DsHI6I5siic9ZtWXybnJyWRZP2xmxrNVWTLbKs=
+	t=1718279891; cv=none; b=s6sZkLCKIojNpIYq14Ir3rG1hoVdC1nc8yx/Ev9dGtQp4M73ThdhgkkvntfjxFpYYKs3qMXHDnDluS5qv5/Jtz3ecQMT2vmOVZhh/ByFUwsSSP7uwVguH7UXojDpkE/LKOaAzMqANdcrd+Zt4nDc9oO1JZ80tnLccL+JqTmu1LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279346; c=relaxed/simple;
-	bh=6/L9qMaaEvyi3JvLAxJqu3Z2qauXRrtz4D7ltyPhRi0=;
+	s=arc-20240116; t=1718279891; c=relaxed/simple;
+	bh=M8fweLmCN3II2gSCTmsERsE1gP+Zl2vxypiCe1OgEyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dnvk4zHUNe0NtB1QVh47l6BLY6Fb9Glq9X5r816ByFIW2vznXej5uxB4b661YapdDJe0ljUdwA/HwW/qFBbR/vdInUhMslpbR2qNv+ozeK7P4A/mE9AaGO93DuTa6DKGHJokrZ6QRk0yUwl986nlmw6j9DbeZWBTvY8CYl9/QFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0fIChAW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6470CC2BBFC;
-	Thu, 13 Jun 2024 11:49:05 +0000 (UTC)
+	 MIME-Version; b=La+nlq1aW8t1pfhDsEe2Tc5sDUAP2LUmWU2XwQq2VHWtVkjSi5hbbqoPkqe+HE2jbrZ2YYpuP4AES8CUFlbXHjnB/P+UFtrJuOTOKSUBLI/ipcoKSWjwAjDPD2qIa8i57uulAm0rTweT1yxGHD+hGzeXkiSF7uRZy5iGORwbIhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3ilpfOG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1902CC2BBFC;
+	Thu, 13 Jun 2024 11:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279345;
-	bh=6/L9qMaaEvyi3JvLAxJqu3Z2qauXRrtz4D7ltyPhRi0=;
+	s=korg; t=1718279891;
+	bh=M8fweLmCN3II2gSCTmsERsE1gP+Zl2vxypiCe1OgEyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p0fIChAWQ4iTwR/DTTrjITFJWpOlWcv2HOSFQ+ZGzQO4JfgfSmOqB5OSb6T5XGlhG
-	 pQvCxliRrBfrZ0TyuBi41iBwf5fiyjfuMP1TIJ/SHQ20nDievWtUcwY4dnKw26hSMy
-	 8SuqHpnJEhahhST9yK5V+J6Y1beQcdi0rModHyFE=
+	b=d3ilpfOG2jH0fMw49Ugpky1G44j9jBPkVRTdfyixvfaekff0NyE91V1r/8JP+K0yH
+	 Bw6X2UBZGu+CVZRRev9GoqmaU7bbvunuXoZdW9C+/2IfGg6N/bLF1dUqVvJ2V3/ILy
+	 M42Q4kbhYzyqGDMp/BgV4kp82yhrIcUiCAjW9VNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.9 044/157] mmc: core: Add mmc_gpiod_set_cd_config() function
+	Justin Green <greenjustin@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 071/202] drm/mediatek: Add 0 size check to mtk_drm_gem_obj
 Date: Thu, 13 Jun 2024 13:32:49 +0200
-Message-ID: <20240613113229.131871446@linuxfoundation.org>
+Message-ID: <20240613113230.517582945@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Justin Green <greenjustin@chromium.org>
 
-commit 63a7cd660246aa36af263b85c33ecc6601bf04be upstream.
+[ Upstream commit 1e4350095e8ab2577ee05f8c3b044e661b5af9a0 ]
 
-Some mmc host drivers may need to fixup a card-detection GPIO's config
-to e.g. enable the GPIO controllers builtin pull-up resistor on devices
-where the firmware description of the GPIO is broken (e.g. GpioInt with
-PullNone instead of PullUp in ACPI DSDT).
+Add a check to mtk_drm_gem_init if we attempt to allocate a GEM object
+of 0 bytes. Currently, no such check exists and the kernel will panic if
+a userspace application attempts to allocate a 0x0 GBM buffer.
 
-Since this is the exception rather then the rule adding a config
-parameter to mmc_gpiod_request_cd() seems undesirable, so instead
-add a new mmc_gpiod_set_cd_config() function. This is simply a wrapper
-to call gpiod_set_config() on the card-detect GPIO acquired through
-mmc_gpiod_request_cd().
+Tested by attempting to allocate a 0x0 GBM buffer on an MT8188 and
+verifying that we now return EINVAL.
 
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240410191639.526324-2-hdegoede@redhat.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Signed-off-by: Justin Green <greenjustin@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240307180051.4104425-1-greenjustin@chromium.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/slot-gpio.c  |   20 ++++++++++++++++++++
- include/linux/mmc/slot-gpio.h |    1 +
- 2 files changed, 21 insertions(+)
+ drivers/gpu/drm/mediatek/mtk_drm_gem.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mmc/core/slot-gpio.c
-+++ b/drivers/mmc/core/slot-gpio.c
-@@ -221,6 +221,26 @@ int mmc_gpiod_request_cd(struct mmc_host
- }
- EXPORT_SYMBOL(mmc_gpiod_request_cd);
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+index 5f87d56d2d1d8..de15cf6105d97 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+@@ -21,6 +21,9 @@ static struct mtk_drm_gem_obj *mtk_drm_gem_init(struct drm_device *dev,
  
-+/**
-+ * mmc_gpiod_set_cd_config - set config for card-detection GPIO
-+ * @host: mmc host
-+ * @config: Generic pinconf config (from pinconf_to_config_packed())
-+ *
-+ * This can be used by mmc host drivers to fixup a card-detection GPIO's config
-+ * (e.g. set PIN_CONFIG_BIAS_PULL_UP) after acquiring the GPIO descriptor
-+ * through mmc_gpiod_request_cd().
-+ *
-+ * Returns:
-+ * 0 on success, or a negative errno value on error.
-+ */
-+int mmc_gpiod_set_cd_config(struct mmc_host *host, unsigned long config)
-+{
-+	struct mmc_gpio *ctx = host->slot.handler_priv;
+ 	size = round_up(size, PAGE_SIZE);
+ 
++	if (size == 0)
++		return ERR_PTR(-EINVAL);
 +
-+	return gpiod_set_config(ctx->cd_gpio, config);
-+}
-+EXPORT_SYMBOL(mmc_gpiod_set_cd_config);
-+
- bool mmc_can_gpio_cd(struct mmc_host *host)
- {
- 	struct mmc_gpio *ctx = host->slot.handler_priv;
---- a/include/linux/mmc/slot-gpio.h
-+++ b/include/linux/mmc/slot-gpio.h
-@@ -21,6 +21,7 @@ int mmc_gpiod_request_cd(struct mmc_host
- 			 unsigned int debounce);
- int mmc_gpiod_request_ro(struct mmc_host *host, const char *con_id,
- 			 unsigned int idx, unsigned int debounce);
-+int mmc_gpiod_set_cd_config(struct mmc_host *host, unsigned long config);
- void mmc_gpio_set_cd_isr(struct mmc_host *host,
- 			 irqreturn_t (*isr)(int irq, void *dev_id));
- int mmc_gpio_set_cd_wake(struct mmc_host *host, bool on);
+ 	mtk_gem_obj = kzalloc(sizeof(*mtk_gem_obj), GFP_KERNEL);
+ 	if (!mtk_gem_obj)
+ 		return ERR_PTR(-ENOMEM);
+-- 
+2.43.0
+
 
 
 
