@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD751907121
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 673C2906F3E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B077B23B57
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CA5F1C23445
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7610112C81F;
-	Thu, 13 Jun 2024 12:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24806146D43;
+	Thu, 13 Jun 2024 12:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSQYUtg1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSUoGGPo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C25BEC4;
-	Thu, 13 Jun 2024 12:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AEC3209;
+	Thu, 13 Jun 2024 12:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282021; cv=none; b=QY4maD2G8g5nofnhQXnOfUmOzGaM4H0FmUJyERu/vJ8urWkEAzGzmazexZuj13b4rU6pptOmGnNch1KHXGxUd1p4DPK6wau3ul9wp1GpvgAIVM4Pwj+OPF6R+nk1RQpdUarz+VZhIjAQhBeTnHVd6CMlaoJWW+q8yY+coEgiFVY=
+	t=1718280903; cv=none; b=rvgc5mFVpj7sjCNr/857kKWy+zM8Y0ldttV1tu/RlFWwdVmtcQkqYkvL9cIqcmjBpplHrVAOh1YPZu74JA9jhXvSJ7cRKKhQqw4FexfnD1fxKskufnilejWs5v1PoGt4Wdve8QGeMLKKF1yD1djaVhbHrNSX7Xei6i06ZKx2RZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282021; c=relaxed/simple;
-	bh=zIZCPlob/6GUe7EFbCfhtSXX957LmpJQdpZH4/Th9l4=;
+	s=arc-20240116; t=1718280903; c=relaxed/simple;
+	bh=vkbFpBLsdVt3meN49iINcVxIBjYH+T/k+a77PDe4kJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDV2fiaurpTSQF+mmL22VbUJyB2zzGbP2rVgC8qcvZRRHLHETa+y4emLDA7EcOZn5jqkvglbS8Svg2YvjAHPEsVJRl9qfIFzmA+wbO09j2H/bcwKaMo8qLBFUyLFzp/Me/ehwO/8rhy01yEW6HNeQkl0UZsIOiUbl/o3RqrY4hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSQYUtg1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82D2C2BBFC;
-	Thu, 13 Jun 2024 12:33:40 +0000 (UTC)
+	 MIME-Version; b=VOVjfEBgjRgQXp78g6j2V/sRYutUuze5yxgp3kZJ23+Oc49mfQwFnBgxbimzGfj2gBIwABGf1VufsaKsNsf4mLAWT6AYtzOtym45Qq5+QBQYOoh5kSr7fUoXZPkgLcD9frNXZ7oYSz3pu2sPSeyRJ1UujSJQTEH2/X4aXV7cFQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XSUoGGPo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC96C2BBFC;
+	Thu, 13 Jun 2024 12:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282021;
-	bh=zIZCPlob/6GUe7EFbCfhtSXX957LmpJQdpZH4/Th9l4=;
+	s=korg; t=1718280903;
+	bh=vkbFpBLsdVt3meN49iINcVxIBjYH+T/k+a77PDe4kJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bSQYUtg1Y3vrn45xnhQuud1pM1pJE3+tNbN5OEQpmNNol53Ws/nQM2AquewzAyGoo
-	 +LURrTNWRCNCQJBrAs3z7hQC0kT5edgjnGuIrH7Ao7ABcmDnc0HXqA8KKZxEFKUTWU
-	 k5goky0MJ14etA3bjDF5qbMzeiUtC3IpaN3U4eRQ=
+	b=XSUoGGPoUXdhLMl5ngrHyIJgqf9fcJ7WFnIt+uNq6cUOqkcs1gwilXpdG/UrhmnwW
+	 gNZGA/47HtMyMLOT3WcIljsjAd8nTAWC00BKtxwFTAoHT7wp64yZLONoI/AiZwwCh/
+	 rrIchVtsMiBHDu9Cn3PeyFJXgBwfpYCHZ41FVX3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Robert Foss <rfoss@kernel.org>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 135/402] drm: bridge: cdns-mhdp8546: Fix possible null pointer dereference
+Subject: [PATCH 5.10 074/317] scsi: qedf: Ensure the copied buf is NUL terminated
 Date: Thu, 13 Jun 2024 13:31:32 +0200
-Message-ID: <20240613113307.402680550@linuxfoundation.org>
+Message-ID: <20240613113250.410745002@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit 935a92a1c400285545198ca2800a4c6c519c650a ]
+[ Upstream commit d0184a375ee797eb657d74861ba0935b6e405c62 ]
 
-In cdns_mhdp_atomic_enable(), the return value of drm_mode_duplicate() is
-assigned to mhdp_state->current_mode, and there is a dereference of it in
-drm_mode_set_name(), which will lead to a NULL pointer dereference on
-failure of drm_mode_duplicate().
+Currently, we allocate a count-sized kernel buffer and copy count from
+userspace to that buffer. Later, we use kstrtouint on this buffer but we
+don't ensure that the string is terminated inside the buffer, this can
+lead to OOB read when using kstrtouint. Fix this issue by using
+memdup_user_nul instead of memdup_user.
 
-Fix this bug add a check of mhdp_state->current_mode.
-
-Fixes: fb43aa0acdfd ("drm: bridge: Add support for Cadence MHDP8546 DPI/DP bridge")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240408125810.21899-1-amishin@t-argos.ru
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-4-f1f1b53a10f4@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/qedf/qedf_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-index 5530fbf64f1e4..c8386311cc704 100644
---- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-@@ -2040,6 +2040,9 @@ static void cdns_mhdp_atomic_enable(struct drm_bridge *bridge,
- 	mhdp_state = to_cdns_mhdp_bridge_state(new_state);
+diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
+index 451fd236bfd05..96174353e3898 100644
+--- a/drivers/scsi/qedf/qedf_debugfs.c
++++ b/drivers/scsi/qedf/qedf_debugfs.c
+@@ -170,7 +170,7 @@ qedf_dbg_debug_cmd_write(struct file *filp, const char __user *buffer,
+ 	if (!count || *ppos)
+ 		return 0;
  
- 	mhdp_state->current_mode = drm_mode_duplicate(bridge->dev, mode);
-+	if (!mhdp_state->current_mode)
-+		return;
-+
- 	drm_mode_set_name(mhdp_state->current_mode);
+-	kern_buf = memdup_user(buffer, count);
++	kern_buf = memdup_user_nul(buffer, count);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
  
- 	dev_dbg(mhdp->dev, "%s: Enabling mode %s\n", __func__, mode->name);
 -- 
 2.43.0
 
