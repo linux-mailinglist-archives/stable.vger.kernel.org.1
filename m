@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B00906FB4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85C1A907169
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1178289529
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31E811F25640
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126751459F7;
-	Thu, 13 Jun 2024 12:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C2828FF;
+	Thu, 13 Jun 2024 12:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCEMeHgl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bw6I/4j9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A1D1459EE;
-	Thu, 13 Jun 2024 12:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D6917FD;
+	Thu, 13 Jun 2024 12:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281183; cv=none; b=besA4P8jb+AObOnF5JyKY4ZKhLFGQxKim9cbs7Jhhs7G4SMoUIcjQvJ7PIPxBV5FbVrOrjmDPCB6/zy5wzsiyKxwGqqfGaM1hxvB75j5zX+yvOvbUes03XVjJ/oIqNG22TmZhY9k319k3Fpxroy3RGP3Zb+cU1PK6WMPnKb7o9s=
+	t=1718282206; cv=none; b=m1DNGC+fqV/RdU1cxuIuoMb0iZODEoF6inj715XxNct9E/Ay/Ei8Vg81grr4ghx+tjM3MWqhj2exkUxofbxUSyI9mldjAtYCXIMvkBW00quTkdklDRcAvBgM2F9kgFV7AoduOu1/aeCT9b7iMsUkAOcYTugiFwLfr9N/SF9djPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281183; c=relaxed/simple;
-	bh=04A6qyanzTdJf61FAQeSH3G7GbJAqSjYzQOMPxKKX8Q=;
+	s=arc-20240116; t=1718282206; c=relaxed/simple;
+	bh=amK6E1NK+HvpgoRz6EuQNxOLner/puuh+mhONIxpVGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=spBiFQ+9aIVOrC0YOEOkr1RtqP+MKWsxZj7ZjaU7m5ZsH+1O8qsuRFJLVsb6J/vj5BVYplDvFok1X+zWoGq4e/pPIZyL9pZmMRcI1Zox5Dvv0v4EyV6lVbhAws+lHTw/2IQt62ZZwep0PLPqacsbvKLsZNpAcNPvNHTlRGSNWVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCEMeHgl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BF7C2BBFC;
-	Thu, 13 Jun 2024 12:19:43 +0000 (UTC)
+	 MIME-Version; b=BMqtHdzs/qkJ9HmxCNgkSZH9ERMPXW78YpwgTjEIdPvPfyd0ht0xYEpyxru5zZLRj80TYwf/qiteCpWRqkBtLBYYO7XTrE3F7XzVgYUk9SiYRIv+NUjXVvenbs1jOtW3sSh0whQhJm7XAvxdkUA1gDN/dAg9BQhT1TgaqmturaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bw6I/4j9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420DFC32786;
+	Thu, 13 Jun 2024 12:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281183;
-	bh=04A6qyanzTdJf61FAQeSH3G7GbJAqSjYzQOMPxKKX8Q=;
+	s=korg; t=1718282205;
+	bh=amK6E1NK+HvpgoRz6EuQNxOLner/puuh+mhONIxpVGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UCEMeHglC08RIHC4yoBTHiH9L9ZCvlyXK/ar/C2xMOtkaVZ7R7sLJb+NsqObPMHol
-	 FS4qNnmwjnBg2ZozDmrukQAswfZnA7dw41lzfec4IH5lQzYh8k8iZ2CzUeQigpjzK0
-	 im7RkzB+ejTI3OGejzNQMhNpXCH64JgfRwdoMs1k=
+	b=bw6I/4j9huTjTaWMuVQpLIJ/N/w9PIWZwTeJq5R1AiYkxoMgvI48iTAbkjCF+qmag
+	 YIUec8o74ZOr9Fk9L2XCoNQEcbPZWfdku/Fk/WCscpza1A0sDLUIzXMei7d/jm3c1d
+	 1mlfyYn3Tuf/8petVo5e1zlVLhiw4K6x6H08f8lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Lobanov <m.lobanov@rosalinux.ru>,
-	Alex Elder <elder@ieee.org>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 138/317] greybus: lights: check return of get_channel_from_mode
+Subject: [PATCH 5.15 199/402] f2fs: fix to relocate check condition in f2fs_fallocate()
 Date: Thu, 13 Jun 2024 13:32:36 +0200
-Message-ID: <20240613113252.902306351@linuxfoundation.org>
+Message-ID: <20240613113309.901837795@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rui Miguel Silva <rmfrfs@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit a1ba19a1ae7cd1e324685ded4ab563e78fe68648 ]
+[ Upstream commit 278a6253a673611dbc8ab72a3b34b151a8e75822 ]
 
-If channel for the given node is not found we return null from
-get_channel_from_mode. Make sure we validate the return pointer
-before using it in two of the missing places.
+compress and pinfile flag should be checked after inode lock held to
+avoid race condition, fix it.
 
-This was originally reported in [0]:
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-[0] https://lore.kernel.org/all/20240301190425.120605-1-m.lobanov@rosalinux.ru
-
-Fixes: 2870b52bae4c ("greybus: lights: add lights implementation")
-Reported-by: Mikhail Lobanov <m.lobanov@rosalinux.ru>
-Suggested-by: Mikhail Lobanov <m.lobanov@rosalinux.ru>
-Suggested-by: Alex Elder <elder@ieee.org>
-Signed-off-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Link: https://lore.kernel.org/r/20240325221549.2185265-1-rmfrfs@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4c8ff7095bef ("f2fs: support data compression")
+Fixes: 5fed0be8583f ("f2fs: do not allow partial truncation on pinned file")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/greybus/light.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/f2fs/file.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/staging/greybus/light.c b/drivers/staging/greybus/light.c
-index e59bb27236b9f..7352d7deb8ba0 100644
---- a/drivers/staging/greybus/light.c
-+++ b/drivers/staging/greybus/light.c
-@@ -147,6 +147,9 @@ static int __gb_lights_flash_brightness_set(struct gb_channel *channel)
- 		channel = get_channel_from_mode(channel->light,
- 						GB_CHANNEL_MODE_TORCH);
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index ffec3c5374f89..39002f3c3f8a7 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1760,15 +1760,6 @@ static long f2fs_fallocate(struct file *file, int mode,
+ 		(mode & (FALLOC_FL_COLLAPSE_RANGE | FALLOC_FL_INSERT_RANGE)))
+ 		return -EOPNOTSUPP;
  
-+	if (!channel)
-+		return -EINVAL;
-+
- 	/* For not flash we need to convert brightness to intensity */
- 	intensity = channel->intensity_uA.min +
- 			(channel->intensity_uA.step * channel->led->brightness);
-@@ -550,7 +553,10 @@ static int gb_lights_light_v4l2_register(struct gb_light *light)
- 	}
+-	/*
+-	 * Pinned file should not support partial truncation since the block
+-	 * can be used by applications.
+-	 */
+-	if ((f2fs_compressed_file(inode) || f2fs_is_pinned_file(inode)) &&
+-		(mode & (FALLOC_FL_PUNCH_HOLE | FALLOC_FL_COLLAPSE_RANGE |
+-			FALLOC_FL_ZERO_RANGE | FALLOC_FL_INSERT_RANGE)))
+-		return -EOPNOTSUPP;
+-
+ 	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE |
+ 			FALLOC_FL_COLLAPSE_RANGE | FALLOC_FL_ZERO_RANGE |
+ 			FALLOC_FL_INSERT_RANGE))
+@@ -1776,6 +1767,17 @@ static long f2fs_fallocate(struct file *file, int mode,
  
- 	channel_flash = get_channel_from_mode(light, GB_CHANNEL_MODE_FLASH);
--	WARN_ON(!channel_flash);
-+	if (!channel_flash) {
-+		dev_err(dev, "failed to get flash channel from mode\n");
-+		return -EINVAL;
+ 	inode_lock(inode);
+ 
++	/*
++	 * Pinned file should not support partial truncation since the block
++	 * can be used by applications.
++	 */
++	if ((f2fs_compressed_file(inode) || f2fs_is_pinned_file(inode)) &&
++		(mode & (FALLOC_FL_PUNCH_HOLE | FALLOC_FL_COLLAPSE_RANGE |
++			FALLOC_FL_ZERO_RANGE | FALLOC_FL_INSERT_RANGE))) {
++		ret = -EOPNOTSUPP;
++		goto out;
 +	}
- 
- 	fled = &channel_flash->fled;
- 
++
+ 	ret = file_modified(file);
+ 	if (ret)
+ 		goto out;
 -- 
 2.43.0
 
