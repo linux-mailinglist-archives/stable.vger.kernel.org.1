@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-50396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67C09064A6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:12:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06C599064A7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:13:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25440B211D6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:12:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC7FE1C22B89
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD95E13792E;
-	Thu, 13 Jun 2024 07:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821CA13792E;
+	Thu, 13 Jun 2024 07:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cI6GacCn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCEIa0dy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F30C12CD9D
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D3D12CD9D
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718262764; cv=none; b=uMGI18jcpNFb5J3z/HJ5kyWpFlO5Kz6yj87HvcTZEnFWGnLCGr8nIhN/W0h+aFbphG00zKldUt9PUp4TLNOkATsR40dKQK9aM0BmVbWMHVz9cAijBaqcZ3kZiSq/uWTo1S2QkXeXTtN+Ew3GnBA8EC+8B60w+pY1HngQ9pJ6J0o=
+	t=1718262774; cv=none; b=iJ3GY8wsnP5eUPNBFXDdrwT02c1DQGdxtYFiC/VVCLj4kE5dBYVNL6lxpJCLdcuJ7EqwHRusLOAKKF6cs4sKTi0lQgyvPzo1SQ8PxJNT4hUHOEt2SXg5DKvIGKZZPN8LukNaa63At+vx4eC+H5h6LOx1HjkxV7f+y93NSmncPYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718262764; c=relaxed/simple;
-	bh=afMlHH3EftLHf09WrS1m/PR1dKE5mZ4RxqY7r72UYxM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jv4+n4Kvot17WQ6r0wi4HKhJVWPa+xZ3/UzfBLOkaEE7s0+r5Ri3HVbu0wBaMk5b3XEfOlsDx3t2OO7UISJTRGJwyh6d2D2wfwE2ffciJ5m6NdogSCv84EfDYGinFBOqn0OlNoCrHlCk/ZapudgHWUr4thl9yqHwsizCMLpLkHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cI6GacCn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8B8C2BBFC;
-	Thu, 13 Jun 2024 07:12:43 +0000 (UTC)
+	s=arc-20240116; t=1718262774; c=relaxed/simple;
+	bh=NC/un1f3MJwKcRmGDJ3YHsnfCcyolZd/E8nOZYx8YYw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GsI+llOtu9AleQUfgTeO2baXqGIDncSCXg6pHD6iNnclxwHIjd5K5iC2cwGk8f9ziRHMhxGroRVijlMnNpbKfjBfqGFag1AAiOMJwpWubyj2EkVqu9HiqPLjYEWX3+nPk8XQmUYvwixT6DyODs3FbMEUVWpCoqrxLRWundlS62k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCEIa0dy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5DBC2BBFC;
+	Thu, 13 Jun 2024 07:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718262764;
-	bh=afMlHH3EftLHf09WrS1m/PR1dKE5mZ4RxqY7r72UYxM=;
+	s=korg; t=1718262773;
+	bh=NC/un1f3MJwKcRmGDJ3YHsnfCcyolZd/E8nOZYx8YYw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=cI6GacCnDHhgZ3F0Z9U7hdz/z4EekJQoeDA7ylXP0PkaIHG1dBFeNWszFKcfYGv1+
-	 TpZ9De63lSKWV/awJy+DQvmx46VP92nLvKIjHEfWRliJjP2osMNTNvHgyiuz62fBYe
-	 KTe84GWX/rGjdTbQKAePNwwN83tDgoq6tmFbqSAY=
-Subject: FAILED: patch "[PATCH] kbuild: Remove support for Clang's ThinLTO caching" failed to apply to 6.1-stable tree
+	b=mCEIa0dynptM7qSyQN9XN1eZvnZZhhGSxb+/F0hGQHphWVc+F46cluwSo/yes/mil
+	 pZeSbyr6IZM5OO1D5+Agr0xccoWce5H9brBd4hB6WIPj6Jf1rWXtpDyYcYd0YWjMGZ
+	 //gihpQBRipKutzC9yLZUk/O8I9m3LpVPmXnviIc=
+Subject: FAILED: patch "[PATCH] kbuild: Remove support for Clang's ThinLTO caching" failed to apply to 5.15-stable tree
 To: nathan@kernel.org,elsk@google.com,masahiroy@kernel.org,mhiramat@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Jun 2024 09:12:41 +0200
-Message-ID: <2024061340-troubling-automated-9989@gregkh>
+Date: Thu, 13 Jun 2024 09:12:42 +0200
+Message-ID: <2024061342-unimpeded-hardcover-349c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,26 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x aba091547ef6159d52471f42a3ef531b7b660ed8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061340-troubling-automated-9989@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061342-unimpeded-hardcover-349c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 aba091547ef6 ("kbuild: Remove support for Clang's ThinLTO caching")
 1db773da58df ("kbuild: remove old Rust docs output path")
 7ea01d3169a2 ("rust: delete rust-project.json when running make clean")
+8afc66e8d43b ("Merge tag 'kbuild-v6.1' of git://git.kernel.org/pub/scm/linux/kernel/git/masahiroy/linux-kbuild")
 
 thanks,
 
