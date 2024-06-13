@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-50650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C711906BB4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 710D3906DC7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:04:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAE9F1F2207B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D05DB24BCB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794EB143871;
-	Thu, 13 Jun 2024 11:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD99149E13;
+	Thu, 13 Jun 2024 11:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sumcBu80"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2MxjO/oY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C5C14389D;
-	Thu, 13 Jun 2024 11:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9E3149E0A;
+	Thu, 13 Jun 2024 11:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278985; cv=none; b=uulhbcND9wPxOaGK3M/PSnB9V5/qXFxNZfqaB69dbhk/AXB6KUcT1nclp2YVPXtszzU/zakzIodw2Yl4WeLMJx1ZP05/BbF1ilYpzbMoZLvs9qhmbnoRm3q6wlq5xBDfe+yIzFVbQsLTgdbF3WqseEMSyFhrE8cPtYAvIhE5c/0=
+	t=1718279956; cv=none; b=fEjXhfTHWhRoppmLxH8BO/uMt5hEbSMugjyjYhCtjdatJzNxoyD+m39RD0jogxw8L2d5GF/q6mxxq036ovIx43zdcFMSHYgY55tqdltiMXfeRP5Cq31bbzQHRUmR6ZRSoByA38L8XzUV0hAocrGpSotXYD9FLXsrrIcD8C6A88A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278985; c=relaxed/simple;
-	bh=UPva8IuiQaJ/S+hLNYv0g8kLr1Zfibp3YbLT1du5BKs=;
+	s=arc-20240116; t=1718279956; c=relaxed/simple;
+	bh=pcwKK381rf0fnihLb2kimVUrie71p6RKRfO5dZP5gac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dNXlhMzTx/iq6ihTu/sOILRX2S0iB4HqEWdBN6z2Z5qsQjOaM4/59s4nkzJFk2AoZ8fwcSQt8WNyJKBwpBevhx36ZknGJkJJSXxM3He1uh+GANyOIHReLyPrbUXgqzIN9NciZNtDmpO0G6U5emEub6Ui0cHeOg/7aEShuP+Jb8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sumcBu80; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE50C2BBFC;
-	Thu, 13 Jun 2024 11:43:04 +0000 (UTC)
+	 MIME-Version; b=nLjJ1tF/TMFla0aT7LhymqSoGB67Ec/jTErVqaeHunvNGl2uOe2CXxnOC8E/r4mnwd4W+u9q3JUdmT96vZ+M/r7dI5jW9rn17IiEAusUM6GaDTL9zjJ3Iz4/V+OzPCYE0i4vFDZJ4cadyE1eHdddjRInOVs82pTeczdzVnxvPUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2MxjO/oY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60EDC2BBFC;
+	Thu, 13 Jun 2024 11:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278985;
-	bh=UPva8IuiQaJ/S+hLNYv0g8kLr1Zfibp3YbLT1du5BKs=;
+	s=korg; t=1718279956;
+	bh=pcwKK381rf0fnihLb2kimVUrie71p6RKRfO5dZP5gac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sumcBu80UcSBXBpVf1bn3Xv9ZT5/B1ud/1RcNS6zhH2vx9lKawlWM65FhQX7Kwa9v
-	 KZ3ldhge4mGiEHlKiI5RhjddS5MyQQua91KH9HixfRUPpda0xZqhS9FqP81YoPwz8r
-	 IPQaWIdevHE9CgOgsk0hQSKagzKi+025Xpg3khMs=
+	b=2MxjO/oYxn+lbNNsmS06TA/YJ1Ixrx9Mh1rcdrtFMM5xGyrZRTesk/NZZKluYTxaY
+	 RrBCSQ/M4r1J30qkw2/Pwy52VDi/k9bw3UcqNlF/cIhWDOXlNyELWu7OBjz0Hn2yGy
+	 f28Uda9D+LIOZRrM896mExMQJnt2MaaPmmLFYxeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roded Zats <rzats@paloaltonetworks.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Gautam Menghani <gautammenghani201@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 136/213] enic: Validate length of nl attributes in enic_set_vf_port
+Subject: [PATCH 5.4 086/202] selftests/kcmp: Make the test output consistent and clear
 Date: Thu, 13 Jun 2024 13:33:04 +0200
-Message-ID: <20240613113233.243793580@linuxfoundation.org>
+Message-ID: <20240613113231.089890013@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roded Zats <rzats@paloaltonetworks.com>
+From: Gautam Menghani <gautammenghani201@gmail.com>
 
-[ Upstream commit e8021b94b0412c37bcc79027c2e382086b6ce449 ]
+[ Upstream commit ff682226a353d88ffa5db9c2a9b945066776311e ]
 
-enic_set_vf_port assumes that the nl attribute IFLA_PORT_PROFILE
-is of length PORT_PROFILE_MAX and that the nl attributes
-IFLA_PORT_INSTANCE_UUID, IFLA_PORT_HOST_UUID are of length PORT_UUID_MAX.
-These attributes are validated (in the function do_setlink in rtnetlink.c)
-using the nla_policy ifla_port_policy. The policy defines IFLA_PORT_PROFILE
-as NLA_STRING, IFLA_PORT_INSTANCE_UUID as NLA_BINARY and
-IFLA_PORT_HOST_UUID as NLA_STRING. That means that the length validation
-using the policy is for the max size of the attributes and not on exact
-size so the length of these attributes might be less than the sizes that
-enic_set_vf_port expects. This might cause an out of bands
-read access in the memcpys of the data of these
-attributes in enic_set_vf_port.
+Make the output format of this test consistent. Currently the output is
+as follows:
 
-Fixes: f8bd909183ac ("net: Add ndo_{set|get}_vf_port support for enic dynamic vnics")
-Signed-off-by: Roded Zats <rzats@paloaltonetworks.com>
-Link: https://lore.kernel.org/r/20240522073044.33519-1-rzats@paloaltonetworks.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
++TAP version 13
++1..1
++# selftests: kcmp: kcmp_test
++# pid1:  45814 pid2:  45815 FD:  1 FILES:  1 VM:  2 FS:  1 SIGHAND:  2
++  IO:  0 SYSVSEM:  0 INV: -1
++# PASS: 0 returned as expected
++# PASS: 0 returned as expected
++# PASS: 0 returned as expected
++# # Planned tests != run tests (0 != 3)
++# # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
++# # Planned tests != run tests (0 != 3)
++# # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
++# # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
++ok 1 selftests: kcmp: kcmp_test
+
+With this patch applied the output is as follows:
+
++TAP version 13
++1..1
++# selftests: kcmp: kcmp_test
++# TAP version 13
++# 1..3
++# pid1:  46330 pid2:  46331 FD:  1 FILES:  2 VM:  2 FS:  2 SIGHAND:  1
++  IO:  0 SYSVSEM:  0 INV: -1
++# PASS: 0 returned as expected
++# PASS: 0 returned as expected
++# PASS: 0 returned as expected
++# # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
++ok 1 selftests: kcmp: kcmp_test
+
+Signed-off-by: Gautam Menghani <gautammenghani201@gmail.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Stable-dep-of: eb59a5811371 ("selftests/kcmp: remove unused open mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cisco/enic/enic_main.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tools/testing/selftests/kcmp/kcmp_test.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index bfe0e820956ca..6ad1734d96777 100644
---- a/drivers/net/ethernet/cisco/enic/enic_main.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -1152,18 +1152,30 @@ static int enic_set_vf_port(struct net_device *netdev, int vf,
- 	pp->request = nla_get_u8(port[IFLA_PORT_REQUEST]);
+diff --git a/tools/testing/selftests/kcmp/kcmp_test.c b/tools/testing/selftests/kcmp/kcmp_test.c
+index 6ea7b9f37a411..25110c7c0b3ed 100644
+--- a/tools/testing/selftests/kcmp/kcmp_test.c
++++ b/tools/testing/selftests/kcmp/kcmp_test.c
+@@ -88,6 +88,9 @@ int main(int argc, char **argv)
+ 		int pid2 = getpid();
+ 		int ret;
  
- 	if (port[IFLA_PORT_PROFILE]) {
-+		if (nla_len(port[IFLA_PORT_PROFILE]) != PORT_PROFILE_MAX) {
-+			memcpy(pp, &prev_pp, sizeof(*pp));
-+			return -EINVAL;
-+		}
- 		pp->set |= ENIC_SET_NAME;
- 		memcpy(pp->name, nla_data(port[IFLA_PORT_PROFILE]),
- 			PORT_PROFILE_MAX);
- 	}
++		ksft_print_header();
++		ksft_set_plan(3);
++
+ 		fd2 = open(kpath, O_RDWR, 0644);
+ 		if (fd2 < 0) {
+ 			perror("Can't open file");
+@@ -152,7 +155,6 @@ int main(int argc, char **argv)
+ 			ksft_inc_pass_cnt();
+ 		}
  
- 	if (port[IFLA_PORT_INSTANCE_UUID]) {
-+		if (nla_len(port[IFLA_PORT_INSTANCE_UUID]) != PORT_UUID_MAX) {
-+			memcpy(pp, &prev_pp, sizeof(*pp));
-+			return -EINVAL;
-+		}
- 		pp->set |= ENIC_SET_INSTANCE;
- 		memcpy(pp->instance_uuid,
- 			nla_data(port[IFLA_PORT_INSTANCE_UUID]), PORT_UUID_MAX);
- 	}
+-		ksft_print_cnts();
  
- 	if (port[IFLA_PORT_HOST_UUID]) {
-+		if (nla_len(port[IFLA_PORT_HOST_UUID]) != PORT_UUID_MAX) {
-+			memcpy(pp, &prev_pp, sizeof(*pp));
-+			return -EINVAL;
-+		}
- 		pp->set |= ENIC_SET_HOST;
- 		memcpy(pp->host_uuid,
- 			nla_data(port[IFLA_PORT_HOST_UUID]), PORT_UUID_MAX);
+ 		if (ret)
+ 			ksft_exit_fail();
+@@ -162,5 +164,5 @@ int main(int argc, char **argv)
+ 
+ 	waitpid(pid2, &status, P_ALL);
+ 
+-	return ksft_exit_pass();
++	return 0;
+ }
 -- 
 2.43.0
 
