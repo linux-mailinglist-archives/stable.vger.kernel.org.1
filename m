@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-51286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E70D906F2A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D795090712A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8F081C22C52
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 840B31F22CC3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0717B1448C5;
-	Thu, 13 Jun 2024 12:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E372613A406;
+	Thu, 13 Jun 2024 12:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtE0O6CC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ytpdqvD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9260144313;
-	Thu, 13 Jun 2024 12:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A021A1EEF8;
+	Thu, 13 Jun 2024 12:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280853; cv=none; b=NhsR/MYS7k7BFI6L5v63VGLwc4F8IIfO4biDA6rxGqnagb0QbzQ06DPJoymyCQSdk0feZZdhRxpN61eE/WwSiFT4fwi9p8WvaAfPA0RUtwvZIWfpOGSLzD4vds8NhBHbxjXVbvAIh4JBg6PsYa4uAK+B8LQ3fx4FUameOaeSPXo=
+	t=1718282047; cv=none; b=KDstuGyVx5Ho1xYNKHPx4Ix0trAyd8nvAchf83h2bIete530sdNkQls0t/DHnI7t1LBU/QpiCO5e3OPZ5u3ruZlkQXSBxdoW8zfY24/Kt0XjhyR4WSeeffO7L6gU4DAYodcVZqgMREMSt2UUQIgwXk3a7YKhFssd7BxTOX1mTp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280853; c=relaxed/simple;
-	bh=rv7tVCJNHaRVZ0a4Nad/Upmni0256kwWxG58zEJPCB0=;
+	s=arc-20240116; t=1718282047; c=relaxed/simple;
+	bh=OuJVc0d9pVKTLqeshr33tFSTAkEYf850wRWl38XCmn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b0rK9PcTEjlDR1mBsrxsgo+usIBL4WYbSMluO3dOZ8dC99oXoxpX0VI+PwQ977V2IxaOYTQRrMTLcoo/VEdKkn64SEsjsx9d4cs1NI4i/LdqgEdoTYCHHKvVWkAhiASPulpjVE2QwUwaOcB068B0aadAqMizV08gIZxZyf/YsDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtE0O6CC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40179C2BBFC;
-	Thu, 13 Jun 2024 12:14:13 +0000 (UTC)
+	 MIME-Version; b=s59/bWPMXg+6K8n+t4k4V5azCsFz867hN749JpZwQq8cUGjcQfa3xICBAX2Po6h66ndqqIr3wp9+GvHMV//puNtXkf/CHTrWklY8yxqBDFBfv+DK0oYsN+2atencBaF9qnT/kUygemy5mDWpV21HHulfZc+hyLZcizM+T6JJL3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ytpdqvD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275C7C2BBFC;
+	Thu, 13 Jun 2024 12:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280853;
-	bh=rv7tVCJNHaRVZ0a4Nad/Upmni0256kwWxG58zEJPCB0=;
+	s=korg; t=1718282047;
+	bh=OuJVc0d9pVKTLqeshr33tFSTAkEYf850wRWl38XCmn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PtE0O6CCPkj3w1yQltpdnCuxdMmqX9pAIkXFOEYgL4hEmMXr9OQvDkng0fuxM1whT
-	 lPe11PRRTZt2R5vKfOtB5YDZs5qNFiVvuqkiwHw5fZt6ZfJN/S7k3gpUCm6T8LBamn
-	 /9Mtfb6q5+7SMQND2owA/CVXCQbe8TFYHkhV4NfU=
+	b=1ytpdqvD7GgzCJFPoM8ygNY4qUckCGcGKZvZHfy1dNbC+b2TJLOe8LKkD3tCn3ks2
+	 KmYHVBsJ8w03SGwFEp7wvR5XV1W+8/RKE8RCkijHRfY0yLJ8GU14kiKHBhiVcr3ZhN
+	 QyC7k3ilXJOb3TCLuO0OjhCrdn+2o+ysUmDCpAM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Lorenz Bauer <lmb@isovalent.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Guillaume Nault <gnault@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 056/317] net: export inet_lookup_reuseport and inet6_lookup_reuseport
+Subject: [PATCH 5.15 117/402] ipv6: sr: fix invalid unregister error path
 Date: Thu, 13 Jun 2024 13:31:14 +0200
-Message-ID: <20240613113249.715200221@linuxfoundation.org>
+Message-ID: <20240613113306.695648478@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,165 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenz Bauer <lmb@isovalent.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit ce796e60b3b196b61fcc565df195443cbb846ef0 ]
+[ Upstream commit 160e9d2752181fcf18c662e74022d77d3164cd45 ]
 
-Rename the existing reuseport helpers for IPv4 and IPv6 so that they
-can be invoked in the follow up commit. Export them so that building
-DCCP and IPv6 as a module works.
+The error path of seg6_init() is wrong in case CONFIG_IPV6_SEG6_LWTUNNEL
+is not defined. In that case if seg6_hmac_init() fails, the
+genl_unregister_family() isn't called.
 
-No change in functionality.
+This issue exist since commit 46738b1317e1 ("ipv6: sr: add option to control
+lwtunnel support"), and commit 5559cea2d5aa ("ipv6: sr: fix possible
+use-after-free and null-ptr-deref") replaced unregister_pernet_subsys()
+with genl_unregister_family() in this error path.
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Lorenz Bauer <lmb@isovalent.com>
-Link: https://lore.kernel.org/r/20230720-so-reuseport-v6-3-7021b683cdae@isovalent.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Stable-dep-of: 50aee97d1511 ("udp: Avoid call to compute_score on multiple sites")
+Fixes: 46738b1317e1 ("ipv6: sr: add option to control lwtunnel support")
+Reported-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240509131812.1662197-4-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet6_hashtables.h |  7 +++++++
- include/net/inet_hashtables.h  |  5 +++++
- net/ipv4/inet_hashtables.c     | 15 ++++++++-------
- net/ipv6/inet6_hashtables.c    | 19 ++++++++++---------
- 4 files changed, 30 insertions(+), 16 deletions(-)
+ net/ipv6/seg6.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/inet6_hashtables.h b/include/net/inet6_hashtables.h
-index 56f1286583d3c..032ddab48f8f8 100644
---- a/include/net/inet6_hashtables.h
-+++ b/include/net/inet6_hashtables.h
-@@ -48,6 +48,13 @@ struct sock *__inet6_lookup_established(struct net *net,
- 					const u16 hnum, const int dif,
- 					const int sdif);
- 
-+struct sock *inet6_lookup_reuseport(struct net *net, struct sock *sk,
-+				    struct sk_buff *skb, int doff,
-+				    const struct in6_addr *saddr,
-+				    __be16 sport,
-+				    const struct in6_addr *daddr,
-+				    unsigned short hnum);
-+
- struct sock *inet6_lookup_listener(struct net *net,
- 				   struct inet_hashinfo *hashinfo,
- 				   struct sk_buff *skb, int doff,
-diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
-index c9e387d174c63..94c418d2e345e 100644
---- a/include/net/inet_hashtables.h
-+++ b/include/net/inet_hashtables.h
-@@ -313,6 +313,11 @@ struct sock *__inet_lookup_established(struct net *net,
- 				       const __be32 daddr, const u16 hnum,
- 				       const int dif, const int sdif);
- 
-+struct sock *inet_lookup_reuseport(struct net *net, struct sock *sk,
-+				   struct sk_buff *skb, int doff,
-+				   __be32 saddr, __be16 sport,
-+				   __be32 daddr, unsigned short hnum);
-+
- static inline struct sock *
- 	inet_lookup_established(struct net *net, struct inet_hashinfo *hashinfo,
- 				const __be32 saddr, const __be16 sport,
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index ad050f8476b8e..bea88219d5313 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -252,10 +252,10 @@ static inline int compute_score(struct sock *sk, struct net *net,
- 	return score;
- }
- 
--static inline struct sock *lookup_reuseport(struct net *net, struct sock *sk,
--					    struct sk_buff *skb, int doff,
--					    __be32 saddr, __be16 sport,
--					    __be32 daddr, unsigned short hnum)
-+struct sock *inet_lookup_reuseport(struct net *net, struct sock *sk,
-+				   struct sk_buff *skb, int doff,
-+				   __be32 saddr, __be16 sport,
-+				   __be32 daddr, unsigned short hnum)
- {
- 	struct sock *reuse_sk = NULL;
- 	u32 phash;
-@@ -266,6 +266,7 @@ static inline struct sock *lookup_reuseport(struct net *net, struct sock *sk,
- 	}
- 	return reuse_sk;
- }
-+EXPORT_SYMBOL_GPL(inet_lookup_reuseport);
- 
- /*
-  * Here are some nice properties to exploit here. The BSD API
-@@ -290,8 +291,8 @@ static struct sock *inet_lhash2_lookup(struct net *net,
- 		sk = (struct sock *)icsk;
- 		score = compute_score(sk, net, hnum, daddr, dif, sdif);
- 		if (score > hiscore) {
--			result = lookup_reuseport(net, sk, skb, doff,
--						  saddr, sport, daddr, hnum);
-+			result = inet_lookup_reuseport(net, sk, skb, doff,
-+						       saddr, sport, daddr, hnum);
- 			if (result)
- 				return result;
- 
-@@ -320,7 +321,7 @@ static inline struct sock *inet_lookup_run_bpf(struct net *net,
- 	if (no_reuseport || IS_ERR_OR_NULL(sk))
- 		return sk;
- 
--	reuse_sk = lookup_reuseport(net, sk, skb, doff, saddr, sport, daddr, hnum);
-+	reuse_sk = inet_lookup_reuseport(net, sk, skb, doff, saddr, sport, daddr, hnum);
- 	if (reuse_sk)
- 		sk = reuse_sk;
- 	return sk;
-diff --git a/net/ipv6/inet6_hashtables.c b/net/ipv6/inet6_hashtables.c
-index b4a5e01e12016..2267f973e2df3 100644
---- a/net/ipv6/inet6_hashtables.c
-+++ b/net/ipv6/inet6_hashtables.c
-@@ -113,12 +113,12 @@ static inline int compute_score(struct sock *sk, struct net *net,
- 	return score;
- }
- 
--static inline struct sock *lookup_reuseport(struct net *net, struct sock *sk,
--					    struct sk_buff *skb, int doff,
--					    const struct in6_addr *saddr,
--					    __be16 sport,
--					    const struct in6_addr *daddr,
--					    unsigned short hnum)
-+struct sock *inet6_lookup_reuseport(struct net *net, struct sock *sk,
-+				    struct sk_buff *skb, int doff,
-+				    const struct in6_addr *saddr,
-+				    __be16 sport,
-+				    const struct in6_addr *daddr,
-+				    unsigned short hnum)
- {
- 	struct sock *reuse_sk = NULL;
- 	u32 phash;
-@@ -129,6 +129,7 @@ static inline struct sock *lookup_reuseport(struct net *net, struct sock *sk,
- 	}
- 	return reuse_sk;
- }
-+EXPORT_SYMBOL_GPL(inet6_lookup_reuseport);
- 
- /* called with rcu_read_lock() */
- static struct sock *inet6_lhash2_lookup(struct net *net,
-@@ -146,8 +147,8 @@ static struct sock *inet6_lhash2_lookup(struct net *net,
- 		sk = (struct sock *)icsk;
- 		score = compute_score(sk, net, hnum, daddr, dif, sdif);
- 		if (score > hiscore) {
--			result = lookup_reuseport(net, sk, skb, doff,
--						  saddr, sport, daddr, hnum);
-+			result = inet6_lookup_reuseport(net, sk, skb, doff,
-+							saddr, sport, daddr, hnum);
- 			if (result)
- 				return result;
- 
-@@ -178,7 +179,7 @@ static inline struct sock *inet6_lookup_run_bpf(struct net *net,
- 	if (no_reuseport || IS_ERR_OR_NULL(sk))
- 		return sk;
- 
--	reuse_sk = lookup_reuseport(net, sk, skb, doff, saddr, sport, daddr, hnum);
-+	reuse_sk = inet6_lookup_reuseport(net, sk, skb, doff, saddr, sport, daddr, hnum);
- 	if (reuse_sk)
- 		sk = reuse_sk;
- 	return sk;
+diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+index 846c3abbcfb41..03090d1419d09 100644
+--- a/net/ipv6/seg6.c
++++ b/net/ipv6/seg6.c
+@@ -546,6 +546,8 @@ int __init seg6_init(void)
+ #endif
+ #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
+ out_unregister_genl:
++#endif
++#if IS_ENABLED(CONFIG_IPV6_SEG6_LWTUNNEL) || IS_ENABLED(CONFIG_IPV6_SEG6_HMAC)
+ 	genl_unregister_family(&seg6_genl_family);
+ #endif
+ out_unregister_pernet:
 -- 
 2.43.0
 
