@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F13BA906FDA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C49E9071C7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92BB8289335
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6A62B26759
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008A71465B1;
-	Thu, 13 Jun 2024 12:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D101EEE0;
+	Thu, 13 Jun 2024 12:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWTlg1tN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAEry+pz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42231465A7;
-	Thu, 13 Jun 2024 12:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E4D4A07;
+	Thu, 13 Jun 2024 12:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281292; cv=none; b=IhUWljc42ua0/xVrRMW1zmT34nQvpk9yhhdiaj/wMO9q3lBU/bu13aRfSdWT1A4V8yxU7fkK6npji8ZGGq7oEnIPZC2uVBH3SFWznNwAz0sBai+bG2GZj/Bh9J29EPVBCngzRae45SN02/vM0KNwOmoAfdqeX9/JQcs6d4cWwWg=
+	t=1718282407; cv=none; b=JUh2caABNMg7CkwklE8XKKGmvOxtkSR8so5ol+idQVX1Z4HfAydPRfmXZh4xil77xxsEAEm0xgBeev99uPoQedx6zHgQf24tee+quJms+sKLxFT6dfxXVXDxNkWSJBUphQtR5hHU14BtKM/FrPwx7M9df3KLNZ8/8R660wfsDNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281292; c=relaxed/simple;
-	bh=8CCw4wuwBPORvh9ZLQbmuKtceb8lIV4ZsXX/oc5KOOQ=;
+	s=arc-20240116; t=1718282407; c=relaxed/simple;
+	bh=uQPPMbbYTgHd24TOUPbyz6kJoPet/jJvLRQntqyruw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EdxJBziY1PFQg2chFFSsMh/GmKWtv2TO2GC2UhGj2sd+cuoVxemG2hXfreqUr99Iz4TpkDQ0lR1PYFjBb61IIEeOMlijatnulOiuhLOih2ofixWJ95KJdOSOhrnCnA6V4vnYD3yHKeM7b16KNE1ttdtX8q/PPMeL9PTvuE7fHqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWTlg1tN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A5EC2BBFC;
-	Thu, 13 Jun 2024 12:21:32 +0000 (UTC)
+	 MIME-Version; b=ssnuX2cFYhsN3YIaQSLKm8UrDK/XlCmlOVCc0LN4FsWLAv8AZ9WRSXB4uhE585YcWbQUbO2WHdFbFmMDQao5qfDomSugXpPHkx+9/xI6BkJi49tJhPCtYzeSJdyhkmICGu0krS9kQOqD6IfeEnKUYCEZtks1/bO/VqgTilM7V5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAEry+pz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B0BBC2BBFC;
+	Thu, 13 Jun 2024 12:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281292;
-	bh=8CCw4wuwBPORvh9ZLQbmuKtceb8lIV4ZsXX/oc5KOOQ=;
+	s=korg; t=1718282407;
+	bh=uQPPMbbYTgHd24TOUPbyz6kJoPet/jJvLRQntqyruw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KWTlg1tNxRuNdsZICV8DyUaUPr2V7YkFIICMPE8TfkRbD9wzHErYpNSiGMEbpZyd7
-	 Qjq4sbdBNrXO8CiasojzYKneTxhd5TxriQwfk9oXDQEEj34OkQh7d2DYjnejB6J3WX
-	 aEf/cNqFVaxNDcWEKQUXv4kn7Pzf+SbOt/an79rM=
+	b=VAEry+pzp0zDCMkoqEjWiTHO1sfC+x/9Eh822IhCfmS4i5UHzZ6D7NPfQRYUJFHZI
+	 +57FU94Zev6qPDRmq+gdEmmZ1GCjhPtt77xgB19TklrN3oHqRCAS8IIDtvDWT9JfG3
+	 cFqXaT92FHnxKMCrjweNgKBwNFVpAo9TOhnLhv20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Richard Weinberger <richard@nod.at>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 206/317] um: vector: fix bpfflash parameter evaluation
+Subject: [PATCH 5.15 267/402] media: flexcop-usb: clean up endpoint sanity checks
 Date: Thu, 13 Jun 2024 13:33:44 +0200
-Message-ID: <20240613113255.523213500@linuxfoundation.org>
+Message-ID: <20240613113312.567873494@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 584ed2f76ff5fe360d87a04d17b6520c7999e06b ]
+[ Upstream commit 3de50478b5cc2e0c2479a5f2b967f331f7597d23 ]
 
-With W=1 the build complains about a pointer compared to
-zero, clearly the result should've been compared.
+Add a temporary variable to make the endpoint sanity checks a bit more
+readable.
 
-Fixes: 9807019a62dc ("um: Loadable BPF "Firmware" for vector drivers")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+While at it, fix a typo in the usb_set_interface() comment.
+
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20220822151456.27178-2-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f62dc8f6bf82 ("media: flexcop-usb: fix sanity check of bNumEndpoints")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/vector_kern.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/b2c2/flexcop-usb.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
-index fc662f7cc2afb..c10432ef2d410 100644
---- a/arch/um/drivers/vector_kern.c
-+++ b/arch/um/drivers/vector_kern.c
-@@ -142,7 +142,7 @@ static bool get_bpf_flash(struct arglist *def)
+diff --git a/drivers/media/usb/b2c2/flexcop-usb.c b/drivers/media/usb/b2c2/flexcop-usb.c
+index 8ab1be03e7319..0b5c2f3a54ab4 100644
+--- a/drivers/media/usb/b2c2/flexcop-usb.c
++++ b/drivers/media/usb/b2c2/flexcop-usb.c
+@@ -501,17 +501,21 @@ static int flexcop_usb_transfer_init(struct flexcop_usb *fc_usb)
  
- 	if (allow != NULL) {
- 		if (kstrtoul(allow, 10, &result) == 0)
--			return (allow > 0);
-+			return result > 0;
+ static int flexcop_usb_init(struct flexcop_usb *fc_usb)
+ {
+-	/* use the alternate setting with the larges buffer */
+-	int ret = usb_set_interface(fc_usb->udev, 0, 1);
++	struct usb_host_interface *alt;
++	int ret;
+ 
++	/* use the alternate setting with the largest buffer */
++	ret = usb_set_interface(fc_usb->udev, 0, 1);
+ 	if (ret) {
+ 		err("set interface failed.");
+ 		return ret;
  	}
- 	return false;
- }
+ 
+-	if (fc_usb->uintf->cur_altsetting->desc.bNumEndpoints < 1)
++	alt = fc_usb->uintf->cur_altsetting;
++
++	if (alt->desc.bNumEndpoints < 1)
+ 		return -ENODEV;
+-	if (!usb_endpoint_is_isoc_in(&fc_usb->uintf->cur_altsetting->endpoint[0].desc))
++	if (!usb_endpoint_is_isoc_in(&alt->endpoint[0].desc))
+ 		return -ENODEV;
+ 
+ 	switch (fc_usb->udev->speed) {
 -- 
 2.43.0
 
