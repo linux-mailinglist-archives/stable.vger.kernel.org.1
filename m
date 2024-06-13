@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-51400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21037906FED
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E4DB907161
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5543AB22462
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B397284173
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03266143747;
-	Thu, 13 Jun 2024 12:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B002E2566;
+	Thu, 13 Jun 2024 12:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+x4V2s5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPLo1KUj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B707D1459F8;
-	Thu, 13 Jun 2024 12:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9BEEC4;
+	Thu, 13 Jun 2024 12:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281186; cv=none; b=XTZvIla6AvLs2Wgr2VCAKSpFbguMkMNkOsnoAGa1yzFZ70rse7GsJ8S0UR9nQRpb3xDYYD80aBGCre24l4TsGTUG73sWBnnO8/Ayb0wvhRBnRJbkCUgz326PZTRKmRllMi/b9byihh8mbUrLdbs1QwUL17sfkfwbRbu9SXk9W7E=
+	t=1718282182; cv=none; b=Ai6ADgDRqD6xnF33goPVS//TlR1Sxn0SoXHYAZwYMIUA3/RC2FmqGwguBLeguwqJ87ZwS/nhM7QdKTTS0infzag5gO+6v3pK8YhHzwYSpA6He1BShVfZsEx7edmPnC3SvfTVyVapY3oyQUiczEfI0VSDXj69gYUis68AK64o73U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281186; c=relaxed/simple;
-	bh=CMr9atO26fLQ+yRAAXlYNtmwcHWYulz8zuUkEc9hF2o=;
+	s=arc-20240116; t=1718282182; c=relaxed/simple;
+	bh=KBb9RyTiMVF9UTa4rowfn7TyQd/UaunCsuv++l7uKTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hiuzJZfquIgXZUa7aWGgzhRsTeRBPKK3EB4JLqCo0pXdJxh7BlEQgOs0DY5cnfsBEMBCyfawwN6Ktdg5bpEmohLeIJRT9Y3Zrj2w0wHbNIzuk1xph5zgoxsN6xY9L0m4tr9GdSROelKBCL8KfKUI6hxNLmrhjQRpohk7A+jsd1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+x4V2s5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFA0C2BBFC;
-	Thu, 13 Jun 2024 12:19:46 +0000 (UTC)
+	 MIME-Version; b=h6LJW9o63TuceG0jZaySt/W07QaWvARx8HoPqOXpJL1aJZMU54/0NlajtovLZFJG3EuhYOITL+rNgY16kBW3ZvVvEWVfPXlBXyY0okHtFC/dm8divSnqXUuL2AIskr5ScRy/2Z08cgsVIyo8cbyMGXAOphNT7+pToY8+MAREQPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPLo1KUj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26E2C2BBFC;
+	Thu, 13 Jun 2024 12:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281186;
-	bh=CMr9atO26fLQ+yRAAXlYNtmwcHWYulz8zuUkEc9hF2o=;
+	s=korg; t=1718282182;
+	bh=KBb9RyTiMVF9UTa4rowfn7TyQd/UaunCsuv++l7uKTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+x4V2s5xeA32eIPUerHeESjwzynsywzAO9CLZSR9y4rr7y4A6X2aHU6RPuaOnhj5
-	 lFiCLznWuSVJWxz1eV2uhryrFbkpNhre8wJFUr3jFJk2+mRLujybypuhB9IadyEp8G
-	 4t0n/Aj3bc8L5SIPw7YF6EiPdOK6XqV+js1w/scA=
+	b=XPLo1KUjdFA8dWZS8ecgKvDTg5R1n0kKawNCNdCC/UWsG85E5zmaRHr1pCI3GlQTr
+	 wEJUGm5MqFudkUCdldULaKAp3Qq9yafB+0vGJyrMfM35akUOFQJMtlMfNBOYDIIhjG
+	 ag47iH/LRVXbzZXxdh5gMcviJvZxhEOtlOTouoYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 129/317] RDMA/IPoIB: Fix format truncation compilation errors
-Date: Thu, 13 Jun 2024 13:32:27 +0200
-Message-ID: <20240613113252.549399871@linuxfoundation.org>
+Subject: [PATCH 5.15 191/402] serial: sc16is7xx: add proper sched.h include for sched_set_fifo()
+Date: Thu, 13 Jun 2024 13:32:28 +0200
+Message-ID: <20240613113309.594590355@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 49ca2b2ef3d003402584c68ae7b3055ba72e750a ]
+[ Upstream commit 2a8e4ab0c93fad30769479f86849e22d63cd0e12 ]
 
-Truncate the device name to store IPoIB VLAN name.
+Replace incorrect include with the proper one for sched_set_fifo()
+declaration.
 
-[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 allmodconfig
-[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 W=1 drivers/infiniband/ulp/ipoib/
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c: In function ‘ipoib_vlan_add’:
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:52: error: ‘%04x’
-directive output may be truncated writing 4 bytes into a region of size
-between 0 and 15 [-Werror=format-truncation=]
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |                                                    ^~~~
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:48: note: directive
-argument in the range [0, 65535]
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |                                                ^~~~~~~~~
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:9: note: ‘snprintf’ output
-between 6 and 21 bytes into a destination of size 16
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  188 |                  ppriv->dev->name, pkey);
-      |                  ~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:244: drivers/infiniband/ulp/ipoib/ipoib_vlan.o] Error 1
-make[6]: *** Waiting for unfinished jobs....
-
-Fixes: 9baa0b036410 ("IB/ipoib: Add rtnl_link_ops support")
-Link: https://lore.kernel.org/r/e9d3e1fef69df4c9beaf402cc3ac342bad680791.1715240029.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Fixes: 28d2f209cd16 ("sched,serial: Convert to sched_set_fifo()")
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240409154253.3043822-2-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/ipoib/ipoib_vlan.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/tty/serial/sc16is7xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-index 4c50a87ed7cc2..15a7cda44676c 100644
---- a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-+++ b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-@@ -185,8 +185,12 @@ int ipoib_vlan_add(struct net_device *pdev, unsigned short pkey)
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 0066a0e235164..35f8675db1d89 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -18,6 +18,7 @@
+ #include <linux/module.h>
+ #include <linux/property.h>
+ #include <linux/regmap.h>
++#include <linux/sched.h>
+ #include <linux/serial_core.h>
+ #include <linux/serial.h>
+ #include <linux/tty.h>
+@@ -25,7 +26,6 @@
+ #include <linux/spi/spi.h>
+ #include <linux/uaccess.h>
+ #include <linux/units.h>
+-#include <uapi/linux/sched/types.h>
  
- 	ppriv = ipoib_priv(pdev);
- 
--	snprintf(intf_name, sizeof(intf_name), "%s.%04x",
--		 ppriv->dev->name, pkey);
-+	/* If you increase IFNAMSIZ, update snprintf below
-+	 * to allow longer names.
-+	 */
-+	BUILD_BUG_ON(IFNAMSIZ != 16);
-+	snprintf(intf_name, sizeof(intf_name), "%.10s.%04x", ppriv->dev->name,
-+		 pkey);
- 
- 	ndev = ipoib_intf_alloc(ppriv->ca, ppriv->port, intf_name);
- 	if (IS_ERR(ndev)) {
+ #define SC16IS7XX_NAME			"sc16is7xx"
+ #define SC16IS7XX_MAX_DEVS		8
 -- 
 2.43.0
 
