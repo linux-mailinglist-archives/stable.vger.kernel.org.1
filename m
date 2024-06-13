@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-50914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC18906D69
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE148906B58
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E72BE1F27C38
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA4F91C21B3A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150A51482FC;
-	Thu, 13 Jun 2024 11:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D03B1428FC;
+	Thu, 13 Jun 2024 11:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKcUYFpc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxZngO+C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A171482F3;
-	Thu, 13 Jun 2024 11:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B97FDDB1;
+	Thu, 13 Jun 2024 11:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279758; cv=none; b=s/o5nXtH84xH182IE87TGUIlCctJsZKvZkmIdkHz3VLFdeFSqy819CqrYiD0hL3nf6DO13EOTxd62GdVMzqOWJ9dbEzF4hA/XzRI0QKBY1/ZOAj/SDiI6shiytjhiKZ7T3hxcp+WMKhLnDnldXgYK23HZy5eKekvi75WXEOINGs=
+	t=1718278790; cv=none; b=ZkdvHV2Aq9Dwj+Qd4BzRQxU6HNhLwwqxshBZxYIDCafKHkTWcxfyvAj77dN1Vz7ftek/njQbFUBWLp8CrDguw3C/V7+LC97YVYamGH+1WUfjJB8wub7f2C3WTZ1jUvPCksCrHmDTnmPOaMZ+wKsF60FGsTgDJOVL9XhsJ12B24U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279758; c=relaxed/simple;
-	bh=VckLm4ragotCZpC25EqAQt0O6E5V7R7PMNevkic5Tms=;
+	s=arc-20240116; t=1718278790; c=relaxed/simple;
+	bh=X91+RqB18JsgYr4msawyz5PEWnXA5Hi/Ad1WxTkat3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ljzsHF1ckMMa1gUfaEzlpe+6YeWOyQE5G3WDL7HoxChtaPQjp+Za9QxVCyEgX1GPUD/9JtJ/TGpUQChacc3comT00h78U4NtERScGK16MKAeIjMWFUHbETw81EpEHwgYleHtF1pCCfauKdaixPclW716gIH8MxAB18MsLP0k3w0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKcUYFpc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB61C2BBFC;
-	Thu, 13 Jun 2024 11:55:58 +0000 (UTC)
+	 MIME-Version; b=s9RVDp3n4sJQ+7fPDh3PukCLplis4DUOmD1fTs20qSFUQY8mu7z1kg/NqTKKyzKx1q3jjpPb07MRbrc8FQnZIW0LjV013feR9vDE3WCqfoCaY1SaS29gPRpxANhRdrItzZsaJ/5hMr58IVcNskZwo4+DgWU1godGXun5RQem6nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxZngO+C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959CCC2BBFC;
+	Thu, 13 Jun 2024 11:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279758;
-	bh=VckLm4ragotCZpC25EqAQt0O6E5V7R7PMNevkic5Tms=;
+	s=korg; t=1718278790;
+	bh=X91+RqB18JsgYr4msawyz5PEWnXA5Hi/Ad1WxTkat3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKcUYFpcYq0Z7XfeJFnDiwa5Ka+tP/c9tI2YM2ANrR7106HfCP60bxR3n79x59zA+
-	 6hNgwzms0jOixZGbvDxuZpZdgptDlVsmExyHXLbzoIaMpBzt7b7DsCXOTCAGtaN0q9
-	 b6On1AWaW0yLONDP4psgzqvC4MzcY7pzBvAthhLM=
+	b=fxZngO+CluSG+I69ePFMgLTEvqLYyMTyIOSY31wpVy8M4BbECS7uCBaXEwMlb9fTL
+	 Ek8C6C7idhMYjoBkcEopG9eFPMupGTa6+WzhYjE9DF+XI+3OR1HXAG2wirRaSb2LZ+
+	 NbAd0RsZTsRRBy/KidkOIzUpaodLN9UrlRgZqEhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Kubisiak <brian@kubisiak.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 019/202] ecryptfs: Fix buffer size for tag 66 packet
-Date: Thu, 13 Jun 2024 13:31:57 +0200
-Message-ID: <20240613113228.507543969@linuxfoundation.org>
+Subject: [PATCH 4.19 070/213] fbdev: sisfb: hide unused variables
+Date: Thu, 13 Jun 2024 13:31:58 +0200
+Message-ID: <20240613113230.707604912@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Kubisiak <brian@kubisiak.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 85a6a1aff08ec9f5b929d345d066e2830e8818e5 ]
+[ Upstream commit 688cf598665851b9e8cb5083ff1d208ce43d10ff ]
 
-The 'TAG 66 Packet Format' description is missing the cipher code and
-checksum fields that are packed into the message packet. As a result,
-the buffer allocated for the packet is 3 bytes too small and
-write_tag_66_packet() will write up to 3 bytes past the end of the
-buffer.
+Building with W=1 shows that a couple of variables in this driver are only
+used in certain configurations:
 
-Fix this by increasing the size of the allocation so the whole packet
-will always fit in the buffer.
+drivers/video/fbdev/sis/init301.c:239:28: error: 'SiS_Part2CLVX_6' defined but not used [-Werror=unused-const-variable=]
+  239 | static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:230:28: error: 'SiS_Part2CLVX_5' defined but not used [-Werror=unused-const-variable=]
+  230 | static const unsigned char SiS_Part2CLVX_5[] = {   /* 750p */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:211:28: error: 'SiS_Part2CLVX_4' defined but not used [-Werror=unused-const-variable=]
+  211 | static const unsigned char SiS_Part2CLVX_4[] = {   /* PAL */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:192:28: error: 'SiS_Part2CLVX_3' defined but not used [-Werror=unused-const-variable=]
+  192 | static const unsigned char SiS_Part2CLVX_3[] = {  /* NTSC, 525i, 525p */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:184:28: error: 'SiS_Part2CLVX_2' defined but not used [-Werror=unused-const-variable=]
+  184 | static const unsigned char SiS_Part2CLVX_2[] = {
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:176:28: error: 'SiS_Part2CLVX_1' defined but not used [-Werror=unused-const-variable=]
+  176 | static const unsigned char SiS_Part2CLVX_1[] = {
+      |                            ^~~~~~~~~~~~~~~
 
-This fixes the below kasan slab-out-of-bounds bug:
+This started showing up after the definitions were moved into the
+source file from the header, which was not flagged by the compiler.
+Move the definition into the appropriate #ifdef block that already
+exists next to them.
 
-  BUG: KASAN: slab-out-of-bounds in ecryptfs_generate_key_packet_set+0x7d6/0xde0
-  Write of size 1 at addr ffff88800afbb2a5 by task touch/181
-
-  CPU: 0 PID: 181 Comm: touch Not tainted 6.6.13-gnu #1 4c9534092be820851bb687b82d1f92a426598dc6
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2/GNU Guix 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x4c/0x70
-   print_report+0xc5/0x610
-   ? ecryptfs_generate_key_packet_set+0x7d6/0xde0
-   ? kasan_complete_mode_report_info+0x44/0x210
-   ? ecryptfs_generate_key_packet_set+0x7d6/0xde0
-   kasan_report+0xc2/0x110
-   ? ecryptfs_generate_key_packet_set+0x7d6/0xde0
-   __asan_store1+0x62/0x80
-   ecryptfs_generate_key_packet_set+0x7d6/0xde0
-   ? __pfx_ecryptfs_generate_key_packet_set+0x10/0x10
-   ? __alloc_pages+0x2e2/0x540
-   ? __pfx_ovl_open+0x10/0x10 [overlay 30837f11141636a8e1793533a02e6e2e885dad1d]
-   ? dentry_open+0x8f/0xd0
-   ecryptfs_write_metadata+0x30a/0x550
-   ? __pfx_ecryptfs_write_metadata+0x10/0x10
-   ? ecryptfs_get_lower_file+0x6b/0x190
-   ecryptfs_initialize_file+0x77/0x150
-   ecryptfs_create+0x1c2/0x2f0
-   path_openat+0x17cf/0x1ba0
-   ? __pfx_path_openat+0x10/0x10
-   do_filp_open+0x15e/0x290
-   ? __pfx_do_filp_open+0x10/0x10
-   ? __kasan_check_write+0x18/0x30
-   ? _raw_spin_lock+0x86/0xf0
-   ? __pfx__raw_spin_lock+0x10/0x10
-   ? __kasan_check_write+0x18/0x30
-   ? alloc_fd+0xf4/0x330
-   do_sys_openat2+0x122/0x160
-   ? __pfx_do_sys_openat2+0x10/0x10
-   __x64_sys_openat+0xef/0x170
-   ? __pfx___x64_sys_openat+0x10/0x10
-   do_syscall_64+0x60/0xd0
-   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-  RIP: 0033:0x7f00a703fd67
-  Code: 25 00 00 41 00 3d 00 00 41 00 74 37 64 8b 04 25 18 00 00 00 85 c0 75 5b 44 89 e2 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 85 00 00 00 48 83 c4 68 5d 41 5c c3 0f 1f
-  RSP: 002b:00007ffc088e30b0 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-  RAX: ffffffffffffffda RBX: 00007ffc088e3368 RCX: 00007f00a703fd67
-  RDX: 0000000000000941 RSI: 00007ffc088e48d7 RDI: 00000000ffffff9c
-  RBP: 00007ffc088e48d7 R08: 0000000000000001 R09: 0000000000000000
-  R10: 00000000000001b6 R11: 0000000000000246 R12: 0000000000000941
-  R13: 0000000000000000 R14: 00007ffc088e48d7 R15: 00007f00a7180040
-   </TASK>
-
-  Allocated by task 181:
-   kasan_save_stack+0x2f/0x60
-   kasan_set_track+0x29/0x40
-   kasan_save_alloc_info+0x25/0x40
-   __kasan_kmalloc+0xc5/0xd0
-   __kmalloc+0x66/0x160
-   ecryptfs_generate_key_packet_set+0x6d2/0xde0
-   ecryptfs_write_metadata+0x30a/0x550
-   ecryptfs_initialize_file+0x77/0x150
-   ecryptfs_create+0x1c2/0x2f0
-   path_openat+0x17cf/0x1ba0
-   do_filp_open+0x15e/0x290
-   do_sys_openat2+0x122/0x160
-   __x64_sys_openat+0xef/0x170
-   do_syscall_64+0x60/0xd0
-   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Fixes: dddfa461fc89 ("[PATCH] eCryptfs: Public key; packet management")
-Signed-off-by: Brian Kubisiak <brian@kubisiak.com>
-Link: https://lore.kernel.org/r/5j2q56p6qkhezva6b2yuqfrsurmvrrqtxxzrnp3wqu7xrz22i7@hoecdztoplbl
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 5908986ef348 ("video: fbdev: sis: avoid mismatched prototypes")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ecryptfs/keystore.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/sis/init301.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/ecryptfs/keystore.c b/fs/ecryptfs/keystore.c
-index 4dc09638de8fa..41a1d7e49ecf8 100644
---- a/fs/ecryptfs/keystore.c
-+++ b/fs/ecryptfs/keystore.c
-@@ -300,9 +300,11 @@ write_tag_66_packet(char *signature, u8 cipher_code,
- 	 *         | Key Identifier Size      | 1 or 2 bytes |
- 	 *         | Key Identifier           | arbitrary    |
- 	 *         | File Encryption Key Size | 1 or 2 bytes |
-+	 *         | Cipher Code              | 1 byte       |
- 	 *         | File Encryption Key      | arbitrary    |
-+	 *         | Checksum                 | 2 bytes      |
- 	 */
--	data_len = (5 + ECRYPTFS_SIG_SIZE_HEX + crypt_stat->key_size);
-+	data_len = (8 + ECRYPTFS_SIG_SIZE_HEX + crypt_stat->key_size);
- 	*packet = kmalloc(data_len, GFP_KERNEL);
- 	message = *packet;
- 	if (!message) {
+diff --git a/drivers/video/fbdev/sis/init301.c b/drivers/video/fbdev/sis/init301.c
+index a8fb41f1a2580..09329072004f4 100644
+--- a/drivers/video/fbdev/sis/init301.c
++++ b/drivers/video/fbdev/sis/init301.c
+@@ -172,7 +172,7 @@ static const unsigned char SiS_HiTVGroup3_2[] = {
+ };
+ 
+ /* 301C / 302ELV extended Part2 TV registers (4 tap scaler) */
+-
++#ifdef CONFIG_FB_SIS_315
+ static const unsigned char SiS_Part2CLVX_1[] = {
+     0x00,0x00,
+     0x00,0x20,0x00,0x00,0x7F,0x20,0x02,0x7F,0x7D,0x20,0x04,0x7F,0x7D,0x1F,0x06,0x7E,
+@@ -245,7 +245,6 @@ static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
+     0xFF,0xFF,
+ };
+ 
+-#ifdef CONFIG_FB_SIS_315
+ /* 661 et al LCD data structure (2.03.00) */
+ static const unsigned char SiS_LCDStruct661[] = {
+     /* 1024x768 */
 -- 
 2.43.0
 
