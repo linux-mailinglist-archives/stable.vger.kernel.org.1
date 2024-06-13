@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-50544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C085906B2E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:38:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2B0906B39
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9BF21F22E7A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:38:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 332B91F2143C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1AD0143753;
-	Thu, 13 Jun 2024 11:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B10C142E8E;
+	Thu, 13 Jun 2024 11:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+t5F+fi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="an/wC/mA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6030B1422B5;
-	Thu, 13 Jun 2024 11:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5943A1422B5;
+	Thu, 13 Jun 2024 11:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278675; cv=none; b=r5DpU73kgmcot4wpzSsgI93ojVfxJ1S1F9j8gQuCwVhJRJJ5b4uU3prC04/8xHwakcTflmCxxvGsw1NYo0SqLIy3ypuAf/lPFwwnuNsmJJpNLzKtZGZkOT5znJiZGExcLwtCXCgdbFykwPRgEOrGOAcNoei3GcjnQqBuJ7lEyY8=
+	t=1718278707; cv=none; b=p1rht2jKvWOXSZQdfNzQQZeIulksBt9UFvBwUUxft296kp3oe7qva4bDc+4MpZdt8QtF050nKAJcPmq6CNOk450QoSxZexQ3pGnG2FoQCLijmE0WJVQDmQQKI2kBBA/LF4fX6ID/3ks2mbVfPAeJ2seKt7KOAiJkPQUzbE5aLbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278675; c=relaxed/simple;
-	bh=+CRbBlpOurciwZ0nOkuRiKPrsJn86l1ohjkR8WIILm8=;
+	s=arc-20240116; t=1718278707; c=relaxed/simple;
+	bh=6hzJJU4IrNAYSUeLXeP9WyE7M5RIWLfA9jaht5ah+eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aeRTwAbCgvwc7eZGXabaYqG21Q9TbxT5KfL7PsBwAKVKu+QAEUldvD2TXyPFrAdbm0Tku5yWzx37SimmNw14n+PZvajyGr1oG9pPKQPJVaqRpQoUI5Zur03eklJHUkYUcWtlpU1zLRtNayd9XccG7cCF5QNeO8SJ/DGJWov5vBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+t5F+fi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9713BC2BBFC;
-	Thu, 13 Jun 2024 11:37:54 +0000 (UTC)
+	 MIME-Version; b=kCzyaxj3261aj/k+N3aZsPzoEYdcnhCF5eTl+S6r4EpRzB+ALYl7pURQOhu+z10FTI5iLG1yZGrrw9L0JLr7FBDHMYl0fYzSPUSo57ICnPMDHpgtGatXcWZDNH4lWx5LWXUhwtBfI5GcTka++U/EshIFBVa9bnavMVTLvOtO/SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=an/wC/mA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7B5C32786;
+	Thu, 13 Jun 2024 11:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278675;
-	bh=+CRbBlpOurciwZ0nOkuRiKPrsJn86l1ohjkR8WIILm8=;
+	s=korg; t=1718278707;
+	bh=6hzJJU4IrNAYSUeLXeP9WyE7M5RIWLfA9jaht5ah+eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+t5F+fifb8nsqUAboiGFbrpi2wfck726NhI1VE38l8U8KmbDGIuvctHfQu4Srr51
-	 fNaHVEssBIB4CqiEzUXQbLC9x6FOrbRDMSrwQBbWmXrQdjaRtiATPcnCGC/p4OgmvM
-	 1yerOPg6/hubmBO7gbejrZmEm/Zd9w84jX3mum8w=
+	b=an/wC/mAp9stmkrbAjOi5Gapg/RR1dIwhOF01QJPO/X7NS0+T95fuOvnG89WbnpIA
+	 6pc9xyjpOQBz5w0wNQCcPUFD/XAJHuhdO3j4D1Ub9LeGOkdwq3O0Zld8z1Wzsqg5ER
+	 POeWEoQUQ5NGzhAN1qmEM4Hx/zV32lpdsQd/AONY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	"Ivan T. Ivanov" <iivanov@suse.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 014/213] crypto: bcm - Fix pointer arithmetic
-Date: Thu, 13 Jun 2024 13:31:02 +0200
-Message-ID: <20240613113228.537037329@linuxfoundation.org>
+Subject: [PATCH 4.19 015/213] firmware: raspberrypi: Use correct device for DMA mappings
+Date: Thu, 13 Jun 2024 13:31:03 +0200
+Message-ID: <20240613113228.576526511@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
 References: <20240613113227.969123070@linuxfoundation.org>
@@ -66,38 +68,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-[ Upstream commit 2b3460cbf454c6b03d7429e9ffc4fe09322eb1a9 ]
+[ Upstream commit df518a0ae1b982a4dcf2235464016c0c4576a34d ]
 
-In spu2_dump_omd() value of ptr is increased by ciph_key_len
-instead of hash_iv_len which could lead to going beyond the
-buffer boundaries.
-Fix this bug by changing ciph_key_len to hash_iv_len.
+The buffer used to transfer data over the mailbox interface is mapped
+using the client's device. This is incorrect, as the device performing
+the DMA transfer is the mailbox itself. Fix it by using the mailbox
+controller device instead.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This requires including the mailbox_controller.h header to dereference
+the mbox_chan and mbox_controller structures. The header is not meant to
+be included by clients. This could be fixed by extending the client API
+with a function to access the controller's device.
 
-Fixes: 9d12ba86f818 ("crypto: brcm - Add Broadcom SPU driver")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 4e3d60656a72 ("ARM: bcm2835: Add the Raspberry Pi firmware driver")
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Tested-by: Ivan T. Ivanov <iivanov@suse.de>
+Link: https://lore.kernel.org/r/20240326195807.15163-3-laurent.pinchart@ideasonboard.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/bcm/spu2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/raspberrypi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/bcm/spu2.c b/drivers/crypto/bcm/spu2.c
-index bf7ac621c591d..0f6023347cc89 100644
---- a/drivers/crypto/bcm/spu2.c
-+++ b/drivers/crypto/bcm/spu2.c
-@@ -506,7 +506,7 @@ static void spu2_dump_omd(u8 *omd, u16 hash_key_len, u16 ciph_key_len,
- 	if (hash_iv_len) {
- 		packet_log("  Hash IV Length %u bytes\n", hash_iv_len);
- 		packet_dump("  hash IV: ", ptr, hash_iv_len);
--		ptr += ciph_key_len;
-+		ptr += hash_iv_len;
+diff --git a/drivers/firmware/raspberrypi.c b/drivers/firmware/raspberrypi.c
+index 44eb99807e337..ea3975b94d6a1 100644
+--- a/drivers/firmware/raspberrypi.c
++++ b/drivers/firmware/raspberrypi.c
+@@ -11,6 +11,7 @@
+ 
+ #include <linux/dma-mapping.h>
+ #include <linux/mailbox_client.h>
++#include <linux/mailbox_controller.h>
+ #include <linux/module.h>
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+@@ -91,8 +92,8 @@ int rpi_firmware_property_list(struct rpi_firmware *fw,
+ 	if (size & 3)
+ 		return -EINVAL;
+ 
+-	buf = dma_alloc_coherent(fw->cl.dev, PAGE_ALIGN(size), &bus_addr,
+-				 GFP_ATOMIC);
++	buf = dma_alloc_coherent(fw->chan->mbox->dev, PAGE_ALIGN(size),
++				 &bus_addr, GFP_ATOMIC);
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
+@@ -120,7 +121,7 @@ int rpi_firmware_property_list(struct rpi_firmware *fw,
+ 		ret = -EINVAL;
  	}
  
- 	if (ciph_iv_len) {
+-	dma_free_coherent(fw->cl.dev, PAGE_ALIGN(size), buf, bus_addr);
++	dma_free_coherent(fw->chan->mbox->dev, PAGE_ALIGN(size), buf, bus_addr);
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
