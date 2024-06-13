@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B36990703C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC73290721A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02F1E283999
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 476D1280D3E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749FF1448C9;
-	Thu, 13 Jun 2024 12:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5221428FC;
+	Thu, 13 Jun 2024 12:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dj4cKnp7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mp1VBRKo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3198614431F;
-	Thu, 13 Jun 2024 12:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5851E519;
+	Thu, 13 Jun 2024 12:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281504; cv=none; b=sCeMoBycdBWrQRJfdwpXiUu2vHnAO5ztXGQ9Ogt4t0mMls362BVNcUUG8+FIyvsZHtnyC1FRFzSnpYMURWIX68dnBXyI4WEOmTYTdbsHqJUdOflxtBvJYR7hY+OYY8kNCaLu2Xj0LFUoh0qqz9bDP8CkiYgcYHp7FyXPrYDECsM=
+	t=1718282622; cv=none; b=QAn/g5SRn3WT8IID2OJIbqa5Qq0EboAjq32AQhqRB01pKdDoLu64vRKHOvyVzlrXsJEK+5cSX5Zuhg5WrPNAD460fHTwu6Y1yXNm0Q0XfyiD0ZyoBP6siEi4cvyK0ihvv+uYrgo8q52k50LsXVaXHBllEjBMiEHIqUneUa8/T0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281504; c=relaxed/simple;
-	bh=UY5C6jRjJ0ZhmPcM+4WyDnrsc4eOqBu7eu4LPd18jdQ=;
+	s=arc-20240116; t=1718282622; c=relaxed/simple;
+	bh=fcDo0RL60RhYFaJPLlxV6MxLImBCRW8pehz2svH7SQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FhSh941K28N/L7D1ThDn+Jb6jbbvkw3xXJaQwAl3dsCVGF5P8x6P5Pyyx/SN6Q4YghpCFr2kiNIrb7ckgJoC+rWkuQTfhvlerD4j2PHZmHP4UTd0Mfy/qyw4rOHvYXWbbmxQzoaozJBeQnqWnkdDCrt+77hKurxK/OC5Eergiak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dj4cKnp7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15DAC2BBFC;
-	Thu, 13 Jun 2024 12:25:03 +0000 (UTC)
+	 MIME-Version; b=FZlC6dgSGX+GT6m1zC3EN7zM/GbxGf+/lP0A4mc+TNfzNJX5UBNYa8ukWb4yf9pveeXu6zREn9VPfSzL59jys5Hbb0wDtl1+mnCF0VbDlO/dpkGBUVP05hzUWd8hRD6P+r8DHkkB9xyHHbTbFi1h0EodupFyCggqHp/o/AFDPUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mp1VBRKo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D252C2BBFC;
+	Thu, 13 Jun 2024 12:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281504;
-	bh=UY5C6jRjJ0ZhmPcM+4WyDnrsc4eOqBu7eu4LPd18jdQ=;
+	s=korg; t=1718282622;
+	bh=fcDo0RL60RhYFaJPLlxV6MxLImBCRW8pehz2svH7SQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dj4cKnp78ALm3rKystUhiRnrtzA1BBLkIN0AxbZ8MIEB6MpjmmQY+x1ORGycGgu5T
-	 TpOFbTeBHVlMCzJYdT69vY5JlxhtFIgXIN0cmsMsxWTR32pssxGBQvRHZfuhAYP8y3
-	 F6a2s3gLom1v48huXwAsZ5V1IThKcN+qNpz3xE6E=
+	b=mp1VBRKoG/9Ugd0Ewnz3kpXIOGBMWxr49EvSNTD2mfdoLnu8N9PQTHqCHF+z37+W4
+	 7+rQLnAKBP+fe56VQI2d3YABxeVKdWrXgefkw6Rybqw/rhxMEUZfansyHNxOXsq5Gj
+	 VPHanexGQmbNMLozmEvuF4G9GfAdhXvtO8qojXNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Niklas Cassel <cassel@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 5.10 278/317] ata: pata_legacy: make legacy_exit() work again
+	Benjamin Coddington <bcodding@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 339/402] SUNRPC: Fix loop termination condition in gss_free_in_token_pages()
 Date: Thu, 13 Jun 2024 13:34:56 +0200
-Message-ID: <20240613113258.305387232@linuxfoundation.org>
+Message-ID: <20240613113315.358404828@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit d4a89339f17c87c4990070e9116462d16e75894f upstream.
+commit 4a77c3dead97339478c7422eb07bf4bf63577008 upstream.
 
-Commit defc9cd826e4 ("pata_legacy: resychronize with upstream changes and
-resubmit") missed to update legacy_exit(), so that it now fails to do any
-cleanup -- the loop body there can never be entered.  Fix that and finally
-remove now useless nr_legacy_host variable...
+The in_token->pages[] array is not NULL terminated. This results in
+the following KASAN splat:
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
+  KASAN: maybe wild-memory-access in range [0x04a2013400000008-0x04a201340000000f]
 
-Fixes: defc9cd826e4 ("pata_legacy: resychronize with upstream changes and resubmit")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Fixes: bafa6b4d95d9 ("SUNRPC: Fix gss_free_in_token_pages()")
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/pata_legacy.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/sunrpc/auth_gss/svcauth_gss.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ata/pata_legacy.c
-+++ b/drivers/ata/pata_legacy.c
-@@ -114,8 +114,6 @@ static int legacy_port[NR_HOST] = { 0x1f
- static struct legacy_probe probe_list[NR_HOST];
- static struct legacy_data legacy_data[NR_HOST];
- static struct ata_host *legacy_host[NR_HOST];
--static int nr_legacy_host;
--
- 
- static int probe_all;		/* Set to check all ISA port ranges */
- static int ht6560a;		/* HT 6560A on primary 1, second 2, both 3 */
-@@ -1239,9 +1237,11 @@ static __exit void legacy_exit(void)
- {
- 	int i;
- 
--	for (i = 0; i < nr_legacy_host; i++) {
-+	for (i = 0; i < NR_HOST; i++) {
- 		struct legacy_data *ld = &legacy_data[i];
--		ata_host_detach(legacy_host[i]);
-+
-+		if (legacy_host[i])
-+			ata_host_detach(legacy_host[i]);
- 		platform_device_unregister(ld->platform_dev);
+--- a/net/sunrpc/auth_gss/svcauth_gss.c
++++ b/net/sunrpc/auth_gss/svcauth_gss.c
+@@ -1162,7 +1162,7 @@ static int gss_read_proxy_verf(struct sv
  	}
- }
+ 
+ 	pages = DIV_ROUND_UP(inlen, PAGE_SIZE);
+-	in_token->pages = kcalloc(pages, sizeof(struct page *), GFP_KERNEL);
++	in_token->pages = kcalloc(pages + 1, sizeof(struct page *), GFP_KERNEL);
+ 	if (!in_token->pages) {
+ 		kfree(in_handle->data);
+ 		return SVC_DENIED;
 
 
 
