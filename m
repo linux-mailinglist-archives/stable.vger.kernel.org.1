@@ -1,56 +1,103 @@
-Return-Path: <stable+bounces-51840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD2DD9071E2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6AC1906DE1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 425FCB26D63
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C85EA1C2113F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5152213A406;
-	Thu, 13 Jun 2024 12:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6C31459F9;
+	Thu, 13 Jun 2024 12:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqEKkTdf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehaEEuNj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC06384;
-	Thu, 13 Jun 2024 12:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205AE126F32;
+	Thu, 13 Jun 2024 12:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282469; cv=none; b=Fr0zRtdfIb867fGxw4nixdOsUEAAsUx280oKETHTAS7PnTR83XREWJK4Zje7QjItnkngn34+BtNwO/rT9g08dD95WIVAXenepckEDJl0gjMgri5y455tk/gMWG8sfmWKkYNdumAnivPUXAkx0DuOy/6k9jXeoubmpFvvlQEZwBI=
+	t=1718280027; cv=none; b=WUQ92xGgwtMDidq4o+FpvP9A43EoqlABVFtbPPltUfrberprDO/savPOMQ5tKGBs7zzTSE54mp+A+mNm4rKm3fk37rzcwrSegKVM6XbhgEmKrpV+8M8DYBnB/kDGzxk3IbcXJUaa8qMicwwl0P7i85WebtiUHgJd6kVXUOiOan4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282469; c=relaxed/simple;
-	bh=3/yal2EHHqY39k9mrKJmZ8SOTjEVmyuUxmIh0oxFpZw=;
+	s=arc-20240116; t=1718280027; c=relaxed/simple;
+	bh=OT4tYSqITjG9a5XSC5dwlh+yLmkM2xiEKd9cNw7dC6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=geFkznYln30LDX+hTgjiS0BLpUNUaM+afvovGch2V3mOV7rYMZzQYhU9dedyQTcOIIfsCEGqY8Yfze3Uz8yvv69MUZiM8sGV4Z/T0//A1u1MOz9DmktaTyXZHn+9bE/hmB8laA139gPhmkP2QwLl6wqrBR5PCgFvPLhq7RTV1W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqEKkTdf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEF5C2BBFC;
-	Thu, 13 Jun 2024 12:41:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tr0byrnuKKTn1+RuzyusuaDL9E7WpUWO3iYB1X9R13b5cw94nsABZWYc1M/74WuQDKfmrDIbska+bRhaFHwYfDug/N+yxk8vqA4Hmb8us162bV6XGvEvrQSgtmaGAnqEo7QoED+YplUOIpUosE9gGovYhBQE15UlgdA5bOMbEtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehaEEuNj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EB4C2BBFC;
+	Thu, 13 Jun 2024 12:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282468;
-	bh=3/yal2EHHqY39k9mrKJmZ8SOTjEVmyuUxmIh0oxFpZw=;
+	s=korg; t=1718280027;
+	bh=OT4tYSqITjG9a5XSC5dwlh+yLmkM2xiEKd9cNw7dC6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BqEKkTdfHflZ7hV7L7sFCYafYD+1uUrFkrBe6zXktBDshTnZUVd/n3+tGl4xeGyON
-	 L8FXMkAlET1P9t+0ED6+e/Rt0NGg2z1QNsVfoCDCVJwJVQZQ/okPrnjQqBDW7sMrK3
-	 pTJz3nAhCd6ZMLU1x0qeo0wC9hSMQvbdSL6RxQxI=
+	b=ehaEEuNj17g9nupo+bBByWihvpz2hQX8IwG4j91Z0iV0llhHtdRM9DLp2o2BeJ5cZ
+	 6jSXYVsDapAI9zCnyGG+Z125w0BlxLIa6ngOv9q2QnelIgdhGcbcy9kPULz4yS3SJF
+	 Mh55aznAtVLoQHUuJFyLiLg485N6kOW8LpHs7boo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Alexandre Truong <alexandre.truong@arm.com>,
+	Alexey Bayduraev <alexey.v.bayduraev@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Andres Freund <andres@anarazel.de>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+	Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Colin Ian King <colin.king@intel.com>,
+	Dario Petrillo <dario.pk1@gmail.com>,
+	Darren Hart <dvhart@infradead.org>,
+	Dave Marchevsky <davemarchevsky@fb.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Fangrui Song <maskray@google.com>,
+	Hewenliang <hewenliang4@huawei.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jason Wang <wangborong@cdjrlc.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Kim Phillips <kim.phillips@amd.com>,
+	Leo Yan <leo.yan@linaro.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	=?UTF-8?q?Martin=20Li=C5=A1ka?= <mliska@suse.cz>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Pavithra Gurushankar <gpavithrasha@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Quentin Monnet <quentin@isovalent.com>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Remi Bernon <rbernon@codeweavers.com>,
+	Riccardo Mancini <rickyman7@gmail.com>,
+	Song Liu <songliubraving@fb.com>,
+	Stephane Eranian <eranian@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Tom Rix <trix@redhat.com>,
+	Weiguo Li <liwg06@foxmail.com>,
+	Wenyu Liu <liuwenyu7@huawei.com>,
+	William Cohen <wcohen@redhat.com>,
+	Zechuan Chen <chenzechuan1@huawei.com>,
+	bpf@vger.kernel.org,
+	llvm@lists.linux.dev,
+	yaowenbin <yaowenbin1@huawei.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 257/402] drm/msm/dpu: Always flush the slave INTF on the CTL
+Subject: [PATCH 5.4 116/202] perf ui: Update use of pthread mutex
 Date: Thu, 13 Jun 2024 13:33:34 +0200
-Message-ID: <20240613113312.171445540@linuxfoundation.org>
+Message-ID: <20240613113232.237694770@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +107,384 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 2b938c3ab0a69ec6ea587bbf6fc2aec3db4a8736 ]
+[ Upstream commit 82aff6cc070417f26f9b02b26e63c17ff43b4044 ]
 
-As we can clearly see in a downstream kernel [1], flushing the slave INTF
-is skipped /only if/ the PPSPLIT topology is active.
+Switch to the use of mutex wrappers that provide better error checking.
 
-However, when DPU was originally submitted to mainline PPSPLIT was no
-longer part of it (seems to have been ripped out before submission), but
-this clause was incorrectly ported from the original SDE driver.  Given
-that there is no support for PPSPLIT (currently), flushing the slave
-INTF should /never/ be skipped (as the `if (ppsplit && !master) goto
-skip;` clause downstream never becomes true).
-
-[1]: https://git.codelinaro.org/clo/la/platform/vendor/opensource/display-drivers/-/blob/display-kernel.lnx.5.4.r1-rel/msm/sde/sde_encoder_phys_cmd.c?ref_type=heads#L1131-1139
-
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/589901/
-Link: https://lore.kernel.org/r/20240417-drm-msm-initial-dualpipe-dsc-fixes-v1-3-78ae3ee9a697@somainline.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Alexandre Truong <alexandre.truong@arm.com>
+Cc: Alexey Bayduraev <alexey.v.bayduraev@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Andres Freund <andres@anarazel.de>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: André Almeida <andrealmeid@igalia.com>
+Cc: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Colin Ian King <colin.king@intel.com>
+Cc: Dario Petrillo <dario.pk1@gmail.com>
+Cc: Darren Hart <dvhart@infradead.org>
+Cc: Dave Marchevsky <davemarchevsky@fb.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Fangrui Song <maskray@google.com>
+Cc: Hewenliang <hewenliang4@huawei.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jason Wang <wangborong@cdjrlc.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Kim Phillips <kim.phillips@amd.com>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Martin Liška <mliska@suse.cz>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Pavithra Gurushankar <gpavithrasha@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Quentin Monnet <quentin@isovalent.com>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Remi Bernon <rbernon@codeweavers.com>
+Cc: Riccardo Mancini <rickyman7@gmail.com>
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Cc: Tom Rix <trix@redhat.com>
+Cc: Weiguo Li <liwg06@foxmail.com>
+Cc: Wenyu Liu <liuwenyu7@huawei.com>
+Cc: William Cohen <wcohen@redhat.com>
+Cc: Zechuan Chen <chenzechuan1@huawei.com>
+Cc: bpf@vger.kernel.org
+Cc: llvm@lists.linux.dev
+Cc: yaowenbin <yaowenbin1@huawei.com>
+Link: https://lore.kernel.org/r/20220826164242.43412-10-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 769e6a1e15bd ("perf ui browser: Don't save pointer to stack memory")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 3 ---
- 1 file changed, 3 deletions(-)
+ tools/perf/ui/browser.c           | 20 ++++++++++----------
+ tools/perf/ui/browsers/annotate.c |  2 +-
+ tools/perf/ui/setup.c             |  5 +++--
+ tools/perf/ui/tui/helpline.c      |  5 ++---
+ tools/perf/ui/tui/progress.c      |  8 ++++----
+ tools/perf/ui/tui/setup.c         |  8 ++++----
+ tools/perf/ui/tui/util.c          | 18 +++++++++---------
+ tools/perf/ui/ui.h                |  4 ++--
+ 8 files changed, 35 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-index aa01698d6b256..a05276f0d6982 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-@@ -441,9 +441,6 @@ static void dpu_encoder_phys_cmd_enable_helper(
+diff --git a/tools/perf/ui/browser.c b/tools/perf/ui/browser.c
+index 781afe42e90e0..9dc808020e824 100644
+--- a/tools/perf/ui/browser.c
++++ b/tools/perf/ui/browser.c
+@@ -268,9 +268,9 @@ void __ui_browser__show_title(struct ui_browser *browser, const char *title)
  
- 	_dpu_encoder_phys_cmd_pingpong_config(phys_enc);
- 
--	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
--		return;
--
- 	ctl = phys_enc->hw_ctl;
- 	ctl->ops.update_pending_flush_intf(ctl, phys_enc->intf_idx);
+ void ui_browser__show_title(struct ui_browser *browser, const char *title)
+ {
+-	pthread_mutex_lock(&ui__lock);
++	mutex_lock(&ui__lock);
+ 	__ui_browser__show_title(browser, title);
+-	pthread_mutex_unlock(&ui__lock);
++	mutex_unlock(&ui__lock);
  }
+ 
+ int ui_browser__show(struct ui_browser *browser, const char *title,
+@@ -284,7 +284,7 @@ int ui_browser__show(struct ui_browser *browser, const char *title,
+ 
+ 	browser->refresh_dimensions(browser);
+ 
+-	pthread_mutex_lock(&ui__lock);
++	mutex_lock(&ui__lock);
+ 	__ui_browser__show_title(browser, title);
+ 
+ 	browser->title = title;
+@@ -295,16 +295,16 @@ int ui_browser__show(struct ui_browser *browser, const char *title,
+ 	va_end(ap);
+ 	if (err > 0)
+ 		ui_helpline__push(browser->helpline);
+-	pthread_mutex_unlock(&ui__lock);
++	mutex_unlock(&ui__lock);
+ 	return err ? 0 : -1;
+ }
+ 
+ void ui_browser__hide(struct ui_browser *browser)
+ {
+-	pthread_mutex_lock(&ui__lock);
++	mutex_lock(&ui__lock);
+ 	ui_helpline__pop();
+ 	zfree(&browser->helpline);
+-	pthread_mutex_unlock(&ui__lock);
++	mutex_unlock(&ui__lock);
+ }
+ 
+ static void ui_browser__scrollbar_set(struct ui_browser *browser)
+@@ -352,9 +352,9 @@ static int __ui_browser__refresh(struct ui_browser *browser)
+ 
+ int ui_browser__refresh(struct ui_browser *browser)
+ {
+-	pthread_mutex_lock(&ui__lock);
++	mutex_lock(&ui__lock);
+ 	__ui_browser__refresh(browser);
+-	pthread_mutex_unlock(&ui__lock);
++	mutex_unlock(&ui__lock);
+ 
+ 	return 0;
+ }
+@@ -390,10 +390,10 @@ int ui_browser__run(struct ui_browser *browser, int delay_secs)
+ 	while (1) {
+ 		off_t offset;
+ 
+-		pthread_mutex_lock(&ui__lock);
++		mutex_lock(&ui__lock);
+ 		err = __ui_browser__refresh(browser);
+ 		SLsmg_refresh();
+-		pthread_mutex_unlock(&ui__lock);
++		mutex_unlock(&ui__lock);
+ 		if (err < 0)
+ 			break;
+ 
+diff --git a/tools/perf/ui/browsers/annotate.c b/tools/perf/ui/browsers/annotate.c
+index 82207db8f97c5..d4c27ebb4b848 100644
+--- a/tools/perf/ui/browsers/annotate.c
++++ b/tools/perf/ui/browsers/annotate.c
+@@ -8,11 +8,11 @@
+ #include "../../util/hist.h"
+ #include "../../util/sort.h"
+ #include "../../util/map.h"
++#include "../../util/mutex.h"
+ #include "../../util/symbol.h"
+ #include "../../util/evsel.h"
+ #include "../../util/evlist.h"
+ #include <inttypes.h>
+-#include <pthread.h>
+ #include <linux/kernel.h>
+ #include <linux/string.h>
+ #include <linux/zalloc.h>
+diff --git a/tools/perf/ui/setup.c b/tools/perf/ui/setup.c
+index 700335cde6180..25ded88801a3d 100644
+--- a/tools/perf/ui/setup.c
++++ b/tools/perf/ui/setup.c
+@@ -1,5 +1,4 @@
+ // SPDX-License-Identifier: GPL-2.0
+-#include <pthread.h>
+ #include <dlfcn.h>
+ #include <unistd.h>
+ 
+@@ -8,7 +7,7 @@
+ #include "../util/hist.h"
+ #include "ui.h"
+ 
+-pthread_mutex_t ui__lock = PTHREAD_MUTEX_INITIALIZER;
++struct mutex ui__lock;
+ void *perf_gtk_handle;
+ int use_browser = -1;
+ 
+@@ -76,6 +75,7 @@ int stdio__config_color(const struct option *opt __maybe_unused,
+ 
+ void setup_browser(bool fallback_to_pager)
+ {
++	mutex_init(&ui__lock);
+ 	if (use_browser < 2 && (!isatty(1) || dump_trace))
+ 		use_browser = 0;
+ 
+@@ -118,4 +118,5 @@ void exit_browser(bool wait_for_ok)
+ 	default:
+ 		break;
+ 	}
++	mutex_destroy(&ui__lock);
+ }
+diff --git a/tools/perf/ui/tui/helpline.c b/tools/perf/ui/tui/helpline.c
+index 298d6af82fddd..db4952f5990bd 100644
+--- a/tools/perf/ui/tui/helpline.c
++++ b/tools/perf/ui/tui/helpline.c
+@@ -2,7 +2,6 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+-#include <pthread.h>
+ #include <linux/kernel.h>
+ #include <linux/string.h>
+ 
+@@ -33,7 +32,7 @@ static int tui_helpline__show(const char *format, va_list ap)
+ 	int ret;
+ 	static int backlog;
+ 
+-	pthread_mutex_lock(&ui__lock);
++	mutex_lock(&ui__lock);
+ 	ret = vscnprintf(ui_helpline__last_msg + backlog,
+ 			sizeof(ui_helpline__last_msg) - backlog, format, ap);
+ 	backlog += ret;
+@@ -45,7 +44,7 @@ static int tui_helpline__show(const char *format, va_list ap)
+ 		SLsmg_refresh();
+ 		backlog = 0;
+ 	}
+-	pthread_mutex_unlock(&ui__lock);
++	mutex_unlock(&ui__lock);
+ 
+ 	return ret;
+ }
+diff --git a/tools/perf/ui/tui/progress.c b/tools/perf/ui/tui/progress.c
+index 3d74af5a7ece6..71b6c8d9474fb 100644
+--- a/tools/perf/ui/tui/progress.c
++++ b/tools/perf/ui/tui/progress.c
+@@ -45,7 +45,7 @@ static void tui_progress__update(struct ui_progress *p)
+ 	}
+ 
+ 	ui__refresh_dimensions(false);
+-	pthread_mutex_lock(&ui__lock);
++	mutex_lock(&ui__lock);
+ 	y = SLtt_Screen_Rows / 2 - 2;
+ 	SLsmg_set_color(0);
+ 	SLsmg_draw_box(y, 0, 3, SLtt_Screen_Cols);
+@@ -56,7 +56,7 @@ static void tui_progress__update(struct ui_progress *p)
+ 	bar = ((SLtt_Screen_Cols - 2) * p->curr) / p->total;
+ 	SLsmg_fill_region(y, 1, 1, bar, ' ');
+ 	SLsmg_refresh();
+-	pthread_mutex_unlock(&ui__lock);
++	mutex_unlock(&ui__lock);
+ }
+ 
+ static void tui_progress__finish(void)
+@@ -67,12 +67,12 @@ static void tui_progress__finish(void)
+ 		return;
+ 
+ 	ui__refresh_dimensions(false);
+-	pthread_mutex_lock(&ui__lock);
++	mutex_lock(&ui__lock);
+ 	y = SLtt_Screen_Rows / 2 - 2;
+ 	SLsmg_set_color(0);
+ 	SLsmg_fill_region(y, 0, 3, SLtt_Screen_Cols, ' ');
+ 	SLsmg_refresh();
+-	pthread_mutex_unlock(&ui__lock);
++	mutex_unlock(&ui__lock);
+ }
+ 
+ static struct ui_progress_ops tui_progress__ops = {
+diff --git a/tools/perf/ui/tui/setup.c b/tools/perf/ui/tui/setup.c
+index b1be59b4e2a4f..a3b8c397c24d5 100644
+--- a/tools/perf/ui/tui/setup.c
++++ b/tools/perf/ui/tui/setup.c
+@@ -29,10 +29,10 @@ void ui__refresh_dimensions(bool force)
+ {
+ 	if (force || ui__need_resize) {
+ 		ui__need_resize = 0;
+-		pthread_mutex_lock(&ui__lock);
++		mutex_lock(&ui__lock);
+ 		SLtt_get_screen_size();
+ 		SLsmg_reinit_smg();
+-		pthread_mutex_unlock(&ui__lock);
++		mutex_unlock(&ui__lock);
+ 	}
+ }
+ 
+@@ -170,10 +170,10 @@ void ui__exit(bool wait_for_ok)
+ 				    "Press any key...", 0);
+ 
+ 	SLtt_set_cursor_visibility(1);
+-	if (!pthread_mutex_trylock(&ui__lock)) {
++	if (mutex_trylock(&ui__lock)) {
+ 		SLsmg_refresh();
+ 		SLsmg_reset_smg();
+-		pthread_mutex_unlock(&ui__lock);
++		mutex_unlock(&ui__lock);
+ 	}
+ 	SLang_reset_tty();
+ 	perf_error__unregister(&perf_tui_eops);
+diff --git a/tools/perf/ui/tui/util.c b/tools/perf/ui/tui/util.c
+index b98dd0e31dc1a..8f8d00c2c1b82 100644
+--- a/tools/perf/ui/tui/util.c
++++ b/tools/perf/ui/tui/util.c
+@@ -91,7 +91,7 @@ int ui_browser__input_window(const char *title, const char *text, char *input,
+ 		t = sep + 1;
+ 	}
+ 
+-	pthread_mutex_lock(&ui__lock);
++	mutex_lock(&ui__lock);
+ 
+ 	max_len += 2;
+ 	nr_lines += 8;
+@@ -121,17 +121,17 @@ int ui_browser__input_window(const char *title, const char *text, char *input,
+ 	SLsmg_write_nstring((char *)exit_msg, max_len);
+ 	SLsmg_refresh();
+ 
+-	pthread_mutex_unlock(&ui__lock);
++	mutex_unlock(&ui__lock);
+ 
+ 	x += 2;
+ 	len = 0;
+ 	key = ui__getch(delay_secs);
+ 	while (key != K_TIMER && key != K_ENTER && key != K_ESC) {
+-		pthread_mutex_lock(&ui__lock);
++		mutex_lock(&ui__lock);
+ 
+ 		if (key == K_BKSPC) {
+ 			if (len == 0) {
+-				pthread_mutex_unlock(&ui__lock);
++				mutex_unlock(&ui__lock);
+ 				goto next_key;
+ 			}
+ 			SLsmg_gotorc(y, x + --len);
+@@ -143,7 +143,7 @@ int ui_browser__input_window(const char *title, const char *text, char *input,
+ 		}
+ 		SLsmg_refresh();
+ 
+-		pthread_mutex_unlock(&ui__lock);
++		mutex_unlock(&ui__lock);
+ 
+ 		/* XXX more graceful overflow handling needed */
+ 		if (len == sizeof(buf) - 1) {
+@@ -211,19 +211,19 @@ void __ui__info_window(const char *title, const char *text, const char *exit_msg
+ 
+ void ui__info_window(const char *title, const char *text)
+ {
+-	pthread_mutex_lock(&ui__lock);
++	mutex_lock(&ui__lock);
+ 	__ui__info_window(title, text, NULL);
+ 	SLsmg_refresh();
+-	pthread_mutex_unlock(&ui__lock);
++	mutex_unlock(&ui__lock);
+ }
+ 
+ int ui__question_window(const char *title, const char *text,
+ 			const char *exit_msg, int delay_secs)
+ {
+-	pthread_mutex_lock(&ui__lock);
++	mutex_lock(&ui__lock);
+ 	__ui__info_window(title, text, exit_msg);
+ 	SLsmg_refresh();
+-	pthread_mutex_unlock(&ui__lock);
++	mutex_unlock(&ui__lock);
+ 	return ui__getch(delay_secs);
+ }
+ 
+diff --git a/tools/perf/ui/ui.h b/tools/perf/ui/ui.h
+index 9b6fdf06e1d2f..99f8d2fe9bc55 100644
+--- a/tools/perf/ui/ui.h
++++ b/tools/perf/ui/ui.h
+@@ -2,11 +2,11 @@
+ #ifndef _PERF_UI_H_
+ #define _PERF_UI_H_ 1
+ 
+-#include <pthread.h>
++#include "../util/mutex.h"
+ #include <stdbool.h>
+ #include <linux/compiler.h>
+ 
+-extern pthread_mutex_t ui__lock;
++extern struct mutex ui__lock;
+ extern void *perf_gtk_handle;
+ 
+ extern int use_browser;
 -- 
 2.43.0
 
