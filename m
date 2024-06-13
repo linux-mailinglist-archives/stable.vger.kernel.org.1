@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-51619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244B99070BE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:30:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 895A7906F11
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:16:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC5A028342B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:30:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84F3E1C208E6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:16:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F7DEC4;
-	Thu, 13 Jun 2024 12:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4105E143C59;
+	Thu, 13 Jun 2024 12:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/FEPvk2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7FK7iCB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71E0195;
-	Thu, 13 Jun 2024 12:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B06143884;
+	Thu, 13 Jun 2024 12:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281827; cv=none; b=SYrck9tJu4oSe+TpgegGcQAanP+W+iRONTelYARP39pF2a2eR4H/S812dVTlZt4Y084jwF4+tIbN3mwjy73QuF8gnnnePogdPjzylKlqibzWHRB3UecLNzJDhBK0f5+1UV5GOglfutHomzllPnI3Ef9KgXUMLI6r+kDmfvvMHuc=
+	t=1718280792; cv=none; b=N1uOTXGqksdj2BHPnk1c0CVerVQjEc6bMDq5VqARlMC8v5dO81CEFnQ8wNe9a43IqXzZkDBO+MzrubRZN7mlkzmctwiW6onbUYC4haTZo6OUFVjQszNNw6r2bBRf96253pXDfb+VR+Tdj6fQkItYXh3tJ/9Koe/245+d/V6CDGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281827; c=relaxed/simple;
-	bh=4DqX1kTAaCnaikL0DMXJB5PjeBcR/SiSUdcmydNPxmE=;
+	s=arc-20240116; t=1718280792; c=relaxed/simple;
+	bh=BP5Pto84SUOKo+l60YLGPSKQyEAMrEzFQd3KfRbLdbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVivorqtwXrY6hUKj9JSBFb0kAJStLz+biBS4bw859f9CKAb2jNM96R9+/UYOGkFHD3YCvx6zcnZkZDyPpmCHQHc51zAKwgY0LT8HszJ6oKKIpcxh7e7Bbj63sfPWIXe8MwQCgx9Hfr0OMuEIzU+5C2MRK7q+qPvAPTmS/CCheE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/FEPvk2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D76C2BBFC;
-	Thu, 13 Jun 2024 12:30:27 +0000 (UTC)
+	 MIME-Version; b=G6MYhDdiJddtrJ2xT0ExOoVymdVU/x/RyX7sW2bXLcON7OfhnQyao+ZOhKIzumXYBl4519oA0AtfoztmbZKxnXInywtBvTT0DlXbxyDly+UpXnmrV/wCImB4pCw/8sWRpDc1VT41mXpIP06vCqV+HNFQmwxrDysxvQNfj6PTkOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7FK7iCB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A64C2BBFC;
+	Thu, 13 Jun 2024 12:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281827;
-	bh=4DqX1kTAaCnaikL0DMXJB5PjeBcR/SiSUdcmydNPxmE=;
+	s=korg; t=1718280791;
+	bh=BP5Pto84SUOKo+l60YLGPSKQyEAMrEzFQd3KfRbLdbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g/FEPvk2L7cTyvnh6RsY9KM6ejWTKeGQ7plHOx1S74fjI1bGV5qQRYYsD3sQv1arC
-	 LUPggN0Chf+TNukJCW3t+1s3sohE7YjcJ2UT/BsNGAZs8IturIYwuMh2k8Dy3CC68p
-	 Sd3eV4uvRmBbKViGYF/Rx7lFSvUKKwEoakuflobw=
+	b=V7FK7iCBZYzHIG9RKBQmhv+bcNaQ89q2Is6f3FVDZOXSBVnewi2ZS4S2ELz+0Q66a
+	 HiuhXTkerM0EQvowLcwjioFYGCWZJ1UYN8i60leLMbt7mQfQyYEGTtT2IPPr+Fo11F
+	 06lJduKcEMC3NY5c9OF43OjkHm/4qx9FTmgir2qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 069/402] gfs2: Dont forget to complete delayed withdraw
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+e3973c409251e136fdd0@syzkaller.appspotmail.com,
+	"Bai, Shuangpeng" <sjb7183@psu.edu>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 008/317] nilfs2: fix potential hang in nilfs_detach_log_writer()
 Date: Thu, 13 Jun 2024 13:30:26 +0200
-Message-ID: <20240613113304.829221530@linuxfoundation.org>
+Message-ID: <20240613113247.859425020@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit b01189333ee91c1ae6cd96dfd1e3a3c2e69202f0 ]
+commit eb85dace897c5986bc2f36b3c783c6abb8a4292e upstream.
 
-Commit fffe9bee14b0 ("gfs2: Delay withdraw from atomic context")
-switched from gfs2_withdraw() to gfs2_withdraw_delayed() in
-gfs2_ail_error(), but failed to then check if a delayed withdraw had
-occurred.  Fix that by adding the missing check in __gfs2_ail_flush(),
-where the spin locks are already dropped and a withdraw is possible.
+Syzbot has reported a potential hang in nilfs_detach_log_writer() called
+during nilfs2 unmount.
 
-Fixes: fffe9bee14b0 ("gfs2: Delay withdraw from atomic context")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Analysis revealed that this is because nilfs_segctor_sync(), which
+synchronizes with the log writer thread, can be called after
+nilfs_segctor_destroy() terminates that thread, as shown in the call trace
+below:
+
+nilfs_detach_log_writer
+  nilfs_segctor_destroy
+    nilfs_segctor_kill_thread  --> Shut down log writer thread
+    flush_work
+      nilfs_iput_work_func
+        nilfs_dispose_list
+          iput
+            nilfs_evict_inode
+              nilfs_transaction_commit
+                nilfs_construct_segment (if inode needs sync)
+                  nilfs_segctor_sync  --> Attempt to synchronize with
+                                          log writer thread
+                           *** DEADLOCK ***
+
+Fix this issue by changing nilfs_segctor_sync() so that the log writer
+thread returns normally without synchronizing after it terminates, and by
+forcing tasks that are already waiting to complete once after the thread
+terminates.
+
+The skipped inode metadata flushout will then be processed together in the
+subsequent cleanup work in nilfs_segctor_destroy().
+
+Link: https://lkml.kernel.org/r/20240520132621.4054-4-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+e3973c409251e136fdd0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e3973c409251e136fdd0
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Cc: "Bai, Shuangpeng" <sjb7183@psu.edu>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/glops.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nilfs2/segment.c |   21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
-index 558932ad89d5d..5a4b3550d833f 100644
---- a/fs/gfs2/glops.c
-+++ b/fs/gfs2/glops.c
-@@ -82,6 +82,9 @@ static void __gfs2_ail_flush(struct gfs2_glock *gl, bool fsync,
- 	GLOCK_BUG_ON(gl, !fsync && atomic_read(&gl->gl_ail_count));
- 	spin_unlock(&sdp->sd_ail_lock);
- 	gfs2_log_unlock(sdp);
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2234,6 +2234,14 @@ static int nilfs_segctor_sync(struct nil
+ 	for (;;) {
+ 		set_current_state(TASK_INTERRUPTIBLE);
+ 
++		/*
++		 * Synchronize only while the log writer thread is alive.
++		 * Leave flushing out after the log writer thread exits to
++		 * the cleanup work in nilfs_segctor_destroy().
++		 */
++		if (!sci->sc_task)
++			break;
 +
-+	if (gfs2_withdrawing(sdp))
-+		gfs2_withdraw(sdp);
+ 		if (atomic_read(&wait_req.done)) {
+ 			err = wait_req.err;
+ 			break;
+@@ -2249,7 +2257,7 @@ static int nilfs_segctor_sync(struct nil
+ 	return err;
  }
  
+-static void nilfs_segctor_wakeup(struct nilfs_sc_info *sci, int err)
++static void nilfs_segctor_wakeup(struct nilfs_sc_info *sci, int err, bool force)
+ {
+ 	struct nilfs_segctor_wait_request *wrq, *n;
+ 	unsigned long flags;
+@@ -2257,7 +2265,7 @@ static void nilfs_segctor_wakeup(struct
+ 	spin_lock_irqsave(&sci->sc_wait_request.lock, flags);
+ 	list_for_each_entry_safe(wrq, n, &sci->sc_wait_request.head, wq.entry) {
+ 		if (!atomic_read(&wrq->done) &&
+-		    nilfs_cnt32_ge(sci->sc_seq_done, wrq->seq)) {
++		    (force || nilfs_cnt32_ge(sci->sc_seq_done, wrq->seq))) {
+ 			wrq->err = err;
+ 			atomic_set(&wrq->done, 1);
+ 		}
+@@ -2397,7 +2405,7 @@ static void nilfs_segctor_notify(struct
+ 	if (mode == SC_LSEG_SR) {
+ 		sci->sc_state &= ~NILFS_SEGCTOR_COMMIT;
+ 		sci->sc_seq_done = sci->sc_seq_accepted;
+-		nilfs_segctor_wakeup(sci, err);
++		nilfs_segctor_wakeup(sci, err, false);
+ 		sci->sc_flush_request = 0;
+ 	} else {
+ 		if (mode == SC_FLUSH_FILE)
+@@ -2779,6 +2787,13 @@ static void nilfs_segctor_destroy(struct
+ 		|| sci->sc_seq_request != sci->sc_seq_done);
+ 	spin_unlock(&sci->sc_state_lock);
  
--- 
-2.43.0
-
++	/*
++	 * Forcibly wake up tasks waiting in nilfs_segctor_sync(), which can
++	 * be called from delayed iput() via nilfs_evict_inode() and can race
++	 * with the above log writer thread termination.
++	 */
++	nilfs_segctor_wakeup(sci, 0, true);
++
+ 	if (flush_work(&sci->sc_iput_work))
+ 		flag = true;
+ 
 
 
 
