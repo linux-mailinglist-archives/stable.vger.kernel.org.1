@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1116906FF8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 623C8906E08
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A1691F22F1B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF83E1C227D6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E70A44C6F;
-	Thu, 13 Jun 2024 12:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9D014430C;
+	Thu, 13 Jun 2024 12:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKaHwooZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kriJQCjq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F921448DA;
-	Thu, 13 Jun 2024 12:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C38F44C6F;
+	Thu, 13 Jun 2024 12:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281366; cv=none; b=tFoGZAjCB4Dt5OgFBq7DVsd0Ayv735e4/+GjSJYIYmQi9zC+6yoV49F1IVkfU1aFnH+9Ro1eOrSF4yqAUH1yqcuvWPWmOujSdZ//gl51EHZqJVazQtjv9KaoSs7MbsmuZsU8VoUX19gRZQbbwDDKyDV/ZfEp4kqWoyvM0gsvtAA=
+	t=1718280118; cv=none; b=ez9w+p3RJU3Tx0OyMti+9xdMcuTnU7EYTW0hFLOHSzxYCLuc0Qw5XfMS8MXSdLoTxdmpA43UUC8bPY8V2WFycty+BlWqyBV7859llqENJyo1bErT0NzoNcph/6slDeWD4F54unCiiCPNIZdLx+cGqUB8HKt6iKloImbogNZUrHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281366; c=relaxed/simple;
-	bh=yHcBHgwYcLi3Sj/NhwQH+Tag+rCHcJyvF3AypkKah2g=;
+	s=arc-20240116; t=1718280118; c=relaxed/simple;
+	bh=wikmbb981eKPNz4OTe7RUA38HhpCAnHeovU/a80OrBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c594HFl0E9mf6b7pTzHcCb4DtCiJXEVKUyv1tNO5IN0WeHdtvZmG7Pe5g/M9hcXHleesInZQNBwQ59dUsBiquNyQml0Uo964x0pxniajR04eri2uPLAGc/sPhaWKsgR6bMud+8jtfjvok1Lh6HRJbcwH/4VjmFXyskr38ZAaWXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKaHwooZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E1BFC2BBFC;
-	Thu, 13 Jun 2024 12:22:45 +0000 (UTC)
+	 MIME-Version; b=rPGJ5pd5MX7H3Ni4jgsGaSQoRCCyT2ax9alfstLhj+jtXr1tpv+DQD4kPQT0nAieklpHjLYUMSK08+0lj+yJ8cBoe6AZ615EHU6JNv/sQ0fSgWiHCZoFo7IvgugBJUgLpig8PJOVU8k6w6YiRdPM9qDqXnFFu7jpZp+tUOgiSmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kriJQCjq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E853FC2BBFC;
+	Thu, 13 Jun 2024 12:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281366;
-	bh=yHcBHgwYcLi3Sj/NhwQH+Tag+rCHcJyvF3AypkKah2g=;
+	s=korg; t=1718280118;
+	bh=wikmbb981eKPNz4OTe7RUA38HhpCAnHeovU/a80OrBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKaHwooZJapYv89cdiAR5DsFbbXYF9GLBrdX0bQfKr/VAd4zCbTm/0k29VJAS8OkG
-	 7hUhChkjqp5aPsLKc9CUDVs/f/znVL5GGy/iAHY0FwTcQliqfCIvwBv9jQdjxNSnaR
-	 Cy6aUxE2RgYc4mlqa5PwDMfx80aT5hjw24zdgpDQ=
+	b=kriJQCjq2PKCD0EvA7STBGuhys+vk08bHE+aJVLqsSarrHzKSUR9xDZjNh3/0t3nC
+	 fROkWtgGVS4Gu8Qh1z/DhGe0JoR7C9MTwUdwPwNP1Ku4DvfkYTmrsQoEFLCGzdNtTe
+	 5O2kZ5EPrBzWc1FQIHsC5HGrF3oOuRHd5fZFwf+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 200/317] mmc: sdhci_am654: Add ITAPDLYSEL in sdhci_j721e_4bit_set_clock
-Date: Thu, 13 Jun 2024 13:33:38 +0200
-Message-ID: <20240613113255.292872457@linuxfoundation.org>
+Subject: [PATCH 5.4 121/202] serial: sh-sci: protect invalidating RXDMA on shutdown
+Date: Thu, 13 Jun 2024 13:33:39 +0200
+Message-ID: <20240613113232.431131685@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 9dff65bb5e09903c27d9cff947dff4d22b6ea6a1 ]
+[ Upstream commit aae20f6e34cd0cbd67a1d0e5877561c40109a81b ]
 
-Add ITAPDLYSEL to sdhci_j721e_4bit_set_clock function.
-This allows to set the correct ITAPDLY for timings that
-do not carry out tuning.
+The to-be-fixed commit removed locking when invalidating the DMA RX
+descriptors on shutdown. It overlooked that there is still a rx_timer
+running which may still access the protected data. So, re-add the
+locking.
 
-Fixes: 1accbced1c32 ("mmc: sdhci_am654: Add Support for 4 bit IP on J721E")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240320223837.959900-7-jm@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
+Closes: https://lore.kernel.org/r/ee6c9e16-9f29-450e-81da-4a8dceaa8fc7@de.bosch.com
+Fixes: 2c4ee23530ff ("serial: sh-sci: Postpone DMA release when falling back to PIO")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/r/20240506114016.30498-7-wsa+renesas@sang-engineering.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci_am654.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/tty/serial/sh-sci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-index 1968381b93100..879ead07f8022 100644
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -319,6 +319,7 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
- 	unsigned char timing = host->mmc->ios.timing;
- 	u32 otap_del_sel;
- 	u32 itap_del_ena;
-+	u32 itap_del_sel;
- 	u32 mask, val;
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index 95db67c07c340..d570edf21239d 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -1259,9 +1259,14 @@ static void sci_dma_rx_chan_invalidate(struct sci_port *s)
+ static void sci_dma_rx_release(struct sci_port *s)
+ {
+ 	struct dma_chan *chan = s->chan_rx_saved;
++	struct uart_port *port = &s->port;
++	unsigned long flags;
  
- 	/* Setup DLL Output TAP delay */
-@@ -328,13 +329,18 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
- 	val = (0x1 << OTAPDLYENA_SHIFT) |
- 	      (otap_del_sel << OTAPDLYSEL_SHIFT);
- 
-+	/* Setup Input TAP delay */
- 	itap_del_ena = sdhci_am654->itap_del_ena[timing];
-+	itap_del_sel = sdhci_am654->itap_del_sel[timing];
- 
--	mask |= ITAPDLYENA_MASK;
--	val |= (itap_del_ena << ITAPDLYENA_SHIFT);
-+	mask |= ITAPDLYENA_MASK | ITAPDLYSEL_MASK;
-+	val |= (itap_del_ena << ITAPDLYENA_SHIFT) |
-+	       (itap_del_sel << ITAPDLYSEL_SHIFT);
- 
-+	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPCHGWIN_MASK,
-+			   1 << ITAPCHGWIN_SHIFT);
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, mask, val);
--
-+	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPCHGWIN_MASK, 0);
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL5, CLKBUFSEL_MASK,
- 			   sdhci_am654->clkbuf_sel);
- 
++	uart_port_lock_irqsave(port, &flags);
+ 	s->chan_rx_saved = NULL;
+ 	sci_dma_rx_chan_invalidate(s);
++	uart_port_unlock_irqrestore(port, flags);
++
+ 	dmaengine_terminate_sync(chan);
+ 	dma_free_coherent(chan->device->dev, s->buf_len_rx * 2, s->rx_buf[0],
+ 			  sg_dma_address(&s->sg_rx[0]));
 -- 
 2.43.0
 
