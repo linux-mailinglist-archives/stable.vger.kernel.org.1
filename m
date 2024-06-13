@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-51582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 445D7907095
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:29:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 618469070A2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8827286862
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:29:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18F1F1F22298
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDDC1428E9;
-	Thu, 13 Jun 2024 12:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9184B1422AB;
+	Thu, 13 Jun 2024 12:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkeMro1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lj0vHGRn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD196EB56;
-	Thu, 13 Jun 2024 12:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505D21411CD;
+	Thu, 13 Jun 2024 12:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281718; cv=none; b=CR7nNdgVUKmh6CPV+quyzi+RyrcoNx9RFTKo7lxgiLnzdYh8cwcJjnI/GBUpmHOW8deJEwMvB3jLdU2DZZyI2/jqM3zUODoCU+1SIrTzZIE408eF+39hkmSvH1Di2fxgFySPxVAgrdbX6ERGHvpWq89TgzwP79i5A/O9MvRzCvM=
+	t=1718281751; cv=none; b=rJg2/FIN9rjnfoSqxeSLuevJXQ4WaoyNc/QemPoqb48CjInJhbZzGViu+BsbtOyjoXPExZXKwx5yWGZ+pZaSE0LtkrQwat6Tq0FQyV8s3AP1w4xriGcrWF8C73mEh+JDrOFxpV8gHlqlfyXSs+mMNj6hIdycDa+nmDwEAjcCKD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281718; c=relaxed/simple;
-	bh=RgkaJeNKnr0VpG0eutLTsr4uelEFfo4MLYldbogzju0=;
+	s=arc-20240116; t=1718281751; c=relaxed/simple;
+	bh=XfHjqJoKtaekeFoF8HQnwo+dqXFJnc1qS8FYW6rOUw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hiQE53CdY6fAv93sxNkV2QCpP/ndpd1h+RE7Cn+rzwVG5UcbLfEdwW0tkhULvOWdSj1O1/ck9YxebmrYnU3gqJDkvt8+yIFJBEqDVAh6PGt3oKlx2LmXzR0SRX39Mo5SdgvHMh4j/MSqur0RLMHBtq+UaEh31J2IJsf98fgIx0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LkeMro1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4446FC2BBFC;
-	Thu, 13 Jun 2024 12:28:38 +0000 (UTC)
+	 MIME-Version; b=K+Cb3cRIy8QBIKLIC04v0o4DDAwUlqYPpmoFmlx62glzgQQPco2cZGkruDnc1I34BnYV09GmtG6M7rk4yWbh6cpumFFbRntoQETWetvgrpfooz5wLBcYEmFEbi2qiCy0b4L02onm+HyhX8KfxachDDgUzNBVl1GsSp/xXqvB/aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lj0vHGRn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA71C2BBFC;
+	Thu, 13 Jun 2024 12:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281718;
-	bh=RgkaJeNKnr0VpG0eutLTsr4uelEFfo4MLYldbogzju0=;
+	s=korg; t=1718281751;
+	bh=XfHjqJoKtaekeFoF8HQnwo+dqXFJnc1qS8FYW6rOUw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LkeMro1YhlIiU83FQdRVn9mpKos1fx1aoPH5EiVwANxWxyBDgO3450TA9vhATL7nw
-	 HBEtlRj2CcQ7c8N8jSFcpgPtFDMthqcQfS8HAjOsjx5Ikg7mPtgikpZGi8HdPszJcM
-	 bKVw2XYCJaxVe3DcFhfiRB6UHkqFLh8bkmkSpAu8=
+	b=Lj0vHGRnunZzUdzeTRHdujBKVTjKR9kLTkOwJFkMMQSb4sTKPDi9clHdhYRDYnj7G
+	 J10t7nd5VUWxRWpEJa1kI5EJVzU8YDlmkP8pnUhBqvnyG8q+pNGLGcBC5Ng8gLn3Fy
+	 UBOdg/7iG+oKVeNVDxCuzl4MwykjDSxtCU5VZT30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 5.15 015/402] fs/ntfs3: Fix case when index is reused during tree transformation
-Date: Thu, 13 Jun 2024 13:29:32 +0200
-Message-ID: <20240613113302.732013091@linuxfoundation.org>
+Subject: [PATCH 5.15 016/402] fs/ntfs3: Break dir enumeration if directory contents error
+Date: Thu, 13 Jun 2024 13:29:33 +0200
+Message-ID: <20240613113302.770475810@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
 References: <20240613113302.116811394@linuxfoundation.org>
@@ -66,50 +66,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 05afeeebcac850a016ec4fb1f681ceda11963562 upstream.
+commit 302e9dca8428979c9c99f2dbb44dc1783f5011c3 upstream.
 
-In most cases when adding a cluster to the directory index,
-they are placed at the end, and in the bitmap, this cluster corresponds
-to the last bit. The new directory size is calculated as follows:
+If we somehow attempt to read beyond the directory size, an error
+is supposed to be returned.
 
-	data_size = (u64)(bit + 1) << indx->index_bits;
+However, in some cases, read requests do not stop and instead enter
+into a loop.
 
-In the case of reusing a non-final cluster from the index,
-data_size is calculated incorrectly, resulting in the directory size
-differing from the actual size.
+To avoid this, we set the position in the directory to the end.
 
-A check for cluster reuse has been added, and the size update is skipped.
-
-Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/index.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ntfs3/dir.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -1538,6 +1538,11 @@ static int indx_add_allocate(struct ntfs
- 		goto out1;
- 	}
- 
-+	if (data_size <= le64_to_cpu(alloc->nres.data_size)) {
-+		/* Reuse index. */
-+		goto out;
-+	}
-+
- 	/* Increase allocation. */
- 	err = attr_set_size(ni, ATTR_ALLOC, in->name, in->name_len,
- 			    &indx->alloc_run, data_size, &data_size, true,
-@@ -1548,6 +1553,7 @@ static int indx_add_allocate(struct ntfs
- 		goto out1;
- 	}
- 
-+out:
- 	*vbn = bit << indx->idx2vbn_bits;
- 
- 	return 0;
+--- a/fs/ntfs3/dir.c
++++ b/fs/ntfs3/dir.c
+@@ -475,6 +475,7 @@ static int ntfs_readdir(struct file *fil
+ 		vbo = (u64)bit << index_bits;
+ 		if (vbo >= i_size) {
+ 			ntfs_inode_err(dir, "Looks like your dir is corrupt");
++			ctx->pos = eod;
+ 			err = -EINVAL;
+ 			goto out;
+ 		}
 
 
 
