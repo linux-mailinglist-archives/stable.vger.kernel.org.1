@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81719071DF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF91C907008
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CECB2812D0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:41:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C0851F22F1F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A880756458;
-	Thu, 13 Jun 2024 12:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED4714535E;
+	Thu, 13 Jun 2024 12:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBBOD6JC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kgZ9Vc2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66046384;
-	Thu, 13 Jun 2024 12:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15131146D43;
+	Thu, 13 Jun 2024 12:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282463; cv=none; b=bm7Bx4yl9bwoNXZbxofCGe+HWXGonGuTAQDmJcPumC6yTue4GIQ819+QAPV13wUrZUVFRQwiulLvqFck/jKowLEOgeCowpmD2ti1Ck0ebjZWoPzNBT3E7CNVzbJFbfPYlDBQlDTV4sj4gVJqcEZ4wm6efzMddQ3CSoh/mVQ0D/8=
+	t=1718281378; cv=none; b=tpwcRHuYayswbd8ng38VQ3/H/d4H25JzmLYaUArS8nj32Cj7hwFFlsfUUj/G99+uMp16Y/43bn2nX6dvr4WBkeAPS4WSqumy/IWZR1UM9qbjXJn9NBm5Y/0e+mwzrDiJKvKtxDIcDb0OuFGgJDZirWNAX0nOZsB0h5Hj4ZedNUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282463; c=relaxed/simple;
-	bh=29yvsxyuIREbQ7amNDkzwOcFCfC2CMZzptVzxZvA+zU=;
+	s=arc-20240116; t=1718281378; c=relaxed/simple;
+	bh=Y6OXytQb2Lo2wF+htNE15z8JKblRJYSKjQ35HagkBdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aKSY2IqGnDBIb+78QT2BWNl5/5Dh0k132BqE6Dkxy8+0bhEak9xFCSwki+hxnVtf7v9qnYLI9K6D2YW4MLSbd+eQBYCP2au1E8bVczF9VvdTp50DcXCI2YYjp9xnkYF2zpM/2CviwRwYnfWtmPY0D13acaaKS0QBqWmNNoiRweg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBBOD6JC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55D7C2BBFC;
-	Thu, 13 Jun 2024 12:41:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=absqozh7ZAVa5YbvdzlaoejKQK0rfChRsBFwT91ypJe8vPUG9X9ysKZJKAnYALKicJV7op7Cp/gVa7IVu2FODRScXv3I2iGd9rG0as//FvBElOBfjNxq3tyBj0purqLqMN65FdyiVvXKD/lbSYdHVhPSS0AVQkodHpxW4QH8uRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kgZ9Vc2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B447C4AF49;
+	Thu, 13 Jun 2024 12:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282463;
-	bh=29yvsxyuIREbQ7amNDkzwOcFCfC2CMZzptVzxZvA+zU=;
+	s=korg; t=1718281378;
+	bh=Y6OXytQb2Lo2wF+htNE15z8JKblRJYSKjQ35HagkBdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IBBOD6JC9FKA72RUJm0NzrUgZXTSaawneHqqbwFUAt5gaIO3u7KJUpDY43n69lTIh
-	 +noSK0OYQiS/aPqTKI49zVpvuHfRLTOANYlst0qrQaIecvPoPhcQpwRHhWQTjX679m
-	 SjB+saZA8UI41U78X9JA/fMSJNDbw0yLXGKQhGyA=
+	b=0kgZ9Vc2Q2nINnoW2zuqQnqfIe77FQAMz2zqDUSxo5d0j6NIm8lD0jl7NYK5o9gdC
+	 IHLGoDVjc5CvKVMWb99sRxGm+Ne8gT+bmv4EcHWQmJRjzon3tXvgMkCw6ejRqPl7Og
+	 MabnOG+P3WalvDOvThBUU0TOGdlyG36xx91TIo/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fenglin Wu <quic_fenglinw@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 255/402] Input: pm8xxx-vibrator - correct VIB_MAX_LEVELS calculation
+Subject: [PATCH 5.10 194/317] Input: ioc3kbd - convert to platform remove callback returning void
 Date: Thu, 13 Jun 2024 13:33:32 +0200
-Message-ID: <20240613113312.093150543@linuxfoundation.org>
+Message-ID: <20240613113255.060736154@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fenglin Wu <quic_fenglinw@quicinc.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 48c0687a322d54ac7e7a685c0b6db78d78f593af ]
+[ Upstream commit 150e792dee9ca8416f3d375e48f2f4d7f701fc6b ]
 
-The output voltage is inclusive hence the max level calculation is
-off-by-one-step. Correct it.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new() which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-iWhile we are at it also add a define for the step size instead of
-using the magic value.
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-Fixes: 11205bb63e5c ("Input: add support for pm8xxx based vibrator driver")
-Signed-off-by: Fenglin Wu <quic_fenglinw@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240412-pm8xxx-vibrator-new-design-v10-1-0ec0ad133866@quicinc.com
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20230920125829.1478827-37-u.kleine-koenig@pengutronix.de
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Stable-dep-of: d40e9edcf3eb ("Input: ioc3kbd - add device table")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/pm8xxx-vibrator.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/input/serio/ioc3kbd.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/input/misc/pm8xxx-vibrator.c b/drivers/input/misc/pm8xxx-vibrator.c
-index 53ad25eaf1a28..8bfe5c7b1244c 100644
---- a/drivers/input/misc/pm8xxx-vibrator.c
-+++ b/drivers/input/misc/pm8xxx-vibrator.c
-@@ -14,7 +14,8 @@
+diff --git a/drivers/input/serio/ioc3kbd.c b/drivers/input/serio/ioc3kbd.c
+index d51bfe912db5b..50552dc7b4f5e 100644
+--- a/drivers/input/serio/ioc3kbd.c
++++ b/drivers/input/serio/ioc3kbd.c
+@@ -190,7 +190,7 @@ static int ioc3kbd_probe(struct platform_device *pdev)
+ 	return 0;
+ }
  
- #define VIB_MAX_LEVEL_mV	(3100)
- #define VIB_MIN_LEVEL_mV	(1200)
--#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV)
-+#define VIB_PER_STEP_mV		(100)
-+#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV + VIB_PER_STEP_mV)
+-static int ioc3kbd_remove(struct platform_device *pdev)
++static void ioc3kbd_remove(struct platform_device *pdev)
+ {
+ 	struct ioc3kbd_data *d = platform_get_drvdata(pdev);
  
- #define MAX_FF_SPEED		0xff
+@@ -198,13 +198,11 @@ static int ioc3kbd_remove(struct platform_device *pdev)
  
-@@ -118,10 +119,10 @@ static void pm8xxx_work_handler(struct work_struct *work)
- 		vib->active = true;
- 		vib->level = ((VIB_MAX_LEVELS * vib->speed) / MAX_FF_SPEED) +
- 						VIB_MIN_LEVEL_mV;
--		vib->level /= 100;
-+		vib->level /= VIB_PER_STEP_mV;
- 	} else {
- 		vib->active = false;
--		vib->level = VIB_MIN_LEVEL_mV / 100;
-+		vib->level = VIB_MIN_LEVEL_mV / VIB_PER_STEP_mV;
- 	}
+ 	serio_unregister_port(d->kbd);
+ 	serio_unregister_port(d->aux);
+-
+-	return 0;
+ }
  
- 	pm8xxx_vib_set(vib, vib->active);
+ static struct platform_driver ioc3kbd_driver = {
+ 	.probe          = ioc3kbd_probe,
+-	.remove         = ioc3kbd_remove,
++	.remove_new     = ioc3kbd_remove,
+ 	.driver = {
+ 		.name = "ioc3-kbd",
+ 	},
 -- 
 2.43.0
 
