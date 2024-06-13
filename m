@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A12907246
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5361F90729B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27A891C2138C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6073282352
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062882CA6;
-	Thu, 13 Jun 2024 12:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E17144D2D;
+	Thu, 13 Jun 2024 12:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFoMV4o/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJtT0j5G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7ACD12C47D;
-	Thu, 13 Jun 2024 12:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D74144317;
+	Thu, 13 Jun 2024 12:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282731; cv=none; b=aDLZAGFqVrkRNJxZ/s/DJsguWF12WvgpEnh8fZXuoWj/yOZNi3mEPxHSowm894rO3vX7OwuU4yj9r9YIQZL3X/I3IkYhfacA6xV2h5NQNeJbzkV3Z+HtsLoWbpio0qJv2Dxb7+4smN6tBvdwbTuIYiML9jWqKVZp0NX3V9uMDXo=
+	t=1718282911; cv=none; b=VfcKMM7OSA+L59KvZwbMMudVv10jixaq5PWJUa/Y+KuPNIII1KQRmFrb2QXdYOZRijnPE2XaReji0opzyC7GW1J+D+89T/YiEv4Pndh2KKu6ItgQ6QKhd5ZSAORm3dO0wc9SYmbPUs+2p40GlGOlZoNTYbHlVE594a+otvgH63k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282731; c=relaxed/simple;
-	bh=5wNqid90rr7atYQZY9PakQnfLtSZPNTCRKIeM429Zqk=;
+	s=arc-20240116; t=1718282911; c=relaxed/simple;
+	bh=QQqS7Qzfl0nXxIaJPO71jp333d3YZjPQSqFD3LEGILo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sUbW1HfYoVrohP/EaEgz3qdGPnqQOoK1x2vNr7nXPfCKloYYjex93gFeXPApfDuesUxYnYSKHA74nLWsi/Wy0GKhisMXc1XX4NWWzlUDA2J5y4CSawVTFkiiPB44iqSqgliitklg2dvSWaIalTCHtbPAaqyBAffoVh0EQTT2O0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFoMV4o/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38581C2BBFC;
-	Thu, 13 Jun 2024 12:45:31 +0000 (UTC)
+	 MIME-Version; b=QQl23MWcqzffUaanyoIMWd/+IrpcGXtAIxLrOlzKqnMYLLlh7MCHnHX8SS4BdU9QTiJKddixMhq9Bm2nJ3IrT+HrKnF2PiIK6lnBxxsGd0DAKbTRPukNKthsZbppBcQM0m7qPp2Fq/Ck6LDD+SqGdpgzwD8Wu/ykt0LB0DnU6VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJtT0j5G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83655C2BBFC;
+	Thu, 13 Jun 2024 12:48:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282731;
-	bh=5wNqid90rr7atYQZY9PakQnfLtSZPNTCRKIeM429Zqk=;
+	s=korg; t=1718282910;
+	bh=QQqS7Qzfl0nXxIaJPO71jp333d3YZjPQSqFD3LEGILo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zFoMV4o/9c3+o7kPLQQDBGOBA8WAb2cr4uRq8SEFf1vX8mKSAVeXpvIx/2t/GafmL
-	 wqnW0QyPX6Wqr+U1/+Az45+RGtWum8sOHHGZasNniGL7sxzd5bJqeOn63fu+QZPW0M
-	 f6hiKfPv2MxRHAnxUarTkm1CvzZSmPfHHJlA8KaM=
+	b=oJtT0j5GzCIjzRqzWwxw3kisD0rq97cqacjT1wNvziEAydNREpH38qZUDNVICKDhQ
+	 09NP/sV6YWlDCsb/x3YvSQiu3dYKQDNgqaof/BaD6Qu8i6EJxs2HD5uIfdw3X0WENY
+	 oUyO+fotZWyBul9r3fwCrgfIJ44hNHnKaPtmIbHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 5.15 376/402] KVM: arm64: Fix AArch32 register narrowing on userspace write
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: [PATCH 6.1 35/85] media: mc: mark the media devnode as registered from the, start
 Date: Thu, 13 Jun 2024 13:35:33 +0200
-Message-ID: <20240613113316.811200647@linuxfoundation.org>
+Message-ID: <20240613113215.502938904@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit 947051e361d551e0590777080ffc4926190f62f2 upstream.
+commit 4bc60736154bc9e0e39d3b88918f5d3762ebe5e0 upstream.
 
-When userspace writes to one of the core registers, we make
-sure to narrow the corresponding GPRs if PSTATE indicates
-an AArch32 context.
+First the media device node was created, and if successful it was
+marked as 'registered'. This leaves a small race condition where
+an application can open the device node and get an error back
+because the 'registered' flag was not yet set.
 
-The code tries to check whether the context is EL0 or EL1 so
-that it narrows the correct registers. But it does so by checking
-the full PSTATE instead of PSTATE.M.
+Change the order: first set the 'registered' flag, then actually
+register the media device node. If that fails, then clear the flag.
 
-As a consequence, and if we are restoring an AArch32 EL0 context
-in a 64bit guest, and that PSTATE has *any* bit set outside of
-PSTATE.M, we narrow *all* registers instead of only the first 15,
-destroying the 64bit state.
-
-Obviously, this is not something the guest is likely to enjoy.
-
-Correctly masking PSTATE to only evaluate PSTATE.M fixes it.
-
-Fixes: 90c1f934ed71 ("KVM: arm64: Get rid of the AArch32 register mapping code")
-Reported-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: cf4b9211b568 ("[media] media: Media device node support")
 Cc: stable@vger.kernel.org
-Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Acked-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240524141956.1450304-2-maz@kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/guest.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/mc/mc-devnode.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kvm/guest.c
-+++ b/arch/arm64/kvm/guest.c
-@@ -270,7 +270,7 @@ static int set_core_reg(struct kvm_vcpu
- 	if (*vcpu_cpsr(vcpu) & PSR_MODE32_BIT) {
- 		int i, nr_reg;
+--- a/drivers/media/mc/mc-devnode.c
++++ b/drivers/media/mc/mc-devnode.c
+@@ -246,15 +246,14 @@ int __must_check media_devnode_register(
+ 	kobject_set_name(&devnode->cdev.kobj, "media%d", devnode->minor);
  
--		switch (*vcpu_cpsr(vcpu)) {
-+		switch (*vcpu_cpsr(vcpu) & PSR_AA32_MODE_MASK) {
- 		/*
- 		 * Either we are dealing with user mode, and only the
- 		 * first 15 registers (+ PC) must be narrowed to 32bit.
+ 	/* Part 3: Add the media and char device */
++	set_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
+ 	ret = cdev_device_add(&devnode->cdev, &devnode->dev);
+ 	if (ret < 0) {
++		clear_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
+ 		pr_err("%s: cdev_device_add failed\n", __func__);
+ 		goto cdev_add_error;
+ 	}
+ 
+-	/* Part 4: Activate this minor. The char device can now be used. */
+-	set_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
+-
+ 	return 0;
+ 
+ cdev_add_error:
 
 
 
