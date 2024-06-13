@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 276BA90711F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA4E906F3C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 399D51C242E3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 939F81C233FF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D532C143747;
-	Thu, 13 Jun 2024 12:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40316146A83;
+	Thu, 13 Jun 2024 12:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWi5W0C7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMx0cSRd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923EE81AA7;
-	Thu, 13 Jun 2024 12:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D851448EE;
+	Thu, 13 Jun 2024 12:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282018; cv=none; b=ZNoLrMzK0CIfVtCC8lP5Tigv5QUDK0/5EqFSSPfNaRoIi6L2Nw9tcqxb9e+Qj6jQ4lr2L4tKaI2xdkNYnHwTCKf1f4KE+eGSP/e8lY8MZis2k9cz6jHo1He/7FiNBca2IOb7Y7kf/J8cPQ78NCFKbTTY4Y6svIEBlXVUnqo2Xl0=
+	t=1718280901; cv=none; b=FVMxsarbyaVk2WRp7OinKGceh8bqVdQOrUBCc2shK3G2Iak2aDYuakiHc3HHySr3WpRD74Y0HMljkzx5bepj8hwJVuMvD1ho8GRyy4NSi9bIgIDJ+J606ErueFRrCbYr0tlYf7+SKi8N6Ie3xaO1t3oj2exGf1HEzN2BTupaObk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282018; c=relaxed/simple;
-	bh=bhpMkoi6ItGZvOfW2/GEZp635wckwGAaQmyh9Fkx/T0=;
+	s=arc-20240116; t=1718280901; c=relaxed/simple;
+	bh=EdeDl8dfCtxfJRdhA2mNpIQdSceR6SE/Gd6XjE9HCzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a+kquXtoketsxgwzmnvWkcBgRJILcFZsy/PDwPEk1ycIzq1JY24k63i+eFdPoRT02bDlrssUV/6U3NJyf7ruCQu47SsAxmJHeGQl9ppFWtlumt5P2AG6un9eALypjUSk+w16X/ATimiHNPruSRvFDVXuiZrz+FafVMc6/zifGs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWi5W0C7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7059C2BBFC;
-	Thu, 13 Jun 2024 12:33:37 +0000 (UTC)
+	 MIME-Version; b=F8q26f7y6Cwwy2KscljVGMHbmambDY/C1Eoux/dMD8BEMPCV7vmOxxLsn69aZcylf12hkL5WL6+C0ENmlbOPw4j8Ke1hQ63Ju5HaDwcvfei3dVch8WH8UDl91IIbebb+Tj+FKdN/U5MQvUGop3ah+CN4G77+WxvVKmbTm+4l5pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMx0cSRd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777FEC32786;
+	Thu, 13 Jun 2024 12:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282018;
-	bh=bhpMkoi6ItGZvOfW2/GEZp635wckwGAaQmyh9Fkx/T0=;
+	s=korg; t=1718280900;
+	bh=EdeDl8dfCtxfJRdhA2mNpIQdSceR6SE/Gd6XjE9HCzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWi5W0C7TElh0aBbg5XWqX8b/CTWsmbc0Q4wxEFOs5e2MLKcfhGfpNCFv3mLCr5BD
-	 JvWtmarCxvDFpgr2iXKZbrslRNFSJsFYMHLrMe4TxJn8BPUzoKcQ1OwRyhZx2ExZZh
-	 o0Ug2jdpb/rPUNOpH6jaea7qRfJP5e2dEulXfhUI=
+	b=WMx0cSRdlZ73ZsYQ37/sf/Hx2NAJRXEzOEHlXC9/Mu8ovRTj+hXED2g5+ZFDoVPZl
+	 FtigjitrzkIDoIK0TPPposK04dctUwiTIw0rZmle6R5ROgV3NlZbpaDVQcXOnQs+yU
+	 l0PIDimqDd5HcXfIw6N/ba96N4OE4rq14j68tVCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 134/402] media: radio-shark2: Avoid led_names truncations
+Subject: [PATCH 5.10 073/317] scsi: bfa: Ensure the copied buf is NUL terminated
 Date: Thu, 13 Jun 2024 13:31:31 +0200
-Message-ID: <20240613113307.363924104@linuxfoundation.org>
+Message-ID: <20240613113250.371647849@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit 1820e16a3019b6258e6009d34432946a6ddd0a90 ]
+[ Upstream commit 13d0cecb4626fae67c00c84d3c7851f6b62f7df3 ]
 
-Increase the size of led_names so it can fit any valid v4l2 device name.
+Currently, we allocate a nbytes-sized kernel buffer and copy nbytes from
+userspace to that buffer. Later, we use sscanf on this buffer but we don't
+ensure that the string is terminated inside the buffer, this can lead to
+OOB read when using sscanf. Fix this issue by using memdup_user_nul instead
+of memdup_user.
 
-Fixes:
-drivers/media/radio/radio-shark2.c:197:17: warning: ‘%s’ directive output may be truncated writing up to 35 bytes into a region of size 32 [-Wformat-truncation=]
-
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 9f30b674759b ("bfa: replace 2 kzalloc/copy_from_user by memdup_user")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-3-f1f1b53a10f4@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/radio/radio-shark2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/bfa/bfad_debugfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/radio/radio-shark2.c b/drivers/media/radio/radio-shark2.c
-index f1c5c0a6a335c..e3e6aa87fe081 100644
---- a/drivers/media/radio/radio-shark2.c
-+++ b/drivers/media/radio/radio-shark2.c
-@@ -62,7 +62,7 @@ struct shark_device {
- #ifdef SHARK_USE_LEDS
- 	struct work_struct led_work;
- 	struct led_classdev leds[NO_LEDS];
--	char led_names[NO_LEDS][32];
-+	char led_names[NO_LEDS][64];
- 	atomic_t brightness[NO_LEDS];
- 	unsigned long brightness_new;
- #endif
+diff --git a/drivers/scsi/bfa/bfad_debugfs.c b/drivers/scsi/bfa/bfad_debugfs.c
+index fd1b378a263a0..d3c7d4423c514 100644
+--- a/drivers/scsi/bfa/bfad_debugfs.c
++++ b/drivers/scsi/bfa/bfad_debugfs.c
+@@ -250,7 +250,7 @@ bfad_debugfs_write_regrd(struct file *file, const char __user *buf,
+ 	unsigned long flags;
+ 	void *kern_buf;
+ 
+-	kern_buf = memdup_user(buf, nbytes);
++	kern_buf = memdup_user_nul(buf, nbytes);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
+ 
+@@ -317,7 +317,7 @@ bfad_debugfs_write_regwr(struct file *file, const char __user *buf,
+ 	unsigned long flags;
+ 	void *kern_buf;
+ 
+-	kern_buf = memdup_user(buf, nbytes);
++	kern_buf = memdup_user_nul(buf, nbytes);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
+ 
 -- 
 2.43.0
 
