@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-52093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAB83907B88
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 20:36:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D43907B8D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 20:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61838B21E7E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 18:36:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FE9D1C22173
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 18:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C51E14B976;
-	Thu, 13 Jun 2024 18:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447B414EC54;
+	Thu, 13 Jun 2024 18:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NkBCvSoN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2SgGcVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE8D14B06E
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 18:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0517514E2D8
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 18:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718303622; cv=none; b=aP667He+2p5hvMXGc4IPigwE/HRhEf3T5Hty7CCa3KJ6VKiioTAFJ95ISCDH3NW0nc8K117FzL9VtD/FtJkQcvr2u3TkyB844jVHB2rzcPbWZhL+jBxrk07nxutUXFIbPW4VbLnmgS8oswcNHE3pI7ogjQlCvkUsPJTXH5kkyYA=
+	t=1718303684; cv=none; b=FbbHwYI1EK2QoV7VbSolvC321sWFU3sQ8+30saRIyYyYVm99ixsRPHwDhWf/oUaYUP2CA1z/PuZfqf6X8Rakiz/Rs5IDIBBZXa9OiYrFIV6tAVx64etKWWMU4QpyN0xpU6lBZpCBLdxafq4OJMfZXWo73AV+zfobhgwW0j/76jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718303622; c=relaxed/simple;
-	bh=8u0Y6svM88axULhOTqGS1VfCafqaKn6kBA1ZAFcW4hg=;
+	s=arc-20240116; t=1718303684; c=relaxed/simple;
+	bh=Txm9mh0/5FDR2ZbpbTweYw6FC848CA8XoG3IhX2bJhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z4+okKnra2OxyKvfrMeexh85lQeBqg7dhtfD67YCVUzZRlNGDu9hK2qb00A6DFXhrRBvp0XY+YaQwgvvnBpMRpnhRHWzRB5qAcZdzHjxz/LS6oeGryr3Aluc8HdC6aSrnRgZooNCQyVlgMC/k6oFcJSSRMDw+j4kF1cH19B5+u8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NkBCvSoN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495FCC2BBFC;
-	Thu, 13 Jun 2024 18:33:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rcwSJEap18OzXWvrrz/wkGySqiDYK7Fx0cfpmtpwH11IoSoagXW4Us39pxi7fYh+hCO7cGCPsI5Cc7ndSDXXSJ6cAS4jrMENtkjfcunS2Ro6tVVHBiyzvSinjAsYu/c4J2V+Qm25fr3jT62M1L29j2HsUtXaalS4jIcQzXaKfUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2SgGcVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE4CC4AF1C;
+	Thu, 13 Jun 2024 18:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718303621;
-	bh=8u0Y6svM88axULhOTqGS1VfCafqaKn6kBA1ZAFcW4hg=;
+	s=k20201202; t=1718303683;
+	bh=Txm9mh0/5FDR2ZbpbTweYw6FC848CA8XoG3IhX2bJhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NkBCvSoN8Ev36e0RvfYdBENNgQ0HmgS4YA1UnYPr5YQAJz8B8B9ngT3gjD8g4wv/1
-	 /XzKxgp0rjBjwPTWRQMg8VhLnHRGw9Q6TognXjvWH4NJHNQmHPdFgX+V1bSuN8t0Fe
-	 hSaG0iPDhlojU0ZEtV0Mk4m27ULndV4mJNLueq6t+NGVySstJOSH9yvJvV6aWLWhKI
-	 6d6f6pF6UL80xHZicTH1GyRR9TgZdigDbQAObxuI1jHZW+ftPOoJkohIX8hY4pQbGo
-	 RLWtjv61k7We+ZmF60jxgV83QRkycV+CNqGagV4DuKJHJUAQV/gQow34Kj9rR+HOqt
-	 TCT/fH3ChvpGA==
+	b=c2SgGcVf8b8dB+IDRlEXlQwVJR2ZrTeHkEfeNDZ7KD56f6UwEwnKfg19KnpbuKnfj
+	 VmZdJKRXqK4H3LauN1pzqF0ChfY46FyPyhT6CJ+SiifEaARp/GSxoq1qPEgkV8MtsD
+	 OX4Ixl95ofbvBfXVhoOPI9uG8LCU9fZfR896b8oRFrgLItYu3599VMUoVMFVeAwDRv
+	 Hxnt0jv159VQ/ses6Gi9VjW8H2CVE2UFDF2GDMtZEqDGD8L/YLctQ4Dh9zlQgLgV5V
+	 YJySevvW2c03t5ugi/GTdgIdWAqbQiJwFtLZjTXYY2I+T/7XrZZGGkLQvOBbPs8lCO
+	 ozOAKyDxHE3pw==
 From: Nathan Chancellor <nathan@kernel.org>
 To: gregkh@linuxfoundation.org
 Cc: nathan@kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 6.1.y] kbuild: Remove support for Clang's ThinLTO caching
-Date: Thu, 13 Jun 2024 11:33:22 -0700
-Message-ID: <20240613183322.1088226-1-nathan@kernel.org>
+Subject: [PATCH 5.15.y] kbuild: Remove support for Clang's ThinLTO caching
+Date: Thu, 13 Jun 2024 11:34:27 -0700
+Message-ID: <20240613183427.1088868-1-nathan@kernel.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024061340-troubling-automated-9989@gregkh>
-References: <2024061340-troubling-automated-9989@gregkh>
+In-Reply-To: <2024061342-unimpeded-hardcover-349c@gregkh>
+References: <2024061342-unimpeded-hardcover-349c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -158,10 +158,10 @@ Signed-off-by: Nathan Chancellor <nathan@kernel.org>
  1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index c5147f1c46f8..abe7ba05155b 100644
+index bfc863d71978..a9118f982484 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -980,7 +980,6 @@ endif
+@@ -959,7 +959,6 @@ endif
  ifdef CONFIG_LTO_CLANG
  ifdef CONFIG_LTO_CLANG_THIN
  CC_FLAGS_LTO	:= -flto=thin -fsplit-lto-unit
@@ -169,16 +169,16 @@ index c5147f1c46f8..abe7ba05155b 100644
  else
  CC_FLAGS_LTO	:= -flto
  endif
-@@ -1588,7 +1587,7 @@ endif # CONFIG_MODULES
+@@ -1560,7 +1559,7 @@ endif # CONFIG_MODULES
  # Directories & files removed with 'make clean'
  CLEAN_FILES += include/ksym vmlinux.symvers modules-only.symvers \
  	       modules.builtin modules.builtin.modinfo modules.nsdeps \
--	       compile_commands.json .thinlto-cache rust/test rust/doc \
-+	       compile_commands.json rust/test rust/doc \
- 	       .vmlinux.objs .vmlinux.export.c
+-	       compile_commands.json .thinlto-cache
++	       compile_commands.json
  
  # Directories & files removed with 'make mrproper'
-@@ -1884,7 +1883,7 @@ PHONY += compile_commands.json
+ MRPROPER_FILES += include/config include/generated          \
+@@ -1788,7 +1787,7 @@ PHONY += compile_commands.json
  
  clean-dirs := $(KBUILD_EXTMOD)
  clean: rm-files := $(KBUILD_EXTMOD)/Module.symvers $(KBUILD_EXTMOD)/modules.nsdeps \
@@ -188,7 +188,7 @@ index c5147f1c46f8..abe7ba05155b 100644
  PHONY += prepare
  # now expand this into a simple variable to reduce the cost of shell evaluations
 
-base-commit: ae9f2a70d69e9c840ee1eda201f09662ca7e2038
+base-commit: c61bd26ae81a896c8660150b4e356153da30880a
 -- 
 2.45.2
 
