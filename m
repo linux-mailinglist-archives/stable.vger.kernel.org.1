@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-51631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116CC9070D2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 634E790710A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF7101F2137C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A4E5283CDD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C741428E7;
-	Thu, 13 Jun 2024 12:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDBF23A0;
+	Thu, 13 Jun 2024 12:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IC7oDp9N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMh3Jf4u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4322B20ED;
-	Thu, 13 Jun 2024 12:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D49384;
+	Thu, 13 Jun 2024 12:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281863; cv=none; b=ICRdwpOvTbv1ouvLweR4mCs5bFQENVU+e6enVGH5sqDI3YO/gMLVNwlFHqKvBnnopSN7WQfpFGDumjwZRSxHFkNIy5TW0nGDR0d95RBKtwguFpNQcZALdqfickeJ47Fn+rUAmVIPyRpIM33m0wYKtgJQyRtCIn5WM1FKGI0l+FA=
+	t=1718281980; cv=none; b=TUxv0blom4rpiECgawlnN01B7WwTbH4kFXLaVQvUOYAZCMtKimkX5SbpZ3nX7N9ymIiJX/3dQYOzwlDZTE5ztxXmgxb4zx8QFBBx3ypnmnmIM2gwDKE8xYvwIB/K1YGKYzwcmbb5zez+dxl41R5+UNRMlH8GY4auREsNy+wjGwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281863; c=relaxed/simple;
-	bh=Ai80KAnQSiky6KlBFDPx6eWtys3WQq/CnqOXrtTLqd4=;
+	s=arc-20240116; t=1718281980; c=relaxed/simple;
+	bh=khD6AEXs6WjYw2MOj6iqVM0Vrhf4TVe9CPTl0qTPwkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jfdVdGBUKuV8yn7vZizGer6pPt4B7kf5XeeiBlbe+Xfd9jEj96fMqjtRvWoonMRXSjzdpqebqsra4fJ+P/dkzvr3texCfRSSQ/9Vk/4Q9Yka/oNzgDInNnLbWBEHLww2I+IshDiutQEFWX9AlHN5KoFjcweCGBPN9r1NH0SBW1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IC7oDp9N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C16C2BBFC;
-	Thu, 13 Jun 2024 12:31:02 +0000 (UTC)
+	 MIME-Version; b=ng6UIfkHsaT+6YYrNg6u/UisOg3ehkvnKpmhKIoTcYeOYWbi9/yZ0rxhbpSUppLNv3kht+Sg+ANX7UCWv3i7BvPpiK6IBK9crCYEURycMKUGtAQy1+BD4TyWWOqk6mCvZs7OuFxmxexNY5VdASM5GFyxZ8DVqgsWXMeFyYqLhRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMh3Jf4u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB28C4AF1A;
+	Thu, 13 Jun 2024 12:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281862;
-	bh=Ai80KAnQSiky6KlBFDPx6eWtys3WQq/CnqOXrtTLqd4=;
+	s=korg; t=1718281979;
+	bh=khD6AEXs6WjYw2MOj6iqVM0Vrhf4TVe9CPTl0qTPwkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IC7oDp9NiSUInfZh6SkochVTAbezSdW6foOmJWrYnxBqCW8IlnOYaoTGUWUFnr/Nr
-	 wvWCm4cpQVnrsYReYe+Yhp+ZbOuJBDnGj6SKE/MoLGyJOy1Tt85eqSiI+eCVCObOnp
-	 N146s47RTiZgc9b7FjNiAsmfJS/MThKIJXngqBg0=
+	b=AMh3Jf4uzDYO/Kw+Pzuc/ezJtCpipWZ/765DySoiz464Bx5DXg7q2oRw3lecnQmjr
+	 jFS5kKeAmiG1/ixIFNRJ+Nm3A3If7f9ZLaguoQCfwB3MPWfpFqjoYJnL3pxRRtgkdP
+	 fc82s0umDmVrOjwCH81nXgr3UqdfkqXBcOYwI1XQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
+	Yuri Karpov <YKarpov@ispras.ru>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 080/402] scsi: libsas: Fix the failure of adding phy with zero-address to port
-Date: Thu, 13 Jun 2024 13:30:37 +0200
-Message-ID: <20240613113305.257136481@linuxfoundation.org>
+Subject: [PATCH 5.15 081/402] scsi: hpsa: Fix allocation size for Scsi_Host private data
+Date: Thu, 13 Jun 2024 13:30:38 +0200
+Message-ID: <20240613113305.294941213@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
 References: <20240613113302.116811394@linuxfoundation.org>
@@ -66,53 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Yuri Karpov <YKarpov@ispras.ru>
 
-[ Upstream commit 06036a0a5db34642c5dbe22021a767141f010b7a ]
+[ Upstream commit 504e2bed5d50610c1836046c0c195b0a6dba9c72 ]
 
-As of commit 7d1d86518118 ("[SCSI] libsas: fix false positive 'device
-attached' conditions"), reset the phy->entacted_sas_addr address to a
-zero-address when the link rate is less than 1.5G.
+struct Scsi_Host private data contains pointer to struct ctlr_info.
 
-Currently we find that when a new device is attached, and the link rate is
-less than 1.5G, but the device type is not NO_DEVICE, for example: the link
-rate is SAS_PHY_RESET_IN_PROGRESS and the device type is stp. After setting
-the phy->entacted_sas_addr address to the zero address, the port will
-continue to be created for the phy with the zero-address, and other phys
-with the zero-address will be tried to be added to the new port:
+Restore allocation of only 8 bytes to store pointer in struct Scsi_Host
+private data area.
 
-[562240.051197] sas: ex 500e004aaaaaaa1f phy19:U:0 attached: 0000000000000000 (no device)
-// phy19 is deleted but still on the parent port's phy_list
-[562240.062536] sas: ex 500e004aaaaaaa1f phy0 new device attached
-[562240.062616] sas: ex 500e004aaaaaaa1f phy00:U:5 attached: 0000000000000000 (stp)
-[562240.062680] port-7:7:0: trying to add phy phy-7:7:19 fails: it's already part of another port
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Therefore, it should be the same as sas_get_phy_attached_dev(). Only when
-device_type is SAS_PHY_UNUSED, sas_address is set to the 0 address.
-
-Fixes: 7d1d86518118 ("[SCSI] libsas: fix false positive 'device attached' conditions")
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Link: https://lore.kernel.org/r/20240312141103.31358-5-yangxingui@huawei.com
+Fixes: bbbd25499100 ("scsi: hpsa: Fix allocation size for scsi_host_alloc()")
+Signed-off-by: Yuri Karpov <YKarpov@ispras.ru>
+Link: https://lore.kernel.org/r/20240312170447.743709-1-YKarpov@ispras.ru
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libsas/sas_expander.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/scsi/hpsa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/libsas/sas_expander.c b/drivers/scsi/libsas/sas_expander.c
-index 9ae35631135d8..ee6607dfcdfa5 100644
---- a/drivers/scsi/libsas/sas_expander.c
-+++ b/drivers/scsi/libsas/sas_expander.c
-@@ -256,8 +256,7 @@ static void sas_set_ex_phy(struct domain_device *dev, int phy_id, void *rsp)
- 	/* help some expanders that fail to zero sas_address in the 'no
- 	 * device' case
- 	 */
--	if (phy->attached_dev_type == SAS_PHY_UNUSED ||
--	    phy->linkrate < SAS_LINK_RATE_1_5_GBPS)
-+	if (phy->attached_dev_type == SAS_PHY_UNUSED)
- 		memset(phy->attached_sas_addr, 0, SAS_ADDR_SIZE);
- 	else
- 		memcpy(phy->attached_sas_addr, dr->attached_sas_addr, SAS_ADDR_SIZE);
+diff --git a/drivers/scsi/hpsa.c b/drivers/scsi/hpsa.c
+index 8aa5c22ae3ff9..b54c8aa8e8035 100644
+--- a/drivers/scsi/hpsa.c
++++ b/drivers/scsi/hpsa.c
+@@ -5848,7 +5848,7 @@ static int hpsa_scsi_host_alloc(struct ctlr_info *h)
+ {
+ 	struct Scsi_Host *sh;
+ 
+-	sh = scsi_host_alloc(&hpsa_driver_template, sizeof(struct ctlr_info));
++	sh = scsi_host_alloc(&hpsa_driver_template, sizeof(struct ctlr_info *));
+ 	if (sh == NULL) {
+ 		dev_err(&h->pdev->dev, "scsi_host_alloc failed\n");
+ 		return -ENOMEM;
 -- 
 2.43.0
 
