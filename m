@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-50507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 426C0906A9B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:59:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 364C6906A9C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:59:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4BEF2850BB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:59:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D3911C24336
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52002142903;
-	Thu, 13 Jun 2024 10:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2CC142911;
+	Thu, 13 Jun 2024 10:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WArTg+Pm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GlIGlOGK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1398313D534
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD0613C68A
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718276383; cv=none; b=X8HxuIS1Pkpg+DDBetxz0QcQJjvZvQ3njM25OA8+nNU8Q4hEArTtMBbFfru+IRQX+qMzxgdB4w09G51KNzDH54kWfYyxWklkq+A40CIsMM0HdFE3TUoujrFv2iQvT9uoBVZ+Ut4o/8H9o5nZMhh136qVEUz3PPVxEeoSJsH2X/c=
+	t=1718276385; cv=none; b=GmXvHF2SEl89MqMDil0p1D1Z+P3vC4kfL/qbVQ8FLduXBJwk/qAtYPCw2uDUUZyBW085Qm7RbwLVIZVdu2Ii3ygUfv1gdkrZGpEPC32aLx4chx9Cewhr4yxLZxoC85TVyiPRu3oefE6fMkMxl+PsbjBCp7fPtIF7kZGA/QKqS9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718276383; c=relaxed/simple;
-	bh=zAr+D9uo+g97pHAqzpxfvI1qNe5JGwVoN27tIxC2Oxw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DCFsJwDhPJ8xheX1JvvGCR1jytnp+7x4kmQbZlLZQIx1qL16MqslF+H/wEARtroR1ZL3c/xE8W3QyJKRVIwX9UVUTrS9WLnv80CYmBHU/Jk/n/UzIqknGZ6H617hykyqq7LA2PygS5XOTyd/G9sU3wDXVIRDIjOtopcJT0epThc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WArTg+Pm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A17DC2BBFC;
-	Thu, 13 Jun 2024 10:59:42 +0000 (UTC)
+	s=arc-20240116; t=1718276385; c=relaxed/simple;
+	bh=M9SGDg9t1jAmCUwq/H51ExJ3QoRsu7XU3MaRiB18bj8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uMFhqggnTB4MjSho9nHSYh7ZK4I8QN0szYzEE3PCtyOjZwz5X/0VqxUeZ23RqO1eRL7yueo9E2dB4WeCwtcPx9O6PD2GAUhIIPqGpThutnkO2++/yU/d3Ved3sImTFQ0gi14/YVqFmt/Yi3UNcbH+BcYoUNSHWnpvWUeO9PjwUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GlIGlOGK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CACC2BBFC;
+	Thu, 13 Jun 2024 10:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718276382;
-	bh=zAr+D9uo+g97pHAqzpxfvI1qNe5JGwVoN27tIxC2Oxw=;
+	s=korg; t=1718276385;
+	bh=M9SGDg9t1jAmCUwq/H51ExJ3QoRsu7XU3MaRiB18bj8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=WArTg+PmhOjeHsJ/H6PDJDZaZnODg6ssdfE/OhdrdZ0QSDoFZMucmMWRW/nJ6+cHY
-	 6QmGVeMAsJBF32j60BBBjPgEalESgZy6eSZrsp+q2aRxHwweLngqkvTwq4hXOzgaHf
-	 ZKV3aEWd8eD2Q2/oKn/PWWs52kjoOYmZfFcvr+D4=
-Subject: FAILED: patch "[PATCH] nilfs2: fix potential kernel bug due to lack of writeback" failed to apply to 4.19-stable tree
+	b=GlIGlOGKm2JOkcjteXK420EwQKU+HZVmK63kXJp+sGmh2mkxGq7Q7a7pSkJEaghYi
+	 y6KSI1vAddZfo2wUTwlxQwA0GGWcxm6bVFb8TrN1URknfDN2XF/atmHfNtsvL8vYdh
+	 3fvZJgr08aeSHjxQh83J42HU4WiGhfltvBJZps4M=
+Subject: FAILED: patch "[PATCH] nilfs2: fix nilfs_empty_dir() misjudgment and long loop on" failed to apply to 6.1-stable tree
 To: konishi.ryusuke@gmail.com,akpm@linux-foundation.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Jun 2024 12:59:30 +0200
-Message-ID: <2024061330-jolliness-decorator-05e9@gregkh>
+Date: Thu, 13 Jun 2024 12:59:36 +0200
+Message-ID: <2024061336-douche-credibly-5e48@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x a4ca369ca221bb7e06c725792ac107f0e48e82e7
+git cherry-pick -x 7373a51e7998b508af7136530f3a997b286ce81c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061330-jolliness-decorator-05e9@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061336-douche-credibly-5e48@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-a4ca369ca221 ("nilfs2: fix potential kernel bug due to lack of writeback flag waiting")
-ff5710c3f3c2 ("nilfs2: convert nilfs_segctor_prepare_write to use folios")
+7373a51e7998 ("nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors")
+09a46acb3697 ("nilfs2: return the mapped address from nilfs_get_page()")
 
 thanks,
 
@@ -78,76 +78,46 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a4ca369ca221bb7e06c725792ac107f0e48e82e7 Mon Sep 17 00:00:00 2001
+From 7373a51e7998b508af7136530f3a997b286ce81c Mon Sep 17 00:00:00 2001
 From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Date: Thu, 30 May 2024 23:15:56 +0900
-Subject: [PATCH] nilfs2: fix potential kernel bug due to lack of writeback
- flag waiting
+Date: Tue, 4 Jun 2024 22:42:55 +0900
+Subject: [PATCH] nilfs2: fix nilfs_empty_dir() misjudgment and long loop on
+ I/O errors
 
-Destructive writes to a block device on which nilfs2 is mounted can cause
-a kernel bug in the folio/page writeback start routine or writeback end
-routine (__folio_start_writeback in the log below):
+The error handling in nilfs_empty_dir() when a directory folio/page read
+fails is incorrect, as in the old ext2 implementation, and if the
+folio/page cannot be read or nilfs_check_folio() fails, it will falsely
+determine the directory as empty and corrupt the file system.
 
- kernel BUG at mm/page-writeback.c:3070!
- Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
- ...
- RIP: 0010:__folio_start_writeback+0xbaa/0x10e0
- Code: 25 ff 0f 00 00 0f 84 18 01 00 00 e8 40 ca c6 ff e9 17 f6 ff ff
-  e8 36 ca c6 ff 4c 89 f7 48 c7 c6 80 c0 12 84 e8 e7 b3 0f 00 90 <0f>
-  0b e8 1f ca c6 ff 4c 89 f7 48 c7 c6 a0 c6 12 84 e8 d0 b3 0f 00
- ...
- Call Trace:
-  <TASK>
-  nilfs_segctor_do_construct+0x4654/0x69d0 [nilfs2]
-  nilfs_segctor_construct+0x181/0x6b0 [nilfs2]
-  nilfs_segctor_thread+0x548/0x11c0 [nilfs2]
-  kthread+0x2f0/0x390
-  ret_from_fork+0x4b/0x80
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
+In addition, since nilfs_empty_dir() does not immediately return on a
+failed folio/page read, but continues to loop, this can cause a long loop
+with I/O if i_size of the directory's inode is also corrupted, causing the
+log writer thread to wait and hang, as reported by syzbot.
 
-This is because when the log writer starts a writeback for segment summary
-blocks or a super root block that use the backing device's page cache, it
-does not wait for the ongoing folio/page writeback, resulting in an
-inconsistent writeback state.
+Fix these issues by making nilfs_empty_dir() immediately return a false
+value (0) if it fails to get a directory folio/page.
 
-Fix this issue by waiting for ongoing writebacks when putting
-folios/pages on the backing device into writeback state.
-
-Link: https://lkml.kernel.org/r/20240530141556.4411-1-konishi.ryusuke@gmail.com
-Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
+Link: https://lkml.kernel.org/r/20240604134255.7165-1-konishi.ryusuke@gmail.com
 Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c8166c541d3971bf6c87
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
 Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
-index 60d4f59f7665..6ea81f1d5094 100644
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -1652,6 +1652,7 @@ static void nilfs_segctor_prepare_write(struct nilfs_sc_info *sci)
- 			if (bh->b_folio != bd_folio) {
- 				if (bd_folio) {
- 					folio_lock(bd_folio);
-+					folio_wait_writeback(bd_folio);
- 					folio_clear_dirty_for_io(bd_folio);
- 					folio_start_writeback(bd_folio);
- 					folio_unlock(bd_folio);
-@@ -1665,6 +1666,7 @@ static void nilfs_segctor_prepare_write(struct nilfs_sc_info *sci)
- 			if (bh == segbuf->sb_super_root) {
- 				if (bh->b_folio != bd_folio) {
- 					folio_lock(bd_folio);
-+					folio_wait_writeback(bd_folio);
- 					folio_clear_dirty_for_io(bd_folio);
- 					folio_start_writeback(bd_folio);
- 					folio_unlock(bd_folio);
-@@ -1681,6 +1683,7 @@ static void nilfs_segctor_prepare_write(struct nilfs_sc_info *sci)
- 	}
- 	if (bd_folio) {
- 		folio_lock(bd_folio);
-+		folio_wait_writeback(bd_folio);
- 		folio_clear_dirty_for_io(bd_folio);
- 		folio_start_writeback(bd_folio);
- 		folio_unlock(bd_folio);
+diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
+index a002a44ff161..52e50b1b7f22 100644
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -607,7 +607,7 @@ int nilfs_empty_dir(struct inode *inode)
+ 
+ 		kaddr = nilfs_get_folio(inode, i, &folio);
+ 		if (IS_ERR(kaddr))
+-			continue;
++			return 0;
+ 
+ 		de = (struct nilfs_dir_entry *)kaddr;
+ 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
 
 
