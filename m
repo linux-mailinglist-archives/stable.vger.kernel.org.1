@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D1E907122
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9D1906F40
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26C131C2308F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 399891C20C51
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B2CEC4;
-	Thu, 13 Jun 2024 12:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02EB51422B4;
+	Thu, 13 Jun 2024 12:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T97jMWZ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2XexvQNd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156FB384;
-	Thu, 13 Jun 2024 12:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51C982C76;
+	Thu, 13 Jun 2024 12:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282027; cv=none; b=K/Ez2ODX50Cyu7WCtC2B8O70mCytYuBvzYta5cIX5l+ldJY/PNHzlDvLdCeyc6mmBbk4fNaDEpPWfQjbQk7/vIg4Hv9j7vIL36JqyLxNeLRTfzcqpdsTuk3gDsihSe2BEJTGP8s59MhXxrP/Xy+lDSQIzVGo2RgWnuYNHv57sOI=
+	t=1718280909; cv=none; b=DodSXZj+wBKuLbHIekpv3vcMAIH+OOMdOPf5GA3oHudPvMyPL/MfuwEvnxZAn99HPIELHgQHQKUIq5I5JwcbNF/7B25SXnTeYOVNk3iSbZQy+IStuWHOrlaPbLoKftmMDoK43yzGuqN7mmtNl2gN2mzG3BomQAx/mXYNmRT+/3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282027; c=relaxed/simple;
-	bh=EvHPonryX9B5vKl2fC/Xj9uPuBQoHSoFOiFujO53JFs=;
+	s=arc-20240116; t=1718280909; c=relaxed/simple;
+	bh=fIhR0j0rc9JWZdfeo4gkgko0XsG/QUzp4AkF10HiigQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6abKz0/H+SagEP6rboOd1zCWWM407ADL/Erz0aTXPIsEZRGhUcNFQRdGoeKExFltfKPYnR2+xMztQKWV1NN83w2by5ymhJOGdgVF77cLkCmye0+Y6KbCPdQfSnHAHoJrdmqhNOJ1Yvx44+4cGiCOC7Z8B5S+oPQl9KBGfEozow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T97jMWZ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7F8C2BBFC;
-	Thu, 13 Jun 2024 12:33:46 +0000 (UTC)
+	 MIME-Version; b=lt6LfUhd5SaYrc/Z14qQA6JnZYABRZsdvHYk+tY/gn+9ngtvmPvWz/fyN4zaZvtj19HnSVz7n2CyNyjgm8BdHFWMLM6uyfHIlfJRtvXQH+yXmO0rGJzAzF7q5XmYpgN4XMXHlQKE1ZLANH47NNotIDYW2dtjyQRUO0YKIQqnYaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2XexvQNd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E99EC2BBFC;
+	Thu, 13 Jun 2024 12:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282027;
-	bh=EvHPonryX9B5vKl2fC/Xj9uPuBQoHSoFOiFujO53JFs=;
+	s=korg; t=1718280909;
+	bh=fIhR0j0rc9JWZdfeo4gkgko0XsG/QUzp4AkF10HiigQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T97jMWZ9/QXA+yVDY6VJ9iZYSsJCh7TbRqo7+iGpWL4QB9UWqCSu5zfPj/cMazzJa
-	 acPd8K1dnGHjfJQv8JPVvx1tRl6/dgkokPVWu6UhPD/zga1gkVOzJ10TkADxO07zeI
-	 g/F4IN3DNlUs+IZQdy5/fK6iWbkAnkkhiDnowG4M=
+	b=2XexvQNdvZ6MZ2M5dEtLxjcJub9GkPjlAznNFF2CPlP1iBO0EDSqOxBKS3+bvpstL
+	 nncAF6JzQcrX/2g52wWptQ+t8XgaGi9YMkZoKUdSMZNxPbl8dWUnJm1qMEx/Gz5EK4
+	 y9BJwOfIOdT+p5PSSewYAtn1Gi2GV5sL5yAP5i08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 137/402] media: ipu3-cio2: Request IRQ earlier
+Subject: [PATCH 5.10 076/317] usb: aqc111: stop lying about skb->truesize
 Date: Thu, 13 Jun 2024 13:31:34 +0200
-Message-ID: <20240613113307.480715330@linuxfoundation.org>
+Message-ID: <20240613113250.489190049@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a069f79bfa6ec1ea0744981ea8425c8a25322579 ]
+[ Upstream commit 9aad6e45c4e7d16b2bb7c3794154b828fb4384b4 ]
 
-Call devm_request_irq() before registering the async notifier, as otherwise
-it would be possible to use the device before the interrupts could be
-delivered to the driver.
+Some usb drivers try to set small skb->truesize and break
+core networking stacks.
 
-Fixes: c2a6a07afe4a ("media: intel-ipu3: cio2: add new MIPI-CSI2 driver")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+I replace one skb_clone() by an allocation of a fresh
+and small skb, to get minimally sized skbs, like we did
+in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
+in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
+stop lying about skb->truesize")
+
+Fixes: 361459cd9642 ("net: usb: aqc111: Implement RX data path")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240506135546.3641185-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ipu3/ipu3-cio2-main.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/usb/aqc111.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c b/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c
-index 29c660fe1425b..dfb2be0b9625a 100644
---- a/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c
-+++ b/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c
-@@ -1803,11 +1803,6 @@ static int cio2_pci_probe(struct pci_dev *pci_dev,
+diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
+index 4ea02116be182..895d4f5166f99 100644
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -1141,17 +1141,15 @@ static int aqc111_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 			continue;
+ 		}
  
- 	v4l2_async_notifier_init(&cio2->notifier);
+-		/* Clone SKB */
+-		new_skb = skb_clone(skb, GFP_ATOMIC);
++		new_skb = netdev_alloc_skb_ip_align(dev->net, pkt_len);
  
--	/* Register notifier for subdevices we care */
--	r = cio2_parse_firmware(cio2);
--	if (r)
--		goto fail_clean_notifier;
--
- 	r = devm_request_irq(dev, pci_dev->irq, cio2_irq, IRQF_SHARED,
- 			     CIO2_NAME, cio2);
- 	if (r) {
-@@ -1815,6 +1810,11 @@ static int cio2_pci_probe(struct pci_dev *pci_dev,
- 		goto fail_clean_notifier;
- 	}
+ 		if (!new_skb)
+ 			goto err;
  
-+	/* Register notifier for subdevices we care */
-+	r = cio2_parse_firmware(cio2);
-+	if (r)
-+		goto fail_clean_notifier;
-+
- 	pm_runtime_put_noidle(dev);
- 	pm_runtime_allow(dev);
+-		new_skb->len = pkt_len;
++		skb_put(new_skb, pkt_len);
++		memcpy(new_skb->data, skb->data, pkt_len);
+ 		skb_pull(new_skb, AQ_RX_HW_PAD);
+-		skb_set_tail_pointer(new_skb, new_skb->len);
+ 
+-		new_skb->truesize = SKB_TRUESIZE(new_skb->len);
+ 		if (aqc111_data->rx_checksum)
+ 			aqc111_rx_checksum(new_skb, pkt_desc);
  
 -- 
 2.43.0
