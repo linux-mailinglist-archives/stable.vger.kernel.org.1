@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0CC906ED2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3EB907048
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E20F1C23C67
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B95DE1F21353
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870D414533E;
-	Thu, 13 Jun 2024 12:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49CE1144D0F;
+	Thu, 13 Jun 2024 12:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQBmb72k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urIcriiL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460161448E0;
-	Thu, 13 Jun 2024 12:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090FB143747;
+	Thu, 13 Jun 2024 12:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280650; cv=none; b=vCWhY/NmI3MkOr9l7ueDSpwQrJPj+Zm6GfmJmc4xXnEcJb4PQ3o6JVPn0SsFftWbh0hFF2vnvKl23+DEV5/mcbhvHROYfsacWYJu2V+qMPDBLX6lCqwhl2Ju+wBn2iEpvu+apcN0weE5NwYe1DQjCgXpGgqoBcuOEBPcwy/OgUE=
+	t=1718281534; cv=none; b=BC3dJiSovww8ZXIX1jW1YBaoIt1iyXek6i9iMOZj24yxTZaP9ZNlU0rkSJ3wx1JkApCG5IpJNY6kA5gWL9Jb/WqrRKeYSueuj0BI1gpoMlyg6cRQ98zP+Wuv1BboNn9cMUQFbzQLQvkDe6Tt2/5+8KYxXP4xtQSxgEZ6vonW+u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280650; c=relaxed/simple;
-	bh=H1xElcmmTfhAVHIiEWoHypkGTPoRdsjIOjd6G4JBrJI=;
+	s=arc-20240116; t=1718281534; c=relaxed/simple;
+	bh=kPuCVOBN1lPQIcK487T6vrxKB3EUw2K8Nrl4ZlBjEmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JlrlJgOXcDFMJBCX6r9hA+HtheN/QM58mT+Fl4JtHxobWdf6P6H6PajuprJ/jiXBqi3Tqz5jBBRisEpno/a0lDrT53K0UC7+qee34E1Pad81tYGo1fK2//PYUinrXI/fDLxNPKnnZV4Mitvu+3xqUdau4Djf31xXotGVMZoodbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQBmb72k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C58C2BBFC;
-	Thu, 13 Jun 2024 12:10:49 +0000 (UTC)
+	 MIME-Version; b=DrTDrMLEun6Tx6HhJxAgcUaqCrYzycbXNL2gR6f2A9q5ytin/dXGzYaSVz/mHIvP/8uZHUCBHS0p83bBk1Dr7NsmV+7z7frAF9xbmbHHgU6DEyPs3MkXCXFtDcGm1ZizX9lrTWqKk9Zdq6ET97W5x6ajZ2UY2E++pt9Cp68I+Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urIcriiL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA3EC2BBFC;
+	Thu, 13 Jun 2024 12:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280650;
-	bh=H1xElcmmTfhAVHIiEWoHypkGTPoRdsjIOjd6G4JBrJI=;
+	s=korg; t=1718281533;
+	bh=kPuCVOBN1lPQIcK487T6vrxKB3EUw2K8Nrl4ZlBjEmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tQBmb72kjHbs18qEDByok7+VYMwCTpF528aNkdR/+3+DXxXkrr/dz4utR6jlS2hL9
-	 P7YHL1bKH3Cqn322xtPHMPlROAz35FykLdg3vJdGGh9w1dljTwtmk6tcIe0d5bSxIC
-	 6vqTiRoKsVPw+C+U95cCINVPbOVEtrD99IhCjWMo=
+	b=urIcriiLMUCRUjOQpD/Z8VhbEgOrWDg8VQIGz9ptTRbpycT9STSnACRjCClrcLJV/
+	 RLiGcGVO1ulzKjegOGLbhq9S6lNsEjT030pUIkRDroi52lDuixOJWdTTO61tWmlL2Q
+	 PCnmni97hX6IbWxrSPYKx+tiY+hzXIfuopKXu/uU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Subject: [PATCH 6.6 125/137] EDAC/igen6: Convert PCIBIOS_* return codes to errnos
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: [PATCH 5.10 287/317] media: mc: mark the media devnode as registered from the, start
 Date: Thu, 13 Jun 2024 13:35:05 +0200
-Message-ID: <20240613113228.148570100@linuxfoundation.org>
+Message-ID: <20240613113258.654438868@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit f8367a74aebf88dc8b58a0db6a6c90b4cb8fc9d3 upstream.
+commit 4bc60736154bc9e0e39d3b88918f5d3762ebe5e0 upstream.
 
-errcmd_enable_error_reporting() uses pci_{read,write}_config_word()
-that return PCIBIOS_* codes. The return code is then returned all the
-way into the probe function igen6_probe() that returns it as is. The
-probe functions, however, should return normal errnos.
+First the media device node was created, and if successful it was
+marked as 'registered'. This leaves a small race condition where
+an application can open the device node and get an error back
+because the 'registered' flag was not yet set.
 
-Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-errno before returning it from errcmd_enable_error_reporting().
+Change the order: first set the 'registered' flag, then actually
+register the media device node. If that fails, then clear the flag.
 
-Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: cf4b9211b568 ("[media] media: Media device node support")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240527132236.13875-2-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/igen6_edac.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/mc/mc-devnode.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -627,7 +627,7 @@ static int errcmd_enable_error_reporting
+--- a/drivers/media/mc/mc-devnode.c
++++ b/drivers/media/mc/mc-devnode.c
+@@ -246,15 +246,14 @@ int __must_check media_devnode_register(
+ 	kobject_set_name(&devnode->cdev.kobj, "media%d", devnode->minor);
  
- 	rc = pci_read_config_word(imc->pdev, ERRCMD_OFFSET, &errcmd);
- 	if (rc)
--		return rc;
-+		return pcibios_err_to_errno(rc);
+ 	/* Part 3: Add the media and char device */
++	set_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
+ 	ret = cdev_device_add(&devnode->cdev, &devnode->dev);
+ 	if (ret < 0) {
++		clear_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
+ 		pr_err("%s: cdev_device_add failed\n", __func__);
+ 		goto cdev_add_error;
+ 	}
  
- 	if (enable)
- 		errcmd |= ERRCMD_CE | ERRSTS_UE;
-@@ -636,7 +636,7 @@ static int errcmd_enable_error_reporting
- 
- 	rc = pci_write_config_word(imc->pdev, ERRCMD_OFFSET, errcmd);
- 	if (rc)
--		return rc;
-+		return pcibios_err_to_errno(rc);
- 
+-	/* Part 4: Activate this minor. The char device can now be used. */
+-	set_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
+-
  	return 0;
- }
+ 
+ cdev_add_error:
 
 
 
