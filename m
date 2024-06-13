@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-50893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0D5906D51
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B9F906C21
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:47:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 076271F27D5C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30A2D1C20B0D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326021459F7;
-	Thu, 13 Jun 2024 11:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DEA1143C5A;
+	Thu, 13 Jun 2024 11:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbevANBP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3zaobS2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56F91386DF;
-	Thu, 13 Jun 2024 11:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF2B13D624;
+	Thu, 13 Jun 2024 11:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279697; cv=none; b=jKeCTFNk0e+xUFwXudBNJoAOCd3t6qt8+kigwX7BGo2b3Gg9S2Odog+OfB8YHZDknhBzy/schix7S0RmPVb2OU7IO7yFRsfbtXpSGX3GlxlvIgXs+hFex6Hma0PiiGkoulCF0LZWw8w5zJYIXqeJz+0UaUGYZ9xQBpM8NtTrrkk=
+	t=1718279175; cv=none; b=rpx1EUIAmQzDMxqIxD7HVe6poAQ4B03hx5ia/2ozqBn3TwitKskdiuBotTTNsVjHnwe4/Nao5ZGhcx/es+qZ7Sdt9+zeOqfaLzh8f0YR2kxTzo0u6G8m/FPz1awCTMq+oBGruB1aP2HN4FzWrm8rLDohNP95wghRglR0khXIFdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279697; c=relaxed/simple;
-	bh=Sbj3MdrXO6SN6TYcm9pjoB5i/yR03U+3H1xjZRz8ZLc=;
+	s=arc-20240116; t=1718279175; c=relaxed/simple;
+	bh=/i08v+W+f2AiEWIQ03Uv8IwZ7QqOE7hbZiHMnT64Mp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bauGaBfzMTliAaQVnS8z68Z4GdsLwlwXGedeLujynRttwslINg/dHmMrnKDm+klPXb/wdKzMVDZmU1xpP3txtED5NeZ1DV9DJtCMsbak3pL1FJ81QvRPnSheO7ZzKQcLZzv+Vw7qtcJxWYhnl/JbGxNTylSY7GfG8ZQfw3dSVZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbevANBP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CABFC2BBFC;
-	Thu, 13 Jun 2024 11:54:56 +0000 (UTC)
+	 MIME-Version; b=k+H7h8YLMZf68wZwVTnexuaPqWNCA6R2mSKV47hThl7MvLitHWdDAWx6Pjpqr/PBvhcLNLOtiwGhp/idFyTnc1uESd3DJwP563sTHBMxTurR9mgbVM9pWqlo+y6vSmro3VstKXXHC/dCvxTVjsTmoxNV4ucEp3U/CYaw0xgVits=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3zaobS2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8717EC2BBFC;
+	Thu, 13 Jun 2024 11:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279696;
-	bh=Sbj3MdrXO6SN6TYcm9pjoB5i/yR03U+3H1xjZRz8ZLc=;
+	s=korg; t=1718279174;
+	bh=/i08v+W+f2AiEWIQ03Uv8IwZ7QqOE7hbZiHMnT64Mp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YbevANBPKRyyY3v8LpEBCu0RKFt9fG/F3TDO8+kPxvNS/ybR4YGlo14cpecxJcMoB
-	 36c0KuOWA1wtU9IERu3o2mvm3NOlqAXeNdLEoQmG6Xs/Pjkt9xJgC61ypPDFenat3M
-	 9rcvDrWLvbYKQDYLiPT8fXR/BPzUafT9kxfSp2Ss=
+	b=C3zaobS26vE/VZNY2Gg4EJuQhj2EBrO9aYOI4RnLwPd2HgxZh+W6ItTpwRI+4EEgg
+	 nZEKKvKXUBn+vS016l72qEangNYbMgjvMWtA2+t1dblgNpO2zv4Hm5Mq5uWBMn3iqL
+	 dw+ofGvgMiIMO3k/XNvgxK3/ztvPgA6N3L3b/jgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.9 122/157] ARM: dts: samsung: smdkv310: fix keypad no-autorepeat
-Date: Thu, 13 Jun 2024 13:34:07 +0200
-Message-ID: <20240613113232.131884210@linuxfoundation.org>
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Subject: [PATCH 4.19 200/213] crypto: qat - Fix ADF_DEV_RESET_SYNC memory leak
+Date: Thu, 13 Jun 2024 13:34:08 +0200
+Message-ID: <20240613113235.694460209@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 87d8e522d6f5a004f0aa06c0def302df65aff296 upstream.
+commit d3b17c6d9dddc2db3670bc9be628b122416a3d26 upstream.
 
-Although the Samsung SoC keypad binding defined
-linux,keypad-no-autorepeat property, Linux driver never implemented it
-and always used linux,input-no-autorepeat.  Correct the DTS to use
-property actually implemented.
+Using completion_done to determine whether the caller has gone
+away only works after a complete call.  Furthermore it's still
+possible that the caller has not yet called wait_for_completion,
+resulting in another potential UAF.
 
-This also fixes dtbs_check errors like:
+Fix this by making the caller use cancel_work_sync and then freeing
+the memory safely.
 
-  exynos4210-smdkv310.dtb: keypad@100a0000: 'linux,keypad-no-autorepeat' does not match any of the regexes: '^key-[0-9a-z]+$', 'pinctrl-[0-9]+'
-
-Cc: <stable@vger.kernel.org>
-Fixes: 0561ceabd0f1 ("ARM: dts: Add intial dts file for EXYNOS4210 SoC, SMDKV310 and ORIGEN")
-Link: https://lore.kernel.org/r/20240312183105.715735-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 7d42e097607c ("crypto: qat - resolve race condition during AER recovery")
+Cc: <stable@vger.kernel.org> #6.8+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/samsung/exynos4210-smdkv310.dts |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/qat/qat_common/adf_aer.c |   19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
---- a/arch/arm/boot/dts/samsung/exynos4210-smdkv310.dts
-+++ b/arch/arm/boot/dts/samsung/exynos4210-smdkv310.dts
-@@ -88,7 +88,7 @@
- &keypad {
- 	samsung,keypad-num-rows = <2>;
- 	samsung,keypad-num-columns = <8>;
--	linux,keypad-no-autorepeat;
-+	linux,input-no-autorepeat;
- 	wakeup-source;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&keypad_rows &keypad_cols>;
+--- a/drivers/crypto/qat/qat_common/adf_aer.c
++++ b/drivers/crypto/qat/qat_common/adf_aer.c
+@@ -139,8 +139,7 @@ static void adf_device_reset_worker(stru
+ 	if (adf_dev_init(accel_dev) || adf_dev_start(accel_dev)) {
+ 		/* The device hanged and we can't restart it so stop here */
+ 		dev_err(&GET_DEV(accel_dev), "Restart device failed\n");
+-		if (reset_data->mode == ADF_DEV_RESET_ASYNC ||
+-		    completion_done(&reset_data->compl))
++		if (reset_data->mode == ADF_DEV_RESET_ASYNC)
+ 			kfree(reset_data);
+ 		WARN(1, "QAT: device restart failed. Device is unusable\n");
+ 		return;
+@@ -148,16 +147,8 @@ static void adf_device_reset_worker(stru
+ 	adf_dev_restarted_notify(accel_dev);
+ 	clear_bit(ADF_STATUS_RESTARTING, &accel_dev->status);
+ 
+-	/*
+-	 * The dev is back alive. Notify the caller if in sync mode
+-	 *
+-	 * If device restart will take a more time than expected,
+-	 * the schedule_reset() function can timeout and exit. This can be
+-	 * detected by calling the completion_done() function. In this case
+-	 * the reset_data structure needs to be freed here.
+-	 */
+-	if (reset_data->mode == ADF_DEV_RESET_ASYNC ||
+-	    completion_done(&reset_data->compl))
++	/* The dev is back alive. Notify the caller if in sync mode */
++	if (reset_data->mode == ADF_DEV_RESET_ASYNC)
+ 		kfree(reset_data);
+ 	else
+ 		complete(&reset_data->compl);
+@@ -192,10 +183,10 @@ static int adf_dev_aer_schedule_reset(st
+ 		if (!timeout) {
+ 			dev_err(&GET_DEV(accel_dev),
+ 				"Reset device timeout expired\n");
++			cancel_work_sync(&reset_data->reset_work);
+ 			ret = -EFAULT;
+-		} else {
+-			kfree(reset_data);
+ 		}
++		kfree(reset_data);
+ 		return ret;
+ 	}
+ 	return 0;
 
 
 
