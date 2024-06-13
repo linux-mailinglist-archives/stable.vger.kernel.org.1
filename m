@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-51786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F35D9071A0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:39:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C61A9071A2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:39:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 587DC1C2425F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:39:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EC53283A4E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2581428EA;
-	Thu, 13 Jun 2024 12:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6644A1448C9;
+	Thu, 13 Jun 2024 12:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGODDEi2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HI19sVg9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769C914198E;
-	Thu, 13 Jun 2024 12:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237971EEE0;
+	Thu, 13 Jun 2024 12:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282311; cv=none; b=BFO26sh2kh4LhRgT+Nmt0u0up+2qbNl+XkliIic1IcWQi1QikQQpZ9Uykz9HciY9TVH8A89S+035D2x0f5a3/vEQJCi/S5HF3LkfSA+45nDlrK+tS6myEJ+MeAB4yre8w/8//g8URXWAOJOvIFwDpq6N2ewv1mO1JRcD0piGgF4=
+	t=1718282316; cv=none; b=Uc4kE869UDKoKFijmQCDBu7501LyPAqX9ifptiDMzU46GGeAjoDAjLqjN1B4JVvIB6q2kWiV7I35eLNxlmpKNT2GE/8P+ABCAmPP94B/ZqfQtZqz1Y4MqDxmoAhjusu0cwTWU4H2FnDs1qd4NicmPCU0WslBCntxU4aBbZt0RsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282311; c=relaxed/simple;
-	bh=pIY1Qo317bxf4jAy5Y0W/bcWml82og9i0/jZa5OCaU4=;
+	s=arc-20240116; t=1718282316; c=relaxed/simple;
+	bh=rQ8RNlV1B/cRHGh91WAHlUfDfBQcdDCGequ+3JE/sBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XormJQ1QaZvLCpNbN1yBRxL+kEebb22nBYgVYT7taW7uuMi+QaGICLYzyOYLmuMN05BtSG0eOw83yEM9A6SLyJWXiGKbQHPNfTyQGckSlJPK++fNSVa7i59lqre1NLedEDMGeYKjuPJxCk718BT5vc5r2X2T6TOyzUsXh/Jv/FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGODDEi2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD235C4AF1A;
-	Thu, 13 Jun 2024 12:38:29 +0000 (UTC)
+	 MIME-Version; b=tLWl2tG872oq4TjMO/G2AvNPtdUiLVk+sk9L1bi+LCScj8+vkFPJWIK6cbfyZB0xIWcEcCH2Ktg8Y4bfw8hXGDSgFKhf0bgRVWsx/QQih/cqI7d3b/fM7PsJnkUykcqk/TWhQIlnqRZ7LAIB7QU/MV/2aPWzV7SWfvL+4nRXwvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HI19sVg9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDEBC2BBFC;
+	Thu, 13 Jun 2024 12:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282310;
-	bh=pIY1Qo317bxf4jAy5Y0W/bcWml82og9i0/jZa5OCaU4=;
+	s=korg; t=1718282316;
+	bh=rQ8RNlV1B/cRHGh91WAHlUfDfBQcdDCGequ+3JE/sBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cGODDEi2721Ftsu+bgSoULJPOHfxB41DGh8HRhhFLusjlOcFRdMmqU5EMxQ0yIHbE
-	 N0s6quhkLsY0pGWrUlzchVS2EyJePC3C07NKokmALyfLa1WUYaVxHCNb2CAvRMB28A
-	 kpRPa6mg2opc96eY7tTnrSMU9wlOHkbTR661UoKw=
+	b=HI19sVg97ub0rf7B6WHNoG4erWo+sJYpzjeqOejuaKfMOFLrPD/E9COMocoAlGDjI
+	 1yPM0Y+hCIHtDTROeTdXfMhCNoCUYmHLAFTHsSI0DDdEOOFJJ8Ri/oiKCB2skNv5RH
+	 FtNaxN7RfEk/o/pQqmzcHwHdco34AYwKSZJIt794=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 234/402] f2fs: compress: dont allow unaligned truncation on released compress inode
-Date: Thu, 13 Jun 2024 13:33:11 +0200
-Message-ID: <20240613113311.270327688@linuxfoundation.org>
+Subject: [PATCH 5.15 235/402] serial: sh-sci: protect invalidating RXDMA on shutdown
+Date: Thu, 13 Jun 2024 13:33:12 +0200
+Message-ID: <20240613113311.311653487@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
 References: <20240613113302.116811394@linuxfoundation.org>
@@ -66,62 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 29ed2b5dd521ce7c5d8466cd70bf0cc9d07afeee ]
+[ Upstream commit aae20f6e34cd0cbd67a1d0e5877561c40109a81b ]
 
-f2fs image may be corrupted after below testcase:
-- mkfs.f2fs -O extra_attr,compression -f /dev/vdb
-- mount /dev/vdb /mnt/f2fs
-- touch /mnt/f2fs/file
-- f2fs_io setflags compression /mnt/f2fs/file
-- dd if=/dev/zero of=/mnt/f2fs/file bs=4k count=4
-- f2fs_io release_cblocks /mnt/f2fs/file
-- truncate -s 8192 /mnt/f2fs/file
-- umount /mnt/f2fs
-- fsck.f2fs /dev/vdb
+The to-be-fixed commit removed locking when invalidating the DMA RX
+descriptors on shutdown. It overlooked that there is still a rx_timer
+running which may still access the protected data. So, re-add the
+locking.
 
-[ASSERT] (fsck_chk_inode_blk:1256)  --> ino: 0x5 has i_blocks: 0x00000002, but has 0x3 blocks
-[FSCK] valid_block_count matching with CP             [Fail] [0x4, 0x5]
-[FSCK] other corrupted bugs                           [Fail]
-
-The reason is: partial truncation assume compressed inode has reserved
-blocks, after partial truncation, valid block count may change w/o
-.i_blocks and .total_valid_block_count update, result in corruption.
-
-This patch only allow cluster size aligned truncation on released
-compress inode for fixing.
-
-Fixes: c61404153eb6 ("f2fs: introduce FI_COMPRESS_RELEASED instead of using IMMUTABLE bit")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
+Closes: https://lore.kernel.org/r/ee6c9e16-9f29-450e-81da-4a8dceaa8fc7@de.bosch.com
+Fixes: 2c4ee23530ff ("serial: sh-sci: Postpone DMA release when falling back to PIO")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/r/20240506114016.30498-7-wsa+renesas@sang-engineering.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/tty/serial/sh-sci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 30b015fbec6a5..be9536815e50d 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -899,9 +899,14 @@ int f2fs_setattr(struct user_namespace *mnt_userns, struct dentry *dentry,
- 				  ATTR_GID | ATTR_TIMES_SET))))
- 		return -EPERM;
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index 25318176091b2..6cd7bd7b6782d 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -1255,9 +1255,14 @@ static void sci_dma_rx_chan_invalidate(struct sci_port *s)
+ static void sci_dma_rx_release(struct sci_port *s)
+ {
+ 	struct dma_chan *chan = s->chan_rx_saved;
++	struct uart_port *port = &s->port;
++	unsigned long flags;
  
--	if ((attr->ia_valid & ATTR_SIZE) &&
--		!f2fs_is_compress_backend_ready(inode))
--		return -EOPNOTSUPP;
-+	if ((attr->ia_valid & ATTR_SIZE)) {
-+		if (!f2fs_is_compress_backend_ready(inode))
-+			return -EOPNOTSUPP;
-+		if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED) &&
-+			!IS_ALIGNED(attr->ia_size,
-+			F2FS_BLK_TO_BYTES(F2FS_I(inode)->i_cluster_size)))
-+			return -EINVAL;
-+	}
- 
- 	err = setattr_prepare(&init_user_ns, dentry, attr);
- 	if (err)
++	uart_port_lock_irqsave(port, &flags);
+ 	s->chan_rx_saved = NULL;
+ 	sci_dma_rx_chan_invalidate(s);
++	uart_port_unlock_irqrestore(port, flags);
++
+ 	dmaengine_terminate_sync(chan);
+ 	dma_free_coherent(chan->device->dev, s->buf_len_rx * 2, s->rx_buf[0],
+ 			  sg_dma_address(&s->sg_rx[0]));
 -- 
 2.43.0
 
