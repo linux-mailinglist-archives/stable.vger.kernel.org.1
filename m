@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15AC907245
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C50C69072EF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA1721C222E9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96852B295EC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6AA23A0;
-	Thu, 13 Jun 2024 12:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C9E137914;
+	Thu, 13 Jun 2024 12:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olHSxdPk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfMeQ5xr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFD82566;
-	Thu, 13 Jun 2024 12:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A33144D36;
+	Thu, 13 Jun 2024 12:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282729; cv=none; b=opuSVZzXcolszjLvynps08+23hkmo3mHAv3hvfb6tUyDeq62neDp7NMCg5QjE0AYnrEJ6m9vMRIJOI85DRh83OmuWck0oBLkU6qIgZzxZRV+Tp6kVeW78VKLoCDrCgnvIYDMsJzyeVANCG6QJqvmo3gajP1v/exE4VcfQ9juZbY=
+	t=1718282908; cv=none; b=jlHeX1Gggj0hwJLOvlE4QOT51VXZcO7sGZG5LBKFpd74wadoHi3RM88HXymtkk8PB94ZGMtPHbr7VMB6AT55C8vSEF5Fpl3y3p9EedK2K+CSgtQB4UkQd9qgDXfZD6vaJe23x5LfA3Ipcxb4+05g5r05WNecUCsZaTsSYSBdS0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282729; c=relaxed/simple;
-	bh=w/AlfZ2nMuNKtl0uy1qMSDX+Wq0XFIM5YAGKsmTip7o=;
+	s=arc-20240116; t=1718282908; c=relaxed/simple;
+	bh=WCu0uCE1zbmbG962tRnlDoDOxyiz90uLovaGAI+w9qc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=joRVZfHakG7brvUNZdua7lDEq8cBBhdf/zubRJEvH97crsVx0673PnsTgwrFEZICb2AVeDTpOSXE26OcPpdRFJCitR9PiZVCHi7CRAMEgd4zN1DwUgEPqPc0LBEFstd+1p4CxhJYLRDWGGc3yX0kQwPkW8ROKbZHZHcNeMLFIsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olHSxdPk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471E6C2BBFC;
-	Thu, 13 Jun 2024 12:45:28 +0000 (UTC)
+	 MIME-Version; b=HYUuLx+4hwmymvD3PvtiptPJW1cPqPUlypV4liySE0vHJMl/8/XX5MQoaWqZt9irOs/PmyLksZoC+pAe/Z+TLDeGXb/efOd9EaHxK1jbHjywXnO0a8y/T+gmYXEVlIoGb4ENS662swFl0WNmlXZPMZhTyZ/KFFVuXc9pzKQJvNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfMeQ5xr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E57C2BBFC;
+	Thu, 13 Jun 2024 12:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282728;
-	bh=w/AlfZ2nMuNKtl0uy1qMSDX+Wq0XFIM5YAGKsmTip7o=;
+	s=korg; t=1718282907;
+	bh=WCu0uCE1zbmbG962tRnlDoDOxyiz90uLovaGAI+w9qc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=olHSxdPk3qDVA14lG5CH4njVeMdq8UtfMuRCSocs+sImvoW4jzLbaDXDf/1fBObBj
-	 RXe+xkgYeY33ZOqFawt6WoMvnN5Yg3XmTevybt8grqWlc489AJwWvqt3SWP1bxPtng
-	 3rTw2iY+9xK9itcC3QKOUhdaScAWpRPM+inBlMPo=
+	b=XfMeQ5xr26GyPm8+Z1+Tu1+C5eCJp/wHSHe5hm8hKzHluThrvhBhjNyA76vc26x5V
+	 TAzImjdKnEl7ZWB0TayCH5ZLoReT2zAqsCw/Fn0sgivvOnsPd0TMdLZpUYOBZm0uvG
+	 +sBy+bjgk5QxLPtdiSuXc57ID6wxtkikd+Yhi6ZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Ma <li.ma@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 375/402] drm/amdgpu/atomfirmware: add intergrated info v2.3 table
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.1 34/85] media: mc: Fix graph walk in media_pipeline_start
 Date: Thu, 13 Jun 2024 13:35:32 +0200
-Message-ID: <20240613113316.773303405@linuxfoundation.org>
+Message-ID: <20240613113215.461789794@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Ma <li.ma@amd.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit e64e8f7c178e5228e0b2dbb504b9dc75953a319f upstream.
+commit 8a9d420149c477e7c97fbd6453704e4612bdd3fa upstream.
 
-[Why]
-The vram width value is 0.
-Because the integratedsysteminfo table in VBIOS has updated to 2.3.
+The graph walk tries to follow all links, even if they are not between
+pads. This causes a crash with, e.g. a MEDIA_LNK_FL_ANCILLARY_LINK link.
 
-[How]
-Driver needs a new intergrated info v2.3 table too.
-Then the vram width value will be correct.
+Fix this by allowing the walk to proceed only for MEDIA_LNK_FL_DATA_LINK
+links.
 
-Signed-off-by: Li Ma <li.ma@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc: stable@vger.kernel.org # for 6.1 and later
+Fixes: ae219872834a ("media: mc: entity: Rewrite media_pipeline_start()")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c |   15 ++++++++
- drivers/gpu/drm/amd/include/atomfirmware.h       |   43 +++++++++++++++++++++++
- 2 files changed, 58 insertions(+)
+ drivers/media/mc/mc-entity.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c
-@@ -149,6 +149,7 @@ union igp_info {
- 	struct atom_integrated_system_info_v1_11 v11;
- 	struct atom_integrated_system_info_v1_12 v12;
- 	struct atom_integrated_system_info_v2_1 v21;
-+	struct atom_integrated_system_info_v2_3 v23;
- };
+--- a/drivers/media/mc/mc-entity.c
++++ b/drivers/media/mc/mc-entity.c
+@@ -593,6 +593,12 @@ static int media_pipeline_explore_next_l
+ 	link = list_entry(entry->links, typeof(*link), list);
+ 	last_link = media_pipeline_walk_pop(walk);
  
- union umc_info {
-@@ -283,6 +284,20 @@ amdgpu_atomfirmware_get_vram_info(struct
- 					if (vram_type)
- 						*vram_type = convert_atom_mem_type_to_vram_type(adev, mem_type);
- 					break;
-+				case 3:
-+					mem_channel_number = igp_info->v23.umachannelnumber;
-+					if (!mem_channel_number)
-+						mem_channel_number = 1;
-+					mem_type = igp_info->v23.memorytype;
-+					if (mem_type == LpDdr5MemType)
-+						mem_channel_width = 32;
-+					else
-+						mem_channel_width = 64;
-+					if (vram_width)
-+						*vram_width = mem_channel_number * mem_channel_width;
-+					if (vram_type)
-+						*vram_type = convert_atom_mem_type_to_vram_type(adev, mem_type);
-+					break;
- 				default:
- 					return -EINVAL;
- 				}
---- a/drivers/gpu/drm/amd/include/atomfirmware.h
-+++ b/drivers/gpu/drm/amd/include/atomfirmware.h
-@@ -1467,6 +1467,49 @@ struct atom_integrated_system_info_v2_2
- 	uint32_t  reserved4[189];
- };
- 
-+struct uma_carveout_option {
-+  char       optionName[29];        //max length of string is 28chars + '\0'. Current design is for "minimum", "Medium", "High". This makes entire struct size 64bits
-+  uint8_t    memoryCarvedGb;        //memory carved out with setting
-+  uint8_t    memoryRemainingGb;     //memory remaining on system
-+  union {
-+    struct _flags {
-+      uint8_t Auto     : 1;
-+      uint8_t Custom   : 1;
-+      uint8_t Reserved : 6;
-+    } flags;
-+    uint8_t all8;
-+  } uma_carveout_option_flags;
-+};
++	if ((link->flags & MEDIA_LNK_FL_LINK_TYPE) != MEDIA_LNK_FL_DATA_LINK) {
++		dev_dbg(walk->mdev->dev,
++			"media pipeline: skipping link (not data-link)\n");
++		return 0;
++	}
 +
-+struct atom_integrated_system_info_v2_3 {
-+  struct  atom_common_table_header table_header;
-+  uint32_t  vbios_misc; // enum of atom_system_vbiosmisc_def
-+  uint32_t  gpucapinfo; // enum of atom_system_gpucapinf_def
-+  uint32_t  system_config;
-+  uint32_t  cpucapinfo;
-+  uint16_t  gpuclk_ss_percentage; // unit of 0.001%,   1000 mean 1%
-+  uint16_t  gpuclk_ss_type;
-+  uint16_t  dpphy_override;  // bit vector, enum of atom_sysinfo_dpphy_override_def
-+  uint8_t memorytype;       // enum of atom_dmi_t17_mem_type_def, APU memory type indication.
-+  uint8_t umachannelnumber; // number of memory channels
-+  uint8_t htc_hyst_limit;
-+  uint8_t htc_tmp_limit;
-+  uint8_t reserved1; // dp_ss_control
-+  uint8_t gpu_package_id;
-+  struct  edp_info_table  edp1_info;
-+  struct  edp_info_table  edp2_info;
-+  uint32_t  reserved2[8];
-+  struct  atom_external_display_connection_info extdispconninfo;
-+  uint8_t UMACarveoutVersion;
-+  uint8_t UMACarveoutIndexMax;
-+  uint8_t UMACarveoutTypeDefault;
-+  uint8_t UMACarveoutIndexDefault;
-+  uint8_t UMACarveoutType;           //Auto or Custom
-+  uint8_t UMACarveoutIndex;
-+  struct  uma_carveout_option UMASizeControlOption[20];
-+  uint8_t reserved3[110];
-+};
-+
- // system_config
- enum atom_system_vbiosmisc_def{
-   INTEGRATED_SYSTEM_INFO__GET_EDID_CALLBACK_FUNC_SUPPORT = 0x01,
+ 	dev_dbg(walk->mdev->dev,
+ 		"media pipeline: exploring link '%s':%u -> '%s':%u\n",
+ 		link->source->entity->name, link->source->index,
 
 
 
