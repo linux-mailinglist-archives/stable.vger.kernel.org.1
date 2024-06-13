@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-50843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1439B906D17
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:58:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 536D7906C09
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A704CB25CD4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:58:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7AF1B20BA7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3AD145FFB;
-	Thu, 13 Jun 2024 11:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34F21448E6;
+	Thu, 13 Jun 2024 11:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWC3BKid"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVsFm/X4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECDA143C50;
-	Thu, 13 Jun 2024 11:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F852143739;
+	Thu, 13 Jun 2024 11:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279549; cv=none; b=XkZSxm8kkjIFPioB+O5N8n68fT6srptP+fEnJ/WijJQZ48uIyhCUHBA6tyoftIfw2viBHJW8MrgiTDcc39mMyGp9SYK2M0Dt/LuLsRRkkgvjROopNu0XY9pMswIluygXYY+TaDQfrGp+oZRf8vgs8jMS2Iku7R+gbq9pFrJ84VI=
+	t=1718279142; cv=none; b=rufA+jbtNuZAzmE1fHrKg/SpJp5FGivbhoSnWxAVamYw2E22V1xGe0Bk8sx5dwnK9n4Yk32sxrt6jmldrBGAOFZzGIQ10fGeKNlwn71D8DY338VMiM5a26QE4K0FeXWKSNgw60VoQ+6hfkxQrnEdO4FwziC+BS0gB/8clr6/SMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279549; c=relaxed/simple;
-	bh=ubiqn1o67vaqW2+4LHJNnYVicdnmWBkx4v5Bd9qznRw=;
+	s=arc-20240116; t=1718279142; c=relaxed/simple;
+	bh=esNmr7O7Ox5oK4COzcNwqQspADfbzlqiYy9Vo5Qenk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clIm6G8tXeOtMrmb8mLVjKO5lCwZREDN/DaG8xnwokmFh1/z1uYwQ1ERxjC6C/DFTqiqHp1IFGt2VUzuU0DAWyfo9osYLbLXWXjJgBX/iJhNYgiy9qTBA9WEGeQBZwxSaSRRUI0nU1z5BPpQ1pRBjRggSIvNKlKPxe2JL44ika8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWC3BKid; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C39C32786;
-	Thu, 13 Jun 2024 11:52:28 +0000 (UTC)
+	 MIME-Version; b=dxLYXCHBVifiLj5rmVawcjhpeJvSBQ0/J2BDKs7CRZfmuDMBi8sko3ANEQ+26WT67FasNAeReRw4TOLT+4v59JTEJW6g1I3y4z2ynZagJSMp24doaEhR7u3PfhEx2IQR5Y2uI8WDhHDeYIWctcL1y+b5iOYYK57P1tt/qXotWj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVsFm/X4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA75C2BBFC;
+	Thu, 13 Jun 2024 11:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279548;
-	bh=ubiqn1o67vaqW2+4LHJNnYVicdnmWBkx4v5Bd9qznRw=;
+	s=korg; t=1718279142;
+	bh=esNmr7O7Ox5oK4COzcNwqQspADfbzlqiYy9Vo5Qenk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jWC3BKidtc4dZWlJkAk5dDhNEX9unxi17NsRSCm1eQSuxZPrLl1v2pZb7MbPhiVIW
-	 g0mOka1rYGcuZRk7DU7dvYNQNIE2iqnHYDQDE4QlXvoH/cAPEppvjNfSmR8/pSb0bS
-	 RUdReRvV6Op12vGTuNHaDYbonE09fMwYur1QHc9E=
+	b=YVsFm/X4FUJinMk7rCXvviDo6NYC80ywkvhWdCXiSYL6pTn/CTFbbh+Avm/q8hTwq
+	 bKmRfhs1rqK4MkFtneTZqOadDCD3y9j+OmXD1YACmhqLS7hXZ4ebMZcVgrvTm8NmSe
+	 THF7D54JFpfleA1gzxwRLAMFsAgmeDhdq48KPMNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuval El-Hanany <YuvalE@radware.com>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 6.9 113/157] Revert "xsk: Support redirect to any socket bound to the same umem"
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 190/213] netfilter: nf_tables: skip dead set elements in netlink dump
 Date: Thu, 13 Jun 2024 13:33:58 +0200
-Message-ID: <20240613113231.791031267@linuxfoundation.org>
+Message-ID: <20240613113235.306182239@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magnus Karlsson <magnus.karlsson@intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 7fcf26b315bbb728036da0862de6b335da83dff2 upstream.
+[ Upstream commit 6b1ca88e4bb63673dc9f9c7f23c899f22c3cb17a ]
 
-This reverts commit 2863d665ea41282379f108e4da6c8a2366ba66db.
+Delete from packet path relies on the garbage collector to purge
+elements with NFT_SET_ELEM_DEAD_BIT on.
 
-This patch introduced a potential kernel crash when multiple napi instances
-redirect to the same AF_XDP socket. By removing the queue_index check, it is
-possible for multiple napi instances to access the Rx ring at the same time,
-which will result in a corrupted ring state which can lead to a crash when
-flushing the rings in __xsk_flush(). This can happen when the linked list of
-sockets to flush gets corrupted by concurrent accesses. A quick and small fix
-is not possible, so let us revert this for now.
+Skip these dead elements from nf_tables_dump_setelem() path, I very
+rarely see tests/shell/testcases/maps/typeof_maps_add_delete reports
+[DUMP FAILED] showing a mismatch in the expected output with an element
+that should not be there.
 
-Reported-by: Yuval El-Hanany <YuvalE@radware.com>
-Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/xdp-newbies/8100DBDC-0B7C-49DB-9995-6027F6E63147@radware.com
-Link: https://lore.kernel.org/bpf/20240604122927.29080-2-magnus.karlsson@gmail.com
+If the netlink dump happens before GC worker run, it might show dead
+elements in the ruleset listing.
+
+nft_rhash_get() already skips dead elements in nft_rhash_cmp(),
+therefore, it already does not show the element when getting a single
+element via netlink control plane.
+
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xdp/xsk.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ net/netfilter/nf_tables_api.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 727aa20be4bd..7d1c0986f9bb 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -313,13 +313,10 @@ static bool xsk_is_bound(struct xdp_sock *xs)
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4200,7 +4200,7 @@ static int nf_tables_dump_setelem(const
+ 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
+ 	struct nft_set_dump_args *args;
  
- static int xsk_rcv_check(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- {
--	struct net_device *dev = xdp->rxq->dev;
--	u32 qid = xdp->rxq->queue_index;
--
- 	if (!xsk_is_bound(xs))
- 		return -ENXIO;
+-	if (nft_set_elem_expired(ext))
++	if (nft_set_elem_expired(ext) || nft_set_elem_is_dead(ext))
+ 		return 0;
  
--	if (!dev->_rx[qid].pool || xs->umem != dev->_rx[qid].pool->umem)
-+	if (xs->dev != xdp->rxq->dev || xs->queue_id != xdp->rxq->queue_index)
- 		return -EINVAL;
- 
- 	if (len > xsk_pool_get_rx_frame_size(xs->pool) && !xs->sg) {
--- 
-2.45.2
-
+ 	args = container_of(iter, struct nft_set_dump_args, iter);
 
 
 
