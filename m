@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-50654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66599906BBB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 014F8906CF8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:57:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E02B1F2118B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC3E5285F30
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29743143892;
-	Thu, 13 Jun 2024 11:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F631145A12;
+	Thu, 13 Jun 2024 11:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tU1Drsnc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNikcn6Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1BC14430D;
-	Thu, 13 Jun 2024 11:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11C613C69C;
+	Thu, 13 Jun 2024 11:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278996; cv=none; b=qUvBDQS0kLSmLpNjKWe6Fybf09m8+6GkMq/q2now/7kDV097z+D687B4ovAIX2OQBS85vOdzHy/IJo171XWYmzhL5RRHLvnvHYDeQvTtZ7UafW/d0Y4dOdfxzIcvjK6yZnN4vBZMacGB6fUM1N2ii3Wu8QEyYcxVASYfsDXjozo=
+	t=1718279493; cv=none; b=YHDGMiRLYiinE8RH4asugrap6gLpBOCGtY7/sD0NBAA8b8oJ+/Rzvl5cqj5rfXKGLr+xQOEOgtgzOGWHTIT/TO3DRx0IDNzaMl9lS7Ac/6GmZq9OTJsa+srSLUsyr8DJm21n/Q/04RLmmS+Rr8ao2GdZP1zNi9mEXE7467T5m/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278996; c=relaxed/simple;
-	bh=1sV4tu7k8/g05I9jOl1Kx32WxPqzYYWKOJq64P/RllQ=;
+	s=arc-20240116; t=1718279493; c=relaxed/simple;
+	bh=nNVmplvd/6vCVrUgPE2SkOdydBKWXs5C/DUpl6tKDNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSPUcI4TyINfnIpH3oKH1hF9hetmm4+YQWlCamdvoif1MhPfOKLF4+uT3bXwZ0uKUa6mn/r3Uwn/n+FWWTKuwmTI45nuPHYvzX8bVRSbwfWh8zMD4qhvpY49nx62XiBeIYIb2sZYccxnfEL932k45ZeyVY85QMmRN4EMjFLmBH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tU1Drsnc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646F4C2BBFC;
-	Thu, 13 Jun 2024 11:43:16 +0000 (UTC)
+	 MIME-Version; b=CWbpZXDlWM3q2XOlpEyxaBI0+kp6qbxogY3fE7qjxQNc2FanxFNkR+wyicS3oF5cQ10sBASbJ+YIGj9VySVwvPsdlqCdo5f8mWRqnlwXbdQkw6ewUzoYCpC1ASd5pE6leHRH9Ioz4FWUdP1O1SVmtngyNSj3MZVyc00ahqgCnb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNikcn6Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786B6C32786;
+	Thu, 13 Jun 2024 11:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278996;
-	bh=1sV4tu7k8/g05I9jOl1Kx32WxPqzYYWKOJq64P/RllQ=;
+	s=korg; t=1718279492;
+	bh=nNVmplvd/6vCVrUgPE2SkOdydBKWXs5C/DUpl6tKDNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tU1Drsnc0IN0XUnfsnba9tIQN2BonMxWfbJQuVFOwL3vJVTcV0eG0ZxyuCeFAFzBP
-	 fALkYGdfUGEam6revxHEPbfyAWSrZhfsg7CZu7WLZ+T5MAtjRXWaTDBaM1kNhDefsy
-	 vpN6YS/5c1Cwz2l6lhIsFiisG51AqpmOHBXI5yzw=
+	b=SNikcn6Q78nfIondtBAw80txuvDXtxKSVT5wkDz6+C+v8xf10dD69Uga9eFlXvKnb
+	 iOgMrmU+OztcnYLqq0ZCrn6Uj+x6dOJAeHulJXmPD09CPJIiQrU3rzXo98JXjIVzr2
+	 m1zA2vb6WSS3HmZE+1Vm/9CBuguJSMsax3AbpNns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 140/213] net:fec: Add fec_enet_deinit()
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.9 063/157] LoongArch: Override higher address bits in JUMP_VIRT_ADDR
 Date: Thu, 13 Jun 2024 13:33:08 +0200
-Message-ID: <20240613113233.395073951@linuxfoundation.org>
+Message-ID: <20240613113229.861469445@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit bf0497f53c8535f99b72041529d3f7708a6e2c0d ]
+commit 1098efd299ffe9c8af818425338c7f6c4f930a98 upstream.
 
-When fec_probe() fails or fec_drv_remove() needs to release the
-fec queue and remove a NAPI context, therefore add a function
-corresponding to fec_enet_init() and call fec_enet_deinit() which
-does the opposite to release memory and remove a NAPI context.
+In JUMP_VIRT_ADDR we are performing an or calculation on address value
+directly from pcaddi.
 
-Fixes: 59d0f7465644 ("net: fec: init multi queue date structure")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240524050528.4115581-1-xiaolei.wang@windriver.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This will only work if we are currently running from direct 1:1 mapping
+addresses or firmware's DMW is configured exactly same as kernel. Still,
+we should not rely on such assumption.
+
+Fix by overriding higher bits in address comes from pcaddi, so we can
+get rid of or operator.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/loongarch/include/asm/stackframe.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 9c4c892bfc837..35593b41e6c12 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -3320,6 +3320,14 @@ static int fec_enet_init(struct net_device *ndev)
- 	return ret;
- }
+--- a/arch/loongarch/include/asm/stackframe.h
++++ b/arch/loongarch/include/asm/stackframe.h
+@@ -42,7 +42,7 @@
+ 	.macro JUMP_VIRT_ADDR temp1 temp2
+ 	li.d	\temp1, CACHE_BASE
+ 	pcaddi	\temp2, 0
+-	or	\temp1, \temp1, \temp2
++	bstrins.d  \temp1, \temp2, (DMW_PABITS - 1), 0
+ 	jirl	zero, \temp1, 0xc
+ 	.endm
  
-+static void fec_enet_deinit(struct net_device *ndev)
-+{
-+	struct fec_enet_private *fep = netdev_priv(ndev);
-+
-+	netif_napi_del(&fep->napi);
-+	fec_enet_free_queue(ndev);
-+}
-+
- #ifdef CONFIG_OF
- static int fec_reset_phy(struct platform_device *pdev)
- {
-@@ -3687,6 +3695,7 @@ fec_probe(struct platform_device *pdev)
- 	fec_enet_mii_remove(fep);
- failed_mii_init:
- failed_irq:
-+	fec_enet_deinit(ndev);
- failed_init:
- 	fec_ptp_stop(pdev);
- failed_reset:
-@@ -3748,6 +3757,7 @@ fec_drv_remove(struct platform_device *pdev)
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 
-+	fec_enet_deinit(ndev);
- 	free_netdev(ndev);
- 	return 0;
- }
--- 
-2.43.0
-
 
 
 
