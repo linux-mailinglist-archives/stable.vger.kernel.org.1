@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-51348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C12D906F88
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:21:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700DD907154
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F2DE286BFA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:21:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D1001C22632
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AF713CFA3;
-	Thu, 13 Jun 2024 12:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A361369B0;
+	Thu, 13 Jun 2024 12:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzidGcJ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GqI47u5V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6358A81AA7;
-	Thu, 13 Jun 2024 12:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227711F937;
+	Thu, 13 Jun 2024 12:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281033; cv=none; b=qn2PmZrBdZyzrPDOQH+jHAO/rXm/L7YN7BmXQCTCuoieivWllLy/PipQZYUdpzOH/59PzcTIlNR+jY3fbo/7OAWCo2Jn74BLOSmRHjNe28zevtAyE99HLhOeboir5/Xji0QGA+68ui4UZ5QbVZ6Q7ZP0fyHVnRIk6/Xs3LyXCaU=
+	t=1718282150; cv=none; b=avKERusUv/azJePLk1c50Wpl4gnf+LnKvccBZMM+ktJS8JLtnXgmfj0D5lwWtKD6TOOAqHwZb9+Y7QaMvsb1+MWjw0iM30iM39UxpEC+ZjvIEr5M9mpIitbCVwSlvR5y5Fug43sD31XVIlFyOWhukz14yEPiN0+avqlgqq52kJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281033; c=relaxed/simple;
-	bh=MuwuugYTT0aYfewpIht73GKOlLDpCv6W8X8VfLsNt0s=;
+	s=arc-20240116; t=1718282150; c=relaxed/simple;
+	bh=BeUiFD8BKdLQNsKGEUBb/1XSve5BvZrrWY5ODBcT9uI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VuE6REj0yQbYkJ6q0xh2maAEZ1BkMPXcmUvCloh6ngntnDq0t89okx7AmT5H0pTIXKB2nxREENkiCLpumnBcKCykyNMc4tkl2yNVusv4RYQHJW8tghn5N5U3rsY9HVoXXThE7MWVphxDaD8iCG0yV+fI1U4av0ivxFDbWYDVMyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzidGcJ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEEEC2BBFC;
-	Thu, 13 Jun 2024 12:17:12 +0000 (UTC)
+	 MIME-Version; b=QypkXZNs1bM8E4AzXqRgRJmvhwW8uKRsSz29aaOz4v4aUGACgAtvQvzubC5xTlH/OW/MxjtmiHDWKp3CVJc8ERlkrYlv2Z39U4VqhDzDVojyvHh1pIi3Ivm0RJkp7SwV9fC2OigUWZQZoA9gZExURJlCZs4fDd0Kmj8TDExw3KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GqI47u5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCEDC2BBFC;
+	Thu, 13 Jun 2024 12:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281033;
-	bh=MuwuugYTT0aYfewpIht73GKOlLDpCv6W8X8VfLsNt0s=;
+	s=korg; t=1718282150;
+	bh=BeUiFD8BKdLQNsKGEUBb/1XSve5BvZrrWY5ODBcT9uI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BzidGcJ3NxnpwvXEZANHrxO1TiAC3dpABnQesg0O2bPuQoFEJC4zsZNwCfJ3N7wZ3
-	 DN2Kz3ejpvVn71SaEMsDlbMj+3JV8nrxMUm/75XYl5kcgnVfFAErl+oiv2S9WaLbtt
-	 yeIn4lQdSiUCMFVEfUOThuAn7oOFyC33DfJFRQIs=
+	b=GqI47u5VvTfv3J1+dbSM5yHlufvgS9MkKON4KNH8HbTZCaHt8FLhUuoubcZ9L6OUI
+	 ZyLzm6XKKHfe4Lebte0InS9KlZyQWktvP5dCGLqVJ/IQv64o3gnbWwzTexYg8RXAIZ
+	 6Dc7yrEuIX5e/c4o2ohKDaH4saJKv7tkzemZPdl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Marc Gonzalez <mgonzalez@freebox.fr>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 117/317] clk: qcom: mmcc-msm8998: fix venus clock issue
+Subject: [PATCH 5.15 178/402] perf probe: Add missing libgen.h header needed for using basename()
 Date: Thu, 13 Jun 2024 13:32:15 +0200
-Message-ID: <20240613113252.078512193@linuxfoundation.org>
+Message-ID: <20240613113309.093046045@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,116 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Gonzalez <mgonzalez@freebox.fr>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit e20ae5ae9f0c843aded4f06f3d1cab7384789e92 ]
+[ Upstream commit 581037151910126a7934e369e4b6ac70eda9a703 ]
 
-Right now, msm8998 video decoder (venus) is non-functional:
+This prototype is obtained indirectly, by luck, from some other header
+in probe-event.c in most systems, but recently exploded on alpine:edge:
 
-$ time mpv --hwdec=v4l2m2m-copy --vd-lavc-software-fallback=no --vo=null --no-audio --untimed --length=30 --quiet demo-480.webm
- (+) Video --vid=1 (*) (vp9 854x480 29.970fps)
-     Audio --aid=1 --alang=eng (*) (opus 2ch 48000Hz)
-[ffmpeg/video] vp9_v4l2m2m: output VIDIOC_REQBUFS failed: Connection timed out
-[ffmpeg/video] vp9_v4l2m2m: no v4l2 output context's buffers
-[ffmpeg/video] vp9_v4l2m2m: can't configure decoder
-Could not open codec.
-Software decoding fallback is disabled.
-Exiting... (Quit)
+   8    13.39 alpine:edge                   : FAIL gcc version 13.2.1 20240309 (Alpine 13.2.1_git20240309)
+    util/probe-event.c: In function 'convert_exec_to_group':
+    util/probe-event.c:225:16: error: implicit declaration of function 'basename' [-Werror=implicit-function-declaration]
+      225 |         ptr1 = basename(exec_copy);
+          |                ^~~~~~~~
+    util/probe-event.c:225:14: error: assignment to 'char *' from 'int' makes pointer from integer without a cast [-Werror=int-conversion]
+      225 |         ptr1 = basename(exec_copy);
+          |              ^
+    cc1: all warnings being treated as errors
+    make[3]: *** [/git/perf-6.8.0/tools/build/Makefile.build:158: util] Error 2
 
-Bryan O'Donoghue suggested the proper fix:
-- Set required register offsets in venus GDSC structs.
-- Set HW_CTRL flag.
+Fix it by adding the libgen.h header where basename() is prototyped.
 
-$ time mpv --hwdec=v4l2m2m-copy --vd-lavc-software-fallback=no --vo=null --no-audio --untimed --length=30 --quiet demo-480.webm
- (+) Video --vid=1 (*) (vp9 854x480 29.970fps)
-     Audio --aid=1 --alang=eng (*) (opus 2ch 48000Hz)
-[ffmpeg/video] vp9_v4l2m2m: VIDIOC_G_FMT ioctl
-[ffmpeg/video] vp9_v4l2m2m: VIDIOC_G_FMT ioctl
-...
-Using hardware decoding (v4l2m2m-copy).
-VO: [null] 854x480 nv12
-Exiting... (End of file)
-real	0m3.315s
-user	0m1.277s
-sys	0m0.453s
-
-NOTES:
-
-GDSC = Globally Distributed Switch Controller
-
-Use same code as mmcc-msm8996 with:
-s/venus_gdsc/video_top_gdsc/
-s/venus_core0_gdsc/video_subcore0_gdsc/
-s/venus_core1_gdsc/video_subcore1_gdsc/
-
-https://git.codelinaro.org/clo/la/kernel/msm-4.4/-/blob/caf_migration/kernel.lnx.4.4.r38-rel/include/dt-bindings/clock/msm-clocks-hwio-8996.h
-https://git.codelinaro.org/clo/la/kernel/msm-4.4/-/blob/caf_migration/kernel.lnx.4.4.r38-rel/include/dt-bindings/clock/msm-clocks-hwio-8998.h
-
-0x1024 = MMSS_VIDEO GDSCR (undocumented)
-0x1028 = MMSS_VIDEO_CORE_CBCR
-0x1030 = MMSS_VIDEO_AHB_CBCR
-0x1034 = MMSS_VIDEO_AXI_CBCR
-0x1038 = MMSS_VIDEO_MAXI_CBCR
-0x1040 = MMSS_VIDEO_SUBCORE0 GDSCR (undocumented)
-0x1044 = MMSS_VIDEO_SUBCORE1 GDSCR (undocumented)
-0x1048 = MMSS_VIDEO_SUBCORE0_CBCR
-0x104c = MMSS_VIDEO_SUBCORE1_CBCR
-
-Fixes: d14b15b5931c2b ("clk: qcom: Add MSM8998 Multimedia Clock Controller (MMCC) driver")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Marc Gonzalez <mgonzalez@freebox.fr>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://lore.kernel.org/r/ff4e2e34-a677-4c39-8c29-83655c5512ae@freebox.fr
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: fb7345bbf7fad9bf ("perf probe: Support basic dwarf-based operations on uprobe events")
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/lkml/
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/mmcc-msm8998.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/perf/util/probe-event.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/qcom/mmcc-msm8998.c b/drivers/clk/qcom/mmcc-msm8998.c
-index a68764cfb7930..5e2e60c1c2283 100644
---- a/drivers/clk/qcom/mmcc-msm8998.c
-+++ b/drivers/clk/qcom/mmcc-msm8998.c
-@@ -2587,6 +2587,8 @@ static struct clk_hw *mmcc_msm8998_hws[] = {
- 
- static struct gdsc video_top_gdsc = {
- 	.gdscr = 0x1024,
-+	.cxcs = (unsigned int []){ 0x1028, 0x1034, 0x1038 },
-+	.cxc_count = 3,
- 	.pd = {
- 		.name = "video_top",
- 	},
-@@ -2595,20 +2597,26 @@ static struct gdsc video_top_gdsc = {
- 
- static struct gdsc video_subcore0_gdsc = {
- 	.gdscr = 0x1040,
-+	.cxcs = (unsigned int []){ 0x1048 },
-+	.cxc_count = 1,
- 	.pd = {
- 		.name = "video_subcore0",
- 	},
- 	.parent = &video_top_gdsc.pd,
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = HW_CTRL,
- };
- 
- static struct gdsc video_subcore1_gdsc = {
- 	.gdscr = 0x1044,
-+	.cxcs = (unsigned int []){ 0x104c },
-+	.cxc_count = 1,
- 	.pd = {
- 		.name = "video_subcore1",
- 	},
- 	.parent = &video_top_gdsc.pd,
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = HW_CTRL,
- };
- 
- static struct gdsc mdss_gdsc = {
+diff --git a/tools/perf/util/probe-event.c b/tools/perf/util/probe-event.c
+index 68844c48f688a..454a7e2325d87 100644
+--- a/tools/perf/util/probe-event.c
++++ b/tools/perf/util/probe-event.c
+@@ -11,6 +11,7 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <errno.h>
++#include <libgen.h>
+ #include <stdio.h>
+ #include <unistd.h>
+ #include <stdlib.h>
 -- 
 2.43.0
 
