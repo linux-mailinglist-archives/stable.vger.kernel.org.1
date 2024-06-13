@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-52012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C1C9072F1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:55:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A46BF90705A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0191B290E7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30DC62847C4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CD91448CD;
-	Thu, 13 Jun 2024 12:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330C3142631;
+	Thu, 13 Jun 2024 12:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5B044+z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5doaz7F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B18B14430D;
-	Thu, 13 Jun 2024 12:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61751411CD;
+	Thu, 13 Jun 2024 12:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282975; cv=none; b=CvudLYDv5CngIQKxkvK6S3pmqP17WZ2g1ELwcV1HxQKB/PUnnAAmRFfwgIduj0ywlVPTRbLCwagJF7cezXZAuL8YAJZ8hiYebSC5WkNwqSQ8wxwdnUambesYJ6Zd+PiI4HVmQEBJeuXpYHZnf7+0XUDSWqzysHfbmFP0Y74XqrA=
+	t=1718281584; cv=none; b=I2nG+q6v2MAHv3uiqDrOXHgcDEbCFO250lH6lu34u1hbKNUq9Ch+b0uhkFN18P58UTAoT9xC1Wi8O3w67SQjkvAHaO+LgYzrIdn0BTfIAaK79/myM7zbsYdlnEa7eVIPjxQyu8XmlMXs5NvLmMWbvanzFSxOqBMmPHUvppRsjtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282975; c=relaxed/simple;
-	bh=g8C7N523steWbU3MLr9OXSrVnsfKpNojiBdgEPM3AGI=;
+	s=arc-20240116; t=1718281584; c=relaxed/simple;
+	bh=h8k9LpZVh1ARWKXpRTtfQ7d4xOott4E8ylirhHHXvOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMjghrXu89SbqKFXWY55wUzMhpALuYZvI+9zisGpxuWyZcDYVhW3kVDFYmC0JXJDDvv8syAxMeEtRTiyzG/11fCKGbAuEGFV3hpPtzecz6w8dMkXtNkaOF3D0X1pyv9Z7XOwH7Vefk5MYUbUhUT2tAPVP8WwOIdxS5d7XwuEdko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5B044+z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21881C2BBFC;
-	Thu, 13 Jun 2024 12:49:34 +0000 (UTC)
+	 MIME-Version; b=WBRaVYUFIDN2AF/XcJT4n5u2zdNLxrZ0qxLqhGMvFFxOszPGABpq+GbuUQuWI+7APqLLagogoH56DkofJ66AT9yI10L5wbRXMT4ybBn9eK+Vre+I2dWVj7+lV6FZDfT1Ph3j0TaiQx3hOa9VptxygEjQMmgRLUrYwWZt2Fhb47k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5doaz7F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22515C2BBFC;
+	Thu, 13 Jun 2024 12:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282975;
-	bh=g8C7N523steWbU3MLr9OXSrVnsfKpNojiBdgEPM3AGI=;
+	s=korg; t=1718281583;
+	bh=h8k9LpZVh1ARWKXpRTtfQ7d4xOott4E8ylirhHHXvOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P5B044+zTo4KyTkVwyHwuqNKpQPKLCbPgtFwMtQdz0yZz8CAL3MJ+EbpI2aikP+Bw
-	 ZiZzg4CDkQTfKqLCgG1CMND7whclLT8vqBXSsTu42mZ9bQnkh1137aK7lolIRH6+cY
-	 TFkiauTe60I7nOBz2dqX5uF3PUSSEH5tHPgpLL68=
+	b=m5doaz7FZUnauwoY0lf7A8BL/P6NhdEJ0RpU5x6TU05tSaCrvtY3bQt/1uB452UOz
+	 2a2Y9UosRUHsfYTmzvRyxWzDVNUmyi7W5gL+kkR5zUL2joPemez6U/t5QIKztPfeL9
+	 aaUqUVo812yme7NyWkGRjt/Gn3ZgA8sthxLU+SHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.1 25/85] arm64: tegra: Correct Tegra132 I2C alias
+	Douglas Anderson <dianders@chromium.org>,
+	Justin Stitt <justinstitt@google.com>,
+	Daniel Thompson <daniel.thompson@linaro.org>
+Subject: [PATCH 5.10 305/317] kdb: Fix console handling when editing and tab-completing commands
 Date: Thu, 13 Jun 2024 13:35:23 +0200
-Message-ID: <20240613113215.112952544@linuxfoundation.org>
+Message-ID: <20240613113259.349906900@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Daniel Thompson <daniel.thompson@linaro.org>
 
-commit 2633c58e1354d7de2c8e7be8bdb6f68a0a01bad7 upstream.
+commit db2f9c7dc29114f531df4a425d0867d01e1f1e28 upstream.
 
-There is no such device as "as3722@40", because its name is "pmic".  Use
-phandles for aliases to fix relying on full node path.  This corrects
-aliases for RTC devices and also fixes dtc W=1 warning:
+Currently, if the cursor position is not at the end of the command buffer
+and the user uses the Tab-complete functions, then the console does not
+leave the cursor in the correct position.
 
-  tegra132-norrin.dts:12.3-36: Warning (alias_paths): /aliases:rtc0: aliases property is not a valid node (/i2c@7000d000/as3722@40)
+For example consider the following buffer with the cursor positioned
+at the ^:
 
-Fixes: 0f279ebdf3ce ("arm64: tegra: Add NVIDIA Tegra132 Norrin support")
+md kdb_pro 10
+          ^
+
+Pressing tab should result in:
+
+md kdb_prompt_str 10
+                 ^
+
+However this does not happen. Instead the cursor is placed at the end
+(after then 10) and further cursor movement redraws incorrectly. The
+same problem exists when we double-Tab but in a different part of the
+code.
+
+Fix this by sending a carriage return and then redisplaying the text to
+the left of the cursor.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-3-f236dbe9828d@linaro.org
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra132-norrin.dts |    4 ++--
- arch/arm64/boot/dts/nvidia/tegra132.dtsi       |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ kernel/debug/kdb/kdb_io.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-+++ b/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-@@ -9,8 +9,8 @@
- 	compatible = "nvidia,norrin", "nvidia,tegra132", "nvidia,tegra124";
- 
- 	aliases {
--		rtc0 = "/i2c@7000d000/as3722@40";
--		rtc1 = "/rtc@7000e000";
-+		rtc0 = &as3722;
-+		rtc1 = &tegra_rtc;
- 		serial0 = &uarta;
- 	};
- 
---- a/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-@@ -579,7 +579,7 @@
- 		status = "disabled";
- 	};
- 
--	rtc@7000e000 {
-+	tegra_rtc: rtc@7000e000 {
- 		compatible = "nvidia,tegra124-rtc", "nvidia,tegra20-rtc";
- 		reg = <0x0 0x7000e000 0x0 0x100>;
- 		interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -370,6 +370,8 @@ poll_again:
+ 			kdb_printf("\n");
+ 			kdb_printf(kdb_prompt_str);
+ 			kdb_printf("%s", buffer);
++			if (cp != lastchar)
++				kdb_position_cursor(kdb_prompt_str, buffer, cp);
+ 		} else if (tab != 2 && count > 0) {
+ 			/* How many new characters do we want from tmpbuffer? */
+ 			len_tmp = strlen(p_tmp) - len;
+@@ -383,6 +385,9 @@ poll_again:
+ 				kdb_printf("%s", cp);
+ 				cp += len_tmp;
+ 				lastchar += len_tmp;
++				if (cp != lastchar)
++					kdb_position_cursor(kdb_prompt_str,
++							    buffer, cp);
+ 			}
+ 		}
+ 		kdb_nextline = 1; /* reset output line number */
 
 
 
