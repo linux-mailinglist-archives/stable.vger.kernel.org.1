@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-51123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4112C906E6E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E81719071DF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48E7D1C22CCA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CECB2812D0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3891474A6;
-	Thu, 13 Jun 2024 12:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A880756458;
+	Thu, 13 Jun 2024 12:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuCnnhs5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBBOD6JC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6DF13C805;
-	Thu, 13 Jun 2024 12:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66046384;
+	Thu, 13 Jun 2024 12:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280377; cv=none; b=Iu0HdzM/Btb6bk9buL4nxDeF/5KzL4gDOLnLRrHnQzqfIGYgJM/QRISvXp1K3fBvq6j2DQ+91Al1EcpPpmnhWRZ8MaBs0UTBKH5uauFn2mRdFQM/YP47SYCbsiB4DxfDIccYwJoAYjR5nRjzRHLBNAXjohvGWAi5hpTnxjt0m4g=
+	t=1718282463; cv=none; b=bm7Bx4yl9bwoNXZbxofCGe+HWXGonGuTAQDmJcPumC6yTue4GIQ819+QAPV13wUrZUVFRQwiulLvqFck/jKowLEOgeCowpmD2ti1Ck0ebjZWoPzNBT3E7CNVzbJFbfPYlDBQlDTV4sj4gVJqcEZ4wm6efzMddQ3CSoh/mVQ0D/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280377; c=relaxed/simple;
-	bh=BrsRyavnK0XSgNUnJVBRxmyPJlfPuKWxaLdu/UfBF5k=;
+	s=arc-20240116; t=1718282463; c=relaxed/simple;
+	bh=29yvsxyuIREbQ7amNDkzwOcFCfC2CMZzptVzxZvA+zU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uUHyluP6rtsrTXPDQRMhfJESH5YB/ahySca1MLeC778H9vL6qpwAXmS3KuxI/Z1nKIEX/FJBKz6k2DeraVBR+GVdAaXKvyvR0PXoYHO5RKhXnPFyn90ukvs/E+w5oSP06l8lJpLx9QU+jPAeosDTGqiFGNXaR7FApTuVy6k4ioE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuCnnhs5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544ABC2BBFC;
-	Thu, 13 Jun 2024 12:06:16 +0000 (UTC)
+	 MIME-Version; b=aKSY2IqGnDBIb+78QT2BWNl5/5Dh0k132BqE6Dkxy8+0bhEak9xFCSwki+hxnVtf7v9qnYLI9K6D2YW4MLSbd+eQBYCP2au1E8bVczF9VvdTp50DcXCI2YYjp9xnkYF2zpM/2CviwRwYnfWtmPY0D13acaaKS0QBqWmNNoiRweg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBBOD6JC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55D7C2BBFC;
+	Thu, 13 Jun 2024 12:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280376;
-	bh=BrsRyavnK0XSgNUnJVBRxmyPJlfPuKWxaLdu/UfBF5k=;
+	s=korg; t=1718282463;
+	bh=29yvsxyuIREbQ7amNDkzwOcFCfC2CMZzptVzxZvA+zU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PuCnnhs5h/S5QzIwboFHSx0uLKmgIscYJI9dj5+Zv3tBnbDUY3276OZatCpKE055+
-	 ek8Fj/ssawIQAbFTfoaf+YVeEsT2T6HRlYEd8ha4+IX+eYbi97Xvvxf/2nikA5o1TS
-	 wsmge5yMw578YVavQ4Uj3UbtT0O2cWHuextC+02o=
+	b=IBBOD6JC9FKA72RUJm0NzrUgZXTSaawneHqqbwFUAt5gaIO3u7KJUpDY43n69lTIh
+	 +noSK0OYQiS/aPqTKI49zVpvuHfRLTOANYlst0qrQaIecvPoPhcQpwRHhWQTjX679m
+	 SjB+saZA8UI41U78X9JA/fMSJNDbw0yLXGKQhGyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.6 032/137] wifi: rtw89: pci: correct TX resource checking for PCI DMA channel of firmware command
+	Fenglin Wu <quic_fenglinw@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 255/402] Input: pm8xxx-vibrator - correct VIB_MAX_LEVELS calculation
 Date: Thu, 13 Jun 2024 13:33:32 +0200
-Message-ID: <20240613113224.537016601@linuxfoundation.org>
+Message-ID: <20240613113312.093150543@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Fenglin Wu <quic_fenglinw@quicinc.com>
 
-commit c6330b129786e267b14129335a08fa7c331c308d upstream.
+[ Upstream commit 48c0687a322d54ac7e7a685c0b6db78d78f593af ]
 
-The DMA channel of firmware command doesn't use TX WD (WiFi descriptor), so
-don't need to consider number of TX WD as factor of TX resource. Otherwise,
-during pause state (a transient state to switch to/from low power mode)
-firmware commands could be dropped and driver throws warnings suddenly:
+The output voltage is inclusive hence the max level calculation is
+off-by-one-step. Correct it.
 
-   rtw89_8852ce 0000:04:00.0: no tx fwcmd resource
-   rtw89_8852ce 0000:04:00.0: failed to send h2c
+iWhile we are at it also add a define for the step size instead of
+using the magic value.
 
-The case we met is that driver sends RSSI strength of firmware command at
-RX path that could be running concurrently with switching low power mode.
-The missing of this firmware command doesn't affect user experiences,
-because the RSSI strength will be updated again after a while.
-
-The DMA descriptors of normal packets has three layers like:
-
-  +-------+
-  | TX BD | (*n elements)
-  +-------+
-      |
-      |   +-------+
-      +-> | TX WD | (*m elements)
-          +-------+
-              |
-              |   +--------+
-              +-> |   SKB  |
-                  +--------+
-
-And, firmware command queue (TXCH 12) is a special queue that has only
-two layers:
-
-  +-------+
-  | TX BD | (*n elements)
-  +-------+
-      |
-      |   +------------------+
-      +-> | firmware command |
-          +------------------+
-
-Fixes: 4a29213cd775 ("wifi: rtw89: pci: correct TX resource checking in low power mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/20240410011316.9906-1-pkshih@realtek.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 11205bb63e5c ("Input: add support for pm8xxx based vibrator driver")
+Signed-off-by: Fenglin Wu <quic_fenglinw@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240412-pm8xxx-vibrator-new-design-v10-1-0ec0ad133866@quicinc.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/pci.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/input/misc/pm8xxx-vibrator.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -958,7 +958,8 @@ u32 __rtw89_pci_check_and_reclaim_tx_res
+diff --git a/drivers/input/misc/pm8xxx-vibrator.c b/drivers/input/misc/pm8xxx-vibrator.c
+index 53ad25eaf1a28..8bfe5c7b1244c 100644
+--- a/drivers/input/misc/pm8xxx-vibrator.c
++++ b/drivers/input/misc/pm8xxx-vibrator.c
+@@ -14,7 +14,8 @@
  
- 	spin_lock_bh(&rtwpci->trx_lock);
- 	cnt = rtw89_pci_get_avail_txbd_num(tx_ring);
--	cnt = min(cnt, wd_ring->curr_num);
-+	if (txch != RTW89_TXCH_CH12)
-+		cnt = min(cnt, wd_ring->curr_num);
- 	spin_unlock_bh(&rtwpci->trx_lock);
+ #define VIB_MAX_LEVEL_mV	(3100)
+ #define VIB_MIN_LEVEL_mV	(1200)
+-#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV)
++#define VIB_PER_STEP_mV		(100)
++#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV + VIB_PER_STEP_mV)
  
- 	return cnt;
+ #define MAX_FF_SPEED		0xff
+ 
+@@ -118,10 +119,10 @@ static void pm8xxx_work_handler(struct work_struct *work)
+ 		vib->active = true;
+ 		vib->level = ((VIB_MAX_LEVELS * vib->speed) / MAX_FF_SPEED) +
+ 						VIB_MIN_LEVEL_mV;
+-		vib->level /= 100;
++		vib->level /= VIB_PER_STEP_mV;
+ 	} else {
+ 		vib->active = false;
+-		vib->level = VIB_MIN_LEVEL_mV / 100;
++		vib->level = VIB_MIN_LEVEL_mV / VIB_PER_STEP_mV;
+ 	}
+ 
+ 	pm8xxx_vib_set(vib, vib->active);
+-- 
+2.43.0
+
 
 
 
