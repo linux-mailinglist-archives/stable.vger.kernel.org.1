@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7FD906E51
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDB4907037
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D4611C20AC6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DF5F289599
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24181144317;
-	Thu, 13 Jun 2024 12:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D187E142903;
+	Thu, 13 Jun 2024 12:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Agis6L/3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pFCxLuG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D561A13D605;
-	Thu, 13 Jun 2024 12:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D735143895;
+	Thu, 13 Jun 2024 12:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280296; cv=none; b=E29r45bseFzbvMPryIyGNaQMtRA+Mxp4ZVK2kct5pp+06fBGR2UsliOstZU4IwFCtKtvAzTi8S5yyPM1Hfye+A+HfbTuWutKmQ2fwI/W849HGeIf3yuuhkODfeK+NOj4nIbq3RFu+Xrk9CiR11L5ax85fddKQ/V6BhWdJqsCzdk=
+	t=1718281489; cv=none; b=iRmAGJb+nel28Cpd6aeYOpItRhmZ5HjRUlW1wtYHtsQQbzJ3cvt/L+RqDFJvOTZ5ZjJCklP0+DMOxqNA0HdKr4pai8PhY2Vma9lW5Dk3xLZj8qnsf8PtuQTGwiIW6XGk/NK9B19cj/jGReyOYx1YvUa3e58FxD5BFKyuWRcKbd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280296; c=relaxed/simple;
-	bh=nGVTQA5ZT6m7aOtFspafGpppGzvCCjJGm4F3ZkoHpm0=;
+	s=arc-20240116; t=1718281489; c=relaxed/simple;
+	bh=mC2TjjLJVr35yKowa0NbHADNr3ThTXNFwFmYvJqdtWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Errd0eyYf8K28HwcHjKFBggTuPQrmmfU0J932S42caurreNqnIDycxg4JBzGEhupUZKHdDTfYqrYwYYvIZg9aidugh+EsjbQQxIY1IWaYQBBasLJsBSqjqfHGlPB+ybtbgrSpFR0r5OVBSS6BJ8Pftmw2r6mXhP7iDoEdLQduG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Agis6L/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B590C2BBFC;
-	Thu, 13 Jun 2024 12:04:56 +0000 (UTC)
+	 MIME-Version; b=RpAf+065ZOu2y1gBRrxALW9AGUe+cF9WE3sKsACwgrEzwCPxwA7f4JAE+P+TPBWjgKmhMqXqIPbRporX7LO7FMyxbK6uyVxwg2gJvO6ouAGFBNJgH9YoguGH1GACLg8p4TZQNNT1TVnNjEgzdkk9sVfS0FWS8Nf1azmwuAVy6sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pFCxLuG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10360C2BBFC;
+	Thu, 13 Jun 2024 12:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280296;
-	bh=nGVTQA5ZT6m7aOtFspafGpppGzvCCjJGm4F3ZkoHpm0=;
+	s=korg; t=1718281489;
+	bh=mC2TjjLJVr35yKowa0NbHADNr3ThTXNFwFmYvJqdtWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Agis6L/3Zat7+qL2nm/c6Bq+r1Yakb0vRX83uwtPf7vUyeX/CghYqI6fPyZMnVJJs
-	 8hZ5Ysuie0fQ2A865iZbsTjyGg0huL1HEBCQWWYIvMqgcihVGrWYEsVSEhh/kCbSxl
-	 X6rGZGtLf+YmmgwIpCMVjPeUwULBUQVe355ezWVY=
+	b=0pFCxLuGmxLh+3zYPaFJOs+sT7xbQz25SOlmFOhxHwLlFP3SBLO4sUCFLnaHI2oK2
+	 YkaZL9mkgLjbAfRxYCra+6odMI/l5oXZZxF50tU6cBRixB9/q71yiSjILPEc6hePXa
+	 qp0xyPX1QOW1HUBTN64fZ7xXfwNUawPiPBKxNEFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 5.4 193/202] kdb: Use format-strings rather than \0 injection in kdb_read()
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Kuntal Nayak <kuntal.nayak@broadcom.com>
+Subject: [PATCH 5.10 273/317] netfilter: nf_tables: restrict tunnel object to NFPROTO_NETDEV
 Date: Thu, 13 Jun 2024 13:34:51 +0200
-Message-ID: <20240613113235.189659011@linuxfoundation.org>
+Message-ID: <20240613113258.113068400@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +61,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 09b35989421dfd5573f0b4683c7700a7483c71f9 upstream.
+commit 776d451648443f9884be4a1b4e38e8faf1c621f9 upstream.
 
-Currently when kdb_read() needs to reposition the cursor it uses copy and
-paste code that works by injecting an '\0' at the cursor position before
-delivering a carriage-return and reprinting the line (which stops at the
-'\0').
+Bail out on using the tunnel dst template from other than netdev family.
+Add the infrastructure to check for the family in objects.
 
-Tidy up the code by hoisting the copy and paste code into an appropriately
-named function. Additionally let's replace the '\0' injection with a
-proper field width parameter so that the string will be abridged during
-formatting instead.
-
-Cc: stable@vger.kernel.org # Not a bug fix but it is needed for later bug fixes
-Tested-by: Justin Stitt <justinstitt@google.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-2-f236dbe9828d@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Fixes: af308b94a2a4 ("netfilter: nf_tables: add tunnel support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[KN: Backport patch according to v5.10.x source]
+Signed-off-by: Kuntal Nayak <kuntal.nayak@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c |   55 ++++++++++++++++++++++++++++------------------
- 1 file changed, 34 insertions(+), 21 deletions(-)
+ include/net/netfilter/nf_tables.h |    2 ++
+ net/netfilter/nf_tables_api.c     |   14 +++++++++-----
+ net/netfilter/nft_tunnel.c        |    1 +
+ 3 files changed, 12 insertions(+), 5 deletions(-)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -170,6 +170,33 @@ static int kdb_read_get_key(char *buffer
- 	return key;
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -1174,6 +1174,7 @@ void nft_obj_notify(struct net *net, con
+  *	@type: stateful object numeric type
+  *	@owner: module owner
+  *	@maxattr: maximum netlink attribute
++ *	@family: address family for AF-specific object types
+  *	@policy: netlink attribute policy
+  */
+ struct nft_object_type {
+@@ -1183,6 +1184,7 @@ struct nft_object_type {
+ 	struct list_head		list;
+ 	u32				type;
+ 	unsigned int                    maxattr;
++	u8				family;
+ 	struct module			*owner;
+ 	const struct nla_policy		*policy;
+ };
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -6234,11 +6234,15 @@ nla_put_failure:
+ 	return -1;
  }
  
-+/**
-+ * kdb_position_cursor() - Place cursor in the correct horizontal position
-+ * @prompt: Nil-terminated string containing the prompt string
-+ * @buffer: Nil-terminated string containing the entire command line
-+ * @cp: Cursor position, pointer the character in buffer where the cursor
-+ *      should be positioned.
-+ *
-+ * The cursor is positioned by sending a carriage-return and then printing
-+ * the content of the line until we reach the correct cursor position.
-+ *
-+ * There is some additional fine detail here.
-+ *
-+ * Firstly, even though kdb_printf() will correctly format zero-width fields
-+ * we want the second call to kdb_printf() to be conditional. That keeps things
-+ * a little cleaner when LOGGING=1.
-+ *
-+ * Secondly, we can't combine everything into one call to kdb_printf() since
-+ * that renders into a fixed length buffer and the combined print could result
-+ * in unwanted truncation.
-+ */
-+static void kdb_position_cursor(char *prompt, char *buffer, char *cp)
-+{
-+	kdb_printf("\r%s", kdb_prompt_str);
-+	if (cp > buffer)
-+		kdb_printf("%.*s", (int)(cp - buffer), buffer);
-+}
+-static const struct nft_object_type *__nft_obj_type_get(u32 objtype)
++static const struct nft_object_type *__nft_obj_type_get(u32 objtype, u8 family)
+ {
+ 	const struct nft_object_type *type;
+ 
+ 	list_for_each_entry(type, &nf_tables_objects, list) {
++		if (type->family != NFPROTO_UNSPEC &&
++		    type->family != family)
++			continue;
 +
- /*
-  * kdb_read
-  *
-@@ -208,7 +235,6 @@ static char *kdb_read(char *buffer, size
- 						 * and null byte */
- 	char *lastchar;
- 	char *p_tmp;
--	char tmp;
- 	static char tmpbuffer[CMD_BUFLEN];
- 	int len = strlen(buffer);
- 	int len_tmp;
-@@ -247,12 +273,8 @@ poll_again:
- 			}
- 			*(--lastchar) = '\0';
- 			--cp;
--			kdb_printf("\b%s \r", cp);
--			tmp = *cp;
--			*cp = '\0';
--			kdb_printf(kdb_prompt_str);
--			kdb_printf("%s", buffer);
--			*cp = tmp;
-+			kdb_printf("\b%s ", cp);
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 13: /* enter */
-@@ -269,19 +291,14 @@ poll_again:
- 			memcpy(tmpbuffer, cp+1, lastchar - cp - 1);
- 			memcpy(cp, tmpbuffer, lastchar - cp - 1);
- 			*(--lastchar) = '\0';
--			kdb_printf("%s \r", cp);
--			tmp = *cp;
--			*cp = '\0';
--			kdb_printf(kdb_prompt_str);
--			kdb_printf("%s", buffer);
--			*cp = tmp;
-+			kdb_printf("%s ", cp);
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 1: /* Home */
- 		if (cp > buffer) {
--			kdb_printf("\r");
--			kdb_printf(kdb_prompt_str);
- 			cp = buffer;
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 5: /* End */
-@@ -387,13 +404,9 @@ poll_again:
- 				memcpy(cp+1, tmpbuffer, lastchar - cp);
- 				*++lastchar = '\0';
- 				*cp = key;
--				kdb_printf("%s\r", cp);
-+				kdb_printf("%s", cp);
- 				++cp;
--				tmp = *cp;
--				*cp = '\0';
--				kdb_printf(kdb_prompt_str);
--				kdb_printf("%s", buffer);
--				*cp = tmp;
-+				kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 			} else {
- 				*++lastchar = '\0';
- 				*cp++ = key;
+ 		if (objtype == type->type)
+ 			return type;
+ 	}
+@@ -6246,11 +6250,11 @@ static const struct nft_object_type *__n
+ }
+ 
+ static const struct nft_object_type *
+-nft_obj_type_get(struct net *net, u32 objtype)
++nft_obj_type_get(struct net *net, u32 objtype, u8 family)
+ {
+ 	const struct nft_object_type *type;
+ 
+-	type = __nft_obj_type_get(objtype);
++	type = __nft_obj_type_get(objtype, family);
+ 	if (type != NULL && try_module_get(type->owner))
+ 		return type;
+ 
+@@ -6343,7 +6347,7 @@ static int nf_tables_newobj(struct net *
+ 		if (nlh->nlmsg_flags & NLM_F_REPLACE)
+ 			return -EOPNOTSUPP;
+ 
+-		type = __nft_obj_type_get(objtype);
++		type = __nft_obj_type_get(objtype, family);
+ 		nft_ctx_init(&ctx, net, skb, nlh, family, table, NULL, nla);
+ 
+ 		return nf_tables_updobj(&ctx, type, nla[NFTA_OBJ_DATA], obj);
+@@ -6354,7 +6358,7 @@ static int nf_tables_newobj(struct net *
+ 	if (!nft_use_inc(&table->use))
+ 		return -EMFILE;
+ 
+-	type = nft_obj_type_get(net, objtype);
++	type = nft_obj_type_get(net, objtype, family);
+ 	if (IS_ERR(type)) {
+ 		err = PTR_ERR(type);
+ 		goto err_type;
+--- a/net/netfilter/nft_tunnel.c
++++ b/net/netfilter/nft_tunnel.c
+@@ -684,6 +684,7 @@ static const struct nft_object_ops nft_t
+ 
+ static struct nft_object_type nft_tunnel_obj_type __read_mostly = {
+ 	.type		= NFT_OBJECT_TUNNEL,
++	.family		= NFPROTO_NETDEV,
+ 	.ops		= &nft_tunnel_obj_ops,
+ 	.maxattr	= NFTA_TUNNEL_KEY_MAX,
+ 	.policy		= nft_tunnel_key_policy,
 
 
 
