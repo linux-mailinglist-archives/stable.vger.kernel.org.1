@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B4C907007
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:25:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBAB89071C2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 642121C223EB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:25:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88B5D1F280ED
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6550E146D42;
-	Thu, 13 Jun 2024 12:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD5F1448DC;
+	Thu, 13 Jun 2024 12:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bR7CyoiH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJwwIWT4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25036143C46;
-	Thu, 13 Jun 2024 12:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A19B1448D2;
+	Thu, 13 Jun 2024 12:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281375; cv=none; b=sM+yIAllfZHGeoxEOOuKA1f/swqeJ7FBbT0RhkY/OF9gSQAP1VdMboAZInht2N6fn6PsL9eAoM5/zwyoqG8+pa6kzMz1eBvE4avN46QCy+ht9TZ7S0Vez27PxvKSJDy1Hf9f9L12ITUHSaZ7iq361du6taf0gFdT0XrEkvCJSSo=
+	t=1718282398; cv=none; b=lcljoqMtYYBSJoMd4+nmxPTnbrQQsCIv37jBryH0BXy1jf20a/Xf0Nwz4OM4AaodRZAhs9tl7iW9nuiyYDJ8mwoElEGFcuUqxtZYddXooYhswTyUcFXPX/msUUGY1rI9qL2hqT+AyBntA0TfGY7W5feCrOFVdmKen6UvuqIdgRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281375; c=relaxed/simple;
-	bh=47YV7xC5p8KLML9oIDMLbay1LeAzWdmLynj8kVpgcu0=;
+	s=arc-20240116; t=1718282398; c=relaxed/simple;
+	bh=fmaBZ3gIFH+/3pJVm84ielEQxheH4lp+MTGpldJDIMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K2gzH9vBIh2vA2eux5vWnFcz1/IKWJxiIn2EEsVk6+2V8S9LuNytlhk7DtvlXHuJhhZbH+hmxgD8AJ5+wEDdQ2QUrQi868G7nO8XxQ+FpJ/XCVOwcrzDdyiD7Gv8cj0DHDq6bF6wXqVbgYpOm27neGighZEjGI/ktIA5ZPz6nCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bR7CyoiH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D33EC2BBFC;
-	Thu, 13 Jun 2024 12:22:54 +0000 (UTC)
+	 MIME-Version; b=heEN50/Z4vs9BRLsZj57ZmEX9N6zjIbu2myFQKszK3bQC6SESqIuboH8Kxyd/KWgZwmIHsJirQhoFUZF/48EUOIurXpkQbjF5uDGkbInPQ95CRzEdoPkS6tv8qM8VHRdNuiwW26CUrFwkr14KDsI5fU8HB/Njs3flKhP0n/q+Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJwwIWT4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51CBC2BBFC;
+	Thu, 13 Jun 2024 12:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281375;
-	bh=47YV7xC5p8KLML9oIDMLbay1LeAzWdmLynj8kVpgcu0=;
+	s=korg; t=1718282398;
+	bh=fmaBZ3gIFH+/3pJVm84ielEQxheH4lp+MTGpldJDIMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bR7CyoiH41kOyZzPAD1vHxxF49wrDlWACaM2EVPwpg2izGw+imZYx9ziG7jasc7cy
-	 FyrALaQFmiCZ418uFDwyqoEEY6OA36rVB4E7CkJAfDYx0MkMa0ehzPyl3p59JprLti
-	 ga44A/rNu0+OBDemMlCgwjZVXAohbtyuN0ptEsMw=
+	b=cJwwIWT4MEohMXPHqs15FY7EcGu0VWwWdurdkaVKad74Oa17It9BReujgVJk8KCaq
+	 hkqYjtqesnnfHIjznDgUfPtXr7sVkHThC6eZdvgBBQ6HorRKEiXdr6PvF8ncqJFmfh
+	 +k8OB/FbQ3ew2d6vtjHus2BhOUKN1AJHF9xGHTmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 203/317] drm/msm/dpu: Always flush the slave INTF on the CTL
+Subject: [PATCH 5.15 264/402] media: stk1160: fix bounds checking in stk1160_copy_video()
 Date: Thu, 13 Jun 2024 13:33:41 +0200
-Message-ID: <20240613113255.408698188@linuxfoundation.org>
+Message-ID: <20240613113312.449255452@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 2b938c3ab0a69ec6ea587bbf6fc2aec3db4a8736 ]
+[ Upstream commit faa4364bef2ec0060de381ff028d1d836600a381 ]
 
-As we can clearly see in a downstream kernel [1], flushing the slave INTF
-is skipped /only if/ the PPSPLIT topology is active.
+The subtract in this condition is reversed.  The ->length is the length
+of the buffer.  The ->bytesused is how many bytes we have copied thus
+far.  When the condition is reversed that means the result of the
+subtraction is always negative but since it's unsigned then the result
+is a very high positive value.  That means the overflow check is never
+true.
 
-However, when DPU was originally submitted to mainline PPSPLIT was no
-longer part of it (seems to have been ripped out before submission), but
-this clause was incorrectly ported from the original SDE driver.  Given
-that there is no support for PPSPLIT (currently), flushing the slave
-INTF should /never/ be skipped (as the `if (ppsplit && !master) goto
-skip;` clause downstream never becomes true).
+Additionally, the ->bytesused doesn't actually work for this purpose
+because we're not writing to "buf->mem + buf->bytesused".  Instead, the
+math to calculate the destination where we are writing is a bit
+involved.  You calculate the number of full lines already written,
+multiply by two, skip a line if necessary so that we start on an odd
+numbered line, and add the offset into the line.
 
-[1]: https://git.codelinaro.org/clo/la/platform/vendor/opensource/display-drivers/-/blob/display-kernel.lnx.5.4.r1-rel/msm/sde/sde_encoder_phys_cmd.c?ref_type=heads#L1131-1139
+To fix this buffer overflow, just take the actual destination where we
+are writing, if the offset is already out of bounds print an error and
+return.  Otherwise, write up to buf->length bytes.
 
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/589901/
-Link: https://lore.kernel.org/r/20240417-drm-msm-initial-dualpipe-dsc-fixes-v1-3-78ae3ee9a697@somainline.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 9cb2173e6ea8 ("[media] media: Add stk1160 new driver (easycap replacement)")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/media/usb/stk1160/stk1160-video.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-index 8493d68ad8417..e1a97c10c0e41 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-@@ -448,9 +448,6 @@ static void dpu_encoder_phys_cmd_enable_helper(
+diff --git a/drivers/media/usb/stk1160/stk1160-video.c b/drivers/media/usb/stk1160/stk1160-video.c
+index 4cf540d1b2501..2a5a90311e0cc 100644
+--- a/drivers/media/usb/stk1160/stk1160-video.c
++++ b/drivers/media/usb/stk1160/stk1160-video.c
+@@ -99,7 +99,7 @@ void stk1160_buffer_done(struct stk1160 *dev)
+ static inline
+ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ {
+-	int linesdone, lineoff, lencopy;
++	int linesdone, lineoff, lencopy, offset;
+ 	int bytesperline = dev->width * 2;
+ 	struct stk1160_buffer *buf = dev->isoc_ctl.buf;
+ 	u8 *dst = buf->mem;
+@@ -139,8 +139,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 	 * Check if we have enough space left in the buffer.
+ 	 * In that case, we force loop exit after copy.
+ 	 */
+-	if (lencopy > buf->bytesused - buf->length) {
+-		lencopy = buf->bytesused - buf->length;
++	offset = dst - (u8 *)buf->mem;
++	if (offset > buf->length) {
++		dev_warn_ratelimited(dev->dev, "out of bounds offset\n");
++		return;
++	}
++	if (lencopy > buf->length - offset) {
++		lencopy = buf->length - offset;
+ 		remain = lencopy;
+ 	}
  
- 	_dpu_encoder_phys_cmd_pingpong_config(phys_enc);
+@@ -182,8 +187,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 		 * Check if we have enough space left in the buffer.
+ 		 * In that case, we force loop exit after copy.
+ 		 */
+-		if (lencopy > buf->bytesused - buf->length) {
+-			lencopy = buf->bytesused - buf->length;
++		offset = dst - (u8 *)buf->mem;
++		if (offset > buf->length) {
++			dev_warn_ratelimited(dev->dev, "offset out of bounds\n");
++			return;
++		}
++		if (lencopy > buf->length - offset) {
++			lencopy = buf->length - offset;
+ 			remain = lencopy;
+ 		}
  
--	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
--		return;
--
- 	ctl = phys_enc->hw_ctl;
- 	ctl->ops.get_bitmask_intf(ctl, &flush_mask, phys_enc->intf_idx);
- 	ctl->ops.update_pending_flush(ctl, flush_mask);
 -- 
 2.43.0
 
