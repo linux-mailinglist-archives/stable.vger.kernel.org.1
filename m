@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD13907240
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1260D907298
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDA7A1F2171B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3D2A28242B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F9456458;
-	Thu, 13 Jun 2024 12:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8E2144D21;
+	Thu, 13 Jun 2024 12:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJ2wXVld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oult8meV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5BC17FD;
-	Thu, 13 Jun 2024 12:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6B71411C5;
+	Thu, 13 Jun 2024 12:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282716; cv=none; b=upQKs3dMEdGQOdhm35IbWVE/iUQdKjukAGfqgkb6TZStwUFAIOkpDC0YOJS5UefedsexsZOoCjgq5LfKix/uBu9jIsBTOWk3C6cfERNf1GiCJpB9pQrFkrvq8WlyDjLsVc939DPsIfPDRZWIpzBErxwfgzDAx+95fjeSKC4HzmI=
+	t=1718282896; cv=none; b=BMtah7qDXwDWdF8Uf9zaAtp74MSuMW71fx00X9s3Gpdb/RkexFaii221pCdxbz+iPzwMfqO33tXJkHwH5E585xZBOVBXM2SaU1vft4MI/yQdC+kKWbygnWYrEX9/19Z0UG3fxlg3f+qa654Lbg8IluejtjeCS+7HqIjFZ3PYI/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282716; c=relaxed/simple;
-	bh=DXHTB8tj2MqZgW7QRWOWtG0HsduzSX7dIdo6cfqrfwY=;
+	s=arc-20240116; t=1718282896; c=relaxed/simple;
+	bh=nMCXXIKkC04B/y/Kwu/sVXv5ohKROlp7C8VJjx7hn4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=syRA7LcoRe99Zovi/VXyFpK2ocb1fCBrwlRnNbs8P3oTwnm/x9vXV9YZ2OAfsU1xUX92XeUFH193bQqksEPmDYRkpUDYEUR70HLnJ6Pp9liTN5adaNnYdOX5SG6qx7M+GAAGqOjYTW29Q4eI/gzcAXSujXEfG0/rPdymhCmNUtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJ2wXVld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539F7C2BBFC;
-	Thu, 13 Jun 2024 12:45:16 +0000 (UTC)
+	 MIME-Version; b=OYHevfN2NdlCKmoVrBJu3nOByars8uWYpOQ76eC0B8W+gkh10k2zR+6C27zWBs4RQMlAkTuZbMQbr3AjS9vd7TKy09PzmoqkLQD/atiPYvOGI/5KoUTDfSFCO0haO+reXcTJG9xoJrrhyRAKxOB3N6dfcadIUCIpW0olOBERFT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oult8meV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA80DC2BBFC;
+	Thu, 13 Jun 2024 12:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282716;
-	bh=DXHTB8tj2MqZgW7QRWOWtG0HsduzSX7dIdo6cfqrfwY=;
+	s=korg; t=1718282896;
+	bh=nMCXXIKkC04B/y/Kwu/sVXv5ohKROlp7C8VJjx7hn4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJ2wXVldzT7aer5Z1mYnKx5+rBo9H0Jd5biW3fg5jkQg6B3aBPiqYYZMJlU2WvGMP
-	 ar+pPLPf5kAb9dpnW3xW68fSBB4dQgcop8O199JpEAWNWL6G5emmVT4OwwBx1o1jqE
-	 Jgc1bk44BTxopJizXkS7Fucj/mylEt3tTd5J3U4k=
+	b=Oult8meV4LybAY2iLzueDM8klSLLaaH7GNMrO8SZMJRa6IuLorFUeJTkatuxEDmER
+	 nlj7O9RiiHFOFB2hTcLPjp9lHmmYHPj3MVRpjpGlYX6kjpO6k3qTjJWkgwAWF3tdtl
+	 Px1Wk/DSghE5s7c7RRgCx1bON7gCl1G++LhrxGdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 371/402] mmc: sdhci-acpi: Sort DMI quirks alphabetically
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.1 30/85] wifi: rtlwifi: rtl8192de: Fix 5 GHz TX power
 Date: Thu, 13 Jun 2024 13:35:28 +0200
-Message-ID: <20240613113316.608714434@linuxfoundation.org>
+Message-ID: <20240613113215.309449920@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit a92a73b1d9249d155412d8ac237142fa716803ea upstream.
+commit de4d4be4fa64ed7b4aa1c613061015bd8fa98b24 upstream.
 
-Sort the DMI quirks alphabetically.
+Different channels have different TX power settings. rtl8192de is using
+the TX power setting from the wrong channel in the 5 GHz band because
+_rtl92c_phy_get_rightchnlplace expects an array which includes all the
+channel numbers, but it's using an array which includes only the 5 GHz
+channel numbers.
 
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Use the array channel_all (defined in rtl8192de/phy.c) instead of
+the incorrect channel5g (defined in core.c).
+
+Tested only with rtl8192du, which will use the same TX power code.
+
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240410191639.526324-4-hdegoede@redhat.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://msgid.link/c7653517-cf88-4f57-b79a-8edb0a8b32f0@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-acpi.c |   25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -795,9 +795,22 @@ static const struct acpi_device_id sdhci
- };
- MODULE_DEVICE_TABLE(acpi, sdhci_acpi_ids);
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+@@ -892,8 +892,8 @@ static u8 _rtl92c_phy_get_rightchnlplace
+ 	u8 place = chnl;
  
-+/* Please keep this list sorted alphabetically */
- static const struct dmi_system_id sdhci_acpi_quirks[] = {
- 	{
- 		/*
-+		 * The Acer Aspire Switch 10 (SW5-012) microSD slot always
-+		 * reports the card being write-protected even though microSD
-+		 * cards do not have a write-protect switch at all.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW5-012"),
-+		},
-+		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
-+	},
-+	{
-+		/*
- 		 * The Lenovo Miix 320-10ICR has a bug in the _PS0 method of
- 		 * the SHC1 ACPI device, this bug causes it to reprogram the
- 		 * wrong LDO (DLDO3) to 1.8V if 1.8V modes are used and the
-@@ -812,18 +825,6 @@ static const struct dmi_system_id sdhci_
- 	},
- 	{
- 		/*
--		 * The Acer Aspire Switch 10 (SW5-012) microSD slot always
--		 * reports the card being write-protected even though microSD
--		 * cards do not have a write-protect switch at all.
--		 */
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW5-012"),
--		},
--		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
--	},
--	{
--		/*
- 		 * The Toshiba WT8-B's microSD slot always reports the card being
- 		 * write-protected.
- 		 */
+ 	if (chnl > 14) {
+-		for (place = 14; place < ARRAY_SIZE(channel5g); place++) {
+-			if (channel5g[place] == chnl) {
++		for (place = 14; place < ARRAY_SIZE(channel_all); place++) {
++			if (channel_all[place] == chnl) {
+ 				place++;
+ 				break;
+ 			}
 
 
 
