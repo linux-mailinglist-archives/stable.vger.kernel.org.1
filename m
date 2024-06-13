@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-50450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FCDA906604
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:59:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015EB90660C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:00:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D52F11F24F4E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:59:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13CA31C23D27
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 08:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2AB13C9AB;
-	Thu, 13 Jun 2024 07:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C094613D52B;
+	Thu, 13 Jun 2024 07:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TUUxWW8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpct+86z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5F713CFBB
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8213C13D529
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718265453; cv=none; b=ATcTJCBsPT7kmaBlhwUPBBEKPe4wU0v3pBHHG2lNo0zH7qqF5vZ6elqEaPOCtzalziKspX/4Uzs9vuu9EXFkQp6A0pDO5OtCYuisjv/f4bHbrFYWiwVla1lTx5MggdJeBr7XkV8kNQEn+IhkLGEBAp1liIwDFZrb21WPWyJkaSw=
+	t=1718265481; cv=none; b=HINJuQJ5imD7p0Z5wksRzlGY7Sfe7YAEGpTLKQqC0VH0MJlwW8m6MZrjPrAo1oZ+5SncgLHUFpjOKtheWvAby2lzpJ8lbipI7xyTYp4QZG/d3NTlg4Oy6gI0fVgAerSt6LtOh6WCzLRvy5QWTOLr5CkVofGAji7ews17RWyyl00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718265453; c=relaxed/simple;
-	bh=+RpqwvDIXF6gu8pmZv0Q1Tv2WVOR+q3JZ/WdVTmA06k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RXk/tE79ED3c0cYJYWj85+rH/UEv7HRvckcyUT1hVlrBF0suG9wMmKRtgxyg91YyFmvwAAo5nGihYhCFHytWS1eMv61V09IQp2LnLuDT9z8zQhGRpjefzqHrNZBiUeOWJYF8Rr4T5rbFkXRmhB710ATz52fmSqdjk49Rkfogyf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TUUxWW8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D52FC3277B;
-	Thu, 13 Jun 2024 07:57:33 +0000 (UTC)
+	s=arc-20240116; t=1718265481; c=relaxed/simple;
+	bh=T2i2jngzpXoL3XY1C4I0yV8Ie1n+J6cPAMwjzG7SWp0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qXJLZ9yV+D7f6m+COZ2271/QsF+lc7xDdzuw57wuPsP8uwuIgxCtRwi/xKMkgwpL586hX+qOnHOmTUMygvsZcn+CKE8GAqznpJHbSoAG0pRwbNuOm8ir/tZJ3pKjamzDOAKCiLPN4FfkFJik2qYIiOQdv7AEa4OgHlzUWzLGJaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpct+86z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCFEAC2BBFC;
+	Thu, 13 Jun 2024 07:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718265453;
-	bh=+RpqwvDIXF6gu8pmZv0Q1Tv2WVOR+q3JZ/WdVTmA06k=;
+	s=korg; t=1718265481;
+	bh=T2i2jngzpXoL3XY1C4I0yV8Ie1n+J6cPAMwjzG7SWp0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0TUUxWW88Vnz1Al1WOzOUDlhRSohOCUhf1fBdvcyp5aD5HAtqJ2s1tQyr8U7H+NUC
-	 ZctJfjbk75s8GFQJS/QtgnFUrxs/2eOQMIV6f5/yUXSwaLt9C2qyoRipSUAKFa5LZ+
-	 yFSnvrA1+cUxh1ZOtkfQ0pBv+kV/p7elPk+2Zx80=
-Subject: FAILED: patch "[PATCH] selftests/mm: compaction_test: fix bogus test success on" failed to apply to 4.19-stable tree
-To: dev.jain@arm.com,akpm@linux-foundation.org,anshuman.khandual@arm.com,shuah@kernel.org,sjayaram@akamai.com,stable@vger.kernel.org
+	b=rpct+86zgZr7S7yCR8s9NFk13Osl0SrOG1ecv5hy4IawvmThUyT8UlR6ghAEcWpzZ
+	 3EXLw8tYd+qDsMqWDf0b7c2hs50H7gAS4EtmsPS+N29xj0zMGTXfeECfJIP70W6fhE
+	 TCXARgj7AOF43VOAPovRHwaERHLqKMFnjOxIMFdQ=
+Subject: FAILED: patch "[PATCH] irqchip/riscv-intc: Prevent memory leak when" failed to apply to 6.6-stable tree
+To: sunilvl@ventanamicro.com,anup@brainfault.org,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Jun 2024 09:57:21 +0200
-Message-ID: <2024061321-cleaver-straddle-c86d@gregkh>
+Date: Thu, 13 Jun 2024 09:57:58 +0200
+Message-ID: <2024061358-defile-outplayed-f986@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x d4202e66a4b1fe6968f17f9f09bbc30d08f028a1
+git cherry-pick -x 0110c4b110477bb1f19b0d02361846be7ab08300
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061321-cleaver-straddle-c86d@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061358-defile-outplayed-f986@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-d4202e66a4b1 ("selftests/mm: compaction_test: fix bogus test success on Aarch64")
-f3b7568c4942 ("selftests/mm: log a consistent test name for check_compaction")
-9a21701edc41 ("selftests/mm: conform test to TAP format output")
+0110c4b11047 ("irqchip/riscv-intc: Prevent memory leak when riscv_intc_init_common() fails")
+f4cc33e78ba8 ("irqchip/riscv-intc: Introduce Andes hart-level interrupt controller")
+96303bcb401c ("irqchip/riscv-intc: Allow large non-standard interrupt number")
 
 thanks,
 
@@ -79,105 +79,49 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d4202e66a4b1fe6968f17f9f09bbc30d08f028a1 Mon Sep 17 00:00:00 2001
-From: Dev Jain <dev.jain@arm.com>
-Date: Tue, 21 May 2024 13:13:56 +0530
-Subject: [PATCH] selftests/mm: compaction_test: fix bogus test success on
- Aarch64
+From 0110c4b110477bb1f19b0d02361846be7ab08300 Mon Sep 17 00:00:00 2001
+From: Sunil V L <sunilvl@ventanamicro.com>
+Date: Mon, 27 May 2024 13:41:13 +0530
+Subject: [PATCH] irqchip/riscv-intc: Prevent memory leak when
+ riscv_intc_init_common() fails
 
-Patch series "Fixes for compaction_test", v2.
+When riscv_intc_init_common() fails, the firmware node allocated is not
+freed. Add the missing free().
 
-The compaction_test memory selftest introduces fragmentation in memory
-and then tries to allocate as many hugepages as possible. This series
-addresses some problems.
+Fixes: 7023b9d83f03 ("irqchip/riscv-intc: Add ACPI support")
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240527081113.616189-1-sunilvl@ventanamicro.com
 
-On Aarch64, if nr_hugepages == 0, then the test trivially succeeds since
-compaction_index becomes 0, which is less than 3, due to no division by
-zero exception being raised. We fix that by checking for division by
-zero.
-
-Secondly, correctly set the number of hugepages to zero before trying
-to set a large number of them.
-
-Now, consider a situation in which, at the start of the test, a non-zero
-number of hugepages have been already set (while running the entire
-selftests/mm suite, or manually by the admin). The test operates on 80%
-of memory to avoid OOM-killer invocation, and because some memory is
-already blocked by hugepages, it would increase the chance of OOM-killing.
-Also, since mem_free used in check_compaction() is the value before we
-set nr_hugepages to zero, the chance that the compaction_index will
-be small is very high if the preset nr_hugepages was high, leading to a
-bogus test success.
-
-
-This patch (of 3):
-
-Currently, if at runtime we are not able to allocate a huge page, the test
-will trivially pass on Aarch64 due to no exception being raised on
-division by zero while computing compaction_index.  Fix that by checking
-for nr_hugepages == 0.  Anyways, in general, avoid a division by zero by
-exiting the program beforehand.  While at it, fix a typo, and handle the
-case where the number of hugepages may overflow an integer.
-
-Link: https://lkml.kernel.org/r/20240521074358.675031-1-dev.jain@arm.com
-Link: https://lkml.kernel.org/r/20240521074358.675031-2-dev.jain@arm.com
-Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Sri Jayaramappa <sjayaram@akamai.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
-index 4f42eb7d7636..0b249a06a60b 100644
---- a/tools/testing/selftests/mm/compaction_test.c
-+++ b/tools/testing/selftests/mm/compaction_test.c
-@@ -82,12 +82,13 @@ int prereq(void)
- 	return -1;
+diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
+index 9e71c4428814..4f3a12383a1e 100644
+--- a/drivers/irqchip/irq-riscv-intc.c
++++ b/drivers/irqchip/irq-riscv-intc.c
+@@ -253,8 +253,9 @@ IRQCHIP_DECLARE(andes, "andestech,cpu-intc", riscv_intc_init);
+ static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
+ 				       const unsigned long end)
+ {
+-	struct fwnode_handle *fn;
+ 	struct acpi_madt_rintc *rintc;
++	struct fwnode_handle *fn;
++	int rc;
+ 
+ 	rintc = (struct acpi_madt_rintc *)header;
+ 
+@@ -273,7 +274,11 @@ static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
+ 		return -ENOMEM;
+ 	}
+ 
+-	return riscv_intc_init_common(fn, &riscv_intc_chip);
++	rc = riscv_intc_init_common(fn, &riscv_intc_chip);
++	if (rc)
++		irq_domain_free_fwnode(fn);
++
++	return rc;
  }
  
--int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
-+int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
- {
-+	unsigned long nr_hugepages_ul;
- 	int fd, ret = -1;
- 	int compaction_index = 0;
--	char initial_nr_hugepages[10] = {0};
--	char nr_hugepages[10] = {0};
-+	char initial_nr_hugepages[20] = {0};
-+	char nr_hugepages[20] = {0};
- 
- 	/* We want to test with 80% of available memory. Else, OOM killer comes
- 	   in to play */
-@@ -134,7 +135,12 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 
- 	/* We should have been able to request at least 1/3 rd of the memory in
- 	   huge pages */
--	compaction_index = mem_free/(atoi(nr_hugepages) * hugepage_size);
-+	nr_hugepages_ul = strtoul(nr_hugepages, NULL, 10);
-+	if (!nr_hugepages_ul) {
-+		ksft_print_msg("ERROR: No memory is available as huge pages\n");
-+		goto close_fd;
-+	}
-+	compaction_index = mem_free/(nr_hugepages_ul * hugepage_size);
- 
- 	lseek(fd, 0, SEEK_SET);
- 
-@@ -145,11 +151,11 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 		goto close_fd;
- 	}
- 
--	ksft_print_msg("Number of huge pages allocated = %d\n",
--		       atoi(nr_hugepages));
-+	ksft_print_msg("Number of huge pages allocated = %lu\n",
-+		       nr_hugepages_ul);
- 
- 	if (compaction_index > 3) {
--		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
-+		ksft_print_msg("ERROR: Less than 1/%d of memory is available\n"
- 			       "as huge pages\n", compaction_index);
- 		goto close_fd;
- 	}
+ IRQCHIP_ACPI_DECLARE(riscv_intc, ACPI_MADT_TYPE_RINTC, NULL,
 
 
