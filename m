@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC05906FCD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC32906E6F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0E80289156
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5794B25162
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7871145FF9;
-	Thu, 13 Jun 2024 12:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F12D145A05;
+	Thu, 13 Jun 2024 12:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xp2gLjSM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBtsyXD4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E5D145FED;
-	Thu, 13 Jun 2024 12:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DAD13C805;
+	Thu, 13 Jun 2024 12:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281257; cv=none; b=AGthcE2mBsT0KZLyGZR62kqziQQ+GfMvUplfpoTkFCIpPshGhT83s2PiLAs9Fo1WuMdAJ6e1jXfM7K5rceUq4dnE3TvBSOaaTL/WA886xGeRCTquDUBabOa0mmAMxSOhecXdsnA5bvnIEawpwoBTAiJ0dQDy43GvW/trvHyFu8o=
+	t=1718280371; cv=none; b=KTWJvwA05Y6Yufr8rvtYjdTMPOgABQIC5iupqYy3uM6i+o2S+Xug7E6qGVDp9xxZgKdZDfN0JoOyQIcj46Skai4OuT09gKOZ6zBUbBRE0nEfRnfCRm3/UziotTufhQ055fSPJwc18GoUWFaLANshh2mBTP0vK0gIZd3n8oFBkSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281257; c=relaxed/simple;
-	bh=oqRvMv0zGCVguUzVd0jTeHiitwtJ3oE53HUMrbK6fsE=;
+	s=arc-20240116; t=1718280371; c=relaxed/simple;
+	bh=B9N6I5srzqdL6lO2LeDN2qwdhb1OhZKQDScMIL3/h9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pijucVeiQ5djYsLnHW7EHuVo6wDRZXickrVQlSuas9OtX5oXfxeNh7H8XIkljXnn9rNUry3L3pTGJ0pc1Sl98wnqirQTDEt0kvihPD/YdM4m03IQzNA2nVMlQIajb9VMA/adTgvmj0nMofwWE69MsBlpi3IEiVwXmxRVrH3Suec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xp2gLjSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29426C2BBFC;
-	Thu, 13 Jun 2024 12:20:56 +0000 (UTC)
+	 MIME-Version; b=SvKweWM4bLWjTp7ngDg6QPZzslzWw0+gbwTLMhHRyCrp7aKRZq391Dj7LcbcexSnieLVQ57t8iFQm8L5blapCUJ2eFBABfmse1UgJSD7grg8J838IbzuFP0sybmNFKpoecK1Ka4qxT4pvOM9diWwXqva/ujBqCDdPQVdGHPPOcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBtsyXD4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 794DDC2BBFC;
+	Thu, 13 Jun 2024 12:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281257;
-	bh=oqRvMv0zGCVguUzVd0jTeHiitwtJ3oE53HUMrbK6fsE=;
+	s=korg; t=1718280370;
+	bh=B9N6I5srzqdL6lO2LeDN2qwdhb1OhZKQDScMIL3/h9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xp2gLjSMLHt20lDokGJ/MBHnjqz4NyT2vHjvtttsgSOVbvUmb6/vKRMPdV/elwU9e
-	 2eMvOS5y/DV/a5XbvaUs6DjINTViQi6jEO3rh7Sex501LNFUw6n8wrK9kdLIkQVpjS
-	 K9BPuK35/IfiCHcuS/k787SMsWyn5vAiw1um7mMk=
+	b=lBtsyXD4WoSL73GyVzYCug2Djj8nfvD4ZEgmZAnKAYx6CjpkZ5QPUkL8VL88Xo/zB
+	 66wqgroCtbg+FGtElb7vTdPg0hx/qXqYWWF99E9aSQx+yjeISLuOxrj2DigSNdeW8Y
+	 UNJcL95pFbEjGVipFd4cwrcTolgzk8BervXd9p/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Egorenkov <egorenar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 192/317] s390/ipl: Fix incorrect initialization of nvme dump block
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 030/137] arm64: dts: qcom: qcs404: fix bluetooth device address
 Date: Thu, 13 Jun 2024 13:33:30 +0200
-Message-ID: <20240613113254.984241315@linuxfoundation.org>
+Message-ID: <20240613113224.456586179@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Egorenkov <egorenar@linux.ibm.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 7faacaeaf6ce12fae78751de5ad869d8f1e1cd7a ]
+commit f5f390a77f18eaeb2c93211a1b7c5e66b5acd423 upstream.
 
-Initialize the correct fields of the nvme dump block.
-This bug had not been detected before because first, the fcp and nvme fields
-of struct ipl_parameter_block are part of the same union and, therefore,
-overlap in memory and second, they are identical in structure and size.
+The 'local-bd-address' property is used to pass a unique Bluetooth
+device address from the boot firmware to the kernel and should otherwise
+be left unset so that the OS can prevent the controller from being used
+until a valid address has been provided through some other means (e.g.
+using btmgmt).
 
-Fixes: d70e38cb1dee ("s390: nvme dump support")
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Egorenkov <egorenar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 60f77ae7d1c1 ("arm64: dts: qcom: qcs404-evb: Enable uart3 and add Bluetooth")
+Cc: stable@vger.kernel.org	# 5.10
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20240501075201.4732-1-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/ipl.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/qcs404-evb.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/ipl.c b/arch/s390/kernel/ipl.c
-index ab23742088d05..939ceec83048f 100644
---- a/arch/s390/kernel/ipl.c
-+++ b/arch/s390/kernel/ipl.c
-@@ -1602,9 +1602,9 @@ static int __init dump_nvme_init(void)
- 	}
- 	dump_block_nvme->hdr.len = IPL_BP_NVME_LEN;
- 	dump_block_nvme->hdr.version = IPL_PARM_BLOCK_VERSION;
--	dump_block_nvme->fcp.len = IPL_BP0_NVME_LEN;
--	dump_block_nvme->fcp.pbt = IPL_PBT_NVME;
--	dump_block_nvme->fcp.opt = IPL_PB0_NVME_OPT_DUMP;
-+	dump_block_nvme->nvme.len = IPL_BP0_NVME_LEN;
-+	dump_block_nvme->nvme.pbt = IPL_PBT_NVME;
-+	dump_block_nvme->nvme.opt = IPL_PB0_NVME_OPT_DUMP;
- 	dump_capabilities |= DUMP_TYPE_NVME;
- 	return 0;
- }
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi
++++ b/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi
+@@ -62,7 +62,7 @@
+ 		vddrf-supply = <&vreg_l1_1p3>;
+ 		vddch0-supply = <&vdd_ch0_3p3>;
+ 
+-		local-bd-address = [ 02 00 00 00 5a ad ];
++		local-bd-address = [ 00 00 00 00 00 00 ];
+ 
+ 		max-speed = <3200000>;
+ 	};
 
 
 
