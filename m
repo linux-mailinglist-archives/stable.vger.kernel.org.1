@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-50755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0734C906C6A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD42F906D73
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 209FA1C21134
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DC16B26FFF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32883144D16;
-	Thu, 13 Jun 2024 11:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69A21487F4;
+	Thu, 13 Jun 2024 11:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hertagzH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJx0bxc4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57C91448C6;
-	Thu, 13 Jun 2024 11:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737A21487E9;
+	Thu, 13 Jun 2024 11:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279290; cv=none; b=ZnvyDxuqmceBlcmC+PHPWfDBKL4MMgEh4Lewmrl4kLXB7iBtZZr0eMwMGksCLoMnZHr1VgC1ErUiJyw25Fmrq7HGaoasmAXkmlQuNtTXIVQFVRDL4HlhIVEHtndJyu+cSGssvMmUAP/A5evli2/7L98m1ILDKulhk4+zv/vbk/Y=
+	t=1718279779; cv=none; b=jYLicvdtfBkkitvX/nW7CbjlLC/zWCyScEfkn1rnGDc1bcO0y5dHkmQlmAjb2uEoDD6Jc28yAI0RHqxBUiiXut5VxEP/qpTIdbzrXtQ4MfXuFuEWQYwEVamvDvm31XNI10zN9FYV7Ja6oPJwVLxplhGHkslg5xhvMo0fNVOqMFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279290; c=relaxed/simple;
-	bh=H/BjiGzbHrUPax+BdIN/opOFTc95u+80ahLrOQWNDl8=;
+	s=arc-20240116; t=1718279779; c=relaxed/simple;
+	bh=pF3TsHBGGWTuCFFX4mFDG3tUGcs8fxFf8/TbWqRu+ug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=teyKL1EJ7RS8TXii8lIISWsfdyWzDXUuDdQ6WdA3T7O4A9zHoxiWCVrF+Qy0aQVoJhNUiEdmHuxngTcel5QRztVrBiJoZwG2i8wnew2w9MW8S4YPz3RyG0dLvbwIAim+iyIPQOdSFMgtNAJBHF2oHGkJrdWX7FpqO0hGRPmYroc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hertagzH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C256C2BBFC;
-	Thu, 13 Jun 2024 11:48:09 +0000 (UTC)
+	 MIME-Version; b=CzeQ1JJSLwk6yz/tix2eM7AcG9wtqRqQcS3IEtxnd/bIAc7kr72u7EzD0gSC4pTe31wFm4JItETmiVx3mEILKhs/K1IOx+4+Dd3Giof9QoaeQhbXTfbLYiTCKcuTbVBoZUYGEDl7ZtRUCFZoWOARGfEu4Tj6WkanSdLzLPBMV0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJx0bxc4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC043C2BBFC;
+	Thu, 13 Jun 2024 11:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279289;
-	bh=H/BjiGzbHrUPax+BdIN/opOFTc95u+80ahLrOQWNDl8=;
+	s=korg; t=1718279779;
+	bh=pF3TsHBGGWTuCFFX4mFDG3tUGcs8fxFf8/TbWqRu+ug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hertagzHKHGF+iK96IiMBhgCraWG9jQFfnv+vdYkiY/WqCS8mORaBL8fw2ZEuFWQU
-	 R+4HkPiVKCogQfmsHGLT9LMINn5sMH/2sN6PqtNApGMG2Qaph1e1LJWzvUSEslhR+W
-	 ib8Z3k6QNr4Czcmz1k9MMGWbTsJRAhqQkhbpvxDQ=
+	b=rJx0bxc4CMVMg9kowGZO161diDXza8j3Tv+T08ulz0bH5xqHG+5LW/MVau/WDHJWj
+	 Wj8Fpq1fbu3/jqsas8/CoTE3N9ejRRfuKYnoahTJSsnwqQuxtGPleVbrya53jRVsoa
+	 aNpWqsreUZllGeIwzPq2aqUhdI1ELqb45TTT6uCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	David Bauer <mail@david-bauer.net>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.9 006/157] vxlan: Fix regression when dropping packets due to invalid src addresses
-Date: Thu, 13 Jun 2024 13:32:11 +0200
-Message-ID: <20240613113227.647604445@linuxfoundation.org>
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 034/202] irqchip/alpine-msi: Fix off-by-one in allocation error path
+Date: Thu, 13 Jun 2024 13:32:12 +0200
+Message-ID: <20240613113229.090768654@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Zenghui Yu <yuzenghui@huawei.com>
 
-commit 1cd4bc987abb2823836cbb8f887026011ccddc8a upstream.
+[ Upstream commit ff3669a71afa06208de58d6bea1cc49d5e3fcbd1 ]
 
-Commit f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
-has recently been added to vxlan mainly in the context of source
-address snooping/learning so that when it is enabled, an entry in the
-FDB is not being created for an invalid address for the corresponding
-tunnel endpoint.
+When alpine_msix_gic_domain_alloc() fails, there is an off-by-one in the
+number of interrupts to be freed.
 
-Before commit f58f45c1e5b9 vxlan was similarly behaving as geneve in
-that it passed through whichever macs were set in the L2 header. It
-turns out that this change in behavior breaks setups, for example,
-Cilium with netkit in L3 mode for Pods as well as tunnel mode has been
-passing before the change in f58f45c1e5b9 for both vxlan and geneve.
-After mentioned change it is only passing for geneve as in case of
-vxlan packets are dropped due to vxlan_set_mac() returning false as
-source and destination macs are zero which for E/W traffic via tunnel
-is totally fine.
+Fix it by passing the number of successfully allocated interrupts, instead
+of the relative index of the last allocated one.
 
-Fix it by only opting into the is_valid_ether_addr() check in
-vxlan_set_mac() when in fact source address snooping/learning is
-actually enabled in vxlan. This is done by moving the check into
-vxlan_snoop(). With this change, the Cilium connectivity test suite
-passes again for both tunnel flavors.
-
-Fixes: f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: David Bauer <mail@david-bauer.net>
-Cc: Ido Schimmel <idosch@nvidia.com>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: David Bauer <mail@david-bauer.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3841245e8498 ("irqchip/alpine-msi: Fix freeing of interrupts on allocation error path")
+Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240327142305.1048-1-yuzenghui@huawei.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/irqchip/irq-alpine-msi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1446,6 +1446,10 @@ static bool vxlan_snoop(struct net_devic
- 	struct vxlan_fdb *f;
- 	u32 ifindex = 0;
+diff --git a/drivers/irqchip/irq-alpine-msi.c b/drivers/irqchip/irq-alpine-msi.c
+index 1819bb1d27230..aedbc4befcdf0 100644
+--- a/drivers/irqchip/irq-alpine-msi.c
++++ b/drivers/irqchip/irq-alpine-msi.c
+@@ -165,7 +165,7 @@ static int alpine_msix_middle_domain_alloc(struct irq_domain *domain,
+ 	return 0;
  
-+	/* Ignore packets from invalid src-address */
-+	if (!is_valid_ether_addr(src_mac))
-+		return true;
-+
- #if IS_ENABLED(CONFIG_IPV6)
- 	if (src_ip->sa.sa_family == AF_INET6 &&
- 	    (ipv6_addr_type(&src_ip->sin6.sin6_addr) & IPV6_ADDR_LINKLOCAL))
-@@ -1615,10 +1619,6 @@ static bool vxlan_set_mac(struct vxlan_d
- 	if (ether_addr_equal(eth_hdr(skb)->h_source, vxlan->dev->dev_addr))
- 		return false;
- 
--	/* Ignore packets from invalid src-address */
--	if (!is_valid_ether_addr(eth_hdr(skb)->h_source))
--		return false;
--
- 	/* Get address from the outer IP header */
- 	if (vxlan_get_sk_family(vs) == AF_INET) {
- 		saddr.sin.sin_addr.s_addr = ip_hdr(skb)->saddr;
+ err_sgi:
+-	irq_domain_free_irqs_parent(domain, virq, i - 1);
++	irq_domain_free_irqs_parent(domain, virq, i);
+ 	alpine_msix_free_sgi(priv, sgi, nr_irqs);
+ 	return err;
+ }
+-- 
+2.43.0
+
 
 
 
