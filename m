@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-50811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE370906CD8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:54:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 482D5906BD1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 559931F2579F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:54:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F044E1F20F97
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0194C148304;
-	Thu, 13 Jun 2024 11:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D770143C4B;
+	Thu, 13 Jun 2024 11:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkG+vRN1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2levDCj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B013C1482F1;
-	Thu, 13 Jun 2024 11:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187A6143867;
+	Thu, 13 Jun 2024 11:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279454; cv=none; b=ecXDYcujkfN9segrT14A4eX+p+QbJbVYqcCx2xHTAk7p7iXgsMLb4kqIAjnh7rtTLrEs9LasDsbomdJJU3k1JVwGHjVBGS23YE7TPyFKkZRfobS1sgCt4LjTj9IfddfScad1YZO+JLJOftlSTU9jUS+Uwqj5/s53r+lVvMDgIhg=
+	t=1718279050; cv=none; b=RNrrPQOKozTd/A+xDqck6ZnesaQYqcRHQNhJxy6mZdtU5+LkYKARMmu1bTGF9jqHzAmO1fpf56mSyHq5qGa9F95YGCUMhNrtc455gXCzySN+rBXu6qfIaKzfJ0F7eEAqFZhyzuxczqoA9TBdJYK+C6Pzm2ODWIMSA2k+rxRc3Zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279454; c=relaxed/simple;
-	bh=3bUm49nbfAYMaI40hY2k4iBl+2HAwWNuJnkIHp8R9sA=;
+	s=arc-20240116; t=1718279050; c=relaxed/simple;
+	bh=Gr9vYNS+GuJaU9GReXpvF0X61Ws7GWNwz8YNfd70SZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5eggWKwABPLDzSo3Z5Yxg5JgTX3lZRwkqLfjPnSXuM2Sgi4SuCoIa2o1CCJ/y2CVMqjyJ7021YI0K6Vhbj7yEoHJc3lL/KjzWIEEvB3RG2zYSSbx/qDUaDykgwYGnQPMOzCLaOS484aWPG+gdax/aQtxI4gdA6LkRJEfjR5V6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkG+vRN1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35020C4AF1A;
-	Thu, 13 Jun 2024 11:50:54 +0000 (UTC)
+	 MIME-Version; b=F6TS4l4sWXqUP+gSb9lXOKaWHLV80ezlC8VIsvWBkLZjlgwnKNIQHjHig9ZaeLGZ/4vUngpokKzMeKqTgH2ASp5HkUuNhDTZWt5OESbaXxYItLPXHtkBWY91YFFDnlVlXsE00xtCs7wdNePvOJ2Xm9VX/SpJltHGkkZ/vlmptbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2levDCj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD85C2BBFC;
+	Thu, 13 Jun 2024 11:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279454;
-	bh=3bUm49nbfAYMaI40hY2k4iBl+2HAwWNuJnkIHp8R9sA=;
+	s=korg; t=1718279050;
+	bh=Gr9vYNS+GuJaU9GReXpvF0X61Ws7GWNwz8YNfd70SZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SkG+vRN1ZOXgvGx94mx53PwWR+UZvGrxcybngS8le/UfbwQX6KyiWvYvz+DVkd5Vy
-	 9oCjC0b+CKoX0gwHn1P/wz0ZwBFQPmZfoFdTURtlnoKi8i36s6TtyKSDS2Hg7qp5Ra
-	 rmzCrvSIh31+zYHFmqPADhRNla14mPMsYCYv23wo=
+	b=P2levDCjGPKI9oAPT53CjjWKXQ6RQvUgUr/T6/IEJ6giWpmVBg0bEsleNeJLgY2Ah
+	 B+ggwnPfdtyWbGbzBM2wHD1Ow1LvbIst9cpE+1vJC5k7UJdo4fOr3AIVcvTkjmWAjW
+	 j1o1TdwUFl1/tZ8Sa+xQ8ELNkUsWPs79PnOUAHFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Schneider <pschneider1968@googlemail.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.9 081/157] scsi: core: Handle devices which return an unusually large VPD page count
-Date: Thu, 13 Jun 2024 13:33:26 +0200
-Message-ID: <20240613113230.558219998@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.19 159/213] netfilter: nf_tables: pass context to nft_set_destroy()
+Date: Thu, 13 Jun 2024 13:33:27 +0200
+Message-ID: <20240613113234.121470444@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin K. Petersen <martin.petersen@oracle.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit d09c05aa35909adb7d29f92f0cd79fdcd1338ef0 upstream.
+commit 0c2a85edd143162b3a698f31e94bf8cdc041da87 upstream.
 
-Peter Schneider reported that a system would no longer boot after
-updating to 6.8.4.  Peter bisected the issue and identified commit
-b5fc07a5fb56 ("scsi: core: Consult supported VPD page list prior to
-fetching page") as being the culprit.
+The patch that adds support for stateful expressions in set definitions
+require this.
 
-Turns out the enclosure device in Peter's system reports a byteswapped
-page length for VPD page 0. It reports "02 00" as page length instead
-of "00 02". This causes us to attempt to access 516 bytes (page length
-+ header) of information despite only 2 pages being present.
-
-Limit the page search scope to the size of our VPD buffer to guard
-against devices returning a larger page count than requested.
-
-Link: https://lore.kernel.org/r/20240521023040.2703884-1-martin.petersen@oracle.com
-Fixes: b5fc07a5fb56 ("scsi: core: Consult supported VPD page list prior to fetching page")
-Cc: stable@vger.kernel.org
-Reported-by: Peter Schneider <pschneider1968@googlemail.com>
-Closes: https://lore.kernel.org/all/eec6ebbf-061b-4a7b-96dc-ea748aa4d035@googlemail.com/
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ net/netfilter/nf_tables_api.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/scsi/scsi.c
-+++ b/drivers/scsi/scsi.c
-@@ -350,6 +350,13 @@ static int scsi_get_vpd_size(struct scsi
- 		if (result < SCSI_VPD_HEADER_SIZE)
- 			return 0;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3753,7 +3753,7 @@ err1:
+ 	return err;
+ }
  
-+		if (result > sizeof(vpd)) {
-+			dev_warn_once(&sdev->sdev_gendev,
-+				      "%s: long VPD page 0 length: %d bytes\n",
-+				      __func__, result);
-+			result = sizeof(vpd);
-+		}
-+
- 		result -= SCSI_VPD_HEADER_SIZE;
- 		if (!memchr(&vpd[SCSI_VPD_HEADER_SIZE], page, result))
- 			return 0;
+-static void nft_set_destroy(struct nft_set *set)
++static void nft_set_destroy(const struct nft_ctx *ctx, struct nft_set *set)
+ {
+ 	if (WARN_ON(set->use > 0))
+ 		return;
+@@ -3926,7 +3926,7 @@ EXPORT_SYMBOL_GPL(nf_tables_deactivate_s
+ void nf_tables_destroy_set(const struct nft_ctx *ctx, struct nft_set *set)
+ {
+ 	if (list_empty(&set->bindings) && nft_set_is_anonymous(set))
+-		nft_set_destroy(set);
++		nft_set_destroy(ctx, set);
+ }
+ EXPORT_SYMBOL_GPL(nf_tables_destroy_set);
+ 
+@@ -6503,7 +6503,7 @@ static void nft_commit_release(struct nf
+ 		nf_tables_rule_destroy(&trans->ctx, nft_trans_rule(trans));
+ 		break;
+ 	case NFT_MSG_DELSET:
+-		nft_set_destroy(nft_trans_set(trans));
++		nft_set_destroy(&trans->ctx, nft_trans_set(trans));
+ 		break;
+ 	case NFT_MSG_DELSETELEM:
+ 		nf_tables_set_elem_destroy(&trans->ctx,
+@@ -6857,7 +6857,7 @@ static void nf_tables_abort_release(stru
+ 		nf_tables_rule_destroy(&trans->ctx, nft_trans_rule(trans));
+ 		break;
+ 	case NFT_MSG_NEWSET:
+-		nft_set_destroy(nft_trans_set(trans));
++		nft_set_destroy(&trans->ctx, nft_trans_set(trans));
+ 		break;
+ 	case NFT_MSG_NEWSETELEM:
+ 		nft_set_elem_destroy(nft_trans_elem_set(trans),
+@@ -7604,7 +7604,7 @@ static void __nft_release_table(struct n
+ 	list_for_each_entry_safe(set, ns, &table->sets, list) {
+ 		list_del(&set->list);
+ 		nft_use_dec(&table->use);
+-		nft_set_destroy(set);
++		nft_set_destroy(&ctx, set);
+ 	}
+ 	list_for_each_entry_safe(obj, ne, &table->objects, list) {
+ 		list_del(&obj->list);
 
 
 
