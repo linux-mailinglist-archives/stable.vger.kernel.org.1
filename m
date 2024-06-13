@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-50763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F34906C7E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AC8906BCA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E9451C21D01
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90DD2283204
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1FEB1448DD;
-	Thu, 13 Jun 2024 11:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B262142E99;
+	Thu, 13 Jun 2024 11:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9On4FU2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaUkxEp8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE921442EF;
-	Thu, 13 Jun 2024 11:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE10514265E;
+	Thu, 13 Jun 2024 11:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279313; cv=none; b=tfH2TJg49qOL1w0ELaZT0NN4AdNDCSC4dEuVdWbWDBBPrd7AfD7A3NrgrRel49BP9js+KBtyXE+ceCG/n7jVzcYc82jISrLUKGECtfW1fP9sXELzKmZJHZx7IsJbdMNdbe1OSYy9g+FgIh1/NEHSTCREgFHJQtp4+Yxqo9JRkPM=
+	t=1718279032; cv=none; b=WxSuCMTqUAVTwKZ2wBzZnH6LAYIItYjTAfepoRcQmb5RvmNf6jVqnsv28752O9QaKgE7G+f9K/zb1CPcYxjncLhNhRN8AovD6CkaKvOFXUyrxriiiXKNE6AUQZsDlo3FHX+0faTxala+eDXvjibfl8WZmzyD3cPnSs+4JUdDQm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279313; c=relaxed/simple;
-	bh=cKOpXRewWpQRAU4shTGZBZZ/CCeACaYJzvAXlRe54uo=;
+	s=arc-20240116; t=1718279032; c=relaxed/simple;
+	bh=xeI3+tO3EB962pE5dCyam8CFvsoMGwhoITWAtWsp26c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TlQcfy26lzBa906XHbegLsyiPZyeilO2PZAdvZT5EE1AhNnJdn1vDOVpYzETJEZgs21dI6FZtNkJyFnPVYJkN7uJ7Q8M7Sun/Kq6Wif4Ohu0UvG4968EVA1X332KBVscUBV58jUxP8v8z0uvP0vBrjXPSSbOtBnzmdTfGZAMuMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9On4FU2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B225C32786;
-	Thu, 13 Jun 2024 11:48:32 +0000 (UTC)
+	 MIME-Version; b=Tgf+Hl5/XMGBYhwM6N8KAumB0h1J60RLuKtFX+2arJ5wmKUzeUgPOBsCRzSIKQF1XVbkn7Odvxynsicf7f2XLYXutUz1g2ttHCEcCj+wAdK2FRYFVp328yW2ZgHCz2D5V/Yk6bTmioibk/1nvdNH5dPmwufKWxC+mQXBkRzHCPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaUkxEp8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9B9C2BBFC;
+	Thu, 13 Jun 2024 11:43:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279313;
-	bh=cKOpXRewWpQRAU4shTGZBZZ/CCeACaYJzvAXlRe54uo=;
+	s=korg; t=1718279032;
+	bh=xeI3+tO3EB962pE5dCyam8CFvsoMGwhoITWAtWsp26c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y9On4FU2evwETyKejXeetgH/K55IhdNI5kV56LU3xZuwyc5PoPSJdhjgmqEasNQT1
-	 EGrNbY5rPX56BjUnRfVUpXhXhwaiDNwdsbcwz8jKKpaRIvbvKJ+ITosCj4zNnn26nP
-	 LRlPhKOo4qz/MNPAgyvW0wuJaONIMkO87x08Xh+w=
+	b=TaUkxEp8sf14pYdJRlm18IuzYHInIH8mEQeMedbRY0zulcPLwJXxHyX29U0M2vsq6
+	 qeFHEl+738JvpOwunGxYwg7HeUnJ83v3a+tRu3DQsYj72oYFCDI4bDz8meaOT6vRn6
+	 mwRF0mpV712F1//SIpINe+ELE2th090zzSrC5RQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20T=C5=AFma?= <martin.tuma@digiteqautomotive.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.9 034/157] media: mgb4: Fix double debugfs remove
-Date: Thu, 13 Jun 2024 13:32:39 +0200
-Message-ID: <20240613113228.736588882@linuxfoundation.org>
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Richard Weinberger <richard@nod.at>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 112/213] um: Fix return value in ubd_init()
+Date: Thu, 13 Jun 2024 13:32:40 +0200
+Message-ID: <20240613113232.322091116@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Tůma <martin.tuma@digiteqautomotive.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit 825fc49497957310e421454fe3fb8b8d8d8e2dd2 upstream.
+[ Upstream commit 31a5990ed253a66712d7ddc29c92d297a991fdf2 ]
 
-Fixes an error where debugfs_remove_recursive() is called first on a parent
-directory and then again on a child which causes a kernel panic.
+When kmalloc_array() fails to allocate memory, the ubd_init()
+should return -ENOMEM instead of -1. So, fix it.
 
-Signed-off-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Fixes: 0ab13674a9bd ("media: pci: mgb4: Added Digiteq Automotive MGB4 driver")
-Cc: <stable@vger.kernel.org>
-[hverkuil: added Fixes/Cc tags]
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f88f0bdfc32f ("um: UBD Improvements")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/mgb4/mgb4_core.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/um/drivers/ubd_kern.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/pci/mgb4/mgb4_core.c
-+++ b/drivers/media/pci/mgb4/mgb4_core.c
-@@ -642,9 +642,6 @@ static void mgb4_remove(struct pci_dev *
- 	struct mgb4_dev *mgbdev = pci_get_drvdata(pdev);
- 	int i;
+diff --git a/arch/um/drivers/ubd_kern.c b/arch/um/drivers/ubd_kern.c
+index 788c80abff5d3..4a32df89a491e 100644
+--- a/arch/um/drivers/ubd_kern.c
++++ b/arch/um/drivers/ubd_kern.c
+@@ -1135,7 +1135,7 @@ static int __init ubd_init(void)
  
--#ifdef CONFIG_DEBUG_FS
--	debugfs_remove_recursive(mgbdev->debugfs);
--#endif
- #if IS_REACHABLE(CONFIG_HWMON)
- 	hwmon_device_unregister(mgbdev->hwmon_dev);
- #endif
-@@ -659,6 +656,10 @@ static void mgb4_remove(struct pci_dev *
- 		if (mgbdev->vin[i])
- 			mgb4_vin_free(mgbdev->vin[i]);
+ 	if (irq_req_buffer == NULL) {
+ 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
+-		return -1;
++		return -ENOMEM;
+ 	}
+ 	io_req_buffer = kmalloc_array(UBD_REQ_BUFFER_SIZE,
+ 				      sizeof(struct io_thread_req *),
+@@ -1146,7 +1146,7 @@ static int __init ubd_init(void)
  
-+#ifdef CONFIG_DEBUG_FS
-+	debugfs_remove_recursive(mgbdev->debugfs);
-+#endif
-+
- 	device_remove_groups(&mgbdev->pdev->dev, mgb4_pci_groups);
- 	free_spi(mgbdev);
- 	free_i2c(mgbdev);
+ 	if (io_req_buffer == NULL) {
+ 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
+-		return -1;
++		return -ENOMEM;
+ 	}
+ 	platform_driver_register(&ubd_driver);
+ 	mutex_lock(&ubd_lock);
+-- 
+2.43.0
+
 
 
 
