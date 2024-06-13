@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-50810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A50F4906CD2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:54:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10567906BCF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFAB1B2551F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:54:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF8CD1F210CE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3191474C4;
-	Thu, 13 Jun 2024 11:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60819143884;
+	Thu, 13 Jun 2024 11:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRr6ynXA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QlxOOL6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B631474B8;
-	Thu, 13 Jun 2024 11:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA8114265E;
+	Thu, 13 Jun 2024 11:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279452; cv=none; b=DDc3JdsgODgpZLw48r1RIUVii3P+acOsYE4aFUQu+KEL3duSybFzFi/vPeL7VZSiLSWqW0B4HdaCDxYsso35XgNgyFjjJORrQgSSHkcH2pgReY1pIfO//ZeNQFbkUf+8tyAx3uefX+FMOo0CfqVlUqaYk8734hZZbK44K1ZOnAE=
+	t=1718279047; cv=none; b=T94bN522d2kN8fRBLOXvblbWWCKPfvWwGa6xN8JXQF20jnA7C9UFaiZ6OlewS7PUEpOI+J+SQyGYvFLFp7hZUxOfdgW2jIdbQyQ84+E2rgxs8IXLjJIFKXYxxgrbons8m776m5acsrkP1OYcEIs5C8vX0JXGntqyoc+wIsXCOpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279452; c=relaxed/simple;
-	bh=PTSrmsBtAYIMpNPav9e9sSC4u8kNCVHUccrMuURHuGA=;
+	s=arc-20240116; t=1718279047; c=relaxed/simple;
+	bh=4KbujfCK88SXRjcRqEGfORatlwtHKiAokLLC+IBeUo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gjMYfPNP+ZzfGYrByOoPejTLGap/atlbOzTumWyJbN6XpPXGU1V9O17a4zX+OICgChkqF2LZbZhm+aK1BzgtS1JDW22TUzy6SdxMIvv2TdgI48Oz1Kp62fLeYpPinp+jW7WUfegmYlZr7jV2SgBAyd+rCfJVjbITkh1eTw5DK00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRr6ynXA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D8DC4AF1D;
-	Thu, 13 Jun 2024 11:50:51 +0000 (UTC)
+	 MIME-Version; b=TzlrcmMAXj6g2Gd1tCGLnc2Fl+iyQpbc84lroPfb28GDmuBbEIRQ+JkUly4GPBWyl52x4jD2jW1ooXPvWaxGqyV7K3mQTirIk1oHco2+TsCJbNJSIAWCEzzYd/98jD5sxJUoreQp61O/iuS/0LNm5WWyjLZAjSNetoJurn3yoas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QlxOOL6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B052C2BBFC;
+	Thu, 13 Jun 2024 11:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279451;
-	bh=PTSrmsBtAYIMpNPav9e9sSC4u8kNCVHUccrMuURHuGA=;
+	s=korg; t=1718279047;
+	bh=4KbujfCK88SXRjcRqEGfORatlwtHKiAokLLC+IBeUo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRr6ynXA85svRANnxP5VONHk8L6QAJw5F+qUDiG4a8fyW0GGiiymTJGB+GVF4KmZy
-	 LnFakd17jrjWiU6r0O8DQ+UAoEnZVzKeiDeRHjMY+7EgpqwMPtms5ayJdyLAGbXM7+
-	 5VgPIbMWOto1MyBfwN/IegGo7tFd4KQ+UnoHCXfQ=
+	b=2QlxOOL6gapUBlNENw+aQmBQZqnYh/zO3U8Yh9Y0QPHr+S4Yt9NpwHYG9HADWlxtB
+	 D21FEOXcGkLfDqJ8lqO0p4PE9oOAwYtmx/PpmS4dfYhHrpuLPcoetUL1w6KN5EVI3R
+	 Ff1kwWWEy2xYIZBMXbkm2UimYBikJbsbtq5+GABI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Steev Klimaszewski <steev@kali.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.9 080/157] HID: i2c-hid: elan: fix reset suspend current leakage
-Date: Thu, 13 Jun 2024 13:33:25 +0200
-Message-ID: <20240613113230.519063554@linuxfoundation.org>
+	Cai Xinchen <caixinchen1@huawei.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 4.19 158/213] fbdev: savage: Handle err return when savagefb_check_var failed
+Date: Thu, 13 Jun 2024 13:33:26 +0200
+Message-ID: <20240613113234.082117412@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,164 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Cai Xinchen <caixinchen1@huawei.com>
 
-commit 0eafc58f2194dbd01d4be40f99a697681171995b upstream.
+commit 6ad959b6703e2c4c5d7af03b4cfd5ff608036339 upstream.
 
-The Elan eKTH5015M touch controller found on the Lenovo ThinkPad X13s
-shares the VCC33 supply with other peripherals that may remain powered
-during suspend (e.g. when enabled as wakeup sources).
+The commit 04e5eac8f3ab("fbdev: savage: Error out if pixclock equals zero")
+checks the value of pixclock to avoid divide-by-zero error. However
+the function savagefb_probe doesn't handle the error return of
+savagefb_check_var. When pixclock is 0, it will cause divide-by-zero error.
 
-The reset line is also wired so that it can be left deasserted when the
-supply is off.
-
-This is important as it avoids holding the controller in reset for
-extended periods of time when it remains powered, which can lead to
-increased power consumption, and also avoids leaking current through the
-X13s reset circuitry during suspend (and after driver unbind).
-
-Use the new 'no-reset-on-power-off' devicetree property to determine
-when reset needs to be asserted on power down.
-
-Notably this also avoids wasting power on machine variants without a
-touchscreen for which the driver would otherwise exit probe with reset
-asserted.
-
-Fixes: bd3cba00dcc6 ("HID: i2c-hid: elan: Add support for Elan eKTH6915 i2c-hid touchscreens")
-Cc: <stable@vger.kernel.org>	# 6.0
-Cc: Douglas Anderson <dianders@chromium.org>
-Tested-by: Steev Klimaszewski <steev@kali.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240507144821.12275-5-johan+linaro@kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: 04e5eac8f3ab ("fbdev: savage: Error out if pixclock equals zero")
+Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-of-elan.c |   59 +++++++++++++++++++++++++++-------
- 1 file changed, 47 insertions(+), 12 deletions(-)
+ drivers/video/fbdev/savage/savagefb_driver.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/i2c-hid/i2c-hid-of-elan.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-of-elan.c
-@@ -31,6 +31,7 @@ struct i2c_hid_of_elan {
- 	struct regulator *vcc33;
- 	struct regulator *vccio;
- 	struct gpio_desc *reset_gpio;
-+	bool no_reset_on_power_off;
- 	const struct elan_i2c_hid_chip_data *chip_data;
- };
- 
-@@ -40,17 +41,17 @@ static int elan_i2c_hid_power_up(struct
- 		container_of(ops, struct i2c_hid_of_elan, ops);
- 	int ret;
- 
-+	gpiod_set_value_cansleep(ihid_elan->reset_gpio, 1);
+--- a/drivers/video/fbdev/savage/savagefb_driver.c
++++ b/drivers/video/fbdev/savage/savagefb_driver.c
+@@ -2271,7 +2271,10 @@ static int savagefb_probe(struct pci_dev
+ 	if (info->var.xres_virtual > 0x1000)
+ 		info->var.xres_virtual = 0x1000;
+ #endif
+-	savagefb_check_var(&info->var, info);
++	err = savagefb_check_var(&info->var, info);
++	if (err)
++		goto failed;
 +
- 	if (ihid_elan->vcc33) {
- 		ret = regulator_enable(ihid_elan->vcc33);
- 		if (ret)
--			return ret;
-+			goto err_deassert_reset;
- 	}
+ 	savagefb_set_fix(info);
  
- 	ret = regulator_enable(ihid_elan->vccio);
--	if (ret) {
--		regulator_disable(ihid_elan->vcc33);
--		return ret;
--	}
-+	if (ret)
-+		goto err_disable_vcc33;
- 
- 	if (ihid_elan->chip_data->post_power_delay_ms)
- 		msleep(ihid_elan->chip_data->post_power_delay_ms);
-@@ -60,6 +61,15 @@ static int elan_i2c_hid_power_up(struct
- 		msleep(ihid_elan->chip_data->post_gpio_reset_on_delay_ms);
- 
- 	return 0;
-+
-+err_disable_vcc33:
-+	if (ihid_elan->vcc33)
-+		regulator_disable(ihid_elan->vcc33);
-+err_deassert_reset:
-+	if (ihid_elan->no_reset_on_power_off)
-+		gpiod_set_value_cansleep(ihid_elan->reset_gpio, 0);
-+
-+	return ret;
- }
- 
- static void elan_i2c_hid_power_down(struct i2chid_ops *ops)
-@@ -67,7 +77,14 @@ static void elan_i2c_hid_power_down(stru
- 	struct i2c_hid_of_elan *ihid_elan =
- 		container_of(ops, struct i2c_hid_of_elan, ops);
- 
--	gpiod_set_value_cansleep(ihid_elan->reset_gpio, 1);
-+	/*
-+	 * Do not assert reset when the hardware allows for it to remain
-+	 * deasserted regardless of the state of the (shared) power supply to
-+	 * avoid wasting power when the supply is left on.
-+	 */
-+	if (!ihid_elan->no_reset_on_power_off)
-+		gpiod_set_value_cansleep(ihid_elan->reset_gpio, 1);
-+
- 	if (ihid_elan->chip_data->post_gpio_reset_off_delay_ms)
- 		msleep(ihid_elan->chip_data->post_gpio_reset_off_delay_ms);
- 
-@@ -79,6 +96,7 @@ static void elan_i2c_hid_power_down(stru
- static int i2c_hid_of_elan_probe(struct i2c_client *client)
- {
- 	struct i2c_hid_of_elan *ihid_elan;
-+	int ret;
- 
- 	ihid_elan = devm_kzalloc(&client->dev, sizeof(*ihid_elan), GFP_KERNEL);
- 	if (!ihid_elan)
-@@ -93,21 +111,38 @@ static int i2c_hid_of_elan_probe(struct
- 	if (IS_ERR(ihid_elan->reset_gpio))
- 		return PTR_ERR(ihid_elan->reset_gpio);
- 
-+	ihid_elan->no_reset_on_power_off = of_property_read_bool(client->dev.of_node,
-+						"no-reset-on-power-off");
-+
- 	ihid_elan->vccio = devm_regulator_get(&client->dev, "vccio");
--	if (IS_ERR(ihid_elan->vccio))
--		return PTR_ERR(ihid_elan->vccio);
-+	if (IS_ERR(ihid_elan->vccio)) {
-+		ret = PTR_ERR(ihid_elan->vccio);
-+		goto err_deassert_reset;
-+	}
- 
- 	ihid_elan->chip_data = device_get_match_data(&client->dev);
- 
- 	if (ihid_elan->chip_data->main_supply_name) {
- 		ihid_elan->vcc33 = devm_regulator_get(&client->dev,
- 						      ihid_elan->chip_data->main_supply_name);
--		if (IS_ERR(ihid_elan->vcc33))
--			return PTR_ERR(ihid_elan->vcc33);
-+		if (IS_ERR(ihid_elan->vcc33)) {
-+			ret = PTR_ERR(ihid_elan->vcc33);
-+			goto err_deassert_reset;
-+		}
- 	}
- 
--	return i2c_hid_core_probe(client, &ihid_elan->ops,
--				  ihid_elan->chip_data->hid_descriptor_address, 0);
-+	ret = i2c_hid_core_probe(client, &ihid_elan->ops,
-+				 ihid_elan->chip_data->hid_descriptor_address, 0);
-+	if (ret)
-+		goto err_deassert_reset;
-+
-+	return 0;
-+
-+err_deassert_reset:
-+	if (ihid_elan->no_reset_on_power_off)
-+		gpiod_set_value_cansleep(ihid_elan->reset_gpio, 0);
-+
-+	return ret;
- }
- 
- static const struct elan_i2c_hid_chip_data elan_ekth6915_chip_data = {
+ 	/*
 
 
 
