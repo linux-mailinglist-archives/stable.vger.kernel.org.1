@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB0C907055
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6B0906E4E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5456284669
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A77D1C21135
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440A8143747;
-	Thu, 13 Jun 2024 12:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5380313CF85;
+	Thu, 13 Jun 2024 12:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpV6F5jG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VVXq9dw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E281B145346;
-	Thu, 13 Jun 2024 12:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1172B1428E9;
+	Thu, 13 Jun 2024 12:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281572; cv=none; b=KSs+l72S2smgLN8F7mZbJMBpv1GRpUteyQnIzRheSAtV+105ZmNeUSOcF4OKcqNc3KorrmkbkTRVlldGmRGMmf6DYe21JvZTl9xyEMl+A/KW3B49r+s0wU6MEPr+1iU0DWiJdtAXPWCpITvKm0WgmUDzbcevhxki3lPsg/taDlc=
+	t=1718280288; cv=none; b=KMRZHjNV8jHnQ4lO3zS2uEFMLMEGSRMdiX6x+3Z93GoSDb9TJ8F1klQV9TwFS7kG6+Oq4EO1Db3QLotnBmehho5etvTfIeVcx0c7MxYXldElr6yNiaXPOEMlKV4LL86SRIbktRhB0wlxFAsyBFM1m2cShVbN7xgPBoWBp5nKq5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281572; c=relaxed/simple;
-	bh=dCqor+CLr4sQ+njNvU7mEhSQKXz29bqfnVCWlU5bJQM=;
+	s=arc-20240116; t=1718280288; c=relaxed/simple;
+	bh=ODrIKstFGP+iROuBE4v3xIz/tDEhJXFdePOVJ8bZEuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DmMztsdjR1EALwMZVwMvqW72dUZmVmV6Pxu77gWf8yYMbYiL1vnp8uKN9bvj8OrCETi/9Cqp6xpfnpxecu95vbryDtYFUHVip9cfxpUNeETfX5q7wm45YsMSHtBTxzSIrPjBtzDj1hNp5vLN9SyDO+A8dquD01ccOXaDud3ZB2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpV6F5jG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614DDC2BBFC;
-	Thu, 13 Jun 2024 12:26:11 +0000 (UTC)
+	 MIME-Version; b=oKr0eCLsdP+649azicOtHi2ncoot4AEv1Pu5i4IE1kRQgzpl1/kvyHL1nW2/BBXzcnEkLtZehSMe2xSufIsMZR2n6+rO9k/SeHonhC7aCu1Umea8BR8NHgtCMJV4OlNYUEmgkWY64jzBXqbzyWyCzZUzQNPNBEpCgeaeAYAZ8Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VVXq9dw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824CAC2BBFC;
+	Thu, 13 Jun 2024 12:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281571;
-	bh=dCqor+CLr4sQ+njNvU7mEhSQKXz29bqfnVCWlU5bJQM=;
+	s=korg; t=1718280287;
+	bh=ODrIKstFGP+iROuBE4v3xIz/tDEhJXFdePOVJ8bZEuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zpV6F5jGB61QwdH/pqnXR7WCYlOxVMDCj+K7IxNSIhNYJLhZzUDNvdKEeur0kHV5e
-	 +0LHiZ/69aG6sVQyDRq353RQ3txXlr/3FCmZn6HvHCuZ0Ztqt7WgpoV7GQqprZIz/K
-	 F4uM0oyhC8xCrTz9I3Q4zm5TO3FzmMW7J5jWiWgw=
+	b=1VVXq9dwqU0IyAkdNNXF6IKV09DAS7x+30OYz3TEGljghwPsBsyBfkqaRk0O+CEmr
+	 L+U22DAchCGkkL+NOJFau1hSH/2I9XUwCoFYX93UWNiVaR7yu3XS+yC4JNKPWOI3si
+	 rvkpPwuwvv0Ysiy5GDwei/J/MrYNcQNrdzdIb0g0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	"Bai, Shuangpeng" <sjb7183@psu.edu>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 270/317] nilfs2: fix use-after-free of timer for log writer thread
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 5.4 190/202] intel_th: pci: Add Meteor Lake-S CPU support
 Date: Thu, 13 Jun 2024 13:34:48 +0200
-Message-ID: <20240613113257.998024112@linuxfoundation.org>
+Message-ID: <20240613113235.072782546@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,127 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-commit f5d4e04634c9cf68bdf23de08ada0bb92e8befe7 upstream.
+commit a4f813c3ec9d1c32bc402becd1f011b3904dd699 upstream.
 
-Patch series "nilfs2: fix log writer related issues".
+Add support for the Trace Hub in Meteor Lake-S CPU.
 
-This bug fix series covers three nilfs2 log writer-related issues,
-including a timer use-after-free issue and potential deadlock issue on
-unmount, and a potential freeze issue in event synchronization found
-during their analysis.  Details are described in each commit log.
-
-
-This patch (of 3):
-
-A use-after-free issue has been reported regarding the timer sc_timer on
-the nilfs_sc_info structure.
-
-The problem is that even though it is used to wake up a sleeping log
-writer thread, sc_timer is not shut down until the nilfs_sc_info structure
-is about to be freed, and is used regardless of the thread's lifetime.
-
-Fix this issue by limiting the use of sc_timer only while the log writer
-thread is alive.
-
-Link: https://lkml.kernel.org/r/20240520132621.4054-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20240520132621.4054-2-konishi.ryusuke@gmail.com
-Fixes: fdce895ea5dd ("nilfs2: change sc_timer from a pointer to an embedded one in struct nilfs_sc_info")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: "Bai, Shuangpeng" <sjb7183@psu.edu>
-Closes: https://groups.google.com/g/syzkaller/c/MK_LYqtt8ko/m/8rgdWeseAwAJ
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20240429130119.1518073-15-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/segment.c |   25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -2164,8 +2164,10 @@ static void nilfs_segctor_start_timer(st
- {
- 	spin_lock(&sci->sc_state_lock);
- 	if (!(sci->sc_state & NILFS_SEGCTOR_COMMIT)) {
--		sci->sc_timer.expires = jiffies + sci->sc_interval;
--		add_timer(&sci->sc_timer);
-+		if (sci->sc_task) {
-+			sci->sc_timer.expires = jiffies + sci->sc_interval;
-+			add_timer(&sci->sc_timer);
-+		}
- 		sci->sc_state |= NILFS_SEGCTOR_COMMIT;
- 	}
- 	spin_unlock(&sci->sc_state_lock);
-@@ -2385,10 +2387,21 @@ int nilfs_construct_dsync_segment(struct
-  */
- static void nilfs_segctor_accept(struct nilfs_sc_info *sci)
- {
-+	bool thread_is_alive;
-+
- 	spin_lock(&sci->sc_state_lock);
- 	sci->sc_seq_accepted = sci->sc_seq_request;
-+	thread_is_alive = (bool)sci->sc_task;
- 	spin_unlock(&sci->sc_state_lock);
--	del_timer_sync(&sci->sc_timer);
-+
-+	/*
-+	 * This function does not race with the log writer thread's
-+	 * termination.  Therefore, deleting sc_timer, which should not be
-+	 * done after the log writer thread exits, can be done safely outside
-+	 * the area protected by sc_state_lock.
-+	 */
-+	if (thread_is_alive)
-+		del_timer_sync(&sci->sc_timer);
- }
- 
- /**
-@@ -2414,7 +2427,7 @@ static void nilfs_segctor_notify(struct
- 			sci->sc_flush_request &= ~FLUSH_DAT_BIT;
- 
- 		/* re-enable timer if checkpoint creation was not done */
--		if ((sci->sc_state & NILFS_SEGCTOR_COMMIT) &&
-+		if ((sci->sc_state & NILFS_SEGCTOR_COMMIT) && sci->sc_task &&
- 		    time_before(jiffies, sci->sc_timer.expires))
- 			add_timer(&sci->sc_timer);
- 	}
-@@ -2604,6 +2617,7 @@ static int nilfs_segctor_thread(void *ar
- 	int timeout = 0;
- 
- 	sci->sc_timer_task = current;
-+	timer_setup(&sci->sc_timer, nilfs_construction_timeout, 0);
- 
- 	/* start sync. */
- 	sci->sc_task = current;
-@@ -2670,6 +2684,7 @@ static int nilfs_segctor_thread(void *ar
-  end_thread:
- 	/* end sync. */
- 	sci->sc_task = NULL;
-+	del_timer_sync(&sci->sc_timer);
- 	wake_up(&sci->sc_wait_task); /* for nilfs_segctor_kill_thread() */
- 	spin_unlock(&sci->sc_state_lock);
- 	return 0;
-@@ -2733,7 +2748,6 @@ static struct nilfs_sc_info *nilfs_segct
- 	INIT_LIST_HEAD(&sci->sc_gc_inodes);
- 	INIT_LIST_HEAD(&sci->sc_iput_queue);
- 	INIT_WORK(&sci->sc_iput_work, nilfs_iput_work_func);
--	timer_setup(&sci->sc_timer, nilfs_construction_timeout, 0);
- 
- 	sci->sc_interval = HZ * NILFS_SC_DEFAULT_TIMEOUT;
- 	sci->sc_mjcp_freq = HZ * NILFS_SC_DEFAULT_SR_FREQ;
-@@ -2819,7 +2833,6 @@ static void nilfs_segctor_destroy(struct
- 
- 	down_write(&nilfs->ns_segctor_sem);
- 
--	del_timer_sync(&sci->sc_timer);
- 	kfree(sci);
- }
- 
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -290,6 +290,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Meteor Lake-S CPU */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xae24),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Raptor Lake-S */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x7a26),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
