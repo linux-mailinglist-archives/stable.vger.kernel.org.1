@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-50738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A88906C5C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F1D2906C67
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E49CB24869
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDC87B25B07
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F145F143C46;
-	Thu, 13 Jun 2024 11:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F421448C1;
+	Thu, 13 Jun 2024 11:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaJcRY53"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBi8X0I/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0589143890;
-	Thu, 13 Jun 2024 11:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6401428E9;
+	Thu, 13 Jun 2024 11:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279239; cv=none; b=ez/o48g7sF6qFmOJdfemXcthtTvTcxV4Av3MTtNAvuvbRLTPvDx5CuepA3COG1XP7AvlqJwTPKTxf+q3PoJPPr4HeF4P5K3/WdjuZFK1O9ThmiyfUW9XU+WRJQ8qS750SdD97/7LGDBtccgO7GGa5A6WLrTGivFnmJvDKHiTcYE=
+	t=1718279272; cv=none; b=vF55qcnZfdIth4ujDdB8e3IzkWzh4MNLCpUFrW63Hw0RBVB5Hz44AysAc0oZLJD3A/Vr6AB1AijY+Z6DxqAeoPsE7/f864riQWogL8aWn5IBhi/C0+leTpSzn+WGwz2wbQxzv4NbpSUC59pSibSmX3thtfV3HTO7V0rfucAT6ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279239; c=relaxed/simple;
-	bh=mCAb+s67X+jWF4ZtljKxTqfz9WZIFs1SdOFYDR+vEa0=;
+	s=arc-20240116; t=1718279272; c=relaxed/simple;
+	bh=lRHGVVWtW7ktzTBdLqsz/tx6zRWsxZ/YDdFPzLCOdmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovjPuMrWw6/ciESvearNLW5fABbtQwz0w42cAzy6L1oJRJZJczPtOACQ6dPlKJu/OP9KecHaPmyAeOpR99hqRSeQPGuBoF06xZ0y4WL6KXKsChM2mJ2bIboiueUmDyjwZxYbRXHamW1yAoSA5y/hxqWv2nqjf2guW4ckHcJg/mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaJcRY53; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37337C2BBFC;
-	Thu, 13 Jun 2024 11:47:19 +0000 (UTC)
+	 MIME-Version; b=pW4lRj1BQ8cP90UfUgUctZXznvU9XMy1ZbQbbkXs4T/uMUYq1mUzaXQc2bpJJxKaxtohL18LAFktflJRH/znwf2qeYSTazHuFjzi0dYGadNx5ewZCnOBOqxAwr1aDBwG4HcZQgp3U4EtsMIHEWzZb1FZZk5whtSycPta40FV6Xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBi8X0I/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79ABC2BBFC;
+	Thu, 13 Jun 2024 11:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279239;
-	bh=mCAb+s67X+jWF4ZtljKxTqfz9WZIFs1SdOFYDR+vEa0=;
+	s=korg; t=1718279272;
+	bh=lRHGVVWtW7ktzTBdLqsz/tx6zRWsxZ/YDdFPzLCOdmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zaJcRY53Hh6aUhILYHFeoZoRUfVuIjYQSTQfQqlnP5Ig2fGUWhwj1pbhtnDZ0BzpI
-	 aeBPoe9HtvJtEDHg/kO8jlyVfmATFBp20QIrcHgmZ6OYBmg59qz6YgK7bKszJ6jZlp
-	 zV9UlBRSti1vpKg9Gg52xd+PZRYxz7LlRLk2kKW4=
+	b=qBi8X0I/27yHzWhaUxsMG6K213Bhl9VUf5iHQFxkKikSFFTcULK/wTRc8nmTgCRX/
+	 NLzBEsl/md4A/fhgEp6UvFwo5iihcZeJNUoizWg7t4pKNcw0h9zrhgnA7DemZQTzQI
+	 HXMFglMH3+snrYBSWjZZv+8sUmk8tsa3ogGx+BNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lang Yu <Lang.Yu@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.9 001/157] drm/amdkfd: handle duplicate BOs in reserve_bo_and_cond_vms
-Date: Thu, 13 Jun 2024 13:32:06 +0200
-Message-ID: <20240613113227.449135295@linuxfoundation.org>
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>
+Subject: [PATCH 6.9 002/157] drm/i915/hwmon: Get rid of devm
+Date: Thu, 13 Jun 2024 13:32:07 +0200
+Message-ID: <20240613113227.487387965@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
 References: <20240613113227.389465891@linuxfoundation.org>
@@ -66,50 +66,136 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lang Yu <Lang.Yu@amd.com>
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-commit 2a705f3e49d20b59cd9e5cc3061b2d92ebe1e5f0 upstream.
+commit 5bc9de065b8bb9b8dd8799ecb4592d0403b54281 upstream.
 
-Observed on gfx8 ASIC where KFD_IOC_ALLOC_MEM_FLAGS_AQL_QUEUE_MEM is used.
-Two attachments use the same VM, root PD would be locked twice.
+When both hwmon and hwmon drvdata (on which hwmon depends) are device
+managed resources, the expectation, on device unbind, is that hwmon will be
+released before drvdata. However, in i915 there are two separate code
+paths, which both release either drvdata or hwmon and either can be
+released before the other. These code paths (for device unbind) are as
+follows (see also the bug referenced below):
 
-[   57.910418] Call Trace:
-[   57.793726]  ? reserve_bo_and_cond_vms+0x111/0x1c0 [amdgpu]
-[   57.793820]  amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu+0x6c/0x1c0 [amdgpu]
-[   57.793923]  ? idr_get_next_ul+0xbe/0x100
-[   57.793933]  kfd_process_device_free_bos+0x7e/0xf0 [amdgpu]
-[   57.794041]  kfd_process_wq_release+0x2ae/0x3c0 [amdgpu]
-[   57.794141]  ? process_scheduled_works+0x29c/0x580
-[   57.794147]  process_scheduled_works+0x303/0x580
-[   57.794157]  ? __pfx_worker_thread+0x10/0x10
-[   57.794160]  worker_thread+0x1a2/0x370
-[   57.794165]  ? __pfx_worker_thread+0x10/0x10
-[   57.794167]  kthread+0x11b/0x150
-[   57.794172]  ? __pfx_kthread+0x10/0x10
-[   57.794177]  ret_from_fork+0x3d/0x60
-[   57.794181]  ? __pfx_kthread+0x10/0x10
-[   57.794184]  ret_from_fork_asm+0x1b/0x30
+Call Trace:
+release_nodes+0x11/0x70
+devres_release_group+0xb2/0x110
+component_unbind_all+0x8d/0xa0
+component_del+0xa5/0x140
+intel_pxp_tee_component_fini+0x29/0x40 [i915]
+intel_pxp_fini+0x33/0x80 [i915]
+i915_driver_remove+0x4c/0x120 [i915]
+i915_pci_remove+0x19/0x30 [i915]
+pci_device_remove+0x32/0xa0
+device_release_driver_internal+0x19c/0x200
+unbind_store+0x9c/0xb0
 
-Signed-off-by: Lang Yu <Lang.Yu@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+and
+
+Call Trace:
+release_nodes+0x11/0x70
+devres_release_all+0x8a/0xc0
+device_unbind_cleanup+0x9/0x70
+device_release_driver_internal+0x1c1/0x200
+unbind_store+0x9c/0xb0
+
+This means that in i915, if use devm, we cannot gurantee that hwmon will
+always be released before drvdata. Which means that we have a uaf if hwmon
+sysfs is accessed when drvdata has been released but hwmon hasn't.
+
+The only way out of this seems to be do get rid of devm_ and release/free
+everything explicitly during device unbind.
+
+v2: Change commit message and other minor code changes
+v3: Cleanup from i915_hwmon_register on error (Armin Wolf)
+v4: Eliminate potential static analyzer warning (Rodrigo)
+    Eliminate fetch_and_zero (Jani)
+v5: Restore previous logic for ddat_gt->hwmon_dev error return (Andi)
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10366
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240417145646.793223-1-ashutosh.dixit@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/i915_hwmon.c |   46 ++++++++++++++++++++++++++------------
+ 1 file changed, 32 insertions(+), 14 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -1188,7 +1188,8 @@ static int reserve_bo_and_cond_vms(struc
- 	int ret;
+--- a/drivers/gpu/drm/i915/i915_hwmon.c
++++ b/drivers/gpu/drm/i915/i915_hwmon.c
+@@ -793,7 +793,7 @@ void i915_hwmon_register(struct drm_i915
+ 	if (!IS_DGFX(i915))
+ 		return;
  
- 	ctx->sync = &mem->sync;
--	drm_exec_init(&ctx->exec, DRM_EXEC_INTERRUPTIBLE_WAIT, 0);
-+	drm_exec_init(&ctx->exec, DRM_EXEC_INTERRUPTIBLE_WAIT |
-+		      DRM_EXEC_IGNORE_DUPLICATES, 0);
- 	drm_exec_until_all_locked(&ctx->exec) {
- 		ctx->n_vms = 0;
- 		list_for_each_entry(entry, &mem->attachments, list) {
+-	hwmon = devm_kzalloc(dev, sizeof(*hwmon), GFP_KERNEL);
++	hwmon = kzalloc(sizeof(*hwmon), GFP_KERNEL);
+ 	if (!hwmon)
+ 		return;
+ 
+@@ -819,14 +819,12 @@ void i915_hwmon_register(struct drm_i915
+ 	hwm_get_preregistration_info(i915);
+ 
+ 	/*  hwmon_dev points to device hwmon<i> */
+-	hwmon_dev = devm_hwmon_device_register_with_info(dev, ddat->name,
+-							 ddat,
+-							 &hwm_chip_info,
+-							 hwm_groups);
+-	if (IS_ERR(hwmon_dev)) {
+-		i915->hwmon = NULL;
+-		return;
+-	}
++	hwmon_dev = hwmon_device_register_with_info(dev, ddat->name,
++						    ddat,
++						    &hwm_chip_info,
++						    hwm_groups);
++	if (IS_ERR(hwmon_dev))
++		goto err;
+ 
+ 	ddat->hwmon_dev = hwmon_dev;
+ 
+@@ -839,16 +837,36 @@ void i915_hwmon_register(struct drm_i915
+ 		if (!hwm_gt_is_visible(ddat_gt, hwmon_energy, hwmon_energy_input, 0))
+ 			continue;
+ 
+-		hwmon_dev = devm_hwmon_device_register_with_info(dev, ddat_gt->name,
+-								 ddat_gt,
+-								 &hwm_gt_chip_info,
+-								 NULL);
++		hwmon_dev = hwmon_device_register_with_info(dev, ddat_gt->name,
++							    ddat_gt,
++							    &hwm_gt_chip_info,
++							    NULL);
+ 		if (!IS_ERR(hwmon_dev))
+ 			ddat_gt->hwmon_dev = hwmon_dev;
+ 	}
++	return;
++err:
++	i915_hwmon_unregister(i915);
+ }
+ 
+ void i915_hwmon_unregister(struct drm_i915_private *i915)
+ {
+-	fetch_and_zero(&i915->hwmon);
++	struct i915_hwmon *hwmon = i915->hwmon;
++	struct intel_gt *gt;
++	int i;
++
++	if (!hwmon)
++		return;
++
++	for_each_gt(gt, i915, i)
++		if (hwmon->ddat_gt[i].hwmon_dev)
++			hwmon_device_unregister(hwmon->ddat_gt[i].hwmon_dev);
++
++	if (hwmon->ddat.hwmon_dev)
++		hwmon_device_unregister(hwmon->ddat.hwmon_dev);
++
++	mutex_destroy(&hwmon->hwmon_lock);
++
++	kfree(i915->hwmon);
++	i915->hwmon = NULL;
+ }
 
 
 
