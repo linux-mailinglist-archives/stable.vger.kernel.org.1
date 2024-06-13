@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-50601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06025906B7D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 166F4906D77
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD8241C21D80
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B51A71F27CC5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76EED143C46;
-	Thu, 13 Jun 2024 11:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7318514882F;
+	Thu, 13 Jun 2024 11:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cT+Iad0O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duQ7UJmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E4D143872;
-	Thu, 13 Jun 2024 11:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C851487DA;
+	Thu, 13 Jun 2024 11:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278844; cv=none; b=lDwGrTL0c0YcrTUuV/HuSBCr1PouWpGgRnbmDol4DzBBOzyV47x/nuVGuzsRg3kVoZC/5QkiX50rRgqTpNg/tZ3D/l+YyZIjZE0sf5lLyYZRiPdcal1qeAwgCc96hRmAQDf/zQDqVvncqPpdW0P3Y+6ByAU5pJFdB2d5uHCcr8I=
+	t=1718279797; cv=none; b=kPdWS+6hNCdWCWYVicTa/GxOGoao3xvPMG29eFFXzXywVviMZnB+WtGXL+DWADXeNd2/+/QngeDAQYBa9msiKLmquINAErLZMJBeFkh3dsG8ftd+CIEvEdLm3fmM8X7UwxjwbhNYLs9NMx1nt2GVCyzDtI+a1MLpJBvQTY+Qaeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278844; c=relaxed/simple;
-	bh=zsYIpWyEE+Rr63ZTKd/x0kU2LTiBw26M9kH2NT7JCXg=;
+	s=arc-20240116; t=1718279797; c=relaxed/simple;
+	bh=WA0PjgWwKx7kVApIphAj20DnD+Vmhm4KHCYjbZaK1RQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q/3ZIjONKs71weyCgTgaNSEitt4+GZXx66qskDg6SJu+34LqEqBHk4r+JYBk1Wp/NFGLGwgp2Mi41einOirXIdLetavCYTgBq/LsmcxzCNc7QP6yIi2i1QIRBOLf/bqObuGFI3YbdJpfkqxXfKdyHleT/7qTmqL5dziawXjqeQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cT+Iad0O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15FBC2BBFC;
-	Thu, 13 Jun 2024 11:40:43 +0000 (UTC)
+	 MIME-Version; b=pBk4cS8aXETebbTGZwYXlYNtfmsngizGuBIfryJ5P0I0YT89WBnRuSVeHuXjlcfvcgtvOoiuEcoP+tZl+euPDTBQumFd6pEFHTlqTrJJY9KnnRZCk/qXN7Row9s0pjN2SkHx6L1SMT8ILoeRoxqng0aZ23jDSNiL98k5p2gtPUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duQ7UJmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B158BC4AF1A;
+	Thu, 13 Jun 2024 11:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278844;
-	bh=zsYIpWyEE+Rr63ZTKd/x0kU2LTiBw26M9kH2NT7JCXg=;
+	s=korg; t=1718279797;
+	bh=WA0PjgWwKx7kVApIphAj20DnD+Vmhm4KHCYjbZaK1RQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cT+Iad0OooNK7oxpsy9Msg4P4AVje6Q7/Mtnhy9tFbFj/srpy4tpNkM2/v/SW8H4t
-	 lcnH+3Rqb/spw5HBuqutniw8omjFJa1xUZTLQ5zHjRBjyBxTYdbS2XRTSeHYHPv8gx
-	 CyTm7qlBn/LQEf8b5lDCKkL+K+X7nMsPtQcFNxHw=
+	b=duQ7UJmPsB1DHG7ehJSKX01yEqDhCSSktWsR+OlxJ5vCxtyWSuthu5Qbom9Dj6wbW
+	 DWWrmnslNSEeNCl9VaJB6Mn3iGla5jPisgE9HOBxeVp610aDBrMp1+aNxyT6ETEQJ6
+	 mfJynLcmieJtlTJTQyfduUPpC+V7K76hLlmGt4oM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20Li=C5=A1ka?= <mliska@suse.cz>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lizhe <sensor1010@163.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 089/213] perf annotate: Add --demangle and --demangle-kernel
+Subject: [PATCH 5.4 039/202] cpufreq: exit() callback is optional
 Date: Thu, 13 Jun 2024 13:32:17 +0200
-Message-ID: <20240613113231.443361711@linuxfoundation.org>
+Message-ID: <20240613113229.281377839@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Liška <mliska@suse.cz>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit 3406ac5347dbf64ab9f7b137ed25a18493f5ea2d ]
+[ Upstream commit b8f85833c05730d631576008daaa34096bc7f3ce ]
 
-'perf annotate' supports --symbol but it's impossible to filter a C++
-symbol. With --no-demangle one can filter easily by mangled function
-name.
+The exit() callback is optional and shouldn't be called without checking
+a valid pointer first.
 
-Signed-off-by: Martin Liška <mliska@suse.cz>
-Link: http://lore.kernel.org/lkml/c3c7e959-9f7f-18e2-e795-f604275cbac3@suse.cz
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 374af9f1f06b ("perf annotate: Get rid of duplicate --group option item")
+Also, we must clear freq_table pointer even if the exit() callback isn't
+present.
+
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 91a12e91dc39 ("cpufreq: Allow light-weight tear down and bring up of CPUs")
+Fixes: f339f3541701 ("cpufreq: Rearrange locking in cpufreq_remove_dev()")
+Reported-by: Lizhe <sensor1010@163.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/Documentation/perf-annotate.txt | 7 +++++++
- tools/perf/builtin-annotate.c              | 4 ++++
- 2 files changed, 11 insertions(+)
+ drivers/cpufreq/cpufreq.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/Documentation/perf-annotate.txt b/tools/perf/Documentation/perf-annotate.txt
-index e8c972f89357d..066ecfffbf4ed 100644
---- a/tools/perf/Documentation/perf-annotate.txt
-+++ b/tools/perf/Documentation/perf-annotate.txt
-@@ -118,6 +118,13 @@ OPTIONS
- --group::
- 	Show event group information together
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index e727282f56963..c79bbd8cc125c 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -1600,10 +1600,13 @@ static void __cpufreq_offline(unsigned int cpu, struct cpufreq_policy *policy)
+ 	 */
+ 	if (cpufreq_driver->offline) {
+ 		cpufreq_driver->offline(policy);
+-	} else if (cpufreq_driver->exit) {
+-		cpufreq_driver->exit(policy);
+-		policy->freq_table = NULL;
++		return;
+ 	}
++
++	if (cpufreq_driver->exit)
++		cpufreq_driver->exit(policy);
++
++	policy->freq_table = NULL;
+ }
  
-+--demangle::
-+	Demangle symbol names to human readable form. It's enabled by default,
-+	disable with --no-demangle.
-+
-+--demangle-kernel::
-+	Demangle kernel symbol names to human readable form (for C++ kernels).
-+
- --percent-type::
- 	Set annotation percent type from following choices:
- 	  global-period, local-period, global-hits, local-hits
-diff --git a/tools/perf/builtin-annotate.c b/tools/perf/builtin-annotate.c
-index 830481b8db26a..d12430fe9c783 100644
---- a/tools/perf/builtin-annotate.c
-+++ b/tools/perf/builtin-annotate.c
-@@ -533,6 +533,10 @@ int cmd_annotate(int argc, const char **argv)
- 		   "Specify disassembler style (e.g. -M intel for intel syntax)"),
- 	OPT_STRING(0, "objdump", &annotate.opts.objdump_path, "path",
- 		   "objdump binary to use for disassembly and annotations"),
-+	OPT_BOOLEAN(0, "demangle", &symbol_conf.demangle,
-+		    "Enable symbol demangling"),
-+	OPT_BOOLEAN(0, "demangle-kernel", &symbol_conf.demangle_kernel,
-+		    "Enable kernel symbol demangling"),
- 	OPT_BOOLEAN(0, "group", &symbol_conf.event_group,
- 		    "Show event group information together"),
- 	OPT_BOOLEAN(0, "show-total-period", &symbol_conf.show_total_period,
+ static int cpufreq_offline(unsigned int cpu)
+@@ -1653,7 +1656,7 @@ static void cpufreq_remove_dev(struct device *dev, struct subsys_interface *sif)
+ 	}
+ 
+ 	/* We did light-weight exit earlier, do full tear down now */
+-	if (cpufreq_driver->offline)
++	if (cpufreq_driver->offline && cpufreq_driver->exit)
+ 		cpufreq_driver->exit(policy);
+ 
+ 	up_write(&policy->rwsem);
 -- 
 2.43.0
 
