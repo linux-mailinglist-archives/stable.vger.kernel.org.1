@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB066906EA2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 973DF906DF1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6826E280D59
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 358AAB24C9C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8078D146582;
-	Thu, 13 Jun 2024 12:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E91145A0B;
+	Thu, 13 Jun 2024 12:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLfz496U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zH+y0b7q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4F61448F2;
-	Thu, 13 Jun 2024 12:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3D11474C6;
+	Thu, 13 Jun 2024 12:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280509; cv=none; b=bsCrGgcYg8ntrKzMUhB0KZFrHd8MdUwkOwUG/k8lY5lffta2ADvbmtKs0MSWj3MagJpjnEbhXDsOmWi1GXaiLitLxLJYlmBAU37916zgeiuohgLCuBR45gkBgZUGlaB7Ng+a4H1v3UKKOptrRf8nwWIFrYICihgbG0oJ9fivMpE=
+	t=1718280059; cv=none; b=cSAQU/gZS4EEYLLEA/Milv1YJRGxawAYWuR0xBSki55/VJucxL13I62Ik6rDLu+HJQSkSpUltBcDQ6ImylPR+RFUEyP9TBiQ2MdpW+NeZ42gX30IzCE492uonMLeA5RYKnp5/mc/PemOqR6s7StyD9Xo1T6/OLF4fuLKgQTb0W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280509; c=relaxed/simple;
-	bh=gksvNOL2diwEGmiluUnj63efImVXv2OhUaZooHr90DY=;
+	s=arc-20240116; t=1718280059; c=relaxed/simple;
+	bh=YKBDbKJcJf2x6anUcQOguvGNsO9FMfspih+IOAkILOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sTRgCY+YKCqcOnT5ZKEn7Kc3uoKTOev5ABlMBv/aQWeYVwycy96rGMedCixxciqmw9gBGGX+DB2O9lLoSii/8tKqbGynbAlf1XFSbeN2TZwoZBYvPtRc3B9eUxXlciTWE5O3clPKpV1zxPjLxiI6AkYSmumA4oYDddsvWNiSYQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLfz496U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F37C2BBFC;
-	Thu, 13 Jun 2024 12:08:28 +0000 (UTC)
+	 MIME-Version; b=r5QWsWNxukhFXHFfJCIu0yE/sIB3ZSCr1X4CQymj19q39swecSsw/RifB9SJRvRc6SwnxKIDw7W/Mn2l5TWAgd39nrmM7m2CRDl7lTdhJkRlFvK35NBd1BGQDSNk4RkxUitpDsseKUbrnZZ9mhofM66CUqyaStnleotFidXqWmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zH+y0b7q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A1BC32786;
+	Thu, 13 Jun 2024 12:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280509;
-	bh=gksvNOL2diwEGmiluUnj63efImVXv2OhUaZooHr90DY=;
+	s=korg; t=1718280059;
+	bh=YKBDbKJcJf2x6anUcQOguvGNsO9FMfspih+IOAkILOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sLfz496UP8d+WkrbNuzgSl67v6C4kusQLptYUdlw6yhCnjnfL4r/BCKrcCcviaiqh
-	 3cXTQamDrA4PObcTkvING2wkI0UWntL0HeJfZs55LLLzt+whjDmgaPz5NQMi+eLTao
-	 0L2N2eR9PCXIZdNMZcHLjsQxV/0G/pya/e7LzSAo=
+	b=zH+y0b7qn6jqSQWhaIMzzmdDeZJdn68ErCb2RYNf++hJJpEy9LrZUUdvpClcqZrKn
+	 0a8T0f+yjnuYo/ejLxY6UxgW/Fkan0YJqdEwlZAXo4RU4F86MMtLChB/Eh77TbUAZi
+	 Y7udNlcdDtnQ3bEsV+thGenLVnvhAkishT+2QQMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 046/137] media: v4l: async: Fix notifier list entry init
-Date: Thu, 13 Jun 2024 13:33:46 +0200
-Message-ID: <20240613113225.080666176@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 129/202] media: stk1160: fix bounds checking in stk1160_copy_video()
+Date: Thu, 13 Jun 2024 13:33:47 +0200
+Message-ID: <20240613113232.741546905@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 6d8acd02c4c6a8f917eefac1de2e035521ca119d upstream.
+[ Upstream commit faa4364bef2ec0060de381ff028d1d836600a381 ]
 
-struct v4l2_async_notifier has several list_head members, but only
-waiting_list and done_list are initialized. notifier_entry was kept
-'zeroed' leading to an uninitialized list_head.
-This results in a NULL-pointer dereference if csi2_async_register() fails,
-e.g. node for remote endpoint is disabled, and returns -ENOTCONN.
-The following calls to v4l2_async_nf_unregister() results in a NULL
-pointer dereference.
-Add the missing list head initializer.
+The subtract in this condition is reversed.  The ->length is the length
+of the buffer.  The ->bytesused is how many bytes we have copied thus
+far.  When the condition is reversed that means the result of the
+subtraction is always negative but since it's unsigned then the result
+is a very high positive value.  That means the overflow check is never
+true.
 
-Fixes: b8ec754ae4c5 ("media: v4l: async: Set v4l2_device and subdev in async notifier init")
-Cc: <stable@vger.kernel.org> # for 6.6 and later
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Additionally, the ->bytesused doesn't actually work for this purpose
+because we're not writing to "buf->mem + buf->bytesused".  Instead, the
+math to calculate the destination where we are writing is a bit
+involved.  You calculate the number of full lines already written,
+multiply by two, skip a line if necessary so that we start on an odd
+numbered line, and add the offset into the line.
+
+To fix this buffer overflow, just take the actual destination where we
+are writing, if the offset is already out of bounds print an error and
+return.  Otherwise, write up to buf->length bytes.
+
+Fixes: 9cb2173e6ea8 ("[media] media: Add stk1160 new driver (easycap replacement)")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-async.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/usb/stk1160/stk1160-video.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-async.c
-+++ b/drivers/media/v4l2-core/v4l2-async.c
-@@ -563,6 +563,7 @@ void v4l2_async_nf_init(struct v4l2_asyn
+diff --git a/drivers/media/usb/stk1160/stk1160-video.c b/drivers/media/usb/stk1160/stk1160-video.c
+index 4cf540d1b2501..2a5a90311e0cc 100644
+--- a/drivers/media/usb/stk1160/stk1160-video.c
++++ b/drivers/media/usb/stk1160/stk1160-video.c
+@@ -99,7 +99,7 @@ void stk1160_buffer_done(struct stk1160 *dev)
+ static inline
+ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
  {
- 	INIT_LIST_HEAD(&notifier->waiting_list);
- 	INIT_LIST_HEAD(&notifier->done_list);
-+	INIT_LIST_HEAD(&notifier->notifier_entry);
- 	notifier->v4l2_dev = v4l2_dev;
- }
- EXPORT_SYMBOL(v4l2_async_nf_init);
-@@ -572,6 +573,7 @@ void v4l2_async_subdev_nf_init(struct v4
- {
- 	INIT_LIST_HEAD(&notifier->waiting_list);
- 	INIT_LIST_HEAD(&notifier->done_list);
-+	INIT_LIST_HEAD(&notifier->notifier_entry);
- 	notifier->sd = sd;
- }
- EXPORT_SYMBOL_GPL(v4l2_async_subdev_nf_init);
+-	int linesdone, lineoff, lencopy;
++	int linesdone, lineoff, lencopy, offset;
+ 	int bytesperline = dev->width * 2;
+ 	struct stk1160_buffer *buf = dev->isoc_ctl.buf;
+ 	u8 *dst = buf->mem;
+@@ -139,8 +139,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 	 * Check if we have enough space left in the buffer.
+ 	 * In that case, we force loop exit after copy.
+ 	 */
+-	if (lencopy > buf->bytesused - buf->length) {
+-		lencopy = buf->bytesused - buf->length;
++	offset = dst - (u8 *)buf->mem;
++	if (offset > buf->length) {
++		dev_warn_ratelimited(dev->dev, "out of bounds offset\n");
++		return;
++	}
++	if (lencopy > buf->length - offset) {
++		lencopy = buf->length - offset;
+ 		remain = lencopy;
+ 	}
+ 
+@@ -182,8 +187,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 		 * Check if we have enough space left in the buffer.
+ 		 * In that case, we force loop exit after copy.
+ 		 */
+-		if (lencopy > buf->bytesused - buf->length) {
+-			lencopy = buf->bytesused - buf->length;
++		offset = dst - (u8 *)buf->mem;
++		if (offset > buf->length) {
++			dev_warn_ratelimited(dev->dev, "offset out of bounds\n");
++			return;
++		}
++		if (lencopy > buf->length - offset) {
++			lencopy = buf->length - offset;
+ 			remain = lencopy;
+ 		}
+ 
+-- 
+2.43.0
+
 
 
 
