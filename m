@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-51856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 861219071F2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A52A3906E1B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 286A9284C35
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42358B2649C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D201142654;
-	Thu, 13 Jun 2024 12:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029D7145B08;
+	Thu, 13 Jun 2024 12:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6QX37pg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TynUTW8X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD9F1E49B;
-	Thu, 13 Jun 2024 12:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5247143C67;
+	Thu, 13 Jun 2024 12:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282516; cv=none; b=OP3BgPmvR36vWAICNcrTeWVH/tY9CRwDQpZMz7YdgqLzhEgWxXs+4XUQcnBeiDU0gTKDHAKjHANSLNK4w/D7PTncujb9GiRKS/l0o2+ENS/8sHo5i8YL5Y/67kIcY6l+xNsBP4WshUQZZLe9XHI1IqQEUX8xdyc8yaVx+NRBtqs=
+	t=1718280156; cv=none; b=FaP8IWZ3TavPEoBbYeA/1qSXkNQElR4ZPPLxXNDESmpfRqFMHcdUVKf8+0RanDAie0teHnv7Of7QBqYcoz/YzRnIjMV0gCoQj949cNP8Jd9KD2pZ1VsGQYc738I8kt/K0H05W+hcGVPg304lL4tMAIKI4Ladz4mcj3UZXZPTJxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282516; c=relaxed/simple;
-	bh=Aus1QVJizoVW4hfc/Io142087SIgW6D9U6pknx8JiXc=;
+	s=arc-20240116; t=1718280156; c=relaxed/simple;
+	bh=Lvuj3vJbKWqD57qZw09OKK+5OlwQiEstQ+VGXLUdTtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1zK0yVYIFAQSyeyrq8jYUZ7/ND25s+xDs4UVbqdQecqKohiDWQheZaHWrEH8yTitCnvR8U5NX7k5IGGXZLyOR65621CgRC49Ujx3JBlJ1mgotNEp1RFUl9O/XAmZtwoHqF1+WOwP94fpFyCGS4ySnUrw2PyI6klV/KSFJZisKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6QX37pg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8706DC2BBFC;
-	Thu, 13 Jun 2024 12:41:55 +0000 (UTC)
+	 MIME-Version; b=evEkm6pvx8AMX0iezcMvndyTeeGz00aLMOgSyrQxzZVn6dg6UWYpbdQO/nfOFhBa9l8q+o33G8Z5slcEEHAbQUwGExGAI/JXnI8BhwyPOuPCrQGd4Vr+to9Oqirhk0k+fJtkK0C7EAHiv2I3XnF3KLqqgLGubwCMMJmZnx7MJrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TynUTW8X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D544C2BBFC;
+	Thu, 13 Jun 2024 12:02:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282515;
-	bh=Aus1QVJizoVW4hfc/Io142087SIgW6D9U6pknx8JiXc=;
+	s=korg; t=1718280156;
+	bh=Lvuj3vJbKWqD57qZw09OKK+5OlwQiEstQ+VGXLUdTtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w6QX37pgd86xvXCEvbA1+ktX50CCEfLsm1+bnCpXPNssIFO8J4ylynU1b4jmaVfs9
-	 BI7I7o1V5HJPovmbWXurJvHVx01NeJyTksS3GhzK3VPrYeLPjx2XjHcYpgTfJCx6SW
-	 9b9yy9glXe4LcvXwRhy4vCSRC0I0pUCgPEiyMW3k=
+	b=TynUTW8XVihqZJ752PlvaS5aZoY/BI4MNUiqAUGqagBxfvaujMKenb/6f8R+6fVoG
+	 5rRJNHpAnTOu97seVTnH6cCU22YlAbt69MLyU+OD6xYApoT6+vV7dNCza0oa3BZFUS
+	 qjzttGag5SmyFj2+uUeG6jL8tSSns9QUYrdeZuFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 303/402] ice: Interpret .set_channels() input differently
+	syzbot+43120c2af6ca2938cc38@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 162/202] ALSA: timer: Set lower bound of start tick time
 Date: Thu, 13 Jun 2024 13:34:20 +0200
-Message-ID: <20240613113313.962581490@linuxfoundation.org>
+Message-ID: <20240613113234.002485572@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,95 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 05d6f442f31f901d27dbc64fd504a8ec7d5013de ]
+commit 4a63bd179fa8d3fcc44a0d9d71d941ddd62f0c4e upstream.
 
-A bug occurs because a safety check guarding AF_XDP-related queues in
-ethnl_set_channels(), does not trigger. This happens, because kernel and
-ice driver interpret the ethtool command differently.
+Currently ALSA timer doesn't have the lower limit of the start tick
+time, and it allows a very small size, e.g. 1 tick with 1ns resolution
+for hrtimer.  Such a situation may lead to an unexpected RCU stall,
+where  the callback repeatedly queuing the expire update, as reported
+by fuzzer.
 
-How the bug occurs:
-1. ethtool -l <IFNAME> -> combined: 40
-2. Attach AF_XDP to queue 30
-3. ethtool -L <IFNAME> rx 15 tx 15
-   combined number is not specified, so command becomes {rx_count = 15,
-   tx_count = 15, combined_count = 40}.
-4. ethnl_set_channels checks, if there are any AF_XDP of queues from the
-   new (combined_count + rx_count) to the old one, so from 55 to 40, check
-   does not trigger.
-5. ice interprets `rx 15 tx 15` as 15 combined channels and deletes the
-   queue that AF_XDP is attached to.
+This patch introduces a sanity check of the timer start tick time, so
+that the system returns an error when a too small start size is set.
+As of this patch, the lower limit is hard-coded to 100us, which is
+small enough but can still work somehow.
 
-Interpret the command in a way that is more consistent with ethtool
-manual [0] (--show-channels and --set-channels).
-
-Considering that in the ice driver only the difference between RX and TX
-queues forms dedicated channels, change the correct way to set number of
-channels to:
-
-ethtool -L <IFNAME> combined 10 /* For symmetric queues */
-ethtool -L <IFNAME> combined 8 tx 2 rx 0 /* For asymmetric queues */
-
-[0] https://man7.org/linux/man-pages/man8/ethtool.8.html
-
-Fixes: 87324e747fde ("ice: Implement ethtool ops for channels")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+43120c2af6ca2938cc38@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/000000000000fa00a1061740ab6d@google.com
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240514182745.4015-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ backport note: the error handling is changed, as the original commit
+  is based on the recent cleanup with guard() in commit beb45974dd49
+  -- tiwai ]
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
+ sound/core/timer.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index 60f73e775beeb..2440c82ea1fa4 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3394,7 +3394,6 @@ static int ice_set_channels(struct net_device *dev, struct ethtool_channels *ch)
- 	struct ice_pf *pf = vsi->back;
- 	int new_rx = 0, new_tx = 0;
- 	bool locked = false;
--	u32 curr_combined;
- 	int ret = 0;
- 
- 	/* do not support changing channels in Safe Mode */
-@@ -3411,22 +3410,8 @@ static int ice_set_channels(struct net_device *dev, struct ethtool_channels *ch)
- 		return -EOPNOTSUPP;
+--- a/sound/core/timer.c
++++ b/sound/core/timer.c
+@@ -524,6 +524,16 @@ static int snd_timer_start1(struct snd_t
+ 		goto unlock;
  	}
  
--	curr_combined = ice_get_combined_cnt(vsi);
--
--	/* these checks are for cases where user didn't specify a particular
--	 * value on cmd line but we get non-zero value anyway via
--	 * get_channels(); look at ethtool.c in ethtool repository (the user
--	 * space part), particularly, do_schannels() routine
--	 */
--	if (ch->rx_count == vsi->num_rxq - curr_combined)
--		ch->rx_count = 0;
--	if (ch->tx_count == vsi->num_txq - curr_combined)
--		ch->tx_count = 0;
--	if (ch->combined_count == curr_combined)
--		ch->combined_count = 0;
--
--	if (!(ch->combined_count || (ch->rx_count && ch->tx_count))) {
--		netdev_err(dev, "Please specify at least 1 Rx and 1 Tx channel\n");
-+	if (ch->rx_count && ch->tx_count) {
-+		netdev_err(dev, "Dedicated RX or TX channels cannot be used simultaneously\n");
- 		return -EINVAL;
- 	}
- 
--- 
-2.43.0
-
++	/* check the actual time for the start tick;
++	 * bail out as error if it's way too low (< 100us)
++	 */
++	if (start) {
++		if ((u64)snd_timer_hw_resolution(timer) * ticks < 100000) {
++			result = -EINVAL;
++			goto unlock;
++		}
++	}
++
+ 	if (start)
+ 		timeri->ticks = timeri->cticks = ticks;
+ 	else if (!timeri->cticks)
 
 
 
