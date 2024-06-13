@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0DB59070C4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:30:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55516906EF5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D9911F2173B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:30:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D83BE2824B9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB8620ED;
-	Thu, 13 Jun 2024 12:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3248214386B;
+	Thu, 13 Jun 2024 12:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emqVDsUA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUGAmsjA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAFA384;
-	Thu, 13 Jun 2024 12:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D3844C6F;
+	Thu, 13 Jun 2024 12:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281839; cv=none; b=QT+yr8+PXBtah6iDivko7apj7VBqcunBl8pOStFn2IMWGM9QyfzxQAYg36aZimud48g4FE/lhy+hXlbkIPoIHEvZmsSbnk5zwdQTcZX7PKX9b5WTjCgOz67rO8Arml4ZByIPKk8AOczeP/JEFKHdzCAmlovN5X9AFBY/EuibMnE=
+	t=1718280721; cv=none; b=Hmn0PDuJdOXN4U6OjmHNLsBGE+hoDpe0KSMkvsrgtnNQAmr5qnFR+Vlcjcp/OCkFcV2b4IoYSRuYvt95Y28xP5os4l5ADHNXIzDlMGYSQG+1K9UNKKXhfVsbl98RwDMcMWBtL3/+eKFHSfgYJ0UYoP7GcZnTwOsZEVypHppGIl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281839; c=relaxed/simple;
-	bh=t5BrudpJIs79pmw5VKtgSIda0Dw8F+sXZYZvQessegU=;
+	s=arc-20240116; t=1718280721; c=relaxed/simple;
+	bh=jzc2x7rpDQ40CsIFJlgvxyK/9oGW+ityi1qITiAcJhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jRZ0gwy9cmWhi9hxomIw8dsYAAnxrycW1+mDSAnWGtTpfWnYMGnjNAkxakKLI7PSakcQlLfPM4k04ZvKl/WFIaGVpTE8RwgF+ZreWNFG8s6SXFfU1KKdWN7PQzOUmI/dYtC1s6bFSNrnmqZ9A3Nm49qpzcM3AHVxCyxJT6a8dm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=emqVDsUA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A26CC32786;
-	Thu, 13 Jun 2024 12:30:38 +0000 (UTC)
+	 MIME-Version; b=mboYzy1CjgElTzRNuMon7Vo11LNHslJAzO26HUEWcB0w7k9Lo7UGpmU4HXM2e4i+M1iB/oOQWQ07lUFl2XxU8FBfRV65Bs2PtEzcDZWyXlZLlAaJUmDC2znRU0R+xFqz6cOBxMeSkNf5r4NG5KHSgoxqssw4LcqqCLoYbsHEVEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUGAmsjA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F379C2BBFC;
+	Thu, 13 Jun 2024 12:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281839;
-	bh=t5BrudpJIs79pmw5VKtgSIda0Dw8F+sXZYZvQessegU=;
+	s=korg; t=1718280720;
+	bh=jzc2x7rpDQ40CsIFJlgvxyK/9oGW+ityi1qITiAcJhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=emqVDsUA8k5qbRuYiqINlL4Ik06fbxokxmmEosLl+1OjoFuUpkNO5GRckBmAAptcd
-	 PKOQCP5jMWDZREwVbju1pNjUwO6eXqi4VilxiSAjg//nokafOge8bkFlEEyayd/Zc+
-	 9ycPGRAmXvetR701HTmxg9ZNCFnS/0qyDzCO4jWs=
+	b=CUGAmsjA1/7fmWaxuCz98jGXb54KSaOxfgZmpJBXMBmo8wDbaocKjk8jaCKpUuzo8
+	 BEaNSK3KkiytaDGYEoBCAwBU3zORIn5xLX6ZtRc7hqmqfQd9Dsd8T7EpFakcTLmucl
+	 ni+Ode/zOma//hM3VRUTZuTPjgvre6sRSp2Krdgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Joshua Ashton <joshua@froggi.es>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 073/402] cpufreq: Split cpufreq_offline()
+Subject: [PATCH 5.10 012/317] drm/amd/display: Set color_mgmt_changed to true on unsuspend
 Date: Thu, 13 Jun 2024 13:30:30 +0200
-Message-ID: <20240613113304.983831319@linuxfoundation.org>
+Message-ID: <20240613113248.014571605@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Joshua Ashton <joshua@froggi.es>
 
-[ Upstream commit fddd8f86dff4a24742a7f0322ccbb34c6c1c9850 ]
+[ Upstream commit 2eb9dd497a698dc384c0dd3e0311d541eb2e13dd ]
 
-Split the "core" part running under the policy rwsem out of
-cpufreq_offline() to allow the locking in cpufreq_remove_dev() to be
-rearranged more easily.
+Otherwise we can end up with a frame on unsuspend where color management
+is not applied when userspace has not committed themselves.
 
-As a side-effect this eliminates the unlock label that's not needed
-any more.
+Fixes re-applying color management on Steam Deck/Gamescope on S3 resume.
 
-No expected functional impact.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Stable-dep-of: b8f85833c057 ("cpufreq: exit() callback is optional")
+Signed-off-by: Joshua Ashton <joshua@froggi.es>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 33 +++++++++++++++++++--------------
- 1 file changed, 19 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index b65dc6af19f08..ce7d718bdfced 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -1572,21 +1572,10 @@ static int cpufreq_add_dev(struct device *dev, struct subsys_interface *sif)
- 	return 0;
- }
- 
--static int cpufreq_offline(unsigned int cpu)
-+static void __cpufreq_offline(unsigned int cpu, struct cpufreq_policy *policy)
- {
--	struct cpufreq_policy *policy;
- 	int ret;
- 
--	pr_debug("%s: unregistering CPU %u\n", __func__, cpu);
--
--	policy = cpufreq_cpu_get_raw(cpu);
--	if (!policy) {
--		pr_debug("%s: No cpu_data found\n", __func__);
--		return 0;
--	}
--
--	down_write(&policy->rwsem);
--
- 	if (has_target())
- 		cpufreq_stop_governor(policy);
- 
-@@ -1604,7 +1593,7 @@ static int cpufreq_offline(unsigned int cpu)
- 				pr_err("%s: Failed to start governor\n", __func__);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 3578e3b3536e3..29ef0ed44d5f4 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2099,6 +2099,7 @@ static int dm_resume(void *handle)
+ 			dc_stream_release(dm_new_crtc_state->stream);
+ 			dm_new_crtc_state->stream = NULL;
  		}
- 
--		goto unlock;
-+		return;
++		dm_new_crtc_state->base.color_mgmt_changed = true;
  	}
  
- 	if (has_target())
-@@ -1631,8 +1620,24 @@ static int cpufreq_offline(unsigned int cpu)
- 		cpufreq_driver->exit(policy);
- 		policy->freq_table = NULL;
- 	}
-+}
-+
-+static int cpufreq_offline(unsigned int cpu)
-+{
-+	struct cpufreq_policy *policy;
-+
-+	pr_debug("%s: unregistering CPU %u\n", __func__, cpu);
-+
-+	policy = cpufreq_cpu_get_raw(cpu);
-+	if (!policy) {
-+		pr_debug("%s: No cpu_data found\n", __func__);
-+		return 0;
-+	}
-+
-+	down_write(&policy->rwsem);
-+
-+	__cpufreq_offline(cpu, policy);
- 
--unlock:
- 	up_write(&policy->rwsem);
- 	return 0;
- }
+ 	for_each_new_plane_in_state(dm->cached_state, plane, new_plane_state, i) {
 -- 
 2.43.0
 
