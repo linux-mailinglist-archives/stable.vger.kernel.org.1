@@ -1,186 +1,127 @@
-Return-Path: <stable+bounces-50466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E74F90664D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11266906665
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:19:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD31E2830F3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 08:14:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A213A285EF5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 08:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A4113D273;
-	Thu, 13 Jun 2024 08:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5440613D50C;
+	Thu, 13 Jun 2024 08:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ct4HdCCY"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="otJk6Np+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7524313BC0D
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 08:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699A913D502
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 08:19:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718266473; cv=none; b=k3rGndNg6W0q6dUfLMp9Bk8v5nfbrRrgI60dL/0xX/cEB9dLA2FlOz8gJmPx0/bl3zKyoWFxIqgVGIkcEb0fNIcGHbi9bMEx5ArMFbTtcEoKWB66XwDrKfp5iwmFKTvsg4AkAwStYrBs8lbMvThZc6uwLPEjeA8IG9bQT1evrIQ=
+	t=1718266786; cv=none; b=jJpJhDOJyIhljt4eqG4eltuYNFn9t+5WWn9WESXici1oveuQKSqdk7SvM+VwwbVD7bR3zBF8BairsjD9CyvqudDvbacG5uJ5uq+LbmViomT34Yvh3Ci188wyTiq3bZFIxLImmELeAhi9u3ofwYsKsW3h7M+PomyzDUX20q4MbJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718266473; c=relaxed/simple;
-	bh=D+QvPlHH57FFlJclwcE2KRgskT5gmaKKKfah5R7cHiM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KRRyXCc5BkM3WiYLfbE/ZNExi5b6HAPm9aUYZ4m+i1k0vDqgj1VuFDjmJICKB86Z+HLGtemU0jXUdJp+sq4OvDoXPCLb+uxMVbz4dCI/XgA/AIAX8lEDClMQCu1vIMy+L0I3e1UdSQOMrNp8+6BOjWjDmTVwy5bOJm3JkBzJo14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ct4HdCCY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B034EC2BBFC;
-	Thu, 13 Jun 2024 08:14:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718266473;
-	bh=D+QvPlHH57FFlJclwcE2KRgskT5gmaKKKfah5R7cHiM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ct4HdCCYzx1Bt+w8AfgCaRtKCeo+mRkPIQJtBk2K3u5Csxzu0kxGpknRfKakcm1wG
-	 y0xB6x56IzFirtHSlj6RQvkTZYbQIm1Is1Qs1qJQNJPbU0jrNbRG5ZefBTyzqRjY6R
-	 DIF6AtLMBOGWTsmu02U20KDXpN2DLex1YMhBu/C4=
-Date: Thu, 13 Jun 2024 10:14:30 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: =?utf-8?B?VG9tw6HFoQ==?= Trnka <trnka@scm.com>
-Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"sashal@kernel.org" <sashal@kernel.org>,
-	"Yu, Lang" <Lang.Yu@amd.com>,
-	"Kuehling, Felix" <Felix.Kuehling@amd.com>
-Subject: Re: [PATCH] drm/amdkfd: handle duplicate BOs in
- reserve_bo_and_cond_vms
-Message-ID: <2024061357-unseemly-nervy-7b25@gregkh>
-References: <20240531141807.3501061-1-alexander.deucher@amd.com>
- <BL1PR12MB5144EA4E60894AEDF352D61FF7FF2@BL1PR12MB5144.namprd12.prod.outlook.com>
- <2024061217-prodigal-navigate-557c@gregkh>
- <26439120.1r3eYUQgxm@mintaka.ncbr.muni.cz>
+	s=arc-20240116; t=1718266786; c=relaxed/simple;
+	bh=kqwyxqCAid86cD5vG1gVcUsF9oMz7VowpVEj+CbUwUU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pUoGGq3rPoxdHsGZFDgFUgZS1ct/FkXTpFsdpAHJEyfHH+NlCyIZgxGUVQrZfGyH8JJR+8eT5FJR+tZJ8kPSmJSg9UZ6c9kzks7EDOjbpFa6Zc6rkTH8XblOEBcVFnMQF7E25oz5SuKbn8K0BREke9l6apaDdrvbJuEfEzL/sqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=otJk6Np+; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2eaea316481so591131fa.2
+        for <stable@vger.kernel.org>; Thu, 13 Jun 2024 01:19:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718266782; x=1718871582; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+0UP0g4SgJBlO7fJs5utFNOMdYzCMBOE1A8PYkpodHE=;
+        b=otJk6Np+lRUpwoKD56lY45QCKqUyWVT0ktrQ2ciJGMMFpb6ibbragctKCvizsGJliJ
+         LfsOHaNJnIr1FfrG/HDRUb7B0d01qf7n/q5HIOHDX203TRyUO5q6V7xWpml50xytfvwy
+         yp1t4WnOITbkFo8uMmDlP9cvPyq76Ya3zxBhyjj20L4M/BlA0ECA7m5S0ar8Kxbw2G6v
+         Q9dhDh1VIcfwH/T2ilYCbtpn2RSnKr1CtptiXa4FayA/8t52qHk34uhPH3rIIsCym/PD
+         2u1MILHgXe7dkuRVnINcEIN/SI9t225hhH2n2YaZc5fKospk1APiT0WkEOYqaVz6vY/L
+         7s7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718266782; x=1718871582;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+0UP0g4SgJBlO7fJs5utFNOMdYzCMBOE1A8PYkpodHE=;
+        b=IwVmehh+eFY7fOnHdOfdgIt5SEQA8S+MMH+XzxzI4RhzZqG25OyJ21nD3RVfnbEQpy
+         FHLUGCFJAMlLJlKtvc4SL1Wr0i9TNZ4Zs9+ncZsAXXy+hpEEG14sn8u7/QE5adkb32+A
+         rXral7J4c4qh9Nc9mY9bwHLveeV2cVDFV+pLCU3KDb//87rlMLV/ILWjZfhbltUf9MIR
+         x5Pg/d0Gm2ZR9Wv0NkuZg4wEBt9l4HXmnZVjKOFERtulVydtWHij3caXIHZgK6rd88Zc
+         aOTGduOz5nrfAdYwzNOQd22Bi2yoAYN+Hp5U+wjF+b7qAPYXp0CqfLoUz/qFuCOtqkFQ
+         gLTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXED2RJYZNJLOnnUwXLKUQHPOGtplLyWWmp07lGHtxdr9DzX7CGw0V7IiRfVOL7eGV2hccb3jpq89qK3q3/Zwg/ep9oU8a
+X-Gm-Message-State: AOJu0Yy2Uij3CnMdPLk6dqLuSaTPzNjdVyb7KHJPAd3ZhCpSMq5e+vb5
+	ycvnd9558m7N1gdGshMY7r9repW4qHBllStzPjw7gvzXYOP/XLs9LicNmPmV6fM=
+X-Google-Smtp-Source: AGHT+IGVP/0aCb+LgJGqQTXXDStsxDbTPr1bzgPtOQZziu+iQkXKZZEEujrtax/g9gdqsncG888sGA==
+X-Received: by 2002:a2e:2a85:0:b0:2eb:e738:53b2 with SMTP id 38308e7fff4ca-2ebfc8b174dmr26404661fa.1.1718266782557;
+        Thu, 13 Jun 2024 01:19:42 -0700 (PDT)
+Received: from [192.168.1.3] (88-112-131-206.elisa-laajakaista.fi. [88.112.131.206])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ec05c16f00sm1240211fa.61.2024.06.13.01.19.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Jun 2024 01:19:42 -0700 (PDT)
+Message-ID: <68a18159-11ff-412c-b742-34ceb0f3a028@linaro.org>
+Date: Thu, 13 Jun 2024 11:19:34 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <26439120.1r3eYUQgxm@mintaka.ncbr.muni.cz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V4 1/8] clk: qcom: clk-alpha-pll: Fix CAL_L_VAL override
+ for LUCID EVO PLL
+To: Ajit Pandey <quic_ajipan@quicinc.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Vinod Koul <vkoul@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Taniya Das <quic_tdas@quicinc.com>, Jagadeesh Kona <quic_jkona@quicinc.com>,
+ Imran Shaik <quic_imrashai@quicinc.com>,
+ Satya Priya Kakitapalli <quic_skakitap@quicinc.com>, stable@vger.kernel.org,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+References: <20240611133752.2192401-1-quic_ajipan@quicinc.com>
+ <20240611133752.2192401-2-quic_ajipan@quicinc.com>
+Content-Language: en-US
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+In-Reply-To: <20240611133752.2192401-2-quic_ajipan@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 13, 2024 at 10:04:51AM +0200, Tomáš Trnka wrote:
-> On Wednesday, June 12, 2024 2:06:37 PM CEST, Greg KH wrote:
-> > On Mon, Jun 03, 2024 at 02:31:27PM +0000, Deucher, Alexander wrote:
-> > > [Public]
-> > > 
-> > > > -----Original Message-----
-> > > > From: Greg KH <gregkh@linuxfoundation.org>
-> > > > Sent: Saturday, June 1, 2024 1:24 AM
-> > > > To: Deucher, Alexander <Alexander.Deucher@amd.com>
-> > > > Cc: stable@vger.kernel.org; sashal@kernel.org; Yu, Lang
-> > > > <Lang.Yu@amd.com>;
-> > > > Tomáš Trnka <trnka@scm.com>; Kuehling, Felix <Felix.Kuehling@amd.com>
-> > > > Subject: Re: [PATCH] drm/amdkfd: handle duplicate BOs in
-> > > > reserve_bo_and_cond_vms
-> > > > 
-> > > > On Fri, May 31, 2024 at 10:18:07AM -0400, Alex Deucher wrote:
-> > > > > From: Lang Yu <Lang.Yu@amd.com>
-> > > > > 
-> > > > > Observed on gfx8 ASIC where
-> > > > 
-> > > > KFD_IOC_ALLOC_MEM_FLAGS_AQL_QUEUE_MEM is used.
-> > > > 
-> > > > > Two attachments use the same VM, root PD would be locked twice.
-> > > > > 
-> > > > > [   57.910418] Call Trace:
-> > > > > [   57.793726]  ? reserve_bo_and_cond_vms+0x111/0x1c0 [amdgpu]
-> > > > > [   57.793820]
-> > > > 
-> > > > amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu+0x6c/0x1c0 [amdgpu]
-> > > > 
-> > > > > [   57.793923]  ? idr_get_next_ul+0xbe/0x100
-> > > > > [   57.793933]  kfd_process_device_free_bos+0x7e/0xf0 [amdgpu]
-> > > > > [   57.794041]  kfd_process_wq_release+0x2ae/0x3c0 [amdgpu]
-> > > > > [   57.794141]  ? process_scheduled_works+0x29c/0x580
-> > > > > [   57.794147]  process_scheduled_works+0x303/0x580
-> > > > > [   57.794157]  ? __pfx_worker_thread+0x10/0x10
-> > > > > [   57.794160]  worker_thread+0x1a2/0x370
-> > > > > [   57.794165]  ? __pfx_worker_thread+0x10/0x10
-> > > > > [   57.794167]  kthread+0x11b/0x150
-> > > > > [   57.794172]  ? __pfx_kthread+0x10/0x10
-> > > > > [   57.794177]  ret_from_fork+0x3d/0x60
-> > > > > [   57.794181]  ? __pfx_kthread+0x10/0x10
-> > > > > [   57.794184]  ret_from_fork_asm+0x1b/0x30
-> > > > > 
-> > > > > Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3007
-> > > > > Tested-by: Tomáš Trnka <trnka@scm.com>
-> > > > > Signed-off-by: Lang Yu <Lang.Yu@amd.com>
-> > > > > Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-> > > > > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> > > > > Cc: stable@vger.kernel.org
-> > > > > (cherry picked from commit
-> > > > 
-> > > > 2a705f3e49d20b59cd9e5cc3061b2d92ebe1e5f0)
-> > > > 
-> > > > > ---
-> > > > > 
-> > > > >  drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 3 ++-
-> > > > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > > > 
-> > > > What kernel release(s) is this backport for?
-> > > 
-> > > 6.6.x and newer.
-> > 
-> > Does not apply to 6.6.y, sorry, how was this tested?  Can you submit a
-> > patch that does work?
-> > 
-> > thanks,
-> > 
-> > greg k-h
+Hi Ajit,
+
+On 6/11/24 16:37, Ajit Pandey wrote:
+> In LUCID EVO PLL CAL_L_VAL and L_VAL bitfields are part of single
+> PLL_L_VAL register. Update for L_VAL bitfield values in PLL_L_VAL
+> register using regmap_write() API in __alpha_pll_trion_set_rate
+> callback will override LUCID EVO PLL initial configuration related
+> to PLL_CAL_L_VAL bit fields in PLL_L_VAL register.
 > 
-> Sorry about that. 6.6 does not have commit 
-> 05d249352f1ae909230c230767ca8f4e9fdf8e7b "drm/exec: Pass in initial # of 
-> objects" which adds the trailing 0 argument. Just removing that zero makes the 
-> patch apply and work. Such a modified version is attached below.
+> Observed random PLL lock failures during PLL enable due to such
+> override in PLL calibration value. Use regmap_update_bits() with
+> L_VAL bitfield mask instead of regmap_write() API to update only
+> PLL_L_VAL bitfields in __alpha_pll_trion_set_rate callback.
 > 
-> Tested on 6.6.32 (version below), 6.8.12 and 6.9.3 (version sent by Alex 
-> above).
-> 
-> 2T
-> 
-> From: Lang Yu <Lang.Yu@amd.com>
-> 
-> Observed on gfx8 ASIC where KFD_IOC_ALLOC_MEM_FLAGS_AQL_QUEUE_MEM is used.
-> Two attachments use the same VM, root PD would be locked twice.
-> 
-> [   57.910418] Call Trace:
-> [   57.793726]  ? reserve_bo_and_cond_vms+0x111/0x1c0 [amdgpu]
-> [   57.793820]  amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu+0x6c/0x1c0 [amdgpu]
-> [   57.793923]  ? idr_get_next_ul+0xbe/0x100
-> [   57.793933]  kfd_process_device_free_bos+0x7e/0xf0 [amdgpu]
-> [   57.794041]  kfd_process_wq_release+0x2ae/0x3c0 [amdgpu]
-> [   57.794141]  ? process_scheduled_works+0x29c/0x580
-> [   57.794147]  process_scheduled_works+0x303/0x580
-> [   57.794157]  ? __pfx_worker_thread+0x10/0x10
-> [   57.794160]  worker_thread+0x1a2/0x370
-> [   57.794165]  ? __pfx_worker_thread+0x10/0x10
-> [   57.794167]  kthread+0x11b/0x150
-> [   57.794172]  ? __pfx_kthread+0x10/0x10
-> [   57.794177]  ret_from_fork+0x3d/0x60
-> [   57.794181]  ? __pfx_kthread+0x10/0x10
-> [   57.794184]  ret_from_fork_asm+0x1b/0x30
-> 
-> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3007
-> Tested-by: Tomáš Trnka <trnka@scm.com>
-> Signed-off-by: Lang Yu <Lang.Yu@amd.com>
-> Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> Fixes: 260e36606a03 ("clk: qcom: clk-alpha-pll: add Lucid EVO PLL configuration interfaces")
 > Cc: stable@vger.kernel.org
-> (cherry picked from commit 2a705f3e49d20b59cd9e5cc3061b2d92ebe1e5f0)
+> Signed-off-by: Ajit Pandey <quic_ajipan@quicinc.com>
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-As you are modifying, and passing on, a patch, you need to also sign off
-on this.
+thank you for the fix!
 
-Please submit this in a format that I can apply it in, not as something
-I need to hand-edit out of an email.
+Acked-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-thanks,
-
-greg k-h
+--
+Best wishes,
+Vladimir
 
