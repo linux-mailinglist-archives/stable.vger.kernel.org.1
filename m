@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-50646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB48906BB0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0DB7906CFB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B3EB1C217DD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ED751C2261C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE8F143C77;
-	Thu, 13 Jun 2024 11:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CBB144D07;
+	Thu, 13 Jun 2024 11:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HW0Nxrd+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUUEZrqH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A19A143C6B;
-	Thu, 13 Jun 2024 11:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C790C13CA99;
+	Thu, 13 Jun 2024 11:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278973; cv=none; b=dLJRoFMUzwlTKoHTLSPOYSTzKvgMssS68LSZOb/vMdK6gBuI5FbFQ0azH5uUTtJqZkAqXbI52EOeTatwuiaEzifJGiMAdj+n2eaWDH4ICcGuf9u0wJO6IRdVqdXEOPIAPl5wiDwzWB6Yo4xFHf9Gp/js98iRqV/R+WTJBBRZsrc=
+	t=1718279498; cv=none; b=izWL3nfyzfFHxb9K8Hq6ZIpRQR5lRXNTeYhZipYac/LNo9XGGg74EuMZQr2/W8cwHsOBYnnxC13UqHMIVlxKyjETVFzG426REc5uxTOCiO0HduM2QGGTFFdlNNeAZYNrfhWEVOMkFioSRDuKuCUFlZVGkWS9nlBYKohU3CK+0UI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278973; c=relaxed/simple;
-	bh=XvKIgsAYK9E3m/qb5Idyf1NqIvZz++t5kQSaos1t4FI=;
+	s=arc-20240116; t=1718279498; c=relaxed/simple;
+	bh=ebW1i56k4+wK7jTu4eUBvGOoDa69ruLEJNcmb62mB80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=po0xq6+1vHBN2wk1c9donMtK7oC7RwAxIqIA9s+zxGVzOipFp+XTfg+rx0He0f1uZsPV4lv1DNWQxTxGl3ROwFT0sdeMr0W+hRbO3Am4/l6tcHS/yuJd0f89bIJTZYAckh06ZZsWxbeabhv8RxtSGl67tLwGz15d8tUjWAwEU6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HW0Nxrd+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA22C4AF1C;
-	Thu, 13 Jun 2024 11:42:52 +0000 (UTC)
+	 MIME-Version; b=j6UG/ZjWPMySRpWQVRE7ORDMSE7u0KJ8aoBoXfCEiAVmOZ7ElpH+BnZR+ENlWzGcWxsONEznf9rTWFHPNW6Vba/GriDBu3gRFjSPjr/uOshDCu6ub49zoRk0Mmu79Wm4SzpzWERacwu8HrWYTeIiHdjsfuqS279yramShDUYyEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUUEZrqH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F235C2BBFC;
+	Thu, 13 Jun 2024 11:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278973;
-	bh=XvKIgsAYK9E3m/qb5Idyf1NqIvZz++t5kQSaos1t4FI=;
+	s=korg; t=1718279498;
+	bh=ebW1i56k4+wK7jTu4eUBvGOoDa69ruLEJNcmb62mB80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HW0Nxrd+XzZ4DLVdBvUe7M5R96DEU+AI05is/W4K+MPkg1DK4SVBdIAc0C93TKszk
-	 KzKT3zb1nkgJGy+l98oocVYgNTh6Kdml2sJU8ccU4EggT379gzgzrzvXMMknjOvEVu
-	 0rg259RkddzfBdeRd7G6e31omF7oXgQzJ0BtctUk=
+	b=AUUEZrqHt3/tZTIHhp0tJqJyLQpa8Hu+eeFwO1upNJW1Hb+T4aXzPcoTnE0AneJBV
+	 DvmZ4nM1BoSNKS1OngxvK+vsF+aHvf8m/9XslmVHHPTMAECSyPK2ardb5mUYQAaRyV
+	 xDgSWYKqs7n0mme/2uIFDTSSXFbCEvEPuO33v494=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 132/213] spi: Dont mark message DMA mapped when no transfer in it is
+	Tim Huang <Tim.Huang@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	lectrode <electrodexsnet@gmail.com>
+Subject: [PATCH 6.9 055/157] drm/amd: Fix shutdown (again) on some SMU v13.0.4/11 platforms
 Date: Thu, 13 Jun 2024 13:33:00 +0200
-Message-ID: <20240613113233.089340000@linuxfoundation.org>
+Message-ID: <20240613113229.554965579@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 9f788ba457b45b0ce422943fcec9fa35c4587764 ]
+commit 267cace556e8a53d703119f7435ab556209e5b6a upstream.
 
-There is no need to set the DMA mapped flag of the message if it has
-no mapped transfers. Moreover, it may give the code a chance to take
-the wrong paths, i.e. to exercise DMA related APIs on unmapped data.
-Make __spi_map_msg() to bail earlier on the above mentioned cases.
+commit cd94d1b182d2 ("dm/amd/pm: Fix problems with reboot/shutdown for
+some SMU 13.0.4/13.0.11 users") attempted to fix shutdown issues
+that were reported since commit 31729e8c21ec ("drm/amd/pm: fixes a
+random hang in S4 for SMU v13.0.4/11") but caused issues for some
+people.
 
-Fixes: 99adef310f68 ("spi: Provide core support for DMA mapping transfers")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://msgid.link/r/20240522171018.3362521-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Adjust the workaround flow to properly only apply in the S4 case:
+-> For shutdown go through SMU_MSG_PrepareMp1ForUnload
+-> For S4 go through SMU_MSG_GfxDeviceDriverReset and
+   SMU_MSG_PrepareMp1ForUnload
+
+Reported-and-tested-by: lectrode <electrodexsnet@gmail.com>
+Closes: https://github.com/void-linux/void-packages/issues/50417
+Cc: stable@vger.kernel.org
+Fixes: cd94d1b182d2 ("dm/amd/pm: Fix problems with reboot/shutdown for some SMU 13.0.4/13.0.11 users")
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c |   20 ++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 3bcd6f178f73b..a15545cee4d2e 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -866,6 +866,7 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 	else
- 		rx_dev = ctlr->dev.parent;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
+@@ -226,15 +226,17 @@ static int smu_v13_0_4_system_features_c
+ 	struct amdgpu_device *adev = smu->adev;
+ 	int ret = 0;
  
-+	ret = -ENOMSG;
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
- 		if (!ctlr->can_dma(ctlr, msg->spi, xfer))
- 			continue;
-@@ -889,6 +890,9 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 			}
- 		}
+-	if (!en && adev->in_s4) {
+-		/* Adds a GFX reset as workaround just before sending the
+-		 * MP1_UNLOAD message to prevent GC/RLC/PMFW from entering
+-		 * an invalid state.
+-		 */
+-		ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_GfxDeviceDriverReset,
+-						      SMU_RESET_MODE_2, NULL);
+-		if (ret)
+-			return ret;
++	if (!en && !adev->in_s0ix) {
++		if (adev->in_s4) {
++			/* Adds a GFX reset as workaround just before sending the
++			 * MP1_UNLOAD message to prevent GC/RLC/PMFW from entering
++			 * an invalid state.
++			 */
++			ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_GfxDeviceDriverReset,
++							      SMU_RESET_MODE_2, NULL);
++			if (ret)
++				return ret;
++		}
+ 
+ 		ret = smu_cmn_send_smc_msg(smu, SMU_MSG_PrepareMp1ForUnload, NULL);
  	}
-+	/* No transfer has been mapped, bail out with success */
-+	if (ret)
-+		return 0;
- 
- 	ctlr->cur_msg_mapped = true;
- 
--- 
-2.43.0
-
 
 
 
