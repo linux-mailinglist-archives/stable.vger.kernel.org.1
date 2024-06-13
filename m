@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF070906E9B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEED190702D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 025451C22C42
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF8351C238DB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1699145A1B;
-	Thu, 13 Jun 2024 12:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5FB13D285;
+	Thu, 13 Jun 2024 12:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClY7t7hb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6I6O9VW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA471448F2;
-	Thu, 13 Jun 2024 12:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED22F7F47B;
+	Thu, 13 Jun 2024 12:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280491; cv=none; b=Bi4D0p+l+eczAqy099wzVEHc6QVY6/fbniefaehUxsXIptP8zjNUxKTre6FXXX0nlwkb5HAhZ+2/DzenFl5PhpIYIc2f5vizyZ8+qooWxBMIW2IhCUBUv95ZyNfjcoxgpYheULFmMrldckQZGawEgbLreVkjcqJBHAGS3FGXGh8=
+	t=1718281466; cv=none; b=rw8bwPrsJCkxqGbCyHXAYxK7N5ukiPbQgXF81zbqqKkW/ghScqq5lDB5W1OzFicRffVBugPqaxyyP/hEVFVGAoNTua4GYLjtWQ8Jlmvy8nVo/C+ahZq1aisGTlz9pKSK3yzkBWlwhEOuvDmn2C6xYVnZb0G/6ibrSc7i1eqpThE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280491; c=relaxed/simple;
-	bh=+R9QajS5uRLJjJwLNqm1Uo7zW/iVbByEN7lXPNrBHBM=;
+	s=arc-20240116; t=1718281466; c=relaxed/simple;
+	bh=KSWV19/cZO9X584RhCgZfHPzeihIF2suZK17mIV5LM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cnh5UFgY094ML98/deC33Vq8e9QtudHV1yiyvqNU25w8mQICjNbmhT926gu+oTLUSnoMNeM7pYeR7InUh1mUSlLz26cnZMLZ1y8t4wC8q7BYjhMrC5agh67KD0Y/mP6Qz3hjEf6UH3HTmJHKRaGiF3l27N2HVQHkltPuIbxKMvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClY7t7hb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27746C2BBFC;
-	Thu, 13 Jun 2024 12:08:10 +0000 (UTC)
+	 MIME-Version; b=PliUP5uPYCiRqifDSgwuEYW71PBqiqM9Wnr50v/u/yPsGYAzKSmkJKTWxeHzYoAXgo6F4cavyOv2jZ1k3oaem71ZyaasrrVyQiYkwRaY1rwMO1vu1ec/lEsNaWCDcI2H8uekUwTVMmL94OeTc5ecxG5hM/RZv4ujmP2UkMsrTRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6I6O9VW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B0CC2BBFC;
+	Thu, 13 Jun 2024 12:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280491;
-	bh=+R9QajS5uRLJjJwLNqm1Uo7zW/iVbByEN7lXPNrBHBM=;
+	s=korg; t=1718281465;
+	bh=KSWV19/cZO9X584RhCgZfHPzeihIF2suZK17mIV5LM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClY7t7hbn1ECNGRABALxMcurUBcXj6Nhwj7HmA7rOoJzr1oL2enxPiEl5nmvZELuG
-	 OoeWLZ7+4deBgdfBwFHkZqJjjovFI7N7cb0H+FqERu3lvjYoDimj0TdKd1hEWXSUYS
-	 Cepgbc45CzEg/8paHkjFZPZgPyFPXuxtrBnvj2X8=
+	b=H6I6O9VWSYyOTtbEwSqMWvtg9zsddfVE0QI9ILj2/qaIVfsmbboiXbM9vM6WUrfH+
+	 B6tjxNsWZdCC4m7gjEmlvKsmlwUic9XJM/CsQ20tKvXnICP8KqPCvabufgv0E6WAZV
+	 fuywSXPCLMBEF2MMYl00hQL56am5kuYph56mxMno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Chikunov <vt@altlinux.org>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Paul Wolneykien <manowar@altlinux.org>
-Subject: [PATCH 6.6 070/137] crypto: ecrdsa - Fix module auto-load on add_key
-Date: Thu, 13 Jun 2024 13:34:10 +0200
-Message-ID: <20240613113226.013043297@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>,
+	Hannes Reinecke <hare@suse.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 233/317] params: lift param_set_uint_minmax to common code
+Date: Thu, 13 Jun 2024 13:34:11 +0200
+Message-ID: <20240613113256.563556896@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Chikunov <vt@altlinux.org>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-commit eb5739a1efbc9ff216271aeea0ebe1c92e5383e5 upstream.
+[ Upstream commit 2a14c9ae15a38148484a128b84bff7e9ffd90d68 ]
 
-Add module alias with the algorithm cra_name similar to what we have for
-RSA-related and other algorithms.
+It is a useful helper hence move it to common code so others can enjoy
+it.
 
-The kernel attempts to modprobe asymmetric algorithms using the names
-"crypto-$cra_name" and "crypto-$cra_name-all." However, since these
-aliases are currently missing, the modules are not loaded. For instance,
-when using the `add_key` function, the hash algorithm is typically
-loaded automatically, but the asymmetric algorithm is not.
-
-Steps to test:
-
-1. Cert is generated usings ima-evm-utils test suite with
-   `gen-keys.sh`, example cert is provided below:
-
-  $ base64 -d >test-gost2012_512-A.cer <<EOF
-  MIIB/DCCAWagAwIBAgIUK8+whWevr3FFkSdU9GLDAM7ure8wDAYIKoUDBwEBAwMFADARMQ8wDQYD
-  VQQDDAZDQSBLZXkwIBcNMjIwMjAxMjIwOTQxWhgPMjA4MjEyMDUyMjA5NDFaMBExDzANBgNVBAMM
-  BkNBIEtleTCBoDAXBggqhQMHAQEBAjALBgkqhQMHAQIBAgEDgYQABIGALXNrTJGgeErBUOov3Cfo
-  IrHF9fcj8UjzwGeKCkbCcINzVUbdPmCopeJRHDJEvQBX1CQUPtlwDv6ANjTTRoq5nCk9L5PPFP1H
-  z73JIXHT0eRBDVoWy0cWDRz1mmQlCnN2HThMtEloaQI81nTlKZOcEYDtDpi5WODmjEeRNQJMdqCj
-  UDBOMAwGA1UdEwQFMAMBAf8wHQYDVR0OBBYEFCwfOITMbE9VisW1i2TYeu1tAo5QMB8GA1UdIwQY
-  MBaAFCwfOITMbE9VisW1i2TYeu1tAo5QMAwGCCqFAwcBAQMDBQADgYEAmBfJCMTdC0/NSjz4BBiQ
-  qDIEjomO7FEHYlkX5NGulcF8FaJW2jeyyXXtbpnub1IQ8af1KFIpwoS2e93LaaofxpWlpQLlju6m
-  KYLOcO4xK3Whwa2hBAz9YbpUSFjvxnkS2/jpH2MsOSXuUEeCruG/RkHHB3ACef9umG6HCNQuAPY=
-  EOF
-
-2. Optionally, trace module requests with: trace-cmd stream -e module &
-
-3. Trigger add_key call for the cert:
-
-  # keyctl padd asymmetric "" @u <test-gost2012_512-A.cer
-  939910969
-  # lsmod | head -3
-  Module                  Size  Used by
-  ecrdsa_generic         16384  0
-  streebog_generic       28672  0
-
-Repored-by: Paul Wolneykien <manowar@altlinux.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Vitaly Chikunov <vt@altlinux.org>
-Tested-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.com>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Stable-dep-of: 3ebc46ca8675 ("tcp: Fix shift-out-of-bounds in dctcp_update_alpha().")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/ecrdsa.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/linux/moduleparam.h |  2 ++
+ kernel/params.c             | 18 ++++++++++++++++++
+ net/sunrpc/xprtsock.c       | 18 ------------------
+ 3 files changed, 20 insertions(+), 18 deletions(-)
 
---- a/crypto/ecrdsa.c
-+++ b/crypto/ecrdsa.c
-@@ -294,4 +294,5 @@ module_exit(ecrdsa_mod_fini);
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Vitaly Chikunov <vt@altlinux.org>");
- MODULE_DESCRIPTION("EC-RDSA generic algorithm");
-+MODULE_ALIAS_CRYPTO("ecrdsa");
- MODULE_ALIAS_CRYPTO("ecrdsa-generic");
+diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
+index 6388eb9734a51..f25a1c4843903 100644
+--- a/include/linux/moduleparam.h
++++ b/include/linux/moduleparam.h
+@@ -431,6 +431,8 @@ extern int param_get_int(char *buffer, const struct kernel_param *kp);
+ extern const struct kernel_param_ops param_ops_uint;
+ extern int param_set_uint(const char *val, const struct kernel_param *kp);
+ extern int param_get_uint(char *buffer, const struct kernel_param *kp);
++int param_set_uint_minmax(const char *val, const struct kernel_param *kp,
++		unsigned int min, unsigned int max);
+ #define param_check_uint(name, p) __param_check(name, p, unsigned int)
+ 
+ extern const struct kernel_param_ops param_ops_long;
+diff --git a/kernel/params.c b/kernel/params.c
+index 164d79330849a..eb00abef7076a 100644
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -243,6 +243,24 @@ STANDARD_PARAM_DEF(ulong,	unsigned long,		"%lu",		kstrtoul);
+ STANDARD_PARAM_DEF(ullong,	unsigned long long,	"%llu",		kstrtoull);
+ STANDARD_PARAM_DEF(hexint,	unsigned int,		"%#08x", 	kstrtouint);
+ 
++int param_set_uint_minmax(const char *val, const struct kernel_param *kp,
++		unsigned int min, unsigned int max)
++{
++	unsigned int num;
++	int ret;
++
++	if (!val)
++		return -EINVAL;
++	ret = kstrtouint(val, 0, &num);
++	if (ret)
++		return ret;
++	if (num < min || num > max)
++		return -EINVAL;
++	*((unsigned int *)kp->arg) = num;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(param_set_uint_minmax);
++
+ int param_set_charp(const char *val, const struct kernel_param *kp)
+ {
+ 	if (strlen(val) > 1024) {
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index ae5b5380f0f03..0666f981618a2 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -3166,24 +3166,6 @@ void cleanup_socket_xprt(void)
+ 	xprt_unregister_transport(&xs_bc_tcp_transport);
+ }
+ 
+-static int param_set_uint_minmax(const char *val,
+-		const struct kernel_param *kp,
+-		unsigned int min, unsigned int max)
+-{
+-	unsigned int num;
+-	int ret;
+-
+-	if (!val)
+-		return -EINVAL;
+-	ret = kstrtouint(val, 0, &num);
+-	if (ret)
+-		return ret;
+-	if (num < min || num > max)
+-		return -EINVAL;
+-	*((unsigned int *)kp->arg) = num;
+-	return 0;
+-}
+-
+ static int param_set_portnr(const char *val, const struct kernel_param *kp)
+ {
+ 	return param_set_uint_minmax(val, kp,
+-- 
+2.43.0
+
 
 
 
