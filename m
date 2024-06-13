@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-51629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196AB9070D0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73165906EFA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 617BFB21EE6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E3A91F23399
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E0B1DFE1;
-	Thu, 13 Jun 2024 12:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F59143C50;
+	Thu, 13 Jun 2024 12:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/cSJ8UQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1yU959K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8D41DFD9;
-	Thu, 13 Jun 2024 12:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BAF144D1E;
+	Thu, 13 Jun 2024 12:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281857; cv=none; b=nM9xL8XajdPdYxDw1Y6/GjpilqpJtIgZmk+RvSt1ViLuC6sHWB1HxhWkY0K8ajVHMxwbdKrjXIgH2sKaMe1pvYjqAEnpGxfAshejLkLIFq/b7Odl+ChGghQfjCa3C5i33UgcoT+Ins/YUwVMCHfDh6Ch4GGRr/e6N5gNW/oOU68=
+	t=1718280735; cv=none; b=NECbd4TYMqwsALEmS7xI3UodAvr8IanKV8dCeNNBu04vv6dtYQrpUM3878zHdyv/w6tqB6WE9MEYNmJgjjwwUvfn+1PIvCD/moWBWiw/rX5NflydoKkYv3VTFqcUPBXx+zKCIsNr+JUO5Gy9MrSuOwCSt34yxPAEwmNMQ0oecZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281857; c=relaxed/simple;
-	bh=bu2j/LDRQzmbthFMRRRPYPLSaz2dsxT4+TRPgrDeDLk=;
+	s=arc-20240116; t=1718280735; c=relaxed/simple;
+	bh=bY1C6hJqmpgTyE4Pw3q9cpHK8nSAnq1/Tkth79ecqUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sa7gidAWth35UZ8+NTRHiKcSWTj6Q7oDX6JNzuPGp2NquBj2RPH/n6g3urlahijDwsrBaNJ1w0yKInYNXERLnIWTVr9RXKNHAcq2WaE5Dp9ZqfT4YRyEhhekbMA+ox/+zG6MGu8X8oy+KP8DPpZbWhJU4rjYmmAkSf4+/JJitAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/cSJ8UQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A531DC2BBFC;
-	Thu, 13 Jun 2024 12:30:56 +0000 (UTC)
+	 MIME-Version; b=EBm/s9FG3xLwXa1Qy1BzRHVQ8UU0S5MZFxKyooCnirKPfEp0k6/j9Hnmsq/mP6DE429SIEwbxkdLUEBqO831I6EvkOMhee8o7d4SmIlMxOAYgEZRoi/dzufXGHDPJv7j3B/qdh78I4YVH2tJOhJGEwOUQmQXsX26ot81XfcKgn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1yU959K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C938C2BBFC;
+	Thu, 13 Jun 2024 12:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281857;
-	bh=bu2j/LDRQzmbthFMRRRPYPLSaz2dsxT4+TRPgrDeDLk=;
+	s=korg; t=1718280735;
+	bh=bY1C6hJqmpgTyE4Pw3q9cpHK8nSAnq1/Tkth79ecqUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V/cSJ8UQnW75bnkunGc57+Hqx+KSMHjk3QnMO5MttmNVfpn0t1Xehf8k4uulpA/Lf
-	 /B0xcp6ElXvhkRx5NoztL4k+T4jbR95Nm4xxEceHj6UMEYIJjAhphoCt8PNV+MLAJ8
-	 3AO8mOhWESGXne/iO6sKgS7835s3BvP3nFtQP7F0=
+	b=J1yU959KnGdeyYhvHfmGiRSQ/B+am8lY+KQVAGOCP/TN3bXOeWM4bViHvqJvbjDmV
+	 zMEhrlFul9Gpy9qanwkjHk5vCcShfUI53a1+oROWaiVFq/i8N+29aeCPggYoOXelVg
+	 BInvUB9BrASvHY7LGOneDnCkuGMVknHZy+go2T4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenz Bauer <lmb@isovalent.com>,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 078/402] udp: Avoid call to compute_score on multiple sites
+Subject: [PATCH 5.10 017/317] ASoC: da7219-aad: fix usage of device_get_named_child_node()
 Date: Thu, 13 Jun 2024 13:30:35 +0200
-Message-ID: <20240613113305.178481855@linuxfoundation.org>
+Message-ID: <20240613113248.207656172@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,166 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@suse.de>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 50aee97d15113b95a68848db1f0cb2a6c09f753a ]
+[ Upstream commit e8a6a5ad73acbafd98e8fd3f0cbf6e379771bb76 ]
 
-We've observed a 7-12% performance regression in iperf3 UDP ipv4 and
-ipv6 tests with multiple sockets on Zen3 cpus, which we traced back to
-commit f0ea27e7bfe1 ("udp: re-score reuseport groups when connected
-sockets are present").  The failing tests were those that would spawn
-UDP sockets per-cpu on systems that have a high number of cpus.
+The documentation for device_get_named_child_node() mentions this
+important point:
 
-Unsurprisingly, it is not caused by the extra re-scoring of the reused
-socket, but due to the compiler no longer inlining compute_score, once
-it has the extra call site in udp4_lib_lookup2.  This is augmented by
-the "Safe RET" mitigation for SRSO, needed in our Zen3 cpus.
+"
+The caller is responsible for calling fwnode_handle_put() on the
+returned fwnode pointer.
+"
 
-We could just explicitly inline it, but compute_score() is quite a large
-function, around 300b.  Inlining in two sites would almost double
-udp4_lib_lookup2, which is a silly thing to do just to workaround a
-mitigation.  Instead, this patch shuffles the code a bit to avoid the
-multiple calls to compute_score.  Since it is a static function used in
-one spot, the compiler can safely fold it in, as it did before, without
-increasing the text size.
+Add fwnode_handle_put() to avoid a leaked reference.
 
-With this patch applied I ran my original iperf3 testcases.  The failing
-cases all looked like this (ipv4):
-	iperf3 -c 127.0.0.1 --udp -4 -f K -b $R -l 8920 -t 30 -i 5 -P 64 -O 2
-
-where $R is either 1G/10G/0 (max, unlimited).  I ran 3 times each.
-baseline is v6.9-rc3. harmean == harmonic mean; CV == coefficient of
-variation.
-
-ipv4:
-                 1G                10G                  MAX
-	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
-baseline 1743852.66(0.0208) 1725933.02(0.0167) 1705203.78(0.0386)
-patched  1968727.61(0.0035) 1962283.22(0.0195) 1923853.50(0.0256)
-
-ipv6:
-                 1G                10G                  MAX
-	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
-baseline 1729020.03(0.0028) 1691704.49(0.0243) 1692251.34(0.0083)
-patched  1900422.19(0.0067) 1900968.01(0.0067) 1568532.72(0.1519)
-
-This restores the performance we had before the change above with this
-benchmark.  We obviously don't expect any real impact when mitigations
-are disabled, but just to be sure it also doesn't regresses:
-
-mitigations=off ipv4:
-                 1G                10G                  MAX
-	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
-baseline 3230279.97(0.0066) 3229320.91(0.0060) 2605693.19(0.0697)
-patched  3242802.36(0.0073) 3239310.71(0.0035) 2502427.19(0.0882)
-
-Cc: Lorenz Bauer <lmb@isovalent.com>
-Fixes: f0ea27e7bfe1 ("udp: re-score reuseport groups when connected sockets are present")
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20240426153033.38500-1-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp.c | 21 ++++++++++++++++-----
- net/ipv6/udp.c | 20 ++++++++++++++++----
- 2 files changed, 32 insertions(+), 9 deletions(-)
+ sound/soc/codecs/da7219-aad.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index a2e5c6776966e..53d7a81d62584 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -420,15 +420,21 @@ static struct sock *udp4_lib_lookup2(struct net *net,
- {
- 	struct sock *sk, *result;
- 	int score, badness;
-+	bool need_rescore;
+diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
+index b6030709b6b6d..2fb26dd84bc72 100644
+--- a/sound/soc/codecs/da7219-aad.c
++++ b/sound/soc/codecs/da7219-aad.c
+@@ -629,8 +629,10 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct device *dev)
+ 		return NULL;
  
- 	result = NULL;
- 	badness = 0;
- 	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
--		score = compute_score(sk, net, saddr, sport,
--				      daddr, hnum, dif, sdif);
-+		need_rescore = false;
-+rescore:
-+		score = compute_score(need_rescore ? result : sk, net, saddr,
-+				      sport, daddr, hnum, dif, sdif);
- 		if (score > badness) {
- 			badness = score;
+ 	aad_pdata = devm_kzalloc(dev, sizeof(*aad_pdata), GFP_KERNEL);
+-	if (!aad_pdata)
++	if (!aad_pdata) {
++		fwnode_handle_put(aad_np);
+ 		return NULL;
++	}
  
-+			if (need_rescore)
-+				continue;
+ 	aad_pdata->irq = i2c->irq;
+ 
+@@ -705,6 +707,8 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct device *dev)
+ 	else
+ 		aad_pdata->adc_1bit_rpt = DA7219_AAD_ADC_1BIT_RPT_1;
+ 
++	fwnode_handle_put(aad_np);
 +
- 			if (sk->sk_state == TCP_ESTABLISHED) {
- 				result = sk;
- 				continue;
-@@ -449,9 +455,14 @@ static struct sock *udp4_lib_lookup2(struct net *net,
- 			if (IS_ERR(result))
- 				continue;
+ 	return aad_pdata;
+ }
  
--			badness = compute_score(result, net, saddr, sport,
--						daddr, hnum, dif, sdif);
--
-+			/* compute_score is too long of a function to be
-+			 * inlined, and calling it again here yields
-+			 * measureable overhead for some
-+			 * workloads. Work around it by jumping
-+			 * backwards to rescore 'result'.
-+			 */
-+			need_rescore = true;
-+			goto rescore;
- 		}
- 	}
- 	return result;
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 0a7f716a0aea3..c60162ea0aa8a 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -166,15 +166,21 @@ static struct sock *udp6_lib_lookup2(struct net *net,
- {
- 	struct sock *sk, *result;
- 	int score, badness;
-+	bool need_rescore;
- 
- 	result = NULL;
- 	badness = -1;
- 	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
--		score = compute_score(sk, net, saddr, sport,
--				      daddr, hnum, dif, sdif);
-+		need_rescore = false;
-+rescore:
-+		score = compute_score(need_rescore ? result : sk, net, saddr,
-+				      sport, daddr, hnum, dif, sdif);
- 		if (score > badness) {
- 			badness = score;
- 
-+			if (need_rescore)
-+				continue;
-+
- 			if (sk->sk_state == TCP_ESTABLISHED) {
- 				result = sk;
- 				continue;
-@@ -195,8 +201,14 @@ static struct sock *udp6_lib_lookup2(struct net *net,
- 			if (IS_ERR(result))
- 				continue;
- 
--			badness = compute_score(sk, net, saddr, sport,
--						daddr, hnum, dif, sdif);
-+			/* compute_score is too long of a function to be
-+			 * inlined, and calling it again here yields
-+			 * measureable overhead for some
-+			 * workloads. Work around it by jumping
-+			 * backwards to rescore 'result'.
-+			 */
-+			need_rescore = true;
-+			goto rescore;
- 		}
- 	}
- 	return result;
 -- 
 2.43.0
 
