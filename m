@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-51004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61BC2906DE0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72960906E71
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 619BB1C21AA2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AC8A1C22BC5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E9D13D601;
-	Thu, 13 Jun 2024 12:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C9D1474B3;
+	Thu, 13 Jun 2024 12:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="os0R/EIJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jx/3oFGo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8586212C530;
-	Thu, 13 Jun 2024 12:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B9813C805;
+	Thu, 13 Jun 2024 12:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280023; cv=none; b=Jj1+EFpeo1SYwXrATplLNdqrg/+eDMajHv7zd2fkfyeMngkzrgKlGAQGWVZNkJULC1glwQbBOvpH8e9JYo9orEMC4gj+FRvO1WA88tda8blsIYAInvCThhnB0Osk3OEheh782SnVhazCM9/kglhEdKVq2LB9sMlXt+xH0HfFJ4c=
+	t=1718280382; cv=none; b=MeTkIPSLKmGFB2FBnDA2Mvqg3s9mCRR89IBTnU9l59WcgTywsNVaaqhPfeWnKWDymg3Zm7GVqUo76nn1nTqqTONa9TbO1+0Zcs+DGkmDqu/YAyrr7hKO60p63l+GzfBkY9DiZmJFV7eNdWk/wsYWfD/VCp7JnWvOTiguZIaryyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280023; c=relaxed/simple;
-	bh=nQeOyCNa1bcSbrEZM6eWf5j5nclTr9/A219eTct2SJY=;
+	s=arc-20240116; t=1718280382; c=relaxed/simple;
+	bh=6Z8dEpHJtZb7LGL+jfHQdUc00LQ0MnErE+LNwuAXdtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kvPBEXbhBmyuhsbxULrCM5N5O3KvCW5dCCV5xUPORFbQyYZiIQszvOcjHu7/5Q+uXqrn2wLSKdNYZjfWHG2WgnvCz6f5sBmqPwPXVclZ2iY/l71S6HBPtLf4iOHglB9jKW9YrURrjRQ28jRYIOFWzuyDGvd03/kkHo/VC/XtI4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=os0R/EIJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D624BC2BBFC;
-	Thu, 13 Jun 2024 12:00:22 +0000 (UTC)
+	 MIME-Version; b=VisljxlAte3xxyeaUJLkDj1Uj5lKM4bTvA5NeS2Wj6TB0kq8Zz5a9fiyC4qdS8P3CU8zRhxYnyKWaN3uDQjWZwruTkebr2rxnlzanO9jZBqaWO4VERkqxrOMj6jDVIIovPiwV5WK5ihhtvZfxbxwxWQ3BEA8J7kwgkivxSVPeDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jx/3oFGo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C700C2BBFC;
+	Thu, 13 Jun 2024 12:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280023;
-	bh=nQeOyCNa1bcSbrEZM6eWf5j5nclTr9/A219eTct2SJY=;
+	s=korg; t=1718280382;
+	bh=6Z8dEpHJtZb7LGL+jfHQdUc00LQ0MnErE+LNwuAXdtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=os0R/EIJAj/dA7FxnQLTZFXf/JBU5cP0F74DSesSJU+f++1uxScgA8r74Yl01QIhO
-	 lY6CQfIF6JmWypYkAkMTe6ZnoytLj3glTGX9xTJcvdIcKpGI5tsL1atS80nC+lmQta
-	 YEhey3Iw8j+6Phn8xALATbVd1BFk0spdnlUi5pvk=
+	b=jx/3oFGo8prIgDAsuHk5DiaKM3/wqv0Hjz1OPEPKvCoFr2Te2b9o39NSQV+F0N2ed
+	 dt1AqS1isSpaot1MdBQ/47haO1q258vTSRGe7D2M4NC+DsFYwUPG1CjdW8e5IcvtuQ
+	 g/LtfKGlOQCMTT69TeRwXFouaRw0uPqS/OQItYPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenyu Liu <liuwenyu7@huawei.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@redhat.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	wuxu.wu@huawei.com,
-	Hewenliang <hewenliang4@huawei.com>,
-	yaowenbin <yaowenbin1@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 115/202] perf top: Fix TUI exit screen refresh race condition
-Date: Thu, 13 Jun 2024 13:33:33 +0200
-Message-ID: <20240613113232.199322102@linuxfoundation.org>
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.6 034/137] wifi: rtlwifi: rtl8192de: Fix 5 GHz TX power
+Date: Thu, 13 Jun 2024 13:33:34 +0200
+Message-ID: <20240613113224.616228914@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,80 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yaowenbin <yaowenbin1@huawei.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 64f18d2d043015b3f835ce4c9f3beb97cfd19b6e ]
+commit de4d4be4fa64ed7b4aa1c613061015bd8fa98b24 upstream.
 
-When the following command is executed several times, a coredump file is
-generated.
+Different channels have different TX power settings. rtl8192de is using
+the TX power setting from the wrong channel in the 5 GHz band because
+_rtl92c_phy_get_rightchnlplace expects an array which includes all the
+channel numbers, but it's using an array which includes only the 5 GHz
+channel numbers.
 
-	$ timeout -k 9 5 perf top -e task-clock
-	*******
-	*******
-	*******
-	0.01%  [kernel]                  [k] __do_softirq
-	0.01%  libpthread-2.28.so        [.] __pthread_mutex_lock
-	0.01%  [kernel]                  [k] __ll_sc_atomic64_sub_return
-	double free or corruption (!prev) perf top --sort comm,dso
-	timeout: the monitored command dumped core
+Use the array channel_all (defined in rtl8192de/phy.c) instead of
+the incorrect channel5g (defined in core.c).
 
-When we terminate "perf top" using sending signal method,
-SLsmg_reset_smg() called. SLsmg_reset_smg() resets the SLsmg screen
-management routines by freeing all memory allocated while it was active.
+Tested only with rtl8192du, which will use the same TX power code.
 
-However SLsmg_reinit_smg() maybe be called by another thread.
-
-SLsmg_reinit_smg() will free the same memory accessed by
-SLsmg_reset_smg(), thus it results in a double free.
-
-SLsmg_reinit_smg() is called already protected by ui__lock, so we fix
-the problem by adding pthread_mutex_trylock of ui__lock when calling
-SLsmg_reset_smg().
-
-Signed-off-by: Wenyu Liu <liuwenyu7@huawei.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: wuxu.wu@huawei.com
-Link: http://lore.kernel.org/lkml/a91e3943-7ddc-f5c0-a7f5-360f073c20e6@huawei.com
-Signed-off-by: Hewenliang <hewenliang4@huawei.com>
-Signed-off-by: yaowenbin <yaowenbin1@huawei.com>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 769e6a1e15bd ("perf ui browser: Don't save pointer to stack memory")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://msgid.link/c7653517-cf88-4f57-b79a-8edb0a8b32f0@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/ui/tui/setup.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/ui/tui/setup.c b/tools/perf/ui/tui/setup.c
-index e9bfe856a5dee..b1be59b4e2a4f 100644
---- a/tools/perf/ui/tui/setup.c
-+++ b/tools/perf/ui/tui/setup.c
-@@ -170,9 +170,11 @@ void ui__exit(bool wait_for_ok)
- 				    "Press any key...", 0);
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+@@ -892,8 +892,8 @@ static u8 _rtl92c_phy_get_rightchnlplace
+ 	u8 place = chnl;
  
- 	SLtt_set_cursor_visibility(1);
--	SLsmg_refresh();
--	SLsmg_reset_smg();
-+	if (!pthread_mutex_trylock(&ui__lock)) {
-+		SLsmg_refresh();
-+		SLsmg_reset_smg();
-+		pthread_mutex_unlock(&ui__lock);
-+	}
- 	SLang_reset_tty();
--
- 	perf_error__unregister(&perf_tui_eops);
- }
--- 
-2.43.0
-
+ 	if (chnl > 14) {
+-		for (place = 14; place < ARRAY_SIZE(channel5g); place++) {
+-			if (channel5g[place] == chnl) {
++		for (place = 14; place < ARRAY_SIZE(channel_all); place++) {
++			if (channel_all[place] == chnl) {
+ 				place++;
+ 				break;
+ 			}
 
 
 
