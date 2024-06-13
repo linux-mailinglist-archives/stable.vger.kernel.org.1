@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-51531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00826907054
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56BB8906E4D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2AB41C23E63
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 589DF1C21045
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AC5E145343;
-	Thu, 13 Jun 2024 12:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D1613C8E1;
+	Thu, 13 Jun 2024 12:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhFKfP7r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oe3BkYNI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C2D144D28;
-	Thu, 13 Jun 2024 12:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A13B13C660;
+	Thu, 13 Jun 2024 12:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281570; cv=none; b=amXRU/WNQhGiMYcYqWeQCKbCCn1hvg6eHbiKm873/R0awoxLvsWJsNwj5l5NinFP6YDeW5UpYnUvTdYB63f3rXHCIP40wNLwjV694izxB99S/qSy8hmsJmcfXJbCwRpiQlq/6aPF5H0Caestu/WUSBzVrzQSewiy+XCLZqhPFng=
+	t=1718280285; cv=none; b=G+HNHr6K77+DugTUP/tbCj9/qIS0cLMj76dTZaQ4W0VBozaWI0KSEGlJjA6pDF6VlXB8hBLoedX7DGO1HaEfkz9aZjltYeUZ/9DhmuOltBV7iblVcrA0Hyyt67Gcnlb3X5P7Q+7l5MMIK0AzqSSPXOkg7h9GYuCoOVKPZMZqpbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281570; c=relaxed/simple;
-	bh=uO+l80iUXPtnxYw0zZqrBACoy3fPVH1d7g15KHM7eX4=;
+	s=arc-20240116; t=1718280285; c=relaxed/simple;
+	bh=Db/CbTG4uvisEV1tR2H+TcxGs+JDzEZtBS6ZhSiZ6bY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUXUvM7qWGj4IAKyY8ItZNeiBsqf5+sn+G22MD5/pDgEr1eGHSOfHrhBHGQqKLKSsJ7EI8JowWsV3VdjVR6tluJvknCBq7QiB9NczS3c0HWfibmp3YvZPjedNnqmwSVbc7qvbTPoasdnjIgvkp2qyjAenTJwdrPUKwzd8ph8D4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhFKfP7r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 718DCC2BBFC;
-	Thu, 13 Jun 2024 12:26:08 +0000 (UTC)
+	 MIME-Version; b=UtcRQzo3bkx6OfJ6JrrXH5pyJDnTfsw1E3BrqkFSlmzw53QdGL+TsSYdBuDRExtK1nXqZh1s8bEmYeu4GYZzXRk1yI00Z4iyMprjlUnwh4aboBvhD0pCAsNMvjAPTo54bWL5UjVORBP98gmxDcQIFkr3Sf2SdyhsBzJgSI3bu5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oe3BkYNI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874D3C2BBFC;
+	Thu, 13 Jun 2024 12:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281568;
-	bh=uO+l80iUXPtnxYw0zZqrBACoy3fPVH1d7g15KHM7eX4=;
+	s=korg; t=1718280284;
+	bh=Db/CbTG4uvisEV1tR2H+TcxGs+JDzEZtBS6ZhSiZ6bY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bhFKfP7rUrV55hH0rmN0JamFH7YAirm/ZpqWzwt+fG9LpI0/8tcsYp2cXPRAqQhQT
-	 dt/i6VwGhE0M0iwCOTYwOUvJU2j3LIRNpejeHVBN7Pim20j6S9pleGZRD4CWnvA2OP
-	 7NIlE2jp9b+ucEuVdWmq5GuMmcEDzOFEJA+xnGZI=
+	b=Oe3BkYNIusBo31HSA4nESxpau+w826gGsj6wPYzh5G7IDktn4ZX0pt9W2eb3zAKC/
+	 8Ldry0hzfl6WoCj5lhbbNaPOK5+wLrWLkOoWOL85ouJvXK6NvmyEhp/yf/Cj9Ox6Gh
+	 qrxohvc9IGcuy+WWxROdh2EIDb0Ru48uvZ9e5yYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Henrik Sylvester <jan.henrik.sylvester@uni-hamburg.de>,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 269/317] afs: Dont cross .backup mountpoint from backup volume
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 189/202] net/9p: fix uninit-value in p9_client_rpc()
 Date: Thu, 13 Jun 2024 13:34:47 +0200
-Message-ID: <20240613113257.959161866@linuxfoundation.org>
+Message-ID: <20240613113235.034416277@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,55 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Dionne <marc.dionne@auristor.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 29be9100aca2915fab54b5693309bc42956542e5 upstream.
+commit 25460d6f39024cc3b8241b14c7ccf0d6f11a736a upstream.
 
-Don't cross a mountpoint that explicitly specifies a backup volume
-(target is <vol>.backup) when starting from a backup volume.
+Syzbot with the help of KMSAN reported the following error:
 
-It it not uncommon to mount a volume's backup directly in the volume
-itself.  This can cause tools that are not paying attention to get
-into a loop mounting the volume onto itself as they attempt to
-traverse the tree, leading to a variety of problems.
+BUG: KMSAN: uninit-value in trace_9p_client_res include/trace/events/9p.h:146 [inline]
+BUG: KMSAN: uninit-value in p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
+ trace_9p_client_res include/trace/events/9p.h:146 [inline]
+ p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
+ p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
+ v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
+ v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
+ legacy_get_tree+0x114/0x290 fs/fs_context.c:662
+ vfs_get_tree+0xa7/0x570 fs/super.c:1797
+ do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
+ path_mount+0x742/0x1f20 fs/namespace.c:3679
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x725/0x810 fs/namespace.c:3875
+ __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
 
-This doesn't prevent the general case of loops in a sequence of
-mountpoints, but addresses a common special case in the same way
-as other afs clients.
+Uninit was created at:
+ __alloc_pages+0x9d6/0xe70 mm/page_alloc.c:4598
+ __alloc_pages_node include/linux/gfp.h:238 [inline]
+ alloc_pages_node include/linux/gfp.h:261 [inline]
+ alloc_slab_page mm/slub.c:2175 [inline]
+ allocate_slab mm/slub.c:2338 [inline]
+ new_slab+0x2de/0x1400 mm/slub.c:2391
+ ___slab_alloc+0x1184/0x33d0 mm/slub.c:3525
+ __slab_alloc mm/slub.c:3610 [inline]
+ __slab_alloc_node mm/slub.c:3663 [inline]
+ slab_alloc_node mm/slub.c:3835 [inline]
+ kmem_cache_alloc+0x6d3/0xbe0 mm/slub.c:3852
+ p9_tag_alloc net/9p/client.c:278 [inline]
+ p9_client_prepare_req+0x20a/0x1770 net/9p/client.c:641
+ p9_client_rpc+0x27e/0x1340 net/9p/client.c:688
+ p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
+ v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
+ v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
+ legacy_get_tree+0x114/0x290 fs/fs_context.c:662
+ vfs_get_tree+0xa7/0x570 fs/super.c:1797
+ do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
+ path_mount+0x742/0x1f20 fs/namespace.c:3679
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x725/0x810 fs/namespace.c:3875
+ __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
 
-Reported-by: Jan Henrik Sylvester <jan.henrik.sylvester@uni-hamburg.de>
-Link: http://lists.infradead.org/pipermail/linux-afs/2024-May/008454.html
-Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
-Link: http://lists.infradead.org/pipermail/linux-afs/2024-February/008074.html
-Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/768760.1716567475@warthog.procyon.org.uk
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+If p9_check_errors() fails early in p9_client_rpc(), req->rc.tag
+will not be properly initialized. However, trace_9p_client_res()
+ends up trying to print it out anyway before p9_client_rpc()
+finishes.
+
+Fix this issue by assigning default values to p9_fcall fields
+such as 'tag' and (just in case KMSAN unearths something new) 'id'
+during the tag allocation stage.
+
+Reported-and-tested-by: syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
+Fixes: 348b59012e5c ("net/9p: Convert net/9p protocol dumps to tracepoints")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: stable@vger.kernel.org
+Message-ID: <20240408141039.30428-1-n.zhandarovich@fintech.ru>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/mntpt.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/9p/client.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/afs/mntpt.c
-+++ b/fs/afs/mntpt.c
-@@ -146,6 +146,11 @@ static int afs_mntpt_set_params(struct f
- 		put_page(page);
- 		if (ret < 0)
- 			return ret;
-+
-+		/* Don't cross a backup volume mountpoint from a backup volume */
-+		if (src_as->volume && src_as->volume->type == AFSVL_BACKVOL &&
-+		    ctx->type == AFSVL_BACKVOL)
-+			return -ENODEV;
- 	}
- 
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -235,6 +235,8 @@ static int p9_fcall_init(struct p9_clien
+ 	if (!fc->sdata)
+ 		return -ENOMEM;
+ 	fc->capacity = alloc_msize;
++	fc->id = 0;
++	fc->tag = P9_NOTAG;
  	return 0;
+ }
+ 
 
 
 
