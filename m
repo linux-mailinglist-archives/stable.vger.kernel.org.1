@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-50783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD90906CA0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D21906DA2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:02:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3451AB20C0D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88A341C21FF7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3879D145348;
-	Thu, 13 Jun 2024 11:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738AB145B14;
+	Thu, 13 Jun 2024 11:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVprGWSG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3Tcvfq0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86866AFAE;
-	Thu, 13 Jun 2024 11:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1AE145B07;
+	Thu, 13 Jun 2024 11:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279373; cv=none; b=Y7F7EUi4pM9khtx7BbvrOJ3sbDNfyYKLpyU0VTWi1d81kFfhuoqEcB7BVUvBkAu0HbxCxtj56YoOjLMB9GmhslcmPuHrcqKJF95iNpmPJEnp1ZOXZg9zbPkklF9g/SvkCEEyaGgKjO3ILd/F8USB6NLWA/j/p1bcYN2shvVjxQg=
+	t=1718279915; cv=none; b=BnscvDECIr7TZKGUJZxFhbU8+BelQa8MAJk5q1/A3VvqIE7UrMKOHGP79Ox1YSpwpGHftXe+MXAdLQDeE2baiBLtgp10UD3jWkwrWhZnJgfnTb6+PBHz75U1yzU2pb35yXATjfPrnuED+IT1KIGNmHwfVqI2CTgxkJeEwAlOFjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279373; c=relaxed/simple;
-	bh=9Xt4CmBc/IWVlYEpfirL6VyzEAvWWZBsaLISltE6SJE=;
+	s=arc-20240116; t=1718279915; c=relaxed/simple;
+	bh=mZ8cWQuQ2SDlTnegmB5phbcFeVgIUzEBxmi8Xs06TEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OiEFFCsI1XYuHKzboJ5JF0C5dDncp0eIrWt0Lh0Hva/pwHIMEl7A/QUZ/EJbb3cwocasWVmKWPy7av4cmZUT0mkdyFREJaVz/swd7Gi9ewuLGbba06d5BCmqI0Ikr+ALUGpx/YJ/hQAd+oJO0M1WB2zGDJUxPEtpLAE2aA8kY5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVprGWSG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDA6C4AF49;
-	Thu, 13 Jun 2024 11:49:31 +0000 (UTC)
+	 MIME-Version; b=XspGWFAPzPtW7NIemyfDij+7gjzReVQzMuopevOPdf3A1H5ffzP3JClIeI4M3RBv3iafo8ziNvI1EpIyk3ctdZGj2vLmf/4a8i4gfCWLFyAmpW0UBr9RQPE+bR21dNJ+mGB3AcDOxaajOyCiJL09keq9m/B/JUZsNEkm3dvoOwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3Tcvfq0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50B0C2BBFC;
+	Thu, 13 Jun 2024 11:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279372;
-	bh=9Xt4CmBc/IWVlYEpfirL6VyzEAvWWZBsaLISltE6SJE=;
+	s=korg; t=1718279915;
+	bh=mZ8cWQuQ2SDlTnegmB5phbcFeVgIUzEBxmi8Xs06TEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HVprGWSGNzRchu9DsyadK23MdqF1kM8Z5B5awM3w7EkX16xdRd7GYg4wNudQc+HEl
-	 qOjUToWy61dZINi/zduLHNaiZ+rK5swZAR/AsD/55270wG5NCM2/d/E95/oRjcC2SU
-	 p7IfwvqNuBMrnTuD5fDK/rnytHRZCWAAVV5M+Gkw=
+	b=B3Tcvfq0OtOdZFPJZ1S5cnclEyOKp3xuBnRtXepsTzhvqRCGmhgkXUpCNmqQBZpj6
+	 s6wwloyalvlUSVNX1iv9Vlv1EcdWG5PCoMKkH7ytWD3M+C5jDDA40y60f4rMZLFkfX
+	 yCAFSyC4GMp3D6ApqKQmSoeL3NNbpUBkS9qt1nlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.9 052/157] firmware: qcom_scm: disable clocks if qcom_scm_bw_enable() fails
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 079/202] ASoC: tracing: Export SND_SOC_DAPM_DIR_OUT to its value
 Date: Thu, 13 Jun 2024 13:32:57 +0200
-Message-ID: <20240613113229.438943968@linuxfoundation.org>
+Message-ID: <20240613113230.823661363@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 0c50b7fcf2773b4853e83fc15aba1a196ba95966 upstream.
+[ Upstream commit 58300f8d6a48e58d1843199be743f819e2791ea3 ]
 
-There are several functions which are calling qcom_scm_bw_enable()
-then returns immediately if the call fails and leaves the clocks
-enabled.
+The string SND_SOC_DAPM_DIR_OUT is printed in the snd_soc_dapm_path trace
+event instead of its value:
 
-Change the code of these functions to disable clocks when the
-qcom_scm_bw_enable() call fails. This also fixes a possible dma
-buffer leak in the qcom_scm_pas_init_image() function.
+   (((REC->path_dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
 
-Compile tested only due to lack of hardware with interconnect
-support.
+User space cannot parse this, as it has no idea what SND_SOC_DAPM_DIR_OUT
+is. Use TRACE_DEFINE_ENUM() to convert it to its value:
 
-Cc: stable@vger.kernel.org
-Fixes: 65b7ebda5028 ("firmware: qcom_scm: Add bw voting support to the SCM interface")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Link: https://lore.kernel.org/r/20240304-qcom-scm-disable-clk-v1-1-b36e51577ca1@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   (((REC->path_dir) == 1) ? "->" : "<-")
+
+So that user space tools, such as perf and trace-cmd, can parse it
+correctly.
+
+Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Fixes: 6e588a0d839b5 ("ASoC: dapm: Consolidate path trace events")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/r/20240416000303.04670cdf@rorschach.local.home
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom/qcom_scm.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ include/trace/events/asoc.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/firmware/qcom/qcom_scm.c
-+++ b/drivers/firmware/qcom/qcom_scm.c
-@@ -569,13 +569,14 @@ int qcom_scm_pas_init_image(u32 peripher
+diff --git a/include/trace/events/asoc.h b/include/trace/events/asoc.h
+index 40c300fe704da..f62d5b7024261 100644
+--- a/include/trace/events/asoc.h
++++ b/include/trace/events/asoc.h
+@@ -11,6 +11,8 @@
+ #define DAPM_DIRECT "(direct)"
+ #define DAPM_ARROW(dir) (((dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
  
- 	ret = qcom_scm_bw_enable();
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	desc.args[1] = mdata_phys;
- 
- 	ret = qcom_scm_call(__scm->dev, &desc, &res);
--
- 	qcom_scm_bw_disable();
++TRACE_DEFINE_ENUM(SND_SOC_DAPM_DIR_OUT);
 +
-+disable_clk:
- 	qcom_scm_clk_disable();
- 
- out:
-@@ -637,10 +638,12 @@ int qcom_scm_pas_mem_setup(u32 periphera
- 
- 	ret = qcom_scm_bw_enable();
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = qcom_scm_call(__scm->dev, &desc, &res);
- 	qcom_scm_bw_disable();
-+
-+disable_clk:
- 	qcom_scm_clk_disable();
- 
- 	return ret ? : res.result[0];
-@@ -672,10 +675,12 @@ int qcom_scm_pas_auth_and_reset(u32 peri
- 
- 	ret = qcom_scm_bw_enable();
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = qcom_scm_call(__scm->dev, &desc, &res);
- 	qcom_scm_bw_disable();
-+
-+disable_clk:
- 	qcom_scm_clk_disable();
- 
- 	return ret ? : res.result[0];
-@@ -706,11 +711,12 @@ int qcom_scm_pas_shutdown(u32 peripheral
- 
- 	ret = qcom_scm_bw_enable();
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = qcom_scm_call(__scm->dev, &desc, &res);
--
- 	qcom_scm_bw_disable();
-+
-+disable_clk:
- 	qcom_scm_clk_disable();
- 
- 	return ret ? : res.result[0];
+ struct snd_soc_jack;
+ struct snd_soc_card;
+ struct snd_soc_dapm_widget;
+-- 
+2.43.0
+
 
 
 
