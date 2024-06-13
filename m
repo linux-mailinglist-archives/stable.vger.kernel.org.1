@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-51369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 879E3906F9C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E148590716A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D23E1C22BBB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E21B281AC2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8CD1448E0;
-	Thu, 13 Jun 2024 12:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7FC4A07;
+	Thu, 13 Jun 2024 12:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqspcUg4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpQbGRvV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADAB51442EF;
-	Thu, 13 Jun 2024 12:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFD6161;
+	Thu, 13 Jun 2024 12:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281095; cv=none; b=aR80XpMB4jAqGUX/VxBXQ9GhPkiMHzjIUTLFv96ceHxY6eBS7G8zPHdk/KsCH10IRkY0LaxPXpZLP/7KQ1pb8jlDsQXtLIrIxYioTYWxX8N6gscg1rsVMv11ODExzC0e8B6oRIMHObG8deumZOHDc4QjMMLKSNidzqbRQmfhjRI=
+	t=1718282208; cv=none; b=XfZD3lW2IweCmtpXeWvXdt54k7cQF9CzGQ57mMywL4jSu4MmOeU1kI6PFFEhNJ1TLws3AncgAYfWs+CLpyRX16CmmoFsXBNgOP/9xV2ws+IhyQsh9I7iyd59umkjCxAXRFJB4A1D9Pm8Sp/z+jpFGbd0vyuJjt03QSTjI7GR1No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281095; c=relaxed/simple;
-	bh=lA513DET9COYzMdC8eP2zwAmIxQDiOA1iwi7N0NnalE=;
+	s=arc-20240116; t=1718282208; c=relaxed/simple;
+	bh=Zyl6Nn4cKf7YKMJrdtIJlOp7luhwQXDHJdpsy1jy1eM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rVPArRyGR3H5iTARr+vfntT/eYOuUVOffzigLp556RICWhUFpO/yN7K0Eh+PoYkCvGnToInNU4iij0sdkVFphtVFegl/tmOpc7qGBwilei86XjYHrsGWFHfIOqnOp/Yjp3GEeaZyPsIbhdcKRf7I0pxUWk/DN1iPeIbhpSdx8rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqspcUg4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CCBC2BBFC;
-	Thu, 13 Jun 2024 12:18:15 +0000 (UTC)
+	 MIME-Version; b=oOrF3FihkQT7YsVHivlBCBoes54qZE+MHNg6EHq86kahHqVwHdrN560sgeHjigi1WkPmBFhpqqzo/yzdPNrhsDT8T7DKjcd4YMV8+PeQgJxQjtzZ/aNLdxaVB3FtfDE4Rb3X6bRgYs+egaDxmVuq2pKpvik4lGSN4dPzBsXLumM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpQbGRvV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346FBC2BBFC;
+	Thu, 13 Jun 2024 12:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281095;
-	bh=lA513DET9COYzMdC8eP2zwAmIxQDiOA1iwi7N0NnalE=;
+	s=korg; t=1718282208;
+	bh=Zyl6Nn4cKf7YKMJrdtIJlOp7luhwQXDHJdpsy1jy1eM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iqspcUg4MNxA0oyuj6wmiebs2wCtaYbtK/Ys+/hWi6cqz5EywWX/j7+2L0GFkWBwZ
-	 8yttrkt3s0gg66I0dMypHJwwXhBJwsvQths6rLNFi6X0Lu27wyzPf1RYHB1tR+NjE7
-	 srhhCeFMct8XoB24O2wPkcCm4SY12/EnnXZPaEWo=
+	b=kpQbGRvVHhIL9WxGLQJwCz/hC6qsLrB31P3DYBUpi5Z16PcDuFZYxmliRKzVFk7CK
+	 D+QE8d/UhlXlgQqfEV115ZIqEcfqeYMTpWop5mIHnILYOkjg1qe85nLOdBrtpj+iEM
+	 P2ZnBRWmU2BmipvBshNJzcou4sRChuB600N39hxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 139/317] f2fs: fix to wait on page writeback in __clone_blkaddrs()
+Subject: [PATCH 5.15 200/402] f2fs: fix to check pinfile flag in f2fs_move_file_range()
 Date: Thu, 13 Jun 2024 13:32:37 +0200
-Message-ID: <20240613113252.942331579@linuxfoundation.org>
+Message-ID: <20240613113309.940906839@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit d3876e34e7e789e2cbdd782360fef2a777391082 ]
+[ Upstream commit e07230da0500e0919a765037c5e81583b519be2c ]
 
-In below race condition, dst page may become writeback status
-in __clone_blkaddrs(), it needs to wait writeback before update,
-fix it.
+ioctl(F2FS_IOC_MOVE_RANGE) can truncate or punch hole on pinned file,
+fix to disallow it.
 
-Thread A				GC Thread
-- f2fs_move_file_range
-  - filemap_write_and_wait_range(dst)
-					- gc_data_segment
-					 - f2fs_down_write(dst)
-					 - move_data_page
-					  - set_page_writeback(dst_page)
-					  - f2fs_submit_page_write
-					 - f2fs_up_write(dst)
-  - f2fs_down_write(dst)
-  - __exchange_data_block
-   - __clone_blkaddrs
-    - f2fs_get_new_data_page
-    - memcpy_page
-
-Fixes: 0a2aa8fbb969 ("f2fs: refactor __exchange_data_block for speed up")
+Fixes: 5fed0be8583f ("f2fs: do not allow partial truncation on pinned file")
 Signed-off-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/f2fs/file.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 40e805014f719..678d72a870259 100644
+index 39002f3c3f8a7..f10156aecf425 100644
 --- a/fs/f2fs/file.c
 +++ b/fs/f2fs/file.c
-@@ -1253,6 +1253,8 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
- 				f2fs_put_page(psrc, 1);
- 				return PTR_ERR(pdst);
- 			}
-+			f2fs_wait_on_page_writeback(pdst, DATA, true, true);
-+
- 			f2fs_copy_page(psrc, pdst);
- 			set_page_dirty(pdst);
- 			f2fs_put_page(pdst, 1);
+@@ -2790,7 +2790,8 @@ static int f2fs_move_file_range(struct file *file_in, loff_t pos_in,
+ 			goto out;
+ 	}
+ 
+-	if (f2fs_compressed_file(src) || f2fs_compressed_file(dst)) {
++	if (f2fs_compressed_file(src) || f2fs_compressed_file(dst) ||
++		f2fs_is_pinned_file(src) || f2fs_is_pinned_file(dst)) {
+ 		ret = -EOPNOTSUPP;
+ 		goto out_unlock;
+ 	}
 -- 
 2.43.0
 
