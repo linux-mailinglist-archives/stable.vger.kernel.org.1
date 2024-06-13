@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-51571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF840907082
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 445D7907095
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:29:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 014441C23E77
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:28:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8827286862
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1434142E84;
-	Thu, 13 Jun 2024 12:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDDC1428E9;
+	Thu, 13 Jun 2024 12:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VB19BvGP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkeMro1Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB121428E9;
-	Thu, 13 Jun 2024 12:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD196EB56;
+	Thu, 13 Jun 2024 12:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281686; cv=none; b=n0lRY5lw9sACuWhh2Qqt/ZCDgmCXHWEyK3WmEC/fKvGQbJcksokeMrMAu8+CjVXv+fTNnmEr3j7rU0ZyPWpkfPk1GqqWyexxoZYvw+5bxg9Y570UmnX5mjnJDlt5YkGrML2G+y3XoAr0DYANJcGU1dJFyzaxw8yLH0TLn2bDSvQ=
+	t=1718281718; cv=none; b=CR7nNdgVUKmh6CPV+quyzi+RyrcoNx9RFTKo7lxgiLnzdYh8cwcJjnI/GBUpmHOW8deJEwMvB3jLdU2DZZyI2/jqM3zUODoCU+1SIrTzZIE408eF+39hkmSvH1Di2fxgFySPxVAgrdbX6ERGHvpWq89TgzwP79i5A/O9MvRzCvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281686; c=relaxed/simple;
-	bh=idqqDqX1xSZ8dxJF/Y9sinXHsltgn09WVFFnf0vw+hM=;
+	s=arc-20240116; t=1718281718; c=relaxed/simple;
+	bh=RgkaJeNKnr0VpG0eutLTsr4uelEFfo4MLYldbogzju0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NLXGk7m8NqqQtJyzoBT7UQfQ6DyBesD5e3V1bwn6opB0E1XkPnfqB5sEztdRalmFSDwOscFX5am0+VqU7MiH096kIS4bC4lp2EWjr/9X3rrXuyx/Ijv1aPMGHFcYU9KR4AkWSTLvgD+7PZZQJKXxS80PE0CHHiTrt8orlufH/0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VB19BvGP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 163B6C2BBFC;
-	Thu, 13 Jun 2024 12:28:05 +0000 (UTC)
+	 MIME-Version; b=hiQE53CdY6fAv93sxNkV2QCpP/ndpd1h+RE7Cn+rzwVG5UcbLfEdwW0tkhULvOWdSj1O1/ck9YxebmrYnU3gqJDkvt8+yIFJBEqDVAh6PGt3oKlx2LmXzR0SRX39Mo5SdgvHMh4j/MSqur0RLMHBtq+UaEh31J2IJsf98fgIx0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LkeMro1Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4446FC2BBFC;
+	Thu, 13 Jun 2024 12:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281686;
-	bh=idqqDqX1xSZ8dxJF/Y9sinXHsltgn09WVFFnf0vw+hM=;
+	s=korg; t=1718281718;
+	bh=RgkaJeNKnr0VpG0eutLTsr4uelEFfo4MLYldbogzju0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VB19BvGPKfFLVBld/+zDOyvOqKZ+hXKj5WSudxt3LwPVldxGIfU2qQjlXkxcD/Ivu
-	 HDZfSMDvOEMislSbBeGyPCHrITTAf+YJe5AZc2q6eLx6iKsr/Vj/pnhQVn/0mNwsEi
-	 +IjMomcemwuQjMutLVgUSsSdc8fEgO5jR1bMAUsw=
+	b=LkeMro1YhlIiU83FQdRVn9mpKos1fx1aoPH5EiVwANxWxyBDgO3450TA9vhATL7nw
+	 HBEtlRj2CcQ7c8N8jSFcpgPtFDMthqcQfS8HAjOsjx5Ikg7mPtgikpZGi8HdPszJcM
+	 bKVw2XYCJaxVe3DcFhfiRB6UHkqFLh8bkmkSpAu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 5.15 014/402] fs/ntfs3: Taking DOS names into account during link counting
-Date: Thu, 13 Jun 2024 13:29:31 +0200
-Message-ID: <20240613113302.694555026@linuxfoundation.org>
+Subject: [PATCH 5.15 015/402] fs/ntfs3: Fix case when index is reused during tree transformation
+Date: Thu, 13 Jun 2024 13:29:32 +0200
+Message-ID: <20240613113302.732013091@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
 References: <20240613113302.116811394@linuxfoundation.org>
@@ -66,95 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 110b24eb1a749bea3440f3ca2ff890a26179050a upstream.
+commit 05afeeebcac850a016ec4fb1f681ceda11963562 upstream.
 
-When counting and checking hard links in an ntfs file record,
+In most cases when adding a cluster to the directory index,
+they are placed at the end, and in the bitmap, this cluster corresponds
+to the last bit. The new directory size is calculated as follows:
 
-  struct MFT_REC {
-    struct NTFS_RECORD_HEADER rhdr; // 'FILE'
-    __le16 seq;		    // 0x10: Sequence number for this record.
->>  __le16 hard_links;	// 0x12: The number of hard links to record.
-    __le16 attr_off;	// 0x14: Offset to attributes.
-  ...
+	data_size = (u64)(bit + 1) << indx->index_bits;
 
-the ntfs3 driver ignored short names (DOS names), causing the link count
-to be reduced by 1 and messages to be output to dmesg.
+In the case of reusing a non-final cluster from the index,
+data_size is calculated incorrectly, resulting in the directory size
+differing from the actual size.
 
-For Windows, such a situation is a minor error, meaning chkdsk does not report
-errors on such a volume, and in the case of using the /f switch, it silently
-corrects them, reporting that no errors were found. This does not affect
-the consistency of the file system.
-
-Nevertheless, the behavior in the ntfs3 driver is incorrect and
-changes the content of the file system. This patch should fix that.
-
-PS: most likely, there has been a confusion of concepts
-MFT_REC::hard_links and inode::__i_nlink.
+A check for cluster reuse has been added, and the size update is skipped.
 
 Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/inode.c  |    7 ++++---
- fs/ntfs3/record.c |   11 ++---------
- 2 files changed, 6 insertions(+), 12 deletions(-)
+ fs/ntfs3/index.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -37,7 +37,7 @@ static struct inode *ntfs_read_mft(struc
- 	bool is_dir;
- 	unsigned long ino = inode->i_ino;
- 	u32 rp_fa = 0, asize, t32;
--	u16 roff, rsize, names = 0;
-+	u16 roff, rsize, names = 0, links = 0;
- 	const struct ATTR_FILE_NAME *fname = NULL;
- 	const struct INDEX_ROOT *root;
- 	struct REPARSE_DATA_BUFFER rp; // 0x18 bytes
-@@ -190,11 +190,12 @@ next_attr:
- 		    rsize < SIZEOF_ATTRIBUTE_FILENAME)
- 			goto out;
- 
-+		names += 1;
- 		fname = Add2Ptr(attr, roff);
- 		if (fname->type == FILE_NAME_DOS)
- 			goto next_attr;
- 
--		names += 1;
-+		links += 1;
- 		if (name && name->len == fname->name_len &&
- 		    !ntfs_cmp_names_cpu(name, (struct le_str *)&fname->name_len,
- 					NULL, false))
-@@ -421,7 +422,7 @@ end_enum:
- 		ni->mi.dirty = true;
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -1538,6 +1538,11 @@ static int indx_add_allocate(struct ntfs
+ 		goto out1;
  	}
  
--	set_nlink(inode, names);
-+	set_nlink(inode, links);
++	if (data_size <= le64_to_cpu(alloc->nres.data_size)) {
++		/* Reuse index. */
++		goto out;
++	}
++
+ 	/* Increase allocation. */
+ 	err = attr_set_size(ni, ATTR_ALLOC, in->name, in->name_len,
+ 			    &indx->alloc_run, data_size, &data_size, true,
+@@ -1548,6 +1553,7 @@ static int indx_add_allocate(struct ntfs
+ 		goto out1;
+ 	}
  
- 	if (S_ISDIR(mode)) {
- 		ni->std_fa |= FILE_ATTRIBUTE_DIRECTORY;
---- a/fs/ntfs3/record.c
-+++ b/fs/ntfs3/record.c
-@@ -508,16 +508,9 @@ bool mi_remove_attr(struct ntfs_inode *n
- 	if (aoff + asize > used)
- 		return false;
++out:
+ 	*vbn = bit << indx->idx2vbn_bits;
  
--	if (ni && is_attr_indexed(attr)) {
-+	if (ni && is_attr_indexed(attr) && attr->type == ATTR_NAME) {
- 		u16 links = le16_to_cpu(ni->mi.mrec->hard_links);
--		struct ATTR_FILE_NAME *fname =
--			attr->type != ATTR_NAME ?
--				NULL :
--				resident_data_ex(attr,
--						 SIZEOF_ATTRIBUTE_FILENAME);
--		if (fname && fname->type == FILE_NAME_DOS) {
--			/* Do not decrease links count deleting DOS name. */
--		} else if (!links) {
-+		if (!links) {
- 			/* minor error. Not critical. */
- 		} else {
- 			ni->mi.mrec->hard_links = cpu_to_le16(links - 1);
+ 	return 0;
 
 
 
