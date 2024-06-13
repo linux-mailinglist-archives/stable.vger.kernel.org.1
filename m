@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B512C9071A1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:39:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE72B906FB8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60076283953
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:39:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F96BB2A014
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1351428F5;
-	Thu, 13 Jun 2024 12:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A325D14532B;
+	Thu, 13 Jun 2024 12:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wbjzl1Pn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNoJPeMN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C736399;
-	Thu, 13 Jun 2024 12:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6274A3209;
+	Thu, 13 Jun 2024 12:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282313; cv=none; b=oP/6QX71jkOJZbqL0iMD9mHtM84lQHF1mQvIG7B/5e/RldnhDmzIbliK9sMeKem4GVpyoSh8S3tSiTc1WO9lDMZ+3nNnZv7LOOZgEdHsG0M4/De1CZZNrYOSnthHNglSHE6oP8tb+5fC4SvXjMXpecP1fLEfKRJb8Lp+h9tT+UM=
+	t=1718281151; cv=none; b=s2PK+GKxsGpvpMT5m1mJTRtx9D+DpwgDtB0UmSx0XAj31g5UFREb4KeFTDhUu5sf0REqH8/WCgU//+wl12U7QQGVfKtC8oN3nO57iGcsvV7XLaLYvWWHet6qiABJw3aNKz7ZFmG5LAPjBgkHBtG5n51fblQaP3WORF9C6qrRiXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282313; c=relaxed/simple;
-	bh=Z+UkoeqddfnP7q6Wtf+ft1FjPO4nK+6NLSJuN2TaF+c=;
+	s=arc-20240116; t=1718281151; c=relaxed/simple;
+	bh=fpF410tvaVqHY3CDQvuhUidwBSQXcgwYMdCc0pxHoXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQ3DNrkQc6B0SPAdrX5aE7IweP+5RiWoda4rPUodq/deOkwEdZN7BSQZdCbVgFpAB4HKL2V3SHS3EG0BXRfSeSvvAWFVzXOew7mzX40MTQJbs/MgUJ4/32GMILkUmVpxpOpz8yD/TZvwYEVXebFZAlAJ4q5mFu7jv1McYuPf1d0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wbjzl1Pn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77D3C2BBFC;
-	Thu, 13 Jun 2024 12:38:32 +0000 (UTC)
+	 MIME-Version; b=E4WI6vAZBF9JyjHXx8rly/PYK7cGrZRaenmKZ5ibb1VGenRtHz04HWRLUf1g5UNaT/oeiU67tHjW+Ivrxjkloa3ve2KOXAjNQV6TLu/jv44s8XpTp5sAwOANkBOXZ11rSg+hKqGtQvwx2ruQA9vW8hYNHxRc+ug1683OT4eCCFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNoJPeMN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67A7C2BBFC;
+	Thu, 13 Jun 2024 12:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282313;
-	bh=Z+UkoeqddfnP7q6Wtf+ft1FjPO4nK+6NLSJuN2TaF+c=;
+	s=korg; t=1718281151;
+	bh=fpF410tvaVqHY3CDQvuhUidwBSQXcgwYMdCc0pxHoXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wbjzl1PnkdmToPO1JSjLxxBP/moSp6o7lzmlErrCwPMN66lln4VyyGvf62gpEYOtK
-	 YWD36i0/FhniWASZNXPFlU9b/BzDrs5lBK1zP/8ekf3+9+nwWxaJIm4s6XYeCnquN5
-	 4Ag7wwIgGzDv3lsVHdca6lR0dbWjEQXvqdNY8pXI=
+	b=zNoJPeMNhjcSkdSPmzCTCWu4LtgHhjYzACEVFPmz0WjHld6nIqpzg8d6BxD0+vRGV
+	 PpltaLh+j3yJOk+6THOooM8EG4DsrTY31zK/RNvbt1ZmgzLhpOogaK0msTSaPpquUr
+	 kvjXfqr5ZFvtX/JUEjiJUZuLvFukTl8niAA47pJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 217/402] watchdog: bd9576_wdt: switch to using devm_fwnode_gpiod_get()
-Date: Thu, 13 Jun 2024 13:32:54 +0200
-Message-ID: <20240613113310.613664524@linuxfoundation.org>
+Subject: [PATCH 5.10 157/317] f2fs: fix to force keeping write barrier for strict fsync mode
+Date: Thu, 13 Jun 2024 13:32:55 +0200
+Message-ID: <20240613113253.636070152@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,129 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 4f719022a753bb15720c9ddeb0387a93caa372ce ]
+[ Upstream commit 2787991516468bfafafb9bf2b45a848e6b202e7c ]
 
-I would like to stop exporting OF-specific devm_gpiod_get_from_of_node()
-so that gpiolib can be cleaned a bit, so let's switch to the generic
-fwnode property API.
+[1] https://www.mail-archive.com/linux-f2fs-devel@lists.sourceforge.net/msg15126.html
 
-While at it, switch the rest of the calls to read properties in
-bd9576_wdt_probe() to the generic device property API as well.
+As [1] reported, if lower device doesn't support write barrier, in below
+case:
 
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20220903-gpiod_get_from_of_node-remove-v1-10-b29adfb27a6c@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Stable-dep-of: e3b3afd34d84 ("watchdog: bd9576: Drop "always-running" property")
+- write page #0; persist
+- overwrite page #0
+- fsync
+ - write data page #0 OPU into device's cache
+ - write inode page into device's cache
+ - issue flush
+
+If SPO is triggered during flush command, inode page can be persisted
+before data page #0, so that after recovery, inode page can be recovered
+with new physical block address of data page #0, however there may
+contains dummy data in new physical block address.
+
+Then what user will see is: after overwrite & fsync + SPO, old data in
+file was corrupted, if any user do care about such case, we can suggest
+user to use STRICT fsync mode, in this mode, we will force to use atomic
+write sematics to keep write order in between data/node and last node,
+so that it avoids potential data corruption during fsync().
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 278a6253a673 ("f2fs: fix to relocate check condition in f2fs_fallocate()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/bd9576_wdt.c | 51 +++++++++++++++++++++--------------
- 1 file changed, 31 insertions(+), 20 deletions(-)
+ fs/f2fs/file.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/watchdog/bd9576_wdt.c b/drivers/watchdog/bd9576_wdt.c
-index 0b6999f3b6e83..4a20e07fbb699 100644
---- a/drivers/watchdog/bd9576_wdt.c
-+++ b/drivers/watchdog/bd9576_wdt.c
-@@ -9,8 +9,8 @@
- #include <linux/gpio/consumer.h>
- #include <linux/mfd/rohm-bd957x.h>
- #include <linux/module.h>
--#include <linux/of.h>
- #include <linux/platform_device.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/watchdog.h>
- 
-@@ -202,10 +202,10 @@ static int bd957x_set_wdt_mode(struct bd9576_wdt_priv *priv, int hw_margin,
- static int bd9576_wdt_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
--	struct device_node *np = dev->parent->of_node;
- 	struct bd9576_wdt_priv *priv;
- 	u32 hw_margin[2];
- 	u32 hw_margin_max = BD957X_WDT_DEFAULT_MARGIN, hw_margin_min = 0;
-+	int count;
- 	int ret;
- 
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-@@ -221,40 +221,51 @@ static int bd9576_wdt_probe(struct platform_device *pdev)
- 		return -ENODEV;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 9023083a98a64..02971d6b347e0 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -297,6 +297,18 @@ static int f2fs_do_sync_file(struct file *file, loff_t start, loff_t end,
+ 				f2fs_exist_written_data(sbi, ino, UPDATE_INO))
+ 			goto flush_out;
+ 		goto out;
++	} else {
++		/*
++		 * for OPU case, during fsync(), node can be persisted before
++		 * data when lower device doesn't support write barrier, result
++		 * in data corruption after SPO.
++		 * So for strict fsync mode, force to use atomic write sematics
++		 * to keep write order in between data/node and last node to
++		 * avoid potential data corruption.
++		 */
++		if (F2FS_OPTION(sbi).fsync_mode ==
++				FSYNC_MODE_STRICT && !atomic)
++			atomic = true;
  	}
- 
--	priv->gpiod_en = devm_gpiod_get_from_of_node(dev, dev->parent->of_node,
--						     "rohm,watchdog-enable-gpios",
--						     0, GPIOD_OUT_LOW,
--						     "watchdog-enable");
-+	priv->gpiod_en = devm_fwnode_gpiod_get(dev, dev_fwnode(dev->parent),
-+					       "rohm,watchdog-enable",
-+					       GPIOD_OUT_LOW,
-+					       "watchdog-enable");
- 	if (IS_ERR(priv->gpiod_en))
- 		return dev_err_probe(dev, PTR_ERR(priv->gpiod_en),
- 			      "getting watchdog-enable GPIO failed\n");
- 
--	priv->gpiod_ping = devm_gpiod_get_from_of_node(dev, dev->parent->of_node,
--						     "rohm,watchdog-ping-gpios",
--						     0, GPIOD_OUT_LOW,
--						     "watchdog-ping");
-+	priv->gpiod_ping = devm_fwnode_gpiod_get(dev, dev_fwnode(dev->parent),
-+						 "rohm,watchdog-ping",
-+						 GPIOD_OUT_LOW,
-+						 "watchdog-ping");
- 	if (IS_ERR(priv->gpiod_ping))
- 		return dev_err_probe(dev, PTR_ERR(priv->gpiod_ping),
- 				     "getting watchdog-ping GPIO failed\n");
- 
--	ret = of_property_read_variable_u32_array(np, "rohm,hw-timeout-ms",
--						  &hw_margin[0], 1, 2);
--	if (ret < 0 && ret != -EINVAL)
--		return ret;
-+	count = device_property_count_u32(dev->parent, "rohm,hw-timeout-ms");
-+	if (count < 0 && count != -EINVAL)
-+		return count;
-+
-+	if (count > 0) {
-+		if (count > ARRAY_SIZE(hw_margin))
-+			return -EINVAL;
- 
--	if (ret == 1)
--		hw_margin_max = hw_margin[0];
-+		ret = device_property_read_u32_array(dev->parent,
-+						     "rohm,hw-timeout-ms",
-+						     hw_margin, count);
-+		if (ret < 0)
-+			return ret;
- 
--	if (ret == 2) {
--		hw_margin_max = hw_margin[1];
--		hw_margin_min = hw_margin[0];
-+		if (count == 1)
-+			hw_margin_max = hw_margin[0];
-+
-+		if (count == 2) {
-+			hw_margin_max = hw_margin[1];
-+			hw_margin_min = hw_margin[0];
-+		}
- 	}
- 
- 	ret = bd957x_set_wdt_mode(priv, hw_margin_max, hw_margin_min);
- 	if (ret)
- 		return ret;
- 
--	priv->always_running = of_property_read_bool(np, "always-running");
-+	priv->always_running = device_property_read_bool(dev->parent,
-+							 "always-running");
- 
- 	watchdog_set_drvdata(&priv->wdd, priv);
- 
+ go_write:
+ 	/*
 -- 
 2.43.0
 
