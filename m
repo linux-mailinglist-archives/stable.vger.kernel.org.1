@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B15C906F9F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACEED907174
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A05F1C22186
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A3FD1F25ECC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A12144D07;
-	Thu, 13 Jun 2024 12:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A401F937;
+	Thu, 13 Jun 2024 12:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fx1t1k1h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BgxE1jKW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B341448E8;
-	Thu, 13 Jun 2024 12:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9562E20ED;
+	Thu, 13 Jun 2024 12:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281107; cv=none; b=Qw9jKhqP/8gVuco0SUcj8dI/Xh2zWNxoClwQq6aVaJ+RfYko0DnfPhlX9yRAolzBTPhAdMbOhv9b19eQOhefxkppGQ1+SZoL0bhrsZ6amcLGJ7I2e0A1h3RWRoAaC7u/LXrsOAVk4btM5tUCZ0MOJy9AlxoiQWuHsNpWWr1nQbk=
+	t=1718282223; cv=none; b=KXmdc6cj+zl1YCV3QBKhp3OxOAYCcQKe/H9g/fXZhYQqz7zvghcnIQAGJy8IIIiibCE9HYdwdqMDDdqN1Ep2cHrveKVsI0CtA8L4TAWVKQD8m0AbxWIV9j8unOW/NWuMSwzjZ6dVW7Y0cGpa1rD4YztPfQJayKpfGiZqrr9/ShQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281107; c=relaxed/simple;
-	bh=PNtJAblXpweOU7H6/G4sGK+5QMEI3WoukRMwJeq3Y8w=;
+	s=arc-20240116; t=1718282223; c=relaxed/simple;
+	bh=VQXKN1H3oNnZdshvUe4yFUf4EGsnUr4k/wFV3W9g7Zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VteRVI6tjamQ67jqtdGikJYC7J0Uq6bY0RDvxei1SdqWEKS8k9LEwN2njMC4C+UmgQa/CDPKawrk7emO2ea337WZ0NzSM3FdGXoXKzG/YCK2VPxEYfzl4HJ+UFEEsi8qLxPkKb6zmStJOOnUMY40hEPDtEhixaoe7QHMnSV1twA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fx1t1k1h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30D8C2BBFC;
-	Thu, 13 Jun 2024 12:18:26 +0000 (UTC)
+	 MIME-Version; b=VQ/A0WLA8KRQmEEZGQAyQWVKc/QKC44QvamUg80BA1schJsnNdO4WVISk4kGm8qYW1q/xDQ/HSDzpQ4N2QqnqgYSB4Puqb0kL5AtNYapHnf4iS685Ds5mNYCA1zloQS8Fj/BJGtneTJpihRAXRbKKqJuePHdJN9YCtSkrLkbW8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BgxE1jKW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199D3C2BBFC;
+	Thu, 13 Jun 2024 12:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281107;
-	bh=PNtJAblXpweOU7H6/G4sGK+5QMEI3WoukRMwJeq3Y8w=;
+	s=korg; t=1718282223;
+	bh=VQXKN1H3oNnZdshvUe4yFUf4EGsnUr4k/wFV3W9g7Zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fx1t1k1hWFsyo3vTLX3nakhirX0tmEVpMgIl846sH5CrSzmHi/+9RCCJ4JuC/C8AS
-	 bHZz+VfWEnPlxvYSQaOKfgRL0ISPy51AHHOXgSrWDKkEIZDxhsGQJ+Y2s/TVR1jjnv
-	 /lWFPvjm6VnHWa0njMgOKCf1n8jRyMXCsKUfMKac=
+	b=BgxE1jKWdGxnw+DQDR6sxfO47vyFH1XmxjCUpVuBpJUf+ZGuZJ7zHxg1ow5IKtYwl
+	 BC0/aEB8Cc4unJ4UNruW4q1OtR2i2Gay+pTgnW7cCdVYCD+b/U0Dpm//WfQq4ZGWS/
+	 Rr3Yo1dbx4TViw+v0paqfg3PtFezxdlUcaxO6FSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Yabin Cui <yabinc@google.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 143/317] dmaengine: idma64: Add check for dma_set_max_seg_size
+Subject: [PATCH 5.15 204/402] coresight: etm4x: Do not hardcode IOMEM access for register restore
 Date: Thu, 13 Jun 2024 13:32:41 +0200
-Message-ID: <20240613113253.100034216@linuxfoundation.org>
+Message-ID: <20240613113310.104297229@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-[ Upstream commit 2b1c1cf08a0addb6df42f16b37133dc7a351de29 ]
+[ Upstream commit 1e7ba33fa591de1cf60afffcabb45600b3607025 ]
 
-As the possible failure of the dma_set_max_seg_size(), it should be
-better to check the return value of the dma_set_max_seg_size().
+When we restore the register state for ETM4x, while coming back
+from CPU idle, we hardcode IOMEM access. This is wrong and could
+blow up for an ETM with system instructions access (and for ETE).
 
-Fixes: e3fdb1894cfa ("dmaengine: idma64: set maximum allowed segment size for DMA")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240403024932.3342606-1-nichen@iscas.ac.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: f5bd523690d2 ("coresight: etm4x: Convert all register accesses")
+Reported-by: Yabin Cui <yabinc@google.com>
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Tested-by: Yabin Cui <yabinc@google.com>
+Link: https://lore.kernel.org/r/20240412142702.2882478-2-suzuki.poulose@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idma64.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hwtracing/coresight/coresight-etm4x-core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/idma64.c b/drivers/dma/idma64.c
-index db506e1f7ef4e..0f065ba844c00 100644
---- a/drivers/dma/idma64.c
-+++ b/drivers/dma/idma64.c
-@@ -594,7 +594,9 @@ static int idma64_probe(struct idma64_chip *chip)
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index 3f5e9400222e7..07f1c0ff89961 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -1697,8 +1697,10 @@ static void etm4_cpu_restore(struct etmv4_drvdata *drvdata)
+ {
+ 	int i;
+ 	struct etmv4_save_state *state = drvdata->save_state;
+-	struct csdev_access tmp_csa = CSDEV_ACCESS_IOMEM(drvdata->base);
+-	struct csdev_access *csa = &tmp_csa;
++	struct csdev_access *csa = &drvdata->csdev->access;
++
++	if (WARN_ON(!drvdata->csdev))
++		return;
  
- 	idma64->dma.dev = chip->sysdev;
- 
--	dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
-+	ret = dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
-+	if (ret)
-+		return ret;
- 
- 	ret = dma_async_device_register(&idma64->dma);
- 	if (ret)
+ 	etm4_cs_unlock(drvdata, csa);
+ 	etm4x_relaxed_write32(csa, state->trcclaimset, TRCCLAIMSET);
 -- 
 2.43.0
 
