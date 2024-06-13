@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-50451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015EB90660C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E53090660D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13CA31C23D27
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 08:00:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82A871C23CF5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 08:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C094613D52B;
-	Thu, 13 Jun 2024 07:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA87B13D257;
+	Thu, 13 Jun 2024 07:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpct+86z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ztheQba6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8213C13D529
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A98913D256
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718265481; cv=none; b=HINJuQJ5imD7p0Z5wksRzlGY7Sfe7YAEGpTLKQqC0VH0MJlwW8m6MZrjPrAo1oZ+5SncgLHUFpjOKtheWvAby2lzpJ8lbipI7xyTYp4QZG/d3NTlg4Oy6gI0fVgAerSt6LtOh6WCzLRvy5QWTOLr5CkVofGAji7ews17RWyyl00=
+	t=1718265496; cv=none; b=CTH2ZWFs97LRALa4smjwjMmYQpPs/EhoyjNkjj9nEFkQu/Eps5MQ/snsjKtYPdGkpudeRsw/a6vZHoaooLfYZ1ARYFh7DV/orH7VDhPGXtcXtnqtnZlUFAAAeRa88Q6oQ984yslUhRFBSoFQCIqEw6K7OF+3lGQGQ96oUxOpuFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718265481; c=relaxed/simple;
-	bh=T2i2jngzpXoL3XY1C4I0yV8Ie1n+J6cPAMwjzG7SWp0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qXJLZ9yV+D7f6m+COZ2271/QsF+lc7xDdzuw57wuPsP8uwuIgxCtRwi/xKMkgwpL586hX+qOnHOmTUMygvsZcn+CKE8GAqznpJHbSoAG0pRwbNuOm8ir/tZJ3pKjamzDOAKCiLPN4FfkFJik2qYIiOQdv7AEa4OgHlzUWzLGJaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpct+86z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCFEAC2BBFC;
-	Thu, 13 Jun 2024 07:58:00 +0000 (UTC)
+	s=arc-20240116; t=1718265496; c=relaxed/simple;
+	bh=jyvL9xOQWtGj3klgfzXFLv5aib9mbzEwhxiGJeEQPrY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Y7gHeSuoVV9rHEXsr65ILb8p/MqWXKa3UuxFUpX7M6TxKAWS5E9h039rrqmde3NRxJlPAw6dhpS82JFecb99GL1ikENZHb81l5JxAcSr0MkawTMBsF8ClhnqEr07ysEYU3nayCiSXTpiGoHASAe02ZzVfNIcKZ4gXMPFY5S/sHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztheQba6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102F8C2BBFC;
+	Thu, 13 Jun 2024 07:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718265481;
-	bh=T2i2jngzpXoL3XY1C4I0yV8Ie1n+J6cPAMwjzG7SWp0=;
+	s=korg; t=1718265496;
+	bh=jyvL9xOQWtGj3klgfzXFLv5aib9mbzEwhxiGJeEQPrY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rpct+86zgZr7S7yCR8s9NFk13Osl0SrOG1ecv5hy4IawvmThUyT8UlR6ghAEcWpzZ
-	 3EXLw8tYd+qDsMqWDf0b7c2hs50H7gAS4EtmsPS+N29xj0zMGTXfeECfJIP70W6fhE
-	 TCXARgj7AOF43VOAPovRHwaERHLqKMFnjOxIMFdQ=
-Subject: FAILED: patch "[PATCH] irqchip/riscv-intc: Prevent memory leak when" failed to apply to 6.6-stable tree
-To: sunilvl@ventanamicro.com,anup@brainfault.org,tglx@linutronix.de
+	b=ztheQba6RLEPIQwEZ3Fh7SUrKBVwBiXvEn8JMOzRkbrWsz6qci9uYiTyTGz5Qha0q
+	 u8B/1ZlmB/NkIFnQjt3hRKbXPF1/pThtr0iEfIHCyN68XBlqigECRPgIYd025pH2vn
+	 2Fa8AEPw5a7GHQsy2b2mBf3bSF4eDkWp7CkeDCwQ=
+Subject: FAILED: patch "[PATCH] wifi: ath10k: fix QCOM_RPROC_COMMON dependency" failed to apply to 6.1-stable tree
+To: dmitry.baryshkov@linaro.org,quic_kvalo@quicinc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Jun 2024 09:57:58 +0200
-Message-ID: <2024061358-defile-outplayed-f986@gregkh>
+Date: Thu, 13 Jun 2024 09:58:13 +0200
+Message-ID: <2024061313-wistful-dipping-5d5b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0110c4b110477bb1f19b0d02361846be7ab08300
+git cherry-pick -x 21ae74e1bf18331ae5e279bd96304b3630828009
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061358-defile-outplayed-f986@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061313-wistful-dipping-5d5b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-0110c4b11047 ("irqchip/riscv-intc: Prevent memory leak when riscv_intc_init_common() fails")
-f4cc33e78ba8 ("irqchip/riscv-intc: Introduce Andes hart-level interrupt controller")
-96303bcb401c ("irqchip/riscv-intc: Allow large non-standard interrupt number")
+21ae74e1bf18 ("wifi: ath10k: fix QCOM_RPROC_COMMON dependency")
+d03407183d97 ("wifi: ath10k: fix QCOM_SMEM dependency")
+4d79f6f34bbb ("wifi: ath10k: Store WLAN firmware version in SMEM image table")
 
 thanks,
 
@@ -79,49 +79,39 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0110c4b110477bb1f19b0d02361846be7ab08300 Mon Sep 17 00:00:00 2001
-From: Sunil V L <sunilvl@ventanamicro.com>
-Date: Mon, 27 May 2024 13:41:13 +0530
-Subject: [PATCH] irqchip/riscv-intc: Prevent memory leak when
- riscv_intc_init_common() fails
+From 21ae74e1bf18331ae5e279bd96304b3630828009 Mon Sep 17 00:00:00 2001
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Fri, 17 May 2024 10:00:28 +0300
+Subject: [PATCH] wifi: ath10k: fix QCOM_RPROC_COMMON dependency
 
-When riscv_intc_init_common() fails, the firmware node allocated is not
-freed. Add the missing free().
+If ath10k_snoc is built-in, while Qualcomm remoteprocs are built as
+modules, compilation fails with:
 
-Fixes: 7023b9d83f03 ("irqchip/riscv-intc: Add ACPI support")
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Anup Patel <anup@brainfault.org>
+/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_init':
+drivers/net/wireless/ath/ath10k/snoc.c:1534: undefined reference to `qcom_register_ssr_notifier'
+/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_deinit':
+drivers/net/wireless/ath/ath10k/snoc.c:1551: undefined reference to `qcom_unregister_ssr_notifier'
+
+Add corresponding dependency to ATH10K_SNOC Kconfig entry so that it's
+built as module if QCOM_RPROC_COMMON is built as module too.
+
+Fixes: 747ff7d3d742 ("ath10k: Don't always treat modem stop events as crashes")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240527081113.616189-1-sunilvl@ventanamicro.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org
 
-diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
-index 9e71c4428814..4f3a12383a1e 100644
---- a/drivers/irqchip/irq-riscv-intc.c
-+++ b/drivers/irqchip/irq-riscv-intc.c
-@@ -253,8 +253,9 @@ IRQCHIP_DECLARE(andes, "andestech,cpu-intc", riscv_intc_init);
- static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
- 				       const unsigned long end)
- {
--	struct fwnode_handle *fn;
- 	struct acpi_madt_rintc *rintc;
-+	struct fwnode_handle *fn;
-+	int rc;
- 
- 	rintc = (struct acpi_madt_rintc *)header;
- 
-@@ -273,7 +274,11 @@ static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
- 		return -ENOMEM;
- 	}
- 
--	return riscv_intc_init_common(fn, &riscv_intc_chip);
-+	rc = riscv_intc_init_common(fn, &riscv_intc_chip);
-+	if (rc)
-+		irq_domain_free_fwnode(fn);
-+
-+	return rc;
- }
- 
- IRQCHIP_ACPI_DECLARE(riscv_intc, ACPI_MADT_TYPE_RINTC, NULL,
+diff --git a/drivers/net/wireless/ath/ath10k/Kconfig b/drivers/net/wireless/ath/ath10k/Kconfig
+index e6ea884cafc1..4f385f4a8cef 100644
+--- a/drivers/net/wireless/ath/ath10k/Kconfig
++++ b/drivers/net/wireless/ath/ath10k/Kconfig
+@@ -45,6 +45,7 @@ config ATH10K_SNOC
+ 	depends on ATH10K
+ 	depends on ARCH_QCOM || COMPILE_TEST
+ 	depends on QCOM_SMEM
++	depends on QCOM_RPROC_COMMON || QCOM_RPROC_COMMON=n
+ 	select QCOM_SCM
+ 	select QCOM_QMI_HELPERS
+ 	help
 
 
