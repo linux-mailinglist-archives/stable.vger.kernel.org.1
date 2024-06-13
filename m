@@ -1,108 +1,114 @@
-Return-Path: <stable+bounces-52088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEDCA907A33
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 19:47:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6B0907A5E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 19:56:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D992844F2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 17:47:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4214A1C24E48
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 17:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275C314A093;
-	Thu, 13 Jun 2024 17:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D9314A093;
+	Thu, 13 Jun 2024 17:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iDixL1B+"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="mfE5XQXZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B13D1311B6;
-	Thu, 13 Jun 2024 17:47:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430C514A0B5
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 17:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718300851; cv=none; b=dnpAJXIZvuKir4pE3BIHv5pmxq/MbwOujR7ufCCGcU3JUKbdQMpMBSDPWxx46wkTO36oe0jYud9NnAA00JoRTdfiHm5QTrCJ2k5FY3MApdulNoZ6Nj3sAoj59tmk32gFjgjTnYUFM5af/Lg9J2lcLzENg8HuykHIsqzDc0tcztc=
+	t=1718301382; cv=none; b=u1fT59YNo/ak4thzlCzbTx0BB+fIBMlStg7i1nrw4PDKGM6gIJ47LpXgE3/oEzKsdz15q1Z0O31HyDsdXjjxL6j4PmNsztI6DNnL2FwOfl5XFT0BKFX9LzSzodQ6jlDgCdvM4Y8iS90B1teOWD3xiAILlYGq9rfmVzsDvcHJuTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718300851; c=relaxed/simple;
-	bh=QhF3rdEorRJO2pP9xuC52x0LmUL4vTmT9mKvfH56YA4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qNzgkvo+HK5dK710ZZiO1eVOnuCcAmGb5mNp/lIJNQ/7RFIabgbkRd4TG9+HQzz1Lh688dcF4tI94bisnmUEiCFf2dJdY4UmXV0JUURSMRsuEzPalZoPmQsIE0vPK2V9euUAHq0AtIQDfOuJCzU/F0E6jTLaT6wg8Il0e2pR2zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iDixL1B+; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a6265d3ba8fso157967466b.0;
-        Thu, 13 Jun 2024 10:47:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718300849; x=1718905649; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QhF3rdEorRJO2pP9xuC52x0LmUL4vTmT9mKvfH56YA4=;
-        b=iDixL1B+98zGw/4CXMkv6RvfZ3y89WyCKyjByMLd67gBWdNiF8O/STWoZs6MZjQrpn
-         WYtf7lXEsMY1dcGdbUNWREJ1lYwBZ4wQ9RYTBCG6qkG4UF+aXFVlDBHr4KiGEHn01jiU
-         JWsrvk+4Ptbm9DEtgj9TlFVOteEqz40g0Wq2WRUYCo0LxTEBVBGDh9SIjK2s7MQeWknR
-         amTsrBPR7Z5CVRYd3dBRhFjsgK1zhcLXPdBv3GsA5Iz98K8L+HlLzbt/J5mkxaiebnYe
-         BRSRIKBmzwIVuv+uUSnNQ6yPDlCIHVOyKk/Ti5Qsvo7QxRLmWx++lC33mf6NdWVe5xZi
-         tuxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718300849; x=1718905649;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QhF3rdEorRJO2pP9xuC52x0LmUL4vTmT9mKvfH56YA4=;
-        b=kxhpmMm7aYiMUzu4amkxY5ZDgeTdOAXT4OeyW99t6t5sMxlbz22Ev1mDvybSpeB0Q/
-         CQCBxvCHvglpOb/FJkgiMQuX9QoqcaWiYwsGZE9FS362Stz0ailcbUbtHM7/87MQkUia
-         sU1ixlAXcbmeQMLyk/QxzDnDSLcCcCiH08w11gCztluvY4QyeOoSrj/V18mEitfvdAeW
-         vbiMohXsA1A8bYwc3aE/Ur6ud4U6MOGlcVw2HLJcgKnNcm6cqDKZbWoiaN4BZ3k7eP8P
-         y63mPnk0a5Uy2Mtyr057uROB8tCcES/IU/CRk19M0a7Yd4RNO5C1TF17dWP65q40vaeP
-         FUcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVjs5gjNi2eoHJeid3Nbbq/+0foEI7G6e0KS2IGwHTATTI0TVJUWXXjbrvwJKt44syUpcJJvdjPsXQ6Vl06j4jTXUhJ3i/r9QSwXxKw9XsCCuFUpgSSMw1ngaZ4f1WMWer1k2Szl6nG9NDXyCtUeGaUejz3i79AOv0vzcOfhQ==
-X-Gm-Message-State: AOJu0Yy47obeMRJlX/sOA80nzByEyrEsIpP+ch7GgzocfVRf3qwoCeTb
-	9SdqRmAmQuyMuRk9N8k0oJsNT6uprl3l/2+mO5R6Ofi4v4nD+/ZykPwP2zbGCLzkSpwjrngCvBr
-	13ucBhaHxYolA9wVVyMARAxDeZiU=
-X-Google-Smtp-Source: AGHT+IFf2JUe+2b8ry0rYcMP2K8D/VxvfrVvNwfyDeXbeWwOq+wgVPzMsY0NMtAtvI6c7zTGW0+fODd4/lnQ03Mmr5M=
-X-Received: by 2002:a17:907:72cb:b0:a6f:1f66:833d with SMTP id
- a640c23a62f3a-a6f60cef68amr42407166b.9.1718300848598; Thu, 13 Jun 2024
- 10:47:28 -0700 (PDT)
+	s=arc-20240116; t=1718301382; c=relaxed/simple;
+	bh=E7beql6PZ0QHFCiY6sxUPNYYViiurX0BbV/IRCAJHPE=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=kwDAaPLTK85MD3WLSFV3OiQm3BScNyDo/iecafvfmNrNr8/dzOOptMYOU247NQacO0cqIhjE1rhNg4PPB37dL1jDLxSx0OU370HqQG818V3huVhGXS+uwTbfG0Z6bU2L15/k6tHdOmstyBjA+Q2dvLD7Obh3s9QBhyaCi1/iEQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=mfE5XQXZ; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from smtpclient.apple (d66-183-91-182.bchsia.telus.net [66.183.91.182])
+	by linux.microsoft.com (Postfix) with ESMTPSA id CD80F20B7001;
+	Thu, 13 Jun 2024 10:56:20 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CD80F20B7001
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1718301380;
+	bh=vVT4FVOu7dJJQlTZG+GRIiExAW5hC8kw2gMNGmlxg60=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=mfE5XQXZPJUZW/RPBiDZEvUlHewYr04Ia3w8CBVjL1LvUIX5UtiCV2/ylAB2fBMr7
+	 xUCkrNrFy//+W6a/ldl40uyxAa0ymuQCheJ+bhXZAVnxgZUreVa6ZerpL59+1rvmkt
+	 xc9Ja2w+LZRu18hbs4+O+tY7Dlo66baKMdK+frzk=
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240612203735.4108690-1-bvanassche@acm.org> <20240612203735.4108690-4-bvanassche@acm.org>
-In-Reply-To: <20240612203735.4108690-4-bvanassche@acm.org>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 13 Jun 2024 19:46:52 +0200
-Message-ID: <CAHp75VcFkNmg=7DZyaBJuNjF0sYkamhcCJ=Of07X+d-4vde94g@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] scsi: core: Do not query IO hints for USB devices
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>, Alan Stern <stern@rowland.harvard.edu>, 
-	linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Joao Machado <jocrismachado@gmail.com>, Christian Heusel <christian@heusel.eu>, stable@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Oliver Neukum <oneukum@suse.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: Regression Impact from Commit dceb683ab87c on Kubernetes Hairpin
+ Tests
+From: Allen Pais <apais@linux.microsoft.com>
+In-Reply-To: <2024061212-reliance-cycling-66e4@gregkh>
+Date: Thu, 13 Jun 2024 10:56:10 -0700
+Cc: stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <B304D01A-7DBC-4576-8B9A-A8F2CD418BB6@linux.microsoft.com>
+References: <AD9EB3AD-7A36-4E54-9BEC-02584A4DF11E@linux.microsoft.com>
+ <2024061212-reliance-cycling-66e4@gregkh>
+To: Greg KH <gregkh@linuxfoundation.org>
+X-Mailer: Apple Mail (2.3774.600.62)
 
-On Wed, Jun 12, 2024 at 10:37=E2=80=AFPM Bart Van Assche <bvanassche@acm.or=
-g> wrote:
->
-> Recently it was reported that the following USB storage devices are unusa=
-ble
-> with Linux kernel 6.9:
-> * Kingston DataTraveler G2
-> * Garmin FR35
->
-> This is because attempting to read the IO hint VPD page causes these devi=
-ces
-> to reset. Hence do not read the IO hint VPD page from USB storage devices=
-.
 
-I have commented on v1, same applicable here. Not that it's a big deal
-for this change, but in general can you follow the advice given there?
+>> Hi Greg,
+>>=20
+>> I hope this message finds you well. I'm reaching out to report a =
+regression issue linked
+>> to the commit dceb683ab87c(v5.15.158), which addresses the netfilter =
+subsystem by skipping
+>> the conntrack input hook for promiscuous packets.=20
+>>=20
+>> [dceb683ab87c 2024-04-09 netfilter: br_netfilter: skip conntrack =
+input hook for promiscuous packets.]
+>>=20
+>> Unfortunately, this update appears to be breaking Kubernetes hairpin =
+tests, impacting the normal
+>> functionality expected in Kubernetes environments.
+>>=20
+>> Additionally, it's worth noting that this specific commit is =
+associated with a security vulnerability,
+>> as detailed in the NVD: CVE-2024-27018.=20
+>>=20
+>> We have bisected the issue to the specific commit dceb683ab87c. By =
+reverting this commit,
+>> we confirmed that the Kubernetes hairpin test issues are resolved. =
+However, given that this commit=20
+>> addresses the security vulnerability CVE-2024-27018, directly =
+reverting it is not a viable option. We=E2=80=99re=20
+>> in a tricky position and would greatly appreciate your advice on how =
+we might approach this problem.
+>>=20
+>> Thank you for your attention to this matter. I look forward to your =
+guidance on how we might proceed.
+>=20
+> Is this issue also in newer kernel versions (like 6.1.y, 6.6.y, and
+> Linus's tree)?  If not, then we might have missed something.  If so,
+> then please work with the netfilter developers to work this out.
 
---=20
-With Best Regards,
-Andy Shevchenko
+I have not tested 6.1.y or 6.6.y yet. Will do that and if the issue =
+persists, will reach out to=20
+The netfilter folks.
+
+Thank you.
+
+Allen
+
+
+>=20
+> thanks,
+>=20
+> greg k-h
+
 
