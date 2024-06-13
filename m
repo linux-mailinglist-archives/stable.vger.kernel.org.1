@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF91C907008
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:25:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B808906E70
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C0851F22F1F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:25:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CCBF1C2197A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED4714535E;
-	Thu, 13 Jun 2024 12:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1134D1474AE;
+	Thu, 13 Jun 2024 12:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kgZ9Vc2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDCjol2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15131146D43;
-	Thu, 13 Jun 2024 12:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C5F13C805;
+	Thu, 13 Jun 2024 12:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281378; cv=none; b=tpwcRHuYayswbd8ng38VQ3/H/d4H25JzmLYaUArS8nj32Cj7hwFFlsfUUj/G99+uMp16Y/43bn2nX6dvr4WBkeAPS4WSqumy/IWZR1UM9qbjXJn9NBm5Y/0e+mwzrDiJKvKtxDIcDb0OuFGgJDZirWNAX0nOZsB0h5Hj4ZedNUQ=
+	t=1718280379; cv=none; b=mYUxSnM+SgBi4eimNwtCkwF8+DkIcL0bIkTA9atmA9vjHT7xGnOX7c6H6sRQdXWIpndUyswALNrfe838eUSLrEWhLhCXX8ArSCL6d8voyEg6bNiTZgaJjKw8O3YT2kQiyCShU3AbGPuJnhsbdZHvh3ogcmN0IkWbuyug/BeVVsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281378; c=relaxed/simple;
-	bh=Y6OXytQb2Lo2wF+htNE15z8JKblRJYSKjQ35HagkBdw=;
+	s=arc-20240116; t=1718280379; c=relaxed/simple;
+	bh=248RzELqZSUNPHTwpZwP3dh4FiR9mXbZ4/LVc5ipddk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=absqozh7ZAVa5YbvdzlaoejKQK0rfChRsBFwT91ypJe8vPUG9X9ysKZJKAnYALKicJV7op7Cp/gVa7IVu2FODRScXv3I2iGd9rG0as//FvBElOBfjNxq3tyBj0purqLqMN65FdyiVvXKD/lbSYdHVhPSS0AVQkodHpxW4QH8uRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kgZ9Vc2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B447C4AF49;
-	Thu, 13 Jun 2024 12:22:57 +0000 (UTC)
+	 MIME-Version; b=kdbyQwfmi3SPfT4O7mL7aSgv9ja4VgVXkfIZa0Xu8aEJk2X9eXZ74zQya6y5dqNdMPhSvHCAzQAvpSagE7fxas8qJyUvkFQvTKSoKz9utaHwHfd77B36hHQd35cfQ99j1RelzNGKbqGln1A/ctxCopkvC35UGB+nL9sf1OlECzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDCjol2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AADAC2BBFC;
+	Thu, 13 Jun 2024 12:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281378;
-	bh=Y6OXytQb2Lo2wF+htNE15z8JKblRJYSKjQ35HagkBdw=;
+	s=korg; t=1718280379;
+	bh=248RzELqZSUNPHTwpZwP3dh4FiR9mXbZ4/LVc5ipddk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0kgZ9Vc2Q2nINnoW2zuqQnqfIe77FQAMz2zqDUSxo5d0j6NIm8lD0jl7NYK5o9gdC
-	 IHLGoDVjc5CvKVMWb99sRxGm+Ne8gT+bmv4EcHWQmJRjzon3tXvgMkCw6ejRqPl7Og
-	 MabnOG+P3WalvDOvThBUU0TOGdlyG36xx91TIo/U=
+	b=EDCjol2V49wxqG8fJqlbLbj29+3+iwhf+bdXtAkcxAdALO3gHf8sQGZK3r9Bb/D/z
+	 yD0CfsmEVjl/FEQCVvwxqWk57OzmtKqemeCAjU7SbqSuPcITRgIMXBnnlHfvmgXlXy
+	 8kOz5Lbcf/L8JP5JVZx0UKNiJ67byOONfbSxzf7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 194/317] Input: ioc3kbd - convert to platform remove callback returning void
-Date: Thu, 13 Jun 2024 13:33:32 +0200
-Message-ID: <20240613113255.060736154@linuxfoundation.org>
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.6 033/137] wifi: rtl8xxxu: Fix the TX power of RTL8192CU, RTL8723AU
+Date: Thu, 13 Jun 2024 13:33:33 +0200
+Message-ID: <20240613113224.575923567@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +59,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 150e792dee9ca8416f3d375e48f2f4d7f701fc6b ]
+commit 08b5d052d17a89bb8706b2888277d0b682dc1610 upstream.
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new() which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+Don't subtract 1 from the power index. This was added in commit
+2fc0b8e5a17d ("rtl8xxxu: Add TX power base values for gen1 parts")
+for unknown reasons. The vendor drivers don't do this.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+Also correct the calculations of values written to
+REG_OFDM0_X{C,D}_TX_IQ_IMBALANCE. According to the vendor driver,
+these are used for TX power training.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230920125829.1478827-37-u.kleine-koenig@pengutronix.de
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Stable-dep-of: d40e9edcf3eb ("Input: ioc3kbd - add device table")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With these changes rtl8xxxu sets the TX power of RTL8192CU the same
+as the vendor driver.
+
+None of this appears to have any effect on my RTL8192CU device.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://msgid.link/6ae5945b-644e-45e4-a78f-4c7d9c987910@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/serio/ioc3kbd.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c |   25 +++++++-----------
+ 1 file changed, 10 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/input/serio/ioc3kbd.c b/drivers/input/serio/ioc3kbd.c
-index d51bfe912db5b..50552dc7b4f5e 100644
---- a/drivers/input/serio/ioc3kbd.c
-+++ b/drivers/input/serio/ioc3kbd.c
-@@ -190,7 +190,7 @@ static int ioc3kbd_probe(struct platform_device *pdev)
- 	return 0;
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -1505,13 +1505,13 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xx
+ 	u8 cck[RTL8723A_MAX_RF_PATHS], ofdm[RTL8723A_MAX_RF_PATHS];
+ 	u8 ofdmbase[RTL8723A_MAX_RF_PATHS], mcsbase[RTL8723A_MAX_RF_PATHS];
+ 	u32 val32, ofdm_a, ofdm_b, mcs_a, mcs_b;
+-	u8 val8;
++	u8 val8, base;
+ 	int group, i;
+ 
+ 	group = rtl8xxxu_gen1_channel_to_group(channel);
+ 
+-	cck[0] = priv->cck_tx_power_index_A[group] - 1;
+-	cck[1] = priv->cck_tx_power_index_B[group] - 1;
++	cck[0] = priv->cck_tx_power_index_A[group];
++	cck[1] = priv->cck_tx_power_index_B[group];
+ 
+ 	if (priv->hi_pa) {
+ 		if (cck[0] > 0x20)
+@@ -1522,10 +1522,6 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xx
+ 
+ 	ofdm[0] = priv->ht40_1s_tx_power_index_A[group];
+ 	ofdm[1] = priv->ht40_1s_tx_power_index_B[group];
+-	if (ofdm[0])
+-		ofdm[0] -= 1;
+-	if (ofdm[1])
+-		ofdm[1] -= 1;
+ 
+ 	ofdmbase[0] = ofdm[0] +	priv->ofdm_tx_power_index_diff[group].a;
+ 	ofdmbase[1] = ofdm[1] +	priv->ofdm_tx_power_index_diff[group].b;
+@@ -1614,20 +1610,19 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xx
+ 
+ 	rtl8xxxu_write32(priv, REG_TX_AGC_A_MCS15_MCS12,
+ 			 mcs_a + power_base->reg_0e1c);
++	val8 = u32_get_bits(mcs_a + power_base->reg_0e1c, 0xff000000);
+ 	for (i = 0; i < 3; i++) {
+-		if (i != 2)
+-			val8 = (mcsbase[0] > 8) ? (mcsbase[0] - 8) : 0;
+-		else
+-			val8 = (mcsbase[0] > 6) ? (mcsbase[0] - 6) : 0;
++		base = i != 2 ? 8 : 6;
++		val8 = max_t(int, val8 - base, 0);
+ 		rtl8xxxu_write8(priv, REG_OFDM0_XC_TX_IQ_IMBALANCE + i, val8);
+ 	}
++
+ 	rtl8xxxu_write32(priv, REG_TX_AGC_B_MCS15_MCS12,
+ 			 mcs_b + power_base->reg_0868);
++	val8 = u32_get_bits(mcs_b + power_base->reg_0868, 0xff000000);
+ 	for (i = 0; i < 3; i++) {
+-		if (i != 2)
+-			val8 = (mcsbase[1] > 8) ? (mcsbase[1] - 8) : 0;
+-		else
+-			val8 = (mcsbase[1] > 6) ? (mcsbase[1] - 6) : 0;
++		base = i != 2 ? 8 : 6;
++		val8 = max_t(int, val8 - base, 0);
+ 		rtl8xxxu_write8(priv, REG_OFDM0_XD_TX_IQ_IMBALANCE + i, val8);
+ 	}
  }
- 
--static int ioc3kbd_remove(struct platform_device *pdev)
-+static void ioc3kbd_remove(struct platform_device *pdev)
- {
- 	struct ioc3kbd_data *d = platform_get_drvdata(pdev);
- 
-@@ -198,13 +198,11 @@ static int ioc3kbd_remove(struct platform_device *pdev)
- 
- 	serio_unregister_port(d->kbd);
- 	serio_unregister_port(d->aux);
--
--	return 0;
- }
- 
- static struct platform_driver ioc3kbd_driver = {
- 	.probe          = ioc3kbd_probe,
--	.remove         = ioc3kbd_remove,
-+	.remove_new     = ioc3kbd_remove,
- 	.driver = {
- 		.name = "ioc3-kbd",
- 	},
--- 
-2.43.0
-
 
 
 
