@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E2A29071EB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C7D906E39
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBF0C1F28185
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4138B2809FF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8AA143C40;
-	Thu, 13 Jun 2024 12:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E252146A67;
+	Thu, 13 Jun 2024 12:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLavtdTN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auNWM6if"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7291420C6;
-	Thu, 13 Jun 2024 12:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0355148855;
+	Thu, 13 Jun 2024 12:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282498; cv=none; b=mabXc4nBZGBfjwRxlotMTxRPjuuZ6hJTkiLMg/hQ4iN8oQXGWpD0wq2WB9Nc1xgJpShwZW0mCeNoa6J5UJFedana28SSFnrTRiFqGeO1kzXQbSgPBCB8nR8DgPsoJV/Ht1GQK7vHk3RyF7LZyKVQ+nodfLWAOCnvMILYcMfrdmo=
+	t=1718280237; cv=none; b=cG3r5xYSSlS3JQbPKKWusN9lpqJb2pSck3NW7pxpCl8qp+75bNXEEupoS8gmlndNsaACLhzFCwqCkT9r0cXhhuSY3XOlvpU2yNxUflzHdhNehxlW7Kvn/cZDECriByobeDhV3/jdxfigpvZMnbj7oAZ9RWFSWLGRi1BzF3lxODw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282498; c=relaxed/simple;
-	bh=cl40BIUMQgCKcUJAIJs+jXurMzw02+PVAUO7vDcgQNQ=;
+	s=arc-20240116; t=1718280237; c=relaxed/simple;
+	bh=HPHYxz3SuKAi5gZq2EH1ntQxjm+xIRl7WPPS3YG3h9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mn7V/0ZB8g2q/OTvDIB01+4ihtpyuCXvbYebZx0z0Z4/6K6JrtiazRiGMI52SnkKaQ1P4YcOejAEZSgLUv6nbG2GLusyQXciBcOZ6La4zTt0mpoom4ge8VscIIyZDRclmxDtwkgS6aFWeVmEyJPpAGLQmW4i28p4TjcTU5jTgoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLavtdTN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7ED1C2BBFC;
-	Thu, 13 Jun 2024 12:41:37 +0000 (UTC)
+	 MIME-Version; b=UsBHqoD7RYlq9Aup8v/ZpzHEsE88YUrbpPSvWGnLssX9k0vi3xwgqwgnBxIjVjj9lr+L9/aB7y7CU/vp6pfG3v+uL6y4wMytzIhaUHoTTFYsD4Pm2l/qRlobyQLgKLRIoVeWB9ivNGgCIy1eBZOER1lWdu8Z4s0CX/hJmnb6OvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auNWM6if; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68DF9C2BBFC;
+	Thu, 13 Jun 2024 12:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282498;
-	bh=cl40BIUMQgCKcUJAIJs+jXurMzw02+PVAUO7vDcgQNQ=;
+	s=korg; t=1718280236;
+	bh=HPHYxz3SuKAi5gZq2EH1ntQxjm+xIRl7WPPS3YG3h9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SLavtdTNevI/z7XlAFx0bUNv+m7D/rSXVIASRdzb4C3Pl7e5sNOThYZFZSXuAps0P
-	 ipNYI8mkue2/juwEfKtbCehyVBybvokRQdf1ad/c05PlOeZBWnPerpR6jRLouLnH4r
-	 lz2JPzv+TnV4CQEmRNqNF8Ckt2aP+GI/fA5ulrQc=
+	b=auNWM6ifGQ9Hb+e7y2oVNUlxdRfVHQ0KKj3FwUp6IsGg3jSF9JUzdF7DxO9QYdVLD
+	 gLYfODgj+rR97vEUFklQtQAG+Yr5+hfkfUotB08fIxsQPF3XzFgshIrNHHycF8zt2l
+	 SvjGPIRo18L8OK9QNj+NHzu7GviSemVyJ8Iz6icM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Bystrin <dev.mbstr@gmail.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 298/402] riscv: stacktrace: fixed walk_stackframe()
+Subject: [PATCH 5.4 157/202] net:fec: Add fec_enet_deinit()
 Date: Thu, 13 Jun 2024 13:34:15 +0200
-Message-ID: <20240613113313.769306334@linuxfoundation.org>
+Message-ID: <20240613113233.807289280@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,134 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Bystrin <dev.mbstr@gmail.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit a2a4d4a6a0bf5eba66f8b0b32502cc20d82715a0 ]
+[ Upstream commit bf0497f53c8535f99b72041529d3f7708a6e2c0d ]
 
-If the load access fault occures in a leaf function (with
-CONFIG_FRAME_POINTER=y), when wrong stack trace will be displayed:
+When fec_probe() fails or fec_drv_remove() needs to release the
+fec queue and remove a NAPI context, therefore add a function
+corresponding to fec_enet_init() and call fec_enet_deinit() which
+does the opposite to release memory and remove a NAPI context.
 
-[<ffffffff804853c2>] regmap_mmio_read32le+0xe/0x1c
----[ end trace 0000000000000000 ]---
-
-Registers dump:
-    ra     0xffffffff80485758 <regmap_mmio_read+36>
-    sp     0xffffffc80200b9a0
-    fp     0xffffffc80200b9b0
-    pc     0xffffffff804853ba <regmap_mmio_read32le+6>
-
-Stack dump:
-    0xffffffc80200b9a0:  0xffffffc80200b9e0  0xffffffc80200b9e0
-    0xffffffc80200b9b0:  0xffffffff8116d7e8  0x0000000000000100
-    0xffffffc80200b9c0:  0xffffffd8055b9400  0xffffffd8055b9400
-    0xffffffc80200b9d0:  0xffffffc80200b9f0  0xffffffff8047c526
-    0xffffffc80200b9e0:  0xffffffc80200ba30  0xffffffff8047fe9a
-
-The assembler dump of the function preambula:
-    add     sp,sp,-16
-    sd      s0,8(sp)
-    add     s0,sp,16
-
-In the fist stack frame, where ra is not stored on the stack we can
-observe:
-
-        0(sp)                  8(sp)
-        .---------------------------------------------.
-    sp->|       frame->fp      | frame->ra (saved fp) |
-        |---------------------------------------------|
-    fp->|         ....         |         ....         |
-        |---------------------------------------------|
-        |                      |                      |
-
-and in the code check is performed:
-	if (regs && (regs->epc == pc) && (frame->fp & 0x7))
-
-I see no reason to check frame->fp value at all, because it is can be
-uninitialized value on the stack. A better way is to check frame->ra to
-be an address on the stack. After the stacktrace shows as expect:
-
-[<ffffffff804853c2>] regmap_mmio_read32le+0xe/0x1c
-[<ffffffff80485758>] regmap_mmio_read+0x24/0x52
-[<ffffffff8047c526>] _regmap_bus_reg_read+0x1a/0x22
-[<ffffffff8047fe9a>] _regmap_read+0x5c/0xea
-[<ffffffff80480376>] _regmap_update_bits+0x76/0xc0
-...
----[ end trace 0000000000000000 ]---
-As pointed by Samuel Holland it is incorrect to remove check of the stackframe
-entirely.
-
-Changes since v2 [2]:
- - Add accidentally forgotten curly brace
-
-Changes since v1 [1]:
- - Instead of just dropping frame->fp check, replace it with validation of
-   frame->ra, which should be a stack address.
- - Move frame pointer validation into the separate function.
-
-[1] https://lore.kernel.org/linux-riscv/20240426072701.6463-1-dev.mbstr@gmail.com/
-[2] https://lore.kernel.org/linux-riscv/20240521131314.48895-1-dev.mbstr@gmail.com/
-
-Fixes: f766f77a74f5 ("riscv/stacktrace: Fix stack output without ra on the stack top")
-Signed-off-by: Matthew Bystrin <dev.mbstr@gmail.com>
-Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://lore.kernel.org/r/20240521191727.62012-1-dev.mbstr@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 59d0f7465644 ("net: fec: init multi queue date structure")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20240524050528.4115581-1-xiaolei.wang@windriver.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/stacktrace.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
-index 26f3916eea47c..94721c484d638 100644
---- a/arch/riscv/kernel/stacktrace.c
-+++ b/arch/riscv/kernel/stacktrace.c
-@@ -20,6 +20,16 @@ register unsigned long sp_in_global __asm__("sp");
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index b55d6ed9aa133..fb7039b001ef8 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -3371,6 +3371,14 @@ static int fec_enet_init(struct net_device *ndev)
+ 	return ret;
+ }
  
- extern asmlinkage void ret_from_exception(void);
- 
-+static inline int fp_is_valid(unsigned long fp, unsigned long sp)
++static void fec_enet_deinit(struct net_device *ndev)
 +{
-+	unsigned long low, high;
++	struct fec_enet_private *fep = netdev_priv(ndev);
 +
-+	low = sp + sizeof(struct stackframe);
-+	high = ALIGN(sp, THREAD_SIZE);
-+
-+	return !(fp < low || fp > high || fp & 0x07);
++	netif_napi_del(&fep->napi);
++	fec_enet_free_queue(ndev);
 +}
 +
- void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 			     bool (*fn)(void *, unsigned long), void *arg)
+ #ifdef CONFIG_OF
+ static int fec_reset_phy(struct platform_device *pdev)
  {
-@@ -43,21 +53,19 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 	}
+@@ -3735,6 +3743,7 @@ fec_probe(struct platform_device *pdev)
+ 	fec_enet_mii_remove(fep);
+ failed_mii_init:
+ failed_irq:
++	fec_enet_deinit(ndev);
+ failed_init:
+ 	fec_ptp_stop(pdev);
+ failed_reset:
+@@ -3796,6 +3805,7 @@ fec_drv_remove(struct platform_device *pdev)
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
  
- 	for (;;) {
--		unsigned long low, high;
- 		struct stackframe *frame;
- 
- 		if (unlikely(!__kernel_text_address(pc) || (level++ >= 0 && !fn(arg, pc))))
- 			break;
- 
--		/* Validate frame pointer */
--		low = sp + sizeof(struct stackframe);
--		high = ALIGN(sp, THREAD_SIZE);
--		if (unlikely(fp < low || fp > high || fp & 0x7))
-+		if (unlikely(!fp_is_valid(fp, sp)))
- 			break;
-+
- 		/* Unwind stack frame */
- 		frame = (struct stackframe *)fp - 1;
- 		sp = fp;
--		if (regs && (regs->epc == pc) && (frame->fp & 0x7)) {
-+		if (regs && (regs->epc == pc) && fp_is_valid(frame->ra, sp)) {
-+			/* We hit function where ra is not saved on the stack */
- 			fp = frame->ra;
- 			pc = regs->ra;
- 		} else {
++	fec_enet_deinit(ndev);
+ 	free_netdev(ndev);
+ 	return 0;
+ }
 -- 
 2.43.0
 
