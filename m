@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A501907043
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4553906ECC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 521261F231FF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97A4D1F22DD6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F8B1448E0;
-	Thu, 13 Jun 2024 12:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF75A1448FB;
+	Thu, 13 Jun 2024 12:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSsK7N4R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXtAdKqJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7753143861;
-	Thu, 13 Jun 2024 12:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C59213D601;
+	Thu, 13 Jun 2024 12:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281518; cv=none; b=L+ePz9HZ7zi6iZtZUETZlyGLF7bo+mPiyOR0LBiztIkts49TspjFHhwLt6Bug1FeAD4qfv8mVWruSYqQCyIpGC50XR+7imINK+8UJXT/h3cFS/HoAO80jp7+lNbSnzW/AChnV/EO40ZMkEh4AFtOytJsKUFgPNla4NtyQmYfIZM=
+	t=1718280632; cv=none; b=oBMnA9ayl2gzov2E2WLSgvw/QY8k7zvTqWoHHhlSaCJmBTLLhAXupus+SNzLyzfikRxm8f1RYJXX34vTnxeRXCPl9HMiWoP0wt9omW5ODUjeL3vwJMaDpJkoHGrOhqN9lKKTptiABCIUwkAnEe10OT6tYfuPwnqBiSUNUYeIlmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281518; c=relaxed/simple;
-	bh=0KGPd60CZwSR2cg2NyzTIq1Votg8FHUF5ndBsE4R0KE=;
+	s=arc-20240116; t=1718280632; c=relaxed/simple;
+	bh=YYa6FzmPY/ua8sUgtDwKrMYoEraBh3a+PrqtNgVwbX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O3JWteiX6M8IGWWIP8+bCDf9fx4eWBTIP0C+RUkoTfapsL8mlauIgYvT0G2rBy0v13DF/ZhWcfMYuE0WNTkhbBarkicwEkBtuKr9z/Qo8KfQ4lt+8q2CYK9M0fo6MheGzumNJJmIotb6fClIEHIsRjv7TpabK/H8oRi237iVD7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSsK7N4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3C8C2BBFC;
-	Thu, 13 Jun 2024 12:25:18 +0000 (UTC)
+	 MIME-Version; b=Fpx9vcSb+mMnSOUo+OzbHuNic4PtwXMKWITuBkmhnd/at4LqZk2re9wjlFANxgflQMLQz4ojKB482s/k6idRJkMajOIiEbaywd/fI3gYKn/5Gnp9SA4oFKsH+12+oAV2z2oFWIIxMIaMQwLzyehC7QR0aTWEOGGt8J6e95WH2PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXtAdKqJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14337C2BBFC;
+	Thu, 13 Jun 2024 12:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281518;
-	bh=0KGPd60CZwSR2cg2NyzTIq1Votg8FHUF5ndBsE4R0KE=;
+	s=korg; t=1718280632;
+	bh=YYa6FzmPY/ua8sUgtDwKrMYoEraBh3a+PrqtNgVwbX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZSsK7N4RMcYTmi0IKCo/O3vOrAQjla2Jncf6azxofC0O1Xn6vZNy0lkv2XF4vrovj
-	 jtc0wns0dRZcQqDfgVQWjidgVQEFVdNSnjkAlp4vZF+2S0jRYHlYrLITd+yC7vO+Ir
-	 kXovVTVRnWGUJYkSJ2paCKd5T5DZVcOxRbBxp7l0=
+	b=xXtAdKqJ51GKvCJLymqpXvkSZyT3hqmagUh7FJ0VcZzV0tTCWOMUV21JtGdLIu30z
+	 vgjc8gJ3GFStuZBQKjCjVmAcCEsM25UOiFse57p8UyTV8VgnqnkJkk9gE0JkooFVuA
+	 nKRDDBIwwdTSM+E0N+vYPoTAjjLWnzGDl4zVH6vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
-	Dan Moulding <dan@danm.net>,
-	Junxiao Bi <junxiao.bi@oracle.com>
-Subject: [PATCH 5.10 282/317] md/raid5: fix deadlock that raid5d() wait for itself to clear MD_SB_CHANGE_PENDING
+	"dicken.ding" <dicken.ding@mediatek.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 120/137] genirq/irqdesc: Prevent use-after-free in irq_find_at_or_after()
 Date: Thu, 13 Jun 2024 13:35:00 +0200
-Message-ID: <20240613113258.462028277@linuxfoundation.org>
+Message-ID: <20240613113227.955167134@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: dicken.ding <dicken.ding@mediatek.com>
 
-commit 151f66bb618d1fd0eeb84acb61b4a9fa5d8bb0fa upstream.
+commit b84a8aba806261d2f759ccedf4a2a6a80a5e55ba upstream.
 
-Xiao reported that lvm2 test lvconvert-raid-takeover.sh can hang with
-small possibility, the root cause is exactly the same as commit
-bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
+irq_find_at_or_after() dereferences the interrupt descriptor which is
+returned by mt_find() while neither holding sparse_irq_lock nor RCU read
+lock, which means the descriptor can be freed between mt_find() and the
+dereference:
 
-However, Dan reported another hang after that, and junxiao investigated
-the problem and found out that this is caused by plugged bio can't issue
-from raid5d().
+    CPU0                            CPU1
+    desc = mt_find()
+                                    delayed_free_desc(desc)
+    irq_desc_get_irq(desc)
 
-Current implementation in raid5d() has a weird dependence:
+The use-after-free is reported by KASAN:
 
-1) md_check_recovery() from raid5d() must hold 'reconfig_mutex' to clear
-   MD_SB_CHANGE_PENDING;
-2) raid5d() handles IO in a deadloop, until all IO are issued;
-3) IO from raid5d() must wait for MD_SB_CHANGE_PENDING to be cleared;
+    Call trace:
+     irq_get_next_irq+0x58/0x84
+     show_stat+0x638/0x824
+     seq_read_iter+0x158/0x4ec
+     proc_reg_read_iter+0x94/0x12c
+     vfs_read+0x1e0/0x2c8
 
-This behaviour is introduce before v2.6, and for consequence, if other
-context hold 'reconfig_mutex', and md_check_recovery() can't update
-super_block, then raid5d() will waste one cpu 100% by the deadloop, until
-'reconfig_mutex' is released.
+    Freed by task 4471:
+     slab_free_freelist_hook+0x174/0x1e0
+     __kmem_cache_free+0xa4/0x1dc
+     kfree+0x64/0x128
+     irq_kobj_release+0x28/0x3c
+     kobject_put+0xcc/0x1e0
+     delayed_free_desc+0x14/0x2c
+     rcu_do_batch+0x214/0x720
 
-Refer to the implementation from raid1 and raid10, fix this problem by
-skipping issue IO if MD_SB_CHANGE_PENDING is still set after
-md_check_recovery(), daemon thread will be woken up when 'reconfig_mutex'
-is released. Meanwhile, the hang problem will be fixed as well.
+Guard the access with a RCU read lock section.
 
-Fixes: 5e2cf333b7bd ("md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d")
-Cc: stable@vger.kernel.org # v5.19+
-Reported-and-tested-by: Dan Moulding <dan@danm.net>
-Closes: https://lore.kernel.org/all/20240123005700.9302-1-dan@danm.net/
-Investigated-by: Junxiao Bi <junxiao.bi@oracle.com>
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240322081005.1112401-1-yukuai1@huaweicloud.com
-Signed-off-by: Song Liu <song@kernel.org>
+Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor management")
+Signed-off-by: dicken.ding <dicken.ding@mediatek.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240524091739.31611-1-dicken.ding@mediatek.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid5.c |   15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ kernel/irq/irqdesc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -36,7 +36,6 @@
-  */
- 
- #include <linux/blkdev.h>
--#include <linux/delay.h>
- #include <linux/kthread.h>
- #include <linux/raid/pq.h>
- #include <linux/async_tx.h>
-@@ -6484,6 +6483,9 @@ static void raid5d(struct md_thread *thr
- 		int batch_size, released;
- 		unsigned int offset;
- 
-+		if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
-+			break;
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -148,7 +148,10 @@ static int irq_find_free_area(unsigned i
+ static unsigned int irq_find_at_or_after(unsigned int offset)
+ {
+ 	unsigned long index = offset;
+-	struct irq_desc *desc = mt_find(&sparse_irqs, &index, nr_irqs);
++	struct irq_desc *desc;
 +
- 		released = release_stripe_list(conf, conf->temp_inactive_list);
- 		if (released)
- 			clear_bit(R5_DID_ALLOC, &conf->cache_state);
-@@ -6520,18 +6522,7 @@ static void raid5d(struct md_thread *thr
- 			spin_unlock_irq(&conf->device_lock);
- 			md_check_recovery(mddev);
- 			spin_lock_irq(&conf->device_lock);
--
--			/*
--			 * Waiting on MD_SB_CHANGE_PENDING below may deadlock
--			 * seeing md_check_recovery() is needed to clear
--			 * the flag when using mdmon.
--			 */
--			continue;
- 		}
--
--		wait_event_lock_irq(mddev->sb_wait,
--			!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags),
--			conf->device_lock);
- 	}
- 	pr_debug("%d stripes handled\n", handled);
++	guard(rcu)();
++	desc = mt_find(&sparse_irqs, &index, nr_irqs);
  
+ 	return desc ? irq_desc_get_irq(desc) : nr_irqs;
+ }
 
 
 
