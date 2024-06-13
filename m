@@ -1,225 +1,122 @@
-Return-Path: <stable+bounces-50488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2D219069AE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F07399069B2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87A542828E9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:10:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6047BB23BB7
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8170F1411E8;
-	Thu, 13 Jun 2024 10:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE79141981;
+	Thu, 13 Jun 2024 10:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHF+1ALs"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S+jejdCP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40ADF13E3E4
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0101411E5
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718273414; cv=none; b=RoYMwy5Urb/RtPA0vj+OZK2E9TQCBM3t7oZX2q/x53Q6l3SApeOFB1lALjb+MvJLNhOLLzZrjmLzIozWYyQo4bp14SH+XD7pIGoomG4+uoguvg5uzewKRtFwj08JAuW8tcdu8o4qDbK+Qj2SvTX65Xk/VDukcVLE+aiO/a6GPxo=
+	t=1718273440; cv=none; b=JdCSqYMu2XxsC/hIhNlnRguiOndWxz90WFf/cmz6eT7RbyD7qtg7gnDR5y8vW+RcOKROfU52Vk98A1Tz7aAXp/dsLwiPvjZ1r9AKFvJMq2jXqapJo0jqddEz0Hi68U5xug4rpIp7mKPyNUCl4VAl38drht0DuGqsJJn9w8ZtuLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718273414; c=relaxed/simple;
-	bh=Mx+r+gKnGsr83InlfS18Kdk95q5bV8oQj+0AgG96Tco=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fFMgr2DbwcxhLflWX7NG7oYD1CpDC3BNLL6gVU+40yCeYAYj5c1gwtLY6YtqLVlgQpFHvfemLdI13DawO3WbZM/L5shl+o7aL12PZjaWmZSn1KI1u8yWX8qG3T9v+anue8tQMa/cXbwwojmyMsM8vsGZFky9U8L8RgYTFF1FrMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHF+1ALs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76855C2BBFC;
-	Thu, 13 Jun 2024 10:10:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718273413;
-	bh=Mx+r+gKnGsr83InlfS18Kdk95q5bV8oQj+0AgG96Tco=;
-	h=Subject:To:Cc:From:Date:From;
-	b=yHF+1ALs/UPKYN+Ipskk6soTf0YTmOON9T7twOkTpWSqxMXIUHHcdImCnJwF/oEBU
-	 TnbbdQd4a7at8QcvNfQc9jisctVuGq0rgpP8NAytfCHl3hP1yA15vTQ8UI/Y0tggaJ
-	 Od1QuFlUs6VcCCImpAH9l8Zaytj2IPcCeFn2780s=
-Subject: FAILED: patch "[PATCH] s390/cpacf: Split and rework cpacf query functions" failed to apply to 4.19-stable tree
-To: freude@linux.ibm.com,dengler@linux.ibm.com,hca@linux.ibm.com,jchrist@linux.ibm.com,nsg@linux.ibm.com,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Jun 2024 12:10:00 +0200
-Message-ID: <2024061300-undead-mortuary-7444@gregkh>
+	s=arc-20240116; t=1718273440; c=relaxed/simple;
+	bh=mOMZE1BImQgQqVos0pSrYVwUrtiIOEk/BT5krayXtjI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UIA1hJSECG+9ASMFr2EhtzLiIKgON9PHoGA7AqoeBOnbFQtwCuixb+Sc12r1ffXTRGLAkkgtz1GAXJ1nhs9zHKLbTHn8scxdnRWgnh5t9FUaszY6rJfdkxfshD9LzAFqJ6c5UPszQkU7eJxc/yyp4E9iGm9YeO9Gid/s+vpN14c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S+jejdCP; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-52c89d6b4adso830679e87.3
+        for <stable@vger.kernel.org>; Thu, 13 Jun 2024 03:10:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718273437; x=1718878237; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VnOXzfBQPF+LHXjU6pXBEMJF3WvZiisnuKFTk0ZYuAo=;
+        b=S+jejdCPSgiDz1ZDqAOPS79cij4ikRaQJnFPWZjdD6wTKuVVopRz3lllO8SKqrvFSw
+         C90yFR52ZUGIC0jUbbhnFrMnlGlJw2Rb7NxesuEnfpSPlotY+yvJbQkmKJLZBR6MxRiE
+         rROuYy8ZlhB4EEa7viqg/m7j/qZ5OjoTPN6qMxxzgCfv6PNH4qg6xNGwyfKbValyW/LL
+         KQ6omeOHDMuupUUycGOIoea0n/vhIJIND5ooye/jIqWVIy8A/3WbkuPnVyHoG/3WXX5l
+         gFnbiNT9GeExEqiCHSl77azExi6zvAVccfQfR/TbFMaq5WWCzZgevXbU5Ev5FhxqKuOM
+         Biiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718273437; x=1718878237;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VnOXzfBQPF+LHXjU6pXBEMJF3WvZiisnuKFTk0ZYuAo=;
+        b=Vev3DGAExN/qxtGBf9TBtUzfmquOo1mqQNKU282+3YiPEjkNIcIeGmKSD4iYaKXHmX
+         cMr7+QvRnJTyYYw1hgabH2n4SRbfKR5tCOCcGO+VDEPuakuzV/xAWP+FdVqpfyjwaX3/
+         DvSR6yq3pL2D9LM+0nczAug2bDoVNO7MuE8PeC9iQgp888rrTIGGoTQJSSRlQRB46XFR
+         8xJ0Kwc1Ugxg90Bp6AzfYPJfEmR0oqlpE3OO4hijN4aWsUqBz7QzxF5ax3ZOyLIYrTHC
+         l0oUSPkBKM5xLsDxbXuOa1lhBZiOsZeEia01ir6wE193gZqvefeV11XqxkEfVx2ejzuI
+         qWIA==
+X-Forwarded-Encrypted: i=1; AJvYcCVfC5U3oZhW/qkeZjvuQJQK+bP07vQu/BQjoYC0rd5rm24/ID5fMlyWZZLXFbSqMn3Qj0HRqxSLym2Q+HK5JgN5HTmRCPe3
+X-Gm-Message-State: AOJu0Ywu6e5csAEO/lAONUNK1WuN0t0eDkiN6X95codmT4aG+f7/sdVU
+	Fi/hCAVyCGnePq4aEVJlGDNUwo8f1c5Sk47uYYNx9N+etmJWk2LmrU4synffBxc=
+X-Google-Smtp-Source: AGHT+IEnmrWgnM5SGxICW1vWwc2O/mTW96VNMeI3/JiExHdDPaxx2NlTGNeh1bZrVaDWkM08FDbyLQ==
+X-Received: by 2002:a05:6512:44a:b0:52c:8a4e:f4bf with SMTP id 2adb3069b0e04-52c9a400d27mr2332640e87.51.1718273437098;
+        Thu, 13 Jun 2024 03:10:37 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca287ad17sm146604e87.225.2024.06.13.03.10.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Jun 2024 03:10:36 -0700 (PDT)
+Date: Thu, 13 Jun 2024 13:10:35 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: x1e80100-crd: fix DAI used for
+ headset recording
+Message-ID: <7rfoogp7w3gmtyawmil5lilx4blbpnb3nzl5tv2onydmzblcqw@qooqesspnrp4>
+References: <20240611142555.994675-1-krzysztof.kozlowski@linaro.org>
+ <20240611142555.994675-2-krzysztof.kozlowski@linaro.org>
+ <90f5ad41-7192-4c01-90c0-ad9c54094917@linaro.org>
+ <9e9cbc0b-f9fd-439c-93d1-054179f7b07f@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9e9cbc0b-f9fd-439c-93d1-054179f7b07f@linaro.org>
 
+On Thu, Jun 13, 2024 at 11:11:05AM +0200, Krzysztof Kozlowski wrote:
+> On 13/06/2024 09:45, Konrad Dybcio wrote:
+> > 
+> > 
+> > On 6/11/24 16:25, Krzysztof Kozlowski wrote:
+> >> The SWR2 Soundwire instance has 1 output and 4 input ports, so for the
+> >> headset recording (via the WCD9385 codec and the TX macro codec) we want
+> >> to use the next DAI, not the first one (see qcom,dout-ports and
+> >> qcom,din-ports for soundwire@6d30000 node).
+> >>
+> >> Original code was copied from other devices like SM8450 and SM8550.  On
+> >> the SM8450 this was a correct setting, however on the SM8550 this worked
+> >> probably only by coincidence, because the DTS defined no output ports on
+> >> SWR2 Soundwire.
+> > 
+> > Planning to send a fix for that?
+> > 
+> > Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> 
+> Not really, because microphone works on these targets and changing it
+> would require testing. I don't have boards suitable for testing, so
+> let's just leave it.
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+If you provide instructions, I can test microphones on SM8450 HDK.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 830999bd7e72f4128b9dfa37090d9fa8120ce323
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061300-undead-mortuary-7444@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
-
-Possible dependencies:
-
-830999bd7e72 ("s390/cpacf: Split and rework cpacf query functions")
-b84d0c417a5a ("s390/cpacf: get rid of register asm")
-5c8e10f83262 ("s390: mark __cpacf_query() as __always_inline")
-e60fb8bf68d4 ("s390/cpacf: mark scpacf_query() as __always_inline")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 830999bd7e72f4128b9dfa37090d9fa8120ce323 Mon Sep 17 00:00:00 2001
-From: Harald Freudenberger <freude@linux.ibm.com>
-Date: Fri, 3 May 2024 11:31:42 +0200
-Subject: [PATCH] s390/cpacf: Split and rework cpacf query functions
-
-Rework the cpacf query functions to use the correct RRE
-or RRF instruction formats and set register fields within
-instructions correctly.
-
-Fixes: 1afd43e0fbba ("s390/crypto: allow to query all known cpacf functions")
-Reported-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Suggested-by: Heiko Carstens <hca@linux.ibm.com>
-Suggested-by: Juergen Christ <jchrist@linux.ibm.com>
-Suggested-by: Holger Dengler <dengler@linux.ibm.com>
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-Reviewed-by: Juergen Christ <jchrist@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-
-diff --git a/arch/s390/include/asm/cpacf.h b/arch/s390/include/asm/cpacf.h
-index b378e2b57ad8..153dc4fcc40a 100644
---- a/arch/s390/include/asm/cpacf.h
-+++ b/arch/s390/include/asm/cpacf.h
-@@ -166,28 +166,79 @@
- 
- typedef struct { unsigned char bytes[16]; } cpacf_mask_t;
- 
--/**
-- * cpacf_query() - check if a specific CPACF function is available
-- * @opcode: the opcode of the crypto instruction
-- * @func: the function code to test for
-- *
-- * Executes the query function for the given crypto instruction @opcode
-- * and checks if @func is available
-- *
-- * Returns 1 if @func is available for @opcode, 0 otherwise
-- */
--static __always_inline void __cpacf_query(unsigned int opcode, cpacf_mask_t *mask)
-+static __always_inline void __cpacf_query_rre(u32 opc, u8 r1, u8 r2,
-+					      cpacf_mask_t *mask)
- {
- 	asm volatile(
--		"	lghi	0,0\n" /* query function */
--		"	lgr	1,%[mask]\n"
--		"	spm	0\n" /* pckmo doesn't change the cc */
--		/* Parameter regs are ignored, but must be nonzero and unique */
--		"0:	.insn	rrf,%[opc] << 16,2,4,6,0\n"
--		"	brc	1,0b\n"	/* handle partial completion */
--		: "=m" (*mask)
--		: [mask] "d" ((unsigned long)mask), [opc] "i" (opcode)
--		: "cc", "0", "1");
-+		"	la	%%r1,%[mask]\n"
-+		"	xgr	%%r0,%%r0\n"
-+		"	.insn	rre,%[opc] << 16,%[r1],%[r2]\n"
-+		: [mask] "=R" (*mask)
-+		: [opc] "i" (opc),
-+		  [r1] "i" (r1), [r2] "i" (r2)
-+		: "cc", "r0", "r1");
-+}
-+
-+static __always_inline void __cpacf_query_rrf(u32 opc,
-+					      u8 r1, u8 r2, u8 r3, u8 m4,
-+					      cpacf_mask_t *mask)
-+{
-+	asm volatile(
-+		"	la	%%r1,%[mask]\n"
-+		"	xgr	%%r0,%%r0\n"
-+		"	.insn	rrf,%[opc] << 16,%[r1],%[r2],%[r3],%[m4]\n"
-+		: [mask] "=R" (*mask)
-+		: [opc] "i" (opc), [r1] "i" (r1), [r2] "i" (r2),
-+		  [r3] "i" (r3), [m4] "i" (m4)
-+		: "cc", "r0", "r1");
-+}
-+
-+static __always_inline void __cpacf_query(unsigned int opcode,
-+					  cpacf_mask_t *mask)
-+{
-+	switch (opcode) {
-+	case CPACF_KDSA:
-+		__cpacf_query_rre(CPACF_KDSA, 0, 2, mask);
-+		break;
-+	case CPACF_KIMD:
-+		__cpacf_query_rre(CPACF_KIMD, 0, 2, mask);
-+		break;
-+	case CPACF_KLMD:
-+		__cpacf_query_rre(CPACF_KLMD, 0, 2, mask);
-+		break;
-+	case CPACF_KM:
-+		__cpacf_query_rre(CPACF_KM, 2, 4, mask);
-+		break;
-+	case CPACF_KMA:
-+		__cpacf_query_rrf(CPACF_KMA, 2, 4, 6, 0, mask);
-+		break;
-+	case CPACF_KMAC:
-+		__cpacf_query_rre(CPACF_KMAC, 0, 2, mask);
-+		break;
-+	case CPACF_KMC:
-+		__cpacf_query_rre(CPACF_KMC, 2, 4, mask);
-+		break;
-+	case CPACF_KMCTR:
-+		__cpacf_query_rrf(CPACF_KMCTR, 2, 4, 6, 0, mask);
-+		break;
-+	case CPACF_KMF:
-+		__cpacf_query_rre(CPACF_KMF, 2, 4, mask);
-+		break;
-+	case CPACF_KMO:
-+		__cpacf_query_rre(CPACF_KMO, 2, 4, mask);
-+		break;
-+	case CPACF_PCC:
-+		__cpacf_query_rre(CPACF_PCC, 0, 0, mask);
-+		break;
-+	case CPACF_PCKMO:
-+		__cpacf_query_rre(CPACF_PCKMO, 0, 0, mask);
-+		break;
-+	case CPACF_PRNO:
-+		__cpacf_query_rre(CPACF_PRNO, 2, 4, mask);
-+		break;
-+	default:
-+		BUG();
-+	}
- }
- 
- static __always_inline int __cpacf_check_opcode(unsigned int opcode)
-@@ -215,6 +266,16 @@ static __always_inline int __cpacf_check_opcode(unsigned int opcode)
- 	}
- }
- 
-+/**
-+ * cpacf_query() - check if a specific CPACF function is available
-+ * @opcode: the opcode of the crypto instruction
-+ * @func: the function code to test for
-+ *
-+ * Executes the query function for the given crypto instruction @opcode
-+ * and checks if @func is available
-+ *
-+ * Returns 1 if @func is available for @opcode, 0 otherwise
-+ */
- static __always_inline int cpacf_query(unsigned int opcode, cpacf_mask_t *mask)
- {
- 	if (__cpacf_check_opcode(opcode)) {
-
+-- 
+With best wishes
+Dmitry
 
