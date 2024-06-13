@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7888906F6B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:19:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F78B907159
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66223B20E99
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF9461F2485E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8B8145A1A;
-	Thu, 13 Jun 2024 12:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DF21E519;
+	Thu, 13 Jun 2024 12:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSonEztk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hE0DxmJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD391145A18;
-	Thu, 13 Jun 2024 12:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B55384;
+	Thu, 13 Jun 2024 12:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280965; cv=none; b=aEWiobbf6XN8FTeke1mVuBNXUlAiRzUyjeHJRz2f899WfUpwES8p2mJAp07MNzdz12mSX0lJbzuXe4OiRV2Ov9O5AP1DYvRUcr0g5JltjG8vR+t4ceuzCRT3BmEPeV4B7GG1c2eBvf0HPxLOo2SjJbB0sj9C8I6Zh4gVuvOl52k=
+	t=1718282164; cv=none; b=KrRLoauam5/97MGTSPWH7h08iodUOqCsjotqyec7/NERWZgVA9a21WMtXimAt8/RplZwko9bcnvoxpKOLE9HUBX7COZN/ahiG8urwgK+fqcfMHO+4CCdQHpArSXgOAIzpb3XCigSO86K8k38a8VXz1d6ehocfW0rATwLj6lZimI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280965; c=relaxed/simple;
-	bh=L4U3N5le8806V23sEF2ujXC8R3gLL9rdS80hK3ZAWis=;
+	s=arc-20240116; t=1718282164; c=relaxed/simple;
+	bh=vBXCtGvgFT8LGGDN1ClzotUCCx+7qUDvSQKisbZ8FWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmQSfg3dH3XZ94CEUj1OtEFGJOL8apoQk2akaOZxJescmPEHti2NOAk8Siuo2CgrhbgA9XhGe/jeIUB0H6WeWiPAvRXagKwI4p7fUqxqIBAcElXMVZeQGzrV5XZqjp4tBj/8NMaI8jd17FrRCU6N58sLIyP/MjfiDGw4e4LHAqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XSonEztk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468D7C2BBFC;
-	Thu, 13 Jun 2024 12:16:05 +0000 (UTC)
+	 MIME-Version; b=mZgRAl+B7xX6ojrURe8jL8a4qaZ6RGWuPpKE/4Ll42FoRQr0IWowE3PvyNzrQVsKL1l9CyATZZEzzOt+e8c1s8d6BUoKDrD3BRKjBJXPXfUdgm2H3yJZobDwCyrqiRwjMDGH22Dicb1DY/AaL532JJHg2qt3GGLp57nBgGUUpgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hE0DxmJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44432C2BBFC;
+	Thu, 13 Jun 2024 12:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280965;
-	bh=L4U3N5le8806V23sEF2ujXC8R3gLL9rdS80hK3ZAWis=;
+	s=korg; t=1718282164;
+	bh=vBXCtGvgFT8LGGDN1ClzotUCCx+7qUDvSQKisbZ8FWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XSonEztkt420orCtwZfUglAe+83ZnfSRAYQmkqBho3imUGerHhoAfBmqJcQ6zGShG
-	 BJD4I9szSIUDIyuaYgwtxxtLi20iItlXq/KEzlbORYg+vPySQQ8a+ZVB0JCgBrSdW4
-	 t0gH3JZE55wIS5OXHVeDbmD40IKwid2Pr1yKj5RA=
+	b=hE0DxmJRn3TIlc2jDZM598t6DDuvkgIhWsGggkRJZP7j/OmdgYoKARCDGby3ccZPo
+	 MgX5NSuabSrzZtpHX3jhZX4h2G6vEDecZA/J/uwPjgDo1Q1angYaaqB4xnsnsU/kzD
+	 UljDwxpmygJMWw0hfSzCYw5hwfex9/i0OlXnoiGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Korotkov <korotkov.maxim.s@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 093/317] mtd: rawnand: hynix: fixed typo
+Subject: [PATCH 5.15 154/402] RDMA/hns: Modify the print level of CQE error
 Date: Thu, 13 Jun 2024 13:31:51 +0200
-Message-ID: <20240613113251.149015213@linuxfoundation.org>
+Message-ID: <20240613113308.143176124@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxim Korotkov <korotkov.maxim.s@gmail.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 6819db94e1cd3ce24a432f3616cd563ed0c4eaba ]
+[ Upstream commit 349e859952285ab9689779fb46de163f13f18f43 ]
 
-The function hynix_nand_rr_init() should probably return an error code.
-Judging by the usage, it seems that the return code is passed up
-the call stack.
-Right now, it always returns 0 and the function hynix_nand_cleanup()
-in hynix_nand_init() has never been called.
+Too much print may lead to a panic in kernel. Change ibdev_err() to
+ibdev_err_ratelimited(), and change the printing level of cqe dump
+to debug level.
 
-Found by RASU JSC and Linux Verification Center (linuxtesting.org)
-
-Fixes: 626994e07480 ("mtd: nand: hynix: Add read-retry support for 1x nm MLC NANDs")
-
-Signed-off-by: Maxim Korotkov <korotkov.maxim.s@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240313102721.1991299-1-korotkov.maxim.s@gmail.com
+Fixes: 7c044adca272 ("RDMA/hns: Simplify the cqe code of poll cq")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240412091616.370789-11-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/nand_hynix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/nand_hynix.c b/drivers/mtd/nand/raw/nand_hynix.c
-index a9f50c9af1097..856b3d6eceb73 100644
---- a/drivers/mtd/nand/raw/nand_hynix.c
-+++ b/drivers/mtd/nand/raw/nand_hynix.c
-@@ -402,7 +402,7 @@ static int hynix_nand_rr_init(struct nand_chip *chip)
- 	if (ret)
- 		pr_warn("failed to initialize read-retry infrastructure");
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index e541de3e6165b..4accc9efa6946 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -3514,8 +3514,9 @@ static void get_cqe_status(struct hns_roce_dev *hr_dev, struct hns_roce_qp *qp,
+ 		   wc->status == IB_WC_WR_FLUSH_ERR))
+ 		return;
  
--	return 0;
-+	return ret;
- }
+-	ibdev_err(&hr_dev->ib_dev, "error cqe status 0x%x:\n", cqe_status);
+-	print_hex_dump(KERN_ERR, "", DUMP_PREFIX_NONE, 16, 4, cqe,
++	ibdev_err_ratelimited(&hr_dev->ib_dev, "error cqe status 0x%x:\n",
++			      cqe_status);
++	print_hex_dump(KERN_DEBUG, "", DUMP_PREFIX_NONE, 16, 4, cqe,
+ 		       cq->cqe_size, false);
+ 	wc->vendor_err = hr_reg_read(cqe, CQE_SUB_STATUS);
  
- static void hynix_nand_extract_oobsize(struct nand_chip *chip,
 -- 
 2.43.0
 
