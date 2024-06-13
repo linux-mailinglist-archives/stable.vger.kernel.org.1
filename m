@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-51155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482F0906E91
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ADD1907200
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F244D1F21655
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C4F0280D83
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E69F145A06;
-	Thu, 13 Jun 2024 12:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79AB74A07;
+	Thu, 13 Jun 2024 12:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVz/CMHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnYG8eeh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C29E13D635;
-	Thu, 13 Jun 2024 12:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A001849;
+	Thu, 13 Jun 2024 12:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280471; cv=none; b=SuuRqtSNOhQ3A29bDwMk9RX/aypqEa5+14SdNZUgHQ6UwgQUdcGAiMC4yFHO4s0bHS9opuZYg48K54A0Y8yIemJ26rI0PXiFU13NxxhOZGCEmidEqBUnCZr/KsO5pIM5VLIPbL4xbCP9qEJgtCy+9dkCx81y5lfjlQfKl8idxiQ=
+	t=1718282560; cv=none; b=RA97x4GTBv+TzH6HwqIjNjoyISZjhywFxL7BGgBmXWEYq3kIv7sa+/eo2LcT2Z/ICXP+3HD3pjkvrJtIMNGz/1Zvqc01S89FydVyI4RIBmD4vWhrWGYat/rxkrOaI7kCYCVE6jyI2Bns7PQL/tMzwxkD2NH6HyADElDJlwRVFrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280471; c=relaxed/simple;
-	bh=Cn/4wXCuUj6OXb/FxZcuM+tJfzWV7Pm+H4EjvneQ/OU=;
+	s=arc-20240116; t=1718282560; c=relaxed/simple;
+	bh=QDP0Au1+pYHbGwWaOAc+k2y8rLJmf6E6uBwevhfTYGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VdUCngWfJK53XDXS6Af0hJ7SqSNjjqP6LHqWI4T+Wu3o1l/fSMg+IqzRwpCO5xvXqyk5pqOxmGDTIK9rsaFBSQ2xpjks++aYZXRYX8KeIlKEKzpuwsmoU62E9OAV2B8+U0vOz+xpoG7RB+3GedsQ4eUUUCqOwypZZy1bnMcGA5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVz/CMHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C659C2BBFC;
-	Thu, 13 Jun 2024 12:07:50 +0000 (UTC)
+	 MIME-Version; b=BZNOzmhQ0FSCRWytjxrKwzre6j/SJo11vAcEuu7lj4NvRovf4w5nOKvw+J60lxv0UgecMwXUPEQqB8p7gK24YfoxFkR850S4TujsPOIJXTde8/1Y7luc+qbXs2rXHGdvDoswH5ydR6qiNVEJY61mrGiHhtQaPYpuk5CeZATnelY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnYG8eeh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20E2C2BBFC;
+	Thu, 13 Jun 2024 12:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280470;
-	bh=Cn/4wXCuUj6OXb/FxZcuM+tJfzWV7Pm+H4EjvneQ/OU=;
+	s=korg; t=1718282560;
+	bh=QDP0Au1+pYHbGwWaOAc+k2y8rLJmf6E6uBwevhfTYGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bVz/CMHtEjr5Ikzf9iwZ0S+PFTyHmadslA7z4MZJW9NFZutyw15JoieR+dBtLMas7
-	 /7PYoKBINAFJcPBI9uhRHKo5LyCeoK8DhhEP7f1i8RTEgz28LWWzUV0sMLoDGHwSZp
-	 JdF4InxLSisMpSxfPD42AyrTvTmCzPnlkxjSQQbs=
+	b=xnYG8eehQfW8JUX1SaCwA/deTzKuggydvpzhFyllc26/UKxCSsNpHoCL5Cq0t3LVn
+	 ajxqZOxcGxXqR0PK/9CNP7m8PVWuPTz1Mbg549uvSMA94nFuX+/6XVyIfah6lI8qS6
+	 qlngaVG5NhiSdYzd6E+c/KqOfIoqrUERzj8ZXWjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 064/137] LoongArch: Add all CPUs enabled by fdt to NUMA node 0
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 287/402] ASoC: tas2552: Add TX path for capturing AUDIO-OUT data
 Date: Thu, 13 Jun 2024 13:34:04 +0200
-Message-ID: <20240613113225.785305265@linuxfoundation.org>
+Message-ID: <20240613113313.347836171@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-commit 3de9c42d02a79a5e09bbee7a4421ddc00cfd5c6d upstream.
+[ Upstream commit 7078ac4fd179a68d0bab448004fcd357e7a45f8d ]
 
-NUMA enabled kernel on FDT based machine fails to boot because CPUs
-are all in NUMA_NO_NODE and mm subsystem won't accept that.
+TAS2552 is a Smartamp with I/V sense data, add TX path
+to support capturing I/V data.
 
-Fix by adding them to default NUMA node at FDT parsing phase and move
-numa_add_cpu(0) to a later point.
-
-Cc: stable@vger.kernel.org
-Fixes: 88d4d957edc7 ("LoongArch: Add FDT booting support from efi system table")
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 38803ce7b53b ("ASoC: codecs: tas*: merge .digital_mute() into .mute_stream()")
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Link: https://msgid.link/r/20240518033515.866-1-shenghao-ding@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/numa.h |    1 +
- arch/loongarch/kernel/smp.c       |    5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ sound/soc/codecs/tas2552.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/include/asm/numa.h
-+++ b/arch/loongarch/include/asm/numa.h
-@@ -56,6 +56,7 @@ extern int early_cpu_to_node(int cpu);
- static inline void early_numa_add_cpu(int cpuid, s16 node)	{ }
- static inline void numa_add_cpu(unsigned int cpu)		{ }
- static inline void numa_remove_cpu(unsigned int cpu)		{ }
-+static inline void set_cpuid_to_node(int cpuid, s16 node)	{ }
+diff --git a/sound/soc/codecs/tas2552.c b/sound/soc/codecs/tas2552.c
+index 700baa6314aa8..ba36525a57898 100644
+--- a/sound/soc/codecs/tas2552.c
++++ b/sound/soc/codecs/tas2552.c
+@@ -2,7 +2,8 @@
+ /*
+  * tas2552.c - ALSA SoC Texas Instruments TAS2552 Mono Audio Amplifier
+  *
+- * Copyright (C) 2014 Texas Instruments Incorporated -  https://www.ti.com
++ * Copyright (C) 2014 - 2024 Texas Instruments Incorporated -
++ *	https://www.ti.com
+  *
+  * Author: Dan Murphy <dmurphy@ti.com>
+  */
+@@ -119,12 +120,14 @@ static const struct snd_soc_dapm_widget tas2552_dapm_widgets[] =
+ 			 &tas2552_input_mux_control),
  
- static inline int early_cpu_to_node(int cpu)
- {
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -262,7 +262,6 @@ static void __init fdt_smp_setup(void)
+ 	SND_SOC_DAPM_AIF_IN("DAC IN", "DAC Playback", 0, SND_SOC_NOPM, 0, 0),
++	SND_SOC_DAPM_AIF_OUT("ASI OUT", "DAC Capture", 0, SND_SOC_NOPM, 0, 0),
+ 	SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
+ 	SND_SOC_DAPM_OUT_DRV("ClassD", TAS2552_CFG_2, 7, 0, NULL, 0),
+ 	SND_SOC_DAPM_SUPPLY("PLL", TAS2552_CFG_2, 3, 0, NULL, 0),
+ 	SND_SOC_DAPM_POST("Post Event", tas2552_post_event),
  
- 		if (cpuid == loongson_sysconf.boot_cpu_id) {
- 			cpu = 0;
--			numa_add_cpu(cpu);
- 		} else {
- 			cpu = cpumask_next_zero(-1, cpu_present_mask);
- 		}
-@@ -272,6 +271,9 @@ static void __init fdt_smp_setup(void)
- 		set_cpu_present(cpu, true);
- 		__cpu_number_map[cpuid] = cpu;
- 		__cpu_logical_map[cpu] = cpuid;
-+
-+		early_numa_add_cpu(cpu, 0);
-+		set_cpuid_to_node(cpuid, 0);
- 	}
+-	SND_SOC_DAPM_OUTPUT("OUT")
++	SND_SOC_DAPM_OUTPUT("OUT"),
++	SND_SOC_DAPM_INPUT("DMIC")
+ };
  
- 	loongson_sysconf.nr_cpus = num_processors;
-@@ -453,6 +455,7 @@ void smp_prepare_boot_cpu(void)
- 	set_cpu_possible(0, true);
- 	set_cpu_online(0, true);
- 	set_my_cpu_offset(per_cpu_offset(0));
-+	numa_add_cpu(0);
+ static const struct snd_soc_dapm_route tas2552_audio_map[] = {
+@@ -134,6 +137,7 @@ static const struct snd_soc_dapm_route tas2552_audio_map[] = {
+ 	{"ClassD", NULL, "Input selection"},
+ 	{"OUT", NULL, "ClassD"},
+ 	{"ClassD", NULL, "PLL"},
++	{"ASI OUT", NULL, "DMIC"}
+ };
  
- 	rr_node = first_node(node_online_map);
- 	for_each_possible_cpu(cpu) {
+ #ifdef CONFIG_PM
+@@ -538,6 +542,13 @@ static struct snd_soc_dai_driver tas2552_dai[] = {
+ 			.rates = SNDRV_PCM_RATE_8000_192000,
+ 			.formats = TAS2552_FORMATS,
+ 		},
++		.capture = {
++			.stream_name = "Capture",
++			.channels_min = 2,
++			.channels_max = 2,
++			.rates = SNDRV_PCM_RATE_8000_192000,
++			.formats = TAS2552_FORMATS,
++		},
+ 		.ops = &tas2552_speaker_dai_ops,
+ 	},
+ };
+-- 
+2.43.0
+
 
 
 
