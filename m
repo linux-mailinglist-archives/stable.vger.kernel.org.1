@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C8690713B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:35:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61428906F5E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02C731F2354D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:35:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 657F91C22E88
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09824143868;
-	Thu, 13 Jun 2024 12:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C30145B24;
+	Thu, 13 Jun 2024 12:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFkqzc09"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtviVpxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0E4399;
-	Thu, 13 Jun 2024 12:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FCA142E84;
+	Thu, 13 Jun 2024 12:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282085; cv=none; b=EonIIV65Fem+RFYC1OGi2DfEwnh6ny0yihPeE9iR5CPE0W5ddB0J1mP73Ubk7S+SDacK2LxfIWqx5rOVrgX+jKo4MUAzYqwLj9FyhKxtX7enctiP0xcYbDDdHiTRAWBdopnDNu+DwYnqk6ymMCLSelksnyzgwLSsmluOWc8rwco=
+	t=1718280997; cv=none; b=VTQLwxCzHXJ22ReNQrn1uoyd1FtaGskKWees45/YzEL3ScDRHc9PAS6Sx1ks9H7BccQdg1zKDwbaOF/V1jv136bjWiBgyp0fZgw45AHp7Ula8zzi0ESkp0mZ+I8YTYpqxTCVMbP1Ri7PozhZEjWGfLZvY7M8LZ2dtP/JYQkmWcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282085; c=relaxed/simple;
-	bh=Otlwzx0mBVpB5tmwPufJ+v8K/EFbmnLtQrw+DWybmok=;
+	s=arc-20240116; t=1718280997; c=relaxed/simple;
+	bh=MBr341mkM89cq/Z6YgL1e01dh5Mlwm+PBf7HlGnyELI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MVaTnkED0FTeSaOKMS8mEUOHyBYrjV1cX7qOZ/05qx2CmWanc7I6N1aTgc4qB4FqkIY4dCF9U0kBv9kY41Pu4qxg4qnczRjqCB2NqsOvV4A/u25QQakwOaKiDMGTUjKfunDoIvfzoITi0aaXfcSBJUfgyJEvTkfBfV13rrQFlkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFkqzc09; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44121C2BBFC;
-	Thu, 13 Jun 2024 12:34:45 +0000 (UTC)
+	 MIME-Version; b=NW1zS2KK4adGHw6ptcESK4YDUlXszQcR2RKJH1LKKaJ+NwQnrA5AoAuXA/tFS0vpRAHVQi/BYdl+PEQ2Cd2fpBKR0HACx570F+A/piv9f7Zw1w7NeDUt4b8sh4AD/CSGb6DjZpwNpVsmL61RovryQWuQ9l56u2/Dit/HPkz7hgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtviVpxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D84C2BBFC;
+	Thu, 13 Jun 2024 12:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282085;
-	bh=Otlwzx0mBVpB5tmwPufJ+v8K/EFbmnLtQrw+DWybmok=;
+	s=korg; t=1718280997;
+	bh=MBr341mkM89cq/Z6YgL1e01dh5Mlwm+PBf7HlGnyELI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cFkqzc09X6eqgVpP6ddKlK4Gg+GZ/3GwukvjAb1vJziYla18adJg//eJLbIZirbvq
-	 m8IlfeOkDhkp0/wA57NX6a07r+9EKCisMginswc0xK++7pqhogaVuCyztQzzbHOEsi
-	 m4ye5D6SEpf6+piW2EXVqf+ezaD3XebbuEzjxO8Q=
+	b=TtviVpxdyphZkqueRWfD8wwKEkEfkbAL48aJnV8FLD+JMFwRU1egvgwuarELnpdxM
+	 XvUomF+N4OsSVlVMmCi5G7UiI1KMIfwyPaMowJdIUmu7rFRzS9P+o8rDhXlJdJouz3
+	 dke9BgbctmbxOB+n3RZQhQGwBlnNviVDFInGAGFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fei Li <fei1.li@intel.com>,
-	Len Baker <len.baker@gmx.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 158/402] virt: acrn: Prefer array_size and struct_size over open coded arithmetic
-Date: Thu, 13 Jun 2024 13:31:55 +0200
-Message-ID: <20240613113308.299429561@linuxfoundation.org>
+Subject: [PATCH 5.10 098/317] fbdev: sisfb: hide unused variables
+Date: Thu, 13 Jun 2024 13:31:56 +0200
+Message-ID: <20240613113251.341328385@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Baker <len.baker@gmx.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 746f1b0ac5bf6ecfb71674af210ae476aa714f46 ]
+[ Upstream commit 688cf598665851b9e8cb5083ff1d208ce43d10ff ]
 
-As noted in the "Deprecated Interfaces, Language Features, Attributes,
-and Conventions" documentation [1], size calculations (especially
-multiplication) should not be performed in memory allocator (or similar)
-function arguments due to the risk of them overflowing. This could lead
-to values wrapping around and a smaller allocation being made than the
-caller was expecting. Using those allocations could lead to linear
-overflows of heap memory and other misbehaviors.
+Building with W=1 shows that a couple of variables in this driver are only
+used in certain configurations:
 
-So, use the array_size() helper to do the arithmetic instead of the
-argument "count * size" in the vzalloc() function.
+drivers/video/fbdev/sis/init301.c:239:28: error: 'SiS_Part2CLVX_6' defined but not used [-Werror=unused-const-variable=]
+  239 | static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:230:28: error: 'SiS_Part2CLVX_5' defined but not used [-Werror=unused-const-variable=]
+  230 | static const unsigned char SiS_Part2CLVX_5[] = {   /* 750p */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:211:28: error: 'SiS_Part2CLVX_4' defined but not used [-Werror=unused-const-variable=]
+  211 | static const unsigned char SiS_Part2CLVX_4[] = {   /* PAL */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:192:28: error: 'SiS_Part2CLVX_3' defined but not used [-Werror=unused-const-variable=]
+  192 | static const unsigned char SiS_Part2CLVX_3[] = {  /* NTSC, 525i, 525p */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:184:28: error: 'SiS_Part2CLVX_2' defined but not used [-Werror=unused-const-variable=]
+  184 | static const unsigned char SiS_Part2CLVX_2[] = {
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:176:28: error: 'SiS_Part2CLVX_1' defined but not used [-Werror=unused-const-variable=]
+  176 | static const unsigned char SiS_Part2CLVX_1[] = {
+      |                            ^~~~~~~~~~~~~~~
 
-Also, take the opportunity to add a flexible array member of struct
-vm_memory_region_op to the vm_memory_region_batch structure. And then,
-change the code accordingly and use the struct_size() helper to do the
-arithmetic instead of the argument "size + size * count" in the kzalloc
-function.
+This started showing up after the definitions were moved into the
+source file from the header, which was not flagged by the compiler.
+Move the definition into the appropriate #ifdef block that already
+exists next to them.
 
-This code was detected with the help of Coccinelle and audited and fixed
-manually.
-
-[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments
-
-Acked-by: Fei Li <fei1.li@intel.com>
-Signed-off-by: Len Baker <len.baker@gmx.com>
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Stable-dep-of: 3d6586008f7b ("drivers/virt/acrn: fix PFNMAP PTE checks in acrn_vm_ram_map()")
+Fixes: 5908986ef348 ("video: fbdev: sis: avoid mismatched prototypes")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virt/acrn/acrn_drv.h | 10 ++++++----
- drivers/virt/acrn/mm.c       |  9 ++++-----
- 2 files changed, 10 insertions(+), 9 deletions(-)
+ drivers/video/fbdev/sis/init301.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/virt/acrn/acrn_drv.h b/drivers/virt/acrn/acrn_drv.h
-index 1be54efa666cb..5663c17ad37c7 100644
---- a/drivers/virt/acrn/acrn_drv.h
-+++ b/drivers/virt/acrn/acrn_drv.h
-@@ -48,6 +48,7 @@ struct vm_memory_region_op {
-  * @reserved:		Reserved.
-  * @regions_num:	The number of vm_memory_region_op.
-  * @regions_gpa:	Physical address of a vm_memory_region_op array.
-+ * @regions_op:		Flexible array of vm_memory_region_op.
-  *
-  * HC_VM_SET_MEMORY_REGIONS uses this structure to manage EPT mappings of
-  * multiple memory regions of a User VM. A &struct vm_memory_region_batch
-@@ -55,10 +56,11 @@ struct vm_memory_region_op {
-  * ACRN Hypervisor.
-  */
- struct vm_memory_region_batch {
--	u16	vmid;
--	u16	reserved[3];
--	u32	regions_num;
--	u64	regions_gpa;
-+	u16			   vmid;
-+	u16			   reserved[3];
-+	u32			   regions_num;
-+	u64			   regions_gpa;
-+	struct vm_memory_region_op regions_op[];
+diff --git a/drivers/video/fbdev/sis/init301.c b/drivers/video/fbdev/sis/init301.c
+index a8fb41f1a2580..09329072004f4 100644
+--- a/drivers/video/fbdev/sis/init301.c
++++ b/drivers/video/fbdev/sis/init301.c
+@@ -172,7 +172,7 @@ static const unsigned char SiS_HiTVGroup3_2[] = {
  };
  
- /**
-diff --git a/drivers/virt/acrn/mm.c b/drivers/virt/acrn/mm.c
-index 3b1b1e7a844b4..b4ad8d452e9a1 100644
---- a/drivers/virt/acrn/mm.c
-+++ b/drivers/virt/acrn/mm.c
-@@ -192,7 +192,7 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
+ /* 301C / 302ELV extended Part2 TV registers (4 tap scaler) */
+-
++#ifdef CONFIG_FB_SIS_315
+ static const unsigned char SiS_Part2CLVX_1[] = {
+     0x00,0x00,
+     0x00,0x20,0x00,0x00,0x7F,0x20,0x02,0x7F,0x7D,0x20,0x04,0x7F,0x7D,0x1F,0x06,0x7E,
+@@ -245,7 +245,6 @@ static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
+     0xFF,0xFF,
+ };
  
- 	/* Get the page number of the map region */
- 	nr_pages = memmap->len >> PAGE_SHIFT;
--	pages = vzalloc(nr_pages * sizeof(struct page *));
-+	pages = vzalloc(array_size(nr_pages, sizeof(*pages)));
- 	if (!pages)
- 		return -ENOMEM;
- 
-@@ -244,16 +244,15 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
- 	}
- 
- 	/* Prepare the vm_memory_region_batch */
--	regions_info = kzalloc(sizeof(*regions_info) +
--			       sizeof(*vm_region) * nr_regions,
--			       GFP_KERNEL);
-+	regions_info = kzalloc(struct_size(regions_info, regions_op,
-+					   nr_regions), GFP_KERNEL);
- 	if (!regions_info) {
- 		ret = -ENOMEM;
- 		goto unmap_kernel_map;
- 	}
- 
- 	/* Fill each vm_memory_region_op */
--	vm_region = (struct vm_memory_region_op *)(regions_info + 1);
-+	vm_region = regions_info->regions_op;
- 	regions_info->vmid = vm->vmid;
- 	regions_info->regions_num = nr_regions;
- 	regions_info->regions_gpa = virt_to_phys(vm_region);
+-#ifdef CONFIG_FB_SIS_315
+ /* 661 et al LCD data structure (2.03.00) */
+ static const unsigned char SiS_LCDStruct661[] = {
+     /* 1024x768 */
 -- 
 2.43.0
 
