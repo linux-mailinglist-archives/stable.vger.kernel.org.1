@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-51283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B3D906F7D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:20:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 953BC90710B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6FA8B29248
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FEB22841D8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30AE8144306;
-	Thu, 13 Jun 2024 12:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B777EC4;
+	Thu, 13 Jun 2024 12:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="haYUXkfL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKCknBUL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40C456458;
-	Thu, 13 Jun 2024 12:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EBE384;
+	Thu, 13 Jun 2024 12:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280845; cv=none; b=reXYGEXbn0f+7NTwnBy6n7oukuPmR9g0Ihj3cg/FBJN4MPyl8mYbbMXNi41uEWSzt58rrIkXpLjXatOSD45cBI+XBgzaeLc7YS0Nz/Jw+Z4lW3T0J6SRCHb4XYlwlBAXc6E1+Lq1SghW0wWCzT2yXtvT8L94kwoD8dIUmtvCZZA=
+	t=1718281983; cv=none; b=PbF9PLesBeriBGgV12C+ytmlKM4h9lcmcbiJ67iFh+9MXGPO58SV5JsCvjkvSZ1C9+qjTpaD7FjRINiIfXPhyAiYbhbcxu5g6CzpT9GUjuLfv9b0TxCgz6dsSo4eTzEq1sgavHwgNiT6R0OhX5B4e4yl02xXUt+vSCxO79BiTPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280845; c=relaxed/simple;
-	bh=SCKYIlv+hFEcYhs7yG1SaZIubeN7mj9O1iqcBhzR7U4=;
+	s=arc-20240116; t=1718281983; c=relaxed/simple;
+	bh=WKuTV4Y0lmpZEaVx+WbsP2M77t/pxJARSXqOij8JDJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g7+MPvSCCZepJsNRhIjA2ky0UzfkQzBBhYtybIhuFyiwL7QvqDjUwM50VvO+7Y4vkPSFB6gMDuvNwxBIwJFvnMMe9D9xFEwOC2O082hKs3mJE1yg2YBZM2m7nxO6ivJj4HTMw8bmxJ0ro0Hid6U8S42TBLxhfFBEqJGeEVjAKFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=haYUXkfL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697A8C2BBFC;
-	Thu, 13 Jun 2024 12:14:04 +0000 (UTC)
+	 MIME-Version; b=EFNBqQIBjoNatUcfCamkkdtnUmSFUjTBOiSuPNLo/cRC1fPV2dG90DMCWDAlrOHLiYw/UBmCu6U6ho/uh591WT67amE8gNhSF8QsQ1Ax8ATEaXIQ5X0IG9XcUcez2f1TrYIU2usIN2NAFslG0aGp0xH/L2xCUId6e44OhX7Tykw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKCknBUL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF6BC2BBFC;
+	Thu, 13 Jun 2024 12:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280844;
-	bh=SCKYIlv+hFEcYhs7yG1SaZIubeN7mj9O1iqcBhzR7U4=;
+	s=korg; t=1718281982;
+	bh=WKuTV4Y0lmpZEaVx+WbsP2M77t/pxJARSXqOij8JDJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=haYUXkfLk0SJQtVe0tVDDzKz3M+EQd7HE7LsAIFYZ5ywT78EeTnSEjwDivaBz0mQF
-	 hOZAR9QSb7PWF5X3ZTQJsZ5MS8ZE0arm+wXArWNDF7TSNkyaNMkTzCif9ZeQ+NZT0d
-	 pH4I/VF6/vPnGYod0HPdwH0AhrS5urec7AgDm4UE=
+	b=TKCknBULWJdEEdkKgoJUVL/NX97z5Nw5tjd9dR+futAMMQ4t4Nu+ENCxrXmTozDG+
+	 K8vBrw24PPH7MnsIY4PlRnbvqZ5IPxNdNYpuN/zFdBZVazDcsayy7BzEN3Xz2umewi
+	 NeIaN6eu4JKoR5tkVbdAmTeGFag/XEaWNEWq8lM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 053/317] cpufreq: Split cpufreq_offline()
-Date: Thu, 13 Jun 2024 13:31:11 +0200
-Message-ID: <20240613113249.599138201@linuxfoundation.org>
+Subject: [PATCH 5.15 115/402] ipv6: sr: add missing seg6_local_exit
+Date: Thu, 13 Jun 2024 13:31:12 +0200
+Message-ID: <20240613113306.618351884@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit fddd8f86dff4a24742a7f0322ccbb34c6c1c9850 ]
+[ Upstream commit 3321687e321307629c71b664225b861ebf3e5753 ]
 
-Split the "core" part running under the policy rwsem out of
-cpufreq_offline() to allow the locking in cpufreq_remove_dev() to be
-rearranged more easily.
+Currently, we only call seg6_local_exit() in seg6_init() if
+seg6_local_init() failed. But forgot to call it in seg6_exit().
 
-As a side-effect this eliminates the unlock label that's not needed
-any more.
-
-No expected functional impact.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Stable-dep-of: b8f85833c057 ("cpufreq: exit() callback is optional")
+Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240509131812.1662197-2-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 33 +++++++++++++++++++--------------
- 1 file changed, 19 insertions(+), 14 deletions(-)
+ net/ipv6/seg6.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 97999bda188dd..dd1acb55fe717 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -1559,21 +1559,10 @@ static int cpufreq_add_dev(struct device *dev, struct subsys_interface *sif)
- 	return 0;
- }
- 
--static int cpufreq_offline(unsigned int cpu)
-+static void __cpufreq_offline(unsigned int cpu, struct cpufreq_policy *policy)
- {
--	struct cpufreq_policy *policy;
- 	int ret;
- 
--	pr_debug("%s: unregistering CPU %u\n", __func__, cpu);
--
--	policy = cpufreq_cpu_get_raw(cpu);
--	if (!policy) {
--		pr_debug("%s: No cpu_data found\n", __func__);
--		return 0;
--	}
--
--	down_write(&policy->rwsem);
--
- 	if (has_target())
- 		cpufreq_stop_governor(policy);
- 
-@@ -1591,7 +1580,7 @@ static int cpufreq_offline(unsigned int cpu)
- 				pr_err("%s: Failed to start governor\n", __func__);
- 		}
- 
--		goto unlock;
-+		return;
- 	}
- 
- 	if (has_target())
-@@ -1621,8 +1610,24 @@ static int cpufreq_offline(unsigned int cpu)
- 		cpufreq_driver->exit(policy);
- 		policy->freq_table = NULL;
- 	}
-+}
-+
-+static int cpufreq_offline(unsigned int cpu)
-+{
-+	struct cpufreq_policy *policy;
-+
-+	pr_debug("%s: unregistering CPU %u\n", __func__, cpu);
-+
-+	policy = cpufreq_cpu_get_raw(cpu);
-+	if (!policy) {
-+		pr_debug("%s: No cpu_data found\n", __func__);
-+		return 0;
-+	}
-+
-+	down_write(&policy->rwsem);
-+
-+	__cpufreq_offline(cpu, policy);
- 
--unlock:
- 	up_write(&policy->rwsem);
- 	return 0;
- }
+diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+index dc434e4ee6d66..d626e0767a069 100644
+--- a/net/ipv6/seg6.c
++++ b/net/ipv6/seg6.c
+@@ -559,6 +559,7 @@ void seg6_exit(void)
+ 	seg6_hmac_exit();
+ #endif
+ #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
++	seg6_local_exit();
+ 	seg6_iptunnel_exit();
+ #endif
+ 	unregister_pernet_subsys(&ip6_segments_ops);
 -- 
 2.43.0
 
