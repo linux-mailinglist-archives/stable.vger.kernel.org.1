@@ -1,73 +1,52 @@
-Return-Path: <stable+bounces-50414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C39090657E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:45:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 423A7906593
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 09:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 218601F236B2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:45:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B771C1F22DB8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 07:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1BC13C3CD;
-	Thu, 13 Jun 2024 07:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126F213C8EE;
+	Thu, 13 Jun 2024 07:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xY/vec3c"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="adOEAd6b"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D357137931
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 07:45:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B5413C827;
+	Thu, 13 Jun 2024 07:48:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718264713; cv=none; b=BlN9dGc7KrkvZhibSml0c55Lju5AUthXU6YjBXuzfxpYLGu8fZ4m+CAGaZHnZxA3GRZnjmh/XjjbPRAEjkAcTiqbT1GpkjgfvVpH22UO0TXakbcld42iaZXA2syPQDgX1HWWhNJUpnY8IAUJjumoODWxFwN26jTF7eHvPmC+//g=
+	t=1718264928; cv=none; b=qUbIojJgibrRo6Hl89I7tFQDIsYvR0gUsc5XI4rL/jklAdVVhbm8zArNyw10SI/q7ip3MJUbrQm6+73TiPe//G8LWhiJfJ79Zixv1Kcm7EbxKuQtwdlSzokHwR9QaO/GOoMcv/T0Vsf+QJ9Cd/YzRLFdXLmB4OHNITMfFvO2vRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718264713; c=relaxed/simple;
-	bh=kruOkB0C5mtg+qRidPLwNLCl0wybSGrd8TELQRoYoxY=;
+	s=arc-20240116; t=1718264928; c=relaxed/simple;
+	bh=/5EG8VMd7LliSml0B5DgPKmGWzFXy5kJxof/+4sXrGc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bsuZcJv9yxUupIHyNaVQiBoELJMhVkRVSnUR6VeTgoFvAJOF0v3vCb1g7YnlZ+T3BCi2EncTFtkPIV31dudThVMTMhO+EhrgOjdgY55LluECcSDwiNymxSYD7ngSEeY8EfbCN98uFMnWBjYLkiZkREYQYZQBlfRDoFNrODiunBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xY/vec3c; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-52c815e8e9eso829961e87.0
-        for <stable@vger.kernel.org>; Thu, 13 Jun 2024 00:45:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718264710; x=1718869510; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cdVtOlMNp03m2x6MWFcqw0pftt+PVX8U/mJ39Asz150=;
-        b=xY/vec3cEa0SpuS4oP8h7nXg8znqm75jiR/SUmwA5+N3td2jTcvyOG7OLgXT6skQgy
-         q1Zj/o/g40amMdqdhaXcSInA45omv2LDf1MCRgBaeeLJFzrIJP6dcRxE07BwWMaNFa97
-         POzIgjJrDFccp6SSfVBSGqeb9PvM61JCl4ikJn3iKEPg51ttiehDtcmtScdhYYit4KZ2
-         AY3rS39oE4x0ctQYKXgXqMWrTnmfpRxqFjweZL9hhPICJcT+DYWwG7Z/7Y5TlFad3bhe
-         kY14cz12O68kN4jXB84wwC2Dicdxv7o7Mi4fdFRVyGqiITGUqdnXU24V55YvvOJ3vwIy
-         O6pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718264710; x=1718869510;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cdVtOlMNp03m2x6MWFcqw0pftt+PVX8U/mJ39Asz150=;
-        b=qsYd6IGgex2MtBksq9r7Z9MjKmGdY4zMs+NqMR1aHkkkQs2NxFdypnfE/bIkJykbd0
-         PLZmH4/i5RiCdSXV5qB2T0r2zpWvUUiyu4hQO2+oEe55MSmRgVhGkoM3thGU+wZDYDXP
-         ibSnadLUZBhcb3eN26L1q0lE2N+q6X7SXjsiHasPG+VPlGI+gbDd91wSkC0Nl10yr41T
-         M212W/hEFbE7Jzr315BFbYpG2r1OwP2G5THaXbHozEpodk1HncGQ3AmOj5cDY9kTRNtn
-         0I4xwPPeCMIoxefFLIwb/cMje7hV8LUIAHNjj5j68Y9FJGMVbOxLIjxz2Sf21PDeXDe4
-         2nkw==
-X-Gm-Message-State: AOJu0Yw9NENneEEdrm0fb+pOuchqkTzVrLLyx1QxmHfMe7+PQ/AM1l1D
-	CV/3a0tIoFGQxpHXZNW35HAeq8HvomR7kbcOAmmi8NGUaLTzUBAliLviHl1pRyk=
-X-Google-Smtp-Source: AGHT+IEPJte/WZ9LVogMrND6fyInO1gJkzDc8M6RNxoglEUrvh5jJ2evyEf+/qAVoLW+M/bkgEzy0Q==
-X-Received: by 2002:a05:6512:2391:b0:52c:820e:a7e7 with SMTP id 2adb3069b0e04-52c9a3fe5f1mr3123521e87.50.1718264709652;
-        Thu, 13 Jun 2024 00:45:09 -0700 (PDT)
-Received: from ?IPV6:2a00:f41:900a:a4b1:c71b:4253:8a9f:c478? ([2a00:f41:900a:a4b1:c71b:4253:8a9f:c478])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca282f79dsm116007e87.118.2024.06.13.00.45.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Jun 2024 00:45:09 -0700 (PDT)
-Message-ID: <90f5ad41-7192-4c01-90c0-ad9c54094917@linaro.org>
-Date: Thu, 13 Jun 2024 09:45:06 +0200
+	 In-Reply-To:Content-Type; b=JP2+I/V4ItF4TH5cOLhpxBfMrQS/ZPCWQp7jVYQoF21J/vvvPayAHSJu86STzzGywieWRT34YpB7OJXQgl7BS3z9HzqdxJ7/QZXrkqZo9bQdhBc5fuw8i39eQExIW4195Wzj9xIPW5+BSAeuR82wer0kGYbdAr9eJV+LXQJX14U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=adOEAd6b; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=Zjr+VSpN2YOV8SzNhgW0HxlJxurFf1+bVKCUe+pa/6g=;
+	t=1718264926; x=1718696926; b=adOEAd6bDO6WKtWHJJi5tI9lzcYLhC471j1AST0wa6gVTKx
+	OKHtZYCuNQ7vPSTgj5XU8PDSe/fI69n9lfVP1tcf4T93yoPzMEsgaG9mLMrxdJRn3SagALtFgrlCB
+	d6qAaOO/Mfi+2b07aWUciVxo15Ok5q5kxp3+o5EY6R+FrFUVMjwu7NdCsXH2jVX/HTb9nc5NyMaNp
+	m8ECo0Nbk7MqRLSB8xjCAF+a0TM8u94QzLIdNUPGaOzosQsou5Z4TZTinQRFigXcnWK+A6/DHpVjX
+	HGertUroJY3FxP5J3S2oL8fpZR+pIMT1TcvE1D0F3+eta0XShJ+JXGWeWIgkkKsw==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sHfCL-0007aF-Hm; Thu, 13 Jun 2024 09:48:41 +0200
+Message-ID: <d1a2072c-e558-418c-a3b0-280d9be0e8f3@leemhuis.info>
+Date: Thu, 13 Jun 2024 09:48:40 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,38 +54,170 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: x1e80100-crd: fix DAI used for
- headset recording
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20240611142555.994675-1-krzysztof.kozlowski@linaro.org>
- <20240611142555.994675-2-krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20240611142555.994675-2-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: Bug in Kernel 6.8.x, 6.9.x Causing Trace/Panic During
+ Shutdown/Reboot
+To: =?UTF-8?Q?Ilkka_Naulap=C3=A4=C3=A4?= <digirigawa@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+References: <CAE4VaREzY+a2PvQJYJbfh8DwB4OP7kucZG-e28H22xyWob1w_A@mail.gmail.com>
+ <5b79732b-087c-411f-a477-9b837566673e@leemhuis.info>
+ <20240527183139.42b6123c@rorschach.local.home>
+ <CAE4VaRHaijpV1CC9Jo_Lg4tNQb_+=LTHwygOp5Bm2z5ErVzeow@mail.gmail.com>
+ <20240528144743.149e351b@rorschach.local.home>
+ <CAE4VaRE3_MYVt+=BGs+WVCmKUiQv0VSKE2NT+JmUPKG0UF+Juw@mail.gmail.com>
+ <20240529144757.79d09eeb@rorschach.local.home>
+ <20240529154824.2db8133a@rorschach.local.home>
+ <CAE4VaRGRwsp+KuEWtsUCxjEtgv1FO+_Ey1-A9xr-o+chaUeteg@mail.gmail.com>
+ <20240530095953.0020dff9@rorschach.local.home>
+ <CAE4VaRGYoa_CAtttifVzmkdm4vW05WtoCwOrcH7=rSUVeD6n5g@mail.gmail.com>
+ <ceb24cb7-dbb0-48b0-9de2-9557f3e310b5@leemhuis.info>
+ <20240612115612.2e5f4b34@rorschach.local.home>
+ <CAE4VaRFwdxNuUWb=S+itDLZf1rOZx9px+xoLWCi+hdUaWJwj6Q@mail.gmail.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <CAE4VaRFwdxNuUWb=S+itDLZf1rOZx9px+xoLWCi+hdUaWJwj6Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1718264926;2021880b;
+X-HE-SMSGID: 1sHfCL-0007aF-Hm
 
+On 13.06.24 09:32, Ilkka Naulapää wrote:
+> On Wed, Jun 12, 2024 at 6:56 PM Steven Rostedt <rostedt@goodmis.org> wrote:
+>> On Wed, 12 Jun 2024 15:36:22 +0200
+>> "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info> wrote:
+>>>
+>>> Ilkka or Steven, what happened to this? This thread looks stalled. I
+>>> also was unsuccessful when looking for other threads related to this
+>>> report or the culprit. Did it fall through the cracks or am I missing
+>>> something here?
+>
+>> Honesty, I have no idea where the bug is. I can't reproduce it. [...]
 
+Steven, thx for the update! And yeah, that's how it sometimes is. Given
+that we haven't seen similar reports (at least afaics) it's nothing I
+worry much about.
 
-On 6/11/24 16:25, Krzysztof Kozlowski wrote:
-> The SWR2 Soundwire instance has 1 output and 4 input ports, so for the
-> headset recording (via the WCD9385 codec and the TX macro codec) we want
-> to use the next DAI, not the first one (see qcom,dout-ports and
-> qcom,din-ports for soundwire@6d30000 node).
+> ok, so if you don't have any idea where this bug is after those debug
+> patches, I'll try to find some time to bisect it as a last resort.
+> Stay tuned.
+
+Yeah, that would be great help. Thank you, too!
+
+Ciao, Thorsten
+
+>>> On 02.06.24 09:32, Ilkka Naulapää wrote:
+>>>> sorry longer delay, been a bit busy but here is the result from that
+>>>> new patch. Only applied this patch so if the previous one is needed
+>>>> also, let me know and I'll rerun it.
+>>>>
+>>>> --Ilkka
+>>>>
+>>>> On Thu, May 30, 2024 at 5:00 PM Steven Rostedt <rostedt@goodmis.org> wrote:
+>>>>>
+>>>>> On Thu, 30 May 2024 16:02:37 +0300
+>>>>> Ilkka Naulapää <digirigawa@gmail.com> wrote:
+>>>>>
+>>>>>> applied your patch and here's the output.
+>>>>>>
+>>>>>
+>>>>> Unfortunately, it doesn't give me any new information. I added one more
+>>>>> BUG on, want to try this? Otherwise, I'm pretty much at a lost. :-/
+>>>>>
+>>>>> -- Steve
+>>>>>
+>>>>> diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+>>>>> index de5b72216b1a..a090495e78c9 100644
+>>>>> --- a/fs/tracefs/inode.c
+>>>>> +++ b/fs/tracefs/inode.c
+>>>>> @@ -39,13 +39,17 @@ static struct inode *tracefs_alloc_inode(struct super_block *sb)
+>>>>>                 return NULL;
+>>>>>
+>>>>>         ti->flags = 0;
+>>>>> +       ti->magic = 20240823;
+>>>>>
+>>>>>         return &ti->vfs_inode;
+>>>>>  }
+>>>>>
+>>>>>  static void tracefs_free_inode(struct inode *inode)
+>>>>>  {
+>>>>> -       kmem_cache_free(tracefs_inode_cachep, get_tracefs(inode));
+>>>>> +       struct tracefs_inode *ti = get_tracefs(inode);
+>>>>> +
+>>>>> +       BUG_ON(ti->magic != 20240823);
+>>>>> +       kmem_cache_free(tracefs_inode_cachep, ti);
+>>>>>  }
+>>>>>
+>>>>>  static ssize_t default_read_file(struct file *file, char __user *buf,
+>>>>> @@ -147,16 +151,6 @@ static const struct inode_operations tracefs_dir_inode_operations = {
+>>>>>         .rmdir          = tracefs_syscall_rmdir,
+>>>>>  };
+>>>>>
+>>>>> -struct inode *tracefs_get_inode(struct super_block *sb)
+>>>>> -{
+>>>>> -       struct inode *inode = new_inode(sb);
+>>>>> -       if (inode) {
+>>>>> -               inode->i_ino = get_next_ino();
+>>>>> -               inode->i_atime = inode->i_mtime = inode_set_ctime_current(inode);
+>>>>> -       }
+>>>>> -       return inode;
+>>>>> -}
+>>>>> -
+>>>>>  struct tracefs_mount_opts {
+>>>>>         kuid_t uid;
+>>>>>         kgid_t gid;
+>>>>> @@ -384,6 +378,7 @@ static void tracefs_dentry_iput(struct dentry *dentry, struct inode *inode)
+>>>>>                 return;
+>>>>>
+>>>>>         ti = get_tracefs(inode);
+>>>>> +       BUG_ON(ti->magic != 20240823);
+>>>>>         if (ti && ti->flags & TRACEFS_EVENT_INODE)
+>>>>>                 eventfs_set_ef_status_free(dentry);
+>>>>>         iput(inode);
+>>>>> @@ -568,6 +563,18 @@ struct dentry *eventfs_end_creating(struct dentry *dentry)
+>>>>>         return dentry;
+>>>>>  }
+>>>>>
+>>>>> +struct inode *tracefs_get_inode(struct super_block *sb)
+>>>>> +{
+>>>>> +       struct inode *inode = new_inode(sb);
+>>>>> +
+>>>>> +       BUG_ON(sb->s_op != &tracefs_super_operations);
+>>>>> +       if (inode) {
+>>>>> +               inode->i_ino = get_next_ino();
+>>>>> +               inode->i_atime = inode->i_mtime = inode_set_ctime_current(inode);
+>>>>> +       }
+>>>>> +       return inode;
+>>>>> +}
+>>>>> +
+>>>>>  /**
+>>>>>   * tracefs_create_file - create a file in the tracefs filesystem
+>>>>>   * @name: a pointer to a string containing the name of the file to create.
+>>>>> diff --git a/fs/tracefs/internal.h b/fs/tracefs/internal.h
+>>>>> index 69c2b1d87c46..9059b8b11bb6 100644
+>>>>> --- a/fs/tracefs/internal.h
+>>>>> +++ b/fs/tracefs/internal.h
+>>>>> @@ -9,12 +9,15 @@ enum {
+>>>>>  struct tracefs_inode {
+>>>>>         unsigned long           flags;
+>>>>>         void                    *private;
+>>>>> +       unsigned long           magic;
+>>>>>         struct inode            vfs_inode;
+>>>>>  };
+>>>>>
+>>>>>  static inline struct tracefs_inode *get_tracefs(const struct inode *inode)
+>>>>>  {
+>>>>> -       return container_of(inode, struct tracefs_inode, vfs_inode);
+>>>>> +       struct tracefs_inode *ti = container_of(inode, struct tracefs_inode, vfs_inode);
+>>>>> +       BUG_ON(ti->magic != 20240823);
+>>>>> +       return ti;
+>>>>>  }
+>>>>>
+>>>>>  struct dentry *tracefs_start_creating(const char *name, struct dentry *parent);
+>>
 > 
-> Original code was copied from other devices like SM8450 and SM8550.  On
-> the SM8450 this was a correct setting, however on the SM8550 this worked
-> probably only by coincidence, because the DTS defined no output ports on
-> SWR2 Soundwire.
-
-Planning to send a fix for that?
-
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-
-Konrad
+> 
 
