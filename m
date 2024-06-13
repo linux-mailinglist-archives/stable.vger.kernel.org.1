@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82BD0906EF4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 285EE9070C2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 980011C217D6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A13A028404B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8E91411CD;
-	Thu, 13 Jun 2024 12:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30552184D;
+	Thu, 13 Jun 2024 12:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekLyCtTK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHWRL/K+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6836744C6F;
-	Thu, 13 Jun 2024 12:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DAB818;
+	Thu, 13 Jun 2024 12:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280715; cv=none; b=pNS+5NfoWqwD06TxvC910iVILJAxecmLj0Ksrhn4r1VDKq/zleWtqPPmHkxq0pc6R7n/2gPcgaNHFr1jbVXe4uDjo8Qx1z9oePmcaeymAq3EMuWboXiqytiFuEwcMeD84QN9UswUhNwtpVc19Uf2vAHy20ZTscBWYfud3dB/Rgc=
+	t=1718281838; cv=none; b=sFtz+03NYLJFaxT48QfpQHYsV4eCocWZHDhq3KsQ6r3oX8kew2lMjz3pgCMknHEfzznOjIp4X1bH/ZI4DkwppqrWEGBP0n+O2grUJ9GaboqeXrfAbAF0QPqFuRUjGrmyItNIqlCyBpMyDBLz6ynts6GIdPQEhTMHn/txilFCa0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280715; c=relaxed/simple;
-	bh=Uo8fpEHLOkH88cRa5wYs+QAGuoKEAkyf8NheDv8YKQw=;
+	s=arc-20240116; t=1718281838; c=relaxed/simple;
+	bh=tfLHirhVeUH5A+84DdiS5f1Q5baYg506nILXM2hrlhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgT7Gn4cMvjubRcMPWZ3gT1TP5fF8sVhsIWNw+UQIGMqxyOMTaIPUOFrO9TGhgvlPMaoTKNbBhrWtc3UwdQ0HyHX51o/tQAYPc6ovYwE70m9xKz+V9PZ6/TJm4FegPgEOOnEOqPiMuO86lXWMBQPf83Tyuvi/bCpnZ5f+wLi0+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekLyCtTK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8A3C2BBFC;
-	Thu, 13 Jun 2024 12:11:54 +0000 (UTC)
+	 MIME-Version; b=uNx6mjvRWyKA8sSSlccyGQCFL+DSHShsvabZv44WPcR2KCvZqsz1spZBAxjvfjd/4ZcYnET9rVtMdIVmsIFWdJut+hV24vbfpN8UumoQvR1NJeDiR1XBcz+sfgEKcbiON5ttnpuQZOdqllBA85tz43NGkYwxyvI2CIw7YaJTioc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHWRL/K+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1256BC2BBFC;
+	Thu, 13 Jun 2024 12:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280714;
-	bh=Uo8fpEHLOkH88cRa5wYs+QAGuoKEAkyf8NheDv8YKQw=;
+	s=korg; t=1718281836;
+	bh=tfLHirhVeUH5A+84DdiS5f1Q5baYg506nILXM2hrlhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ekLyCtTKK9A5D1GSTwwX5NeGtR6P5p4GL3LON0LGhQZ0gGDi7chPeWgpMlgzUyYWH
-	 +oQGh/LL4+6kc7x7UwhS1crn2Mj8H9M1DCqG1PKwwXoS65dh0nT1shwXmDVwIywRT4
-	 wbsie7dYi7lzfP7Kl2f+nzGVZMtHyc9g3cqtIj+8=
+	b=ZHWRL/K+7lrrUwacxOzVQlBCjVpY/YPWdE03Q9r3zetqUJlIk6uOpDBD9hoktvcmv
+	 kENRBtsiRpZwts2x9ks1Pr3f1Q5KmtA8Ejsj55SvTKnYP2UgPwvB9kk8uBlVrwC61I
+	 KO7lu8x1plQqCkLM7zsKTwTCeuDwXAuKJCOQP+sM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 010/317] wifi: cfg80211: fix the order of arguments for trace events of the tx_rx_evt class
-Date: Thu, 13 Jun 2024 13:30:28 +0200
-Message-ID: <20240613113247.937201270@linuxfoundation.org>
+Subject: [PATCH 5.15 072/402] cpufreq: Reorganize checks in cpufreq_offline()
+Date: Thu, 13 Jun 2024 13:30:29 +0200
+Message-ID: <20240613113304.945348441@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 9ef369973cd2c97cce3388d2c0c7e3c056656e8a ]
+[ Upstream commit e1e962c5b9edbc628a335bcdbd010331a12d3e5b ]
 
-The declarations of the tx_rx_evt class and the rdev_set_antenna event
-use the wrong order of arguments in the TP_ARGS macro.
+Notice that cpufreq_offline() only needs to check policy_is_inactive()
+once and rearrange the code in there to make that happen.
 
-Fix the order of arguments in the TP_ARGS macro.
+No expected functional impact.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
-Link: https://msgid.link/20240405152431.270267-1-Igor.A.Artemiev@mcst.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Stable-dep-of: b8f85833c057 ("cpufreq: exit() callback is optional")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/trace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/cpufreq/cpufreq.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index edc824c103e83..06e81d1efc921 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -1660,7 +1660,7 @@ TRACE_EVENT(rdev_return_void_tx_rx,
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index c2227be7bad88..b65dc6af19f08 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -1586,24 +1586,18 @@ static int cpufreq_offline(unsigned int cpu)
+ 	}
  
- DECLARE_EVENT_CLASS(tx_rx_evt,
- 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
--	TP_ARGS(wiphy, rx, tx),
-+	TP_ARGS(wiphy, tx, rx),
- 	TP_STRUCT__entry(
- 		WIPHY_ENTRY
- 		__field(u32, tx)
-@@ -1677,7 +1677,7 @@ DECLARE_EVENT_CLASS(tx_rx_evt,
+ 	down_write(&policy->rwsem);
++
+ 	if (has_target())
+ 		cpufreq_stop_governor(policy);
  
- DEFINE_EVENT(tx_rx_evt, rdev_set_antenna,
- 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
--	TP_ARGS(wiphy, rx, tx)
-+	TP_ARGS(wiphy, tx, rx)
- );
+ 	cpumask_clear_cpu(cpu, policy->cpus);
  
- DECLARE_EVENT_CLASS(wiphy_netdev_id_evt,
+-	if (policy_is_inactive(policy)) {
+-		if (has_target())
+-			strncpy(policy->last_governor, policy->governor->name,
+-				CPUFREQ_NAME_LEN);
+-		else
+-			policy->last_policy = policy->policy;
+-	} else if (cpu == policy->cpu) {
+-		/* Nominate new CPU */
+-		policy->cpu = cpumask_any(policy->cpus);
+-	}
+-
+-	/* Start governor again for active policy */
+ 	if (!policy_is_inactive(policy)) {
++		/* Nominate a new CPU if necessary. */
++		if (cpu == policy->cpu)
++			policy->cpu = cpumask_any(policy->cpus);
++
++		/* Start the governor again for the active policy. */
+ 		if (has_target()) {
+ 			ret = cpufreq_start_governor(policy);
+ 			if (ret)
+@@ -1613,6 +1607,12 @@ static int cpufreq_offline(unsigned int cpu)
+ 		goto unlock;
+ 	}
+ 
++	if (has_target())
++		strncpy(policy->last_governor, policy->governor->name,
++			CPUFREQ_NAME_LEN);
++	else
++		policy->last_policy = policy->policy;
++
+ 	if (cpufreq_thermal_control_enabled(cpufreq_driver)) {
+ 		cpufreq_cooling_unregister(policy->cdev);
+ 		policy->cdev = NULL;
 -- 
 2.43.0
 
