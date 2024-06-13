@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-51876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15811907207
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:43:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F2C906EB3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2FB41F24B00
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:43:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99585280C14
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E02E143C79;
-	Thu, 13 Jun 2024 12:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896331482F4;
+	Thu, 13 Jun 2024 12:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boQszd73"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9E8qGhL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4A356458;
-	Thu, 13 Jun 2024 12:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458071482F1;
+	Thu, 13 Jun 2024 12:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282575; cv=none; b=G3S8pouxKVtHUJjI9ex0LLzZy5knjDCISJEOPigjCnB+MG9uD+kgWypDc6ZhjCw4y7l5DAEw/ug5ZvQQwCcquko2GW8tSkw2o8sdMvlm+LMi3NIwOauojAl7y/1gv/awYQthVjIhU3iJpgpFrSCp+gQFxWQWSONmHHziBe4UxA0=
+	t=1718280556; cv=none; b=ZO6QmuSl2krObZXdRp2Ku40cqdfXiTTjge3r3CvXeCU4EcxGdj6OrhBDyjb62ez3d+dbBC8K9V8fBWyxksbCDjXrmAz/ojxUxcc5jr3bC/r8Mjg3hZVt9Oyi6WdPmM/rprujOwo3r4JuRgT74eJDau+e4IKNKD+3149UeKHUWMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282575; c=relaxed/simple;
-	bh=jaz7ZNxztLYHw9oKOn5vBW3wHe5GZuxE0wB4W3u8DvY=;
+	s=arc-20240116; t=1718280556; c=relaxed/simple;
+	bh=0bD9ePhHR5E1skqPOt1X/BxLDeQNSFQjPzeJ2ee9DrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtzqN+stHWbemfqahJP8KpDaDRfWmFEwKCdRZN29UZAIwIonEhtRuY9TQsAOanjqTMjJeAzeu6g4zXJ79k1B1QbZQvXjDTvDrMcv178a7PM5Xu2+4g03rVTZnq+eLXDHAIM/uM6s7dfcnFvlS/HM9tjDBqYmF3KuT8vZGfPgcsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boQszd73; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62753C2BBFC;
-	Thu, 13 Jun 2024 12:42:54 +0000 (UTC)
+	 MIME-Version; b=uVBOO5ks0QZ+tnZbaD/IWSeHRqwBQ3u8dwCnIz4VNy80FJR41oHmsrgr/lTCMh8CP4mSuMwuAGatg3BblAr9rHY0jlfJepGyZBaU1CTgIyYgehFTBfnJKAzrqaFfepmkArnuGeXVxsyiC0LTLSsKcRYJD8XbRauV6uFmfvzzjJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9E8qGhL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA218C32786;
+	Thu, 13 Jun 2024 12:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282574;
-	bh=jaz7ZNxztLYHw9oKOn5vBW3wHe5GZuxE0wB4W3u8DvY=;
+	s=korg; t=1718280556;
+	bh=0bD9ePhHR5E1skqPOt1X/BxLDeQNSFQjPzeJ2ee9DrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=boQszd73QIP89LSYt/y09T/t+M5kuG4MPjGv3SnISiAb6kxKyaJLQH0fAas6myTUa
-	 j8rZvmUtQ4tV/sKE8Iv5tqDkFyEM7N9YEFZAin6Q56miGNWS2yIBfyi9jXIzVq5J6f
-	 7r6AubMdCmGwYmL366Q7sYMYyyUyLvuNiHA/T+Xs=
+	b=d9E8qGhL3DhdRKRX20gbmj9+6T5D8c75TGIcRWpxo+uUwbJWU8GtUtuqL1kuoMVS7
+	 Eg5jN7vTgi45kU1OLbtg629FYXOl9ET30BLL/zB6VspEWaOlOvGpzs3laEUE7VTyug
+	 Gd52ctTCLVco7L1FEI4kBB6dAslaKV9nv8AMpA3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
-	Simon Horman <horms@kernel.org>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 316/402] net: usb: smsc95xx: fix changing LED_SEL bit value updated from EEPROM
+	Dev Jain <dev.jain@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sri Jayaramappa <sjayaram@akamai.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 093/137] selftests/mm: compaction_test: fix incorrect write of zero to nr_hugepages
 Date: Thu, 13 Jun 2024 13:34:33 +0200
-Message-ID: <20240613113314.466803320@linuxfoundation.org>
+Message-ID: <20240613113226.904650717@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
+From: Dev Jain <dev.jain@arm.com>
 
-[ Upstream commit 52a2f0608366a629d43dacd3191039c95fef74ba ]
+commit 9ad665ef55eaad1ead1406a58a34f615a7c18b5e upstream.
 
-LED Select (LED_SEL) bit in the LED General Purpose IO Configuration
-register is used to determine the functionality of external LED pins
-(Speed Indicator, Link and Activity Indicator, Full Duplex Link
-Indicator). The default value for this bit is 0 when no EEPROM is
-present. If a EEPROM is present, the default value is the value of the
-LED Select bit in the Configuration Flags of the EEPROM. A USB Reset or
-Lite Reset (LRST) will cause this bit to be restored to the image value
-last loaded from EEPROM, or to be set to 0 if no EEPROM is present.
+Currently, the test tries to set nr_hugepages to zero, but that is not
+actually done because the file offset is not reset after read().  Fix that
+using lseek().
 
-While configuring the dual purpose GPIO/LED pins to LED outputs in the
-LED General Purpose IO Configuration register, the LED_SEL bit is changed
-as 0 and resulting the configured value from the EEPROM is cleared. The
-issue is fixed by using read-modify-write approach.
-
-Fixes: f293501c61c5 ("smsc95xx: configure LED outputs")
-Signed-off-by: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Woojung Huh <woojung.huh@microchip.com>
-Link: https://lore.kernel.org/r/20240523085314.167650-1-Parthiban.Veerasooran@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240521074358.675031-3-dev.jain@arm.com
+Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+Cc: <stable@vger.kernel.org>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Sri Jayaramappa <sjayaram@akamai.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/smsc95xx.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ tools/testing/selftests/mm/compaction_test.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
-index 10fae3989fbdb..8a38939dd57e4 100644
---- a/drivers/net/usb/smsc95xx.c
-+++ b/drivers/net/usb/smsc95xx.c
-@@ -842,7 +842,7 @@ static int smsc95xx_start_rx_path(struct usbnet *dev, int in_pm)
- static int smsc95xx_reset(struct usbnet *dev)
- {
- 	struct smsc95xx_priv *pdata = dev->driver_priv;
--	u32 read_buf, write_buf, burst_cap;
-+	u32 read_buf, burst_cap;
- 	int ret = 0, timeout;
+--- a/tools/testing/selftests/mm/compaction_test.c
++++ b/tools/testing/selftests/mm/compaction_test.c
+@@ -103,6 +103,8 @@ int check_compaction(unsigned long mem_f
+ 		goto close_fd;
+ 	}
  
- 	netif_dbg(dev, ifup, dev->net, "entering smsc95xx_reset\n");
-@@ -984,10 +984,13 @@ static int smsc95xx_reset(struct usbnet *dev)
- 		return ret;
- 	netif_dbg(dev, ifup, dev->net, "ID_REV = 0x%08x\n", read_buf);
- 
-+	ret = smsc95xx_read_reg(dev, LED_GPIO_CFG, &read_buf);
-+	if (ret < 0)
-+		return ret;
- 	/* Configure GPIO pins as LED outputs */
--	write_buf = LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
--		LED_GPIO_CFG_FDX_LED;
--	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, write_buf);
-+	read_buf |= LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
-+		    LED_GPIO_CFG_FDX_LED;
-+	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, read_buf);
- 	if (ret < 0)
- 		return ret;
- 
--- 
-2.43.0
-
++	lseek(fd, 0, SEEK_SET);
++
+ 	/* Start with the initial condition of 0 huge pages*/
+ 	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
+ 		perror("Failed to write 0 to /proc/sys/vm/nr_hugepages\n");
 
 
 
