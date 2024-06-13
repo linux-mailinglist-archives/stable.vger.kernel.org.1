@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2068907100
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:33:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9549906F39
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58EA528509F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:33:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37725B28267
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA011DFE1;
-	Thu, 13 Jun 2024 12:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9636145A18;
+	Thu, 13 Jun 2024 12:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEAEfoEP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BXMGNBI8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADE0161;
-	Thu, 13 Jun 2024 12:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BE6130A47;
+	Thu, 13 Jun 2024 12:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281962; cv=none; b=mESkrzvV4NVmN2PQeNscT0LhtjXO+nDptbHxrVCGYOxTaJYtcUvCix9rhs8Yx4/mT74ivvA0ZOEzJwuK8XnSBBVWMub/chXIjB71bKMIn02nr5SafkKOnK08K1b8nF3nMjZumF7glq+htW//MTU/ZrYJ2u0/lK7l/A+WBlQGWnc=
+	t=1718280759; cv=none; b=tAa6jDOoXZowX/TYKA/Kl52Xa2MMdJSBRdJZHDafGweEu3CX5WjIfg5t7jDcj7XibvQCS2RjnoGRFOz4Lf4E0Y9n1HQkm7lcD4WAn2cqfnk7+JZJsU9kxoOD/oQou2dwxd2E9wTYsbijMNeY4WUy1ehSTbAaFt+00piFxQ+sME8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281962; c=relaxed/simple;
-	bh=rIZeeGQoHYYTfn3bVX2XBFcT9UdRBfMMLuz2PiXrLek=;
+	s=arc-20240116; t=1718280759; c=relaxed/simple;
+	bh=hsaxmUvOF6LMXAGSBC3Ro4rm9tUWa9FE+XOXbUDUxZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NUAkrzkELbl0hnC74+2ea9cLpAIgGAkcR2iook1CBNpC55+UpgkIismVQJkMo+BMpMvW14LOJU6s1o2Bg+IGVkeo7+yT4qqT3+7NDOFktMqSMgGgPHWJuE/xuO0Cej1hjNzj1C+2/BVEFWK6ooQ8SmZaWgxMSy+PPicnVesDKvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEAEfoEP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045C9C2BBFC;
-	Thu, 13 Jun 2024 12:32:41 +0000 (UTC)
+	 MIME-Version; b=fvWUOch8odjGBmnDzGq1bP5dRvltjQuhOhDJe2EZ1KBE2jGsmCY/31Gb348LnlWGZyRaj1AGsecWAiAmnAFD5JxzmThHsMYSlb80F44AiLRNZ5pAHbl0kBeKu2Uqx61MOScVyLFrW7LI6wiju/BFNWE7bbv2h+W9VmdeRf7KFS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BXMGNBI8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8ADC2BBFC;
+	Thu, 13 Jun 2024 12:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281962;
-	bh=rIZeeGQoHYYTfn3bVX2XBFcT9UdRBfMMLuz2PiXrLek=;
+	s=korg; t=1718280759;
+	bh=hsaxmUvOF6LMXAGSBC3Ro4rm9tUWa9FE+XOXbUDUxZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tEAEfoEP/lj8Wp/uBUT6w3JV2IbScmpcPWSQ1vvtkFA1m1b0ZRXUzgI+tiLoMTuwe
-	 EJgE17Yui6sMTmRLGzuLS9dh6axMluqwfPt/w23IMgKcXma6BZQJ2kwelZw+oV33MW
-	 wuquS8Pkx2aBCjv1UlcQwbQZPkcZyCE8/sE57sBw=
+	b=BXMGNBI8Lt/tDV8vWb77td+iUvSWH5og9DdgYfSoHjSuW2X6zKWwJopp9ykelnuXz
+	 EPh1VNHF0ChSAKEK3CrmRbN8XzxP6V5vn662MFN8Xcziy52OJ1mvAn/Ify/ZaH2UCi
+	 y9BhxFwBxuOQGXqRk7DHxAphz16hx203ftHAeRh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongqin Liu <yongqin.liu@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 085/402] wifi: ath10k: populate board data for WCN3990
+Subject: [PATCH 5.10 024/317] nilfs2: fix out-of-range warning
 Date: Thu, 13 Jun 2024 13:30:42 +0200
-Message-ID: <20240613113305.451685667@linuxfoundation.org>
+Message-ID: <20240613113248.476211566@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f1f1b5b055c9f27a2f90fd0f0521f5920e9b3c18 ]
+[ Upstream commit c473bcdd80d4ab2ae79a7a509a6712818366e32a ]
 
-Specify board data size (and board.bin filename) for the WCN3990
-platform.
+clang-14 points out that v_size is always smaller than a 64KB
+page size if that is configured by the CPU architecture:
 
-Reported-by: Yongqin Liu <yongqin.liu@linaro.org>
-Fixes: 03a72288c546 ("ath10k: wmi: add hw params entry for wcn3990")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240130-wcn3990-board-fw-v1-1-738f7c19a8c8@linaro.org
+fs/nilfs2/ioctl.c:63:19: error: result of comparison of constant 65536 with expression of type '__u16' (aka 'unsigned short') is always false [-Werror,-Wtautological-constant-out-of-range-compare]
+        if (argv->v_size > PAGE_SIZE)
+            ~~~~~~~~~~~~ ^ ~~~~~~~~~
+
+This is ok, so just shut up that warning with a cast.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240328143051.1069575-7-arnd@kernel.org
+Fixes: 3358b4aaa84f ("nilfs2: fix problems of memory allocation in ioctl")
+Acked-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/core.c      | 3 +++
- drivers/net/wireless/ath/ath10k/hw.h        | 1 +
- drivers/net/wireless/ath/ath10k/targaddrs.h | 3 +++
- 3 files changed, 7 insertions(+)
+ fs/nilfs2/ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index eca24a61165ee..4a93c415db07b 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -640,6 +640,9 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.max_spatial_stream = 4,
- 		.fw = {
- 			.dir = WCN3990_HW_1_0_FW_DIR,
-+			.board = WCN3990_HW_1_0_BOARD_DATA_FILE,
-+			.board_size = WCN3990_BOARD_DATA_SZ,
-+			.board_ext_size = WCN3990_BOARD_EXT_DATA_SZ,
- 		},
- 		.sw_decrypt_mcast_mgmt = true,
- 		.hw_ops = &wcn3990_ops,
-diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
-index 591ef7416b613..0d8c8e948bb5a 100644
---- a/drivers/net/wireless/ath/ath10k/hw.h
-+++ b/drivers/net/wireless/ath/ath10k/hw.h
-@@ -132,6 +132,7 @@ enum qca9377_chip_id_rev {
- /* WCN3990 1.0 definitions */
- #define WCN3990_HW_1_0_DEV_VERSION	ATH10K_HW_WCN3990
- #define WCN3990_HW_1_0_FW_DIR		ATH10K_FW_DIR "/WCN3990/hw1.0"
-+#define WCN3990_HW_1_0_BOARD_DATA_FILE "board.bin"
+diff --git a/fs/nilfs2/ioctl.c b/fs/nilfs2/ioctl.c
+index 01235fac5971f..668c1b28a940e 100644
+--- a/fs/nilfs2/ioctl.c
++++ b/fs/nilfs2/ioctl.c
+@@ -59,7 +59,7 @@ static int nilfs_ioctl_wrap_copy(struct the_nilfs *nilfs,
+ 	if (argv->v_nmembs == 0)
+ 		return 0;
  
- #define ATH10K_FW_FILE_BASE		"firmware"
- #define ATH10K_FW_API_MAX		6
-diff --git a/drivers/net/wireless/ath/ath10k/targaddrs.h b/drivers/net/wireless/ath/ath10k/targaddrs.h
-index ec556bb88d658..ba37e6c7ced08 100644
---- a/drivers/net/wireless/ath/ath10k/targaddrs.h
-+++ b/drivers/net/wireless/ath/ath10k/targaddrs.h
-@@ -491,4 +491,7 @@ struct host_interest {
- #define QCA4019_BOARD_DATA_SZ	  12064
- #define QCA4019_BOARD_EXT_DATA_SZ 0
+-	if (argv->v_size > PAGE_SIZE)
++	if ((size_t)argv->v_size > PAGE_SIZE)
+ 		return -EINVAL;
  
-+#define WCN3990_BOARD_DATA_SZ	  26328
-+#define WCN3990_BOARD_EXT_DATA_SZ 0
-+
- #endif /* __TARGADDRS_H__ */
+ 	/*
 -- 
 2.43.0
 
