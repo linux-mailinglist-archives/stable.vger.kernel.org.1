@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27AD5906EC9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B36990703C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A7971C2443C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02F1E283999
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC351448C4;
-	Thu, 13 Jun 2024 12:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749FF1448C9;
+	Thu, 13 Jun 2024 12:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVfv8Efb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dj4cKnp7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDE11448C1;
-	Thu, 13 Jun 2024 12:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3198614431F;
+	Thu, 13 Jun 2024 12:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280620; cv=none; b=hwALDvbt7HInM6V27ziko9KiddEbBK3jYZVxOXuGQ5V5TfA7V+WOBKFg67AavrWlKBzPsqXXqnxDoeJEb4Ehoxx/EkIfYjXFYfAu4KLiokC7ICcyWuAzjK7kFkWkxjR07ilaZjUVofSme1cUIVAjCk+BVFc6adIIOIPAnC2Uw6w=
+	t=1718281504; cv=none; b=sCeMoBycdBWrQRJfdwpXiUu2vHnAO5ztXGQ9Ogt4t0mMls362BVNcUUG8+FIyvsZHtnyC1FRFzSnpYMURWIX68dnBXyI4WEOmTYTdbsHqJUdOflxtBvJYR7hY+OYY8kNCaLu2Xj0LFUoh0qqz9bDP8CkiYgcYHp7FyXPrYDECsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280620; c=relaxed/simple;
-	bh=cvb64Eo630MY8N+V1/2yAaLGWIEpAY67HzPHjgtJxss=;
+	s=arc-20240116; t=1718281504; c=relaxed/simple;
+	bh=UY5C6jRjJ0ZhmPcM+4WyDnrsc4eOqBu7eu4LPd18jdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/B3dj8ucG+E1P8AUhDbFxh+mJ3F+j/LfB+VZmQf4YmKFd9UtNXpJpVsWeNeUnsS4gC43IWM02Fi++XFlJ3UPpLaLbmpi6K+M0B6Zh16YZCpeoQ0gKvpJMuxJhmTc53z+SdQ7yEBq/o8jN6C/03X1weT4rv7vNDTwt5PislYOrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVfv8Efb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4813FC2BBFC;
-	Thu, 13 Jun 2024 12:10:20 +0000 (UTC)
+	 MIME-Version; b=FhSh941K28N/L7D1ThDn+Jb6jbbvkw3xXJaQwAl3dsCVGF5P8x6P5Pyyx/SN6Q4YghpCFr2kiNIrb7ckgJoC+rWkuQTfhvlerD4j2PHZmHP4UTd0Mfy/qyw4rOHvYXWbbmxQzoaozJBeQnqWnkdDCrt+77hKurxK/OC5Eergiak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dj4cKnp7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15DAC2BBFC;
+	Thu, 13 Jun 2024 12:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280620;
-	bh=cvb64Eo630MY8N+V1/2yAaLGWIEpAY67HzPHjgtJxss=;
+	s=korg; t=1718281504;
+	bh=UY5C6jRjJ0ZhmPcM+4WyDnrsc4eOqBu7eu4LPd18jdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BVfv8Efbr0NlEn0BWebBmrN4FPsr5ziNCH7PNLWowxZvilng96Itcn75hMA5CZqfL
-	 bg2MTmgtx05yQIsEBBbekSsx2zAtXXd/syMAKCPHm5WAq1RbAihnawfwctc/S+di1C
-	 kXqVQcdqOkluDwlHe6/iMPrcgsm2UaGEYD96BSWo=
+	b=dj4cKnp78ALm3rKystUhiRnrtzA1BBLkIN0AxbZ8MIEB6MpjmmQY+x1ORGycGgu5T
+	 TpOFbTeBHVlMCzJYdT69vY5JlxhtFIgXIN0cmsMsxWTR32pssxGBQvRHZfuhAYP8y3
+	 F6a2s3gLom1v48huXwAsZ5V1IThKcN+qNpz3xE6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Hartmayer <mhartmay@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.6 116/137] s390/ap: Fix crash in AP internal function modify_bitmap()
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Niklas Cassel <cassel@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 5.10 278/317] ata: pata_legacy: make legacy_exit() work again
 Date: Thu, 13 Jun 2024 13:34:56 +0200
-Message-ID: <20240613113227.800614065@linuxfoundation.org>
+Message-ID: <20240613113258.305387232@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-commit d4f9d5a99a3fd1b1c691b7a1a6f8f3f25f4116c9 upstream.
+commit d4a89339f17c87c4990070e9116462d16e75894f upstream.
 
-A system crash like this
+Commit defc9cd826e4 ("pata_legacy: resychronize with upstream changes and
+resubmit") missed to update legacy_exit(), so that it now fails to do any
+cleanup -- the loop body there can never be entered.  Fix that and finally
+remove now useless nr_legacy_host variable...
 
-  Failing address: 200000cb7df6f000 TEID: 200000cb7df6f403
-  Fault in home space mode while using kernel ASCE.
-  AS:00000002d71bc007 R3:00000003fe5b8007 S:000000011a446000 P:000000015660c13d
-  Oops: 0038 ilc:3 [#1] PREEMPT SMP
-  Modules linked in: mlx5_ib ...
-  CPU: 8 PID: 7556 Comm: bash Not tainted 6.9.0-rc7 #8
-  Hardware name: IBM 3931 A01 704 (LPAR)
-  Krnl PSW : 0704e00180000000 0000014b75e7b606 (ap_parse_bitmap_str+0x10e/0x1f8)
-  R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2 PM:0 RI:0 EA:3
-  Krnl GPRS: 0000000000000001 ffffffffffffffc0 0000000000000001 00000048f96b75d3
-  000000cb00000100 ffffffffffffffff ffffffffffffffff 000000cb7df6fce0
-  000000cb7df6fce0 00000000ffffffff 000000000000002b 00000048ffffffff
-  000003ff9b2dbc80 200000cb7df6fcd8 0000014bffffffc0 000000cb7df6fbc8
-  Krnl Code: 0000014b75e7b5fc: a7840047            brc     8,0000014b75e7b68a
-  0000014b75e7b600: 18b2                lr      %r11,%r2
-  #0000014b75e7b602: a7f4000a            brc     15,0000014b75e7b616
-  >0000014b75e7b606: eb22d00000e6        laog    %r2,%r2,0(%r13)
-  0000014b75e7b60c: a7680001            lhi     %r6,1
-  0000014b75e7b610: 187b                lr      %r7,%r11
-  0000014b75e7b612: 84960021            brxh    %r9,%r6,0000014b75e7b654
-  0000014b75e7b616: 18e9                lr      %r14,%r9
-  Call Trace:
-  [<0000014b75e7b606>] ap_parse_bitmap_str+0x10e/0x1f8
-  ([<0000014b75e7b5dc>] ap_parse_bitmap_str+0xe4/0x1f8)
-  [<0000014b75e7b758>] apmask_store+0x68/0x140
-  [<0000014b75679196>] kernfs_fop_write_iter+0x14e/0x1e8
-  [<0000014b75598524>] vfs_write+0x1b4/0x448
-  [<0000014b7559894c>] ksys_write+0x74/0x100
-  [<0000014b7618a440>] __do_syscall+0x268/0x328
-  [<0000014b761a3558>] system_call+0x70/0x98
-  INFO: lockdep is turned off.
-  Last Breaking-Event-Address:
-  [<0000014b75e7b636>] ap_parse_bitmap_str+0x13e/0x1f8
-  Kernel panic - not syncing: Fatal exception: panic_on_oops
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
 
-occured when /sys/bus/ap/a[pq]mask was updated with a relative mask value
-(like +0x10-0x12,+60,-90) with one of the numeric values exceeding INT_MAX.
-
-The fix is simple: use unsigned long values for the internal variables. The
-correct checks are already in place in the function but a simple int for
-the internal variables was used with the possibility to overflow.
-
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Tested-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: defc9cd826e4 ("pata_legacy: resychronize with upstream changes and resubmit")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/crypto/ap_bus.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/pata_legacy.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/s390/crypto/ap_bus.c
-+++ b/drivers/s390/crypto/ap_bus.c
-@@ -1098,7 +1098,7 @@ static int hex2bitmap(const char *str, u
-  */
- static int modify_bitmap(const char *str, unsigned long *bitmap, int bits)
- {
--	int a, i, z;
-+	unsigned long a, i, z;
- 	char *np, sign;
+--- a/drivers/ata/pata_legacy.c
++++ b/drivers/ata/pata_legacy.c
+@@ -114,8 +114,6 @@ static int legacy_port[NR_HOST] = { 0x1f
+ static struct legacy_probe probe_list[NR_HOST];
+ static struct legacy_data legacy_data[NR_HOST];
+ static struct ata_host *legacy_host[NR_HOST];
+-static int nr_legacy_host;
+-
  
- 	/* bits needs to be a multiple of 8 */
+ static int probe_all;		/* Set to check all ISA port ranges */
+ static int ht6560a;		/* HT 6560A on primary 1, second 2, both 3 */
+@@ -1239,9 +1237,11 @@ static __exit void legacy_exit(void)
+ {
+ 	int i;
+ 
+-	for (i = 0; i < nr_legacy_host; i++) {
++	for (i = 0; i < NR_HOST; i++) {
+ 		struct legacy_data *ld = &legacy_data[i];
+-		ata_host_detach(legacy_host[i]);
++
++		if (legacy_host[i])
++			ata_host_detach(legacy_host[i]);
+ 		platform_device_unregister(ld->platform_dev);
+ 	}
+ }
 
 
 
