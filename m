@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-51189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB35906EB9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE655907225
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD47AB2616E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E21C31C21B35
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD37143878;
-	Thu, 13 Jun 2024 12:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551CE143899;
+	Thu, 13 Jun 2024 12:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gO6hFucW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOwVxZyS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3416143C46;
-	Thu, 13 Jun 2024 12:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11805139CFE;
+	Thu, 13 Jun 2024 12:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280568; cv=none; b=W6Z8p+4CYuKRdBTLmXbcsKhkpV8/rae0XRuCaEo6zmZ+2OTbK0RMRbw67zaUN6SCCLxFiTDoBQGtcrxpNS/TilAw08d8h33gfH5uo0JmtHCE+k6mVUMWqm3b60ciALAVCobYBBvfFdZH9Z5jcONvdlEN1M2GYfiKfz1FqBglzbA=
+	t=1718282655; cv=none; b=XwIwt1f6v5XJXI3rK9tqateNbtNBmwUe2T5OvVepv8cPnuc3wB9Dl8Rid621QGop/NDxFP05RSlX+Eq5E8a8vk4zAIkbt8bybhm2CkjQiQ460OSdr9dENpV8smtxFP0rSObOBZdyJdjYbkVrSiclqm8UX3Ja/oF7esKfga5fv48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280568; c=relaxed/simple;
-	bh=6a0t3fJmj+bQCE7uinrbt1w+JcGrZ/hFibxaqOwbt8I=;
+	s=arc-20240116; t=1718282655; c=relaxed/simple;
+	bh=G4RiEjbfjlr4b0q7R6WIBEIIQOLebt5Y8c3dzwaSKR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CCZOIf3BTAVmAKwFTcp9Ndl3kKZCNSy+zmmJme81zAFGmP0oV0PLKwTDCjWN8Im87Uqn+gImT56WFyeSmloz+KfcyoOLTOFLF+4ZCXAuJMHpBHaisSW15oDoVhLimpeavnRRpAxqeMRdJ+L0uYxQ5PPPHQOOFNtsCRpAx7XKfSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gO6hFucW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E380C32786;
-	Thu, 13 Jun 2024 12:09:27 +0000 (UTC)
+	 MIME-Version; b=YSpNAjF2/YvcRBi1qDV1CqH/g3PrdktNDJ9djRMDKU7dJ6UOdmAInFdQv6szJHhTBBGPVgoNWTPOBpSdtaxJN60OwneNEQs9rtYaIQoyrpA9OBA/sccU9VEg9l8+HdLRelKCSoORCvZJzmXOPMQO8NCWUJEYgtDhFBIYPovbfm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOwVxZyS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81CC3C2BBFC;
+	Thu, 13 Jun 2024 12:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280567;
-	bh=6a0t3fJmj+bQCE7uinrbt1w+JcGrZ/hFibxaqOwbt8I=;
+	s=korg; t=1718282654;
+	bh=G4RiEjbfjlr4b0q7R6WIBEIIQOLebt5Y8c3dzwaSKR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gO6hFucWs29CFFIkdnw1jCqpgZeBaD4G4oflIo7L02qkGw3ulaJnTqhPFxkfmpoIN
-	 KupxWSRiSZldm2fMMrnH9qNCyr3coG25MglLroY5SgPI9eIkMXafq9xLr55CYeF6jk
-	 rgAYzWfyBJ8SjNjLNErxKEn3Fy8tmkBN0oGOslJg=
+	b=uOwVxZySMxsM0vVo/S14IceGCUpVYpkwBBO6n98CKdO3au63trDHmXYO8WjC4Y/gN
+	 01LQgtwwA3HXAOB+YJnAAVMR4gMLevQpsaQYMoMa439gP5YeNuSIyzC2oUIXmowvtZ
+	 lqWNhvqXu09aU9/t34xdWX9m+mxRrgf3jJRmW80Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>
-Subject: [PATCH 6.6 097/137] wifi: ath10k: fix QCOM_RPROC_COMMON dependency
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 320/402] netfilter: nft_payload: rebuild vlan header when needed
 Date: Thu, 13 Jun 2024 13:34:37 +0200
-Message-ID: <20240613113227.059682543@linuxfoundation.org>
+Message-ID: <20240613113314.620808543@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 21ae74e1bf18331ae5e279bd96304b3630828009 upstream.
+[ Upstream commit de6843be3082d416eaf2a00b72dad95c784ca980 ]
 
-If ath10k_snoc is built-in, while Qualcomm remoteprocs are built as
-modules, compilation fails with:
+Skip rebuilding the vlan header when accessing destination and source
+mac address.
 
-/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_init':
-drivers/net/wireless/ath/ath10k/snoc.c:1534: undefined reference to `qcom_register_ssr_notifier'
-/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_deinit':
-drivers/net/wireless/ath/ath10k/snoc.c:1551: undefined reference to `qcom_unregister_ssr_notifier'
-
-Add corresponding dependency to ATH10K_SNOC Kconfig entry so that it's
-built as module if QCOM_RPROC_COMMON is built as module too.
-
-Fixes: 747ff7d3d742 ("ath10k: Don't always treat modem stop events as crashes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 33c563ebf8d3 ("netfilter: nft_payload: skbuff vlan metadata mangle support")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nft_payload.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath10k/Kconfig
-+++ b/drivers/net/wireless/ath/ath10k/Kconfig
-@@ -45,6 +45,7 @@ config ATH10K_SNOC
- 	depends on ATH10K
- 	depends on ARCH_QCOM || COMPILE_TEST
- 	depends on QCOM_SMEM
-+	depends on QCOM_RPROC_COMMON || QCOM_RPROC_COMMON=n
- 	select QCOM_SCM
- 	select QCOM_QMI_HELPERS
- 	help
+diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
+index e5f0d33a27e61..b1745304dbd22 100644
+--- a/net/netfilter/nft_payload.c
++++ b/net/netfilter/nft_payload.c
+@@ -127,7 +127,8 @@ void nft_payload_eval(const struct nft_expr *expr,
+ 		if (!skb_mac_header_was_set(skb) || skb_mac_header_len(skb) == 0)
+ 			goto err;
+ 
+-		if (skb_vlan_tag_present(skb)) {
++		if (skb_vlan_tag_present(skb) &&
++		    priv->offset >= offsetof(struct ethhdr, h_proto)) {
+ 			if (!nft_payload_copy_vlan(dest, skb,
+ 						   priv->offset, priv->len))
+ 				goto err;
+-- 
+2.43.0
+
 
 
 
