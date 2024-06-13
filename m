@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-51431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED15D906FDE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DCB6906E76
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9F58B2A0FB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D80BC1F21944
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F10914601C;
-	Thu, 13 Jun 2024 12:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D20A146583;
+	Thu, 13 Jun 2024 12:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCFw3juV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/q2ZxLC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19F9145FEE;
-	Thu, 13 Jun 2024 12:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A50B145B15;
+	Thu, 13 Jun 2024 12:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281278; cv=none; b=IfMnePqGFt+PqENU4qLMDu7wiwFvpXzIRcUiHOGpqiiKOTx6yLRQj2TgBoCZGJ867tAB1wcmjD4fNP5Cz/WHOKQFpYJl8RqJ2O0hchlsCFN6tJ/23exET8oHvXEXGvBkGwebN44/tVuWSB+e2+dR1zZ6AQ3VwylAvpBmEyWqadE=
+	t=1718280397; cv=none; b=daEexPUcaNtH1v6C+qnCKdYjbW6bBJoVled79gDegS/xAD/C+8yxUS1kjBM8HOTHnpzsdHqtXPjKWnZyq6uvzn1LwTK3XO6ETb1G7shFpvORW+9CX7WurPEEa5ttLC8tcE5EiPCWvzwltXhDuy9fcH1GjYuTYzjIVqf/oOnnfw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281278; c=relaxed/simple;
-	bh=FdjcBlJaFYeV/5qFhm1KETp7TB2apg/TuhfPPOsLxC0=;
+	s=arc-20240116; t=1718280397; c=relaxed/simple;
+	bh=t69aR8N8Zispxe0JuaHFMNB2rAABqZC2GbKttFzdJH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N10JkSBoGld7lkT2uS1d/pUII0xrdFf+3DAmMpW9+0n9nkqmQPoLo/7l0BSWrtuF2YX669HCTrOoCcCYu3NLIT+qBthxhnfFWrGz+AMgJ2iwwW8gFJKPiebxhAp++uaS9pJQiMv3Z3214rS3mjs85l8ndjBwaOmY+NZ1O4AP+Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCFw3juV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BCB3C2BBFC;
-	Thu, 13 Jun 2024 12:21:17 +0000 (UTC)
+	 MIME-Version; b=c8GjblRKnIXVX6MuqovpQUauQFeOzpKS0Rxfr/Dx27SNcTlu1NTIVM3ayNCdJf0lck+Gjeu5H7cf063i4b0JOaXBsSLpLd+oBuQ07TQt5NwaR7M8P5bzaaJpgHPCttBM/z5Mu8ZAMOZg4dvrT8mgsL0iLo2X43jZ7Yeh4ZnmSzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/q2ZxLC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4926C2BBFC;
+	Thu, 13 Jun 2024 12:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281277;
-	bh=FdjcBlJaFYeV/5qFhm1KETp7TB2apg/TuhfPPOsLxC0=;
+	s=korg; t=1718280397;
+	bh=t69aR8N8Zispxe0JuaHFMNB2rAABqZC2GbKttFzdJH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jCFw3juV7gDX5FtLWuLgoeq+zHUO/W8hreddyghIvlWClAY/e7hbsBmp2PiZnSm80
-	 nkgg6+2vNUmIsUlmW6+Ew6izN6WZGEc7/p5yDrszgAuyZbi8cnH8ckMMRQqQqMJKAV
-	 maMIZ+4uf+X/6+XGNS2b+OffA/8z/wxZK/jU1Ng8=
+	b=m/q2ZxLC5q4+hrKi2iyrm6RMiduhlWw0iVzP7hlKwcHg5li2cymmSNw9KY4/4lsu6
+	 ap1tqE3V43dyF8X7lJzE+/ItAYQNfBu6SUMsTitJ4aITCwL8inWh7qPmDBUlZoR8mN
+	 YkYGZylmu96eXGDd5dPSeAzRcykhw0agpN1k6H3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 171/317] ovl: remove upper umask handling from ovl_create_upper()
+	Sandeep Dhavale <dhavale@google.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.6 009/137] erofs: avoid allocating DEFLATE streams before mounting
 Date: Thu, 13 Jun 2024 13:33:09 +0200
-Message-ID: <20240613113254.175627603@linuxfoundation.org>
+Message-ID: <20240613113223.649602154@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 096802748ea1dea8b476938e0a8dc16f4bd2f1ad ]
+commit 80eb4f62056d6ae709bdd0636ab96ce660f494b2 upstream.
 
-This is already done by vfs_prepare_mode() when creating the upper object
-by vfs_create(), vfs_mkdir() and vfs_mknod().
+Currently, each DEFLATE stream takes one 32 KiB permanent internal
+window buffer even if there is no running instance which uses DEFLATE
+algorithm.
 
-No regressions have been observed in xfstests run with posix acls turned
-off for the upper filesystem.
+It's unexpected and wasteful on embedded devices with limited resources
+and servers with hundreds of CPU cores if DEFLATE is enabled but unused.
 
-Fixes: 1639a49ccdce ("fs: move S_ISGID stripping into the vfs_*() helpers")
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ffa09b3bd024 ("erofs: DEFLATE compression support")
+Cc: <stable@vger.kernel.org> # 6.6+
+Reviewed-by: Sandeep Dhavale <dhavale@google.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20240520090106.2898681-1-hsiangkao@linux.alibaba.com
+[ Gao Xiang: resolve trivial conflicts. ]
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/overlayfs/dir.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/erofs/decompressor_deflate.c |   57 +++++++++++++++++++++-------------------
+ 1 file changed, 30 insertions(+), 27 deletions(-)
 
-diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
-index a7021c87bfcb0..470ff30851b4d 100644
---- a/fs/overlayfs/dir.c
-+++ b/fs/overlayfs/dir.c
-@@ -323,9 +323,6 @@ static int ovl_create_upper(struct dentry *dentry, struct inode *inode,
- 	struct dentry *newdentry;
- 	int err;
- 
--	if (!attr->hardlink && !IS_POSIXACL(udir))
--		attr->mode &= ~current_umask();
+--- a/fs/erofs/decompressor_deflate.c
++++ b/fs/erofs/decompressor_deflate.c
+@@ -47,39 +47,15 @@ int __init z_erofs_deflate_init(void)
+ 	/* by default, use # of possible CPUs instead */
+ 	if (!z_erofs_deflate_nstrms)
+ 		z_erofs_deflate_nstrms = num_possible_cpus();
 -
- 	inode_lock_nested(udir, I_MUTEX_PARENT);
- 	newdentry = ovl_create_real(udir,
- 				    lookup_one_len(dentry->d_name.name,
--- 
-2.43.0
-
+-	for (; z_erofs_deflate_avail_strms < z_erofs_deflate_nstrms;
+-	     ++z_erofs_deflate_avail_strms) {
+-		struct z_erofs_deflate *strm;
+-
+-		strm = kzalloc(sizeof(*strm), GFP_KERNEL);
+-		if (!strm)
+-			goto out_failed;
+-
+-		/* XXX: in-kernel zlib cannot shrink windowbits currently */
+-		strm->z.workspace = vmalloc(zlib_inflate_workspacesize());
+-		if (!strm->z.workspace) {
+-			kfree(strm);
+-			goto out_failed;
+-		}
+-
+-		spin_lock(&z_erofs_deflate_lock);
+-		strm->next = z_erofs_deflate_head;
+-		z_erofs_deflate_head = strm;
+-		spin_unlock(&z_erofs_deflate_lock);
+-	}
+ 	return 0;
+-
+-out_failed:
+-	pr_err("failed to allocate zlib workspace\n");
+-	z_erofs_deflate_exit();
+-	return -ENOMEM;
+ }
+ 
+ int z_erofs_load_deflate_config(struct super_block *sb,
+ 			struct erofs_super_block *dsb, void *data, int size)
+ {
+ 	struct z_erofs_deflate_cfgs *dfl = data;
++	static DEFINE_MUTEX(deflate_resize_mutex);
++	static bool inited;
+ 
+ 	if (!dfl || size < sizeof(struct z_erofs_deflate_cfgs)) {
+ 		erofs_err(sb, "invalid deflate cfgs, size=%u", size);
+@@ -90,9 +66,36 @@ int z_erofs_load_deflate_config(struct s
+ 		erofs_err(sb, "unsupported windowbits %u", dfl->windowbits);
+ 		return -EOPNOTSUPP;
+ 	}
+-
++	mutex_lock(&deflate_resize_mutex);
++	if (!inited) {
++		for (; z_erofs_deflate_avail_strms < z_erofs_deflate_nstrms;
++		     ++z_erofs_deflate_avail_strms) {
++			struct z_erofs_deflate *strm;
++
++			strm = kzalloc(sizeof(*strm), GFP_KERNEL);
++			if (!strm)
++				goto failed;
++			/* XXX: in-kernel zlib cannot customize windowbits */
++			strm->z.workspace = vmalloc(zlib_inflate_workspacesize());
++			if (!strm->z.workspace) {
++				kfree(strm);
++				goto failed;
++			}
++
++			spin_lock(&z_erofs_deflate_lock);
++			strm->next = z_erofs_deflate_head;
++			z_erofs_deflate_head = strm;
++			spin_unlock(&z_erofs_deflate_lock);
++		}
++		inited = true;
++	}
++	mutex_unlock(&deflate_resize_mutex);
+ 	erofs_info(sb, "EXPERIMENTAL DEFLATE feature in use. Use at your own risk!");
+ 	return 0;
++failed:
++	mutex_unlock(&deflate_resize_mutex);
++	z_erofs_deflate_exit();
++	return -ENOMEM;
+ }
+ 
+ int z_erofs_deflate_decompress(struct z_erofs_decompress_req *rq,
 
 
 
