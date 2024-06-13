@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-50573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877DE906B4E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71D99906D56
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 843661C21B88
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:39:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D8991C22AB6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8CE7142911;
-	Thu, 13 Jun 2024 11:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E75146D73;
+	Thu, 13 Jun 2024 11:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08sa92+K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOQn4Ca6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77EBDDB1;
-	Thu, 13 Jun 2024 11:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D88F145A03;
+	Thu, 13 Jun 2024 11:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278760; cv=none; b=sSCS5MWNgpO4vEb6lHijYeJtjPWRZuzad51HLm6kTKpfuse38z5Y7OWxuttMT2kw9tw6XKgC+20M2wLORXYpNHRleTYIZDy2q8G3UAQpQEb1a4+alL/U0kMuhNBZvthKbmntMOhilHmKPUS7JF+fs3J5ZKCp3vBFZeeicTaweqk=
+	t=1718279712; cv=none; b=P7bhAe+ZwMtI9RwGrxvIrnifodc/UVfdCqzKVLKmkvnKFz/7aP5ejcNktGoVciyUDJ4+XEUZLsRQgHnpcnLwThvLdVzbJ3z98Gzzo43Rp2visTIGQm6CavqOHs5l35ryFqxGGP7hgWLhZANhnTAz3ME3ZQ5s1dp4jtwRUxT65yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278760; c=relaxed/simple;
-	bh=Jfsvk0EAypvQtBAUJASSBb/Y1XF4hvVJLydalFhrQnc=;
+	s=arc-20240116; t=1718279712; c=relaxed/simple;
+	bh=3vaOvf7YuJQidvvvnO3sYSlA5nLd4+TSEzseeC/nC3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K322sQvTvdDHldoX1MZQQn5cR4AgIm4lQiK0p9UEdp8/FXHeS7d5n2J5uOlRi72yV07LSAXWqIg913xW8n6V6yEdTfxLkUKxFfP3jS7qlQvS1nS4OnemGlo79/Qh7zksznG9PsVRzagE5HV6knNw2+pYTuOI4jcQSQc4OvhrZRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08sa92+K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE66C4AF1A;
-	Thu, 13 Jun 2024 11:39:19 +0000 (UTC)
+	 MIME-Version; b=bqdnGZjBwTbt6lLH1yOodB/ru2296yZIq9kqnH+3h096ITsm+MdBnc1FymI24jb1QzVhwZMxAOpphgoqiOtruOz9DcksVNeP6vm3bLpN1o+QQD/uZKK3YpLq3Z3cd4zjyYy7coOduEUbYOXlV+z2pda7j1Zvc3EIorGvhSipSSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOQn4Ca6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF07C2BBFC;
+	Thu, 13 Jun 2024 11:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278760;
-	bh=Jfsvk0EAypvQtBAUJASSBb/Y1XF4hvVJLydalFhrQnc=;
+	s=korg; t=1718279711;
+	bh=3vaOvf7YuJQidvvvnO3sYSlA5nLd4+TSEzseeC/nC3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=08sa92+KnvqouajsLUZS0To5eYVt9r/ZhArpneFaHU4El9BB3Y1oTsjuzita+F1rm
-	 VWnrZLFDkHsFoxHmrsO8aGYzB8NbPsgh7BLXdBDSzeNdzFfvr+Ebf3hh4N6ZB3kJrz
-	 G9K9p2E7N7RSbO1NZ3ejtnwo4wGpr9iUH+dGvKnw=
+	b=pOQn4Ca6kbzFXwDDEz0pd0XDcnABEbe9+ghG/KPX22aEfmz48MMyzqttPPwnSeIIo
+	 m1v2GmL/NPNRxMr33evmlHVXbj2Uz6zzmBVvln3jV5HW64FzQ94WFDbKOQz5iHGIGm
+	 ck9jVQyqyH4PMMmQa2cnr2QCfLqA5CJCLkJIHe+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonin Bas <antonin.bas@broadcom.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Derek Fang <derek.fang@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 061/213] net: openvswitch: fix overwriting ct original tuple for ICMPv6
+Subject: [PATCH 5.4 011/202] ASoC: rt5645: Fix the electric noise due to the CBJ contacts floating
 Date: Thu, 13 Jun 2024 13:31:49 +0200
-Message-ID: <20240613113230.363977199@linuxfoundation.org>
+Message-ID: <20240613113228.199423804@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Derek Fang <derek.fang@realtek.com>
 
-[ Upstream commit 7c988176b6c16c516474f6fceebe0f055af5eb56 ]
+[ Upstream commit 103abab975087e1f01b76fcb54c91dbb65dbc249 ]
 
-OVS_PACKET_CMD_EXECUTE has 3 main attributes:
- - OVS_PACKET_ATTR_KEY - Packet metadata in a netlink format.
- - OVS_PACKET_ATTR_PACKET - Binary packet content.
- - OVS_PACKET_ATTR_ACTIONS - Actions to execute on the packet.
+The codec leaves tie combo jack's sleeve/ring2 to floating status
+default. It would cause electric noise while connecting the active
+speaker jack during boot or shutdown.
+This patch requests a gpio to control the additional jack circuit
+to tie the contacts to the ground or floating.
 
-OVS_PACKET_ATTR_KEY is parsed first to populate sw_flow_key structure
-with the metadata like conntrack state, input port, recirculation id,
-etc.  Then the packet itself gets parsed to populate the rest of the
-keys from the packet headers.
+Signed-off-by: Derek Fang <derek.fang@realtek.com>
 
-Whenever the packet parsing code starts parsing the ICMPv6 header, it
-first zeroes out fields in the key corresponding to Neighbor Discovery
-information even if it is not an ND packet.
-
-It is an 'ipv6.nd' field.  However, the 'ipv6' is a union that shares
-the space between 'nd' and 'ct_orig' that holds the original tuple
-conntrack metadata parsed from the OVS_PACKET_ATTR_KEY.
-
-ND packets should not normally have conntrack state, so it's fine to
-share the space, but normal ICMPv6 Echo packets or maybe other types of
-ICMPv6 can have the state attached and it should not be overwritten.
-
-The issue results in all but the last 4 bytes of the destination
-address being wiped from the original conntrack tuple leading to
-incorrect packet matching and potentially executing wrong actions
-in case this packet recirculates within the datapath or goes back
-to userspace.
-
-ND fields should not be accessed in non-ND packets, so not clearing
-them should be fine.  Executing memset() only for actual ND packets to
-avoid the issue.
-
-Initializing the whole thing before parsing is needed because ND packet
-may not contain all the options.
-
-The issue only affects the OVS_PACKET_CMD_EXECUTE path and doesn't
-affect packets entering OVS datapath from network interfaces, because
-in this case CT metadata is populated from skb after the packet is
-already parsed.
-
-Fixes: 9dd7f8907c37 ("openvswitch: Add original direction conntrack tuple to sw_flow_key.")
-Reported-by: Antonin Bas <antonin.bas@broadcom.com>
-Closes: https://github.com/openvswitch/ovs-issues/issues/327
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Link: https://lore.kernel.org/r/20240509094228.1035477-1-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://msgid.link/r/20240408091057.14165-1-derek.fang@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/flow.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/codecs/rt5645.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
-index 56b8e7167790f..857b1ffe3d856 100644
---- a/net/openvswitch/flow.c
-+++ b/net/openvswitch/flow.c
-@@ -427,7 +427,6 @@ static int parse_icmpv6(struct sk_buff *skb, struct sw_flow_key *key,
- 	 */
- 	key->tp.src = htons(icmp->icmp6_type);
- 	key->tp.dst = htons(icmp->icmp6_code);
--	memset(&key->ipv6.nd, 0, sizeof(key->ipv6.nd));
+diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
+index c78d5833c9cd9..6aab552eda777 100644
+--- a/sound/soc/codecs/rt5645.c
++++ b/sound/soc/codecs/rt5645.c
+@@ -414,6 +414,7 @@ struct rt5645_priv {
+ 	struct regmap *regmap;
+ 	struct i2c_client *i2c;
+ 	struct gpio_desc *gpiod_hp_det;
++	struct gpio_desc *gpiod_cbj_sleeve;
+ 	struct snd_soc_jack *hp_jack;
+ 	struct snd_soc_jack *mic_jack;
+ 	struct snd_soc_jack *btn_jack;
+@@ -3169,6 +3170,9 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
+ 		regmap_update_bits(rt5645->regmap, RT5645_IN1_CTRL2,
+ 			RT5645_CBJ_MN_JD, 0);
  
- 	if (icmp->icmp6_code == 0 &&
- 	    (icmp->icmp6_type == NDISC_NEIGHBOUR_SOLICITATION ||
-@@ -436,6 +435,8 @@ static int parse_icmpv6(struct sk_buff *skb, struct sw_flow_key *key,
- 		struct nd_msg *nd;
- 		int offset;
- 
-+		memset(&key->ipv6.nd, 0, sizeof(key->ipv6.nd));
++		if (rt5645->gpiod_cbj_sleeve)
++			gpiod_set_value(rt5645->gpiod_cbj_sleeve, 1);
 +
- 		/* In order to process neighbor discovery options, we need the
- 		 * entire packet.
- 		 */
+ 		msleep(600);
+ 		regmap_read(rt5645->regmap, RT5645_IN1_CTRL3, &val);
+ 		val &= 0x7;
+@@ -3185,6 +3189,8 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
+ 			snd_soc_dapm_disable_pin(dapm, "Mic Det Power");
+ 			snd_soc_dapm_sync(dapm);
+ 			rt5645->jack_type = SND_JACK_HEADPHONE;
++			if (rt5645->gpiod_cbj_sleeve)
++				gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
+ 		}
+ 		if (rt5645->pdata.level_trigger_irq)
+ 			regmap_update_bits(rt5645->regmap, RT5645_IRQ_CTRL2,
+@@ -3210,6 +3216,9 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
+ 		if (rt5645->pdata.level_trigger_irq)
+ 			regmap_update_bits(rt5645->regmap, RT5645_IRQ_CTRL2,
+ 				RT5645_JD_1_1_MASK, RT5645_JD_1_1_INV);
++
++		if (rt5645->gpiod_cbj_sleeve)
++			gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
+ 	}
+ 
+ 	return rt5645->jack_type;
+@@ -3861,6 +3870,16 @@ static int rt5645_i2c_probe(struct i2c_client *i2c,
+ 			return ret;
+ 	}
+ 
++	rt5645->gpiod_cbj_sleeve = devm_gpiod_get_optional(&i2c->dev, "cbj-sleeve",
++							   GPIOD_OUT_LOW);
++
++	if (IS_ERR(rt5645->gpiod_cbj_sleeve)) {
++		ret = PTR_ERR(rt5645->gpiod_cbj_sleeve);
++		dev_info(&i2c->dev, "failed to initialize gpiod, ret=%d\n", ret);
++		if (ret != -ENOENT)
++			return ret;
++	}
++
+ 	for (i = 0; i < ARRAY_SIZE(rt5645->supplies); i++)
+ 		rt5645->supplies[i].supply = rt5645_supply_names[i];
+ 
+@@ -4104,6 +4123,9 @@ static int rt5645_i2c_remove(struct i2c_client *i2c)
+ 	cancel_delayed_work_sync(&rt5645->jack_detect_work);
+ 	cancel_delayed_work_sync(&rt5645->rcclock_work);
+ 
++	if (rt5645->gpiod_cbj_sleeve)
++		gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
++
+ 	regulator_bulk_disable(ARRAY_SIZE(rt5645->supplies), rt5645->supplies);
+ 
+ 	return 0;
+@@ -4121,6 +4143,9 @@ static void rt5645_i2c_shutdown(struct i2c_client *i2c)
+ 		0);
+ 	msleep(20);
+ 	regmap_write(rt5645->regmap, RT5645_RESET, 0);
++
++	if (rt5645->gpiod_cbj_sleeve)
++		gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
+ }
+ 
+ static struct i2c_driver rt5645_i2c_driver = {
 -- 
 2.43.0
 
