@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-51119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BF1D906E6B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0701D906FCA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28E98B251C2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D0231C23169
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4D6146D7A;
-	Thu, 13 Jun 2024 12:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155F4145FE5;
+	Thu, 13 Jun 2024 12:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9UpCZ3U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/RI9KTm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09870145A0B;
-	Thu, 13 Jun 2024 12:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C696F14534A;
+	Thu, 13 Jun 2024 12:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280365; cv=none; b=UjsGw9VYD9WZ3mW0tHevePfT49g3uedWbGqzWoIzQpmabEKuqnDqR44ydvS1eqRd4nlDsKZQutq4NMSqiCXxx3tnBR/XWAEAwZcts0flhomqUlmeALreK0cV48lBbAdEP6qDAgZ13+V/UG7tkS46KrxqECJh+btDLZxuTFkMpU4=
+	t=1718281248; cv=none; b=EpNW5qpfryMDBGCR/TwjBF+ySGv4ob2aC3VsJapxyUGPLt0yB//t351i7P4Sht0pulzOnU3stU1KJdSAxQVd1NZ2miuS/3IVygDVlInxom+rN2xqHP/puMS2zKXqL3pcFrQ2YNUT6K9FoFLinF3AMeyc0T2LbjUTtCgxJtT/DT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280365; c=relaxed/simple;
-	bh=AunfuEYzfhSPGWQSJkC8l+ZRMY2JpynZnPTJJAcqtGM=;
+	s=arc-20240116; t=1718281248; c=relaxed/simple;
+	bh=Ofq/dNmXcwIKaun8BIZ3ujAcd+NVVhE+0E9MSo2SjRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3JZM98Ts2ti7Z7RMonZ1wuaNSEJR4/j3Xu1nwfhC0xZrz8nNMGql4qBQ9aM7bXj9hg46Td8AirZr8V5P/O1HabfVkfMVJXIUjMGt4uLkGFsq5ekzI8L57mGupACKt73xNe/wwaDq+O+Gy/aqVNdubKvIr1ns38EenIo0Jv7r1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9UpCZ3U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E5AC2BBFC;
-	Thu, 13 Jun 2024 12:06:04 +0000 (UTC)
+	 MIME-Version; b=mRYan+QAesh1Q9CqQXf2hGTfALh5sDaZHCT6u39AmeMXDxi9FoGVaJCAmbGnqln6ChCNVDVKUoSOVt4U/Q4qpjGRXPSrPJdVn1gY6k3BXem82hj5+sjS6uR0K45b1lVvandOMzAI9BIOoR+j+03Slea+rTBTapcLbX+/Mcp/Ko8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/RI9KTm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 229A2C2BBFC;
+	Thu, 13 Jun 2024 12:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280364;
-	bh=AunfuEYzfhSPGWQSJkC8l+ZRMY2JpynZnPTJJAcqtGM=;
+	s=korg; t=1718281248;
+	bh=Ofq/dNmXcwIKaun8BIZ3ujAcd+NVVhE+0E9MSo2SjRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S9UpCZ3UwS1dGCEjr3P/4FPESwNRsX5jK7JITFe0BD+sfvsJcX2kKlbw8+BituQW0
-	 vdor7gtRcGwn2JWasvl4FjjViJn+jKzz37lH8jztSpm1Wg+Vez4hIO/7uRZGBvxFAs
-	 Jp+4bK47oOWuWO17jh704WQ9pxgVOeOPZQQV+On4=
+	b=d/RI9KTmPixod/zzZBUEr19aFWqq8XM2i0tkuj9JCq3cPSslow2B1hj8vD/Zp30vK
+	 pGeWs2yAy74lK5Bcf8Ud2bfD9Z56TKwGBM9LBUwb7gLr+pNMEv5DR6Z7A3geixkLKL
+	 wLoCgeDLKoGk47e90QXwjkCL02QDiMgHzdMkFQhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 028/137] ACPI: resource: Do IRQ override on TongFang GXxHRXx and GMxHGxx
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kaige Ye <ye@kaige.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 190/317] perf stat: Dont display metric header for non-leader uncore events
 Date: Thu, 13 Jun 2024 13:33:28 +0200
-Message-ID: <20240613113224.380241497@linuxfoundation.org>
+Message-ID: <20240613113254.907414857@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +73,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Ian Rogers <irogers@google.com>
 
-commit c81bf14f9db68311c2e75428eea070d97d603975 upstream.
+[ Upstream commit 193a9e30207f54777ff42d0d8be8389edc522277 ]
 
-Listed devices need the override for the keyboard to work.
+On an Intel tigerlake laptop a metric like:
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    {
+        "BriefDescription": "Test",
+        "MetricExpr": "imc_free_running@data_read@ + imc_free_running@data_write@",
+        "MetricGroup": "Test",
+        "MetricName": "Test",
+        "ScaleUnit": "6.103515625e-5MiB"
+    },
+
+Will have 4 events:
+
+  uncore_imc_free_running_0/data_read/
+  uncore_imc_free_running_0/data_write/
+  uncore_imc_free_running_1/data_read/
+  uncore_imc_free_running_1/data_write/
+
+If aggregration is disabled with metric-only 2 column headers are
+needed:
+
+  $ perf stat -M test --metric-only -A -a sleep 1
+
+   Performance counter stats for 'system wide':
+
+                    MiB  Test            MiB  Test
+  CPU0                 1821.0               1820.5
+
+But when not, the counts aggregated in the metric leader and only 1
+column should be shown:
+
+  $ perf stat -M test --metric-only -a sleep 1
+   Performance counter stats for 'system wide':
+
+              MiB  Test
+                5909.4
+
+         1.001258915 seconds time elapsed
+
+Achieve this by skipping events that aren't metric leaders when
+printing column headers and aggregation isn't disabled.
+
+The bug is long standing, the fixes tag is set to a refactor as that
+is as far back as is reasonable to backport.
+
+Fixes: 088519f318be3a41 ("perf stat: Move the display functions to stat-display.c")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kaige Ye <ye@kaige.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20240510051309.2452468-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tools/perf/util/stat-display.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -594,6 +594,18 @@ static const struct dmi_system_id lg_lap
- 			DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
- 		},
- 	},
-+	{
-+		/* TongFang GXxHRXx/TUXEDO InfinityBook Pro Gen9 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GXxHRXx"),
-+		},
-+	},
-+	{
-+		/* TongFang GMxHGxx/TUXEDO Stellaris Slim Gen1 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
-+		},
-+	},
- 	{ }
- };
+diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
+index 971fd77bd3e61..8c2da9a3f953c 100644
+--- a/tools/perf/util/stat-display.c
++++ b/tools/perf/util/stat-display.c
+@@ -939,6 +939,9 @@ static void print_metric_headers(struct perf_stat_config *config,
  
+ 	/* Print metrics headers only */
+ 	evlist__for_each_entry(evlist, counter) {
++		if (config->aggr_mode != AGGR_NONE && counter->metric_leader != counter)
++			continue;
++
+ 		os.evsel = counter;
+ 		out.ctx = &os;
+ 		out.print_metric = print_metric_header;
+-- 
+2.43.0
+
 
 
 
