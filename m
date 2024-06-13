@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-51203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B43906EC5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:13:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38DA9907019
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAA5B282561
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:13:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7DB228960D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7F0143C5F;
-	Thu, 13 Jun 2024 12:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0BA8145A05;
+	Thu, 13 Jun 2024 12:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCBgc86T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJb3eAat"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7936EB56;
-	Thu, 13 Jun 2024 12:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7171C145B08;
+	Thu, 13 Jun 2024 12:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280609; cv=none; b=KqjVW00pV0xcOd2wxS8/dgVNRV84h9zLhqw5zSu/7KTiWrKpjE9KGGlA+VZO0Q95waA0+uc/DIaZPfebA1Ou9HzBW2MPIkvMdetfplKoYaE5RSl+BIz2mrmrEF0b8CXxesrRrZbKDTS/4GD7VmZtvDLXlC0ti0yV1taUrJ/Tl6I=
+	t=1718281404; cv=none; b=O+wb1WkIwpQYgfxh33zQi9WcQ6VKgurA1OzC0niQBoF3yJh21WYT9FrZN8RxABYEpvzYYCwN3Wu20fw7OJm9Os+OiK//qUQhMeg/pPUozAxo4tTkbWNtz8A8v/A655qJ1S3s6vZjcB8kDOHp2k/+j0VoK+BzBp+ResWHKi5eopQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280609; c=relaxed/simple;
-	bh=knO/ttw51sF4Dy+EXmex4qRI2yL53a/Lew2b8espY8U=;
+	s=arc-20240116; t=1718281404; c=relaxed/simple;
+	bh=6lZ+9BDQRzGWVsa+b4COvKQMZJDoCqLArsq2geuGNbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lU/1UnHD65RLhd+YJHT/y+lXh8u3SGf4zWfXjn53OecmtnHJ3so4Sg2tSG0PIlIy1VP924yx75V1pqz7YPqxPiN5MXCRaxHx0tUD5byTgihB74PJWa7m25A+jhRwYXXkp2wELp8lCzDQ0yZTHmsF6LFz6PqPQ1PhwbJyJTp3tNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCBgc86T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F27C2BBFC;
-	Thu, 13 Jun 2024 12:10:08 +0000 (UTC)
+	 MIME-Version; b=q92xwWlXgomRytq4ml98hpSyIegCkt83jcO3LaLzhaAKDYt1vV8ItZSGK8TzHqj5WrhlnvtNRy1tSxckwxWzqpP0yAqZ0igdBWBlJFL85pIjglGrEEDW4yqmxC93QrQVVerdnPBu3Fc0RfIVkK+JQmCej2m5+J1oPK+kWJXJ5SE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJb3eAat; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA50C2BBFC;
+	Thu, 13 Jun 2024 12:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280609;
-	bh=knO/ttw51sF4Dy+EXmex4qRI2yL53a/Lew2b8espY8U=;
+	s=korg; t=1718281404;
+	bh=6lZ+9BDQRzGWVsa+b4COvKQMZJDoCqLArsq2geuGNbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bCBgc86Tpm8eOtDfkzjqJpfOmdZTVgK4doYofr/o8oEm4qkiF49j5tmWxe/htNl/R
-	 HKahmA4vh3/+VDhO6d/+92DxvJhkvxNDD3DAdZNgiym19OvfGJ38S7xE8jGRbp6YFz
-	 C8goQoq0K6sLoZ+re67kth+BKIB7RP/kqWO6Fkhc=
+	b=hJb3eAattRPcItMvaOd1yko+ruzNBfzPaX5ObPsgRrP1kJ0SzItGkviTIgxI9HnNE
+	 HDQqRsfvOIH2uvhKHPOaL7uHGKBaFRRqAWOXCpRUeecLpxlwbEfjw5uouewKwDKQc9
+	 T2sLVYnjNKajT4BGz6YusG/65kk38eSw1X8KE8Wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	David Hildenbrand <david@redhat.com>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
-	Stefan Roesch <shr@devkernel.io>,
-	Yang Yang <yang.yang29@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 081/137] mm/ksm: fix ksm_pages_scanned accounting
-Date: Thu, 13 Jun 2024 13:34:21 +0200
-Message-ID: <20240613113226.439810216@linuxfoundation.org>
+	Ryosuke Yasuoka <ryasuoka@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 244/317] nfc: nci: Fix handling of zero-length payload packets in nci_rx_work()
+Date: Thu, 13 Jun 2024 13:34:22 +0200
+Message-ID: <20240613113256.989312161@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengming Zhou <chengming.zhou@linux.dev>
+From: Ryosuke Yasuoka <ryasuoka@redhat.com>
 
-commit 730cdc2c72c6905a2eda2fccbbf67dcef1206590 upstream.
+[ Upstream commit 6671e352497ca4bb07a96c48e03907065ff77d8a ]
 
-Patch series "mm/ksm: fix some accounting problems", v3.
+When nci_rx_work() receives a zero-length payload packet, it should not
+discard the packet and exit the loop. Instead, it should continue
+processing subsequent packets.
 
-We encountered some abnormal ksm_pages_scanned and ksm_zero_pages during
-some random tests.
-
-1. ksm_pages_scanned unchanged even ksmd scanning has progress.
-2. ksm_zero_pages maybe -1 in some rare cases.
-
-
-This patch (of 2):
-
-During testing, I found ksm_pages_scanned is unchanged although the
-scan_get_next_rmap_item() did return valid rmap_item that is not NULL.
-
-The reason is the scan_get_next_rmap_item() will return NULL after a full
-scan, so ksm_do_scan() just return without accounting of the
-ksm_pages_scanned.
-
-Fix it by just putting ksm_pages_scanned accounting in that loop, and it
-will be accounted more timely if that loop would last for a long time.
-
-Link: https://lkml.kernel.org/r/20240528-b4-ksm-counters-v3-0-34bb358fdc13@linux.dev
-Link: https://lkml.kernel.org/r/20240528-b4-ksm-counters-v3-1-34bb358fdc13@linux.dev
-Fixes: b348b5fe2b5f ("mm/ksm: add pages scanned metric")
-Signed-off-by: Chengming Zhou <chengming.zhou@linux.dev>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: xu xin <xu.xin16@zte.com.cn>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Cc: Stefan Roesch <shr@devkernel.io>
-Cc: Yang Yang <yang.yang29@zte.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
+Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240521153444.535399-1-ryasuoka@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/ksm.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/nfc/nci/core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2486,18 +2486,16 @@ static void ksm_do_scan(unsigned int sca
- {
- 	struct ksm_rmap_item *rmap_item;
- 	struct page *page;
--	unsigned int npages = scan_npages;
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index ada7f32d03e48..a7e6b8b272505 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1517,8 +1517,7 @@ static void nci_rx_work(struct work_struct *work)
  
--	while (npages-- && likely(!freezing(current))) {
-+	while (scan_npages-- && likely(!freezing(current))) {
- 		cond_resched();
- 		rmap_item = scan_get_next_rmap_item(&page);
- 		if (!rmap_item)
- 			return;
- 		cmp_and_merge_page(page, rmap_item);
- 		put_page(page);
-+		ksm_pages_scanned++;
- 	}
--
--	ksm_pages_scanned += scan_npages - npages;
- }
+ 		if (!nci_valid_size(skb)) {
+ 			kfree_skb(skb);
+-			kcov_remote_stop();
+-			break;
++			continue;
+ 		}
  
- static int ksmd_should_run(void)
+ 		/* Process frame */
+-- 
+2.43.0
+
 
 
 
