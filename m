@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-50643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BAA906BAC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D48EE906CA1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7BBE1F22E2B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DDFE1F23C8C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7ADD143897;
-	Thu, 13 Jun 2024 11:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D5D145B1B;
+	Thu, 13 Jun 2024 11:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lENz9Bid"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NkD+fNYL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33B6143C55;
-	Thu, 13 Jun 2024 11:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786276AFAE;
+	Thu, 13 Jun 2024 11:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278967; cv=none; b=uZUaAvoSOe9cD9E+gf5IBIPZSWIZS6WjaHBZZxZqDoJUhqT5grGQMFlcafvkEq6aJNVNAvv7GrKHiXqJqcLa0ZazpFmytbhlx5KFp0qZW6XXhFseppRe+N4wzlWlVkBU6i8wScEWfvs7QQ1nzQreTGVCFCD+EsiBrh5Vni1T/s0=
+	t=1718279378; cv=none; b=Bl0/F46OS51ZohRXXV6JMUdwkI6btPGTjzXwKbx1o8Zpzt4YBFoIJlZ3yMm5Zs4Ze20SAatOQM/6LVX0J3ea1TzLvCwwKbTSKjmTX5M+Hp4qGxyP0KCdf8Twi6leCjxRURtLncsC+CelsUBy5RxmPIyu9y2zallmfVJNaIoQ8J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278967; c=relaxed/simple;
-	bh=o0fp1I1jNy9Xudxz3Y6k88oPWhU/Cgw98I7mXGYm0GE=;
+	s=arc-20240116; t=1718279378; c=relaxed/simple;
+	bh=mSiazMd0rU950ApFYr2Cw+jeVeIAXMXvRkO/U34s7LQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ii+nmEif1SXh9d9u/Vs67qdY7sc65Y3C9YBxjQ0BOewkbOwYiqO5E74daWMeQN0DRHJgWbbRS+IEMFjZUInzEqhkv8MRmMquB9y5j7gVZXxjpFP8+LsunL2uogoVjgtlMNr4za6O1KU4D1b6SmCYtVq3V1tmh9qPEUWnICddS5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lENz9Bid; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5FDC32786;
-	Thu, 13 Jun 2024 11:42:46 +0000 (UTC)
+	 MIME-Version; b=uHFKYbaXbaG17vytJ0gUbJme2PwfT8QLn5qOjNbOOJARN2R1KPGUYxXBJggWZp2D1gx2dJ8GfubPbv2uGee+QsrWbzkIolbh/KtXSuMkln+F5zyRVZUXVTI84tM2mDX2I0ks4Bs/90UjvAYySUjMjRmhkdDJCkHcVyVIRTLOfXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkD+fNYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001F7C2BBFC;
+	Thu, 13 Jun 2024 11:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278967;
-	bh=o0fp1I1jNy9Xudxz3Y6k88oPWhU/Cgw98I7mXGYm0GE=;
+	s=korg; t=1718279378;
+	bh=mSiazMd0rU950ApFYr2Cw+jeVeIAXMXvRkO/U34s7LQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lENz9BidK647X7JE8Neo9N/yQRgpL1d/mVTg7cgKakrl3MS/ahnWeaN2g1NTpv6uZ
-	 nWjiS/EFiyqBHBxkpFyYXFT4Xk46cf1y8DhbbQAA6h8BcSwSfjSWup5yXUKObuSp1e
-	 dIk6GexveS81zxxjkuvT0GGYqZRUeIXHvS5QlyQA=
+	b=NkD+fNYLpnFGXHYnvTXNQaNtrZyWVHFEM6YeZgJpS7Yg6lyMOEwEiKHtCwduQ4ek6
+	 TZGSPLAgBOb8sEa0txJwdqHL8WW8CDyE+jf6g+Cp46BCm5KswmJwAqF3pVnYAD+sko
+	 4mJsvbZGVFhoikB5DEVrZj4zG6PQPLjpzk6XgulI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 131/213] netfilter: nfnetlink_queue: acquire rcu_read_lock() in instance_destroy_rcu()
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Dominique Martinet <asmadeus@codewreck.org>
+Subject: [PATCH 6.9 054/157] 9p: add missing locking around taking dentry fid list
 Date: Thu, 13 Jun 2024 13:32:59 +0200
-Message-ID: <20240613113233.051217270@linuxfoundation.org>
+Message-ID: <20240613113229.515996913@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dominique Martinet <asmadeus@codewreck.org>
 
-[ Upstream commit dc21c6cc3d6986d938efbf95de62473982c98dec ]
+commit c898afdc15645efb555acb6d85b484eb40a45409 upstream.
 
-syzbot reported that nf_reinject() could be called without rcu_read_lock() :
+Fix a use-after-free on dentry's d_fsdata fid list when a thread
+looks up a fid through dentry while another thread unlinks it:
 
-WARNING: suspicious RCU usage
-6.9.0-rc7-syzkaller-02060-g5c1672705a1a #0 Not tainted
+UAF thread:
+refcount_t: addition on 0; use-after-free.
+ p9_fid_get linux/./include/net/9p/client.h:262
+ v9fs_fid_find+0x236/0x280 linux/fs/9p/fid.c:129
+ v9fs_fid_lookup_with_uid linux/fs/9p/fid.c:181
+ v9fs_fid_lookup+0xbf/0xc20 linux/fs/9p/fid.c:314
+ v9fs_vfs_getattr_dotl+0xf9/0x360 linux/fs/9p/vfs_inode_dotl.c:400
+ vfs_statx+0xdd/0x4d0 linux/fs/stat.c:248
 
-net/netfilter/nfnetlink_queue.c:263 suspicious rcu_dereference_check() usage!
+Freed by:
+ p9_fid_destroy (inlined)
+ p9_client_clunk+0xb0/0xe0 linux/net/9p/client.c:1456
+ p9_fid_put linux/./include/net/9p/client.h:278
+ v9fs_dentry_release+0xb5/0x140 linux/fs/9p/vfs_dentry.c:55
+ v9fs_remove+0x38f/0x620 linux/fs/9p/vfs_inode.c:518
+ vfs_unlink+0x29a/0x810 linux/fs/namei.c:4335
 
-other info that might help us debug this:
+The problem is that d_fsdata was not accessed under d_lock, because
+d_release() normally is only called once the dentry is otherwise no
+longer accessible but since we also call it explicitly in v9fs_remove
+that lock is required:
+move the hlist out of the dentry under lock then unref its fids once
+they are no longer accessible.
 
-rcu_scheduler_active = 2, debug_locks = 1
-2 locks held by syz-executor.4/13427:
-  #0: ffffffff8e334f60 (rcu_callback){....}-{0:0}, at: rcu_lock_acquire include/linux/rcupdate.h:329 [inline]
-  #0: ffffffff8e334f60 (rcu_callback){....}-{0:0}, at: rcu_do_batch kernel/rcu/tree.c:2190 [inline]
-  #0: ffffffff8e334f60 (rcu_callback){....}-{0:0}, at: rcu_core+0xa86/0x1830 kernel/rcu/tree.c:2471
-  #1: ffff88801ca92958 (&inst->lock){+.-.}-{2:2}, at: spin_lock_bh include/linux/spinlock.h:356 [inline]
-  #1: ffff88801ca92958 (&inst->lock){+.-.}-{2:2}, at: nfqnl_flush net/netfilter/nfnetlink_queue.c:405 [inline]
-  #1: ffff88801ca92958 (&inst->lock){+.-.}-{2:2}, at: instance_destroy_rcu+0x30/0x220 net/netfilter/nfnetlink_queue.c:172
-
-stack backtrace:
-CPU: 0 PID: 13427 Comm: syz-executor.4 Not tainted 6.9.0-rc7-syzkaller-02060-g5c1672705a1a #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-Call Trace:
- <IRQ>
-  __dump_stack lib/dump_stack.c:88 [inline]
-  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
-  lockdep_rcu_suspicious+0x221/0x340 kernel/locking/lockdep.c:6712
-  nf_reinject net/netfilter/nfnetlink_queue.c:323 [inline]
-  nfqnl_reinject+0x6ec/0x1120 net/netfilter/nfnetlink_queue.c:397
-  nfqnl_flush net/netfilter/nfnetlink_queue.c:410 [inline]
-  instance_destroy_rcu+0x1ae/0x220 net/netfilter/nfnetlink_queue.c:172
-  rcu_do_batch kernel/rcu/tree.c:2196 [inline]
-  rcu_core+0xafd/0x1830 kernel/rcu/tree.c:2471
-  handle_softirqs+0x2d6/0x990 kernel/softirq.c:554
-  __do_softirq kernel/softirq.c:588 [inline]
-  invoke_softirq kernel/softirq.c:428 [inline]
-  __irq_exit_rcu+0xf4/0x1c0 kernel/softirq.c:637
-  irq_exit_rcu+0x9/0x30 kernel/softirq.c:649
-  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1043 [inline]
-  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1043
- </IRQ>
- <TASK>
-
-Fixes: 9872bec773c2 ("[NETFILTER]: nfnetlink: use RCU for queue instances hash")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 154372e67d40 ("fs/9p: fix create-unlink-getattr idiom")
+Cc: stable@vger.kernel.org
+Reported-by: Meysam Firouzi
+Reported-by: Amirmohammad Eftekhar
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Message-ID: <20240521122947.1080227-1-asmadeus@codewreck.org>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nfnetlink_queue.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/9p/vfs_dentry.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index 1aacc31a6bf92..6ed2be4ac88eb 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -171,7 +171,9 @@ instance_destroy_rcu(struct rcu_head *head)
- 	struct nfqnl_instance *inst = container_of(head, struct nfqnl_instance,
- 						   rcu);
+--- a/fs/9p/vfs_dentry.c
++++ b/fs/9p/vfs_dentry.c
+@@ -48,12 +48,17 @@ static int v9fs_cached_dentry_delete(con
+ static void v9fs_dentry_release(struct dentry *dentry)
+ {
+ 	struct hlist_node *p, *n;
++	struct hlist_head head;
  
-+	rcu_read_lock();
- 	nfqnl_flush(inst, NULL, 0);
-+	rcu_read_unlock();
- 	kfree(inst);
- 	module_put(THIS_MODULE);
+ 	p9_debug(P9_DEBUG_VFS, " dentry: %pd (%p)\n",
+ 		 dentry, dentry);
+-	hlist_for_each_safe(p, n, (struct hlist_head *)&dentry->d_fsdata)
++
++	spin_lock(&dentry->d_lock);
++	hlist_move_list((struct hlist_head *)&dentry->d_fsdata, &head);
++	spin_unlock(&dentry->d_lock);
++
++	hlist_for_each_safe(p, n, &head)
+ 		p9_fid_put(hlist_entry(p, struct p9_fid, dlist));
+-	dentry->d_fsdata = NULL;
  }
--- 
-2.43.0
-
+ 
+ static int v9fs_lookup_revalidate(struct dentry *dentry, unsigned int flags)
 
 
 
