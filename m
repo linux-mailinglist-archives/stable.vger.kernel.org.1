@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-50935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47078906D7F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B3F906B86
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB569285A92
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 994EA1C21B88
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FCB5145A0E;
-	Thu, 13 Jun 2024 11:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D15143C4B;
+	Thu, 13 Jun 2024 11:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeBvHRNt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFceJ31L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A3A143C55;
-	Thu, 13 Jun 2024 11:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9892B143866;
+	Thu, 13 Jun 2024 11:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279820; cv=none; b=PrXg2BsjKRqg5BAepX9Xu3hZ9dzPmeyxVXf7sK4AdQ5Q/EyeZX6hFBCz66p2yWwI8Zw8G0clrmqJgp03/YWKwU/zhY9QtI242gbeu66q5Cr+xfsRVhg0v25ywOinf56wUX4YO9nreCRSi/u6dpMp4d1Snag7nWNbywKjgPBXfD8=
+	t=1718278870; cv=none; b=ZsdvoFg7w31jgZqvAL+v0AUUJaAvV4JRrl5LWQqSoMOHzCa4HCcFlZbR4lUpeQe0+TKVxjUTjSPlBc02iSJqcZbZ+I6IbsxJvgIIgB0yzrgm2/dVDzrjTcdR+6d5g8V7+QpE9JBXuttf8J5+8QB4pZr0Qit87DXN0H0KHdxt1Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279820; c=relaxed/simple;
-	bh=LYlypHw2R2Pi7R6OM1DocPfoB697URyLlbxnAuAOlvg=;
+	s=arc-20240116; t=1718278870; c=relaxed/simple;
+	bh=XSqT1DNZkN7TRXqZ7Im/qe/rEEI+iBftdh70c8Qge28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SnG/4TCmO2ZeIZxmy9Erg5fVfsqms9uIeNLiAvNJVDDe1gAK4ddNcMKN993C8tgnkHftGdHtf11YzOk+cwoF1bNknED1HSXsm2oJDsYpNBwa7Z48gXOkYyZt0r8HcWekf5SQnfS5D5MHyeHWnqMEBRxXfgNG+2fuUhp7zB0FPqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeBvHRNt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48647C2BBFC;
-	Thu, 13 Jun 2024 11:57:00 +0000 (UTC)
+	 MIME-Version; b=u0V7mE6HJ1GF0O331WKrB693dKstL1P+BhtImD7fqq0bquruseH+48pyUFWHGvDlrn05RGLFWDtA+FegGJLQJWxIdZbTos59rSA6R1m8nm8yZa9zds3khHZBtWElKAEoq1GfV+CwUIjGHEQZkIP7LRzmxOrkwBwCGXVLqwygYig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFceJ31L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22565C2BBFC;
+	Thu, 13 Jun 2024 11:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279820;
-	bh=LYlypHw2R2Pi7R6OM1DocPfoB697URyLlbxnAuAOlvg=;
+	s=korg; t=1718278870;
+	bh=XSqT1DNZkN7TRXqZ7Im/qe/rEEI+iBftdh70c8Qge28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zeBvHRNtSzwGdENIYauZxf8ZUdkBk7JM+dIU9zvg6dCZvbqv875O5EmpKYJ1cDgbz
-	 JqPVsR5FBo+PScHBwc4TykL+GUjSBrj+DinaVo0lAc10HfurujuhrAGpHkbx01AFPU
-	 wyYOsSPlxoOhz69Dh537qXj/Rvnn/wVQ1CvlC9VM=
+	b=UFceJ31LQc3Df8SbExEJg3Ns6wYuP2pnR1SOtInAAuxvSLuJO42jpNKaq4+SgFQTU
+	 G7FvZskwUQugPivg5QUhIRWku/n2xsAKcfuW1F8wNJRimnuimeMKaLYpHDsuWF28Jc
+	 YXee0wekc4LBAvWNV0rJn2NHvFymzin5FvMEotaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 047/202] tcp: avoid premature drops in tcp_add_backlog()
-Date: Thu, 13 Jun 2024 13:32:25 +0200
-Message-ID: <20240613113229.588647299@linuxfoundation.org>
+Subject: [PATCH 4.19 098/213] microblaze: Remove early printk call from cpuinfo-static.c
+Date: Thu, 13 Jun 2024 13:32:26 +0200
+Message-ID: <20240613113231.789319248@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michal Simek <michal.simek@amd.com>
 
-[ Upstream commit ec00ed472bdb7d0af840da68c8c11bff9f4d9caa ]
+[ Upstream commit 58d647506c92ccd3cfa0c453c68ddd14f40bf06f ]
 
-While testing TCP performance with latest trees,
-I saw suspect SOCKET_BACKLOG drops.
+Early printk has been removed already that's why also remove calling it.
+Similar change has been done in cpuinfo-pvr-full.c by commit cfbd8d1979af
+("microblaze: Remove early printk setup").
 
-tcp_add_backlog() computes its limit with :
-
-    limit = (u32)READ_ONCE(sk->sk_rcvbuf) +
-            (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
-    limit += 64 * 1024;
-
-This does not take into account that sk->sk_backlog.len
-is reset only at the very end of __release_sock().
-
-Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
-sk_rcvbuf in normal conditions.
-
-We should double sk->sk_rcvbuf contribution in the formula
-to absorb bubbles in the backlog, which happen more often
-for very fast flows.
-
-This change maintains decent protection against abuses.
-
-Fixes: c377411f2494 ("net: sk_add_backlog() take rmem_alloc into account")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240423125620.3309458-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 96f0e6fcc9ad ("microblaze: remove redundant early_printk support")
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/r/2f10db506be8188fa07b6ec331caca01af1b10f8.1712824039.git.michal.simek@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ arch/microblaze/kernel/cpu/cpuinfo-static.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index d29d4b8192643..c18ad443ca7db 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -1678,7 +1678,7 @@ int tcp_v4_early_demux(struct sk_buff *skb)
+diff --git a/arch/microblaze/kernel/cpu/cpuinfo-static.c b/arch/microblaze/kernel/cpu/cpuinfo-static.c
+index 85dbda4a08a81..03da36dc6d9c9 100644
+--- a/arch/microblaze/kernel/cpu/cpuinfo-static.c
++++ b/arch/microblaze/kernel/cpu/cpuinfo-static.c
+@@ -18,7 +18,7 @@ static const char family_string[] = CONFIG_XILINX_MICROBLAZE0_FAMILY;
+ static const char cpu_ver_string[] = CONFIG_XILINX_MICROBLAZE0_HW_VER;
  
- bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
+ #define err_printk(x) \
+-	early_printk("ERROR: Microblaze " x "-different for kernel and DTS\n");
++	pr_err("ERROR: Microblaze " x "-different for kernel and DTS\n");
+ 
+ void __init set_cpuinfo_static(struct cpuinfo *ci, struct device_node *cpu)
  {
--	u32 limit, tail_gso_size, tail_gso_segs;
-+	u32 tail_gso_size, tail_gso_segs;
- 	struct skb_shared_info *shinfo;
- 	const struct tcphdr *th;
- 	struct tcphdr *thtail;
-@@ -1687,6 +1687,7 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
- 	bool fragstolen;
- 	u32 gso_segs;
- 	u32 gso_size;
-+	u64 limit;
- 	int delta;
- 
- 	/* In case all data was pulled from skb frags (in __pskb_pull_tail()),
-@@ -1781,7 +1782,13 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
- 	__skb_push(skb, hdrlen);
- 
- no_coalesce:
--	limit = (u32)READ_ONCE(sk->sk_rcvbuf) + (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
-+	/* sk->sk_backlog.len is reset only at the end of __release_sock().
-+	 * Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
-+	 * sk_rcvbuf in normal conditions.
-+	 */
-+	limit = ((u64)READ_ONCE(sk->sk_rcvbuf)) << 1;
-+
-+	limit += ((u32)READ_ONCE(sk->sk_sndbuf)) >> 1;
- 
- 	/* Only socket owner can try to collapse/prune rx queues
- 	 * to reduce memory overhead, so add a little headroom here.
-@@ -1789,6 +1796,8 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
- 	 */
- 	limit += 64 * 1024;
- 
-+	limit = min_t(u64, limit, UINT_MAX);
-+
- 	if (unlikely(sk_add_backlog(sk, skb, limit))) {
- 		bh_unlock_sock(sk);
- 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPBACKLOGDROP);
 -- 
 2.43.0
 
