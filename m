@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D5949070DE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A64906F22
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8CE11F22DF9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ACEE1F23213
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688901E4A2;
-	Thu, 13 Jun 2024 12:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63ABE143867;
+	Thu, 13 Jun 2024 12:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlvy0cV3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XETviQ1/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E371DDD6;
-	Thu, 13 Jun 2024 12:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B766EB56;
+	Thu, 13 Jun 2024 12:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281895; cv=none; b=s3VQ7pPzdFDK/zr4Uqdf1CKw79YsngwwFZzourStkQD5Hauk+jGq2h/AEC+GqioER8qeI8gn1NjUkPThoGJSZmdp7kvkuyM0qpHGGoOfIyk3MiSILn8KXL/SYybtmYAlbNNUlgxs9tUSbDadVZcUDhCEFlcPmlo9KNharQYf6cM=
+	t=1718280833; cv=none; b=nHOGVoL7vgkDqhDUyOVXhVO1BOv69DQXHlKDYpMKglOzm39RTlAHvm7pThSHQfOa/jctc9KkJIswQiJ/Tfz0agn9AtshDYOradni3aOPqicZqUNn6uTCpbhcsIEC15TsaAX15RKR+OXreVzLto01MPvLEg0xvcNVDn/P67H39Zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281895; c=relaxed/simple;
-	bh=JOIN1DZIuv7LI4dewb3gcmb2vo1VxM3T5gB+1Lb5Uxk=;
+	s=arc-20240116; t=1718280833; c=relaxed/simple;
+	bh=8rR1WV+HFESfGx/gtYFXLpD2hahDzyfTdB4SDva+3K4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMLYfuDm/3m9RLcLYzmxUYLpU9RN8K/OwnNGNx1QLkS2FSfJo+wkURW+5MAcF+XZ0r7weHXYW0pZnKgzH4f8zg9CYBdOPAU2egzhAVr/If80oQwbS41NiycI4drO1RNKMPSan9zhR5SS0mNUwHAZDztvvgsvFzq2UzPaJnY9Jko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlvy0cV3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25CDC2BBFC;
-	Thu, 13 Jun 2024 12:31:34 +0000 (UTC)
+	 MIME-Version; b=R2zcmU9rLUbvuQCCSZpTJuH2KCeuue7zNEA/N6XR9SFhJeaxWSKZNcNTQ1pC9xEB4B8LbI+xzwzTk6yBGJWqYyHSf79KYA3ApwqEaQEWpfuCVp5oteq4CFdiSaT+9Y46cQIsU45sx1uZ8NI6vqaGpNl4+2SM8A1y3HYgJdhiFEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XETviQ1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9619AC2BBFC;
+	Thu, 13 Jun 2024 12:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281895;
-	bh=JOIN1DZIuv7LI4dewb3gcmb2vo1VxM3T5gB+1Lb5Uxk=;
+	s=korg; t=1718280833;
+	bh=8rR1WV+HFESfGx/gtYFXLpD2hahDzyfTdB4SDva+3K4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xlvy0cV3Y8ztUcjk8NIuSyqwJRBhNaJfCc2+dn0Zz8op5uyyV77YIyngiNGSvt/8H
-	 n6iJqaA/5Se71YnkogOtk+qrxjiKaI3jMUXaQmELpBikYpa4mah0vPUr5KBzX4TNxO
-	 RYP6Wapp2uxpHAKex93NsBSf35xe7YrKAk9h2TIo=
+	b=XETviQ1/ZID+kFozoLbOeWuaSDVkg8AvLbzdvHEYe6v5GOEVdgE0UrXgFJx+wjFW+
+	 np+fkzTlo5eI3zyDtqFKy5Ck+n624mU5JtlQLvvqz+O51RSTbHPCFIxgIqAllUv+ND
+	 ILzDrMo+hBFhyptRSzmiuppOkR9IvgeCTLGftwlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 093/402] macintosh/via-macii: Fix "BUG: sleeping function called from invalid context"
+Subject: [PATCH 5.10 032/317] null_blk: Fix missing mutex_destroy() at module removal
 Date: Thu, 13 Jun 2024 13:30:50 +0200
-Message-ID: <20240613113305.767426361@linuxfoundation.org>
+Message-ID: <20240613113248.784579109@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-[ Upstream commit d301a71c76ee4c384b4e03cdc320a55f5cf1df05 ]
+[ Upstream commit 07d1b99825f40f9c0d93e6b99d79a08d0717bac1 ]
 
-The via-macii ADB driver calls request_irq() after disabling hard
-interrupts. But disabling interrupts isn't necessary here because the
-VIA shift register interrupt was masked during VIA1 initialization.
+When a mutex lock is not used any more, the function mutex_destroy
+should be called to mark the mutex lock uninitialized.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/419fcc09d0e563b425c419053d02236b044d86b0.1710298421.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: f2298c0403b0 ("null_blk: multi queue aware block test driver")
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Link: https://lore.kernel.org/r/20240425171635.4227-1-yanjun.zhu@linux.dev
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/macintosh/via-macii.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/block/null_blk/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/macintosh/via-macii.c b/drivers/macintosh/via-macii.c
-index db9270da5b8e9..b6ddf1d47cb4e 100644
---- a/drivers/macintosh/via-macii.c
-+++ b/drivers/macintosh/via-macii.c
-@@ -140,24 +140,19 @@ static int macii_probe(void)
- /* Initialize the driver */
- static int macii_init(void)
- {
--	unsigned long flags;
- 	int err;
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 35b390a785dd4..ee1c3f476a3a0 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -2032,6 +2032,8 @@ static void __exit null_exit(void)
  
--	local_irq_save(flags);
--
- 	err = macii_init_via();
- 	if (err)
--		goto out;
-+		return err;
- 
- 	err = request_irq(IRQ_MAC_ADB, macii_interrupt, 0, "ADB",
- 			  macii_interrupt);
- 	if (err)
--		goto out;
-+		return err;
- 
- 	macii_state = idle;
--out:
--	local_irq_restore(flags);
--	return err;
-+	return 0;
+ 	if (g_queue_mode == NULL_Q_MQ && shared_tags)
+ 		blk_mq_free_tag_set(&tag_set);
++
++	mutex_destroy(&lock);
  }
  
- /* initialize the hardware */
+ module_init(null_init);
 -- 
 2.43.0
 
