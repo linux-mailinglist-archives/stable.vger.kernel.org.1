@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-50921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD42F906D73
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76AB3906B9C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DC16B26FFF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EEA71C2185F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69A21487F4;
-	Thu, 13 Jun 2024 11:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADCD144D0C;
+	Thu, 13 Jun 2024 11:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJx0bxc4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M90jh+pa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737A21487E9;
-	Thu, 13 Jun 2024 11:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BEB144D00;
+	Thu, 13 Jun 2024 11:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279779; cv=none; b=jYLicvdtfBkkitvX/nW7CbjlLC/zWCyScEfkn1rnGDc1bcO0y5dHkmQlmAjb2uEoDD6Jc28yAI0RHqxBUiiXut5VxEP/qpTIdbzrXtQ4MfXuFuEWQYwEVamvDvm31XNI10zN9FYV7Ja6oPJwVLxplhGHkslg5xhvMo0fNVOqMFY=
+	t=1718278920; cv=none; b=LYgmYNZ0oCCTFQ4dOHNxrai91ILUjjtw2zCGlHdlGFhrMVanZwq2QW8OJJwcDbEg/2hT+7LE7ABMLfYnS4bkLp1QT17tr6aKnsLHJr2Y4EvRYAk1GyeOiZ3hmoYBITROnRn74j4rZHWdiZmsOz3sJvHjViyaUbORdKsXdlT4V6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279779; c=relaxed/simple;
-	bh=pF3TsHBGGWTuCFFX4mFDG3tUGcs8fxFf8/TbWqRu+ug=;
+	s=arc-20240116; t=1718278920; c=relaxed/simple;
+	bh=FTvsF0rQgUtWC+5UslWo0XTquX8ILB7CaPgyzU3mhww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzeQ1JJSLwk6yz/tix2eM7AcG9wtqRqQcS3IEtxnd/bIAc7kr72u7EzD0gSC4pTe31wFm4JItETmiVx3mEILKhs/K1IOx+4+Dd3Giof9QoaeQhbXTfbLYiTCKcuTbVBoZUYGEDl7ZtRUCFZoWOARGfEu4Tj6WkanSdLzLPBMV0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJx0bxc4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC043C2BBFC;
-	Thu, 13 Jun 2024 11:56:18 +0000 (UTC)
+	 MIME-Version; b=NlVhWfDGnaUzjZJzIdgqqXpDFRdxN6/cxJK10e9Gj0R+PfPCzC88XVYTWRVgDptfM4tLFUUkJYR+tMu9fDnrKIY16YQCfobDdiWv+pJby9oUmY1tCR5bxbGCpp1LG1TzIW/rU72PdkHIWvdGFFcxsDZJwaM3P3/ddcSG5aSfuGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M90jh+pa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9ED6C2BBFC;
+	Thu, 13 Jun 2024 11:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279779;
-	bh=pF3TsHBGGWTuCFFX4mFDG3tUGcs8fxFf8/TbWqRu+ug=;
+	s=korg; t=1718278920;
+	bh=FTvsF0rQgUtWC+5UslWo0XTquX8ILB7CaPgyzU3mhww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJx0bxc4CMVMg9kowGZO161diDXza8j3Tv+T08ulz0bH5xqHG+5LW/MVau/WDHJWj
-	 Wj8Fpq1fbu3/jqsas8/CoTE3N9ejRRfuKYnoahTJSsnwqQuxtGPleVbrya53jRVsoa
-	 aNpWqsreUZllGeIwzPq2aqUhdI1ELqb45TTT6uCY=
+	b=M90jh+paZohf/JbMoMTHCzLx6kuq1Po94TMefF8O4Yi/6QqEyrQBBLajfL3t8H812
+	 vjFjTEA+ihorNhUgqeyZIW9qzSJvO8O9GLzgG1Fq9PSjS7foXzaZGRcgxoL6pR9mKm
+	 WlByBRJAMGoBAo8HD0h044VYNgjfF5rq/deuGNho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Neil Horman <nhorman@tuxdriver.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 034/202] irqchip/alpine-msi: Fix off-by-one in allocation error path
+Subject: [PATCH 4.19 084/213] af_packet: do not call packet_read_pending() from tpacket_destruct_skb()
 Date: Thu, 13 Jun 2024 13:32:12 +0200
-Message-ID: <20240613113229.090768654@linuxfoundation.org>
+Message-ID: <20240613113231.251681513@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenghui Yu <yuzenghui@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ff3669a71afa06208de58d6bea1cc49d5e3fcbd1 ]
+[ Upstream commit 581073f626e387d3e7eed55c48c8495584ead7ba ]
 
-When alpine_msix_gic_domain_alloc() fails, there is an off-by-one in the
-number of interrupts to be freed.
+trafgen performance considerably sank on hosts with many cores
+after the blamed commit.
 
-Fix it by passing the number of successfully allocated interrupts, instead
-of the relative index of the last allocated one.
+packet_read_pending() is very expensive, and calling it
+in af_packet fast path defeats Daniel intent in commit
+b013840810c2 ("packet: use percpu mmap tx frame pending refcount")
 
-Fixes: 3841245e8498 ("irqchip/alpine-msi: Fix freeing of interrupts on allocation error path")
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240327142305.1048-1-yuzenghui@huawei.com
+tpacket_destruct_skb() makes room for one packet, we can immediately
+wakeup a producer, no need to completely drain the tx ring.
+
+Fixes: 89ed5b519004 ("af_packet: Block execution of tasks waiting for transmit to complete in AF_PACKET")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Neil Horman <nhorman@tuxdriver.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20240515163358.4105915-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-alpine-msi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/packet/af_packet.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-alpine-msi.c b/drivers/irqchip/irq-alpine-msi.c
-index 1819bb1d27230..aedbc4befcdf0 100644
---- a/drivers/irqchip/irq-alpine-msi.c
-+++ b/drivers/irqchip/irq-alpine-msi.c
-@@ -165,7 +165,7 @@ static int alpine_msix_middle_domain_alloc(struct irq_domain *domain,
- 	return 0;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index e8b05769d1c9a..4ddc60c7509fb 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2441,8 +2441,7 @@ static void tpacket_destruct_skb(struct sk_buff *skb)
+ 		ts = __packet_set_timestamp(po, ph, skb);
+ 		__packet_set_status(po, ph, TP_STATUS_AVAILABLE | ts);
  
- err_sgi:
--	irq_domain_free_irqs_parent(domain, virq, i - 1);
-+	irq_domain_free_irqs_parent(domain, virq, i);
- 	alpine_msix_free_sgi(priv, sgi, nr_irqs);
- 	return err;
- }
+-		if (!packet_read_pending(&po->tx_ring))
+-			complete(&po->skb_completion);
++		complete(&po->skb_completion);
+ 	}
+ 
+ 	sock_wfree(skb);
 -- 
 2.43.0
 
