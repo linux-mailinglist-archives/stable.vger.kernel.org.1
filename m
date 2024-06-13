@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-51291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB42E906F71
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:20:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B9B2907132
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8810B293F4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4C86283D70
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D6656458;
-	Thu, 13 Jun 2024 12:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC2A17FD;
+	Thu, 13 Jun 2024 12:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORSqE5jZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ba0FdUnG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7749144D2C;
-	Thu, 13 Jun 2024 12:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4BF4A07;
+	Thu, 13 Jun 2024 12:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280868; cv=none; b=VNlRdLWTeU+nXexTzISd2asvbtueQn4lutqys0UzHMc6L07Lrn1iNXH5lbZwM6niOn/ywU+6Pj+trcQXGustKcSiATZ2qq9+B7X/4zKvRcbFa3nSzNWt9IV71ofTJiKIBh4IjichM1o8iqIJpegQ1SkdNtk4wWOKrxaB0AydvL8=
+	t=1718282071; cv=none; b=C60Yc/DHZkRj56yDwZGb7tvlUI0QQZv+8B3zNqCc5kOxjVmpqqGr/vkaiQV15YZhERS/noQRPDA1a4frosdTKhgLobdqV4hRX9DPOjTSguH0FeaBd5XGXolacmz5KldyPpnYkKjN94JoXJ0sl05HbqcDeEpCWHF3tyPfLwgwiGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280868; c=relaxed/simple;
-	bh=2hcx5jvBXamuVyRDPPGaxdLBrGzyhlc7z3a+fsSPxI8=;
+	s=arc-20240116; t=1718282071; c=relaxed/simple;
+	bh=xTT1mBoVWyIXcX3yqpz/y1ajo+MRDKsgRbv8dYqQqO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLld9jDyjIzJypVaGEjYuWwdJDkvuBgvp1SZFPK4EivweiiQqqJ4HKxNABHTBCLcs0K+TgMYHYK0Wus7d0vR07Y5D1f3OS28Yi32ZYxDfH6Rsqb7lVV24KYCpmKfCrkdxEFti9aoixzrBWtiUMZSrO0Sw5hzSqk5cktzKAmQUTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORSqE5jZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74BFC2BBFC;
-	Thu, 13 Jun 2024 12:14:27 +0000 (UTC)
+	 MIME-Version; b=jaYDJB98id/9bALyz9FfES3mx5nL37A6/+yQ4y3oXLStJCggHgJAtAfH+xLnuez7T0QytKfzC0sRHTD56pJ06gZ/miL5tjMSIjo7NICrgFgWh/0Ouk0LhAC45eRLYvu0lgV6fRI7RKS7BMtj+qKLdH17Y9xQJQndfVf7k/kOSe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ba0FdUnG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73980C2BBFC;
+	Thu, 13 Jun 2024 12:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280868;
-	bh=2hcx5jvBXamuVyRDPPGaxdLBrGzyhlc7z3a+fsSPxI8=;
+	s=korg; t=1718282070;
+	bh=xTT1mBoVWyIXcX3yqpz/y1ajo+MRDKsgRbv8dYqQqO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ORSqE5jZkvgbAvv82IMKaU2EfiTTqrMJlNDpRQ/BkbXSnYwq7xv0OTTwN4W9s3WHr
-	 MRyboNMNpAZt340r4pWSpqP1YPkD4wD08ivxY2LUpF6x490BZlOnjFDATA3gaElHKy
-	 dEdiv3k+D9uoameM+AtbxxeO+PZvgED7Lqd4yhzA=
+	b=Ba0FdUnGzdgXbB/lJqYxX8zWvJa/SR08TSZkbSr90jKfDr6IwPt7wGPI43g4tWlQ/
+	 v+6S0X1E0drXT2y3VlS2fErzhx4N9HfpxL6iO8nMWgGZ+brtiLuduwC11hDRRnkSfT
+	 hZdJ+UfqY6LZItpApruQLJCxkxWpfSCuwvIfSJQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuri Karpov <YKarpov@ispras.ru>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Chris Down <chris@chrisdown.name>,
+	Petr Mladek <pmladek@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 060/317] scsi: hpsa: Fix allocation size for Scsi_Host private data
+Subject: [PATCH 5.15 121/402] printk: Let no_printk() use _printk()
 Date: Thu, 13 Jun 2024 13:31:18 +0200
-Message-ID: <20240613113249.872473042@linuxfoundation.org>
+Message-ID: <20240613113306.854795726@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +65,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuri Karpov <YKarpov@ispras.ru>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 504e2bed5d50610c1836046c0c195b0a6dba9c72 ]
+[ Upstream commit 8522f6b760ca588928eede740d5d69dd1e936b49 ]
 
-struct Scsi_Host private data contains pointer to struct ctlr_info.
+When printk-indexing is enabled, each printk() invocation emits a
+pi_entry structure, containing the format string and other information
+related to its location in the kernel sources.  This is even true for
+no_printk(): while the actual code to print the message is optimized out
+by the compiler due to the always-false check, the pi_entry structure is
+still emitted.
 
-Restore allocation of only 8 bytes to store pointer in struct Scsi_Host
-private data area.
+As the main purpose of no_printk() is to provide a helper to maintain
+printf()-style format checking when debugging is disabled, this leads to
+the inclusion in the index of lots of printk formats that cannot be
+emitted by the current kernel.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Fix this by switching no_printk() from printk() to _printk().
 
-Fixes: bbbd25499100 ("scsi: hpsa: Fix allocation size for scsi_host_alloc()")
-Signed-off-by: Yuri Karpov <YKarpov@ispras.ru>
-Link: https://lore.kernel.org/r/20240312170447.743709-1-YKarpov@ispras.ru
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This reduces the size of an arm64 defconfig kernel with
+CONFIG_PRINTK_INDEX=y by 576 KiB.
+
+Fixes: 337015573718b161 ("printk: Userspace format indexing support")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Chris Down <chris@chrisdown.name>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/56cf92edccffea970e1f40a075334dd6cf5bb2a4.1709127473.git.geert+renesas@glider.be
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hpsa.c | 2 +-
+ include/linux/printk.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/hpsa.c b/drivers/scsi/hpsa.c
-index a44a098dbb9c7..4e7ec83c07cf6 100644
---- a/drivers/scsi/hpsa.c
-+++ b/drivers/scsi/hpsa.c
-@@ -5834,7 +5834,7 @@ static int hpsa_scsi_host_alloc(struct ctlr_info *h)
- {
- 	struct Scsi_Host *sh;
+diff --git a/include/linux/printk.h b/include/linux/printk.h
+index 9497f6b983399..c4fb84822111d 100644
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -129,7 +129,7 @@ struct va_format {
+ #define no_printk(fmt, ...)				\
+ ({							\
+ 	if (0)						\
+-		printk(fmt, ##__VA_ARGS__);		\
++		_printk(fmt, ##__VA_ARGS__);		\
+ 	0;						\
+ })
  
--	sh = scsi_host_alloc(&hpsa_driver_template, sizeof(struct ctlr_info));
-+	sh = scsi_host_alloc(&hpsa_driver_template, sizeof(struct ctlr_info *));
- 	if (sh == NULL) {
- 		dev_err(&h->pdev->dev, "scsi_host_alloc failed\n");
- 		return -ENOMEM;
 -- 
 2.43.0
 
