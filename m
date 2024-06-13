@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-51050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE346906E1D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1927E907018
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CB89B264AD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 164A71C23C18
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE3C1422B4;
-	Thu, 13 Jun 2024 12:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44AD145B10;
+	Thu, 13 Jun 2024 12:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jG/OJV+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0XzjF61"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A9F145B1E;
-	Thu, 13 Jun 2024 12:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81ABB145A05;
+	Thu, 13 Jun 2024 12:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280159; cv=none; b=NGFHiEpxG3L65KMW87ZHrpt7vjwNBPlMzkOpBdmzqiuLKhU6Vd5O3ZnwELAG+FYOyZP3TExez62Iev6Utdw2XJVHq6KoyFe3Z20MRaQYC7NU2pp8rEjGGz1fiFQs+pmIcWHe+iTtB88PSYAvkGBmT2lIwMER2/9gs67FwJos2uc=
+	t=1718281401; cv=none; b=P71xKKdAXc5HH9K0AMMQ/78t87PQqIxoyOLzkVu5zLE3SsLXA4kNvX+vemNikgq7orNA3IZE6WGeNcru37FdT/zKQmebpNVhWzz4YBJWAW95EWczKXG+t1WhKcXEKeob10ZU79IcG/Bpc0zeT8sgW1jwdGFb17IY/etlc8RQ9dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280159; c=relaxed/simple;
-	bh=DxNnnJ3Q63yUOMdU452SRUOqsjTbI/fyqR/HfwvZCOQ=;
+	s=arc-20240116; t=1718281401; c=relaxed/simple;
+	bh=2vjBHCven7dE4bs/pY/nlqCOphCAhTqKrmWNAhVCfjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZYKpjNkadRgXFop7o8UgBIbmbIKzgMNMu/vQPLA3TGN4TXsqxSBOCrC1Qz9qp5de+1cT/xiJpJKM/ghmElvIjOtVW5/rg89QGlcLCE2ZzpGHHrD2Mbqz/G6dmXix664q4e+zYW2oBL3Ykm11ETU7YgnRM4E3KR0XNC1oaemY00k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jG/OJV+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA02C2BBFC;
-	Thu, 13 Jun 2024 12:02:39 +0000 (UTC)
+	 MIME-Version; b=FKmKqbRHcT7wzHoFf4Ucxz/usxlJiEYZNfBYWb3PzaQ+K7fgsByr9i/Fhp4a9qu6s6c5yCj2l5MetYgDOkXffchOBa/gz2QsdBInzwV81CeI/YcWtbLUGMnoMsW4k3JW6nri2B+dzT7lrFXRiuf2313RRM4cI0EVci+x4rS9cDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0XzjF61; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABADC2BBFC;
+	Thu, 13 Jun 2024 12:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280159;
-	bh=DxNnnJ3Q63yUOMdU452SRUOqsjTbI/fyqR/HfwvZCOQ=;
+	s=korg; t=1718281401;
+	bh=2vjBHCven7dE4bs/pY/nlqCOphCAhTqKrmWNAhVCfjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0jG/OJV+BsLWFX7Ju6rrkcfQQyLpXNL5MBa3OHxeXE0L9mOj1SPRvwLqM33E5HTRK
-	 rkSD7sxBF+zyFkZSc4gtkgzWEe7hnjloMsJLUrEOU5MSwFAR2N2+8tG6QgiGbcbvLF
-	 axYQHMFhJvV0rbdn+zM7/BXERofMzuSdoJdSvCmM=
+	b=d0XzjF61YL/LK0xMhx7eZMLGjlMp2CKtyPQ4+eo/QBX3fmpXwkCq98uODuhuoVOqv
+	 fC01YxJOhS8KYPYbn5/e7w/SRMg1WJ9JEi/z5Tk3ef3w1YPMXZI2FQJ5q3ZBO/UgW0
+	 Tuk2kVZoK1pY7QvdwTIA0XGnJvTfDfOXUtodoim4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.4 163/202] genirq/cpuhotplug, x86/vector: Prevent vector leak during CPU offline
+	syzbot <syzbot+0438378d6f157baae1a2@syzkaller.appspotmail.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 243/317] nfc: nci: Fix kcov check in nci_rx_work()
 Date: Thu, 13 Jun 2024 13:34:21 +0200
-Message-ID: <20240613113234.040006767@linuxfoundation.org>
+Message-ID: <20240613113256.948156720@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit a6c11c0a5235fb144a65e0cb2ffd360ddc1f6c32 upstream.
+[ Upstream commit 19e35f24750ddf860c51e51c68cf07ea181b4881 ]
 
-The absence of IRQD_MOVE_PCNTXT prevents immediate effectiveness of
-interrupt affinity reconfiguration via procfs. Instead, the change is
-deferred until the next instance of the interrupt being triggered on the
-original CPU.
+Commit 7e8cdc97148c ("nfc: Add KCOV annotations") added
+kcov_remote_start_common()/kcov_remote_stop() pair into nci_rx_work(),
+with an assumption that kcov_remote_stop() is called upon continue of
+the for loop. But commit d24b03535e5e ("nfc: nci: Fix uninit-value in
+nci_dev_up and nci_ntf_packet") forgot to call kcov_remote_stop() before
+break of the for loop.
 
-When the interrupt next triggers on the original CPU, the new affinity is
-enforced within __irq_move_irq(). A vector is allocated from the new CPU,
-but the old vector on the original CPU remains and is not immediately
-reclaimed. Instead, apicd->move_in_progress is flagged, and the reclaiming
-process is delayed until the next trigger of the interrupt on the new CPU.
-
-Upon the subsequent triggering of the interrupt on the new CPU,
-irq_complete_move() adds a task to the old CPU's vector_cleanup list if it
-remains online. Subsequently, the timer on the old CPU iterates over its
-vector_cleanup list, reclaiming old vectors.
-
-However, a rare scenario arises if the old CPU is outgoing before the
-interrupt triggers again on the new CPU.
-
-In that case irq_force_complete_move() is not invoked on the outgoing CPU
-to reclaim the old apicd->prev_vector because the interrupt isn't currently
-affine to the outgoing CPU, and irq_needs_fixup() returns false. Even
-though __vector_schedule_cleanup() is later called on the new CPU, it
-doesn't reclaim apicd->prev_vector; instead, it simply resets both
-apicd->move_in_progress and apicd->prev_vector to 0.
-
-As a result, the vector remains unreclaimed in vector_matrix, leading to a
-CPU vector leak.
-
-To address this issue, move the invocation of irq_force_complete_move()
-before the irq_needs_fixup() call to reclaim apicd->prev_vector, if the
-interrupt is currently or used to be affine to the outgoing CPU.
-
-Additionally, reclaim the vector in __vector_schedule_cleanup() as well,
-following a warning message, although theoretically it should never see
-apicd->move_in_progress with apicd->prev_cpu pointing to an offline CPU.
-
-Fixes: f0383c24b485 ("genirq/cpuhotplug: Add support for cleaning up move in progress")
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240522220218.162423-1-dongli.zhang@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot <syzbot+0438378d6f157baae1a2@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=0438378d6f157baae1a2
+Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
+Suggested-by: Andrey Konovalov <andreyknvl@gmail.com>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/6d10f829-5a0c-405a-b39a-d7266f3a1a0b@I-love.SAKURA.ne.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 6671e352497c ("nfc: nci: Fix handling of zero-length payload packets in nci_rx_work()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apic/vector.c |    9 ++++++---
- kernel/irq/cpuhotplug.c       |   16 ++++++++--------
- 2 files changed, 14 insertions(+), 11 deletions(-)
+ net/nfc/nci/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kernel/apic/vector.c
-+++ b/arch/x86/kernel/apic/vector.c
-@@ -913,7 +913,8 @@ static void __send_cleanup_vector(struct
- 		hlist_add_head(&apicd->clist, per_cpu_ptr(&cleanup_list, cpu));
- 		apic->send_IPI(cpu, IRQ_MOVE_CLEANUP_VECTOR);
- 	} else {
--		apicd->prev_vector = 0;
-+		pr_warn("IRQ %u schedule cleanup for offline CPU %u\n", apicd->irq, cpu);
-+		free_moved_vector(apicd);
- 	}
- 	raw_spin_unlock(&vector_lock);
- }
-@@ -949,6 +950,7 @@ void irq_complete_move(struct irq_cfg *c
-  */
- void irq_force_complete_move(struct irq_desc *desc)
- {
-+	unsigned int cpu = smp_processor_id();
- 	struct apic_chip_data *apicd;
- 	struct irq_data *irqd;
- 	unsigned int vector;
-@@ -973,10 +975,11 @@ void irq_force_complete_move(struct irq_
- 		goto unlock;
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 7b3f3d6285004..ada7f32d03e48 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1517,6 +1517,7 @@ static void nci_rx_work(struct work_struct *work)
  
- 	/*
--	 * If prev_vector is empty, no action required.
-+	 * If prev_vector is empty or the descriptor is neither currently
-+	 * nor previously on the outgoing CPU no action required.
- 	 */
- 	vector = apicd->prev_vector;
--	if (!vector)
-+	if (!vector || (apicd->cpu != cpu && apicd->prev_cpu != cpu))
- 		goto unlock;
+ 		if (!nci_valid_size(skb)) {
+ 			kfree_skb(skb);
++			kcov_remote_stop();
+ 			break;
+ 		}
  
- 	/*
---- a/kernel/irq/cpuhotplug.c
-+++ b/kernel/irq/cpuhotplug.c
-@@ -69,6 +69,14 @@ static bool migrate_one_irq(struct irq_d
- 	}
- 
- 	/*
-+	 * Complete an eventually pending irq move cleanup. If this
-+	 * interrupt was moved in hard irq context, then the vectors need
-+	 * to be cleaned up. It can't wait until this interrupt actually
-+	 * happens and this CPU was involved.
-+	 */
-+	irq_force_complete_move(desc);
-+
-+	/*
- 	 * No move required, if:
- 	 * - Interrupt is per cpu
- 	 * - Interrupt is not started
-@@ -87,14 +95,6 @@ static bool migrate_one_irq(struct irq_d
- 	}
- 
- 	/*
--	 * Complete an eventually pending irq move cleanup. If this
--	 * interrupt was moved in hard irq context, then the vectors need
--	 * to be cleaned up. It can't wait until this interrupt actually
--	 * happens and this CPU was involved.
--	 */
--	irq_force_complete_move(desc);
--
--	/*
- 	 * If there is a setaffinity pending, then try to reuse the pending
- 	 * mask, so the last change of the affinity does not get lost. If
- 	 * there is no move pending or the pending mask does not contain
+-- 
+2.43.0
+
 
 
 
