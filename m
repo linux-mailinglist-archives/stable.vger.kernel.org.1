@@ -1,183 +1,209 @@
-Return-Path: <stable+bounces-50457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9EE390661D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:03:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA7B90663C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:11:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37F91284B5E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 08:03:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46C431C23269
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 08:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D324E13CAB8;
-	Thu, 13 Jun 2024 08:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB2E13CAA7;
+	Thu, 13 Jun 2024 08:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hjR5yiI"
+	dkim=pass (2048-bit key) header.d=scm.com header.i=@scm.com header.b="fK8OSTj5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ext6.scm.com (ext6.scm.com [5.9.60.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9387113A3F4
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 08:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768EB13CFB9
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 08:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.9.60.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718265789; cv=none; b=Es5Y4IjyqeSQbIzIoPKGV8V2W0X9dPt6gDf9e4T5f29r++biGqTL8sesmXZ9of7PZFPhp9XEH6MiPilIbqyeNdch5jOM+RUfiLtfnMOSbgnLFi7o4/cwKnqsnhDn4o+1KL8GcMtiw3tmRGsDug5G7gGQF4cLxrA/PGZbYVMJNYo=
+	t=1718266270; cv=none; b=dcmCAPaBYQ6wq5+JONaFjp0ha6mFAlYc/FZHAKM1+D8suTh2nIIx4H2KvhmaMnPVi2w3IZ7UPm5TYkhCRnbZk5f7GCnjoRFliA/C+yFA8aed0QDJGYB2l9fI4fIR3fwdKctFOsAvgx9dGychSEJILA1xVeROFBb3W5om+mmBC08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718265789; c=relaxed/simple;
-	bh=oGO5r0b5ITzHJltRc+J71FRMjo4rmBs/oy4TRhzj/Qw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jhJTax6PBC82qVBMw56keJfyLX6ib8OEZiVIeMRmS+lAg7d2BhB8p+WXK81qb6BsM6YVSWJ5Ybsb4ScB70BQa0OLGoxNeuclxo9Hmoh42ooh7xca18NRKEztGP0rpH5RJNm2UQ5mAYKKwaTve8pOW/7HtHr0MU/PzDKeXkZksUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hjR5yiI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 194DCC2BBFC;
-	Thu, 13 Jun 2024 08:03:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718265789;
-	bh=oGO5r0b5ITzHJltRc+J71FRMjo4rmBs/oy4TRhzj/Qw=;
-	h=Subject:To:Cc:From:Date:From;
-	b=1hjR5yiIOCdUJ5IsUFUyCMXe9tClNWZPHkMM+MFbM0Zl25r7kaiNv9DQI1fK8OHwh
-	 7d800ETcBCTLMrtAJXIO3Oaq+xfr8pTZhjXbuMtMPYIcgOpDX0egBwgBWCYnx2htuk
-	 wCBAS5mBVDEQT42iNfjdVS1f7SNX9VNd4F7oM+SM=
-Subject: FAILED: patch "[PATCH] mm/huge_memory: don't unpoison huge_zero_folio" failed to apply to 5.15-stable tree
-To: linmiaohe@huawei.com,akpm@linux-foundation.org,anshuman.khandual@arm.com,david@redhat.com,nao.horiguchi@gmail.com,osalvador@suse.de,shy828301@gmail.com,stable@vger.kernel.org,xuyu@linux.alibaba.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Jun 2024 10:03:00 +0200
-Message-ID: <2024061300-ceremony-habitable-06c0@gregkh>
+	s=arc-20240116; t=1718266270; c=relaxed/simple;
+	bh=u9MF74Anj6EjDhIaQKIlgKLDW1WgNxvWZze+LY3Y9pg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a4yXIen85Yxrs9+/MyCy50M1JFwYNTD84tyuP4RNy+Ra5BD73CocTp+g4OPgs989h0DkP3kC33c8wmgOC96DQzbv1+vJwALMIB4dNGFesBde6S3+amyDj/7HIy5EW91uozxLb9JzerpaeFwbk6A+ga1UTLFhBSsgE9jvcNqr3F4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=scm.com; spf=pass smtp.mailfrom=scm.com; dkim=pass (2048-bit key) header.d=scm.com header.i=@scm.com header.b=fK8OSTj5; arc=none smtp.client-ip=5.9.60.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=scm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=scm.com
+Received: from mintaka.ncbr.muni.cz (mintaka.ncbr.muni.cz [147.251.90.119])
+	by ext6.scm.com (Postfix) with ESMTPSA id 2BAE87E805D3;
+	Thu, 13 Jun 2024 10:04:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=scm.com;
+	s=dkim20220819; t=1718265893;
+	bh=u9MF74Anj6EjDhIaQKIlgKLDW1WgNxvWZze+LY3Y9pg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fK8OSTj5UmCKYKewPmQJyaQbmAWM4eKBl1LinkpyQd6hSE+lAEzeg/2Uy7oFwdMu7
+	 B2p9He34whUguR7hfCqWnb2nqs6U2WsFQKBoHmUN1YRUZHrrubiD+irPMVQhWKbOdL
+	 6AoO1iDko+MWPdU6+6KAIyBkE5UOezuXNThl2HMgivSjnvOA9Nv7rMb3JOsgOR4XOU
+	 oE18wKZDjzrdfnVCDBH3sYKPCnbkVl2P87Nh4EFb6hJX5+r2DiXmH3h/kGLsf8+ZJN
+	 S7bHs9lgCUHNZh3NrYqwzaJ57n4Aa/CO88Vngqy6OPg2v4U48f2dQwrZv387x6MoyD
+	 O/JxDcKsD7VkA==
+From: =?utf-8?B?VG9tw6HFoQ==?= Trnka <trnka@scm.com>
+To: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ Greg KH <gregkh@linuxfoundation.org>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "sashal@kernel.org" <sashal@kernel.org>, "Yu, Lang" <Lang.Yu@amd.com>,
+ "Kuehling, Felix" <Felix.Kuehling@amd.com>
+Subject:
+ Re: [PATCH] drm/amdkfd: handle duplicate BOs in reserve_bo_and_cond_vms
+Date: Thu, 13 Jun 2024 10:04:51 +0200
+Message-ID: <26439120.1r3eYUQgxm@mintaka.ncbr.muni.cz>
+In-Reply-To: <2024061217-prodigal-navigate-557c@gregkh>
+References:
+ <20240531141807.3501061-1-alexander.deucher@amd.com>
+ <BL1PR12MB5144EA4E60894AEDF352D61FF7FF2@BL1PR12MB5144.namprd12.prod.outlook.com>
+ <2024061217-prodigal-navigate-557c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+
+On Wednesday, June 12, 2024 2:06:37 PM CEST, Greg KH wrote:
+> On Mon, Jun 03, 2024 at 02:31:27PM +0000, Deucher, Alexander wrote:
+> > [Public]
+> >=20
+> > > -----Original Message-----
+> > > From: Greg KH <gregkh@linuxfoundation.org>
+> > > Sent: Saturday, June 1, 2024 1:24 AM
+> > > To: Deucher, Alexander <Alexander.Deucher@amd.com>
+> > > Cc: stable@vger.kernel.org; sashal@kernel.org; Yu, Lang
+> > > <Lang.Yu@amd.com>;
+> > > Tom=C3=A1=C5=A1 Trnka <trnka@scm.com>; Kuehling, Felix <Felix.Kuehlin=
+g@amd.com>
+> > > Subject: Re: [PATCH] drm/amdkfd: handle duplicate BOs in
+> > > reserve_bo_and_cond_vms
+> > >=20
+> > > On Fri, May 31, 2024 at 10:18:07AM -0400, Alex Deucher wrote:
+> > > > From: Lang Yu <Lang.Yu@amd.com>
+> > > >=20
+> > > > Observed on gfx8 ASIC where
+> > >=20
+> > > KFD_IOC_ALLOC_MEM_FLAGS_AQL_QUEUE_MEM is used.
+> > >=20
+> > > > Two attachments use the same VM, root PD would be locked twice.
+> > > >=20
+> > > > [   57.910418] Call Trace:
+> > > > [   57.793726]  ? reserve_bo_and_cond_vms+0x111/0x1c0 [amdgpu]
+> > > > [   57.793820]
+> > >=20
+> > > amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu+0x6c/0x1c0 [amdgpu]
+> > >=20
+> > > > [   57.793923]  ? idr_get_next_ul+0xbe/0x100
+> > > > [   57.793933]  kfd_process_device_free_bos+0x7e/0xf0 [amdgpu]
+> > > > [   57.794041]  kfd_process_wq_release+0x2ae/0x3c0 [amdgpu]
+> > > > [   57.794141]  ? process_scheduled_works+0x29c/0x580
+> > > > [   57.794147]  process_scheduled_works+0x303/0x580
+> > > > [   57.794157]  ? __pfx_worker_thread+0x10/0x10
+> > > > [   57.794160]  worker_thread+0x1a2/0x370
+> > > > [   57.794165]  ? __pfx_worker_thread+0x10/0x10
+> > > > [   57.794167]  kthread+0x11b/0x150
+> > > > [   57.794172]  ? __pfx_kthread+0x10/0x10
+> > > > [   57.794177]  ret_from_fork+0x3d/0x60
+> > > > [   57.794181]  ? __pfx_kthread+0x10/0x10
+> > > > [   57.794184]  ret_from_fork_asm+0x1b/0x30
+> > > >=20
+> > > > Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3007
+> > > > Tested-by: Tom=C3=A1=C5=A1 Trnka <trnka@scm.com>
+> > > > Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+> > > > Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+> > > > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> > > > Cc: stable@vger.kernel.org
+> > > > (cherry picked from commit
+> > >=20
+> > > 2a705f3e49d20b59cd9e5cc3061b2d92ebe1e5f0)
+> > >=20
+> > > > ---
+> > > >=20
+> > > >  drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 3 ++-
+> > > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > >=20
+> > > What kernel release(s) is this backport for?
+> >=20
+> > 6.6.x and newer.
+>=20
+> Does not apply to 6.6.y, sorry, how was this tested?  Can you submit a
+> patch that does work?
+>=20
+> thanks,
+>=20
+> greg k-h
+
+Sorry about that. 6.6 does not have commit=20
+05d249352f1ae909230c230767ca8f4e9fdf8e7b "drm/exec: Pass in initial # of=20
+objects" which adds the trailing 0 argument. Just removing that zero makes =
+the=20
+patch apply and work. Such a modified version is attached below.
+
+Tested on 6.6.32 (version below), 6.8.12 and 6.9.3 (version sent by Alex=20
+above).
+
+2T
+
+=46rom: Lang Yu <Lang.Yu@amd.com>
+
+Observed on gfx8 ASIC where KFD_IOC_ALLOC_MEM_FLAGS_AQL_QUEUE_MEM is used.
+Two attachments use the same VM, root PD would be locked twice.
+
+[   57.910418] Call Trace:
+[   57.793726]  ? reserve_bo_and_cond_vms+0x111/0x1c0 [amdgpu]
+[   57.793820]  amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu+0x6c/0x1c0 [amdgp=
+u]
+[   57.793923]  ? idr_get_next_ul+0xbe/0x100
+[   57.793933]  kfd_process_device_free_bos+0x7e/0xf0 [amdgpu]
+[   57.794041]  kfd_process_wq_release+0x2ae/0x3c0 [amdgpu]
+[   57.794141]  ? process_scheduled_works+0x29c/0x580
+[   57.794147]  process_scheduled_works+0x303/0x580
+[   57.794157]  ? __pfx_worker_thread+0x10/0x10
+[   57.794160]  worker_thread+0x1a2/0x370
+[   57.794165]  ? __pfx_worker_thread+0x10/0x10
+[   57.794167]  kthread+0x11b/0x150
+[   57.794172]  ? __pfx_kthread+0x10/0x10
+[   57.794177]  ret_from_fork+0x3d/0x60
+[   57.794181]  ? __pfx_kthread+0x10/0x10
+[   57.794184]  ret_from_fork_asm+0x1b/0x30
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3007
+Tested-by: Tom=C3=A1=C5=A1 Trnka <trnka@scm.com>
+Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+(cherry picked from commit 2a705f3e49d20b59cd9e5cc3061b2d92ebe1e5f0)
+=2D--
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/
+drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+index 15c5a2533ba6..9115fc8c96ba 100644
+=2D-- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -1135,7 +1135,8 @@ static int reserve_bo_and_cond_vms(struct kgd_mem *me=
+m,
+ 	int ret;
+=20
+ 	ctx->sync =3D &mem->sync;
+=2D	drm_exec_init(&ctx->exec, DRM_EXEC_INTERRUPTIBLE_WAIT);
++	drm_exec_init(&ctx->exec, DRM_EXEC_INTERRUPTIBLE_WAIT |
++		      DRM_EXEC_IGNORE_DUPLICATES);
+ 	drm_exec_until_all_locked(&ctx->exec) {
+ 		ctx->n_vms =3D 0;
+ 		list_for_each_entry(entry, &mem->attachments, list) {
+=2D-=20
+2.45.1
 
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
 
-To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x fe6f86f4b40855a130a19aa589f9ba7f650423f4
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061300-ceremony-habitable-06c0@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-fe6f86f4b408 ("mm/huge_memory: don't unpoison huge_zero_folio")
-6c54312f9689 ("mm/memory-failure: fix hardware poison check in unpoison_memory()")
-a6fddef49eef ("mm/memory-failure: convert unpoison_memory() to folios")
-9637d7dfb19c ("mm/memory-failure: convert free_raw_hwp_pages() to folios")
-2ff6cecee669 ("mm/memory-failure: convert hugetlb_clear_page_hwpoison to folios")
-bc1cfde19467 ("mm/memory-failure: convert try_memory_failure_hugetlb() to folios")
-911565b82853 ("mm/hugetlb: convert destroy_compound_gigantic_page() to folios")
-e0ff42804233 ("mm/memory-failure.c: cleanup in unpoison_memory")
-cb67f4282bf9 ("mm,thp,rmap: simplify compound page mapcount handling")
-dad6a5eb5556 ("mm,hugetlb: use folio fields in second tail page")
-f074732d599e ("mm/hugetlb_cgroup: convert hugetlb_cgroup_from_page() to folios")
-a098c977722c ("mm/hugetlb_cgroup: convert __set_hugetlb_cgroup() to folios")
-5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
-a46c9304b4bb ("mm/hwpoison: pass pfn to num_poisoned_pages_*()")
-d027122d8363 ("mm/hwpoison: move definitions of num_poisoned_pages_* to memory-failure.c")
-e591ef7d96d6 ("mm,hwpoison,hugetlb,memory_hotplug: hotremove memory section with hwpoisoned hugepage")
-b66d00dfebe7 ("mm: memory-failure: make action_result() return int")
-4781593d5dba ("mm/hugetlb: unify clearing of RestoreReserve for private pages")
-149562f75094 ("mm/hugetlb: add hugetlb_folio_subpool() helpers")
-d340625f4849 ("mm: add private field of first tail to struct page and struct folio")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From fe6f86f4b40855a130a19aa589f9ba7f650423f4 Mon Sep 17 00:00:00 2001
-From: Miaohe Lin <linmiaohe@huawei.com>
-Date: Thu, 16 May 2024 20:26:08 +0800
-Subject: [PATCH] mm/huge_memory: don't unpoison huge_zero_folio
-
-When I did memory failure tests recently, below panic occurs:
-
- kernel BUG at include/linux/mm.h:1135!
- invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
- CPU: 9 PID: 137 Comm: kswapd1 Not tainted 6.9.0-rc4-00491-gd5ce28f156fe-dirty #14
- RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
- RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
- RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
- RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
- RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
- R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
- R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
- FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
- Call Trace:
-  <TASK>
-  do_shrink_slab+0x14f/0x6a0
-  shrink_slab+0xca/0x8c0
-  shrink_node+0x2d0/0x7d0
-  balance_pgdat+0x33a/0x720
-  kswapd+0x1f3/0x410
-  kthread+0xd5/0x100
-  ret_from_fork+0x2f/0x50
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
- Modules linked in: mce_inject hwpoison_inject
- ---[ end trace 0000000000000000 ]---
- RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
- RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
- RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
- RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
- RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
- R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
- R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
- FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
-
-The root cause is that HWPoison flag will be set for huge_zero_folio
-without increasing the folio refcnt.  But then unpoison_memory() will
-decrease the folio refcnt unexpectedly as it appears like a successfully
-hwpoisoned folio leading to VM_BUG_ON_PAGE(page_ref_count(page) == 0) when
-releasing huge_zero_folio.
-
-Skip unpoisoning huge_zero_folio in unpoison_memory() to fix this issue.
-We're not prepared to unpoison huge_zero_folio yet.
-
-Link: https://lkml.kernel.org/r/20240516122608.22610-1-linmiaohe@huawei.com
-Fixes: 478d134e9506 ("mm/huge_memory: do not overkill when splitting huge_zero_page")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Yang Shi <shy828301@gmail.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Xu Yu <xuyu@linux.alibaba.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 16ada4fb02b7..a9fe9eda593f 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2546,6 +2546,13 @@ int unpoison_memory(unsigned long pfn)
- 		goto unlock_mutex;
- 	}
- 
-+	if (is_huge_zero_folio(folio)) {
-+		unpoison_pr_info("Unpoison: huge zero page is not supported %#lx\n",
-+				 pfn, &unpoison_rs);
-+		ret = -EOPNOTSUPP;
-+		goto unlock_mutex;
-+	}
-+
- 	if (!PageHWPoison(p)) {
- 		unpoison_pr_info("Unpoison: Page was already unpoisoned %#lx\n",
- 				 pfn, &unpoison_rs);
 
 
