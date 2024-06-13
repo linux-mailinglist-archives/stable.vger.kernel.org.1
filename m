@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-50597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ABB4906B74
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:41:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0787906D60
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B56791F212FC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:41:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C62C285F2C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3921448CD;
-	Thu, 13 Jun 2024 11:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5860C1474B2;
+	Thu, 13 Jun 2024 11:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pe9Gz0sV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5otryHI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4AD1448C4;
-	Thu, 13 Jun 2024 11:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171E7145A09;
+	Thu, 13 Jun 2024 11:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278833; cv=none; b=CjhXckakWEZJp74rwQeOrjZ0zLpoO5QRJaDzvfYnjsCjEXuq4ytEPvmPItrv8kdZptpSY/5sDQDWaos3rBS/vbKLE8iE4HDbHFx15/cAboOaj2c7YWxL8u4u7472cmbwqFxX6WaNoKThTfLVcPw3YCnwO1F5UZVIrkHd+vA4VT0=
+	t=1718279738; cv=none; b=VFuuM92WnaECWuyu4uef1Av8EFmeauwImP5hQiIzzG0uAaeIyIadEV6eirkaisTfo09bCE65E1bt+FTNfzUvd9sX5hl3o0H16IsdaDIDSZHRLrvoZL8XVy7bH2bCiXzQqYSy8vHnXzPNuLCW8kBdwJq7Y7RuCLNw3hLUXDIzpfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278833; c=relaxed/simple;
-	bh=mW53Vd+dlAo0ImV7kemJPJqlT2+9qrVVwsMId4psv80=;
+	s=arc-20240116; t=1718279738; c=relaxed/simple;
+	bh=MPKOr4jg8xH1VSIMDhui4E8CNUlj26VmS15jTaKJNlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=smzM5n8qiGsNvNqsEBn6HIxPCrNmQj3QAIKaxZPAlr+9gy4AqCkpvP/kKJunJlfkPJ9sN/DvaTqNtbXHJBv7ST/SDQGXrTwH6EfvRdNw1yzXoEUBqb3RC5zzNtsTuzKe3bA+UWc4tIj5vye2OG+0Sc8jOwrS+rW6wT6KEGjJpbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pe9Gz0sV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8330C2BBFC;
-	Thu, 13 Jun 2024 11:40:30 +0000 (UTC)
+	 MIME-Version; b=IkbP0zlV7NCpPGeiisb4DU4HgAS1JT/Bhf8yU0AmviaBohcqtBykLRP5jSKsRCu7y8bMZsFZUy+aAxsL4mC33XSL6xAXTYN/kQLFS1fTp7GIXPYf9hs1T7wupJv9ypbembr1AnjWZVUTVzAaH0MV6Jq5mQ0Ig7ImIeiwbDU9s5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5otryHI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C59C2BBFC;
+	Thu, 13 Jun 2024 11:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278831;
-	bh=mW53Vd+dlAo0ImV7kemJPJqlT2+9qrVVwsMId4psv80=;
+	s=korg; t=1718279738;
+	bh=MPKOr4jg8xH1VSIMDhui4E8CNUlj26VmS15jTaKJNlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pe9Gz0sV68OKeOyhLVZ1cngrXVk2jr1+VJbmJeP/X0+LxU6khgOfKN4POHtod8Iak
-	 fUqQY9kWgY4MQWE+72+tmdITqCwvrBTiCFbc1vBUHpI9mpdK7WgWbQ4N1BLisy58mS
-	 MH/R9Gol42SQ/3m/gAm0Pfjsq4nrUQk0DrfLg/I8=
+	b=Y5otryHIyhtwYnvte380SHRpQixbPTh+e7lbE0Gvb656yva4q0ND1XwAl2Ejl4ior
+	 srpv3zVr+C0wZwKEu98HVt+DMYDUtlEMh7LqykTU1IseIKyy2ipYgp8Vs+I5hN0AMo
+	 GwwXib9xdyqAUNtY8qTH9SLThvV9gI1GMctSWbyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 053/213] wifi: mwl8k: initialize cmd->addr[] properly
-Date: Thu, 13 Jun 2024 13:31:41 +0200
-Message-ID: <20240613113230.055848323@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.4 004/202] ring-buffer: Fix a race between readers and resize checks
+Date: Thu, 13 Jun 2024 13:31:42 +0200
+Message-ID: <20240613113227.931587985@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 1d60eabb82694e58543e2b6366dae3e7465892a5 ]
+commit c2274b908db05529980ec056359fae916939fdaa upstream.
 
-This loop is supposed to copy the mac address to cmd->addr but the
-i++ increment is missing so it copies everything to cmd->addr[0] and
-only the last address is recorded.
+The reader code in rb_get_reader_page() swaps a new reader page into the
+ring buffer by doing cmpxchg on old->list.prev->next to point it to the
+new page. Following that, if the operation is successful,
+old->list.next->prev gets updated too. This means the underlying
+doubly-linked list is temporarily inconsistent, page->prev->next or
+page->next->prev might not be equal back to page for some page in the
+ring buffer.
 
-Fixes: 22bedad3ce11 ("net: convert multicast list to list_head")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/b788be9a-15f5-4cca-a3fe-79df4c8ce7b2@moroto.mountain
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The resize operation in ring_buffer_resize() can be invoked in parallel.
+It calls rb_check_pages() which can detect the described inconsistency
+and stop further tracing:
+
+[  190.271762] ------------[ cut here ]------------
+[  190.271771] WARNING: CPU: 1 PID: 6186 at kernel/trace/ring_buffer.c:1467 rb_check_pages.isra.0+0x6a/0xa0
+[  190.271789] Modules linked in: [...]
+[  190.271991] Unloaded tainted modules: intel_uncore_frequency(E):1 skx_edac(E):1
+[  190.272002] CPU: 1 PID: 6186 Comm: cmd.sh Kdump: loaded Tainted: G            E      6.9.0-rc6-default #5 158d3e1e6d0b091c34c3b96bfd99a1c58306d79f
+[  190.272011] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.0-0-gd239552c-rebuilt.opensuse.org 04/01/2014
+[  190.272015] RIP: 0010:rb_check_pages.isra.0+0x6a/0xa0
+[  190.272023] Code: [...]
+[  190.272028] RSP: 0018:ffff9c37463abb70 EFLAGS: 00010206
+[  190.272034] RAX: ffff8eba04b6cb80 RBX: 0000000000000007 RCX: ffff8eba01f13d80
+[  190.272038] RDX: ffff8eba01f130c0 RSI: ffff8eba04b6cd00 RDI: ffff8eba0004c700
+[  190.272042] RBP: ffff8eba0004c700 R08: 0000000000010002 R09: 0000000000000000
+[  190.272045] R10: 00000000ffff7f52 R11: ffff8eba7f600000 R12: ffff8eba0004c720
+[  190.272049] R13: ffff8eba00223a00 R14: 0000000000000008 R15: ffff8eba067a8000
+[  190.272053] FS:  00007f1bd64752c0(0000) GS:ffff8eba7f680000(0000) knlGS:0000000000000000
+[  190.272057] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  190.272061] CR2: 00007f1bd6662590 CR3: 000000010291e001 CR4: 0000000000370ef0
+[  190.272070] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[  190.272073] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[  190.272077] Call Trace:
+[  190.272098]  <TASK>
+[  190.272189]  ring_buffer_resize+0x2ab/0x460
+[  190.272199]  __tracing_resize_ring_buffer.part.0+0x23/0xa0
+[  190.272206]  tracing_resize_ring_buffer+0x65/0x90
+[  190.272216]  tracing_entries_write+0x74/0xc0
+[  190.272225]  vfs_write+0xf5/0x420
+[  190.272248]  ksys_write+0x67/0xe0
+[  190.272256]  do_syscall_64+0x82/0x170
+[  190.272363]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  190.272373] RIP: 0033:0x7f1bd657d263
+[  190.272381] Code: [...]
+[  190.272385] RSP: 002b:00007ffe72b643f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+[  190.272391] RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007f1bd657d263
+[  190.272395] RDX: 0000000000000002 RSI: 0000555a6eb538e0 RDI: 0000000000000001
+[  190.272398] RBP: 0000555a6eb538e0 R08: 000000000000000a R09: 0000000000000000
+[  190.272401] R10: 0000555a6eb55190 R11: 0000000000000246 R12: 00007f1bd6662500
+[  190.272404] R13: 0000000000000002 R14: 00007f1bd6667c00 R15: 0000000000000002
+[  190.272412]  </TASK>
+[  190.272414] ---[ end trace 0000000000000000 ]---
+
+Note that ring_buffer_resize() calls rb_check_pages() only if the parent
+trace_buffer has recording disabled. Recent commit d78ab792705c
+("tracing: Stop current tracer when resizing buffer") causes that it is
+now always the case which makes it more likely to experience this issue.
+
+The window to hit this race is nonetheless very small. To help
+reproducing it, one can add a delay loop in rb_get_reader_page():
+
+ ret = rb_head_page_replace(reader, cpu_buffer->reader_page);
+ if (!ret)
+ 	goto spin;
+ for (unsigned i = 0; i < 1U << 26; i++)  /* inserted delay loop */
+ 	__asm__ __volatile__ ("" : : : "memory");
+ rb_list_head(reader->list.next)->prev = &cpu_buffer->reader_page->list;
+
+.. and then run the following commands on the target system:
+
+ echo 1 > /sys/kernel/tracing/events/sched/sched_switch/enable
+ while true; do
+ 	echo 16 > /sys/kernel/tracing/buffer_size_kb; sleep 0.1
+ 	echo 8 > /sys/kernel/tracing/buffer_size_kb; sleep 0.1
+ done &
+ while true; do
+ 	for i in /sys/kernel/tracing/per_cpu/*; do
+ 		timeout 0.1 cat $i/trace_pipe; sleep 0.2
+ 	done
+ done
+
+To fix the problem, make sure ring_buffer_resize() doesn't invoke
+rb_check_pages() concurrently with a reader operating on the same
+ring_buffer_per_cpu by taking its cpu_buffer->reader_lock.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240517134008.24529-3-petr.pavlu@suse.com
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 659f451ff213 ("ring-buffer: Add integrity check at end of iter read")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+[ Fixed whitespace ]
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwl8k.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/ring_buffer.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
-index ee842797570b7..55129bd36786f 100644
---- a/drivers/net/wireless/marvell/mwl8k.c
-+++ b/drivers/net/wireless/marvell/mwl8k.c
-@@ -2711,7 +2711,7 @@ __mwl8k_cmd_mac_multicast_adr(struct ieee80211_hw *hw, int allmulti,
- 		cmd->action |= cpu_to_le16(MWL8K_ENABLE_RX_MULTICAST);
- 		cmd->numaddr = cpu_to_le16(mc_count);
- 		netdev_hw_addr_list_for_each(ha, mc_list) {
--			memcpy(cmd->addr[i], ha->addr, ETH_ALEN);
-+			memcpy(cmd->addr[i++], ha->addr, ETH_ALEN);
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1235,6 +1235,11 @@ static int rb_check_list(struct ring_buf
+  *
+  * As a safety measure we check to make sure the data pages have not
+  * been corrupted.
++ *
++ * Callers of this function need to guarantee that the list of pages doesn't get
++ * modified during the check. In particular, if it's possible that the function
++ * is invoked with concurrent readers which can swap in a new reader page then
++ * the caller should take cpu_buffer->reader_lock.
+  */
+ static int rb_check_pages(struct ring_buffer_per_cpu *cpu_buffer)
+ {
+@@ -1951,8 +1956,12 @@ int ring_buffer_resize(struct ring_buffe
+ 		 */
+ 		synchronize_rcu();
+ 		for_each_buffer_cpu(buffer, cpu) {
++			unsigned long flags;
++
+ 			cpu_buffer = buffer->buffers[cpu];
++			raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
+ 			rb_check_pages(cpu_buffer);
++			raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
  		}
+ 		atomic_dec(&buffer->record_disabled);
  	}
- 
--- 
-2.43.0
-
 
 
 
