@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-50596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E2B7906B6D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:40:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED14B906D5F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCD101F216C4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:40:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E0B3285EB3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F74142E99;
-	Thu, 13 Jun 2024 11:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1B11474A4;
+	Thu, 13 Jun 2024 11:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcQoInlT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OeSvwc4T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76433143883;
-	Thu, 13 Jun 2024 11:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A125145336;
+	Thu, 13 Jun 2024 11:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278828; cv=none; b=W24ke/qjnl4S6H8ey6oIZxh1GIHQI+mkZ2nekJxFa5oxDZ6FxiwHp/Yp2DwW0KZ8pf4hyFKdYGnGj0M4Kxe98k+Lu19QM4Ef5nF8mW//nrktL19trazprcCRoCLX1ORoepMlL+hw1VeME4uPws3EZiGk+jzXAs44LNKSV3h/x58=
+	t=1718279735; cv=none; b=S+9Ri6qZWsZeSxubHdxEC6Jje9ULE6L3xyBS1+ynWcRaGwmcp3413mCLzb0jgGPRnxA3aGz0bOxiTTzzzjlP3K4dViQZg8zz9A3pt8M833ICEEKv9IQWBtMc2mWlDaBCLE4VKNfxxh7yO7DJ7tGMQdlHI3hb480UWgdvmdbGRjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278828; c=relaxed/simple;
-	bh=1CZ8CVJQ2PKbjhqjTMOf8XFLi6nS0KqtVCYp8+U+00o=;
+	s=arc-20240116; t=1718279735; c=relaxed/simple;
+	bh=ir1q+pBPWmSlMpEq8lbMBPzFcVE9dE7IAmofz1wDvHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eW3+z3zsgEFaTVWyOk+3PCG5CWHA7fEy9ZGmQBl+F1PoDIsiTG2DlX4B3WidHLWXRaz80wVz9wM7r6vyob87qrH0xXhjyIsX1P7u4cLvMPBKRtcPuf/VH6T5QMU0ErBdBVDfG1qMGyn9Jeu9TwriM79rBWzkEituV7lNez2ZAjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcQoInlT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60E0C4AF4D;
-	Thu, 13 Jun 2024 11:40:27 +0000 (UTC)
+	 MIME-Version; b=PixQLyk7u255AXQNmw2PNNLSH0gQA43nnnAK+KHxzD/MHhk3G5LgxFZSsKImZSw8TpVrEW9HERbIxsdNZfBEutUWQ7Um9FQ3VmVpkqZDPPCG1eoqtfD0KoeIsX9C1R8S1Aknfr5jL4zmzlgPq2N6YaDN3ni1f/RE/ryoFslsT2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OeSvwc4T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8350C2BBFC;
+	Thu, 13 Jun 2024 11:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278828;
-	bh=1CZ8CVJQ2PKbjhqjTMOf8XFLi6nS0KqtVCYp8+U+00o=;
+	s=korg; t=1718279735;
+	bh=ir1q+pBPWmSlMpEq8lbMBPzFcVE9dE7IAmofz1wDvHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CcQoInlTAVWKmJEb/IHB+GDEKU+OAXbjBrGk3WcKkIsadNP3caiJCYjxkT43kn4vl
-	 7lG81gbg7Zm+6nkebWkO62JHguOw47yuY6eIAx450mp/Mpwb+hygazx6mnlt9L/dye
-	 qN44WAYw/zIjsNXc19Ywkd3L/N1kwgSiNIKN8+L8=
+	b=OeSvwc4Th3V6ebDxKDwz4nB8X/6ZbN13MCcl4qLUMCLQ/IIMCCaK0HWT396CmEOqw
+	 ezKsZtbV77hxfLtqD184BPW4DD8dmLQGjA2EjEjRKfif7y17xCkqCd7bKxO1oi27VK
+	 uJ50LzKTJtuCsu++7aMxhgsZF7Du3i5fXuYD27wQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 052/213] scsi: qedf: Ensure the copied buf is NUL terminated
-Date: Thu, 13 Jun 2024 13:31:40 +0200
-Message-ID: <20240613113230.016883948@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Samuel Thibault <samuel.thibault@ens-lyon.org>
+Subject: [PATCH 5.4 003/202] speakup: Fix sizeof() vs ARRAY_SIZE() bug
+Date: Thu, 13 Jun 2024 13:31:41 +0200
+Message-ID: <20240613113227.894288428@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit d0184a375ee797eb657d74861ba0935b6e405c62 ]
+commit 008ab3c53bc4f0b2f20013c8f6c204a3203d0b8b upstream.
 
-Currently, we allocate a count-sized kernel buffer and copy count from
-userspace to that buffer. Later, we use kstrtouint on this buffer but we
-don't ensure that the string is terminated inside the buffer, this can
-lead to OOB read when using kstrtouint. Fix this issue by using
-memdup_user_nul instead of memdup_user.
+The "buf" pointer is an array of u16 values.  This code should be
+using ARRAY_SIZE() (which is 256) instead of sizeof() (which is 512),
+otherwise it can the still got out of bounds.
 
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-4-f1f1b53a10f4@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c8d2f34ea96e ("speakup: Avoid crash on very long word")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
+Link: https://lore.kernel.org/r/d16f67d2-fd0a-4d45-adac-75ddd11001aa@moroto.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qedf/qedf_debugfs.c | 2 +-
+ drivers/staging/speakup/main.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
-index 84f1ddcfbb218..4636c045e1e3e 100644
---- a/drivers/scsi/qedf/qedf_debugfs.c
-+++ b/drivers/scsi/qedf/qedf_debugfs.c
-@@ -190,7 +190,7 @@ qedf_dbg_debug_cmd_write(struct file *filp, const char __user *buffer,
- 	if (!count || *ppos)
- 		return 0;
- 
--	kern_buf = memdup_user(buffer, count);
-+	kern_buf = memdup_user_nul(buffer, count);
- 	if (IS_ERR(kern_buf))
- 		return PTR_ERR(kern_buf);
- 
--- 
-2.43.0
-
+--- a/drivers/staging/speakup/main.c
++++ b/drivers/staging/speakup/main.c
+@@ -577,7 +577,7 @@ static u_long get_word(struct vc_data *v
+ 	}
+ 	attr_ch = get_char(vc, (u_short *)tmp_pos, &spk_attr);
+ 	buf[cnt++] = attr_ch;
+-	while (tmpx < vc->vc_cols - 1 && cnt < sizeof(buf) - 1) {
++	while (tmpx < vc->vc_cols - 1 && cnt < ARRAY_SIZE(buf) - 1) {
+ 		tmp_pos += 2;
+ 		tmpx++;
+ 		ch = get_char(vc, (u_short *)tmp_pos, &temp);
 
 
 
