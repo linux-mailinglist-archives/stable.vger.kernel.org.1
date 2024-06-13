@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-50856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566B2906D26
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2E3906BF1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:46:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9C84285FF6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B2CFB24357
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD22146A73;
-	Thu, 13 Jun 2024 11:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F047A143C53;
+	Thu, 13 Jun 2024 11:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XMqu1Zv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fk0dtEjS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE7E1465A7;
-	Thu, 13 Jun 2024 11:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE02114265E;
+	Thu, 13 Jun 2024 11:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279587; cv=none; b=ho5spCBe2buaPa1LkhXXG8/HeKX5fmQXWwCjmRd45SjRNmpTQm40ABbfFW0f1fu3SIRD5m/L+5ogJUOPa9h++zJm/Pvbdwfh1ohY33O6UN1CLKfsEUSBRKFOR4yi+av1Q1XLNbjsGMSo35/sMd56MTmd3B0WqR70eYiwKv+SgMc=
+	t=1718279095; cv=none; b=dxeyP6cF+CW4oAwmZz6iWb02QuyWPS26G/R42SKr/Q1FqWOBDrI9aoV94Otlh48KCFeA5yeSzdxmk1b2qVxUjFs4uUZE5S8KAUnnbgH41A7Xjx1aXKnDswcSVoduJLchh2jRSkaB/4NAn3HHYH4+msihBCiGGn08U+5Vj6I3V3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279587; c=relaxed/simple;
-	bh=XcZngvrOiFgiRdXevEXR+PurPTwgf9tTXx6HKoiwjuo=;
+	s=arc-20240116; t=1718279095; c=relaxed/simple;
+	bh=qzlKT4fcHXVEBSswqCe1rkOpfAVYTIqPYfQkBN3Lu5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iExrOQtWGSn5Uh36pZDzRa+nv+CwF3oCkXuSrp3Kq7mKQ/HNhyHW4SkX638uSh2ojsnVLzBU5iHJc617lZThxTCC6eA5KZe7sR3EsML+FPIDbLBLruZ2hcknrN/ToifROgC4z/BQVXsBVSCLjoeGoGcYo2/QQyuMCLbcEaB5wjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XMqu1Zv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9FCC2BBFC;
-	Thu, 13 Jun 2024 11:53:06 +0000 (UTC)
+	 MIME-Version; b=VZRoDt5iGDwiaopcJyY3RGdy3UUkkEPfOaQ0l3uhBZtJ6GaKqWGCazvFcBiBcyhGT1zBmQiKpyoajzj1ZaLDzJwFkT4f3zq1NW+mWBPV5Bbc4jsbMdXH8sVmPBjIpXU54zfVRMfTXhmAAgjMpXevsTrl6flkchI7RLM/Hr3XrkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fk0dtEjS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3867AC2BBFC;
+	Thu, 13 Jun 2024 11:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279587;
-	bh=XcZngvrOiFgiRdXevEXR+PurPTwgf9tTXx6HKoiwjuo=;
+	s=korg; t=1718279095;
+	bh=qzlKT4fcHXVEBSswqCe1rkOpfAVYTIqPYfQkBN3Lu5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0XMqu1ZvJ6LDRx+/fk+e0LVQic0npgmHrVth0IpnYWzAzNV9NvS4KsjAzLyRj2NFT
-	 Em7684JtqMpcwfREpUJ6GNIDhA7KZHOol0IcWgCLpGK/FucXrGVy9J4LU1xwbf7+aQ
-	 qQTFG18dN+46UiaVenFauWJOOfW5PG1MtvJXmtgA=
+	b=Fk0dtEjSCMKwy6pLV3HoKCOky+RuwfzO+riJtr061aVhid3DOAv96xdN9Sl79QvWD
+	 +9xAoAMskYjzuq5TxymR4A9bLuEblevgSt1kqEphb92TJ1PgBRpO+U0GL9noB4Xzay
+	 R9XUR8gEsEsDmCSl3khtUPhkYZi2oO1mZIawSgfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank van der Linden <fvdl@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 096/157] mm/cma: drop incorrect alignment check in cma_init_reserved_mem
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.19 173/213] netfilter: nf_tables: GC transaction race with abort path
 Date: Thu, 13 Jun 2024 13:33:41 +0200
-Message-ID: <20240613113231.139277637@linuxfoundation.org>
+Message-ID: <20240613113234.657005933@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank van der Linden <fvdl@google.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit b174f139bdc8aaaf72f5b67ad1bd512c4868a87e upstream.
+commit 720344340fb9be2765bbaab7b292ece0a4570eae upstream.
 
-cma_init_reserved_mem uses IS_ALIGNED to check if the size represented by
-one bit in the cma allocation bitmask is aligned with
-CMA_MIN_ALIGNMENT_BYTES (pageblock size).
+Abort path is missing a synchronization point with GC transactions. Add
+GC sequence number hence any GC transaction losing race will be
+discarded.
 
-However, this is too strict, as this will fail if order_per_bit >
-pageblock_order, which is a valid configuration.
-
-We could check IS_ALIGNED both ways, but since both numbers are powers of
-two, no check is needed at all.
-
-Link: https://lkml.kernel.org/r/20240404162515.527802-1-fvdl@google.com
-Fixes: de9e14eebf33 ("drivers: dma-contiguous: add initialization from device tree")
-Signed-off-by: Frank van der Linden <fvdl@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/cma.c |    4 ----
- 1 file changed, 4 deletions(-)
+ net/netfilter/nf_tables_api.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -182,10 +182,6 @@ int __init cma_init_reserved_mem(phys_ad
- 	if (!size || !memblock_is_region_reserved(base, size))
- 		return -EINVAL;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7263,7 +7263,12 @@ static int __nf_tables_abort(struct net
+ static int nf_tables_abort(struct net *net, struct sk_buff *skb)
+ {
+ 	struct nftables_pernet *nft_net = net_generic(net, nf_tables_net_id);
+-	int ret = __nf_tables_abort(net);
++	unsigned int gc_seq;
++	int ret;
++
++	gc_seq = nft_gc_seq_begin(nft_net);
++	ret = __nf_tables_abort(net);
++	nft_gc_seq_end(nft_net, gc_seq);
  
--	/* alignment should be aligned with order_per_bit */
--	if (!IS_ALIGNED(CMA_MIN_ALIGNMENT_PAGES, 1 << order_per_bit))
--		return -EINVAL;
--
- 	/* ensure minimal alignment required by mm core */
- 	if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
- 		return -EINVAL;
+ 	mutex_unlock(&nft_net->commit_mutex);
+ 
 
 
 
