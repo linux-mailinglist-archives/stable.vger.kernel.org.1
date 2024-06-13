@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-50661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA94C906BC5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:44:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A59B906C92
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:51:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B835282FCA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:44:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FCAE1C21C0E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8D6143C77;
-	Thu, 13 Jun 2024 11:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE0C144D1E;
+	Thu, 13 Jun 2024 11:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fewH832i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+L3jGn2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5F114265E;
-	Thu, 13 Jun 2024 11:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE9D143861;
+	Thu, 13 Jun 2024 11:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279017; cv=none; b=lPISZnGLEvqkt1nNGMwCjGOwhkezyToHj6r7V/5ptGwzdfPHoK/Eu4B4eZI10dYO4GA9OOZU6+iK/jXBxHt6M0HBbeG+YyIaARv6uolUdyvAhryU+0hCAoY5xFfdg+1BLXlOy/o/WdmJ+hJqLnNUiAKj8B3qxg4VgxGn7hVnBk0=
+	t=1718279334; cv=none; b=hnRq+HX60s/8eD01RQozp3XtDtZx8lCRJbcTYLM3MQcXrEEBlddZylGmfoLI6l+Qskuc75BzB0wkj+maCSXD96umRZ57H+JIPG78HSvsv0ypnF7HVwYtjHmnMm4FL/8x3mrQ43Yxuy8LFIN/I4+zDB4qRnwrGVNEH6/Om64uA84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279017; c=relaxed/simple;
-	bh=4LaZbl16NS/zdoIH0y7j1e8U1rw+RTSfs38AdULsJAk=;
+	s=arc-20240116; t=1718279334; c=relaxed/simple;
+	bh=Lq6sCIz2tLATC3JBE1MO5RrSiR14I+yGWYc+j0x/OpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TIpRC75MF2a66w+PuwBXRp8kUExXqXQQKtLNG9YxtM97hL/zbruTz2o7MBkH0wrT9acj65I272mrIHMVn0GNt/NOctDjNu1P3Q0hsSxuO/yQJrhhymWKWws+LTOcBFNRWVoLZ/VZxOo4yqhmSU5xUXtriS5wTDcMdOOvJX+DPXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fewH832i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17751C2BBFC;
-	Thu, 13 Jun 2024 11:43:36 +0000 (UTC)
+	 MIME-Version; b=fbjxG1bxgNDO21bxcw0kfGyIhZ2UI7wJkUNRhH7xZJdBvENJCY3jUTMVO041cQFt694+uocjutqg1GNKUCDYUgDDOcLT/pH4KzljdHpG3Ltiet85hL1htKpAo5YG7cFKR0oCYUJRDcgnC2SbjGqtDNFeUBOBqcxzTJLFDI192YQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+L3jGn2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70BFC2BBFC;
+	Thu, 13 Jun 2024 11:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279017;
-	bh=4LaZbl16NS/zdoIH0y7j1e8U1rw+RTSfs38AdULsJAk=;
+	s=korg; t=1718279334;
+	bh=Lq6sCIz2tLATC3JBE1MO5RrSiR14I+yGWYc+j0x/OpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fewH832imI+4puyBddl/UOBQ0AYCWj+Cho6HoZTiDaQvbke9FpB3F/UgSqs7yf1Zd
-	 gXhfajgwxb8/JxarIHKQjlKyWePVNPjZwKwxly+stljCidlRLGugquXTn52jOBwXhY
-	 7BRvMq5nTG4FX0AfPCqWacCKZwUzZlqm4skPa4rk=
+	b=l+L3jGn2QtE+AUPBtu6bR2SqRpZdGIW9Sk1GZ/K0LTDv+AWuuFf3P0Pe2WZRVD89J
+	 XAnRBZTZU6cFs7lGspAUSSuD1GqpAMyfutSRhUsPdWOj96u3Hr2dvA+EJGR9q+1xP1
+	 o6ZtyWrgfjqa3myOneWiUkZ0yddKKRwSDN/kMDOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	"Yang, Chenyuan" <cy54@illinois.edu>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
-Subject: [PATCH 4.19 117/213] media: cec: cec-adap: always cancel work in cec_transmit_msg_fh
-Date: Thu, 13 Jun 2024 13:32:45 +0200
-Message-ID: <20240613113232.512176594@linuxfoundation.org>
+	patches@lists.linux.dev,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.9 041/157] media: v4l: async: Dont set notifiers V4L2 device if registering fails
+Date: Thu, 13 Jun 2024 13:32:46 +0200
+Message-ID: <20240613113229.012671656@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 9fe2816816a3c765dff3b88af5b5c3d9bbb911ce ]
+commit 46bc0234ad38063ce550ecf135c1a52458f0a804 upstream.
 
-Do not check for !data->completed, just always call
-cancel_delayed_work_sync(). This fixes a small race condition.
+The V4L2 device used to be set when the notifier was registered but this
+has been moved to the notifier initialisation. Don't touch the V4L2 device
+if registration fails.
 
+Fixes: b8ec754ae4c5 ("media: v4l: async: Set v4l2_device and subdev in async notifier init")
+Cc: <stable@vger.kernel.org> # for 6.6 and later
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Yang, Chenyuan <cy54@illinois.edu>
-Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
-Fixes: 490d84f6d73c ("media: cec: forgot to cancel delayed work")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/cec/cec-adap.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/v4l2-core/v4l2-async.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/media/cec/cec-adap.c b/drivers/media/cec/cec-adap.c
-index 2f49c4db49b35..d73beb1246946 100644
---- a/drivers/media/cec/cec-adap.c
-+++ b/drivers/media/cec/cec-adap.c
-@@ -863,8 +863,7 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
- 	 */
- 	mutex_unlock(&adap->lock);
- 	wait_for_completion_killable(&data->c);
--	if (!data->completed)
--		cancel_delayed_work_sync(&data->work);
-+	cancel_delayed_work_sync(&data->work);
- 	mutex_lock(&adap->lock);
+--- a/drivers/media/v4l2-core/v4l2-async.c
++++ b/drivers/media/v4l2-core/v4l2-async.c
+@@ -618,16 +618,10 @@ err_unlock:
  
- 	/* Cancel the transmit if it was interrupted */
--- 
-2.43.0
-
+ int v4l2_async_nf_register(struct v4l2_async_notifier *notifier)
+ {
+-	int ret;
+-
+ 	if (WARN_ON(!notifier->v4l2_dev == !notifier->sd))
+ 		return -EINVAL;
+ 
+-	ret = __v4l2_async_nf_register(notifier);
+-	if (ret)
+-		notifier->v4l2_dev = NULL;
+-
+-	return ret;
++	return __v4l2_async_nf_register(notifier);
+ }
+ EXPORT_SYMBOL(v4l2_async_nf_register);
+ 
 
 
 
