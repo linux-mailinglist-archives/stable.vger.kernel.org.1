@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-50711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0F7906C1D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:47:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B566A906D22
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0259C1F20F2C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:47:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64A61C2291C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777FC142911;
-	Thu, 13 Jun 2024 11:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40ED146A69;
+	Thu, 13 Jun 2024 11:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpCdDVxq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xj6kRiWW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D12143866;
-	Thu, 13 Jun 2024 11:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CCF146A66;
+	Thu, 13 Jun 2024 11:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279166; cv=none; b=XZrS4Fl19fEXVovGMBGx5/zU/g7M4M7XnHc27J4vZv6KfsCXuDnJWmceb9ku6Jb2pY5PlcwOxL57tGn22WGu9snAPmeBHIDaCBDnPEllpsPgoJMegTpHg33pSw1iavZQqU6zcY8Pkcc9wLVItRJXkvJngNkGPUgYhfxeiUHobzU=
+	t=1718279575; cv=none; b=UePtjQujjUgKY4plLS/FUWX1Jo+AtX4ONqw+xiLhElgTByPjj9Ue/5WGEgo/xGI1Hu3mAQ75kV7UnH3bzgECKt5FpKoiymYvpNaT4i3wUmyRC862s9e0EJ3ujTuPAp8nqxdz2VmKQau69OCeAxqrTb4Qeu3Twrq3x4aMWyV/VuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279166; c=relaxed/simple;
-	bh=CN0+qHWgPq6QsZ3DJ3v7WeUUd+oKP9vfbcSyX1FBq3c=;
+	s=arc-20240116; t=1718279575; c=relaxed/simple;
+	bh=LfoPSpCfw3hkX+dgs6DTUPJ1EULmBa/AhrSPFaK8uR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XwB7ce7FKIsVQec2hu/nXqZ/DTlQbNPwrtnfqb9HHHOkzJaZ/BSzygJJ0XBIsgd3Dygznqr4mXi2CCD01SeiV0bNzSLmIiNf45GYDxy6lZhSafxjsg0y/Yb/lgQtLfG1RQDBadGAaFajvKSNxrWaCX5WEz14YqVEv4L4eFz45Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpCdDVxq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0AC9C2BBFC;
-	Thu, 13 Jun 2024 11:46:05 +0000 (UTC)
+	 MIME-Version; b=ENuZcTgyxlHeFemXgmzjGsxo7zm3tve4r+WMgc1XDOPjtFGdIelTqNvMFOi66dcG781ugqqheP5+MNflNL93WYA1D7V8FmIcNt3/0NO0oyHGP4xAUUojbdyn/vcMH1m43VDlLDCFRutSEKN1GnaMZA2gGer92lz/XaB320kLNxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xj6kRiWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6F3C2BBFC;
+	Thu, 13 Jun 2024 11:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279166;
-	bh=CN0+qHWgPq6QsZ3DJ3v7WeUUd+oKP9vfbcSyX1FBq3c=;
+	s=korg; t=1718279575;
+	bh=LfoPSpCfw3hkX+dgs6DTUPJ1EULmBa/AhrSPFaK8uR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VpCdDVxqmXGDPhI9jAjwZgqL3o8PdZo1Cp1hL9l7apAiTujMvBKq6ECBKyN34Y7X9
-	 xLffmljPB83QjjqbEmxrD1RHkm6UcyUw/HdZOTBhNKjbBfUpfmejnZ3ItqvN14kZTm
-	 mslUWxgwwekRZzImBJATwF+FoIf+2uVHJy6VR0q8=
+	b=Xj6kRiWWMQ6FYWR8FpyS+jERY192eet4LjEV11mt6WOhnQ28uxGugbXuKt2VJRWxl
+	 EhvDx9le7jGhRqzqs4tebak/xrgbFVZs7GsAOLAf1mYxws24tXte2zmSdm32652iDD
+	 G8fx6xq2W0FtZggvi4zSh/8Rs9YRCC6SlMyrnHK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 198/213] netfilter: nf_tables: discard table flag update with pending basechain deletion
+	Bo Gan <ganboing@gmail.com>,
+	Shengyu Qu <wiagn233@outlook.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH 6.9 121/157] riscv: dts: starfive: Remove PMIC interrupt info for Visionfive 2 board
 Date: Thu, 13 Jun 2024 13:34:06 +0200
-Message-ID: <20240613113235.615589176@linuxfoundation.org>
+Message-ID: <20240613113232.094589214@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Shengyu Qu <wiagn233@outlook.com>
 
-commit 1bc83a019bbe268be3526406245ec28c2458a518 upstream.
+commit 0f74c64f0a9f6e1e7cf17bea3d4350fa6581e0d7 upstream.
 
-Hook unregistration is deferred to the commit phase, same occurs with
-hook updates triggered by the table dormant flag. When both commands are
-combined, this results in deleting a basechain while leaving its hook
-still registered in the core.
+Interrupt line number of the AXP15060 PMIC is not a necessary part of
+its device tree. Originally the binding required one, so the dts patch
+added an invalid interrupt that the driver ignored (0) as the interrupt
+line of the PMIC is not actually connected on this platform. This went
+unnoticed during review as it would have been a valid interrupt for a
+GPIO controller, but it is not for the PLIC. The PLIC, on this platform
+at least, silently ignores the enablement of interrupt 0. Bo Gan is
+running a modified version of OpenSBI that faults if writes are done to
+reserved fields, so their kernel runs into problems.
 
-Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Delete the invalid interrupt from the device tree.
+
+Cc: stable@vger.kernel.org
+Reported-by: Bo Gan <ganboing@gmail.com>
+Link: https://lore.kernel.org/all/c8b6e960-2459-130f-e4e4-7c9c2ebaa6d3@gmail.com/
+Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
+Fixes: 2378341504de ("riscv: dts: starfive: Enable axp15060 pmic for cpufreq")
+[conor: rewrite the commit message to add more detail]
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |   20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -877,6 +877,24 @@ static void nf_tables_table_disable(stru
- #define __NFT_TABLE_F_UPDATE		(__NFT_TABLE_F_WAS_DORMANT | \
- 					 __NFT_TABLE_F_WAS_AWAKEN)
+--- a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
++++ b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
+@@ -238,7 +238,6 @@
+ 	axp15060: pmic@36 {
+ 		compatible = "x-powers,axp15060";
+ 		reg = <0x36>;
+-		interrupts = <0>;
+ 		interrupt-controller;
+ 		#interrupt-cells = <1>;
  
-+static bool nft_table_pending_update(const struct nft_ctx *ctx)
-+{
-+	struct nftables_pernet *nft_net = net_generic(ctx->net, nf_tables_net_id);
-+	struct nft_trans *trans;
-+
-+	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
-+		return true;
-+
-+	list_for_each_entry(trans, &nft_net->commit_list, list) {
-+		if (trans->ctx.table == ctx->table &&
-+		    trans->msg_type == NFT_MSG_DELCHAIN &&
-+		    nft_is_base_chain(trans->ctx.chain))
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static int nf_tables_updtable(struct nft_ctx *ctx)
- {
- 	struct nft_trans *trans;
-@@ -894,7 +912,7 @@ static int nf_tables_updtable(struct nft
- 		return 0;
- 
- 	/* No dormant off/on/off/on games in single transaction */
--	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
-+	if (nft_table_pending_update(ctx))
- 		return -EINVAL;
- 
- 	trans = nft_trans_alloc(ctx, NFT_MSG_NEWTABLE,
 
 
 
