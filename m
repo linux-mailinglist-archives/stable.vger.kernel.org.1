@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27898906E0A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E8590701B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 412F91C21ED3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 396621F2308F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE62E1448D9;
-	Thu, 13 Jun 2024 12:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D759145B19;
+	Thu, 13 Jun 2024 12:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3ll2n1l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLjeeZUU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5F744C6F;
-	Thu, 13 Jun 2024 12:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6DB1459FA;
+	Thu, 13 Jun 2024 12:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280121; cv=none; b=Hgmdy33A15PD1C8mifAFa5sdLPui7GzdP4Mw62Q1r2rxApgBK9vBnMqLPGqyZ8Lo8hqktGQX34JVAe6YK8RJlyMI4NJZoDmVTHrLf6edO9dUu7H0HJROpS1AtJH6MleZBmpNU6GJickDhHFLDL6tzLsBVznU5w2OINb/rphiHHg=
+	t=1718281413; cv=none; b=L37zdsErWc6xuifQB2HCgWz1BZsDcz+oXT2D/A64Imuh33G2b3rdI8CLQ4WM1B14ONWyzJv/EnwljZKwRK/U+q9kn3cf6mVYpj2e6EiRVfwiU/32u8dZW0ywiDFYUDxNA1FgypStKDOiBJLhdmx1mpgT/8zMMhD8Pak4ojma+yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280121; c=relaxed/simple;
-	bh=/nZonGBYILDcEAsFlRajbxq3vJfZX0Zfs/5JbP2BbMM=;
+	s=arc-20240116; t=1718281413; c=relaxed/simple;
+	bh=xU2+X5SfxSfFtr+bnGiLJI3jubL/N5S675ulumPm4qY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lR46Az1aeCtttv+bavJ9PR1m0V91ScRljQ/X12VNA92n8Q9ilnm1rbFU6TsOh40QY0L2VdCcjQ8yln6t18LFXrKZ9KD/7xmtF90X+3UNTFNfzBUkYCOTokq2hBu1PRVrG3me6eRsyj0w1NWahQ6d5JW1Yx/e+WaIfZh8aLz/gxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3ll2n1l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EA4C2BBFC;
-	Thu, 13 Jun 2024 12:02:00 +0000 (UTC)
+	 MIME-Version; b=uijrUDtoSJ+6UFYG96+ATj9Pf0UEeW+6yVAwXCn83nLtv1zwwoHvHGLUfqb/8Ph8QfN2MTb13ipWZbyp8plIsc62MtQ9hAFap+ooOM4D/ahbuZ2YhXnp/+BOvA1N/MyzwKkMa60CtXUBsYqNRztV/uQ4vWl+pOKGN+dYEd7Z95g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLjeeZUU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8156C2BBFC;
+	Thu, 13 Jun 2024 12:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280121;
-	bh=/nZonGBYILDcEAsFlRajbxq3vJfZX0Zfs/5JbP2BbMM=;
+	s=korg; t=1718281413;
+	bh=xU2+X5SfxSfFtr+bnGiLJI3jubL/N5S675ulumPm4qY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U3ll2n1lrP7NiRk2kn727+APgjGXr9VeBK2s+GN/EEW81hoHA/SoSEKcrDfMJAsGV
-	 0Hw9Uf/a8cNjDa9pfJXRhv7M4l1Nhvo5xjQ6ioApLqEGK1n7srnANLPjgKZPxhJZ+4
-	 V7SjgiKm9WCs8JeDdxjXhZ6TIGH5LiBf+egfnB9U=
+	b=CLjeeZUUlf+p8Z6k7HLk7MEOm9ONi6XI2vkiWyLtZLJ8pqldH3yGdVN762kTcaBkY
+	 0bmybd4RuuyUb3CNX50uGnjOZUmZxANvlDMtQaieryIbQrAR2/o7QlgKkfxvB8OKwf
+	 P1dIkaaENKiRiQqmYdhBJg+CXknf1mtNtSfhgcyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 148/202] netfilter: nfnetlink_queue: acquire rcu_read_lock() in instance_destroy_rcu()
-Date: Thu, 13 Jun 2024 13:34:06 +0200
-Message-ID: <20240613113233.467045252@linuxfoundation.org>
+Subject: [PATCH 5.10 229/317] ASoC: tas2552: Add TX path for capturing AUDIO-OUT data
+Date: Thu, 13 Jun 2024 13:34:07 +0200
+Message-ID: <20240613113256.410155469@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-[ Upstream commit dc21c6cc3d6986d938efbf95de62473982c98dec ]
+[ Upstream commit 7078ac4fd179a68d0bab448004fcd357e7a45f8d ]
 
-syzbot reported that nf_reinject() could be called without rcu_read_lock() :
+TAS2552 is a Smartamp with I/V sense data, add TX path
+to support capturing I/V data.
 
-WARNING: suspicious RCU usage
-6.9.0-rc7-syzkaller-02060-g5c1672705a1a #0 Not tainted
-
-net/netfilter/nfnetlink_queue.c:263 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-2 locks held by syz-executor.4/13427:
-  #0: ffffffff8e334f60 (rcu_callback){....}-{0:0}, at: rcu_lock_acquire include/linux/rcupdate.h:329 [inline]
-  #0: ffffffff8e334f60 (rcu_callback){....}-{0:0}, at: rcu_do_batch kernel/rcu/tree.c:2190 [inline]
-  #0: ffffffff8e334f60 (rcu_callback){....}-{0:0}, at: rcu_core+0xa86/0x1830 kernel/rcu/tree.c:2471
-  #1: ffff88801ca92958 (&inst->lock){+.-.}-{2:2}, at: spin_lock_bh include/linux/spinlock.h:356 [inline]
-  #1: ffff88801ca92958 (&inst->lock){+.-.}-{2:2}, at: nfqnl_flush net/netfilter/nfnetlink_queue.c:405 [inline]
-  #1: ffff88801ca92958 (&inst->lock){+.-.}-{2:2}, at: instance_destroy_rcu+0x30/0x220 net/netfilter/nfnetlink_queue.c:172
-
-stack backtrace:
-CPU: 0 PID: 13427 Comm: syz-executor.4 Not tainted 6.9.0-rc7-syzkaller-02060-g5c1672705a1a #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-Call Trace:
- <IRQ>
-  __dump_stack lib/dump_stack.c:88 [inline]
-  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
-  lockdep_rcu_suspicious+0x221/0x340 kernel/locking/lockdep.c:6712
-  nf_reinject net/netfilter/nfnetlink_queue.c:323 [inline]
-  nfqnl_reinject+0x6ec/0x1120 net/netfilter/nfnetlink_queue.c:397
-  nfqnl_flush net/netfilter/nfnetlink_queue.c:410 [inline]
-  instance_destroy_rcu+0x1ae/0x220 net/netfilter/nfnetlink_queue.c:172
-  rcu_do_batch kernel/rcu/tree.c:2196 [inline]
-  rcu_core+0xafd/0x1830 kernel/rcu/tree.c:2471
-  handle_softirqs+0x2d6/0x990 kernel/softirq.c:554
-  __do_softirq kernel/softirq.c:588 [inline]
-  invoke_softirq kernel/softirq.c:428 [inline]
-  __irq_exit_rcu+0xf4/0x1c0 kernel/softirq.c:637
-  irq_exit_rcu+0x9/0x30 kernel/softirq.c:649
-  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1043 [inline]
-  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1043
- </IRQ>
- <TASK>
-
-Fixes: 9872bec773c2 ("[NETFILTER]: nfnetlink: use RCU for queue instances hash")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 38803ce7b53b ("ASoC: codecs: tas*: merge .digital_mute() into .mute_stream()")
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Link: https://msgid.link/r/20240518033515.866-1-shenghao-ding@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_queue.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/codecs/tas2552.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index 772f8c69818c6..c4005a42a78ba 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -167,7 +167,9 @@ instance_destroy_rcu(struct rcu_head *head)
- 	struct nfqnl_instance *inst = container_of(head, struct nfqnl_instance,
- 						   rcu);
+diff --git a/sound/soc/codecs/tas2552.c b/sound/soc/codecs/tas2552.c
+index bd00c35116cd5..f045876c12f17 100644
+--- a/sound/soc/codecs/tas2552.c
++++ b/sound/soc/codecs/tas2552.c
+@@ -2,7 +2,8 @@
+ /*
+  * tas2552.c - ALSA SoC Texas Instruments TAS2552 Mono Audio Amplifier
+  *
+- * Copyright (C) 2014 Texas Instruments Incorporated -  https://www.ti.com
++ * Copyright (C) 2014 - 2024 Texas Instruments Incorporated -
++ *	https://www.ti.com
+  *
+  * Author: Dan Murphy <dmurphy@ti.com>
+  */
+@@ -119,12 +120,14 @@ static const struct snd_soc_dapm_widget tas2552_dapm_widgets[] =
+ 			 &tas2552_input_mux_control),
  
-+	rcu_read_lock();
- 	nfqnl_flush(inst, NULL, 0);
-+	rcu_read_unlock();
- 	kfree(inst);
- 	module_put(THIS_MODULE);
- }
+ 	SND_SOC_DAPM_AIF_IN("DAC IN", "DAC Playback", 0, SND_SOC_NOPM, 0, 0),
++	SND_SOC_DAPM_AIF_OUT("ASI OUT", "DAC Capture", 0, SND_SOC_NOPM, 0, 0),
+ 	SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
+ 	SND_SOC_DAPM_OUT_DRV("ClassD", TAS2552_CFG_2, 7, 0, NULL, 0),
+ 	SND_SOC_DAPM_SUPPLY("PLL", TAS2552_CFG_2, 3, 0, NULL, 0),
+ 	SND_SOC_DAPM_POST("Post Event", tas2552_post_event),
+ 
+-	SND_SOC_DAPM_OUTPUT("OUT")
++	SND_SOC_DAPM_OUTPUT("OUT"),
++	SND_SOC_DAPM_INPUT("DMIC")
+ };
+ 
+ static const struct snd_soc_dapm_route tas2552_audio_map[] = {
+@@ -134,6 +137,7 @@ static const struct snd_soc_dapm_route tas2552_audio_map[] = {
+ 	{"ClassD", NULL, "Input selection"},
+ 	{"OUT", NULL, "ClassD"},
+ 	{"ClassD", NULL, "PLL"},
++	{"ASI OUT", NULL, "DMIC"}
+ };
+ 
+ #ifdef CONFIG_PM
+@@ -538,6 +542,13 @@ static struct snd_soc_dai_driver tas2552_dai[] = {
+ 			.rates = SNDRV_PCM_RATE_8000_192000,
+ 			.formats = TAS2552_FORMATS,
+ 		},
++		.capture = {
++			.stream_name = "Capture",
++			.channels_min = 2,
++			.channels_max = 2,
++			.rates = SNDRV_PCM_RATE_8000_192000,
++			.formats = TAS2552_FORMATS,
++		},
+ 		.ops = &tas2552_speaker_dai_ops,
+ 	},
+ };
 -- 
 2.43.0
 
