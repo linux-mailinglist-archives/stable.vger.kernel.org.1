@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 656AF906F9B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3F51907162
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F7941F2303E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B5CC1F252E0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6F21448EA;
-	Thu, 13 Jun 2024 12:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC5A17FD;
+	Thu, 13 Jun 2024 12:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNy1T4bh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywUbiv2Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02261448E4;
-	Thu, 13 Jun 2024 12:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E63441D;
+	Thu, 13 Jun 2024 12:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281092; cv=none; b=Za8yApJFiGQ8uIRKKdpGZlJAxyus/fRVIpWERkScZ7oKU5iXDd3O//Igm7t31HGf/F3MCXJIL3xMrXsACAwpPWdJ2AeHRkkDzTgOTK6W2kC2jY298ApiFC+OmL4i9IOqGTY1EJA0LwBeMzy65emfBI2TpOY5eNlspd+DdsNQtyw=
+	t=1718282185; cv=none; b=g5J/TnDFeRaJ+J1YDhaU477ZW3bpFV8XJI6qzXNGFFe95Sf3zdoMJs2yIdm4s5hpg136A9wOY6gGULZXDJoVfvNo2oUtAOS/o5/9kiODcbXsRb9E7bzrG+kirYm39VBR20Lg0tdo0rv2d2JQ2frOq0lX4fezZB1IhPZ+c/qVMxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281092; c=relaxed/simple;
-	bh=3gpZR1/pNCFTb73XeL4b+cGjydice9JV0ob8cOJJbSE=;
+	s=arc-20240116; t=1718282185; c=relaxed/simple;
+	bh=KRXI8/6S66S6mI+zK4kKDnC6bjUyERE/hgeYzCcTZ8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSp0Ho5xatSuNkBYTTHQeoDHtz1+YMPJN8zBM9A+F2DQjxPunHUHTSI4GNg/2b7JsoyT0RdD1ZclH/EPXbtE+oPCAGLgQmfqmCt3eR316fNnJLxepWkDDpj++rNvTfj/m0IZguaF/HUn5C9VEHF7ahxSwcSbgT7uoO7UmEgLk50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNy1T4bh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D50C2BBFC;
-	Thu, 13 Jun 2024 12:18:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wkchg+XnEiDYfNCRsM0s/tk9ucVmG+VPXdGK3tTcV3QYcUHO5PuEOpuXKuIzzfKdWThTok5AeL78Ec/CEODFIQbvYQcfiyDU7L0MMbgKA79lOb5/FQe4KS1L99hyo4JonYSqPNJOw/IjCoWm6mUa6nEd/cSM6PMvmaRQIKN4eoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywUbiv2Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC55C2BBFC;
+	Thu, 13 Jun 2024 12:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281092;
-	bh=3gpZR1/pNCFTb73XeL4b+cGjydice9JV0ob8cOJJbSE=;
+	s=korg; t=1718282185;
+	bh=KRXI8/6S66S6mI+zK4kKDnC6bjUyERE/hgeYzCcTZ8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hNy1T4bh/TStiYSRNumGk1E7Y1u7gXQrD32T+rrekP+4wRxu7P3sKGg44fCUAal0l
-	 P3Zl4GUFqt3SLJVCltEevib+G4b6kBdZ6Ys2hppsOY4AsQIV/V2Ty7Tc8V4Lsat0Pj
-	 YpKxq+9q2xVMCXcjmUvmdRiYY51Jjvu0pmw7x7Zc=
+	b=ywUbiv2ZIBMoYgu2iEZo6vJBkbrTsHGqSSxN3njek7yH0YHptHny25L/zKr15cWVH
+	 AObsRcDtTsKEzLZ1rICTuvaPaXgmh2WzSrGJ2+TxU0naw0IMrPWSTdxob4yLnrRefD
+	 IyUPPc3lvuV6wVSnXSHEQu3tekHx5mtFs34P2pJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hulk Robot <hulkci@huawei.com>,
-	Qinglang Miao <miaoqinglang@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 130/317] net: qrtr: fix null-ptr-deref in qrtr_ns_remove
-Date: Thu, 13 Jun 2024 13:32:28 +0200
-Message-ID: <20240613113252.587909639@linuxfoundation.org>
+Subject: [PATCH 5.15 192/402] dt-bindings: PCI: rcar-pci-host: Add optional regulators
+Date: Thu, 13 Jun 2024 13:32:29 +0200
+Message-ID: <20240613113309.633587389@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,125 +62,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qinglang Miao <miaoqinglang@huawei.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 4beb17e553b49c3dd74505c9f361e756aaae653e ]
+[ Upstream commit b952f96a57e6fb4528c1d6be19e941c3322f9905 ]
 
-A null-ptr-deref bug is reported by Hulk Robot like this:
---------------
-KASAN: null-ptr-deref in range [0x0000000000000128-0x000000000000012f]
-Call Trace:
-qrtr_ns_remove+0x22/0x40 [ns]
-qrtr_proto_fini+0xa/0x31 [qrtr]
-__x64_sys_delete_module+0x337/0x4e0
-do_syscall_64+0x34/0x80
-entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x468ded
---------------
+Support regulators found on the KingFisher board for miniPCIe (1.5 and
+3.3v). For completeness, describe a 12v regulator while we are here.
 
-When qrtr_ns_init fails in qrtr_proto_init, qrtr_ns_remove which would
-be called later on would raise a null-ptr-deref because qrtr_ns.workqueue
-has been destroyed.
-
-Fix it by making qrtr_ns_init have a return value and adding a check in
-qrtr_proto_init.
-
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: fd76e5ccc48f ("net: qrtr: ns: Fix module refcnt")
+Link: https://lore.kernel.org/linux-pci/20231105092908.3792-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Stable-dep-of: 78d212851f0e ("dt-bindings: PCI: rcar-pci-host: Add missing IOMMU properties")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/qrtr/af_qrtr.c | 16 +++++++++++-----
- net/qrtr/ns.c      |  7 ++++---
- net/qrtr/qrtr.h    |  2 +-
- 3 files changed, 16 insertions(+), 9 deletions(-)
+ .../devicetree/bindings/pci/rcar-pci-host.yaml        | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index 71c2295d4a573..29c0886eb9efe 100644
---- a/net/qrtr/af_qrtr.c
-+++ b/net/qrtr/af_qrtr.c
-@@ -1279,13 +1279,19 @@ static int __init qrtr_proto_init(void)
- 		return rc;
+diff --git a/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml b/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml
+index 8fdfbc763d704..b6a7cb32f61e5 100644
+--- a/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml
++++ b/Documentation/devicetree/bindings/pci/rcar-pci-host.yaml
+@@ -68,6 +68,15 @@ properties:
+   phy-names:
+     const: pcie
  
- 	rc = sock_register(&qrtr_family);
--	if (rc) {
--		proto_unregister(&qrtr_proto);
--		return rc;
--	}
-+	if (rc)
-+		goto err_proto;
- 
--	qrtr_ns_init();
-+	rc = qrtr_ns_init();
-+	if (rc)
-+		goto err_sock;
- 
-+	return 0;
++  vpcie1v5-supply:
++    description: The 1.5v regulator to use for PCIe.
 +
-+err_sock:
-+	sock_unregister(qrtr_family.family);
-+err_proto:
-+	proto_unregister(&qrtr_proto);
- 	return rc;
- }
- postcore_initcall(qrtr_proto_init);
-diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-index c92dd960bfefa..3376a656da39f 100644
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -771,7 +771,7 @@ static void qrtr_ns_data_ready(struct sock *sk)
- 	queue_work(qrtr_ns.workqueue, &qrtr_ns.work);
- }
- 
--void qrtr_ns_init(void)
-+int qrtr_ns_init(void)
- {
- 	struct sockaddr_qrtr sq;
- 	int ret;
-@@ -782,7 +782,7 @@ void qrtr_ns_init(void)
- 	ret = sock_create_kern(&init_net, AF_QIPCRTR, SOCK_DGRAM,
- 			       PF_QIPCRTR, &qrtr_ns.sock);
- 	if (ret < 0)
--		return;
-+		return ret;
- 
- 	ret = kernel_getsockname(qrtr_ns.sock, (struct sockaddr *)&sq);
- 	if (ret < 0) {
-@@ -815,12 +815,13 @@ void qrtr_ns_init(void)
- 	if (ret < 0)
- 		goto err_wq;
- 
--	return;
-+	return 0;
- 
- err_wq:
- 	destroy_workqueue(qrtr_ns.workqueue);
- err_sock:
- 	sock_release(qrtr_ns.sock);
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(qrtr_ns_init);
- 
-diff --git a/net/qrtr/qrtr.h b/net/qrtr/qrtr.h
-index dc2b67f179271..3f2d28696062a 100644
---- a/net/qrtr/qrtr.h
-+++ b/net/qrtr/qrtr.h
-@@ -29,7 +29,7 @@ void qrtr_endpoint_unregister(struct qrtr_endpoint *ep);
- 
- int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len);
- 
--void qrtr_ns_init(void);
-+int qrtr_ns_init(void);
- 
- void qrtr_ns_remove(void);
- 
++  vpcie3v3-supply:
++    description: The 3.3v regulator to use for PCIe.
++
++  vpcie12v-supply:
++    description: The 12v regulator to use for PCIe.
++
+ required:
+   - compatible
+   - reg
+@@ -121,5 +130,7 @@ examples:
+              clock-names = "pcie", "pcie_bus";
+              power-domains = <&sysc R8A7791_PD_ALWAYS_ON>;
+              resets = <&cpg 319>;
++             vpcie3v3-supply = <&pcie_3v3>;
++             vpcie12v-supply = <&pcie_12v>;
+          };
+     };
 -- 
 2.43.0
 
