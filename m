@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-50898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71D99906D56
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 989C5906B4F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D8991C22AB6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93B181C2173F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E75146D73;
-	Thu, 13 Jun 2024 11:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E238C14265E;
+	Thu, 13 Jun 2024 11:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOQn4Ca6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LaRQLfz4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D88F145A03;
-	Thu, 13 Jun 2024 11:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FBFBDDB1;
+	Thu, 13 Jun 2024 11:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279712; cv=none; b=P7bhAe+ZwMtI9RwGrxvIrnifodc/UVfdCqzKVLKmkvnKFz/7aP5ejcNktGoVciyUDJ4+XEUZLsRQgHnpcnLwThvLdVzbJ3z98Gzzo43Rp2visTIGQm6CavqOHs5l35ryFqxGGP7hgWLhZANhnTAz3ME3ZQ5s1dp4jtwRUxT65yQ=
+	t=1718278763; cv=none; b=MxRU2lj8bewmAJx+kTkgSvnpmf6xIBjZpQ20E3kSzLRd/2glj0oXw49XFHostG5PP65L526JcYnRMS6LN/QdouktJhFgDvy2x9jxaO3TiG6YQ4s6ox+JYobVaDhDfAajw/1PcXDKEoiVVK4axh3TO6yKhdpqTmoGqYoSm6yECAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279712; c=relaxed/simple;
-	bh=3vaOvf7YuJQidvvvnO3sYSlA5nLd4+TSEzseeC/nC3w=;
+	s=arc-20240116; t=1718278763; c=relaxed/simple;
+	bh=izJtpBk7IXnGxLUfEfodBVVreDmjuh12MUcDsIdX2UY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqdnGZjBwTbt6lLH1yOodB/ru2296yZIq9kqnH+3h096ITsm+MdBnc1FymI24jb1QzVhwZMxAOpphgoqiOtruOz9DcksVNeP6vm3bLpN1o+QQD/uZKK3YpLq3Z3cd4zjyYy7coOduEUbYOXlV+z2pda7j1Zvc3EIorGvhSipSSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOQn4Ca6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF07C2BBFC;
-	Thu, 13 Jun 2024 11:55:11 +0000 (UTC)
+	 MIME-Version; b=J0s5kto+Aj68lPZ/eIt629STf6SsgwnKBJHXchqlchQHYk5kwbA/Du3Dr8L1Pve2HDsOJsCp+ZJs4JQEBDjluO+pXIqJydVNwx4VxfPpZUMO4uijron1ijPHfckZKWYQB4cwKGo53YBO+W33k8lnBUol1KY488kyVvyRnOq4r/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LaRQLfz4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CF1C2BBFC;
+	Thu, 13 Jun 2024 11:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279711;
-	bh=3vaOvf7YuJQidvvvnO3sYSlA5nLd4+TSEzseeC/nC3w=;
+	s=korg; t=1718278763;
+	bh=izJtpBk7IXnGxLUfEfodBVVreDmjuh12MUcDsIdX2UY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pOQn4Ca6kbzFXwDDEz0pd0XDcnABEbe9+ghG/KPX22aEfmz48MMyzqttPPwnSeIIo
-	 m1v2GmL/NPNRxMr33evmlHVXbj2Uz6zzmBVvln3jV5HW64FzQ94WFDbKOQz5iHGIGm
-	 ck9jVQyqyH4PMMmQa2cnr2QCfLqA5CJCLkJIHe+E=
+	b=LaRQLfz492CY6RyUS4eSom6ZOkP6WTw5hGZeBe+Hz8e9hq5kkP9elrSLy7ag4Am1A
+	 AeKSwqTim1fII/vKahs/R+LqyOHW6QLFCCZX16YPfokZUpr5BDfB982F+mL+dLFtc1
+	 oqkLLq4ojOCkcm8lHV2llS08LlPNu2A+cICP1U6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Derek Fang <derek.fang@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 011/202] ASoC: rt5645: Fix the electric noise due to the CBJ contacts floating
-Date: Thu, 13 Jun 2024 13:31:49 +0200
-Message-ID: <20240613113228.199423804@linuxfoundation.org>
+Subject: [PATCH 4.19 062/213] ipv6: sr: add missing seg6_local_exit
+Date: Thu, 13 Jun 2024 13:31:50 +0200
+Message-ID: <20240613113230.402497377@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Derek Fang <derek.fang@realtek.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 103abab975087e1f01b76fcb54c91dbb65dbc249 ]
+[ Upstream commit 3321687e321307629c71b664225b861ebf3e5753 ]
 
-The codec leaves tie combo jack's sleeve/ring2 to floating status
-default. It would cause electric noise while connecting the active
-speaker jack during boot or shutdown.
-This patch requests a gpio to control the additional jack circuit
-to tie the contacts to the ground or floating.
+Currently, we only call seg6_local_exit() in seg6_init() if
+seg6_local_init() failed. But forgot to call it in seg6_exit().
 
-Signed-off-by: Derek Fang <derek.fang@realtek.com>
-
-Link: https://msgid.link/r/20240408091057.14165-1-derek.fang@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240509131812.1662197-2-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5645.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ net/ipv6/seg6.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
-index c78d5833c9cd9..6aab552eda777 100644
---- a/sound/soc/codecs/rt5645.c
-+++ b/sound/soc/codecs/rt5645.c
-@@ -414,6 +414,7 @@ struct rt5645_priv {
- 	struct regmap *regmap;
- 	struct i2c_client *i2c;
- 	struct gpio_desc *gpiod_hp_det;
-+	struct gpio_desc *gpiod_cbj_sleeve;
- 	struct snd_soc_jack *hp_jack;
- 	struct snd_soc_jack *mic_jack;
- 	struct snd_soc_jack *btn_jack;
-@@ -3169,6 +3170,9 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
- 		regmap_update_bits(rt5645->regmap, RT5645_IN1_CTRL2,
- 			RT5645_CBJ_MN_JD, 0);
- 
-+		if (rt5645->gpiod_cbj_sleeve)
-+			gpiod_set_value(rt5645->gpiod_cbj_sleeve, 1);
-+
- 		msleep(600);
- 		regmap_read(rt5645->regmap, RT5645_IN1_CTRL3, &val);
- 		val &= 0x7;
-@@ -3185,6 +3189,8 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
- 			snd_soc_dapm_disable_pin(dapm, "Mic Det Power");
- 			snd_soc_dapm_sync(dapm);
- 			rt5645->jack_type = SND_JACK_HEADPHONE;
-+			if (rt5645->gpiod_cbj_sleeve)
-+				gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
- 		}
- 		if (rt5645->pdata.level_trigger_irq)
- 			regmap_update_bits(rt5645->regmap, RT5645_IRQ_CTRL2,
-@@ -3210,6 +3216,9 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
- 		if (rt5645->pdata.level_trigger_irq)
- 			regmap_update_bits(rt5645->regmap, RT5645_IRQ_CTRL2,
- 				RT5645_JD_1_1_MASK, RT5645_JD_1_1_INV);
-+
-+		if (rt5645->gpiod_cbj_sleeve)
-+			gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
- 	}
- 
- 	return rt5645->jack_type;
-@@ -3861,6 +3870,16 @@ static int rt5645_i2c_probe(struct i2c_client *i2c,
- 			return ret;
- 	}
- 
-+	rt5645->gpiod_cbj_sleeve = devm_gpiod_get_optional(&i2c->dev, "cbj-sleeve",
-+							   GPIOD_OUT_LOW);
-+
-+	if (IS_ERR(rt5645->gpiod_cbj_sleeve)) {
-+		ret = PTR_ERR(rt5645->gpiod_cbj_sleeve);
-+		dev_info(&i2c->dev, "failed to initialize gpiod, ret=%d\n", ret);
-+		if (ret != -ENOENT)
-+			return ret;
-+	}
-+
- 	for (i = 0; i < ARRAY_SIZE(rt5645->supplies); i++)
- 		rt5645->supplies[i].supply = rt5645_supply_names[i];
- 
-@@ -4104,6 +4123,9 @@ static int rt5645_i2c_remove(struct i2c_client *i2c)
- 	cancel_delayed_work_sync(&rt5645->jack_detect_work);
- 	cancel_delayed_work_sync(&rt5645->rcclock_work);
- 
-+	if (rt5645->gpiod_cbj_sleeve)
-+		gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
-+
- 	regulator_bulk_disable(ARRAY_SIZE(rt5645->supplies), rt5645->supplies);
- 
- 	return 0;
-@@ -4121,6 +4143,9 @@ static void rt5645_i2c_shutdown(struct i2c_client *i2c)
- 		0);
- 	msleep(20);
- 	regmap_write(rt5645->regmap, RT5645_RESET, 0);
-+
-+	if (rt5645->gpiod_cbj_sleeve)
-+		gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
- }
- 
- static struct i2c_driver rt5645_i2c_driver = {
+diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+index 4bd601c964343..42ff4f421d42a 100644
+--- a/net/ipv6/seg6.c
++++ b/net/ipv6/seg6.c
+@@ -497,6 +497,7 @@ void seg6_exit(void)
+ 	seg6_hmac_exit();
+ #endif
+ #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
++	seg6_local_exit();
+ 	seg6_iptunnel_exit();
+ #endif
+ 	unregister_pernet_subsys(&ip6_segments_ops);
 -- 
 2.43.0
 
