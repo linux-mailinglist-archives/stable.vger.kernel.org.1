@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9831D906F90
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E5890713F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E3CE289068
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A802283931
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3782F6EB56;
-	Thu, 13 Jun 2024 12:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88E71DDDB;
+	Thu, 13 Jun 2024 12:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgCbwIoP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0i57BgZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A3056458;
-	Thu, 13 Jun 2024 12:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662C528FF;
+	Thu, 13 Jun 2024 12:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281063; cv=none; b=F5mfsl1b1/2lh/j1aZuJaL4DnYAx0E858Ng+VOhshild9Km3DnQ8il+bJDB8GQbiKsfmHZ1xwqypjZmCMzt8jFJugbwYH8IwQLvzXCihsN1ZgXnNSAlGrhTn94JDOsiwGo9lwrAFUQdSRzGVe8Z9QpVnWTaofBn0ILpfdFdkUNQ=
+	t=1718282097; cv=none; b=oh+Es5cmwT9TEefJvvf8dgeJ904Yk1EMG/mYNa3SBZiTMl4+aR7JZt90fh7Ii7IMpUXMBOBUYk66XH/D+JT0Amm0qR0ObGvDp0T71kR3UApk8aB4Cgo+A6iqOyYEWMr7xvzTC/MKxgKOjFBcXIDFRei9iw1rIfaMiYvuczLR1Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281063; c=relaxed/simple;
-	bh=lCiDnOHvhuGJqkrFSAvLM+Zas2y8di/Ukys+UFV6IxI=;
+	s=arc-20240116; t=1718282097; c=relaxed/simple;
+	bh=khaerv9JBHKISx/ttUiJr+Qq97+0qt21n7hG8hmUzLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Iz3j4cG8CpyX/bkJ8K+504pCToy/Wtl1W6OyrSslMw6G/KkHdRzvDIGnbt+HfKSX9sCxFz0+vH5eHZV26Fan3cJNqq7HsZHTJZv5iHlxKLFOoxlWyW2xdmCkzZwaSdmcwS+ygc0fPl0IxjlNBhwUWKEtQPH/ea8iRWBD0+4+Y5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgCbwIoP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C621C2BBFC;
-	Thu, 13 Jun 2024 12:17:42 +0000 (UTC)
+	 MIME-Version; b=h8sS1lTFWakQO12YKJBFtgCd9EaHU80wa0Y6QeBobXdyXrgrCmQr90g8PwCPAmE+7XE6iQ/DGQH7ClkbMat0JWzGfSN9J0T2x6JJY6P1hBRTbbLp4YDsNWuyLaaX3wQTIsI4Mu+IG5K+opEvoWOIkU+nMR0kUPi91OuPvgGir1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0i57BgZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF434C2BBFC;
+	Thu, 13 Jun 2024 12:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281062;
-	bh=lCiDnOHvhuGJqkrFSAvLM+Zas2y8di/Ukys+UFV6IxI=;
+	s=korg; t=1718282097;
+	bh=khaerv9JBHKISx/ttUiJr+Qq97+0qt21n7hG8hmUzLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tgCbwIoPEthul/eQ3qE4hvHFAR5XL3dRmweNmXx7gP8vAUYoR5GLJ0BI1i+tdot+M
-	 a4ZsJO7aYXp8qUujtEiDpGrN4dCcvE9+yPpggFJ3As9Vqb69Hyp5LaM+Rj4+Oomm8u
-	 lmv2lPKQ/yl/zatBc9eDbvE3sTftvz4FfL/Im+lc=
+	b=X0i57BgZB2PPbL3DczxPJpYhGoouphR1CKP+ardb0R0c513J/0cCYOpOB1MJ7YhJ4
+	 lwZWGdhJGvnF1qvnsOE37J4sckcH1DwwA3cHV70z9YbQ1j1T6nXuUVu2YolR6YiA+K
+	 ZLOPS8I6m0jSxgFIChMkdnAeYpt+uzQ5QAeceht8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 100/317] media: radio-shark2: Avoid led_names truncations
-Date: Thu, 13 Jun 2024 13:31:58 +0200
-Message-ID: <20240613113251.419865082@linuxfoundation.org>
+Subject: [PATCH 5.15 162/402] ext4: simplify calculation of blkoff in ext4_mb_new_blocks_simple
+Date: Thu, 13 Jun 2024 13:31:59 +0200
+Message-ID: <20240613113308.453011077@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit 1820e16a3019b6258e6009d34432946a6ddd0a90 ]
+[ Upstream commit 253cacb0de89235673ad5889d61f275a73dbee79 ]
 
-Increase the size of led_names so it can fit any valid v4l2 device name.
+We try to allocate a block from goal in ext4_mb_new_blocks_simple. We
+only need get blkoff in first group with goal and set blkoff to 0 for
+the rest groups.
 
-Fixes:
-drivers/media/radio/radio-shark2.c:197:17: warning: ‘%s’ directive output may be truncated writing up to 35 bytes into a region of size 32 [-Wformat-truncation=]
-
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Link: https://lore.kernel.org/r/20230303172120.3800725-21-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 3f4830abd236 ("ext4: fix potential unnitialized variable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/radio/radio-shark2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/mballoc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/radio/radio-shark2.c b/drivers/media/radio/radio-shark2.c
-index f1c5c0a6a335c..e3e6aa87fe081 100644
---- a/drivers/media/radio/radio-shark2.c
-+++ b/drivers/media/radio/radio-shark2.c
-@@ -62,7 +62,7 @@ struct shark_device {
- #ifdef SHARK_USE_LEDS
- 	struct work_struct led_work;
- 	struct led_classdev leds[NO_LEDS];
--	char led_names[NO_LEDS][32];
-+	char led_names[NO_LEDS][64];
- 	atomic_t brightness[NO_LEDS];
- 	unsigned long brightness_new;
- #endif
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 8dba416aa6c1e..c2fcdee223317 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -5908,9 +5908,6 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+ 			return 0;
+ 		}
+ 
+-		ext4_get_group_no_and_offset(sb,
+-			max(ext4_group_first_block_no(sb, group), goal),
+-			NULL, &blkoff);
+ 		while (1) {
+ 			i = mb_find_next_zero_bit(bitmap_bh->b_data, max,
+ 						blkoff);
+@@ -5925,6 +5922,8 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+ 		brelse(bitmap_bh);
+ 		if (i < max)
+ 			break;
++
++		blkoff = 0;
+ 	}
+ 
+ 	if (group >= ext4_get_groups_count(sb) || i >= max) {
 -- 
 2.43.0
 
