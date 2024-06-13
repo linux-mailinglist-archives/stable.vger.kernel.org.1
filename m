@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-50724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C660906C32
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:48:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8E6906D0D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:58:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4311B23A8B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:48:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 090BB1C22D14
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71181448DF;
-	Thu, 13 Jun 2024 11:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A8414A62B;
+	Thu, 13 Jun 2024 11:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rm0nfgBi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcxiU4AT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7307C143872;
-	Thu, 13 Jun 2024 11:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE5914A623;
+	Thu, 13 Jun 2024 11:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279201; cv=none; b=hhM1yktIKA/yJASXiVBC0iriywIzTGIoF9nQleZVittxB8vtGyPZH662e47I2QE8/f5QyniCh0IHx45v0yS4rOg89KzU1tnWtLYmRm54901vwK5nAfWkNkZHwcxq/rVfbVVPnkAa0fzIXXO6Kqo8svEwQMgc6X6wUHjyz5G+CGs=
+	t=1718279525; cv=none; b=ZiuR53WceBby5ciHZxyCdFRi43AAVlZjsqrfuxeLddDR80TpNjQfEtKaN2JnWOPmIVT7YY1q8mQp2P15oZAzes6iM6lYuM8UTwIgzCokMTcy/79V0rAA4ZwD50g3y4jowLg3R8pJJMdsHEtEYhzfGDjbaY4FXfF7br9mMW76EZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279201; c=relaxed/simple;
-	bh=qg2Sf+omNu4q5hMqCDvhPtIGD3eEZz9u29VE8TCu6Lg=;
+	s=arc-20240116; t=1718279525; c=relaxed/simple;
+	bh=jfhVh1Jxae1yAOJJs/qfkyThE12OBAeG3zVTRH+tGh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qKx4r/vQL9awIjmCW97U5TgJOdwCUNx7cw7RpoZiH1u/VYrQq+J614GjBWitL8ecdhz0UlfY8j2AFWf+Y1DOhJPmX3agKlbBoYNywT7tFhiNAmlOpd4+5ncPuyh4dZaBHqz75uFphHBKom33oS6Jx7gYQb8fsP0MpW8ckZqQtfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rm0nfgBi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE525C2BBFC;
-	Thu, 13 Jun 2024 11:46:40 +0000 (UTC)
+	 MIME-Version; b=b9CjxIkiX5HqeL7x1kJ6YV8FwFTQGajVHTknBzJZmZM8jYiw1A97yGCaJpyG4OJHTfLjcerbs6dtVlOk0vc/Xj/14c1TXe4VcsQOkAeRMom9qbkBxjR+4JdLDNWwd3OHjTP4njFfe4rqwA6e9SAo4Z65SMJPKU4WtenyI16pYFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcxiU4AT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2461AC32786;
+	Thu, 13 Jun 2024 11:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279201;
-	bh=qg2Sf+omNu4q5hMqCDvhPtIGD3eEZz9u29VE8TCu6Lg=;
+	s=korg; t=1718279525;
+	bh=jfhVh1Jxae1yAOJJs/qfkyThE12OBAeG3zVTRH+tGh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rm0nfgBi2SmTFMvftRao4W1Ht1rWQaXkhITDQ1EReYjG8vpxfcKLNAOd7CH1lXa9+
-	 x5/JwYZ2RGE3bDgh433McBBI39cWnZ+L74HabTaAtaFG/Drxs9Q3eTROsnOrmzvb/A
-	 MXlP1TlkT2QrsKbZa3CT+IWlBHPsW4i9N72I8nJc=
+	b=zcxiU4AT+BO7TSEIkjvVj/2eBAcj/jogOJyG3B5DunL4JpkXbPkIpVk4wIDAsOR8z
+	 sQtnnkhH7DVHvgVYO15Xh8mpY1KxC5xTOctNi279TmMk38H8uAAH6+3CeOEt6yzox6
+	 vdAIHW2GFA46AV8A31UQFjenXk1vUjSW76Ie9/6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7ad5cd1615f2d89c6e7e@syzkaller.appspotmail.com,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 182/213] netfilter: nf_tables: fix table flag updates
-Date: Thu, 13 Jun 2024 13:33:50 +0200
-Message-ID: <20240613113235.003285118@linuxfoundation.org>
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Anup Patel <anup@brainfault.org>
+Subject: [PATCH 6.9 106/157] irqchip/riscv-intc: Prevent memory leak when riscv_intc_init_common() fails
+Date: Thu, 13 Jun 2024 13:33:51 +0200
+Message-ID: <20240613113231.520366907@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,196 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Sunil V L <sunilvl@ventanamicro.com>
 
-commit 179d9ba5559a756f4322583388b3213fe4e391b0 upstream.
+commit 0110c4b110477bb1f19b0d02361846be7ab08300 upstream.
 
-The dormant flag need to be updated from the preparation phase,
-otherwise, two consecutive requests to dorm a table in the same batch
-might try to remove the same hooks twice, resulting in the following
-warning:
+When riscv_intc_init_common() fails, the firmware node allocated is not
+freed. Add the missing free().
 
- hook not found, pf 3 num 0
- WARNING: CPU: 0 PID: 334 at net/netfilter/core.c:480 __nf_unregister_net_hook+0x1eb/0x610 net/netfilter/core.c:480
- Modules linked in:
- CPU: 0 PID: 334 Comm: kworker/u4:5 Not tainted 5.12.0-syzkaller #0
- Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
- Workqueue: netns cleanup_net
- RIP: 0010:__nf_unregister_net_hook+0x1eb/0x610 net/netfilter/core.c:480
-
-This patch is a partial revert of 0ce7cf4127f1 ("netfilter: nftables:
-update table flags from the commit phase") to restore the previous
-behaviour.
-
-However, there is still another problem: A batch containing a series of
-dorm-wakeup-dorm table and vice-versa also trigger the warning above
-since hook unregistration happens from the preparation phase, while hook
-registration occurs from the commit phase.
-
-To fix this problem, this patch adds two internal flags to annotate the
-original dormant flag status which are __NFT_TABLE_F_WAS_DORMANT and
-__NFT_TABLE_F_WAS_AWAKEN, to restore it from the abort path.
-
-The __NFT_TABLE_F_UPDATE bitmask allows to handle the dormant flag update
-with one single transaction.
-
-Reported-by: syzbot+7ad5cd1615f2d89c6e7e@syzkaller.appspotmail.com
-Fixes: 0ce7cf4127f1 ("netfilter: nftables: update table flags from the commit phase")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 7023b9d83f03 ("irqchip/riscv-intc: Add ACPI support")
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240527081113.616189-1-sunilvl@ventanamicro.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h        |    6 ---
- include/uapi/linux/netfilter/nf_tables.h |    1 
- net/netfilter/nf_tables_api.c            |   59 +++++++++++++++++++++----------
- 3 files changed, 41 insertions(+), 25 deletions(-)
+ drivers/irqchip/irq-riscv-intc.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1347,16 +1347,10 @@ struct nft_trans_chain {
- 
- struct nft_trans_table {
- 	bool				update;
--	u8				state;
--	u32				flags;
- };
- 
- #define nft_trans_table_update(trans)	\
- 	(((struct nft_trans_table *)trans->data)->update)
--#define nft_trans_table_state(trans)	\
--	(((struct nft_trans_table *)trans->data)->state)
--#define nft_trans_table_flags(trans)	\
--	(((struct nft_trans_table *)trans->data)->flags)
- 
- struct nft_trans_elem {
- 	struct nft_set			*set;
---- a/include/uapi/linux/netfilter/nf_tables.h
-+++ b/include/uapi/linux/netfilter/nf_tables.h
-@@ -162,6 +162,7 @@ enum nft_hook_attributes {
- enum nft_table_flags {
- 	NFT_TABLE_F_DORMANT	= 0x1,
- };
-+#define NFT_TABLE_F_MASK       (NFT_TABLE_F_DORMANT)
- 
- /**
-  * enum nft_table_attributes - nf_tables table netlink attributes
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -676,7 +676,8 @@ static int nf_tables_fill_table_info(str
- 		goto nla_put_failure;
- 
- 	if (nla_put_string(skb, NFTA_TABLE_NAME, table->name) ||
--	    nla_put_be32(skb, NFTA_TABLE_FLAGS, htonl(table->flags)) ||
-+	    nla_put_be32(skb, NFTA_TABLE_FLAGS,
-+			 htonl(table->flags & NFT_TABLE_F_MASK)) ||
- 	    nla_put_be32(skb, NFTA_TABLE_USE, htonl(table->use)) ||
- 	    nla_put_be64(skb, NFTA_TABLE_HANDLE, cpu_to_be64(table->handle),
- 			 NFTA_TABLE_PAD))
-@@ -865,20 +866,22 @@ err:
- 
- static void nf_tables_table_disable(struct net *net, struct nft_table *table)
+--- a/drivers/irqchip/irq-riscv-intc.c
++++ b/drivers/irqchip/irq-riscv-intc.c
+@@ -253,8 +253,9 @@ IRQCHIP_DECLARE(andes, "andestech,cpu-in
+ static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
+ 				       const unsigned long end)
  {
-+	table->flags &= ~NFT_TABLE_F_DORMANT;
- 	nft_table_disable(net, table, 0);
-+	table->flags |= NFT_TABLE_F_DORMANT;
- }
+-	struct fwnode_handle *fn;
+ 	struct acpi_madt_rintc *rintc;
++	struct fwnode_handle *fn;
++	int rc;
  
--enum {
--	NFT_TABLE_STATE_UNCHANGED	= 0,
--	NFT_TABLE_STATE_DORMANT,
--	NFT_TABLE_STATE_WAKEUP
--};
-+#define __NFT_TABLE_F_INTERNAL		(NFT_TABLE_F_MASK + 1)
-+#define __NFT_TABLE_F_WAS_DORMANT	(__NFT_TABLE_F_INTERNAL << 0)
-+#define __NFT_TABLE_F_WAS_AWAKEN	(__NFT_TABLE_F_INTERNAL << 1)
-+#define __NFT_TABLE_F_UPDATE		(__NFT_TABLE_F_WAS_DORMANT | \
-+					 __NFT_TABLE_F_WAS_AWAKEN)
+ 	rintc = (struct acpi_madt_rintc *)header;
  
- static int nf_tables_updtable(struct nft_ctx *ctx)
- {
- 	struct nft_trans *trans;
- 	u32 flags;
--	int ret = 0;
-+	int ret;
- 
- 	if (!ctx->nla[NFTA_TABLE_FLAGS])
- 		return 0;
-@@ -897,21 +900,27 @@ static int nf_tables_updtable(struct nft
- 
- 	if ((flags & NFT_TABLE_F_DORMANT) &&
- 	    !(ctx->table->flags & NFT_TABLE_F_DORMANT)) {
--		nft_trans_table_state(trans) = NFT_TABLE_STATE_DORMANT;
-+		ctx->table->flags |= NFT_TABLE_F_DORMANT;
-+		if (!(ctx->table->flags & __NFT_TABLE_F_UPDATE))
-+			ctx->table->flags |= __NFT_TABLE_F_WAS_AWAKEN;
- 	} else if (!(flags & NFT_TABLE_F_DORMANT) &&
- 		   ctx->table->flags & NFT_TABLE_F_DORMANT) {
--		ret = nf_tables_table_enable(ctx->net, ctx->table);
--		if (ret >= 0)
--			nft_trans_table_state(trans) = NFT_TABLE_STATE_WAKEUP;
-+		ctx->table->flags &= ~NFT_TABLE_F_DORMANT;
-+		if (!(ctx->table->flags & __NFT_TABLE_F_UPDATE)) {
-+			ret = nf_tables_table_enable(ctx->net, ctx->table);
-+			if (ret < 0)
-+				goto err_register_hooks;
-+
-+			ctx->table->flags |= __NFT_TABLE_F_WAS_DORMANT;
-+		}
+@@ -273,7 +274,11 @@ static int __init riscv_intc_acpi_init(u
+ 		return -ENOMEM;
  	}
--	if (ret < 0)
--		goto err;
  
--	nft_trans_table_flags(trans) = flags;
- 	nft_trans_table_update(trans) = true;
- 	nft_trans_commit_list_add_tail(ctx->net, trans);
+-	return riscv_intc_init_common(fn, &riscv_intc_chip);
++	rc = riscv_intc_init_common(fn, &riscv_intc_chip);
++	if (rc)
++		irq_domain_free_fwnode(fn);
 +
- 	return 0;
--err:
-+
-+err_register_hooks:
- 	nft_trans_destroy(trans);
- 	return ret;
++	return rc;
  }
-@@ -7013,10 +7022,14 @@ static int nf_tables_commit(struct net *
- 		switch (trans->msg_type) {
- 		case NFT_MSG_NEWTABLE:
- 			if (nft_trans_table_update(trans)) {
--				if (nft_trans_table_state(trans) == NFT_TABLE_STATE_DORMANT)
-+				if (!(trans->ctx.table->flags & __NFT_TABLE_F_UPDATE)) {
-+					nft_trans_destroy(trans);
-+					break;
-+				}
-+				if (trans->ctx.table->flags & NFT_TABLE_F_DORMANT)
- 					nf_tables_table_disable(net, trans->ctx.table);
  
--				trans->ctx.table->flags = nft_trans_table_flags(trans);
-+				trans->ctx.table->flags &= ~__NFT_TABLE_F_UPDATE;
- 			} else {
- 				nft_clear(net, trans->ctx.table);
- 			}
-@@ -7177,9 +7190,17 @@ static int __nf_tables_abort(struct net
- 		switch (trans->msg_type) {
- 		case NFT_MSG_NEWTABLE:
- 			if (nft_trans_table_update(trans)) {
--				if (nft_trans_table_state(trans) == NFT_TABLE_STATE_WAKEUP)
-+				if (!(trans->ctx.table->flags & __NFT_TABLE_F_UPDATE)) {
-+					nft_trans_destroy(trans);
-+					break;
-+				}
-+				if (trans->ctx.table->flags & __NFT_TABLE_F_WAS_DORMANT) {
- 					nf_tables_table_disable(net, trans->ctx.table);
--
-+					trans->ctx.table->flags |= NFT_TABLE_F_DORMANT;
-+				} else if (trans->ctx.table->flags & __NFT_TABLE_F_WAS_AWAKEN) {
-+					trans->ctx.table->flags &= ~NFT_TABLE_F_DORMANT;
-+				}
-+				trans->ctx.table->flags &= ~__NFT_TABLE_F_UPDATE;
- 				nft_trans_destroy(trans);
- 			} else {
- 				list_del_rcu(&trans->ctx.table->list);
+ IRQCHIP_ACPI_DECLARE(riscv_intc, ACPI_MADT_TYPE_RINTC, NULL,
 
 
 
