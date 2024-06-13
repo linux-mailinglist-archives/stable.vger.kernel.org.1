@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-51894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461B390721B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA69906E48
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B9FE1C21B92
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 457FB1C21A32
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDFF81ABE;
-	Thu, 13 Jun 2024 12:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BDF1494CF;
+	Thu, 13 Jun 2024 12:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUH/nyHK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFGrS3bo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9EF2CA6;
-	Thu, 13 Jun 2024 12:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940901494C9;
+	Thu, 13 Jun 2024 12:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282628; cv=none; b=vA0/zo3cfTSEwst75jiFvrih5kIVTbe2z+hs3vfgvhZ77NtbhRU7bhCUKcLJ2X53avHn2ifPEZWcanKcsHOfXKUEQo6Nzs/ExHrfvth/7K798S9jek4rFvRebLxCE5bX3nVQWABWpjAfnw1s7p9CpFZDryn9bkaPz32P+EdtA78=
+	t=1718280270; cv=none; b=ixz1hryTwk4EWK1ZzTCk2KN+Ex4JlBH3t88bI6mekwLIPmYaKqklZ549/7gk8atcEupUr5Wju5oxSkOqeXWZI5tc5e8KvCM7fCEKq8JOTr1VwaTFtem7Ti3VL5MmnH6vPmS+pLGubfQ1QxvzyvBgqdB4drlLn6BnxF/ap81aPyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282628; c=relaxed/simple;
-	bh=Lj6aXx1pGJufDYqfiqJoKGeOlgudeGjjQfFZjSxssw4=;
+	s=arc-20240116; t=1718280270; c=relaxed/simple;
+	bh=hgr60hx0oQ6G6pcLmUaJCCUGhArtJiHJmz3xStf5kvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VFzo0GdcCL9uQxkI8yAbHLqlqClX7lI4iM9XDzbF1a0Siy/TeSMFLdoPkQEeJUxIhtdAh13VSRP3IXZeKYNnUwgRi2Yt3/tHjwqenG3hk9u4002/By1f9olxAVq0ggGRU3e5ZSkRmynI17l66fZl5TrLw3bJ2rvBsplFlei713M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUH/nyHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F7BC4AF1C;
-	Thu, 13 Jun 2024 12:43:47 +0000 (UTC)
+	 MIME-Version; b=IZcojMfjKnFMGREuKobnMUGbz8EyCTChZjJ2mXAEJW/YuzLIIAhM9tCz0+DxDCZe6ouhn7qTL9aa4UqGYLKsYVTDU3yG9Ik01bq54jIYwg7g+5P1X2XC7FoUki3C0UMonyNnGHqov9C41SDFPaMMTHz+hyl+Ei6++kmjnm+ulEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFGrS3bo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE00C2BBFC;
+	Thu, 13 Jun 2024 12:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282628;
-	bh=Lj6aXx1pGJufDYqfiqJoKGeOlgudeGjjQfFZjSxssw4=;
+	s=korg; t=1718280270;
+	bh=hgr60hx0oQ6G6pcLmUaJCCUGhArtJiHJmz3xStf5kvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dUH/nyHKQ6XILB3/Z3qD8CDCZzFoYzM2OVYfJPJRf41RlKVbnvy/BO7OxeV1M9tPm
-	 mhi4GHtt08ZCySC3RR5yUu97q4xmjukx0TQ8EWGW3icBUtjoROX5Or1NcD3abpc0Pm
-	 pwVKiEY+tHxjouWVuUlttA9yX5fo64okuPQRZb8M=
+	b=aFGrS3bomoYZkHwb86jX7k6x6SqmeP4GijxFd0N70/FiWShI7LuZoXFRy9h1AyNnJ
+	 LQaLEdW3wiIeBfEKnhaxZGk15ySdpo2vEaWGUSvH58P8hKw4NrhVja86wg9VZ7eF51
+	 biqEidigjZVLzOFjIMaxBEILw4V5mP2m2cheW9+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>
-Subject: [PATCH 5.15 341/402] drm: Check polling initialized before enabling in drm_helper_probe_single_connector_modes
+	syzbot+dd43bd0f7474512edc47@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.4 200/202] ext4: fix mb_cache_entrys e_refcnt leak in ext4_xattr_block_cache_find()
 Date: Thu, 13 Jun 2024 13:34:58 +0200
-Message-ID: <20240613113315.434170602@linuxfoundation.org>
+Message-ID: <20240613113235.456655046@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 048a36d8a6085bbd8ab9e5794b713b92ac986450 upstream.
+commit 0c0b4a49d3e7f49690a6827a41faeffad5df7e21 upstream.
 
-In function drm_helper_probe_single_connector_modes() when we enable
-polling again, if it is already uninitialized, a warning is reported.
-This patch fixes the warning message by checking if poll is initialized
-before enabling it.
+Syzbot reports a warning as follows:
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202401191128.db8423f1-oliver.sang@intel.com
-Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/1706856224-9725-1-git-send-email-shradhagupta@linux.microsoft.com
+============================================
+WARNING: CPU: 0 PID: 5075 at fs/mbcache.c:419 mb_cache_destroy+0x224/0x290
+Modules linked in:
+CPU: 0 PID: 5075 Comm: syz-executor199 Not tainted 6.9.0-rc6-gb947cc5bf6d7
+RIP: 0010:mb_cache_destroy+0x224/0x290 fs/mbcache.c:419
+Call Trace:
+ <TASK>
+ ext4_put_super+0x6d4/0xcd0 fs/ext4/super.c:1375
+ generic_shutdown_super+0x136/0x2d0 fs/super.c:641
+ kill_block_super+0x44/0x90 fs/super.c:1675
+ ext4_kill_sb+0x68/0xa0 fs/ext4/super.c:7327
+[...]
+============================================
+
+This is because when finding an entry in ext4_xattr_block_cache_find(), if
+ext4_sb_bread() returns -ENOMEM, the ce's e_refcnt, which has already grown
+in the __entry_find(), won't be put away, and eventually trigger the above
+issue in mb_cache_destroy() due to reference count leakage.
+
+So call mb_cache_entry_put() on the -ENOMEM error branch as a quick fix.
+
+Reported-by: syzbot+dd43bd0f7474512edc47@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=dd43bd0f7474512edc47
+Fixes: fb265c9cb49e ("ext4: add ext4_sb_bread() to disambiguate ENOMEM cases")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240504075526.2254349-2-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_probe_helper.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ext4/xattr.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_probe_helper.c
-+++ b/drivers/gpu/drm/drm_probe_helper.c
-@@ -498,7 +498,8 @@ retry:
- 	}
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -3079,8 +3079,10 @@ ext4_xattr_block_cache_find(struct inode
  
- 	/* Re-enable polling in case the global poll config changed. */
--	if (drm_kms_helper_poll != dev->mode_config.poll_running)
-+	if (dev->mode_config.poll_enabled &&
-+	    (drm_kms_helper_poll != dev->mode_config.poll_running))
- 		drm_kms_helper_poll_enable(dev);
- 
- 	dev->mode_config.poll_running = drm_kms_helper_poll;
+ 		bh = ext4_sb_bread(inode->i_sb, ce->e_value, REQ_PRIO);
+ 		if (IS_ERR(bh)) {
+-			if (PTR_ERR(bh) == -ENOMEM)
++			if (PTR_ERR(bh) == -ENOMEM) {
++				mb_cache_entry_put(ea_block_cache, ce);
+ 				return NULL;
++			}
+ 			bh = NULL;
+ 			EXT4_ERROR_INODE(inode, "block %lu read error",
+ 					 (unsigned long)ce->e_value);
 
 
 
