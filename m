@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-51908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB02990722A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16291906E2C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F7301C219D1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A60BAB2424C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1811DFE1;
-	Thu, 13 Jun 2024 12:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C61D148844;
+	Thu, 13 Jun 2024 12:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ndlo806e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOT4Y96o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4C51849;
-	Thu, 13 Jun 2024 12:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E15F14883B;
+	Thu, 13 Jun 2024 12:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282669; cv=none; b=oeMgUTe2vFtNnuGQEFYiZQAxYWI1xDeAB9RycMkl38tXz7e9IlKQxrVuGSdsk7D+n36msIC+uEtKSijKYxgUiYG8oAuzEql3RbZHc4JIiP8CjkCJiOt/qzQ3UglPqdbXk73g7bWoOa5D1qaSCPyywt9nVqnqx176VGzjoGVO2oA=
+	t=1718280195; cv=none; b=MxD9e8DIeGPe6eVQhecNjh6BKAUYOJr4JeiEGYGvJFSv41mvu9IvJBVq8mBYVX5wWEcqlXPwvbsUPwxqer8wB7MM5eW2PzF8klCwURH24I//ZpT3wvatBbt4MZBwcJjM2X7ABzgKHMoZ0pdvg2h+LF0RZ4LMz+k1WwDdFk3ZYCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282669; c=relaxed/simple;
-	bh=0YYXtbeAH9DvfZ1lmqac57okO1i0u1L/J1X69gDChuk=;
+	s=arc-20240116; t=1718280195; c=relaxed/simple;
+	bh=kBy+ogLECFs68oV845dNlF55n5ui9/w2s9SUr+Jo13w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TlmYlnypFhhzBCmBAyYqkXKCQOOfEQKCJJlwl0l41EoN5pnIPKxzbyc5ClQlLRQdrmb+ArQy2NT+FYTNRNQ9Ce37HV3o4b+pvjrqWfHYxZltpq+iopq2EkMZ3PjO+mPR8Bpx1MxgorpR/RCeYUa+J1aMY0v7XImHPT3TBbv9yoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ndlo806e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD43C2BBFC;
-	Thu, 13 Jun 2024 12:44:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N/06AXNSd0Ivtcq9fJ8LrxMZEm9pNXJEwiYxESwywZkvBXOM0PsVnItlxbgHajKbNjzqWsj3acjZULpQObdgDC/Dly287JAguaQ4eJ3+YNGUO8EKmKXS+jcad4p3iqW7CHYRW7bh3bUBhJJ2ThalifxKd1dxJy5Q/V1aszO+UIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOT4Y96o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD0DC2BBFC;
+	Thu, 13 Jun 2024 12:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282669;
-	bh=0YYXtbeAH9DvfZ1lmqac57okO1i0u1L/J1X69gDChuk=;
+	s=korg; t=1718280195;
+	bh=kBy+ogLECFs68oV845dNlF55n5ui9/w2s9SUr+Jo13w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ndlo806eHiKZpxC/a9cdeUQFrHCX/7VRL6SAup6Y0XJjeTq1gWTXRgjgwwWpkJ7Qo
-	 QELHQ5SIMMg4F7aCcMCPYU/5WFRuGiZZe+8ySzcRrAkrkb8ERPv1Teu9Be38UPdn9X
-	 +feF7EOv6NPj7o6QGzSZ9raE6Ck5SGnlsofuFANk=
+	b=eOT4Y96oFbKr2HZ+kLjeM8awF3m04FY7alHUy7c3LarIncVln05Yu0asZFV+3xGYs
+	 V7vhTRO6tQ/0LIi1NXRdUyyqzg+bD9aeKFxeiRwiEc7IhDNKPeOoekjzIQz7rEglJV
+	 H1zob5bRt93NQ67o0/qbECaIdRHhw+nYePR/B8UQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roded Zats <rzats@paloaltonetworks.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 315/402] enic: Validate length of nl attributes in enic_set_vf_port
+	Bob Zhou <bob.zhou@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Le Ma <le.ma@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.4 174/202] drm/amdgpu: add error handle to avoid out-of-bounds
 Date: Thu, 13 Jun 2024 13:34:32 +0200
-Message-ID: <20240613113314.427543568@linuxfoundation.org>
+Message-ID: <20240613113234.456549136@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roded Zats <rzats@paloaltonetworks.com>
+From: Bob Zhou <bob.zhou@amd.com>
 
-[ Upstream commit e8021b94b0412c37bcc79027c2e382086b6ce449 ]
+commit 8b2faf1a4f3b6c748c0da36cda865a226534d520 upstream.
 
-enic_set_vf_port assumes that the nl attribute IFLA_PORT_PROFILE
-is of length PORT_PROFILE_MAX and that the nl attributes
-IFLA_PORT_INSTANCE_UUID, IFLA_PORT_HOST_UUID are of length PORT_UUID_MAX.
-These attributes are validated (in the function do_setlink in rtnetlink.c)
-using the nla_policy ifla_port_policy. The policy defines IFLA_PORT_PROFILE
-as NLA_STRING, IFLA_PORT_INSTANCE_UUID as NLA_BINARY and
-IFLA_PORT_HOST_UUID as NLA_STRING. That means that the length validation
-using the policy is for the max size of the attributes and not on exact
-size so the length of these attributes might be less than the sizes that
-enic_set_vf_port expects. This might cause an out of bands
-read access in the memcpys of the data of these
-attributes in enic_set_vf_port.
+if the sdma_v4_0_irq_id_to_seq return -EINVAL, the process should
+be stop to avoid out-of-bounds read, so directly return -EINVAL.
 
-Fixes: f8bd909183ac ("net: Add ndo_{set|get}_vf_port support for enic dynamic vnics")
-Signed-off-by: Roded Zats <rzats@paloaltonetworks.com>
-Link: https://lore.kernel.org/r/20240522073044.33519-1-rzats@paloaltonetworks.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Bob Zhou <bob.zhou@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Le Ma <le.ma@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cisco/enic/enic_main.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index d0a8f7106958b..52bc164a1cfbc 100644
---- a/drivers/net/ethernet/cisco/enic/enic_main.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -1117,18 +1117,30 @@ static int enic_set_vf_port(struct net_device *netdev, int vf,
- 	pp->request = nla_get_u8(port[IFLA_PORT_REQUEST]);
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
+@@ -2007,6 +2007,9 @@ static int sdma_v4_0_process_trap_irq(st
  
- 	if (port[IFLA_PORT_PROFILE]) {
-+		if (nla_len(port[IFLA_PORT_PROFILE]) != PORT_PROFILE_MAX) {
-+			memcpy(pp, &prev_pp, sizeof(*pp));
-+			return -EINVAL;
-+		}
- 		pp->set |= ENIC_SET_NAME;
- 		memcpy(pp->name, nla_data(port[IFLA_PORT_PROFILE]),
- 			PORT_PROFILE_MAX);
- 	}
- 
- 	if (port[IFLA_PORT_INSTANCE_UUID]) {
-+		if (nla_len(port[IFLA_PORT_INSTANCE_UUID]) != PORT_UUID_MAX) {
-+			memcpy(pp, &prev_pp, sizeof(*pp));
-+			return -EINVAL;
-+		}
- 		pp->set |= ENIC_SET_INSTANCE;
- 		memcpy(pp->instance_uuid,
- 			nla_data(port[IFLA_PORT_INSTANCE_UUID]), PORT_UUID_MAX);
- 	}
- 
- 	if (port[IFLA_PORT_HOST_UUID]) {
-+		if (nla_len(port[IFLA_PORT_HOST_UUID]) != PORT_UUID_MAX) {
-+			memcpy(pp, &prev_pp, sizeof(*pp));
-+			return -EINVAL;
-+		}
- 		pp->set |= ENIC_SET_HOST;
- 		memcpy(pp->host_uuid,
- 			nla_data(port[IFLA_PORT_HOST_UUID]), PORT_UUID_MAX);
--- 
-2.43.0
-
+ 	DRM_DEBUG("IH: SDMA trap\n");
+ 	instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
++	if (instance < 0)
++		return instance;
++
+ 	switch (entry->ring_id) {
+ 	case 0:
+ 		amdgpu_fence_process(&adev->sdma.instance[instance].ring);
 
 
 
