@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-50497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653EB906A7C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:55:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C49B0906A7D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:55:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05130284DFD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:55:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD4891C242CB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D5C142648;
-	Thu, 13 Jun 2024 10:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB0F142648;
+	Thu, 13 Jun 2024 10:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJ+7YPWl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lf4baGGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF2D13C68A
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D16813C68A
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718276112; cv=none; b=VVRGXCLe6i6uNAO1poVh4PtBBY0Kttc5u7yrX6w+c6nfsj2NQCySUwclylwo9dQnscgzb2TM6wUrxbs7RLfgcgkf/+ecsiuO+XQmQGBzKTxxP8wH5A2Q5E7ZB8BF+3BRTb7eQXX56TNTtJ1mR92rQzBHNr8jClXVdEOZxitMY6o=
+	t=1718276121; cv=none; b=SWBQtaVaG9D3kqOweQOreXyIvhgrZEtUXPsgUxEAwhsTnMlgQtKxfnCK2Rqr16+GwuDyXXtrv/J7+DMCx4vLfcV7Oi3eLre0eyk4d6+oYEVREe1jzdEws5YVlgKuRrz4ibt7O3SqaJ/ttMZaBjIESvolma0d09Ok88z6RAC/0LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718276112; c=relaxed/simple;
-	bh=ECUY3E+CNzLK5wMlhobRJ4SuuzaD0HVp+3vQfRMkpt8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=amcOTp8h2maOll52dQx80+FSww2DVQXbVdbfH20JuZHThevUDGjPDnAW/P+ntI8PRZWea2mTIzwE6dCco2G4gTJkiyC9wmwkd5yyM1AJVP9jci6RD5KkKIyChZK370Cal9ZoXfihwp/JbV0x+e2+cXZKGpsRbVCeQ9BilJHA2ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJ+7YPWl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4814C2BBFC;
-	Thu, 13 Jun 2024 10:55:11 +0000 (UTC)
+	s=arc-20240116; t=1718276121; c=relaxed/simple;
+	bh=2VLtj0VTjSYA1P6s+Stn4BXiPA85krRqaN72ayZhn6M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NQTYg8b8x+di9nS7KFLLWZYcb8xztdcL4Iw3XqN2R7e9A0v4ZN8e+yfMY1b6MpDpAShNFPb11f/k6RpMoem0PBTHADf7QdvCqioA0Zc0Y7Y4LAgfFvHM87mYjzS+EWpYIikvMbg13wPNRkNVyL7wiYHYGtyyLuyT28C0Z5WDIa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lf4baGGf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8960FC32786;
+	Thu, 13 Jun 2024 10:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718276112;
-	bh=ECUY3E+CNzLK5wMlhobRJ4SuuzaD0HVp+3vQfRMkpt8=;
+	s=korg; t=1718276120;
+	bh=2VLtj0VTjSYA1P6s+Stn4BXiPA85krRqaN72ayZhn6M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=DJ+7YPWlwe48WFDrjydYVxwMAU9BQGKk4ZHpwWRIRcR0DvwipzRhUruGV9/p1r7II
-	 Bq3NXUJQ7oTypufprI7Z/3zkol+bjUkf+bP+0EXkBYyl1FI2tipQJJTt0pOa5xU5BJ
-	 vHnww+rKltYpicOdzR5R7/Db/rI7ASuvj0ubwKQo=
-Subject: FAILED: patch "[PATCH] tracefs: Update inode permissions on remount" failed to apply to 6.9-stable tree
+	b=Lf4baGGfMulz+T5UNm82Ohmq91jo8dCcfh4oTPaxYyxBp7xyvTXshWkBxw0shVepB
+	 Ogb3vHpy/UPsCsgu42W8q33QXzAjX/FX7BG3Xge5Q6vZ2o0vO7hvjeOZryB98FeP0x
+	 VFOIBZsKEqkADj5NoL1xYLqJ6YSOnkx09gyJ5JvQ=
+Subject: FAILED: patch "[PATCH] tracefs: Update inode permissions on remount" failed to apply to 6.6-stable tree
 To: rostedt@goodmis.org,akpm@linux-foundation.org,mark.rutland@arm.com,masahiroy@kernel.org,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Jun 2024 12:55:09 +0200
-Message-ID: <2024061309-pliable-outcast-adb7@gregkh>
+Date: Thu, 13 Jun 2024 12:55:10 +0200
+Message-ID: <2024061310-exemplify-snore-c1b0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.9-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 27c046484382d78b4abb0a6e9905a20121af9b35
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061309-pliable-outcast-adb7@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061310-exemplify-snore-c1b0@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 27c046484382 ("tracefs: Update inode permissions on remount")
+baa23a8d4360 ("tracefs: Reset permissions on remount if permissions are options")
+8dce06e98c70 ("eventfs: Clean up dentry ops and add revalidate function")
+49304c2b93e4 ("tracefs: dentry lookup crapectomy")
+4fa4b010b83f ("eventfs: Initialize the tracefs inode properly")
+d81786f53aec ("tracefs: Zero out the tracefs_inode when allocating it")
+29142dc92c37 ("tracefs: remove stale 'update_gid' code")
+8186fff7ab64 ("tracefs/eventfs: Use root and instance inodes as default ownership")
+b0f7e2d739b4 ("eventfs: Remove "lookup" parameter from create_dir/file_dentry()")
+ad579864637a ("tracefs: Check for dentry->d_inode exists in set_gid()")
+7e8358edf503 ("eventfs: Fix file and directory uid and gid ownership")
+0dfc852b6fe3 ("eventfs: Have event files and directories default to parent uid and gid")
+5eaf7f0589c0 ("eventfs: Fix events beyond NAME_MAX blocking tasks")
+f49f950c217b ("eventfs: Make sure that parent->d_inode is locked in creating files/dirs")
+fc4561226fea ("eventfs: Do not allow NULL parent to eventfs_start_creating()")
+bcae32c5632f ("eventfs: Move taking of inode_lock into dcache_dir_open_wrapper()")
+71cade82f2b5 ("eventfs: Do not invalidate dentry in create_file/dir_dentry()")
+88903daecacf ("eventfs: Remove expectation that ei->is_freed means ei->dentry == NULL")
+44365329f821 ("eventfs: Hold eventfs_mutex when calling callback functions")
+28e12c09f5aa ("eventfs: Save ownership and mode")
 
 thanks,
 
