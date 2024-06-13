@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-51414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0B7906FC3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF18906DD2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:04:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EBF628951F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82241B24CD4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870A7145B25;
-	Thu, 13 Jun 2024 12:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D27149E16;
+	Thu, 13 Jun 2024 11:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwgN1YMU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrZlqxHU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4535413C69C;
-	Thu, 13 Jun 2024 12:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39CE144312;
+	Thu, 13 Jun 2024 11:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281228; cv=none; b=GiynkfSbm9WicIuNTBdOmBkHWpcjt2yzJLo7Dm4R+nNaAYrDdaBvd3YEs0CPfp1C/UPndueH5ktSOI0TOEQh8vnklkEKYVtqBoPVlfUt6Qi38J0PUI2ll+XPjS5Ph2HZvQ5RLf7V+naPS3b2HDWVWLC0np4/TYm7p3mN6lkTkf8=
+	t=1718279983; cv=none; b=TaM1z6qGt+55yJe6yrYerWNSuCJnAMmkKRCwCLiLkX2R2Xye/M9bepN9aKjfr1FWa6Iwm/favxpFibO7vyw0QWb+/xMftgcC4SgYo91dg9A3XhtPM49sEjpSIXZZeCQWgiHKreKJDhQKsaXSBDZM9hYMH+ZIZlcqk2oQLPXwqS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281228; c=relaxed/simple;
-	bh=m3tvPW+ID9jA/f0oO4ASTacpjSkI08eBBL/R0b/9KIc=;
+	s=arc-20240116; t=1718279983; c=relaxed/simple;
+	bh=5Kr2bXHc+6VpllY6sZwIUuY76djgOzI7vnXBjKM1bwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HtSRGfTG6fq5Y1qXYmcmRdEGCv6iGrwOLCbxGA9nuPDxANw8nmyqNaFyxS7EhAAayjPSUCxyMx/PWfswiWxhJEKT6KzG/yG9/G5b4itzCGB3Pl9a3xpyJSEke8gXa867zhEBTen3Gq0b8wvY/GJiE7o2alqSPUkBqMsfKQdrbfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwgN1YMU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB61C2BBFC;
-	Thu, 13 Jun 2024 12:20:27 +0000 (UTC)
+	 MIME-Version; b=OvM1TonVgUGb3QumTYNL/95f4ukNQfvV/uPcWHWycoWexfO7Odvf8Z/+RcPglWczaf43KdpBOMS8AR83MUGtfIDlwS0jFffudlDGWvgnoyNn55KhNejwe7HczVPJevkPdyK095E9Hm3UqR4FcfVEwmnnVj+bWozGnXd1X38kacE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrZlqxHU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A801C2BBFC;
+	Thu, 13 Jun 2024 11:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281228;
-	bh=m3tvPW+ID9jA/f0oO4ASTacpjSkI08eBBL/R0b/9KIc=;
+	s=korg; t=1718279982;
+	bh=5Kr2bXHc+6VpllY6sZwIUuY76djgOzI7vnXBjKM1bwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OwgN1YMUAP3+zas4hgpcn6IZhYHLt7muBGgictPk6mHfUPqQodpyTPOqpG8d6Cqta
-	 iIV3KuxDEZ6CqG0unxO0uOI6xqvFCTM0HwieFMZk+yGk8CVz0mOuUstw7HOOFPAds2
-	 6i+KPfiyaB7iebV7bLCZBadsV6wC/jLg0ogtwILY=
+	b=FrZlqxHUWBMQ4N+Nq6hHaU8yFkBI1snXx0hHs1wGRhnmv9rYT8+BKd9mC/CDK9qxw
+	 sl34VvH0XBTk6OeE0L0WebK1qmoZTNRRe6uPT+/d61QemBUB8VGpol8Cf7mK9afBCM
+	 vWkg79sLTQ7O3Oe1TDanV0xnW4idSiwXYVb6FcYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Leo Yan <leo.yan@linux.dev>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 183/317] perf ui browser: Avoid SEGV on title
+Subject: [PATCH 5.4 103/202] serial: max3100: Lock port->lock when calling uart_handle_cts_change()
 Date: Thu, 13 Jun 2024 13:33:21 +0200
-Message-ID: <20240613113254.639846046@linuxfoundation.org>
+Message-ID: <20240613113231.739933144@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,48 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 90f01afb0dfafbc9b094bb61e61a4ac297d9d0d2 ]
+[ Upstream commit 77ab53371a2066fdf9b895246505f5ef5a4b5d47 ]
 
-If the title is NULL then it can lead to a SEGV.
+uart_handle_cts_change() has to be called with port lock taken,
+Since we run it in a separate work, the lock may not be taken at
+the time of running. Make sure that it's taken by explicitly doing
+that. Without it we got a splat:
 
-Fixes: 769e6a1e15bdbbaf ("perf ui browser: Don't save pointer to stack memory")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Leo Yan <leo.yan@linux.dev>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240508035301.1554434-2-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+  WARNING: CPU: 0 PID: 10 at drivers/tty/serial/serial_core.c:3491 uart_handle_cts_change+0xa6/0xb0
+  ...
+  Workqueue: max3100-0 max3100_work [max3100]
+  RIP: 0010:uart_handle_cts_change+0xa6/0xb0
+  ...
+   max3100_handlerx+0xc5/0x110 [max3100]
+   max3100_work+0x12a/0x340 [max3100]
+
+Fixes: 7831d56b0a35 ("tty: MAX3100")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240402195306.269276-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/ui/browser.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/max3100.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/ui/browser.c b/tools/perf/ui/browser.c
-index 6fa4f123d5ff7..b84b87b939573 100644
---- a/tools/perf/ui/browser.c
-+++ b/tools/perf/ui/browser.c
-@@ -203,7 +203,7 @@ void ui_browser__refresh_dimensions(struct ui_browser *browser)
- void ui_browser__handle_resize(struct ui_browser *browser)
- {
- 	ui__refresh_dimensions(false);
--	ui_browser__show(browser, browser->title, ui_helpline__current);
-+	ui_browser__show(browser, browser->title ?: "", ui_helpline__current);
- 	ui_browser__refresh(browser);
+diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
+index 371569a0fd00a..915d7753eec2f 100644
+--- a/drivers/tty/serial/max3100.c
++++ b/drivers/tty/serial/max3100.c
+@@ -213,7 +213,7 @@ static int max3100_sr(struct max3100_port *s, u16 tx, u16 *rx)
+ 	return 0;
  }
  
+-static int max3100_handlerx(struct max3100_port *s, u16 rx)
++static int max3100_handlerx_unlocked(struct max3100_port *s, u16 rx)
+ {
+ 	unsigned int ch, flg, status = 0;
+ 	int ret = 0, cts;
+@@ -253,6 +253,17 @@ static int max3100_handlerx(struct max3100_port *s, u16 rx)
+ 	return ret;
+ }
+ 
++static int max3100_handlerx(struct max3100_port *s, u16 rx)
++{
++	unsigned long flags;
++	int ret;
++
++	uart_port_lock_irqsave(&s->port, &flags);
++	ret = max3100_handlerx_unlocked(s, rx);
++	uart_port_unlock_irqrestore(&s->port, flags);
++	return ret;
++}
++
+ static void max3100_work(struct work_struct *w)
+ {
+ 	struct max3100_port *s = container_of(w, struct max3100_port, work);
 -- 
 2.43.0
 
