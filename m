@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-50852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B566A906D22
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:59:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28EEC906C20
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:47:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64A61C2291C
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:59:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7A951F23D94
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40ED146A69;
-	Thu, 13 Jun 2024 11:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DA2144D34;
+	Thu, 13 Jun 2024 11:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xj6kRiWW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e34opGk4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CCF146A66;
-	Thu, 13 Jun 2024 11:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A3413CA99;
+	Thu, 13 Jun 2024 11:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279575; cv=none; b=UePtjQujjUgKY4plLS/FUWX1Jo+AtX4ONqw+xiLhElgTByPjj9Ue/5WGEgo/xGI1Hu3mAQ75kV7UnH3bzgECKt5FpKoiymYvpNaT4i3wUmyRC862s9e0EJ3ujTuPAp8nqxdz2VmKQau69OCeAxqrTb4Qeu3Twrq3x4aMWyV/VuQ=
+	t=1718279172; cv=none; b=qxGNWoYFx7G8j1FU0AtpVzRPKJtPM239QB8LPN3OqZoQRfW36xXQxHkTSJqvVEKPI4XuLjolc5Fb/bYjSqVNxAAWmIw71FIlnsBQ+iMg3xND8s+gw+avb4/FO56uU/cOeAyakiHTZjsxeFNp4+shmghk8ncLG/I4qOoESVxirps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279575; c=relaxed/simple;
-	bh=LfoPSpCfw3hkX+dgs6DTUPJ1EULmBa/AhrSPFaK8uR0=;
+	s=arc-20240116; t=1718279172; c=relaxed/simple;
+	bh=5SMrO+DqoQ8OSg5f/8SJ0lQ2/eG+6ifVSWAuC4lduh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ENuZcTgyxlHeFemXgmzjGsxo7zm3tve4r+WMgc1XDOPjtFGdIelTqNvMFOi66dcG781ugqqheP5+MNflNL93WYA1D7V8FmIcNt3/0NO0oyHGP4xAUUojbdyn/vcMH1m43VDlLDCFRutSEKN1GnaMZA2gGer92lz/XaB320kLNxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xj6kRiWW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6F3C2BBFC;
-	Thu, 13 Jun 2024 11:52:54 +0000 (UTC)
+	 MIME-Version; b=JLvPrBzS/gEm95vysbkDfOLU90BqMXw3CUrSKhOfHp4bWawCzyQPOOvD0qXAf623Xm1VhoGPuy7elZmE0MLkkSXq9Mb2W7qXmLzhSoeNJiWepNP5FXHTek1tMTGkcC9CIMUreWCMul5EesfdyNyLrgXcbo6XpU3TeIZMzo4uxgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e34opGk4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90330C32786;
+	Thu, 13 Jun 2024 11:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279575;
-	bh=LfoPSpCfw3hkX+dgs6DTUPJ1EULmBa/AhrSPFaK8uR0=;
+	s=korg; t=1718279171;
+	bh=5SMrO+DqoQ8OSg5f/8SJ0lQ2/eG+6ifVSWAuC4lduh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xj6kRiWWMQ6FYWR8FpyS+jERY192eet4LjEV11mt6WOhnQ28uxGugbXuKt2VJRWxl
-	 EhvDx9le7jGhRqzqs4tebak/xrgbFVZs7GsAOLAf1mYxws24tXte2zmSdm32652iDD
-	 G8fx6xq2W0FtZggvi4zSh/8Rs9YRCC6SlMyrnHK4=
+	b=e34opGk4+JPcBaNzF07ggDuHx/R8cCPQyzQCzn5rCvot+mUfEQcZqrx2I6KNEO55F
+	 soS/DDo0n9TfhVNu1TJM+9yXQcaotu/4QmsC0ttCvE95CJ0pN4+B4x/l9b/9z0LLMy
+	 n2WfrO3egyWzxVbX6aJCcbwcXqedvV5vnTft1JVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bo Gan <ganboing@gmail.com>,
-	Shengyu Qu <wiagn233@outlook.com>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH 6.9 121/157] riscv: dts: starfive: Remove PMIC interrupt info for Visionfive 2 board
-Date: Thu, 13 Jun 2024 13:34:06 +0200
-Message-ID: <20240613113232.094589214@linuxfoundation.org>
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 4.19 199/213] KVM: arm64: Allow AArch32 PSTATE.M to be restored as System mode
+Date: Thu, 13 Jun 2024 13:34:07 +0200
+Message-ID: <20240613113235.654786459@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengyu Qu <wiagn233@outlook.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 0f74c64f0a9f6e1e7cf17bea3d4350fa6581e0d7 upstream.
+commit dfe6d190f38fc5df5ff2614b463a5195a399c885 upstream.
 
-Interrupt line number of the AXP15060 PMIC is not a necessary part of
-its device tree. Originally the binding required one, so the dts patch
-added an invalid interrupt that the driver ignored (0) as the interrupt
-line of the PMIC is not actually connected on this platform. This went
-unnoticed during review as it would have been a valid interrupt for a
-GPIO controller, but it is not for the PLIC. The PLIC, on this platform
-at least, silently ignores the enablement of interrupt 0. Bo Gan is
-running a modified version of OpenSBI that faults if writes are done to
-reserved fields, so their kernel runs into problems.
+It appears that we don't allow a vcpu to be restored in AArch32
+System mode, as we *never* included it in the list of valid modes.
 
-Delete the invalid interrupt from the device tree.
+Just add it to the list of allowed modes.
 
+Fixes: 0d854a60b1d7 ("arm64: KVM: enable initialization of a 32bit vcpu")
 Cc: stable@vger.kernel.org
-Reported-by: Bo Gan <ganboing@gmail.com>
-Link: https://lore.kernel.org/all/c8b6e960-2459-130f-e4e4-7c9c2ebaa6d3@gmail.com/
-Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
-Fixes: 2378341504de ("riscv: dts: starfive: Enable axp15060 pmic for cpufreq")
-[conor: rewrite the commit message to add more detail]
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240524141956.1450304-3-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi |    1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/kvm/guest.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-+++ b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-@@ -238,7 +238,6 @@
- 	axp15060: pmic@36 {
- 		compatible = "x-powers,axp15060";
- 		reg = <0x36>;
--		interrupts = <0>;
- 		interrupt-controller;
- 		#interrupt-cells = <1>;
- 
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -175,6 +175,7 @@ static int set_core_reg(struct kvm_vcpu
+ 		case PSR_AA32_MODE_SVC:
+ 		case PSR_AA32_MODE_ABT:
+ 		case PSR_AA32_MODE_UND:
++		case PSR_AA32_MODE_SYS:
+ 			if (!vcpu_el1_is_32bit(vcpu))
+ 				return -EINVAL;
+ 			break;
 
 
 
