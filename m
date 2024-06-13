@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-50572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2CF1906B4D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:39:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E65E1906D58
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6AD01C22AB9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:39:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FFF1B26971
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0563D14265E;
-	Thu, 13 Jun 2024 11:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16827146D65;
+	Thu, 13 Jun 2024 11:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AO5i6js"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p89HWJBD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87EDDDB1;
-	Thu, 13 Jun 2024 11:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DF7145359;
+	Thu, 13 Jun 2024 11:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278757; cv=none; b=syTx522h42lcLINTpnef/WmytMxgkbCgKWJ49sHsh3RA8df4zq3afbEuv8yZLLLyez/BUbo0dapJa17iSQv4K9GbXm3OzWgJZsDR142snZ2iEOlPa/ZAmbdGodNYbFLuRjRqw0iEChkPczsVUU0jEg9wfW+9MGN0y6qSMkDV5iE=
+	t=1718279708; cv=none; b=IloiL0b14drsqrtktLqs9vcYyuiR2TloFPZMbFIGPtf95pJbZgZnOVgFs3oy2605wETWYQlMI8MvAhEHXqPKUnRND8ypV8qdTOAkVmW0hNyOlqB0IE4fL9TDAP2OVVNynluSnx3swr/afEKFi5X2p77V67jXchBypewgrCYwt5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278757; c=relaxed/simple;
-	bh=Gx67DoLwfVAK3kPKQ6+fjUQ5OAkdQQCn7AgMCDioZVw=;
+	s=arc-20240116; t=1718279708; c=relaxed/simple;
+	bh=sNmGpln7qkG83UDdBf9Y9o7HjXWz/L927ce1663BWts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l6wVhFZjjrRGhzN12qNIpk696RqpGmGLcLM0jTYIYGfK3lngwXlOzpMiVJRJtMqCwvMRd6KZ9Aig3oIOdIqYHvzqp696A1zGCWKyqNXsG8AuLv9onG3hDWQ0lx8N6RbDTs52lBDmfCXspAEyRCuHPWZL/Iwkwz3j8sh+laBTZoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AO5i6js; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F93AC2BBFC;
-	Thu, 13 Jun 2024 11:39:17 +0000 (UTC)
+	 MIME-Version; b=MixNpW3WzuJkipErMk1lDyKzZ3fAZnOZRK0nbfDhuuD1h4prhDX5qu2N1rM24YApIwRlHtMfqbdZT7SrHwSzyFMT+GJmc897EN9fi7l9bO4KKAsseQruOtX1Sj3jskn6z0hH7WUrfd7cpxmmmkxiugDb6qzxovZYumyB3XDMD6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p89HWJBD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505A4C32786;
+	Thu, 13 Jun 2024 11:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278757;
-	bh=Gx67DoLwfVAK3kPKQ6+fjUQ5OAkdQQCn7AgMCDioZVw=;
+	s=korg; t=1718279708;
+	bh=sNmGpln7qkG83UDdBf9Y9o7HjXWz/L927ce1663BWts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0AO5i6jsC32dU/GX4iYSskHmGpCMChg07wCTUn4Vf4rCyBg1z/2Q2BPUU92SCgpxz
-	 v96P5S9DwYA64cLhrySypcQqN5aVATudoEk8WUNrazb+cMIt+8O+CIcDRuyHdr8iE0
-	 lR3T9CO8xJgn/T2EAc8cKjJkPXpfyDNR1ZIttmgg=
+	b=p89HWJBD4JY513HszYZBCIYjuBfQhvqJ+QBW+N8sJNYpoSa1eDJwQfg8n4ENfyjFb
+	 AtZBUtTJQF5/mC9npC3N6T9eE/9P/XO4MIJ6P3j6VugA9mrISPJH0Pbudi9iUOTf9u
+	 uP58qy4Dlg7a73cl8IOFvA79JPD+B2BwtVXZZlsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Steve Glendinning <steve.glendinning@shawell.net>,
-	UNGLinuxDriver@microchip.com,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Joshua Ashton <joshua@froggi.es>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 060/213] net: usb: smsc95xx: stop lying about skb->truesize
+Subject: [PATCH 5.4 010/202] drm/amd/display: Set color_mgmt_changed to true on unsuspend
 Date: Thu, 13 Jun 2024 13:31:48 +0200
-Message-ID: <20240613113230.323595333@linuxfoundation.org>
+Message-ID: <20240613113228.161627751@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Joshua Ashton <joshua@froggi.es>
 
-[ Upstream commit d50729f1d60bca822ef6d9c1a5fb28d486bd7593 ]
+[ Upstream commit 2eb9dd497a698dc384c0dd3e0311d541eb2e13dd ]
 
-Some usb drivers try to set small skb->truesize and break
-core networking stacks.
+Otherwise we can end up with a frame on unsuspend where color management
+is not applied when userspace has not committed themselves.
 
-In this patch, I removed one of the skb->truesize override.
+Fixes re-applying color management on Steam Deck/Gamescope on S3 resume.
 
-I also replaced one skb_clone() by an allocation of a fresh
-and small skb, to get minimally sized skbs, like we did
-in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
-in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
-stop lying about skb->truesize")
-
-v3: also fix a sparse error ( https://lore.kernel.org/oe-kbuild-all/202405091310.KvncIecx-lkp@intel.com/ )
-v2: leave the skb_trim() game because smsc95xx_rx_csum_offload()
-    needs the csum part. (Jakub)
-    While we are it, use get_unaligned() in smsc95xx_rx_csum_offload().
-
-Fixes: 2f7ca802bdae ("net: Add SMSC LAN9500 USB2.0 10/100 ethernet adapter driver")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Steve Glendinning <steve.glendinning@shawell.net>
-Cc: UNGLinuxDriver@microchip.com
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240509083313.2113832-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Joshua Ashton <joshua@froggi.es>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/smsc95xx.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
-index 37547ac72840f..be5543c71d069 100644
---- a/drivers/net/usb/smsc95xx.c
-+++ b/drivers/net/usb/smsc95xx.c
-@@ -1924,9 +1924,11 @@ static int smsc95xx_reset_resume(struct usb_interface *intf)
- 
- static void smsc95xx_rx_csum_offload(struct sk_buff *skb)
- {
--	skb->csum = *(u16 *)(skb_tail_pointer(skb) - 2);
-+	u16 *csum_ptr = (u16 *)(skb_tail_pointer(skb) - 2);
-+
-+	skb->csum = (__force __wsum)get_unaligned(csum_ptr);
- 	skb->ip_summed = CHECKSUM_COMPLETE;
--	skb_trim(skb, skb->len - 2);
-+	skb_trim(skb, skb->len - 2); /* remove csum */
- }
- 
- static int smsc95xx_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
-@@ -1985,25 +1987,22 @@ static int smsc95xx_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 				if (dev->net->features & NETIF_F_RXCSUM)
- 					smsc95xx_rx_csum_offload(skb);
- 				skb_trim(skb, skb->len - 4); /* remove fcs */
--				skb->truesize = size + sizeof(struct sk_buff);
- 
- 				return 1;
- 			}
- 
--			ax_skb = skb_clone(skb, GFP_ATOMIC);
-+			ax_skb = netdev_alloc_skb_ip_align(dev->net, size);
- 			if (unlikely(!ax_skb)) {
- 				netdev_warn(dev->net, "Error allocating skb\n");
- 				return 0;
- 			}
- 
--			ax_skb->len = size;
--			ax_skb->data = packet;
--			skb_set_tail_pointer(ax_skb, size);
-+			skb_put(ax_skb, size);
-+			memcpy(ax_skb->data, packet, size);
- 
- 			if (dev->net->features & NETIF_F_RXCSUM)
- 				smsc95xx_rx_csum_offload(ax_skb);
- 			skb_trim(ax_skb, ax_skb->len - 4); /* remove fcs */
--			ax_skb->truesize = size + sizeof(struct sk_buff);
- 
- 			usbnet_skb_return(dev, ax_skb);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 3f3242783e1c3..3bfc4aa328c6f 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1251,6 +1251,7 @@ static int dm_resume(void *handle)
+ 			dc_stream_release(dm_new_crtc_state->stream);
+ 			dm_new_crtc_state->stream = NULL;
  		}
++		dm_new_crtc_state->base.color_mgmt_changed = true;
+ 	}
+ 
+ 	for_each_new_plane_in_state(dm->cached_state, plane, new_plane_state, i) {
 -- 
 2.43.0
 
