@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50BE290703E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 461B390721B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 611481C2375F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B9FE1C21B92
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552831448DA;
-	Thu, 13 Jun 2024 12:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDFF81ABE;
+	Thu, 13 Jun 2024 12:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LH3i9TfP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUH/nyHK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A991411C5;
-	Thu, 13 Jun 2024 12:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9EF2CA6;
+	Thu, 13 Jun 2024 12:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281510; cv=none; b=V7bRJ9umXiAB4lfVAYwYXVYQjLe60XnyudY4/isxvSZUCz8p4eMfCOXGcRjHEhRMzD2I7Apt9DKBs58VZbszi9fb+7ZCz6dX3B0u7S9sQrY8oAtdaeN8mpnAVvQm9+X2K4yvuw2x8VO1JKR4kY4uWsKv/JmuluBmNPGJ6Hu7id8=
+	t=1718282628; cv=none; b=vA0/zo3cfTSEwst75jiFvrih5kIVTbe2z+hs3vfgvhZ77NtbhRU7bhCUKcLJ2X53avHn2ifPEZWcanKcsHOfXKUEQo6Nzs/ExHrfvth/7K798S9jek4rFvRebLxCE5bX3nVQWABWpjAfnw1s7p9CpFZDryn9bkaPz32P+EdtA78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281510; c=relaxed/simple;
-	bh=Zl3g4Gl+9Max8veYXrL2TJcw8GTfzNt0D5g3C6q2IZ0=;
+	s=arc-20240116; t=1718282628; c=relaxed/simple;
+	bh=Lj6aXx1pGJufDYqfiqJoKGeOlgudeGjjQfFZjSxssw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aJ500+tIS7W3+e/8BCCQwfup0rZxtT/AMqwM4T+xrN6gUbVqOunKsjRdbtud++ZmS5VAklLAPhRSY1dxv9owVUkFrmxzTrFqPzWz2sRGyK6hGFcS1dvEBmjxafK1tnUBo26Mia4n5Igx3jZcx+VDKSO1GxvC9oNkbgxgAEJviSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LH3i9TfP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90EAAC2BBFC;
-	Thu, 13 Jun 2024 12:25:09 +0000 (UTC)
+	 MIME-Version; b=VFzo0GdcCL9uQxkI8yAbHLqlqClX7lI4iM9XDzbF1a0Siy/TeSMFLdoPkQEeJUxIhtdAh13VSRP3IXZeKYNnUwgRi2Yt3/tHjwqenG3hk9u4002/By1f9olxAVq0ggGRU3e5ZSkRmynI17l66fZl5TrLw3bJ2rvBsplFlei713M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUH/nyHK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F7BC4AF1C;
+	Thu, 13 Jun 2024 12:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281510;
-	bh=Zl3g4Gl+9Max8veYXrL2TJcw8GTfzNt0D5g3C6q2IZ0=;
+	s=korg; t=1718282628;
+	bh=Lj6aXx1pGJufDYqfiqJoKGeOlgudeGjjQfFZjSxssw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LH3i9TfPiGwqI1g9JbEj+3ThPHHCd60312gETqC+kgaMdhmWD/y2B+t6lPJFIlaYR
-	 FeUYgs9X9xBMfxMfUPyvILfRpSC81ErI8DGfYIcn4CTjFmLUsljGCbGoKyIYoPha43
-	 VeAYtLo8KNmFfgeNMe/mWI8qgSOanjUqnKZ96Ork=
+	b=dUH/nyHKQ6XILB3/Z3qD8CDCZzFoYzM2OVYfJPJRf41RlKVbnvy/BO7OxeV1M9tPm
+	 mhi4GHtt08ZCySC3RR5yUu97q4xmjukx0TQ8EWGW3icBUtjoROX5Or1NcD3abpc0Pm
+	 pwVKiEY+tHxjouWVuUlttA9yX5fo64okuPQRZb8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 5.10 280/317] arm64: tegra: Correct Tegra132 I2C alias
+	kernel test robot <oliver.sang@intel.com>,
+	Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>
+Subject: [PATCH 5.15 341/402] drm: Check polling initialized before enabling in drm_helper_probe_single_connector_modes
 Date: Thu, 13 Jun 2024 13:34:58 +0200
-Message-ID: <20240613113258.381309466@linuxfoundation.org>
+Message-ID: <20240613113315.434170602@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
 
-commit 2633c58e1354d7de2c8e7be8bdb6f68a0a01bad7 upstream.
+commit 048a36d8a6085bbd8ab9e5794b713b92ac986450 upstream.
 
-There is no such device as "as3722@40", because its name is "pmic".  Use
-phandles for aliases to fix relying on full node path.  This corrects
-aliases for RTC devices and also fixes dtc W=1 warning:
+In function drm_helper_probe_single_connector_modes() when we enable
+polling again, if it is already uninitialized, a warning is reported.
+This patch fixes the warning message by checking if poll is initialized
+before enabling it.
 
-  tegra132-norrin.dts:12.3-36: Warning (alias_paths): /aliases:rtc0: aliases property is not a valid node (/i2c@7000d000/as3722@40)
-
-Fixes: 0f279ebdf3ce ("arm64: tegra: Add NVIDIA Tegra132 Norrin support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202401191128.db8423f1-oliver.sang@intel.com
+Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/1706856224-9725-1-git-send-email-shradhagupta@linux.microsoft.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra132-norrin.dts |    4 ++--
- arch/arm64/boot/dts/nvidia/tegra132.dtsi       |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/drm_probe_helper.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-+++ b/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-@@ -9,8 +9,8 @@
- 	compatible = "nvidia,norrin", "nvidia,tegra132", "nvidia,tegra124";
+--- a/drivers/gpu/drm/drm_probe_helper.c
++++ b/drivers/gpu/drm/drm_probe_helper.c
+@@ -498,7 +498,8 @@ retry:
+ 	}
  
- 	aliases {
--		rtc0 = "/i2c@7000d000/as3722@40";
--		rtc1 = "/rtc@7000e000";
-+		rtc0 = &as3722;
-+		rtc1 = &tegra_rtc;
- 		serial0 = &uarta;
- 	};
+ 	/* Re-enable polling in case the global poll config changed. */
+-	if (drm_kms_helper_poll != dev->mode_config.poll_running)
++	if (dev->mode_config.poll_enabled &&
++	    (drm_kms_helper_poll != dev->mode_config.poll_running))
+ 		drm_kms_helper_poll_enable(dev);
  
---- a/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-@@ -573,7 +573,7 @@
- 		status = "disabled";
- 	};
- 
--	rtc@7000e000 {
-+	tegra_rtc: rtc@7000e000 {
- 		compatible = "nvidia,tegra124-rtc", "nvidia,tegra20-rtc";
- 		reg = <0x0 0x7000e000 0x0 0x100>;
- 		interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
+ 	dev->mode_config.poll_running = drm_kms_helper_poll;
 
 
 
