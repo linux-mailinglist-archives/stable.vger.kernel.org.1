@@ -1,73 +1,57 @@
-Return-Path: <stable+bounces-51397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEBCD906FB2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEDF1907167
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF26E1C21D64
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BD181F2562A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256051459EC;
-	Thu, 13 Jun 2024 12:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B72C3C24;
+	Thu, 13 Jun 2024 12:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NR4N2cqA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rR/6TsJj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C24143747;
-	Thu, 13 Jun 2024 12:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192241EEF8;
+	Thu, 13 Jun 2024 12:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281177; cv=none; b=tOsCNcOfFl5j80lgVteJklkroULJtPoBwpr1bfIopAfxA8qz+yXRKpfch43JMaBY7tDVI19y1VJck6nC+wBs9PVlyrAKj9+kH61ssNeGLu5PGuX21PZ41JXv3eMuuZeHlbpe2VT2jhIyHKu7Eg49WzXzUJomnpgm737Od0ulqhw=
+	t=1718282203; cv=none; b=JKZMDh7y4hFPCFRdp4NG95tnJyc8hC6WEoIJNo4YwsNVJ9MkHg9hcXA4AcqagBefLYEwJUFUZXh+Mr1/RFVzX0IGsEq+k4iPPIHRZf/4SwwLbSMF+2ETXw3k47Im6A6spmg6UdDs4bTPeVApgRnejHUdFNcDpkGjXgRU7swc5BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281177; c=relaxed/simple;
-	bh=gPSb3zpkOMC12uPi6gAPjJRBPOZcmWBWpuUVV2XOLSI=;
+	s=arc-20240116; t=1718282203; c=relaxed/simple;
+	bh=cK3BptSmGQKKDKbs7X8b+3j2vI19ibgqHbw7bCgT5OU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PTEL5CNRpSEmZAvmYq7aATrihwrfSMtNvKiddTFgYW0/IphdaIq+0TsnoKkabwKCYSclkqnp7BjZv1B9xH/i7oYvHfu6PKVrRiqMZYJk0M1TsFs6jikrIrbPvkmCTZcjoYxrWgFn/Lf/Bc1byWus7yTmKHhQKqQvo2uy50ND2f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NR4N2cqA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8EDC2BBFC;
-	Thu, 13 Jun 2024 12:19:37 +0000 (UTC)
+	 MIME-Version; b=eIZU+3Lirjesacq9nRpKjZftixkqt7I39Yhwqcq754J3XLvrG/LAd8nPVFmqUig8jzxDCJBqSVjZocISYY/t8KfhXJ6Ui7bIhGDdoe4w6Rz33qcp5hn3cfyth0yOEEvbbOBOngL4Tbu2qLdiP3unY0ABt/ML5x3bWkL03j5Xe4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rR/6TsJj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D76C2BBFC;
+	Thu, 13 Jun 2024 12:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281177;
-	bh=gPSb3zpkOMC12uPi6gAPjJRBPOZcmWBWpuUVV2XOLSI=;
+	s=korg; t=1718282202;
+	bh=cK3BptSmGQKKDKbs7X8b+3j2vI19ibgqHbw7bCgT5OU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NR4N2cqA6fkAzI5N0wXzxgqkMHmWTE1vVouYckjE6oes+Egs9GFyx2i27qmp2gT4F
-	 Fz0PTzF/Mdl1Pk8fy8Nvng03D1//+LBzPhLGJjPaUbcakAUg+cGfs3MdOQ1DpOrMLS
-	 owDOBMPSdsnPbquz08jUbk+rQfN7mGLyaxP7gk8A=
+	b=rR/6TsJjWWfVbRlnRW3RtBj0JXe1aWDdkKo0fylCpjD3oFpoZ7jr8I+J/ercc3IbJ
+	 ZIau6UkZVT+XUxa8KMqwgrcyuXBcXlrKsARWCo/5UAo4ZF7/4QVgD8G95TbUtZvNQo
+	 v3En1/3/4fastDO9oOYNdR7v+ZmC/0q7mgIVy3do=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Disha Goel <disgoel@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Song Liu <songliubraving@fb.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Jinyoung Choi <j-young.choi@samsung.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 136/317] perf record: Delete session after stopping sideband thread
-Date: Thu, 13 Jun 2024 13:32:34 +0200
-Message-ID: <20240613113252.822022527@linuxfoundation.org>
+Subject: [PATCH 5.15 198/402] f2fs: fix typos in comments
+Date: Thu, 13 Jun 2024 13:32:35 +0200
+Message-ID: <20240613113309.863530615@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,85 +63,185 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Jinyoung CHOI <j-young.choi@samsung.com>
 
-[ Upstream commit 88ce0106a1f603bf360cb397e8fe293f8298fabb ]
+[ Upstream commit 146949defda868378992171b9e42318b06fcd482 ]
 
-The session has a header in it which contains a perf env with
-bpf_progs. The bpf_progs are accessed by the sideband thread and so
-the sideband thread must be stopped before the session is deleted, to
-avoid a use after free.  This error was detected by AddressSanitizer
-in the following:
+This patch is to fix typos in f2fs files.
 
-  ==2054673==ERROR: AddressSanitizer: heap-use-after-free on address 0x61d000161e00 at pc 0x55769289de54 bp 0x7f9df36d4ab0 sp 0x7f9df36d4aa8
-  READ of size 8 at 0x61d000161e00 thread T1
-      #0 0x55769289de53 in __perf_env__insert_bpf_prog_info util/env.c:42
-      #1 0x55769289dbb1 in perf_env__insert_bpf_prog_info util/env.c:29
-      #2 0x557692bbae29 in perf_env__add_bpf_info util/bpf-event.c:483
-      #3 0x557692bbb01a in bpf_event__sb_cb util/bpf-event.c:512
-      #4 0x5576928b75f4 in perf_evlist__poll_thread util/sideband_evlist.c:68
-      #5 0x7f9df96a63eb in start_thread nptl/pthread_create.c:444
-      #6 0x7f9df9726a4b in clone3 ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
-
-  0x61d000161e00 is located 384 bytes inside of 2136-byte region [0x61d000161c80,0x61d0001624d8)
-  freed by thread T0 here:
-      #0 0x7f9dfa6d7288 in __interceptor_free libsanitizer/asan/asan_malloc_linux.cpp:52
-      #1 0x557692978d50 in perf_session__delete util/session.c:319
-      #2 0x557692673959 in __cmd_record tools/perf/builtin-record.c:2884
-      #3 0x55769267a9f0 in cmd_record tools/perf/builtin-record.c:4259
-      #4 0x55769286710c in run_builtin tools/perf/perf.c:349
-      #5 0x557692867678 in handle_internal_command tools/perf/perf.c:402
-      #6 0x557692867a40 in run_argv tools/perf/perf.c:446
-      #7 0x557692867fae in main tools/perf/perf.c:562
-      #8 0x7f9df96456c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
-
-Fixes: 657ee5531903339b ("perf evlist: Introduce side band thread")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Disha Goel <disgoel@linux.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Tim Chen <tim.c.chen@linux.intel.com>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20240301074639.2260708-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Jinyoung Choi <j-young.choi@samsung.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 278a6253a673 ("f2fs: fix to relocate check condition in f2fs_fallocate()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-record.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/checkpoint.c   | 4 ++--
+ fs/f2fs/compress.c     | 2 +-
+ fs/f2fs/data.c         | 8 ++++----
+ fs/f2fs/extent_cache.c | 4 ++--
+ fs/f2fs/file.c         | 6 +++---
+ fs/f2fs/namei.c        | 2 +-
+ fs/f2fs/segment.c      | 2 +-
+ 7 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
-index a7d9f00382d9f..44bd12aa0e062 100644
---- a/tools/perf/builtin-record.c
-+++ b/tools/perf/builtin-record.c
-@@ -2063,10 +2063,10 @@ static int __cmd_record(struct record *rec, int argc, const char **argv)
- 		close(done_fd);
- #endif
- 	zstd_fini(&session->zstd_data);
--	perf_session__delete(session);
--
- 	if (!opts->no_bpf_event)
- 		evlist__stop_sb_thread(rec->sb_evlist);
-+
-+	perf_session__delete(session);
- 	return status;
+diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
+index 7d3e7418d8fd5..71a3714419f85 100644
+--- a/fs/f2fs/checkpoint.c
++++ b/fs/f2fs/checkpoint.c
+@@ -792,7 +792,7 @@ static void write_orphan_inodes(struct f2fs_sb_info *sbi, block_t start_blk)
+ 	 */
+ 	head = &im->ino_list;
+ 
+-	/* loop for each orphan inode entry and write them in Jornal block */
++	/* loop for each orphan inode entry and write them in journal block */
+ 	list_for_each_entry(orphan, head, list) {
+ 		if (!page) {
+ 			page = f2fs_grab_meta_page(sbi, start_blk++);
+@@ -1124,7 +1124,7 @@ int f2fs_sync_dirty_inodes(struct f2fs_sb_info *sbi, enum inode_type type,
+ 	} else {
+ 		/*
+ 		 * We should submit bio, since it exists several
+-		 * wribacking dentry pages in the freeing inode.
++		 * writebacking dentry pages in the freeing inode.
+ 		 */
+ 		f2fs_submit_merged_write(sbi, DATA);
+ 		cond_resched();
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index 88799c6ebd7de..be46dc41523b4 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1247,7 +1247,7 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
+ 	loff_t psize;
+ 	int i, err;
+ 
+-	/* we should bypass data pages to proceed the kworkder jobs */
++	/* we should bypass data pages to proceed the kworker jobs */
+ 	if (unlikely(f2fs_cp_error(sbi))) {
+ 		mapping_set_error(cc->rpages[0]->mapping, -EIO);
+ 		goto out_free;
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index a8e99da8edc1f..fa86eaf1d6393 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -2412,7 +2412,7 @@ static int f2fs_mpage_readpages(struct inode *inode,
+ 
+ #ifdef CONFIG_F2FS_FS_COMPRESSION
+ 		if (f2fs_compressed_file(inode)) {
+-			/* there are remained comressed pages, submit them */
++			/* there are remained compressed pages, submit them */
+ 			if (!f2fs_cluster_can_merge_page(&cc, page->index)) {
+ 				ret = f2fs_read_multi_pages(&cc, &bio,
+ 							max_nr_pages,
+@@ -2811,7 +2811,7 @@ int f2fs_write_single_data_page(struct page *page, int *submitted,
+ 
+ 	trace_f2fs_writepage(page, DATA);
+ 
+-	/* we should bypass data pages to proceed the kworkder jobs */
++	/* we should bypass data pages to proceed the kworker jobs */
+ 	if (unlikely(f2fs_cp_error(sbi))) {
+ 		mapping_set_error(page->mapping, -EIO);
+ 		/*
+@@ -2938,7 +2938,7 @@ int f2fs_write_single_data_page(struct page *page, int *submitted,
+ redirty_out:
+ 	redirty_page_for_writepage(wbc, page);
+ 	/*
+-	 * pageout() in MM traslates EAGAIN, so calls handle_write_error()
++	 * pageout() in MM translates EAGAIN, so calls handle_write_error()
+ 	 * -> mapping_set_error() -> set_bit(AS_EIO, ...).
+ 	 * file_write_and_wait_range() will see EIO error, which is critical
+ 	 * to return value of fsync() followed by atomic_write failure to user.
+@@ -2972,7 +2972,7 @@ static int f2fs_write_data_page(struct page *page,
  }
  
+ /*
+- * This function was copied from write_cche_pages from mm/page-writeback.c.
++ * This function was copied from write_cache_pages from mm/page-writeback.c.
+  * The major change is making write step of cold data page separately from
+  * warm/hot data page.
+  */
+diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
+index 6a9ab5c11939f..30b8924d1493d 100644
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -112,7 +112,7 @@ struct rb_node **f2fs_lookup_rb_tree_for_insert(struct f2fs_sb_info *sbi,
+  * @prev_ex: extent before ofs
+  * @next_ex: extent after ofs
+  * @insert_p: insert point for new extent at ofs
+- * in order to simpfy the insertion after.
++ * in order to simplify the insertion after.
+  * tree must stay unchanged between lookup and insertion.
+  */
+ struct rb_entry *f2fs_lookup_rb_tree_ret(struct rb_root_cached *root,
+@@ -573,7 +573,7 @@ static void f2fs_update_extent_tree_range(struct inode *inode,
+ 	if (!en)
+ 		en = next_en;
+ 
+-	/* 2. invlidate all extent nodes in range [fofs, fofs + len - 1] */
++	/* 2. invalidate all extent nodes in range [fofs, fofs + len - 1] */
+ 	while (en && en->ei.fofs < end) {
+ 		unsigned int org_end;
+ 		int parts = 0;	/* # of parts current extent split into */
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 959e1458412df..ffec3c5374f89 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -304,7 +304,7 @@ static int f2fs_do_sync_file(struct file *file, loff_t start, loff_t end,
+ 		 * for OPU case, during fsync(), node can be persisted before
+ 		 * data when lower device doesn't support write barrier, result
+ 		 * in data corruption after SPO.
+-		 * So for strict fsync mode, force to use atomic write sematics
++		 * So for strict fsync mode, force to use atomic write semantics
+ 		 * to keep write order in between data/node and last node to
+ 		 * avoid potential data corruption.
+ 		 */
+@@ -1761,7 +1761,7 @@ static long f2fs_fallocate(struct file *file, int mode,
+ 		return -EOPNOTSUPP;
+ 
+ 	/*
+-	 * Pinned file should not support partial trucation since the block
++	 * Pinned file should not support partial truncation since the block
+ 	 * can be used by applications.
+ 	 */
+ 	if ((f2fs_compressed_file(inode) || f2fs_is_pinned_file(inode)) &&
+@@ -1811,7 +1811,7 @@ static long f2fs_fallocate(struct file *file, int mode,
+ static int f2fs_release_file(struct inode *inode, struct file *filp)
+ {
+ 	/*
+-	 * f2fs_relase_file is called at every close calls. So we should
++	 * f2fs_release_file is called at every close calls. So we should
+ 	 * not drop any inmemory pages by close called by other process.
+ 	 */
+ 	if (!(filp->f_mode & FMODE_WRITE) ||
+diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
+index 0d6906644feb7..80bc386ec6980 100644
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -959,7 +959,7 @@ static int f2fs_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 
+ 	/*
+ 	 * If new_inode is null, the below renaming flow will
+-	 * add a link in old_dir which can conver inline_dir.
++	 * add a link in old_dir which can convert inline_dir.
+ 	 * After then, if we failed to get the entry due to other
+ 	 * reasons like ENOMEM, we had to remove the new entry.
+ 	 * Instead of adding such the error handling routine, let's
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index b454496ca67a1..1c69dc91c3292 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -3772,7 +3772,7 @@ void f2fs_wait_on_page_writeback(struct page *page,
+ 
+ 		/* submit cached LFS IO */
+ 		f2fs_submit_merged_write_cond(sbi, NULL, page, 0, type);
+-		/* sbumit cached IPU IO */
++		/* submit cached IPU IO */
+ 		f2fs_submit_merged_ipu_write(sbi, NULL, page);
+ 		if (ordered) {
+ 			wait_on_page_writeback(page);
 -- 
 2.43.0
 
