@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA67C9071F6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:42:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8044906E1F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:08:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BD9228552E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:42:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DD6EB264E3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2295E142E9C;
-	Thu, 13 Jun 2024 12:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01124143C48;
+	Thu, 13 Jun 2024 12:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1bNDR4P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSkoiRVQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D583B2CA6;
-	Thu, 13 Jun 2024 12:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DA5145B3F;
+	Thu, 13 Jun 2024 12:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282527; cv=none; b=dwftRWT5xw4D6+2XgVAwkea9cyOQTmSdBw89zxbDy43Yq8ST6QZ1udxOwnUiBDIV6ShsHhY8MI5c7EiUe4Lm+GmTm0z5IIBqwXDh/e0IgbCd7NlMdFzssAu1dclXDsN4SM9K31Zz4aBpI5LcVoYzzM1wqAg/EOl2OVdDZB1Uwk8=
+	t=1718280168; cv=none; b=qJhntEpcsE5DRO/U8Cj0q8rth8zJjyIF7Moc+N5SygxlHaq/G3hq7Ra55OHsAhgONzY4DY8jEw1GVc4J44iCm/5w6aemI/AjxXk2QTDbZvY6rHkoexqu5+B7J+PlPugMNWvwqpRjcJCHI2g6B2S38u7F+jkJ11GDjSm2JP650iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282527; c=relaxed/simple;
-	bh=CpFCo/c6Dtgn1qWck+S3E9jSSy8pv0XCAUrzkBDwvuU=;
+	s=arc-20240116; t=1718280168; c=relaxed/simple;
+	bh=lECTMReqkblqTOh6aNjcNhDUAOgbtnza/CQ/dMmH75Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SuvUyT3f6KpIKlaRnBuhGuJXAAv9M7TLF+lk1YAvrIemEOvkMHq+esliD+UQSKjRCUEEHyYn9I/vMS72OqqB25j//3/OP2BxCDEyI/gUBpRtf6QsRMICGumRhVaFIgLR18eNwNFMRMT0Wze/E+lj6aOWGciOAefazx1jz3LEyGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1bNDR4P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C98BC2BBFC;
-	Thu, 13 Jun 2024 12:42:07 +0000 (UTC)
+	 MIME-Version; b=fE2sN5L2D64lFPCLEcM2r1wNigilPFMRhwyhjeAkZR2VTRNlSC45OnY18EBuydwBR8YokZemAZpT+hV/m9nCoObsLT4wCKvzkKWGFpb8MJjGbz6pxqs/J/8rnqbOmoKSrrBbH4rT1Z5qlNdCYk9z+rXa+g+F+W9jklHGGS0eypM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSkoiRVQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394FDC2BBFC;
+	Thu, 13 Jun 2024 12:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282527;
-	bh=CpFCo/c6Dtgn1qWck+S3E9jSSy8pv0XCAUrzkBDwvuU=;
+	s=korg; t=1718280168;
+	bh=lECTMReqkblqTOh6aNjcNhDUAOgbtnza/CQ/dMmH75Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F1bNDR4PkYbWNqXFI2NkPgDRNaNlVBIfy210OqxeAbptkNS00SeG9ksT3VAJtWvMj
-	 dH7LEx2bPETpRZ+29pgFDlkAprazmbAaF9GRUyZxGPSESJWdw9MPXJTBoFNaQlE+PI
-	 yVtq3GLCg7Ci2X+CNGlquXKNgueNYwPtn4nrTtIc=
+	b=oSkoiRVQVS97Dau10/SyTp2TXlXi/gFZLpxasilPomiwLeLTjO81kY6n+vNcuhULY
+	 0LneHg4UrQmfuSqjX4X3pDqBSccLy63iTJwGfav9qzjcRQwDjZenZcq0JU6EIkHZYh
+	 w5Zw+akLfWTclFbfYIfqvwgjKhn5pcL7H/TKiRlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 307/402] dma-mapping: benchmark: fix node id validation
+	Jorge Ramirez-Ortiz <jorge@foundries.io>,
+	Avri Altman <avri.altman@wdc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 5.4 166/202] mmc: core: Do not force a retune before RPMB switch
 Date: Thu, 13 Jun 2024 13:34:24 +0200
-Message-ID: <20240613113314.116608782@linuxfoundation.org>
+Message-ID: <20240613113234.153177417@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Jorge Ramirez-Ortiz <jorge@foundries.io>
 
-[ Upstream commit 1ff05e723f7ca30644b8ec3fb093f16312e408ad ]
+commit 67380251e8bbd3302c64fea07f95c31971b91c22 upstream.
 
-While validating node ids in map_benchmark_ioctl(), node_possible() may
-be provided with invalid argument outside of [0,MAX_NUMNODES-1] range
-leading to:
+Requesting a retune before switching to the RPMB partition has been
+observed to cause CRC errors on the RPMB reads (-EILSEQ).
 
-BUG: KASAN: wild-memory-access in map_benchmark_ioctl (kernel/dma/map_benchmark.c:214)
-Read of size 8 at addr 1fffffff8ccb6398 by task dma_map_benchma/971
-CPU: 7 PID: 971 Comm: dma_map_benchma Not tainted 6.9.0-rc6 #37
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-Call Trace:
- <TASK>
-dump_stack_lvl (lib/dump_stack.c:117)
-kasan_report (mm/kasan/report.c:603)
-kasan_check_range (mm/kasan/generic.c:189)
-variable_test_bit (arch/x86/include/asm/bitops.h:227) [inline]
-arch_test_bit (arch/x86/include/asm/bitops.h:239) [inline]
-_test_bit at (include/asm-generic/bitops/instrumented-non-atomic.h:142) [inline]
-node_state (include/linux/nodemask.h:423) [inline]
-map_benchmark_ioctl (kernel/dma/map_benchmark.c:214)
-full_proxy_unlocked_ioctl (fs/debugfs/file.c:333)
-__x64_sys_ioctl (fs/ioctl.c:890)
-do_syscall_64 (arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+Since RPMB reads can not be retried, the clients would be directly
+affected by the errors.
 
-Compare node ids with sane bounds first. NUMA_NO_NODE is considered a
-special valid case meaning that benchmarking kthreads won't be bound to a
-cpuset of a given node.
+This commit disables the retune request prior to switching to the RPMB
+partition: mmc_retune_pause() no longer triggers a retune before the
+pause period begins.
 
-Found by Linux Verification Center (linuxtesting.org).
+This was verified with the sdhci-of-arasan driver (ZynqMP) configured
+for HS200 using two separate eMMC cards (DG4064 and 064GB2). In both
+cases, the error was easy to reproduce triggering every few tenths of
+reads.
 
-Fixes: 65789daa8087 ("dma-mapping: add benchmark support for streaming DMA APIs")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With this commit, systems that were utilizing OP-TEE to access RPMB
+variables will experience an enhanced performance. Specifically, when
+OP-TEE is configured to employ RPMB as a secure storage solution, it not
+only writes the data but also the secure filesystem within the
+partition. As a result, retrieving any variable involves multiple RPMB
+reads, typically around five.
+
+For context, on ZynqMP, each retune request consumed approximately
+8ms. Consequently, reading any RPMB variable used to take at the very
+minimum 40ms.
+
+After droping the need to retune before switching to the RPMB partition,
+this is no longer the case.
+
+Signed-off-by: Jorge Ramirez-Ortiz <jorge@foundries.io>
+Acked-by: Avri Altman <avri.altman@wdc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240103112911.2954632-1-jorge@foundries.io
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/map_benchmark.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mmc/core/host.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
-index 9b9af1bd6be31..130feaa8de7fc 100644
---- a/kernel/dma/map_benchmark.c
-+++ b/kernel/dma/map_benchmark.c
-@@ -231,7 +231,8 @@ static long map_benchmark_ioctl(struct file *file, unsigned int cmd,
- 		}
+--- a/drivers/mmc/core/host.c
++++ b/drivers/mmc/core/host.c
+@@ -111,13 +111,12 @@ void mmc_retune_enable(struct mmc_host *
  
- 		if (map->bparam.node != NUMA_NO_NODE &&
--		    !node_possible(map->bparam.node)) {
-+		    (map->bparam.node < 0 || map->bparam.node >= MAX_NUMNODES ||
-+		     !node_possible(map->bparam.node))) {
- 			pr_err("invalid numa node\n");
- 			return -EINVAL;
- 		}
--- 
-2.43.0
-
+ /*
+  * Pause re-tuning for a small set of operations.  The pause begins after the
+- * next command and after first doing re-tuning.
++ * next command.
+  */
+ void mmc_retune_pause(struct mmc_host *host)
+ {
+ 	if (!host->retune_paused) {
+ 		host->retune_paused = 1;
+-		mmc_retune_needed(host);
+ 		mmc_retune_hold(host);
+ 	}
+ }
 
 
 
