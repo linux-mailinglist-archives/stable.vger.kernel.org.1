@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-50498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C49B0906A7D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:55:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B037906A84
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD4891C242CB
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:55:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9286284DF5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 10:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB0F142648;
-	Thu, 13 Jun 2024 10:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC18214265C;
+	Thu, 13 Jun 2024 10:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lf4baGGf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9lQrt9C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D16813C68A
-	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88F914262B
+	for <stable@vger.kernel.org>; Thu, 13 Jun 2024 10:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718276121; cv=none; b=SWBQtaVaG9D3kqOweQOreXyIvhgrZEtUXPsgUxEAwhsTnMlgQtKxfnCK2Rqr16+GwuDyXXtrv/J7+DMCx4vLfcV7Oi3eLre0eyk4d6+oYEVREe1jzdEws5YVlgKuRrz4ibt7O3SqaJ/ttMZaBjIESvolma0d09Ok88z6RAC/0LA=
+	t=1718276170; cv=none; b=X+43bSx52EQXbL1OyhvT1PM+rdxIdJEqpm8ilffvfoKf4fgF+vmFNhPMaXHIbnvTAJ2uo/YzXbF3ITPyLcT8oZEfGLDk2VkfMHqN+yDxsYCQZQk9jR0vL/ZhwJM3Zmhu9oSPSV4QUIasZrIxviN0wEQkDoQfBvaBmI9Y9BjcZWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718276121; c=relaxed/simple;
-	bh=2VLtj0VTjSYA1P6s+Stn4BXiPA85krRqaN72ayZhn6M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NQTYg8b8x+di9nS7KFLLWZYcb8xztdcL4Iw3XqN2R7e9A0v4ZN8e+yfMY1b6MpDpAShNFPb11f/k6RpMoem0PBTHADf7QdvCqioA0Zc0Y7Y4LAgfFvHM87mYjzS+EWpYIikvMbg13wPNRkNVyL7wiYHYGtyyLuyT28C0Z5WDIa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lf4baGGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8960FC32786;
-	Thu, 13 Jun 2024 10:55:20 +0000 (UTC)
+	s=arc-20240116; t=1718276170; c=relaxed/simple;
+	bh=bBSIq9KAVpDHLkBXWT+BAAJhv9YMI7eZGW281W2J5OQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Rn6isy6LTW29yg0DFQs3W+KcdHBbTEAR8cQuYeJpOO6D/Q5lmK1N2cfBuEw/RhNxyY0H1uilnTQimI51G8g0I7/zw31w3/ixc7ve4Ae4BkfcbEQIOE3e6dBwvBWcoSqOTw0Z5UchVH2mtGJVgXuszT1skGwA8XvXcU4Bi7BSeJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9lQrt9C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39C7C32786;
+	Thu, 13 Jun 2024 10:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718276120;
-	bh=2VLtj0VTjSYA1P6s+Stn4BXiPA85krRqaN72ayZhn6M=;
+	s=korg; t=1718276170;
+	bh=bBSIq9KAVpDHLkBXWT+BAAJhv9YMI7eZGW281W2J5OQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Lf4baGGfMulz+T5UNm82Ohmq91jo8dCcfh4oTPaxYyxBp7xyvTXshWkBxw0shVepB
-	 Ogb3vHpy/UPsCsgu42W8q33QXzAjX/FX7BG3Xge5Q6vZ2o0vO7hvjeOZryB98FeP0x
-	 VFOIBZsKEqkADj5NoL1xYLqJ6YSOnkx09gyJ5JvQ=
-Subject: FAILED: patch "[PATCH] tracefs: Update inode permissions on remount" failed to apply to 6.6-stable tree
-To: rostedt@goodmis.org,akpm@linux-foundation.org,mark.rutland@arm.com,masahiroy@kernel.org,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
+	b=d9lQrt9Cbi7/qf6jFaaOYoRE03LU5wz1VM+L/981+iD3es2cRFUJUAHoVfwcCvVOj
+	 TfZnfSVf+6suVDH/XQAtEetZCX8dVuUr8J7oc3vZuC6a6Yb9MDr62EEgps3zhxefds
+	 hv0LF7nhajN4HXJt4COVBi9/1UpYZrsHd488D3hU=
+Subject: FAILED: patch "[PATCH] btrfs: qgroup: update rescan message levels and error codes" failed to apply to 6.6-stable tree
+To: dsterba@suse.com,boris@bur.io
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Jun 2024 12:55:10 +0200
-Message-ID: <2024061310-exemplify-snore-c1b0@gregkh>
+Date: Thu, 13 Jun 2024 12:56:07 +0200
+Message-ID: <2024061307-gab-underfoot-f7db@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,33 +62,17 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 27c046484382d78b4abb0a6e9905a20121af9b35
+git cherry-pick -x 1fa7603d569b9e738e9581937ba8725cd7d39b48
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061310-exemplify-snore-c1b0@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061307-gab-underfoot-f7db@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-27c046484382 ("tracefs: Update inode permissions on remount")
-baa23a8d4360 ("tracefs: Reset permissions on remount if permissions are options")
-8dce06e98c70 ("eventfs: Clean up dentry ops and add revalidate function")
-49304c2b93e4 ("tracefs: dentry lookup crapectomy")
-4fa4b010b83f ("eventfs: Initialize the tracefs inode properly")
-d81786f53aec ("tracefs: Zero out the tracefs_inode when allocating it")
-29142dc92c37 ("tracefs: remove stale 'update_gid' code")
-8186fff7ab64 ("tracefs/eventfs: Use root and instance inodes as default ownership")
-b0f7e2d739b4 ("eventfs: Remove "lookup" parameter from create_dir/file_dentry()")
-ad579864637a ("tracefs: Check for dentry->d_inode exists in set_gid()")
-7e8358edf503 ("eventfs: Fix file and directory uid and gid ownership")
-0dfc852b6fe3 ("eventfs: Have event files and directories default to parent uid and gid")
-5eaf7f0589c0 ("eventfs: Fix events beyond NAME_MAX blocking tasks")
-f49f950c217b ("eventfs: Make sure that parent->d_inode is locked in creating files/dirs")
-fc4561226fea ("eventfs: Do not allow NULL parent to eventfs_start_creating()")
-bcae32c5632f ("eventfs: Move taking of inode_lock into dcache_dir_open_wrapper()")
-71cade82f2b5 ("eventfs: Do not invalidate dentry in create_file/dir_dentry()")
-88903daecacf ("eventfs: Remove expectation that ei->is_freed means ei->dentry == NULL")
-44365329f821 ("eventfs: Hold eventfs_mutex when calling callback functions")
-28e12c09f5aa ("eventfs: Save ownership and mode")
+1fa7603d569b ("btrfs: qgroup: update rescan message levels and error codes")
+182940f4f4db ("btrfs: qgroup: add new quota mode for simple quotas")
+6b0cd63bc75c ("btrfs: qgroup: introduce quota mode")
+515020900d44 ("btrfs: read raid stripe tree from disk")
 
 thanks,
 
@@ -96,91 +80,64 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 27c046484382d78b4abb0a6e9905a20121af9b35 Mon Sep 17 00:00:00 2001
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Date: Thu, 23 May 2024 01:14:27 -0400
-Subject: [PATCH] tracefs: Update inode permissions on remount
+From 1fa7603d569b9e738e9581937ba8725cd7d39b48 Mon Sep 17 00:00:00 2001
+From: David Sterba <dsterba@suse.com>
+Date: Thu, 2 May 2024 22:45:58 +0200
+Subject: [PATCH] btrfs: qgroup: update rescan message levels and error codes
 
-When a remount happens, if a gid or uid is specified update the inodes to
-have the same gid and uid. This will allow the simplification of the
-permissions logic for the dynamically created files and directories.
+On filesystems without enabled quotas there's still a warning message in
+the logs when rescan is called. In that case it's not a problem that
+should be reported, rescan can be called unconditionally.  Change the
+error code to ENOTCONN which is used for 'quotas not enabled' elsewhere.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240523051539.592429986@goodmis.org
+Remove message (also a warning) when rescan is called during an ongoing
+rescan, this brings no useful information and the error code is
+sufficient.
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Fixes: baa23a8d4360d ("tracefs: Reset permissions on remount if permissions are options")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Change message levels to debug for now, they can be removed eventually.
 
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 55a40a730b10..5dfb1ccd56ea 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -317,20 +317,29 @@ void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid)
- 	if (!ei)
- 		return;
- 
--	if (update_uid)
-+	if (update_uid) {
- 		ei->attr.mode &= ~EVENTFS_SAVE_UID;
-+		ei->attr.uid = ti->vfs_inode.i_uid;
-+	}
- 
--	if (update_gid)
-+
-+	if (update_gid) {
- 		ei->attr.mode &= ~EVENTFS_SAVE_GID;
-+		ei->attr.gid = ti->vfs_inode.i_gid;
-+	}
- 
- 	if (!ei->entry_attrs)
- 		return;
- 
- 	for (int i = 0; i < ei->nr_entries; i++) {
--		if (update_uid)
-+		if (update_uid) {
- 			ei->entry_attrs[i].mode &= ~EVENTFS_SAVE_UID;
--		if (update_gid)
-+			ei->entry_attrs[i].uid = ti->vfs_inode.i_uid;
-+		}
-+		if (update_gid) {
- 			ei->entry_attrs[i].mode &= ~EVENTFS_SAVE_GID;
-+			ei->entry_attrs[i].gid = ti->vfs_inode.i_gid;
-+		}
- 	}
- }
- 
-diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
-index a827f6a716c4..9252e0d78ea2 100644
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -373,12 +373,21 @@ static int tracefs_apply_options(struct super_block *sb, bool remount)
- 
- 		rcu_read_lock();
- 		list_for_each_entry_rcu(ti, &tracefs_inodes, list) {
--			if (update_uid)
-+			if (update_uid) {
- 				ti->flags &= ~TRACEFS_UID_PERM_SET;
-+				ti->vfs_inode.i_uid = fsi->uid;
-+			}
- 
--			if (update_gid)
-+			if (update_gid) {
- 				ti->flags &= ~TRACEFS_GID_PERM_SET;
-+				ti->vfs_inode.i_gid = fsi->gid;
-+			}
- 
-+			/*
-+			 * Note, the above ti->vfs_inode updates are
-+			 * used in eventfs_remount() so they must come
-+			 * before calling it.
-+			 */
- 			if (ti->flags & TRACEFS_EVENT_INODE)
- 				eventfs_remount(ti, update_uid, update_gid);
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index eb28141d5c37..f93354a96909 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -3820,14 +3820,14 @@ qgroup_rescan_init(struct btrfs_fs_info *fs_info, u64 progress_objectid,
+ 		/* we're resuming qgroup rescan at mount time */
+ 		if (!(fs_info->qgroup_flags &
+ 		      BTRFS_QGROUP_STATUS_FLAG_RESCAN)) {
+-			btrfs_warn(fs_info,
++			btrfs_debug(fs_info,
+ 			"qgroup rescan init failed, qgroup rescan is not queued");
+ 			ret = -EINVAL;
+ 		} else if (!(fs_info->qgroup_flags &
+ 			     BTRFS_QGROUP_STATUS_FLAG_ON)) {
+-			btrfs_warn(fs_info,
++			btrfs_debug(fs_info,
+ 			"qgroup rescan init failed, qgroup is not enabled");
+-			ret = -EINVAL;
++			ret = -ENOTCONN;
  		}
+ 
+ 		if (ret)
+@@ -3838,14 +3838,12 @@ qgroup_rescan_init(struct btrfs_fs_info *fs_info, u64 progress_objectid,
+ 
+ 	if (init_flags) {
+ 		if (fs_info->qgroup_flags & BTRFS_QGROUP_STATUS_FLAG_RESCAN) {
+-			btrfs_warn(fs_info,
+-				   "qgroup rescan is already in progress");
+ 			ret = -EINPROGRESS;
+ 		} else if (!(fs_info->qgroup_flags &
+ 			     BTRFS_QGROUP_STATUS_FLAG_ON)) {
+-			btrfs_warn(fs_info,
++			btrfs_debug(fs_info,
+ 			"qgroup rescan init failed, qgroup is not enabled");
+-			ret = -EINVAL;
++			ret = -ENOTCONN;
+ 		} else if (btrfs_qgroup_mode(fs_info) == BTRFS_QGROUP_MODE_DISABLED) {
+ 			/* Quota disable is in progress */
+ 			ret = -EBUSY;
 
 
