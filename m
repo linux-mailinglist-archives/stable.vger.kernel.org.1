@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-51094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D45906E50
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:09:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE73E906EEC
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD9C01C22940
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:09:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AF381F215C5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CFA1428E9;
-	Thu, 13 Jun 2024 12:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD16B1448DF;
+	Thu, 13 Jun 2024 12:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcDG39y6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dMv763I3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D8613CFA3;
-	Thu, 13 Jun 2024 12:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9FD1442EF;
+	Thu, 13 Jun 2024 12:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280291; cv=none; b=jF6pBr+Vkk+4HX+IsldrvK1v4NeeO8qeetKXMnufanfruiUz+mj1C293Wku8lQlCFISwyYsf3jsUgRlZRDIas8/ji/nkRCYH61hc1fn9tXSrZPzxKV0givtyDLMKNfxl8F23ce708bLsQOop4OIX8VHppBxZD+68iz4w07Z3nns=
+	t=1718280691; cv=none; b=HaBwVuCfyjqQNg3vwO/z1WJCx2T9YVArL4ZQDDH1Yh2i13BEwbmrc85/H+VoaKQw6MmDXzqGHtpVNCRyxmUV0W//cLeuoukDf9yurfhumMTp41cSavrimjQK78vDcjDFQT9lARZmx86WBrIWJoGPUYkV/RPy77VCRZVlDCSy6yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280291; c=relaxed/simple;
-	bh=lxMHIYlWE/c4gdle/sTMG/rMicPUf6rL0WO7k7qPaUo=;
+	s=arc-20240116; t=1718280691; c=relaxed/simple;
+	bh=k46ZFuWGEz6lxXNzNUXSrhM1OhLo6F1ErX4BoIR6vMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gWw2MlWrb2GQOCE14sPotTpWOkVhRpUUj8VomVdz9UWGb7iS2TC/RTExMe1KZ4CBJbZbP5cZB4UYqytc6CiJ5Pz0XTvqvKYbH83Pr/4kjJDOd0QzqV7XH49OgXGNN7i6zPuHUQXCoqwgxG1k/Ay6ptu+b/g53LPatYWk+kupup4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcDG39y6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714A8C2BBFC;
-	Thu, 13 Jun 2024 12:04:50 +0000 (UTC)
+	 MIME-Version; b=erNQs5BWlsFzSjyOrkz+qOqB6E4QTWSNyQCJNo+LzsdUvGdbpc7MpilCybeSbxjD1/A0mdEEczuDxf1WVS4s4pUjjE3mmSROdRy9TFyfhr2Ny7xEsAnGRHrxgHOb48pslA3fcxSS0P+hTsPI4wJ+P7P8xLnJ33/doV6hOibFfWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dMv763I3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 014CEC2BBFC;
+	Thu, 13 Jun 2024 12:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280290;
-	bh=lxMHIYlWE/c4gdle/sTMG/rMicPUf6rL0WO7k7qPaUo=;
+	s=korg; t=1718280691;
+	bh=k46ZFuWGEz6lxXNzNUXSrhM1OhLo6F1ErX4BoIR6vMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WcDG39y6FMtHbtfa6Lum+c0Oyp8eVi8YB/d3pIS3Jp3wIyUfcLKlM/QZjbuFoufvk
-	 Dj/jSY+LpNcGDdVNdNLtZk0ai3CQEtfpsNLKikrDRqP/3nB7GA/w4y3l8I6g2XVH2l
-	 YtSDfB99qx/WMTk24n1iD+lm8fNvplfvsHM44iGQ=
+	b=dMv763I3pveylSmrO8FMVdkEPEcEASMRTb7F41QRRP+IB8IQrz/6lUkvXF+V+UnW1
+	 E6jDPnpq1Rani7n9x/BKSGLEncgMHfdRH02QDx/xJR4Qse4kEdpi2bx8SXghIFvvYy
+	 nB7EZ32ChriPZUvhiLyfk2Gw8NZp6KhwGMYxE1Vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Nick Bowler <nbowler@draconx.ca>,
-	Andreas Larsson <andreas@gaisler.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Atish Patra <atish.patra@oracle.com>,
-	Bob Picco <bob.picco@oracle.com>,
-	Vijay Kumar <vijay.ac.kumar@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5.4 191/202] sparc64: Fix number of online CPUs
+	syzbot+dd43bd0f7474512edc47@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 109/137] ext4: fix mb_cache_entrys e_refcnt leak in ext4_xattr_block_cache_find()
 Date: Thu, 13 Jun 2024 13:34:49 +0200
-Message-ID: <20240613113235.111263034@linuxfoundation.org>
+Message-ID: <20240613113227.527511422@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,128 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Ravnborg <sam@ravnborg.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 98937707fea8375e8acea0aaa0b68a956dd52719 upstream.
+commit 0c0b4a49d3e7f49690a6827a41faeffad5df7e21 upstream.
 
-Nick Bowler reported:
-    When using newer kernels on my Ultra 60 with dual 450MHz UltraSPARC-II
-    CPUs, I noticed that only CPU 0 comes up, while older kernels (including
-    4.7) are working fine with both CPUs.
+Syzbot reports a warning as follows:
 
-      I bisected the failure to this commit:
+============================================
+WARNING: CPU: 0 PID: 5075 at fs/mbcache.c:419 mb_cache_destroy+0x224/0x290
+Modules linked in:
+CPU: 0 PID: 5075 Comm: syz-executor199 Not tainted 6.9.0-rc6-gb947cc5bf6d7
+RIP: 0010:mb_cache_destroy+0x224/0x290 fs/mbcache.c:419
+Call Trace:
+ <TASK>
+ ext4_put_super+0x6d4/0xcd0 fs/ext4/super.c:1375
+ generic_shutdown_super+0x136/0x2d0 fs/super.c:641
+ kill_block_super+0x44/0x90 fs/super.c:1675
+ ext4_kill_sb+0x68/0xa0 fs/ext4/super.c:7327
+[...]
+============================================
 
-      9b2f753ec23710aa32c0d837d2499db92fe9115b is the first bad commit
-      commit 9b2f753ec23710aa32c0d837d2499db92fe9115b
-      Author: Atish Patra <atish.patra@oracle.com>
-      Date:   Thu Sep 15 14:54:40 2016 -0600
+This is because when finding an entry in ext4_xattr_block_cache_find(), if
+ext4_sb_bread() returns -ENOMEM, the ce's e_refcnt, which has already grown
+in the __entry_find(), won't be put away, and eventually trigger the above
+issue in mb_cache_destroy() due to reference count leakage.
 
-      sparc64: Fix cpu_possible_mask if nr_cpus is set
+So call mb_cache_entry_put() on the -ENOMEM error branch as a quick fix.
 
-    This is a small change that reverts very easily on top of 5.18: there is
-    just one trivial conflict.  Once reverted, both CPUs work again.
-
-    Maybe this is related to the fact that the CPUs on this system are
-    numbered CPU0 and CPU2 (there is no CPU1)?
-
-The current code that adjust cpu_possible based on nr_cpu_ids do not
-take into account that CPU's may not come one after each other.
-Move the chech to the function that setup the cpu_possible mask
-so there is no need to adjust it later.
-
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Fixes: 9b2f753ec237 ("sparc64: Fix cpu_possible_mask if nr_cpus is set")
-Reported-by: Nick Bowler <nbowler@draconx.ca>
-Tested-by: Nick Bowler <nbowler@draconx.ca>
-Link: https://lore.kernel.org/sparclinux/20201009161924.c8f031c079dd852941307870@gmx.de/
-Link: https://lore.kernel.org/all/CADyTPEwt=ZNams+1bpMB1F9w_vUdPsGCt92DBQxxq_VtaLoTdw@mail.gmail.com/
-Cc: stable@vger.kernel.org # v4.8+
-Cc: Andreas Larsson <andreas@gaisler.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Atish Patra <atish.patra@oracle.com>
-Cc: Bob Picco <bob.picco@oracle.com>
-Cc: Vijay Kumar <vijay.ac.kumar@oracle.com>
-Cc: David S. Miller <davem@davemloft.net>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240330-sparc64-warnings-v1-9-37201023ee2f@ravnborg.org
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Reported-by: syzbot+dd43bd0f7474512edc47@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=dd43bd0f7474512edc47
+Fixes: fb265c9cb49e ("ext4: add ext4_sb_bread() to disambiguate ENOMEM cases")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240504075526.2254349-2-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/include/asm/smp_64.h |    2 --
- arch/sparc/kernel/prom_64.c     |    4 +++-
- arch/sparc/kernel/setup_64.c    |    1 -
- arch/sparc/kernel/smp_64.c      |   14 --------------
- 4 files changed, 3 insertions(+), 18 deletions(-)
+ fs/ext4/xattr.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/sparc/include/asm/smp_64.h
-+++ b/arch/sparc/include/asm/smp_64.h
-@@ -47,7 +47,6 @@ void arch_send_call_function_ipi_mask(co
- int hard_smp_processor_id(void);
- #define raw_smp_processor_id() (current_thread_info()->cpu)
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -3126,8 +3126,10 @@ ext4_xattr_block_cache_find(struct inode
  
--void smp_fill_in_cpu_possible_map(void);
- void smp_fill_in_sib_core_maps(void);
- void cpu_play_dead(void);
- 
-@@ -77,7 +76,6 @@ void __cpu_die(unsigned int cpu);
- #define smp_fill_in_sib_core_maps() do { } while (0)
- #define smp_fetch_global_regs() do { } while (0)
- #define smp_fetch_global_pmu() do { } while (0)
--#define smp_fill_in_cpu_possible_map() do { } while (0)
- #define smp_init_cpu_poke() do { } while (0)
- #define scheduler_poke() do { } while (0)
- 
---- a/arch/sparc/kernel/prom_64.c
-+++ b/arch/sparc/kernel/prom_64.c
-@@ -483,7 +483,9 @@ static void *record_one_cpu(struct devic
- 	ncpus_probed++;
- #ifdef CONFIG_SMP
- 	set_cpu_present(cpuid, true);
--	set_cpu_possible(cpuid, true);
-+
-+	if (num_possible_cpus() < nr_cpu_ids)
-+		set_cpu_possible(cpuid, true);
- #endif
- 	return NULL;
- }
---- a/arch/sparc/kernel/setup_64.c
-+++ b/arch/sparc/kernel/setup_64.c
-@@ -695,7 +695,6 @@ void __init setup_arch(char **cmdline_p)
- 
- 	paging_init();
- 	init_sparc64_elf_hwcap();
--	smp_fill_in_cpu_possible_map();
- 	/*
- 	 * Once the OF device tree and MDESC have been setup and nr_cpus has
- 	 * been parsed, we know the list of possible cpus.  Therefore we can
---- a/arch/sparc/kernel/smp_64.c
-+++ b/arch/sparc/kernel/smp_64.c
-@@ -1213,20 +1213,6 @@ void __init smp_setup_processor_id(void)
- 		xcall_deliver_impl = hypervisor_xcall_deliver;
- }
- 
--void __init smp_fill_in_cpu_possible_map(void)
--{
--	int possible_cpus = num_possible_cpus();
--	int i;
--
--	if (possible_cpus > nr_cpu_ids)
--		possible_cpus = nr_cpu_ids;
--
--	for (i = 0; i < possible_cpus; i++)
--		set_cpu_possible(i, true);
--	for (; i < NR_CPUS; i++)
--		set_cpu_possible(i, false);
--}
--
- void smp_fill_in_sib_core_maps(void)
- {
- 	unsigned int i;
+ 		bh = ext4_sb_bread(inode->i_sb, ce->e_value, REQ_PRIO);
+ 		if (IS_ERR(bh)) {
+-			if (PTR_ERR(bh) == -ENOMEM)
++			if (PTR_ERR(bh) == -ENOMEM) {
++				mb_cache_entry_put(ea_block_cache, ce);
+ 				return NULL;
++			}
+ 			bh = NULL;
+ 			EXT4_ERROR_INODE(inode, "block %lu read error",
+ 					 (unsigned long)ce->e_value);
 
 
 
