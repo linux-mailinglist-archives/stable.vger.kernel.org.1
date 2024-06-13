@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A295390704B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A34590724B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:46:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16B41283F32
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7FDC1F2149B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4FD144D1A;
-	Thu, 13 Jun 2024 12:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BAF1292FF;
+	Thu, 13 Jun 2024 12:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntzqEnjZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjUw57tj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B1D143861;
-	Thu, 13 Jun 2024 12:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8921DDDB;
+	Thu, 13 Jun 2024 12:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281542; cv=none; b=hVSfLgQbMh7G+3AluID9mWBDDNjdE88RSIMSuysEnCYX5lwEn3PGY70JXLmOdK9QdDk7a5mDGBUaNZOQqisJE+Gchm498ee6FYO+npn9Kd7t347GuzGXizP5jJhOqeyudiubQoo/FwyspkwTHcI4Dj/j+KfRG6C4lssfHOCYXYg=
+	t=1718282752; cv=none; b=acPIBf/nm2qPNpnH4qC1UjM6lbpaQIneTX7CoI7+ZTP0p/HLW5WHibyW7NyzBMEmf5PmF87wiUxp1kOkPTNQ9gwQb+h1VJwm3M9QssgVIuvZZRfz4bdWh09R3/NePHQ1QcY85xUhso2AJTLPqsCE9ZVgbElR4aGEqY8Bhgmg2sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281542; c=relaxed/simple;
-	bh=AvFSAjZSR7dd4D6hUenbO74YAS7y/Ri43ZjW9hdRiCc=;
+	s=arc-20240116; t=1718282752; c=relaxed/simple;
+	bh=EVICGdvthQ/neTQ8nUvq/YuIxxxgqOgM1bgltMTa3NU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXPq5mZNUceaXRLXfZBeaRg3Q76U/diUSQxi5XNUK2a32/pPO/919Mxod/ikPnwYCtvPmhOk6zU5kIvEliYL65+wo9eYzpxUpplOCpmnM/B6hMbUK9FUmFk8yj2U76lfmML+L8FaQgLAlUA/M0gb6afg2yqumu62hxtN/Y2vvk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntzqEnjZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F289BC2BBFC;
-	Thu, 13 Jun 2024 12:25:41 +0000 (UTC)
+	 MIME-Version; b=WyMz8EQGs+IRuA3mibKWx8trUWUA2H8BfTOFsuFxTtNUFZeut71/9clTqpIgUc/VlHHWjQIABxgVXxlE5pSqUsbM4JUK59dK8CnNr2kNzEG5crqUUl+2QL1SEIYRRU3QI+IUsBdCmr5MZjxzXm9KEX7fHAziSfF8pENEOxCikas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjUw57tj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81F8C2BBFC;
+	Thu, 13 Jun 2024 12:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281542;
-	bh=AvFSAjZSR7dd4D6hUenbO74YAS7y/Ri43ZjW9hdRiCc=;
+	s=korg; t=1718282752;
+	bh=EVICGdvthQ/neTQ8nUvq/YuIxxxgqOgM1bgltMTa3NU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ntzqEnjZt7qVtuIFK/P5Lph79Q3wohAusKp0VUTNDGFG8lXz74kkhCxe5jhU1XfQk
-	 dE4a2zkaxWYfTkzgTN4Df29GJsVMUhv+4X4hwnmumc/XBP4Y8Q5o0Vdk7L4RrXiAnT
-	 QIIttjURSorQWbVW4hx5eKhPlA43QHNT1Ta3ZPsY=
+	b=UjUw57tjQkErnVW6dSW6MfMZRqt5EjRAZvzJ7VQy3U5jR1X3uhrBM+Wdbn1zalkvj
+	 Evo4FeMYRzTGWmIVCedews/rTt08QUDabxO+tRCVqO7AoGOMOr44hwmzv6xMksuj5P
+	 kxKcNRdVc/bKI8DJ1LZqlNWzsaes31+hznBZ2lvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 290/317] mmc: core: Add mmc_gpiod_set_cd_config() function
-Date: Thu, 13 Jun 2024 13:35:08 +0200
-Message-ID: <20240613113258.771121725@linuxfoundation.org>
+	Jon Hunter <jonathanh@nvidia.com>,
+	NeilBrown <neilb@suse.de>
+Subject: [PATCH 5.15 352/402] sunrpc: exclude from freezer when waiting for requests:
+Date: Thu, 13 Jun 2024 13:35:09 +0200
+Message-ID: <20240613113315.866006865@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: NeilBrown <neilb@suse.de>
 
-commit 63a7cd660246aa36af263b85c33ecc6601bf04be upstream.
+Prior to v6.1, the freezer will only wake a kernel thread from an
+uninterruptible sleep.  Since we changed svc_get_next_xprt() to use and
+IDLE sleep the freezer cannot wake it.  We need to tell the freezer to
+ignore it instead.
 
-Some mmc host drivers may need to fixup a card-detection GPIO's config
-to e.g. enable the GPIO controllers builtin pull-up resistor on devices
-where the firmware description of the GPIO is broken (e.g. GpioInt with
-PullNone instead of PullUp in ACPI DSDT).
+To make this work with only upstream commits, 5.15.y would need
+commit f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
+which allows non-interruptible sleeps to be woken by the freezer.
 
-Since this is the exception rather then the rule adding a config
-parameter to mmc_gpiod_request_cd() seems undesirable, so instead
-add a new mmc_gpiod_set_cd_config() function. This is simply a wrapper
-to call gpiod_set_config() on the card-detect GPIO acquired through
-mmc_gpiod_request_cd().
-
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240410191639.526324-2-hdegoede@redhat.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 9b8a8e5e8129 ("nfsd: don't allow nfsd threads to be signalled.")
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: NeilBrown <neilb@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/slot-gpio.c  |   20 ++++++++++++++++++++
- include/linux/mmc/slot-gpio.h |    1 +
- 2 files changed, 21 insertions(+)
+ fs/nfs/callback.c     |    2 +-
+ fs/nfsd/nfs4proc.c    |    3 ++-
+ net/sunrpc/svc_xprt.c |    4 ++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/mmc/core/slot-gpio.c
-+++ b/drivers/mmc/core/slot-gpio.c
-@@ -202,6 +202,26 @@ int mmc_gpiod_request_cd(struct mmc_host
- }
- EXPORT_SYMBOL(mmc_gpiod_request_cd);
+--- a/fs/nfs/callback.c
++++ b/fs/nfs/callback.c
+@@ -124,7 +124,7 @@ nfs41_callback_svc(void *vrqstp)
+ 		} else {
+ 			spin_unlock_bh(&serv->sv_cb_lock);
+ 			if (!kthread_should_stop())
+-				schedule();
++				freezable_schedule();
+ 			finish_wait(&serv->sv_cb_waitq, &wq);
+ 		}
+ 	}
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -38,6 +38,7 @@
+ #include <linux/slab.h>
+ #include <linux/kthread.h>
+ #include <linux/namei.h>
++#include <linux/freezer.h>
  
-+/**
-+ * mmc_gpiod_set_cd_config - set config for card-detection GPIO
-+ * @host: mmc host
-+ * @config: Generic pinconf config (from pinconf_to_config_packed())
-+ *
-+ * This can be used by mmc host drivers to fixup a card-detection GPIO's config
-+ * (e.g. set PIN_CONFIG_BIAS_PULL_UP) after acquiring the GPIO descriptor
-+ * through mmc_gpiod_request_cd().
-+ *
-+ * Returns:
-+ * 0 on success, or a negative errno value on error.
-+ */
-+int mmc_gpiod_set_cd_config(struct mmc_host *host, unsigned long config)
-+{
-+	struct mmc_gpio *ctx = host->slot.handler_priv;
-+
-+	return gpiod_set_config(ctx->cd_gpio, config);
-+}
-+EXPORT_SYMBOL(mmc_gpiod_set_cd_config);
-+
- bool mmc_can_gpio_cd(struct mmc_host *host)
- {
- 	struct mmc_gpio *ctx = host->slot.handler_priv;
---- a/include/linux/mmc/slot-gpio.h
-+++ b/include/linux/mmc/slot-gpio.h
-@@ -20,6 +20,7 @@ int mmc_gpiod_request_cd(struct mmc_host
- 			 unsigned int debounce);
- int mmc_gpiod_request_ro(struct mmc_host *host, const char *con_id,
- 			 unsigned int idx, unsigned int debounce);
-+int mmc_gpiod_set_cd_config(struct mmc_host *host, unsigned long config);
- void mmc_gpio_set_cd_isr(struct mmc_host *host,
- 			 irqreturn_t (*isr)(int irq, void *dev_id));
- int mmc_gpio_set_cd_wake(struct mmc_host *host, bool on);
+ #include <linux/sunrpc/addr.h>
+ #include <linux/nfs_ssc.h>
+@@ -1322,7 +1323,7 @@ try_again:
+ 
+ 			/* allow 20secs for mount/unmount for now - revisit */
+ 			if (kthread_should_stop() ||
+-					(schedule_timeout(20*HZ) == 0)) {
++					(freezable_schedule_timeout(20*HZ) == 0)) {
+ 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
+ 				kfree(work);
+ 				return nfserr_eagain;
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -705,7 +705,7 @@ static int svc_alloc_arg(struct svc_rqst
+ 			set_current_state(TASK_RUNNING);
+ 			return -EINTR;
+ 		}
+-		schedule_timeout(msecs_to_jiffies(500));
++		freezable_schedule_timeout(msecs_to_jiffies(500));
+ 	}
+ 	rqstp->rq_page_end = &rqstp->rq_pages[pages];
+ 	rqstp->rq_pages[pages] = NULL; /* this might be seen in nfsd_splice_actor() */
+@@ -765,7 +765,7 @@ static struct svc_xprt *svc_get_next_xpr
+ 	smp_mb__after_atomic();
+ 
+ 	if (likely(rqst_should_sleep(rqstp)))
+-		time_left = schedule_timeout(timeout);
++		time_left = freezable_schedule_timeout(timeout);
+ 	else
+ 		__set_current_state(TASK_RUNNING);
+ 
 
 
 
