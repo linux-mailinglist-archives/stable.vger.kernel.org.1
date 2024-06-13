@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-52009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8819072CF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:51:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64CDB907231
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B0D9B25200
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF3732812AF
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC10143C60;
-	Thu, 13 Jun 2024 12:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C0B1849;
+	Thu, 13 Jun 2024 12:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxLQgsAK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0tCjVuo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE137143868;
-	Thu, 13 Jun 2024 12:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572E6384;
+	Thu, 13 Jun 2024 12:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282966; cv=none; b=rdcwQ4jDbvKbw0fngM+EPFAhEVzP48rtLPTF9lQb1/zXzzCuVtl2DRCL3avo7Xb4SavM3m2SPDQjO21Slz31/BSap3qq82xHUO2Rbx8Eqo11V88Buk0W1Cn44fCf91ri0XoEIv5HMI1I9Qq56A57qgYiher2lmiScsLntd4uih0=
+	t=1718282690; cv=none; b=IlBpWHjgH/+QbEBwccf77zdWJ7E15KafcrQIgsQeXJbLLfcWKE1Ap8UGH7Z4TrAnWrEBYS1dFU/sOxDqC0NAeWvkktEEi6IE16VUM4oRuLSH1LNtgniQmGol7cNhQpdo0ZzV+9NiL3DsYJz6wNwun+TeqjqPqowV1CC+neyQToU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282966; c=relaxed/simple;
-	bh=So+dgj3/aWCKmdZQf/y3jX9TIZWXwewG9YshAUGRSx8=;
+	s=arc-20240116; t=1718282690; c=relaxed/simple;
+	bh=Z9W6UCNJpEyuuN23MPrE5ykWXM8hy2WfYIiLqNE/2GM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JYlN+Nn5uKHl/Zd4HLw111SNtF4vbyqiXz/kfTGjwTYLcq+1evANBeqfNZqs3AaMst4s0IoliQoaw7XZOeLJkyvFZVttGuTZX5B0MAlfF+U2tftcwl145FOKe8JeOJc+8XObba1dOgOvfl1wCJPrM8AyUQ6MLCfVGTYOgTUWNqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxLQgsAK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4452DC2BBFC;
-	Thu, 13 Jun 2024 12:49:26 +0000 (UTC)
+	 MIME-Version; b=m4Stz+/bvS45L058P5qpXY63bReAZrgUcI/wzYpeVAPOy0OM+GS5wyV6eG8IDTVQ81o09U0SfztaiKjhjUXxxkJ/CXXklQCjtVPaE5oqKQGXxbNPr1n1yq3wX0RMZnxHx2vUz21JkNBCcZSecGzzbymYgbPmsfPMT2+TX5fSlcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0tCjVuo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D155CC2BBFC;
+	Thu, 13 Jun 2024 12:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282966;
-	bh=So+dgj3/aWCKmdZQf/y3jX9TIZWXwewG9YshAUGRSx8=;
+	s=korg; t=1718282690;
+	bh=Z9W6UCNJpEyuuN23MPrE5ykWXM8hy2WfYIiLqNE/2GM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hxLQgsAKXYbljWK0sRm+vN2co4Pk5B4N6Cqfci58eHCloAwXvhgLbLHTY2C7Hc2Dc
-	 cLBfM/1dGkfS39eMcP8PsjZzxPh4PZbolantc3NkmHHbN6kA6+YPD9MNG0AppXDMXu
-	 hW79zAsgjL2aWnqKingGpYBoFhrK+zJtlxkqK/Uo=
+	b=t0tCjVuonFnyq4Z/Y6sG7k9PPuqxACDDwlrVAmOM+JygNYzXTLv9m8fsI2QuGhZwe
+	 R9kJS9PzuzIa++pNdWnft/80KawZRAMKI8vHFrnIgLyooyArWzFrE+sBTn0391NG9D
+	 USuhsetYrbfcqK7o0jAqpUlzMvgEKfSYAZHSvW/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.1 22/85] thermal/drivers/qcom/lmh: Check for SCM availability at probe
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 5.15 363/402] wifi: rtl8xxxu: Fix the TX power of RTL8192CU, RTL8723AU
 Date: Thu, 13 Jun 2024 13:35:20 +0200
-Message-ID: <20240613113214.999156778@linuxfoundation.org>
+Message-ID: <20240613113316.298377675@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit d9d3490c48df572edefc0b64655259eefdcbb9be upstream.
+commit 08b5d052d17a89bb8706b2888277d0b682dc1610 upstream.
 
-Up until now, the necessary scm availability check has not been
-performed, leading to possible null pointer dereferences (which did
-happen for me on RB1).
+Don't subtract 1 from the power index. This was added in commit
+2fc0b8e5a17d ("rtl8xxxu: Add TX power base values for gen1 parts")
+for unknown reasons. The vendor drivers don't do this.
 
-Fix that.
+Also correct the calculations of values written to
+REG_OFDM0_X{C,D}_TX_IQ_IMBALANCE. According to the vendor driver,
+these are used for TX power training.
 
-Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20240308-topic-rb1_lmh-v2-2-bac3914b0fe3@linaro.org
+With these changes rtl8xxxu sets the TX power of RTL8192CU the same
+as the vendor driver.
+
+None of this appears to have any effect on my RTL8192CU device.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://msgid.link/6ae5945b-644e-45e4-a78f-4c7d9c987910@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/qcom/lmh.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c |   26 +++++++-----------
+ 1 file changed, 11 insertions(+), 15 deletions(-)
 
---- a/drivers/thermal/qcom/lmh.c
-+++ b/drivers/thermal/qcom/lmh.c
-@@ -95,6 +95,9 @@ static int lmh_probe(struct platform_dev
- 	unsigned int enable_alg;
- 	u32 node_id;
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -28,6 +28,7 @@
+ #include <linux/wireless.h>
+ #include <linux/firmware.h>
+ #include <linux/moduleparam.h>
++#include <linux/bitfield.h>
+ #include <net/mac80211.h>
+ #include "rtl8xxxu.h"
+ #include "rtl8xxxu_regs.h"
+@@ -1389,13 +1390,13 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xx
+ 	u8 cck[RTL8723A_MAX_RF_PATHS], ofdm[RTL8723A_MAX_RF_PATHS];
+ 	u8 ofdmbase[RTL8723A_MAX_RF_PATHS], mcsbase[RTL8723A_MAX_RF_PATHS];
+ 	u32 val32, ofdm_a, ofdm_b, mcs_a, mcs_b;
+-	u8 val8;
++	u8 val8, base;
+ 	int group, i;
  
-+	if (!qcom_scm_is_available())
-+		return -EPROBE_DEFER;
+ 	group = rtl8xxxu_gen1_channel_to_group(channel);
+ 
+-	cck[0] = priv->cck_tx_power_index_A[group] - 1;
+-	cck[1] = priv->cck_tx_power_index_B[group] - 1;
++	cck[0] = priv->cck_tx_power_index_A[group];
++	cck[1] = priv->cck_tx_power_index_B[group];
+ 
+ 	if (priv->hi_pa) {
+ 		if (cck[0] > 0x20)
+@@ -1406,10 +1407,6 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xx
+ 
+ 	ofdm[0] = priv->ht40_1s_tx_power_index_A[group];
+ 	ofdm[1] = priv->ht40_1s_tx_power_index_B[group];
+-	if (ofdm[0])
+-		ofdm[0] -= 1;
+-	if (ofdm[1])
+-		ofdm[1] -= 1;
+ 
+ 	ofdmbase[0] = ofdm[0] +	priv->ofdm_tx_power_index_diff[group].a;
+ 	ofdmbase[1] = ofdm[1] +	priv->ofdm_tx_power_index_diff[group].b;
+@@ -1498,20 +1495,19 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xx
+ 
+ 	rtl8xxxu_write32(priv, REG_TX_AGC_A_MCS15_MCS12,
+ 			 mcs_a + power_base->reg_0e1c);
++	val8 = u32_get_bits(mcs_a + power_base->reg_0e1c, 0xff000000);
+ 	for (i = 0; i < 3; i++) {
+-		if (i != 2)
+-			val8 = (mcsbase[0] > 8) ? (mcsbase[0] - 8) : 0;
+-		else
+-			val8 = (mcsbase[0] > 6) ? (mcsbase[0] - 6) : 0;
++		base = i != 2 ? 8 : 6;
++		val8 = max_t(int, val8 - base, 0);
+ 		rtl8xxxu_write8(priv, REG_OFDM0_XC_TX_IQ_IMBALANCE + i, val8);
+ 	}
 +
- 	lmh_data = devm_kzalloc(dev, sizeof(*lmh_data), GFP_KERNEL);
- 	if (!lmh_data)
- 		return -ENOMEM;
+ 	rtl8xxxu_write32(priv, REG_TX_AGC_B_MCS15_MCS12,
+ 			 mcs_b + power_base->reg_0868);
++	val8 = u32_get_bits(mcs_b + power_base->reg_0868, 0xff000000);
+ 	for (i = 0; i < 3; i++) {
+-		if (i != 2)
+-			val8 = (mcsbase[1] > 8) ? (mcsbase[1] - 8) : 0;
+-		else
+-			val8 = (mcsbase[1] > 6) ? (mcsbase[1] - 6) : 0;
++		base = i != 2 ? 8 : 6;
++		val8 = max_t(int, val8 - base, 0);
+ 		rtl8xxxu_write8(priv, REG_OFDM0_XD_TX_IQ_IMBALANCE + i, val8);
+ 	}
+ }
 
 
 
