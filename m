@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-51802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AFB49071B3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C541B906FAA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C05842844F4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADEFD1C21F76
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA514143724;
-	Thu, 13 Jun 2024 12:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9819F145326;
+	Thu, 13 Jun 2024 12:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChCwvfDn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IRvDUyS+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A735A17FD;
-	Thu, 13 Jun 2024 12:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DB73209;
+	Thu, 13 Jun 2024 12:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282357; cv=none; b=JVDzIbvwLxEIl15uxd+FxRxhWuHWDVgKko7DMJmnm4Rg+3olpsX4Z5Yj8Z9Y2QpwkTv/frByc4jlqk/PA7KhvzQwoEqLKt2ThtlZu3Fwr5x5PPkGH4wc9IkbfzF3BShfK40oLmO4BSsftMWJ7EE5eFO2aNMA3kqOZ2xlSwSShl4=
+	t=1718281154; cv=none; b=NRrIPOIcdrH22yD63bXzGhtw4i+GhJHnWs/4wth6H4Z5vpP7mg+PvaMHcWEkZQer3TYvTQzjyLLlD8M79ssVQcsi4n2V7vTS6Y96GAaR+r87+Sca385shHU+j4wlkqh5SgoNaxayBuIgk4rLgxzFBTya2GHU2YZaiu/xS/C0SP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282357; c=relaxed/simple;
-	bh=fJWHUQoPL34O5J3XBVftLRUa+7kgkv9+RFECOOgXYx0=;
+	s=arc-20240116; t=1718281154; c=relaxed/simple;
+	bh=bXVZn84L1JWQeKGeOHN2zzKHJ2Xgsm+Qm9jdR0hbeQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZqZ45vaOt893Rw2Kc+mNa3W8HtRVyNY+reuG7BHOlLN+pJEfaeR1vnRLKjB6gjywQujt4uEQMmVMLum+JKCmVj/eOsDQbgMfrP9gxL9G6JRiLHRC1XJVh5+zWu/yQjDX5DkeL2jwLzlJ6YtDBlZ/Eh1pa5WkpH05HVMzJpjgytw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChCwvfDn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC3DC2BBFC;
-	Thu, 13 Jun 2024 12:39:16 +0000 (UTC)
+	 MIME-Version; b=eAVPMiPMVdDUbhVPuc/ZCaJ/xuJYHodaacab5rKoi3dg/0W+fwDv1ExyKMLOTRo0tGACcdTGhYQ6l4IMpcBIyy6B3m+IKpXix5jFjeff+16ei9hEBJJ6xKqqQA4+V9TT2DmTSE6M2XVYQcjGeOm6P3pxX6DQ/em8i++oIkg6MBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IRvDUyS+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D078DC2BBFC;
+	Thu, 13 Jun 2024 12:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282357;
-	bh=fJWHUQoPL34O5J3XBVftLRUa+7kgkv9+RFECOOgXYx0=;
+	s=korg; t=1718281154;
+	bh=bXVZn84L1JWQeKGeOHN2zzKHJ2Xgsm+Qm9jdR0hbeQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ChCwvfDnqeQc1YXnSGtUOw/qT/X8R+wyD4Ysvzm15V3XA0nB2+cYDeG+WCHbszpmd
-	 cMSYHcaOmq+tt8j1uh3jgiI91u/NBkt27gGb11CYBQlrM175osvh+OwSyXAA8HSG2t
-	 +r36oi53Xy5v7/lysVPTfiuRNsx/7SOW0Ji+rwtA=
+	b=IRvDUyS+e7SmiCovEuDp3oDjb9qUT5JWqRr3bJuMCNnZzChyEoC0rxAKVktqziXAk
+	 +WUEdqhUmzaMxRLaU/ZvsvuX000rnx4pK95EwePb2r4oHzy7DmuC5nJy0N10eYXwxT
+	 7LPuAW2QqMRgj6OchjFtVIy28d2GLu2EOOHjMBmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wulff <chris.wulff@biamp.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 219/402] usb: gadget: u_audio: Clear uac pointer when freed.
+Subject: [PATCH 5.10 158/317] f2fs: do not allow partial truncation on pinned file
 Date: Thu, 13 Jun 2024 13:32:56 +0200
-Message-ID: <20240613113310.690231574@linuxfoundation.org>
+Message-ID: <20240613113253.674642500@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Wulff <Chris.Wulff@biamp.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit a2cf936ebef291ef7395172b9e2f624779fb6dc0 ]
+[ Upstream commit 5fed0be8583f08c1548b4dcd9e5ee0d1133d0730 ]
 
-This prevents use of a stale pointer if functions are called after
-g_cleanup that shouldn't be. This doesn't fix any races, but converts
-a possibly silent kernel memory corruption into an obvious NULL pointer
-dereference report.
+If the pinned file has a hole by partial truncation, application that has
+the block map will be broken.
 
-Fixes: eb9fecb9e69b ("usb: gadget: f_uac2: split out audio core")
-Signed-off-by: Chris Wulff <chris.wulff@biamp.com>
-Link: https://lore.kernel.org/stable/CO1PR17MB54194226DA08BFC9EBD8C163E1172%40CO1PR17MB5419.namprd17.prod.outlook.com
-Link: https://lore.kernel.org/r/CO1PR17MB54194226DA08BFC9EBD8C163E1172@CO1PR17MB5419.namprd17.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 278a6253a673 ("f2fs: fix to relocate check condition in f2fs_fallocate()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_audio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/f2fs/file.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/function/u_audio.c b/drivers/usb/gadget/function/u_audio.c
-index 200eb788a74b3..5e34a7ff1b63d 100644
---- a/drivers/usb/gadget/function/u_audio.c
-+++ b/drivers/usb/gadget/function/u_audio.c
-@@ -1172,6 +1172,8 @@ void g_audio_cleanup(struct g_audio *g_audio)
- 		return;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 02971d6b347e0..e88d4c0f71e3e 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1745,7 +1745,11 @@ static long f2fs_fallocate(struct file *file, int mode,
+ 		(mode & (FALLOC_FL_COLLAPSE_RANGE | FALLOC_FL_INSERT_RANGE)))
+ 		return -EOPNOTSUPP;
  
- 	uac = g_audio->uac;
-+	g_audio->uac = NULL;
-+
- 	card = uac->card;
- 	if (card)
- 		snd_card_free_when_closed(card);
+-	if (f2fs_compressed_file(inode) &&
++	/*
++	 * Pinned file should not support partial trucation since the block
++	 * can be used by applications.
++	 */
++	if ((f2fs_compressed_file(inode) || f2fs_is_pinned_file(inode)) &&
+ 		(mode & (FALLOC_FL_PUNCH_HOLE | FALLOC_FL_COLLAPSE_RANGE |
+ 			FALLOC_FL_ZERO_RANGE | FALLOC_FL_INSERT_RANGE)))
+ 		return -EOPNOTSUPP;
 -- 
 2.43.0
 
