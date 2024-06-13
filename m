@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-51222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E9E9906EED
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC0A90704E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5ED9FB26DCF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6DE51C2375F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2FF146D6F;
-	Thu, 13 Jun 2024 12:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB947144D3C;
+	Thu, 13 Jun 2024 12:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtY/LOz0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWwq47AU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA78E145A02;
-	Thu, 13 Jun 2024 12:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AFB144D34;
+	Thu, 13 Jun 2024 12:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280665; cv=none; b=N1k8B0dzMboH5UXHVMWMmzbTLtUyYFXwb1RGRwIUqN3ZkV/EnScb8si8OX+7KfVZYsD3bdzqizjhXdAY1n/xPvcOmJCKXW2cIfbmrgCr8cNYEQbNvKIQhd+WccZKjq2WWcaZM8QVRbQYJYB34xCedjj9SFDH+XM9p2CwTaOBwdg=
+	t=1718281551; cv=none; b=O7UBIvddBAQW36R9S28iNQGwsK7UFw3jFLe2v7LAv8uKVf+Q/agOeOXNGmFj7RAoQosKBqTYmZU3VVzSJORiTeXad2/izkrxAUhVjvyapYPLVuijnjpER7OUC2EKom1jJh9pmtPTdf3tI5pacxgfx9WIV5i4H5q5WV0ZYZ1hF7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280665; c=relaxed/simple;
-	bh=A1KHrnIrxxXmqlbNmtfihwimbFayT9pKwRTunOC4v2k=;
+	s=arc-20240116; t=1718281551; c=relaxed/simple;
+	bh=zwiTOn2G+bM12lpKnP+68m6+CrgjnyJGGv7YUUu2tuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IgcWjcIqSj9vidrpufGzNs/njnpemXDHPlNy15p3vJvN5AYwuV5UQtUuhNDh/e+5u9cf0SwJBRrFQI6W8AUtpA7gnad0E7OL0KzJyperLbG4MjKt1f4KvHA3kRaeDOqX7eNadmSQbuSWBhjgK0p3cY1r9Mnn64g0p/TDihFwFKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtY/LOz0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7636AC2BBFC;
-	Thu, 13 Jun 2024 12:11:04 +0000 (UTC)
+	 MIME-Version; b=HbZ9QqgR4HxP01CqCtbTUexhbQmtyy6sewlMosrPXGULSgnWI9BajP6zbeApn7bIu2p/iO4DKyAz6hcPfLKsDIjrlkiPfmFip8pGz/MlRryBl3mG7NXjM82Tqw9MoPNNDl4CpHldfq41xrYqN7s5OzWfUNFKMelSqAE/OgKHMCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWwq47AU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D885BC2BBFC;
+	Thu, 13 Jun 2024 12:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280664;
-	bh=A1KHrnIrxxXmqlbNmtfihwimbFayT9pKwRTunOC4v2k=;
+	s=korg; t=1718281551;
+	bh=zwiTOn2G+bM12lpKnP+68m6+CrgjnyJGGv7YUUu2tuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtY/LOz0LFYBz+JKb3+GVVPWPhfCnCINl95uuHMY5OpU8b66TZ3dRUyrYnvdHmNW6
-	 z1CB2+55S7SEGggLNqa313NRgQAsbpsPFtYYKr/Xsj75ybWnYXOuLk2xOec8UPIOjg
-	 JSnNe2+spsA1DF8tX8X1l0397acXWztRdu8n/qe0=
+	b=DWwq47AU0atDI5ozE7Ggxx96SW+v4kcLK4wRf3ZZQC2S9bn2ca1Ny94QgpbZlPnXH
+	 cqtZS81bkXXpOMeKF8rDHsgbTdzV8hOVltxTfN4WzG+8C6m2jzOCz3pt+p5xfofM5Z
+	 sxiDCRVmaxLkCKrYI77IXBPb7SyYzkixiNWj/uqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 130/137] tracefs: Clear EVENT_INODE flag in tracefs_drop_inode()
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 292/317] mmc: sdhci-acpi: Fix Lenovo Yoga Tablet 2 Pro 1380 sdcard slot not working
 Date: Thu, 13 Jun 2024 13:35:10 +0200
-Message-ID: <20240613113228.342390472@linuxfoundation.org>
+Message-ID: <20240613113258.847497025@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 0bcfd9aa4dafa03b88d68bf66b694df2a3e76cf3 upstream.
+commit f3521d7cbaefff19cc656325787ed797e5f6a955 upstream.
 
-When the inode is being dropped from the dentry, the TRACEFS_EVENT_INODE
-flag needs to be cleared to prevent a remount from calling
-eventfs_remount() on the tracefs_inode private data. There's a race
-between the inode is dropped (and the dentry freed) to where the inode is
-actually freed. If a remount happens between the two, the eventfs_inode
-could be accessed after it is freed (only the dentry keeps a ref count on
-it).
+The Lenovo Yoga Tablet 2 Pro 1380 sdcard slot has an active high cd pin
+and a broken wp pin which always reports the card being write-protected.
 
-Currently the TRACEFS_EVENT_INODE flag is cleared from the dentry iput()
-function. But this is incorrect, as it is possible that the inode has
-another reference to it. The flag should only be cleared when the inode is
-really being dropped and has no more references. That happens in the
-drop_inode callback of the inode, as that gets called when the last
-reference of the inode is released.
+Add a DMI quirk to address both issues.
 
-Remove the tracefs_d_iput() function and move its logic to the more
-appropriate tracefs_drop_inode() callback function.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240523051539.908205106@goodmis.org
-
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Fixes: baa23a8d4360d ("tracefs: Reset permissions on remount if permissions are options")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/r/20240410191639.526324-5-hdegoede@redhat.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/inode.c |   33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ drivers/mmc/host/sdhci-acpi.c |   24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -439,10 +439,26 @@ static int tracefs_show_options(struct s
- 	return 0;
- }
- 
-+static int tracefs_drop_inode(struct inode *inode)
-+{
-+	struct tracefs_inode *ti = get_tracefs(inode);
-+
-+	/*
-+	 * This inode is being freed and cannot be used for
-+	 * eventfs. Clear the flag so that it doesn't call into
-+	 * eventfs during the remount flag updates. The eventfs_inode
-+	 * gets freed after an RCU cycle, so the content will still
-+	 * be safe if the iteration is going on now.
-+	 */
-+	ti->flags &= ~TRACEFS_EVENT_INODE;
-+
-+	return 1;
-+}
-+
- static const struct super_operations tracefs_super_operations = {
- 	.alloc_inode    = tracefs_alloc_inode,
- 	.free_inode     = tracefs_free_inode,
--	.drop_inode     = generic_delete_inode,
-+	.drop_inode     = tracefs_drop_inode,
- 	.statfs		= simple_statfs,
- 	.remount_fs	= tracefs_remount,
- 	.show_options	= tracefs_show_options,
-@@ -469,22 +485,7 @@ static int tracefs_d_revalidate(struct d
- 	return !(ei && ei->is_freed);
- }
- 
--static void tracefs_d_iput(struct dentry *dentry, struct inode *inode)
--{
--	struct tracefs_inode *ti = get_tracefs(inode);
--
--	/*
--	 * This inode is being freed and cannot be used for
--	 * eventfs. Clear the flag so that it doesn't call into
--	 * eventfs during the remount flag updates. The eventfs_inode
--	 * gets freed after an RCU cycle, so the content will still
--	 * be safe if the iteration is going on now.
--	 */
--	ti->flags &= ~TRACEFS_EVENT_INODE;
--}
--
- static const struct dentry_operations tracefs_dentry_operations = {
--	.d_iput = tracefs_d_iput,
- 	.d_revalidate = tracefs_d_revalidate,
- 	.d_release = tracefs_d_release,
+--- a/drivers/mmc/host/sdhci-acpi.c
++++ b/drivers/mmc/host/sdhci-acpi.c
+@@ -81,6 +81,7 @@ struct sdhci_acpi_host {
+ enum {
+ 	DMI_QUIRK_RESET_SD_SIGNAL_VOLT_ON_SUSP			= BIT(0),
+ 	DMI_QUIRK_SD_NO_WRITE_PROTECT				= BIT(1),
++	DMI_QUIRK_SD_CD_ACTIVE_HIGH				= BIT(2),
  };
+ 
+ static inline void *sdhci_acpi_priv(struct sdhci_acpi_host *c)
+@@ -791,6 +792,26 @@ static const struct dmi_system_id sdhci_
+ 	},
+ 	{
+ 		/*
++		 * Lenovo Yoga Tablet 2 Pro 1380F/L (13" Android version) this
++		 * has broken WP reporting and an inverted CD signal.
++		 * Note this has more or less the same BIOS as the Lenovo Yoga
++		 * Tablet 2 830F/L or 1050F/L (8" and 10" Android), but unlike
++		 * the 830 / 1050 models which share the same mainboard this
++		 * model has a different mainboard and the inverted CD and
++		 * broken WP are unique to this board.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corp."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "VALLEYVIEW C0 PLATFORM"),
++			DMI_MATCH(DMI_BOARD_NAME, "BYT-T FFD8"),
++			/* Full match so as to NOT match the 830/1050 BIOS */
++			DMI_MATCH(DMI_BIOS_VERSION, "BLADE_21.X64.0005.R00.1504101516"),
++		},
++		.driver_data = (void *)(DMI_QUIRK_SD_NO_WRITE_PROTECT |
++					DMI_QUIRK_SD_CD_ACTIVE_HIGH),
++	},
++	{
++		/*
+ 		 * The Toshiba WT8-B's microSD slot always reports the card being
+ 		 * write-protected.
+ 		 */
+@@ -914,6 +935,9 @@ static int sdhci_acpi_probe(struct platf
+ 	if (sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD)) {
+ 		bool v = sdhci_acpi_flag(c, SDHCI_ACPI_SD_CD_OVERRIDE_LEVEL);
+ 
++		if (quirks & DMI_QUIRK_SD_CD_ACTIVE_HIGH)
++			host->mmc->caps2 |= MMC_CAP2_CD_ACTIVE_HIGH;
++
+ 		err = mmc_gpiod_request_cd(host->mmc, NULL, 0, v, 0);
+ 		if (err) {
+ 			if (err == -EPROBE_DEFER)
 
 
 
