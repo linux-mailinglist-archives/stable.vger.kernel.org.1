@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-51002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F97906DDF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4112C906E6E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B71EFB27169
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48E7D1C22CCA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E5A145355;
-	Thu, 13 Jun 2024 12:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3891474A6;
+	Thu, 13 Jun 2024 12:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGTobW0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuCnnhs5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A854F144D3F;
-	Thu, 13 Jun 2024 12:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6DF13C805;
+	Thu, 13 Jun 2024 12:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280017; cv=none; b=txRvPiare2qiGSJcw8RIeXt8Wextlgdr/jh2mfUPfTyRE4ldlBg1Eyz2zafE3dnnzEQwlAdpsB332hmrPTHK9x8rTL6kB2Hun49HWzJpUgyxCnCUWDsSQUzF6vYoUOa6C5IW8j9oO7ZkO1eTDOa8Pypg+BnD/8vOIZ97hX2hnqQ=
+	t=1718280377; cv=none; b=Iu0HdzM/Btb6bk9buL4nxDeF/5KzL4gDOLnLRrHnQzqfIGYgJM/QRISvXp1K3fBvq6j2DQ+91Al1EcpPpmnhWRZ8MaBs0UTBKH5uauFn2mRdFQM/YP47SYCbsiB4DxfDIccYwJoAYjR5nRjzRHLBNAXjohvGWAi5hpTnxjt0m4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280017; c=relaxed/simple;
-	bh=tdrUW9gaMtridZMAC6N1TyEBVsOIjg2JGOTnrEs8194=;
+	s=arc-20240116; t=1718280377; c=relaxed/simple;
+	bh=BrsRyavnK0XSgNUnJVBRxmyPJlfPuKWxaLdu/UfBF5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qaghy7OlBOfmu3+b+xgdIwcnxayTrjmqhT9U9KLUc2IDmODjh2BHD/m27hv/AG8yj/8jdUbzyHJdlCPYRHWSw7iY7YU0QwA9rPnT+uAKi7COFBzXGm+p/gIRJjnBEInI0zqKx3QkUv94tqXgsDBwTmv36JFSjEwIJT8QYwrCymM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGTobW0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2925EC2BBFC;
-	Thu, 13 Jun 2024 12:00:16 +0000 (UTC)
+	 MIME-Version; b=uUHyluP6rtsrTXPDQRMhfJESH5YB/ahySca1MLeC778H9vL6qpwAXmS3KuxI/Z1nKIEX/FJBKz6k2DeraVBR+GVdAaXKvyvR0PXoYHO5RKhXnPFyn90ukvs/E+w5oSP06l8lJpLx9QU+jPAeosDTGqiFGNXaR7FApTuVy6k4ioE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuCnnhs5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544ABC2BBFC;
+	Thu, 13 Jun 2024 12:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280017;
-	bh=tdrUW9gaMtridZMAC6N1TyEBVsOIjg2JGOTnrEs8194=;
+	s=korg; t=1718280376;
+	bh=BrsRyavnK0XSgNUnJVBRxmyPJlfPuKWxaLdu/UfBF5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGTobW0IpT56J9AbR8gNUF4+M/ctbgxKqMDwJaXT3L0bD4dJMWPdNXhrP4JxQs68Z
-	 f+7Bz4pAnyXRvqrPJQo66YpMMqEjLmEa1rRiZx1Naloqr0Nh3Azh2VJ4B53mm1+sz/
-	 4nY8d1Pi5PWrHca6pGib3UKroZHdL0GmJe2hv43k=
+	b=PuCnnhs5h/S5QzIwboFHSx0uLKmgIscYJI9dj5+Zv3tBnbDUY3276OZatCpKE055+
+	 ek8Fj/ssawIQAbFTfoaf+YVeEsT2T6HRlYEd8ha4+IX+eYbi97Xvvxf/2nikA5o1TS
+	 wsmge5yMw578YVavQ4Uj3UbtT0O2cWHuextC+02o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huai-Yuan Liu <qq810974084@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 114/202] ppdev: Add an error check in register_device
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.6 032/137] wifi: rtw89: pci: correct TX resource checking for PCI DMA channel of firmware command
 Date: Thu, 13 Jun 2024 13:33:32 +0200
-Message-ID: <20240613113232.159730210@linuxfoundation.org>
+Message-ID: <20240613113224.537016601@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huai-Yuan Liu <qq810974084@gmail.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit fbf740aeb86a4fe82ad158d26d711f2f3be79b3e ]
+commit c6330b129786e267b14129335a08fa7c331c308d upstream.
 
-In register_device, the return value of ida_simple_get is unchecked,
-in witch ida_simple_get will use an invalid index value.
+The DMA channel of firmware command doesn't use TX WD (WiFi descriptor), so
+don't need to consider number of TX WD as factor of TX resource. Otherwise,
+during pause state (a transient state to switch to/from low power mode)
+firmware commands could be dropped and driver throws warnings suddenly:
 
-To address this issue, index should be checked after ida_simple_get. When
-the index value is abnormal, a warning message should be printed, the port
-should be dropped, and the value should be recorded.
+   rtw89_8852ce 0000:04:00.0: no tx fwcmd resource
+   rtw89_8852ce 0000:04:00.0: failed to send h2c
 
-Fixes: 9a69645dde11 ("ppdev: fix registering same device name")
-Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
-Link: https://lore.kernel.org/r/20240412083840.234085-1-qq810974084@gmail.com
+The case we met is that driver sends RSSI strength of firmware command at
+RX path that could be running concurrently with switching low power mode.
+The missing of this firmware command doesn't affect user experiences,
+because the RSSI strength will be updated again after a while.
+
+The DMA descriptors of normal packets has three layers like:
+
+  +-------+
+  | TX BD | (*n elements)
+  +-------+
+      |
+      |   +-------+
+      +-> | TX WD | (*m elements)
+          +-------+
+              |
+              |   +--------+
+              +-> |   SKB  |
+                  +--------+
+
+And, firmware command queue (TXCH 12) is a special queue that has only
+two layers:
+
+  +-------+
+  | TX BD | (*n elements)
+  +-------+
+      |
+      |   +------------------+
+      +-> | firmware command |
+          +------------------+
+
+Fixes: 4a29213cd775 ("wifi: rtw89: pci: correct TX resource checking in low power mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://msgid.link/20240410011316.9906-1-pkshih@realtek.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ppdev.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw89/pci.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/ppdev.c b/drivers/char/ppdev.c
-index 5246e0faaf9ae..fb51430e1d5c6 100644
---- a/drivers/char/ppdev.c
-+++ b/drivers/char/ppdev.c
-@@ -296,28 +296,35 @@ static int register_device(int minor, struct pp_struct *pp)
- 	if (!port) {
- 		pr_warn("%s: no associated port!\n", name);
- 		rc = -ENXIO;
--		goto err;
-+		goto err_free_name;
- 	}
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -958,7 +958,8 @@ u32 __rtw89_pci_check_and_reclaim_tx_res
  
- 	index = ida_alloc(&ida_index, GFP_KERNEL);
-+	if (index < 0) {
-+		pr_warn("%s: failed to get index!\n", name);
-+		rc = index;
-+		goto err_put_port;
-+	}
-+
- 	memset(&ppdev_cb, 0, sizeof(ppdev_cb));
- 	ppdev_cb.irq_func = pp_irq;
- 	ppdev_cb.flags = (pp->flags & PP_EXCL) ? PARPORT_FLAG_EXCL : 0;
- 	ppdev_cb.private = pp;
- 	pdev = parport_register_dev_model(port, name, &ppdev_cb, index);
--	parport_put_port(port);
+ 	spin_lock_bh(&rtwpci->trx_lock);
+ 	cnt = rtw89_pci_get_avail_txbd_num(tx_ring);
+-	cnt = min(cnt, wd_ring->curr_num);
++	if (txch != RTW89_TXCH_CH12)
++		cnt = min(cnt, wd_ring->curr_num);
+ 	spin_unlock_bh(&rtwpci->trx_lock);
  
- 	if (!pdev) {
- 		pr_warn("%s: failed to register device!\n", name);
- 		rc = -ENXIO;
- 		ida_free(&ida_index, index);
--		goto err;
-+		goto err_put_port;
- 	}
- 
- 	pp->pdev = pdev;
- 	pp->index = index;
- 	dev_dbg(&pdev->dev, "registered pardevice\n");
--err:
-+err_put_port:
-+	parport_put_port(port);
-+err_free_name:
- 	kfree(name);
- 	return rc;
- }
--- 
-2.43.0
-
+ 	return cnt;
 
 
 
