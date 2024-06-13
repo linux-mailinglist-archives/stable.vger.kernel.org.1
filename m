@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-51933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83067907258
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:46:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0A59072A0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AD62B2723A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:46:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B099C28238E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C03441D;
-	Thu, 13 Jun 2024 12:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22387142658;
+	Thu, 13 Jun 2024 12:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvG2FFSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Ux2sO5K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6305384;
-	Thu, 13 Jun 2024 12:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D2A1C32;
+	Thu, 13 Jun 2024 12:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282743; cv=none; b=sRPw9Zca19OifhNWwmUV88ALAg6WT06cZaZPyvP9pvGrhPiX7b7Qe88nVtvxE6xMYjq9f0fRQj1j/HYw7XneTvrVhICzAj5FCGhONx+b51LdXuiR6gL/xNbIoZAS0kqMgYv/lfjUIjX4GEc1vqyGvsDEiM+oHHtji+IoXAsW1So=
+	t=1718282922; cv=none; b=HfKCMJSDF7bHCDx4Sl7huZGWxb9Fd6eAqzTMgmx0Ha9psMIZNPFQFudMAz2bmqxF/hbhX6kRxl/b8S1PYiS6HZ3rrJ4DqdTWvFkK4eqI9TV4EfAugUqoGMn4pZdXG2f+pAUN+WcSbaCbbIzoyJU7ZfMbZng+ss7tJApwQ72G/ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282743; c=relaxed/simple;
-	bh=etXSffufHwMn5X1FmrszYQeUCXScniCqWz7aZC4gii4=;
+	s=arc-20240116; t=1718282922; c=relaxed/simple;
+	bh=ucFYpo5HWIT8gyA/m9LSCCa51EEWgWIfSl0rXVFCQOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IckagxRK2WFmXTnHncVmFRFVHkmcPzmmneg/Mc2xaUhNrdP1w9jlJyMXbuIrlzj+oWszibJrvX8Q1Uu0FIXEPukFlk5nRbfSHapRx0vgiEUKOstld/6kgpNup6X7MmhOqa1Fu43v9zPvq9UEaA+RzJxvDh4SmTUYuHt7Y43AisU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvG2FFSJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFFB8C2BBFC;
-	Thu, 13 Jun 2024 12:45:42 +0000 (UTC)
+	 MIME-Version; b=Q89qbo+B/vHAWP0iQwoKwNaKjIMLkZRwy8ffXz6IhvsU5nKKG8wXPZwPKREhZW5SUaYujiC9dxvVrN05AEYeoxKgSg3Ky/I2OGWhHr/GqqNOs+m9VUaautuoxvkZ36coxqlSLGIzQKJ4j0bmNDriivz+QqLkMPpri3bPyngn+Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Ux2sO5K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5417BC2BBFC;
+	Thu, 13 Jun 2024 12:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282743;
-	bh=etXSffufHwMn5X1FmrszYQeUCXScniCqWz7aZC4gii4=;
+	s=korg; t=1718282922;
+	bh=ucFYpo5HWIT8gyA/m9LSCCa51EEWgWIfSl0rXVFCQOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QvG2FFSJ8BN48u8iWHAk/QoB7CQxn/6qxP0p08Ap3Al64GUEfDEj3NR6arL+NR65+
-	 IyVYLuZI5hNN/JRsDNos7O6qiCotrWgs75LxB2RMuj1RYOimXjbVJOs4bW8jfy5/xY
-	 3KEeZu8cNzhSvTs+z3bl4AwbJsoPIfiig8h/mFG0=
+	b=1Ux2sO5KVb9pFa8o6mbHhlI5dr6QupH8ASyukmSkDj3j0a0uLYsiQZDflPaZ8QYhW
+	 Z/Jk8NMUZL6djVF4LshMpq6ZGYchgwlsqNPdciDk8MuXgmhkt9uBdBKCw6iAGNflpe
+	 e53WdEUyowwlG8bxwPDZ8YH/9mi5U8prvXOdu5+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Chikunov <vt@altlinux.org>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Paul Wolneykien <manowar@altlinux.org>
-Subject: [PATCH 5.15 379/402] crypto: ecrdsa - Fix module auto-load on add_key
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 38/85] mmc: core: Add mmc_gpiod_set_cd_config() function
 Date: Thu, 13 Jun 2024 13:35:36 +0200
-Message-ID: <20240613113316.926139086@linuxfoundation.org>
+Message-ID: <20240613113215.619288403@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Chikunov <vt@altlinux.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit eb5739a1efbc9ff216271aeea0ebe1c92e5383e5 upstream.
+commit 63a7cd660246aa36af263b85c33ecc6601bf04be upstream.
 
-Add module alias with the algorithm cra_name similar to what we have for
-RSA-related and other algorithms.
+Some mmc host drivers may need to fixup a card-detection GPIO's config
+to e.g. enable the GPIO controllers builtin pull-up resistor on devices
+where the firmware description of the GPIO is broken (e.g. GpioInt with
+PullNone instead of PullUp in ACPI DSDT).
 
-The kernel attempts to modprobe asymmetric algorithms using the names
-"crypto-$cra_name" and "crypto-$cra_name-all." However, since these
-aliases are currently missing, the modules are not loaded. For instance,
-when using the `add_key` function, the hash algorithm is typically
-loaded automatically, but the asymmetric algorithm is not.
+Since this is the exception rather then the rule adding a config
+parameter to mmc_gpiod_request_cd() seems undesirable, so instead
+add a new mmc_gpiod_set_cd_config() function. This is simply a wrapper
+to call gpiod_set_config() on the card-detect GPIO acquired through
+mmc_gpiod_request_cd().
 
-Steps to test:
-
-1. Cert is generated usings ima-evm-utils test suite with
-   `gen-keys.sh`, example cert is provided below:
-
-  $ base64 -d >test-gost2012_512-A.cer <<EOF
-  MIIB/DCCAWagAwIBAgIUK8+whWevr3FFkSdU9GLDAM7ure8wDAYIKoUDBwEBAwMFADARMQ8wDQYD
-  VQQDDAZDQSBLZXkwIBcNMjIwMjAxMjIwOTQxWhgPMjA4MjEyMDUyMjA5NDFaMBExDzANBgNVBAMM
-  BkNBIEtleTCBoDAXBggqhQMHAQEBAjALBgkqhQMHAQIBAgEDgYQABIGALXNrTJGgeErBUOov3Cfo
-  IrHF9fcj8UjzwGeKCkbCcINzVUbdPmCopeJRHDJEvQBX1CQUPtlwDv6ANjTTRoq5nCk9L5PPFP1H
-  z73JIXHT0eRBDVoWy0cWDRz1mmQlCnN2HThMtEloaQI81nTlKZOcEYDtDpi5WODmjEeRNQJMdqCj
-  UDBOMAwGA1UdEwQFMAMBAf8wHQYDVR0OBBYEFCwfOITMbE9VisW1i2TYeu1tAo5QMB8GA1UdIwQY
-  MBaAFCwfOITMbE9VisW1i2TYeu1tAo5QMAwGCCqFAwcBAQMDBQADgYEAmBfJCMTdC0/NSjz4BBiQ
-  qDIEjomO7FEHYlkX5NGulcF8FaJW2jeyyXXtbpnub1IQ8af1KFIpwoS2e93LaaofxpWlpQLlju6m
-  KYLOcO4xK3Whwa2hBAz9YbpUSFjvxnkS2/jpH2MsOSXuUEeCruG/RkHHB3ACef9umG6HCNQuAPY=
-  EOF
-
-2. Optionally, trace module requests with: trace-cmd stream -e module &
-
-3. Trigger add_key call for the cert:
-
-  # keyctl padd asymmetric "" @u <test-gost2012_512-A.cer
-  939910969
-  # lsmod | head -3
-  Module                  Size  Used by
-  ecrdsa_generic         16384  0
-  streebog_generic       28672  0
-
-Repored-by: Paul Wolneykien <manowar@altlinux.org>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Vitaly Chikunov <vt@altlinux.org>
-Tested-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://lore.kernel.org/r/20240410191639.526324-2-hdegoede@redhat.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/ecrdsa.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/core/slot-gpio.c  |   20 ++++++++++++++++++++
+ include/linux/mmc/slot-gpio.h |    1 +
+ 2 files changed, 21 insertions(+)
 
---- a/crypto/ecrdsa.c
-+++ b/crypto/ecrdsa.c
-@@ -294,4 +294,5 @@ module_exit(ecrdsa_mod_fini);
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Vitaly Chikunov <vt@altlinux.org>");
- MODULE_DESCRIPTION("EC-RDSA generic algorithm");
-+MODULE_ALIAS_CRYPTO("ecrdsa");
- MODULE_ALIAS_CRYPTO("ecrdsa-generic");
+--- a/drivers/mmc/core/slot-gpio.c
++++ b/drivers/mmc/core/slot-gpio.c
+@@ -206,6 +206,26 @@ int mmc_gpiod_request_cd(struct mmc_host
+ }
+ EXPORT_SYMBOL(mmc_gpiod_request_cd);
+ 
++/**
++ * mmc_gpiod_set_cd_config - set config for card-detection GPIO
++ * @host: mmc host
++ * @config: Generic pinconf config (from pinconf_to_config_packed())
++ *
++ * This can be used by mmc host drivers to fixup a card-detection GPIO's config
++ * (e.g. set PIN_CONFIG_BIAS_PULL_UP) after acquiring the GPIO descriptor
++ * through mmc_gpiod_request_cd().
++ *
++ * Returns:
++ * 0 on success, or a negative errno value on error.
++ */
++int mmc_gpiod_set_cd_config(struct mmc_host *host, unsigned long config)
++{
++	struct mmc_gpio *ctx = host->slot.handler_priv;
++
++	return gpiod_set_config(ctx->cd_gpio, config);
++}
++EXPORT_SYMBOL(mmc_gpiod_set_cd_config);
++
+ bool mmc_can_gpio_cd(struct mmc_host *host)
+ {
+ 	struct mmc_gpio *ctx = host->slot.handler_priv;
+--- a/include/linux/mmc/slot-gpio.h
++++ b/include/linux/mmc/slot-gpio.h
+@@ -20,6 +20,7 @@ int mmc_gpiod_request_cd(struct mmc_host
+ 			 unsigned int debounce);
+ int mmc_gpiod_request_ro(struct mmc_host *host, const char *con_id,
+ 			 unsigned int idx, unsigned int debounce);
++int mmc_gpiod_set_cd_config(struct mmc_host *host, unsigned long config);
+ void mmc_gpio_set_cd_isr(struct mmc_host *host,
+ 			 irqreturn_t (*isr)(int irq, void *dev_id));
+ int mmc_gpio_set_cd_wake(struct mmc_host *host, bool on);
 
 
 
