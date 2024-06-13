@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45454906F10
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:16:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 244B99070BE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:30:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F149D1F23595
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:16:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC5A028342B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EAD1465A4;
-	Thu, 13 Jun 2024 12:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F7DEC4;
+	Thu, 13 Jun 2024 12:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWw3ShJu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/FEPvk2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6A8145B14;
-	Thu, 13 Jun 2024 12:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71E0195;
+	Thu, 13 Jun 2024 12:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280788; cv=none; b=EypxXXOKH3wGjaePvDJFlGrxyq6xphJ4KCeknYPXn5LjTaX/bbesBffZibmhn52qAdakMFOSk9GAtpZ9pdOl3qKSCxic0NQMFa7PHNKsnzPYxijVhKM5iJ+Xztnvfq6iarJqBiFaV6X7dgAs4HKudPOvSSJIeGpfznRBXL2x1YI=
+	t=1718281827; cv=none; b=SYrck9tJu4oSe+TpgegGcQAanP+W+iRONTelYARP39pF2a2eR4H/S812dVTlZt4Y084jwF4+tIbN3mwjy73QuF8gnnnePogdPjzylKlqibzWHRB3UecLNzJDhBK0f5+1UV5GOglfutHomzllPnI3Ef9KgXUMLI6r+kDmfvvMHuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280788; c=relaxed/simple;
-	bh=KgWLoc/ye5Q/npKDrcI9BA9zrqN0DquhMr7IUdJkmfc=;
+	s=arc-20240116; t=1718281827; c=relaxed/simple;
+	bh=4DqX1kTAaCnaikL0DMXJB5PjeBcR/SiSUdcmydNPxmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dnuEmrbEVMdgaHoviy1YR5Ix55i+IZoIU94r2foZFYPa12EbVzJe1IHhhETfqomvzWMVrsyYvqDgGrJV3BbUlRMpqMIboag+VIpc1NuPW32sblWAUH8T/126+FV+RWjcAaOkrq8yqvcvETcKu3mx90d0vNISh9kXCnf79czpqs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWw3ShJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CF3C2BBFC;
-	Thu, 13 Jun 2024 12:13:08 +0000 (UTC)
+	 MIME-Version; b=KVivorqtwXrY6hUKj9JSBFb0kAJStLz+biBS4bw859f9CKAb2jNM96R9+/UYOGkFHD3YCvx6zcnZkZDyPpmCHQHc51zAKwgY0LT8HszJ6oKKIpcxh7e7Bbj63sfPWIXe8MwQCgx9Hfr0OMuEIzU+5C2MRK7q+qPvAPTmS/CCheE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/FEPvk2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D76C2BBFC;
+	Thu, 13 Jun 2024 12:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280788;
-	bh=KgWLoc/ye5Q/npKDrcI9BA9zrqN0DquhMr7IUdJkmfc=;
+	s=korg; t=1718281827;
+	bh=4DqX1kTAaCnaikL0DMXJB5PjeBcR/SiSUdcmydNPxmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWw3ShJuMvw+yFAfGnGzRybJiAfcgU4KuYxX9iaLy2zoWLJ58YzgmUqU4hs9D7Gp/
-	 tr3DGrBxKlLYVsFx71EP7wx6ADD5sqksUmYPYk303XeG6zAu/hg/ncquvgQnELql0e
-	 uhn7fRC7LKTt9dIOkdSibeKaopNwqMT67yYnEIk8=
+	b=g/FEPvk2L7cTyvnh6RsY9KM6ejWTKeGQ7plHOx1S74fjI1bGV5qQRYYsD3sQv1arC
+	 LUPggN0Chf+TNukJCW3t+1s3sohE7YjcJ2UT/BsNGAZs8IturIYwuMh2k8Dy3CC68p
+	 Sd3eV4uvRmBbKViGYF/Rx7lFSvUKKwEoakuflobw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	"Bai, Shuangpeng" <sjb7183@psu.edu>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 007/317] nilfs2: fix unexpected freezing of nilfs_segctor_sync()
-Date: Thu, 13 Jun 2024 13:30:25 +0200
-Message-ID: <20240613113247.818846396@linuxfoundation.org>
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 069/402] gfs2: Dont forget to complete delayed withdraw
+Date: Thu, 13 Jun 2024 13:30:26 +0200
+Message-ID: <20240613113304.829221530@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit 936184eadd82906992ff1f5ab3aada70cce44cee upstream.
+[ Upstream commit b01189333ee91c1ae6cd96dfd1e3a3c2e69202f0 ]
 
-A potential and reproducible race issue has been identified where
-nilfs_segctor_sync() would block even after the log writer thread writes a
-checkpoint, unless there is an interrupt or other trigger to resume log
-writing.
+Commit fffe9bee14b0 ("gfs2: Delay withdraw from atomic context")
+switched from gfs2_withdraw() to gfs2_withdraw_delayed() in
+gfs2_ail_error(), but failed to then check if a delayed withdraw had
+occurred.  Fix that by adding the missing check in __gfs2_ail_flush(),
+where the spin locks are already dropped and a withdraw is possible.
 
-This turned out to be because, depending on the execution timing of the
-log writer thread running in parallel, the log writer thread may skip
-responding to nilfs_segctor_sync(), which causes a call to schedule()
-waiting for completion within nilfs_segctor_sync() to lose the opportunity
-to wake up.
-
-The reason why waking up the task waiting in nilfs_segctor_sync() may be
-skipped is that updating the request generation issued using a shared
-sequence counter and adding an wait queue entry to the request wait queue
-to the log writer, are not done atomically.  There is a possibility that
-log writing and request completion notification by nilfs_segctor_wakeup()
-may occur between the two operations, and in that case, the wait queue
-entry is not yet visible to nilfs_segctor_wakeup() and the wake-up of
-nilfs_segctor_sync() will be carried over until the next request occurs.
-
-Fix this issue by performing these two operations simultaneously within
-the lock section of sc_state_lock.  Also, following the memory barrier
-guidelines for event waiting loops, move the call to set_current_state()
-in the same location into the event waiting loop to ensure that a memory
-barrier is inserted just before the event condition determination.
-
-Link: https://lkml.kernel.org/r/20240520132621.4054-3-konishi.ryusuke@gmail.com
-Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Cc: "Bai, Shuangpeng" <sjb7183@psu.edu>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fffe9bee14b0 ("gfs2: Delay withdraw from atomic context")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ fs/gfs2/glops.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -2212,19 +2212,28 @@ static int nilfs_segctor_sync(struct nil
- 	struct nilfs_segctor_wait_request wait_req;
- 	int err = 0;
- 
--	spin_lock(&sci->sc_state_lock);
- 	init_wait(&wait_req.wq);
- 	wait_req.err = 0;
- 	atomic_set(&wait_req.done, 0);
-+	init_waitqueue_entry(&wait_req.wq, current);
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index 558932ad89d5d..5a4b3550d833f 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -82,6 +82,9 @@ static void __gfs2_ail_flush(struct gfs2_glock *gl, bool fsync,
+ 	GLOCK_BUG_ON(gl, !fsync && atomic_read(&gl->gl_ail_count));
+ 	spin_unlock(&sdp->sd_ail_lock);
+ 	gfs2_log_unlock(sdp);
 +
-+	/*
-+	 * To prevent a race issue where completion notifications from the
-+	 * log writer thread are missed, increment the request sequence count
-+	 * "sc_seq_request" and insert a wait queue entry using the current
-+	 * sequence number into the "sc_wait_request" queue at the same time
-+	 * within the lock section of "sc_state_lock".
-+	 */
-+	spin_lock(&sci->sc_state_lock);
- 	wait_req.seq = ++sci->sc_seq_request;
-+	add_wait_queue(&sci->sc_wait_request, &wait_req.wq);
- 	spin_unlock(&sci->sc_state_lock);
++	if (gfs2_withdrawing(sdp))
++		gfs2_withdraw(sdp);
+ }
  
--	init_waitqueue_entry(&wait_req.wq, current);
--	add_wait_queue(&sci->sc_wait_request, &wait_req.wq);
--	set_current_state(TASK_INTERRUPTIBLE);
- 	wake_up(&sci->sc_wait_daemon);
  
- 	for (;;) {
-+		set_current_state(TASK_INTERRUPTIBLE);
-+
- 		if (atomic_read(&wait_req.done)) {
- 			err = wait_req.err;
- 			break;
+-- 
+2.43.0
+
 
 
 
