@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-50891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC5A906D52
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:00:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD1D906C2F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:48:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07D6BB26880
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:00:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 497441C20BF0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF73146D51;
-	Thu, 13 Jun 2024 11:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF9C1448CD;
+	Thu, 13 Jun 2024 11:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yAQEkmOp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eVswZtWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66051144D16;
-	Thu, 13 Jun 2024 11:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9904A143C7A;
+	Thu, 13 Jun 2024 11:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279691; cv=none; b=gm6J6wIjffDulPKtdF0xQ8Y3kx/XXqKqZbdDskZz8rgbhqtN6CtUtKpxnWuLD6iMN4UmdDAI1bXvWG5I5GPlRshCT9d7LsmIStraL1RbgNA1POEYSpjowlQoWeghF6vfwgrgDj6fBs1JSCp3CuPzZtCbGlIRVYC3SilHkyJQ7I0=
+	t=1718279195; cv=none; b=fl8XPzHckvJqgV9ibBLWbOeKb63Xp/3sG/CB8g52gLtI0b/e8ToHwfx78cHJs/7M/TPPNxWpdsAiLJxkaeXPSO40OOCu4voWKbOm5okWSLCuOmMRFt4wCWjheBbPDb9TuYWmOItKmXyVlSDC8v5Zak7QXIG7bGkDwSuBEqFkHMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279691; c=relaxed/simple;
-	bh=ni5dGz3Kcd5bfiBFbWdKsCG69Aodr6IpZ8fYUNuePwo=;
+	s=arc-20240116; t=1718279195; c=relaxed/simple;
+	bh=0oJND+ZqKBLlAni9PamumLLIDLPU9p7w9LoW6FRHZQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UWvxzY3Qhv3SU6RgocNhZga7xlSOuUV3ny7Wr9qC0GohghyARuMO6kEou4R2nPNc6w29CR/xP5YGWu9SoCLLfko2r+1X7s0thhCM4xJAadv24jBpdJXtStT/5uccX0S7Z4PA9aiWWxmyoI0Ly2fyDRSl6Zv6JpYA9KhCQjC86S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yAQEkmOp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F341C2BBFC;
-	Thu, 13 Jun 2024 11:54:50 +0000 (UTC)
+	 MIME-Version; b=d7NstaXV8Y0XxFqO5hAflKGYOpA/rZDAxKQVqcJLPu3KD2/fALbXoRo/ZsrTLHG9nTL/aBWYd1o+VvIGp6DoHwJMii+81EpbNYi/WGWyzy1buGaEci7G6p5l1ZVk/Jj27iZUUquDQN4Q6cTBuLhdHtlDcMxF9ad+FJy5qNI5kcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVswZtWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F30EC2BBFC;
+	Thu, 13 Jun 2024 11:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279691;
-	bh=ni5dGz3Kcd5bfiBFbWdKsCG69Aodr6IpZ8fYUNuePwo=;
+	s=korg; t=1718279195;
+	bh=0oJND+ZqKBLlAni9PamumLLIDLPU9p7w9LoW6FRHZQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yAQEkmOpk/7T1CrPm/Fk6rMniseVA/QrOWvzF3QkdMTVep0PTbqtNLGu6rvwX5CcN
-	 uPlHQO+wSn1JYQYj7EdayjNsy+PcSrGDbbXG8hl0+ijJ2D7dMX6winU0ZtmMn+rlF3
-	 VAOgBOypoWkoXidEz2gvT6xjINN4vzYX3WUjMjV8=
+	b=eVswZtWdKOh9zncx3rNs705jMTmhwfM22ZRVu5sV8iQY2Gnvwa6AxmoByjsxMQ5ts
+	 4CmC4VDzrXJrfOJ/1TBg/5qFoWQv69t4l2CTRgah/ZvYfUpflmXLZxwWl6uDEeT4wC
+	 h7ClDlWwYaZ12QsnlLRTSriWOGxwewhlv/MwvVi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.9 130/157] i3c: master: svc: fix invalidate IBI type and miss call client IBI handler
+	Douglas Anderson <dianders@chromium.org>,
+	Justin Stitt <justinstitt@google.com>,
+	Daniel Thompson <daniel.thompson@linaro.org>
+Subject: [PATCH 4.19 207/213] kdb: Merge identical case statements in kdb_read()
 Date: Thu, 13 Jun 2024 13:34:15 +0200
-Message-ID: <20240613113232.438296046@linuxfoundation.org>
+Message-ID: <20240613113235.968082488@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Daniel Thompson <daniel.thompson@linaro.org>
 
-commit 38baed9b8600008e5d7bc8cb9ceccc1af3dd54b7 upstream.
+commit 6244917f377bf64719551b58592a02a0336a7439 upstream.
 
-In an In-Band Interrupt (IBI) handle, the code logic is as follows:
+The code that handles case 14 (down) and case 16 (up) has been copy and
+pasted despite being byte-for-byte identical. Combine them.
 
-1: writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI | SVC_I3C_MCTRL_IBIRESP_AUTO,
-	  master->regs + SVC_I3C_MCTRL);
-
-2: ret = readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
-                                    SVC_I3C_MSTATUS_IBIWON(val), 0, 1000);
-	...
-3: ibitype = SVC_I3C_MSTATUS_IBITYPE(status);
-   ibiaddr = SVC_I3C_MSTATUS_IBIADDR(status);
-
-SVC_I3C_MSTATUS_IBIWON may be set before step 1. Thus, step 2 will return
-immediately, and the I3C controller has not sent out the 9th SCL yet.
-Consequently, ibitype and ibiaddr are 0, resulting in an unknown IBI type
-occurrence and missing call I3C client driver's IBI handler.
-
-A typical case is that SVC_I3C_MSTATUS_IBIWON is set when an IBI occurs
-during the controller send start frame in svc_i3c_master_xfer().
-
-Clear SVC_I3C_MSTATUS_IBIWON before issue SVC_I3C_MCTRL_REQUEST_AUTO_IBI
-to fix this issue.
-
-Cc: stable@vger.kernel.org
-Fixes: 5e5e3c92e748 ("i3c: master: svc: fix wrong data return when IBI happen during start frame")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20240506164009.21375-3-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: stable@vger.kernel.org # Not a bug fix but it is needed for later bug fixes
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/r/20240424-kgdb_read_refactor-v3-4-f236dbe9828d@linaro.org
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ kernel/debug/kdb/kdb_io.c |   10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -415,6 +415,19 @@ static void svc_i3c_master_ibi_work(stru
- 	int ret;
- 
- 	mutex_lock(&master->lock);
-+	/*
-+	 * IBIWON may be set before SVC_I3C_MCTRL_REQUEST_AUTO_IBI, causing
-+	 * readl_relaxed_poll_timeout() to return immediately. Consequently,
-+	 * ibitype will be 0 since it was last updated only after the 8th SCL
-+	 * cycle, leading to missed client IBI handlers.
-+	 *
-+	 * A typical scenario is when IBIWON occurs and bus arbitration is lost
-+	 * at svc_i3c_master_priv_xfers().
-+	 *
-+	 * Clear SVC_I3C_MINT_IBIWON before sending SVC_I3C_MCTRL_REQUEST_AUTO_IBI.
-+	 */
-+	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
-+
- 	/* Acknowledge the incoming interrupt with the AUTOIBI mechanism */
- 	writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI |
- 	       SVC_I3C_MCTRL_IBIRESP_AUTO,
-@@ -429,9 +442,6 @@ static void svc_i3c_master_ibi_work(stru
- 		goto reenable_ibis;
- 	}
- 
--	/* Clear the interrupt status */
--	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
--
- 	status = readl(master->regs + SVC_I3C_MSTATUS);
- 	ibitype = SVC_I3C_MSTATUS_IBITYPE(status);
- 	ibiaddr = SVC_I3C_MSTATUS_IBIADDR(status);
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -314,6 +314,7 @@ poll_again:
+ 		}
+ 		break;
+ 	case 14: /* Down */
++	case 16: /* Up */
+ 		memset(tmpbuffer, ' ',
+ 		       strlen(kdb_prompt_str) + (lastchar-buffer));
+ 		*(tmpbuffer+strlen(kdb_prompt_str) +
+@@ -328,15 +329,6 @@ poll_again:
+ 			++cp;
+ 		}
+ 		break;
+-	case 16: /* Up */
+-		memset(tmpbuffer, ' ',
+-		       strlen(kdb_prompt_str) + (lastchar-buffer));
+-		*(tmpbuffer+strlen(kdb_prompt_str) +
+-		  (lastchar-buffer)) = '\0';
+-		kdb_printf("\r%s\r", tmpbuffer);
+-		*lastchar = (char)key;
+-		*(lastchar+1) = '\0';
+-		return lastchar;
+ 	case 9: /* Tab */
+ 		if (tab < 2)
+ 			++tab;
 
 
 
