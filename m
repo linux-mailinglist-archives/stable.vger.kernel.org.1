@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-52003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C928A9072A8
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6559E9072CD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:51:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 742301F23222
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 541D4B2342A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775EC1E49B;
-	Thu, 13 Jun 2024 12:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575F1143895;
+	Thu, 13 Jun 2024 12:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xM4IMq7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOK8SY33"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370EF384;
-	Thu, 13 Jun 2024 12:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162CE384;
+	Thu, 13 Jun 2024 12:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282949; cv=none; b=sqj+TsTV66lZohxZqpY0zF3w94Z/cjSNPDuaacoDhmkX2Oou8NZZjo225u4ZJNs9MACoo2HWzaUfMVVe4YSLZA/MDu2X202KwUBEeNbMp7TJMj+29CYnzU2Hg7lW6bIDcoia7cdjOTqN0/FmSIEFPD4kzbcIURC7XHE/Ytmfp8U=
+	t=1718282955; cv=none; b=M6m/YVK8Y1nCJURPRroYVkQQZdCDqKwQKDL+PhEyTdOL2A5grH6peWMTIL9Sr8Nfs5bMZLhue5Ictma0K4Z+Sp1bTz3UQdqwZmdvQ4wZ9T/Oa4CoaboaW8n5Fbp1H09cYlAuc+5PSUBb4nKMm7LzLO2LiS7THXeu9Vjaf4zd2aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282949; c=relaxed/simple;
-	bh=GLlwhFQoflEAwqxUE3LhlsBj+lmhyuCl7DAXl2YAxs8=;
+	s=arc-20240116; t=1718282955; c=relaxed/simple;
+	bh=q01qvYuepLPiHFSCd8ZrmMv326HZ/8Fmvsp34phbeYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l9M6lUvhzPrkbMJOaEy8cnq2bxy/1GyCPFagfkYCX7nLJjVoWi5VQLOTX874c70lTEM6yBMiLsRw2LsruUw+MqlrvNRAWnBlgfPxVw23AR3Rzl5ZadKtoU1F7Pfqumj5bKSNY6NKNE1M6JMl2y31Nfel7CAn102CI6e4gun4WBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xM4IMq7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4C0C2BBFC;
-	Thu, 13 Jun 2024 12:49:08 +0000 (UTC)
+	 MIME-Version; b=N6v83jxonzxFsi+ySlx53tcxqUZCxVQ45R8CjY0JhtsIBfOVCqyUNOocA5jOdxPnAfCsTyYFUt5/KtdD8fm/T9pH6nJl2ESUon1NKq2gfu38d/MCGjufFwFWxoTXsXOmVT93zqtqqGVboapzvO8cjDXv6egL7NoaotCwwFxNvR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOK8SY33; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F84AC2BBFC;
+	Thu, 13 Jun 2024 12:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282949;
-	bh=GLlwhFQoflEAwqxUE3LhlsBj+lmhyuCl7DAXl2YAxs8=;
+	s=korg; t=1718282955;
+	bh=q01qvYuepLPiHFSCd8ZrmMv326HZ/8Fmvsp34phbeYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0xM4IMq7/QYWW085xKgy8qU6J8Grsl79bs8myQWeZqcdqhY4ixsy/299HvHRY79cJ
-	 7phHctwUbY+03ZkPxh5Yc1d/6uAvPXfxUlA7YT3f53GOyzOzqCqAP9E2aILOCLfsVa
-	 NNUHJgsemXXm04Xz8ki0Ln0WZCTNnmMEtdA6P+ew=
+	b=mOK8SY330i9gTL+fxELiTLPnDnXr9yfuA415m0sbJNb2JbT2dkipYpILta+HLGONj
+	 A14jd2U2Gd7fpCg5qqypkHusx3wEBsEEf4iosP6MXp0ykMw78WOfAbTljooqGWkei0
+	 SCNEMM3dLIPd9pqWR6fCQsobh65Ftft+JR+75u/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	lectrode <electrodexsnet@gmail.com>
-Subject: [PATCH 6.1 47/85] drm/amd: Fix shutdown (again) on some SMU v13.0.4/11 platforms
-Date: Thu, 13 Jun 2024 13:35:45 +0200
-Message-ID: <20240613113215.957977931@linuxfoundation.org>
+	Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.1 48/85] KVM: arm64: Fix AArch32 register narrowing on userspace write
+Date: Thu, 13 Jun 2024 13:35:46 +0200
+Message-ID: <20240613113215.995625025@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
 References: <20240613113214.134806994@linuxfoundation.org>
@@ -67,62 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 267cace556e8a53d703119f7435ab556209e5b6a upstream.
+commit 947051e361d551e0590777080ffc4926190f62f2 upstream.
 
-commit cd94d1b182d2 ("dm/amd/pm: Fix problems with reboot/shutdown for
-some SMU 13.0.4/13.0.11 users") attempted to fix shutdown issues
-that were reported since commit 31729e8c21ec ("drm/amd/pm: fixes a
-random hang in S4 for SMU v13.0.4/11") but caused issues for some
-people.
+When userspace writes to one of the core registers, we make
+sure to narrow the corresponding GPRs if PSTATE indicates
+an AArch32 context.
 
-Adjust the workaround flow to properly only apply in the S4 case:
--> For shutdown go through SMU_MSG_PrepareMp1ForUnload
--> For S4 go through SMU_MSG_GfxDeviceDriverReset and
-   SMU_MSG_PrepareMp1ForUnload
+The code tries to check whether the context is EL0 or EL1 so
+that it narrows the correct registers. But it does so by checking
+the full PSTATE instead of PSTATE.M.
 
-Reported-and-tested-by: lectrode <electrodexsnet@gmail.com>
-Closes: https://github.com/void-linux/void-packages/issues/50417
+As a consequence, and if we are restoring an AArch32 EL0 context
+in a 64bit guest, and that PSTATE has *any* bit set outside of
+PSTATE.M, we narrow *all* registers instead of only the first 15,
+destroying the 64bit state.
+
+Obviously, this is not something the guest is likely to enjoy.
+
+Correctly masking PSTATE to only evaluate PSTATE.M fixes it.
+
+Fixes: 90c1f934ed71 ("KVM: arm64: Get rid of the AArch32 register mapping code")
+Reported-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 Cc: stable@vger.kernel.org
-Fixes: cd94d1b182d2 ("dm/amd/pm: Fix problems with reboot/shutdown for some SMU 13.0.4/13.0.11 users")
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240524141956.1450304-2-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c |   20 ++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ arch/arm64/kvm/guest.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
-@@ -222,15 +222,17 @@ static int smu_v13_0_4_system_features_c
- 	struct amdgpu_device *adev = smu->adev;
- 	int ret = 0;
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -270,7 +270,7 @@ static int set_core_reg(struct kvm_vcpu
+ 	if (*vcpu_cpsr(vcpu) & PSR_MODE32_BIT) {
+ 		int i, nr_reg;
  
--	if (!en && adev->in_s4) {
--		/* Adds a GFX reset as workaround just before sending the
--		 * MP1_UNLOAD message to prevent GC/RLC/PMFW from entering
--		 * an invalid state.
--		 */
--		ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_GfxDeviceDriverReset,
--						      SMU_RESET_MODE_2, NULL);
--		if (ret)
--			return ret;
-+	if (!en && !adev->in_s0ix) {
-+		if (adev->in_s4) {
-+			/* Adds a GFX reset as workaround just before sending the
-+			 * MP1_UNLOAD message to prevent GC/RLC/PMFW from entering
-+			 * an invalid state.
-+			 */
-+			ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_GfxDeviceDriverReset,
-+							      SMU_RESET_MODE_2, NULL);
-+			if (ret)
-+				return ret;
-+		}
- 
- 		ret = smu_cmn_send_smc_msg(smu, SMU_MSG_PrepareMp1ForUnload, NULL);
- 	}
+-		switch (*vcpu_cpsr(vcpu)) {
++		switch (*vcpu_cpsr(vcpu) & PSR_AA32_MODE_MASK) {
+ 		/*
+ 		 * Either we are dealing with user mode, and only the
+ 		 * first 15 registers (+ PC) must be narrowed to 32bit.
 
 
 
