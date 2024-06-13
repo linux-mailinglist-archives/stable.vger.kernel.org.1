@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-50828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 413A5906CFF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:57:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E50906BF9
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:46:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C29451F2735A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:57:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAA96B25119
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB3A144D22;
-	Thu, 13 Jun 2024 11:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1352144D3B;
+	Thu, 13 Jun 2024 11:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O58EOdJb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsnyJdIK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA1E144D0B;
-	Thu, 13 Jun 2024 11:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA5413541B;
+	Thu, 13 Jun 2024 11:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279504; cv=none; b=VON0FfqXX6gIwWwfMU0oDWuCBGWEinvkrvfpSR7X7L9SL/Vlev7c017VUzcQvNdrtRGl8QGdxUQxNfabq4CFf6wJnX/q8MRT2wj0ea/3bWatbsmv7gS0Ts5fk2ESkPJ2f6uopFRqpfvFSghIhCFIL2t3Be3VANUA80NX+LsaIlw=
+	t=1718279107; cv=none; b=a8x02ocRZE1m+RbtnruRKCLlhLKTEWEZrd8mzoRhhpRmJKxuWaRxOiD3Uj4Z+A0xxIbnBeAmBf2kGi/sq3zLS4zyBUH2CXbzu2m6WzjSu/QrJfgwsGwTsauXR9NHVPI5Bz1VPEQUsGSJM3LxN+n80Xqqf9e6ltZsZEib19/UDvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279504; c=relaxed/simple;
-	bh=6SD1GKSpjSvc3MCCDma6cXgTZDMPNUUaDJvkB5COP0E=;
+	s=arc-20240116; t=1718279107; c=relaxed/simple;
+	bh=Hm0JQkloxGWBkVlLc175kiihDz2+M8z4y5K1OG9vsB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PIr8YouN4bu1DnCV/HQ1+MqyR8jGDqOh9Lhn5/LrH/qAYh2lsiIIP+l791Uf4n/G6FPz2oLm7H7M3ySMxxbmQvgi/2zb5FWM3p4wWcF4+tbK46AghGKmBQpu9RFaDTGSey0Fc1DIC0nfwjbfIUWEk2f+KU4GoCa81OfzMB8CmbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O58EOdJb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254EEC2BBFC;
-	Thu, 13 Jun 2024 11:51:43 +0000 (UTC)
+	 MIME-Version; b=JkubO41T7iwQOPCv/GiwCH5c3EDBIkUFpN915QuvcrebU7Ktl8mPiAbYphzPU58onwfh7LX+ZzlbfDxBGQ/g+8NvkwjLRHWaokDyz/evbdfh/XH2sy943zmpdfdYNcLSgeOUzc3t909OkZkEMsABywpbAhVqC5q4VPSB5UzNk4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsnyJdIK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E05C2BBFC;
+	Thu, 13 Jun 2024 11:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279504;
-	bh=6SD1GKSpjSvc3MCCDma6cXgTZDMPNUUaDJvkB5COP0E=;
+	s=korg; t=1718279107;
+	bh=Hm0JQkloxGWBkVlLc175kiihDz2+M8z4y5K1OG9vsB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O58EOdJbpozhWY0cPz0V3xSaPNJVyroN6hoATwix9CnHqs1RVy65/6HGGtzejYQUT
-	 rGE36CD1k4EjpF8W0ndwgj/padjzRGK9hdTs8E+rTBgAs2PBXy0+cLT+Zft8NplNQL
-	 ka8BnLG8kUPVJUcSMdD5UeGLNNl93mtwhGPaB0ys=
+	b=EsnyJdIKZvjAtItiXse8/raIbKv4ReiBKs/yqBgmE/qND0AG17pQH2gxLVwQ23j++
+	 Qc8OqaFRmkU7nK1+m8/g88yZ+58lrRvWLMSq5exKyNs9X6B0QqGd22XugfIQQgeuWW
+	 Fmg3+8Ko+rOb2ITHkbWspKsE4qAPAPVWiAySdYjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 099/157] mm/memory-failure: fix handling of dissolved but not taken off from buddy pages
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.19 176/213] netfilter: nft_set_rbtree: use read spinlock to avoid datapath contention
 Date: Thu, 13 Jun 2024 13:33:44 +0200
-Message-ID: <20240613113231.252712276@linuxfoundation.org>
+Message-ID: <20240613113234.770708190@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,146 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 8cf360b9d6a840700e06864236a01a883b34bbad upstream.
+commit 96b33300fba880ec0eafcf3d82486f3463b4b6da upstream.
 
-When I did memory failure tests recently, below panic occurs:
+rbtree GC does not modify the datastructure, instead it collects expired
+elements and it enqueues a GC transaction. Use a read spinlock instead
+to avoid data contention while GC worker is running.
 
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x8cee00
-flags: 0x6fffe0000000000(node=1|zone=2|lastcpupid=0x7fff)
-raw: 06fffe0000000000 dead000000000100 dead000000000122 0000000000000000
-raw: 0000000000000000 0000000000000009 00000000ffffffff 0000000000000000
-page dumped because: VM_BUG_ON_PAGE(!PageBuddy(page))
-------------[ cut here ]------------
-kernel BUG at include/linux/page-flags.h:1009!
-invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-RIP: 0010:__del_page_from_free_list+0x151/0x180
-RSP: 0018:ffffa49c90437998 EFLAGS: 00000046
-RAX: 0000000000000035 RBX: 0000000000000009 RCX: ffff8dd8dfd1c9c8
-RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff8dd8dfd1c9c0
-RBP: ffffd901233b8000 R08: ffffffffab5511f8 R09: 0000000000008c69
-R10: 0000000000003c15 R11: ffffffffab5511f8 R12: ffff8dd8fffc0c80
-R13: 0000000000000001 R14: ffff8dd8fffc0c80 R15: 0000000000000009
-FS:  00007ff916304740(0000) GS:ffff8dd8dfd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055eae50124c8 CR3: 00000008479e0000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- __rmqueue_pcplist+0x23b/0x520
- get_page_from_freelist+0x26b/0xe40
- __alloc_pages_noprof+0x113/0x1120
- __folio_alloc_noprof+0x11/0xb0
- alloc_buddy_hugetlb_folio.isra.0+0x5a/0x130
- __alloc_fresh_hugetlb_folio+0xe7/0x140
- alloc_pool_huge_folio+0x68/0x100
- set_max_huge_pages+0x13d/0x340
- hugetlb_sysctl_handler_common+0xe8/0x110
- proc_sys_call_handler+0x194/0x280
- vfs_write+0x387/0x550
- ksys_write+0x64/0xe0
- do_syscall_64+0xc2/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff916114887
-RSP: 002b:00007ffec8a2fd78 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 000055eae500e350 RCX: 00007ff916114887
-RDX: 0000000000000004 RSI: 000055eae500e390 RDI: 0000000000000003
-RBP: 000055eae50104c0 R08: 0000000000000000 R09: 000055eae50104c0
-R10: 0000000000000077 R11: 0000000000000246 R12: 0000000000000004
-R13: 0000000000000004 R14: 00007ff916216b80 R15: 00007ff916216a00
- </TASK>
-Modules linked in: mce_inject hwpoison_inject
----[ end trace 0000000000000000 ]---
-
-And before the panic, there had an warning about bad page state:
-
-BUG: Bad page state in process page-types  pfn:8cee00
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x8cee00
-flags: 0x6fffe0000000000(node=1|zone=2|lastcpupid=0x7fff)
-page_type: 0xffffff7f(buddy)
-raw: 06fffe0000000000 ffffd901241c0008 ffffd901240f8008 0000000000000000
-raw: 0000000000000000 0000000000000009 00000000ffffff7f 0000000000000000
-page dumped because: nonzero mapcount
-Modules linked in: mce_inject hwpoison_inject
-CPU: 8 PID: 154211 Comm: page-types Not tainted 6.9.0-rc4-00499-g5544ec3178e2-dirty #22
-Call Trace:
- <TASK>
- dump_stack_lvl+0x83/0xa0
- bad_page+0x63/0xf0
- free_unref_page+0x36e/0x5c0
- unpoison_memory+0x50b/0x630
- simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
- debugfs_attr_write+0x42/0x60
- full_proxy_write+0x5b/0x80
- vfs_write+0xcd/0x550
- ksys_write+0x64/0xe0
- do_syscall_64+0xc2/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f189a514887
-RSP: 002b:00007ffdcd899718 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f189a514887
-RDX: 0000000000000009 RSI: 00007ffdcd899730 RDI: 0000000000000003
-RBP: 00007ffdcd8997a0 R08: 0000000000000000 R09: 00007ffdcd8994b2
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffdcda199a8
-R13: 0000000000404af1 R14: 000000000040ad78 R15: 00007f189a7a5040
- </TASK>
-
-The root cause should be the below race:
-
- memory_failure
-  try_memory_failure_hugetlb
-   me_huge_page
-    __page_handle_poison
-     dissolve_free_hugetlb_folio
-     drain_all_pages -- Buddy page can be isolated e.g. for compaction.
-     take_page_off_buddy -- Failed as page is not in the buddy list.
-	     -- Page can be putback into buddy after compaction.
-    page_ref_inc -- Leads to buddy page with refcnt = 1.
-
-Then unpoison_memory() can unpoison the page and send the buddy page back
-into buddy list again leading to the above bad page state warning.  And
-bad_page() will call page_mapcount_reset() to remove PageBuddy from buddy
-page leading to later VM_BUG_ON_PAGE(!PageBuddy(page)) when trying to
-allocate this page.
-
-Fix this issue by only treating __page_handle_poison() as successful when
-it returns 1.
-
-Link: https://lkml.kernel.org/r/20240523071217.1696196-1-linmiaohe@huawei.com
-Fixes: ceaf8fbea79a ("mm, hwpoison: skip raw hwpoison page in freeing 1GB hugepage")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory-failure.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nft_set_rbtree.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1218,7 +1218,7 @@ static int me_huge_page(struct page_stat
- 		 * subpages.
- 		 */
- 		folio_put(folio);
--		if (__page_handle_poison(p) >= 0) {
-+		if (__page_handle_poison(p) > 0) {
- 			page_ref_inc(p);
- 			res = MF_RECOVERED;
- 		} else {
-@@ -2097,7 +2097,7 @@ retry:
- 	 */
- 	if (res == 0) {
- 		folio_unlock(folio);
--		if (__page_handle_poison(p) >= 0) {
-+		if (__page_handle_poison(p) > 0) {
- 			page_ref_inc(p);
- 			res = MF_RECOVERED;
- 		} else {
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -629,8 +629,7 @@ static void nft_rbtree_gc(struct work_st
+ 	if (!gc)
+ 		goto done;
+ 
+-	write_lock_bh(&priv->lock);
+-	write_seqcount_begin(&priv->count);
++	read_lock_bh(&priv->lock);
+ 	for (node = rb_first(&priv->root); node != NULL; node = rb_next(node)) {
+ 
+ 		/* Ruleset has been updated, try later. */
+@@ -679,8 +678,7 @@ dead_elem:
+ 	}
+ 
+ try_later:
+-	write_seqcount_end(&priv->count);
+-	write_unlock_bh(&priv->lock);
++	read_unlock_bh(&priv->lock);
+ 
+ 	if (gc)
+ 		nft_trans_gc_queue_async_done(gc);
 
 
 
