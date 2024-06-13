@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17DFE907248
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:45:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C70E3907066
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FBA61C220F2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:45:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B4001F2290B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48DE142658;
-	Thu, 13 Jun 2024 12:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B6414265A;
+	Thu, 13 Jun 2024 12:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGS1WS+H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUgY+pz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8403620ED;
-	Thu, 13 Jun 2024 12:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CD11420C6;
+	Thu, 13 Jun 2024 12:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282740; cv=none; b=It19c1kS2Rn8CoGoDBos5DSj+JL9OphNhUl0tap9/7Awt2Lw/q29OVrLoIaTTWP9JeosnI191o1SVxv650YCpLMib/609SYm4r0Ez52/QBTijjJ/eHnWdHaqEMxSItiZ43GWl93BgDtiv5m+KHfMvlhBuo7a/C/A2e89SADUIik=
+	t=1718281622; cv=none; b=aVPwukG1dXGzXl7pigV5EOB1cHwm5nuOxqAMNE4EdGAhVgHhQwXCeZOQeSj+TqAYnl2F2KB485D57v3PVlJ5+a5AfIYXn4k8CFQDEcKFPq7Ncch8+SPbDSf4d5vg23HrGTs2qa0buJzDujhZrEs0w2e1wTL2/mDLC/qceSJREK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282740; c=relaxed/simple;
-	bh=MyaCdDpDDfsEw+AM6ktWCRww5s+EjmqK951C0cE4mok=;
+	s=arc-20240116; t=1718281622; c=relaxed/simple;
+	bh=jbPBdkPwVttwEXmtELnvsxONNLRvSPmImpooOE+EQFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qEWe+Uexv3VOgZAfh7oOCkA531F4MqZ/S9eNdcF7OKGVqhZtyiEpbQGJ57IoH3i+V7Rie7HRwvbZ2vMlECXGDyNDIcSl31rD9TDo3zdobL/72fbr7+j94C4D/XjUo0dIliAhU5Zl7bq4utzkzD3VZj4cFG5i+svWEkt9JOn/HO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGS1WS+H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0884BC2BBFC;
-	Thu, 13 Jun 2024 12:45:39 +0000 (UTC)
+	 MIME-Version; b=ast1UYY8gkhUKdIBOo2CoBW17dajsxYrhUFn1rMFeNPNo5Y/Tss+5F2pDZEQmSHK4jpT3RZW1toviumTcKy4F/nq0uQPX45KkW49Zp4KaY7OB8zPlVpVtifMpdAAAqj2MsTlWydYGqMN6snkMJd3+5Q61LX55vcCz1awOD/2AO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUgY+pz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEE3C2BBFC;
+	Thu, 13 Jun 2024 12:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282740;
-	bh=MyaCdDpDDfsEw+AM6ktWCRww5s+EjmqK951C0cE4mok=;
+	s=korg; t=1718281621;
+	bh=jbPBdkPwVttwEXmtELnvsxONNLRvSPmImpooOE+EQFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DGS1WS+HzvCiE9B84yub3ukoCV971YXQLkx1J7pTUE9T9NPshxHADEfGqeZ83N7CZ
-	 KOjcMcAU2meAEbaECQVF0qgSYWZolyp1DvkPwDGSisASGVEmCizHcZ4rgM6hEQGR3A
-	 +Q6vcZZjX+7h3Ccgm5nTbiKYrDrv+SDiGIsPQxGw=
+	b=cUgY+pz8ULPIBB2vr2OcJ/j8o8iqo8/YmvCDoNJ/rzUNloU9lL5tMTmOkxzUrWe16
+	 MbYUvT4lwm0KIGo8yznH1P8oGLYig7G+hhdg6VmwrCP4LF2aSutkaEI62SjBtD6U/z
+	 hWZkp5nqPdSU64AUyGNDVnK0BWC/skVjWNokMf4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Vitaly Chikunov <vt@altlinux.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.15 378/402] crypto: ecdsa - Fix module auto-load on add-key
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 5.10 317/317] RDMA/hns: Fix CQ and QP cache affinity
 Date: Thu, 13 Jun 2024 13:35:35 +0200
-Message-ID: <20240613113316.889054388@linuxfoundation.org>
+Message-ID: <20240613113259.815606243@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-commit 48e4fd6d54f54d0ceab5a952d73e47a9454a6ccb upstream.
+commit 9e03dbea2b0634b21a45946b4f8097e0dc86ebe1 upstream.
 
-Add module alias with the algorithm cra_name similar to what we have for
-RSA-related and other algorithms.
+Currently, the affinity between QP cache and CQ cache is not
+considered when assigning QPN, it will affect the message rate of HW.
 
-The kernel attempts to modprobe asymmetric algorithms using the names
-"crypto-$cra_name" and "crypto-$cra_name-all." However, since these
-aliases are currently missing, the modules are not loaded. For instance,
-when using the `add_key` function, the hash algorithm is typically
-loaded automatically, but the asymmetric algorithm is not.
+Allocate QPN from QP cache with better CQ affinity to get better
+performance.
 
-Steps to test:
-
-1. Create certificate
-
-  openssl req -x509 -sha256 -newkey ec \
-  -pkeyopt "ec_paramgen_curve:secp384r1" -keyout key.pem -days 365 \
-  -subj '/CN=test' -nodes -outform der -out nist-p384.der
-
-2. Optionally, trace module requests with: trace-cmd stream -e module &
-
-3. Trigger add_key call for the cert:
-
-   # keyctl padd asymmetric "" @u < nist-p384.der
-   641069229
-   # lsmod | head -2
-   Module                  Size  Used by
-   ecdsa_generic          16384  0
-
-Fixes: c12d448ba939 ("crypto: ecdsa - Register NIST P384 and extend test suite")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Reviewed-by: Vitaly Chikunov <vt@altlinux.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 71586dd20010 ("RDMA/hns: Create QP with selected QPN for bank load balance")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20230804012711.808069-5-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/ecdsa.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_device.h |    2 ++
+ drivers/infiniband/hw/hns/hns_roce_qp.c     |   28 ++++++++++++++++++++++------
+ 2 files changed, 24 insertions(+), 6 deletions(-)
 
---- a/crypto/ecdsa.c
-+++ b/crypto/ecdsa.c
-@@ -373,4 +373,7 @@ module_exit(ecdsa_exit);
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Stefan Berger <stefanb@linux.ibm.com>");
- MODULE_DESCRIPTION("ECDSA generic algorithm");
-+MODULE_ALIAS_CRYPTO("ecdsa-nist-p192");
-+MODULE_ALIAS_CRYPTO("ecdsa-nist-p256");
-+MODULE_ALIAS_CRYPTO("ecdsa-nist-p384");
- MODULE_ALIAS_CRYPTO("ecdsa-generic");
+--- a/drivers/infiniband/hw/hns/hns_roce_device.h
++++ b/drivers/infiniband/hw/hns/hns_roce_device.h
+@@ -122,6 +122,8 @@
+  */
+ #define EQ_DEPTH_COEFF				2
+ 
++#define CQ_BANKID_MASK GENMASK(1, 0)
++
+ enum {
+ 	SERV_TYPE_RC,
+ 	SERV_TYPE_UC,
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -154,14 +154,29 @@ static void hns_roce_ib_qp_event(struct
+ 	}
+ }
+ 
+-static u8 get_least_load_bankid_for_qp(struct hns_roce_bank *bank)
++static u8 get_affinity_cq_bank(u8 qp_bank)
+ {
+-	u32 least_load = bank[0].inuse;
++	return (qp_bank >> 1) & CQ_BANKID_MASK;
++}
++
++static u8 get_least_load_bankid_for_qp(struct ib_qp_init_attr *init_attr,
++					struct hns_roce_bank *bank)
++{
++#define INVALID_LOAD_QPNUM 0xFFFFFFFF
++	struct ib_cq *scq = init_attr->send_cq;
++	u32 least_load = INVALID_LOAD_QPNUM;
++	unsigned long cqn = 0;
+ 	u8 bankid = 0;
+ 	u32 bankcnt;
+ 	u8 i;
+ 
+-	for (i = 1; i < HNS_ROCE_QP_BANK_NUM; i++) {
++	if (scq)
++		cqn = to_hr_cq(scq)->cqn;
++
++	for (i = 0; i < HNS_ROCE_QP_BANK_NUM; i++) {
++		if (scq && (get_affinity_cq_bank(i) != (cqn & CQ_BANKID_MASK)))
++			continue;
++
+ 		bankcnt = bank[i].inuse;
+ 		if (bankcnt < least_load) {
+ 			least_load = bankcnt;
+@@ -193,7 +208,8 @@ static int alloc_qpn_with_bankid(struct
+ 
+ 	return 0;
+ }
+-static int alloc_qpn(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp)
++static int alloc_qpn(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp,
++		     struct ib_qp_init_attr *init_attr)
+ {
+ 	struct hns_roce_qp_table *qp_table = &hr_dev->qp_table;
+ 	unsigned long num = 0;
+@@ -211,7 +227,7 @@ static int alloc_qpn(struct hns_roce_dev
+ 		hr_qp->doorbell_qpn = 1;
+ 	} else {
+ 		mutex_lock(&qp_table->bank_mutex);
+-		bankid = get_least_load_bankid_for_qp(qp_table->bank);
++		bankid = get_least_load_bankid_for_qp(init_attr, qp_table->bank);
+ 
+ 		ret = alloc_qpn_with_bankid(&qp_table->bank[bankid], bankid,
+ 					    &num);
+@@ -1005,7 +1021,7 @@ static int hns_roce_create_qp_common(str
+ 		goto err_db;
+ 	}
+ 
+-	ret = alloc_qpn(hr_dev, hr_qp);
++	ret = alloc_qpn(hr_dev, hr_qp, init_attr);
+ 	if (ret) {
+ 		ibdev_err(ibdev, "failed to alloc QPN, ret = %d.\n", ret);
+ 		goto err_buf;
 
 
 
