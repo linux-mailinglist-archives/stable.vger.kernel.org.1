@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-51240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD036906F05
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0DB59070C4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:30:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3956B26BA6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D9911F2173B
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314B3144D11;
-	Thu, 13 Jun 2024 12:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB8620ED;
+	Thu, 13 Jun 2024 12:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKzbcbEJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emqVDsUA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E425381ABF;
-	Thu, 13 Jun 2024 12:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAFA384;
+	Thu, 13 Jun 2024 12:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280718; cv=none; b=JDrDTzBvBk7EOsho+7rgFaxVyRS6d1ReW4QRV6gMpbMw9TQ2GWehTWl4nPRq2bMSWxgcHuQtspaRFpQUtylgzqElHyM3+QvKtcsXIpqdewD1Mk628BFassTFEajw28t/jwcqC7ujpKFNw5AIxLwPtYx0sQcXBLAG72l+AuS8K28=
+	t=1718281839; cv=none; b=QT+yr8+PXBtah6iDivko7apj7VBqcunBl8pOStFn2IMWGM9QyfzxQAYg36aZimud48g4FE/lhy+hXlbkIPoIHEvZmsSbnk5zwdQTcZX7PKX9b5WTjCgOz67rO8Arml4ZByIPKk8AOczeP/JEFKHdzCAmlovN5X9AFBY/EuibMnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280718; c=relaxed/simple;
-	bh=ancr3vIp5Hs0VgWZZh3P1eVmMKoOnQxDkdYzksZWn1Y=;
+	s=arc-20240116; t=1718281839; c=relaxed/simple;
+	bh=t5BrudpJIs79pmw5VKtgSIda0Dw8F+sXZYZvQessegU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZYqdY4iNDQyMHs6y5Hw5k/yzNFPVnWd5JFzSLu7CsOf4Q221+n6Vyz4RLgRXsQRooxaZnHnhErjQGd9jTMKu6d+7k6f6WQbBc8M1ycU+7ZrtjOSsSMzdEmU4oc9Cc4+rFi/zB5IGi+8wRPgv/xfC78zo53Wmqo7xUiDgMhahifo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKzbcbEJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC7EC2BBFC;
-	Thu, 13 Jun 2024 12:11:57 +0000 (UTC)
+	 MIME-Version; b=jRZ0gwy9cmWhi9hxomIw8dsYAAnxrycW1+mDSAnWGtTpfWnYMGnjNAkxakKLI7PSakcQlLfPM4k04ZvKl/WFIaGVpTE8RwgF+ZreWNFG8s6SXFfU1KKdWN7PQzOUmI/dYtC1s6bFSNrnmqZ9A3Nm49qpzcM3AHVxCyxJT6a8dm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=emqVDsUA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A26CC32786;
+	Thu, 13 Jun 2024 12:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280717;
-	bh=ancr3vIp5Hs0VgWZZh3P1eVmMKoOnQxDkdYzksZWn1Y=;
+	s=korg; t=1718281839;
+	bh=t5BrudpJIs79pmw5VKtgSIda0Dw8F+sXZYZvQessegU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eKzbcbEJP6SpmctqHCnOA+YpnhYrFo9fcB1ReNAZvxU3LaNkgxR5d2qWqfCdbzdbP
-	 o9WDc1WGzlnkV07lj5Xz0gfhUZt7QEEXyZX7Stvrx+4u4yf/r7/I5psfxfroG2RQRp
-	 wuFg/ga5mgod5LP5x12DR2HNQh6VPNH5gGH/moqc=
+	b=emqVDsUA8k5qbRuYiqINlL4Ik06fbxokxmmEosLl+1OjoFuUpkNO5GRckBmAAptcd
+	 PKOQCP5jMWDZREwVbju1pNjUwO6eXqi4VilxiSAjg//nokafOge8bkFlEEyayd/Zc+
+	 9ycPGRAmXvetR701HTmxg9ZNCFnS/0qyDzCO4jWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 011/317] net: usb: qmi_wwan: add Telit FN920C04 compositions
-Date: Thu, 13 Jun 2024 13:30:29 +0200
-Message-ID: <20240613113247.975464921@linuxfoundation.org>
+Subject: [PATCH 5.15 073/402] cpufreq: Split cpufreq_offline()
+Date: Thu, 13 Jun 2024 13:30:30 +0200
+Message-ID: <20240613113304.983831319@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 0b8fe5bd73249dc20be2e88a12041f8920797b59 ]
+[ Upstream commit fddd8f86dff4a24742a7f0322ccbb34c6c1c9850 ]
 
-Add the following Telit FN920C04 compositions:
+Split the "core" part running under the policy rwsem out of
+cpufreq_offline() to allow the locking in cpufreq_remove_dev() to be
+rearranged more easily.
 
-0x10a0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  5 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a0 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+As a side-effect this eliminates the unlock label that's not needed
+any more.
 
-0x10a4: rmnet + tty (AT) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a4 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+No expected functional impact.
 
-0x10a9: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  9 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a9 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Stable-dep-of: b8f85833c057 ("cpufreq: exit() callback is optional")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/cpufreq/cpufreq.c | 33 +++++++++++++++++++--------------
+ 1 file changed, 19 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index be2761d0bcd91..4dd1a9fb4c8a0 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1301,6 +1301,9 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1060, 2)},	/* Telit LN920 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1070, 2)},	/* Telit FN990 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1080, 2)}, /* Telit FE990 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a9, 0)}, /* Telit FN920C04 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index b65dc6af19f08..ce7d718bdfced 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -1572,21 +1572,10 @@ static int cpufreq_add_dev(struct device *dev, struct subsys_interface *sif)
+ 	return 0;
+ }
+ 
+-static int cpufreq_offline(unsigned int cpu)
++static void __cpufreq_offline(unsigned int cpu, struct cpufreq_policy *policy)
+ {
+-	struct cpufreq_policy *policy;
+ 	int ret;
+ 
+-	pr_debug("%s: unregistering CPU %u\n", __func__, cpu);
+-
+-	policy = cpufreq_cpu_get_raw(cpu);
+-	if (!policy) {
+-		pr_debug("%s: No cpu_data found\n", __func__);
+-		return 0;
+-	}
+-
+-	down_write(&policy->rwsem);
+-
+ 	if (has_target())
+ 		cpufreq_stop_governor(policy);
+ 
+@@ -1604,7 +1593,7 @@ static int cpufreq_offline(unsigned int cpu)
+ 				pr_err("%s: Failed to start governor\n", __func__);
+ 		}
+ 
+-		goto unlock;
++		return;
+ 	}
+ 
+ 	if (has_target())
+@@ -1631,8 +1620,24 @@ static int cpufreq_offline(unsigned int cpu)
+ 		cpufreq_driver->exit(policy);
+ 		policy->freq_table = NULL;
+ 	}
++}
++
++static int cpufreq_offline(unsigned int cpu)
++{
++	struct cpufreq_policy *policy;
++
++	pr_debug("%s: unregistering CPU %u\n", __func__, cpu);
++
++	policy = cpufreq_cpu_get_raw(cpu);
++	if (!policy) {
++		pr_debug("%s: No cpu_data found\n", __func__);
++		return 0;
++	}
++
++	down_write(&policy->rwsem);
++
++	__cpufreq_offline(cpu, policy);
+ 
+-unlock:
+ 	up_write(&policy->rwsem);
+ 	return 0;
+ }
 -- 
 2.43.0
 
