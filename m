@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-51455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85802907034
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA13906E18
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92AADB22B26
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 919F51F21D8E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFEC82C76;
-	Thu, 13 Jun 2024 12:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309F714882A;
+	Thu, 13 Jun 2024 12:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLIh1ZMw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaRvboW5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0D156458;
-	Thu, 13 Jun 2024 12:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23EC145B32;
+	Thu, 13 Jun 2024 12:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281348; cv=none; b=EbGeeuXktEWQOy5tmLxf7speivyfuL0lPSlNNhgfP3oWVPNJ/TA2okyag3L3Z/ZkGix8dU8Qq/qgSkmVnVEps31hYSlZ1oRjkEvf6ImXCSJLYq9YeMKKrAQq7l+wNPuOHNxUz3aDavw6uitlOVfi8MY14RWcc26VjG/lN5/ydcU=
+	t=1718280148; cv=none; b=VOqplTyFEkhoLuZiUh0kHa2Uh7CLvRSKC2f+YpXV/t1viu/BrWdxHkKojBfB+RS5QSaBLA9uAExCT7FbJ9UW4FM8AVX6Ie0GZ/JX8tvfFxFxuT+Wr2+Ys2iJbDH7N2b7h/6/SJ6ievvof/gA2V4vuVsidTZ9ANPkYTciEXtPPj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281348; c=relaxed/simple;
-	bh=KtkuAShG93W1ZF2yDQCi+FZhH7ID+GyzFiTrcXapoHo=;
+	s=arc-20240116; t=1718280148; c=relaxed/simple;
+	bh=1A9lW8hynRipUfSA1ltRo6AS5y6Rpt0D5bwoJP7Zh8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jy8z/k7ym8PFdDO5A9BFUL2HyKtDs32POxW9G7tnxNVoVYNtV4l9RgZz/ZeR249lTpf4VZrcdaF0X9pIc3nlanWPiS43n/WeiozYQXmexKA7Nw4sUFEmBxES5964a7hY27eyP6S3zgRmx9ZOVMQzsB3gpYkai2L3+IqHN/HLS4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLIh1ZMw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C47C2BBFC;
-	Thu, 13 Jun 2024 12:22:27 +0000 (UTC)
+	 MIME-Version; b=V0oGVWIFpgVyC4wx4Z26a3Ql4lswBjzkHvsx3Y8i32h3o68lOHt7eFIQqUIwEphWTGqr0f3aEI6UwZe9XUSeTYOwJkduRNWilVhWLYhwjmPh2zgLFbyY/wP9dFSWHMrzCRTxSY/0rXcNs/SrKSr6XqBUX23de6UJrJ1Xls3XGkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaRvboW5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CDDC2BBFC;
+	Thu, 13 Jun 2024 12:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281348;
-	bh=KtkuAShG93W1ZF2yDQCi+FZhH7ID+GyzFiTrcXapoHo=;
+	s=korg; t=1718280147;
+	bh=1A9lW8hynRipUfSA1ltRo6AS5y6Rpt0D5bwoJP7Zh8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLIh1ZMwJELGBMNCSaZ1NBBt0vmMjNP+x+BTbqE1UQUTh3PV19peD4+U3n5Jy5vxq
-	 Yd0Cim4AzyiD188ao1/R2cmwDcY0zUDvGrMG6plzLFjqn8G+xUdL8YZ8WiNDb30PAV
-	 zAgAE7kRSWCNeSd7f4Jiw9sgpAHrP4vodtwAfSOA=
+	b=PaRvboW55ULMUsG4KTCLXMlMLaTWX/DRmwsdV29x7Iv0SkfyJ0LOfsCXbSWASleu+
+	 TPjiQ463Mctuwapuju5KKkZORk4Z5VBoAwlJ85HDj4POUh6j5H3AGgasZjHIHvyVgE
+	 fU0hCyml/nz8WcOJFyeJnh+Am8D7IsQ911tKFKKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Andrew Davis <afd@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 197/317] mmc: sdhci_am654: Write ITAPDLY for DDR52 timing
-Date: Thu, 13 Jun 2024 13:33:35 +0200
-Message-ID: <20240613113255.179309279@linuxfoundation.org>
+Subject: [PATCH 5.4 118/202] extcon: max8997: select IRQ_DOMAIN instead of depending on it
+Date: Thu, 13 Jun 2024 13:33:36 +0200
+Message-ID: <20240613113232.316477394@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit d465234493bb6ad1b9c10a0c9ef9881b8d85081a ]
+[ Upstream commit b1781d0a1458070d40134e4f3412ec9d70099bec ]
 
-For DDR52 timing, DLL is enabled but tuning is not carried
-out, therefore the ITAPDLY value in PHY CTRL 4 register is
-not correct. Fix this by writing ITAPDLY after enabling DLL.
+IRQ_DOMAIN is a hidden (not user visible) symbol. Users cannot set
+it directly thru "make *config", so drivers should select it instead
+of depending on it if they need it.
+Relying on it being set for a dependency is risky.
 
-Fixes: a161c45f2979 ("mmc: sdhci_am654: Enable DLL only for some speed modes")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Andrew Davis <afd@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240320223837.959900-3-jm@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Consistently using "select" or "depends on" can also help reduce
+Kconfig circular dependency issues.
+
+Therefore, change EXTCON_MAX8997's use of "depends on" for
+IRQ_DOMAIN to "select".
+
+Link: https://lore.kernel.org/lkml/20240213060028.9744-1-rdunlap@infradead.org/
+Fixes: dca1a71e4108 ("extcon: Add support irq domain for MAX8997 muic")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci_am654.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/extcon/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-index 2e302c2b0ac12..13bff543f7c06 100644
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -304,6 +304,7 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
- 	if (timing > MMC_TIMING_UHS_SDR25 && clock >= CLOCK_TOO_SLOW_HZ) {
- 		sdhci_am654_setup_dll(host, clock);
- 		sdhci_am654->dll_enable = true;
-+		sdhci_am654_write_itapdly(sdhci_am654, sdhci_am654->itap_del_sel[timing]);
- 	} else {
- 		sdhci_am654_setup_delay_chain(sdhci_am654, timing);
- 		sdhci_am654->dll_enable = false;
+diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
+index aac507bff135c..09485803280ef 100644
+--- a/drivers/extcon/Kconfig
++++ b/drivers/extcon/Kconfig
+@@ -121,7 +121,8 @@ config EXTCON_MAX77843
+ 
+ config EXTCON_MAX8997
+ 	tristate "Maxim MAX8997 EXTCON Support"
+-	depends on MFD_MAX8997 && IRQ_DOMAIN
++	depends on MFD_MAX8997
++	select IRQ_DOMAIN
+ 	help
+ 	  If you say yes here you get support for the MUIC device of
+ 	  Maxim MAX8997 PMIC. The MAX8997 MUIC is a USB port accessory
 -- 
 2.43.0
 
