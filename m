@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5B9906E19
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:07:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE5F90702C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A19E11F2199B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:07:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C55531C23B60
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCED145B21;
-	Thu, 13 Jun 2024 12:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492AE13CFA3;
+	Thu, 13 Jun 2024 12:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARJopXCK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLy4DsVM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB62E145B08;
-	Thu, 13 Jun 2024 12:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0826D7F47B;
+	Thu, 13 Jun 2024 12:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280150; cv=none; b=pDcvBm5PozcC92YJOIWQuzfhLgSBPobPQhyItyboRDQ8o60AGUqt+N8f5p4yuSl4Yds1xBNg5KW0v+QoeO6Y7jJOytoquHaU5B7gpo+EyVxc1Ah52L3JFwgJAfbyoqHY1/X/83iSd4rr6hTBP53hk7nsFnuGO52MbRSKRHJYMxI=
+	t=1718281463; cv=none; b=aTmpVfJy+LOxlq/THbAEHR5pLGK9V8zreuBiN5DzFr7kY9JwpxPl6KnNq5TIHYpIrqt8ZWQsLwAtKLIaNQaWAhkW6mEyjr8sEbXlZucSWBRfu8NAmkwirF+hLvvBepSsyQWFwByUcD/C4GLbR/Wkl+hzQYT9p+SkoVpclP2dg4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280150; c=relaxed/simple;
-	bh=UvURrZyTDgSQ11AmCdV26lZQv/AVWxXjuR72zhN56LM=;
+	s=arc-20240116; t=1718281463; c=relaxed/simple;
+	bh=xWw8Ep1doQY4qcWTwYTTy1J0uLR2mZ2uuM4fSwFCGXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gzrXBcfN689Xu0ApyY41iUNl0H9l0W/beFpw5B2fo30lz3YRvoyOxUJtZZKCxZezHtjDoGvrdZUzoACEbYpSKVFumpbfBd7rMI9v4cb8cqmPmb9xwiLsIte8VrCWBmxjMniHePWJP0z4MvsFdeAHWTTpHRMACe3YsIMaeKMaj+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARJopXCK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524FEC2BBFC;
-	Thu, 13 Jun 2024 12:02:30 +0000 (UTC)
+	 MIME-Version; b=XsA4EjwUzwRvzuAbUO/+bu5QYUGEDpIdfXJqmaf1bS4b4BbxcseuIw4trAwisTUKkD1awxCTOquIc3HqTLb5AmhhJy2MKlCwshxu41bhRMNsiKhJsrI12FJFc7MT4IGjqCDFUy/6m3QfYm0KeuAkahnFCVUKWckJe/wR8BJXH2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLy4DsVM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD29C2BBFC;
+	Thu, 13 Jun 2024 12:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280150;
-	bh=UvURrZyTDgSQ11AmCdV26lZQv/AVWxXjuR72zhN56LM=;
+	s=korg; t=1718281462;
+	bh=xWw8Ep1doQY4qcWTwYTTy1J0uLR2mZ2uuM4fSwFCGXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ARJopXCKNLhRt39FngFheH88XU74AdHQ3N+U2iQyIU8/S7Pcl1OZUL9e1ElQHQtUT
-	 luFry+mV+rmbKcmn5Z62hCXOKKgE/Q4bbwLZ7z2GQrWRCxzVpHP3MjaENZfcbqTSJ9
-	 nfjCA/G7ZqyJ9zzlpElmYBObFfq3vvdKRPxbSIz0=
+	b=JLy4DsVMFo5p67/KBzvzEr4CeIEjMzV7hmTALGl8SVJ4cSgDelIoM7yfomhhuRB+0
+	 pRlTRIQr2Z8tQPr/qkNZvfiVm7HtW1P4YC3kne/COiSxNo93ICtyJAyvxN5WoX7OXQ
+	 fyRxA6Xcg3moIp/tzD8qkHVDZzn6fuyhzaF21tS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 152/202] dma-buf/sw-sync: dont enable IRQ from sync_print_obj()
+Subject: [PATCH 5.10 232/317] ipv6: sr: fix memleak in seg6_hmac_init_algo
 Date: Thu, 13 Jun 2024 13:34:10 +0200
-Message-ID: <20240613113233.620513709@linuxfoundation.org>
+Message-ID: <20240613113256.525120988@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
-References: <20240613113227.759341286@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit b794918961516f667b0c745aebdfebbb8a98df39 ]
+[ Upstream commit efb9f4f19f8e37fde43dfecebc80292d179f56c6 ]
 
-Since commit a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from
-known context") by error replaced spin_unlock_irqrestore() with
-spin_unlock_irq() for both sync_debugfs_show() and sync_print_obj() despite
-sync_print_obj() is called from sync_debugfs_show(), lockdep complains
-inconsistent lock state warning.
+seg6_hmac_init_algo returns without cleaning up the previous allocations
+if one fails, so it's going to leak all that memory and the crypto tfms.
 
-Use plain spin_{lock,unlock}() for sync_print_obj(), for
-sync_debugfs_show() is already using spin_{lock,unlock}_irq().
+Update seg6_hmac_exit to only free the memory when allocated, so we can
+reuse the code directly.
 
-Reported-by: syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=a225ee3df7e7f9372dbe
-Fixes: a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from known context")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/c2e46020-aaa6-4e06-bf73-f05823f913f0@I-love.SAKURA.ne.jp
-Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
+Reported-by: Sabrina Dubroca <sd@queasysnail.net>
+Closes: https://lore.kernel.org/netdev/Zj3bh-gE7eT6V6aH@hog/
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/20240517005435.2600277-1-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/sync_debug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv6/seg6_hmac.c | 42 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 28 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/dma-buf/sync_debug.c b/drivers/dma-buf/sync_debug.c
-index 101394f16930f..237bce21d1e72 100644
---- a/drivers/dma-buf/sync_debug.c
-+++ b/drivers/dma-buf/sync_debug.c
-@@ -110,12 +110,12 @@ static void sync_print_obj(struct seq_file *s, struct sync_timeline *obj)
+diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+index 552bce1fdfb94..2e2b94ae63552 100644
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -355,6 +355,7 @@ static int seg6_hmac_init_algo(void)
+ 	struct crypto_shash *tfm;
+ 	struct shash_desc *shash;
+ 	int i, alg_count, cpu;
++	int ret = -ENOMEM;
  
- 	seq_printf(s, "%s: %d\n", obj->name, obj->value);
+ 	alg_count = ARRAY_SIZE(hmac_algos);
  
--	spin_lock_irq(&obj->lock);
-+	spin_lock(&obj->lock); /* Caller already disabled IRQ. */
- 	list_for_each(pos, &obj->pt_list) {
- 		struct sync_pt *pt = container_of(pos, struct sync_pt, link);
- 		sync_print_fence(s, &pt->base, false);
+@@ -365,12 +366,14 @@ static int seg6_hmac_init_algo(void)
+ 		algo = &hmac_algos[i];
+ 		algo->tfms = alloc_percpu(struct crypto_shash *);
+ 		if (!algo->tfms)
+-			return -ENOMEM;
++			goto error_out;
+ 
+ 		for_each_possible_cpu(cpu) {
+ 			tfm = crypto_alloc_shash(algo->name, 0, 0);
+-			if (IS_ERR(tfm))
+-				return PTR_ERR(tfm);
++			if (IS_ERR(tfm)) {
++				ret = PTR_ERR(tfm);
++				goto error_out;
++			}
+ 			p_tfm = per_cpu_ptr(algo->tfms, cpu);
+ 			*p_tfm = tfm;
+ 		}
+@@ -382,18 +385,22 @@ static int seg6_hmac_init_algo(void)
+ 
+ 		algo->shashs = alloc_percpu(struct shash_desc *);
+ 		if (!algo->shashs)
+-			return -ENOMEM;
++			goto error_out;
+ 
+ 		for_each_possible_cpu(cpu) {
+ 			shash = kzalloc_node(shsize, GFP_KERNEL,
+ 					     cpu_to_node(cpu));
+ 			if (!shash)
+-				return -ENOMEM;
++				goto error_out;
+ 			*per_cpu_ptr(algo->shashs, cpu) = shash;
+ 		}
  	}
--	spin_unlock_irq(&obj->lock);
-+	spin_unlock(&obj->lock);
+ 
+ 	return 0;
++
++error_out:
++	seg6_hmac_exit();
++	return ret;
  }
  
- static void sync_print_sync_file(struct seq_file *s,
+ int __init seg6_hmac_init(void)
+@@ -413,22 +420,29 @@ int __net_init seg6_hmac_net_init(struct net *net)
+ void seg6_hmac_exit(void)
+ {
+ 	struct seg6_hmac_algo *algo = NULL;
++	struct crypto_shash *tfm;
++	struct shash_desc *shash;
+ 	int i, alg_count, cpu;
+ 
+ 	alg_count = ARRAY_SIZE(hmac_algos);
+ 	for (i = 0; i < alg_count; i++) {
+ 		algo = &hmac_algos[i];
+-		for_each_possible_cpu(cpu) {
+-			struct crypto_shash *tfm;
+-			struct shash_desc *shash;
+ 
+-			shash = *per_cpu_ptr(algo->shashs, cpu);
+-			kfree(shash);
+-			tfm = *per_cpu_ptr(algo->tfms, cpu);
+-			crypto_free_shash(tfm);
++		if (algo->shashs) {
++			for_each_possible_cpu(cpu) {
++				shash = *per_cpu_ptr(algo->shashs, cpu);
++				kfree(shash);
++			}
++			free_percpu(algo->shashs);
++		}
++
++		if (algo->tfms) {
++			for_each_possible_cpu(cpu) {
++				tfm = *per_cpu_ptr(algo->tfms, cpu);
++				crypto_free_shash(tfm);
++			}
++			free_percpu(algo->tfms);
+ 		}
+-		free_percpu(algo->tfms);
+-		free_percpu(algo->shashs);
+ 	}
+ }
+ EXPORT_SYMBOL(seg6_hmac_exit);
 -- 
 2.43.0
 
