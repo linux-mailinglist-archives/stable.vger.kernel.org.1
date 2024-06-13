@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-51530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E7AE907053
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66644906EDD
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29EBC1C23E66
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:27:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F268EB2819A
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B34145332;
-	Thu, 13 Jun 2024 12:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9983A144D3B;
+	Thu, 13 Jun 2024 12:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajj5TKFL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJDZuQJJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0325C144D28;
-	Thu, 13 Jun 2024 12:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DFC144D2F;
+	Thu, 13 Jun 2024 12:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281566; cv=none; b=ZaWdM0rafKJQzu624/IhdpQd5JYjrj6ARwd3VNgfdgapJZ/msEz+lBWyurW7vKIE91oXJ4b4EtBA1TDpxz2BDppMwd6gSSaO+Q1QqqFiOaHKxRYlNdAM7uV5QOJJd/cmj5GmxtEZPdqWZa04aisVgTzfnRCRgPbt79aNwfnukMY=
+	t=1718280647; cv=none; b=ii2kF2qLOyVtl4jDazb9BjS9zyOdittlnU51zSrvYmgSUq0YS3cWvXXSJFD27E7QETt/+3a2ypQOrevzJndBr1gIeu03TGuDGZpP7oCSJCaya1puHAGsVpvxFWnjQznX9t5SQH+IM9ah8PwjKB3qDpnWNAZJa8Q5H7orLnLQxPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281566; c=relaxed/simple;
-	bh=dEgkLC9R/zecjOYUtFzehZ5SNLCmlLR1LZYXt/7KITQ=;
+	s=arc-20240116; t=1718280647; c=relaxed/simple;
+	bh=D8RiNhwJuEUxV+S49JdjYhW9HuuZmbuFK8it5GLDNL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TJXLDwlZnwIltTTFwzARZg7M8g/E+8lz89MV0tcnEQ06o03vIsvXWCGK9653m6O5952V+xFeKdm5g4jyQxUzI7c4SvqQbE/PnYxHvXhgRkey0cWgTseFOp9zxqyclHEBoFz/45ScvUn8TLv/n9X+6uWqVHr6y+cjoMsRy1nqPVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajj5TKFL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D29DC2BBFC;
-	Thu, 13 Jun 2024 12:26:05 +0000 (UTC)
+	 MIME-Version; b=QHAFP6BMwY8Z2CRJSI9BpP2rYgppbRq4BhjSptuVNb2ioYM2PK3AMM4dZo7XQ/HlsLkAkUlz9b8+VQbzXaAW+9mDrUjFg4DX2Prp/EKXzZZSEWXm6TpmMn/mfVe6tKynsZtQnMAOIG2k+3EiH7NTnVhqrDnPM8P7mcVrWYAm2UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJDZuQJJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD754C2BBFC;
+	Thu, 13 Jun 2024 12:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281565;
-	bh=dEgkLC9R/zecjOYUtFzehZ5SNLCmlLR1LZYXt/7KITQ=;
+	s=korg; t=1718280647;
+	bh=D8RiNhwJuEUxV+S49JdjYhW9HuuZmbuFK8it5GLDNL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajj5TKFLr0TMyGtEujLq4dJLa3VnrWN5Ar3SYC+P2QRBFTJZsbk6vvbIGteNDYM87
-	 n3NY+aiOFbPe5ZAwqFy5RBNwEACX4Ee6YMnaeJbH2j6rBxUlz4+ROR5gojGhqqqKnt
-	 L9iXDWE3OcPeCA1RDbzzv3PGDz2xAG5xM2j1oaOI=
+	b=gJDZuQJJWTQvM0+0VoKeo5h9iHe6d1EsDZTaHJAMpKo56L6/ahuj9Nk1iEomlyl88
+	 m0TK5Mj/wyyaANw6n0MvHgfN1V4JYKKECObYoE/QODR5PiGLJYPN4WounqpmEbt6+1
+	 Z9ZQAuISRjQXLIQvrGiul5HgZp2+ejojiwoTu2Ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Ming Lei <ming.lei@redhat.com>
-Subject: [PATCH 5.10 268/317] io_uring: fail NOP if non-zero op flags is passed in
-Date: Thu, 13 Jun 2024 13:34:46 +0200
-Message-ID: <20240613113257.919652625@linuxfoundation.org>
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.6 107/137] ext4: Fixes len calculation in mpage_journal_page_buffers
+Date: Thu, 13 Jun 2024 13:34:47 +0200
+Message-ID: <20240613113227.448926547@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-commit 3d8f874bd620ce03f75a5512847586828ab86544 upstream.
+commit c2a09f3d782de952f09a3962d03b939e7fa7ffa4 upstream.
 
-The NOP op flags should have been checked from beginning like any other
-opcode, otherwise NOP may not be extended with the op flags.
+Truncate operation can race with writeback, in which inode->i_size can get
+truncated and therefore size - folio_pos() can be negative. This fixes the
+len calculation. However this path doesn't get easily triggered even
+with data journaling.
 
-Given both liburing and Rust io-uring crate always zeros SQE op flags, just
-ignore users which play raw NOP uring interface without zeroing SQE, because
-NOP is just for test purpose. Then we can save one NOP2 opcode.
-
-Suggested-by: Jens Axboe <axboe@kernel.dk>
-Fixes: 2b188cc1bb85 ("Add io_uring IO interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240510035031.78874-2-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: stable@kernel.org # v6.5
+Fixes: 80be8c5cc925 ("Fixes: ext4: Make mpage_journal_page_buffers use folio")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/cff4953b5c9306aba71e944ab176a5d396b9a1b7.1709182250.git.ritesh.list@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/inode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -6474,6 +6474,8 @@ static int io_req_prep(struct io_kiocb *
- {
- 	switch (req->opcode) {
- 	case IORING_OP_NOP:
-+		if (READ_ONCE(sqe->rw_flags))
-+			return -EINVAL;
- 		return 0;
- 	case IORING_OP_READV:
- 	case IORING_OP_READ_FIXED:
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -2342,7 +2342,7 @@ static int mpage_journal_page_buffers(ha
+ 
+ 	if (folio_pos(folio) + len > size &&
+ 	    !ext4_verity_in_progress(inode))
+-		len = size - folio_pos(folio);
++		len = size & (len - 1);
+ 
+ 	return ext4_journal_folio_buffers(handle, folio, len);
+ }
 
 
 
