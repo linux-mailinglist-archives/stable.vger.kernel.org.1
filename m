@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-51796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AFE79071AD
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0B7906FC3
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:23:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 332481F279D1
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EBF628951F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C081DFE1;
-	Thu, 13 Jun 2024 12:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870A7145B25;
+	Thu, 13 Jun 2024 12:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4hBvSPJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwgN1YMU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9251917FD;
-	Thu, 13 Jun 2024 12:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4535413C69C;
+	Thu, 13 Jun 2024 12:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282339; cv=none; b=A//ga0gT+utLL6Li57sPqtbN8bOgAcavq//OMcpndZeXgKlGVxxEleC3NH0TKDb7XxZNfcrRy/YXoBY1SC1DkziN9LWaUcXoBQU4GaKZKcb1XmjRqHeMvxgnPYDvRMT/1Z4G6MCsj520HVD6eLMEPSh8Eb4ogxBJyYp+GsrdCps=
+	t=1718281228; cv=none; b=GiynkfSbm9WicIuNTBdOmBkHWpcjt2yzJLo7Dm4R+nNaAYrDdaBvd3YEs0CPfp1C/UPndueH5ktSOI0TOEQh8vnklkEKYVtqBoPVlfUt6Qi38J0PUI2ll+XPjS5Ph2HZvQ5RLf7V+naPS3b2HDWVWLC0np4/TYm7p3mN6lkTkf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282339; c=relaxed/simple;
-	bh=soAMKqL7KvU9TIC0P1m8Hebq6hR9XL5Yzm1uq4Y12zs=;
+	s=arc-20240116; t=1718281228; c=relaxed/simple;
+	bh=m3tvPW+ID9jA/f0oO4ASTacpjSkI08eBBL/R0b/9KIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CVgh9JLY9YWGtdDpRzuj8ds3GCTqpdrYzTCt0t1bJzsUnhCXMCnQ1JD5BxJTUTdilyiYtz4FJnbHMnUGXZbkkIxgzk8dQaQcOpMc+LHTY8PM/ZI86BWbhfot81JR+nx+xRNBSJeiG2yZTPKqd665oTw8kXiBvScGITEUa9zRJpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4hBvSPJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188EFC2BBFC;
-	Thu, 13 Jun 2024 12:38:58 +0000 (UTC)
+	 MIME-Version; b=HtSRGfTG6fq5Y1qXYmcmRdEGCv6iGrwOLCbxGA9nuPDxANw8nmyqNaFyxS7EhAAayjPSUCxyMx/PWfswiWxhJEKT6KzG/yG9/G5b4itzCGB3Pl9a3xpyJSEke8gXa867zhEBTen3Gq0b8wvY/GJiE7o2alqSPUkBqMsfKQdrbfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwgN1YMU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB61C2BBFC;
+	Thu, 13 Jun 2024 12:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282339;
-	bh=soAMKqL7KvU9TIC0P1m8Hebq6hR9XL5Yzm1uq4Y12zs=;
+	s=korg; t=1718281228;
+	bh=m3tvPW+ID9jA/f0oO4ASTacpjSkI08eBBL/R0b/9KIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a4hBvSPJzwRjPjmY+zd2IUPy2AjsYl5u5DV7LlfhV/soXUsyWdETBaE62/aefqPPt
-	 MuChpyxRuNLI0P8BalcHVrmfflxjjh7LFDhlC0q/2bYC1/5TAlkiEXNr6hJVN3u8o+
-	 Kl/8+FU081u7yxuJo15uts6jaMFBZ6i12XmgvKVk=
+	b=OwgN1YMUAP3+zas4hgpcn6IZhYHLt7muBGgictPk6mHfUPqQodpyTPOqpG8d6Cqta
+	 iIV3KuxDEZ6CqG0unxO0uOI6xqvFCTM0HwieFMZk+yGk8CVz0mOuUstw7HOOFPAds2
+	 6i+KPfiyaB7iebV7bLCZBadsV6wC/jLg0ogtwILY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Egorenkov <egorenar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Leo Yan <leo.yan@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 243/402] s390/ipl: Fix incorrect initialization of len fields in nvme reipl block
-Date: Thu, 13 Jun 2024 13:33:20 +0200
-Message-ID: <20240613113311.628119535@linuxfoundation.org>
+Subject: [PATCH 5.10 183/317] perf ui browser: Avoid SEGV on title
+Date: Thu, 13 Jun 2024 13:33:21 +0200
+Message-ID: <20240613113254.639846046@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +72,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Egorenkov <egorenar@linux.ibm.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 9c922b73acaf39f867668d9cbe5dc69c23511f84 ]
+[ Upstream commit 90f01afb0dfafbc9b094bb61e61a4ac297d9d0d2 ]
 
-Use correct symbolic constants IPL_BP_NVME_LEN and IPL_BP0_NVME_LEN
-to initialize nvme reipl block when 'scp_data' sysfs attribute is
-being updated. This bug had not been detected before because
-the corresponding fcp and nvme symbolic constants are equal.
+If the title is NULL then it can lead to a SEGV.
 
-Fixes: 23a457b8d57d ("s390: nvme reipl")
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Egorenkov <egorenar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 769e6a1e15bdbbaf ("perf ui browser: Don't save pointer to stack memory")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Leo Yan <leo.yan@linux.dev>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240508035301.1554434-2-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/ipl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/ui/browser.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/ipl.c b/arch/s390/kernel/ipl.c
-index 834b1ec5dd7a0..77246ff5b0141 100644
---- a/arch/s390/kernel/ipl.c
-+++ b/arch/s390/kernel/ipl.c
-@@ -833,8 +833,8 @@ static ssize_t reipl_nvme_scpdata_write(struct file *filp, struct kobject *kobj,
- 		scpdata_len += padding;
- 	}
+diff --git a/tools/perf/ui/browser.c b/tools/perf/ui/browser.c
+index 6fa4f123d5ff7..b84b87b939573 100644
+--- a/tools/perf/ui/browser.c
++++ b/tools/perf/ui/browser.c
+@@ -203,7 +203,7 @@ void ui_browser__refresh_dimensions(struct ui_browser *browser)
+ void ui_browser__handle_resize(struct ui_browser *browser)
+ {
+ 	ui__refresh_dimensions(false);
+-	ui_browser__show(browser, browser->title, ui_helpline__current);
++	ui_browser__show(browser, browser->title ?: "", ui_helpline__current);
+ 	ui_browser__refresh(browser);
+ }
  
--	reipl_block_nvme->hdr.len = IPL_BP_FCP_LEN + scpdata_len;
--	reipl_block_nvme->nvme.len = IPL_BP0_FCP_LEN + scpdata_len;
-+	reipl_block_nvme->hdr.len = IPL_BP_NVME_LEN + scpdata_len;
-+	reipl_block_nvme->nvme.len = IPL_BP0_NVME_LEN + scpdata_len;
- 	reipl_block_nvme->nvme.scp_data_len = scpdata_len;
- 
- 	return count;
 -- 
 2.43.0
 
