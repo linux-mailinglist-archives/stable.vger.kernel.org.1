@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-51180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F28F906EAE
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E35DA907020
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25A8D1F211AC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B32C1F2313D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E9E1482E2;
-	Thu, 13 Jun 2024 12:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68FF5145B2B;
+	Thu, 13 Jun 2024 12:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Zk4flRz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tp384Gat"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8699B1448DD;
-	Thu, 13 Jun 2024 12:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2845513D607;
+	Thu, 13 Jun 2024 12:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280541; cv=none; b=TC8IzzejuTdTiZ671KoSb++WDNKnxw2xRyTLRsq8YAmO7hjd45IRIWy0Tfu7jGoi8tHAkfdbiPH3g6+1+UttXSoYFeH8idy7s29jaJHIZQQSSBBjf9ojXsfZ+/m9YdmxZ9paOAJ3jtqX3YLN3ap6e2MSH3y8E5AkkbAePZOEaiw=
+	t=1718281428; cv=none; b=eC+Apahzgsz1GDyvJsD29Vci7p1hh30ThxVzttfZnoTqQ0YWMfjzny2WFB+dU2VrK5JXbE6cPclO4bvS9SfE7bkqbF6o0ZncKMvam+dmkd5iEvQMPJrqYkkNTam83rwLMKQPw01OztR267b+vyM0cCkeZoT3Qi8rg4nvqPqDLxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280541; c=relaxed/simple;
-	bh=9SyS69gAEoipQSV0zGvhTy2YWeeYoJnFnyeqEtsxXJY=;
+	s=arc-20240116; t=1718281428; c=relaxed/simple;
+	bh=mdkKJrsZhByPfDmwRickyI6043MT6GA5QWM4kpzzQ30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n+EFnGDBHJvcvcxG8VcFWteqEHU9dH6VoGXsb8U8Y+O7rt8KMVTvr+sKnDPxZaIDW3wqTVItSeCBn/UtFWSiYa5VVdTtr7FOds5AB0ZhB9PznAq+J46Xdajmv11gxGsmd0EnJ5V2Nj3aWjtPC5Oc7zajU0k8LK8iBRg8XcYUFOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Zk4flRz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD8FC4AF1A;
-	Thu, 13 Jun 2024 12:09:00 +0000 (UTC)
+	 MIME-Version; b=IsliLhDignUzRbmLMUbPbrinYuopWZz7g4ApSV6gA+HuzcJAkc4senkrsmujTau037UwhjTVNN8aYB03Xu/3B1R82q85H7fPQpMX8f3YO2jTRNraOA/kL2fjKnKkJI0RcwaBUPHsQRVs6zRu/MdImtTzF+XmJouB7cKNKrGTGWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tp384Gat; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A8BC2BBFC;
+	Thu, 13 Jun 2024 12:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280541;
-	bh=9SyS69gAEoipQSV0zGvhTy2YWeeYoJnFnyeqEtsxXJY=;
+	s=korg; t=1718281427;
+	bh=mdkKJrsZhByPfDmwRickyI6043MT6GA5QWM4kpzzQ30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Zk4flRzCbcJGCmskQ0imT9TmvF9C0IjOs335ZTqSfKUJKP+KlSmXyX7ipmMpO1xx
-	 D9rBXQJ7Wdk94kdJMqd+43ZsCQF9kIkzptwlJVZkkFUIgj3US4fkEB3ZLGYp/viLqR
-	 Z5v9zeaHXAdsGz4UtLr40cHZoVOJ8otpK7N7gYj0=
+	b=tp384GatTjKpqS8FN06rEzc7UCgO272lpD6LFUR9zLo3GTaYJdpwMSTodPpgzhADQ
+	 DofmMQ4Vn7sPA0cfKQq22AGf7o7zMv7SjZy+jOT2GDxLkDMOJT0nSCKrlDcrZ3tz6t
+	 P6zruSKVpMAoNBHH7WnOp8B+Y/k+0XGd1bkO9Evc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank van der Linden <fvdl@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 089/137] mm/cma: drop incorrect alignment check in cma_init_reserved_mem
+	Friedrich Vock <friedrich.vock@gmx.de>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 251/317] bpf: Fix potential integer overflow in resolve_btfids
 Date: Thu, 13 Jun 2024 13:34:29 +0200
-Message-ID: <20240613113226.751704726@linuxfoundation.org>
+Message-ID: <20240613113257.260336917@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank van der Linden <fvdl@google.com>
+From: Friedrich Vock <friedrich.vock@gmx.de>
 
-commit b174f139bdc8aaaf72f5b67ad1bd512c4868a87e upstream.
+[ Upstream commit 44382b3ed6b2787710c8ade06c0e97f5970a47c8 ]
 
-cma_init_reserved_mem uses IS_ALIGNED to check if the size represented by
-one bit in the cma allocation bitmask is aligned with
-CMA_MIN_ALIGNMENT_BYTES (pageblock size).
+err is a 32-bit integer, but elf_update returns an off_t, which is 64-bit
+at least on 64-bit platforms. If symbols_patch is called on a binary between
+2-4GB in size, the result will be negative when cast to a 32-bit integer,
+which the code assumes means an error occurred. This can wrongly trigger
+build failures when building very large kernel images.
 
-However, this is too strict, as this will fail if order_per_bit >
-pageblock_order, which is a valid configuration.
-
-We could check IS_ALIGNED both ways, but since both numbers are powers of
-two, no check is needed at all.
-
-Link: https://lkml.kernel.org/r/20240404162515.527802-1-fvdl@google.com
-Fixes: de9e14eebf33 ("drivers: dma-contiguous: add initialization from device tree")
-Signed-off-by: Frank van der Linden <fvdl@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fbbb68de80a4 ("bpf: Add resolve_btfids tool to resolve BTF IDs in ELF object")
+Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240514070931.199694-1-friedrich.vock@gmx.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/cma.c |    4 ----
- 1 file changed, 4 deletions(-)
+ tools/bpf/resolve_btfids/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -187,10 +187,6 @@ int __init cma_init_reserved_mem(phys_ad
- 	if (!size || !memblock_is_region_reserved(base, size))
- 		return -EINVAL;
+diff --git a/tools/bpf/resolve_btfids/main.c b/tools/bpf/resolve_btfids/main.c
+index f32c059fbfb4f..8b2a2576fed66 100644
+--- a/tools/bpf/resolve_btfids/main.c
++++ b/tools/bpf/resolve_btfids/main.c
+@@ -637,7 +637,7 @@ static int sets_patch(struct object *obj)
  
--	/* alignment should be aligned with order_per_bit */
--	if (!IS_ALIGNED(CMA_MIN_ALIGNMENT_PAGES, 1 << order_per_bit))
--		return -EINVAL;
--
- 	/* ensure minimal alignment required by mm core */
- 	if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
- 		return -EINVAL;
+ static int symbols_patch(struct object *obj)
+ {
+-	int err;
++	off_t err;
+ 
+ 	if (__symbols_patch(obj, &obj->structs)  ||
+ 	    __symbols_patch(obj, &obj->unions)   ||
+-- 
+2.43.0
+
 
 
 
