@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-50803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F77906CC4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:53:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A990906BFE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A089282D0B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:53:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4454E1F23226
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93F3143C79;
-	Thu, 13 Jun 2024 11:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FE6143C79;
+	Thu, 13 Jun 2024 11:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LN3SxZ+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WfdwQ9ud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EB914265A;
-	Thu, 13 Jun 2024 11:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F82143733;
+	Thu, 13 Jun 2024 11:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279431; cv=none; b=nWrD6Z+AbkXednPTO+1gaUjDfuNs9hFTwgQf53v0cAeylO+AHhYtMM311hBkXZs9HIikZoq0Wn8Pgm6sHzf5SE0v2KSHVvXttXq43ZEyObncvKNUki1M+gPbsCE+MAdsIywke1ZlTTPt5kuVplypzz6typnc3sncfcE6UZNyZvM=
+	t=1718279122; cv=none; b=n7uBVSCCBJ9vwX+erqx4sU69dRbUGoR+vvHxLHCMuAAdYUMxkyI6oIgbwiBoi9+4j+f3Fx/Bfy+p5v1u6hbWo/R65A887NFywQTlYtMMcAi5823iJI/oXdLguk7RlpRHxwNVgwMvM4yvpiMwK6enrL7R9JC2DqunzAhAcvW51b4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279431; c=relaxed/simple;
-	bh=hLW6sSPmEHz+eCxnLZljcWU+qFfSRs67qHpTX419UT8=;
+	s=arc-20240116; t=1718279122; c=relaxed/simple;
+	bh=Il65WoHwN3bEyCGYGM/TnvELmNAhsLBg+MIg8K3xFGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RT7zI0m0TGt87RafcENc9z/S1mo/IEAjeXUPSwo3ZcqyRtGDHcSXk6BqdjukxUXHchhfyRh6+ETIZ6mfBsn8i0iF00mho+mDaDeRD3I0QvjwptlZziSlljazx1JxQAh0j/w1g+tOprgnHeQRYdThzjtWbnytKqy491yfVXSwAuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LN3SxZ+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA068C32786;
-	Thu, 13 Jun 2024 11:50:30 +0000 (UTC)
+	 MIME-Version; b=CyOP661KzRbBRkx/kZka6t7FpnLNLpSQeoDZwpRexnS2RcCIfIQ3QVYAvv2KXTtMZjNSTYyUKfJDwOvkKAkstq5uNLJGt5rkwhWY4V86gRaevqnDL8jTD1syAFbaknVe9WBaU2NtJlDOrrHs8zXhNJhN8IB9n5sN0FBtRllKZPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WfdwQ9ud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94021C2BBFC;
+	Thu, 13 Jun 2024 11:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279431;
-	bh=hLW6sSPmEHz+eCxnLZljcWU+qFfSRs67qHpTX419UT8=;
+	s=korg; t=1718279122;
+	bh=Il65WoHwN3bEyCGYGM/TnvELmNAhsLBg+MIg8K3xFGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LN3SxZ+WZnH0ZeVIfUlgyabRGmtp62PLTIn3qKj69iKulzrC8MQEThyhn/YkgADRX
-	 zl7s7rx/jjP/fEZqJAVdFgW0SXucWwHQZqboeH8Gg8GAQNpswyj04PeMJ9m9DtbIiB
-	 +A2/RYNT6rnTxz155Mhn/EqWDm9WLAKOrnqR0sv8=
+	b=WfdwQ9udIJPp1u/mOOPGFxXKKSIpINafQmD+GccBiXkjmC8y4JSLQUMuXMfsnWuG0
+	 Jx5TExz7cgIwfe/wSTuWIPirvObOhL3xLd2v9knkFsGFoeK+Evs/KTvjdIqqrbai9o
+	 l8hN545COTQJd3m1+VLTE14bj8p/lXKA9JVPzzJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lewis Baker <lewissbaker@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.9 074/157] io_uring/napi: fix timeout calculation
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Niklas Cassel <cassel@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 4.19 151/213] ata: pata_legacy: make legacy_exit() work again
 Date: Thu, 13 Jun 2024 13:33:19 +0200
-Message-ID: <20240613113230.285602991@linuxfoundation.org>
+Message-ID: <20240613113233.812253916@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-commit 415ce0ea55c5a3afea501a773e002be9ed7149f5 upstream.
+commit d4a89339f17c87c4990070e9116462d16e75894f upstream.
 
-Not quite sure what __io_napi_adjust_timeout() was attemping to do, it's
-adjusting both the NAPI timeout and the general overall timeout, and
-calculating a value that is never used. The overall timeout is a super
-set of the NAPI timeout, and doesn't need adjusting. The only thing we
-really need to care about is that the NAPI timeout doesn't exceed the
-overall timeout. If a user asked for a timeout of eg 5 usec and NAPI
-timeout is 10 usec, then we should not spin for 10 usec.
+Commit defc9cd826e4 ("pata_legacy: resychronize with upstream changes and
+resubmit") missed to update legacy_exit(), so that it now fails to do any
+cleanup -- the loop body there can never be entered.  Fix that and finally
+remove now useless nr_legacy_host variable...
 
-While in there, sanitize the time checking a bit. If we have a negative
-value in the passed in timeout, discard it. Round up the value as well,
-so we don't end up with a NAPI timeout for the majority of the wait,
-with only a tiny sleep value at the end.
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
 
-Hence the only case we need to care about is if the NAPI timeout is
-larger than the overall timeout. If it is, cap the NAPI timeout at what
-the overall timeout is.
-
+Fixes: defc9cd826e4 ("pata_legacy: resychronize with upstream changes and resubmit")
 Cc: stable@vger.kernel.org
-Fixes: 8d0c12a80cde ("io-uring: add napi busy poll support")
-Reported-by: Lewis Baker <lewissbaker@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/napi.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/ata/pata_legacy.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/io_uring/napi.c b/io_uring/napi.c
-index 883a1a665907..8c18ede595c4 100644
---- a/io_uring/napi.c
-+++ b/io_uring/napi.c
-@@ -261,12 +261,14 @@ int io_unregister_napi(struct io_ring_ctx *ctx, void __user *arg)
- }
- 
- /*
-- * __io_napi_adjust_timeout() - Add napi id to the busy poll list
-+ * __io_napi_adjust_timeout() - adjust busy loop timeout
-  * @ctx: pointer to io-uring context structure
-  * @iowq: pointer to io wait queue
-  * @ts: pointer to timespec or NULL
-  *
-  * Adjust the busy loop timeout according to timespec and busy poll timeout.
-+ * If the specified NAPI timeout is bigger than the wait timeout, then adjust
-+ * the NAPI timeout accordingly.
-  */
- void __io_napi_adjust_timeout(struct io_ring_ctx *ctx, struct io_wait_queue *iowq,
- 			      struct timespec64 *ts)
-@@ -274,16 +276,16 @@ void __io_napi_adjust_timeout(struct io_ring_ctx *ctx, struct io_wait_queue *iow
- 	unsigned int poll_to = READ_ONCE(ctx->napi_busy_poll_to);
- 
- 	if (ts) {
--		struct timespec64 poll_to_ts = ns_to_timespec64(1000 * (s64)poll_to);
-+		struct timespec64 poll_to_ts;
- 
--		if (timespec64_compare(ts, &poll_to_ts) > 0) {
--			*ts = timespec64_sub(*ts, poll_to_ts);
--		} else {
--			u64 to = timespec64_to_ns(ts);
+--- a/drivers/ata/pata_legacy.c
++++ b/drivers/ata/pata_legacy.c
+@@ -128,8 +128,6 @@ static int legacy_port[NR_HOST] = { 0x1f
+ static struct legacy_probe probe_list[NR_HOST];
+ static struct legacy_data legacy_data[NR_HOST];
+ static struct ata_host *legacy_host[NR_HOST];
+-static int nr_legacy_host;
 -
--			do_div(to, 1000);
--			ts->tv_sec = 0;
--			ts->tv_nsec = 0;
-+		poll_to_ts = ns_to_timespec64(1000 * (s64)poll_to);
-+		if (timespec64_compare(ts, &poll_to_ts) < 0) {
-+			s64 poll_to_ns = timespec64_to_ns(ts);
-+			if (poll_to_ns > 0) {
-+				u64 val = poll_to_ns + 999;
-+				do_div(val, (s64) 1000);
-+				poll_to = val;
-+			}
- 		}
- 	}
  
--- 
-2.45.2
-
+ static int probe_all;		/* Set to check all ISA port ranges */
+ static int ht6560a;		/* HT 6560A on primary 1, second 2, both 3 */
+@@ -1253,9 +1251,11 @@ static __exit void legacy_exit(void)
+ {
+ 	int i;
+ 
+-	for (i = 0; i < nr_legacy_host; i++) {
++	for (i = 0; i < NR_HOST; i++) {
+ 		struct legacy_data *ld = &legacy_data[i];
+-		ata_host_detach(legacy_host[i]);
++
++		if (legacy_host[i])
++			ata_host_detach(legacy_host[i]);
+ 		platform_device_unregister(ld->platform_dev);
+ 	}
+ }
 
 
 
