@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-51728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5F4907151
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:36:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16F7906F9D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:22:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A29551F242EA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:36:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10719B26F52
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4371428E9;
-	Thu, 13 Jun 2024 12:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B171487DA;
+	Thu, 13 Jun 2024 12:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPoVNd3V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4aaPA+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48ADA81ABE;
-	Thu, 13 Jun 2024 12:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC121487CB;
+	Thu, 13 Jun 2024 12:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282141; cv=none; b=ON/wJUwUhUeur2ef+FwnDyHXAcmjJdPC251StbS5IoquZ+wraE700WhZg/HxLS9BfAvSM2Wc0nH794varUoKQgsLUu2DaelRjB929IRovOk75JQxtflYGXZBk6sDkpL8bUeoFbdC4MJdrxjPL8hPgCcqmEcO3gdAEu3kHAJHL1Q=
+	t=1718281024; cv=none; b=ic7kL0uZo9VhWxpcW6fgRMIoVduPs9bxw0hsiW1YPQ+h3nZL+mGM8qdfHYbCxrk3SptJXiRODi581QZSXtZNJQ2ag8dPUGA5vmYubL3QR2e42XrWXjTB9/kvnntbGzbGI3jl5VhWO5KyfTYjiVZzt76Fzo6MPq10AMYtn6BZMNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282141; c=relaxed/simple;
-	bh=lueb+Yxirgi0o/k6dBhCIorgLZbkZBMzlL/fiWPBfq8=;
+	s=arc-20240116; t=1718281024; c=relaxed/simple;
+	bh=qZ5KFg8/dL5w2zep4GFHhjtfka21iaCS0rwPdVuZHUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z/mUOfZe2AmRykuxzUaV7i3ZqIBbgcTGixGTq3jMU33ItOJIGpHsMeUXZUuM5u6GsQBU8KQe2MYU/16eXnznte9SLuBGPzJCkxPn0lRkQ6gqL7P0qbCZqBE9ILiwJvON61UMk2oIueXmuJ+wHSOEe269Sv1mdTeLfajdoeAvm0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPoVNd3V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C422BC2BBFC;
-	Thu, 13 Jun 2024 12:35:40 +0000 (UTC)
+	 MIME-Version; b=UCfZOGxzB+GAqhvdlBx9aICL0jl9Jbt9rUC5MlqqJCQKVABk2Dsq2SYWSe1VRqw1u3QVgVypcEGCh1vMZNQEem3FOJJ+DYXoPbw4UWItEwjA+BKdT+0CO8DLEAKAH3wPQhyR04S83ECBKxDnS4xDmwPgBKGgb08/8yqwQAY2lOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4aaPA+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F67C4AF1A;
+	Thu, 13 Jun 2024 12:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282141;
-	bh=lueb+Yxirgi0o/k6dBhCIorgLZbkZBMzlL/fiWPBfq8=;
+	s=korg; t=1718281024;
+	bh=qZ5KFg8/dL5w2zep4GFHhjtfka21iaCS0rwPdVuZHUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sPoVNd3VbRX0/TGBtjcpLaIpmwSIHsh1xuVJoThGfa95GVRajq9Ft3YJVCAuYnQRG
-	 kXydafLDQ9M+gjCDO+xJQXM7+NuZY7PaS5SeV4tJWhfKYIu2GahF5IrtiH8DvZ1LYD
-	 HG1Hv81/YGjJkdlZNvnnV8a+f7+aWI+4Lxo6xqMA=
+	b=j4aaPA+PU6hMVD53HKWWDG4ArGLN2nWKule6fFRGBGjeqanPcnVzpiOT4K7tiM9Q6
+	 Pj8K65Oi52kPW3u5Zd/TR/r73rzPA0kXjJci7S+uunl0y5gSqSwFCPixvh9FBGfZYD
+	 GKvoixzei3P49K2aXQp3o30qdoPtuBWayNQm+V7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qixin Liao <liaoqixin@huawei.com>,
-	Cheng Yu <serein.chengyu@huawei.com>,
-	Zhang Qiao <zhangqiao22@huawei.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 176/402] sched/core: Fix incorrect initialization of the burst parameter in cpu_max_write()
+Subject: [PATCH 5.10 115/317] RDMA/hns: Use complete parentheses in macros
 Date: Thu, 13 Jun 2024 13:32:13 +0200
-Message-ID: <20240613113309.010790114@linuxfoundation.org>
+Message-ID: <20240613113252.000147845@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheng Yu <serein.chengyu@huawei.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 49217ea147df7647cb89161b805c797487783fc0 ]
+[ Upstream commit 4125269bb9b22e1d8cdf4412c81be8074dbc61ca ]
 
-In the cgroup v2 CPU subsystem, assuming we have a
-cgroup named 'test', and we set cpu.max and cpu.max.burst:
+Use complete parentheses to ensure that macro expansion does
+not produce unexpected results.
 
-    # echo 1000000 > /sys/fs/cgroup/test/cpu.max
-    # echo 1000000 > /sys/fs/cgroup/test/cpu.max.burst
-
-then we check cpu.max and cpu.max.burst:
-
-    # cat /sys/fs/cgroup/test/cpu.max
-    1000000 100000
-    # cat /sys/fs/cgroup/test/cpu.max.burst
-    1000000
-
-Next we set cpu.max again and check cpu.max and
-cpu.max.burst:
-
-    # echo 2000000 > /sys/fs/cgroup/test/cpu.max
-    # cat /sys/fs/cgroup/test/cpu.max
-    2000000 100000
-
-    # cat /sys/fs/cgroup/test/cpu.max.burst
-    1000
-
-... we find that the cpu.max.burst value changed unexpectedly.
-
-In cpu_max_write(), the unit of the burst value returned
-by tg_get_cfs_burst() is microseconds, while in cpu_max_write(),
-the burst unit used for calculation should be nanoseconds,
-which leads to the bug.
-
-To fix it, get the burst value directly from tg->cfs_bandwidth.burst.
-
-Fixes: f4183717b370 ("sched/fair: Introduce the burstable CFS controller")
-Reported-by: Qixin Liao <liaoqixin@huawei.com>
-Signed-off-by: Cheng Yu <serein.chengyu@huawei.com>
-Signed-off-by: Zhang Qiao <zhangqiao22@huawei.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20240424132438.514720-1-serein.chengyu@huawei.com
+Fixes: a25d13cbe816 ("RDMA/hns: Add the interfaces to support multi hop addressing for the contexts in hip08")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240412091616.370789-10-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hem.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 25b8ea91168ea..b43da6201b9aa 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -10828,7 +10828,7 @@ static ssize_t cpu_max_write(struct kernfs_open_file *of,
- {
- 	struct task_group *tg = css_tg(of_css(of));
- 	u64 period = tg_get_cfs_period(tg);
--	u64 burst = tg_get_cfs_burst(tg);
-+	u64 burst = tg->cfs_bandwidth.burst;
- 	u64 quota;
- 	int ret;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.h b/drivers/infiniband/hw/hns/hns_roce_hem.h
+index b7617786b1005..5b2162a2b8cef 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hem.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hem.h
+@@ -60,16 +60,16 @@ enum {
+ 	 (sizeof(struct scatterlist) + sizeof(void *)))
  
+ #define check_whether_bt_num_3(type, hop_num) \
+-	(type < HEM_TYPE_MTT && hop_num == 2)
++	((type) < HEM_TYPE_MTT && (hop_num) == 2)
+ 
+ #define check_whether_bt_num_2(type, hop_num) \
+-	((type < HEM_TYPE_MTT && hop_num == 1) || \
+-	(type >= HEM_TYPE_MTT && hop_num == 2))
++	(((type) < HEM_TYPE_MTT && (hop_num) == 1) || \
++	((type) >= HEM_TYPE_MTT && (hop_num) == 2))
+ 
+ #define check_whether_bt_num_1(type, hop_num) \
+-	((type < HEM_TYPE_MTT && hop_num == HNS_ROCE_HOP_NUM_0) || \
+-	(type >= HEM_TYPE_MTT && hop_num == 1) || \
+-	(type >= HEM_TYPE_MTT && hop_num == HNS_ROCE_HOP_NUM_0))
++	(((type) < HEM_TYPE_MTT && (hop_num) == HNS_ROCE_HOP_NUM_0) || \
++	((type) >= HEM_TYPE_MTT && (hop_num) == 1) || \
++	((type) >= HEM_TYPE_MTT && (hop_num) == HNS_ROCE_HOP_NUM_0))
+ 
+ struct hns_roce_hem_chunk {
+ 	struct list_head	 list;
 -- 
 2.43.0
 
