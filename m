@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-51962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFC2390726D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:47:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BFA9072F2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:55:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 321481F21BF3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:47:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2481DB297AB
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:50:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5BB2144312;
-	Thu, 13 Jun 2024 12:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30ECC143C59;
+	Thu, 13 Jun 2024 12:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjFVGhhO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IbNrQdRu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E927384;
-	Thu, 13 Jun 2024 12:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43DC384;
+	Thu, 13 Jun 2024 12:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282828; cv=none; b=GrJL04NCzD1vYbX58uyfrsX7o6SHvC3kwulmrAlOoyTcXOQv9tS3oU8WGdF2/LEFmZA3JC3L+T5dY2likKLmXRiv0DzPv2NAcK0tFcbTv0cmbVo2wpGxRS/kF7Y2Q7iho8amnrIfDHaGZQpN1Xz1bFl5xUZgf0aMuFSa74DoCBc=
+	t=1718282961; cv=none; b=cBCkEBKT2g3kbea0juF7R5hHc1sVGNHX9WHNAXm9ehsEd+0oIuFfr574DH4VF+AzUhrK0scjekDxEkPGY8RF5E+PUSnCaM54kvB0VOzkjP2wV2G6bExlLuCf5ENfOICtALgOfMMTm9mFDghB/0j9R+asY1QvyBudQioBd6c2D8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282828; c=relaxed/simple;
-	bh=A05lNfyy/dg17kBByh2CN/1x5PLuCEidaw0qKXy2wuw=;
+	s=arc-20240116; t=1718282961; c=relaxed/simple;
+	bh=qcn5L4eACC+RJU8R4Md8TgmHNR77qSY64Q9M5w+kMn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MXOONuwYiZHkOnrw3GIacAQjuWJyuVjkfafrvUOqZMCs85KxkGiyU0su0KST9d/hQ6FVVxis24ogsZMZKh8XUPqZO9tVHYupWjuHz0hPyA5aDLLPIctL+teKR4SfCIjv2UlcknCff1hnvtPxFfSicRvP0cSy3lt2Eri8DZ76gB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjFVGhhO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05216C2BBFC;
-	Thu, 13 Jun 2024 12:47:07 +0000 (UTC)
+	 MIME-Version; b=lG8g85do8ouTC+cBfddpA617U/8EyiH2w5h26nr2ns/hEd0RsMuMb4Ey8ZSZb9CGhwTuCa+ndJdTmWH3FYlEKQtmL9A0OunnjRNvkk2qE8q0tdpT9VT/5s4GRQyMuZfqXkkwWPORmqBwdF4Zwgm9XObF6Devf4n7c8bqbunYJZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IbNrQdRu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68909C2BBFC;
+	Thu, 13 Jun 2024 12:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282828;
-	bh=A05lNfyy/dg17kBByh2CN/1x5PLuCEidaw0qKXy2wuw=;
+	s=korg; t=1718282960;
+	bh=qcn5L4eACC+RJU8R4Md8TgmHNR77qSY64Q9M5w+kMn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AjFVGhhO4Rw55cuaDoHBD86rdZf5Z7gjvA/XykqxcG419qpFMcnrRS2kB8Sokpst+
-	 v3dy80HJM8P9i1Qm8dJB97E9/OjPmZkmMfu1pgl3j6Thv1Yg8ppznmeGKhBB7RBdf0
-	 jsNs5N5ezBAh11sZFA3hL2eXNw0TRwOSLpWNcnvY=
+	b=IbNrQdRu2vBeUa5cLOdeAnR22RQkIIVYuFYHWGlRhLn4IexKsqDrh0Nni1tb3ftZm
+	 VtFSxcA6QO97lhQRMjN9NQtTv7MM4wa9I071L5kKzaJu427Bbp3FdctBxe/O7mxJRP
+	 GmAYr9TkcW+sDRvp+bKvyRARQaBcHzB1tURSpEhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Clement Lecigne <clecigne@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Tom Herbert <tom@herbertland.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.15 391/402] net: fix __dst_negative_advice() race
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.1 50/85] KVM: arm64: AArch32: Fix spurious trapping of conditional instructions
 Date: Thu, 13 Jun 2024 13:35:48 +0200
-Message-ID: <20240613113317.405617154@linuxfoundation.org>
+Message-ID: <20240613113216.069747361@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+References: <20240613113214.134806994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,200 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 92f1655aa2b2294d0b49925f3b875a634bd3b59e upstream.
+commit c92e8b9eacebb4060634ebd9395bba1b29aadc68 upstream.
 
-__dst_negative_advice() does not enforce proper RCU rules when
-sk->dst_cache must be cleared, leading to possible UAF.
+We recently upgraded the view of ESR_EL2 to 64bit, in keeping with
+the requirements of the architecture.
 
-RCU rules are that we must first clear sk->sk_dst_cache,
-then call dst_release(old_dst).
+However, the AArch32 emulation code was left unaudited, and the
+(already dodgy) code that triages whether a trap is spurious or not
+(because the condition code failed) broke in a subtle way:
 
-Note that sk_dst_reset(sk) is implementing this protocol correctly,
-while __dst_negative_advice() uses the wrong order.
+If ESR_EL2.ISS2 is ever non-zero (unlikely, but hey, this is the ARM
+architecture we're talking about), the hack that tests the top bits
+of ESR_EL2.EC will break in an interesting way.
 
-Given that ip6_negative_advice() has special logic
-against RTF_CACHE, this means each of the three ->negative_advice()
-existing methods must perform the sk_dst_reset() themselves.
+Instead, use kvm_vcpu_trap_get_class() to obtain the EC, and list
+all the possible ECs that can fail a condition code check.
 
-Note the check against NULL dst is centralized in
-__dst_negative_advice(), there is no need to duplicate
-it in various callbacks.
+While we're at it, add SMC32 to the list, as it is explicitly listed
+as being allowed to trap despite failing a condition code check (as
+described in the HCR_EL2.TSC documentation).
 
-Many thanks to Clement Lecigne for tracking this issue.
-
-This old bug became visible after the blamed commit, using UDP sockets.
-
-Fixes: a87cb3e48ee8 ("net: Facility to report route quality of connected sockets")
-Reported-by: Clement Lecigne <clecigne@google.com>
-Diagnosed-by: Clement Lecigne <clecigne@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Tom Herbert <tom@herbertland.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240528114353.1794151-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Lee: Stable backport]
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 0b12620fddb8 ("KVM: arm64: Treat ESR_EL2 as a 64-bit register")
+Cc: stable@vger.kernel.org
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240524141956.1450304-4-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/dst_ops.h  |    2 +-
- include/net/sock.h     |   13 +++----------
- net/ipv4/route.c       |   22 ++++++++--------------
- net/ipv6/route.c       |   29 +++++++++++++++--------------
- net/xfrm/xfrm_policy.c |   11 +++--------
- 5 files changed, 30 insertions(+), 47 deletions(-)
+ arch/arm64/kvm/hyp/aarch32.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/include/net/dst_ops.h
-+++ b/include/net/dst_ops.h
-@@ -24,7 +24,7 @@ struct dst_ops {
- 	void			(*destroy)(struct dst_entry *);
- 	void			(*ifdown)(struct dst_entry *,
- 					  struct net_device *dev, int how);
--	struct dst_entry *	(*negative_advice)(struct dst_entry *);
-+	void			(*negative_advice)(struct sock *sk, struct dst_entry *);
- 	void			(*link_failure)(struct sk_buff *);
- 	void			(*update_pmtu)(struct dst_entry *dst, struct sock *sk,
- 					       struct sk_buff *skb, u32 mtu,
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2082,17 +2082,10 @@ sk_dst_get(struct sock *sk)
+--- a/arch/arm64/kvm/hyp/aarch32.c
++++ b/arch/arm64/kvm/hyp/aarch32.c
+@@ -50,9 +50,23 @@ bool kvm_condition_valid32(const struct
+ 	u32 cpsr_cond;
+ 	int cond;
  
- static inline void __dst_negative_advice(struct sock *sk)
- {
--	struct dst_entry *ndst, *dst = __sk_dst_get(sk);
-+	struct dst_entry *dst = __sk_dst_get(sk);
+-	/* Top two bits non-zero?  Unconditional. */
+-	if (kvm_vcpu_get_esr(vcpu) >> 30)
++	/*
++	 * These are the exception classes that could fire with a
++	 * conditional instruction.
++	 */
++	switch (kvm_vcpu_trap_get_class(vcpu)) {
++	case ESR_ELx_EC_CP15_32:
++	case ESR_ELx_EC_CP15_64:
++	case ESR_ELx_EC_CP14_MR:
++	case ESR_ELx_EC_CP14_LS:
++	case ESR_ELx_EC_FP_ASIMD:
++	case ESR_ELx_EC_CP10_ID:
++	case ESR_ELx_EC_CP14_64:
++	case ESR_ELx_EC_SVC32:
++		break;
++	default:
+ 		return true;
++	}
  
--	if (dst && dst->ops->negative_advice) {
--		ndst = dst->ops->negative_advice(dst);
--
--		if (ndst != dst) {
--			rcu_assign_pointer(sk->sk_dst_cache, ndst);
--			sk_tx_queue_clear(sk);
--			WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
--		}
--	}
-+	if (dst && dst->ops->negative_advice)
-+		dst->ops->negative_advice(sk, dst);
- }
- 
- static inline void dst_negative_advice(struct sock *sk)
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -139,7 +139,8 @@ struct dst_entry	*ipv4_dst_check(struct
- static unsigned int	 ipv4_default_advmss(const struct dst_entry *dst);
- INDIRECT_CALLABLE_SCOPE
- unsigned int		ipv4_mtu(const struct dst_entry *dst);
--static struct dst_entry *ipv4_negative_advice(struct dst_entry *dst);
-+static void		ipv4_negative_advice(struct sock *sk,
-+					     struct dst_entry *dst);
- static void		 ipv4_link_failure(struct sk_buff *skb);
- static void		 ip_rt_update_pmtu(struct dst_entry *dst, struct sock *sk,
- 					   struct sk_buff *skb, u32 mtu,
-@@ -844,22 +845,15 @@ static void ip_do_redirect(struct dst_en
- 	__ip_do_redirect(rt, skb, &fl4, true);
- }
- 
--static struct dst_entry *ipv4_negative_advice(struct dst_entry *dst)
-+static void ipv4_negative_advice(struct sock *sk,
-+				 struct dst_entry *dst)
- {
- 	struct rtable *rt = (struct rtable *)dst;
--	struct dst_entry *ret = dst;
- 
--	if (rt) {
--		if (dst->obsolete > 0) {
--			ip_rt_put(rt);
--			ret = NULL;
--		} else if ((rt->rt_flags & RTCF_REDIRECTED) ||
--			   rt->dst.expires) {
--			ip_rt_put(rt);
--			ret = NULL;
--		}
--	}
--	return ret;
-+	if ((dst->obsolete > 0) ||
-+	    (rt->rt_flags & RTCF_REDIRECTED) ||
-+	    rt->dst.expires)
-+		sk_dst_reset(sk);
- }
- 
- /*
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -87,7 +87,8 @@ struct dst_entry	*ip6_dst_check(struct d
- static unsigned int	 ip6_default_advmss(const struct dst_entry *dst);
- INDIRECT_CALLABLE_SCOPE
- unsigned int		ip6_mtu(const struct dst_entry *dst);
--static struct dst_entry *ip6_negative_advice(struct dst_entry *);
-+static void		ip6_negative_advice(struct sock *sk,
-+					    struct dst_entry *dst);
- static void		ip6_dst_destroy(struct dst_entry *);
- static void		ip6_dst_ifdown(struct dst_entry *,
- 				       struct net_device *dev, int how);
-@@ -2763,24 +2764,24 @@ INDIRECT_CALLABLE_SCOPE struct dst_entry
- }
- EXPORT_INDIRECT_CALLABLE(ip6_dst_check);
- 
--static struct dst_entry *ip6_negative_advice(struct dst_entry *dst)
-+static void ip6_negative_advice(struct sock *sk,
-+				struct dst_entry *dst)
- {
- 	struct rt6_info *rt = (struct rt6_info *) dst;
- 
--	if (rt) {
--		if (rt->rt6i_flags & RTF_CACHE) {
--			rcu_read_lock();
--			if (rt6_check_expired(rt)) {
--				rt6_remove_exception_rt(rt);
--				dst = NULL;
--			}
--			rcu_read_unlock();
--		} else {
--			dst_release(dst);
--			dst = NULL;
-+	if (rt->rt6i_flags & RTF_CACHE) {
-+		rcu_read_lock();
-+		if (rt6_check_expired(rt)) {
-+			/* counteract the dst_release() in sk_dst_reset() */
-+			dst_hold(dst);
-+			sk_dst_reset(sk);
-+
-+			rt6_remove_exception_rt(rt);
- 		}
-+		rcu_read_unlock();
-+		return;
- 	}
--	return dst;
-+	sk_dst_reset(sk);
- }
- 
- static void ip6_link_failure(struct sk_buff *skb)
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -3766,15 +3766,10 @@ static void xfrm_link_failure(struct sk_
- 	/* Impossible. Such dst must be popped before reaches point of failure. */
- }
- 
--static struct dst_entry *xfrm_negative_advice(struct dst_entry *dst)
-+static void xfrm_negative_advice(struct sock *sk, struct dst_entry *dst)
- {
--	if (dst) {
--		if (dst->obsolete) {
--			dst_release(dst);
--			dst = NULL;
--		}
--	}
--	return dst;
-+	if (dst->obsolete)
-+		sk_dst_reset(sk);
- }
- 
- static void xfrm_init_pmtu(struct xfrm_dst **bundle, int nr)
+ 	/* Is condition field valid? */
+ 	cond = kvm_vcpu_get_condition(vcpu);
 
 
 
