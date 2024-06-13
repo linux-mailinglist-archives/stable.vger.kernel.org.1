@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-51706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A8A907134
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED964906F2E
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3BC51F20F62
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E506284960
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4FA2566;
-	Thu, 13 Jun 2024 12:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC76145336;
+	Thu, 13 Jun 2024 12:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tL/Krl7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heUDWp4G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05124A07;
-	Thu, 13 Jun 2024 12:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D40145331;
+	Thu, 13 Jun 2024 12:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282077; cv=none; b=SlLG20eQBtvh9rESfqjq/Btia9BPjdkpU+0nHySCdqh/Di7pD+/zEpb6tOJ7ifp9UcKNYIoTg6Uf69Zd3vPCJqrwdVpYC27svgngJr9Fkfrf5JIzFa5YRRgDC+HL3nWeCl7ny9cvyyvCgRFb0REbIgUCZYHebvXRVBZiA9rrTjU=
+	t=1718280874; cv=none; b=oF4tcf6J84RjnS03ebX/qxOE/U33evKwqM+6eietJY2JeyAVgD2vFHN3Fz5Dv/0XIzM/xRieHgSCWtn1vpKXLJQZLQknb/TWVEviMEa799DjRBZxRT0gSJw6LYG11Sc/Q8l4Stzm/tvH91KHRXVi0HDnUT/2MED5l7OZYFNyQVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282077; c=relaxed/simple;
-	bh=82aztCju/V0q34RtN8rt4GVGsFnOpMnmxRZlAdr4Lfg=;
+	s=arc-20240116; t=1718280874; c=relaxed/simple;
+	bh=fmwQnHT9O4Gm4znUJtNI5FUN55TPf9D+06OeUcSV75s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVNZd0xkAnd81yGF4VwIbemrdHz4kHdft0TEG5X+MvcT+Z9DV8XOeIl1cYDGFJptvt9bB4b0OfHrUjGtLBbaBCdldctmWPZbFlzF/2MdEDE8NTI8r+U94a/GNhJetfK95rL9V8ReLHOF0PiAABP+7yVMVMfqEEJ0HO6rf5dhBA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tL/Krl7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DF7C2BBFC;
-	Thu, 13 Jun 2024 12:34:36 +0000 (UTC)
+	 MIME-Version; b=PahwcxPBB2WapH6B/dlnNZZdHC97z0AO7Fk8IdnV8iA5JzqxGEoS/maZeCJN8+Wbnu+sXFLR7l0auQxapQrtR9Lzjh1bSL+lzqEexKacF46JTxtTzrt8YJoVOVEUX+gz+IaDI1Mh5ofG6BhUtJTrImA02ZHKPlm4+bTAHppTjdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heUDWp4G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEC9C2BBFC;
+	Thu, 13 Jun 2024 12:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282076;
-	bh=82aztCju/V0q34RtN8rt4GVGsFnOpMnmxRZlAdr4Lfg=;
+	s=korg; t=1718280874;
+	bh=fmwQnHT9O4Gm4znUJtNI5FUN55TPf9D+06OeUcSV75s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tL/Krl7WmL9La1we1ZdcOmZElITkEvfyB60L3/4tVXWdeUniXz69YRsUV6U+e3Tm8
-	 a6ktTfdVlNWDMQ1VsCoyw9f8WOuFQzR77S9MrG9Ev5evz547FRm2tKtQ7Cl5RTmUQF
-	 pfiuIAYhPDbW69OMVZjYi6MiB4ua+4PsKqeHDBUE=
+	b=heUDWp4GnxXR33j6Le2CERsgXgb/mKGdOHPttM2dC2H8QnUQCdLoYzMVucjrH5kys
+	 iZuIHbay2vK2GsehcnzA5X6Dwl+A89hms8jxAWF39APVTd1qKs+IiDdVNg1gI5lQet
+	 Lkit+3LU3wo+LBLJ+alVLgXfEpt+Huo4XIh/YLXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
-	Charlene Liu <Charlene.Liu@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Su Hui <suhui@nfschina.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 123/402] drm/amd/display: Fix potential index out of bounds in color transformation function
+Subject: [PATCH 5.10 062/317] wifi: ath10k: Fix an error code problem in ath10k_dbg_sta_write_peer_debug_trigger()
 Date: Thu, 13 Jun 2024 13:31:20 +0200
-Message-ID: <20240613113306.938531756@linuxfoundation.org>
+Message-ID: <20240613113249.948494656@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,59 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 63ae548f1054a0b71678d0349c7dc9628ddd42ca ]
+[ Upstream commit c511a9c12674d246916bb16c479d496b76983193 ]
 
-Fixes index out of bounds issue in the color transformation function.
-The issue could occur when the index 'i' exceeds the number of transfer
-function points (TRANSFER_FUNC_POINTS).
+Clang Static Checker (scan-build) warns:
 
-The fix adds a check to ensure 'i' is within bounds before accessing the
-transfer function points. If 'i' is out of bounds, an error message is
-logged and the function returns false to indicate an error.
+drivers/net/wireless/ath/ath10k/debugfs_sta.c:line 429, column 3
+Value stored to 'ret' is never read.
 
-Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:405 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:406 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:407 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
+Return 'ret' rather than 'count' when 'ret' stores an error code.
 
-Fixes: b629596072e5 ("drm/amd/display: Build unity lut for shaper")
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Charlene Liu <Charlene.Liu@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: ee8b08a1be82 ("ath10k: add debugfs support to get per peer tids log via tracing")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240422034243.938962-1-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/ath/ath10k/debugfs_sta.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
-index 7a00fe525dfba..bd9bc51983fec 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
-@@ -379,6 +379,11 @@ bool cm_helper_translate_curve_to_hw_format(
- 				i += increment) {
- 			if (j == hw_points - 1)
- 				break;
-+			if (i >= TRANSFER_FUNC_POINTS) {
-+				DC_LOG_ERROR("Index out of bounds: i=%d, TRANSFER_FUNC_POINTS=%d\n",
-+					     i, TRANSFER_FUNC_POINTS);
-+				return false;
-+			}
- 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
- 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
- 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
+diff --git a/drivers/net/wireless/ath/ath10k/debugfs_sta.c b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
+index 367539f2c3700..f7912c72cba34 100644
+--- a/drivers/net/wireless/ath/ath10k/debugfs_sta.c
++++ b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
+@@ -438,7 +438,7 @@ ath10k_dbg_sta_write_peer_debug_trigger(struct file *file,
+ 	}
+ out:
+ 	mutex_unlock(&ar->conf_mutex);
+-	return count;
++	return ret ?: count;
+ }
+ 
+ static const struct file_operations fops_peer_debug_trigger = {
 -- 
 2.43.0
 
