@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BC990724F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:46:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C509906EE4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:14:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4B5D1F217A9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:46:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A3AC1C203E4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CEC84A0F;
-	Thu, 13 Jun 2024 12:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138B1145B15;
+	Thu, 13 Jun 2024 12:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRrra4p3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5sFt3F+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3D517FD;
-	Thu, 13 Jun 2024 12:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67DD13D881;
+	Thu, 13 Jun 2024 12:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282767; cv=none; b=luVkgZviZ5pHfSXmVMgAZijs27w13DUY6wj142ICUkEmxfF6Gkn6wgqaPZSidclEUoGlGDXVf6Ifk44mbEoHU8uunawQgiOXqMz/Qj0Br/BxWSFxSq4TW3f5nBx3pB8Wa/94bZS/HWznRdTJ80Fe9PNU1jGL54nXDuMhlj41Pa8=
+	t=1718280676; cv=none; b=o/PIx6AHJpJf9ylErobIaME8jyNSdzLxSa+sfOXpN6+7EHyfneNpATr4cBniPA0wrJrUCAkUHF/KaVIntr23XiaGpFmU9JMgvSSn2JRYmwMJG6fmYFdBnyTSFbr4ShNjtiJAuK3J8iC0iwEUHhQQpz6XzRURI2CndWbsgjMHgto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282767; c=relaxed/simple;
-	bh=1JBQIvWeipe4Q0+XUaabh0Co/wF6H4tl2kWGs/3+xTg=;
+	s=arc-20240116; t=1718280676; c=relaxed/simple;
+	bh=kqNdxCCy/6NBCMm7jOBjSTrmZwVLcxmDu642YbhgBfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=st5dm+4ttWmWQGz0T8fyN5XOE9AWPmu/wO0hGuRRvZdL+4RBn062A3Ti8t5+mjxBaRwF0+1btyqjmfxSuwcO4K3R69LWd/Zlkx+rSG1ifhuMVC8sHYx3zC9aCQlkupLktqHWlwA/kxJ5G/RHe1giFTYOR9ZfqV6w/dzMPa0ymZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRrra4p3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71551C32786;
-	Thu, 13 Jun 2024 12:46:06 +0000 (UTC)
+	 MIME-Version; b=T5ZAV66ydGbhnsyt+YYqc98R1KwVxOAkYRdVe6tWaLmdT3MQbdP3BHKyqgEXoTtBnLIhKj7uL+nd4BzNrDb35DUJFxmvMoCa2/toNwLCFfCZeKLOx3FpEsc7gJ9nlC13eAIBtW3nb9DnEPS4+/53/99SpAnPY+7+P65YXYjPzKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5sFt3F+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED36C2BBFC;
+	Thu, 13 Jun 2024 12:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282766;
-	bh=1JBQIvWeipe4Q0+XUaabh0Co/wF6H4tl2kWGs/3+xTg=;
+	s=korg; t=1718280676;
+	bh=kqNdxCCy/6NBCMm7jOBjSTrmZwVLcxmDu642YbhgBfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hRrra4p3FJNyamodBhS0Ulpz0JrcyjvUL4peDrRFGCm5b7R4TOMa8f1y0t1tuwXw7
-	 +QcnUjai00AIOuCtOkMY4r3Ci8IHSdV/p3ohFjgikuJNsSBFcKW6ASOCxyq8pU7xD8
-	 F+PUhAh3f1HvtvKLwquzc3s0nvKQhxhsYfm5Fk+0=
+	b=X5sFt3F+HV726Svvt8iV3tGpg1dg9kKRgz8EgnFrl6cwrtQiWm5VzU0mlEbwgiS35
+	 sD2TI6BSAdCrHVBtQRW01LSofxq37epynmkMtWwlxKWF/KwCE/E1ckLl9AzYncXIsH
+	 Uvg2e/JC3s3hRVNQUHLNTGRVcoMfS/O9Jf6R03pA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 5.15 357/402] thermal/drivers/qcom/lmh: Check for SCM availability at probe
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.6 134/137] powerpc/64/bpf: fix tail calls for PCREL addressing
 Date: Thu, 13 Jun 2024 13:35:14 +0200
-Message-ID: <20240613113316.061279137@linuxfoundation.org>
+Message-ID: <20240613113228.500841625@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Hari Bathini <hbathini@linux.ibm.com>
 
-commit d9d3490c48df572edefc0b64655259eefdcbb9be upstream.
+commit 2ecfe59cd7de1f202e9af2516a61fbbf93d0bd4d upstream.
 
-Up until now, the necessary scm availability check has not been
-performed, leading to possible null pointer dereferences (which did
-happen for me on RB1).
+With PCREL addressing, there is no kernel TOC. So, it is not setup in
+prologue when PCREL addressing is used. But the number of instructions
+to skip on a tail call was not adjusted accordingly. That resulted in
+not so obvious failures while using tailcalls. 'tailcalls' selftest
+crashed the system with the below call trace:
 
-Fix that.
+  bpf_test_run+0xe8/0x3cc (unreliable)
+  bpf_prog_test_run_skb+0x348/0x778
+  __sys_bpf+0xb04/0x2b00
+  sys_bpf+0x28/0x38
+  system_call_exception+0x168/0x340
+  system_call_vectored_common+0x15c/0x2ec
 
-Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20240308-topic-rb1_lmh-v2-2-bac3914b0fe3@linaro.org
+Also, as bpf programs are always module addresses and a bpf helper in
+general is a core kernel text address, using PC relative addressing
+often fails with "out of range of pcrel address" error. Switch to
+using kernel base for relative addressing to handle this better.
+
+Fixes: 7e3a68be42e1 ("powerpc/64: vmlinux support building with PCREL addresing")
+Cc: stable@vger.kernel.org # v6.4+
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240502173205.142794-1-hbathini@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/qcom/lmh.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/net/bpf_jit_comp64.c |   30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
---- a/drivers/thermal/qcom/lmh.c
-+++ b/drivers/thermal/qcom/lmh.c
-@@ -92,6 +92,9 @@ static int lmh_probe(struct platform_dev
- 	int temp_low, temp_high, temp_arm, cpu_id, ret;
- 	u32 node_id;
+--- a/arch/powerpc/net/bpf_jit_comp64.c
++++ b/arch/powerpc/net/bpf_jit_comp64.c
+@@ -202,7 +202,8 @@ void bpf_jit_build_epilogue(u32 *image,
+ 	EMIT(PPC_RAW_BLR());
+ }
  
-+	if (!qcom_scm_is_available())
-+		return -EPROBE_DEFER;
-+
- 	lmh_data = devm_kzalloc(dev, sizeof(*lmh_data), GFP_KERNEL);
- 	if (!lmh_data)
- 		return -ENOMEM;
+-static int bpf_jit_emit_func_call_hlp(u32 *image, struct codegen_context *ctx, u64 func)
++static int
++bpf_jit_emit_func_call_hlp(u32 *image, u32 *fimage, struct codegen_context *ctx, u64 func)
+ {
+ 	unsigned long func_addr = func ? ppc_function_entry((void *)func) : 0;
+ 	long reladdr;
+@@ -211,19 +212,20 @@ static int bpf_jit_emit_func_call_hlp(u3
+ 		return -EINVAL;
+ 
+ 	if (IS_ENABLED(CONFIG_PPC_KERNEL_PCREL)) {
+-		reladdr = func_addr - CTX_NIA(ctx);
++		reladdr = func_addr - local_paca->kernelbase;
+ 
+ 		if (reladdr >= (long)SZ_8G || reladdr < -(long)SZ_8G) {
+-			pr_err("eBPF: address of %ps out of range of pcrel address.\n",
+-				(void *)func);
++			pr_err("eBPF: address of %ps out of range of 34-bit relative address.\n",
++			       (void *)func);
+ 			return -ERANGE;
+ 		}
+-		/* pla r12,addr */
+-		EMIT(PPC_PREFIX_MLS | __PPC_PRFX_R(1) | IMM_H18(reladdr));
+-		EMIT(PPC_INST_PADDI | ___PPC_RT(_R12) | IMM_L(reladdr));
+-		EMIT(PPC_RAW_MTCTR(_R12));
+-		EMIT(PPC_RAW_BCTR());
+-
++		EMIT(PPC_RAW_LD(_R12, _R13, offsetof(struct paca_struct, kernelbase)));
++		/* Align for subsequent prefix instruction */
++		if (!IS_ALIGNED((unsigned long)fimage + CTX_NIA(ctx), 8))
++			EMIT(PPC_RAW_NOP());
++		/* paddi r12,r12,addr */
++		EMIT(PPC_PREFIX_MLS | __PPC_PRFX_R(0) | IMM_H18(reladdr));
++		EMIT(PPC_INST_PADDI | ___PPC_RT(_R12) | ___PPC_RA(_R12) | IMM_L(reladdr));
+ 	} else {
+ 		reladdr = func_addr - kernel_toc_addr();
+ 		if (reladdr > 0x7FFFFFFF || reladdr < -(0x80000000L)) {
+@@ -233,9 +235,9 @@ static int bpf_jit_emit_func_call_hlp(u3
+ 
+ 		EMIT(PPC_RAW_ADDIS(_R12, _R2, PPC_HA(reladdr)));
+ 		EMIT(PPC_RAW_ADDI(_R12, _R12, PPC_LO(reladdr)));
+-		EMIT(PPC_RAW_MTCTR(_R12));
+-		EMIT(PPC_RAW_BCTRL());
+ 	}
++	EMIT(PPC_RAW_MTCTR(_R12));
++	EMIT(PPC_RAW_BCTRL());
+ 
+ 	return 0;
+ }
+@@ -285,7 +287,7 @@ static int bpf_jit_emit_tail_call(u32 *i
+ 	int b2p_index = bpf_to_ppc(BPF_REG_3);
+ 	int bpf_tailcall_prologue_size = 8;
+ 
+-	if (IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2))
++	if (!IS_ENABLED(CONFIG_PPC_KERNEL_PCREL) && IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2))
+ 		bpf_tailcall_prologue_size += 4; /* skip past the toc load */
+ 
+ 	/*
+@@ -993,7 +995,7 @@ emit_clear:
+ 				return ret;
+ 
+ 			if (func_addr_fixed)
+-				ret = bpf_jit_emit_func_call_hlp(image, ctx, func_addr);
++				ret = bpf_jit_emit_func_call_hlp(image, fimage, ctx, func_addr);
+ 			else
+ 				ret = bpf_jit_emit_func_call_rel(image, ctx, func_addr);
+ 
 
 
 
