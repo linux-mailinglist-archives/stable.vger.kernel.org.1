@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-51135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0959E906E7A
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D29E906FE8
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31CD81C22A86
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DB52B232F5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466DD147C76;
-	Thu, 13 Jun 2024 12:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0AE145A17;
+	Thu, 13 Jun 2024 12:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TucVT8N1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrrnH1LF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0375F145359;
-	Thu, 13 Jun 2024 12:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D391459FA;
+	Thu, 13 Jun 2024 12:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280412; cv=none; b=qXvcSIJyVJcwAqqNPvnleKqSH5Z2GYlvcutQsrcn7tPmyJyVYEP25IEZwn9FxX6hoZqPGs339kh11eZWhysGZKuMVu06nt+4ONtJE04OBmaH9MUsHL+BeBZxUKvh+cGawik+thNf7uJPzaFMZt+hctKN5qtXAfieZXiKi3uJ604=
+	t=1718281204; cv=none; b=TZ0vBXkI7v2zOfh2/Q5EK4U/E4xSE6me/B3Gwbj8f2/q0UVoK3ihU5ycGEJwKiwO1OWBqgVs1StJqFqaV8DgovTlHET11V9ULF3Q64fyoNhJd+t2kVn5ukAEXd0/2sdlHFrPHh5LPWE5LKxc6gXwJ5P2UDwojR8wIkGqDhNsBEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280412; c=relaxed/simple;
-	bh=TwN/TWIES48+YXv5/VV6ruNQRhx8zEP2dwmitafp7cc=;
+	s=arc-20240116; t=1718281204; c=relaxed/simple;
+	bh=v/yGC2V6EIHQTTkCCALZEOJTguGVU4XviFlgOtzzsak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ifLc3kJbfWGbocMBNj+xlj5e9nzTLdhVBhuVZnnyhaIbEBLIdMmEyW5SsZ69lIybDXtJRBxRFaTD8pKvHBCn8BXWBq2NjI30aHqojUd5Ac+LEo2Zp/TC/wm8oUXqQZ6oWebBgTjLcikuRegGjW+ueZtHhfR3nnZvjx50fT9PJJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TucVT8N1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E541C2BBFC;
-	Thu, 13 Jun 2024 12:06:51 +0000 (UTC)
+	 MIME-Version; b=uyt0iVpARBsY1+X1VHVzKEpR1cAQj1zdJGMEXjOEx/xEbYGF+ulJ0esWR1bSlR1UglJj9cK79p9OVkPMeLFO91Icoca/OVpAomU789L1OoLTHPV3jwRgY8DFLKy644LuIsZ6BaZnFTgCe0s/nw77vbuCK+q5BtLo2yot0pqUIrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrrnH1LF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D08C2BBFC;
+	Thu, 13 Jun 2024 12:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280411;
-	bh=TwN/TWIES48+YXv5/VV6ruNQRhx8zEP2dwmitafp7cc=;
+	s=korg; t=1718281204;
+	bh=v/yGC2V6EIHQTTkCCALZEOJTguGVU4XviFlgOtzzsak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TucVT8N1QjQD7d8DKBR+NDTVlFOe+GfRzMarALLSFhOXhKQX1B1DPku/ibVB5aSzC
-	 DJJ9kHvYZ4g+DjbxTDIUgmOhBj0hxiXpAuXFxUEn3fPePNAFCz5b9HXYRDEsJjWVha
-	 kYGR5/u3EPG/uOfsNZpvLFdohYxbLA7xfkV2V1Nw=
+	b=jrrnH1LFQK0gcM6smjHgQgq0iGmxZu5stkS3DxpD/8GTE19R3mD9k+HDMfoa9q3Ex
+	 lN/SdBz8WrYzRHsbhN5ae620oYmYDJL/15QpA+dQwhPlnHtPg88a9EXLiPajgAdc7r
+	 cnWzO6hEMRnkIAuydLbnI/OY6ixOEf6sS/jmlRSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Po-Hsu Lin <po-hsu.lin@canonical.com>
-Subject: [PATCH 6.6 014/137] selftests: net: List helper scripts in TEST_FILES Makefile variable
+	He Zhe <zhe.he@windriver.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 176/317] perf bench internals inject-build-id: Fix trap divide when collecting just one DSO
 Date: Thu, 13 Jun 2024 13:33:14 +0200
-Message-ID: <20240613113223.843530476@linuxfoundation.org>
+Message-ID: <20240613113254.367070562@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +68,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Po-Hsu Lin <po-hsu.lin@canonical.com>
+From: He Zhe <zhe.he@windriver.com>
 
-From: Benjamin Poirier <bpoirier@nvidia.com>
+[ Upstream commit d9180e23fbfa3875424d3a6b28b71b072862a52a ]
 
-commit 06efafd8608dac0c3a480539acc66ee41d2fb430 upstream.
+'perf bench internals inject-build-id' suffers from the following error when
+only one DSO is collected.
 
-Some scripts are not tests themselves; they contain utility functions used
-by other tests. According to Documentation/dev-tools/kselftest.rst, such
-files should be listed in TEST_FILES. Move those utility scripts to
-TEST_FILES.
+  # perf bench internals inject-build-id -v
+    Collected 1 DSOs
+  traps: internals-injec[2305] trap divide error
+  ip:557566ba6394 sp:7ffd4de97fe0 error:0 in perf[557566b2a000+23d000]
+    Build-id injection benchmark
+    Iteration #1
+  Floating point exception
 
-Fixes: 1751eb42ddb5 ("selftests: net: use TEST_PROGS_EXTENDED")
-Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
-Fixes: b99ac1841147 ("kselftests/net: add missed setup_loopback.sh/setup_veth.sh to Makefile")
-Fixes: f5173fe3e13b ("selftests: net: included needed helper in the install targets")
-Suggested-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
-Link: https://lore.kernel.org/r/20240131140848.360618-5-bpoirier@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[PHLin: ignore the non-existing lib.sh]
-Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch removes the unnecessary minus one from the divisor which also
+corrects the randomization range.
+
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: 0bf02a0d80427f26 ("perf bench: Add build-id injection benchmark")
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240507065026.2652929-1-zhe.he@windriver.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/Makefile |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tools/perf/bench/inject-buildid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -53,9 +53,7 @@ TEST_PROGS += bind_bhash.sh
- TEST_PROGS += ip_local_port_range.sh
- TEST_PROGS += rps_default_mask.sh
- TEST_PROGS += big_tcp.sh
--TEST_PROGS_EXTENDED := in_netns.sh setup_loopback.sh setup_veth.sh
--TEST_PROGS_EXTENDED += toeplitz_client.sh toeplitz.sh
--TEST_PROGS_EXTENDED += net_helper.sh
-+TEST_PROGS_EXTENDED := toeplitz_client.sh toeplitz.sh
- TEST_GEN_FILES =  socket nettest
- TEST_GEN_FILES += psock_fanout psock_tpacket msg_zerocopy reuseport_addr_any
- TEST_GEN_FILES += tcp_mmap tcp_inq psock_snd txring_overwrite
-@@ -94,6 +92,7 @@ TEST_PROGS += test_vxlan_nolocalbypass.s
- TEST_PROGS += test_bridge_backup_port.sh
+diff --git a/tools/perf/bench/inject-buildid.c b/tools/perf/bench/inject-buildid.c
+index f4ec01da8da68..922b3c3837642 100644
+--- a/tools/perf/bench/inject-buildid.c
++++ b/tools/perf/bench/inject-buildid.c
+@@ -361,7 +361,7 @@ static int inject_build_id(struct bench_data *data, u64 *max_rss)
+ 		return -1;
  
- TEST_FILES := settings
-+TEST_FILES += in_netns.sh net_helper.sh setup_loopback.sh setup_veth.sh
+ 	for (i = 0; i < nr_mmaps; i++) {
+-		int idx = rand() % (nr_dsos - 1);
++		int idx = rand() % nr_dsos;
+ 		struct bench_dso *dso = &dsos[idx];
+ 		u64 timestamp = rand() % 1000000;
  
- include ../lib.mk
- 
+-- 
+2.43.0
+
 
 
 
