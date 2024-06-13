@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-51722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 364D590714B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:35:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F28B7906F62
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:19:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9B7A28235D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:35:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F13FE1C22DA0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052FA17FD;
-	Thu, 13 Jun 2024 12:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52703145FEA;
+	Thu, 13 Jun 2024 12:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9CTws30"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LocBVme2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F6A399;
-	Thu, 13 Jun 2024 12:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F0114533A;
+	Thu, 13 Jun 2024 12:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282123; cv=none; b=I6DX0ET4+v6nDTTIbCbPFmJBpIybr40pHqmmmAa3T5FgC1rtD+eadSShjMppl5UbD4dMiapnKADlrqR21zcdHJEvij2IfZWsf2TS8pgOEr7QdXY9IySRnlxJDFmQpATOvv10EKNbESNXMQbMTjne3vPXZxD4K6fla3C3gAgba3M=
+	t=1718281007; cv=none; b=qrqKh7Ru+Xi/0uvR7CO0L8vt9qymDsAMIy+MRmyikNwhNzpGbPgauGDt6cUC43rmgewOxY/Un5BxvBha+7K0dKATGXvPAMpWQU98/3Un3PqC5KttQ+BqvUPOCAAoT+kDDAw2SJVkhhjBAb1FEwToWVFq6/CSlT7r7A0v4Pp+26c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282123; c=relaxed/simple;
-	bh=9ZWYIh1nPY/n2Dqjvr4HbVsBVnfUBJ2OSjbDFQHouy4=;
+	s=arc-20240116; t=1718281007; c=relaxed/simple;
+	bh=C+4CAtPcMUEQhudMFq3PkGiYNdE7v6Ot39v1jNhu6bE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fybE/VPKeYCvFFdd+dxv2e7Fn8dv94lmJ5tE/h0XcAVXs3jKI/e8dTsCt33irEltxTMZ9OZ+Cdt1uYlr2RmgooA0InMfOws0P5FzawkpkvZqCpSWEvXDu/olwN140GzvlDRekhQKL71spldPaf6JYfVNzrWlxtnwnDqn56ZSzjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9CTws30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D695C2BBFC;
-	Thu, 13 Jun 2024 12:35:23 +0000 (UTC)
+	 MIME-Version; b=uzsiYhqwM2njsqm7npdbM7zozzE7HPFsOr1PEGdjeBZnUdBXGKRHqtHnK4qigL53idmHU0Thb06ClHZm2OXbFbBYEgrgWR5c+InxpWxTTExR9gpddgOm4dEIl2Gb2gNlsw6teiVdQ02FIffMQ8ucOdpvJcy/w+e8nHFeCsp3k8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LocBVme2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DB4C2BBFC;
+	Thu, 13 Jun 2024 12:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282123;
-	bh=9ZWYIh1nPY/n2Dqjvr4HbVsBVnfUBJ2OSjbDFQHouy4=;
+	s=korg; t=1718281006;
+	bh=C+4CAtPcMUEQhudMFq3PkGiYNdE7v6Ot39v1jNhu6bE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9CTws300fetaAtUfv4j8lDYodAmLdKtB99wObNZSNYIcDZuZjuYrHwadPJb49lJD
-	 nkN/v9N71uN2p7++fR14Oifyw8/w1N5e72hd/P2SEiRps4Y0rmGoynz1ID82lBSsZh
-	 0kLQ/2KA6h0i0OQHpzKRoIee3NtKbt1UfksZD3V4=
+	b=LocBVme2BWGHEWNvS1f4kgYdlNtffnJfKDLtg57A81toFW+aZVkfeD+xad4sh6bzh
+	 0DCX7RQijt0kKugmSxpErovn9Xvj3fTE6nsnZPrsGUtsczgI8r5yr7ff3KLhHy/ETH
+	 0xnK/uwTVZTUr/xET6+voAGIoPtcPPqcnGDpwdro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Marek Vasut <marex@denx.de>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 170/402] RDMA/IPoIB: Fix format truncation compilation errors
+Subject: [PATCH 5.10 109/317] drm/panel: simple: Add missing Innolux G121X1-L03 format, flags, connector
 Date: Thu, 13 Jun 2024 13:32:07 +0200
-Message-ID: <20240613113308.776875455@linuxfoundation.org>
+Message-ID: <20240613113251.767744396@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 49ca2b2ef3d003402584c68ae7b3055ba72e750a ]
+[ Upstream commit 11ac72d033b9f577e8ba0c7a41d1c312bb232593 ]
 
-Truncate the device name to store IPoIB VLAN name.
+The .bpc = 6 implies .bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG ,
+add the missing bus_format. Add missing connector type and bus_flags
+as well.
 
-[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 allmodconfig
-[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 W=1 drivers/infiniband/ulp/ipoib/
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c: In function ‘ipoib_vlan_add’:
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:52: error: ‘%04x’
-directive output may be truncated writing 4 bytes into a region of size
-between 0 and 15 [-Werror=format-truncation=]
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |                                                    ^~~~
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:48: note: directive
-argument in the range [0, 65535]
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |                                                ^~~~~~~~~
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:9: note: ‘snprintf’ output
-between 6 and 21 bytes into a destination of size 16
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  188 |                  ppriv->dev->name, pkey);
-      |                  ~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:244: drivers/infiniband/ulp/ipoib/ipoib_vlan.o] Error 1
-make[6]: *** Waiting for unfinished jobs....
+Documentation [1] 1.4 GENERAL SPECIFICATI0NS indicates this panel is
+capable of both RGB 18bit/24bit panel, the current configuration uses
+18bit mode, .bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG , .bpc = 6.
 
-Fixes: 9baa0b036410 ("IB/ipoib: Add rtnl_link_ops support")
-Link: https://lore.kernel.org/r/e9d3e1fef69df4c9beaf402cc3ac342bad680791.1715240029.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Support for the 24bit mode would require another entry in panel-simple
+with .bus_format = MEDIA_BUS_FMT_RGB666_1X7X4_SPWG and .bpc = 8, which
+is out of scope of this fix.
+
+[1] https://www.distec.de/fileadmin/pdf/produkte/TFT-Displays/Innolux/G121X1-L03_Datasheet.pdf
+
+Fixes: f8fa17ba812b ("drm/panel: simple: Add support for Innolux G121X1-L03")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240328102746.17868-2-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/ipoib/ipoib_vlan.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-index 0322dc75396f1..323d5d5db2473 100644
---- a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-+++ b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-@@ -185,8 +185,12 @@ int ipoib_vlan_add(struct net_device *pdev, unsigned short pkey)
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 51470020ba61d..7797aad592a19 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -2235,6 +2235,9 @@ static const struct panel_desc innolux_g121x1_l03 = {
+ 		.unprepare = 200,
+ 		.disable = 400,
+ 	},
++	.bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
++	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+ };
  
- 	ppriv = ipoib_priv(pdev);
- 
--	snprintf(intf_name, sizeof(intf_name), "%s.%04x",
--		 ppriv->dev->name, pkey);
-+	/* If you increase IFNAMSIZ, update snprintf below
-+	 * to allow longer names.
-+	 */
-+	BUILD_BUG_ON(IFNAMSIZ != 16);
-+	snprintf(intf_name, sizeof(intf_name), "%.10s.%04x", ppriv->dev->name,
-+		 pkey);
- 
- 	ndev = ipoib_intf_alloc(ppriv->ca, ppriv->port, intf_name);
- 	if (IS_ERR(ndev)) {
+ /*
 -- 
 2.43.0
 
