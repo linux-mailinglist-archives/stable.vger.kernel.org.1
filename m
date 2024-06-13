@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-51457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42FE906FF3
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 055D7906E90
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 540102895AF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:24:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 898F1281448
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927B413CA9A;
-	Thu, 13 Jun 2024 12:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61576145346;
+	Thu, 13 Jun 2024 12:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYowfwmF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnuoHBKQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5127744C6F;
-	Thu, 13 Jun 2024 12:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCA613D635;
+	Thu, 13 Jun 2024 12:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281354; cv=none; b=lZpEGJrCu8P68PnrzJpG2rhnwEZ/QK3ywVWq+NqUHRN28tIRPHCs8tqc4gLlTEjiKqqVGmAhu4cjoGBYSis5jqzEcYnlV/lnvDe5lWeuohusg61HcY+yHatXcQgZHSzi6upoiS5St9TkHHhG7EjCzx/Dxi+dwbryPaMHwSs1i7A=
+	t=1718280468; cv=none; b=gSmHRqyPsyrJftHDjdmUbNqEAbcQ1Tb4+QgCrnrpQRnmdTAeOpwR0eZYgJCEHDUevAlNH7sTmt9msOv4Pf52hAy0LUWzpbb9DPx+FyPDWbcKY76jaqJKqcrCYDd77Kehf3+NSboZOwFigi+saQpqprpEiF+uGVTpE7uFCIgazNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281354; c=relaxed/simple;
-	bh=OQtA2uPmxjpf02clBF6BB5oBypDEWkjRC1VblbI75w8=;
+	s=arc-20240116; t=1718280468; c=relaxed/simple;
+	bh=mFau7EG/3sz3VKvDbAwNGA0vpGcbwNR0P9/jPYyiVF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCryjr7I5W5iENJnprzLncHrmMSMXN1aGf39CP9KjtymSajP9bqVBn63+lFEdjrEgkSfDKYht1O5Txm/QQvFFPQ4xSXM+xMVSG4t0Fao43snQ7h40l9iG3Ti40TbTuciknX6RZ4vtEukeWkIBARD/rRZ/cCT3Uo1EtdxwjmvAos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYowfwmF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC904C2BBFC;
-	Thu, 13 Jun 2024 12:22:33 +0000 (UTC)
+	 MIME-Version; b=cwsbQsrAN1frIEH8w3mGZSCyIXRceiRLtmu6FmWhl5rw8VG2LfQK6Itc/pjQp3+Yv0AYZMHbKoFpmNgKVJEeI5uT2+B26oxTtLULE6mKJQlZRavTietw36pneWEPjym1AUnd6bkgbHbRxZWwozLtEmpG/ReVjMcy5NRYQyX05sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AnuoHBKQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B57C2BBFC;
+	Thu, 13 Jun 2024 12:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281354;
-	bh=OQtA2uPmxjpf02clBF6BB5oBypDEWkjRC1VblbI75w8=;
+	s=korg; t=1718280468;
+	bh=mFau7EG/3sz3VKvDbAwNGA0vpGcbwNR0P9/jPYyiVF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OYowfwmF1tUSzrCTTfUvoCLZg/3t0tKLbubC1XCoHiEympvUbms1rsLRvuw9KMnbB
-	 fmcd8+0d29DAyX5yP+HKQD3B3HAE21tGhrTn1SHwRQjJL8CbcJ15TfDo62pgWfzIl0
-	 eUyncXFaduTGsh6lx+SA1KGP/iKdoCqhTzdHBCDU=
+	b=AnuoHBKQ4TT8OJwQAQT1iYWrhePejriihTxQHiM05qm4frcUiIdvwaxflRUFT/LW2
+	 XhG759wBs3Znv5gZhIUZK14NRPFgGDqq1xt+LrUX5tbC+3WtdzUwd+a1WHX6Yh+WQJ
+	 qkW2DEq/Xck6+zOieFeRmBC9EtShY9RhSWFLMlTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 225/317] null_blk: Fix the WARNING: modpost: missing MODULE_DESCRIPTION()
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.6 063/137] KVM: arm64: AArch32: Fix spurious trapping of conditional instructions
 Date: Thu, 13 Jun 2024 13:34:03 +0200
-Message-ID: <20240613113256.256595963@linuxfoundation.org>
+Message-ID: <20240613113225.746596749@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 9e6727f824edcdb8fdd3e6e8a0862eb49546e1cd ]
+commit c92e8b9eacebb4060634ebd9395bba1b29aadc68 upstream.
 
-No functional changes intended.
+We recently upgraded the view of ESR_EL2 to 64bit, in keeping with
+the requirements of the architecture.
 
-Fixes: f2298c0403b0 ("null_blk: multi queue aware block test driver")
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Link: https://lore.kernel.org/r/20240506075538.6064-1-yanjun.zhu@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, the AArch32 emulation code was left unaudited, and the
+(already dodgy) code that triages whether a trap is spurious or not
+(because the condition code failed) broke in a subtle way:
+
+If ESR_EL2.ISS2 is ever non-zero (unlikely, but hey, this is the ARM
+architecture we're talking about), the hack that tests the top bits
+of ESR_EL2.EC will break in an interesting way.
+
+Instead, use kvm_vcpu_trap_get_class() to obtain the EC, and list
+all the possible ECs that can fail a condition code check.
+
+While we're at it, add SMC32 to the list, as it is explicitly listed
+as being allowed to trap despite failing a condition code check (as
+described in the HCR_EL2.TSC documentation).
+
+Fixes: 0b12620fddb8 ("KVM: arm64: Treat ESR_EL2 as a 64-bit register")
+Cc: stable@vger.kernel.org
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240524141956.1450304-4-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/null_blk/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/kvm/hyp/aarch32.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index ee1c3f476a3a0..862a9420df526 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -2040,4 +2040,5 @@ module_init(null_init);
- module_exit(null_exit);
+--- a/arch/arm64/kvm/hyp/aarch32.c
++++ b/arch/arm64/kvm/hyp/aarch32.c
+@@ -50,9 +50,23 @@ bool kvm_condition_valid32(const struct
+ 	u32 cpsr_cond;
+ 	int cond;
  
- MODULE_AUTHOR("Jens Axboe <axboe@kernel.dk>");
-+MODULE_DESCRIPTION("multi queue aware block test driver");
- MODULE_LICENSE("GPL");
--- 
-2.43.0
-
+-	/* Top two bits non-zero?  Unconditional. */
+-	if (kvm_vcpu_get_esr(vcpu) >> 30)
++	/*
++	 * These are the exception classes that could fire with a
++	 * conditional instruction.
++	 */
++	switch (kvm_vcpu_trap_get_class(vcpu)) {
++	case ESR_ELx_EC_CP15_32:
++	case ESR_ELx_EC_CP15_64:
++	case ESR_ELx_EC_CP14_MR:
++	case ESR_ELx_EC_CP14_LS:
++	case ESR_ELx_EC_FP_ASIMD:
++	case ESR_ELx_EC_CP10_ID:
++	case ESR_ELx_EC_CP14_64:
++	case ESR_ELx_EC_SVC32:
++		break;
++	default:
+ 		return true;
++	}
+ 
+ 	/* Is condition field valid? */
+ 	cond = kvm_vcpu_get_condition(vcpu);
 
 
 
