@@ -1,67 +1,64 @@
-Return-Path: <stable+bounces-51791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9609071A5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:39:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC09907069
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:27:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEADA1C238B2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:39:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4A0AB2543D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311421448DC;
-	Thu, 13 Jun 2024 12:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77B1145A1C;
+	Thu, 13 Jun 2024 12:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VtU7e3V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exBawHht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35EF28FF;
-	Thu, 13 Jun 2024 12:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84378145A12;
+	Thu, 13 Jun 2024 12:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282325; cv=none; b=mw1uMU4CnTF0R+N3HR2EWW4NZ+CoCYUqfHL0janOZNo/+pgcNakeU9PXCxQrhO8wYQMQAUEzk0wyUErJNYVL3QBc6YZXzVwczzNEJ4lr84c310r1t9LiXaucoepVU2lHPAD05q6jkrJLuUENxoxy5Sl8GeYtrmhuzLcuK3Uhtyo=
+	t=1718281207; cv=none; b=MnMrTx6KkCI5Q1batFHimgl9nzYiK24m/gZqSZbjC+3o7NzYOrPyghUmnv3ttHZp7NX1VTyXGy/gZ7sAjQmZx4kdh2lJeOHGBsNVB9g9Fepxhu0z6aDqTtsARwJLi/mpGIGHNZ+DUeUyAe2q890rmvz4By7s5R/0Al5UVk4CEvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282325; c=relaxed/simple;
-	bh=qm+2BzEh2Fuaq5PdPTswzqERR2ZeplH2DHGMWT/V/8I=;
+	s=arc-20240116; t=1718281207; c=relaxed/simple;
+	bh=fEElFSrBoNzwDZseO1v27y8vmvrIasJjTPBsAnm1zks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVef7P5hBRp3ZxZt4onpxjLin1ZIceVgRXuYpisO5ogGq63I5hcJMmBCY2GXKoEiGn56W/zy/CgqSCH5RKCpjxnLBlwrzYGXAlMdF73pFkhaeka5/YVj8j0riyQgi84W2MGaJ9kVwIKolSLJftNS9eMVUnEGnpRzoa7xL3PGwfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VtU7e3V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35CE0C2BBFC;
-	Thu, 13 Jun 2024 12:38:44 +0000 (UTC)
+	 MIME-Version; b=jNP+r6B0g/lO7S/QRYQFMPnDMci3GGRjoufgKvox2dbwFjUZWtHXPWIOKRcLxZCOuPhQZG6A7uN3o/3DeTcX4AZS/MIApcKxFBVE4G92rjSIkgwBwCtiq/fSPC9RUoyO50x19udWeg+QWAda+PgUFQTiV1rUeO12pi7/D5BwaCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exBawHht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9264FC2BBFC;
+	Thu, 13 Jun 2024 12:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282324;
-	bh=qm+2BzEh2Fuaq5PdPTswzqERR2ZeplH2DHGMWT/V/8I=;
+	s=korg; t=1718281207;
+	bh=fEElFSrBoNzwDZseO1v27y8vmvrIasJjTPBsAnm1zks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1VtU7e3VI0jm/3kyB9bm9A5SbuWnVQLjhwjeeESUbLHhXMYUCS/LgUuQXZ+JaWmH8
-	 9Iq7YrREt/xM6UCUinPmzaVit7OcWiCNVr6pafrZLdKxSiNi/68IJDy+CQPguMGfa0
-	 S6GdAeYTqwAPmTwFTsto5Ou7r2jgs2gOqqYXy6QY=
+	b=exBawHhtmIh9FR6ckl6mbmRgUUEnw2r5fUI7p1InwUBNKm9C6dDiQXYZzzSavoQpj
+	 i3R7vk1c4+6XuFcLdv33qISgpN0ImzsJmboqt2F/2vNULHL4ZE3aCArS6duHAxkEAZ
+	 VczFkX+bGbyE4c3yYmZ4Lvvo8Jj4rtPojD6naq6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
+	Wenyu Liu <liuwenyu7@huawei.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kaige Ye <ye@kaige.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Jiri Olsa <jolsa@redhat.com>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	wuxu.wu@huawei.com,
+	Hewenliang <hewenliang4@huawei.com>,
+	yaowenbin <yaowenbin1@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 238/402] perf stat: Dont display metric header for non-leader uncore events
+Subject: [PATCH 5.10 177/317] perf top: Fix TUI exit screen refresh race condition
 Date: Thu, 13 Jun 2024 13:33:15 +0200
-Message-ID: <20240613113311.427940556@linuxfoundation.org>
+Message-ID: <20240613113254.405386591@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,92 +70,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: yaowenbin <yaowenbin1@huawei.com>
 
-[ Upstream commit 193a9e30207f54777ff42d0d8be8389edc522277 ]
+[ Upstream commit 64f18d2d043015b3f835ce4c9f3beb97cfd19b6e ]
 
-On an Intel tigerlake laptop a metric like:
+When the following command is executed several times, a coredump file is
+generated.
 
-    {
-        "BriefDescription": "Test",
-        "MetricExpr": "imc_free_running@data_read@ + imc_free_running@data_write@",
-        "MetricGroup": "Test",
-        "MetricName": "Test",
-        "ScaleUnit": "6.103515625e-5MiB"
-    },
+	$ timeout -k 9 5 perf top -e task-clock
+	*******
+	*******
+	*******
+	0.01%  [kernel]                  [k] __do_softirq
+	0.01%  libpthread-2.28.so        [.] __pthread_mutex_lock
+	0.01%  [kernel]                  [k] __ll_sc_atomic64_sub_return
+	double free or corruption (!prev) perf top --sort comm,dso
+	timeout: the monitored command dumped core
 
-Will have 4 events:
+When we terminate "perf top" using sending signal method,
+SLsmg_reset_smg() called. SLsmg_reset_smg() resets the SLsmg screen
+management routines by freeing all memory allocated while it was active.
 
-  uncore_imc_free_running_0/data_read/
-  uncore_imc_free_running_0/data_write/
-  uncore_imc_free_running_1/data_read/
-  uncore_imc_free_running_1/data_write/
+However SLsmg_reinit_smg() maybe be called by another thread.
 
-If aggregration is disabled with metric-only 2 column headers are
-needed:
+SLsmg_reinit_smg() will free the same memory accessed by
+SLsmg_reset_smg(), thus it results in a double free.
 
-  $ perf stat -M test --metric-only -A -a sleep 1
+SLsmg_reinit_smg() is called already protected by ui__lock, so we fix
+the problem by adding pthread_mutex_trylock of ui__lock when calling
+SLsmg_reset_smg().
 
-   Performance counter stats for 'system wide':
-
-                    MiB  Test            MiB  Test
-  CPU0                 1821.0               1820.5
-
-But when not, the counts aggregated in the metric leader and only 1
-column should be shown:
-
-  $ perf stat -M test --metric-only -a sleep 1
-   Performance counter stats for 'system wide':
-
-              MiB  Test
-                5909.4
-
-         1.001258915 seconds time elapsed
-
-Achieve this by skipping events that aren't metric leaders when
-printing column headers and aggregation isn't disabled.
-
-The bug is long standing, the fixes tag is set to a refactor as that
-is as far back as is reasonable to backport.
-
-Fixes: 088519f318be3a41 ("perf stat: Move the display functions to stat-display.c")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Wenyu Liu <liuwenyu7@huawei.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kaige Ye <ye@kaige.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20240510051309.2452468-1-irogers@google.com
+Cc: wuxu.wu@huawei.com
+Link: http://lore.kernel.org/lkml/a91e3943-7ddc-f5c0-a7f5-360f073c20e6@huawei.com
+Signed-off-by: Hewenliang <hewenliang4@huawei.com>
+Signed-off-by: yaowenbin <yaowenbin1@huawei.com>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 769e6a1e15bd ("perf ui browser: Don't save pointer to stack memory")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/stat-display.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/ui/tui/setup.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
-index 5ed20e1e09aef..79384e8326c65 100644
---- a/tools/perf/util/stat-display.c
-+++ b/tools/perf/util/stat-display.c
-@@ -1000,6 +1000,9 @@ static void print_metric_headers(struct perf_stat_config *config,
+diff --git a/tools/perf/ui/tui/setup.c b/tools/perf/ui/tui/setup.c
+index e9bfe856a5dee..b1be59b4e2a4f 100644
+--- a/tools/perf/ui/tui/setup.c
++++ b/tools/perf/ui/tui/setup.c
+@@ -170,9 +170,11 @@ void ui__exit(bool wait_for_ok)
+ 				    "Press any key...", 0);
  
- 	/* Print metrics headers only */
- 	evlist__for_each_entry(evlist, counter) {
-+		if (config->aggr_mode != AGGR_NONE && counter->metric_leader != counter)
-+			continue;
-+
- 		os.evsel = counter;
- 		out.ctx = &os;
- 		out.print_metric = print_metric_header;
+ 	SLtt_set_cursor_visibility(1);
+-	SLsmg_refresh();
+-	SLsmg_reset_smg();
++	if (!pthread_mutex_trylock(&ui__lock)) {
++		SLsmg_refresh();
++		SLsmg_reset_smg();
++		pthread_mutex_unlock(&ui__lock);
++	}
+ 	SLang_reset_tty();
+-
+ 	perf_error__unregister(&perf_tui_eops);
+ }
 -- 
 2.43.0
 
