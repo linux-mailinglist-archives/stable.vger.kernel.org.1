@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-52004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7FB9072A9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:49:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3CF0907070
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F19401C21B5E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:49:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 214C81F220A6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64670143884;
-	Thu, 13 Jun 2024 12:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82603144317;
+	Thu, 13 Jun 2024 12:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4Krc3Uh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F++6Vv9l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B59384;
-	Thu, 13 Jun 2024 12:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400023209;
+	Thu, 13 Jun 2024 12:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282952; cv=none; b=iW7siIs3CuJAOMe5RVpjDOVU2Q0E2G+hjg497d/fHF6VgbJLPGasJGlaL2+G4hJqF3d075+XyNerkPF9fQCcog8vT8Ro3gt/pms9bIf2Vj8+b7g19vjyq2cxB0FkTMEHesQN9iaGLD0uoYEw15fJbq63lVUrM4NximZPNbT9ED4=
+	t=1718281636; cv=none; b=UcU8WqGjRvSAPO86BqSYHfS/SOF+pTG3lJUdxB72Ddd5+3cBfzUIf5vYxc6aK3SAQr+wZ/GgecpyAuGsgjXAdGkihymxqjsf1RLH1pcYQfHsxNHtVYaP5MIc+t/DIvNu8hqzc7Qb6kZHrf3mTiF5D87IMsAmWeGD+xjhNaYOR4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282952; c=relaxed/simple;
-	bh=M3jpvNVFQ8tO9wCo0KbHjYq37hH+CkOGhOtnqVnaRAA=;
+	s=arc-20240116; t=1718281636; c=relaxed/simple;
+	bh=yZoPGFITFyjdDd9WjHRy/xFdnGd3fupnZghOq5Q+Spk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zwn/qS4BjLqi7pN324W7uxhb3PCnhN63c/Wj1kPDAjZgydkRQxF6N5EYwgKzHMXDu2GvaPADNqyb4zChtcDnJttL2kNQl7VCD7lnyUFF3pHnCht07RpLzxf+tgNvOs8ElvzcjtY7bDTxYeGTOYpDGcqzi74m2PcsO0+qrlpBxhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4Krc3Uh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5D2C2BBFC;
-	Thu, 13 Jun 2024 12:49:11 +0000 (UTC)
+	 MIME-Version; b=rmsUXqVRLxb6+WV46dA8g5WOr7pfCoT8U9sRSESM4rupsfYDyjE+Fsc4ge75DUS7r/RTLWclHthFDkEjj2VkU0x5efwMVh8wE8qh7YwJr+/DDY4eM7Cdy80xgCC7f79O/EeziHoP5KFZ8bc6ffQHvaXuURM9OVRk+skAj7IpBf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F++6Vv9l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF68C2BBFC;
+	Thu, 13 Jun 2024 12:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282952;
-	bh=M3jpvNVFQ8tO9wCo0KbHjYq37hH+CkOGhOtnqVnaRAA=;
+	s=korg; t=1718281636;
+	bh=yZoPGFITFyjdDd9WjHRy/xFdnGd3fupnZghOq5Q+Spk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b4Krc3UhDnA0Qt3Themiv9OUCYxyeeCx3JziiDZTN4LeX31YvXj5V7Hlvw0g70AWQ
-	 C9vKrmHG3//x5pjbZCjVGFp9tXJrKqMAf3vUUOlY8IE2pq96zWOZaYu/GEmzD/gX5L
-	 fxwn0ky3a20tmb8cMj1HO9auyEd0beqSWyslcQwk=
+	b=F++6Vv9lInMor0FlgeVcsYn1LgIqd1p2/uT9PuY2+ywHmbyY/0sru5O46DdbYfLS7
+	 6vyj4qd0Olq3kJGB69Q1yGhpGu7hqaW+pi4sO3F23qksnNd/Jxf3OERR8SQq7KU9Up
+	 /yHfVIP0SpZ42QmKIIVGBSM8qv9XE7UINfg1eEZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Niklas Cassel <cassel@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.1 21/85] ata: pata_legacy: make legacy_exit() work again
+	Sam Ravnborg <sam@ravnborg.org>,
+	Nick Bowler <nbowler@draconx.ca>,
+	Andreas Larsson <andreas@gaisler.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Atish Patra <atish.patra@oracle.com>,
+	Bob Picco <bob.picco@oracle.com>,
+	Vijay Kumar <vijay.ac.kumar@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.10 301/317] sparc64: Fix number of online CPUs
 Date: Thu, 13 Jun 2024 13:35:19 +0200
-Message-ID: <20240613113214.960362792@linuxfoundation.org>
+Message-ID: <20240613113259.195314721@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
-References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +67,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Sam Ravnborg <sam@ravnborg.org>
 
-commit d4a89339f17c87c4990070e9116462d16e75894f upstream.
+commit 98937707fea8375e8acea0aaa0b68a956dd52719 upstream.
 
-Commit defc9cd826e4 ("pata_legacy: resychronize with upstream changes and
-resubmit") missed to update legacy_exit(), so that it now fails to do any
-cleanup -- the loop body there can never be entered.  Fix that and finally
-remove now useless nr_legacy_host variable...
+Nick Bowler reported:
+    When using newer kernels on my Ultra 60 with dual 450MHz UltraSPARC-II
+    CPUs, I noticed that only CPU 0 comes up, while older kernels (including
+    4.7) are working fine with both CPUs.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
+      I bisected the failure to this commit:
 
-Fixes: defc9cd826e4 ("pata_legacy: resychronize with upstream changes and resubmit")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+      9b2f753ec23710aa32c0d837d2499db92fe9115b is the first bad commit
+      commit 9b2f753ec23710aa32c0d837d2499db92fe9115b
+      Author: Atish Patra <atish.patra@oracle.com>
+      Date:   Thu Sep 15 14:54:40 2016 -0600
+
+      sparc64: Fix cpu_possible_mask if nr_cpus is set
+
+    This is a small change that reverts very easily on top of 5.18: there is
+    just one trivial conflict.  Once reverted, both CPUs work again.
+
+    Maybe this is related to the fact that the CPUs on this system are
+    numbered CPU0 and CPU2 (there is no CPU1)?
+
+The current code that adjust cpu_possible based on nr_cpu_ids do not
+take into account that CPU's may not come one after each other.
+Move the chech to the function that setup the cpu_possible mask
+so there is no need to adjust it later.
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Fixes: 9b2f753ec237 ("sparc64: Fix cpu_possible_mask if nr_cpus is set")
+Reported-by: Nick Bowler <nbowler@draconx.ca>
+Tested-by: Nick Bowler <nbowler@draconx.ca>
+Link: https://lore.kernel.org/sparclinux/20201009161924.c8f031c079dd852941307870@gmx.de/
+Link: https://lore.kernel.org/all/CADyTPEwt=ZNams+1bpMB1F9w_vUdPsGCt92DBQxxq_VtaLoTdw@mail.gmail.com/
+Cc: stable@vger.kernel.org # v4.8+
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Atish Patra <atish.patra@oracle.com>
+Cc: Bob Picco <bob.picco@oracle.com>
+Cc: Vijay Kumar <vijay.ac.kumar@oracle.com>
+Cc: David S. Miller <davem@davemloft.net>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240330-sparc64-warnings-v1-9-37201023ee2f@ravnborg.org
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/pata_legacy.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/sparc/include/asm/smp_64.h |    2 --
+ arch/sparc/kernel/prom_64.c     |    4 +++-
+ arch/sparc/kernel/setup_64.c    |    1 -
+ arch/sparc/kernel/smp_64.c      |   14 --------------
+ 4 files changed, 3 insertions(+), 18 deletions(-)
 
---- a/drivers/ata/pata_legacy.c
-+++ b/drivers/ata/pata_legacy.c
-@@ -173,8 +173,6 @@ static int legacy_port[NR_HOST] = { 0x1f
- static struct legacy_probe probe_list[NR_HOST];
- static struct legacy_data legacy_data[NR_HOST];
- static struct ata_host *legacy_host[NR_HOST];
--static int nr_legacy_host;
--
+--- a/arch/sparc/include/asm/smp_64.h
++++ b/arch/sparc/include/asm/smp_64.h
+@@ -47,7 +47,6 @@ void arch_send_call_function_ipi_mask(co
+ int hard_smp_processor_id(void);
+ #define raw_smp_processor_id() (current_thread_info()->cpu)
  
- /**
-  *	legacy_probe_add	-	Add interface to probe list
-@@ -1276,9 +1274,11 @@ static __exit void legacy_exit(void)
- {
- 	int i;
+-void smp_fill_in_cpu_possible_map(void);
+ void smp_fill_in_sib_core_maps(void);
+ void cpu_play_dead(void);
  
--	for (i = 0; i < nr_legacy_host; i++) {
-+	for (i = 0; i < NR_HOST; i++) {
- 		struct legacy_data *ld = &legacy_data[i];
--		ata_host_detach(legacy_host[i]);
+@@ -77,7 +76,6 @@ void __cpu_die(unsigned int cpu);
+ #define smp_fill_in_sib_core_maps() do { } while (0)
+ #define smp_fetch_global_regs() do { } while (0)
+ #define smp_fetch_global_pmu() do { } while (0)
+-#define smp_fill_in_cpu_possible_map() do { } while (0)
+ #define smp_init_cpu_poke() do { } while (0)
+ #define scheduler_poke() do { } while (0)
+ 
+--- a/arch/sparc/kernel/prom_64.c
++++ b/arch/sparc/kernel/prom_64.c
+@@ -483,7 +483,9 @@ static void *record_one_cpu(struct devic
+ 	ncpus_probed++;
+ #ifdef CONFIG_SMP
+ 	set_cpu_present(cpuid, true);
+-	set_cpu_possible(cpuid, true);
 +
-+		if (legacy_host[i])
-+			ata_host_detach(legacy_host[i]);
- 		platform_device_unregister(ld->platform_dev);
- 	}
++	if (num_possible_cpus() < nr_cpu_ids)
++		set_cpu_possible(cpuid, true);
+ #endif
+ 	return NULL;
  }
+--- a/arch/sparc/kernel/setup_64.c
++++ b/arch/sparc/kernel/setup_64.c
+@@ -688,7 +688,6 @@ void __init setup_arch(char **cmdline_p)
+ 
+ 	paging_init();
+ 	init_sparc64_elf_hwcap();
+-	smp_fill_in_cpu_possible_map();
+ 	/*
+ 	 * Once the OF device tree and MDESC have been setup and nr_cpus has
+ 	 * been parsed, we know the list of possible cpus.  Therefore we can
+--- a/arch/sparc/kernel/smp_64.c
++++ b/arch/sparc/kernel/smp_64.c
+@@ -1210,20 +1210,6 @@ void __init smp_setup_processor_id(void)
+ 		xcall_deliver_impl = hypervisor_xcall_deliver;
+ }
+ 
+-void __init smp_fill_in_cpu_possible_map(void)
+-{
+-	int possible_cpus = num_possible_cpus();
+-	int i;
+-
+-	if (possible_cpus > nr_cpu_ids)
+-		possible_cpus = nr_cpu_ids;
+-
+-	for (i = 0; i < possible_cpus; i++)
+-		set_cpu_possible(i, true);
+-	for (; i < NR_CPUS; i++)
+-		set_cpu_possible(i, false);
+-}
+-
+ void smp_fill_in_sib_core_maps(void)
+ {
+ 	unsigned int i;
 
 
 
