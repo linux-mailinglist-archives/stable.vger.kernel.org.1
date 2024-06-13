@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-51147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39054906E89
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00669906DFE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:06:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F3321C22DD5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AA371F21C04
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CCB81ABF;
-	Thu, 13 Jun 2024 12:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5C2148312;
+	Thu, 13 Jun 2024 12:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1Ts6OZu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkcCEV5v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901DF1448DA;
-	Thu, 13 Jun 2024 12:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4738C1465B8;
+	Thu, 13 Jun 2024 12:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280447; cv=none; b=Kfci93KISXa1HsyUZwSz6t5moJiKBRsEceaYGZBc9JBi7G6Lk4IKWgI5y5EDDXMH9Ob480w9gv8CUVoKo+dg1qql5YKWXvgxj/PDy78UX40D1OZiQa+AeYVDMKX3RcJuleL95n7Glt7K3UQuj69+0ZO8Vz5H59+6IXIICmanEKw=
+	t=1718280093; cv=none; b=FqC9MKJplAqJ5RCgnahmKf81YjSUJrtnns76KGRINASA3aLSEqTde0a/1WOh2MfOYG28IVvwKnKWzSmXYe0j53NKve4sErBFdQNFHc/BfL81M4BOr59kRz4X1xW2kFgf7QhjY9p8tlQts58oMWFwKc86VhosQU4SsTHfdEHDjco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280447; c=relaxed/simple;
-	bh=KZalhTj92n43uRo4jB62ZqxpCiqIisI7kHrlL9OYC5I=;
+	s=arc-20240116; t=1718280093; c=relaxed/simple;
+	bh=k2r38tOsvL4+1z9QmTAoFiy6s5IPOukXVrB2P7DraEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kAOjcfj8V3LsAQ06f4H9vwPlDGLYp4JHqDlGVko1I9glKIJ6vBnamG0lWtv5gTOHRqzw1IllLFFlpA2mDU89h6wFaxUaz3+RaG9tbmJ9bt5yvm8r1BpJ0XcK7GEBaamfE49629MsR5JlorxWk2aUe4ztxbV95lkhJWt55xNyAFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1Ts6OZu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9265C2BBFC;
-	Thu, 13 Jun 2024 12:07:26 +0000 (UTC)
+	 MIME-Version; b=VvNHYMxjmk4PusAPBjSDSfzNLbPBvb8eZC0eqm/iqwAvDNXCA+o6+EDpJHn27LlGqwQcB7RneYLYx9Ks1WzGEcxvn2qAfXB8CMWWdn1XiGCwYh1kbZa59v0Aq//ojVVbp8bJm0xQJym+KfzUUwfRgCYDg3FZdDu6YOwaNwCSG6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkcCEV5v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7FFC2BBFC;
+	Thu, 13 Jun 2024 12:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280447;
-	bh=KZalhTj92n43uRo4jB62ZqxpCiqIisI7kHrlL9OYC5I=;
+	s=korg; t=1718280091;
+	bh=k2r38tOsvL4+1z9QmTAoFiy6s5IPOukXVrB2P7DraEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O1Ts6OZuK54eyQe9D9+cAWtPMWwyRkxNENboEOR9ooyp+mZ0lcQRhOkbzd9Fs6g0l
-	 W+1zwD8XAW5cSR99EDjSFkCVDjvm9CAE3tF0DNa7DeI6ZasnNI7lNFPiedgheGufGP
-	 StLeNO6uBel4f3qh8wkmkKASXOoh4KYYkKcbmJ+c=
+	b=nkcCEV5vpFz9g79mHNJFQ1xLNTc3HPVN0Brb1jeKP0XPzUlFSvX6PYaWTB72jVUSL
+	 yujlPohsNq9SV3DRJ8ErRL9Prs7wtXOsDRfC4Eq1wSaSaikDlZ9JiSJsf5zSRlhdAR
+	 93jxN3enAtcdXAqwTJ9nNg9N5zpRFEzHZ8NB5QUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Dominique Martinet <asmadeus@codewreck.org>
-Subject: [PATCH 6.6 057/137] 9p: add missing locking around taking dentry fid list
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 139/202] ipv6: sr: fix memleak in seg6_hmac_init_algo
 Date: Thu, 13 Jun 2024 13:33:57 +0200
-Message-ID: <20240613113225.514852034@linuxfoundation.org>
+Message-ID: <20240613113233.125169976@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +64,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <asmadeus@codewreck.org>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit c898afdc15645efb555acb6d85b484eb40a45409 upstream.
+[ Upstream commit efb9f4f19f8e37fde43dfecebc80292d179f56c6 ]
 
-Fix a use-after-free on dentry's d_fsdata fid list when a thread
-looks up a fid through dentry while another thread unlinks it:
+seg6_hmac_init_algo returns without cleaning up the previous allocations
+if one fails, so it's going to leak all that memory and the crypto tfms.
 
-UAF thread:
-refcount_t: addition on 0; use-after-free.
- p9_fid_get linux/./include/net/9p/client.h:262
- v9fs_fid_find+0x236/0x280 linux/fs/9p/fid.c:129
- v9fs_fid_lookup_with_uid linux/fs/9p/fid.c:181
- v9fs_fid_lookup+0xbf/0xc20 linux/fs/9p/fid.c:314
- v9fs_vfs_getattr_dotl+0xf9/0x360 linux/fs/9p/vfs_inode_dotl.c:400
- vfs_statx+0xdd/0x4d0 linux/fs/stat.c:248
+Update seg6_hmac_exit to only free the memory when allocated, so we can
+reuse the code directly.
 
-Freed by:
- p9_fid_destroy (inlined)
- p9_client_clunk+0xb0/0xe0 linux/net/9p/client.c:1456
- p9_fid_put linux/./include/net/9p/client.h:278
- v9fs_dentry_release+0xb5/0x140 linux/fs/9p/vfs_dentry.c:55
- v9fs_remove+0x38f/0x620 linux/fs/9p/vfs_inode.c:518
- vfs_unlink+0x29a/0x810 linux/fs/namei.c:4335
-
-The problem is that d_fsdata was not accessed under d_lock, because
-d_release() normally is only called once the dentry is otherwise no
-longer accessible but since we also call it explicitly in v9fs_remove
-that lock is required:
-move the hlist out of the dentry under lock then unref its fids once
-they are no longer accessible.
-
-Fixes: 154372e67d40 ("fs/9p: fix create-unlink-getattr idiom")
-Cc: stable@vger.kernel.org
-Reported-by: Meysam Firouzi
-Reported-by: Amirmohammad Eftekhar
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Message-ID: <20240521122947.1080227-1-asmadeus@codewreck.org>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
+Reported-by: Sabrina Dubroca <sd@queasysnail.net>
+Closes: https://lore.kernel.org/netdev/Zj3bh-gE7eT6V6aH@hog/
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/20240517005435.2600277-1-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/vfs_dentry.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/ipv6/seg6_hmac.c | 42 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 28 insertions(+), 14 deletions(-)
 
---- a/fs/9p/vfs_dentry.c
-+++ b/fs/9p/vfs_dentry.c
-@@ -48,12 +48,17 @@ static int v9fs_cached_dentry_delete(con
- static void v9fs_dentry_release(struct dentry *dentry)
- {
- 	struct hlist_node *p, *n;
-+	struct hlist_head head;
+diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+index 65394abf4736b..b3b2aa92e60d4 100644
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -356,6 +356,7 @@ static int seg6_hmac_init_algo(void)
+ 	struct crypto_shash *tfm;
+ 	struct shash_desc *shash;
+ 	int i, alg_count, cpu;
++	int ret = -ENOMEM;
  
- 	p9_debug(P9_DEBUG_VFS, " dentry: %pd (%p)\n",
- 		 dentry, dentry);
--	hlist_for_each_safe(p, n, (struct hlist_head *)&dentry->d_fsdata)
+ 	alg_count = ARRAY_SIZE(hmac_algos);
+ 
+@@ -366,12 +367,14 @@ static int seg6_hmac_init_algo(void)
+ 		algo = &hmac_algos[i];
+ 		algo->tfms = alloc_percpu(struct crypto_shash *);
+ 		if (!algo->tfms)
+-			return -ENOMEM;
++			goto error_out;
+ 
+ 		for_each_possible_cpu(cpu) {
+ 			tfm = crypto_alloc_shash(algo->name, 0, 0);
+-			if (IS_ERR(tfm))
+-				return PTR_ERR(tfm);
++			if (IS_ERR(tfm)) {
++				ret = PTR_ERR(tfm);
++				goto error_out;
++			}
+ 			p_tfm = per_cpu_ptr(algo->tfms, cpu);
+ 			*p_tfm = tfm;
+ 		}
+@@ -383,18 +386,22 @@ static int seg6_hmac_init_algo(void)
+ 
+ 		algo->shashs = alloc_percpu(struct shash_desc *);
+ 		if (!algo->shashs)
+-			return -ENOMEM;
++			goto error_out;
+ 
+ 		for_each_possible_cpu(cpu) {
+ 			shash = kzalloc_node(shsize, GFP_KERNEL,
+ 					     cpu_to_node(cpu));
+ 			if (!shash)
+-				return -ENOMEM;
++				goto error_out;
+ 			*per_cpu_ptr(algo->shashs, cpu) = shash;
+ 		}
+ 	}
+ 
+ 	return 0;
 +
-+	spin_lock(&dentry->d_lock);
-+	hlist_move_list((struct hlist_head *)&dentry->d_fsdata, &head);
-+	spin_unlock(&dentry->d_lock);
-+
-+	hlist_for_each_safe(p, n, &head)
- 		p9_fid_put(hlist_entry(p, struct p9_fid, dlist));
--	dentry->d_fsdata = NULL;
++error_out:
++	seg6_hmac_exit();
++	return ret;
  }
  
- static int v9fs_lookup_revalidate(struct dentry *dentry, unsigned int flags)
+ int __init seg6_hmac_init(void)
+@@ -414,22 +421,29 @@ int __net_init seg6_hmac_net_init(struct net *net)
+ void seg6_hmac_exit(void)
+ {
+ 	struct seg6_hmac_algo *algo = NULL;
++	struct crypto_shash *tfm;
++	struct shash_desc *shash;
+ 	int i, alg_count, cpu;
+ 
+ 	alg_count = ARRAY_SIZE(hmac_algos);
+ 	for (i = 0; i < alg_count; i++) {
+ 		algo = &hmac_algos[i];
+-		for_each_possible_cpu(cpu) {
+-			struct crypto_shash *tfm;
+-			struct shash_desc *shash;
+ 
+-			shash = *per_cpu_ptr(algo->shashs, cpu);
+-			kfree(shash);
+-			tfm = *per_cpu_ptr(algo->tfms, cpu);
+-			crypto_free_shash(tfm);
++		if (algo->shashs) {
++			for_each_possible_cpu(cpu) {
++				shash = *per_cpu_ptr(algo->shashs, cpu);
++				kfree(shash);
++			}
++			free_percpu(algo->shashs);
++		}
++
++		if (algo->tfms) {
++			for_each_possible_cpu(cpu) {
++				tfm = *per_cpu_ptr(algo->tfms, cpu);
++				crypto_free_shash(tfm);
++			}
++			free_percpu(algo->tfms);
+ 		}
+-		free_percpu(algo->tfms);
+-		free_percpu(algo->shashs);
+ 	}
+ }
+ EXPORT_SYMBOL(seg6_hmac_exit);
+-- 
+2.43.0
+
 
 
 
