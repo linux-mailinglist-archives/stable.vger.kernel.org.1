@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-51807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA8F9071B9
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16003906FF1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B65BF1C23270
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3757DB21A46
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CE4144303;
-	Thu, 13 Jun 2024 12:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE5D145B1C;
+	Thu, 13 Jun 2024 12:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9XB/gG2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWtiDQMt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E172E144306;
-	Thu, 13 Jun 2024 12:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6977513C69C;
+	Thu, 13 Jun 2024 12:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282372; cv=none; b=r5Mt7fHP1s82N+73iYPa/9yK5aH+96jN1nEPArOp/0l1HRAlQTph25a+vICs5Uz9+YawsPUjYvQEU9nBHZ6f0RnJqGxr+LiwtDX+y0lHkGBub+1oYxvZma+TByl94ktVMp/A9f+lFUuLRRylAtrZEcB8PY//nwkYb6IgqbegjKk=
+	t=1718281222; cv=none; b=GgfhiLQcdg7e4bV/OM4dyNeO+3o4x9XcpJ56TnIubWPXx3/lN8YmEWebU72FmR4aUkzCFzPl59l4C3EmDCygo+TPE720PGO5C0jDUiN+OMgTdwENcMnmfr9ikybRLA6B0Hq5KANDCfA9mm+0ErIy70/Jl2sICPd4vGIjOG3gS7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282372; c=relaxed/simple;
-	bh=qzr9MRxEq5Gnyy3tAbgeR5fKLjZ8b+Ocb1rWZhJJluE=;
+	s=arc-20240116; t=1718281222; c=relaxed/simple;
+	bh=uVLtSSTaxrNZQy3jzBgkBul08AZh5YKW6LyVU2qB29E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSmqQ3xxuLrEtODBh38KkRW9txOYKvP8Q5tbW46T+tJyiujvG8NHLkdmM5z1UCz8KKoAwV59VjE73s4SfA7Q+lGGMvGx4WXfkqRDV/DmxL4ztvBtRVKUCW+qerkAKnBYjq/V1GawWALNuIrii0KKUiJetUrltg4VBS5HjBS2Bi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9XB/gG2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C195C2BBFC;
-	Thu, 13 Jun 2024 12:39:31 +0000 (UTC)
+	 MIME-Version; b=fZxPJXnh1bTWRDFbtaimT6PPoSoqKhL7YBI6lG0Za/Nnkq/VuIfKeKteq8xJ1qgsJbsS57ofGwS0nXvxRlx8BbJllx7V1Sf85bdWco/OZDbeQH31n/eK6ESMGg8eF6I3/cBGFFk3V7BXms2Oc3uL6Wx5i0lFepf31rsxuUqnoeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWtiDQMt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFA5C2BBFC;
+	Thu, 13 Jun 2024 12:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282371;
-	bh=qzr9MRxEq5Gnyy3tAbgeR5fKLjZ8b+Ocb1rWZhJJluE=;
+	s=korg; t=1718281222;
+	bh=uVLtSSTaxrNZQy3jzBgkBul08AZh5YKW6LyVU2qB29E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q9XB/gG2UYuS+dJuNiFWvITDPfyfK8ew3vac31FdTQGRyDmIVHtwkCxWw/cfw5n2E
-	 hmuoshq2h5ZTWPJrUKyhfeX/gav7mU+cWNt5Eq2GKYMG9lWUG1+F6zyoxMF8zhI/M+
-	 GLulUBpb8h2zVcD5q1i8SqxaaTHuzTBptEZm+BzY=
+	b=fWtiDQMtqWB3nhwOfpdvzOIznlJb3FKuVycVJNWypNTC5rlHkbURqQFYzToOsV5Cb
+	 aH7d9UtCrCZozijjmN1lpvIAPnDds16toN0JdxjWiJvhNWw/eEisX1/IcGmgAB5fND
+	 +wKKVvmRyf6yobrpSVLPAQnQ/eS0fCGIxLEu+k00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenyu Liu <liuwenyu7@huawei.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@redhat.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	wuxu.wu@huawei.com,
-	Hewenliang <hewenliang4@huawei.com>,
-	yaowenbin <yaowenbin1@huawei.com>,
+	Russ Weight <russell.h.weight@intel.com>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Moritz Fischer <mdf@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 224/402] perf top: Fix TUI exit screen refresh race condition
-Date: Thu, 13 Jun 2024 13:33:01 +0200
-Message-ID: <20240613113310.879886624@linuxfoundation.org>
+Subject: [PATCH 5.10 164/317] fpga: region: Rename dev to parent for parent device
+Date: Thu, 13 Jun 2024 13:33:02 +0200
+Message-ID: <20240613113253.908802547@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,77 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yaowenbin <yaowenbin1@huawei.com>
+From: Russ Weight <russell.h.weight@intel.com>
 
-[ Upstream commit 64f18d2d043015b3f835ce4c9f3beb97cfd19b6e ]
+[ Upstream commit 5e77886d0aa9a882424f6a4ccb3eca4dca43b4a0 ]
 
-When the following command is executed several times, a coredump file is
-generated.
+Rename variable "dev" to "parent" in cases where it represents the parent
+device.
 
-	$ timeout -k 9 5 perf top -e task-clock
-	*******
-	*******
-	*******
-	0.01%  [kernel]                  [k] __do_softirq
-	0.01%  libpthread-2.28.so        [.] __pthread_mutex_lock
-	0.01%  [kernel]                  [k] __ll_sc_atomic64_sub_return
-	double free or corruption (!prev) perf top --sort comm,dso
-	timeout: the monitored command dumped core
-
-When we terminate "perf top" using sending signal method,
-SLsmg_reset_smg() called. SLsmg_reset_smg() resets the SLsmg screen
-management routines by freeing all memory allocated while it was active.
-
-However SLsmg_reinit_smg() maybe be called by another thread.
-
-SLsmg_reinit_smg() will free the same memory accessed by
-SLsmg_reset_smg(), thus it results in a double free.
-
-SLsmg_reinit_smg() is called already protected by ui__lock, so we fix
-the problem by adding pthread_mutex_trylock of ui__lock when calling
-SLsmg_reset_smg().
-
-Signed-off-by: Wenyu Liu <liuwenyu7@huawei.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: wuxu.wu@huawei.com
-Link: http://lore.kernel.org/lkml/a91e3943-7ddc-f5c0-a7f5-360f073c20e6@huawei.com
-Signed-off-by: Hewenliang <hewenliang4@huawei.com>
-Signed-off-by: yaowenbin <yaowenbin1@huawei.com>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 769e6a1e15bd ("perf ui browser: Don't save pointer to stack memory")
+Signed-off-by: Russ Weight <russell.h.weight@intel.com>
+Reviewed-by: Xu Yilun <yilun.xu@intel.com>
+Signed-off-by: Moritz Fischer <mdf@kernel.org>
+Link: https://lore.kernel.org/r/20210614170909.232415-6-mdf@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: b7c0e1ecee40 ("fpga: region: add owner module and take its refcount")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/ui/tui/setup.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/fpga/fpga-region.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/tools/perf/ui/tui/setup.c b/tools/perf/ui/tui/setup.c
-index e9bfe856a5dee..b1be59b4e2a4f 100644
---- a/tools/perf/ui/tui/setup.c
-+++ b/tools/perf/ui/tui/setup.c
-@@ -170,9 +170,11 @@ void ui__exit(bool wait_for_ok)
- 				    "Press any key...", 0);
+diff --git a/drivers/fpga/fpga-region.c b/drivers/fpga/fpga-region.c
+index c5c55d2f20b92..a4838715221ff 100644
+--- a/drivers/fpga/fpga-region.c
++++ b/drivers/fpga/fpga-region.c
+@@ -181,7 +181,7 @@ ATTRIBUTE_GROUPS(fpga_region);
  
- 	SLtt_set_cursor_visibility(1);
--	SLsmg_refresh();
--	SLsmg_reset_smg();
-+	if (!pthread_mutex_trylock(&ui__lock)) {
-+		SLsmg_refresh();
-+		SLsmg_reset_smg();
-+		pthread_mutex_unlock(&ui__lock);
-+	}
- 	SLang_reset_tty();
--
- 	perf_error__unregister(&perf_tui_eops);
- }
+ /**
+  * fpga_region_create - alloc and init a struct fpga_region
+- * @dev: device parent
++ * @parent: device parent
+  * @mgr: manager that programs this region
+  * @get_bridges: optional function to get bridges to a list
+  *
+@@ -192,7 +192,7 @@ ATTRIBUTE_GROUPS(fpga_region);
+  * Return: struct fpga_region or NULL
+  */
+ struct fpga_region
+-*fpga_region_create(struct device *dev,
++*fpga_region_create(struct device *parent,
+ 		    struct fpga_manager *mgr,
+ 		    int (*get_bridges)(struct fpga_region *))
+ {
+@@ -214,8 +214,8 @@ struct fpga_region
+ 
+ 	device_initialize(&region->dev);
+ 	region->dev.class = fpga_region_class;
+-	region->dev.parent = dev;
+-	region->dev.of_node = dev->of_node;
++	region->dev.parent = parent;
++	region->dev.of_node = parent->of_node;
+ 	region->dev.id = id;
+ 
+ 	ret = dev_set_name(&region->dev, "region%d", id);
+@@ -253,7 +253,7 @@ static void devm_fpga_region_release(struct device *dev, void *res)
+ 
+ /**
+  * devm_fpga_region_create - create and initialize a managed FPGA region struct
+- * @dev: device parent
++ * @parent: device parent
+  * @mgr: manager that programs this region
+  * @get_bridges: optional function to get bridges to a list
+  *
+@@ -268,7 +268,7 @@ static void devm_fpga_region_release(struct device *dev, void *res)
+  * Return: struct fpga_region or NULL
+  */
+ struct fpga_region
+-*devm_fpga_region_create(struct device *dev,
++*devm_fpga_region_create(struct device *parent,
+ 			 struct fpga_manager *mgr,
+ 			 int (*get_bridges)(struct fpga_region *))
+ {
+@@ -278,12 +278,12 @@ struct fpga_region
+ 	if (!ptr)
+ 		return NULL;
+ 
+-	region = fpga_region_create(dev, mgr, get_bridges);
++	region = fpga_region_create(parent, mgr, get_bridges);
+ 	if (!region) {
+ 		devres_free(ptr);
+ 	} else {
+ 		*ptr = region;
+-		devres_add(dev, ptr);
++		devres_add(parent, ptr);
+ 	}
+ 
+ 	return region;
 -- 
 2.43.0
 
