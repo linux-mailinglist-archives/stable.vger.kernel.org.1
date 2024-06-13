@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-51649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF19F9070E5
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9EFE906F74
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:20:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51342282F26
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20777B2952C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DE2387;
-	Thu, 13 Jun 2024 12:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AE4143895;
+	Thu, 13 Jun 2024 12:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMWGT/2n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cji21yAn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C33E441D;
-	Thu, 13 Jun 2024 12:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21663136E00;
+	Thu, 13 Jun 2024 12:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281915; cv=none; b=TEaVn67lIzE9KQ19Kzdp2GtXhlGseo/wtNNz+lhFgMV48sSBeM4XrHOeTSv12G26crM12FuhKINlR1Si/NfOWoQo/L9f7o2DyWvogMhdSkwb1eW7XnpERw5bMfgzlo4qe65dtc5nuFx+ssJAPRMVTePnb0y/gSOshCkLxiilpMU=
+	t=1718280892; cv=none; b=lo1yYrB2cKxZYuGMcghgpeaxTEp9NjKYUVAm1Rjnx/2mDC4m7Van4YZfsqbkFMPocS36/5TGR+Wsc/yxR3xfw1B/ONICnaZfK8gUX1L5rMCZZVM32VeaZnFN3NFXUrpkaOwKNppTAbq2fDMo2UVOpwhfZaSk6EbnkPIwFDofw+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281915; c=relaxed/simple;
-	bh=76T8RUHoJxU7JEN0rClctDDlNKqiSn7FuvvKCon6KXA=;
+	s=arc-20240116; t=1718280892; c=relaxed/simple;
+	bh=OxoPTjS5GniDrbqg3Ig7theT7GhVFoQYFc0Y6icNYs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHvj+5XJwd47J62TV/pfCPc+bKkIwuL6HW+y68ysfV5eNDIybLmHcPG6/Nsq5f6cLvPlTmZWEycyfCF9MGGqBrR8ygkjCJJYaWgOHG6JkrUc6Ng7T3vg8myyEiCVwKHAe1NINJOGCHHFMhazND7FyD5htVZF9HB4vWEEGMJ8YHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMWGT/2n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DC5C2BBFC;
-	Thu, 13 Jun 2024 12:31:54 +0000 (UTC)
+	 MIME-Version; b=OWrUnqkKZ43t/OGFdZv630235ZKA2pFk6CfugdB+PoFK6WGsL31rKFykNkhnlJXEQHxGU+UXQPcGflazpRrlK55SmiamtEU024OQLWhfM9ZctCweTcu1IQPgwWaEDHO8A4A3/Kpof9Pd8EYn2UeAuw0q2WNFO/sal4x5B97ifyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cji21yAn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B683C2BBFC;
+	Thu, 13 Jun 2024 12:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281915;
-	bh=76T8RUHoJxU7JEN0rClctDDlNKqiSn7FuvvKCon6KXA=;
+	s=korg; t=1718280892;
+	bh=OxoPTjS5GniDrbqg3Ig7theT7GhVFoQYFc0Y6icNYs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uMWGT/2nC6qtc2UgM29lRGlluaZSxGoOjZ0VUhfHjDx9BpOiDbxcHnNs+DjzypRPa
-	 bbKif4mPGKE0rZPOP0uqjnktilw4HiSUtdpcaAQARf0/3FsZ9CxIpMqH4tZMUgvBzk
-	 2xycPt0zxq2TfzLT6PTqTVmup9TUoAHXZZZ1bDAE=
+	b=cji21yAnPZRYMIQbSzG5Nxzmd3WgVBvcWkQRcvFcrObOXW2pTowrEAw6D5dGaSqzo
+	 Sz2rZXxT8UIod4NOXSEsuXiY9o379qG9p4znqzwkALJ41kGrfV8KDDEqlamHtEkQ10
+	 EpDdUvXAwUvTBcRy4lVg8810AQYNJt990W+f7Tro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Can Guo <quic_cang@quicinc.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 100/402] HID: intel-ish-hid: ipc: Add check for pci_alloc_irq_vectors
+Subject: [PATCH 5.10 039/317] scsi: ufs: qcom: Perform read back after writing REG_UFS_SYS1CLK_1US
 Date: Thu, 13 Jun 2024 13:30:57 +0200
-Message-ID: <20240613113306.037567493@linuxfoundation.org>
+Message-ID: <20240613113249.060307445@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit 6baa4524027fd64d7ca524e1717c88c91a354b93 ]
+[ Upstream commit a862fafa263aea0f427d51aca6ff7fd9eeaaa8bd ]
 
-Add a check for the return value of pci_alloc_irq_vectors() and return
-error if it fails.
+Currently after writing to REG_UFS_SYS1CLK_1US a mb() is used to ensure
+that write has gone through to the device.
 
-[jkosina@suse.com: reworded changelog based on Srinivas' suggestion]
-Fixes: 74fbc7d371d9 ("HID: intel-ish-hid: add MSI interrupt support")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring this
+bit has taken effect on the device is to perform a read back to force it to
+make it all the way to the device. This is documented in device-io.rst and
+a talk by Will Deacon on this can be seen over here:
+
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
+
+Let's do that to ensure the bit hits the device. Because the mb()'s purpose
+wasn't to add extra ordering (on top of the ordering guaranteed by
+writel()/readl()), it can safely be removed.
+
+Fixes: f06fcc7155dc ("scsi: ufs-qcom: add QUniPro hardware support and power optimizations")
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-2-181252004586@redhat.com
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ipc/pci-ish.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/scsi/ufs/ufs-qcom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/intel-ish-hid/ipc/pci-ish.c b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-index 5916ef2933e27..bbc3ea34585d2 100644
---- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-+++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-@@ -212,6 +212,11 @@ static int ish_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+diff --git a/drivers/scsi/ufs/ufs-qcom.c b/drivers/scsi/ufs/ufs-qcom.c
+index a432c561c3df0..45d21cb80289d 100644
+--- a/drivers/scsi/ufs/ufs-qcom.c
++++ b/drivers/scsi/ufs/ufs-qcom.c
+@@ -449,7 +449,7 @@ static int ufs_qcom_cfg_timers(struct ufs_hba *hba, u32 gear,
+ 		 * make sure above write gets applied before we return from
+ 		 * this function.
+ 		 */
+-		mb();
++		ufshcd_readl(hba, REG_UFS_SYS1CLK_1US);
+ 	}
  
- 	/* request and enable interrupt */
- 	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
-+	if (ret < 0) {
-+		dev_err(dev, "ISH: Failed to allocate IRQ vectors\n");
-+		return ret;
-+	}
-+
- 	if (!pdev->msi_enabled && !pdev->msix_enabled)
- 		irq_flag = IRQF_SHARED;
- 
+ 	if (ufs_qcom_cap_qunipro(host))
 -- 
 2.43.0
 
