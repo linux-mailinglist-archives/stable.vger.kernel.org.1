@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-50748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88304906C65
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA896906B85
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38F8028136F
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 621A21F22AFA
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E7F1448C4;
-	Thu, 13 Jun 2024 11:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3130143C5A;
+	Thu, 13 Jun 2024 11:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKkLjlyl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7sL4tro"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE0F143899;
-	Thu, 13 Jun 2024 11:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A212A143C59;
+	Thu, 13 Jun 2024 11:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279269; cv=none; b=KPDdogDBKeyLvQ8QkuZ73201u1ZTyjFzniJCtHnCbFPqASTj/uaJ/ivjsFVZI6Qk5Z1/eNnwrFyjvTkRvCVdhXTCrrTPaI+5YD3PNq+ycVbLibM7JqQvqA9f9SLdvHtHe8uSUlBasloK4IPK2lQTWM9tXUA8eCRnMvIpTbN+gQ4=
+	t=1718278867; cv=none; b=rb+G/DbNL0lt6N1AbR+DCSvs1R6ezIJIZ0RjWA1uHm252i1FkSpRoOXvrtOw98ydSH/sgyQwzz5/yyc3qMpPj5knBzqrdqjEz76UbItjQ5rHyCnBdqfrwPdJoUmiuy47w0HLAfj5KPSqtOeK3oRtr5GE/MpCI77nuI4EMsXCBtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279269; c=relaxed/simple;
-	bh=xUFNT0HHfTvGPsmkp9t4yKHQEnnyj/3hvqM+SgooA44=;
+	s=arc-20240116; t=1718278867; c=relaxed/simple;
+	bh=d3K2DQHvqAnpJor6rBzVn2iLpmyd6EQbaciVO2YoXwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bkqcHBQH6IJY5kqilQZI9HAvqUXrTEQVAvT+aQ/6iOv3kcN5xu8f9h/pojuVpZyNi5GOcwIKdxLWt09Ib6BXyqQsLYp+bRU3fOIGU5fe3vmzWOGGtIQOWxSBh/Ok0ZJzcMfXBx8K64/QJv1F1l/OhPVSGvY83rEEqgiLpIlVrK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKkLjlyl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D744DC2BBFC;
-	Thu, 13 Jun 2024 11:47:48 +0000 (UTC)
+	 MIME-Version; b=cADJbxI3IRZ8uWK3TKiWM/CtB0WFJtWtqOPH+d1fnqVc4jIHsF3lkbutmm2bibu3PEc0Z+TIDC5rW1FlQgYyJ9mg5H6H/Zb+MFVSJ4XOBYLeTpex2UmChRAwbWUbi7lrw3Wpt98R7mE4/V7QcIn1b+QwLRg8MNlSFCH8YBoitFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7sL4tro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283BFC2BBFC;
+	Thu, 13 Jun 2024 11:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279269;
-	bh=xUFNT0HHfTvGPsmkp9t4yKHQEnnyj/3hvqM+SgooA44=;
+	s=korg; t=1718278867;
+	bh=d3K2DQHvqAnpJor6rBzVn2iLpmyd6EQbaciVO2YoXwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IKkLjlylhaKKFsDHH23wgI7mqAGOB1cNcvhx8OAnbug6UNES8BwZ7ilS8sP/EBBXz
-	 v+St5iSir4vS7wbTNdtSSC148pSkAOeGzsw0Ek8+ahObQGtEYK3Ij2L0jyhnNlDv/G
-	 8pbdh6j8NOeBv1QyGEOA48orVO2s8fN4qzh1TOnM=
+	b=S7sL4trowGV3+JQpeWuksezeYpK/b13t1m1ZYMEIGF+HE1xqsC+7Zo4QQfiqEmGrc
+	 faO9a3uDwlUo5XuHOpHlTlIz9s29lrONmMB3nYxSYuB/z7lSm1T+vQATBl+JSbYBNg
+	 J88N/eK4M8/jBzG7Hm6Qaxq6jRp3tgf4bhbBYU7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.9 019/157] thermal/drivers/qcom/lmh: Check for SCM availability at probe
-Date: Thu, 13 Jun 2024 13:32:24 +0200
-Message-ID: <20240613113228.150118490@linuxfoundation.org>
+	Michal Simek <michal.simek@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 097/213] microblaze: Remove gcc flag for non existing early_printk.c file
+Date: Thu, 13 Jun 2024 13:32:25 +0200
+Message-ID: <20240613113231.751050659@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Michal Simek <michal.simek@amd.com>
 
-commit d9d3490c48df572edefc0b64655259eefdcbb9be upstream.
+[ Upstream commit edc66cf0c4164aa3daf6cc55e970bb94383a6a57 ]
 
-Up until now, the necessary scm availability check has not been
-performed, leading to possible null pointer dereferences (which did
-happen for me on RB1).
+early_printk support for removed long time ago but compilation flag for
+ftrace still points to already removed file that's why remove that line
+too.
 
-Fix that.
-
-Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20240308-topic-rb1_lmh-v2-2-bac3914b0fe3@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 96f0e6fcc9ad ("microblaze: remove redundant early_printk support")
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/r/5493467419cd2510a32854e2807bcd263de981a0.1712823702.git.michal.simek@amd.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qcom/lmh.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/microblaze/kernel/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/thermal/qcom/lmh.c
-+++ b/drivers/thermal/qcom/lmh.c
-@@ -95,6 +95,9 @@ static int lmh_probe(struct platform_dev
- 	unsigned int enable_alg;
- 	u32 node_id;
- 
-+	if (!qcom_scm_is_available())
-+		return -EPROBE_DEFER;
-+
- 	lmh_data = devm_kzalloc(dev, sizeof(*lmh_data), GFP_KERNEL);
- 	if (!lmh_data)
- 		return -ENOMEM;
+diff --git a/arch/microblaze/kernel/Makefile b/arch/microblaze/kernel/Makefile
+index dd71637437f4f..8b9d52b194cb4 100644
+--- a/arch/microblaze/kernel/Makefile
++++ b/arch/microblaze/kernel/Makefile
+@@ -7,7 +7,6 @@ ifdef CONFIG_FUNCTION_TRACER
+ # Do not trace early boot code and low level code
+ CFLAGS_REMOVE_timer.o = -pg
+ CFLAGS_REMOVE_intc.o = -pg
+-CFLAGS_REMOVE_early_printk.o = -pg
+ CFLAGS_REMOVE_ftrace.o = -pg
+ CFLAGS_REMOVE_process.o = -pg
+ endif
+-- 
+2.43.0
+
 
 
 
