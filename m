@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-51176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CCF7906EAA
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:12:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 849C790701C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:26:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28E75B27F4B
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:12:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 316D21F23124
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343291465BA;
-	Thu, 13 Jun 2024 12:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835F9145B1D;
+	Thu, 13 Jun 2024 12:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDUzQK71"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJY1E1G3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E753E1448DD;
-	Thu, 13 Jun 2024 12:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430391459FA;
+	Thu, 13 Jun 2024 12:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280530; cv=none; b=Ek8ajzsgZcWjv9N4IJo4xWazCvBvIZhGU8Xwo0J2YYzy69ixt552EJbPkbzMKHiuyXg9K7nvmRukJHfj+vd0NtvPnRX6B+QYX2WBUhBdbbXeCce1E4AXk5wTJnAsyRhPncOZYOpoprAgwIYeX8ZOEFokLFONcFi75o8iKHsSwh8=
+	t=1718281416; cv=none; b=fqjMDMPGIU2XKrbszeSCHumi1/NXi9+7MYoTneq0TovLJh63I9yxLZhc9wPlLvT/lUoR42jNtwVImwvBa/9G24GcIFW0pqiFLOkR0ZLajmUyImMlyd//9okxAsUR3lZAtSNUpPZlVI+SyoAqrs0qKngaR1ecUSsupoZ+wOLXZQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280530; c=relaxed/simple;
-	bh=oXNaYm+rgi4z5oqDIHWVxdx5sKD9fQ+n+lKyouJJudc=;
+	s=arc-20240116; t=1718281416; c=relaxed/simple;
+	bh=U9ezX8TGvRcvjEeSsYXdNB4NYqFB1GDlSSBOuFrvO5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKPSrdaPoRJP2T+QGr1kits1til30a05c21yIxYA86wpTt4eXsXe9wRo+1j2p32WKlG1LGn0YmlRvtVcAMfvrYCMOoQQmDcsU3AsQ79DNN8rcABjXpL+DcXtJ5YYD9HJ5KCEZtno8KXffQCSIFSZn4ojqaU4lmoF/oxv+JgoYH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDUzQK71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB0AC2BBFC;
-	Thu, 13 Jun 2024 12:08:49 +0000 (UTC)
+	 MIME-Version; b=XMHgE0d2wq3HuK7wBm+iAOamfWnIs5qAF3WQdgQZAWOIVrFN3GHPVHb2SD2YPvpqokuI+3xVngvZi3+1cnB5xTJxPTxE8KdHCrf45j370YulFSlSA3numCJ/uvizT6ZcxpmbZiIJc8ZDQQ0Fas77S8LyCAkx8xviWVlewUdNyrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJY1E1G3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA51C2BBFC;
+	Thu, 13 Jun 2024 12:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280529;
-	bh=oXNaYm+rgi4z5oqDIHWVxdx5sKD9fQ+n+lKyouJJudc=;
+	s=korg; t=1718281416;
+	bh=U9ezX8TGvRcvjEeSsYXdNB4NYqFB1GDlSSBOuFrvO5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xDUzQK71Yc8R/78vhAiVmhKh4Fce+rstxp/LjCe3DOlMmc8qtXTNZCOZBWDOY6UsR
-	 uvtfNNEozIGGDRrSh8L5VkmvXP+MzpY+c39EdvF/WS81wUvmQUbIKsWS4Yrt1uC/bj
-	 +ALfSsiAypEPQYkDVLo5OwPihmC/bX5BxZpRhhaA=
+	b=zJY1E1G3oArC1a82wtJoSFs4acVEXwQgc+NbXfQtJFkFYrdS/uxPXqN2mbiSKD/of
+	 Gql9Kbf4oS2kAKPrdg5/6DNmxJDY2pM6i6TBGhkh66JL3qvoD5Wp0ITAql4BaMhtPJ
+	 pTtRvmGRTlTtdLdeyfapvcKDP09NCTgisrMFrU0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Peter Jung <ptr1337@cachyos.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 085/137] cpufreq: amd-pstate: Fix the inconsistency in max frequency units
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 247/317] spi: Dont mark message DMA mapped when no transfer in it is
 Date: Thu, 13 Jun 2024 13:34:25 +0200
-Message-ID: <20240613113226.594434195@linuxfoundation.org>
+Message-ID: <20240613113257.106498073@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit e4731baaf29438508197d3a8a6d4f5a8c51663f8 upstream.
+[ Upstream commit 9f788ba457b45b0ce422943fcec9fa35c4587764 ]
 
-The nominal frequency in cpudata is maintained in MHz whereas all other
-frequencies are in KHz. This means we have to convert nominal frequency
-value to KHz before we do any interaction with other frequency values.
+There is no need to set the DMA mapped flag of the message if it has
+no mapped transfers. Moreover, it may give the code a chance to take
+the wrong paths, i.e. to exercise DMA related APIs on unmapped data.
+Make __spi_map_msg() to bail earlier on the above mentioned cases.
 
-In amd_pstate_set_boost(), this conversion from MHz to KHz is missed,
-fix that.
-
-Tested on a AMD Zen4 EPYC server
-
-Before:
-$ cat /sys/devices/system/cpu/cpufreq/policy*/scaling_max_freq | uniq
-2151
-$ cat /sys/devices/system/cpu/cpufreq/policy*/cpuinfo_min_freq | uniq
-400000
-$ cat /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq | uniq
-2151
-409422
-
-After:
-$ cat /sys/devices/system/cpu/cpufreq/policy*/scaling_max_freq | uniq
-2151000
-$ cat /sys/devices/system/cpu/cpufreq/policy*/cpuinfo_min_freq | uniq
-400000
-$ cat /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq | uniq
-2151000
-1799527
-
-Fixes: ec437d71db77 ("cpufreq: amd-pstate: Introduce a new AMD P-State driver to support future processors")
-Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
-Acked-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Tested-by: Peter Jung <ptr1337@cachyos.org>
-Cc: 5.17+ <stable@vger.kernel.org> # 5.17+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 99adef310f68 ("spi: Provide core support for DMA mapping transfers")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://msgid.link/r/20240522171018.3362521-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -675,7 +675,7 @@ static int amd_pstate_set_boost(struct c
- 	if (state)
- 		policy->cpuinfo.max_freq = cpudata->max_freq;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 857a1399850c3..e84494eed1c11 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -970,6 +970,7 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
  	else
--		policy->cpuinfo.max_freq = cpudata->nominal_freq;
-+		policy->cpuinfo.max_freq = cpudata->nominal_freq * 1000;
+ 		rx_dev = ctlr->dev.parent;
  
- 	policy->max = policy->cpuinfo.max_freq;
++	ret = -ENOMSG;
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		if (!ctlr->can_dma(ctlr, msg->spi, xfer))
+ 			continue;
+@@ -993,6 +994,9 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 			}
+ 		}
+ 	}
++	/* No transfer has been mapped, bail out with success */
++	if (ret)
++		return 0;
  
+ 	ctlr->cur_msg_mapped = true;
+ 
+-- 
+2.43.0
+
 
 
 
