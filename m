@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-51890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB1E090721D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:44:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CECA8906EF1
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E62E7B27BD4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:44:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A0D71F22198
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00179143C55;
-	Thu, 13 Jun 2024 12:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E8E1448E5;
+	Thu, 13 Jun 2024 12:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOP0uwaa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvvwhD71"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26A7143892;
-	Thu, 13 Jun 2024 12:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DC944C6F;
+	Thu, 13 Jun 2024 12:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282616; cv=none; b=OIBfhTCdmk0+k7+4SD6xLKJMrLJg+TpM+dJjTzBA3J4KiXuiwdAWzZtqgOWkQ5De7BKopUmfyWAmsHWepEFMBcepRUgmAhnwi2Dsio6Qrrl6BkkdDCr0QY8L5m0XJI5owy73WLjl8py21eRU8i6UjyWU9nXT1+l2TBwmVDcFbsU=
+	t=1718280706; cv=none; b=Bmuf0JQkJhBLjcVlHjNBUJgLCmZuBadUMOEGu7bcu5NdzkXhbrO0+t4v0h/sDdhhIE0fY6FlQ6ibgYxt84sC4CFC+MMsfTyLFM95xZj5+BLsoJNt0DQAYjd4NTcdIpi0FpM0DAjBawc5krOJTrq6/8FJYyvg8BkBiG/S9QtJjgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282616; c=relaxed/simple;
-	bh=4+5jPSfSO7claWTvAypu6qirncl7qW8fSNRLL+ERpII=;
+	s=arc-20240116; t=1718280706; c=relaxed/simple;
+	bh=Lel2nnbRqt/xP1Ikh/CoiFYzNHyTn+6EPvP7asrG9P0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RqOXlPS6+UxQ0w3SUxOUv+BZZvVYPnKag3B5tycNLYO55XEHkNuOI6u2+mbvnmt7U0kWPg7LGCndCAOeyotDRho0UvHSVbkjRebRZO1YYLYimFrZApkwWW83Bx9AG9MQn9XQv2ywAgxEHLxSAp0nRdowDVoSDNjIq5jsNg/AWfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOP0uwaa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36537C4AF1C;
-	Thu, 13 Jun 2024 12:43:36 +0000 (UTC)
+	 MIME-Version; b=qby9Uu8I+/u/0JZergspptQnlShSpl5ErTkCo6faV/DdyXIuOMj5uSBNX0GeR+PFKxOvGy80sjj/zyFM80G4+qMsRRyunNRBAv0Mlhovpnb/s7Jj2iU5yHzoo1/Mc1+hfdjSZa33tggpaa0hsy8ho0vxRXSE4x4ly2yT2tiY3Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvvwhD71; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925A3C2BBFC;
+	Thu, 13 Jun 2024 12:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282616;
-	bh=4+5jPSfSO7claWTvAypu6qirncl7qW8fSNRLL+ERpII=;
+	s=korg; t=1718280706;
+	bh=Lel2nnbRqt/xP1Ikh/CoiFYzNHyTn+6EPvP7asrG9P0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOP0uwaaYWkuQM3CSPEf+mS1JTltOMwgYhg8cZzll3UFzg9/EsA+zqAwiOv8HYsza
-	 SbrXSQZRPN5eQc72NJBj6Ou8wJGCSgm8GVeNSCGXfU5TLXZxb2uslTL1zRcxFv0sxE
-	 DnOCmwaxNDi7JUFlddsYdWFYSCWyQv3z/X29vZLE=
+	b=vvvwhD7122YTNEXbmvpBwUmpDmNgP4BHzdb1A5BTweCk5dauPMv3ypKeD6uH646bk
+	 dI5D2CgeQMxKXux3vTVRuw8XQdjWL/FkPCgXe83X1PPICtfRmkbkc9aZd7O33WPS63
+	 f4jLAp9wIJzNlJsCVJQ1JQ5ZmXN26i5pDKrufzN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arthur Kiyanovski <akiyano@amazon.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 337/402] net: ena: Fix DMA syncing in XDP path when SWIOTLB is on
+	Helge Deller <deller@gmx.de>,
+	John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH 6.6 114/137] parisc: Define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 Date: Thu, 13 Jun 2024 13:34:54 +0200
-Message-ID: <20240613113315.280983904@linuxfoundation.org>
+Message-ID: <20240613113227.719608686@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
+References: <20240613113223.281378087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,182 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Arinzon <darinzon@amazon.com>
+From: Helge Deller <deller@gmx.de>
 
-commit d760117060cf2e90b5c59c5492cab179a4dbce01 upstream.
+commit d4a599910193b85f76c100e30d8551c8794f8c2a upstream.
 
-This patch fixes two issues:
+Define the HAVE_ARCH_HUGETLB_UNMAPPED_AREA macro like other platforms do in
+their page.h files to avoid this compile warning:
+arch/parisc/mm/hugetlbpage.c:25:1: warning: no previous prototype for 'hugetlb_get_unmapped_area' [-Wmissing-prototypes]
 
-Issue 1
--------
-Description
-```````````
-Current code does not call dma_sync_single_for_cpu() to sync data from
-the device side memory to the CPU side memory before the XDP code path
-uses the CPU side data.
-This causes the XDP code path to read the unset garbage data in the CPU
-side memory, resulting in incorrect handling of the packet by XDP.
-
-Solution
-````````
-1. Add a call to dma_sync_single_for_cpu() before the XDP code starts to
-   use the data in the CPU side memory.
-2. The XDP code verdict can be XDP_PASS, in which case there is a
-   fallback to the non-XDP code, which also calls
-   dma_sync_single_for_cpu().
-   To avoid calling dma_sync_single_for_cpu() twice:
-2.1. Put the dma_sync_single_for_cpu() in the code in such a place where
-     it happens before XDP and non-XDP code.
-2.2. Remove the calls to dma_sync_single_for_cpu() in the non-XDP code
-     for the first buffer only (rx_copybreak and non-rx_copybreak
-     cases), since the new call that was added covers these cases.
-     The call to dma_sync_single_for_cpu() for the second buffer and on
-     stays because only the first buffer is handled by the newly added
-     dma_sync_single_for_cpu(). And there is no need for special
-     handling of the second buffer and on for the XDP path since
-     currently the driver supports only single buffer packets.
-
-Issue 2
--------
-Description
-```````````
-In case the XDP code forwarded the packet (ENA_XDP_FORWARDED),
-ena_unmap_rx_buff_attrs() is called with attrs set to 0.
-This means that before unmapping the buffer, the internal function
-dma_unmap_page_attrs() will also call dma_sync_single_for_cpu() on
-the whole buffer (not only on the data part of it).
-This sync is both wasteful (since a sync was already explicitly
-called before) and also causes a bug, which will be explained
-using the below diagram.
-
-The following diagram shows the flow of events causing the bug.
-The order of events is (1)-(4) as shown in the diagram.
-
-CPU side memory area
-
-     (3)convert_to_xdp_frame() initializes the
-        headroom with xdpf metadata
-                      ||
-                      \/
-          ___________________________________
-         |                                   |
- 0       |                                   V                       4K
- ---------------------------------------------------------------------
- | xdpf->data      | other xdpf       |   < data >   | tailroom ||...|
- |                 | fields           |              | GARBAGE  ||   |
- ---------------------------------------------------------------------
-
-                   /\                        /\
-                   ||                        ||
-   (4)ena_unmap_rx_buff_attrs() calls     (2)dma_sync_single_for_cpu()
-      dma_sync_single_for_cpu() on the       copies data from device
-      whole buffer page, overwriting         side to CPU side memory
-      the xdpf->data with GARBAGE.           ||
- 0                                                                   4K
- ---------------------------------------------------------------------
- | headroom                           |   < data >   | tailroom ||...|
- | GARBAGE                            |              | GARBAGE  ||   |
- ---------------------------------------------------------------------
-
-Device side memory area                      /\
-                                             ||
-                               (1) device writes RX packet data
-
-After the call to ena_unmap_rx_buff_attrs() in (4), the xdpf->data
-becomes corrupted, and so when it is later accessed in
-ena_clean_xdp_irq()->xdp_return_frame(), it causes a page fault,
-crashing the kernel.
-
-Solution
-````````
-Explicitly tell ena_unmap_rx_buff_attrs() not to call
-dma_sync_single_for_cpu() by passing it the ENA_DMA_ATTR_SKIP_CPU_SYNC
-flag.
-
-Fixes: f7d625adeb7b ("net: ena: Add dynamic recycling mechanism for rx buffers")
-Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
-Signed-off-by: David Arinzon <darinzon@amazon.com>
-Link: https://lore.kernel.org/r/20231211062801.27891-4-darinzon@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org  # 6.0+
+Reported-by: John David Anglin <dave.anglin@bell.net>
+Tested-by: John David Anglin <dave.anglin@bell.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_netdev.c |   23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ arch/parisc/include/asm/page.h |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-@@ -1495,11 +1495,6 @@ static struct sk_buff *ena_rx_skb(struct
- 		if (unlikely(!skb))
- 			return NULL;
+--- a/arch/parisc/include/asm/page.h
++++ b/arch/parisc/include/asm/page.h
+@@ -16,6 +16,7 @@
+ #define PAGE_SIZE	(_AC(1,UL) << PAGE_SHIFT)
+ #define PAGE_MASK	(~(PAGE_SIZE-1))
  
--		/* sync this buffer for CPU use */
--		dma_sync_single_for_cpu(rx_ring->dev,
--					dma_unmap_addr(&rx_info->ena_buf, paddr) + pkt_offset,
--					len,
--					DMA_FROM_DEVICE);
- 		skb_copy_to_linear_data(skb, buf_addr + buf_offset, len);
- 		dma_sync_single_for_device(rx_ring->dev,
- 					   dma_unmap_addr(&rx_info->ena_buf, paddr) + pkt_offset,
-@@ -1518,17 +1513,10 @@ static struct sk_buff *ena_rx_skb(struct
++#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
  
- 	buf_len = SKB_DATA_ALIGN(len + buf_offset + tailroom);
+ #ifndef __ASSEMBLY__
  
--	pre_reuse_paddr = dma_unmap_addr(&rx_info->ena_buf, paddr);
--
- 	/* If XDP isn't loaded try to reuse part of the RX buffer */
- 	reuse_rx_buf_page = !is_xdp_loaded &&
- 			    ena_try_rx_buf_page_reuse(rx_info, buf_len, len, pkt_offset);
- 
--	dma_sync_single_for_cpu(rx_ring->dev,
--				pre_reuse_paddr + pkt_offset,
--				len,
--				DMA_FROM_DEVICE);
--
- 	if (!reuse_rx_buf_page)
- 		ena_unmap_rx_buff_attrs(rx_ring, rx_info, DMA_ATTR_SKIP_CPU_SYNC);
- 
-@@ -1724,6 +1712,7 @@ static int ena_clean_rx_irq(struct ena_r
- 	int xdp_flags = 0;
- 	int total_len = 0;
- 	int xdp_verdict;
-+	u8 pkt_offset;
- 	int rc = 0;
- 	int i;
- 
-@@ -1750,13 +1739,19 @@ static int ena_clean_rx_irq(struct ena_r
- 
- 		/* First descriptor might have an offset set by the device */
- 		rx_info = &rx_ring->rx_buffer_info[rx_ring->ena_bufs[0].req_id];
--		rx_info->buf_offset += ena_rx_ctx.pkt_offset;
-+		pkt_offset = ena_rx_ctx.pkt_offset;
-+		rx_info->buf_offset += pkt_offset;
- 
- 		netif_dbg(rx_ring->adapter, rx_status, rx_ring->netdev,
- 			  "rx_poll: q %d got packet from ena. descs #: %d l3 proto %d l4 proto %d hash: %x\n",
- 			  rx_ring->qid, ena_rx_ctx.descs, ena_rx_ctx.l3_proto,
- 			  ena_rx_ctx.l4_proto, ena_rx_ctx.hash);
- 
-+		dma_sync_single_for_cpu(rx_ring->dev,
-+					dma_unmap_addr(&rx_info->ena_buf, paddr) + pkt_offset,
-+					rx_ring->ena_bufs[0].len,
-+					DMA_FROM_DEVICE);
-+
- 		if (ena_xdp_present_ring(rx_ring))
- 			xdp_verdict = ena_xdp_handle_buff(rx_ring, &xdp, ena_rx_ctx.descs);
- 
-@@ -1782,7 +1777,7 @@ static int ena_clean_rx_irq(struct ena_r
- 				if (xdp_verdict & ENA_XDP_FORWARDED) {
- 					ena_unmap_rx_buff_attrs(rx_ring,
- 								&rx_ring->rx_buffer_info[req_id],
--								0);
-+								DMA_ATTR_SKIP_CPU_SYNC);
- 					rx_ring->rx_buffer_info[req_id].page = NULL;
- 				}
- 			}
 
 
 
