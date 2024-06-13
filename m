@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-50750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B11E906C66
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47078906D7F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3B552825B6
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB569285A92
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C87C1448C5;
-	Thu, 13 Jun 2024 11:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FCB5145A0E;
+	Thu, 13 Jun 2024 11:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aohPvawv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeBvHRNt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC5B143899;
-	Thu, 13 Jun 2024 11:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A3A143C55;
+	Thu, 13 Jun 2024 11:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279275; cv=none; b=CdK/R5AE/1zwYzPv95Rir2Qv/w6015/Wi9aBLDi1cduSxomKaZMoUdJOsnwKjk9osjcfHVOLx3CLmMUXPARW6oHiaWeLg29x5v2iRKITttlihM13uIc+1/J56GMbhqh+Zrbxa6XCp3f3MuEe6yzExmLH5E7AabqEZs62IQ7gauM=
+	t=1718279820; cv=none; b=PrXg2BsjKRqg5BAepX9Xu3hZ9dzPmeyxVXf7sK4AdQ5Q/EyeZX6hFBCz66p2yWwI8Zw8G0clrmqJgp03/YWKwU/zhY9QtI242gbeu66q5Cr+xfsRVhg0v25ywOinf56wUX4YO9nreCRSi/u6dpMp4d1Snag7nWNbywKjgPBXfD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279275; c=relaxed/simple;
-	bh=VKRspw8KzSk6wPAnn+KengVarIj7Xz4encPSXI+m308=;
+	s=arc-20240116; t=1718279820; c=relaxed/simple;
+	bh=LYlypHw2R2Pi7R6OM1DocPfoB697URyLlbxnAuAOlvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Awgg+SZl8vZxCE7uGeErLVDbGsc83Dog65/zo1oUt8LoeMvDiKDRHVKDNwq384IsLdJ7HHEx8eb8eFjfuluAOJgIiMRRcnYxAiS7DxvdEP23Evisqjzq1yU11Xac7qDipNJpNXXCobjXM2JhzOSxWWjIXnzqLFkNeyY1vfsqqLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aohPvawv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FCCC2BBFC;
-	Thu, 13 Jun 2024 11:47:54 +0000 (UTC)
+	 MIME-Version; b=SnG/4TCmO2ZeIZxmy9Erg5fVfsqms9uIeNLiAvNJVDDe1gAK4ddNcMKN993C8tgnkHftGdHtf11YzOk+cwoF1bNknED1HSXsm2oJDsYpNBwa7Z48gXOkYyZt0r8HcWekf5SQnfS5D5MHyeHWnqMEBRxXfgNG+2fuUhp7zB0FPqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeBvHRNt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48647C2BBFC;
+	Thu, 13 Jun 2024 11:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279275;
-	bh=VKRspw8KzSk6wPAnn+KengVarIj7Xz4encPSXI+m308=;
+	s=korg; t=1718279820;
+	bh=LYlypHw2R2Pi7R6OM1DocPfoB697URyLlbxnAuAOlvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aohPvawvqE6kyyK2+mReZsl/q5n1DfjwfXURa8tanwgrR70VUWnlmXdXMNfrvmPlv
-	 E+u4gB+DmgmkDz5mejqBuYWPsGqdTaPAZ6GkhbiUF/131lWba6VgFspa+lo3P8Y7rE
-	 m4/5MxA+1HtdlUn64BkqiKnTlFzSbuwic3aCxy7M=
+	b=zeBvHRNtSzwGdENIYauZxf8ZUdkBk7JM+dIU9zvg6dCZvbqv875O5EmpKYJ1cDgbz
+	 JqPVsR5FBo+PScHBwc4TykL+GUjSBrj+DinaVo0lAc10HfurujuhrAGpHkbx01AFPU
+	 wyYOsSPlxoOhz69Dh537qXj/Rvnn/wVQ1CvlC9VM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Maulik Shah <quic_mkshah@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Elliot Berman <quic_eberman@quicinc.com>
-Subject: [PATCH 6.9 020/157] soc: qcom: rpmh-rsc: Enhance check for VRM in-flight request
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 047/202] tcp: avoid premature drops in tcp_add_backlog()
 Date: Thu, 13 Jun 2024 13:32:25 +0200
-Message-ID: <20240613113228.189797839@linuxfoundation.org>
+Message-ID: <20240613113229.588647299@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maulik Shah <quic_mkshah@quicinc.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit f592cc5794747b81e53b53dd6e80219ee25f0611 upstream.
+[ Upstream commit ec00ed472bdb7d0af840da68c8c11bff9f4d9caa ]
 
-Each RPMh VRM accelerator resource has 3 or 4 contiguous 4-byte aligned
-addresses associated with it. These control voltage, enable state, mode,
-and in legacy targets, voltage headroom. The current in-flight request
-checking logic looks for exact address matches. Requests for different
-addresses of the same RPMh resource as thus not detected as in-flight.
+While testing TCP performance with latest trees,
+I saw suspect SOCKET_BACKLOG drops.
 
-Add new cmd-db API cmd_db_match_resource_addr() to enhance the in-flight
-request check for VRM requests by ignoring the address offset.
+tcp_add_backlog() computes its limit with :
 
-This ensures that only one request is allowed to be in-flight for a given
-VRM resource. This is needed to avoid scenarios where request commands are
-carried out by RPMh hardware out-of-order leading to LDO regulator
-over-current protection triggering.
+    limit = (u32)READ_ONCE(sk->sk_rcvbuf) +
+            (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
+    limit += 64 * 1024;
 
-Fixes: 658628e7ef78 ("drivers: qcom: rpmh-rsc: add RPMH controller for QCOM SoCs")
-Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Tested-by: Elliot Berman <quic_eberman@quicinc.com> # sm8650-qrd
-Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
-Link: https://lore.kernel.org/r/20240215-rpmh-rsc-fixes-v4-1-9cbddfcba05b@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This does not take into account that sk->sk_backlog.len
+is reset only at the very end of __release_sock().
+
+Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
+sk_rcvbuf in normal conditions.
+
+We should double sk->sk_rcvbuf contribution in the formula
+to absorb bubbles in the backlog, which happen more often
+for very fast flows.
+
+This change maintains decent protection against abuses.
+
+Fixes: c377411f2494 ("net: sk_add_backlog() take rmem_alloc into account")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240423125620.3309458-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/cmd-db.c   |   32 +++++++++++++++++++++++++++++++-
- drivers/soc/qcom/rpmh-rsc.c |    3 ++-
- include/soc/qcom/cmd-db.h   |   10 +++++++++-
- 3 files changed, 42 insertions(+), 3 deletions(-)
+ net/ipv4/tcp_ipv4.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/soc/qcom/cmd-db.c
-+++ b/drivers/soc/qcom/cmd-db.c
-@@ -1,6 +1,10 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright (c) 2016-2018, 2020, The Linux Foundation. All rights reserved. */
-+/*
-+ * Copyright (c) 2016-2018, 2020, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
-+ */
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index d29d4b8192643..c18ad443ca7db 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -1678,7 +1678,7 @@ int tcp_v4_early_demux(struct sk_buff *skb)
  
-+#include <linux/bitfield.h>
- #include <linux/debugfs.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -17,6 +21,8 @@
- #define MAX_SLV_ID		8
- #define SLAVE_ID_MASK		0x7
- #define SLAVE_ID_SHIFT		16
-+#define SLAVE_ID(addr)		FIELD_GET(GENMASK(19, 16), addr)
-+#define VRM_ADDR(addr)		FIELD_GET(GENMASK(19, 4), addr)
+ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
+ {
+-	u32 limit, tail_gso_size, tail_gso_segs;
++	u32 tail_gso_size, tail_gso_segs;
+ 	struct skb_shared_info *shinfo;
+ 	const struct tcphdr *th;
+ 	struct tcphdr *thtail;
+@@ -1687,6 +1687,7 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
+ 	bool fragstolen;
+ 	u32 gso_segs;
+ 	u32 gso_size;
++	u64 limit;
+ 	int delta;
  
- /**
-  * struct entry_header: header for each entry in cmddb
-@@ -221,6 +227,30 @@ const void *cmd_db_read_aux_data(const c
- EXPORT_SYMBOL_GPL(cmd_db_read_aux_data);
+ 	/* In case all data was pulled from skb frags (in __pskb_pull_tail()),
+@@ -1781,7 +1782,13 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
+ 	__skb_push(skb, hdrlen);
  
- /**
-+ * cmd_db_match_resource_addr() - Compare if both Resource addresses are same
-+ *
-+ * @addr1: Resource address to compare
-+ * @addr2: Resource address to compare
-+ *
-+ * Return: true if two addresses refer to the same resource, false otherwise
-+ */
-+bool cmd_db_match_resource_addr(u32 addr1, u32 addr2)
-+{
-+	/*
-+	 * Each RPMh VRM accelerator resource has 3 or 4 contiguous 4-byte
-+	 * aligned addresses associated with it. Ignore the offset to check
-+	 * for VRM requests.
+ no_coalesce:
+-	limit = (u32)READ_ONCE(sk->sk_rcvbuf) + (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
++	/* sk->sk_backlog.len is reset only at the end of __release_sock().
++	 * Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
++	 * sk_rcvbuf in normal conditions.
 +	 */
-+	if (addr1 == addr2)
-+		return true;
-+	else if (SLAVE_ID(addr1) == CMD_DB_HW_VRM && VRM_ADDR(addr1) == VRM_ADDR(addr2))
-+		return true;
++	limit = ((u64)READ_ONCE(sk->sk_rcvbuf)) << 1;
 +
-+	return false;
-+}
-+EXPORT_SYMBOL_GPL(cmd_db_match_resource_addr);
++	limit += ((u32)READ_ONCE(sk->sk_sndbuf)) >> 1;
+ 
+ 	/* Only socket owner can try to collapse/prune rx queues
+ 	 * to reduce memory overhead, so add a little headroom here.
+@@ -1789,6 +1796,8 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
+ 	 */
+ 	limit += 64 * 1024;
+ 
++	limit = min_t(u64, limit, UINT_MAX);
 +
-+/**
-  * cmd_db_read_slave_id - Get the slave ID for a given resource address
-  *
-  * @id: Resource id to query the DB for version
---- a/drivers/soc/qcom/rpmh-rsc.c
-+++ b/drivers/soc/qcom/rpmh-rsc.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-  * Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2023-2024, Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #define pr_fmt(fmt) "%s " fmt, KBUILD_MODNAME
-@@ -557,7 +558,7 @@ static int check_for_req_inflight(struct
- 		for_each_set_bit(j, &curr_enabled, MAX_CMDS_PER_TCS) {
- 			addr = read_tcs_cmd(drv, drv->regs[RSC_DRV_CMD_ADDR], i, j);
- 			for (k = 0; k < msg->num_cmds; k++) {
--				if (addr == msg->cmds[k].addr)
-+				if (cmd_db_match_resource_addr(msg->cmds[k].addr, addr))
- 					return -EBUSY;
- 			}
- 		}
---- a/include/soc/qcom/cmd-db.h
-+++ b/include/soc/qcom/cmd-db.h
-@@ -1,5 +1,8 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright (c) 2016-2018, The Linux Foundation. All rights reserved. */
-+/*
-+ * Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
-+ */
- 
- #ifndef __QCOM_COMMAND_DB_H__
- #define __QCOM_COMMAND_DB_H__
-@@ -21,6 +24,8 @@ u32 cmd_db_read_addr(const char *resourc
- 
- const void *cmd_db_read_aux_data(const char *resource_id, size_t *len);
- 
-+bool cmd_db_match_resource_addr(u32 addr1, u32 addr2);
-+
- enum cmd_db_hw_type cmd_db_read_slave_id(const char *resource_id);
- 
- int cmd_db_ready(void);
-@@ -31,6 +36,9 @@ static inline u32 cmd_db_read_addr(const
- static inline const void *cmd_db_read_aux_data(const char *resource_id, size_t *len)
- { return ERR_PTR(-ENODEV); }
- 
-+static inline bool cmd_db_match_resource_addr(u32 addr1, u32 addr2)
-+{ return false; }
-+
- static inline enum cmd_db_hw_type cmd_db_read_slave_id(const char *resource_id)
- { return -ENODEV; }
- 
+ 	if (unlikely(sk_add_backlog(sk, skb, limit))) {
+ 		bh_unlock_sock(sk);
+ 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPBACKLOGDROP);
+-- 
+2.43.0
+
 
 
 
