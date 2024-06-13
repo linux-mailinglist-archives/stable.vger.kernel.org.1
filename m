@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-50702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F2A5906C06
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:46:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1439B906D17
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:58:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E7A91C21A01
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:46:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A704CB25CD4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF04143872;
-	Thu, 13 Jun 2024 11:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3AD145FFB;
+	Thu, 13 Jun 2024 11:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8j0uiOl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWC3BKid"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6EF143C6D;
-	Thu, 13 Jun 2024 11:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECDA143C50;
+	Thu, 13 Jun 2024 11:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279139; cv=none; b=WuLPEKkm0XpcipVDM0wkRT/j/9FHQuUYBnDDfR3/o1SvumVIQzLgkFTVvxsiJL3TPDCZZBu6oV52O5UMKMPff69cH1aqSm9MjBArL8DR9s2JyLHmr63xpBRK3NEfsZ+WqqnqbJgeBRjJfPhACSpPJ4zF+MmuqU1WtQb3eA8AZ9A=
+	t=1718279549; cv=none; b=XkZSxm8kkjIFPioB+O5N8n68fT6srptP+fEnJ/WijJQZ48uIyhCUHBA6tyoftIfw2viBHJW8MrgiTDcc39mMyGp9SYK2M0Dt/LuLsRRkkgvjROopNu0XY9pMswIluygXYY+TaDQfrGp+oZRf8vgs8jMS2Iku7R+gbq9pFrJ84VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279139; c=relaxed/simple;
-	bh=7u6ABA55JaGctoDzT1Q7whu7FJbMsJ+IFU5trrLuBuc=;
+	s=arc-20240116; t=1718279549; c=relaxed/simple;
+	bh=ubiqn1o67vaqW2+4LHJNnYVicdnmWBkx4v5Bd9qznRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdh54VdLHPCbEjwkTgSvf4sADaJM8oBiWjWaTWG0O2gtJwuNUuiqOvOICyvxG4kNKZ9oblSCw9MIh952FlylDjycY73Eaw9MHWYtyd68Y0/mkgMuQSvJ4EN9UCzdy6JM5vWxJFwl2alDyuAB4RGlcNheRMQjQ2s2QYP9WXQ7j80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8j0uiOl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265AAC2BBFC;
-	Thu, 13 Jun 2024 11:45:38 +0000 (UTC)
+	 MIME-Version; b=clIm6G8tXeOtMrmb8mLVjKO5lCwZREDN/DaG8xnwokmFh1/z1uYwQ1ERxjC6C/DFTqiqHp1IFGt2VUzuU0DAWyfo9osYLbLXWXjJgBX/iJhNYgiy9qTBA9WEGeQBZwxSaSRRUI0nU1z5BPpQ1pRBjRggSIvNKlKPxe2JL44ika8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWC3BKid; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C39C32786;
+	Thu, 13 Jun 2024 11:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279139;
-	bh=7u6ABA55JaGctoDzT1Q7whu7FJbMsJ+IFU5trrLuBuc=;
+	s=korg; t=1718279548;
+	bh=ubiqn1o67vaqW2+4LHJNnYVicdnmWBkx4v5Bd9qznRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8j0uiOlSZWA82NwenZQ0MBiovHS5IXXw74/1SxS/VoyesExyEAf+C+jIJAMwKEyr
-	 nI0ND4BjRm6RzRTzYllCBtm3nw6b3MFrmtQhRcBYqrinm9xn6VpmzTgxApYrSoy9Qm
-	 ZHP0lJbEEtkZ+V/NI3mr8duqMmcsolvXhKnh67aU=
+	b=jWC3BKidtc4dZWlJkAk5dDhNEX9unxi17NsRSCm1eQSuxZPrLl1v2pZb7MbPhiVIW
+	 g0mOka1rYGcuZRk7DU7dvYNQNIE2iqnHYDQDE4QlXvoH/cAPEppvjNfSmR8/pSb0bS
+	 RUdReRvV6Op12vGTuNHaDYbonE09fMwYur1QHc9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 189/213] netfilter: nf_tables: mark newset as dead on transaction abort
-Date: Thu, 13 Jun 2024 13:33:57 +0200
-Message-ID: <20240613113235.268891052@linuxfoundation.org>
+	Yuval El-Hanany <YuvalE@radware.com>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Daniel Borkmann <daniel@iogearbox.net>
+Subject: [PATCH 6.9 113/157] Revert "xsk: Support redirect to any socket bound to the same umem"
+Date: Thu, 13 Jun 2024 13:33:58 +0200
+Message-ID: <20240613113231.791031267@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-References: <20240613113227.969123070@linuxfoundation.org>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+References: <20240613113227.389465891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Magnus Karlsson <magnus.karlsson@intel.com>
 
-[ Upstream commit 08e4c8c5919fd405a4d709b4ba43d836894a26eb ]
+commit 7fcf26b315bbb728036da0862de6b335da83dff2 upstream.
 
-If a transaction is aborted, we should mark the to-be-released NEWSET dead,
-just like commit path does for DEL and DESTROYSET commands.
+This reverts commit 2863d665ea41282379f108e4da6c8a2366ba66db.
 
-In both cases all remaining elements will be released via
-set->ops->destroy().
+This patch introduced a potential kernel crash when multiple napi instances
+redirect to the same AF_XDP socket. By removing the queue_index check, it is
+possible for multiple napi instances to access the Rx ring at the same time,
+which will result in a corrupted ring state which can lead to a crash when
+flushing the rings in __xsk_flush(). This can happen when the linked list of
+sockets to flush gets corrupted by concurrent accesses. A quick and small fix
+is not possible, so let us revert this for now.
 
-The existing abort code does NOT post the actual release to the work queue.
-Also the entire __nf_tables_abort() function is wrapped in gc_seq
-begin/end pair.
-
-Therefore, async gc worker will never try to release the pending set
-elements, as gc sequence is always stale.
-
-It might be possible to speed up transaction aborts via work queue too,
-this would result in a race and a possible use-after-free.
-
-So fix this before it becomes an issue.
-
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Yuval El-Hanany <YuvalE@radware.com>
+Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/xdp-newbies/8100DBDC-0B7C-49DB-9995-6027F6E63147@radware.com
+Link: https://lore.kernel.org/bpf/20240604122927.29080-2-magnus.karlsson@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/xdp/xsk.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7254,6 +7254,7 @@ static int __nf_tables_abort(struct net
- 				nft_trans_destroy(trans);
- 				break;
- 			}
-+			nft_trans_set(trans)->dead = 1;
- 			list_del_rcu(&nft_trans_set(trans)->list);
- 			break;
- 		case NFT_MSG_DELSET:
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 727aa20be4bd..7d1c0986f9bb 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -313,13 +313,10 @@ static bool xsk_is_bound(struct xdp_sock *xs)
+ 
+ static int xsk_rcv_check(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
+ {
+-	struct net_device *dev = xdp->rxq->dev;
+-	u32 qid = xdp->rxq->queue_index;
+-
+ 	if (!xsk_is_bound(xs))
+ 		return -ENXIO;
+ 
+-	if (!dev->_rx[qid].pool || xs->umem != dev->_rx[qid].pool->umem)
++	if (xs->dev != xdp->rxq->dev || xs->queue_id != xdp->rxq->queue_index)
+ 		return -EINVAL;
+ 
+ 	if (len > xsk_pool_get_rx_frame_size(xs->pool) && !xs->sg) {
+-- 
+2.45.2
+
 
 
 
