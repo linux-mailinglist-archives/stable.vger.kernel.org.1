@@ -1,55 +1,78 @@
-Return-Path: <stable+bounces-51127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1489C906E73
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:11:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9DEB906DE2
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DB621C223CF
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:11:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F38981C2188D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE651474C5;
-	Thu, 13 Jun 2024 12:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B6B145B29;
+	Thu, 13 Jun 2024 12:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtWgegiH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeiLlEFC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F131474B6;
-	Thu, 13 Jun 2024 12:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158C512C530;
+	Thu, 13 Jun 2024 12:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280388; cv=none; b=lmuUEGI2K4Cl4pZMaPOl0jK0z5OP3MvHUSp1NHoFG5unU1yW6BzL5UTdUmwE0Zle23b3O7TI3XkHf/CditcnXZ5UlZPtUEsmDvs5AcAY5dP4I5PQVIj6o+e8BV9jEDBDcZKpsv0rDz0rWJ6siGaGCSQ8NzX6UCnjzQGaig/y2ac=
+	t=1718280030; cv=none; b=i0iQZgU5OPXNnezq9kWvXA2T21CdeoOuZj5QZfdi/zkbBg9Ka/r+oV+Uief9CYZuZoMwAP5/Vgmqdpu9QvmZgA5va6wtTvpmZEeOeExHmzFBF5fwgs3d/JGjFpkWYsvw9SWBMceuTkCNmG5kDmIj2G6HUniGSzUkbZLdeGjhkAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280388; c=relaxed/simple;
-	bh=4HDZbzpdDjCJ4Iuisc7VyBI69OhZWXQSrvniWva/bfc=;
+	s=arc-20240116; t=1718280030; c=relaxed/simple;
+	bh=Q7eSktE/oQ40riiMDJ4hqsTYaOoRHaA73dZz+yP1iBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YKQcSQToU98gQyTmKzhYCXDYBCxz6EmOhwr5RuFb49TuK5qirbQBGZBXfLJG7M47GYq7A1CdIhNyAX1l0MCuRXLhSsHnGbhs6D8UXWokLsrDkAVMdLXs/mtHRksUr9orJasyl1MILj4EUmKvzmh4Zlw8ZhgsWJY5qv4NFSx46i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtWgegiH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B0BC2BBFC;
-	Thu, 13 Jun 2024 12:06:27 +0000 (UTC)
+	 MIME-Version; b=onS9zU4VWrZn6DLdxkCngmlU299O/YajhOTJgiIeQDP0yOOz7UPoYgps+iborxHA5HmaZ3LG8ugRtq1srBqU4kL1QT77LOosBsliFfVFnlPn9ta26LSpx4a1tscoW7GDRcH9MjkT5v+4aIr3OS7OQRtez9A+QYA1YcXLpb9NkN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeiLlEFC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6477EC32786;
+	Thu, 13 Jun 2024 12:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280388;
-	bh=4HDZbzpdDjCJ4Iuisc7VyBI69OhZWXQSrvniWva/bfc=;
+	s=korg; t=1718280030;
+	bh=Q7eSktE/oQ40riiMDJ4hqsTYaOoRHaA73dZz+yP1iBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jtWgegiHYd+EMMXUMmnRBhm9JrhSwVKCqkhmN2Hi7JxRAcKXcl9p0lvlpWZSX0Lwl
-	 xn0TqihzNoK10kDX1OVJD/a2viOxy0viwY9xZGUctiSVyAQeaiBxkpEyo2t6jKg/Ra
-	 Xa7Jxnqwav2Pvcj/Ij/sIFDBYZxMcPWgvuhy2vtQ=
+	b=DeiLlEFCXy1TqxIqYHXC9O49QwIwkyCBWLDYmbyQWhX87aoGb44zYSClaKkaAg/SJ
+	 MNiVzdnLzGjr4KWLvn/BEg4B3+k7cJsbfLYL45KnhksOfEXqlqMiHDuQNlDM/9RSMq
+	 Ua1Qjedg15ubmFzzNb2yUCfO538rL1sybeIV/kAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.6 035/137] wifi: rtlwifi: rtl8192de: Fix low speed with WPA3-SAE
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Ben Gainey <ben.gainey@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Li Dong <lidong@vivo.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Paran Lee <p4ranlee@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Sun Haiyong <sunhaiyong@loongson.cn>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Yanteng Si <siyanteng@loongson.cn>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 117/202] perf ui browser: Dont save pointer to stack memory
 Date: Thu, 13 Jun 2024 13:33:35 +0200
-Message-ID: <20240613113224.654098846@linuxfoundation.org>
+Message-ID: <20240613113232.276801054@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113227.759341286@linuxfoundation.org>
+References: <20240613113227.759341286@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +84,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Ian Rogers <irogers@google.com>
 
-commit a7c0f48410f546772ac94a0f7b7291a15c4fc173 upstream.
+[ Upstream commit 769e6a1e15bdbbaf2b0d2f37c24f2c53268bd21f ]
 
-Some (all?) management frames are incorrectly reported to mac80211 as
-decrypted when actually the hardware did not decrypt them. This results
-in speeds 3-5 times lower than expected, 20-30 Mbps instead of 100
-Mbps.
+ui_browser__show() is capturing the input title that is stack allocated
+memory in hist_browser__run().
 
-Fix this by checking the encryption type field of the RX descriptor.
-rtw88 does the same thing.
+Avoid a use after return by strdup-ing the string.
 
-This fix was tested only with rtl8192du, which will use the same code.
+Committer notes:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/4d600435-f0ea-46b0-bdb4-e60f173da8dd@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Further explanation from Ian Rogers:
+
+My command line using tui is:
+$ sudo bash -c 'rm /tmp/asan.log*; export
+ASAN_OPTIONS="log_path=/tmp/asan.log"; /tmp/perf/perf mem record -a
+sleep 1; /tmp/perf/perf mem report'
+I then go to the perf annotate view and quit. This triggers the asan
+error (from the log file):
+```
+==1254591==ERROR: AddressSanitizer: stack-use-after-return on address
+0x7f2813331920 at pc 0x7f28180
+65991 bp 0x7fff0a21c750 sp 0x7fff0a21bf10
+READ of size 80 at 0x7f2813331920 thread T0
+    #0 0x7f2818065990 in __interceptor_strlen
+../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:461
+    #1 0x7f2817698251 in SLsmg_write_wrapped_string
+(/lib/x86_64-linux-gnu/libslang.so.2+0x98251)
+    #2 0x7f28176984b9 in SLsmg_write_nstring
+(/lib/x86_64-linux-gnu/libslang.so.2+0x984b9)
+    #3 0x55c94045b365 in ui_browser__write_nstring ui/browser.c:60
+    #4 0x55c94045c558 in __ui_browser__show_title ui/browser.c:266
+    #5 0x55c94045c776 in ui_browser__show ui/browser.c:288
+    #6 0x55c94045c06d in ui_browser__handle_resize ui/browser.c:206
+    #7 0x55c94047979b in do_annotate ui/browsers/hists.c:2458
+    #8 0x55c94047fb17 in evsel__hists_browse ui/browsers/hists.c:3412
+    #9 0x55c940480a0c in perf_evsel_menu__run ui/browsers/hists.c:3527
+    #10 0x55c940481108 in __evlist__tui_browse_hists ui/browsers/hists.c:3613
+    #11 0x55c9404813f7 in evlist__tui_browse_hists ui/browsers/hists.c:3661
+    #12 0x55c93ffa253f in report__browse_hists tools/perf/builtin-report.c:671
+    #13 0x55c93ffa58ca in __cmd_report tools/perf/builtin-report.c:1141
+    #14 0x55c93ffaf159 in cmd_report tools/perf/builtin-report.c:1805
+    #15 0x55c94000c05c in report_events tools/perf/builtin-mem.c:374
+    #16 0x55c94000d96d in cmd_mem tools/perf/builtin-mem.c:516
+    #17 0x55c9400e44ee in run_builtin tools/perf/perf.c:350
+    #18 0x55c9400e4a5a in handle_internal_command tools/perf/perf.c:403
+    #19 0x55c9400e4e22 in run_argv tools/perf/perf.c:447
+    #20 0x55c9400e53ad in main tools/perf/perf.c:561
+    #21 0x7f28170456c9 in __libc_start_call_main
+../sysdeps/nptl/libc_start_call_main.h:58
+    #22 0x7f2817045784 in __libc_start_main_impl ../csu/libc-start.c:360
+    #23 0x55c93ff544c0 in _start (/tmp/perf/perf+0x19a4c0) (BuildId:
+84899b0e8c7d3a3eaa67b2eb35e3d8b2f8cd4c93)
+
+Address 0x7f2813331920 is located in stack of thread T0 at offset 32 in frame
+    #0 0x55c94046e85e in hist_browser__run ui/browsers/hists.c:746
+
+  This frame has 1 object(s):
+    [32, 192) 'title' (line 747) <== Memory access at offset 32 is
+inside this variable
+HINT: this may be a false positive if your program uses some custom
+stack unwind mechanism, swapcontext or vfork
+```
+hist_browser__run isn't on the stack so the asan error looks legit.
+There's no clean init/exit on struct ui_browser so I may be trading a
+use-after-return for a memory leak, but that seems look a good trade
+anyway.
+
+Fixes: 05e8b0804ec4 ("perf ui browser: Stop using 'self'")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ben Gainey <ben.gainey@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Li Dong <lidong@vivo.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Cc: Paran Lee <p4ranlee@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Sun Haiyong <sunhaiyong@loongson.cn>
+Cc: Tim Chen <tim.c.chen@linux.intel.com>
+Cc: Yanteng Si <siyanteng@loongson.cn>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20240507183545.1236093-2-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c |    5 ++---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h |   14 ++++++++++++++
- 2 files changed, 16 insertions(+), 3 deletions(-)
+ tools/perf/ui/browser.c | 4 +++-
+ tools/perf/ui/browser.h | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-@@ -414,7 +414,8 @@ bool rtl92de_rx_query_desc(struct ieee80
- 	stats->icv = (u16)get_rx_desc_icv(pdesc);
- 	stats->crc = (u16)get_rx_desc_crc32(pdesc);
- 	stats->hwerror = (stats->crc | stats->icv);
--	stats->decrypted = !get_rx_desc_swdec(pdesc);
-+	stats->decrypted = !get_rx_desc_swdec(pdesc) &&
-+			   get_rx_desc_enc_type(pdesc) != RX_DESC_ENC_NONE;
- 	stats->rate = (u8)get_rx_desc_rxmcs(pdesc);
- 	stats->shortpreamble = (u16)get_rx_desc_splcp(pdesc);
- 	stats->isampdu = (bool)(get_rx_desc_paggr(pdesc) == 1);
-@@ -427,8 +428,6 @@ bool rtl92de_rx_query_desc(struct ieee80
- 	rx_status->band = hw->conf.chandef.chan->band;
- 	if (get_rx_desc_crc32(pdesc))
- 		rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
--	if (!get_rx_desc_swdec(pdesc))
--		rx_status->flag |= RX_FLAG_DECRYPTED;
- 	if (get_rx_desc_bw(pdesc))
- 		rx_status->bw = RATE_INFO_BW_40;
- 	if (get_rx_desc_rxht(pdesc))
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-@@ -14,6 +14,15 @@
- #define USB_HWDESC_HEADER_LEN			32
- #define CRCLENGTH				4
+diff --git a/tools/perf/ui/browser.c b/tools/perf/ui/browser.c
+index 9dc808020e824..6fa4f123d5ff7 100644
+--- a/tools/perf/ui/browser.c
++++ b/tools/perf/ui/browser.c
+@@ -287,7 +287,8 @@ int ui_browser__show(struct ui_browser *browser, const char *title,
+ 	mutex_lock(&ui__lock);
+ 	__ui_browser__show_title(browser, title);
  
-+enum rtl92d_rx_desc_enc {
-+	RX_DESC_ENC_NONE	= 0,
-+	RX_DESC_ENC_WEP40	= 1,
-+	RX_DESC_ENC_TKIP_WO_MIC	= 2,
-+	RX_DESC_ENC_TKIP_MIC	= 3,
-+	RX_DESC_ENC_AES		= 4,
-+	RX_DESC_ENC_WEP104	= 5,
-+};
-+
- /* macros to read/write various fields in RX or TX descriptors */
+-	browser->title = title;
++	free(browser->title);
++	browser->title = strdup(title);
+ 	zfree(&browser->helpline);
  
- static inline void set_tx_desc_pkt_size(__le32 *__pdesc, u32 __val)
-@@ -246,6 +255,11 @@ static inline u32 get_rx_desc_drv_info_s
- 	return le32_get_bits(*__pdesc, GENMASK(19, 16));
+ 	va_start(ap, helpline);
+@@ -304,6 +305,7 @@ void ui_browser__hide(struct ui_browser *browser)
+ 	mutex_lock(&ui__lock);
+ 	ui_helpline__pop();
+ 	zfree(&browser->helpline);
++	zfree(&browser->title);
+ 	mutex_unlock(&ui__lock);
  }
  
-+static inline u32 get_rx_desc_enc_type(__le32 *__pdesc)
-+{
-+	return le32_get_bits(*__pdesc, GENMASK(22, 20));
-+}
-+
- static inline u32 get_rx_desc_shift(__le32 *__pdesc)
- {
- 	return le32_get_bits(*__pdesc, GENMASK(25, 24));
+diff --git a/tools/perf/ui/browser.h b/tools/perf/ui/browser.h
+index 3678eb88f119c..815e6bf7ee531 100644
+--- a/tools/perf/ui/browser.h
++++ b/tools/perf/ui/browser.h
+@@ -21,7 +21,7 @@ struct ui_browser {
+ 	u8	      extra_title_lines;
+ 	int	      current_color;
+ 	void	      *priv;
+-	const char    *title;
++	char	      *title;
+ 	char	      *helpline;
+ 	const char    *no_samples_msg;
+ 	void 	      (*refresh_dimensions)(struct ui_browser *browser);
+-- 
+2.43.0
+
 
 
 
