@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-51111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09418906E62
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:10:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA9DB9071AE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:40:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90A51281587
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:10:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC3411C243EE
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778AF1465BC;
-	Thu, 13 Jun 2024 12:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3151EEF8;
+	Thu, 13 Jun 2024 12:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tfA46ykn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bo+9aY1j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3706A145FE1;
-	Thu, 13 Jun 2024 12:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7823B17FD;
+	Thu, 13 Jun 2024 12:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280341; cv=none; b=mG+XtT7VX0MZi4mIXYabAgdhZnLcNCtkQAaL/qBfTi0KrMSyN8cBlNU0U2swaswtwChGyBmQsGeqs/zQf0sT4+pWfwa5GuSyTFlTKjBKzJNpoWwY2bzz6ehahW00znLsarFEZPogH9klNB0xzmWd1rhgeU3N9JPABvJpafO+xxU=
+	t=1718282342; cv=none; b=Hmocr5Hl/dQPh6MTgM4vO+OnqaMLYU6DQO97ocgtyo9sHQA1X5Ld+dZH2HMbsOJFr09q65O+g8neEroYZocTpuP+iUh94NVQ7fqRJkMaYQ0oEdXOVUfGbd/xiUqXBkalXCtC8lOK/CG1dQJYbpeaUcYl1yrP8VO1xCuQVRnQREc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280341; c=relaxed/simple;
-	bh=9Xl0S9+4uJDbQNbDCeD52QcpXLDtzVa3Tu/Pd9kwDPI=;
+	s=arc-20240116; t=1718282342; c=relaxed/simple;
+	bh=V8F6w5ieYb8xNtve80HL6ZKWiSn+lglT8r6eNcxmuT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VfaP8eUMPBFvvcng5QkcHmD22ASiJqnGBn0BGXShowtZC0Gv0dKWisdrulpS1ekWi4SNyvY+Af6/Bxv92qi1r3/xGjW4DfvllJ1yohu6l3OqkX5Ar50sH7EOa/hasrpZ1P3TqFW9rNvXCkncZ3WLwPxgemOj/HH6WutHG0GZ1wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tfA46ykn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FD0C2BBFC;
-	Thu, 13 Jun 2024 12:05:40 +0000 (UTC)
+	 MIME-Version; b=lJAKvP+DSaHJKXWVWHwYvNwGe6byN3N7H8qBj/clfIhETU9qmfmWnWI6KpgWUuvJnWf9ss7A5ZHNS/t9SUuuu/31YY/5KJyLccCeEk7+PxAKZd0knlBcni+dtUzZ1WGp25fhBjnasiZQkC/S4iojhkX72ItB/r714NWRpqVSW0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bo+9aY1j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B21C2BBFC;
+	Thu, 13 Jun 2024 12:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280341;
-	bh=9Xl0S9+4uJDbQNbDCeD52QcpXLDtzVa3Tu/Pd9kwDPI=;
+	s=korg; t=1718282342;
+	bh=V8F6w5ieYb8xNtve80HL6ZKWiSn+lglT8r6eNcxmuT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tfA46yknKxBmECt6hop47GV+NObFM3GplzGThzyIyybfCUWJGveOOMZVDFJgdAejk
-	 4uFCxjifNgZ2pQL0Tzm9dMO0GJVg8WXT4pJX5V63hpuphy+U+bMP10aLvaBuDoI3VX
-	 OT4ZImIpZGpzdAAAbWkvswnL/KU3++a2of+GOXbw=
+	b=Bo+9aY1jEbf4hz9yZSpFf6+NRkYD7MSopcs6jFwxzk7eLv1vZCVGJ2ZVs4lMMnIif
+	 3av5T7KA7wtSJmISph1ryP1qmk6tPTovOg3uT98UVMd0YWsrSRHssk1ZPmlzvu83+Y
+	 a4Nqfm7NCeUy1cezdsskaw0SbCvSXBICaxCHeoSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.6 021/137] wifi: rtw89: correct aSIFSTime for 6GHz band
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Egorenkov <egorenar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 244/402] s390/ipl: Fix incorrect initialization of nvme dump block
 Date: Thu, 13 Jun 2024 13:33:21 +0200
-Message-ID: <20240613113224.111267386@linuxfoundation.org>
+Message-ID: <20240613113311.667485977@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113223.281378087@linuxfoundation.org>
-References: <20240613113223.281378087@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Alexander Egorenkov <egorenar@linux.ibm.com>
 
-commit f506e3ee547669cd96842e03c8a772aa7df721fa upstream.
+[ Upstream commit 7faacaeaf6ce12fae78751de5ad869d8f1e1cd7a ]
 
-aSIFSTime is 10us for 2GHz band and 16us for 5GHz and 6GHz bands.
-Originally, it doesn't consider 6GHz band and use wrong value, so correct
-it accordingly.
+Initialize the correct fields of the nvme dump block.
+This bug had not been detected before because first, the fcp and nvme fields
+of struct ipl_parameter_block are part of the same union and, therefore,
+overlap in memory and second, they are identical in structure and size.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/20240430020515.8399-1-pkshih@realtek.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d70e38cb1dee ("s390: nvme dump support")
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/mac80211.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kernel/ipl.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -303,7 +303,7 @@ static u8 rtw89_aifsn_to_aifs(struct rtw
- 	u8 sifs;
- 
- 	slot_time = vif->bss_conf.use_short_slot ? 9 : 20;
--	sifs = chan->band_type == RTW89_BAND_5G ? 16 : 10;
-+	sifs = chan->band_type == RTW89_BAND_2G ? 10 : 16;
- 
- 	return aifsn * slot_time + sifs;
+diff --git a/arch/s390/kernel/ipl.c b/arch/s390/kernel/ipl.c
+index 77246ff5b0141..d2ba82873abfd 100644
+--- a/arch/s390/kernel/ipl.c
++++ b/arch/s390/kernel/ipl.c
+@@ -1603,9 +1603,9 @@ static int __init dump_nvme_init(void)
+ 	}
+ 	dump_block_nvme->hdr.len = IPL_BP_NVME_LEN;
+ 	dump_block_nvme->hdr.version = IPL_PARM_BLOCK_VERSION;
+-	dump_block_nvme->fcp.len = IPL_BP0_NVME_LEN;
+-	dump_block_nvme->fcp.pbt = IPL_PBT_NVME;
+-	dump_block_nvme->fcp.opt = IPL_PB0_NVME_OPT_DUMP;
++	dump_block_nvme->nvme.len = IPL_BP0_NVME_LEN;
++	dump_block_nvme->nvme.pbt = IPL_PBT_NVME;
++	dump_block_nvme->nvme.opt = IPL_PB0_NVME_OPT_DUMP;
+ 	dump_capabilities |= DUMP_TYPE_NVME;
+ 	return 0;
  }
+-- 
+2.43.0
+
 
 
 
