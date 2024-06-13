@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-51648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF5969070E4
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF19F9070E5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:31:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BE761F233D1
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51342282F26
 	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3052D17FD;
-	Thu, 13 Jun 2024 12:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DE2387;
+	Thu, 13 Jun 2024 12:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbY7ZSAn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMWGT/2n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40E228FF;
-	Thu, 13 Jun 2024 12:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C33E441D;
+	Thu, 13 Jun 2024 12:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281913; cv=none; b=MwQxwQnMqaofG6XajBlNE9c3xN6epcJBKpp9d0q9Uej6qrq8sZEoA9qkja4PThQ9lKu+non0b91hDIHZ5dLGHduPG9I5WPEJ3m2XcCMAnYG13BroX34yjPw7PoS2Mao/Os8RYGY2zq7Aglu2dGQAnm8TnHPXeQeXTnRWNtH21M0=
+	t=1718281915; cv=none; b=TEaVn67lIzE9KQ19Kzdp2GtXhlGseo/wtNNz+lhFgMV48sSBeM4XrHOeTSv12G26crM12FuhKINlR1Si/NfOWoQo/L9f7o2DyWvogMhdSkwb1eW7XnpERw5bMfgzlo4qe65dtc5nuFx+ssJAPRMVTePnb0y/gSOshCkLxiilpMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281913; c=relaxed/simple;
-	bh=dQ8aOJTTSsln2k2gAA++MD2yJXZoOPlILz8q56G2hZI=;
+	s=arc-20240116; t=1718281915; c=relaxed/simple;
+	bh=76T8RUHoJxU7JEN0rClctDDlNKqiSn7FuvvKCon6KXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wg2+B/afqvts7pa57rgeI04xc/LIrww3yA2kOTKwi5lTWSBDMYlMDCb0VVxNvfbJxCDBa2dqDmKUbB8TUrlHFwqBo3tuXyekYEWCG7RztytsiCikaqHrWGeQE3xzsF84EkY01aJNKFX3a/KAegKXzd8428nCg/lkATn4++Z132s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbY7ZSAn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C431C2BBFC;
-	Thu, 13 Jun 2024 12:31:51 +0000 (UTC)
+	 MIME-Version; b=SHvj+5XJwd47J62TV/pfCPc+bKkIwuL6HW+y68ysfV5eNDIybLmHcPG6/Nsq5f6cLvPlTmZWEycyfCF9MGGqBrR8ygkjCJJYaWgOHG6JkrUc6Ng7T3vg8myyEiCVwKHAe1NINJOGCHHFMhazND7FyD5htVZF9HB4vWEEGMJ8YHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMWGT/2n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DC5C2BBFC;
+	Thu, 13 Jun 2024 12:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281912;
-	bh=dQ8aOJTTSsln2k2gAA++MD2yJXZoOPlILz8q56G2hZI=;
+	s=korg; t=1718281915;
+	bh=76T8RUHoJxU7JEN0rClctDDlNKqiSn7FuvvKCon6KXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qbY7ZSAnsGTYVMcXlysrxzBfvTBfsTDYE7uh6MO6Nd4wSCAfU0GNREt8ebsFmVnxh
-	 oEc1f4L6gaLmcW0GBe/yrc7hQYRoZFnhvPJ7hxBa0qiEZr3s1XOAETgQakOcSRW/vW
-	 Ayk2h07RR8zmai//+Usyac8NvDGVaINQEhUAWJT8=
+	b=uMWGT/2nC6qtc2UgM29lRGlluaZSxGoOjZ0VUhfHjDx9BpOiDbxcHnNs+DjzypRPa
+	 bbKif4mPGKE0rZPOP0uqjnktilw4HiSUtdpcaAQARf0/3FsZ9CxIpMqH4tZMUgvBzk
+	 2xycPt0zxq2TfzLT6PTqTVmup9TUoAHXZZZ1bDAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 099/402] selftests/resctrl: fix clang build failure: use LOCAL_HDRS
-Date: Thu, 13 Jun 2024 13:30:56 +0200
-Message-ID: <20240613113305.999546792@linuxfoundation.org>
+Subject: [PATCH 5.15 100/402] HID: intel-ish-hid: ipc: Add check for pci_alloc_irq_vectors
+Date: Thu, 13 Jun 2024 13:30:57 +0200
+Message-ID: <20240613113306.037567493@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
 References: <20240613113302.116811394@linuxfoundation.org>
@@ -62,62 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Hubbard <jhubbard@nvidia.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit d8171aa4ca72f1a67bf3c14c59441d63c1d2585f ]
+[ Upstream commit 6baa4524027fd64d7ca524e1717c88c91a354b93 ]
 
-First of all, in order to build with clang at all, one must first apply
-Valentin Obst's build fix for LLVM [1]. Once that is done, then when
-building with clang, via:
+Add a check for the return value of pci_alloc_irq_vectors() and return
+error if it fails.
 
-    make LLVM=1 -C tools/testing/selftests
-
-...the following error occurs:
-
-   clang: error: cannot specify -o when generating multiple output files
-
-This is because clang, unlike gcc, won't accept invocations of this
-form:
-
-    clang file1.c header2.h
-
-Fix this by using selftests/lib.mk facilities for tracking local header
-file dependencies: add them to LOCAL_HDRS, leaving only the .c files to
-be passed to the compiler.
-
-[1] https://lore.kernel.org/all/20240329-selftests-libmk-llvm-rfc-v1-1-2f9ed7d1c49f@valentinobst.de/
-
-Fixes: 8e289f454289 ("selftests/resctrl: Add resctrl.h into build deps")
-Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+[jkosina@suse.com: reworded changelog based on Srinivas' suggestion]
+Fixes: 74fbc7d371d9 ("HID: intel-ish-hid: add MSI interrupt support")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/Makefile | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hid/intel-ish-hid/ipc/pci-ish.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/resctrl/Makefile b/tools/testing/selftests/resctrl/Makefile
-index 2deac2031de9e..021863f86053a 100644
---- a/tools/testing/selftests/resctrl/Makefile
-+++ b/tools/testing/selftests/resctrl/Makefile
-@@ -5,6 +5,8 @@ CFLAGS += $(KHDR_INCLUDES)
+diff --git a/drivers/hid/intel-ish-hid/ipc/pci-ish.c b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+index 5916ef2933e27..bbc3ea34585d2 100644
+--- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
++++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+@@ -212,6 +212,11 @@ static int ish_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  
- TEST_GEN_PROGS := resctrl_tests
- 
-+LOCAL_HDRS += $(wildcard *.h)
+ 	/* request and enable interrupt */
+ 	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
++	if (ret < 0) {
++		dev_err(dev, "ISH: Failed to allocate IRQ vectors\n");
++		return ret;
++	}
 +
- include ../lib.mk
+ 	if (!pdev->msi_enabled && !pdev->msix_enabled)
+ 		irq_flag = IRQF_SHARED;
  
--$(OUTPUT)/resctrl_tests: $(wildcard *.[ch])
-+$(OUTPUT)/resctrl_tests: $(wildcard *.c)
 -- 
 2.43.0
 
