@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-50832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3332906D08
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:58:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A75906C1F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:47:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBADC1C22BE7
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:58:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C8D6B22EF0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3DE145348;
-	Thu, 13 Jun 2024 11:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F72144D2F;
+	Thu, 13 Jun 2024 11:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuM8QhV4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G82UGffj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC0114386B;
-	Thu, 13 Jun 2024 11:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDC7143C48;
+	Thu, 13 Jun 2024 11:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279516; cv=none; b=oKou4qqCrEf4sNahXa4elXX4Tl428XNqhv5GGNUCCniiOdVBFtiqQVPvlMKEXSvNQ+cImwHBu3c4a0Q4W23CnizbzmZbm5FNmBj4maIH6gPdGiVAkxg3ZNq3g9AKGHSV5lo9IsJou7rJSg+05y2v7kpdlMGAClcnrMfc13rl3Fc=
+	t=1718279169; cv=none; b=p/MKc3+Gogh1QGl4sqh7/vpiM5njQ4Y1IGcW0zBsxGhrDp45dV6WhKZgsp166ZV1fXFvvuQjO5+fEaoL5Gi4X0XDcF0qSRo5EsJuJh5pDigXOD5n/UA86HePn1fTozjzco8F2DnUIN7CG29+DEYsso7EnA65Xha1U1lRzcPsQxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279516; c=relaxed/simple;
-	bh=s4Q0crqw4gNY41OZAFYxthUE1HV0VMn28+pmFloQ8Y4=;
+	s=arc-20240116; t=1718279169; c=relaxed/simple;
+	bh=Hp5NoI2makNpJzklLylBPXf3W1gSfyR1zrEurhgofnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GiL6o69vlHT7bspi6zdzcBmD5nzseTTXnacnPC0oAA4YruMiQwOvNTphHz4rFrU/TytHv+p0iCnc4nzh55sTFuKl9djJYOkbmlcmaXmPbagCAp5s9OSZE/CblxW2tXD+2fkWvvfvZbEkt7uOJzcVUkjOUSCfs+2qUnUThscUjo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuM8QhV4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82A7C2BBFC;
-	Thu, 13 Jun 2024 11:51:55 +0000 (UTC)
+	 MIME-Version; b=rHOLcQ4o98bphQcvbZ5EmqlIRzoOmYixkQEmygNuf6Px5WK8NK5rPffM2y9zUDEzEEyXLPLp6AqELn2d9oGsfiUg4Aw9+bHooPR5buPKbQ/S7+VIxgHobr9sbAFbe5EBLJDFA42ytliUcEEt7Y1BM4NJJZvVazlA2giD7ig4szs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G82UGffj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AECBC2BBFC;
+	Thu, 13 Jun 2024 11:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279516;
-	bh=s4Q0crqw4gNY41OZAFYxthUE1HV0VMn28+pmFloQ8Y4=;
+	s=korg; t=1718279169;
+	bh=Hp5NoI2makNpJzklLylBPXf3W1gSfyR1zrEurhgofnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iuM8QhV4bLNUAIS4A9mW2Sql3uoQMGVpru44IX6FpnNaaCi2U4oe/Rm8NdRlxgasC
-	 HpOajQw4MW+RTZDfWb9G6r3i6lxg4x92rHA26GynNSmU4gExo0JHjm6Q5Zg5oWF6bq
-	 joa3oY2HG/B+DlYBt1dk250rAVWh7aObI+M5tzO8=
+	b=G82UGffjFJ3rOh+Ui0RYj7iqbQ0jzIORedQZ7pIshC7H62E/f3gKvWcVmchFdVm33
+	 tCuVF7Jagyeld5BMfuVHp/diyHvabkMoJt0whzx630103xTwSzazKc7+SbzKUVprsL
+	 fDwgrLNu4lMaepzrQrhN9i8iHo8L0q0ZQPyI5Rho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dev Jain <dev.jain@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Sri Jayaramappa <sjayaram@akamai.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 103/157] selftests/mm: compaction_test: fix bogus test success on Aarch64
-Date: Thu, 13 Jun 2024 13:33:48 +0200
-Message-ID: <20240613113231.404948601@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.19 181/213] netfilter: nftables: update table flags from the commit phase
+Date: Thu, 13 Jun 2024 13:33:49 +0200
+Message-ID: <20240613113234.964140434@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-References: <20240613113227.389465891@linuxfoundation.org>
+In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
+References: <20240613113227.969123070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,110 +61,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dev Jain <dev.jain@arm.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit d4202e66a4b1fe6968f17f9f09bbc30d08f028a1 upstream.
+commit 0ce7cf4127f14078ca598ba9700d813178a59409 upstream.
 
-Patch series "Fixes for compaction_test", v2.
+Do not update table flags from the preparation phase. Store the flags
+update into the transaction, then update the flags from the commit
+phase.
 
-The compaction_test memory selftest introduces fragmentation in memory
-and then tries to allocate as many hugepages as possible. This series
-addresses some problems.
-
-On Aarch64, if nr_hugepages == 0, then the test trivially succeeds since
-compaction_index becomes 0, which is less than 3, due to no division by
-zero exception being raised. We fix that by checking for division by
-zero.
-
-Secondly, correctly set the number of hugepages to zero before trying
-to set a large number of them.
-
-Now, consider a situation in which, at the start of the test, a non-zero
-number of hugepages have been already set (while running the entire
-selftests/mm suite, or manually by the admin). The test operates on 80%
-of memory to avoid OOM-killer invocation, and because some memory is
-already blocked by hugepages, it would increase the chance of OOM-killing.
-Also, since mem_free used in check_compaction() is the value before we
-set nr_hugepages to zero, the chance that the compaction_index will
-be small is very high if the preset nr_hugepages was high, leading to a
-bogus test success.
-
-
-This patch (of 3):
-
-Currently, if at runtime we are not able to allocate a huge page, the test
-will trivially pass on Aarch64 due to no exception being raised on
-division by zero while computing compaction_index.  Fix that by checking
-for nr_hugepages == 0.  Anyways, in general, avoid a division by zero by
-exiting the program beforehand.  While at it, fix a typo, and handle the
-case where the number of hugepages may overflow an integer.
-
-Link: https://lkml.kernel.org/r/20240521074358.675031-1-dev.jain@arm.com
-Link: https://lkml.kernel.org/r/20240521074358.675031-2-dev.jain@arm.com
-Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Sri Jayaramappa <sjayaram@akamai.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/compaction_test.c |   20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ include/net/netfilter/nf_tables.h |    9 ++++++---
+ net/netfilter/nf_tables_api.c     |   31 ++++++++++++++++---------------
+ 2 files changed, 22 insertions(+), 18 deletions(-)
 
---- a/tools/testing/selftests/mm/compaction_test.c
-+++ b/tools/testing/selftests/mm/compaction_test.c
-@@ -82,12 +82,13 @@ int prereq(void)
- 	return -1;
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -1347,13 +1347,16 @@ struct nft_trans_chain {
+ 
+ struct nft_trans_table {
+ 	bool				update;
+-	bool				enable;
++	u8				state;
++	u32				flags;
+ };
+ 
+ #define nft_trans_table_update(trans)	\
+ 	(((struct nft_trans_table *)trans->data)->update)
+-#define nft_trans_table_enable(trans)	\
+-	(((struct nft_trans_table *)trans->data)->enable)
++#define nft_trans_table_state(trans)	\
++	(((struct nft_trans_table *)trans->data)->state)
++#define nft_trans_table_flags(trans)	\
++	(((struct nft_trans_table *)trans->data)->flags)
+ 
+ struct nft_trans_elem {
+ 	struct nft_set			*set;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -868,6 +868,12 @@ static void nf_tables_table_disable(stru
+ 	nft_table_disable(net, table, 0);
  }
  
--int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
-+int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
++enum {
++	NFT_TABLE_STATE_UNCHANGED	= 0,
++	NFT_TABLE_STATE_DORMANT,
++	NFT_TABLE_STATE_WAKEUP
++};
++
+ static int nf_tables_updtable(struct nft_ctx *ctx)
  {
-+	unsigned long nr_hugepages_ul;
- 	int fd, ret = -1;
- 	int compaction_index = 0;
--	char initial_nr_hugepages[10] = {0};
--	char nr_hugepages[10] = {0};
-+	char initial_nr_hugepages[20] = {0};
-+	char nr_hugepages[20] = {0};
+ 	struct nft_trans *trans;
+@@ -891,19 +897,17 @@ static int nf_tables_updtable(struct nft
  
- 	/* We want to test with 80% of available memory. Else, OOM killer comes
- 	   in to play */
-@@ -136,7 +137,12 @@ int check_compaction(unsigned long mem_f
- 
- 	/* We should have been able to request at least 1/3 rd of the memory in
- 	   huge pages */
--	compaction_index = mem_free/(atoi(nr_hugepages) * hugepage_size);
-+	nr_hugepages_ul = strtoul(nr_hugepages, NULL, 10);
-+	if (!nr_hugepages_ul) {
-+		ksft_print_msg("ERROR: No memory is available as huge pages\n");
-+		goto close_fd;
-+	}
-+	compaction_index = mem_free/(nr_hugepages_ul * hugepage_size);
- 
- 	lseek(fd, 0, SEEK_SET);
- 
-@@ -147,11 +153,11 @@ int check_compaction(unsigned long mem_f
- 		goto close_fd;
+ 	if ((flags & NFT_TABLE_F_DORMANT) &&
+ 	    !(ctx->table->flags & NFT_TABLE_F_DORMANT)) {
+-		nft_trans_table_enable(trans) = false;
++		nft_trans_table_state(trans) = NFT_TABLE_STATE_DORMANT;
+ 	} else if (!(flags & NFT_TABLE_F_DORMANT) &&
+ 		   ctx->table->flags & NFT_TABLE_F_DORMANT) {
+-		ctx->table->flags &= ~NFT_TABLE_F_DORMANT;
+ 		ret = nf_tables_table_enable(ctx->net, ctx->table);
+ 		if (ret >= 0)
+-			nft_trans_table_enable(trans) = true;
+-		else
+-			ctx->table->flags |= NFT_TABLE_F_DORMANT;
++			nft_trans_table_state(trans) = NFT_TABLE_STATE_WAKEUP;
  	}
+ 	if (ret < 0)
+ 		goto err;
  
--	ksft_print_msg("Number of huge pages allocated = %d\n",
--		       atoi(nr_hugepages));
-+	ksft_print_msg("Number of huge pages allocated = %lu\n",
-+		       nr_hugepages_ul);
- 
- 	if (compaction_index > 3) {
--		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
-+		ksft_print_msg("ERROR: Less than 1/%d of memory is available\n"
- 			       "as huge pages\n", compaction_index);
- 		goto close_fd;
- 	}
++	nft_trans_table_flags(trans) = flags;
+ 	nft_trans_table_update(trans) = true;
+ 	nft_trans_commit_list_add_tail(ctx->net, trans);
+ 	return 0;
+@@ -7009,11 +7013,10 @@ static int nf_tables_commit(struct net *
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWTABLE:
+ 			if (nft_trans_table_update(trans)) {
+-				if (!nft_trans_table_enable(trans)) {
+-					nf_tables_table_disable(net,
+-								trans->ctx.table);
+-					trans->ctx.table->flags |= NFT_TABLE_F_DORMANT;
+-				}
++				if (nft_trans_table_state(trans) == NFT_TABLE_STATE_DORMANT)
++					nf_tables_table_disable(net, trans->ctx.table);
++
++				trans->ctx.table->flags = nft_trans_table_flags(trans);
+ 			} else {
+ 				nft_clear(net, trans->ctx.table);
+ 			}
+@@ -7174,11 +7177,9 @@ static int __nf_tables_abort(struct net
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWTABLE:
+ 			if (nft_trans_table_update(trans)) {
+-				if (nft_trans_table_enable(trans)) {
+-					nf_tables_table_disable(net,
+-								trans->ctx.table);
+-					trans->ctx.table->flags |= NFT_TABLE_F_DORMANT;
+-				}
++				if (nft_trans_table_state(trans) == NFT_TABLE_STATE_WAKEUP)
++					nf_tables_table_disable(net, trans->ctx.table);
++
+ 				nft_trans_destroy(trans);
+ 			} else {
+ 				list_del_rcu(&trans->ctx.table->list);
 
 
 
