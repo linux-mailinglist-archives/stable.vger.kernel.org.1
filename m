@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-51621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07F799070C0
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:30:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82BD0906EF4
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:15:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0A7E1F21F56
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:30:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 980011C217D6
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347A0EC4;
-	Thu, 13 Jun 2024 12:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8E91411CD;
+	Thu, 13 Jun 2024 12:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwYVpUlb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekLyCtTK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C0C399;
-	Thu, 13 Jun 2024 12:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6836744C6F;
+	Thu, 13 Jun 2024 12:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281834; cv=none; b=SDaMbhQWSl+VB4W0U3HelhEh7ub5mhNg6SVOAmdYA8VZReDlFMyB13cmX0Jx8XUbV92M8UJrRuKMS8C/P6eD3gSY+hhGjKLkxtdkLQj4SiBKZVmhI33BbgyqF3rg4k0RTdwOWKDorSR6mnNOGkPSHyvrm6O6ND30UxBS7PWlfZ0=
+	t=1718280715; cv=none; b=pNS+5NfoWqwD06TxvC910iVILJAxecmLj0Ksrhn4r1VDKq/zleWtqPPmHkxq0pc6R7n/2gPcgaNHFr1jbVXe4uDjo8Qx1z9oePmcaeymAq3EMuWboXiqytiFuEwcMeD84QN9UswUhNwtpVc19Uf2vAHy20ZTscBWYfud3dB/Rgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281834; c=relaxed/simple;
-	bh=P5GkESFmeAmDEfIEUNtw6WhHPA8yeclbkzDnSNPF6Uk=;
+	s=arc-20240116; t=1718280715; c=relaxed/simple;
+	bh=Uo8fpEHLOkH88cRa5wYs+QAGuoKEAkyf8NheDv8YKQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rx/CE4DCR6gUoSJ5h9fQ/oLRyXZ9FeFWLzA5WlGYRHoztBldOrrQuvTminHGPtD8mvqeKXHLby3jTGoPPKHqKRDZBh2kY236vgCYJp+12cDiPAiMxBLxm2FaIknwkJBjh3WFeviUFL2xR6sFtsA4mDTO3RtAhwdnQPKeB7+UfrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwYVpUlb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9C7C2BBFC;
-	Thu, 13 Jun 2024 12:30:32 +0000 (UTC)
+	 MIME-Version; b=AgT7Gn4cMvjubRcMPWZ3gT1TP5fF8sVhsIWNw+UQIGMqxyOMTaIPUOFrO9TGhgvlPMaoTKNbBhrWtc3UwdQ0HyHX51o/tQAYPc6ovYwE70m9xKz+V9PZ6/TJm4FegPgEOOnEOqPiMuO86lXWMBQPf83Tyuvi/bCpnZ5f+wLi0+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekLyCtTK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8A3C2BBFC;
+	Thu, 13 Jun 2024 12:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718281833;
-	bh=P5GkESFmeAmDEfIEUNtw6WhHPA8yeclbkzDnSNPF6Uk=;
+	s=korg; t=1718280714;
+	bh=Uo8fpEHLOkH88cRa5wYs+QAGuoKEAkyf8NheDv8YKQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KwYVpUlb+ltdlrA7JIumvCjUAadCdl689lsw3si/AbKveeaSiIngmCMMoYMHCZX0d
-	 3AHaDcyROQuRPH9kew8DVCO7NR+hsAp7Io/DUOh7ei5AC9stWhfXcHW4O5N3PGtVnP
-	 +7PhOZj2vcX9C3bQgOrySmOkvJchEmlkwO3a910E=
+	b=ekLyCtTKK9A5D1GSTwwX5NeGtR6P5p4GL3LON0LGhQZ0gGDi7chPeWgpMlgzUyYWH
+	 +oQGh/LL4+6kc7x7UwhS1crn2Mj8H9M1DCqG1PKwwXoS65dh0nT1shwXmDVwIywRT4
+	 wbsie7dYi7lzfP7Kl2f+nzGVZMtHyc9g3cqtIj+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/402] selftests/bpf: Fix umount cgroup2 error in test_sockmap
+Subject: [PATCH 5.10 010/317] wifi: cfg80211: fix the order of arguments for trace events of the tx_rx_evt class
 Date: Thu, 13 Jun 2024 13:30:28 +0200
-Message-ID: <20240613113304.907304748@linuxfoundation.org>
+Message-ID: <20240613113247.937201270@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
 
-[ Upstream commit d75142dbeb2bd1587b9cc19f841578f541275a64 ]
+[ Upstream commit 9ef369973cd2c97cce3388d2c0c7e3c056656e8a ]
 
-This patch fixes the following "umount cgroup2" error in test_sockmap.c:
+The declarations of the tx_rx_evt class and the rdev_set_antenna event
+use the wrong order of arguments in the TP_ARGS macro.
 
- (cgroup_helpers.c:353: errno: Device or resource busy) umount cgroup2
+Fix the order of arguments in the TP_ARGS macro.
 
-Cgroup fd cg_fd should be closed before cleanup_cgroup_environment().
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 13a5f3ffd202 ("bpf: Selftests, sockmap test prog run without setting cgroup")
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/0399983bde729708773416b8488bac2cd5e022b8.1712639568.git.tanggeliang@kylinos.cn
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+Link: https://msgid.link/20240405152431.270267-1-Igor.A.Artemiev@mcst.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/trace.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index eefd445b96fc7..7465cbe19bb08 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -2014,9 +2014,9 @@ int main(int argc, char **argv)
- 		free(options.whitelist);
- 	if (options.blacklist)
- 		free(options.blacklist);
-+	close(cg_fd);
- 	if (cg_created)
- 		cleanup_cgroup_environment();
--	close(cg_fd);
- 	return err;
- }
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index edc824c103e83..06e81d1efc921 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -1660,7 +1660,7 @@ TRACE_EVENT(rdev_return_void_tx_rx,
  
+ DECLARE_EVENT_CLASS(tx_rx_evt,
+ 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
+-	TP_ARGS(wiphy, rx, tx),
++	TP_ARGS(wiphy, tx, rx),
+ 	TP_STRUCT__entry(
+ 		WIPHY_ENTRY
+ 		__field(u32, tx)
+@@ -1677,7 +1677,7 @@ DECLARE_EVENT_CLASS(tx_rx_evt,
+ 
+ DEFINE_EVENT(tx_rx_evt, rdev_set_antenna,
+ 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
+-	TP_ARGS(wiphy, rx, tx)
++	TP_ARGS(wiphy, tx, rx)
+ );
+ 
+ DECLARE_EVENT_CLASS(wiphy_netdev_id_evt,
 -- 
 2.43.0
 
