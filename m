@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-51293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED964906F2E
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:17:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 319FC906F5D
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:19:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E506284960
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:17:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC3402872C5
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC76145336;
-	Thu, 13 Jun 2024 12:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFC5145B18;
+	Thu, 13 Jun 2024 12:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heUDWp4G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLpZRhO6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D40145331;
-	Thu, 13 Jun 2024 12:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BF01411C5;
+	Thu, 13 Jun 2024 12:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280874; cv=none; b=oF4tcf6J84RjnS03ebX/qxOE/U33evKwqM+6eietJY2JeyAVgD2vFHN3Fz5Dv/0XIzM/xRieHgSCWtn1vpKXLJQZLQknb/TWVEviMEa799DjRBZxRT0gSJw6LYG11Sc/Q8l4Stzm/tvH91KHRXVi0HDnUT/2MED5l7OZYFNyQVo=
+	t=1718280995; cv=none; b=D3s8a0U0guLGRjJyFKcA3oY3FqJSlz+szRs2gd0gi4MLveRTUcFFhhsgnnU4+eIcF/qyKDBRh+Z6+YmqeZWI9nMir6X/itnqKwl/dpNiVA8k9k2f6b/0Z8/z74RGcA8MCUQQ5btmsUUYcNvsbrk+iEnBhe6aSaC7/n7PCvDNHKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280874; c=relaxed/simple;
-	bh=fmwQnHT9O4Gm4znUJtNI5FUN55TPf9D+06OeUcSV75s=;
+	s=arc-20240116; t=1718280995; c=relaxed/simple;
+	bh=0Rvg35jk8MehwPwgSew32l1mwb5yRsGfaXQHcrv12zI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PahwcxPBB2WapH6B/dlnNZZdHC97z0AO7Fk8IdnV8iA5JzqxGEoS/maZeCJN8+Wbnu+sXFLR7l0auQxapQrtR9Lzjh1bSL+lzqEexKacF46JTxtTzrt8YJoVOVEUX+gz+IaDI1Mh5ofG6BhUtJTrImA02ZHKPlm4+bTAHppTjdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heUDWp4G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEC9C2BBFC;
-	Thu, 13 Jun 2024 12:14:33 +0000 (UTC)
+	 MIME-Version; b=cNebX4s0NwReepvZuIM8HkUmPFvgk0X8xmjPOL9tjynELzgKiuwwGwkcRztAQcDcfrHgkzukx62OaaCwFwFOokVNoNw5UXg8BLSDbsx3lC7FsFY58VgcE8LXHSG/MkSt9l1YPUDCDnp0PZf7bmDs0tvzQ2Sefpga38GD+n+RKUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLpZRhO6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6941BC2BBFC;
+	Thu, 13 Jun 2024 12:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280874;
-	bh=fmwQnHT9O4Gm4znUJtNI5FUN55TPf9D+06OeUcSV75s=;
+	s=korg; t=1718280994;
+	bh=0Rvg35jk8MehwPwgSew32l1mwb5yRsGfaXQHcrv12zI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=heUDWp4GnxXR33j6Le2CERsgXgb/mKGdOHPttM2dC2H8QnUQCdLoYzMVucjrH5kys
-	 iZuIHbay2vK2GsehcnzA5X6Dwl+A89hms8jxAWF39APVTd1qKs+IiDdVNg1gI5lQet
-	 Lkit+3LU3wo+LBLJ+alVLgXfEpt+Huo4XIh/YLXs=
+	b=eLpZRhO6zi1hdocYyIXFk/rt4s7EQFGFGYJkzuZrUHcREeRGBKhWJsUexjqvXZPTb
+	 oebtvb3RRUz2SpsqnSK849GFl7kn5y4tBlwT/K0phqfqZDtgOSljwsDQAVAAcjUdCT
+	 fLkydkdSAQ3DnrW/GnWj1A2VHoYfVw5IuENOxG4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Yongqin Liu <yongqin.liu@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 062/317] wifi: ath10k: Fix an error code problem in ath10k_dbg_sta_write_peer_debug_trigger()
-Date: Thu, 13 Jun 2024 13:31:20 +0200
-Message-ID: <20240613113249.948494656@linuxfoundation.org>
+Subject: [PATCH 5.10 063/317] wifi: ath10k: populate board data for WCN3990
+Date: Thu, 13 Jun 2024 13:31:21 +0200
+Message-ID: <20240613113249.987682089@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
 References: <20240613113247.525431100@linuxfoundation.org>
@@ -67,40 +67,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit c511a9c12674d246916bb16c479d496b76983193 ]
+[ Upstream commit f1f1b5b055c9f27a2f90fd0f0521f5920e9b3c18 ]
 
-Clang Static Checker (scan-build) warns:
+Specify board data size (and board.bin filename) for the WCN3990
+platform.
 
-drivers/net/wireless/ath/ath10k/debugfs_sta.c:line 429, column 3
-Value stored to 'ret' is never read.
-
-Return 'ret' rather than 'count' when 'ret' stores an error code.
-
-Fixes: ee8b08a1be82 ("ath10k: add debugfs support to get per peer tids log via tracing")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Reported-by: Yongqin Liu <yongqin.liu@linaro.org>
+Fixes: 03a72288c546 ("ath10k: wmi: add hw params entry for wcn3990")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240422034243.938962-1-suhui@nfschina.com
+Link: https://msgid.link/20240130-wcn3990-board-fw-v1-1-738f7c19a8c8@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/debugfs_sta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/core.c      | 3 +++
+ drivers/net/wireless/ath/ath10k/hw.h        | 1 +
+ drivers/net/wireless/ath/ath10k/targaddrs.h | 3 +++
+ 3 files changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/debugfs_sta.c b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-index 367539f2c3700..f7912c72cba34 100644
---- a/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-+++ b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-@@ -438,7 +438,7 @@ ath10k_dbg_sta_write_peer_debug_trigger(struct file *file,
- 	}
- out:
- 	mutex_unlock(&ar->conf_mutex);
--	return count;
-+	return ret ?: count;
- }
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index 57ac80997319b..d03a36c45f9f3 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -625,6 +625,9 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+ 		.max_spatial_stream = 4,
+ 		.fw = {
+ 			.dir = WCN3990_HW_1_0_FW_DIR,
++			.board = WCN3990_HW_1_0_BOARD_DATA_FILE,
++			.board_size = WCN3990_BOARD_DATA_SZ,
++			.board_ext_size = WCN3990_BOARD_EXT_DATA_SZ,
+ 		},
+ 		.sw_decrypt_mcast_mgmt = true,
+ 		.hw_ops = &wcn3990_ops,
+diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
+index d3ef83ad577da..c4df0e4e161b6 100644
+--- a/drivers/net/wireless/ath/ath10k/hw.h
++++ b/drivers/net/wireless/ath/ath10k/hw.h
+@@ -132,6 +132,7 @@ enum qca9377_chip_id_rev {
+ /* WCN3990 1.0 definitions */
+ #define WCN3990_HW_1_0_DEV_VERSION	ATH10K_HW_WCN3990
+ #define WCN3990_HW_1_0_FW_DIR		ATH10K_FW_DIR "/WCN3990/hw1.0"
++#define WCN3990_HW_1_0_BOARD_DATA_FILE "board.bin"
  
- static const struct file_operations fops_peer_debug_trigger = {
+ #define ATH10K_FW_FILE_BASE		"firmware"
+ #define ATH10K_FW_API_MAX		6
+diff --git a/drivers/net/wireless/ath/ath10k/targaddrs.h b/drivers/net/wireless/ath/ath10k/targaddrs.h
+index ec556bb88d658..ba37e6c7ced08 100644
+--- a/drivers/net/wireless/ath/ath10k/targaddrs.h
++++ b/drivers/net/wireless/ath/ath10k/targaddrs.h
+@@ -491,4 +491,7 @@ struct host_interest {
+ #define QCA4019_BOARD_DATA_SZ	  12064
+ #define QCA4019_BOARD_EXT_DATA_SZ 0
+ 
++#define WCN3990_BOARD_DATA_SZ	  26328
++#define WCN3990_BOARD_EXT_DATA_SZ 0
++
+ #endif /* __TARGADDRS_H__ */
 -- 
 2.43.0
 
