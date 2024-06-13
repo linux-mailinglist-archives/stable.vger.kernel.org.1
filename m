@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-50543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84EF906B2D
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:38:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 433D7906B2F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:38:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DF871F246B2
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:38:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BA6C1C21D1F
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F527143887;
-	Thu, 13 Jun 2024 11:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512E71422B5;
+	Thu, 13 Jun 2024 11:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IuL1i1Ep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJAwuPAg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CDC142E83;
-	Thu, 13 Jun 2024 11:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10854142911;
+	Thu, 13 Jun 2024 11:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718278672; cv=none; b=mxRDYQRCGrwIp0H5STXXycAVg9hH8xCJTJoT0bD6g1zuO0qArqeBsNBG6Aj5/AoQCOsBmGDHATlPEfZpgpGDP3iKwVfptCUTzactuBoB7GsBWetVzEg1jc0rdzjAYKzAvaBSBtB46BU8GR3W6VmtSH03hm8ZJBqnUB3r2Q5fghc=
+	t=1718278678; cv=none; b=FY1OYh+KTCSZ8a0T0rsFiybiIJUfCCyKdmut4IXkUo2T+TitSm5RsTCSHmiirVL/hpMMNFLWaT9dVb+uZMpDYLfrrZGL6KdCGx32vM88PIMzmgRPgqbsOnkTQAz8bhl2SV8NUJzz6hELRzf4cMUo2ebVdffsFQe5/ONrKlHoU+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718278672; c=relaxed/simple;
-	bh=zGkkU419yhEROKUgevD2YYshLhqMQW3deKl5ZwgVdA0=;
+	s=arc-20240116; t=1718278678; c=relaxed/simple;
+	bh=gFnC8YFjYJli8zmUaGCe7tSl02GfVZg/a8sVxFCFpCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZdKXSk10HywBVq27WbEnvTvv5SQzNHSKk/X1nDQY1YsqjaNRvb5R7dhLnKCPrTBDQo2BAXuYm0b/U0+bg18fuQLHtTuFwlORu7vG3I7mQcqrpDedqbivAZ27bR20S7vhfYzF2BcZdS07bTQ8HGl9hnRVB0jcUP+a1df2xWlhmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IuL1i1Ep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E14C4AF1A;
-	Thu, 13 Jun 2024 11:37:51 +0000 (UTC)
+	 MIME-Version; b=PXpWmM9XSEsweDv1Sji4ewQhu2WsN2qHZb5dFp/+30mnsKn7nQu6cnEqEWKuNnGXtk0DiBhV6wmT9gssTV3M0M1BAUQEhv9UwpRvQ+6m4s74khY/Da9e0tWjD0Agy7ongRoF/PBuO0sYwRiNIuAUxa/wlwLukSJciig6tgNynME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJAwuPAg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC8EC2BBFC;
+	Thu, 13 Jun 2024 11:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718278672;
-	bh=zGkkU419yhEROKUgevD2YYshLhqMQW3deKl5ZwgVdA0=;
+	s=korg; t=1718278677;
+	bh=gFnC8YFjYJli8zmUaGCe7tSl02GfVZg/a8sVxFCFpCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IuL1i1EpdDfHL0VknXHHnKQ1GlS8RE3d7lP99GLlXkUr4O1Gj5DztdjEUFr4xgstE
-	 fgy9PNjfwY0xh2N//N04fwTmEmKXhpGZ7bACxC8wqrVBSDLskcOL2OYRdV3rbQysY6
-	 cKjGn5tPmStQ7pmuCYuqKUtANLbMG3zF8k4btLIE=
+	b=hJAwuPAgjNlBc2am75tpGk3DEl4XjVOB4TSz7rXJ7Hbg27AmHJ0tTLgFSWbemANRA
+	 qrpnyfz9Hx3basBx/+CS5k+PWSGdwm3QUfBqgY/BYtlk6IcgB4OdcepEKMfSCeriI9
+	 /N35vYwzU/2Oend+tolzhnOGKqAJ3fjBHuOX+EdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 031/213] qed: avoid truncating work queue length
-Date: Thu, 13 Jun 2024 13:31:19 +0200
-Message-ID: <20240613113229.199320216@linuxfoundation.org>
+Subject: [PATCH 4.19 032/213] scsi: ufs: qcom: Perform read back after writing reset bit
+Date: Thu, 13 Jun 2024 13:31:20 +0200
+Message-ID: <20240613113229.238818828@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
 References: <20240613113227.969123070@linuxfoundation.org>
@@ -66,56 +68,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit 954fd908f177604d4cce77e2a88cc50b29bad5ff ]
+[ Upstream commit c4d28e06b0c94636f6e35d003fa9ebac0a94e1ae ]
 
-clang complains that the temporary string for the name passed into
-alloc_workqueue() is too short for its contents:
+Currently, the reset bit for the UFS provided reset controller (used by its
+phy) is written to, and then a mb() happens to try and ensure that hit the
+device. Immediately afterwards a usleep_range() occurs.
 
-drivers/net/ethernet/qlogic/qed/qed_main.c:1218:3: error: 'snprintf' will always be truncated; specified size is 16, but format string expands to at least 18 [-Werror,-Wformat-truncation]
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring this
+bit has taken effect on the device is to perform a read back to force it to
+make it all the way to the device. This is documented in device-io.rst and
+a talk by Will Deacon on this can be seen over here:
 
-There is no need for a temporary buffer, and the actual name of a workqueue
-is 32 bytes (WQ_NAME_LEN), so just use the interface as intended to avoid
-the truncation.
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
 
-Fixes: 59ccf86fe69a ("qed: Add driver infrastucture for handling mfw requests.")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240326223825.4084412-4-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Let's do that to ensure the bit hits the device. By doing so and
+guaranteeing the ordering against the immediately following usleep_range(),
+the mb() can safely be removed.
+
+Fixes: 81c0fc51b7a7 ("ufs-qcom: add support for Qualcomm Technologies Inc platforms")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-1-181252004586@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_main.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/scsi/ufs/ufs-qcom.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_main.c b/drivers/net/ethernet/qlogic/qed/qed_main.c
-index 43c85e584b6fe..d0441bd1944a4 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_main.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_main.c
-@@ -1007,7 +1007,6 @@ static void qed_slowpath_task(struct work_struct *work)
- static int qed_slowpath_wq_start(struct qed_dev *cdev)
- {
- 	struct qed_hwfn *hwfn;
--	char name[NAME_SIZE];
- 	int i;
+diff --git a/drivers/scsi/ufs/ufs-qcom.h b/drivers/scsi/ufs/ufs-qcom.h
+index 295f4bef6a0e9..507ffaa868466 100644
+--- a/drivers/scsi/ufs/ufs-qcom.h
++++ b/drivers/scsi/ufs/ufs-qcom.h
+@@ -167,10 +167,10 @@ static inline void ufs_qcom_assert_reset(struct ufs_hba *hba)
+ 			1 << OFFSET_UFS_PHY_SOFT_RESET, REG_UFS_CFG1);
  
- 	if (IS_VF(cdev))
-@@ -1016,11 +1015,11 @@ static int qed_slowpath_wq_start(struct qed_dev *cdev)
- 	for_each_hwfn(cdev, i) {
- 		hwfn = &cdev->hwfns[i];
+ 	/*
+-	 * Make sure assertion of ufs phy reset is written to
+-	 * register before returning
++	 * Dummy read to ensure the write takes effect before doing any sort
++	 * of delay
+ 	 */
+-	mb();
++	ufshcd_readl(hba, REG_UFS_CFG1);
+ }
  
--		snprintf(name, NAME_SIZE, "slowpath-%02x:%02x.%02x",
--			 cdev->pdev->bus->number,
--			 PCI_SLOT(cdev->pdev->devfn), hwfn->abs_pf_id);
-+		hwfn->slowpath_wq = alloc_workqueue("slowpath-%02x:%02x.%02x",
-+					 0, 0, cdev->pdev->bus->number,
-+					 PCI_SLOT(cdev->pdev->devfn),
-+					 hwfn->abs_pf_id);
+ static inline void ufs_qcom_deassert_reset(struct ufs_hba *hba)
+@@ -179,10 +179,10 @@ static inline void ufs_qcom_deassert_reset(struct ufs_hba *hba)
+ 			0 << OFFSET_UFS_PHY_SOFT_RESET, REG_UFS_CFG1);
  
--		hwfn->slowpath_wq = alloc_workqueue(name, 0, 0);
- 		if (!hwfn->slowpath_wq) {
- 			DP_NOTICE(hwfn, "Cannot create slowpath workqueue\n");
- 			return -ENOMEM;
+ 	/*
+-	 * Make sure de-assertion of ufs phy reset is written to
+-	 * register before returning
++	 * Dummy read to ensure the write takes effect before doing any sort
++	 * of delay
+ 	 */
+-	mb();
++	ufshcd_readl(hba, REG_UFS_CFG1);
+ }
+ 
+ struct ufs_qcom_bus_vote {
 -- 
 2.43.0
 
