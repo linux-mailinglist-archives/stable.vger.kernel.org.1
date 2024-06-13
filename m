@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-51308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-51691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F0A906F42
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:18:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DDC907126
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 14:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3D66286402
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:18:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D6F4B23A1C
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 12:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D844514386B;
-	Thu, 13 Jun 2024 12:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC0E1DDDB;
+	Thu, 13 Jun 2024 12:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRQiV0ib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luy6DRap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945C913D635;
-	Thu, 13 Jun 2024 12:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7C7441D;
+	Thu, 13 Jun 2024 12:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718280915; cv=none; b=twuId9HlZxwwQuVf4FwEmEqJMawxdOtgVh3lyFKcTSfJGDZvN/9L4tObZpho7VdS0Yttbw0yuDpiELbLCzRyKL8aC3GgCIJCBPfZG/sjXwudwgr3kuIoxCfQON4Qmd9YurMOnJaMOUNDZBrR2LtIz4HmJJzm3d3Nk7sjktYmipw=
+	t=1718282033; cv=none; b=Zwq9a6lQqZVTPt1+B7nmNJ63iU/tkxerbK+MitGwduf8y9afPb/T16hK6i4C+MYfmOMWeJHtBJ6i5RTTxdx8Uy3FF0RymeJHBh8Yc/ZDvnZWxmGpDJlOf88WSH72R/puf3BCuuwzJphcsuNtug3V7b3P6f+vhbqXgFNCd51zWgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718280915; c=relaxed/simple;
-	bh=TnqIOZTpFB6UPMtXWuBCtBu6eqW69tnde8eooE/OWYU=;
+	s=arc-20240116; t=1718282033; c=relaxed/simple;
+	bh=KQybIGgc8eKb8M04mpkTLK3C2ps3hMNvhnzEFnbE6Gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P0rSXfSTZaVZXBaLvxbKfxZ0p71E/yvo3Cl1eyocqoP6rwNfrGB3jYyfdfVl/8XnMGlhW1BEQiAIkpMUFTN4BLSbYDZFywKw36gyGhF8u1G+K84uNyLCkUuN/jJwYt+mrGDdnu+LPN+3AUvpGjhM1YT4aUXbrzNv6u1wpKfTLYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRQiV0ib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B124C2BBFC;
-	Thu, 13 Jun 2024 12:15:14 +0000 (UTC)
+	 MIME-Version; b=l+aKPp0J2ofjbOSt0dRBMNWRVtC6C5J542Hi/uutbIZXurve5QI8rWIDUimQ/01Kr3kl5q1pCVCxs2DkUiBgX2dn4ehb/MuJRPtaeVTOEGJe6Vg3ghjjmCLXiOkavdOzj6Wpkj0TdE+2/rZi8XUCBYtNab00Ht64iF5tBZ21IPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luy6DRap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47091C32786;
+	Thu, 13 Jun 2024 12:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718280915;
-	bh=TnqIOZTpFB6UPMtXWuBCtBu6eqW69tnde8eooE/OWYU=;
+	s=korg; t=1718282032;
+	bh=KQybIGgc8eKb8M04mpkTLK3C2ps3hMNvhnzEFnbE6Gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRQiV0ibLC7RbRnUddpw9ouwHIsdW977cc+YAjt6cXs8k2sliCtr3V2adWRNpXQrF
-	 TFLveU8qzgp+Vz48JrdSh8vpaOB+FIk4c8NM5g8kU/vG4pHWE6e2R3cmQoCxwIY7Fk
-	 E/LMi/0tkgkjDb49FzIB0CjRnOob4+SLxl/0V8Tk=
+	b=luy6DRapSNglAs1WMUrf3Gw80SCADqbfXR/tUlRSPexpAIYBDPHYLPx6a0mYbDYud
+	 mnFQuA2BD9jgKv9CJdu1BY+hdwp+rDCBbXX9VWSNgap+kziJH6gxQO/0C8io4VKVEe
+	 NYRtCgO2F7BR6l5F+MhkuIpee8OMPCee1/RBL278=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Michael Schmitz <schmitzmic@gmail.com>,
 	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 078/317] m68k: Fix spinlock race in kernel thread creation
+Subject: [PATCH 5.15 139/402] fbdev: sh7760fb: allow modular build
 Date: Thu, 13 Jun 2024 13:31:36 +0200
-Message-ID: <20240613113250.566733952@linuxfoundation.org>
+Message-ID: <20240613113307.558810728@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
-References: <20240613113247.525431100@linuxfoundation.org>
+In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
+References: <20240613113302.116811394@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +69,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Schmitz <schmitzmic@gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit da89ce46f02470ef08f0f580755d14d547da59ed ]
+[ Upstream commit 51084f89d687e14d96278241e5200cde4b0985c7 ]
 
-Context switching does take care to retain the correct lock owner across
-the switch from 'prev' to 'next' tasks.  This does rely on interrupts
-remaining disabled for the entire duration of the switch.
+There is no reason to prohibit sh7760fb from being built as a
+loadable module as suggested by Geert, so change the config symbol
+from bool to tristate to allow that and change the FB dependency as
+needed.
 
-This condition is guaranteed for normal process creation and context
-switching between already running processes, because both 'prev' and
-'next' already have interrupts disabled in their saved copies of the
-status register.
-
-The situation is different for newly created kernel threads.  The status
-register is set to PS_S in copy_thread(), which does leave the IPL at 0.
-Upon restoring the 'next' thread's status register in switch_to() aka
-resume(), interrupts then become enabled prematurely.  resume() then
-returns via ret_from_kernel_thread() and schedule_tail() where run queue
-lock is released (see finish_task_switch() and finish_lock_switch()).
-
-A timer interrupt calling scheduler_tick() before the lock is released
-in finish_task_switch() will find the lock already taken, with the
-current task as lock owner.  This causes a spinlock recursion warning as
-reported by Guenter Roeck.
-
-As far as I can ascertain, this race has been opened in commit
-533e6903bea0 ("m68k: split ret_from_fork(), simplify kernel_thread()")
-but I haven't done a detailed study of kernel history so it may well
-predate that commit.
-
-Interrupts cannot be disabled in the saved status register copy for
-kernel threads (init will complain about interrupts disabled when
-finally starting user space).  Disable interrupts temporarily when
-switching the tasks' register sets in resume().
-
-Note that a simple oriw 0x700,%sr after restoring sr is not enough here
-- this leaves enough of a race for the 'spinlock recursion' warning to
-still be observed.
-
-Tested on ARAnyM and qemu (Quadra 800 emulation).
-
-Fixes: 533e6903bea0 ("m68k: split ret_from_fork(), simplify kernel_thread()")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/all/07811b26-677c-4d05-aeb4-996cd880b789@roeck-us.net
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/20240411033631.16335-1-schmitzmic@gmail.com
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: f75f71b2c418 ("fbdev/sh7760fb: Depend on FB=y")
+Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/kernel/entry.S | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/m68k/kernel/entry.S b/arch/m68k/kernel/entry.S
-index 546bab6bfc273..d0ca4df435285 100644
---- a/arch/m68k/kernel/entry.S
-+++ b/arch/m68k/kernel/entry.S
-@@ -432,7 +432,9 @@ resume:
- 	movec	%a0,%dfc
+diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+index 662524574cc33..26dfc4e5b10ce 100644
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -2016,8 +2016,8 @@ config FB_COBALT
+ 	depends on FB && MIPS_COBALT
  
- 	/* restore status register */
--	movew	%a1@(TASK_THREAD+THREAD_SR),%sr
-+	movew	%a1@(TASK_THREAD+THREAD_SR),%d0
-+	oriw	#0x0700,%d0
-+	movew	%d0,%sr
- 
- 	rts
- 
+ config FB_SH7760
+-	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
+-	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
++	tristate "SH7760/SH7763/SH7720/SH7721 LCDC support"
++	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
+ 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
 -- 
 2.43.0
 
