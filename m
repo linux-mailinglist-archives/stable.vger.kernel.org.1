@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-50792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-50760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF2CA906CAC
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:52:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BDF3906C77
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 13:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1A011C21B38
-	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:52:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B81022811A0
+	for <lists+stable@lfdr.de>; Thu, 13 Jun 2024 11:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E5C143C52;
-	Thu, 13 Jun 2024 11:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D027145A0A;
+	Thu, 13 Jun 2024 11:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hdqefEIA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TpgRRKtk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32460143C4B;
-	Thu, 13 Jun 2024 11:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCC5145A05;
+	Thu, 13 Jun 2024 11:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718279399; cv=none; b=RxZ0kjvAREKcwLK50cxTbqoKsi2+oIfulKD4Rls4+z/AokiQybR+JevmFMEietGdWI9iZLF4YMvH2Jk/Rn+mlFjohz+GMz0NXsfQgc/Rp4VPfv+kwU9ZldJ4miy7LfI9f2j0hJTpH71u8SGZ+W3fJ1W43e2slZOzH/DMn3KIsZg=
+	t=1718279305; cv=none; b=h8y9aFQ2kwueqk0RhnEw3xeEVJ3VnbkfPb6Hzutf2kSuJWPQ2yt6OZfia0eRTRJr3HcrufsCJzdVdStCQBtD2fLdHmsfA8BrFihzL2mHxegPOX4ho569PjA0nnr8amwT8YYo20M/cF5yEDJK+Pwa1wneaynn+Va9yKI622FGrTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718279399; c=relaxed/simple;
-	bh=uX8T5PtCkgOGRvqMNg6BXFxOf8JdI4vIUEndm1Ll890=;
+	s=arc-20240116; t=1718279305; c=relaxed/simple;
+	bh=/lNboxCC0oCfCmftXm28zRzTzKMPS8F6m+5yN7uS9hQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oKlAouwZstNkZNNWMBWWzJvzQtMfeLnQqkxKNt8F/Yrvn/oF7D1MsjHPwGOaTS7pf6baZ3GOkb439PNq9IW7UluQTMfb12QpniQbdwVJnF9rn1aze8iWXIReH6CJH/AAh4/7MemIEfZH+g7T/PPK3ddIScLp7zM72iGX3sgZrgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdqefEIA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F907C32786;
-	Thu, 13 Jun 2024 11:49:58 +0000 (UTC)
+	 MIME-Version; b=lasGB2pSQsyS2hUI244r2CDuACfm+/11cfX3xewMyv56DOxrZ8cd2AKW4mOMQXPMjJin8eu9k5ld6755Gwx5grWjGGMpjGHyh0RFZfybvhrg+JXIrUUh1YaJovI+EA3QJFhy4qADg13lFGjWAVss0SH9/6+drwa3jrKrr5r637A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TpgRRKtk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58114C2BBFC;
+	Thu, 13 Jun 2024 11:48:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718279399;
-	bh=uX8T5PtCkgOGRvqMNg6BXFxOf8JdI4vIUEndm1Ll890=;
+	s=korg; t=1718279304;
+	bh=/lNboxCC0oCfCmftXm28zRzTzKMPS8F6m+5yN7uS9hQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hdqefEIAWGVQU1/hyk1wTk1wrXyTPUe9Ig/8CUBRuh+Y7Zr/gad2FyYTQonmEOcTb
-	 YmyjSN8KGSPIsnBgvHb8H4/cmsyYu/qN9dhQZLv/RFWBm4J/igbSJk4GNWUpAXywBP
-	 HfzMswvSJ06BEWlJpgn4ksYlnveBGDJukXVvTzRM=
+	b=TpgRRKtk9VL8igSIh6J7GwxZC4eCLDHkidV5x5xovL4qVfjaEe/iGBnYQ6aoWP2uw
+	 cxIu4SGCUlpmBAEfMcuzEjNb5JOBGTKpRg1cFbtVQd7DknuKV+0nBg6v/ndCtpwHmR
+	 o/ydIU8zwJ2+t99t696n3gYdGIG24k7QBI2AZmJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.9 022/157] arm64: tegra: Correct Tegra132 I2C alias
-Date: Thu, 13 Jun 2024 13:32:27 +0200
-Message-ID: <20240613113228.268342956@linuxfoundation.org>
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.9 023/157] arm64: dts: qcom: qcs404: fix bluetooth device address
+Date: Thu, 13 Jun 2024 13:32:28 +0200
+Message-ID: <20240613113228.306836804@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
 References: <20240613113227.389465891@linuxfoundation.org>
@@ -66,51 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 2633c58e1354d7de2c8e7be8bdb6f68a0a01bad7 upstream.
+commit f5f390a77f18eaeb2c93211a1b7c5e66b5acd423 upstream.
 
-There is no such device as "as3722@40", because its name is "pmic".  Use
-phandles for aliases to fix relying on full node path.  This corrects
-aliases for RTC devices and also fixes dtc W=1 warning:
+The 'local-bd-address' property is used to pass a unique Bluetooth
+device address from the boot firmware to the kernel and should otherwise
+be left unset so that the OS can prevent the controller from being used
+until a valid address has been provided through some other means (e.g.
+using btmgmt).
 
-  tegra132-norrin.dts:12.3-36: Warning (alias_paths): /aliases:rtc0: aliases property is not a valid node (/i2c@7000d000/as3722@40)
-
-Fixes: 0f279ebdf3ce ("arm64: tegra: Add NVIDIA Tegra132 Norrin support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Fixes: 60f77ae7d1c1 ("arm64: dts: qcom: qcs404-evb: Enable uart3 and add Bluetooth")
+Cc: stable@vger.kernel.org	# 5.10
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20240501075201.4732-1-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra132-norrin.dts |    4 ++--
- arch/arm64/boot/dts/nvidia/tegra132.dtsi       |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/qcs404-evb.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-+++ b/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-@@ -9,8 +9,8 @@
- 	compatible = "nvidia,norrin", "nvidia,tegra132", "nvidia,tegra124";
+--- a/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi
++++ b/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi
+@@ -62,7 +62,7 @@
+ 		vddrf-supply = <&vreg_l1_1p3>;
+ 		vddch0-supply = <&vdd_ch0_3p3>;
  
- 	aliases {
--		rtc0 = "/i2c@7000d000/as3722@40";
--		rtc1 = "/rtc@7000e000";
-+		rtc0 = &as3722;
-+		rtc1 = &tegra_rtc;
- 		serial0 = &uarta;
+-		local-bd-address = [ 02 00 00 00 5a ad ];
++		local-bd-address = [ 00 00 00 00 00 00 ];
+ 
+ 		max-speed = <3200000>;
  	};
- 
---- a/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-@@ -572,7 +572,7 @@
- 		status = "disabled";
- 	};
- 
--	rtc@7000e000 {
-+	tegra_rtc: rtc@7000e000 {
- 		compatible = "nvidia,tegra124-rtc", "nvidia,tegra20-rtc";
- 		reg = <0x0 0x7000e000 0x0 0x100>;
- 		interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
 
 
 
