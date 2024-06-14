@@ -1,107 +1,147 @@
-Return-Path: <stable+bounces-52167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4201C90871B
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 11:10:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B90E908729
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 11:15:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B3DF1C2206C
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 09:10:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B986B23B7F
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 09:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C8C19149D;
-	Fri, 14 Jun 2024 09:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD5181922CD;
+	Fri, 14 Jun 2024 09:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxxLdAaz"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YZHXyssU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADFB146A7A;
-	Fri, 14 Jun 2024 09:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CF4146D6A
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 09:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718356205; cv=none; b=nqifJa01vcxtbLX/dp4wzouzJN3AIfz+sub7+qd8+7V4gkti3vMDCdCGejxXk7wzEsYe97/wuY2Vkp5WAHVjhwIPiAkq2ESNnn5AhK/BkB4pu+uS0xzA1mUFnPmSTjApTTa/cp8DAkBXf+6K/wiqQ6tSiujrgqumUsvMo3WcDeM=
+	t=1718356541; cv=none; b=MItds+xiVCINHs6TbcQRURfCR7AtUcW83XVc11rzENxfot6dMMjM5sgLLEYA8ueS8DdSELE4+KgpF7OXQ6ZV+Fq/2zgoTZf0sZeOKZlKKR40p4AfxNlG07vXApj/kypNVyf3tzVeXhvqLnJx9j+vu3no8Foid4AuFeu6Vn2EDfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718356205; c=relaxed/simple;
-	bh=CoUsKKpI32pU95daZgGcxXSyemfLlfTxinEmRmDSL1E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JBm5jfO2m6O6EoaAEGnukVFd55ti7MVcWOEI6rLcceOHhwcFltXhx5oG0lPaX4GnDLYqQo8TpV32VNvOpNvdU1tEDpnXLjBOeYBnAT9P4CvQIJ7QR7E8kXOOUU7JSBLpV61YhcHQUBKtWDABmPOY3VYEbT+3gtp14owzOcNiMTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxxLdAaz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51142C2BD10;
-	Fri, 14 Jun 2024 09:10:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718356204;
-	bh=CoUsKKpI32pU95daZgGcxXSyemfLlfTxinEmRmDSL1E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vxxLdAazcaZPdI0+ItnGVpNbpgrE1yvW7nZwkhj1881EeqjZjzXDLT8N8vfDMXGnq
-	 8oeTYCnMDkHLZdQD375/WN/aYgQ5ua9izz16Yu4dyNbc9LQFu8jJj0rn9E8KEnPnsD
-	 cYRD6pVO8ty/MBxzxKzs9zp00KUZB3rqZVyyWY3E=
-Date: Fri, 14 Jun 2024 11:10:02 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: Ismael Luceno <ismael@iodev.co.uk>, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Hui Wang <hui.wang@canonical.com>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>
-Subject: Re: Intel e1000e driver bug on stable (6.9.x)
-Message-ID: <2024061406-refreeze-flatfoot-f33a@gregkh>
-References: <ZmfcJsyCB6M3wr84@pirotess>
- <2024061323-unhappily-mauve-b7ea@gregkh>
- <6dcfa590-8d09-4d3a-9c35-0294099489ed@leemhuis.info>
+	s=arc-20240116; t=1718356541; c=relaxed/simple;
+	bh=/JZG/AGW8YO9YEwzpQSbeXxjZz1kRWU7PMN2yTnHC3Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IdjbcERzj2XVYRnXDxKLjiXjgfM6lJmmKQWP2SC2hr73bKoOkrwJSEdXq82CA0HQDtTEWqNfst48LYgT/aJ13stHAbkpZ6hx/ffjiEOphZxFydetAXc9jrseJYgyKPZo+mBoQH86RodNzOWFJyw3eM4DtEIX5wmzwihT3CO1WBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YZHXyssU; arc=none smtp.client-ip=209.85.222.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-80d6cf96e22so1153290241.0
+        for <stable@vger.kernel.org>; Fri, 14 Jun 2024 02:15:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718356537; x=1718961337; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=p5t2Wj1oXu+8rhsC44ZuFPYafYW/0+ix7sLMBpjY/38=;
+        b=YZHXyssU7+Xe83GcApUJia+H9JVtx3Z54AJLtSLpS438eNJO4+c7PLH6TsJs1bzvTq
+         tB17LVBe0BsetJ+AILi72yj32YMtbPBx+4ZqxKI2nLA62j5HTxMoWhfAmFPTvj7mpS/I
+         HSTta//vgKwOB/yNUgwPvgLK/tqQrUQ7Kb7ltMKSkMoiN/3a0KbUhZeQ3lGJIdJGDfeo
+         ZLD6iKkZ454K834Np4u8HqSJCMYVmubPbcTvaALvmLAdMPCXOTH3NsQze+u9X1iuLtso
+         sfQYW8A5nOvV6630UcJ1e2qQnnaGKFLl15wlvDLra31xjKPsayN+kfkCuejJEgJ1LN2w
+         KJLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718356537; x=1718961337;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=p5t2Wj1oXu+8rhsC44ZuFPYafYW/0+ix7sLMBpjY/38=;
+        b=X4N+bIpEPIm9MMUvxswe2GkJ2BEtOfXMt0x4tqEuoiQBx2PNOGcVh20N+QjKqphr01
+         pnETvRxvrmsjpkSpbAGKFMT1xGx6EzC/1tQx9tMNEFDMQKJlmnfqCNK7/2FFBXGzKlUg
+         SIAwcSreH0UKTBXgmM8hzB9z0BGbCCe1td77LCR0uV+BfVmc34zgviAS9L2QkOyQw6KA
+         1qZsajZc2UVHerf0M+s7U5lZaueyc9mT9Mprk7rb4sLcOMcEN8rFkHK/weAh6qD/DUVX
+         cDXAhBVPNT6V17thiY3+WQVB+8xNmik0uEcie6MBDIr7BUZ6cpSKjgFFOGNzA2DWmndU
+         604Q==
+X-Gm-Message-State: AOJu0YwypM7J8+JxE+B9K9NotPskkZ1qLCn7bcj2NMwPOpsaQ699rjcb
+	G6RmIDZvDwh8/F83NXVChzqAHO6jn2Z06I1n1UmLlkwvKkXip1hT9xUC5eWmDYGqqT3p01+8U1X
+	fAbRfyeigOLVo+iP3igmarOPg0GT4j1TE/nUkFw==
+X-Google-Smtp-Source: AGHT+IE3eSj2stOVQBL5thdzjGaVBKFsIPShMAnCCjVqEowRbjHRfmjek5eDn/iLg3Kys0gPCOQmwn2hEbOoZKuDtZg=
+X-Received: by 2002:a05:6102:304e:b0:48d:a16c:9c9d with SMTP id
+ ada2fe7eead31-48db4f00688mr472940137.4.1718356537574; Fri, 14 Jun 2024
+ 02:15:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6dcfa590-8d09-4d3a-9c35-0294099489ed@leemhuis.info>
+References: <20240613113223.281378087@linuxfoundation.org> <CA+G9fYtEkcPasc62FH170nPyJTS83jfdAtHUfgwG+QDuQP060g@mail.gmail.com>
+In-Reply-To: <CA+G9fYtEkcPasc62FH170nPyJTS83jfdAtHUfgwG+QDuQP060g@mail.gmail.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 14 Jun 2024 14:45:25 +0530
+Message-ID: <CA+G9fYvwJxJdsSeTGsKjKonkiJnDC13t1+mpjHhyCvc_2r3=-w@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/137] 6.6.34-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org, Puranjay Mohan <puranjay@kernel.org>, 
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Jun 14, 2024 at 08:58:11AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 13.06.24 10:35, Greg KH wrote:
-> > On Wed, Jun 12, 2024 at 10:33:19PM +0200, Ismael Luceno wrote:
-> >>
-> >> I noticed that the NIC started to fail on a couple of notebooks [0]
-> >> [1] after upgrading to 6.9.1.
-> >>
-> >> I tracked down the problem to commit 861e8086029e ("e1000e: move force
-> >> SMBUS from enable ulp function to avoid PHY loss issue", 2024-03-03),
-> >> included in all 6.9.x releases.
-> >>
-> >> The fix is in commit bfd546a552e1 ("e1000e: move force SMBUS near
-> >> the end of enable_ulp function", 2024-05-28) from mainline.
-> >>
-> >> The NIC fails right after boot on both systems I tried; I mention
-> >> because the description is a bit unclear about that on the fix, maybe
-> >> other systems are affected differently.
-> > 
-> > Now queued up, thanks.
-> 
-> I see that they are in the latest 6.6.y and 6.9.y stable-rcs. Thing is:
-> 
-> bfd546a552e1 causes other regressions, which is why Hui Wang submitted a
-> revert for that one:
-> 
-> https://lore.kernel.org/all/20240611062416.16440-1-hui.wang@canonical.com/
-> 
-> Vitaly Lifshits meanwhile submitted a change that afaics is meant to fix
-> that regression:
-> 
-> https://lore.kernel.org/all/20240613120134.224585-1-vitaly.lifshits@intel.com/
-> 
-> CCed both so they can comment.
-> 
-> Not sure what's the best way forward here, maybe it is "not picking up
-> bfd546a552e1 for now and waiting a few more days till the dust settles".
+On Thu, 13 Jun 2024 at 20:15, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+>
+> On Thu, 13 Jun 2024 at 17:35, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 6.6.34 release.
+> > There are 137 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Sat, 15 Jun 2024 11:31:50 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.34-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+>
+> The powerpc defconfig builds failed on stable-rc 6.6 branch due to below
+> build errors with gcc-13, gcc-8 and clang.
+>
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>
+> Build log:
+> ----
+> arch/powerpc/net/bpf_jit_comp64.c: In function 'bpf_jit_build_body':
+> arch/powerpc/net/bpf_jit_comp64.c:1010:73: error: 'fimage' undeclared
+> (first use in this function); did you mean 'image'?
+>  1010 |                                 ret =
+> bpf_jit_emit_func_call_hlp(image, fimage, ctx, func_addr);
+>       |
+>          ^~~~~~
+>       |
+>          image
+> arch/powerpc/net/bpf_jit_comp64.c:1010:73: note: each undeclared
+> identifier is reported only once for each function it appears in
 
-Ok, I'll just not pick this one up and let the maintainers figure it
-out as this is still broken in Linus's tree as well.
+Anders bisected this and found following patch,
+ first bad commit:
+ [2298022fd5c6c428872f5741592526b8f4aadcf8]
+  powerpc/64/bpf: fix tail calls for PCREL addressing
 
-Thanks for noticing this!
+>
+>
+> Links:
+>  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.32-876-g8429fc3308da/testrun/24327571/suite/build/test/gcc-13-defconfig/log
+>
+> --
+> Linaro LKFT
+> https://lkft.linaro.org
 
-thanks,
-
-greg k-h
+- Naresh
 
