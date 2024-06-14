@@ -1,166 +1,134 @@
-Return-Path: <stable+bounces-52193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C63908B9B
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 14:24:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2037908C3A
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 15:06:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9555A1C25EB5
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 12:24:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B67561C2235C
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 13:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98193196C8B;
-	Fri, 14 Jun 2024 12:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33961946CF;
+	Fri, 14 Jun 2024 13:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FYdBguBr"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2jgY/LjQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AB9195F00;
-	Fri, 14 Jun 2024 12:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A11A14884C
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 13:06:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718367838; cv=none; b=JJrRfaryBPXNDFsUxK30bxdY6OpiMgrjP/uHqRzTaN3NC7/hSO4IxyRxuC9FQTiw2eh6+4fn9yFzaSczQBvvApt/O0CzIJSUtVzb8mhIduRwhM+RAdwsHh7JHZTFcFbRNd/ITxHjHyLC6xMqrHEGfSAEDk0leqEfUN3YlnmYaGE=
+	t=1718370379; cv=none; b=babBvMhNr8e3VGBx7wqeGEeNRd3v5GMNAhm/VkMcxSFopYwGQU7wSZ5yQI1oEClS5Iz71XkWukOeDFxP5+tbJhHTH4B849nr658FlnOAqOrCBzYyMh0u3NVZtQfkiPL7Cy4kLxA9SsjNFpxLCnkWr+rXdpBX4/7ybfZ4maEVag8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718367838; c=relaxed/simple;
-	bh=DGzoCCxLNYT6BKKWvGiqwmKAtrD18PJlb8XGaVgkId4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=P8DmzG/flIf5bx04yrtoW8uzEKDNQWtkY/Pp8TnoX/iOtzno+oBwGq8uXNTwmdx5f634hjxkC2znJ4whc1mPYwFApTThrcwE0NRWUj323NcWss9BtP+HMwxrtD2eLFpr+5H132AwRdqYMQCWhx3EZ2Yap7TsKH8NF9NqRlFwqOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FYdBguBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4F7C2BD10;
-	Fri, 14 Jun 2024 12:23:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718367837;
-	bh=DGzoCCxLNYT6BKKWvGiqwmKAtrD18PJlb8XGaVgkId4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=FYdBguBramcWq1BCVB4FTHYaixFhRO/ff49NWxw4unPedzyvLlBQL+JPrFdRq1Txc
-	 Y16GBVMP5AA42jYfr8GiA83cGDp84Ij3bL6DxS2Fyh/kF8teegHyC/t50VADivGi/b
-	 NijQ21DE8ej34YN+nScgod2LgjoXyDyzw6bi4K1AXgYrx2ojj/7EVxQIkPZdkJPP1A
-	 lG07zjADYMLJka+d9hTTTAPWJmu6T4DEU2eeKVkjOV4vcEFrcHaef0XWZ29kVdptwn
-	 iA8u0tOxKbwM+4IL8RfT6VLEXuUXRqxwShFGXR48Z3hnvcfifsLNZZxTG+n9h47NEE
-	 L728qiABhCZ6Q==
-From: Niklas Cassel <cassel@kernel.org>
-To: Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Cc: Manuel Lauss <manuel.lauss@gmail.com>,
-	stable@vger.kernel.org,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	linux-ide@vger.kernel.org
-Subject: [PATCH v2] ata: libata-scsi: Set the RMB bit only for removable media devices
-Date: Fri, 14 Jun 2024 14:23:45 +0200
-Message-ID: <20240614122344.1577261-2-cassel@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1718370379; c=relaxed/simple;
+	bh=SnUQNI6UHQP5MbPqCnlHxHpVurWDkYrxspXEtgwaH54=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=RqrHRJqRq8RmYDV+M+QazU0LrmdeT2dQXp9Pa8U3P4K+rNpPWr2yIyvJlcVA9nJb9446i8yfCYLsLEGHTuEANEwPJVhnTPvFAzlRaVWYyxzIn6A3jkMXxDyIkNKMtXGBzZaV9nDpyYmAT13MrbDRgpgilt3ZBcZU2YFyDnwGE6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2jgY/LjQ; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dfebc229250so4100762276.1
+        for <stable@vger.kernel.org>; Fri, 14 Jun 2024 06:06:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1718370377; x=1718975177; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7fRKhubzFyYMHPVT4nS15jvFr0tZ15mqILMaqnV6cNg=;
+        b=2jgY/LjQV9T9KwdxoEgdgqWIgXfaDBYcvYrwUawYzFthrSQ41BLxG0Q/pRGgA9mQYF
+         isMz06AfIwpd6dW/CSbenM8Lc/rkSDJhTOU6ZKrv6WWEdX3Dy96LUu/sfnhkc7Hv6/qY
+         D2iEbQCSVZcaTZsDDsfYPgISZeyKQPmCTbBe8axabuQg5APBJvdEqwlPi6iF1e09zUVa
+         BOU8Lmur3NwtFlvy6dA8cy4WbzWyDtmAS4kr4PCpWaDbUL1rR7jPcli6FuJceE+SHtGH
+         lH0VvNjQ7WYK4zPMv/jWmj/CARK+hpJKnSJWt2pSCUefT8PJ6PkuthLnUIxOhcYp1ZRH
+         h5zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718370377; x=1718975177;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7fRKhubzFyYMHPVT4nS15jvFr0tZ15mqILMaqnV6cNg=;
+        b=rWUzihGm9/XcF0hVFp5D2unTfRgOT0CuT4ZuvkUi3kD9+hAWw7hhBYdXQJLpxQJSw7
+         tgG6wvIY+B51kq14nb6i46k3qn0XT5GLwbiNNuFOmxNONQqjYY271x+bzsTno3ya218j
+         UueP+0VDsMIJULrThRtoYYHyNjhpc23svbWyUCNFZkmdNf5yuZZmhvfVZph/D+VHA5BM
+         iT3vpvFgVAPDWzIhlhwlYQXVDIOiy02r5Db9ZlQXjZL1Jmt6RKANHIhkPwMVgCxb0MpX
+         FU0YKKsZf9QVv4jl8U4Da8bcyieveUVVsUtnQH8VkB9QxORMaC8Bvd75CI0G9s7VgSi6
+         QHnA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSj/aSmsefHQd5wy1m6nHn3s2vK78qbMNALK+hz5zp3HVAgyqzTTpGxt47GYHh+GQGzV3XWgZGrWC9Ab46HCJQm3lBM4Hv
+X-Gm-Message-State: AOJu0Yyk7v2AC1w98q4AWJu0FsvL4MVCxGf3f4xowKEXWoR+pBUCR2F1
+	97Aw/+70bH5INgkfNdiHb8JkrpxvDMOHNXdDtVHT7jlzjfWi/pLjaMR0Ye8PednXOPEzMs2Z208
+	P1WPr7JwP5w==
+X-Google-Smtp-Source: AGHT+IGIoTzHzTFDFsyv1dPaltPPdn/E5X6Cw9mb6zbL+w9fxfWZJaVo6SWO3fdCWvcUwkVcatanyPY7TGVySQ==
+X-Received: from edumazet1.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:395a])
+ (user=edumazet job=sendgmr) by 2002:a05:6902:150b:b0:dfa:8ed1:8f1b with SMTP
+ id 3f1490d57ef6-dff15402e19mr658855276.1.1718370377078; Fri, 14 Jun 2024
+ 06:06:17 -0700 (PDT)
+Date: Fri, 14 Jun 2024 13:06:15 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4082; i=cassel@kernel.org; h=from:subject; bh=HS/n3PxLTOvnvuCou+RcDHhcilzm+RDmUNKnYhgZQ3g=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNJyzALv+5eVnfoYbJPr9STYkb+34G62YMCchbbdUx9KL vR95ljSUcrCIMbFICumyOL7w2V/cbf7lOOKd2xg5rAygQxh4OIUgIkYNzEyzI3OYdZJC/g801VM yYD1dUBG+3aZuHjZ9sRZ9gfk+b+WMTKc87yyvmnO/uVtx4y/Ntcf6ZWQ2fKw+0qVQa6unPI3/Rx 2AA==
-X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.2.627.g7a2c4fd464-goog
+Message-ID: <20240614130615.396837-1-edumazet@google.com>
+Subject: [PATCH net] tcp: clear tp->retrans_stamp in tcp_rcv_fastopen_synack()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org, 
+	Neal Cardwell <ncardwell@google.com>, Yuchung Cheng <ycheng@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Damien Le Moal <dlemoal@kernel.org>
+Some applications were reporting ETIMEDOUT errors on apparently
+good looking flows, according to packet dumps.
 
-The SCSI Removable Media Bit (RMB) should only be set for removable media,
-where the device stays and the media changes, e.g. CD-ROM or floppy.
+We were able to root cause the issue to an accidental setting
+of tp->retrans_stamp in the following scenario:
 
-The ATA removable media device bit is obsoleted since ATA-8 ACS (2006),
-but before that it was used to indicate that the device can have its media
-removed (while the device stays).
+- client sends TFO SYN with data.
+- server has TFO disabled, ACKs only SYN but not payload.
+- client receives SYNACK covering only SYN.
+- tcp_ack() eats SYN and sets tp->retrans_stamp to 0.
+- tcp_rcv_fastopen_synack() calls tcp_xmit_retransmit_queue()
+  to retransmit TFO payload w/o SYN, sets tp->retrans_stamp to "now",
+  but we are not in any loss recovery state.
+- TFO payload is ACKed.
+- we are not in any loss recovery state, and don't see any dupacks,
+  so we don't get to any code path that clears tp->retrans_stamp.
+- tp->retrans_stamp stays non-zero for the lifetime of the connection.
+- after first RTO, tcp_clamp_rto_to_user_timeout() clamps second RTO
+  to 1 jiffy due to bogus tp->retrans_stamp.
+- on clamped RTO with non-zero icsk_retransmits, retransmits_timed_out()
+  sets start_ts from tp->retrans_stamp from TFO payload retransmit
+  hours/days ago, and computes bogus long elapsed time for loss recovery,
+  and suffers ETIMEDOUT early.
 
-Commit 8a3e33cf92c7 ("ata: ahci: find eSATA ports and flag them as
-removable") introduced a change to set the RMB bit if the port has either
-the eSATA bit or the hot-plug capable bit set. The reasoning was that the
-author wanted his eSATA ports to get treated like a USB stick.
-
-This is however wrong. See "20-082r23SPC-6: Removable Medium Bit
-Expectations" which has since been integrated to SPC, which states that:
-
-"""
-Reports have been received that some USB Memory Stick device servers set
-the removable medium (RMB) bit to one. The rub comes when the medium is
-actually removed, because... The device server is removed concurrently
-with the medium removal. If there is no device server, then there is no
-device server that is waiting to have removable medium inserted.
-
-Sufficient numbers of SCSI analysts see such a device:
-- not as a device that supports removable medium;
-but
-- as a removable, hot pluggable device.
-"""
-
-The definition of the RMB bit in the SPC specification has since been
-clarified to match this.
-
-Thus, a USB stick should not have the RMB bit set (and neither shall an
-eSATA nor a hot-plug capable port).
-
-Commit dc8b4afc4a04 ("ata: ahci: don't mark HotPlugCapable Ports as
-external/removable") then changed so that the RMB bit is only set for the
-eSATA bit (and not for the hot-plug capable bit), because of a lot of bug
-reports of SATA devices were being automounted by udisks. However,
-treating eSATA and hot-plug capable ports differently is not correct.
-
-From the AHCI 1.3.1 spec:
-Hot Plug Capable Port (HPCP): When set to '1', indicates that this port's
-signal and power connectors are externally accessible via a joint signal
-and power connector for blindmate device hot plug.
-
-So a hot-plug capable port is an external port, just like commit
-45b96d65ec68 ("ata: ahci: a hotplug capable port is an external port")
-claims.
-
-In order to not violate the SPC specification, modify the SCSI INQUIRY
-data to only set the RMB bit if the ATA device can have its media removed.
-
-This fixes a reported problem where GNOME/udisks was automounting devices
-connected to hot-plug capable ports.
-
-Fixes: 45b96d65ec68 ("ata: ahci: a hotplug capable port is an external port")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
-Tested-by: Thomas Weißschuh <linux@weissschuh.net>
-Reported-by: Thomas Weißschuh <linux@weissschuh.net>
-Closes: https://lore.kernel.org/linux-ide/c0de8262-dc4b-4c22-9fac-33432e5bddd3@t-8ch.de/
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-[cassel: wrote commit message]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Fixes: a7abf3cd76e1 ("tcp: consider using standard rtx logic in tcp_rcv_fastopen_synack()")
+CC: stable@vger.kernel.org
+Co-developed-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Co-developed-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
-Changes since v1:
--Added Cc: stable.
--Updated comment and commit message to correctly state that the
- ATA removable media device bit is obsoleted since ATA-8 ACS.
+ net/ipv4/tcp_input.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/ata/libata-scsi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index cdf29b178ddc..bb4d30d377ae 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1831,11 +1831,11 @@ static unsigned int ata_scsiop_inq_std(struct ata_scsi_args *args, u8 *rbuf)
- 		2
- 	};
- 
--	/* set scsi removable (RMB) bit per ata bit, or if the
--	 * AHCI port says it's external (Hotplug-capable, eSATA).
-+	/*
-+	 * Set the SCSI Removable Media Bit (RMB) if the ATA removable media
-+	 * device bit (obsolete since ATA-8 ACS) is set.
- 	 */
--	if (ata_id_removable(args->id) ||
--	    (args->dev->link->ap->pflags & ATA_PFLAG_EXTERNAL))
-+	if (ata_id_removable(args->id))
- 		hdr[1] |= (1 << 7);
- 
- 	if (args->dev->class == ATA_DEV_ZAC) {
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 9c04a9c8be9dfaa0ec2437b3748284e57588b216..01d208e0eef31fd87c7faaf5a3d10b8f52e99ee0 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6296,6 +6296,7 @@ static bool tcp_rcv_fastopen_synack(struct sock *sk, struct sk_buff *synack,
+ 		skb_rbtree_walk_from(data)
+ 			 tcp_mark_skb_lost(sk, data);
+ 		tcp_xmit_retransmit_queue(sk);
++		tp->retrans_stamp = 0;
+ 		NET_INC_STATS(sock_net(sk),
+ 				LINUX_MIB_TCPFASTOPENACTIVEFAIL);
+ 		return true;
 -- 
-2.45.2
+2.45.2.627.g7a2c4fd464-goog
 
 
