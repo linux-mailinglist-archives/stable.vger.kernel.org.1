@@ -1,77 +1,108 @@
-Return-Path: <stable+bounces-52163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ACBC9086AB
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 10:45:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E169086BD
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 10:51:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D91FB20C19
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 08:45:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC07D1C21AD5
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 08:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767C814884B;
-	Fri, 14 Jun 2024 08:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjKRjeO/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249CA190470;
+	Fri, 14 Jun 2024 08:51:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2042813A863
-	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 08:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66AB187546
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 08:51:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718354751; cv=none; b=EFWAVZM9thysdxs8nWVslCSEUkRANqqCDLPHV4trkxElhDJJbfbquYwh5vnOCJ6AoWvbkk/bgxZPSwYraD/C/jCaRZdzPK9y3UGQvsV/uv9uQP73RDD2AhJFfhCkVc8aRcML8SR3Ox0qgFczEDev/opWQEd9xvjkpvI/gZsCUsw=
+	t=1718355069; cv=none; b=rEvOpt7JKWlbKcuN+8OvP8ZQnAzBSIwwl/Y+tp00xyEB+iPUj4myAQzs1aEqY9SJOc6Tqc+NzpNjWyMviheo/ANy9ukfZmyxDy/n04wjBzze/NFa1Xq7hu7BYd0myuuxRJc8NXT+NxJUxyM/D00HCDsQ2rUSxVk5YJr0agGptNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718354751; c=relaxed/simple;
-	bh=GKdxUhUXcDfYN3jYPCUX/pOROt6SaxRLTeslIUh2VrQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bi/jWePEJUF7W2FUXwzk2JkXdSB2Fk/IWs2hqkWQoJ6hlWrdW8sQQlybM3aV+vXTolKiazUxklVnFIAIXd0vF/bUbOj9i50P3V8EytIRQ4e1s5j2M5TVttbEhDsshi9pva2JUrjhCuES0Hoq5F4jfhxVSJi10i6K9fc8Q9nFNLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjKRjeO/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D355C2BD10;
-	Fri, 14 Jun 2024 08:45:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718354750;
-	bh=GKdxUhUXcDfYN3jYPCUX/pOROt6SaxRLTeslIUh2VrQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FjKRjeO/WPyO7cpdvMcjMHK8Ko20hHPMj03iXXYsncckVkJjXyEinIoNaXPVHN1yU
-	 /LRAqeGJFOErqLHh7tU/0hnVMS/qqaoL+oAn8f44q3nliKrXr0Tc0EkRcvqFpUwbny
-	 LtunLNuq/5Mq9/GxQyIkp5GnpdSdrwCI/brDszXQ=
-Date: Fri, 14 Jun 2024 10:45:47 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: stable@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: Please backport 2d43cc701b96 to v6.9 and v6.6
-Message-ID: <2024061411-hypertext-saline-afb4@gregkh>
-References: <87wmmsnelx.fsf@mail.lhotse>
+	s=arc-20240116; t=1718355069; c=relaxed/simple;
+	bh=pYD9i/lxDw5B8ce15enfoVfcDt2/Cm5hQueyX/ZzqqM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gJc0lixzdp+GwiXR3wfrd1SEvvQKbLFpXhnPec6zwOKLY7LEBP2rEgJW0DNk0bXEV8pY78XcRQS0Ws7zbkblSlO3peBYQ2EjG+R6zjZ2I0ZW4e85aUQFCydkrU0AH4bRTmISepCJWoYe5dzhLWBI4QXo/N5EFPlclgnh/yZl53E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+From: Sam James <sam@gentoo.org>
+To: stable@vger.kernel.org
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	leah.rumancik@gmail.com,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Sam James <sam@gentoo.org>
+Subject: [PATCH 6.6] Revert "fork: defer linking file vma until vma is fully initialized"
+Date: Fri, 14 Jun 2024 09:50:59 +0100
+Message-ID: <20240614085102.3198934-1-sam@gentoo.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87wmmsnelx.fsf@mail.lhotse>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 14, 2024 at 05:54:50PM +1000, Michael Ellerman wrote:
-> Hi stable team,
-> 
-> Can you please backport:
->   2d43cc701b96 ("powerpc/uaccess: Fix build errors seen with GCC 13/14")
-> 
-> To v6.9 and v6.6.
-> 
-> It was marked for backporting, but hasn't been picked up AFAICS. I'm not
-> sure if it clashed with the asm_goto_output changes or something. But it
-> backports cleanly to the current stable branches.
+This reverts commit cec11fa2eb512ebe3a459c185f4aca1d44059bbf.
 
-It's still in my "to get to queue" along with about 150+ other patches
-that were tagged for stable inclusion.  It's in good company, I'll get
-to it after this current round of -rc releases is out.
+The backport is incomplete and causes xfstests failures. The consequences
+of the incomplete backport seem worse than the original issue, so pick
+the lesser evil and revert until a full backport is ready.
 
-thanks,
+Link: https://lore.kernel.org/stable/20240604004751.3883227-1-leah.rumancik@gmail.com/
+Reported-by: Leah Rumancik <leah.rumancik@gmail.com>
+Signed-off-by: Sam James <sam@gentoo.org>
+---
+ kernel/fork.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-greg k-h
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 2eab916b504bf..177ce7438db6b 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -727,15 +727,6 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 		} else if (anon_vma_fork(tmp, mpnt))
+ 			goto fail_nomem_anon_vma_fork;
+ 		vm_flags_clear(tmp, VM_LOCKED_MASK);
+-		/*
+-		 * Copy/update hugetlb private vma information.
+-		 */
+-		if (is_vm_hugetlb_page(tmp))
+-			hugetlb_dup_vma_private(tmp);
+-
+-		if (tmp->vm_ops && tmp->vm_ops->open)
+-			tmp->vm_ops->open(tmp);
+-
+ 		file = tmp->vm_file;
+ 		if (file) {
+ 			struct address_space *mapping = file->f_mapping;
+@@ -752,6 +743,12 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 			i_mmap_unlock_write(mapping);
+ 		}
+ 
++		/*
++		 * Copy/update hugetlb private vma information.
++		 */
++		if (is_vm_hugetlb_page(tmp))
++			hugetlb_dup_vma_private(tmp);
++
+ 		/* Link the vma into the MT */
+ 		if (vma_iter_bulk_store(&vmi, tmp))
+ 			goto fail_nomem_vmi_store;
+@@ -760,6 +757,9 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 		if (!(tmp->vm_flags & VM_WIPEONFORK))
+ 			retval = copy_page_range(tmp, mpnt);
+ 
++		if (tmp->vm_ops && tmp->vm_ops->open)
++			tmp->vm_ops->open(tmp);
++
+ 		if (retval)
+ 			goto loop_out;
+ 	}
+-- 
+2.45.2
+
 
